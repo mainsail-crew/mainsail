@@ -62,26 +62,19 @@ export default class WebSocketClient {
         };
 
         this.instance.onmessage = (msg) => {
-            if (msg.data instanceof Blob) {
-                let reader = new FileReader();
-                reader.onload = () => {
-                    let data = JSON.parse(reader.result);
-                    if (typeof this.onMessage === 'function') {
-                        this.onMessage(data)
-                    } else if (this.store) {
-                        if ('error' in data) {
-                            this.passToStore('socket_on_error', data.error)
-                        } else if (this.wsData.filter(item => item.id === data.id).length > 0 &&
-                            this.wsData.filter(item => item.id === data.id)[0].action !== "") {
-                            this.store.dispatch(
-                                this.wsData.filter(item => item.id === data.id)[0].action,
-                                data.result
-                            )
-                        } else this.passToStore('socket_on_message', data)
-                    }
-                };
-
-                reader.readAsText(msg.data);
+            let data = JSON.parse(msg.data);
+            if (typeof this.onMessage === 'function') {
+                this.onMessage(data)
+            } else if (this.store) {
+                if ('error' in data) {
+                    this.passToStore('socket_on_error', data.error)
+                } else if (this.wsData.filter(item => item.id === data.id).length > 0 &&
+                    this.wsData.filter(item => item.id === data.id)[0].action !== "") {
+                    this.store.dispatch(
+                        this.wsData.filter(item => item.id === data.id)[0].action,
+                        data.result
+                    )
+                } else this.passToStore('socket_on_message', data)
             }
         }
 
