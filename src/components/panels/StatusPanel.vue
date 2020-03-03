@@ -16,19 +16,19 @@
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">X</v-flex>
-                        <v-flex tag="span">{{ toolhead !== null && 'position' in toolhead ? toolhead.position[0].toFixed(2) : "--" }}</v-flex>
+                        <v-flex tag="span">{{ position.length ? position[0].toFixed(2) : "--" }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Y</v-flex>
-                        <v-flex tag="span">{{ toolhead !== null && 'position' in toolhead ? toolhead.position[1].toFixed(2) : "--" }}</v-flex>
+                        <v-flex tag="span">{{ position.length ? position[1].toFixed(2) : "--" }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Z</v-flex>
-                        <v-flex tag="span">{{ toolhead !== null && 'position' in toolhead ? toolhead.position[2].toFixed(2) : "--" }}</v-flex>
+                        <v-flex tag="span">{{ position.length ? position[2].toFixed(2) : "--" }}</v-flex>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -105,13 +105,16 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
+    import { mapState, mapGetters } from 'vuex';
 
     export default {
         computed: {
-            ...mapGetters({
-                toolhead: 'toolhead'
-            })
+            ...mapState({
+                position: state => state.printer.toolhead.position
+            }),
+            ...mapGetters([
+                'toolhead'
+            ])
         },
         methods: {
 

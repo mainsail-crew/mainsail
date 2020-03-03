@@ -8,7 +8,7 @@ import VueResource from 'vue-resource'
 import './components'
 import store from './store'
 
-Vue.use(JRPCWS, 'ws://kossel.local:8080/websocket', {
+Vue.use(JRPCWS, 'ws://'+window.location.host+'/websocket', {
   store: store
 });
 
@@ -21,6 +21,7 @@ Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*';
 Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin';
+Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIONS, DELETE, OPTIONS';
 
 new Vue({
   vuetify,

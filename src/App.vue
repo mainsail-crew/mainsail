@@ -46,7 +46,7 @@
         </v-content>
 
         <v-footer app class="d-block">
-            <span v-if="hostname">{{ hostname }} - {{ version }}</span>
+            <span v-if="version">{{ version }}</span>
             <span class="float-right">&copy; 2019</span>
         </v-footer>
     </v-app>
@@ -71,18 +71,18 @@ export default {
     created () {
         this.$vuetify.theme.dark = true,
         this.$socket.onOpen = () => {
-            this.$socket.sendObj('get_klippy_info', {}, 'getKlipperInfo');
-            this.$socket.sendObj('get_object_info', {}, 'getObjectInfo');
-            this.$socket.sendObj('get_status', [{ heater: [] }], 'getObjectInfo');
-            this.$socket.sendObj('add_subscription', [{
+            this.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+            this.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
+            this.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
+            this.$socket.sendObj('post_printer_subscriptions', {
                 gcode: ["gcode_position", "speed", "speed_factor", "extrude_factor"],
                 toolhead: [],
                 virtual_sdcard: [],
                 header: [],
                 heater_bed: [],
                 extruder: ["temperature", "target"],
-                fan: []}]);
-            this.$socket.sendObj('get_file_list', {}, 'getFileList');
+                fan: []});
+            this.$socket.sendObj('get_printer_files', {}, 'getFileList');
         }
     },
     computed: {
@@ -212,6 +212,10 @@ export default {
         text-transform: capitalize;
         font-weight: 400;
         font-size: 14px;
+    }
+
+    .v-btn--absolute.v-btn--bottom, .v-btn--fixed.v-btn--bottom {
+        bottom: 52px;
     }
 
 
