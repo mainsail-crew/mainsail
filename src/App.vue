@@ -32,7 +32,7 @@
                    elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="error">Emergency Stop</v-btn>
+            <v-btn color="error" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
         <v-content id="content">
@@ -81,7 +81,11 @@ export default {
                 header: [],
                 heater_bed: [],
                 extruder: ["temperature", "target"],
-                fan: []});
+                fan: [],
+                pause_resume: [],
+                idle_timeout: [],
+
+            });
             this.$socket.sendObj('get_printer_files', {}, 'getFileList');
         }
     },
@@ -93,7 +97,14 @@ export default {
             toolhead: state => state.printer.toolhead,
             hostname: state => state.printer.hostname,
             version: state => state.printer.version,
+            loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
         }),
+    },
+    methods: {
+        emergencyStop: function() {
+            this.$store.commit('setLoadingEmergencyStop', true);
+            this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
+        },
     }
 }
 </script>

@@ -7,8 +7,9 @@ import routes from './routes'
 import VueResource from 'vue-resource'
 import './components'
 import store from './store'
+import { hostname } from './store/variables'
 
-Vue.use(JRPCWS, 'ws://'+window.location.host+'/websocket', {
+Vue.use(JRPCWS, 'ws://' + hostname + '/websocket', {
   store: store
 });
 

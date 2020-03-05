@@ -22,7 +22,7 @@
                 </template>
 
                 <template #item="{ item }">
-                    <tr @contextmenu="showContextMenu($event, item)">
+                    <tr @contextmenu="showContextMenu($event, item)" @click="dialog.show = true, dialog.filename = item.filename">
                         <td class=" ">
                             {{ item.filename }}
                         </td>
@@ -38,25 +38,41 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item>
+                <!--<v-list-item>
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
-                </v-list-item>
+                </v-list-item>-->
                 <v-list-item @click="removeFile">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
                 </v-list-item>
             </v-list>
         </v-menu>
+        <v-dialog v-model="dialog.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Start Job</v-card-title>
+                <v-card-text>Do you want to start {{ dialog.filename }}?</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red darken-1" text @click="dialog.show = false">No</v-btn>
+                    <v-btn color="green darken-1" text @click="startPrint(dialog.filename)">Yes</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
     import { mapState } from 'vuex';
     import axios from 'axios';
+    import { hostname } from '../store/variables';
 
     export default {
         data () {
             return {
                 sortBy: 'modified',
                 sortDesc: true,
+                dialog: {
+                    show: false,
+                    filename: ""
+                },
                 headers: [
                     {
                         text: 'Name',
@@ -101,7 +117,7 @@
                     formData.append('file', file);
                     this.$store.commit('setLoadingGcodeUpload', true);
 
-                    axios.post('http://'+window.location.host+'/printer/files/upload',
+                    axios.post('http://' + hostname + '/printer/files/upload',
                         formData, {
                             headers: { 'Content-Type': 'multipart/form-data' }
                         }
@@ -151,17 +167,22 @@
                 });
             },
             removeFile() {
-                window.console.log(this.contextMenu.item);
-                window.console.log("remove");
-
                 axios.delete(
-                    'http://'+window.location.host+'/printer/files/'+this.contextMenu.item.filename
+                    'http://'+hostname+'/printer/files/'+this.contextMenu.item.filename
                 ).then(() => {
-                    window.console.log('success');
+                    this.$toast(this.contextMenu.item.filename+" successfully deleted.", {
+                        icon: 'fa-trash'
+                    });
                 }).catch(() => {
-                    window.console.log('fail');
+                    this.$toast.error("Error! Cannot delete file.", {
+                        icon: 'fa-warning'
+                    });
                 });
             },
+            startPrint(filename = "") {
+                this.dialog.show = false;
+                this.$socket.sendObj('post_printer_print_start', { filename: filename }, 'switchToDashboard');
+            }
         }
     }
 </script>

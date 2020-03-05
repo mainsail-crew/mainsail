@@ -1,9 +1,9 @@
 import Dashboard from '../pages/Dashboard.vue'
-import Status from '../pages/Status.vue'
+//import Status from '../pages/Status.vue'
 import Console from '../pages/Console.vue'
 import Files from '../pages/Files.vue'
-import SettingsGeneral from '../pages/settings/general.vue'
-import SettingsMachine from '../pages/settings/machine.vue'
+//import SettingsGeneral from '../pages/settings/general.vue'
+//import SettingsMachine from '../pages/settings/machine.vue'
 
 const routes = [
     {
@@ -13,24 +13,24 @@ const routes = [
         component: Dashboard
     },
     {
+        title: "Console",
+        path: '/console',
+        icon: 'code-tags',
+        component: Console
+    },
+    /*{
         title: "Current Job",
         path: '/status',
         icon: 'printer-3d-nozzle',
         component: Status
-    },
+    },*/
     {
         title: "G-Code Files",
         path: '/files',
         icon: 'printer-3d-nozzle',
         component: Files
     },
-    {
-        title: "Console",
-        path: '/console',
-        icon: 'code-tags',
-        component: Console
-    },
-    {
+    /*{
         title: "Settings",
         path: '/settings',
         icon: 'wrench',
@@ -48,7 +48,7 @@ const routes = [
                 component: SettingsMachine
             },
         ]
-    },
+    },*/
 
 ];
 

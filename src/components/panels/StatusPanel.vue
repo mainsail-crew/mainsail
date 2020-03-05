@@ -6,6 +6,9 @@
                 <v-list-item-title class="headline">Status</v-list-item-title>
                 <v-list-item-subtitle>{{ toolhead !== null && 'status' in toolhead ? toolhead.status : "" }}</v-list-item-subtitle>
             </v-list-item-content>
+            <v-btn class="orange" v-if="toolhead && toolhead.status === 'Printing'" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
+            <v-btn class="red" v-if="toolhead && toolhead.status === 'Paused'" :loading="btnStatusResume">resume job</v-btn>
+            <v-btn class="red" v-if="toolhead && toolhead.status === 'Paused'">cancel job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
@@ -110,14 +113,23 @@
     export default {
         computed: {
             ...mapState({
-                position: state => state.printer.toolhead.position
+                position: state => state.printer.toolhead.position,
+                btnStatusPause: state => state.socket.loadingPrintPause,
+                btnStatusResume: state => state.socket.loadingPrintResume,
             }),
             ...mapGetters([
                 'toolhead'
             ])
         },
         methods: {
-
+            btnPauseJob() {
+                this.$store.commit('setLoadingPrintPause', true);
+                this.$socket.sendObj('post_printer_print_pause', { }, 'setLoadingPrintPause');
+            },
+            btnResumeJob() {
+                this.$store.commit('setLoadingPrintResume', true);
+                this.$socket.sendObj('post_printer_print_resume', { }, 'setLoadingPrintResume');
+            }
         },
     }
 </script>
