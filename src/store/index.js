@@ -24,6 +24,9 @@ export default new Vuex.Store({
             isConnected: false,
             loadingGcodeUpload: false,
             loadingGcodeRefresh: false,
+            loadingEmergencyStop: false,
+            loadingPrintPause: false,
+            loadingPrintResume: false,
         },
         printer: {
             hostname: '',
@@ -160,8 +163,7 @@ export default new Vuex.Store({
             state.socket.loadingSendGcode = value;
         },
 
-        sendGcode(state, data) {
-            window.console.log(data);
+        sendGcode(state) {
             state.socket.loadingSendGcode = false;
         },
 
@@ -175,6 +177,22 @@ export default new Vuex.Store({
 
         setLoadingGcodeRefresh(state, value) {
             state.socket.loadingGcodeRefresh = value;
+        },
+
+        setLoadingEmergencyStop(state, value) {
+            state.socket.loadingEmergencyStop = value;
+        },
+
+        setLoadingPrintPause(state, value) {
+            state.socket.loadingPrintPause = value;
+        },
+
+        setLoadingPrintResume(state, value) {
+            state.socket.loadingPrintResume = value;
+        },
+
+        reportError: (data) => {
+            this.$toast(data.message)
         },
 
         voidMutation() {
@@ -199,11 +217,7 @@ export default new Vuex.Store({
         },
 
         socket_on_error ({ commit }, data) {
-            commit('voidMutation');
-            window.console.error('Socket Error: ' + data.message);
-            window.console.log(data);
-
-            //this.$toast.error(data.message)
+            commit('reportError', data);
         },
 
         socket_on_message ({ commit, state }, data) {
@@ -220,6 +234,10 @@ export default new Vuex.Store({
                 case 'notify_printer_state_changed':
                     commit('setPrinterStatus', data.params[0]);
                     break;
+
+                /*case 'notify_klippy_state_changed':
+                    commit('setPrinterStatus', data.params[0]);
+                    break;*/
 
                 case 'notify_filelist_changed':
                     commit('setFileList', data.params[0].filelist);
@@ -267,9 +285,26 @@ export default new Vuex.Store({
             commit('setLoadingSendGcode', value);
         },
 
+        setLoadingEmergencyStop({commit}) {
+            commit('setLoadingEmergencyStop', false);
+        },
+
+        setLoadingPrintPause({commit}) {
+            commit('setLoadingPrintPause', false);
+        },
+
+        setLoadingPrintResume({commit}) {
+            commit('setLoadingPrintResume', false);
+        },
+
         sendGcode({commit}, data) {
             commit('setLoadingSendGcode', false);
             commit('sendGcode', data);
+        },
+
+        switchToDashboard(state) {
+            window.console.log(state);
+
         }
     }
 });
