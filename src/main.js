@@ -1,21 +1,19 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 import JRPCWS from './plugins/json-rpc-websocket'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
-import routes from './routes'
 import VueResource from 'vue-resource'
 import './components'
 import store from './store'
+import router from './plugins/router'
 import { hostname } from './store/variables'
+import 'vue-toast-notification/dist/index.css';
 
 Vue.use(JRPCWS, 'ws://' + hostname + '/websocket', {
   store: store
 });
 
 Vue.config.productionTip = false;
-Vue.use(VueRouter);
-const router = new VueRouter({mode: 'history', routes});
 
 Vue.use(VueResource);
 Vue.http.headers.common['Content-Type'] = 'application/json';

@@ -1,3 +1,9 @@
+<style>
+    .heater-row .vertical_align_center {
+        margin: auto 0;
+    }
+</style>
+
 <template>
     <v-card>
         <v-list-item>
@@ -9,26 +15,23 @@
         </v-list-item>
         <v-divider class="my-2"></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
-            <v-layout wrap class=" text-center">
-                <v-flex tag="strong" class="category-header">Heater</v-flex>
-                <v-flex tag="strong" class="equal-width">Current</v-flex>
-                <v-flex tag="strong" class="equal-width">Target</v-flex>
-            </v-layout>
+            <v-row class="pl-3 pr-3">
+                <v-col class="text-center"><b>Heater</b></v-col>
+                <v-col class="text-center"><b>Current</b></v-col>
+                <v-col class="text-center"><b>Target</b></v-col>
+            </v-row>
             <div v-for="(heater, index) in heaters" v-bind:key="index" >
                 <v-divider class="my-2"></v-divider>
-                <v-layout wrap class=" text-center">
-                    <v-flex col tag="strong" class="category-header">
-                        <a>{{ heater.name }}</a>
-                    </v-flex>
-                    <v-flex col class="equal-width text-center">
-                        <v-layout column>
-                            <v-flex tag="strong">{{ heater.temperature.toFixed(1) }}°C</v-flex>
-                        </v-layout>
-                    </v-flex>
-                    <v-flex grow class="equal-width pr-2">
-                        <toolInput :name="heater.name" ></toolInput>
-                    </v-flex>
-                </v-layout>
+                <v-row class="pl-3 pr-3 heater-row">
+                    <v-col class="text-center">
+                        <b>{{ heater.name }}</b><br />
+                        <small>{{ heater.target > 0 ? "active" : "off" }}</small>
+                    </v-col>
+                    <v-col class="text-center vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
+                    <v-col class="text-center vertical_align_center">
+                        <toolInput :name="heater.name" :target="heater.target" ></toolInput>
+                    </v-col>
+                </v-row>
             </div>
         </v-card-text>
     </v-card>

@@ -7,8 +7,8 @@
                 <v-list-item-subtitle>{{ toolhead !== null && 'status' in toolhead ? toolhead.status : "" }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-btn class="orange" v-if="toolhead && toolhead.status === 'Printing'" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
-            <v-btn class="red" v-if="toolhead && toolhead.status === 'Paused'" :loading="btnStatusResume">resume job</v-btn>
-            <v-btn class="red" v-if="toolhead && toolhead.status === 'Paused'">cancel job</v-btn>
+            <v-btn class="orange" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
+            <v-btn class="red ml-2" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
@@ -35,91 +35,64 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-
-            <!--<v-divider class="my-2" v-if="'position' in toolhead && toolhead.position.length > 3"></v-divider>
-
-            <v-layout wrap class=" text-center" v-if="toolhead && toolhead.position.length > 3">
+            <v-divider class="my-2" v-if="(toolhead && toolhead.status === 'Printing') || is_paused"></v-divider>
+            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing') || is_paused">
                 <v-flex col tag="strong" class="category-header">
-                    Drives
+                    Printstatus
                 </v-flex>
-                <v-layout v-for="(drive, index) in this.getDrives()" :key="index" v-bind:index="index">
-                    <v-flex grow class="equal-width">
-                        <v-layout column>
-                            <v-flex tag="strong">E{{ index }}</v-flex>
-                            <v-flex tag="span">{{ drive.toFixed(2) }}</v-flex>
-                        </v-layout>
-                    </v-flex>
+                <v-flex grow class="equal-width">
+                    <v-layout column>
+                        <v-flex tag="strong">printing</v-flex>
+                        <v-flex tag="span">{{ formatTime(toolhead.printing_time) }}</v-flex>
+                    </v-layout>
+                </v-flex>
+                <v-flex grow class="equal-width">
+                    <v-layout column>
+                        <v-flex tag="strong">estimated</v-flex>
+                        <v-flex tag="span">{{ formatTime(print_time) }}</v-flex>
+                    </v-layout>
+                </v-flex>
+                <v-flex grow class="equal-width">
+                    <v-layout column>
+                        <v-flex tag="strong">total</v-flex>
+                        <v-flex tag="span">{{ formatTime(print_time + toolhead.printing_time) }}</v-flex>
+                    </v-layout>
+                </v-flex>
+            </v-layout>
+            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing') || is_paused">
+                <v-layout column class="mt-2" >
+                    <v-progress-linear
+                        :value="printProgress * 100"
+                        height="25"
+                    >
+                        <template>
+                            <strong>{{ Math.ceil(printProgress * 100) }}%</strong>
+                        </template>
+                    </v-progress-linear>
                 </v-layout>
-            </v-layout>-->
-
-            <!--<v-divider class="my-2"></v-divider>
-
-            <v-layout wrap class=" text-center">
-                <v-flex col tag="strong" class="category-header">
-                    Speeds
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Requested Speed</v-flex>
-                        <v-flex tag="span">123 mm/s</v-flex>
-                    </v-layout>
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Top Speed</v-flex>
-                        <v-flex tag="span">321 mm/s</v-flex>
-                    </v-layout>
-                </v-flex>
-            </v-layout>-->
-
-            <!--<v-divider class="my-2"></v-divider>
-
-            <v-layout wrap class=" text-center">
-                <v-flex tag="strong" class="category-header">
-                    Quad Gantry Levelin
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Z0</v-flex>
-                        <v-flex tag="span">1.2um</v-flex>
-                    </v-layout>
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Z1</v-flex>
-                        <v-flex tag="span">0.9um</v-flex>
-                    </v-layout>
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Z2</v-flex>
-                        <v-flex tag="span">1.0um</v-flex>
-                    </v-layout>
-                </v-flex>
-                <v-flex grow class="equal-width">
-                    <v-layout column>
-                        <v-flex tag="strong">Z3</v-flex>
-                        <v-flex tag="span">1.5um</v-flex>
-                    </v-layout>
-                </v-flex>
-            </v-layout>-->
+            </v-layout>
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-    import { mapState, mapGetters } from 'vuex';
+    import { mapState } from 'vuex';
 
     export default {
+        data: () => ({
+            progress: 0.15
+        }),
         computed: {
             ...mapState({
+                toolhead: state => state.printer.toolhead,
                 position: state => state.printer.toolhead.position,
+                is_paused: state => state.printer.pause_resume.is_paused,
                 btnStatusPause: state => state.socket.loadingPrintPause,
                 btnStatusResume: state => state.socket.loadingPrintResume,
+                btnStatusCancel: state => state.socket.loadingPrintCancel,
+                printProgress: state => state.printer.virtual_sdcard.progress,
+                print_time: state => state.printer.idle_timeout.printing_time,
             }),
-            ...mapGetters([
-                'toolhead'
-            ])
         },
         methods: {
             btnPauseJob() {
@@ -129,6 +102,16 @@
             btnResumeJob() {
                 this.$store.commit('setLoadingPrintResume', true);
                 this.$socket.sendObj('post_printer_print_resume', { }, 'setLoadingPrintResume');
+            },
+            btnCancelJob() {
+                this.$store.commit('setLoadingPrintCancel', true);
+                this.$socket.sendObj('post_printer_print_cancel', { }, 'setLoadingPrintCancel');
+            },
+            formatTime(seconds) {
+                let date = new Date(null);
+                date.setSeconds(seconds);
+
+                return date.toISOString().substr(11,8);
             }
         },
     }
