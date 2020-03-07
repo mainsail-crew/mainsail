@@ -16,19 +16,19 @@
         <v-divider class="my-2"></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-row class="pl-3 pr-3">
-                <v-col class="text-center"><b>Heater</b></v-col>
-                <v-col class="text-center"><b>Current</b></v-col>
-                <v-col class="text-center"><b>Target</b></v-col>
+                <v-col class="text-center py-0"><b>Heater</b></v-col>
+                <v-col class="text-center py-0"><b>Current</b></v-col>
+                <v-col class="text-center py-0"><b>Target</b></v-col>
             </v-row>
             <div v-for="(heater, index) in heaters" v-bind:key="index" >
                 <v-divider class="my-2"></v-divider>
                 <v-row class="pl-3 pr-3 heater-row">
-                    <v-col class="text-center">
+                    <v-col class="text-center py-0">
                         <b>{{ heater.name }}</b><br />
                         <small>{{ heater.target > 0 ? "active" : "off" }}</small>
                     </v-col>
-                    <v-col class="text-center vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
-                    <v-col class="text-center vertical_align_center">
+                    <v-col class="text-center py-0 vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
+                    <v-col class="text-center py-0 vertical_align_center">
                         <toolInput :name="heater.name" :target="heater.target" ></toolInput>
                     </v-col>
                 </v-row>

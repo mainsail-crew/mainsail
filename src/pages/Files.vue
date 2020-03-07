@@ -1,3 +1,17 @@
+<style>
+    .v-data-table .v-data-table-header__icon {
+        margin-left: 7px;
+    }
+
+    .v-data-table th:last-child .v-data-table-header__icon {
+        float: right;
+    }
+
+    .v-data-table .file-list-cursor:hover {
+        cursor: pointer;
+    }
+</style>
+
 <template>
     <div>
         <v-card>
@@ -22,7 +36,7 @@
                 </template>
 
                 <template #item="{ item }">
-                    <tr @contextmenu="showContextMenu($event, item)" @click="dialog.show = true, dialog.filename = item.filename">
+                    <tr @contextmenu="showContextMenu($event, item)" @click="dialog.show = true, dialog.filename = item.filename" class="file-list-cursor">
                         <td class=" ">
                             {{ item.filename }}
                         </td>
@@ -38,9 +52,9 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <!--<v-list-item>
+                <v-list-item @click="downloadFile">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
-                </v-list-item>-->
+                </v-list-item>
                 <v-list-item @click="removeFile">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
                 </v-list-item>
@@ -86,7 +100,7 @@
                     {
                         text: 'last modified',
                         value: 'modified',
-                        align: 'end',
+                        align: 'end'
                     },
                 ],
                 options: {
@@ -99,6 +113,7 @@
                     y: 0,
                     item: {}
                 },
+                hostname: hostname,
             }
         },
         computed: {
@@ -167,6 +182,14 @@
                 this.$nextTick(() => {
                     this.contextMenu.shown = true
                 });
+            },
+            downloadFile() {
+                let link = document.createElement("a");
+                link.download = name;
+                link.href = 'http://' + hostname + '/printer/files/' + this.contextMenu.item.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             },
             removeFile() {
                 axios.delete(

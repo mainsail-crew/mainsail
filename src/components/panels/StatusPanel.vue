@@ -7,8 +7,8 @@
                 <v-list-item-subtitle>{{ toolhead !== null && 'status' in toolhead ? toolhead.status : "" }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-btn class="orange" v-if="toolhead && toolhead.status === 'Printing'" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
-            <v-btn class="orange" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
-            <v-btn class="red ml-2" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
+            <v-btn class="red" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
+            <v-btn class="orange ml-2" v-if="(toolhead && toolhead.status === 'Ready') && is_paused" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
