@@ -32,7 +32,8 @@
                    elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="error" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
+            <v-btn color="green" v-if="!isConnected" :loading="loadingEmergencyStop" @click="emergencyStop"><v-icon class="mr-2">mdi-refresh-circle</v-icon> reconnect</v-btn>
+            <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
         <v-content id="content">
@@ -75,7 +76,7 @@ export default {
             this.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
             this.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
             this.$socket.sendObj('post_printer_subscriptions', {
-                gcode: ["gcode_position", "speed", "speed_factor", "extrude_factor"],
+                gcode: ["gcode_position", "speed", "speed_factor", "extrude_factor", "busy", "abs_extrude"],
                 toolhead: [],
                 virtual_sdcard: [],
                 header: [],
@@ -98,6 +99,7 @@ export default {
             hostname: state => state.printer.hostname,
             version: state => state.printer.version,
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
+            isConnected: state => state.socket.isConnected,
         }),
     },
     methods: {

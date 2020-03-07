@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueToast from 'vue-toast-notification';
+import router from '../plugins/router'
 
 Vue.use(Vuex);
+Vue.use(VueToast);
 
 let colorArray = [
     '#F44336',
@@ -34,7 +37,19 @@ export default new Vuex.Store({
             toolhead: {
                 position: [],
                 status: "",
+                print_time: 0,
+                printing_time: 0,
+                estimated_print_time: 0,
             },
+            pause_resume: {
+                is_paused: false
+            },
+            idle_timeout: {
+                printing_time: 0
+            },
+            virtual_sdcard: {
+                process: 0
+            }
         },
         object: {
             heater: {
@@ -69,7 +84,15 @@ export default new Vuex.Store({
                 }
             }
 
-            return heaters;
+            return heaters.sort((a, b) => {
+                let nameA = a.name.toUpperCase();
+                let nameB = b.name.toUpperCase();
+
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+
+                return 0;
+            });
         },
 
         heatersCount: (state, getters) => {
@@ -157,6 +180,14 @@ export default new Vuex.Store({
                 date: new Date(),
                 message: data
             });
+
+            if (data.substring(0,2) === "//") {
+                data = data.replace("//", "");
+                Vue.$toast.warning(data);
+            } else if (data.substring(0,2) === "!!") {
+                data = data.replace("!!", "");
+                Vue.$toast.error(data);
+            }
         },
 
         setLoadingSendGcode(state, value) {
@@ -191,8 +222,31 @@ export default new Vuex.Store({
             state.socket.loadingPrintResume = value;
         },
 
-        reportError: (data) => {
-            this.$toast(data.message)
+        setLoadingPrintCancel(state, value) {
+            state.socket.loadingPrintCancel = value;
+        },
+
+        reportError(state, data) {
+            Vue.$toast.error(data.message);
+        },
+
+        setPausedState(state, data) {
+            switch (data) {
+                case 'paused':
+                    state.printer.pause_resume.is_paused = true;
+                    break;
+
+                case 'resumed':
+                    state.printer.pause_resume.is_paused = false;
+                    break;
+
+                case 'cleared':
+                    state.printer.pause_resume.is_paused = false;
+                    break;
+
+                default:
+                    window.console.log('setPausedState -> Default: '+data);
+            }
         },
 
         voidMutation() {
@@ -243,6 +297,10 @@ export default new Vuex.Store({
                     commit('setFileList', data.params[0].filelist);
                     break;
 
+                case 'notify_paused_state_changed':
+                    commit('setPausedState', data.params[0]);
+                    break;
+
                 default:
                     window.console.log("Default return");
                     if (data.error) window.console.error("JSON-RPC: " + data.error.message);
@@ -251,7 +309,7 @@ export default new Vuex.Store({
         },
 
         socket_reconnect ({ commit }, count) {
-            commit('setConnected')
+            commit('setConnected');
             window.console.log(count)
         },
 
@@ -297,6 +355,10 @@ export default new Vuex.Store({
             commit('setLoadingPrintResume', false);
         },
 
+        setLoadingPrintCancel({commit}) {
+            commit('setLoadingPrintCancel', false);
+        },
+
         sendGcode({commit}, data) {
             commit('setLoadingSendGcode', false);
             commit('sendGcode', data);
@@ -304,7 +366,7 @@ export default new Vuex.Store({
 
         switchToDashboard(state) {
             window.console.log(state);
-
+            router.push("/");
         }
     }
 });

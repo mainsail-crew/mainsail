@@ -6,7 +6,7 @@
                 <v-spacer></v-spacer>
                 <v-btn :loading="loadingRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn color="primary ml-4 " :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+                <v-btn color="primary ml-4 " v-if="printStatus == 'Ready'" :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
             </v-card-title>
             <v-data-table
                     :headers="headers"
@@ -106,6 +106,7 @@
                 files: state => state.files,
                 loadingUpload: state => state.socket.loadingGcodeUpload,
                 loadingRefresh: state => state.socket.loadingGcodeRefresh,
+                printStatus: state => state.printer.toolhead.status,
             })
         },
         methods: {
@@ -128,6 +129,7 @@
                         });
                     })
                     .catch(() => {
+                        this.$store.commit('setLoadingGcodeUpload', false);
                         toast.error("Cannot upload the file!", {
                             icon: 'fa-exclamation-triangle'
                         });
