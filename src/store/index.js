@@ -364,8 +364,7 @@ export default new Vuex.Store({
             commit('sendGcode', data);
         },
 
-        switchToDashboard(state) {
-            window.console.log(state);
+        switchToDashboard() {
             router.push("/");
         }
     }

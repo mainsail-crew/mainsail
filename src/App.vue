@@ -32,7 +32,7 @@
                    elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="green" v-if="!isConnected" :loading="loadingEmergencyStop" @click="emergencyStop"><v-icon class="mr-2">mdi-refresh-circle</v-icon> reconnect</v-btn>
+            <!--<v-btn color="green" v-if="!isConnected" :loading="loadingEmergencyStop" @click="emergencyStop"><v-icon class="mr-2">mdi-refresh-circle</v-icon> reconnect</v-btn>-->
             <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
@@ -124,7 +124,10 @@ export default {
         text-align: center;
         border-bottom: 1px solid #ffffff40;
         margin-bottom: 1em;
-        padding: .75em 0 .25em 0;
+        padding: .75em 0 .75em 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     #nav-header img {
@@ -133,9 +136,8 @@ export default {
     }
 
     #nav-header .v-toolbar__title {
-        display: inline-block;
-        line-height: 40px;
         font-size: 24px;
+        vertical-align: middle;
     }
 
     .v-navigation-drawer__content {
