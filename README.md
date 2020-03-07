@@ -8,8 +8,7 @@ Download and install KWC:
 ```bash
 mkdir -p ~/kwc
 cd ~/kwc
-wget https://github.com/meteyou/kwc/releases/download/V0.0.2/kwc-alpha-0.0.2.zip
-unzip *.zip && for f_ in $(find . | grep '.gz');do gunzip ${f_};done
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/V0.0.2/kwc-alpha-0.0.2.zip && unzip kwc.zip && rm kwc.zip
 ```
 
 Configure web_server in printer.cfg:
@@ -63,6 +62,5 @@ gcode:
 ```
 rm -R ~/kwc/*
 cd ~/kwc
-wget https://github.com/meteyou/kwc/releases/download/V0.0.2/kwc-alpha-0.0.2.zip
-unzip *.zip && for f_ in $(find . | grep '.gz');do gunzip ${f_};done
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/V0.0.2/kwc-alpha-0.0.2.zip && unzip kwc.zip && rm kwc.zip
 ```
