@@ -30,12 +30,18 @@ export default new Vuex.Store({
             loadingEmergencyStop: false,
             loadingPrintPause: false,
             loadingPrintResume: false,
+            loadingHomeX: false,
+            loadingHomeY: false,
+            loadingHomeZ: false,
+            loadingRestart: false,
+            loadingRestartFirmware: false,
         },
         printer: {
             hostname: '',
             version: '',
             toolhead: {
                 position: [],
+                homed_axes: [],
                 status: "",
                 print_time: 0,
                 printing_time: 0,
@@ -97,7 +103,34 @@ export default new Vuex.Store({
 
         heatersCount: (state, getters) => {
             return getters.heaters.length;
-        }
+        },
+
+        temperature_fans: state => {
+            let fans = [];
+
+            for (let [key, value] of Object.entries(state.printer)) {
+                let nameSplit = key.split(" ");
+
+                if (nameSplit[0] === "temperature_fan") {
+                    fans.push({
+                        name: nameSplit[1],
+                        target: value.target,
+                        temperature: value.temperature,
+                        speed: value.speed,
+                    });
+                }
+            }
+
+            return fans.sort((a, b) => {
+                let nameA = a.name.toUpperCase();
+                let nameB = b.name.toUpperCase();
+
+                if (nameA < nameB) return -1;
+                if (nameA > nameB) return 1;
+
+                return 0;
+            });
+        },
     },
 
     mutations: {
@@ -107,18 +140,23 @@ export default new Vuex.Store({
 
         setDisconnected (state) {
             state.socket.isConnected = false
+            Vue.prototype.$socket.reconnect();
         },
 
         setPrinterData(state, data) {
             Object.assign(state.printer, data);
 
-            if (state.object.heater.available_heaters.length) {
+            if (Array.isArray(state.object.heater.available_heaters) && state.object.heater.available_heaters.length) {
                 let boolAddValues = false;
                 let now = new Date();
 
                 if (state.temperaturChart.labels.length === 0 || now - state.temperaturChart.labels[state.temperaturChart.labels.length - 1] > temperaturChartSampleInterval) {
                     for (let [key, value] of Object.entries(data)) {
-                        if (state.object.heater.available_heaters.includes(key)) {
+                        let keySplit = key.split(" ");
+
+                        if (state.object.heater.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
+                            if (keySplit[0] === "temperature_fan") key = keySplit[1];
+
                             let index =  state.temperaturChart.datasets.findIndex(element => element.label === key);
 
                             if (index >= 0) state.temperaturChart.datasets[index].data.push(value.temperature.toFixed(1));
@@ -169,6 +207,14 @@ export default new Vuex.Store({
 
         setObjectData(state, data) {
             Object.assign(state.object, data);
+
+            for (let key of Object.keys(data)) {
+                let nameSplit = key.split(" ");
+
+                if (nameSplit[0] === "temperature_fan") {
+                    Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
+                }
+            }
         },
 
         setFileList(state, data) {
@@ -226,8 +272,29 @@ export default new Vuex.Store({
             state.socket.loadingPrintCancel = value;
         },
 
+        setLoadingHomeX(state, value) {
+            state.socket.loadingHomeX = value;
+        },
+
+        setLoadingHomeY(state, value) {
+            state.socket.loadingHomeY = value;
+        },
+
+        setLoadingHomeZ(state, value) {
+            state.socket.loadingHomeZ = value;
+        },
+
+        setLoadingRestart(state, value) {
+            state.socket.loadingRestart = value;
+        },
+
+        setLoadingRestartFirmware(state, value) {
+            state.socket.loadingRestartFirmware = value;
+        },
+
         reportError(state, data) {
-            Vue.$toast.error(data.message);
+            //Vue.$toast.error(data.message);
+            window.console.log(data);
         },
 
         setPausedState(state, data) {
@@ -302,9 +369,11 @@ export default new Vuex.Store({
                     break;
 
                 default:
-                    window.console.log("Default return");
-                    if (data.error) window.console.error("JSON-RPC: " + data.error.message);
-                    else window.console.log(data);
+                    if (data.result !== "ok") {
+                        window.console.log("Default return");
+                        if (data.error) window.console.error("JSON-RPC: " + data.error.message);
+                        else window.console.log(data);
+                    }
             }
         },
 
@@ -362,6 +431,26 @@ export default new Vuex.Store({
         sendGcode({commit}, data) {
             commit('setLoadingSendGcode', false);
             commit('sendGcode', data);
+        },
+
+        responseHomeX({commit}) {
+            commit('setLoadingHomeX', false);
+        },
+
+        responseHomeY({commit}) {
+            commit('setLoadingHomeY', false);
+        },
+
+        responseHomeZ({commit}) {
+            commit('setLoadingHomeZ', false);
+        },
+
+        responseRestart({commit}) {
+            commit('setLoadingRestart', false);
+        },
+
+        responseRestartFirmware({commit}) {
+            commit('setLoadingRestartFirmware', false);
         },
 
         switchToDashboard() {

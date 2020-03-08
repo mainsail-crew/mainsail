@@ -4,7 +4,11 @@
             <v-list-item-avatar color="grey"><v-icon dark>fa-thermometer-three-quarters</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Temperature Chart</v-list-item-title>
-                <v-list-item-subtitle>{{ heatersCount }} heaters</v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    <span>{{ heatersCount }} heaters</span>
+                    <span v-if="temperature_fans.length === 1">, {{ temperature_fans.length }} fan</span>
+                    <span v-if="temperature_fans.length > 1">, {{ temperature_fans.length }} fans</span>
+                </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2"></v-divider>
@@ -37,7 +41,8 @@
                 datasets: state => state.temperaturChart.datasets,
             }),
             ...mapGetters([
-                'heatersCount'
+                'heatersCount',
+                'temperature_fans'
             ])
         },
         methods: {
