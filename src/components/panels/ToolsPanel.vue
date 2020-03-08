@@ -10,7 +10,11 @@
             <v-list-item-avatar color="grey"><v-icon dark>fa-thermometer-three-quarters</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Heaters</v-list-item-title>
-                <v-list-item-subtitle>{{ heatersCount }} heaters</v-list-item-subtitle>
+                <v-list-item-subtitle>
+                    {{ heatersCount }} heaters
+                    <span v-if="temperature_fans.length === 1">, {{ temperature_fans.length }} fan</span>
+                    <span v-if="temperature_fans.length > 1">, {{ temperature_fans.length }} fans</span>
+                </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2"></v-divider>
@@ -29,7 +33,20 @@
                     </v-col>
                     <v-col class="text-center py-0 vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
                     <v-col class="text-center py-0 vertical_align_center">
-                        <toolInput :name="heater.name" :target="heater.target" ></toolInput>
+                        <toolInput :name="heater.name" :target="heater.target" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
+                    </v-col>
+                </v-row>
+            </div>
+            <div v-for="(fan, index) in temperature_fans" v-bind:key="index+99" >
+                <v-divider class="my-2"></v-divider>
+                <v-row class="pl-3 pr-3 heater-row">
+                    <v-col class="text-center py-0">
+                        <b>{{ fan.name }}</b><br />
+                        <small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
+                    </v-col>
+                    <v-col class="text-center py-0 vertical_align_center"><span>{{ fan.temperature.toFixed(1) }}°C</span></v-col>
+                    <v-col class="text-center py-0 vertical_align_center">
+                        <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" ></toolInput>
                     </v-col>
                 </v-row>
             </div>
@@ -40,7 +57,6 @@
 <script>
     import { mapGetters } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
-
 
     export default {
         components: {
@@ -54,7 +70,8 @@
         computed: {
             ...mapGetters([
                 'heaters',
-                'heatersCount'
+                'heatersCount',
+                'temperature_fans'
             ])
         },
         methods: {

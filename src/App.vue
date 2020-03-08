@@ -46,6 +46,15 @@
             </v-scroll-y-transition>
         </v-content>
 
+        <v-dialog v-model="isConnecting"  persistent width="300">
+            <v-card color="primary" dark >
+                <v-card-text class="pt-2">
+                    Connecting to Klipper
+                    <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
         <v-footer app class="d-block">
             <span v-if="version">{{ version }}</span>
             <span class="float-right">&copy; 2019</span>
@@ -76,10 +85,10 @@ export default {
             this.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
             this.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
             this.$socket.sendObj('post_printer_subscriptions', {
-                gcode: ["gcode_position", "speed", "speed_factor", "extrude_factor", "busy", "abs_extrude"],
+                gcode: [],
                 toolhead: [],
                 virtual_sdcard: [],
-                header: [],
+                heater: [],
                 heater_bed: [],
                 extruder: ["temperature", "target"],
                 fan: [],
@@ -100,6 +109,7 @@ export default {
             version: state => state.printer.version,
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,
+            isConnecting: state => !state.socket.isConnected,
         }),
     },
     methods: {

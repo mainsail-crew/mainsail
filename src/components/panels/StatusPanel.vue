@@ -35,8 +35,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="(toolhead && toolhead.status === 'Printing') || is_paused"></v-divider>
-            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing') || is_paused">
+            <v-divider class="my-2" v-if="(toolhead && toolhead.status === 'Printing' && printProgress > 0) || is_paused"></v-divider>
+            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing' && printProgress > 0) || is_paused">
                 <v-flex col tag="strong" class="category-header">
                     Printstatus
                 </v-flex>
@@ -59,7 +59,7 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing') || is_paused">
+            <v-layout wrap class=" text-center" v-if="(toolhead && toolhead.status === 'Printing' && printProgress > 0) || is_paused">
                 <v-layout column class="mt-2" >
                     <v-progress-linear
                         :value="printProgress * 100"

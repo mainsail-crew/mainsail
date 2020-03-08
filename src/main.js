@@ -10,7 +10,10 @@ import { hostname } from './store/variables'
 import 'vue-toast-notification/dist/index.css';
 
 Vue.use(JRPCWS, 'ws://' + hostname + '/websocket', {
-  store: store
+  store: store,
+  reconnectEnabled: true,
+  reconnectInterval: 3000,
+  recconectAttempts: 1000,
 });
 
 Vue.config.productionTip = false;
