@@ -34,6 +34,8 @@
                     solo
                     class="gcode-command-field"
                     v-on:keyup.enter="doSend"
+                    v-on:keyup.up="onKeyUp"
+                    v-on:keyup.down="onKeyDown"
                 ></v-text-field>
             </v-col>
 
@@ -99,7 +101,11 @@
                 ],
                 options: {
 
-                }
+                },
+                lastCommands: [
+
+                ],
+                lastCommandNumber: null
             }
         },
         computed: {
@@ -119,11 +125,32 @@
             doSend() {
                 this.loadingSendGcode = true;
                 this.$socket.sendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
+                this.lastCommands.push(this.gcode);
+                this.gcode = "";
+                this.lastCommandNumber = null;
             },
             formatMessage(message) {
                 message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
                 return message;
+            },
+            onKeyUp() {
+                if (this.lastCommandNumber === null && this.lastCommands.length) {
+                    this.lastCommandNumber = this.lastCommands.length - 1;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber > 0) {
+                    this.lastCommandNumber--;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                }
+            },
+            onKeyDown() {
+                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber++;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber = null;
+                    this.gcode = "";
+                }
             }
         }
     }

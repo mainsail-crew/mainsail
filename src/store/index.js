@@ -227,11 +227,7 @@ export default new Vuex.Store({
                 message: data
             });
 
-            if (data.substring(0,2) === "//") {
-                data = data.replace("//", "");
-                Vue.$toast.warning(data);
-            } else if (data.substring(0,2) === "!!") {
-                data = data.replace("!!", "");
+            if (data.substring(0,2) === "!!") {
                 Vue.$toast.error(data);
             }
         },
