@@ -57,7 +57,7 @@
 
         <v-footer app class="d-block">
             <span v-if="version">{{ version }}</span>
-            <span class="float-right">&copy; 2019</span>
+            <span class="float-right">&copy; 2020</span>
         </v-footer>
     </v-app>
 </template>

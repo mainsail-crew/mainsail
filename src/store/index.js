@@ -51,10 +51,17 @@ export default new Vuex.Store({
                 is_paused: false
             },
             idle_timeout: {
-                printing_time: 0
+                printing_time: 0,
+                state: "",
             },
             virtual_sdcard: {
-                process: 0
+                process: 0,
+                current_file: "",
+                is_active: false,
+                filament_used: 0,
+                file_position: 0,
+                print_duration: 0,
+                total_duration: 0,
             }
         },
         object: {
@@ -130,6 +137,18 @@ export default new Vuex.Store({
 
                 return 0;
             });
+        },
+
+        current_file_size: state =>  {
+            let current_file = state.printer.virtual_sdcard.current_file;
+            let files = state.files;
+
+            if (current_file !== '') {
+                files.filter(file => file.name == current_file);
+                if (files.length) return files[0].size;
+            }
+
+            return 0;
         },
     },
 

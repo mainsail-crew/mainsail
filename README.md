@@ -8,7 +8,7 @@ Download and install KWC:
 ```bash
 mkdir -p ~/kwc
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.4/kwc-alpha-0.0.4.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.5/kwc-alpha-0.0.5.zip && unzip kwc.zip && rm kwc.zip
 ```
 
 Configure web_server in printer.cfg:
@@ -18,16 +18,16 @@ port: 8080
 trusted_clients:
  192.168.1.0/24
 web_path: ~/kwc
-pause_gcode: PAUSE_PRINT
-resume_gcode: RESUME_PRINT
-cancel_gcode: CANCEL_PRINT
 ```
 
 Example Klipper macros:
 ```
 [pause_resume]
 
-[gcode_macro CANCEL_PRINT]
+[gcode_macro CANCEL]
+default_parameter_X: 230
+default_parameter_Y: 230
+default_parameter_Z: 10
 gcode:
     M104 S0
     M140 S0
@@ -35,13 +35,14 @@ gcode:
     M106 S0
     CLEAR_PAUSE
 
-[gcode_macro PAUSE_PRINT]
+[gcode_macro PAUSE]
+rename_existing: BASE_PAUSE
 default_parameter_X: 230
 default_parameter_Y: 230
 default_parameter_Z: 10
 gcode:
     SAVE_GCODE_STATE NAME=PAUSE_state
-    PAUSE
+    BASE_PAUSE
     G91
     G1 E-1.7 F2100
     G1 Z{Z}
@@ -49,18 +50,20 @@ gcode:
     G1 X{X} Y{Y} F6000
     G91
 
-[gcode_macro RESUME_PRINT]
+[gcode_macro RESUME]
+rename_existing: BASE_RESUME
 gcode:
     G91
     G1 E1.7 F2100
     G91
     RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
-    RESUME
+    BASE_RESUME
 ```
 
-## Update KWC to V0.0.4
+## Update KWC to V0.0.5
 ```
 rm -R ~/kwc/*
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.4/kwc-alpha-0.0.4.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.5/kwc-alpha-0.0.5.zip && unzip kwc.zip && rm kwc.zip
 ```
+and update your macros
