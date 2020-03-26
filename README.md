@@ -8,7 +8,7 @@ Download and install KWC:
 ```bash
 mkdir -p ~/kwc
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.5/kwc-alpha-0.0.5.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.6/kwc-alpha-0.0.6.zip && unzip kwc.zip && rm kwc.zip
 ```
 
 Configure web_server in printer.cfg:
@@ -94,6 +94,6 @@ backend kwc
 ```
 rm -R ~/kwc/*
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.5/kwc-alpha-0.0.5.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.6/kwc-alpha-0.0.6.zip && unzip kwc.zip && rm kwc.zip
 ```
 and update your macros
