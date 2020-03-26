@@ -1,3 +1,9 @@
+<style>
+    #line-chart {
+        height: 250px;
+    }
+</style>
+
 <template>
     <v-card>
         <v-list-item>
@@ -20,7 +26,7 @@
 
 <script>
     import LineChart from '../../charts/LineChart.js'
-    import {mapGetters, mapState} from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
 
     export default {
         components: {

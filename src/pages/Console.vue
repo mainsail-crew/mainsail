@@ -28,7 +28,17 @@
     <div>
         <v-row>
             <v-col class="col">
-                <v-text-field
+                <v-combobox
+                        v-model="gcode"
+                        :items="items"
+                        label="Send code..."
+                        solo
+                        class="gcode-command-field"
+                        v-on:keyup.enter="doSend"
+                        v-on:keyup.up="onKeyUp"
+                        v-on:keyup.down="onKeyDown"
+                ></v-combobox>
+                <!--<v-text-field
                     v-model="gcode"
                     label="Send code..."
                     solo
@@ -36,7 +46,7 @@
                     v-on:keyup.enter="doSend"
                     v-on:keyup.up="onKeyUp"
                     v-on:keyup.down="onKeyDown"
-                ></v-text-field>
+                ></v-text-field>-->
             </v-col>
 
             <v-col class="col-auto align-content-center">
@@ -78,7 +88,7 @@
     </div>
 </template>
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters } from 'vuex';
 
     export default {
         data () {
@@ -105,13 +115,17 @@
                 lastCommands: [
 
                 ],
-                lastCommandNumber: null
+                lastCommandNumber: null,
+                items: []
             }
         },
         computed: {
             ...mapState({
                 events: state => state.events,
             }),
+            ...mapGetters([
+                'getMacros'
+            ]),
             loadingSendGcode: {
                 get() {
                     return this.$store.state.socket.loadingSendGcode

@@ -7,8 +7,8 @@
                 <v-list-item-subtitle>{{ printer_state }}{{ printer_is_printing ? " - "+current_file : "" }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-btn class="orange" v-if="printer_state === 'Printing' && printer_is_printing" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
-            <v-btn class="red" v-if="(printer_state === 'Ready' && printer_is_paused)" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
-            <v-btn class="orange ml-2" v-if="(printer_state === 'Ready' && printer_is_paused)" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
+            <v-btn class="red" v-if="(is_printing && printer_is_paused)" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
+            <v-btn class="orange ml-2" v-if="(is_printing && printer_is_paused)" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
@@ -35,8 +35,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="printer_is_printing || printer_is_paused"></v-divider>
-            <v-layout wrap class=" text-center" v-if="printer_is_printing || printer_is_paused">
+            <v-divider class="my-2" v-if="is_printing"></v-divider>
+            <v-layout wrap class=" text-center" v-if="is_printing">
                 <v-flex col tag="strong" class="category-header">
                     Printstatus
                 </v-flex>
@@ -59,15 +59,15 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="printer_is_printing || printer_is_paused"></v-divider>
-            <v-layout wrap class=" text-center" v-if="printer_is_printing || printer_is_paused">
+            <v-divider class="my-2" v-if="is_printing"></v-divider>
+            <v-layout wrap class=" text-center" v-if="is_printing">
                 <v-flex col tag="strong" class="category-header py-0">
                     Estimations<br />based on
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Time</v-flex>
-                        <v-flex tag="span">{{ print_time > 0 && printProgress > 0 ? formatTime(print_time / printProgress) : '--' }}</v-flex>
+                        <v-flex tag="span">{{ print_time > 0 && printProgress > 0 ? formatTime(print_time / printProgress - print_time) : '--' }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
@@ -83,7 +83,7 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-layout wrap class=" text-center" v-if="printer_is_printing || printer_is_paused">
+            <v-layout wrap class=" text-center" v-if="is_printing">
                 <v-layout column class="mt-2" >
                     <v-progress-linear
                         :value="printProgress * 100"
@@ -104,6 +104,7 @@
 
     export default {
         data: () => ({
+
 
         }),
         computed: {
@@ -128,7 +129,9 @@
             }),
 
             ...mapGetters([
-                'current_file_size'
+                'current_file_size',
+                'current_file_metadata',
+                'is_printing',
             ]),
         },
         methods: {
@@ -149,7 +152,7 @@
                 date.setSeconds(seconds);
 
                 return date.toISOString().substr(11,8);
-            }
+            },
         },
     }
 </script>
