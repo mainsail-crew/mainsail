@@ -1,5 +1,8 @@
 <template>
     <v-app>
+        <vue-headful
+                :title="getTitle"
+        />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
             :src="require('./assets/bg-navi.jpg')"
@@ -64,7 +67,7 @@
 
 <script>
     import routes from './routes';
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters } from 'vuex';
 
 export default {
     props: {
@@ -84,6 +87,7 @@ export default {
             this.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
             this.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
             this.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
+            this.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
             this.$socket.sendObj('post_printer_subscriptions', {
                 gcode: [],
                 toolhead: [],
@@ -110,13 +114,68 @@ export default {
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
+            progress: state => state.printer.virtual_sdcard.progress,
         }),
+        ...mapGetters([
+            'getTitle'
+        ])
     },
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
             this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
         },
+        drawFavicon(val) {
+            let favicon = document.getElementById('favicon');
+            if (val === 0) favicon.href = "/favicon.ico";
+            else {
+                let faviconSize = 64;
+
+                let canvas = document.createElement('canvas');
+                canvas.width = faviconSize;
+                canvas.height = faviconSize;
+                let context = canvas.getContext('2d');
+                let centerX = canvas.width / 2;
+                let centerY = canvas.height / 2;
+                let radius = 32;
+                let percent = val * 100;
+
+                /* draw the grey circle */
+                context.beginPath();
+                context.moveTo(centerX, centerY);
+                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+                context.closePath();
+                context.fillStyle = "#ddd";
+                context.fill();
+                context.strokeStyle = "rgba(200, 208, 218, 0.66)";
+                context.stroke();
+
+                /* draw the green circle based on percentage */
+                let startAngle = 1.5 * Math.PI;
+                let endAngle = 0;
+                let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
+                if (percent >= 0 && percent <= 25) endAngle = startAngle + (percent * unitValue);
+                else if (percent > 25 && percent <= 50) endAngle = startAngle + (percent * unitValue);
+                else if (percent > 50 && percent <= 75) endAngle = startAngle + (percent * unitValue);
+                else if (percent > 75 && percent <= 100) endAngle = startAngle + (percent * unitValue);
+
+                context.beginPath();
+                context.moveTo(centerX, centerY);
+                context.arc(centerX, centerY, radius, startAngle, endAngle, false);
+                context.closePath();
+                context.fillStyle = "#e41313";
+                context.fill();
+
+                favicon.href = canvas.toDataURL('image/png');
+            }
+        }
+    },
+    watch: {
+        progress: {
+            handler: function(val) {
+                this.drawFavicon(val);
+            }
+        }
     }
 }
 </script>

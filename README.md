@@ -15,8 +15,10 @@ Configure web_server in printer.cfg:
 ```
 [web_server]
 port: 8080
+enable_cors: true
 trusted_clients:
  192.168.1.0/24
+ 127.0.0.1
 web_path: ~/kwc
 ```
 
@@ -34,6 +36,11 @@ gcode:
     M141 S0
     M106 S0
     CLEAR_PAUSE
+    RESET_SD
+
+[gcode_macro CANCEL_PRINT]
+gcode:
+    CANCEL
 
 [gcode_macro PAUSE]
 rename_existing: BASE_PAUSE
@@ -59,6 +66,29 @@ gcode:
     RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
     BASE_RESUME
 ```
+
+## Installation haproxy
+haproxy is necessary to use port 80.
+
+`sudo apt install haproxy`
+
+add following lines at the end of `/etc/haproxy/haproxy.cfg`:
+```
+frontend public
+        bind :::80 v4v6
+#        use_backend webcam if { path_beg /webcam/ }
+        default_backend kwc
+
+backend kwc
+        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
+        option forwardfor
+        server kwc1 127.0.0.1:8080
+
+#backend webcam
+#        reqrep ^([^\ :]*)\ /webcam/(.*)     \1\ /\2
+#        server webcam1 127.0.0.1:8081
+```
+
 
 ## Update KWC to V0.0.5
 ```

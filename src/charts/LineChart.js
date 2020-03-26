@@ -26,6 +26,17 @@ export default {
                         fontFamily: 'Roboto,sans-serif'
                     }
                 },
+                tooltips: {
+                    enabled: true,
+                    callbacks: {
+                        title: function (tooltipItem, data) {
+                            return data['labels'][tooltipItem[0]['index']];
+                        },
+                        label: function (tooltipItem, data) {
+                            return data['datasets'][0]['data'][tooltipItem['index']];
+                        },
+                    }
+                },
                 maintainAspectRatio: false,
                 responsive: true,
                 responsiveAnimationDuration: 0, // animation duration after a resize
