@@ -4,7 +4,7 @@
             <v-list-item-avatar color="grey"><v-icon dark>fa-info</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Status</v-list-item-title>
-                <v-list-item-subtitle>{{ printer_state }}{{ printer_is_printing ? " - "+current_file : "" }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="mr-3">{{ printer_state }}{{ printer_is_printing ? " - "+current_file : "" }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-btn class="orange" v-if="printer_state === 'Printing' && printer_is_printing" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
             <v-btn class="red" v-if="(is_printing && printer_is_paused)" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>

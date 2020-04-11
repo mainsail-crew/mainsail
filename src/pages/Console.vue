@@ -28,16 +28,19 @@
     <div>
         <v-row>
             <v-col class="col">
-                <v-combobox
+                <v-text-field
                         v-model="gcode"
                         :items="items"
                         label="Send code..."
                         solo
                         class="gcode-command-field"
+                        ref="gcodeCommandField"
                         v-on:keyup.enter="doSend"
                         v-on:keyup.up="onKeyUp"
                         v-on:keyup.down="onKeyDown"
-                ></v-combobox>
+                        v-on:keydown.tab="getAutocomplete"
+                        v-on:blur="handleBlur"
+                ></v-text-field>
                 <!--<v-text-field
                     v-model="gcode"
                     label="Send code..."
@@ -122,6 +125,7 @@
         computed: {
             ...mapState({
                 events: state => state.events,
+                helplist: state => state.helplist,
             }),
             ...mapGetters([
                 'getMacros'
@@ -165,6 +169,25 @@
                     this.lastCommandNumber = null;
                     this.gcode = "";
                 }
+            },
+            getAutocomplete(e) {
+                e.preventDefault();
+                if (this.gcode.length) {
+                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode) === 0);
+                    if (commands && commands.length === 1) this.gcode = commands[0].command;
+                    else {
+                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode));
+                        if (commands && commands.length) {
+                            let output = "";
+                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+
+                            this.$store.commit('addGcodeResponse', output);
+                        }
+                    }
+                }
+            },
+            handleBlur() {
+                this.$refs.gcodeCommandField.focus();
             }
         }
     }

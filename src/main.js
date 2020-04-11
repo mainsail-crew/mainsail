@@ -6,16 +6,8 @@ import VueResource from 'vue-resource'
 import './components'
 import store from './store'
 import router from './plugins/router'
-import { hostname } from './store/variables'
 import 'vue-toast-notification/dist/index.css';
 import vueHeadful from 'vue-headful';
-
-Vue.use(JRPCWS, 'ws://' + hostname + '/websocket', {
-  store: store,
-  reconnectEnabled: true,
-  reconnectInterval: 3000,
-  recconectAttempts: 1000,
-});
 
 Vue.config.productionTip = false;
 
@@ -28,9 +20,29 @@ Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIO
 
 Vue.component('vue-headful', vueHeadful);
 
-new Vue({
-  vuetify,
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
+fetch('/config.json').then(res => res.json()).then(file => {
+  store.commit('setSettings', file);
+
+  Vue.use(JRPCWS, 'ws://' + file.socket.hostname + ':' + file.socket.port + '/websocket', {
+    store: store,
+    reconnectEnabled: true,
+    reconnectInterval: file.socket.reconnectInterval,
+    reconnectAttempts: file.socket.reconnectAttempts,
+  });
+
+  new Vue({
+    data(){
+      return file
+    },
+    vuetify,
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+}).catch((error) => {
+  let p = document.createElement("p");
+  let content = document.createTextNode("config.json not found or cannot be decoded!");
+  p.appendChild(content);
+  document.getElementById('app').append(p);
+  window.console.error('Error:', error);
+});

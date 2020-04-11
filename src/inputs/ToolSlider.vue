@@ -5,7 +5,7 @@
 <template>
     <v-row>
         <v-col class="col-auto"><v-icon @click="decrement">mdi-minus</v-icon></v-col>
-        <v-col class="col"><v-slider v-model="value" thumb-label="always" :min="min" :max="max" @change="sendCmd" hide-details></v-slider></v-col>
+        <v-col class="col"><v-slider v-model="value" thumb-label="always" :label="label" :min="min" :max="max" @change="sendCmd" hide-details></v-slider></v-col>
         <v-col class="col-auto"><v-icon @click="increment">mdi-plus</v-icon></v-col>
     </v-row>
 </template>
@@ -28,6 +28,11 @@
                 required: true,
             },
             attributeName: {
+                type: String,
+                required: false,
+                default: ''
+            },
+            label: {
                 type: String,
                 required: false,
                 default: ''
