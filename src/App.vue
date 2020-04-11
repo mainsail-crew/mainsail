@@ -101,6 +101,7 @@ export default {
 
             });
             this.$socket.sendObj('get_printer_files', {}, 'getFileList');
+            this.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         }
     },
     computed: {

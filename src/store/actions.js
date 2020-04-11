@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import router from "../plugins/router";
 
 
@@ -5,6 +6,8 @@ export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
         window.console.log('Socket connected');
+
+        Vue.prototype.$socket.sendObj('get_printer_status', { }, 'getHelpData');
     },
 
     socket_on_close ({ commit }, event) {
@@ -92,6 +95,10 @@ export default {
         commit('setLoadingGcodeRefresh', false);
     },
 
+    getHelpList({ commit }, data) {
+        commit('setHelpList', data);
+    },
+
     setLoadingSendGcode({commit}, value) {
         commit('setLoadingSendGcode', value);
     },
@@ -147,5 +154,11 @@ export default {
 
     switchToDashboard() {
         router.push("/");
-    }
+    },
+
+    getHelpData({ commit }, data) {
+        commit('voidMutation', data);
+        window.console.log(data);
+
+    },
 }

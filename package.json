@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
+    "object-assign-deep": "^0.4.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.0",
     "vue-context": "^5.0.0",

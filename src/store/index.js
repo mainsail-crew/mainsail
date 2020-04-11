@@ -11,6 +11,10 @@ Vue.use(VueToast);
 export default new Vuex.Store({
     state: {
         socket: {
+            hostname: window.location.hostname,
+            port: 8080,
+            reconnectInterval: 3000,
+            reconnectAttempts: 1000,
             isConnected: false,
             loadingGcodeUpload: false,
             loadingGcodeRefresh: false,
@@ -25,6 +29,18 @@ export default new Vuex.Store({
             loadingRestart: false,
             loadingRestartFirmware: false,
         },
+        webcam: {
+            url: ""
+        },
+        gui: {
+            dashboard: {
+                boolWebcam: false,
+                hiddenMacros: [],
+            }
+        },
+        config: {
+
+        },
         printer: {
             hostname: '',
             version: '',
@@ -35,6 +51,10 @@ export default new Vuex.Store({
                 print_time: 0,
                 printing_time: 0,
                 estimated_print_time: 0,
+                max_velocity: 0,
+                max_accel: 0,
+                max_accel_to_decel: 0,
+                square_corner_velocity: 0,
             },
             pause_resume: {
                 is_paused: false
@@ -65,13 +85,11 @@ export default new Vuex.Store({
                 available_heaters: []
             }
         },
-        config: {
-
-        },
         temperaturChart: {
             labels: [],
             datasets: [],
         },
+        helplist: [],
         files: [],
         events: []
     },

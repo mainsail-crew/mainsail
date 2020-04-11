@@ -86,9 +86,16 @@ export default {
 
     getMacros: state => {
         let array = [];
+        let hiddenMacros = [];
+        state.gui.dashboard.hiddenMacros.forEach(function(item,index) {
+            hiddenMacros[index] = item.toLowerCase();
+        });
 
         for (let prop in state.config) {
-            if (prop.startsWith('gcode_macro') && !state.config[prop].hasOwnProperty('rename_existing')) {
+            if (prop.startsWith('gcode_macro') &&
+                !state.config[prop].hasOwnProperty('rename_existing') &&
+                !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
+            ) {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
                     'prop': state.config[prop]
@@ -96,7 +103,15 @@ export default {
             }
         }
 
-        return array;
+        return array.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
+            return 0;
+        });
     },
 
     getTitle: state => {
@@ -106,5 +121,9 @@ export default {
 
             return state.printer.hostname;
         } else return "KlipperWebControl";
+    },
+
+    showDashboardWebcam: state => {
+        return (state.webcam.url !== "" && state.gui.dashboard.boolWebcam);
     }
 }

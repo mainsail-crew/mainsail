@@ -2,8 +2,8 @@
     <v-row>
         <v-col class="col-sm-12 col-md-7">
             <status-panel></status-panel>
+            <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
             <control-panel class="mt-6"></control-panel>
-            <macros-panel class="mt-6"></macros-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-5">
             <tools-panel></tools-panel>
@@ -14,7 +14,13 @@
 </template>
 
 <script>
-    export default {
+    import { mapGetters } from 'vuex'
 
+    export default {
+        computed: {
+            ...mapGetters([
+                'showDashboardWebcam'
+            ])
+        },
     }
 </script>

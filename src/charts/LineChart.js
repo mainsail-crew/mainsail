@@ -23,17 +23,25 @@ export default {
                 legend: {
                     labels: {
                         fontColor: 'rgb(203, 203, 203)',
-                        fontFamily: 'Roboto,sans-serif'
+                        fontFamily: 'Roboto,sans-serif',
+                        filter: function(item) {
+                            return !item.text.includes('_target');
+                        }
                     }
                 },
                 tooltips: {
                     enabled: true,
                     callbacks: {
-                        title: function (tooltipItem, data) {
-                            return data['labels'][tooltipItem[0]['index']];
+                        title: function (tooltipItem) {
+                            let date = new Date(tooltipItem[0].label);
+                            return date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
                         },
                         label: function (tooltipItem, data) {
-                            return data['datasets'][0]['data'][tooltipItem['index']];
+                            let label_target = data['datasets'][tooltipItem.datasetIndex].label+"_target";
+                            let target_dataset = data['datasets'].find(dataset => dataset.label === label_target);
+
+                            if (target_dataset !== undefined) return tooltipItem.value+" / "+target_dataset.data[tooltipItem.index];
+                            return tooltipItem.value;
                         },
                     }
                 },
