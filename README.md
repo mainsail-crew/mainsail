@@ -67,6 +67,21 @@ gcode:
     BASE_RESUME
 ```
 
+## Installation lighttpd
+```bash
+sudo apt install lighttpd
+```
+edit configfile `/etc/lighttpd/lighttpd.conf` and edit following lines:
+```
+server.document-root        = "/home/pi/kwc"
+server.port                 = 81
+```
+ 
+ `server.port` to port `81`
+```bash
+sudo usermod -a -G www-data pi
+```
+
 ## Installation haproxy
 haproxy is necessary to use port 80.
 
@@ -76,18 +91,36 @@ add following lines at the end of `/etc/haproxy/haproxy.cfg`:
 ```
 frontend public
         bind :::80 v4v6
-#        use_backend webcam if { path_beg /webcam/ }
-        default_backend kwc
+        default_backend lighttpd
+        use_backend printer if { path_beg /printer/ }
+#        use_backend webcam if { path_beg /webcam1/ }
 
-backend kwc
-        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
+        acl is_websocket path_beg /websocket
+        acl is_websocket hdr(Upgrade) -i WebSocket
+        acl is_websocket hdr_beg(Host) -i ws
+        use_backend websocket if is_websocket
+
+backend lighttpd
+        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
         option forwardfor
-        server kwc1 127.0.0.1:8080
+        server lighttpd1 127.0.0.1:81
+
+backend printer
+        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
+        option forwardfor
+        server printer1 127.0.0.1:8080
+
+backend websocket
+        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
+        option forwardfor
+        server websocket1 127.0.0.1:8080
 
 #backend webcam
-#        reqrep ^([^\ :]*)\ /webcam/(.*)     \1\ /\2
+#        reqrep ^([^\ :]*)\ /webcam1/(.*)     \1\ /\2
 #        server webcam1 127.0.0.1:8081
 ```
+
+all comments are for webcam support. You can install MJPEG-Streamer with this [tutorial](https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording).
 
 
 ## Update KWC to V0.0.5
