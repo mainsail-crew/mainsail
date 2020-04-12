@@ -125,6 +125,12 @@ export default {
                 filename: file.filename,
                 modified: Date.parse(file.modified),
                 size: file.size,
+                slicer: file.slicer,
+                filament_used: file.filament_used,
+                estimated_time: file.estimated_time,
+                layer_height: file.layer_height,
+                first_layer_height: file.first_layer_height,
+                object_height: file.object_height,
             });
         }
         //state.files = data;

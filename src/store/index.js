@@ -36,6 +36,9 @@ export default new Vuex.Store({
             dashboard: {
                 boolWebcam: false,
                 hiddenMacros: [],
+            },
+            gcodefiles: {
+                countPerPage: 10,
             }
         },
         config: {
