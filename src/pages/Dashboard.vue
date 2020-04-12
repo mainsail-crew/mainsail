@@ -7,7 +7,6 @@
         </v-col>
         <v-col class="col-sm-12 col-md-5">
             <tools-panel></tools-panel>
-            <tempchart-panel class="mt-6"></tempchart-panel>
             <peripherie-panel></peripherie-panel>
         </v-col>
     </v-row>

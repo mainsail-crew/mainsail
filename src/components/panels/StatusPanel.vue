@@ -66,20 +66,20 @@
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
-                        <v-flex tag="strong">Time</v-flex>
+                        <v-flex tag="strong">File</v-flex>
                         <v-flex tag="span">{{ print_time > 0 && printProgress > 0 ? formatTime(print_time / printProgress - print_time) : '--' }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
-                        <v-flex tag="strong">File Progress</v-flex>
-                        <v-flex tag="span">{{ print_time > 0 && file_position > 0 ? formatTime(print_time / (file_position / current_file_size) - print_time) : '--' }}</v-flex>
+                        <v-flex tag="strong">Filament</v-flex>
+                        <v-flex tag="span">{{ filament_used > 0 && current_file_filament_used > 0 ? formatTime(print_time / (filament_used / current_file_filament_used) - print_time) : '--' }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Slicer</v-flex>
-                        <v-flex tag="span"><i>coming soon</i></v-flex>
+                        <v-flex tag="span">{{ current_file_estimated_time > print_time ? formatTime(current_file_estimated_time - print_time) : formatTime(0) }}</v-flex>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -131,6 +131,8 @@
             ...mapGetters([
                 'current_file_size',
                 'current_file_metadata',
+                'current_file_estimated_time',
+                'current_file_filament_used',
                 'is_printing',
             ]),
         },

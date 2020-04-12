@@ -4,14 +4,16 @@
 
 <template>
     <v-card>
-        <v-col xs12 md12>
-            <v-row class="px-1 mb-2 text-center">
-                <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHome" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-2">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
-                <div class="d-inline-block mx-2 my-1"><v-btn v-if="config.hasOwnProperty('quad_gantry_level')" @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
+        <v-row class="">
+            <v-col class="col-12 pb-0 text-center">
+                <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHome" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
+                <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
                 <div class="d-none d-sm-inline-block mx-2 my-1"><v-btn @click="doRestart" :loading="loadingRestart" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn></div>
                 <div class="d-inline-block mx-2 my-1"><v-btn @click="doRestartFirmware" :loading="loadingRestartFirmware" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon><span class="d-none d-sm-block">Firmware Restart</span></v-btn></div>
-            </v-row>
-            <v-row class="pl-3 pr-3 text-center">
+            </v-col>
+        </v-row>
+        <v-row class="mt-3">
+            <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('X-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left class="d-sm-flex">mdi-chevron-left</v-icon><span>X-100</span></v-btn>
                     <v-btn @click="doSendMove('X-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span>X-10</span></v-btn>
@@ -21,8 +23,10 @@
                     <v-btn @click="doSendMove('X+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span>X+10</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                     <v-btn @click="doSendMove('X+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span>X+100</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                 </v-btn-toggle>
-            </v-row>
-            <v-row class="pl-3 pr-3 mt-3 text-center">
+            </v-col>
+        </v-row>
+        <v-row class="mt-3">
+            <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('Y-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span>Y-100</span></v-btn>
                     <v-btn @click="doSendMove('Y-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span>Y-10</span></v-btn>
@@ -32,8 +36,10 @@
                     <v-btn @click="doSendMove('Y+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span>Y+10</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                     <v-btn @click="doSendMove('Y+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span>Y+100</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                 </v-btn-toggle>
-            </v-row>
-            <v-row class="pl-3 pr-3 mt-3 text-center">
+            </v-col>
+        </v-row>
+        <v-row class="mt-3">
+            <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('Z-25')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span>Z-25</span></v-btn>
                     <v-btn @click="doSendMove('Z-1')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span>Z-1</span></v-btn>
@@ -43,15 +49,15 @@
                     <v-btn @click="doSendMove('Z+1')" cols="1" class="flex-grow-1 flex-shrink-0"><span>Z+1</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                     <v-btn @click="doSendMove('Z+25')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span>Z+25</span><v-icon right  class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                 </v-btn-toggle>
-            </v-row>
-            <v-row class="px-1 pt-0 pb-0 mt-3" v-if="getMacros.length > 0">
-                <v-col class="col-12 text-center">
-                    <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
-                        <v-btn color="primary" class="mx-1" @click="doSend(macro.name)">{{ macro.name }}</v-btn>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-col>
+            </v-col>
+        </v-row>
+        <v-row class="" v-if="getMacros.length > 0">
+            <v-col class="col-12 px-0 py-2 text-center">
+                <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
+                    <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name }}</v-btn>
+                </div>
+            </v-col>
+        </v-row>
     </v-card>
 </template>
 

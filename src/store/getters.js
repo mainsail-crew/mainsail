@@ -76,6 +76,22 @@ export default {
         return []
     },
 
+    current_file_estimated_time: state =>  {
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+
+        if (file.length) return file[0]['estimated_time'];
+
+        return 0;
+    },
+
+    current_file_filament_used: state =>  {
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+
+        if (file.length) return file[0]['filament_used'];
+
+        return 0;
+    },
+
     bool_fan: state => {
         return Object.entries(state.object).indexOf('fan');
     },
