@@ -8,7 +8,7 @@ Download and install KWC:
 ```bash
 mkdir -p ~/kwc
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.6/kwc-alpha-0.0.6.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
 ```
 
 Configure web_server in printer.cfg:
@@ -19,7 +19,7 @@ enable_cors: true
 trusted_clients:
  192.168.1.0/24
  127.0.0.1
-web_path: ~/kwc
+allow_file_ops_when_printing: true
 ```
 
 Example Klipper macros:
@@ -77,7 +77,6 @@ server.document-root        = "/home/pi/kwc"
 server.port                 = 81
 ```
  
- `server.port` to port `81`
 ```bash
 sudo usermod -a -G www-data pi
 ```
@@ -123,10 +122,10 @@ backend websocket
 all comments are for webcam support. You can install MJPEG-Streamer with this [tutorial](https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording).
 
 
-## Update KWC to V0.0.5
+## Update KWC to V0.0.7
 ```
 rm -R ~/kwc/*
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.6/kwc-alpha-0.0.6.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
 ```
 and update your macros

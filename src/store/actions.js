@@ -2,7 +2,6 @@ import Vue from 'vue'
 import router from "../plugins/router";
 import store from "./index";
 import axios from "axios";
-import {hostname} from "./variables";
 
 
 export default {
@@ -118,7 +117,7 @@ export default {
         let formData = new FormData();
         formData.append('file', file);
 
-        axios.post('http://' + hostname + '/printer/files/upload',
+        axios.post('http://' + state.socket.hostname + ':' + state.socket.port + '/printer/files/upload',
             formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }

@@ -127,7 +127,6 @@
 <script>
     import { mapState, mapGetters } from 'vuex';
     import axios from 'axios';
-    import { hostname } from '../store/variables';
 
     export default {
         data () {
@@ -189,7 +188,6 @@
                     y: 0,
                     item: {}
                 },
-                hostname: hostname,
                 dropzone: {
                     visibility: 'hidden',
                     opacity: 0,
@@ -202,6 +200,8 @@
                 loadingUpload: state => state.socket.loadingGcodeUpload,
                 loadingRefresh: state => state.socket.loadingGcodeRefresh,
                 countPerPage: state => state.gui.gcodefiles.countPerPage,
+                hostname: state => state.socket.hostname,
+                port: state => state.socket.port,
             }),
             ...mapGetters([
                 'is_printing'
@@ -219,7 +219,7 @@
                 formData.append('file', file);
                 this.$store.commit('setLoadingGcodeUpload', true);
 
-                axios.post('http://' + hostname + '/printer/files/upload',
+                axios.post('http://' + this.hostname + ':' + this.port + '/printer/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
@@ -288,14 +288,14 @@
             downloadFile() {
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = 'http://' + hostname + '/printer/files/' + this.contextMenu.item.filename;
+                link.href = 'http://' + this.hostname + ':' + this.port + '/printer/files/' + this.contextMenu.item.filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
             },
             removeFile() {
                 axios.delete(
-                    'http://'+hostname+'/printer/files/'+this.contextMenu.item.filename
+                    'http://'+ this.hostname + ':' + this.port +'/printer/files/'+this.contextMenu.item.filename
                 ).then(() => {
                     this.$toast(this.contextMenu.item.filename+" successfully deleted.", {
                         icon: 'fa-trash'

@@ -23,11 +23,11 @@ Vue.component('vue-headful', vueHeadful);
 fetch('/config.json').then(res => res.json()).then(file => {
   store.commit('setSettings', file);
 
-  Vue.use(JRPCWS, 'ws://' + file.socket.hostname + ':' + file.socket.port + '/websocket', {
+  Vue.use(JRPCWS, 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
     store: store,
     reconnectEnabled: true,
-    reconnectInterval: file.socket.reconnectInterval,
-    reconnectAttempts: file.socket.reconnectAttempts,
+    reconnectInterval: store.state.socket.reconnectInterval,
+    reconnectAttempts: store.state.socket.reconnectAttempts,
   });
 
   new Vue({
