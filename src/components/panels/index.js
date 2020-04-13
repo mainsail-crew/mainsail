@@ -8,6 +8,7 @@ import Peripherie from "./PeripheriePanel";
 import MacrosPanel from "./MacrosPanel";
 import LimitsPanel from "./LimitsPanel";
 import WebcamPanel from "./WebcamPanel";
+import Settings from "./Settings/";
 
 Vue.component('status-panel', StatusPanel);
 Vue.component('tools-panel', ToolsPanel);
@@ -19,5 +20,5 @@ Vue.component('limits-panel', LimitsPanel);
 Vue.component('webcam-panel', WebcamPanel);
 
 export default {
-    StatusPanel,
+    Settings
 }

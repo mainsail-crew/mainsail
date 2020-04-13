@@ -1,22 +1,8 @@
 {
   "socket": {
-    "hostname": "kossel.local",
+    "hostname": "voron250.local",
     "port": 8080,
     "reconnectInterval": 3000,
     "reconnectAttempts": 1000
-  },
-  "webcam": {
-    "url": "http://192.168.0.210/webcam/?action=stream"
-  },
-  "gui": {
-    "dashboard": {
-      "boolWebcam": true,
-      "hiddenMacros": [
-        "M600", "FLASH_YES", "FLASH_NO", "TESTMOVE_A", "TESTMOVE_B", "TESTMOVE_X", "TESTMOVE_Y", "M141", "CANCEL", "M120", "M121", "CANCEL_PRINT", "PRINT_START", "PRINT_END", "RESTORE_LIGHT", "M355"
-      ]
-    },
-    "gcodefiles": {
-      "countPerPage": 15
-    }
   }
 }

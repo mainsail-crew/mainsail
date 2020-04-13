@@ -12,8 +12,10 @@
                 <v-toolbar-title>{{ hostname }}</v-toolbar-title>
             </div>
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
-                <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon" :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']" :value="true">
-                    <router-link slot="activator" class="nav-link" exact :to="category.path" @click.prevent>
+                <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon"
+                    :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
+                    :value="true">
+                    <router-link slot="activator" class="nav-link" exact :to="category.path" @click.prevent v-if="(category.title === 'Webcam' && boolNaviWebcam) || category.title !== 'Webcam'">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
                         <span class="nav-title">{{ category.title }}</span>
                         <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
@@ -82,26 +84,9 @@ export default {
         routes: routes
     }),
     created () {
-        this.$vuetify.theme.dark = true,
+        this.$vuetify.theme.dark = true;
         this.$socket.onOpen = () => {
-            this.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-            this.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
-            this.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
-            this.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-            this.$socket.sendObj('post_printer_subscriptions', {
-                gcode: [],
-                toolhead: [],
-                virtual_sdcard: [],
-                heater: [],
-                heater_bed: [],
-                extruder: ["temperature", "target"],
-                fan: [],
-                pause_resume: [],
-                idle_timeout: [],
 
-            });
-            this.$socket.sendObj('get_printer_files', {}, 'getFileList');
-            this.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         }
     },
     computed: {
@@ -116,6 +101,7 @@ export default {
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
             progress: state => state.printer.virtual_sdcard.progress,
+            boolNaviWebcam: state => state.gui.webcam.bool,
         }),
         ...mapGetters([
             'getTitle'

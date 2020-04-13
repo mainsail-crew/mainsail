@@ -50,8 +50,8 @@
                     </v-col>
                 </v-row>
             </div>
-            <v-divider class="my-2"></v-divider>
-            <v-row>
+            <v-divider class="my-2" v-if="boolTempchart"></v-divider>
+            <v-row v-if="boolTempchart">
                 <v-col>
                     <line-chart :chart-data="chartdata" v-if="loaded"></line-chart>
                 </v-col>
@@ -84,6 +84,7 @@
             ...mapState({
                 labels: state => state.temperaturChart.labels,
                 datasets: state => state.temperaturChart.datasets,
+                boolTempchart: state => state.gui.dashboard.boolTempchart,
             }),
             ...mapGetters([
                 'heaters',
