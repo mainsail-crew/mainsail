@@ -39,17 +39,7 @@
                         v-on:keyup.up="onKeyUp"
                         v-on:keyup.down="onKeyDown"
                         v-on:keydown.tab="getAutocomplete"
-                        v-on:blur="handleBlur"
                 ></v-text-field>
-                <!--<v-text-field
-                    v-model="gcode"
-                    label="Send code..."
-                    solo
-                    class="gcode-command-field"
-                    v-on:keyup.enter="doSend"
-                    v-on:keyup.up="onKeyUp"
-                    v-on:keyup.down="onKeyDown"
-                ></v-text-field>-->
             </v-col>
 
             <v-col class="col-auto align-content-center">
@@ -173,10 +163,10 @@
             getAutocomplete(e) {
                 e.preventDefault();
                 if (this.gcode.length) {
-                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode) === 0);
+                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
                     if (commands && commands.length === 1) this.gcode = commands[0].command;
                     else {
-                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode));
+                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
                         if (commands && commands.length) {
                             let output = "";
                             commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
@@ -185,8 +175,6 @@
                         }
                     }
                 }
-            },
-            handleBlur() {
                 this.$refs.gcodeCommandField.focus();
             }
         }

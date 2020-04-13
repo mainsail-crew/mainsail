@@ -28,14 +28,19 @@ export default new Vuex.Store({
             loadingQGL: false,
             loadingRestart: false,
             loadingRestartFirmware: false,
+            loadingSaveGuiConfig: false,
         },
         webcam: {
             url: ""
         },
         gui: {
             dashboard: {
-                boolWebcam: false,
+                boolWebcam: true,
+                boolTempchart: true,
                 hiddenMacros: [],
+            },
+            webcam: {
+                bool: false,
             },
             gcodefiles: {
                 countPerPage: 10,

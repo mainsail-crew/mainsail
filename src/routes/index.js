@@ -1,9 +1,10 @@
 import Dashboard from '../pages/Dashboard.vue'
 //import Status from '../pages/Status.vue'
+import Webcam from '../pages/Webcam.vue'
 import Console from '../pages/Console.vue'
 import Files from '../pages/Files.vue'
 import Settings from '../pages/Settings.vue'
-import SettingsGeneral from '../pages/settings/general.vue'
+import SettingsInterface from '../pages/settings/interface.vue'
 import SettingsMachine from '../pages/settings/machine.vue'
 
 const routes = [
@@ -11,13 +12,19 @@ const routes = [
         title: "Dashboard",
         path: '/',
         icon: 'view-dashboard',
-        component: Dashboard
+        component: Dashboard,
+    },
+    {
+        title: "Webcam",
+        path: '/webcam',
+        icon: 'webcam',
+        component: Webcam,
     },
     {
         title: "Console",
         path: '/console',
         icon: 'code-tags',
-        component: Console
+        component: Console,
     },
     /*{
         title: "Current Job",
@@ -29,7 +36,7 @@ const routes = [
         title: "G-Code Files",
         path: '/files',
         icon: 'printer-3d-nozzle',
-        component: Files
+        component: Files,
     },
     {
         title: "Settings",
@@ -38,9 +45,9 @@ const routes = [
         component: Settings,
         children: [
             {
-                title: 'General',
-                path: '/settings/general',
-                component: SettingsGeneral
+                title: 'Interface',
+                path: '/settings/interface',
+                component: SettingsInterface
             },
             {
                 title: 'Machine',

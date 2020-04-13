@@ -7,7 +7,7 @@
 <template>
     <v-card>
         <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>fa-camera</v-icon></v-list-item-avatar>
+            <v-list-item-avatar color="grey"><v-icon dark>mdi-webcam</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Webcam</v-list-item-title>
             </v-list-item-content>

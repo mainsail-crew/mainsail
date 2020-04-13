@@ -130,6 +130,29 @@ export default {
         });
     },
 
+    getAllMacros: state => {
+        let array = [];
+
+        for (let prop in state.config) {
+            if (prop.startsWith('gcode_macro') && !state.config[prop].hasOwnProperty('rename_existing')) {
+                array.push({
+                    'name': prop.replace('gcode_macro ', ''),
+                    'prop': state.config[prop]
+                });
+            }
+        }
+
+        return array.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
+            return 0;
+        });
+    },
+
     getTitle: state => {
         if (state.socket.isConnected) {
             if (state.printer.pause_resume.is_paused) return "Pause Print";

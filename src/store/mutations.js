@@ -118,20 +118,23 @@ export default {
 
     setFileList(state, data) {
         state.files = [];
+        let array = Object.entries(data);
 
-        for (let [key, file] of Object.entries(data)) {
-            state.files.push({
-                number: key,
-                filename: file.filename,
-                modified: Date.parse(file.modified),
-                size: file.size,
-                slicer: file.slicer,
-                filament_used: file.filament_used,
-                estimated_time: file.estimated_time,
-                layer_height: file.layer_height,
-                first_layer_height: file.first_layer_height,
-                object_height: file.object_height,
-            });
+        for (let [key, file] of array) {
+            if (file.filename !== "gui.json") {
+                state.files.push({
+                    number: key,
+                    filename: file.filename,
+                    modified: Date.parse(file.modified),
+                    size: file.size,
+                    slicer: file.slicer,
+                    filament_used: file.filament_used,
+                    estimated_time: file.estimated_time,
+                    layer_height: file.layer_height,
+                    first_layer_height: file.first_layer_height,
+                    object_height: file.object_height,
+                });
+            }
         }
         //state.files = data;
     },
@@ -221,6 +224,10 @@ export default {
 
     setLoadingRestartFirmware(state, value) {
         state.socket.loadingRestartFirmware = value;
+    },
+
+    setLoadingSaveGuiConfige(state, value) {
+        state.socket.loadingSaveGuiConfig = value;
     },
 
     reportError(state, data) {
