@@ -29,18 +29,18 @@
         methods: {
             setValue() {
                 if (this.value) {
-                    let index = this.hiddenMacros.indexOf(this.name);
+                    let index = this.hiddenMacros.indexOf(this.name.toUpperCase());
                     if (index > -1) this.hiddenMacros.splice(index, 1);
-                } else this.hiddenMacros.push(this.name);
+                } else this.hiddenMacros.push(this.name.toUpperCase());
             }
         },
         watch: {
             hiddenMacros: function() {
-                this.value = !this.hiddenMacros.includes(this.name);
+                this.value = !this.hiddenMacros.includes(this.name.toUpperCase());
             }
         },
         created() {
-            this.value = !this.hiddenMacros.includes(this.name);
+            this.value = !this.hiddenMacros.includes(this.name.toUpperCase());
         }
     }
 </script>

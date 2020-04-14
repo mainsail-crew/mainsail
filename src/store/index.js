@@ -12,7 +12,7 @@ export default new Vuex.Store({
     state: {
         socket: {
             hostname: window.location.hostname,
-            port: 8080,
+            port: window.location.port,
             reconnectInterval: 3000,
             reconnectAttempts: 1000,
             isConnected: false,
