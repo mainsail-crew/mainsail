@@ -154,7 +154,6 @@ server {
         }
 
         location /printer {
-                #edit here your klipper API-port
                 proxy_pass http://apiserver/printer;
         }
 
