@@ -20,29 +20,27 @@ Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIO
 
 Vue.component('vue-headful', vueHeadful);
 
-fetch('/config.json').then(res => res.json()).then(file => {
-  store.commit('setSettings', file);
+fetch('/config.json').then(res => res.json())
+  .then(file => {
+    store.commit('setSettings', file);
+    Vue.use(JRPCWS, 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
+      store: store,
+      reconnectEnabled: true,
+      reconnectInterval: store.state.socket.reconnectInterval,
+      reconnectAttempts: store.state.socket.reconnectAttempts,
+    });
 
-  Vue.use(JRPCWS, 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
-    store: store,
-    reconnectEnabled: true,
-    reconnectInterval: store.state.socket.reconnectInterval,
-    reconnectAttempts: store.state.socket.reconnectAttempts,
+    new Vue({
+      vuetify,
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+  })
+  .catch((error) => {
+    let p = document.createElement("p");
+    let content = document.createTextNode("config.json not found or cannot be decoded!");
+    p.appendChild(content);
+    document.getElementById('app').append(p);
+    window.console.error('Error:', error);
   });
-
-  new Vue({
-    data(){
-      return file
-    },
-    vuetify,
-    router,
-    store,
-    render: h => h(App)
-  }).$mount('#app')
-}).catch((error) => {
-  let p = document.createElement("p");
-  let content = document.createTextNode("config.json not found or cannot be decoded!");
-  p.appendChild(content);
-  document.getElementById('app').append(p);
-  window.console.error('Error:', error);
-});

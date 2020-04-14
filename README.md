@@ -67,24 +67,20 @@ gcode:
     BASE_RESUME
 ```
 
-## Installation lighttpd
+## Installation lighttpd & haproxy
 ```bash
-sudo apt install lighttpd
+sudo apt install lighttpd haproxy
 ```
 edit configfile `/etc/lighttpd/lighttpd.conf` and edit following lines:
 ```
 server.document-root        = "/home/pi/kwc"
+server.bind                 = "127.0.0.1"
 server.port                 = 81
 ```
  
 ```bash
 sudo usermod -a -G www-data pi
 ```
-
-## Installation haproxy
-haproxy is necessary to use port 80.
-
-`sudo apt install haproxy`
 
 add following lines at the end of `/etc/haproxy/haproxy.cfg`:
 ```
@@ -121,6 +117,64 @@ backend websocket
 
 all comments are for webcam support. You can install MJPEG-Streamer with this [tutorial](https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording).
 
+## Installation nginx
+```bash
+sudo apt install nginx
+```
+create configfile `/etc/nginx/sites-available/kwc`:
+```
+map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+}
+
+upstream apiserver {
+        #edit your api port here
+        server 127.0.0.1:8080;
+}
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        access_log /var/log/nginx/kwc-access.log;
+        error_log /var/log/nginx/kwc-error.log;
+
+        #web_path from kwc static files
+        root /home/pi/kwc;
+
+        index index.html;
+
+        server_name _;
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+
+        location /printer {
+                #edit here your klipper API-port
+                proxy_pass http://apiserver/printer;
+        }
+
+        location /websocket {
+            proxy_pass http://apiserver/websocket;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+        }
+}
+```
+
+change api port & root path.
+
+```bash
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/kwc /etc/nginx/sites-enabled/
+sudo service nginx restart
+```
 
 ## Update KWC to V0.0.7
 ```
