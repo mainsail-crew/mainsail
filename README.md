@@ -9,7 +9,7 @@ Download and install KWC:
 mkdir -p ~/sdcard
 mkdir -p ~/kwc
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.8/kwc-alpha-0.0.8.zip && unzip kwc.zip && rm kwc.zip
 ```
 
 Configure web_server in printer.cfg:
@@ -189,10 +189,10 @@ sudo ln -s /etc/nginx/sites-available/kwc /etc/nginx/sites-enabled/
 sudo service nginx restart
 ```
 
-## Update KWC to V0.0.7
+## Update KWC to V0.0.8
 ```
 rm -R ~/kwc/*
 cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.8/kwc-alpha-0.0.8.zip && unzip kwc.zip && rm kwc.zip
 ```
 and update your macros & nginx config.
