@@ -6,6 +6,7 @@ At first install Arksine klipper-api fork/branch -> [install manual](https://git
 
 Download and install KWC:
 ```bash
+mkdir -p ~/sdcard
 mkdir -p ~/kwc
 cd ~/kwc
 wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
@@ -20,6 +21,9 @@ trusted_clients:
  192.168.1.0/24
  127.0.0.1
 allow_file_ops_when_printing: true
+
+[virtual_sdcard]
+path: /home/pi/sdcard
 ```
 
 Example Klipper macros:
@@ -67,7 +71,7 @@ gcode:
     BASE_RESUME
 ```
 
-## Installation lighttpd & haproxy
+## Installation lighttpd & haproxy (out-dated)
 ```bash
 sudo apt install lighttpd haproxy
 ```
@@ -118,6 +122,16 @@ backend websocket
 all comments are for webcam support. You can install MJPEG-Streamer with this [tutorial](https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording).
 
 ## Installation nginx
+
+If you have installed lighttpd & haproxy before:
+```bash
+sudo service haproxy stop
+sudo update-rc.d -f haproxy remove
+sudo service lighttpd stop
+sudo update-rc.d -f lighttpd remove
+```
+
+and now install nginx:
 ```bash
 sudo apt install nginx
 ```
@@ -144,13 +158,13 @@ server {
         root /home/pi/kwc;
 
         index index.html;
-
         server_name _;
 
+        #max upload size for gcodes
+        client_max_body_size 128M;
+
         location / {
-                # First attempt to serve request as file, then
-                # as directory, then fall back to displaying a 404.
-                try_files $uri $uri/ =404;
+                try_files $uri $uri/ /index.html;
         }
 
         location /printer {
@@ -181,4 +195,4 @@ rm -R ~/kwc/*
 cd ~/kwc
 wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.7/kwc-alpha-0.0.7.zip && unzip kwc.zip && rm kwc.zip
 ```
-and update your macros
+and update your macros & nginx config.

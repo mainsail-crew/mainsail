@@ -15,7 +15,8 @@
     export default {
         data: function() {
             return {
-                value: this.target * this.multi
+                value: this.target * this.multi,
+                variableMax: 0,
             }
         },
         props: {
@@ -52,6 +53,11 @@
                 required: false,
                 default: 100
             },
+            extenderSteps: {
+                type: Number,
+                required: false,
+                default: 100
+            },
             multi: {
                 type: Number,
                 required: false,
@@ -77,7 +83,24 @@
         watch: {
             target: function() {
                 this.value = this.target * this.multi;
-            }
+            },
+            /*value: function() {
+                if (this.value > 0) {
+                    if (this.value > (this.variableMax - this.extenderSteps) && this.value < (this.variableMax + this.extenderSteps)) this.variableMax += this.extenderSteps;
+                    else if (this.value > (this.variableMax - this.extenderSteps)) {
+                        this.variableMax = (this.value / this.extenderSteps).toFixed(0) * this.extenderSteps;
+                        if (this.variableMax < this.max) this.variableMax = this.max;
+                    }
+                }
+            }*/
         },
+        /*created: function() {
+            /!*window.console.log("Test");
+            window.console.log(this.target+' * '+this.multi);
+            this.value = this.target * this.multi;*!/
+            window.console.log(this.target+' * '+this.multi);
+            this.variableMax = (this.value / this.extenderSteps + 1).toFixed(0) * this.extenderSteps;
+            if (this.variableMax < this.max) this.variableMax = this.max;
+        }*/
     }
 </script>

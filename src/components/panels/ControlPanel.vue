@@ -8,8 +8,6 @@
             <v-col class="col-12 pb-0 text-center">
                 <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHome" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
-                <div class="d-none d-sm-inline-block mx-2 my-1"><v-btn @click="doRestart" :loading="loadingRestart" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn></div>
-                <div class="d-inline-block mx-2 my-1"><v-btn @click="doRestartFirmware" :loading="loadingRestartFirmware" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon><span class="d-none d-sm-block">Firmware Restart</span></v-btn></div>
             </v-col>
         </v-row>
         <v-row class="mt-3">
@@ -80,8 +78,6 @@
                 loadingHomeY: state => state.socket.loadingHomeY,
                 loadingHomeZ: state => state.socket.loadingHomeZ,
                 loadingQGL: state => state.socket.loadingQGL,
-                loadingRestart: state => state.socket.loadingRestart,
-                loadingRestartFirmware: state => state.socket.loadingRestartFirmware,
                 homedAxes: state => state.printer.toolhead.homed_axes,
                 config: state => state.config,
             }),
@@ -91,8 +87,6 @@
                 'setLoadingHomeY',
                 'setLoadingHomeZ',
                 'setLoadingQGL',
-                'setLoadingRestart',
-                'setLoadingRestartFirmware',
             ]),
             ...mapGetters([
                 'getMacros',
@@ -128,14 +122,6 @@
             },
             doSend(gcode) {
                 this.$socket.sendObj('post_printer_gcode', { script: gcode }, "sendGcode");
-            },
-            doRestart() {
-                this.$store.commit('setLoadingRestart', true);
-                this.$socket.sendObj('post_printer_restart', { }, "responseRestart");
-            },
-            doRestartFirmware() {
-                this.$store.commit('setLoadingRestartFirmware', true);
-                this.$socket.sendObj('post_printer_firmware_restart', { }, "responseRestartFirmware");
             },
         }
     }

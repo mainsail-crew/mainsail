@@ -27,6 +27,21 @@ export default {
                         filter: function(item) {
                             return !item.text.includes('_target');
                         }
+                    },
+                    onClick: function(e, legendItem) {
+                        let ci = this.chart;
+                        let index = legendItem.datasetIndex;
+                        let index_target = ci.data.datasets.findIndex(dataset => dataset.label === legendItem.text+'_target');
+                        let meta = ci.getDatasetMeta(index);
+
+                        // See controller.isDatasetVisible comment
+                        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                        if (index_target) {
+                            let meta_target = ci.getDatasetMeta(index_target);
+                            meta_target.hidden = meta.hidden;
+                        }
+
+                        ci.update();
                     }
                 },
                 tooltips: {

@@ -10,7 +10,7 @@ export default {
     },
 
     setDisconnected (state) {
-        state.socket.isConnected = false
+        state.socket.isConnected = false;
         Vue.prototype.$socket.reconnect();
     },
 
@@ -162,6 +162,10 @@ export default {
         }
     },
 
+    setEndstopStatus(state, data) {
+        Vue.set(state.printer, 'endstops', data);
+    },
+
     setLoadingSendGcode(state, value) {
         state.socket.loadingSendGcode = value;
     },
@@ -228,6 +232,10 @@ export default {
 
     setLoadingSaveGuiConfige(state, value) {
         state.socket.loadingSaveGuiConfig = value;
+    },
+
+    setLoadingEndstopStatus(state, value) {
+        state.socket.loadingEndstopStatus = value;
     },
 
     reportError(state, data) {

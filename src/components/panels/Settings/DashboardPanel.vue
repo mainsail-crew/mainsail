@@ -19,6 +19,11 @@
                     <v-switch v-model="boolShowTempchartOnDashboard" label="Tempchart"></v-switch>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col class="px-10 py-0">
+                    <v-switch v-model="boolShowConsoleOnDashboard" label="Console"></v-switch>
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
@@ -48,6 +53,14 @@
                 },
                 set(status) {
                     return this.$store.dispatch('setSettings', { gui: { dashboard: { boolTempchart: status } } });
+                }
+            },
+            boolShowConsoleOnDashboard: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolConsole;
+                },
+                set(status) {
+                    return this.$store.dispatch('setSettings', { gui: { dashboard: { boolConsole: status } } });
                 }
             },
         },

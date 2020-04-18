@@ -1,15 +1,13 @@
 <template>
     <div>
         <v-row>
-            <v-col class="col-6">
+            <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-dashboard-panel></settings-dashboard-panel>
             </v-col>
-            <v-col class="col-6">
+            <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-webcam-panel></settings-webcam-panel>
             </v-col>
-        </v-row>
-        <v-row>
-            <v-col class="col-6">
+            <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-macros-panel></settings-macros-panel>
             </v-col>
         </v-row>

@@ -153,6 +153,32 @@ export default {
         });
     },
 
+    getFilamentSwitchSensors: state => {
+        let sensors = [];
+
+        for (let [key, value] of Object.entries(state.printer)) {
+            let nameSplit = key.split(" ");
+
+            if (nameSplit[0] === "filament_switch_sensor") {
+                sensors.push({
+                    name: nameSplit[1],
+                    enabled: value.enabled,
+                    filament_detected: value.filament_detected,
+                });
+            }
+        }
+
+        return sensors.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
+            return 0;
+        });
+    },
+
     getTitle: state => {
         if (state.socket.isConnected) {
             if (state.printer.pause_resume.is_paused) return "Pause Print";

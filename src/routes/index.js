@@ -23,7 +23,7 @@ const routes = [
     {
         title: "Console",
         path: '/console',
-        icon: 'code-tags',
+        icon: 'console-line',
         component: Console,
     },
     /*{
@@ -41,6 +41,7 @@ const routes = [
     {
         title: "Settings",
         path: '/settings',
+        redirect: '/settings/interface',
         icon: 'wrench',
         component: Settings,
         children: [
