@@ -1,8 +1,7 @@
 {
   "socket": {
-    "hostname": "voron250.local",
-    "port": 8080,
-    "reconnectInterval": 3000,
+    "hostname": "kossel.local",
+    "reconnectInterval": 5000,
     "reconnectAttempts": 1000
   }
 }

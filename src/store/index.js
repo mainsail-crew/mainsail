@@ -29,6 +29,7 @@ export default new Vuex.Store({
             loadingRestart: false,
             loadingRestartFirmware: false,
             loadingSaveGuiConfig: false,
+            loadingEndstopStatus: false,
         },
         webcam: {
             url: ""
@@ -37,6 +38,7 @@ export default new Vuex.Store({
             dashboard: {
                 boolWebcam: true,
                 boolTempchart: true,
+                boolConsole: false,
                 hiddenMacros: [],
             },
             webcam: {
@@ -86,7 +88,8 @@ export default new Vuex.Store({
             },
             fan: {
                 speed: 0,
-            }
+            },
+            endstops: {},
         },
         object: {
             heater: {

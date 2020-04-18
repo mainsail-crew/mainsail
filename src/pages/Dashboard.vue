@@ -7,16 +7,20 @@
         </v-col>
         <v-col class="col-sm-12 col-md-5">
             <tools-panel></tools-panel>
-            <peripherie-panel></peripherie-panel>
+            <peripherie-panel class="mt-6"></peripherie-panel>
+            <miniconsole-panel class="mt-6" v-if="showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapState, mapGetters } from 'vuex'
 
     export default {
         computed: {
+            ...mapState({
+                showDashboardConsole: state => state.gui.dashboard.boolConsole,
+            }),
             ...mapGetters([
                 'showDashboardWebcam'
             ])

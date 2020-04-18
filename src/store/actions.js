@@ -210,6 +210,11 @@ export default {
         commit('setLoadingRestartFirmware', false);
     },
 
+    responseEndstopStatus({ commit }, data) {
+        commit('setLoadingEndstopStatus', false);
+        commit('setEndstopStatus', data);
+    },
+
     switchToDashboard() {
         router.push("/");
     },
