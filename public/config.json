@@ -1,6 +1,6 @@
 {
   "socket": {
-    "hostname": "kossel.local",
+    "hostname": "voron250.local",
     "reconnectInterval": 5000,
     "reconnectAttempts": 1000
   }

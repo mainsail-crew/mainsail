@@ -171,6 +171,14 @@ server {
                 proxy_pass http://apiserver/printer;
         }
 
+        location /api {
+                proxy_pass http://apiserver/api;
+        }
+        
+        location /access {
+                proxy_pass http://apiserver/access;
+        }
+
         location /websocket {
             proxy_pass http://apiserver/websocket;
             proxy_http_version 1.1;

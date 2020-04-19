@@ -1,7 +1,14 @@
-import '@fortawesome/fontawesome-free/css/all.css'
+import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue';
 import Vuetify, { VSnackbar, VBtn, VIcon } from 'vuetify/lib';
-import VuetifyToast from 'vuetify-toast-snackbar'
+
+//vue-toast-notification
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+Vue.use(VueToast, {
+  duration: 3000,
+});
 
 
 Vue.use(Vuetify,{
@@ -12,15 +19,8 @@ Vue.use(Vuetify,{
   }
 });
 
-Vue.use(VuetifyToast, {
-  x: 'right',
-  y: 'bottom',
-  timeout: 3000,
-});
-
 export default new Vuetify({
-
   icons: {
-    iconfont: 'fa',
+    iconfont: 'mdi',
   },
 });

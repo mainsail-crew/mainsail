@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>fa-exclamation</v-icon></v-list-item-avatar>
+            <v-list-item-avatar color="grey"><v-icon dark>mdi-exclamation-thick</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Machinelimits</v-list-item-title>
             </v-list-item-content>
