@@ -225,15 +225,11 @@
                     }
                 ).then((result) => {
                     this.$store.commit('setLoadingGcodeUpload', false);
-                    toast.success("Upload of "+result.data.result+" successful!", {
-                        icon: 'fa-check'
-                    });
+                    toast.success("Upload of "+result.data.result+" successful!");
                 })
                 .catch(() => {
                     this.$store.commit('setLoadingGcodeUpload', false);
-                    toast.error("Cannot upload the file!", {
-                        icon: 'fa-exclamation-triangle'
-                    });
+                    toast.error("Cannot upload the file!");
                 });
             },
             clickUploadButton: function() {
@@ -296,14 +292,10 @@
             removeFile() {
                 axios.delete(
                     'http://'+ this.hostname + ':' + this.port +'/printer/files/'+this.contextMenu.item.filename
-                ).then(() => {
-                    this.$toast(this.contextMenu.item.filename+" successfully deleted.", {
-                        icon: 'fa-trash'
-                    });
+                ).then((result) => {
+                    this.$toast.success(result.data.result+" successfully deleted.");
                 }).catch(() => {
-                    this.$toast.error("Error! Cannot delete file.", {
-                        icon: 'fa-warning'
-                    });
+                    this.$toast.error("Error! Cannot delete file.");
                 });
             },
             startPrint(filename = "") {

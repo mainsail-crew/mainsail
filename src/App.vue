@@ -1,3 +1,7 @@
+<style>
+    @import './assets/styles/fonts.css';
+</style>
+
 <template>
     <v-app>
         <vue-headful
@@ -62,7 +66,7 @@
 
         <v-footer app class="d-block">
             <span v-if="version">{{ version }}</span>
-            <span class="float-right">&copy; 2020</span>
+            <span class="float-right">Made with <img src="/img/heard.svg" height="10" /> by <img src="/img/voron.png" height="10" />.   &copy; 2020</span>
         </v-footer>
     </v-app>
 </template>

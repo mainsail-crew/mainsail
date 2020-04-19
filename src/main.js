@@ -6,7 +6,6 @@ import VueResource from 'vue-resource'
 import './components'
 import store from './store'
 import router from './plugins/router'
-import 'vue-toast-notification/dist/index.css';
 import vueHeadful from 'vue-headful';
 
 Vue.config.productionTip = false;

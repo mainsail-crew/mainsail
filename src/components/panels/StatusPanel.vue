@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>fa-info</v-icon></v-list-item-avatar>
+            <v-list-item-avatar color="grey"><v-icon dark>mdi-information-variant</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Status</v-list-item-title>
                 <v-list-item-subtitle class="mr-3">{{ printer_state }}{{ printer_is_printing ? " - "+current_file : "" }}</v-list-item-subtitle>
