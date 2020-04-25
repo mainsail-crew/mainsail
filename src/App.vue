@@ -66,7 +66,7 @@
 
         <v-footer app class="d-block">
             <span v-if="version">{{ version }}</span>
-            <span class="float-right">Made with <img src="/img/heard.svg" height="10" /> by <img src="/img/voron.png" height="10" />.   &copy; 2020</span>
+            <span class="float-right">Made with <img src="/img/heard.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
     </v-app>
 </template>
@@ -89,9 +89,8 @@ export default {
     }),
     created () {
         this.$vuetify.theme.dark = true;
-        this.$socket.onOpen = () => {
-
-        }
+        window.console.log('app created');
+        this.$webSocketsConnect();
     },
     computed: {
         currentPage: function() {
@@ -114,7 +113,7 @@ export default {
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
-            this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
+            //this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');

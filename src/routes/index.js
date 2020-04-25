@@ -41,19 +41,19 @@ const routes = [
     {
         title: "Settings",
         path: '/settings',
-        redirect: '/settings/interface',
+        redirect: '/settings/machine',
         icon: 'wrench',
         component: Settings,
         children: [
             {
-                title: 'Interface',
-                path: '/settings/interface',
-                component: SettingsInterface
-            },
-            {
                 title: 'Machine',
                 path: '/settings/machine',
                 component: SettingsMachine
+            },
+            {
+                title: 'Interface',
+                path: '/settings/interface',
+                component: SettingsInterface
             },
         ]
     },

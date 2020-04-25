@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import JRPCWS from './plugins/json-rpc-websocket'
+//import WebSocketClient from './plugins/wsClient'
+import webSocketService from './services/websocket'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueResource from 'vue-resource'
@@ -22,12 +23,19 @@ Vue.component('vue-headful', vueHeadful);
 fetch('/config.json').then(res => res.json())
   .then(file => {
     store.commit('setSettings', file);
-    Vue.use(JRPCWS, 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
-      store: store,
-      reconnectEnabled: true,
-      reconnectInterval: store.state.socket.reconnectInterval,
-      reconnectAttempts: store.state.socket.reconnectAttempts,
+
+    /*const socketClient = new WebSocketClient('ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
+        store: store,
+        reconnectEnabled: true,
+        reconnectInterval: store.state.socket.reconnectInterval,
     });
+    socketClient.connect()
+    Vue.prototype.$socket = socketClient*/
+
+    Vue.use(webSocketService, {
+      store,
+      url: 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket'
+    })
 
     new Vue({
       vuetify,

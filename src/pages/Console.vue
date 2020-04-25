@@ -82,6 +82,7 @@
 </template>
 <script>
     import { mapState, mapGetters } from 'vuex';
+    import Vue from "vue";
 
     export default {
         data () {
@@ -131,8 +132,9 @@
         },
         methods: {
             doSend() {
+                window.console.log('send gcode: '+this.gcode);
                 this.loadingSendGcode = true;
-                this.$socket.sendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
+                Vue.prototype.$webSocketsSendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;

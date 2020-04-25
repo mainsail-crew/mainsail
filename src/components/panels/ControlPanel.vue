@@ -6,7 +6,7 @@
     <v-card>
         <v-row class="">
             <v-col class="col-12 pb-0 text-center">
-                <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHome" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
+                <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHomeAll" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
             </v-col>
         </v-row>
@@ -61,6 +61,7 @@
 
 <script>
     import { mapState, mapGetters, mapMutations } from 'vuex'
+    import Vue from "vue";
 
     export default {
         components: {
@@ -68,24 +69,20 @@
         },
         data: function() {
             return {
-
+                loadingHomeAll: false,
+                loadingHomeX: false,
+                loadingHomeY: false,
+                loadingHomeZ: false,
             }
         },
         computed: {
             ...mapState({
-                loadingHome: state => state.socket.loadingHome,
-                loadingHomeX: state => state.socket.loadingHomeX,
-                loadingHomeY: state => state.socket.loadingHomeY,
-                loadingHomeZ: state => state.socket.loadingHomeZ,
                 loadingQGL: state => state.socket.loadingQGL,
                 homedAxes: state => state.printer.toolhead.homed_axes,
                 config: state => state.config,
+                loadings: state => state.loadings,
             }),
             ...mapMutations([
-                'setLoadingHome',
-                'setLoadingHomeX',
-                'setLoadingHomeY',
-                'setLoadingHomeZ',
                 'setLoadingQGL',
             ]),
             ...mapGetters([
@@ -94,19 +91,19 @@
         },
         methods: {
             doHome() {
-                this.$store.commit('setLoadingHome', true);
+                this.$store.commit('setLoading', { name: 'controlHomeAll' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28" }, "responseHome");
             },
             doHomeX() {
-                this.$store.commit('setLoadingHomeX', true);
+                this.$store.commit('setLoading', { name: 'controlHomeX' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 X" }, "responseHomeX");
             },
             doHomeY() {
-                this.$store.commit('setLoadingHomeY', true);
+                this.$store.commit('setLoading', { name: 'controlHomeY' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 Y" }, "responseHomeY");
             },
             doHomeZ() {
-                this.$store.commit('setLoadingHomeZ', true);
+                this.$store.commit('setLoading', { name: 'controlHomeZ' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 Z" }, "responseHomeZ");
             },
             doQGL() {
@@ -121,8 +118,16 @@
                 this.doSend(gcode);
             },
             doSend(gcode) {
-                this.$socket.sendObj('post_printer_gcode', { script: gcode }, "sendGcode");
+                Vue.prototype.$webSocketsSendObj('post_printer_gcode', { script: gcode }, "sendGcode");
             },
+        },
+        watch: {
+            loadings: function(loadings) {
+                this.loadingHomeAll = loadings.includes('controlHomeAll');
+                this.loadingHomeX = loadings.includes('controlHomeX');
+                this.loadingHomeY = loadings.includes('controlHomeY');
+                this.loadingHomeZ = loadings.includes('controlHomeZ');
+            }
         }
     }
 </script>
