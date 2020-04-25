@@ -133,6 +133,7 @@ sudo update-rc.d -f lighttpd remove
 
 and now install nginx:
 ```bash
+sudo apt install update
 sudo apt install nginx
 ```
 create configfile `/etc/nginx/sites-available/kwc`:
