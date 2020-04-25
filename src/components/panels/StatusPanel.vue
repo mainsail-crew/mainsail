@@ -43,7 +43,7 @@
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Filament used</v-flex>
-                        <v-flex tag="span">{{ filament_used.toFixed(2) }}mm</v-flex>
+                        <v-flex tag="span">{{ filament_total.toFixed(2) }}mm</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
@@ -73,13 +73,13 @@
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Filament</v-flex>
-                        <v-flex tag="span">{{ filament_used > 0 && current_file_filament_used > 0 ? formatTime(print_time / (filament_used / current_file_filament_used) - print_time) : '--' }}</v-flex>
+                        <v-flex tag="span">{{ (filament_used > 0 && current_file_filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file_filament_total) - print_time) : '--' }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Slicer</v-flex>
-                        <v-flex tag="span">{{ current_file_estimated_time > print_time ? formatTime(current_file_estimated_time - print_time) : formatTime(0) }}</v-flex>
+                        <v-flex tag="span">{{ current_file_estimated_time > print_time ? formatTime(current_file_estimated_time - print_time) : '--'}}</v-flex>
                     </v-layout>
                 </v-flex>
             </v-layout>
@@ -132,7 +132,7 @@
                 'current_file_size',
                 'current_file_metadata',
                 'current_file_estimated_time',
-                'current_file_filament_used',
+                'current_file_filament_total',
                 'is_printing',
             ]),
         },

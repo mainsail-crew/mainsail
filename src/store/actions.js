@@ -7,7 +7,7 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('get_printer_status', { }, 'getHelpData');
+        Vue.prototype.$webSocketsSendObj('get_printer_status', { }, 'getHelpData');
 
         fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/printer/files/gui.json')
         .then(res => res.json()).then(file => {
@@ -16,11 +16,11 @@ export default {
             window.console.warn('No kwc config file found.');
         });
 
-        Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-        Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-        Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
+        Vue.prototype.$webSocketsSendObj('get_printer_info', {}, 'getKlipperInfo');
+        Vue.prototype.$webSocketsSendObj('get_printer_objects', {}, 'getObjectInfo');
+        Vue.prototype.$webSocketsSendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
+        Vue.prototype.$webSocketsSendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
+        Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', {
             gcode: [],
             toolhead: [],
             virtual_sdcard: [],
@@ -32,8 +32,8 @@ export default {
             idle_timeout: [],
 
         });
-        Vue.prototype.$socket.sendObj('get_printer_files', {}, 'getFileList');
-        Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
+        Vue.prototype.$webSocketsSendObj('get_printer_files', {}, 'getFileList');
+        Vue.prototype.$webSocketsSendObj('get_printer_gcode_help', {}, 'getHelpList');
     },
 
     socket_on_close ({ commit }, event) {
@@ -44,10 +44,6 @@ export default {
             window.console.error('Connection failure')
         }
         window.console.error('Code: ' + event.code)
-    },
-
-    socket_on_error ({ commit }, data) {
-        commit('reportError', data);
     },
 
     socket_on_message ({ commit, state }, data) {
@@ -84,30 +80,6 @@ export default {
                     else window.console.log(data);
                 }
         }
-    },
-
-    socket_reconnect ({ commit }, count) {
-        commit('setConnected');
-        window.console.log(count);
-        Vue.prototype.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-        Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
-            gcode: [],
-            toolhead: [],
-            virtual_sdcard: [],
-            heater: [],
-            heater_bed: [],
-            extruder: ["temperature", "target"],
-            fan: [],
-            pause_resume: [],
-            idle_timeout: [],
-
-        });
-    },
-
-    socket_reconnect_error ({ commit }) {
-        commit('setDisconnected');
-        window.console.error('Socket disconnected')
     },
 
     saveGuiSettings({ commit, state }) {
@@ -178,24 +150,27 @@ export default {
     },
 
     sendGcode({commit}, data) {
+        window.console.log('finish');
+        window.console.log(data);
+
         commit('setLoadingSendGcode', false);
         commit('sendGcode', data);
     },
 
     responseHome({commit}) {
-        commit('setLoadingHome', false);
+        commit('removeLoading', { name: 'controlHomeAll' });
     },
 
     responseHomeX({commit}) {
-        commit('setLoadingHomeX', false);
+        commit('removeLoading', { name: 'controlHomeX' });
     },
 
     responseHomeY({commit}) {
-        commit('setLoadingHomeY', false);
+        commit('removeLoading', { name: 'controlHomeY' });
     },
 
     responseHomeZ({commit}) {
-        commit('setLoadingHomeZ', false);
+        commit('removeLoading', { name: 'controlHomeZ' });
     },
 
     responseQGL({commit}) {

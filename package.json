@@ -16,7 +16,6 @@
     "vue-chartjs": "^3.5.0",
     "vue-context": "^5.1.0",
     "vue-headful": "^2.1.0",
-    "vue-json-rpc-websocket": "^1.1.1",
     "vue-resource": "^1.5.1",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.2.0",

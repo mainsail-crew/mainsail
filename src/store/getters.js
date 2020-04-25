@@ -84,10 +84,10 @@ export default {
         return 0;
     },
 
-    current_file_filament_used: state =>  {
+    current_file_filament_total: state =>  {
         let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
 
-        if (file.length) return file[0]['filament_used'];
+        if (file.length) return file[0]['filament_total'];
 
         return 0;
     },
@@ -109,7 +109,7 @@ export default {
 
         for (let prop in state.config) {
             if (prop.startsWith('gcode_macro') &&
-                !state.config[prop].hasOwnProperty('rename_existing') &&
+                !Object.hasOwnProperty.call(state.config[prop], 'rename_existing') &&
                 !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
             ) {
                 array.push({
@@ -134,7 +134,8 @@ export default {
         let array = [];
 
         for (let prop in state.config) {
-            if (prop.startsWith('gcode_macro') && !state.config[prop].hasOwnProperty('rename_existing')) {
+            if (prop.startsWith('gcode_macro') &&
+                !Object.hasOwnProperty.call(state.config[prop], 'rename_existing')) {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
                     'prop': state.config[prop]

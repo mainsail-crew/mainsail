@@ -3,15 +3,14 @@ const objectAssignDeep = require(`object-assign-deep`);
 import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleInterval, temperaturChartSampleLength } from './variables';
 
 export default {
+
     setConnected (state) {
         state.socket.isConnected = true;
-
-        Vue.prototype.$socket
     },
 
     setDisconnected (state) {
         state.socket.isConnected = false;
-        Vue.prototype.$socket.reconnect();
+        //Vue.prototype.$socket.reconnect();
     },
 
     setPrinterData(state, data) {
@@ -103,11 +102,11 @@ export default {
             let nameSplit = key.split(" ");
 
             if (nameSplit[0] === "temperature_fan") {
-                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
+                Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', { [key]: [] });
             }
 
             if (nameSplit[0] === "filament_switch_sensor") {
-                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
+                Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', { [key]: [] });
             }
         }
     },
@@ -128,7 +127,7 @@ export default {
                     modified: Date.parse(file.modified),
                     size: file.size,
                     slicer: file.slicer,
-                    filament_used: file.filament_used,
+                    filament_total: file.filament_total,
                     estimated_time: file.estimated_time,
                     layer_height: file.layer_height,
                     first_layer_height: file.first_layer_height,
@@ -174,6 +173,16 @@ export default {
         state.socket.loadingSendGcode = false;
     },
 
+    setLoading(state, data) {
+        if (!state.loadings.includes(data.name)) {
+            state.loadings.push(data.name);
+        }
+    },
+
+    removeLoading(state, data) {
+        state.loadings = state.loadings.filter(function(ele){ return ele !== data.name; });
+    },
+
     setPrinterStatus(state, value) {
         state.printer.toolhead.status = value;
     },
@@ -202,22 +211,6 @@ export default {
         state.socket.loadingPrintCancel = value;
     },
 
-    setLoadingHome(state, value) {
-        state.socket.loadingHome = value;
-    },
-
-    setLoadingHomeX(state, value) {
-        state.socket.loadingHomeX = value;
-    },
-
-    setLoadingHomeY(state, value) {
-        state.socket.loadingHomeY = value;
-    },
-
-    setLoadingHomeZ(state, value) {
-        state.socket.loadingHomeZ = value;
-    },
-
     setLoadingQGL(state, value) {
         state.socket.loadingQGL = value;
     },
@@ -228,6 +221,14 @@ export default {
 
     setLoadingRestartFirmware(state, value) {
         state.socket.loadingRestartFirmware = value;
+    },
+
+    setLoadingRebootHost(state, value) {
+        state.socket.loadingRebootHost = value;
+    },
+
+    setLoadingShutdownHost(state, value) {
+        state.socket.loadingShutdownHost = value;
     },
 
     setLoadingSaveGuiConfige(state, value) {
