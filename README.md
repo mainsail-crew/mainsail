@@ -1,30 +1,171 @@
-# Klipper Web Control
-KWC is a responsive web interface for [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the klipper-api from [Arksine](https://github.com/arksine). 
+# Mainsail
+Mainsail is a responsive web interface for [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the klipper-api from [Arksine](https://github.com/arksine). 
 
-## Installation
-At first install Arksine klipper-api fork/branch -> [install manual](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/web_server)
+## Requirement
+You need a full working Klipper-instance. Install Klipper with the official Installation documentaion and check the Logfile if klipper (/tmp/klippy.log) works.
 
-Download and install KWC:
+## Installtion of Mainsail
+The installation is split into several sections
+
+- [Change branch for Klipper-API](#change-brunch-for-klipper-api)
+- [configure Klipper-API](#configure-klipper-api)
+- [install webserver & reverse proxy (nginx)](#install-webserver--reverse-proxy-nginx)
+- [install & configure Mainsail](#install--configure-mainsail)
+
+### Change brunch for Klipper-API
+The Klipper-API isn't merged in Klipper at the moment, so you have to change the Repository to [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api) with the Klipper-API.
+
 ```bash
-mkdir -p ~/sdcard
-mkdir -p ~/kwc
-cd ~/kwc
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.8/kwc-alpha-0.0.8.zip && unzip kwc.zip && rm kwc.zip
+cd ~/klipper
+git fetch arksine
+git checkout arksine/work-web_server-20200131
+```
+and install the python package "tornado"
+```bash
+~/klippy-env/bin/pip install tornado
 ```
 
-Configure web_server in printer.cfg:
+### configure Klipper-API
+edit your `printer.cfg` with `nano ~/printer.cfg` and add following lines:
 ```
-[web_server]
-port: 8080
-enable_cors: true
-trusted_clients:
- 192.168.1.0/24
- 127.0.0.1
-allow_file_ops_when_printing: true
-
 [virtual_sdcard]
 path: /home/pi/sdcard
+
+[remote_api]
+trusted_clients:
+ 192.168.0.0/24
+ 127.0.0.0/24
+``` 
+edit the first line of trusted_clients (192.168.0.0/24) to your network. The second line (127.0.0.0/24) is for reverse proxy later.
+
+at last, we create the virtual_sdcard directory:
 ```
+mkdir ~/sdcard
+```
+now restart klipper (`sudo service klipper restart`) and check your klippy-log if klipper is starting correct again.
+
+when klipper is running, open the url `http://<printer-ip>:7125/printer/info` in your browser. if you see a content like this
+```
+{"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
+```
+your API is working!
+
+### install webserver & reverse proxy (nginx)
+nginx is important to mount all components on port 80 and host the static files from Mainsail.
+
+If you have installed lighttpd & haproxy before you have to stop & disable it:
+```bash
+sudo service haproxy stop
+sudo update-rc.d -f haproxy remove
+sudo service lighttpd stop
+sudo update-rc.d -f lighttpd remove
+```
+
+After disable all other webserver you can install nginx now:
+```bash
+sudo apt install nginx
+```
+now we create the config file with
+```bash
+sudo nano /etc/nginx/sites-available/mainsail
+```
+and fill it with the following content:
+```
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+upstream apiserver {
+    #edit your api port here
+    ip_hash;
+    server 127.0.0.1:7125;
+}
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    access_log /var/log/nginx/kwc-access.log;
+    error_log /var/log/nginx/kwc-error.log;
+
+    #web_path from mainsail static files
+    root /home/pi/mainsail;
+
+    index index.html;
+    server_name _;
+
+    #max upload size for gcodes
+    client_max_body_size 200M;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /printer {
+        proxy_pass http://apiserver/printer;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+    }
+
+    location /api {
+        proxy_pass http://apiserver/api;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+    }
+
+    location /access {
+        proxy_pass http://apiserver/access;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+    }
+
+    location /websocket {
+        proxy_pass http://apiserver/websocket;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_read_timeout 86400;
+    }
+
+    location /machine {
+        proxy_pass http://apiserver/machine;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+    }
+}
+```
+create directory for static files and active nginx config: 
+```bash
+mkdir ~/mainsail
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/mainsail /etc/nginx/sites-enabled/
+sudo service nginx restart
+```
+now you can check again the API if it works with the reverse proxy. Open the url `http://<printer-ip>/printer/info` in your browser. if you see a content like this:
+```
+{"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
+```
+now we can install Mainsail.
+
+### install & configure Mainsail
+now you can download the current mainsail static data
+```bash
+cd ~/mainsail
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mailsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
+```
+
 
 Example Klipper macros:
 ```
@@ -71,136 +212,10 @@ gcode:
     BASE_RESUME
 ```
 
-## Installation lighttpd & haproxy (out-dated)
-```bash
-sudo apt install lighttpd haproxy
+## Update Mainsail to V0.0.9
 ```
-edit configfile `/etc/lighttpd/lighttpd.conf` and edit following lines:
-```
-server.document-root        = "/home/pi/kwc"
-server.bind                 = "127.0.0.1"
-server.port                 = 81
-```
- 
-```bash
-sudo usermod -a -G www-data pi
-```
-
-add following lines at the end of `/etc/haproxy/haproxy.cfg`:
-```
-frontend public
-        bind :::80 v4v6
-        default_backend lighttpd
-        use_backend printer if { path_beg /printer/ }
-#        use_backend webcam if { path_beg /webcam1/ }
-
-        acl is_websocket path_beg /websocket
-        acl is_websocket hdr(Upgrade) -i WebSocket
-        acl is_websocket hdr_beg(Host) -i ws
-        use_backend websocket if is_websocket
-
-backend lighttpd
-        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
-        option forwardfor
-        server lighttpd1 127.0.0.1:81
-
-backend printer
-        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
-        option forwardfor
-        server printer1 127.0.0.1:8080
-
-backend websocket
-        reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
-        option forwardfor
-        server websocket1 127.0.0.1:8080
-
-#backend webcam
-#        reqrep ^([^\ :]*)\ /webcam1/(.*)     \1\ /\2
-#        server webcam1 127.0.0.1:8081
-```
-
-all comments are for webcam support. You can install MJPEG-Streamer with this [tutorial](https://github.com/cncjs/cncjs/wiki/Setup-Guide:-Raspberry-Pi-%7C-MJPEG-Streamer-Install-&-Setup-&-FFMpeg-Recording).
-
-## Installation nginx
-
-If you have installed lighttpd & haproxy before:
-```bash
-sudo service haproxy stop
-sudo update-rc.d -f haproxy remove
-sudo service lighttpd stop
-sudo update-rc.d -f lighttpd remove
-```
-
-and now install nginx:
-```bash
-sudo apt install nginx
-```
-create configfile `/etc/nginx/sites-available/kwc`:
-```
-map $http_upgrade $connection_upgrade {
-        default upgrade;
-        '' close;
-}
-
-upstream apiserver {
-        #edit your api port here
-        server 127.0.0.1:8080;
-}
-
-server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-
-        access_log /var/log/nginx/kwc-access.log;
-        error_log /var/log/nginx/kwc-error.log;
-
-        #web_path from kwc static files
-        root /home/pi/kwc;
-
-        index index.html;
-        server_name _;
-
-        #max upload size for gcodes
-        client_max_body_size 128M;
-
-        location / {
-                try_files $uri $uri/ /index.html;
-        }
-
-        location /printer {
-                proxy_pass http://apiserver/printer;
-        }
-
-        location /api {
-                proxy_pass http://apiserver/api;
-        }
-        
-        location /access {
-                proxy_pass http://apiserver/access;
-        }
-
-        location /websocket {
-            proxy_pass http://apiserver/websocket;
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection $connection_upgrade;
-            proxy_set_header Host $host;
-        }
-}
-```
-
-change api port & root path.
-
-```bash
-sudo rm /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/kwc /etc/nginx/sites-enabled/
-sudo service nginx restart
-```
-
-## Update KWC to V0.0.8
-```
-rm -R ~/kwc/*
-cd ~/kwc
+rm -R ~/mainsail/*
+cd ~/mainsail
 wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.8/kwc-alpha-0.0.8.zip && unzip kwc.zip && rm kwc.zip
 ```
 and update your macros & nginx config.

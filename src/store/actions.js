@@ -7,7 +7,7 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
-        Vue.prototype.$webSocketsSendObj('get_printer_status', { }, 'getHelpData');
+        Vue.prototype.$socket.sendObj('get_printer_status', { }, 'getHelpData');
 
         fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/printer/files/gui.json')
         .then(res => res.json()).then(file => {
@@ -16,11 +16,11 @@ export default {
             window.console.warn('No kwc config file found.');
         });
 
-        Vue.prototype.$webSocketsSendObj('get_printer_info', {}, 'getKlipperInfo');
-        Vue.prototype.$webSocketsSendObj('get_printer_objects', {}, 'getObjectInfo');
-        Vue.prototype.$webSocketsSendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
-        Vue.prototype.$webSocketsSendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-        Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', {
+        Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+        Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
+        Vue.prototype.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
+        Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
+        Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
             gcode: [],
             toolhead: [],
             virtual_sdcard: [],
@@ -32,8 +32,8 @@ export default {
             idle_timeout: [],
 
         });
-        Vue.prototype.$webSocketsSendObj('get_printer_files', {}, 'getFileList');
-        Vue.prototype.$webSocketsSendObj('get_printer_gcode_help', {}, 'getHelpList');
+        Vue.prototype.$socket.sendObj('get_printer_files', {}, 'getFileList');
+        Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
     },
 
     socket_on_close ({ commit }, event) {
@@ -115,11 +115,6 @@ export default {
         commit('setPrinterConfig', data);
     },
 
-    addSubscription(state, data) {
-        window.console.log(state);
-        window.console.log(data);
-    },
-
     getFileList({ commit }, data) {
         commit('setFileList', data);
         commit('setLoadingGcodeRefresh', false);
@@ -150,11 +145,9 @@ export default {
     },
 
     sendGcode({commit}, data) {
-        window.console.log('finish');
-        window.console.log(data);
-
         commit('setLoadingSendGcode', false);
         commit('sendGcode', data);
+        commit('addGcodeResponse', data);
     },
 
     responseHome({commit}) {

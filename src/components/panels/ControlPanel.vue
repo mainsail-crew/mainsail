@@ -118,7 +118,7 @@
                 this.doSend(gcode);
             },
             doSend(gcode) {
-                Vue.prototype.$webSocketsSendObj('post_printer_gcode', { script: gcode }, "sendGcode");
+                Vue.prototype.$socket.sendObj('post_printer_gcode', { script: gcode }, "sendGcode");
             },
         },
         watch: {

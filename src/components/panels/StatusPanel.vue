@@ -43,7 +43,7 @@
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Filament used</v-flex>
-                        <v-flex tag="span">{{ filament_total.toFixed(2) }}mm</v-flex>
+                        <v-flex tag="span">{{ filament_used.toFixed(2) }}mm</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
