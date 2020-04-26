@@ -89,8 +89,7 @@ export default {
     }),
     created () {
         this.$vuetify.theme.dark = true;
-        window.console.log('app created');
-        this.$webSocketsConnect();
+        //this.$webSocketsConnect();
     },
     computed: {
         currentPage: function() {

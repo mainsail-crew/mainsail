@@ -102,11 +102,11 @@ export default {
             let nameSplit = key.split(" ");
 
             if (nameSplit[0] === "temperature_fan") {
-                Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', { [key]: [] });
+                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
             }
 
             if (nameSplit[0] === "filament_switch_sensor") {
-                Vue.prototype.$webSocketsSendObj('post_printer_subscriptions', { [key]: [] });
+                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
             }
         }
     },

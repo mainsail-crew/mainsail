@@ -1,6 +1,5 @@
 import Vue from 'vue'
-//import WebSocketClient from './plugins/wsClient'
-import webSocketService from './services/websocket'
+import WebSocketClient from './plugins/wsClient'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueResource from 'vue-resource'
@@ -20,22 +19,18 @@ Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIO
 
 Vue.component('vue-headful', vueHeadful);
 
-fetch('/config.json').then(res => res.json())
-  .then(file => {
+fetch('/config.json')
+.then(res => res.json())
+.then(file => {
     store.commit('setSettings', file);
 
-    /*const socketClient = new WebSocketClient('ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
+    const socketClient = new WebSocketClient('ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
         store: store,
         reconnectEnabled: true,
         reconnectInterval: store.state.socket.reconnectInterval,
     });
-    socketClient.connect()
-    Vue.prototype.$socket = socketClient*/
-
-    Vue.use(webSocketService, {
-      store,
-      url: 'ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket'
-    })
+    socketClient.connect();
+    Vue.prototype.$socket = socketClient;
 
     new Vue({
       vuetify,
@@ -43,11 +38,11 @@ fetch('/config.json').then(res => res.json())
       store,
       render: h => h(App)
     }).$mount('#app')
-  })
-  .catch((error) => {
+})
+.catch((error) => {
     let p = document.createElement("p");
     let content = document.createTextNode("config.json not found or cannot be decoded!");
     p.appendChild(content);
     document.getElementById('app').append(p);
     window.console.error('Error:', error);
-  });
+});

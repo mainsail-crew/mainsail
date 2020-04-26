@@ -27,7 +27,7 @@ export default class WebSocketClient {
         let method = 'dispatch'
         let target = eventName
         let msg = event
-        if (event.data) {
+        if (event && event.data) {
             msg = JSON.parse(event.data)
         }
         this.store[method](target, msg)
@@ -38,13 +38,11 @@ export default class WebSocketClient {
 
         this.instance.onopen = () => {
             if (this.store) this.passToStore('socket_on_open', event);
-            this.keepAlive();
         };
 
         this.instance.onclose = (e) => {
             window.console.log("Websocket Closed, reconnecting in "+this.reconnectInterval+"ms: ", e.reason);
             this.passToStore('socket_on_close', e);
-            this.cancelKeepAlive();
 
             setTimeout(() => {
                 this.connect();
@@ -68,21 +66,6 @@ export default class WebSocketClient {
                 } else this.passToStore('socket_on_message', data)
             }
         };
-    }
-
-    keepAlive() {
-        window.console.log('keepAlive start');
-        window.console.log(this.instance);
-        if (this.instance.readyState === this.instance.OPEN) {
-            window.console.log('keepAlive send');
-            this.sendObj('get_printer_info', {}, 'getKlipperInfo');
-        }
-
-        this.timerId = setTimeout(this.keepAlive, this.keepAliveTimeout);
-    }
-
-    cancelKeepAlive() {
-        if (this.timerId) clearTimeout(this.timerId);
     }
 
     sendObj (method, params, action = '') {

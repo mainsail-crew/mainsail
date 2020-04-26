@@ -132,9 +132,8 @@
         },
         methods: {
             doSend() {
-                window.console.log('send gcode: '+this.gcode);
                 this.loadingSendGcode = true;
-                Vue.prototype.$webSocketsSendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
+                Vue.prototype.$socket.sendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;
