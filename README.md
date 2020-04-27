@@ -59,9 +59,8 @@ nginx is important to mount all components on port 80 and host the static files 
 If you have installed lighttpd & haproxy before you have to stop & disable it:
 ```bash
 sudo service haproxy stop
-sudo update-rc.d -f haproxy remove
 sudo service lighttpd stop
-sudo update-rc.d -f lighttpd remove
+sudo apt remove haproxy lighttpd
 ```
 
 After disable all other webserver you can install nginx now:
