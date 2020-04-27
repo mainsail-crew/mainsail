@@ -17,6 +17,7 @@ The Klipper-API isn't merged in Klipper at the moment, so you have to change the
 
 ```bash
 cd ~/klipper
+git remote add arksine https://github.com/Arksine/klipper.git
 git fetch arksine
 git checkout arksine/work-web_server-20200131
 ```
@@ -37,6 +38,7 @@ trusted_clients:
  127.0.0.0/24
 ``` 
 edit the first line of trusted_clients (192.168.0.0/24) to your network. The second line (127.0.0.0/24) is for reverse proxy later.
+If you need other options in your API you can find all options with descriptions on [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api).
 
 at last, we create the virtual_sdcard directory:
 ```
@@ -163,11 +165,22 @@ now we can install Mainsail.
 now you can download the current mainsail static data
 ```bash
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mailsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
 ```
+now it should be possible to open the interface: `http://<printer-ip>/`.
 
+to use the hostname instate of the ip, you can install the avahi-daemon:
+```bash
+sudo apt install avahi-daemon 
+```
+and you can config your hostname (if you use a raspberry pi):
+```bash
+sudo raspi-config
+```
+in `2 Network Options` > `N1 Hostname` you can edit your hostname of your raspberry pi. After a reboot you can use `http://<hostname>.local/` to open the webinterface.
 
-Example Klipper macros:
+## Klipper exampe macros for Mainsail
+This macros are important to start/pause/cancel prints.
 ```
 [pause_resume]
 
@@ -216,6 +229,6 @@ gcode:
 ```
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O kwc.zip https://github.com/meteyou/kwc/releases/download/v0.0.8/kwc-alpha-0.0.8.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O kwc.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip kwc.zip && rm kwc.zip
 ```
 and update your macros & nginx config.
