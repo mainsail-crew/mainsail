@@ -1,19 +1,19 @@
 # Mainsail
-Mainsail is a responsive web interface for [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the klipper-api from [Arksine](https://github.com/arksine). 
+Mainsail is a responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the Klipper-API from [Arksine](https://github.com/arksine). 
 
 ## Requirement
-You need a full working Klipper-instance. Install Klipper with the official Installation documentaion and check the Logfile if klipper (/tmp/klippy.log) works.
+Mainsail requires a working Klipper instance. Please head over to the official Klipper [installation documentation](https://www.klipper3d.org/Installation.html).
 
-## Installtion of Mainsail
-The installation is split into several sections
+## Installation of Mainsail
+The installation is split into several sections:
 
-- [Change branch for Klipper-API](#change-brunch-for-klipper-api)
-- [configure Klipper-API](#configure-klipper-api)
-- [install webserver & reverse proxy (nginx)](#install-webserver--reverse-proxy-nginx)
-- [install & configure Mainsail](#install--configure-mainsail)
-- [change-hostname](#change-hostname-optinal)
+- [Change branch for Klipper-API](#change-branch-for-klipper-api)
+- [Configure Klipper-API](#configure-klipper-api)
+- [Install the Webserver & Reverse Proxy (NGINX)](#install-webserver--reverse-proxy-nginx)
+- [Install & Configure Mainsail](#install--configure-mainsail)
+- [Change the Hostname](#change-the-hostname-optional)
 
-### Change brunch for Klipper-API
+### Change branch for Klipper-API
 The Klipper-API isn't merged in Klipper at the moment, so you have to change the Repository to [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api) with the Klipper-API.
 
 ```bash
@@ -27,8 +27,8 @@ and install the python package "tornado"
 ~/klippy-env/bin/pip install tornado
 ```
 
-### configure Klipper-API
-edit your `printer.cfg` with `nano ~/printer.cfg` and add following lines:
+### Configure Klipper-API
+Edit your `printer.cfg` with `nano ~/printer.cfg` and add the following lines:
 ```
 [virtual_sdcard]
 path: /home/pi/sdcard
@@ -38,16 +38,16 @@ trusted_clients:
  192.168.0.0/24
  127.0.0.0/24
 ``` 
-edit the first line of trusted_clients (192.168.0.0/24) to your network. The second line (127.0.0.0/24) is for reverse proxy later.
+Edit the first line of `trusted_clients` (192.168.0.0/24) to your network. The second line (127.0.0.0/24) is for reverse proxy later.
 If you need other options in your API you can find all options with descriptions on [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api).
 
-at last, we create the virtual_sdcard directory:
+Finally, we create the `virtual_sdcard` directory:
 ```
 mkdir ~/sdcard
 ```
-now restart klipper (`sudo service klipper restart`) and check your klippy-log if klipper is starting correct again.
+Restart klipper (`sudo service klipper restart`) and check your klippy.log if klipper is starting correct again.
 
-when klipper is running, open the url `http://<printer-ip>:7125/printer/info` in your browser. if you see a content like this
+When klipper is running, open the url `http://<printer-ip>:7125/printer/info` in your browser. If you see a content like this
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
@@ -149,28 +149,28 @@ server {
     }
 }
 ```
-create directory for static files and active nginx config: 
+Create directory for static files and active nginx config: 
 ```bash
 mkdir ~/mainsail
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/mainsail /etc/nginx/sites-enabled/
 sudo service nginx restart
 ```
-now you can check again the API if it works with the reverse proxy. Open the url `http://<printer-ip>/printer/info` in your browser. if you see a content like this:
+Now you can check again the API if it works with the reverse proxy. Open the url `http://<printer-ip>/printer/info` in your browser. if you see a content like this:
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
-now we can install Mainsail.
+Now we can install Mainsail.
 
-### install & configure Mainsail
-now you can download the current mainsail static data
+### Install & Configure Mainsail
+Now you can download the current mainsail static data
 ```bash
 cd ~/mainsail
 wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
 ```
-now it should be possible to open the interface: `http://<printer-ip>/`.
+Now it should be possible to open the interface: `http://<printer-ip>/`.
 
-### change hostname (optinal)
+### Change the Hostname (Optional)
 to use the hostname instate of the ip, you can install the avahi-daemon:
 ```bash
 sudo apt install avahi-daemon 
@@ -181,8 +181,8 @@ sudo raspi-config
 ```
 in `2 Network Options` > `N1 Hostname` you can edit your hostname of your raspberry pi. After a reboot you can use `http://<hostname>.local/` to open the webinterface.
 
-## Klipper exampe macros for Mainsail
-This macros are important to start/pause/cancel prints.
+## Klipper example macros for Mainsail
+These macros are important to start/pause/cancel prints.
 ```
 [pause_resume]
 
