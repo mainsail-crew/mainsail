@@ -11,6 +11,7 @@ The installation is split into several sections
 - [configure Klipper-API](#configure-klipper-api)
 - [install webserver & reverse proxy (nginx)](#install-webserver--reverse-proxy-nginx)
 - [install & configure Mainsail](#install--configure-mainsail)
+- [change-hostname](#change-hostname-optinal)
 
 ### Change brunch for Klipper-API
 The Klipper-API isn't merged in Klipper at the moment, so you have to change the Repository to [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api) with the Klipper-API.
@@ -169,6 +170,7 @@ wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0
 ```
 now it should be possible to open the interface: `http://<printer-ip>/`.
 
+### change hostname (optinal)
 to use the hostname instate of the ip, you can install the avahi-daemon:
 ```bash
 sudo apt install avahi-daemon 
