@@ -88,8 +88,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    access_log /var/log/nginx/kwc-access.log;
-    error_log /var/log/nginx/kwc-error.log;
+    access_log /var/log/nginx/mainsail-access.log;
+    error_log /var/log/nginx/mainsail-error.log;
 
     #web_path from mainsail static files
     root /home/pi/mainsail;
@@ -229,6 +229,14 @@ gcode:
 ## Update Mainsail to V0.0.9
 ```
 rm -R ~/mainsail/*
+cd ~/mainsail
+wget -q -O kwc.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip kwc.zip && rm kwc.zip
+```
+
+## Update Mainsail to V0.0.9 in case you come from KWC
+```
+rm -R ~/kwc
+mkdir ~/mainsail
 cd ~/mainsail
 wget -q -O kwc.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip kwc.zip && rm kwc.zip
 ```
