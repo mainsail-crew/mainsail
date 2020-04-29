@@ -53,6 +53,14 @@ When klipper is running, open the url `http://<printer-ip>:7125/printer/info` in
 ```
 your API is working!
 
+### Install & Configure Mainsail
+Now you can download the current mainsail static data
+```bash
+mkdir ~/mainsail
+cd ~/mainsail
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
+```
+
 ### install webserver & reverse proxy (nginx)
 nginx is important to mount all components on port 80 and host the static files from Mainsail.
 
@@ -67,90 +75,10 @@ After disable all other webserver you can install nginx now:
 ```bash
 sudo apt install nginx
 ```
-now we create the config file with
+Configure the nginx site:
+
 ```bash
-sudo nano /etc/nginx/sites-available/mainsail
-```
-and fill it with the following content:
-```
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
-
-upstream apiserver {
-    #edit your api port here
-    ip_hash;
-    server 127.0.0.1:7125;
-}
-
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    access_log /var/log/nginx/kwc-access.log;
-    error_log /var/log/nginx/kwc-error.log;
-
-    #web_path from mainsail static files
-    root /home/pi/mainsail;
-
-    index index.html;
-    server_name _;
-
-    #max upload size for gcodes
-    client_max_body_size 200M;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-    location /printer {
-        proxy_pass http://apiserver/printer;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /api {
-        proxy_pass http://apiserver/api;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /access {
-        proxy_pass http://apiserver/access;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /websocket {
-        proxy_pass http://apiserver/websocket;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection $connection_upgrade;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_read_timeout 86400;
-    }
-
-    location /machine {
-        proxy_pass http://apiserver/machine;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-}
-```
-Create directory for static files and active nginx config: 
-```bash
-mkdir ~/mainsail
+sudo cp ~/mainsail/nginx/sites-available/mainsail.conf.example /etc/nginx/sites-available/mainsail.conf
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/mainsail /etc/nginx/sites-enabled/
 sudo service nginx restart
@@ -158,14 +86,6 @@ sudo service nginx restart
 Now you can check again the API if it works with the reverse proxy. Open the url `http://<printer-ip>/printer/info` in your browser. if you see a content like this:
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
-```
-Now we can install Mainsail.
-
-### Install & Configure Mainsail
-Now you can download the current mainsail static data
-```bash
-cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
