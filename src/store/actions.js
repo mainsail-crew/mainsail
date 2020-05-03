@@ -18,13 +18,13 @@ export default {
 
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
         Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
+        Vue.prototype.$socket.sendObj('get_printer_status', { heaters: [] }, 'getObjectInfo');
         Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
         Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
             gcode: [],
             toolhead: [],
             virtual_sdcard: [],
-            heater: [],
+            heaters: [],
             heater_bed: [],
             extruder: ["temperature", "target"],
             fan: [],
