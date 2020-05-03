@@ -16,7 +16,7 @@ export default {
     setPrinterData(state, data) {
         Object.assign(state.printer, data);
 
-        if (Array.isArray(state.object.heater.available_heaters) && state.object.heater.available_heaters.length) {
+        if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
             let boolAddValues = false;
             let now = new Date();
 
@@ -24,7 +24,7 @@ export default {
                 for (let [key, value] of Object.entries(data)) {
                     let keySplit = key.split(" ");
 
-                    if (state.object.heater.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
+                    if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
                         if (keySplit[0] === "temperature_fan") key = keySplit[1];
 
                         let index =  state.temperaturChart.datasets.findIndex(element => element.label === key);
