@@ -6,9 +6,9 @@ export default {
     heaters: state => {
         let heaters = [];
 
-        if (state.object.heater.available_heaters) {
+        if (state.object.heaters.available_heaters) {
             for (let [key, value] of Object.entries(state.printer)) {
-                if (state.object.heater.available_heaters.includes(key)) {
+                if (state.object.heaters.available_heaters.includes(key)) {
                     heaters.push({
                         name: key,
                         target: value.target,
