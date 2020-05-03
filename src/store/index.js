@@ -90,7 +90,7 @@ export default new Vuex.Store({
             endstops: {},
         },
         object: {
-            heater: {
+            heaters: {
                 available_heaters: []
             }
         },
