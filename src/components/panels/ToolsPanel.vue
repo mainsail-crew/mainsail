@@ -50,6 +50,18 @@
                     </v-col>
                 </v-row>
             </div>
+            <div v-if="temperature_sensors.length" >
+                <v-divider class="my-2"></v-divider>
+                <v-row class="pl-3 pr-3 heater-row">
+                    <v-col class="text-center py-0">
+                        <b>Temperature<br />Sensors</b>
+                    </v-col>
+                    <v-col class="text-center py-0 vertical_align_center" v-for="(sensor,index) in temperature_sensors" v-bind:key="index+999" >
+                        <span>{{ sensor.temperature.toFixed(1) }}°C</span><br />
+                        <small>{{ sensor.name }}</small>
+                    </v-col>
+                </v-row>
+            </div>
             <v-divider class="my-2" v-if="boolTempchart"></v-divider>
             <v-row v-if="boolTempchart">
                 <v-col>
@@ -61,7 +73,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapState} from 'vuex'
+    import { mapGetters, mapState } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
     import LineChart from '../../charts/LineChart.js'
 
@@ -90,7 +102,11 @@
                 'heaters',
                 'heatersCount',
                 'temperature_fans',
+                'temperature_sensors',
             ])
+        },
+        created() {
+            window.console.log(this.temperature_sensors);
         },
         methods: {
             fillData () {

@@ -6,9 +6,9 @@ export default {
     heaters: state => {
         let heaters = [];
 
-        if (state.object.heater.available_heaters) {
+        if (state.object.heaters.available_heaters) {
             for (let [key, value] of Object.entries(state.printer)) {
-                if (state.object.heater.available_heaters.includes(key)) {
+                if (state.object.heaters.available_heaters.includes(key)) {
                     heaters.push({
                         name: key,
                         target: value.target,
@@ -50,6 +50,31 @@ export default {
         }
 
         return fans.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
+            return 0;
+        });
+    },
+
+    temperature_sensors: state => {
+        let sensors = [];
+
+        for (let [key, value] of Object.entries(state.printer)) {
+            let nameSplit = key.split(" ");
+
+            if (nameSplit[0] === "temperature_sensor") {
+                sensors.push({
+                    name: nameSplit[1],
+                    temperature: value.temperature,
+                });
+            }
+        }
+
+        return sensors.sort((a, b) => {
             let nameA = a.name.toUpperCase();
             let nameB = b.name.toUpperCase();
 
@@ -170,6 +195,31 @@ export default {
         }
 
         return sensors.sort((a, b) => {
+            let nameA = a.name.toUpperCase();
+            let nameB = b.name.toUpperCase();
+
+            if (nameA < nameB) return -1;
+            if (nameA > nameB) return 1;
+
+            return 0;
+        });
+    },
+
+    getBedMeshProfiles: state => {
+        let profiles = [];
+
+        for (let [key, value] of Object.entries(state.config)) {
+            let nameSplit = key.split(" ");
+
+            if (nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+                profiles.push({
+                    name: nameSplit[1],
+                    data: value
+                });
+            }
+        }
+
+        return profiles.sort((a, b) => {
             let nameA = a.name.toUpperCase();
             let nameB = b.name.toUpperCase();
 

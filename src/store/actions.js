@@ -17,23 +17,6 @@ export default {
         });
 
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-        Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { heater: [] }, 'getObjectInfo');
-        Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-        Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
-            gcode: [],
-            toolhead: [],
-            virtual_sdcard: [],
-            heater: [],
-            heater_bed: [],
-            extruder: ["temperature", "target"],
-            fan: [],
-            pause_resume: [],
-            idle_timeout: [],
-
-        });
-        Vue.prototype.$socket.sendObj('get_printer_files', {}, 'getFileList');
-        Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
     },
 
     socket_on_close ({ commit }, event) {
@@ -61,9 +44,9 @@ export default {
                 commit('setPrinterStatus', data.params[0]);
                 break;
 
-            /*case 'notify_klippy_state_changed':
+            case 'notify_klippy_state_changed':
                 commit('setPrinterStatus', data.params[0]);
-                break;*/
+                break;
 
             case 'notify_filelist_changed':
                 commit('setFileList', data.params[0].filelist);
@@ -101,14 +84,56 @@ export default {
     },
 
     getKlipperInfo({ commit }, data) {
-        commit('setPrinterData', {
-            hostname: data.hostname,
-            version: data.version
-        });
+        if (data !== undefined && data.is_ready) {
+            commit('setPrinterData', {
+                hostname: data.hostname,
+                version: data.version
+            });
+
+            commit('setPrinterStatus', 'ready');
+
+            Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
+            Vue.prototype.$socket.sendObj('get_printer_status', { heaters: [] }, 'getHeatersInfo');
+            Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
+            Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
+                gcode: [],
+                toolhead: [],
+                virtual_sdcard: [],
+                heaters: [],
+                fan: [],
+                pause_resume: [],
+                idle_timeout: [],
+                display_status: [],
+            });
+            Vue.prototype.$socket.sendObj('get_printer_files', {}, 'getFileList');
+            Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
+        } else {
+            commit('setPrinterStatus', 'disconnected');
+
+            setTimeout(function() {
+                Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+            }, 1000);
+        }
     },
 
     getObjectInfo({ commit }, data) {
         commit('setObjectData', data);
+    },
+
+    getHeatersInfo({ commit }, data) {
+        commit('setObjectData', data);
+
+        if (data.heaters.available_heaters.length) {
+            data.heaters.available_heaters.forEach(function(heater) {
+                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [heater]: [] });
+            })
+        }
+
+        Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
+    },
+
+    getHeatersHistory({ commit }, data) {
+        commit('setHeaterHistory', data);
     },
 
     getPrinterConfig({commit}, data) {
