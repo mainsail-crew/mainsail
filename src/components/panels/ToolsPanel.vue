@@ -14,6 +14,8 @@
                     {{ heatersCount }} heaters
                     <span v-if="temperature_fans.length === 1">, {{ temperature_fans.length }} fan</span>
                     <span v-if="temperature_fans.length > 1">, {{ temperature_fans.length }} fans</span>
+                    <span v-if="temperature_sensors.length === 1">, {{ temperature_sensors.length }} sensor</span>
+                    <span v-if="temperature_sensors.length > 1">, {{ temperature_sensors.length }} sensors</span>
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
