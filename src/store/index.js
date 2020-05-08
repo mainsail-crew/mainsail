@@ -27,6 +27,7 @@ export default new Vuex.Store({
             loadingShutdownHost: false,
             loadingSaveGuiConfig: false,
             loadingEndstopStatus: false,
+            klippy_state: "ready",
         },
         webcam: {
             url: ""
@@ -71,6 +72,10 @@ export default new Vuex.Store({
                 printing_time: 0,
                 state: "",
             },
+            display_status: {
+                message: null,
+                progress: 0,
+            },
             virtual_sdcard: {
                 progress: 0,
                 current_file: "",
@@ -90,7 +95,7 @@ export default new Vuex.Store({
             endstops: {},
         },
         object: {
-            heater: {
+            heaters: {
                 available_heaters: []
             }
         },

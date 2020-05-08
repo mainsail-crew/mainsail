@@ -1,11 +1,13 @@
 import Vue from "vue";
 const objectAssignDeep = require(`object-assign-deep`);
-import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleInterval, temperaturChartSampleLength } from './variables';
+import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleLength } from './variables';
 
 export default {
 
     setConnected (state) {
         state.socket.isConnected = true;
+
+        //reset store
     },
 
     setDisconnected (state) {
@@ -16,79 +18,107 @@ export default {
     setPrinterData(state, data) {
         Object.assign(state.printer, data);
 
-        if (Array.isArray(state.object.heater.available_heaters) && state.object.heater.available_heaters.length) {
-            let boolAddValues = false;
-            let now = new Date();
+        if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
+            let now = Date.now();
 
-            if (state.temperaturChart.labels.length === 0 || now - state.temperaturChart.labels[state.temperaturChart.labels.length - 1] > temperaturChartSampleInterval) {
-                for (let [key, value] of Object.entries(data)) {
-                    let keySplit = key.split(" ");
+            for (let [key, value] of Object.entries(data)) {
+                let keySplit = key.split(" ");
 
-                    if (state.object.heater.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
-                        if (keySplit[0] === "temperature_fan") key = keySplit[1];
+                if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
+                    if (keySplit[0] === "temperature_fan") key = keySplit[1];
 
-                        let index =  state.temperaturChart.datasets.findIndex(element => element.label === key);
-                        let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === key+'_target');
-
-                        if (index >= 0) {
-                            state.temperaturChart.datasets[index].data.push(value.temperature.toFixed(1));
-                            state.temperaturChart.datasets[index_target].data.push(value.target.toFixed(1));
-                        } else {
-                            let color = '#f87979';
-
-                            switch (key) {
-                                case 'heater_bed': color = colorHeaterBed; break;
-                                case 'chamber': color = colorChamber; break;
-                                default: color = colorArray[state.temperaturChart.datasets.length]; break;
-                            }
-
-                            state.temperaturChart.datasets.push({
-                                label: key,
-                                data: [value.temperature.toFixed(1)],
-                                borderColor: color,
-                                backgroundColor: color,
-                                fill: false,
-                                borderDash: undefined,
-                                borderWidth: 2,
-                                pointRadius: 0,
-                                pointHitRadius: 5,
-                                showLine: true
-                            });
-
-                            state.temperaturChart.datasets.push({
-                                label: key+"_target",
-                                data: [value.target.toFixed(1)],
-                                borderColor: color,
-                                backgroundColor: color+'20',
-                                fill: true,
-                                borderDash: undefined,
-                                borderWidth: 0,
-                                pointRadius: 0,
-                                pointHitRadius: 0,
-                                showLine: true
-                            });
-                        }
-
-                        boolAddValues = true;
-                    }
+                    this.commit('addTemperatureChartValue', {name: key, value: value, time: now});
                 }
-
-                if (boolAddValues) {
-                    state.temperaturChart.labels.push(now);
-
-                    if (state.temperaturChart.labels.length > temperaturChartSampleLength) {
-                        state.temperaturChart.labels.splice(0, state.temperaturChart.labels.length-temperaturChartSampleLength)
-                    }
-                }
-
-                for (let [key, dataset] of Object.entries(state.temperaturChart.datasets)) {
-                    if (dataset.data.length > temperaturChartSampleLength) {
-                        state.temperaturChart.datasets[key].data.splice(0, dataset.data.length-temperaturChartSampleLength)
-                    }
-                }
-
             }
         }
+    },
+
+    setHeaterHistory(state, data) {
+        let now = new Date();
+
+        if (data !== undefined) {
+            for (let [key, datasets] of Object.entries(data)) {
+                let keySplit = key.split(" ");
+
+                if (keySplit[0] !== "temperature_sensor") {
+                    let max = datasets.temperatures.length;
+                    for (let i = 0; i < max; i++) {
+                        let time = new Date(now.getTime() - 1000 * (max - i));
+                        this.commit('addTemperatureChartValue', {
+                            name: key,
+                            value: {
+                                temperature: datasets.temperatures[i],
+                                target: datasets.targets[i],
+                            },
+                            time: time
+                        });
+                    }
+                }
+            }
+        }
+    },
+
+    addTemperatureChartValue(state, payload) {
+        if (state.temperaturChart.labels.map(Number).indexOf(+payload.time) < 0) {
+            state.temperaturChart.labels.push(payload.time);
+
+            if (state.temperaturChart.labels.length > temperaturChartSampleLength) {
+                state.temperaturChart.labels = state.temperaturChart.labels.splice(state.temperaturChart.labels.length - temperaturChartSampleLength)
+            }
+        }
+
+        let index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+        if (index < 0) {
+            this.commit('addTemperatureChartHeater', payload.name);
+            index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+        }
+        let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
+
+        if (index >= 0) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
+        if (index_target >= 0) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
+
+        if (index >= 0 && state.temperaturChart.datasets[index].data.length > temperaturChartSampleLength) {
+            state.temperaturChart.datasets[index].data = state.temperaturChart.datasets[index].data.splice(state.temperaturChart.datasets[index].data.length - temperaturChartSampleLength)
+            state.temperaturChart.datasets[index_target].data = state.temperaturChart.datasets[index_target].data.splice(state.temperaturChart.datasets[index_target].data.length - temperaturChartSampleLength)
+        }
+    },
+
+    addTemperatureChartHeater(state, name) {
+        let color = '';
+
+        switch (name) {
+            case 'heater_bed': color = colorHeaterBed; break;
+            case 'chamber': color = colorChamber; break;
+            default: color = colorArray[state.temperaturChart.datasets.length]; break;
+        }
+
+        state.temperaturChart.datasets.push({
+            label: name,
+            data: [],
+            borderColor: color,
+            backgroundColor: color,
+            fill: false,
+            borderDash: undefined,
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHitRadius: 5,
+            showLine: true,
+            lineTension: 0,
+        });
+
+        state.temperaturChart.datasets.push({
+            label: name+"_target",
+            data: [],
+            borderColor: color,
+            backgroundColor: color+'20',
+            fill: true,
+            borderDash: undefined,
+            borderWidth: 0,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            showLine: true,
+            lineTension: 0,
+        });
     },
 
     setSettings(state, data) {
@@ -101,18 +131,16 @@ export default {
         for (let key of Object.keys(data)) {
             let nameSplit = key.split(" ");
 
-            if (nameSplit[0] === "temperature_fan") {
-                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
-            }
-
-            if (nameSplit[0] === "filament_switch_sensor") {
-                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
-            }
+            if (
+                nameSplit[0] === "temperature_fan" ||
+                nameSplit[0] === "temperature_sensors" ||
+                nameSplit[0] === "filament_switch_sensor"
+            ) Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
         }
     },
 
     setPrinterConfig(state, data) {
-        Vue.set(state, 'config', data.configfile.config);
+        if (data.configfile) Vue.set(state, 'config', data.configfile.config);
     },
 
     setFileList(state, data) {
@@ -156,7 +184,7 @@ export default {
             message: data
         });
 
-        if (data.substring(0,2) === "!!") {
+        if (data !== undefined && data.substring(0,2) === "!!") {
             Vue.$toast.error(data);
         }
     },
@@ -184,7 +212,8 @@ export default {
     },
 
     setPrinterStatus(state, value) {
-        state.printer.toolhead.status = value;
+        state.socket.klippy_state = value;
+        //state.printer.toolhead.status = value;
     },
 
     setLoadingGcodeUpload(state, value) {

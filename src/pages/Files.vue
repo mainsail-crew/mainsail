@@ -86,7 +86,7 @@
                             {{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}
                         </td>
                         <td class="text-no-wrap text-right">
-                            {{ item.filament_used ? item.filament_used.toFixed()+' mm' : '--' }}
+                            {{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}
                         </td>
                         <td class="text-no-wrap text-right">
                             {{ formatPrintTime(item.estimated_time) }}
@@ -164,7 +164,7 @@
                     },
                     {
                         text: 'Filament Usage',
-                        value: 'filament_used',
+                        value: 'filament_total',
                         align: 'right',
                     },
                     {

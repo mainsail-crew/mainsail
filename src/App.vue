@@ -18,8 +18,19 @@
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
                 <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon"
                     :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
-                    :value="true">
-                    <router-link slot="activator" class="nav-link" exact :to="category.path" @click.prevent v-if="(category.title === 'Webcam' && boolNaviWebcam) || category.title !== 'Webcam'">
+                    :value="true"
+                    >
+                    <router-link
+                        slot="activator" class="nav-link" exact :to="category.path" @click.prevent
+                        v-if="
+                            (category.title === 'Webcam' && boolNaviWebcam) ||
+                            (category.title === 'Heightmap' && boolNaviHeightmap) ||
+                            (
+                                category.title !== 'Webcam' &&
+                                category.title !== 'Heightmap' &&
+                                (is_ready || category.alwaysShow)
+                            )
+                        ">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
                         <span class="nav-title">{{ category.title }}</span>
                         <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
@@ -27,7 +38,7 @@
 
                     <ul class="child">
                         <li v-for="(page, pageIndex) in category.children" class="nav-item" v-bind:key="`${index}-${pageIndex}`">
-                            <router-link :to="page.path" class="nav-link" @click.prevent>
+                            <router-link :to="page.path" class="nav-link" @click.prevent v-if="is_ready || page.alwaysShow">
                                 <v-icon>mdi-{{ page.icon }}</v-icon>
                                 <span class="nav-title">{{ page.title }}</span>
                             </router-link>
@@ -85,11 +96,14 @@ export default {
     data: () => ({
         drawer: null,
         activeClass: 'active',
-        routes: routes
+        routes: routes,
+        is_ready: false,
+        boolNaviHeightmap: false,
     }),
     created () {
         this.$vuetify.theme.dark = true;
-        //this.$webSocketsConnect();
+        this.is_ready = (this.klippy_state === "ready") ? true : false;
+        this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
         currentPage: function() {
@@ -104,6 +118,8 @@ export default {
             isConnecting: state => !state.socket.isConnected,
             progress: state => state.printer.virtual_sdcard.progress,
             boolNaviWebcam: state => state.gui.webcam.bool,
+            klippy_state: state => state.socket.klippy_state,
+            config: state => state.config,
         }),
         ...mapGetters([
             'getTitle'
@@ -112,7 +128,7 @@ export default {
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
-            //this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
+            this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');
@@ -164,8 +180,14 @@ export default {
             handler: function(val) {
                 this.drawFavicon(val);
             }
+        },
+        klippy_state() {
+            this.is_ready = (this.klippy_state === "ready") ? true : false;
+        },
+        config() {
+            this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         }
-    }
+    },
 }
 </script>
 

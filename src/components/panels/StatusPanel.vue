@@ -12,6 +12,11 @@
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
+            <v-layout wrap class=" text-center" v-if="display_message">
+                <v-flex col tag="strong" class="category-header">Message</v-flex>
+                <v-flex col class="text-left">{{ display_message }}</v-flex>
+            </v-layout>
+            <v-divider class="my-2" v-if="display_message" ></v-divider>
             <v-layout wrap class=" text-center">
                 <v-flex col tag="strong" class="category-header">
                     Position
@@ -103,10 +108,6 @@
     import { mapState, mapGetters } from 'vuex';
 
     export default {
-        data: () => ({
-
-
-        }),
         computed: {
             ...mapState({
                 toolhead: state => state.printer.toolhead,
@@ -126,6 +127,8 @@
                 printer_state: state => state.printer.idle_timeout.state,
                 printer_is_paused: state => state.printer.pause_resume.is_paused,
                 printer_is_printing: state => state.printer.virtual_sdcard.is_active,
+
+                display_message: state => state.printer.display_status.message,
             }),
 
             ...mapGetters([

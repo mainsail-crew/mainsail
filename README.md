@@ -7,13 +7,13 @@ Mainsail requires a working Klipper instance. Please head over to the official K
 ## Installation of Mainsail
 The installation is split into several sections:
 
-- [Change branch for Klipper-API](#change-branch-for-klipper-api)
-- [Configure Klipper-API](#configure-klipper-api)
+- [Change branch for Klipper-API](#change-branch-for-moonraker)
+- [Configure Klipper-API](#configure-moonraker)
 - [Install the Webserver & Reverse Proxy (NGINX)](#install-webserver--reverse-proxy-nginx)
 - [Install & Configure Mainsail](#install--configure-mainsail)
 - [Change the Hostname](#change-the-hostname-optional)
 
-### Change branch for Klipper-API
+### Change branch for Moonraker
 The Klipper-API isn't merged in Klipper at the moment, so you have to change the Repository to [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api) with the Klipper-API.
 
 ```bash
@@ -21,25 +21,22 @@ cd ~/klipper
 git remote add arksine https://github.com/Arksine/klipper.git
 git fetch arksine
 git checkout arksine/work-web_server-20200131
-```
-and install the python package "tornado"
-```bash
-~/klippy-env/bin/pip install tornado
+~/klipper/scripts/install-moonraker.sh
 ```
 
-### Configure Klipper-API
+### Configure Moonraker
 Edit your `printer.cfg` with `nano ~/printer.cfg` and add the following lines:
 ```
 [virtual_sdcard]
 path: /home/pi/sdcard
 
-[remote_api]
+[api_server]
 trusted_clients:
  192.168.0.0/24
- 127.0.0.0/24
+ 127.0.0.1
 ``` 
 Edit the first line of `trusted_clients` (192.168.0.0/24) to your network. The second line (127.0.0.0/24) is for reverse proxy later.
-If you need other options in your API you can find all options with descriptions on [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/klippy/extras/remote_api).
+If you need other options in your API you can find all options with descriptions on [Arksine's Fork](https://github.com/Arksine/klipper/tree/work-web_server-20200131/moonraker).
 
 Finally, we create the `virtual_sdcard` directory:
 ```
@@ -146,6 +143,14 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Scheme $scheme;
     }
+
+    location /server {
+        proxy_pass http://apiserver/server;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+    }
 }
 ```
 Create directory for static files and active nginx config: 
@@ -165,7 +170,7 @@ Now we can install Mainsail.
 Now you can download the current mainsail static data
 ```bash
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.10/mainsail-alpha-0.0.10.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
@@ -226,10 +231,15 @@ gcode:
     BASE_RESUME
 ```
 
-## Update Mainsail to V0.0.9
+## Update Mainsail to V0.0.10
 ```
+sudo service klipper stop
+cd ~/klipper
+git clean -x -d -i
+git fetch arksine && git checkout arksine/work-web_server-20200131
+~/klipper/scripts/install-moonraker.sh
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O kwc.zip https://github.com/meteyou/mainsail/releases/download/v0.0.9/mainsail-alpha-0.0.9.zip && unzip kwc.zip && rm kwc.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.10/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 and update your macros & nginx config.

@@ -2,6 +2,7 @@ import Dashboard from '../pages/Dashboard.vue'
 //import Status from '../pages/Status.vue'
 import Webcam from '../pages/Webcam.vue'
 import Console from '../pages/Console.vue'
+import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import Settings from '../pages/Settings.vue'
 import SettingsInterface from '../pages/settings/interface.vue'
@@ -13,18 +14,28 @@ const routes = [
         path: '/',
         icon: 'view-dashboard',
         component: Dashboard,
+        alwaysShow: true,
     },
     {
         title: "Webcam",
         path: '/webcam',
         icon: 'webcam',
         component: Webcam,
+        alwaysShow: false,
     },
     {
         title: "Console",
         path: '/console',
         icon: 'console-line',
         component: Console,
+        alwaysShow: false,
+    },
+    {
+        title: "Heightmap",
+        path: '/heightmap',
+        icon: 'grid',
+        component: Heightmap,
+        alwaysShow: false,
     },
     /*{
         title: "Current Job",
@@ -37,6 +48,7 @@ const routes = [
         path: '/files',
         icon: 'printer-3d-nozzle',
         component: Files,
+        alwaysShow: false,
     },
     {
         title: "Settings",
@@ -44,16 +56,19 @@ const routes = [
         redirect: '/settings/machine',
         icon: 'wrench',
         component: Settings,
+        alwaysShow: true,
         children: [
             {
                 title: 'Machine',
                 path: '/settings/machine',
-                component: SettingsMachine
+                component: SettingsMachine,
+                alwaysShow: true,
             },
             {
                 title: 'Interface',
                 path: '/settings/interface',
-                component: SettingsInterface
+                component: SettingsInterface,
+                alwaysShow: true,
             },
         ]
     },
