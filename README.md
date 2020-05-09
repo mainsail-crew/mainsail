@@ -240,6 +240,6 @@ git fetch arksine && git checkout arksine/work-web_server-20200131
 ~/klipper/scripts/install-moonraker.sh
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.10/mainsail-alpha-0.0.9.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.10/mainsail-alpha-0.0.10.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 and update your macros & nginx config.
