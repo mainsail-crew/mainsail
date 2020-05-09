@@ -153,10 +153,12 @@
                 this.$socket.sendObj('post_printer_print_cancel', { }, 'setLoadingPrintCancel');
             },
             formatTime(seconds) {
-                let date = new Date(null);
-                date.setSeconds(seconds);
+                let h = Math.floor(seconds / 3600);
+                seconds %= 3600;
+                let m = Math.floor(seconds / 60);
+                let s = seconds % 60;
 
-                return date.toISOString().substr(11,8);
+                return h+':'+m+':'+s;
             },
         },
     }
