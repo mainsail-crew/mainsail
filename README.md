@@ -1,10 +1,13 @@
 # Mainsail
-Mainsail is a responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the Klipper-API from [Arksine](https://github.com/arksine). 
+Mainsail is a responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper) 3D printer firmware. It communicates with the Moonraker (Klipper-API) from [Arksine](https://github.com/arksine). 
 
-## Requirement
+## Automatic Install Scripts
+* [Installer from ArmyAg08](https://github.com/ArmyAg08/mainsail-installer) (recommended)
+* [Installer from BlackStump](https://github.com/BlackStump/mainsail-install) (untested)
+
+## Manual installation of Mainsail
 Mainsail requires a working Klipper instance. Please head over to the official Klipper [installation documentation](https://www.klipper3d.org/Installation.html).
 
-## Installation of Mainsail
 The installation is split into several sections:
 
 - [Change branch for Klipper-API](#change-branch-for-moonraker)
