@@ -10,7 +10,7 @@
 </style>
 
 <template>
-    <v-text-field type="number" min="-273" max="1999" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps">
+    <v-text-field type="number" min="-273" max="1999" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps" onClick="this.select();">
     </v-text-field>
 </template>
 
