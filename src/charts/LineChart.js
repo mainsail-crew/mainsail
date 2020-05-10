@@ -1,3 +1,4 @@
+import store from '../store'
 import { Line, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins;
 
@@ -36,10 +37,12 @@ export default {
 
                         // See controller.isDatasetVisible comment
                         meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-                        if (index_target) {
+                        if (index_target !== -1) {
                             let meta_target = ci.getDatasetMeta(index_target);
                             meta_target.hidden = meta.hidden;
                         }
+
+                        store.dispatch('setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
 
                         ci.update();
                     }

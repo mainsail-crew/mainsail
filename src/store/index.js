@@ -38,6 +38,7 @@ export default new Vuex.Store({
                 boolTempchart: true,
                 boolConsole: false,
                 hiddenMacros: [],
+                hiddenTempChart: [],
             },
             webcam: {
                 bool: false,

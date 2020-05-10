@@ -149,6 +149,11 @@ export default {
         commit('setHelpList', data);
     },
 
+    setHeaterChartVisibility({ commit, dispatch }, data) {
+        commit('setHeaterChartVisibility', data);
+        dispatch('saveGuiSettings');
+    },
+
     setLoadingSendGcode({commit}, value) {
         commit('setLoadingSendGcode', value);
     },

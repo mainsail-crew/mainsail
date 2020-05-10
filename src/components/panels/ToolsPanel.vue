@@ -108,7 +108,7 @@
             ])
         },
         created() {
-            window.console.log(this.temperature_sensors);
+
         },
         methods: {
             fillData () {
