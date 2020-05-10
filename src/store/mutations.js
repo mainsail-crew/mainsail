@@ -27,7 +27,7 @@ export default {
                 if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
 
-                    this.commit('addTemperatureChartValue', {name: key, value: value, time: now});
+                    this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
                 }
             }
         }
@@ -40,19 +40,20 @@ export default {
             for (let [key, datasets] of Object.entries(data)) {
                 let keySplit = key.split(" ");
 
-                if (keySplit[0] !== "temperature_sensor") {
-                    let max = datasets.temperatures.length;
-                    for (let i = 0; i < max; i++) {
-                        let time = new Date(now.getTime() - 1000 * (max - i));
-                        this.commit('addTemperatureChartValue', {
-                            name: key,
-                            value: {
-                                temperature: datasets.temperatures[i],
-                                target: datasets.targets[i],
-                            },
-                            time: time
-                        });
-                    }
+                if (keySplit.length > 1) key = keySplit[1];
+
+                let max = datasets.temperatures.length;
+                for (let i = 0; i < max; i++) {
+                    let time = new Date(now.getTime() - 1000 * (max - i));
+                    this.commit('addTemperatureChartValue', {
+                        name: key,
+                        value: {
+                            temperature: datasets.temperatures[i],
+                            target: datasets.targets[i],
+                        },
+                        type: keySplit[0],
+                        time: time
+                    });
                 }
             }
         }
@@ -69,7 +70,10 @@ export default {
 
         let index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
         if (index < 0) {
-            this.commit('addTemperatureChartHeater', payload.name);
+            this.commit('addTemperatureChartHeater', {
+                name: payload.name,
+                type: payload.type,
+            });
             index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
         }
         let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
@@ -79,21 +83,26 @@ export default {
 
         if (index >= 0 && state.temperaturChart.datasets[index].data.length > temperaturChartSampleLength) {
             state.temperaturChart.datasets[index].data = state.temperaturChart.datasets[index].data.splice(state.temperaturChart.datasets[index].data.length - temperaturChartSampleLength)
+        }
+
+        if (index_target >= 0 && state.temperaturChart.datasets[index_target].data.length > temperaturChartSampleLength) {
             state.temperaturChart.datasets[index_target].data = state.temperaturChart.datasets[index_target].data.splice(state.temperaturChart.datasets[index_target].data.length - temperaturChartSampleLength)
         }
     },
 
-    addTemperatureChartHeater(state, name) {
+    addTemperatureChartHeater(state, payload) {
         let color = '';
 
-        switch (name) {
+        switch (payload.name) {
             case 'heater_bed': color = colorHeaterBed; break;
             case 'chamber': color = colorChamber; break;
             default: color = colorArray[state.temperaturChart.datasets.length]; break;
         }
 
+        let hidden = state.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0 ? true : null;
+
         state.temperaturChart.datasets.push({
-            label: name,
+            label: payload.name,
             data: [],
             borderColor: color,
             backgroundColor: color,
@@ -104,21 +113,32 @@ export default {
             pointHitRadius: 5,
             showLine: true,
             lineTension: 0,
+            hidden: hidden,
         });
 
-        state.temperaturChart.datasets.push({
-            label: name+"_target",
-            data: [],
-            borderColor: color,
-            backgroundColor: color+'20',
-            fill: true,
-            borderDash: undefined,
-            borderWidth: 0,
-            pointRadius: 0,
-            pointHitRadius: 0,
-            showLine: true,
-            lineTension: 0,
-        });
+        if (payload.type !== "temperature_sensor") {
+            state.temperaturChart.datasets.push({
+                label: payload.name+"_target",
+                data: [],
+                borderColor: color,
+                backgroundColor: color+'20',
+                fill: true,
+                borderDash: undefined,
+                borderWidth: 0,
+                pointRadius: 0,
+                pointHitRadius: 0,
+                showLine: true,
+                lineTension: 0,
+                hidden: hidden,
+            });
+        }
+    },
+
+    setHeaterChartVisibility(state, data) {
+        let index = state.gui.dashboard.hiddenTempChart.indexOf(data.name.toUpperCase());
+
+        if (data.hidden && index === -1) state.gui.dashboard.hiddenTempChart.push(data.name.toUpperCase())
+        else if (data.hidden !== true && index > -1) state.gui.dashboard.hiddenTempChart.splice(index, 1);
     },
 
     setSettings(state, data) {
