@@ -9,7 +9,7 @@
         <v-list-item>
             <v-list-item-avatar color="grey"><v-icon dark>mdi-thermometer</v-icon></v-list-item-avatar>
             <v-list-item-content>
-                <v-list-item-title class="headline">Heaters</v-list-item-title>
+                <v-list-item-title class="headline">Temperatures</v-list-item-title>
                 <v-list-item-subtitle>
                     {{ heatersCount }} heaters
                     <span v-if="temperature_fans.length === 1">, {{ temperature_fans.length }} fan</span>
@@ -59,8 +59,8 @@
                         <b>Temperature<br />Sensors</b>
                     </v-col>
                     <v-col class="text-center py-0 vertical_align_center" v-for="(sensor,index) in temperature_sensors" v-bind:key="index+999" >
-                        <span>{{ sensor.temperature.toFixed(1) }}°C</span><br />
-                        <small>{{ sensor.name }}</small>
+                        <span style="cursor: default;" :title="'min: '+sensor.measured_min_temp.toFixed(1)+'° / max: '+sensor.measured_max_temp.toFixed(1)+'°'">{{ sensor.temperature.toFixed(1) }}°C</span><br />
+                        <small style="cursor: default;" :title="'min: '+sensor.measured_min_temp.toFixed(1)+'° / max: '+sensor.measured_max_temp.toFixed(1)+'°'">{{ sensor.name }}</small>
                     </v-col>
                 </v-row>
             </div>
