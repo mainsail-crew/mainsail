@@ -70,6 +70,8 @@ export default {
                 sensors.push({
                     name: nameSplit[1],
                     temperature: value.temperature,
+                    measured_min_temp: value.measured_min_temp,
+                    measured_max_temp: value.measured_max_temp,
                 });
             }
         }
