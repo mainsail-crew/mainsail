@@ -88,8 +88,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    access_log /var/log/nginx/kwc-access.log;
-    error_log /var/log/nginx/kwc-error.log;
+    access_log /var/log/nginx/mainsail-access.log;
+    error_log /var/log/nginx/mainsail-error.log;
 
     #web_path from mainsail static files
     root /home/pi/mainsail;
