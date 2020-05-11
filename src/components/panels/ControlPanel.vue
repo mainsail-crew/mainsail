@@ -91,24 +91,29 @@
         },
         methods: {
             doHome() {
+                this.$store.commit('addGcodeResponse', "G28");
                 this.$store.commit('setLoading', { name: 'controlHomeAll' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28" }, "responseHome");
             },
             doHomeX() {
+                this.$store.commit('addGcodeResponse', "G28 X");
                 this.$store.commit('setLoading', { name: 'controlHomeX' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 X" }, "responseHomeX");
             },
             doHomeY() {
+                this.$store.commit('addGcodeResponse', "G28 Y");
                 this.$store.commit('setLoading', { name: 'controlHomeY' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 Y" }, "responseHomeY");
             },
             doHomeZ() {
+                this.$store.commit('addGcodeResponse', "G28 Z");
                 this.$store.commit('setLoading', { name: 'controlHomeZ' });
                 this.$socket.sendObj('post_printer_gcode', { script: "G28 Z" }, "responseHomeZ");
             },
             doQGL() {
+                this.$store.commit('addGcodeResponse', "QUAD_GANTRY_LEVEL");
                 this.$store.commit('setLoadingQGL', true);
-                this.$socket.sendObj('post_printer_gcode', { script: "quad_gantry_level" }, "responseQGL");
+                this.$socket.sendObj('post_printer_gcode', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
             },
             doSendMove(gcode) {
                 gcode = "G91" + "\n" +
@@ -118,6 +123,7 @@
                 this.doSend(gcode);
             },
             doSend(gcode) {
+                this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode', { script: gcode }, "sendGcode");
             },
         },

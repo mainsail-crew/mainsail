@@ -54,12 +54,12 @@
                     :headers="headers"
                     :options="options"
                     :sort-by.sync="sortBy"
-                    :sort-desc.sync="sortDesc"
                     :items="events"
                     item-key="date"
                     hide-default-footer
                     disable-pagination
                     class="event-table"
+                    :custom-sort="customSort"
                 >
                     <template #no-data>
                         <div class="text-center">empty</div>
@@ -89,12 +89,12 @@
             return {
                 gcode: "",
                 sortBy: 'date',
-                sortDesc: true,
                 headers: [
                     {
                         text: 'Date',
                         value: 'date',
-                        width: '15%'
+                        width: '15%',
+                        dateType: 'Date',
                     },
                     {
                         text: 'Event',
@@ -133,6 +133,7 @@
         methods: {
             doSend() {
                 this.loadingSendGcode = true;
+                this.$store.commit('addGcodeResponse', this.gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode', { script: this.gcode }, "sendGcode");
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
@@ -177,6 +178,21 @@
                     }
                 }
                 this.$refs.gcodeCommandField.focus();
+            },
+            customSort: function(items, index, isDesc) {
+                items.sort((a, b) => {
+                    if (index[0] === 'date') {
+                        if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
+                        else return new Date(a[index]) - new Date(b[index]);
+                    } else {
+                        if(typeof a[index] !== 'undefined'){
+                            if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+                            else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                        }
+                    }
+                });
+
+                return items;
             }
         }
     }
