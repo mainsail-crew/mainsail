@@ -34,7 +34,7 @@
                             v-model="profile"
                             item-text="name"
                             item-value="data"
-                            label="Profil"
+                            label="Profile"
                             outlined
                         ></v-select>
                     </v-card-text>
