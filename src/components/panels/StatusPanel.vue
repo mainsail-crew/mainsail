@@ -155,8 +155,8 @@
             formatTime(seconds) {
                 let h = Math.floor(seconds / 3600);
                 seconds %= 3600;
-                let m = Math.floor(seconds / 60);
-                let s = seconds % 60;
+                let m = ("0" + Math.floor(seconds / 60)).slice(-2);
+                let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
 
                 return h+':'+m+':'+s;
             },

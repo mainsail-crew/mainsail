@@ -173,7 +173,7 @@ Now we can install Mainsail.
 Now you can download the current mainsail static data
 ```bash
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.11/mainsail-alpha-0.0.11.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.12/mainsail-alpha-0.0.12.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
@@ -243,6 +243,6 @@ git fetch arksine && git checkout arksine/work-web_server-20200131
 ~/klipper/scripts/install-moonraker.sh #optional: only for the first installation of moonraker
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.11/mainsail-alpha-0.0.11.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.0.12/mainsail-alpha-0.0.12.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 and update your macros & nginx config.
