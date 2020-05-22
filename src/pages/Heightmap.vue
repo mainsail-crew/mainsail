@@ -115,16 +115,28 @@
         methods: {
 
         },
+        created: function() {
+            this.profiles = this.$store.getters.getBedMeshProfiles;
+        },
         watch: {
             config: function() {
                 this.profiles = this.$store.getters.getBedMeshProfiles;
 
-                if (this.config.stepper_x !== undefined) this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max];
-                if (this.config.stepper_y !== undefined) this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max];
+                if (this.config.stepper_x !== undefined && this.config.stepper_y !== undefined) {
+                    this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max];
+                    this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max];
+                }
 
                 this.$refs.heightmap.update();
             },
             profile: function() {
+                window.console.log(this.profile);
+
+                if (this.config.stepper_x === undefined || this.config.stepper_y === undefined) {
+                    this.layout.scene.xaxis.range = [this.profile.min_x, this.profile.max_x];
+                    this.layout.scene.yaxis.range = [this.profile.min_y, this.profile.max_y];
+                }
+
                 this.data[0].x = [];
                 let x_step = (this.profile.max_x - this.profile.min_x) / this.profile.x_count;
                 for(let i = 0; i < this.profile.x_count; i++) {
@@ -152,7 +164,6 @@
                 });
 
                 //this.$refs.heightmap.plot();
-                window.console.log(this.$refs);
             }
         }
     }

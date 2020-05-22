@@ -57,6 +57,7 @@ export default new Vuex.Store({
             toolhead: {
                 position: [],
                 homed_axes: [],
+                extruder: "",
                 status: "",
                 print_time: 0,
                 printing_time: 0,

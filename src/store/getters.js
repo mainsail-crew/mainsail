@@ -213,7 +213,9 @@ export default {
         for (let [key, value] of Object.entries(state.config)) {
             let nameSplit = key.split(" ");
 
-            if (nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+            if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+                window.console.log(nameSplit);
+                window.console.log(value);
                 profiles.push({
                     name: nameSplit[1],
                     data: value
@@ -243,5 +245,25 @@ export default {
 
     showDashboardWebcam: state => {
         return (state.webcam.url !== "" && state.gui.dashboard.boolWebcam);
+    },
+
+    getCurrentExtruder: state => {
+        let extruder = {
+            name: "",
+            status: null,
+            config: null,
+        };
+        let extruderName = state.printer.toolhead.extruder;
+        extruder.name = extruderName;
+
+        if (state.config[extruderName]) {
+            extruder.config = state.config[extruderName];
+        }
+
+        if (state.printer[extruderName]) {
+            extruder.status = state.printer[extruderName];
+        }
+
+        return extruder;
     }
 }
