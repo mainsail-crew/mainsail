@@ -213,6 +213,16 @@ export default {
         commit('setEndstopStatus', data);
     },
 
+    respondeExtruderRetract({commit}) {
+        window.console.log("respond");
+        commit('removeLoading', { name: 'extruderRetract' });
+    },
+
+    respondeExtruderDetract({commit}) {
+        window.console.log("respond");
+        commit('removeLoading', { name: 'extruderDetract' });
+    },
+
     switchToDashboard() {
         router.push("/");
     },

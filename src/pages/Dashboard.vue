@@ -4,6 +4,7 @@
             <status-panel></status-panel>
             <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
             <control-panel class="mt-6" v-if="is_ready"></control-panel>
+            <extruder-panel class="mt-6" v-if="is_ready"></extruder-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-5">
             <tools-panel v-if="is_ready"></tools-panel>

@@ -51,7 +51,7 @@
                 <v-spacer></v-spacer>
                 <v-btn :loading="loadingRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn color="primary ml-4 " v-if="!is_printing" :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+                <v-btn color="primary ml-4 " :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
             </v-card-title>
             <v-data-table
                     :headers="headers"
