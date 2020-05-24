@@ -234,7 +234,7 @@ gcode:
     BASE_RESUME
 ```
 
-## Update Mainsail to V0.0.11
+## Update Mainsail to V0.0.12
 ```
 sudo service klipper stop
 cd ~/klipper
