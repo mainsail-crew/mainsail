@@ -13,7 +13,7 @@ export default {
         .then(res => res.json()).then(file => {
             store.commit('setSettings', file);
         }).catch(function() {
-            window.console.warn('No kwc config file found.');
+            window.console.warn('No mainsail config file found.');
         });
 
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
