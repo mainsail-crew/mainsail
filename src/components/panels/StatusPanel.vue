@@ -48,7 +48,7 @@
                 <v-flex grow class="equal-width">
                     <v-layout column>
                         <v-flex tag="strong">Filament used</v-flex>
-                        <v-flex tag="span">{{ filament_used.toFixed(2) }}mm</v-flex>
+                        <v-flex tag="span">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-flex>
                     </v-layout>
                 </v-flex>
                 <v-flex grow class="equal-width">
