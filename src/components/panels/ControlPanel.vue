@@ -26,13 +26,13 @@
         <v-row class="mt-3">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="doSendMove('Z-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Z-100</span></v-btn>
-                    <v-btn @click="doSendMove('Z-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-10</span></v-btn>
-                    <v-btn @click="doSendMove('Z-1')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-1</span></v-btn>
+                    <v-btn @click="doSendMove('Y-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Z-100</span></v-btn>
+                    <v-btn @click="doSendMove('Y-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-10</span></v-btn>
+                    <v-btn @click="doSendMove('Y-1')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-1</span></v-btn>
                     <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadingHomeY"><v-icon class="mdi mdi-home"></v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+1')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+1</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+10</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">Y+100</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+1')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+1</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+10</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">Y+100</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>
