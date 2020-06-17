@@ -214,13 +214,19 @@ export default {
     },
 
     respondeExtruderRetract({commit}) {
-        window.console.log("respond");
         commit('removeLoading', { name: 'extruderRetract' });
     },
 
     respondeExtruderDetract({commit}) {
-        window.console.log("respond");
         commit('removeLoading', { name: 'extruderDetract' });
+    },
+
+    respondeBabySteppingDown({commit}) {
+        commit('removeLoading', { name: 'babySteppingDown' });
+    },
+
+    respondeBabySteppingUp({commit}) {
+        commit('removeLoading', { name: 'babySteppingUp' });
     },
 
     switchToDashboard() {

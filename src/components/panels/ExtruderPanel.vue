@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card>
+    <v-card v-if="!(printer_state === 'Printing' && printer_is_printing)">
         <v-row class="px-3">
             <v-col class="col-12 col-md-6">
                 <v-label>Feed amount in mm:</v-label>
@@ -30,7 +30,7 @@
         <v-row class="px-3">
             <v-col class="col-12 text-center">
                 <v-btn @click="sendRetract()" class="mx-2" :loading="loadingRetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && extruder.config.min_extrude_temp < extruder.status.temperature)"><v-icon>mdi-arrow-up-bold</v-icon> Retract</v-btn>
-                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && extruder.config.min_extrude_temp < extruder.status.temperature)"><v-icon>mdi-arrow-down-bold</v-icon> Detract</v-btn>
+                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && extruder.config.min_extrude_temp < extruder.status.temperature)"><v-icon>mdi-arrow-down-bold</v-icon> Extrude</v-btn>
             </v-col>
         </v-row>
     </v-card>
@@ -56,10 +56,14 @@
             ...mapState({
                 config: state => state.config,
                 loadings: state => state.loadings,
+                printer_state: state => state.printer.idle_timeout.state,
+                printer_is_paused: state => state.printer.pause_resume.is_paused,
+                printer_is_printing: state => state.printer.virtual_sdcard.is_active,
             }),
             ...mapGetters([
                 'getMacros',
-                'getCurrentExtruder'
+                'getCurrentExtruder',
+                'is_printing'
             ]),
             extruder: {
                 get: function() {

@@ -165,6 +165,7 @@ export default {
 
     setFileList(state, data) {
         state.files = [];
+        window.console.log(data);
         let array = Object.entries(data);
 
         for (let [key, file] of array) {
@@ -180,6 +181,7 @@ export default {
                     layer_height: file.layer_height,
                     first_layer_height: file.first_layer_height,
                     object_height: file.object_height,
+                    thumbnails : file.thumbnails ? file.thumbnails : [],
                 });
             }
         }

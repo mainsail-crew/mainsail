@@ -33,6 +33,9 @@ export default new Vuex.Store({
             url: ""
         },
         gui: {
+            general: {
+                printername: "",
+            },
             dashboard: {
                 boolWebcam: true,
                 boolTempchart: true,
@@ -90,6 +93,9 @@ export default new Vuex.Store({
             gcode: {
                 extrude_factor: 1,
                 speed_factor: 1,
+                base_zpos: 0,
+                absolute_coordinates: true,
+                absolute_extrude: true,
             },
             fan: {
                 speed: 0,

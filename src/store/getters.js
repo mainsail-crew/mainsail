@@ -239,8 +239,8 @@ export default {
             if (state.printer.pause_resume.is_paused) return "Pause Print";
             else if (state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.current_file;
 
-            return state.printer.hostname;
-        } else return "KlipperWebControl";
+            return state.gui.general.printername ? state.gui.general.printername : state.printer.hostname;
+        } else return "Mainsail";
     },
 
     showDashboardWebcam: state => {
