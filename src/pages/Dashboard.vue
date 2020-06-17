@@ -3,6 +3,7 @@
         <v-col class="col-sm-12 col-md-7">
             <status-panel></status-panel>
             <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
+            <z-offset-panel class="mt-6" v-if="is_ready"></z-offset-panel>
             <control-panel class="mt-6" v-if="is_ready"></control-panel>
             <extruder-panel class="mt-6" v-if="is_ready"></extruder-panel>
         </v-col>
@@ -16,8 +17,10 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex'
+    import ZOffsetPanel from "../components/panels/ZOffsetPanel";
 
     export default {
+        components: {ZOffsetPanel},
         data: () => ({
             is_ready: false
         }),

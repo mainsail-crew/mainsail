@@ -71,6 +71,7 @@
                 <template #item="{ item }">
                     <tr @contextmenu="showContextMenu($event, item)" @click="dialog.show = true, dialog.filename = item.filename" class="file-list-cursor">
                         <td class=" ">
+                            <img v-if="item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
                             {{ item.filename }}
                         </td>
                         <td class="text-no-wrap text-right">

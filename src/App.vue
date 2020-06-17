@@ -13,7 +13,7 @@
         >
             <div id="nav-header">
                 <img :src="require('./assets/logo.svg')" />
-                <v-toolbar-title>{{ hostname }}</v-toolbar-title>
+                <v-toolbar-title>{{ printername != "" ? printername : hostname }}</v-toolbar-title>
             </div>
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
                 <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon"
@@ -112,6 +112,7 @@ export default {
         ...mapState({
             toolhead: state => state.printer.toolhead,
             hostname: state => state.printer.hostname,
+            printername: state => state.gui.general.printername,
             version: state => state.printer.version,
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,

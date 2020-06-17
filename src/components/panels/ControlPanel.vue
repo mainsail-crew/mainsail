@@ -4,13 +4,13 @@
 
 <template>
     <v-card>
-        <v-row class="">
+        <v-row class="" v-if="!is_printing">
             <v-col class="col-12 pb-0 text-center">
                 <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHomeAll" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
             </v-col>
         </v-row>
-        <v-row class="mt-3">
+        <v-row class="mt-3" v-if="!is_printing">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('X-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left class="d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">X-100</span></v-btn>
@@ -23,20 +23,20 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3">
+        <v-row class="mt-3" v-if="!is_printing">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="doSendMove('Z-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Z-100</span></v-btn>
-                    <v-btn @click="doSendMove('Z-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-10</span></v-btn>
-                    <v-btn @click="doSendMove('Z-1')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-1</span></v-btn>
+                    <v-btn @click="doSendMove('Y-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-100</span></v-btn>
+                    <v-btn @click="doSendMove('Y-10')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-10</span></v-btn>
+                    <v-btn @click="doSendMove('Y-1')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-1</span></v-btn>
                     <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadingHomeY"><v-icon class="mdi mdi-home"></v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+1')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+1</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+10</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
-                    <v-btn @click="doSendMove('Z+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">Y+100</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+1')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+1</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+10')" cols="1" class="flex-grow-1 flex-shrink-0"><span class="body-2">Y+10</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
+                    <v-btn @click="doSendMove('Y+100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">Y+100</span><v-icon right class="d-none d-sm-flex">mdi-chevron-right</v-icon></v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3">
+        <v-row class="mt-3" v-if="!is_printing">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('Z-25')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Z-25</span></v-btn>
@@ -50,7 +50,7 @@
             </v-col>
         </v-row>
         <v-row class="" v-if="getMacros.length > 0">
-            <v-col class="col-12 px-0 py-2 text-center">
+            <v-col class="col-12 px-2 py-2 text-center">
                 <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
                     <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name }}</v-btn>
                 </div>
@@ -87,6 +87,7 @@
             ]),
             ...mapGetters([
                 'getMacros',
+                'is_printing'
             ])
         },
         methods: {

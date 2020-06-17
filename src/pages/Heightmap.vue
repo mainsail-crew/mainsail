@@ -5,7 +5,7 @@
 <template>
     <div>
         <v-row>
-            <v-col class="col-xl-8">
+            <v-col class="col-12 col-md-8">
                 <v-card>
                     <v-list-item>
                         <v-list-item-avatar color="grey"><v-icon dark>mdi-grid</v-icon></v-list-item-avatar>
@@ -19,7 +19,7 @@
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col class="col-xl-4">
+            <v-col class="col-12 col-md-4">
                 <v-card>
                     <v-list-item>
                         <v-list-item-avatar color="grey"><v-icon dark>mdi-cogs</v-icon></v-list-item-avatar>
