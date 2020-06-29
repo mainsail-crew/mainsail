@@ -74,6 +74,16 @@ export default {
                     measured_max_temp: value.measured_max_temp,
                 });
             }
+
+            if (nameSplit[0] === "temperature_probe") {
+                sensors.push({
+                    name: "Probe",
+                    temperature: value.temperature,
+                    //TODO: update measured_temps
+                    measured_min_temp: 0,
+                    measured_max_temp: 0,
+                });
+            }
         }
 
         return sensors.sort((a, b) => {

@@ -24,7 +24,7 @@ export default {
             for (let [key, value] of Object.entries(data)) {
                 let keySplit = key.split(" ");
 
-                if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan") {
+                if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan" || keySplit[0] === "temperature_probe") {
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
 
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
@@ -153,6 +153,7 @@ export default {
 
             if (
                 nameSplit[0] === "temperature_fan" ||
+                nameSplit[0] === "temperature_probe" ||
                 nameSplit[0] === "temperature_sensors" ||
                 nameSplit[0] === "filament_switch_sensor"
             ) Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
