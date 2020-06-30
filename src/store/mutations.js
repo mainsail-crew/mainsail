@@ -37,7 +37,7 @@ export default {
         let now = new Date();
 
         if (data !== undefined) {
-            for (let [key, datasets] of Object.entries(data)) {
+            Object.entries(data).sort().forEach(([key, datasets]) => {
                 let keySplit = key.split(" ");
 
                 if (keySplit.length > 1) key = keySplit[1];
@@ -55,7 +55,7 @@ export default {
                         time: time
                     });
                 }
-            }
+            });
         }
     },
 
