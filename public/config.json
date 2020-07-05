@@ -1,7 +1,4 @@
 {
   "socket": {
-    "hostname": "voron250.local",
-    "port": 80,
-    "reconnectInterval": 3000
   }
 }
