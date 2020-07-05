@@ -59,10 +59,14 @@ export default class WebSocketClient {
             if (this.store) {
                 if (this.wsData.filter(item => item.id === data.id).length > 0 &&
                     this.wsData.filter(item => item.id === data.id)[0].action !== "") {
-                    this.store.dispatch(
-                        this.wsData.filter(item => item.id === data.id)[0].action,
-                        data.result
-                    )
+                    if (data.error && data.error.message) {
+                        window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
+                    } else {
+                        this.store.dispatch(
+                            this.wsData.filter(item => item.id === data.id)[0].action,
+                            data.result
+                        )
+                    }
                 } else this.passToStore('socket_on_message', data)
             }
         };

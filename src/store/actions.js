@@ -7,25 +7,16 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('get_printer_status', { }, 'getHelpData');
-
-        fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/printer/files/gui.json')
-        .then(res => res.json()).then(file => {
-            store.commit('setSettings', file);
-        }).catch(function() {
-            window.console.warn('No mainsail config file found.');
-        });
-
+        Vue.prototype.$socket.sendObj('get_printer_objects_status', { }, 'getHelpData');
+        Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
     },
 
     socket_on_close ({ commit }, event) {
         commit('setDisconnected');
-        if (event.wasClean) {
-            window.console.log('Socket closed clear')
-        } else {
-            window.console.error('Connection failure')
-        }
+        if (event.wasClean) window.console.log('Socket closed clear')
+        else window.console.error('Connection failure')
+
         window.console.error('Code: ' + event.code)
     },
 
@@ -58,10 +49,17 @@ export default {
 
             default:
                 if (data.result !== "ok") {
-                    window.console.log("Default return");
                     if (data.error) window.console.error("JSON-RPC: " + data.error.message);
-                    else window.console.log(data);
                 }
+        }
+    },
+
+    getDirectoryRoot({ commit }, data) {
+        if (data.files && data.files.filter((file) => file.filename === "gui.json")) {
+            fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/gcodes/gui.json')
+                .then(res => res.json()).then(file => {
+                commit('setSettings', file);
+            });
         }
     },
 
@@ -92,10 +90,10 @@ export default {
 
             commit('setPrinterStatus', 'ready');
 
-            Vue.prototype.$socket.sendObj('get_printer_objects', {}, 'getObjectInfo');
-            Vue.prototype.$socket.sendObj('get_printer_status', { heaters: [] }, 'getHeatersInfo');
-            Vue.prototype.$socket.sendObj('get_printer_status', { configfile: ['config'] }, 'getPrinterConfig');
-            Vue.prototype.$socket.sendObj('post_printer_subscriptions', {
+            Vue.prototype.$socket.sendObj('get_printer_objects_list', {}, 'getObjectInfo');
+            Vue.prototype.$socket.sendObj('get_printer_objects_status', { heaters: [] }, 'getHeatersInfo');
+            Vue.prototype.$socket.sendObj('get_printer_objects_status', { configfile: ['config'] }, 'getPrinterConfig');
+            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', {
                 gcode: [],
                 toolhead: [],
                 virtual_sdcard: [],
@@ -105,7 +103,7 @@ export default {
                 idle_timeout: [],
                 display_status: [],
             });
-            Vue.prototype.$socket.sendObj('get_printer_files', {}, 'getFileList');
+            Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         } else {
             commit('setPrinterStatus', 'disconnected');
@@ -125,7 +123,7 @@ export default {
 
         if (data.heaters.available_heaters.length) {
             data.heaters.available_heaters.forEach(function(heater) {
-                Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [heater]: [] });
+                Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [heater]: [] });
             })
         }
 

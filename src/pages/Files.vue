@@ -220,7 +220,7 @@
                 formData.append('file', file);
                 this.$store.commit('setLoadingGcodeUpload', true);
 
-                axios.post('http://' + this.hostname + ':' + this.port + '/printer/files/upload',
+                axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
@@ -238,7 +238,7 @@
             },
             refreshFileList: function() {
                 this.$store.commit('setLoadingGcodeRefresh', true);
-                this.$socket.sendObj('get_printer_files', {}, 'getFileList');
+                this.$socket.sendObj('get_file_list', {}, 'getFileList');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -292,7 +292,7 @@
             },
             removeFile() {
                 axios.delete(
-                    'http://'+ this.hostname + ':' + this.port +'/printer/files/'+this.contextMenu.item.filename
+                    'http://'+ this.hostname + ':' + this.port +'/server/files/'+this.contextMenu.item.filename
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
                 }).catch(() => {

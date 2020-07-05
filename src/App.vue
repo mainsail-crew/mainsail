@@ -129,7 +129,7 @@ export default {
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
-            this.$socket.sendObj('post_printer_gcode', {script: 'M112'}, 'setLoadingEmergencyStop');
+            this.$socket.sendObj('post_printer_gcode_script', {script: 'M112'}, 'setLoadingEmergencyStop');
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');

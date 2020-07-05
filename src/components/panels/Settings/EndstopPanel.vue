@@ -53,7 +53,7 @@
         methods: {
             syncEndstops() {
                 this.$store.commit('setLoadingEndstopStatus', true);
-                this.$socket.sendObj('get_printer_endstops', { }, "responseEndstopStatus");
+                this.$socket.sendObj('get_printer_query_endstops_status', { }, "responseEndstopStatus");
             }
         },
         watch: {
