@@ -33,7 +33,7 @@
         },
         methods: {
             setTemps() {
-                this.$socket.sendObj('post_printer_gcode', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
+                this.$socket.sendObj('post_printer_gcode_script', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
             }
         },
         watch: {

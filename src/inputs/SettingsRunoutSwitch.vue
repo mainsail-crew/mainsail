@@ -42,7 +42,7 @@
         },
         methods: {
             changeSensor() {
-                this.$socket.sendObj('post_printer_gcode', { script: 'SET_FILAMENT_SENSOR SENSOR='+this.name+' ENABLE='+(this.enabled ? 0 : 1) });
+                this.$socket.sendObj('post_printer_gcode_script', { script: 'SET_FILAMENT_SENSOR SENSOR='+this.name+' ENABLE='+(this.enabled ? 0 : 1) });
             }
         },
         watch: {

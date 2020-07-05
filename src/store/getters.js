@@ -98,7 +98,7 @@ export default {
     },
 
     current_file_size: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
 
         if (file.length) return file[0]['size'];
 
@@ -106,7 +106,7 @@ export default {
     },
 
     current_file_metadata: state => {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
 
         if (file.length) return file[0];
 
@@ -114,7 +114,7 @@ export default {
     },
 
     current_file_estimated_time: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
 
         if (file.length) return file[0]['estimated_time'];
 
@@ -122,7 +122,7 @@ export default {
     },
 
     current_file_filament_total: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.current_file);
+        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
 
         if (file.length) return file[0]['filament_total'];
 
@@ -134,7 +134,7 @@ export default {
     },
 
     is_printing: state => {
-        return (state.printer.virtual_sdcard.current_file !== "");
+        return (state.printer.virtual_sdcard.filename !== "");
     },
 
     getMacros: state => {
@@ -247,7 +247,7 @@ export default {
     getTitle: state => {
         if (state.socket.isConnected) {
             if (state.printer.pause_resume.is_paused) return "Pause Print";
-            else if (state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.current_file;
+            else if (state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.filename;
 
             return state.gui.general.printername ? state.gui.general.printername : state.printer.hostname;
         } else return "Mainsail";

@@ -156,7 +156,7 @@ export default {
                 nameSplit[0] === "temperature_probe" ||
                 nameSplit[0] === "temperature_sensors" ||
                 nameSplit[0] === "filament_switch_sensor"
-            ) Vue.prototype.$socket.sendObj('post_printer_subscriptions', { [key]: [] });
+            ) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [key]: [] });
         }
     },
 
@@ -166,7 +166,7 @@ export default {
 
     setFileList(state, data) {
         state.files = [];
-        window.console.log(data);
+        //window.console.log(data);
         let array = Object.entries(data);
 
         for (let [key, file] of array) {

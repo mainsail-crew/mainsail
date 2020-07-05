@@ -7,13 +7,13 @@
             </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2"></v-divider>
-        <v-card-text class="">
-            <div><v-btn :href="'http://'+hostname+':'+port+'/printer/klippy.log'" color="primary"><v-icon class="mr-sm-2">mdi-download</v-icon>Klipper Log</v-btn></div>
-            <div><v-btn :href="'http://'+hostname+':'+port+'/server/moonraker.log'" color="mt-3 primary"><v-icon class="mr-sm-2">mdi-download</v-icon>Moonraker Log</v-btn></div>
+        <v-card-text class=" text-center text-lg-left">
+            <div><v-btn :href="'http://'+hostname+':'+port+'/server/files/klippy.log'" color="primary"><v-icon class="mr-sm-2">mdi-download</v-icon>Klipper Log</v-btn></div>
+            <div><v-btn :href="'http://'+hostname+':'+port+'/server/files/moonraker.log'" color="mt-3 primary"><v-icon class="mr-sm-2">mdi-download</v-icon>Moonraker Log</v-btn></div>
             <div><v-btn @click="doRestart" :loading="loadingRestart" color="error" class="mt-3"><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn></div>
-            <div><v-btn @click="doRestartFirmware" :loading="loadingRestartFirmware" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon><span class="d-none d-sm-block">FW Restart</span></v-btn></div>
-            <div><v-btn @click="doRebootHost" :loading="loadingRebootHost" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon><span class="d-none d-sm-block">Host Restart</span></v-btn></div>
-            <div><v-btn @click="doShutdownHost" :loading="loadingShutdownHost" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-power</v-icon><span class="d-none d-sm-block">Host Shutdown</span></v-btn></div>
+            <div><v-btn @click="doRestartFirmware" :loading="loadingRestartFirmware" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>FW <span class="d-none d-sm-block">Restart</span></v-btn></div>
+            <div><v-btn @click="doRebootHost" :loading="loadingRebootHost" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>Host <span class="d-none d-sm-block">Restart</span></v-btn></div>
+            <div><v-btn @click="doShutdownHost" :loading="loadingShutdownHost" class="mt-3" color="error"><v-icon class="mr-sm-2">mdi-power</v-icon>Host <span class="d-none d-sm-block">Shutdown</span></v-btn></div>
         </v-card-text>
     </v-card>
 </template>

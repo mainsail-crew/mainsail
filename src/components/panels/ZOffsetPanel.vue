@@ -54,13 +54,13 @@
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05 MOVE=1";
                 this.$store.commit('setLoading', { name: 'babySteppingDown' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode', { script: gcode }, "respondeBabySteppingDown");
+                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDown");
             },
             sendBabySteppingUp() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05 MOVE=1";
                 this.$store.commit('setLoading', { name: 'babySteppingUp' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode', { script: gcode }, "respondeBabySteppingUp");
+                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUp");
             },
         },
         watch: {
