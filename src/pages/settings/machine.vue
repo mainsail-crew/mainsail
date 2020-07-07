@@ -19,20 +19,18 @@
 
     export default {
         data: () => ({
-            is_ready: false
+
         }),
         computed: {
             ...mapState({
-                klippy_state: state => state.socket.klippy_state,
+                is_ready: state => state.socket.is_ready,
             }),
         },
         created() {
-            this.is_ready = (this.klippy_state === "ready") ? true : false;
+
         },
         watch: {
-            klippy_state() {
-                this.is_ready = (this.klippy_state === "ready") ? true : false;
-            }
+
         }
     }
 </script>

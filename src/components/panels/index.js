@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 import StatusPanel from './StatusPanel.vue'
+import KlippyStatePanel from './KlippyStatePanel.vue'
 import ToolsPanel from './ToolsPanel.vue'
 import TempchartPanel from './TempchartPanel.vue'
 import ControlPanel from "./ControlPanel";
@@ -12,6 +13,7 @@ import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
 
 Vue.component('status-panel', StatusPanel);
+Vue.component('klippy-state-panel', KlippyStatePanel);
 Vue.component('tools-panel', ToolsPanel);
 Vue.component('tempchart-panel', TempchartPanel);
 Vue.component('control-panel', ControlPanel);

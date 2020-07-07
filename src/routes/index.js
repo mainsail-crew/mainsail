@@ -28,7 +28,7 @@ const routes = [
         path: '/console',
         icon: 'console-line',
         component: Console,
-        alwaysShow: false,
+        alwaysShow: true,
     },
     {
         title: "Heightmap",

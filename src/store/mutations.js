@@ -15,6 +15,28 @@ export default {
         //Vue.prototype.$socket.reconnect();
     },
 
+    resetPrinter(state) {
+        window.console.log("restart printer state");
+        Vue.set(state, '', {
+                state: {
+                    loadings: [],
+                    config: {},
+                    object: {
+                        heaters: {
+                            available_heaters: []
+                        }
+                    },
+                    temperaturChart: {
+                        labels: [],
+                        datasets: [],
+                    },
+                    helplist: [],
+                    files: [],
+                }
+            }
+        );
+    },
+
     setPrinterData(state, data) {
         Object.assign(state.printer, data);
 
@@ -26,6 +48,7 @@ export default {
 
                 if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan" || keySplit[0] === "temperature_probe") {
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
+                    if (keySplit[0] === "temperature_probe") key = "probe";
 
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
                 }
@@ -41,6 +64,7 @@ export default {
                 let keySplit = key.split(" ");
 
                 if (keySplit.length > 1) key = keySplit[1];
+                if (keySplit[0] === "temperature_probe") key = "probe";
 
                 let max = datasets.temperatures.length;
                 for (let i = 0; i < max; i++) {
@@ -235,8 +259,23 @@ export default {
     },
 
     setPrinterStatus(state, value) {
+        window.console.log("setPrinterStatus");
+        window.console.log(value);
         state.socket.klippy_state = value;
-        //state.printer.toolhead.status = value;
+        if (value === "disconnect") state.socket.is_ready = false;
+        else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+    },
+
+    setKlippyStatus(state, value) {
+        state.socket.klippy_state = value;
+        window.console.log("setKlippyStatus");
+        window.console.log(value);
+    },
+
+    setPrinterStatusDetails(state, data) {
+        state.socket.error_detected = data.error_detected;
+        state.socket.is_ready = data.is_ready;
+        state.socket.klippy_message = data.message;
     },
 
     setLoadingGcodeUpload(state, value) {
