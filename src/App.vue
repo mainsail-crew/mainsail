@@ -97,12 +97,12 @@ export default {
         drawer: null,
         activeClass: 'active',
         routes: routes,
-        is_ready: false,
+        //is_ready: false,
         boolNaviHeightmap: false,
     }),
     created () {
         this.$vuetify.theme.dark = true;
-        this.is_ready = (this.klippy_state === "ready") ? true : false;
+        //this.is_ready = (this.klippy_state === "ready") ? true : false;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
@@ -120,6 +120,7 @@ export default {
             progress: state => state.printer.virtual_sdcard.progress,
             boolNaviWebcam: state => state.gui.webcam.bool,
             klippy_state: state => state.socket.klippy_state,
+            is_ready: state => state.socket.is_ready,
             config: state => state.config,
         }),
         ...mapGetters([
@@ -182,9 +183,9 @@ export default {
                 this.drawFavicon(val);
             }
         },
-        klippy_state() {
+        /*klippy_state() {
             this.is_ready = (this.klippy_state === "ready") ? true : false;
-        },
+        },*/
         config() {
             this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         }

@@ -28,6 +28,9 @@ export default new Vuex.Store({
             loadingSaveGuiConfig: false,
             loadingEndstopStatus: false,
             klippy_state: "ready",
+            klippy_message: "",
+            is_ready: false,
+            error_detected: false,
         },
         webcam: {
             url: ""
@@ -83,7 +86,7 @@ export default new Vuex.Store({
             },
             virtual_sdcard: {
                 progress: 0,
-                current_file: "",
+                filename: "",
                 is_active: false,
                 filament_used: 0,
                 file_position: 0,

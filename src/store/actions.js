@@ -36,7 +36,7 @@ export default {
                 break;
 
             case 'notify_klippy_state_changed':
-                commit('setPrinterStatus', data.params[0]);
+                commit('setKlippyStatus', data.params[0]);
                 break;
 
             case 'notify_filelist_changed':
@@ -81,8 +81,9 @@ export default {
         });
     },
 
-    getKlipperInfo({ commit }, data) {
-        if (data !== undefined && data.is_ready) {
+    getKlipperInfo({ commit, state }, data) {
+        if (data !== undefined && data.is_ready && !state.socket.is_ready) {
+            commit('resetPrinter');
             commit('setPrinterData', {
                 hostname: data.hostname,
                 version: data.version
@@ -105,13 +106,13 @@ export default {
             });
             Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
-        } else {
-            commit('setPrinterStatus', 'disconnected');
+        } else commit('setPrinterStatus', 'disconnect');
 
-            setTimeout(function() {
-                Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-            }, 1000);
-        }
+        commit('setPrinterStatusDetails', data);
+
+        setTimeout(function() {
+            if (state.socket.is_ready) Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+        }, 5000);
     },
 
     getObjectInfo({ commit }, data) {
@@ -121,13 +122,14 @@ export default {
     getHeatersInfo({ commit }, data) {
         commit('setObjectData', data);
 
-        if (data.heaters.available_heaters.length) {
+        if (data.heaters && data.heaters.available_heaters && data.heaters.available_heaters.length) {
             data.heaters.available_heaters.forEach(function(heater) {
                 Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [heater]: [] });
-            })
+            });
+
+            Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
         }
 
-        Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
     },
 
     getHeatersHistory({ commit }, data) {
