@@ -117,7 +117,7 @@ export default {
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
-            progress: state => state.printer.virtual_sdcard.progress,
+            virtual_sdcard: state => state.printer.virtual_sdcard,
             boolNaviWebcam: state => state.gui.webcam.bool,
             klippy_state: state => state.socket.klippy_state,
             is_ready: state => state.socket.is_ready,
@@ -178,14 +178,14 @@ export default {
         }
     },
     watch: {
-        progress: {
+        virtual_sdcard: {
+            deep: true,
             handler: function(val) {
-                this.drawFavicon(val);
+                let progress = (val && val.progress) ? val.progress : 0;
+
+                this.drawFavicon(progress);
             }
         },
-        /*klippy_state() {
-            this.is_ready = (this.klippy_state === "ready") ? true : false;
-        },*/
         config() {
             this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         }
