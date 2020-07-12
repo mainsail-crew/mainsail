@@ -13,7 +13,7 @@ export default {
     },
 
     socket_on_close ({ commit }, event) {
-        commit('setDisconnected');
+        commit('setDisconnect');
         if (event.wasClean) window.console.log('Socket closed clear')
         else window.console.error('Connection failure')
 
@@ -106,7 +106,7 @@ export default {
             });
             Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
-        } else commit('setPrinterStatus', 'disconnect');
+        } else if (data !== undefined && !data.is_ready) commit('setPrinterStatus', 'disconnect');
 
         commit('setPrinterStatusDetails', data);
 
@@ -227,6 +227,22 @@ export default {
 
     respondeBabySteppingUp({commit}) {
         commit('removeLoading', { name: 'babySteppingUp' });
+    },
+
+    responseBedMeshLoad({commit}) {
+        commit('removeLoading', { name: 'bedMeshLoad' });
+    },
+
+    responseBedMeshClear({commit}) {
+        commit('removeLoading', { name: 'bedMeshClear' });
+    },
+
+    responseBedMeshSave({commit}) {
+        commit('removeLoading', { name: 'bedMeshSave' });
+    },
+
+    responseBedMeshRemove({commit}) {
+        commit('removeLoading', { name: 'bedMeshRemove' });
     },
 
     switchToDashboard() {
