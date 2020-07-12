@@ -16,7 +16,6 @@ export default {
     },
 
     resetPrinter(state) {
-        window.console.log("restart printer state");
         Vue.set(state, '', {
                 state: {
                     loadings: [],
@@ -38,12 +37,12 @@ export default {
     },
 
     setPrinterData(state, data) {
-        Object.assign(state.printer, data);
+        let now = Date.now();
 
-        if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
-            let now = Date.now();
+        Object.entries(data).forEach(([key, value]) => {
+            Vue.set(state.printer, key, value);
 
-            for (let [key, value] of Object.entries(data)) {
+            if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
                 let keySplit = key.split(" ");
 
                 if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan" || keySplit[0] === "temperature_probe") {
@@ -53,7 +52,7 @@ export default {
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
                 }
             }
-        }
+        });
     },
 
     setHeaterHistory(state, data) {
@@ -179,8 +178,15 @@ export default {
                 nameSplit[0] === "temperature_fan" ||
                 nameSplit[0] === "temperature_probe" ||
                 nameSplit[0] === "temperature_sensors" ||
-                nameSplit[0] === "filament_switch_sensor"
+                nameSplit[0] === "filament_switch_sensor" ||
+                nameSplit[0] === "bed_mesh"
             ) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [key]: [] });
+
+            if (
+                nameSplit[0] === "bed_mesh"
+            ) {
+                Vue.prototype.$socket.sendObj('get_printer_objects_status', {[key]: []}, 'getObjectInfo')
+            }
         }
     },
 

@@ -219,15 +219,17 @@ export default {
 
     getBedMeshProfiles: state => {
         let profiles = [];
+        let currentProfile = "";
+        if (state.printer.bed_mesh) {
+            currentProfile = state.printer.bed_mesh.profile_name;
+        }
 
         for (let [key, value] of Object.entries(state.config)) {
             let nameSplit = key.split(" ");
 
             if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
-                window.console.log(nameSplit);
-                window.console.log(value);
                 profiles.push({
-                    name: nameSplit[1],
+                    name: nameSplit[1]+(currentProfile === nameSplit[1] ? " (current)": ""),
                     data: value
                 });
             }
@@ -246,8 +248,8 @@ export default {
 
     getTitle: state => {
         if (state.socket.isConnected) {
-            if (state.printer.pause_resume.is_paused) return "Pause Print";
-            else if (state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.filename;
+            if (state.printer.pause_resume && state.printer.pause_resume.is_paused) return "Pause Print";
+            else if (state.printer.virtual_sdcard && state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.filename;
 
             return state.gui.general.printername ? state.gui.general.printername : state.printer.hostname;
         } else return "Mainsail";
