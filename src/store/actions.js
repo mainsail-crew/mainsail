@@ -49,7 +49,7 @@ export default {
 
             default:
                 if (data.result !== "ok") {
-                    if (data.error) window.console.error("JSON-RPC: " + data.error.message);
+                    if (data.error && data.error.message !== "Klippy Request Timed Out") window.console.error("JSON-RPC: " + data.error.message);
                 }
         }
     },
@@ -105,6 +105,7 @@ export default {
                 display_status: [],
             });
             Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
+            Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         } else if (data !== undefined && !data.is_ready) commit('setPrinterStatus', 'disconnect');
 
@@ -143,6 +144,15 @@ export default {
     getFileList({ commit }, data) {
         commit('setFileList', data);
         commit('setLoadingGcodeRefresh', false);
+    },
+
+    getDirectory({ commit }, data) {
+        commit('setDirectory', data);
+        //commit('setLoadingGcodeRefresh', false);
+    },
+
+    getMetadata({ commit }, data) {
+        commit('setMetadata', data);
     },
 
     getHelpList({ commit }, data) {

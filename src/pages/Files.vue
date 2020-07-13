@@ -53,29 +53,63 @@
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
                 <v-btn color="primary ml-4 " :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
             </v-card-title>
+            <v-card-title>
+                <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        single-line
+                        hide-details
+                ></v-text-field>
+            </v-card-title>
             <v-data-table
-                    :headers="headers"
-                    :options="options"
-                    :custom-sort="sort"
-                    :sort-by.sync="sortBy"
-                    :sort-desc.sync="sortDesc"
-                    :items="files"
-                    :items-per-page="countPerPage"
-                    item-key="date"
-                    class="files-table"
-            >
+                :items="files"
+                class="files-table"
+                :headers="headers"
+                :options="options"
+                :custom-sort="sortFiles"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                :items-per-page="countPerPage"
+                item-key="name"
+                :search="search"
+                :custom-filter="advancedSearch"
+                @pagination="refreshMetadata">
+
                 <template #no-data>
                     <div class="text-center">empty</div>
                 </template>
 
-                <template #item="{ item }">
-                    <tr @contextmenu="showContextMenu($event, item)" @click="dialog.show = true, dialog.filename = item.filename" class="file-list-cursor">
+                <template v-slot:body.prepend>
+                    <tr
+                        v-if="(currentPath !== 'gcodes')"
+                        class="file-list-cursor"
+                        @click="clickRowGoBack"
+                        >
                         <td class=" ">
-                            <img v-if="item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
+                            <v-icon>mdi-folder-upload</v-icon>
+                        </td>
+                        <td class=" " colspan="8">
+                            ..
+                        </td>
+                    </tr>
+                </template>
+
+                <template #item="{ item }">
+                    <tr
+                        @contextmenu="showContextMenu($event, item)"
+                        @click="clickRow(item)"
+                        class="file-list-cursor">
+                        <td class=" ">
+                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
+                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
+                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
+                        </td>
+                        <td class=" ">
                             {{ item.filename }}
                         </td>
                         <td class="text-no-wrap text-right">
-                            {{ formatFilesize(item.size) }}
+                            {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
                         <td class="text-right">
                             {{ formatDate(item.modified) }}
@@ -128,17 +162,24 @@
 <script>
     import { mapState, mapGetters } from 'vuex';
     import axios from 'axios';
+    import { findDirectory } from "../plugins/helpers";
 
     export default {
         data () {
             return {
+                search: '',
                 sortBy: 'modified',
                 sortDesc: true,
+                selected: [],
                 dialog: {
                     show: false,
-                    filename: ""
+                    name: ""
                 },
                 headers: [
+                    {
+                        text: '',
+                        value: '',
+                    },
                     {
                         text: 'Name',
                         value: 'filename',
@@ -192,12 +233,14 @@
                 dropzone: {
                     visibility: 'hidden',
                     opacity: 0,
-                }
+                },
+                files: [],
+                currentPath: 'gcodes',
             }
         },
         computed: {
             ...mapState({
-                files: state => state.files,
+                filetree: state => state.filetree,
                 loadingUpload: state => state.socket.loadingGcodeUpload,
                 loadingRefresh: state => state.socket.loadingGcodeRefresh,
                 countPerPage: state => state.gui.gcodefiles.countPerPage,
@@ -207,6 +250,10 @@
             ...mapGetters([
                 'is_printing'
             ])
+        },
+        created() {
+            let dirArray = this.currentPath.split("/");
+            this.files = findDirectory(this.filetree, dirArray);
         },
         methods: {
             uploadFile: function() {
@@ -299,6 +346,24 @@
                     this.$toast.error("Error! Cannot delete file.");
                 });
             },
+            clickRow: function(item) {
+                if (!item.isDirectory) {
+                    this.dialog.show = true;
+                    this.dialog.filename = item.filename
+                } else {
+                    this.currentPath += "/"+item.filename;
+                    this.loadPath();
+                }
+            },
+            clickRowGoBack: function() {
+                this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
+                //this.loadPath();
+            },
+            loadPath: function() {
+                this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
+                let dirArray = this.currentPath.split("/");
+                this.files = findDirectory(this.filetree, dirArray);
+            },
             startPrint(filename = "") {
                 this.dialog.show = false;
                 this.$socket.sendObj('post_printer_print_start', { filename: filename }, 'switchToDashboard');
@@ -327,41 +392,72 @@
                     await this.doUploadFile(e.dataTransfer.files[0]);
                 }
             },
-            sort(items, sortBy, sortDesc) {
-                sortBy = sortBy.length ? sortBy[0] : 'name';
+            sortFiles(items, sortBy, sortDesc) {
+                sortBy = sortBy.length ? sortBy[0] : 'filename';
                 sortDesc = sortDesc[0];
 
-                // Sort by index
-                items.sort(function(a, b) {
-                    if (a[sortBy] === b[sortBy]) {
-                        return 0;
-                    }
-                    if (a[sortBy] === null || a[sortBy] === undefined) {
-                        return -1;
-                    }
-                    if (b[sortBy] === null || b[sortBy] === undefined) {
-                        return 1;
-                    }
-                    if (a[sortBy].constructor === String && b[sortBy].constructor === String) {
-                        return a[sortBy].localeCompare(b[sortBy], undefined, { sensivity: 'base' });
-                    }
-                    if (a[sortBy] instanceof Array && b[sortBy] instanceof Array) {
-                        const reducedA = a[sortBy].length ? a.filament.reduce((a, b) => a + b) : 0;
-                        const reducedB = b[sortBy].length ? b.filament.reduce((a, b) => a + b) : 0;
-                        return reducedA - reducedB;
-                    }
-                    return a[sortBy] - b[sortBy];
-                });
+                if (items !== undefined) {
+                    // Sort by index
+                    items.sort(function(a, b) {
+                        if (a[sortBy] === b[sortBy]) {
+                            return 0;
+                        }
+                        if (a[sortBy] === null || a[sortBy] === undefined) {
+                            return -1;
+                        }
+                        if (b[sortBy] === null || b[sortBy] === undefined) {
+                            return 1;
+                        }
+                        if (a[sortBy].constructor === String && b[sortBy].constructor === String) {
+                            return a[sortBy].localeCompare(b[sortBy], undefined, { sensivity: 'base' });
+                        }
+                        if (a[sortBy] instanceof Array && b[sortBy] instanceof Array) {
+                            const reducedA = a[sortBy].length ? a.filament.reduce((a, b) => a + b) : 0;
+                            const reducedB = b[sortBy].length ? b.filament.reduce((a, b) => a + b) : 0;
+                            return reducedA - reducedB;
+                        }
+                        return a[sortBy] - b[sortBy];
+                    });
 
-                // Deal with descending order
-                if (sortDesc) {
-                    items.reverse();
+                    // Deal with descending order
+                    if (sortDesc) items.reverse();
+
+                    // Then make sure directories come first
+                    items.sort((a, b) => (a.isDirectory === b.isDirectory) ? 0 : (a.isDirectory ? -1 : 1));
                 }
-
-                // Then make sure directories come first
-                items.sort((a, b) => (a.isDirectory === b.isDirectory) ? 0 : (a.isDirectory ? -1 : 1));
                 return items;
             },
+            refreshMetadata: function(data) {
+                let items = this.sortFiles(this.files, [this.sortBy], [this.sortDesc]);
+                for (let i = data.pageStart; i < data.pageStop; i++) {
+                    if (items[i] && !items[i].isDirectory) {
+                        let filename = (this.currentPath+"/"+items[i].filename).substring(7);
+                        this.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata")
+                    }
+                }
+
+            },
+            advancedSearch: function(value, search) {
+                return value != null &&
+                    search != null &&
+                    typeof value === 'string' &&
+                    value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+            }
+        },
+        watch: {
+            filetree: {
+                deep: true,
+                handler(newVal) {
+                    let dirArray = this.currentPath.split("/");
+                    this.files = findDirectory(newVal, dirArray);
+                }
+            },
+            currentPath: {
+                handler(newVal) {
+                    let dirArray = newVal.split("/");
+                    this.files = findDirectory(this.filetree, dirArray);
+                }
+            }
         }
     }
 </script>

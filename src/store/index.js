@@ -116,6 +116,14 @@ export default new Vuex.Store({
         },
         helplist: [],
         files: [],
+        filetree: [
+            {
+                isDirectory: true,
+                filename: 'gcodes',
+                modified: new Date(),
+                childrens: []
+            }
+        ],
         events: []
     },
 
