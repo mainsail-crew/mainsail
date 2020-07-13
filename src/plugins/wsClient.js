@@ -13,6 +13,10 @@ export default class WebSocketClient {
         this.onMessage = null;
         this.onClose = null;
         this.onError = null;
+        this.blackErrorList = [
+            "Metadata not available for",
+            "Klippy Request Timed Out",
+        ];
     }
 
     createMessage (method, params, id) {
@@ -30,7 +34,7 @@ export default class WebSocketClient {
         if (event && event.data) {
             msg = JSON.parse(event.data)
         }
-        this.store[method](target, msg)
+        this.store[method](target, msg);
     }
 
     connect () {
@@ -60,11 +64,13 @@ export default class WebSocketClient {
                 if (this.wsData.filter(item => item.id === data.id).length > 0 &&
                     this.wsData.filter(item => item.id === data.id)[0].action !== "") {
                     if (data.error && data.error.message) {
-                        window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
+                        if (!this.blackErrorList.find(element => data.error.message.startsWith(element))) {
+                            window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
+                        }
                     } else {
                         this.store.dispatch(
                             this.wsData.filter(item => item.id === data.id)[0].action,
-                            data.result
+                            Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, data.result)
                         )
                     }
                 } else this.passToStore('socket_on_message', data)
@@ -76,7 +82,8 @@ export default class WebSocketClient {
         let id = Math.floor(Math.random() * 10000) + 1
         this.wsData.push({
             id: id,
-            action: action
+            action: action,
+            params: params
         })
         this.instance.send(this.createMessage(method, params, id))
     }

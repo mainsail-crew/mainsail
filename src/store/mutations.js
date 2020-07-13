@@ -1,5 +1,6 @@
 import Vue from "vue";
 const objectAssignDeep = require(`object-assign-deep`);
+import { findDirectory } from '../plugins/helpers';
 import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleLength } from './variables';
 
 export default {
@@ -7,15 +8,15 @@ export default {
     setConnected (state) {
         state.socket.isConnected = true;
 
-        //reset store
+        //TODO reset store
     },
 
     setDisconnected (state) {
         state.socket.isConnected = false;
-        //Vue.prototype.$socket.reconnect();
     },
 
     resetPrinter(state) {
+        //TODO check reset in storage
         Vue.set(state, '', {
                 state: {
                     loadings: [],
@@ -65,18 +66,20 @@ export default {
                 if (keySplit.length > 1) key = keySplit[1];
                 if (keySplit[0] === "temperature_probe") key = "probe";
 
-                let max = datasets.temperatures.length;
-                for (let i = 0; i < max; i++) {
-                    let time = new Date(now.getTime() - 1000 * (max - i));
-                    this.commit('addTemperatureChartValue', {
-                        name: key,
-                        value: {
-                            temperature: datasets.temperatures[i],
-                            target: datasets.targets[i],
-                        },
-                        type: keySplit[0],
-                        time: time
-                    });
+                if (datasets.temperatures) {
+                    let max = datasets.temperatures.length;
+                    for (let i = 0; i < max; i++) {
+                        let time = new Date(now.getTime() - 1000 * (max - i));
+                        this.commit('addTemperatureChartValue', {
+                            name: key,
+                            value: {
+                                temperature: datasets.temperatures[i],
+                                target: datasets.targets[i],
+                            },
+                            type: keySplit[0],
+                            time: time
+                        });
+                    }
                 }
             });
         }
@@ -219,6 +222,70 @@ export default {
         //state.files = data;
     },
 
+    setDirectory(state, data) {
+        let parent = undefined;
+        if (data && data.requestParams && data.requestParams.path) {
+            let arrayPath = data.requestParams.path.split("/");
+            parent = findDirectory(state.filetree, arrayPath);
+        }
+
+        if (parent === undefined) parent = state.filetree;
+
+        if (data.dirs && data.dirs.length) {
+            for (let dir of data.dirs) {
+                if (!parent.find(element => (element.isDirectory === true && element.filename === dir.dirname))) {
+                    parent.push({
+                        isDirectory: true,
+                        filename: dir.dirname,
+                        modified: Date.parse(dir.modified),
+                        childrens: []
+                    });
+                }
+            }
+        }
+
+        if (data.files && data.files.length) {
+            for (let file of data.files) {
+                if (file.filename === "gui.json") continue;
+
+                if (!parent.find(element => (element.isDirectory === false && element.filename === file.filename))) {
+                    parent.push({
+                        isDirectory: false,
+                        filename: file.filename,
+                        modified: Date.parse(file.modified),
+                        size: parseInt(file.size),
+                    });
+                }
+            }
+        }
+    },
+
+    setMetadata(state, data) {
+        if (data !== undefined && data.filename !== "") {
+            let filename = "gcodes/"+data.filename;
+            let dirArray = filename.split("/");
+            filename = dirArray[dirArray.length-1];
+            let path = findDirectory(state.filetree, dirArray);
+
+            let index = path.findIndex(element => element.filename === filename);
+            if (index && path[index]) {
+                let newData = {
+                    estimated_time: data.estimated_time ? data.estimated_time : undefined,
+                    filament_total: data.filament_total ? data.filament_total : undefined,
+                    first_layer_height: data.first_layer_height ? data.first_layer_height : undefined,
+                    layer_height: data.layer_height ? data.layer_height : undefined,
+                    object_height: data.object_height ? data.object_height : undefined,
+                    slicer: data.slicer ? data.slicer : undefined,
+                    thumbnails: data.thumbnails ? data.thumbnails : undefined,
+                };
+
+                let newObject = Object.assign(path[index], newData);
+                Vue.set(path, index, newObject);
+            }
+
+        }
+    },
+
     setHelpList(state, data) {
         state.helplist = [];
 
@@ -265,8 +332,6 @@ export default {
     },
 
     setPrinterStatus(state, value) {
-        window.console.log("setPrinterStatus");
-        window.console.log(value);
         state.socket.klippy_state = value;
         if (value === "disconnect") state.socket.is_ready = false;
         else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
@@ -274,8 +339,6 @@ export default {
 
     setKlippyStatus(state, value) {
         state.socket.klippy_state = value;
-        window.console.log("setKlippyStatus");
-        window.console.log(value);
     },
 
     setPrinterStatusDetails(state, data) {
