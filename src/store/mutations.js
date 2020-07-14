@@ -173,6 +173,7 @@ export default {
 
     setObjectData(state, data) {
         Object.assign(state.object, data);
+        let subscripts = {}
 
         for (let key of Object.keys(data)) {
             let nameSplit = key.split(" ");
@@ -183,14 +184,10 @@ export default {
                 nameSplit[0] === "temperature_sensors" ||
                 nameSplit[0] === "filament_switch_sensor" ||
                 nameSplit[0] === "bed_mesh"
-            ) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [key]: [] });
-
-            if (
-                nameSplit[0] === "bed_mesh"
-            ) {
-                Vue.prototype.$socket.sendObj('get_printer_objects_status', {[key]: []}, 'getObjectInfo')
-            }
+            )  subscripts = {...subscripts, [key]: []}
         }
+
+        if (subscripts.length) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
     },
 
     setPrinterConfig(state, data) {
@@ -231,6 +228,13 @@ export default {
 
         if (parent === undefined) parent = state.filetree;
 
+        if (Array.isArray(parent) && parent.length) {
+            for (const [key, item] of Object.entries(parent)) {
+                if (item.isDirectory && data.dirs.findIndex(element => element.dirname === item.filename) < 0) parent.splice(key, 1);
+                else if (!item.isDirectory && data.files.findIndex(element => element.filename === item.filename) < 0) parent.splice(key, 1);
+            }
+        }
+
         if (data.dirs && data.dirs.length) {
             for (let dir of data.dirs) {
                 if (!parent.find(element => (element.isDirectory === true && element.filename === dir.dirname))) {
@@ -238,7 +242,7 @@ export default {
                         isDirectory: true,
                         filename: dir.dirname,
                         modified: Date.parse(dir.modified),
-                        childrens: []
+                        childrens: [],
                     });
                 }
             }
@@ -254,6 +258,7 @@ export default {
                         filename: file.filename,
                         modified: Date.parse(file.modified),
                         size: parseInt(file.size),
+                        metadataPulled: false,
                     });
                 }
             }
@@ -268,7 +273,7 @@ export default {
             let path = findDirectory(state.filetree, dirArray);
 
             let index = path.findIndex(element => element.filename === filename);
-            if (index && path[index]) {
+            if (index >= 0 && path[index]) {
                 let newData = {
                     estimated_time: data.estimated_time ? data.estimated_time : undefined,
                     filament_total: data.filament_total ? data.filament_total : undefined,
@@ -277,6 +282,7 @@ export default {
                     object_height: data.object_height ? data.object_height : undefined,
                     slicer: data.slicer ? data.slicer : undefined,
                     thumbnails: data.thumbnails ? data.thumbnails : undefined,
+                    metadataPulled: true,
                 };
 
                 let newObject = Object.assign(path[index], newData);
@@ -311,14 +317,6 @@ export default {
 
     setEndstopStatus(state, data) {
         Vue.set(state.printer, 'endstops', data);
-    },
-
-    setLoadingSendGcode(state, value) {
-        state.socket.loadingSendGcode = value;
-    },
-
-    sendGcode(state) {
-        state.socket.loadingSendGcode = false;
     },
 
     setLoading(state, data) {

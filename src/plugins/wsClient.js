@@ -15,7 +15,7 @@ export default class WebSocketClient {
         this.onError = null;
         this.blackErrorList = [
             "Metadata not available for",
-            "Klippy Request Timed Out",
+            //"Klippy Request Timed Out",
         ];
     }
 
@@ -66,11 +66,18 @@ export default class WebSocketClient {
                     if (data.error && data.error.message) {
                         if (!this.blackErrorList.find(element => data.error.message.startsWith(element))) {
                             window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
+                            this.store.dispatch(
+                                this.wsData.filter(item => item.id === data.id)[0].action,
+                                Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, {error: data.error})
+                            );
                         }
                     } else {
+                        let result = data.result;
+                        if (result === "ok") result = { result: result };
+
                         this.store.dispatch(
                             this.wsData.filter(item => item.id === data.id)[0].action,
-                            Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, data.result)
+                            Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, result)
                         )
                     }
                 } else this.passToStore('socket_on_message', data)
