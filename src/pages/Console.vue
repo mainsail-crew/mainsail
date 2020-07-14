@@ -110,29 +110,23 @@
 
                 ],
                 lastCommandNumber: null,
-                items: []
+                items: [],
+                loadingSendGcode: false,
             }
         },
         computed: {
             ...mapState({
                 events: state => state.events,
                 helplist: state => state.helplist,
+                loadings: state => state.loadings,
             }),
             ...mapGetters([
                 'getMacros'
             ]),
-            loadingSendGcode: {
-                get() {
-                    return this.$store.state.socket.loadingSendGcode
-                },
-                set(value) {
-                    return this.$store.dispatch('setLoadingSendGcode', value)
-                }
-            }
         },
         methods: {
             doSend() {
-                this.loadingSendGcode = true;
+                this.$store.commit('setLoading', { name: 'loadingSendGcode' });
                 this.$store.commit('addGcodeResponse', this.gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: this.gcode }, "sendGcode");
                 this.lastCommands.push(this.gcode);
@@ -193,6 +187,13 @@
                 });
 
                 return items;
+            }
+        },
+        watch: {
+            loadings: {
+                handler: function(newVal) {
+                    this.loadingSendGcode = newVal.includes('loadingSendGcode');
+                }
             }
         }
     }

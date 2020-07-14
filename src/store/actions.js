@@ -220,10 +220,6 @@ export default {
         dispatch('saveGuiSettings');
     },
 
-    setLoadingSendGcode({commit}, value) {
-        commit('setLoadingSendGcode', value);
-    },
-
     setLoadingEmergencyStop({commit}) {
         commit('setLoadingEmergencyStop', false);
     },
@@ -241,8 +237,7 @@ export default {
     },
 
     sendGcode({commit}, data) {
-        commit('setLoadingSendGcode', false);
-        commit('sendGcode', data);
+        commit('removeLoading', { name: 'loadingSendGcode' });
         commit('addGcodeResponse', data);
     },
 

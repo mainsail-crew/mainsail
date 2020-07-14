@@ -54,7 +54,7 @@
                         <v-row>
                             <v-col class="col-12">
                                 <v-btn color="primary" class="mr-3" @click="loadProfile" :loading="loadingLoad" :disabled="disabledLoad">LOAD</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="saveDialog = true" :loading="loadingSave" :disabled="disabledSave">SAVE</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="saveDialog = true; newName = profile" :loading="loadingSave" :disabled="disabledSave">SAVE</v-btn>
                                 <v-btn color="primary" class="mr-3" @click="removeDialog = true" :loading="loadingRemove" :disabled="disabledRemove">REMOVE</v-btn>
                             </v-col>
                         </v-row>
