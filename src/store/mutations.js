@@ -299,13 +299,15 @@ export default {
     },
 
     addGcodeResponse(state, data) {
+        let message = data.result ? data.result : data;
+
         state.events.push({
             date: new Date(),
-            message: data
+            message: message
         });
 
-        if (data !== undefined && data.substring(0,2) === "!!") {
-            Vue.$toast.error(data);
+        if (message !== undefined && message.substring(0,2) === "!!") {
+            Vue.$toast.error(message);
         }
     },
 
