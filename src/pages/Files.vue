@@ -49,11 +49,15 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer></v-spacer>
-                <v-btn :loading="loadingRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
+                <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
+                <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn color="primary ml-4 " :loading="loadingUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+                <v-btn color="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
             </v-card-title>
-            <v-card-title>
+            <v-card-subtitle>
+                Current path: {{ this.currentPath }}
+            </v-card-subtitle>
+            <v-card-text>
                 <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"
@@ -61,7 +65,7 @@
                         single-line
                         hide-details
                 ></v-text-field>
-            </v-card-title>
+            </v-card-text>
             <v-data-table
                 :items="files"
                 class="files-table"
@@ -138,22 +142,44 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="downloadFile">
+                <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
                 </v-list-item>
-                <v-list-item @click="removeFile">
+                <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                </v-list-item>
+                <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="dialog.show" max-width="400">
+        <v-dialog v-model="dialogPrintFile.show" max-width="400">
             <v-card>
+                <v-img
+                    v-if="dialogPrintFile.item.thumbnails && dialogPrintFile.item.thumbnails.find(element => element.width === 400)"
+                    :src="'data:image/gif;base64,'+(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400).data : '')"
+                    :height="(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400).height : '')+'px'"
+                ></v-img>
                 <v-card-title class="headline">Start Job</v-card-title>
-                <v-card-text>Do you want to start {{ dialog.filename }}?</v-card-text>
+                <v-card-text>Do you want to start {{ dialogPrintFile.item.filename }}?</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialog.show = false">No</v-btn>
-                    <v-btn color="green darken-1" text @click="startPrint(dialog.filename)">Yes</v-btn>
+                    <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">No</v-btn>
+                    <v-btn color="green darken-1" text @click="startPrint(dialogPrintFile.item.filename)">Yes</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">New Directory</v-card-title>
+                <v-card-text>
+                    Please enter a new directory name:
+                    <v-text-field label="Name" required v-model="dialogCreateDirectory.name"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogCreateDirectory.show = false">Cancel</v-btn>
+                    <v-btn color="primary" text @click="createDirectoryAction">create</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -163,6 +189,7 @@
     import { mapState, mapGetters } from 'vuex';
     import axios from 'axios';
     import { findDirectory } from "../plugins/helpers";
+    import Vue from "vue";
 
     export default {
         data () {
@@ -171,60 +198,31 @@
                 sortBy: 'modified',
                 sortDesc: true,
                 selected: [],
-                dialog: {
+                dialogPrintFile: {
+                    show: false,
+                    item: {}
+                },
+                dialogCreateDirectory: {
                     show: false,
                     name: ""
                 },
                 headers: [
-                    {
-                        text: '',
-                        value: '',
-                    },
-                    {
-                        text: 'Name',
-                        value: 'filename',
-                    },
-                    {
-                        text: 'Filesize',
-                        value: 'size',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Last modified',
-                        value: 'modified',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Object Height',
-                        value: 'object_height',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Layer Height',
-                        value: 'layer_height',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Filament Usage',
-                        value: 'filament_total',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Print Time',
-                        value: 'estimated_time',
-                        align: 'right',
-                    },
-                    {
-                        text: 'Generated by',
-                        value: 'slicer',
-                        align: 'right',
-                    },
+                    { text: '', value: '', },
+                    { text: 'Name', value: 'filename', },
+                    { text: 'Filesize', value: 'size', align: 'right', },
+                    { text: 'Last modified', value: 'modified', align: 'right', },
+                    { text: 'Object Height', value: 'object_height', align: 'right', },
+                    { text: 'Layer Height', value: 'layer_height', align: 'right', },
+                    { text: 'Filament Usage', value: 'filament_total', align: 'right', },
+                    { text: 'Print Time', value: 'estimated_time', align: 'right', },
+                    { text: 'Generated by', value: 'slicer', align: 'right', },
                 ],
                 options: {
 
                 },
                 contextMenu: {
                     shown: false,
+                    isDirectory: false,
                     touchTimer: undefined,
                     x: 0,
                     y: 0,
@@ -236,16 +234,18 @@
                 },
                 files: [],
                 currentPath: 'gcodes',
+                loadingGcodeUpload: false,
+                loadingGcodeRefresh: false,
+                loadingMakeDirectory: false,
             }
         },
         computed: {
             ...mapState({
                 filetree: state => state.filetree,
-                loadingUpload: state => state.socket.loadingGcodeUpload,
-                loadingRefresh: state => state.socket.loadingGcodeRefresh,
                 countPerPage: state => state.gui.gcodefiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
+                loadings: state => state.loadings,
             }),
             ...mapGetters([
                 'is_printing'
@@ -264,19 +264,25 @@
             doUploadFile: function(file) {
                 let toast = this.$toast;
                 let formData = new FormData();
-                formData.append('file', file);
-                this.$store.commit('setLoadingGcodeUpload', true);
+                formData.append('file', file, (this.currentPath+"/"+file.name).substring(7));
+                this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
 
                 axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 ).then((result) => {
-                    this.$store.commit('setLoadingGcodeUpload', false);
+                    this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
                     toast.success("Upload of "+result.data.result+" successful!");
+                    this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
+
+                    let filename = (this.currentPath+"/"+file.name).substring(7);
+                    setTimeout(function() {
+                        Vue.prototype.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata");
+                    }, 1000);
                 })
                 .catch(() => {
-                    this.$store.commit('setLoadingGcodeUpload', false);
+                    this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
                     toast.error("Cannot upload the file!");
                 });
             },
@@ -284,8 +290,8 @@
                 this.$refs.fileUpload.click();
             },
             refreshFileList: function() {
-                this.$store.commit('setLoadingGcodeRefresh', true);
-                this.$socket.sendObj('get_file_list', {}, 'getFileList');
+                this.$store.commit('setLoading', { name: 'loadingGcodeRefresh' });
+                this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -330,26 +336,40 @@
                 });
             },
             downloadFile() {
+                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = 'http://' + this.hostname + ':' + this.port + '/printer/files/' + this.contextMenu.item.filename;
+                link.href = 'http://' + this.hostname + ':' + this.port + '/server/files/' + filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
             },
             removeFile() {
+                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 axios.delete(
-                    'http://'+ this.hostname + ':' + this.port +'/server/files/'+this.contextMenu.item.filename
+                    'http://'+ this.hostname + ':' + this.port +'/server/files/'+filename
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
+                    this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
                 }).catch(() => {
                     this.$toast.error("Error! Cannot delete file.");
                 });
             },
+            createDirectory: function() {
+                this.dialogCreateDirectory.name = "";
+                this.dialogCreateDirectory.show = true;
+            },
+            createDirectoryAction: function() {
+                this.dialogCreateDirectory.show = false;
+                this.$socket.sendObj('post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
+            },
+            deleteDirectoryAction: function() {
+                this.$socket.sendObj('delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+            },
             clickRow: function(item) {
                 if (!item.isDirectory) {
-                    this.dialog.show = true;
-                    this.dialog.filename = item.filename
+                    this.dialogPrintFile.show = true;
+                    this.dialogPrintFile.item = item;
                 } else {
                     this.currentPath += "/"+item.filename;
                     this.loadPath();
@@ -357,7 +377,6 @@
             },
             clickRowGoBack: function() {
                 this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
-                //this.loadPath();
             },
             loadPath: function() {
                 this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
@@ -365,7 +384,8 @@
                 this.files = findDirectory(this.filetree, dirArray);
             },
             startPrint(filename = "") {
-                this.dialog.show = false;
+                filename = (this.currentPath+"/"+filename).substring(7);
+                this.dialogPrintFile.show = false;
                 this.$socket.sendObj('post_printer_print_start', { filename: filename }, 'switchToDashboard');
             },
             dragOver(e) {
@@ -430,9 +450,9 @@
             refreshMetadata: function(data) {
                 let items = this.sortFiles(this.files, [this.sortBy], [this.sortDesc]);
                 for (let i = data.pageStart; i < data.pageStop; i++) {
-                    if (items[i] && !items[i].isDirectory) {
+                    if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                         let filename = (this.currentPath+"/"+items[i].filename).substring(7);
-                        this.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata")
+                        this.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata");
                     }
                 }
 
@@ -457,6 +477,10 @@
                     let dirArray = newVal.split("/");
                     this.files = findDirectory(this.filetree, dirArray);
                 }
+            },
+            loadings: function(loadings) {
+                this.loadingGcodeRefresh = loadings.includes('loadingGcodeRefresh');
+                this.loadingGcodeUpload = loadings.includes('loadingGcodeUpload');
             }
         }
     }

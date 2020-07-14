@@ -124,10 +124,13 @@ export default {
         commit('setObjectData', data);
 
         if (data.heaters && data.heaters.available_heaters && data.heaters.available_heaters.length) {
+            let subscripts = {};
+
             data.heaters.available_heaters.forEach(function(heater) {
-                Vue.prototype.$socket.sendObj('post_printer_objects_subscription', { [heater]: [] });
+                subscripts = {...subscripts, [heater]: []}
             });
 
+            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts );
             Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
         }
 
@@ -143,16 +146,44 @@ export default {
 
     getFileList({ commit }, data) {
         commit('setFileList', data);
-        commit('setLoadingGcodeRefresh', false);
+        commit('removeLoading', 'loadingGcodeRefresh');
     },
 
     getDirectory({ commit }, data) {
         commit('setDirectory', data);
-        //commit('setLoadingGcodeRefresh', false);
+        commit('removeLoading', { name: 'loadingGcodeRefresh' });
     },
 
     getMetadata({ commit }, data) {
         commit('setMetadata', data);
+    },
+
+    getPostDirectory({ commit }, data) {
+        if (data.error) {
+            Vue.$toast.error(data.error.message);
+        } else if (data.result === "ok") {
+            let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
+            let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
+
+            Vue.$toast.success("Successfully created "+newPath);
+            Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
+            commit('voidMutation');
+        }
+    },
+
+    getDeleteDirectory({ commit }, data) {
+        if (data.error) {
+            Vue.$toast.error(data.error.message);
+        } else if (data.result === "ok") {
+            let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
+            let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
+
+            window.console.log(currentPath);
+
+            Vue.$toast.success("Successfully deleted "+newPath);
+            Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
+            commit('voidMutation');
+        }
     },
 
     getHelpList({ commit }, data) {
