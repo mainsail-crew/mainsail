@@ -123,7 +123,7 @@
                 print_time_total: state => state.printer.virtual_sdcard.total_duration,
                 filament_used: state => state.printer.virtual_sdcard.filament_used,
                 file_position: state => state.printer.virtual_sdcard.file_position,
-                current_file: state => state.printer.virtual_sdcard.current_file,
+                current_file: state => state.printer.virtual_sdcard.filename,
                 printer_state: state => state.printer.idle_timeout.state,
                 printer_is_paused: state => state.printer.pause_resume.is_paused,
                 printer_is_printing: state => state.printer.virtual_sdcard.is_active,

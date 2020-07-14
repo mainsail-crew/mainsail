@@ -221,9 +221,11 @@ export default {
 
     setDirectory(state, data) {
         let parent = undefined;
+        let parentPath = "";
         if (data && data.requestParams && data.requestParams.path) {
             let arrayPath = data.requestParams.path.split("/");
             parent = findDirectory(state.filetree, arrayPath);
+            parentPath = data.requestParams.path;
         }
 
         if (parent === undefined) parent = state.filetree;
@@ -244,6 +246,8 @@ export default {
                         modified: Date.parse(dir.modified),
                         childrens: [],
                     });
+
+                    Vue.prototype.$socket.sendObj('get_directory', { path: parentPath+"/"+dir.dirname }, 'getDirectory');
                 }
             }
         }
@@ -289,6 +293,12 @@ export default {
                 Vue.set(path, index, newObject);
             }
 
+        }
+    },
+
+    setMetadataCurrentFile(state, data) {
+        if (data !== undefined && data.filename !== "") {
+            Vue.set(state.printer, 'current_file', data);
         }
     },
 

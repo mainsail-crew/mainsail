@@ -158,6 +158,10 @@ export default {
         commit('setMetadata', data);
     },
 
+    getMetadataCurrentFile({ commit }, data) {
+        commit('setMetadataCurrentFile', data);
+    },
+
     getPostDirectory({ commit }, data) {
         if (data.error) {
             Vue.$toast.error(data.error.message);
