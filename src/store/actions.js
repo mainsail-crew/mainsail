@@ -70,7 +70,7 @@ export default {
         let formData = new FormData();
         formData.append('file', file);
 
-        axios.post('http://' + state.socket.hostname + ':' + state.socket.port + '/printer/files/upload',
+        axios.post('http://' + state.socket.hostname + ':' + state.socket.port + '/server/files/upload',
             formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }
