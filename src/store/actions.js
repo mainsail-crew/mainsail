@@ -118,6 +118,27 @@ export default {
 
     getObjectInfo({ commit }, data) {
         commit('setObjectData', data);
+
+        let subscripts = {}
+
+        for (let key of Object.keys(data)) {
+            let nameSplit = key.split(" ");
+
+            if (
+                nameSplit[0] === "temperature_fan" ||
+                nameSplit[0] === "temperature_probe" ||
+                nameSplit[0] === "temperature_sensors" ||
+                nameSplit[0] === "filament_switch_sensor" ||
+                nameSplit[0] === "bed_mesh"
+            )  subscripts = {...subscripts, [key]: []}
+        }
+
+        if (subscripts !== {}) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
+        if (subscripts.bed_mesh) Vue.prototype.$socket.sendObj('get_printer_objects_status', { bed_mesh: [] }, 'getPrinterData');
+    },
+
+    getPrinterData({ commit }, data) {
+        commit('setPrinterData', data);
     },
 
     getHeatersInfo({ commit }, data) {
@@ -280,6 +301,10 @@ export default {
 
     responseBedMeshClear({commit}) {
         commit('removeLoading', { name: 'bedMeshClear' });
+    },
+
+    responseBedMeshCalibrate({commit}) {
+        commit('removeLoading', { name: 'bedMeshCalibrate' });
     },
 
     responseBedMeshSave({commit}) {

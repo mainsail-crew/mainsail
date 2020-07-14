@@ -227,8 +227,9 @@ export default {
 
             if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
                 profiles.push({
-                    name: nameSplit[1]+(currentProfile === nameSplit[1] ? " (current)": ""),
-                    data: value
+                    name: nameSplit[1],
+                    data: value,
+                    is_active: (currentProfile === nameSplit[1] ? true: false),
                 });
             }
         }

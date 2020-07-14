@@ -31,13 +31,14 @@ export default {
                         datasets: [],
                     },
                     helplist: [],
-                    files: [],
+                    filetree: [],
                 }
             }
         );
     },
 
     setPrinterData(state, data) {
+        if (data.requestParams) delete data.requestParams;
         let now = Date.now();
 
         Object.entries(data).forEach(([key, value]) => {
@@ -173,21 +174,6 @@ export default {
 
     setObjectData(state, data) {
         Object.assign(state.object, data);
-        let subscripts = {}
-
-        for (let key of Object.keys(data)) {
-            let nameSplit = key.split(" ");
-
-            if (
-                nameSplit[0] === "temperature_fan" ||
-                nameSplit[0] === "temperature_probe" ||
-                nameSplit[0] === "temperature_sensors" ||
-                nameSplit[0] === "filament_switch_sensor" ||
-                nameSplit[0] === "bed_mesh"
-            )  subscripts = {...subscripts, [key]: []}
-        }
-
-        if (subscripts.length) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
     },
 
     setPrinterConfig(state, data) {
@@ -221,11 +207,11 @@ export default {
 
     setDirectory(state, data) {
         let parent = undefined;
-        let parentPath = "";
+        //let parentPath = "";
         if (data && data.requestParams && data.requestParams.path) {
             let arrayPath = data.requestParams.path.split("/");
             parent = findDirectory(state.filetree, arrayPath);
-            parentPath = data.requestParams.path;
+            //parentPath = data.requestParams.path;
         }
 
         if (parent === undefined) parent = state.filetree;
@@ -246,8 +232,6 @@ export default {
                         modified: Date.parse(dir.modified),
                         childrens: [],
                     });
-
-                    Vue.prototype.$socket.sendObj('get_directory', { path: parentPath+"/"+dir.dirname }, 'getDirectory');
                 }
             }
         }
