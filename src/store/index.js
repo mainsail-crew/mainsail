@@ -93,6 +93,9 @@ export default new Vuex.Store({
                 print_duration: 0,
                 total_duration: 0,
             },
+            current_file: {
+
+            },
             gcode: {
                 extrude_factor: 1,
                 speed_factor: 1,
@@ -115,7 +118,6 @@ export default new Vuex.Store({
             datasets: [],
         },
         helplist: [],
-        files: [],
         filetree: [
             {
                 isDirectory: true,

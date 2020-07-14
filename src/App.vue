@@ -118,6 +118,7 @@ export default {
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
             virtual_sdcard: state => state.printer.virtual_sdcard,
+            current_file: state => state.printer.virtual_sdcard.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
             klippy_state: state => state.socket.klippy_state,
             is_ready: state => state.socket.is_ready,
@@ -184,6 +185,11 @@ export default {
                 let progress = (val && val.progress) ? val.progress : 0;
 
                 this.drawFavicon(progress);
+            }
+        },
+        current_file: {
+            handler: function(newVal) {
+                this.$socket.sendObj("get_file_metadata", { filename: newVal }, "getMetadataCurrentFile");
             }
         },
         config() {

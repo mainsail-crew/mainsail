@@ -1,3 +1,5 @@
+
+
 export default {
     toolhead(state) {
         return (state.socket.isConnected) ? state.printer.toolhead : null;
@@ -98,33 +100,29 @@ export default {
     },
 
     current_file_size: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
-
-        if (file.length) return file[0]['size'];
+        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+            return state.printer.current_file.size;
+        }
 
         return 0;
     },
 
     current_file_metadata: state => {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
-
-        if (file.length) return file[0];
-
-        return []
+        return state.printer.current_file;
     },
 
     current_file_estimated_time: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
-
-        if (file.length) return file[0]['estimated_time'];
+        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+            return state.printer.current_file.estimated_time;
+        }
 
         return 0;
     },
 
     current_file_filament_total: state =>  {
-        let file = state.files.filter((file) => file.filename === state.printer.virtual_sdcard.filename);
-
-        if (file.length) return file[0]['filament_total'];
+        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+            return state.printer.current_file.filament_total;
+        }
 
         return 0;
     },
