@@ -286,6 +286,22 @@ export default {
         }
     },
 
+    renameMetadataFilename(state, data) {
+        let dirArray = data.source.split("/");
+        let sourceFilename = dirArray[dirArray.length-1];
+        dirArray.splice(-1,1);
+        let path = findDirectory(state.filetree, dirArray);
+
+        let dirDestArray = data.dest.split("/");
+        let destFilename = dirDestArray[dirDestArray.length-1];
+
+        let index = path.findIndex(element => element.filename === sourceFilename);
+        if (index >= 0 && path[index]) {
+            let newObject = Object.assign(path[index], { filename: destFilename });
+            Vue.set(path, index, newObject);
+        }
+    },
+
     setHelpList(state, data) {
         state.helplist = [];
 

@@ -203,11 +203,24 @@ export default {
             let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
             let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
 
-            window.console.log(currentPath);
-
             Vue.$toast.success("Successfully deleted "+newPath);
             Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
             commit('voidMutation');
+        }
+    },
+
+    getPostFileMove({ commit }, data) {
+        if (data.error) {
+            Vue.$toast.error(data.error.message);
+        } else if (data.result === "ok") {
+            let filename = data.requestParams.dest.substr(data.requestParams.dest.lastIndexOf("/")).replace("/", "");
+
+            Vue.$toast.success("Successfully renamed "+filename);
+
+            commit('renameMetadataFilename', {
+                source: data.requestParams.source,
+                dest: data.requestParams.dest
+            });
         }
     },
 

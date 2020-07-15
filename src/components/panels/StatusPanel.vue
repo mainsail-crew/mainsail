@@ -1,3 +1,9 @@
+<style>
+    .vertical_align_center {
+        margin: auto 0;
+    }
+</style>
+
 <template>
     <v-card>
         <v-list-item>
@@ -14,7 +20,9 @@
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center" v-if="display_message">
                 <v-flex col tag="strong" class="category-header">Message</v-flex>
-                <v-flex col class="text-left">{{ display_message }}</v-flex>
+                <v-flex grow class="equal-width text-left vertical_align_center">
+                    <v-flex tag="span">{{ display_message }}</v-flex>
+                </v-flex>
             </v-layout>
             <v-divider class="my-2" v-if="display_message" ></v-divider>
             <v-layout wrap class=" text-center">
