@@ -142,8 +142,17 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item @click="downloadFile" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-play</v-icon> Print start
+                </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
+                </v-list-item>
+                <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
+                </v-list-item>
+                <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
@@ -183,6 +192,32 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogRenameFile.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Rename File</v-card-title>
+                <v-card-text>
+                    <v-text-field label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">Cancel</v-btn>
+                    <v-btn color="primary" text @click="renameFileAction">rename</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Rename Directory</v-card-title>
+                <v-card-text>
+                    <v-text-field label="Name" required v-model="dialogRenameDirectory.newName"></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogRenameDirectory.show = false">Cancel</v-btn>
+                    <v-btn color="primary" text @click="renameDirectoryAction">rename</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -205,6 +240,16 @@
                 dialogCreateDirectory: {
                     show: false,
                     name: ""
+                },
+                dialogRenameFile: {
+                    show: false,
+                    newName: "",
+                    item: {}
+                },
+                dialogRenameDirectory: {
+                    show: false,
+                    newName: "",
+                    item: {}
                 },
                 headers: [
                     { text: '', value: '', },
@@ -343,6 +388,30 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            },
+            renameFile(item) {
+                this.dialogRenameFile.item = item;
+                this.dialogRenameFile.newName = item.filename;
+                this.dialogRenameFile.show = true;
+            },
+            renameFileAction() {
+                this.dialogRenameFile.show = false;
+                this.$socket.sendObj('post_file_move', {
+                    source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
+                    dest: this.currentPath+"/"+this.dialogRenameFile.newName
+                }, 'getPostFileMove');
+            },
+            renameDirectory(item) {
+                this.dialogRenameDirectory.item = item;
+                this.dialogRenameDirectory.newName = item.filename;
+                this.dialogRenameDirectory.show = true;
+            },
+            renameDirectoryAction() {
+                this.dialogRenameDirectory.show = false;
+                this.$socket.sendObj('post_file_move', {
+                    source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
+                    dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
+                }, 'getPostFileMove');
             },
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
