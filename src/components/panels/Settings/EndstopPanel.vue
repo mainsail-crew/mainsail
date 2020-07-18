@@ -50,14 +50,15 @@
                 endstops: state => state.printer.endstops,
             })
         },
+        created() {
+            this.getEndstops();
+        },
         methods: {
             syncEndstops() {
                 this.$store.commit('setLoadingEndstopStatus', true);
                 this.$socket.sendObj('get_printer_query_endstops_status', { }, "responseEndstopStatus");
-            }
-        },
-        watch: {
-            endstops: function() {
+            },
+            getEndstops() {
                 this.sortEndstops = {};
 
                 let keys = Object.keys(this.endstops);
@@ -67,6 +68,11 @@
                     let k = keys[i];
                     this.sortEndstops[k] = this.endstops[k];
                 }
+            }
+        },
+        watch: {
+            endstops: function() {
+                this.getEndstops();
             }
         }
     }
