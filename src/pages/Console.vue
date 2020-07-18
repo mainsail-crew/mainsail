@@ -134,7 +134,7 @@
                 this.lastCommandNumber = null;
             },
             formatMessage(message) {
-                message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                if (typeof message === "string") message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
                 return message;
             },

@@ -214,8 +214,11 @@ export default {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
             let filename = data.requestParams.dest.substr(data.requestParams.dest.lastIndexOf("/")).replace("/", "");
+            let sourceDir = data.requestParams.dest.substr(0, data.requestParams.dest.lastIndexOf("/"));
+            let destDir = data.requestParams.dest.substr(0, data.requestParams.dest.lastIndexOf("/"));
 
-            Vue.$toast.success("Successfully renamed "+filename);
+            if (sourceDir === destDir) Vue.$toast.success("Successfully renamed "+filename);
+            else Vue.$toast.success("Successfully moved "+filename);
 
             commit('renameMetadataFilename', {
                 source: data.requestParams.source,

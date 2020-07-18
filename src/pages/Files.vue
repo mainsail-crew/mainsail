@@ -45,7 +45,7 @@
 
 <template>
     <div>
-        <v-card class="fileupload-card" @dragover="dragOver" @dragleave="dragLeave" @drop.prevent.stop="dragDrop">
+        <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
             <v-card-title>
                 G-Code Files
                 <v-spacer></v-spacer>
@@ -89,6 +89,7 @@
                         v-if="(currentPath !== 'gcodes')"
                         class="file-list-cursor"
                         @click="clickRowGoBack"
+                        @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
                         >
                         <td class=" ">
                             <v-icon>mdi-folder-upload</v-icon>
@@ -103,7 +104,13 @@
                     <tr
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        class="file-list-cursor">
+                        class="file-list-cursor"
+                        draggable="true"
+                        @drag="dragFile($event, item)"
+                        @dragend="dragendFile($event)"
+                        @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
+                        :data-name="item.filename"
+                        >
                         <td class=" ">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
                             <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
@@ -282,6 +289,10 @@
                 loadingGcodeUpload: false,
                 loadingGcodeRefresh: false,
                 loadingMakeDirectory: false,
+                draggingFile: {
+                    status: false,
+                    item: {}
+                }
             }
         },
         computed: {
@@ -457,28 +468,73 @@
                 this.dialogPrintFile.show = false;
                 this.$socket.sendObj('post_printer_print_start', { filename: filename }, 'switchToDashboard');
             },
-            dragOver(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            dragOverUpload(e) {
+                if (!this.draggingFile.status) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                this.dropzone.visibility = 'visible';
-                this.dropzone.opacity = 1;
+                    this.dropzone.visibility = 'visible';
+                    this.dropzone.opacity = 1;
+                }
             },
-            dragLeave(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            dragLeaveUpload(e) {
+                if (!this.draggingFile.status) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                this.dropzone.visibility = 'hidden';
-                this.dropzone.opacity = 0;
+                    this.dropzone.visibility = 'hidden';
+                    this.dropzone.opacity = 0;
+                }
             },
-            async dragDrop(e) {
+            async dragDropUpload(e) {
+                if (!this.draggingFile.status) {
+                    e.preventDefault();
+
+                    this.dropzone.visibility = 'hidden';
+                    this.dropzone.opacity = 0;
+
+                    if (!this.is_printing && e.dataTransfer.files.length) {
+                        await this.doUploadFile(e.dataTransfer.files[0]);
+                    }
+                }
+            },
+            dragFile(e, item) {
                 e.preventDefault();
+                this.draggingFile.status = true;
+                this.draggingFile.item = item;
+            },
+            dragendFile(e) {
+                e.preventDefault();
+                this.draggingFile.status = false;
+                this.draggingFile.item = { };
+            },
+            dragOverFilelist(e, row) {
+                if (this.draggingFile.status) {
+                    e.preventDefault();
+                    //e.stopPropagation();
 
-                this.dropzone.visibility = 'hidden';
-                this.dropzone.opacity = 0;
+                    if (row.isDirectory) {
+                        e.target.parentElement.style.backgroundColor = '#43A04720';
+                    }
+                }
+            },
+            dragLeaveFilelist(e) {
+                if (this.draggingFile.status) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                if (!this.is_printing && e.dataTransfer.files.length) {
-                    await this.doUploadFile(e.dataTransfer.files[0]);
+                    e.target.parentElement.style.backgroundColor = 'transparent';
+                }
+            },
+            async dragDropFilelist(e, row) {
+                if (this.draggingFile.status) {
+                    e.preventDefault();
+                    e.target.parentElement.style.backgroundColor = 'transparent';
+
+                    this.$socket.sendObj('post_file_move', {
+                        source: this.currentPath+"/"+this.draggingFile.item.filename,
+                        dest: this.currentPath+"/"+row.filename+"/"+this.draggingFile.item.filename,
+                    }, 'getPostFileMove');
                 }
             },
             sortFiles(items, sortBy, sortDesc) {
