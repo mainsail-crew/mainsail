@@ -328,6 +328,8 @@ export default {
     },
 
     setEndstopStatus(state, data) {
+        delete data.requestParams;
+
         Vue.set(state.printer, 'endstops', data);
     },
 
