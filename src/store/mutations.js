@@ -218,7 +218,12 @@ export default {
 
         if (Array.isArray(parent) && parent.length) {
             for (const [key, item] of Object.entries(parent)) {
-                if (item.isDirectory && data.dirs.findIndex(element => element.dirname === item.filename) < 0) parent.splice(key, 1);
+                if (
+                    item.isDirectory &&
+                    data.dirs &&
+                    data.dirs.length &&
+                    data.dirs.findIndex(element => element.dirname === item.filename) < 0
+                ) parent.splice(key, 1);
                 else if (!item.isDirectory && data.files.findIndex(element => element.filename === item.filename) < 0) parent.splice(key, 1);
             }
         }
@@ -287,19 +292,36 @@ export default {
     },
 
     renameMetadataFilename(state, data) {
-        let dirArray = data.source.split("/");
-        let sourceFilename = dirArray[dirArray.length-1];
-        dirArray.splice(-1,1);
-        let path = findDirectory(state.filetree, dirArray);
+        let sourceDirArray = data.source.split("/");
+        let sourceFilename = sourceDirArray[sourceDirArray.length-1];
 
-        let dirDestArray = data.dest.split("/");
-        let destFilename = dirDestArray[dirDestArray.length-1];
+        sourceDirArray.splice(-1,1);
+        let sourcePath = findDirectory(state.filetree, sourceDirArray);
 
-        let index = path.findIndex(element => element.filename === sourceFilename);
-        if (index >= 0 && path[index]) {
-            let newObject = Object.assign(path[index], { filename: destFilename });
-            Vue.set(path, index, newObject);
+        let destDirArray = data.dest.split("/");
+        let destFilename = destDirArray[destDirArray.length-1];
+
+        let index = sourcePath.findIndex(element => element.filename === sourceFilename);
+
+        if (destFilename === sourceFilename) {
+            destDirArray.splice(-1,1);
+            if (destDirArray[destDirArray.length-1] === "..") destDirArray.splice(-2,2);
+
+            let destPath = findDirectory(state.filetree, destDirArray);
+            destPath.push(sourcePath[index]);
+            sourcePath.splice(index, 1);
+        } else if (index >= 0 && sourcePath[index]) {
+            let newObject = Object.assign(sourcePath[index], { filename: destFilename });
+            Vue.set(sourcePath, index, newObject);
         }
+    },
+
+    removeDirFromFiletree(state, data) {
+        let currentPathArray = data.currentPath.split("/");
+        let currentPath = findDirectory(state.filetree, currentPathArray);
+        let index = currentPath.findIndex(element => element.filename === data.delPathName);
+
+        if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
     },
 
     setHelpList(state, data) {
