@@ -56,7 +56,7 @@
             <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
-        <v-content id="content">
+        <v-main id="content">
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container">
                     <keep-alive>
@@ -64,7 +64,7 @@
                     </keep-alive>
                 </v-container>
             </v-scroll-y-transition>
-        </v-content>
+        </v-main>
 
         <v-dialog v-model="isConnecting"  persistent width="300">
             <v-card color="primary" dark >
