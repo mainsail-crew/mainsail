@@ -201,11 +201,14 @@ export default {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
             let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
-            let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
+            let delPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
 
-            Vue.$toast.success("Successfully deleted "+newPath);
-            Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
-            commit('voidMutation');
+            Vue.$toast.success("Successfully deleted "+delPath);
+            //Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
+            commit('removeDirFromFiletree', {
+                currentPath: currentPath,
+                delPathName: delPath
+            });
         }
     },
 

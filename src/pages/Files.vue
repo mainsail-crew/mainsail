@@ -190,7 +190,7 @@
                 <v-card-title class="headline">New Directory</v-card-title>
                 <v-card-text>
                     Please enter a new directory name:
-                    <v-text-field label="Name" required v-model="dialogCreateDirectory.name"></v-text-field>
+                    <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -292,7 +292,10 @@
                 draggingFile: {
                     status: false,
                     item: {}
-                }
+                },
+                input_rules: [
+                    value => value.indexOf(" ") === -1 || 'Name contain spaces!'
+                ]
             }
         },
         computed: {
@@ -320,7 +323,9 @@
             doUploadFile: function(file) {
                 let toast = this.$toast;
                 let formData = new FormData();
-                formData.append('file', file, (this.currentPath+"/"+file.name).substring(7));
+                let filename = file.name.replace(" ", "_");
+
+                formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
                 this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
 
                 axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
@@ -440,8 +445,10 @@
                 this.dialogCreateDirectory.show = true;
             },
             createDirectoryAction: function() {
-                this.dialogCreateDirectory.show = false;
-                this.$socket.sendObj('post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
+                if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(" ") === -1) {
+                    this.dialogCreateDirectory.show = false;
+                    this.$socket.sendObj('post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
+                }
             },
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
