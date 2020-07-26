@@ -39,7 +39,7 @@
                     </v-col>
                     <v-col class="text-center py-0 vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
                     <v-col class="text-center py-0 vertical_align_center">
-                        <toolInput :name="heater.name" :target="heater.target" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
+                        <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
                     </v-col>
                 </v-row>
             </div>

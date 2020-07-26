@@ -10,12 +10,14 @@
 </style>
 
 <template>
-    <v-text-field type="number" min="-273" max="1999" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps" onClick="this.select();">
+    <v-text-field type="number" min="0" :max="max_temp" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps" onClick="this.select();">
     </v-text-field>
 </template>
 
 
 <script>
+    import Vue from "vue";
+
     export default {
         data: function() {
             return {
@@ -25,6 +27,8 @@
         props: {
             name: String,
             target: Number,
+            min_temp: Number,
+            max_temp: Number,
             command: String,
             attributeName: String,
         },
@@ -33,7 +37,13 @@
         },
         methods: {
             setTemps() {
-                this.$socket.sendObj('post_printer_gcode_script', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
+                if (this.max_temp !== undefined && this.value > this.max_temp) {
+                    this.value = this.target;
+                    Vue.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")");
+                } else if (this.min_temp !== undefined && this.value < this.min_temp && this.value !== 0) {
+                    this.value = this.target;
+                    Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
+                } else this.$socket.sendObj('post_printer_gcode_script', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
             }
         },
         watch: {
