@@ -119,7 +119,7 @@ export default {
             if (
                 nameSplit[0] === "temperature_fan" ||
                 nameSplit[0] === "temperature_probe" ||
-                nameSplit[0] === "temperature_sensors" ||
+                nameSplit[0] === "temperature_sensor" ||
                 nameSplit[0] === "filament_switch_sensor" ||
                 nameSplit[0] === "bed_mesh"
             )  subscripts = {...subscripts, [key]: []}

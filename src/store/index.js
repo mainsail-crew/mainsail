@@ -117,6 +117,7 @@ export default new Vuex.Store({
         temperaturChart: {
             labels: [],
             datasets: [],
+            updateTicks: []
         },
         helplist: [],
         filetree: [
