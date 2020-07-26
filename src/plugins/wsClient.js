@@ -15,7 +15,7 @@ export default class WebSocketClient {
         this.onError = null;
         this.blackErrorList = [
             "Metadata not available for",
-            //"Klippy Request Timed Out",
+            "Klippy Request Timed Out",
         ];
     }
 
