@@ -15,6 +15,8 @@ export default {
                         name: key,
                         target: value.target,
                         temperature: value.temperature,
+                        min_temp: state.config[key] !== undefined ? parseFloat(state.config[key].min_temp) : undefined,
+                        max_temp: state.config[key] !== undefined ? parseFloat(state.config[key].max_temp) : undefined,
                     });
                 }
             }
