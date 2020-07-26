@@ -10,9 +10,9 @@
             <v-list-item-avatar color="grey"><v-icon dark>mdi-information-variant</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Status</v-list-item-title>
-                <v-list-item-subtitle class="mr-3">{{ printer_state }}{{ printer_is_printing ? " - "+current_file : "" }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="mr-3">{{ printer_is_paused ? "Pause" : printer_state }}{{ printer_is_printing || printer_is_paused ? " - "+current_file : "" }}</v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn class="orange" v-if="printer_state === 'Printing' && printer_is_printing" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
+            <v-btn class="orange" v-if="printer_state === 'Printing' && printer_is_printing && !printer_is_paused" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
             <v-btn class="red" v-if="(is_printing && printer_is_paused)" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
             <v-btn class="orange ml-2" v-if="(is_printing && printer_is_paused)" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
         </v-list-item>

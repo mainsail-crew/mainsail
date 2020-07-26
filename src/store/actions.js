@@ -31,20 +31,12 @@ export default {
                 commit('addGcodeResponse', data.params[0]);
                 break;
 
-            case 'notify_printer_state_changed':
-                commit('setPrinterStatus', data.params[0]);
-                break;
-
             case 'notify_klippy_state_changed':
                 commit('setKlippyStatus', data.params[0]);
                 break;
 
             case 'notify_filelist_changed':
                 commit('setFileList', data.params[0].filelist);
-                break;
-
-            case 'notify_paused_state_changed':
-                commit('setPausedState', data.params[0]);
                 break;
 
             default:
@@ -89,7 +81,7 @@ export default {
                 version: data.version
             });
 
-            commit('setPrinterStatus', 'ready');
+            commit('setKlippyStatus', 'ready');
 
             Vue.prototype.$socket.sendObj('get_printer_objects_list', {}, 'getObjectInfo');
             Vue.prototype.$socket.sendObj('get_printer_objects_status', { heaters: [] }, 'getHeatersInfo');
@@ -107,7 +99,7 @@ export default {
             Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
             Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
-        } else if (data !== undefined && !data.is_ready) commit('setPrinterStatus', 'disconnect');
+        } else if (data !== undefined && !data.is_ready) commit('setKlippyStatus', 'disconnect');
 
         commit('setPrinterStatusDetails', data);
 

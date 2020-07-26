@@ -337,7 +337,10 @@ export default {
     },
 
     addGcodeResponse(state, data) {
-        let message = data.result ? data.result : data;
+        let message = data;
+
+        if (message.result !== undefined) message = message.result;
+        else if (message.error !== undefined) message = message.error.message;
 
         state.events.push({
             date: new Date(),
@@ -365,14 +368,12 @@ export default {
         state.loadings = state.loadings.filter(function(ele){ return ele !== data.name; });
     },
 
-    setPrinterStatus(state, value) {
-        state.socket.klippy_state = value;
-        if (value === "disconnect") state.socket.is_ready = false;
-        else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-    },
-
     setKlippyStatus(state, value) {
         state.socket.klippy_state = value;
+        if (value === "disconnect") {
+            state.socket.is_ready = false;
+            state.socket.klippy_message = "";
+        } else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
     },
 
     setPrinterStatusDetails(state, data) {
@@ -436,25 +437,6 @@ export default {
     reportError(state, data) {
         //Vue.$toast.error(data.message);
         window.console.log(data);
-    },
-
-    setPausedState(state, data) {
-        switch (data) {
-            case 'paused':
-                state.printer.pause_resume.is_paused = true;
-                break;
-
-            case 'resumed':
-                state.printer.pause_resume.is_paused = false;
-                break;
-
-            case 'cleared':
-                state.printer.pause_resume.is_paused = false;
-                break;
-
-            default:
-                window.console.log('setPausedState -> Default: '+data);
-        }
     },
 
     voidMutation() {
