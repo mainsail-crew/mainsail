@@ -2,6 +2,10 @@
     .heater-row .vertical_align_center {
         margin: auto 0;
     }
+
+    #line-chart {
+        height: 250px;
+    }
 </style>
 
 <template>

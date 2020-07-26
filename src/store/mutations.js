@@ -40,6 +40,7 @@ export default {
     setPrinterData(state, data) {
         if (data.requestParams) delete data.requestParams;
         let now = Date.now();
+        let updateTicks = false;
 
         Object.entries(data).forEach(([key, value]) => {
             Vue.set(state.printer, key, value);
@@ -47,9 +48,28 @@ export default {
             if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
                 let keySplit = key.split(" ");
 
-                if (state.object.heaters.available_heaters.includes(key) || keySplit[0] === "temperature_fan" || keySplit[0] === "temperature_probe") {
+                if (
+                    state.object.heaters.available_heaters.includes(key) ||
+                    keySplit[0] === "temperature_fan" ||
+                    keySplit[0] === "temperature_sensor" ||
+                    keySplit[0] === "temperature_probe") {
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
-                    if (keySplit[0] === "temperature_probe") key = "probe";
+                    else if (keySplit[0] === "temperature_sensor") key = keySplit[1];
+                    else if (keySplit[0] === "temperature_probe") key = "probe";
+
+                    // increment update ticks array only 1 time per setPrinterData with heaters/sensors
+                    if (!updateTicks) {
+                        for (let index in state.temperaturChart.updateTicks) {
+                            state.temperaturChart.updateTicks[index] += 1;
+                        }
+
+                        updateTicks = true;
+                    }
+
+                    // add object to update ticks array if it doesn't exists
+                    if (state.temperaturChart.updateTicks[key] === undefined) {
+                        state.temperaturChart.updateTicks[key] = 1;
+                    }
 
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
                 }
@@ -105,8 +125,23 @@ export default {
         }
         let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
 
-        if (index >= 0) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
-        if (index_target >= 0) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
+        let ticks = 1;
+
+        // find missing ticks in update ticks array and reset it
+        if (state.temperaturChart.updateTicks[payload.name] !== undefined) {
+            ticks = state.temperaturChart.updateTicks[payload.name];
+            state.temperaturChart.updateTicks[payload.name] = 0;
+        }
+
+        // update current temp in temperature chart
+        if (index >= 0) {
+            for (let i = 0; i < ticks; i++) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
+        }
+
+        // update target temp in temperature chart
+        if (index_target >= 0) {
+            for (let i = 0; i < ticks; i++) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
+        }
 
         if (index >= 0 && state.temperaturChart.datasets[index].data.length > temperaturChartSampleLength) {
             state.temperaturChart.datasets[index].data = state.temperaturChart.datasets[index].data.splice(state.temperaturChart.datasets[index].data.length - temperaturChartSampleLength)
