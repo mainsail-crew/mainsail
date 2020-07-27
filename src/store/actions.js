@@ -293,8 +293,16 @@ export default {
         commit('removeLoading', { name: 'extruderDetract' });
     },
 
+    respondeBabySteppingDownFine({commit}) {
+        commit('removeLoading', { name: 'babySteppingDownFine' });
+    },
+
     respondeBabySteppingDown({commit}) {
         commit('removeLoading', { name: 'babySteppingDown' });
+    },
+
+    respondeBabySteppingUpFine({commit}) {
+        commit('removeLoading', { name: 'babySteppingUpFine' });
     },
 
     respondeBabySteppingUp({commit}) {
