@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="(printer_state === 'Printing' && printer_is_printing)">
+    <v-card v-if="(printer_state === 'Printing' && printer_is_printing) || true">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>Z Baby Stepping</span>
@@ -17,9 +17,15 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col class="col-12 pt-0 text-center">
-                    <v-btn @click="sendBabySteppingDown()" class="mx-2" :loading="loadingBabySteppingDown" ><v-icon class="mr-2">mdi-arrow-collapse-down</v-icon> -0.05mm</v-btn>
-                    <v-btn @click="sendBabySteppingUp()" class="mx-2" :loading="loadingBabySteppingUp" ><v-icon class="mr-2">mdi-arrow-expand-up</v-icon> +0.05mm</v-btn>
+                <v-col class="col-12 pt-0 text-center d-flex flex-column align-center flex-sm-row justify-center">
+                    <v-btn-toggle borderless no-gutters class="mx-2 mb-2 order-last flex-nowrap order-sm-first" >
+                        <v-btn @click="sendBabySteppingDownFine()" class="" :loading="loadingBabySteppingDownFine" ><v-icon class="mr-2">mdi-arrow-collapse-down</v-icon> -0.01mm</v-btn>
+                        <v-btn @click="sendBabySteppingDown()" class="" :loading="loadingBabySteppingDown" >-0.05mm</v-btn>
+                    </v-btn-toggle>
+                    <v-btn-toggle borderless no-gutters class="mx-2 mb-2 order-first flex-nowrap order-sm-last" >
+                        <v-btn @click="sendBabySteppingUpFine()" class="" :loading="loadingBabySteppingUpFine" ><v-icon class="mr-2">mdi-arrow-expand-up</v-icon> +0.01mm</v-btn>
+                        <v-btn @click="sendBabySteppingUp()" class="" :loading="loadingBabySteppingUp" >+0.05mm</v-btn>
+                    </v-btn-toggle>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -36,7 +42,9 @@
         },
         data: function() {
             return {
+                loadingBabySteppingDownFine: false,
                 loadingBabySteppingDown: false,
+                loadingBabySteppingUpFine: false,
                 loadingBabySteppingUp: false,
             }
         },
@@ -50,11 +58,23 @@
             }),
         },
         methods: {
+            sendBabySteppingDownFine() {
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01 MOVE=1";
+                this.$store.commit('setLoading', { name: 'babySteppingDownFine' });
+                this.$store.commit('addGcodeResponse', gcode);
+                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDownFine");
+            },
             sendBabySteppingDown() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05 MOVE=1";
                 this.$store.commit('setLoading', { name: 'babySteppingDown' });
                 this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDown");
+            },
+            sendBabySteppingUpFine() {
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01 MOVE=1";
+                this.$store.commit('setLoading', { name: 'babySteppingUpFine' });
+                this.$store.commit('addGcodeResponse', gcode);
+                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUpFine");
             },
             sendBabySteppingUp() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05 MOVE=1";
@@ -65,7 +85,9 @@
         },
         watch: {
             loadings: function(loadings) {
+                this.loadingBabySteppingDownFine = loadings.includes('babySteppingDownFine');
                 this.loadingBabySteppingDown = loadings.includes('babySteppingDown');
+                this.loadingBabySteppingUpFine = loadings.includes('babySteppingUpFine');
                 this.loadingBabySteppingUp = loadings.includes('babySteppingUp');
             },
         }
