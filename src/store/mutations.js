@@ -158,7 +158,7 @@ export default {
         switch (payload.name) {
             case 'heater_bed': color = colorHeaterBed; break;
             case 'chamber': color = colorChamber; break;
-            default: color = colorArray[state.temperaturChart.datasets.length]; break;
+            default: color = colorArray[state.temperaturChart.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
         }
 
         let hidden = state.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0 ? true : null;
