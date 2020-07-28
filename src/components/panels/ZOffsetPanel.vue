@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="(printer_state === 'Printing' && printer_is_printing) || true">
+    <v-card v-if="(printer_state === 'Printing' && printer_is_printing)">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>Z Baby Stepping</span>
