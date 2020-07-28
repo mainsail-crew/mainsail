@@ -4,3 +4,4 @@
 - [Update from 0.0.x to 0.1.x](update-0.0.x.md)
 - [Macros](macros.md)
 - [Slicer upload](slicer-upload.md)
+- [Gcode thumbnails (PrusaSlicer & SuperSlicer only)](gcode-thumbnails.md)
