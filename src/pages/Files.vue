@@ -55,7 +55,7 @@
                 <v-btn color="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
             </v-card-title>
             <v-card-subtitle>
-                Current path: {{ this.currentPath }}
+                Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}
             </v-card-subtitle>
             <v-card-text>
                 <v-text-field
@@ -231,7 +231,7 @@
     import { mapState, mapGetters } from 'vuex';
     import axios from 'axios';
     import { findDirectory } from "../plugins/helpers";
-    import Vue from "vue";
+    /*import Vue from "vue";*/
 
     export default {
         data () {
@@ -335,12 +335,6 @@
                 ).then((result) => {
                     this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
                     toast.success("Upload of "+result.data.result+" successful!");
-                    this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
-
-                    let filename = (this.currentPath+"/"+file.name).substring(7);
-                    setTimeout(function() {
-                        Vue.prototype.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata");
-                    }, 1000);
                 })
                 .catch(() => {
                     this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
@@ -435,7 +429,6 @@
                     'http://'+ this.hostname + ':' + this.port +'/server/files/'+filename
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
-                    this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
                 }).catch(() => {
                     this.$toast.error("Error! Cannot delete file.");
                 });
@@ -538,9 +531,14 @@
                     e.preventDefault();
                     e.target.parentElement.style.backgroundColor = 'transparent';
 
+                    let dest = "";
+                    if (row.filename === '..') {
+                      dest = this.currentPath.substring(0, this.currentPath.lastIndexOf("/") + 1)+this.draggingFile.item.filename;
+                    } else dest = this.currentPath+"/"+row.filename+"/"+this.draggingFile.item.filename;
+
                     this.$socket.sendObj('post_file_move', {
                         source: this.currentPath+"/"+this.draggingFile.item.filename,
-                        dest: this.currentPath+"/"+row.filename+"/"+this.draggingFile.item.filename,
+                        dest: dest
                     }, 'getPostFileMove');
                 }
             },

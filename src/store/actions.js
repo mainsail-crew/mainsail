@@ -36,7 +36,31 @@ export default {
                 break;
 
             case 'notify_filelist_changed':
-                commit('setFileList', data.params[0].filelist);
+                switch(data.params[0].action) {
+                    case 'added':
+                        commit('setFileChangeAdded', data.params[0]);
+                        break;
+
+                    case 'removed':
+                        commit('setFileChangeRemoved', data.params[0]);
+                        break;
+
+                    case 'file_move':
+                        commit('setFileChangeFileMove', data.params[0]);
+                        break;
+
+                    case 'add_directory':
+                        commit('setFileChangeAddDirectory', data.params[0]);
+                        break;
+
+                    case 'delete_directory':
+                        commit('setFileChangeDeleteDirectory', data.params[0]);
+                        break;
+
+                    default:
+                        window.console.error("Unknown filelist_changed action: "+data.params[0].action);
+                        break;
+                }
                 break;
 
             default:
@@ -96,7 +120,6 @@ export default {
                 idle_timeout: [],
                 display_status: [],
             });
-            Vue.prototype.$socket.sendObj('get_file_list', {}, 'getFileList');
             Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         } else if (data !== undefined && !data.is_ready) commit('setKlippyStatus', 'disconnect');
@@ -157,11 +180,6 @@ export default {
         commit('setPrinterConfig', data);
     },
 
-    getFileList({ commit }, data) {
-        commit('setFileList', data);
-        commit('removeLoading', 'loadingGcodeRefresh');
-    },
-
     getDirectory({ commit }, data) {
         commit('setDirectory', data);
         commit('removeLoading', { name: 'loadingGcodeRefresh' });
@@ -179,11 +197,9 @@ export default {
         if (data.error) {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
-            let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
             let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
 
             Vue.$toast.success("Successfully created "+newPath);
-            Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
             commit('voidMutation');
         }
     },
@@ -192,15 +208,10 @@ export default {
         if (data.error) {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
-            let currentPath = data.requestParams.path.substr(0, data.requestParams.path.lastIndexOf("/"));
             let delPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
 
             Vue.$toast.success("Successfully deleted "+delPath);
-            //Vue.prototype.$socket.sendObj('get_directory', { path: currentPath }, 'getDirectory');
-            commit('removeDirFromFiletree', {
-                currentPath: currentPath,
-                delPathName: delPath
-            });
+            commit('voidMutation');
         }
     },
 
@@ -214,11 +225,7 @@ export default {
 
             if (sourceDir === destDir) Vue.$toast.success("Successfully renamed "+filename);
             else Vue.$toast.success("Successfully moved "+filename);
-
-            commit('renameMetadataFilename', {
-                source: data.requestParams.source,
-                dest: data.requestParams.dest
-            });
+            commit('voidMutation');
         }
     },
 
