@@ -8,6 +8,7 @@
             <v-col class="col-12 pb-0 text-center">
                 <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHomeAll" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
+                <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('z_tilt')"><v-btn @click="doZtilt" :loading="loadingZTilt" color="primary">Z Tilt</v-btn></div>
             </v-col>
         </v-row>
         <v-row class="mt-3" v-if="!is_printing">
@@ -52,7 +53,7 @@
         <v-row class="" v-if="getMacros.length > 0">
             <v-col class="col-12 px-4 py-2 text-center">
                 <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
-                    <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name }}</v-btn>
+                    <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name.replace("_", " ") }}</v-btn>
                 </div>
             </v-col>
         </v-row>
@@ -73,6 +74,7 @@
                 loadingHomeX: false,
                 loadingHomeY: false,
                 loadingHomeZ: false,
+                loadingZTilt: false,
             }
         },
         computed: {
@@ -116,6 +118,11 @@
                 this.$store.commit('setLoadingQGL', true);
                 this.$socket.sendObj('post_printer_gcode_script', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
             },
+            doZtilt() {
+                this.$store.commit('addGcodeResponse', "Z_TILT_ADJUST");
+              this.$store.commit('setLoading', { name: 'controlZTilt' });
+                this.$socket.sendObj('post_printer_gcode_script', { script: "Z_TILT_ADJUST" }, "responseZTilt");
+            },
             doSendMove(gcode) {
                 gcode = "G91" + "\n" +
                     "G1 " + gcode + " F6000" + "\n" +
@@ -134,6 +141,7 @@
                 this.loadingHomeX = loadings.includes('controlHomeX');
                 this.loadingHomeY = loadings.includes('controlHomeY');
                 this.loadingHomeZ = loadings.includes('controlHomeZ');
+                this.loadingZTilt = loadings.includes('controlZTilt');
             }
         }
     }

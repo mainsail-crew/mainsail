@@ -272,6 +272,10 @@ export default {
         commit('setLoadingQGL', false);
     },
 
+    responseZTilt({commit}) {
+        commit('removeLoading', { name: 'controlZTilt' });
+    },
+
     responseRestart({commit}) {
         commit('setLoadingRestart', false);
     },
