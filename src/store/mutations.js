@@ -215,29 +215,74 @@ export default {
         if (data.configfile) Vue.set(state, 'config', data.configfile.config);
     },
 
-    setFileList(state, data) {
-        state.files = [];
-        //window.console.log(data);
-        let array = Object.entries(data);
+    setFileChangeAdded(state, data) {
+        let filename = data.filename.substr(data.filename.lastIndexOf("/")).replace("/", "");
+        let path = data.filename.substr(0, data.filename.lastIndexOf("/"));
+        let parent = findDirectory(state.filetree, (data.root+"/"+path).split("/"));
 
-        for (let [key, file] of array) {
-            if (file.filename !== "gui.json") {
-                state.files.push({
-                    number: key,
-                    filename: file.filename,
-                    modified: Date.parse(file.modified),
-                    size: file.size,
-                    slicer: file.slicer,
-                    filament_total: file.filament_total,
-                    estimated_time: file.estimated_time,
-                    layer_height: file.layer_height,
-                    first_layer_height: file.first_layer_height,
-                    object_height: file.object_height,
-                    thumbnails : file.thumbnails ? file.thumbnails : [],
-                });
-            }
+        if (parent) {
+            parent.push({
+                isDirectory: false,
+                filename: filename,
+                modified: new Date(),
+                size: 0,
+                metadataPulled: false,
+            });
+
+            setTimeout(function() {
+                Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
+            }, 500);
         }
-        //state.files = data;
+    },
+
+    setFileChangeRemoved(state, data) {
+        let currentPath = data.filename.substr(0, data.filename.lastIndexOf("/"));
+        let delPath = data.filename.substr(data.filename.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.root+"/"+currentPath).split("/"));
+        let index = currentPath.findIndex(element => element.filename === delPath);
+
+        if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
+    },
+
+    setFileChangeFileMove(state, data) {
+        let oldPath = data.prev_file.substr(0, data.prev_file.lastIndexOf("/") + 1);
+        let newPath = data.filename.substr(0, data.filename.lastIndexOf("/") + 1);
+        let filenameOld = data.prev_file.substr(data.prev_file.lastIndexOf("/")+1);
+        let filenameNew = data.filename.substr(data.filename.lastIndexOf("/")+1);
+
+        oldPath = findDirectory(state.filetree, (data.root+"/"+oldPath).split("/"));
+        let indexFile = oldPath.findIndex(element => element.filename === filenameOld);
+
+        if (indexFile >= 0 && oldPath[indexFile]) {
+            let file = oldPath.splice(indexFile, 1)[0];
+            file.filename = filenameNew;
+            newPath = findDirectory(state.filetree, (data.root+"/"+newPath).split("/"));
+            newPath.push(file);
+        }
+    },
+
+    setFileChangeAddDirectory(state, data) {
+        let filename = data.filename.substr(data.filename.lastIndexOf("/") + 1);
+        let path = data.filename.substr(0, data.filename.lastIndexOf("/"));
+        let parent = findDirectory(state.filetree, (data.root+"/"+path).split("/"));
+
+        if (parent) {
+            parent.push({
+                isDirectory: true,
+                filename: filename,
+                modified: new Date(),
+                childrens: [],
+            });
+        }
+    },
+
+    setFileChangeDeleteDirectory(state, data) {
+        let currentPath = data.filename.substr(0, data.filename.lastIndexOf("/"));
+        let delPath = data.filename.substr(data.filename.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.root+"/"+currentPath).split("/"));
+        let index = currentPath.findIndex(element => element.filename === delPath);
+
+        if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
     },
 
     setDirectory(state, data) {
@@ -311,6 +356,8 @@ export default {
                     slicer: data.slicer ? data.slicer : undefined,
                     thumbnails: data.thumbnails ? data.thumbnails : undefined,
                     metadataPulled: true,
+                    modified: Date.parse(data.modified),
+                    size: parseInt(data.size),
                 };
 
                 let newObject = Object.assign(path[index], newData);
@@ -349,14 +396,6 @@ export default {
             let newObject = Object.assign(sourcePath[index], { filename: destFilename });
             Vue.set(sourcePath, index, newObject);
         }
-    },
-
-    removeDirFromFiletree(state, data) {
-        let currentPathArray = data.currentPath.split("/");
-        let currentPath = findDirectory(state.filetree, currentPathArray);
-        let index = currentPath.findIndex(element => element.filename === data.delPathName);
-
-        if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
     },
 
     setHelpList(state, data) {
