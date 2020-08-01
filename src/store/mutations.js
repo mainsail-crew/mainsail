@@ -139,7 +139,7 @@ export default {
         }
 
         // update target temp in temperature chart
-        if (index_target >= 0) {
+        if (index_target >= 0 && payload.value.target !== undefined) {
             for (let i = 0; i < ticks; i++) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
         }
 
@@ -443,17 +443,22 @@ export default {
     },
 
     setKlippyStatus(state, value) {
-        state.socket.klippy_state = value;
-        if (value === "disconnect") {
-            state.socket.is_ready = false;
-            state.socket.klippy_message = "";
-        } else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+        if (value !== undefined) {
+            state.socket.klippy_state = value;
+
+            if (value === "disconnect") {
+                state.socket.is_ready = false;
+                state.socket.klippy_message = "";
+            } else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+        }
     },
 
     setPrinterStatusDetails(state, data) {
-        state.socket.error_detected = data.error_detected;
-        state.socket.is_ready = data.is_ready;
-        state.socket.klippy_message = data.message;
+        if (data !== undefined && data.is_ready !== undefined) {
+            state.socket.error_detected = data.error_detected;
+            state.socket.is_ready = data.is_ready;
+            state.socket.klippy_message = data.message;
+        }
     },
 
     setLoadingGcodeUpload(state, value) {

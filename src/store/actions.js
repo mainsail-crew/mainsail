@@ -32,6 +32,8 @@ export default {
                 break;
 
             case 'notify_klippy_state_changed':
+                window.console.log('notify_klippy_state_changed');
+                window.console.log(data.params[0]);
                 commit('setKlippyStatus', data.params[0]);
                 break;
 
@@ -105,8 +107,6 @@ export default {
                 version: data.version
             });
 
-            commit('setKlippyStatus', 'ready');
-
             Vue.prototype.$socket.sendObj('get_printer_objects_list', {}, 'getObjectInfo');
             Vue.prototype.$socket.sendObj('get_printer_objects_status', { heaters: [] }, 'getHeatersInfo');
             Vue.prototype.$socket.sendObj('get_printer_objects_status', { configfile: ['config'] }, 'getPrinterConfig');
@@ -122,7 +122,7 @@ export default {
             });
             Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
-        } else if (data !== undefined && !data.is_ready) commit('setKlippyStatus', 'disconnect');
+        }
 
         commit('setPrinterStatusDetails', data);
 
@@ -276,7 +276,7 @@ export default {
     },
 
     responseQGL({commit}) {
-        commit('setLoadingQGL', false);
+        commit('removeLoading', { name: 'controlQGL' });
     },
 
     responseZTilt({commit}) {
