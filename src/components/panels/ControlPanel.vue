@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapMutations } from 'vuex'
+    import { mapState, mapGetters } from 'vuex'
     import Vue from "vue";
 
     export default {
@@ -74,19 +74,16 @@
                 loadingHomeX: false,
                 loadingHomeY: false,
                 loadingHomeZ: false,
+                loadingQGL: false,
                 loadingZTilt: false,
             }
         },
         computed: {
             ...mapState({
-                loadingQGL: state => state.socket.loadingQGL,
                 homedAxes: state => state.printer.toolhead.homed_axes,
                 config: state => state.config,
                 loadings: state => state.loadings,
             }),
-            ...mapMutations([
-                'setLoadingQGL',
-            ]),
             ...mapGetters([
                 'getMacros',
                 'is_printing'
@@ -115,7 +112,7 @@
             },
             doQGL() {
                 this.$store.commit('addGcodeResponse', "QUAD_GANTRY_LEVEL");
-                this.$store.commit('setLoadingQGL', true);
+              this.$store.commit('setLoading', { name: 'controlQGL' });
                 this.$socket.sendObj('post_printer_gcode_script', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
             },
             doZtilt() {
@@ -141,6 +138,7 @@
                 this.loadingHomeX = loadings.includes('controlHomeX');
                 this.loadingHomeY = loadings.includes('controlHomeY');
                 this.loadingHomeZ = loadings.includes('controlHomeZ');
+                this.loadingQGL = loadings.includes('controlQGL');
                 this.loadingZTilt = loadings.includes('controlZTilt');
             }
         }

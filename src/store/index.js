@@ -20,7 +20,6 @@ export default new Vuex.Store({
             loadingEmergencyStop: false,
             loadingPrintPause: false,
             loadingPrintResume: false,
-            loadingQGL: false,
             loadingRestart: false,
             loadingRestartFirmware: false,
             loadingRebootHost: false,
