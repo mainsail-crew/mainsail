@@ -5,10 +5,6 @@ may work, however they may need a custom install script.
 
 **Please don't use a octopi image!!!**
 
-Klipper should be installed prior to installing Moonraker. Please see
-[Klipper's Documention](https://github.com/KevinOConnor/klipper/blob/master/docs/Installation.md)
-for instructions on how to do this.
-
 ## Installing operation system image
 It's recommend to use a clean Raspberry Pi OS 32-bit Lite (previosly called Raspbian)
 image. You can download it [here](https://downloads.raspberrypi.org/raspios_lite_armhf_latest).
