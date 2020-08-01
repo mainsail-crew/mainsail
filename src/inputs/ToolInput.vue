@@ -40,7 +40,7 @@
                 if (this.max_temp !== undefined && this.value > this.max_temp) {
                     this.value = this.target;
                     Vue.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")");
-                } else if (this.min_temp !== undefined && this.value < this.min_temp && this.value !== 0) {
+                } else if (this.min_temp !== undefined && this.value < this.min_temp && parseFloat(this.value) !== 0) {
                     this.value = this.target;
                     Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
                 } else this.$socket.sendObj('post_printer_gcode_script', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
