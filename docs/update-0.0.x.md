@@ -43,5 +43,5 @@ Restart nginx with `sudo service nginx restart`
 ```
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.0/mainsail-beta-0.1.0.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.1/mainsail-beta-0.1.1.zip && unzip mainsail.zip && rm mainsail.zip
 ```
