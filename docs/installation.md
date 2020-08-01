@@ -9,31 +9,47 @@ Klipper should be installed prior to installing Moonraker. Please see
 [Klipper's Documention](https://github.com/KevinOConnor/klipper/blob/master/docs/Installation.md)
 for instructions on how to do this.
 
-## Install Moonraker (API)
+## Installing operation system image
+It's recommend to use a clean Raspberry Pi OS 32-bit Lite (previosly called Raspbian)
+image. You can download it [here](https://downloads.raspberrypi.org/raspios_lite_armhf_latest).
+
+More information about the installtion of Raspberry Pi OS are
+[here](https://www.raspberrypi.org/documentation/installation/installing-images/).
+
+**If you have finished the installation and connected via ssh, you can continue.**
+
+## Install Requirements
+```
+sudo apt update && sudo apt upgrade
+sudo apt install git dfu-util
+```
+
+## Install Klipper
 Moonraker is still in alpha development, and thus some of its dependencies
 in Klipper have yet to be merged.  Until this has been done it will be
 necessary to add a remote and work off a developmental branch of Klipper
 to correctly run Moonraker.
 
-### Change Klipper branch
+In this step, we install klipper and change to the development branch of Klipper.
 ```
+cd ~
+git clone https://github.com/KevinOConnor/klipper
 cd ~/klipper
-git remote add arksine https://github.com/Arksine/klipper.git
-```
-
-Now fetch and checkout:
-```
+git remote add arksine https://github.com/arksine/klipper
 git fetch arksine
-git checkout arksine/dev-moonraker-testing
+git reset --hard arksine/dev-moonraker-testing
+./scripts/install-octopi.sh
 ```
+
 Note that you are now in a detached head state and you cannot pull. Any
-time you want to update to the latest version of this branch you must
-repeat the two commands above.
+time you want to update to the latest version of this branch you have to
+`git fetch arksine` and `git reset --hard arksine/dev-moonraker-testing`.
 
-**Note that the above command is NOT part of the Moonraker install procedure.**
+Now you can copy your `printer.cfg` in your home directory and restart klipper.
+Please check the `klippy.log`, if Klipper starts correctly and then continue
+the guide.
 
-### Install Moonraker application
-
+## Install Moonraker (API)
 You can now install the Moonraker application:
 ```
 cd ~
@@ -59,7 +75,7 @@ Edit your printer.cfg with nano ~/printer.cfg and add the following lines:
 ```
 [moonraker]
 trusted_clients:
- 192.168.1.0/24
+    192.168.1.0/24
 ```
 
 We also need a `virtual_sdcard` for store the gcode files:
