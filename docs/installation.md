@@ -128,6 +128,12 @@ upstream apiserver {
     server 127.0.0.1:7125;
 }
 
+upstream mjpgstreamer {
+    #edit your webcam port here
+    ip_hash;
+    server 127.0.0.1:8081;
+}
+
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
@@ -197,6 +203,10 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Scheme $scheme;
+    }
+
+    location /webcam/ {
+        proxy_pass http://mjpgstreamer/;
     }
 }
 ```
