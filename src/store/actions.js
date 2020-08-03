@@ -74,7 +74,7 @@ export default {
 
     getDirectoryRoot({ commit }, data) {
         if (data.files && data.files.filter((file) => file.filename === "gui.json")) {
-            fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/gcodes/gui.json')
+            fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/gcodes/gui.json?time='+Date.now())
                 .then(res => res.json()).then(file => {
                 commit('setSettings', file);
             });
