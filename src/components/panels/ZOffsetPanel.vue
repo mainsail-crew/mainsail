@@ -55,29 +55,30 @@
                 printer_state: state => state.printer.idle_timeout.state,
                 printer_is_paused: state => state.printer.pause_resume.is_paused,
                 printer_is_printing: state => state.printer.virtual_sdcard.is_active,
+                homed_axis: state => state.printer.toolhead.homed_axes,
             }),
         },
         methods: {
             sendBabySteppingDownFine() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01 MOVE=1";
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingDownFine' });
                 this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDownFine");
             },
             sendBabySteppingDown() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05 MOVE=1";
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingDown' });
                 this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDown");
             },
             sendBabySteppingUpFine() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01 MOVE=1";
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingUpFine' });
                 this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUpFine");
             },
             sendBabySteppingUp() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05 MOVE=1";
+                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingUp' });
                 this.$store.commit('addGcodeResponse', gcode);
                 Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUp");
