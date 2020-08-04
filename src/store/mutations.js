@@ -231,7 +231,7 @@ export default {
 
             setTimeout(function() {
                 Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
-            }, 500);
+            }, 1000);
         }
     },
 
