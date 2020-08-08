@@ -1,6 +1,6 @@
 {
   "socket": {
-    "hostname": "voron250.local",
+    "hostname": "kossel.local",
     "port": 80
   }
 }

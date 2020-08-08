@@ -51,6 +51,11 @@ export default new Vuex.Store({
             },
             gcodefiles: {
                 countPerPage: 10,
+            },
+            settings: {
+                configfiles: {
+                    countPerPage: 10,
+                }
             }
         },
         loadings: [],
@@ -123,6 +128,18 @@ export default new Vuex.Store({
             {
                 isDirectory: true,
                 filename: 'gcodes',
+                modified: new Date(),
+                childrens: []
+            },
+            {
+                isDirectory: true,
+                filename: 'config_examples',
+                modified: new Date(),
+                childrens: []
+            },
+            {
+                isDirectory: true,
+                filename: 'config',
                 modified: new Date(),
                 childrens: []
             }
