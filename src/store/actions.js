@@ -121,6 +121,8 @@ export default {
                 display_status: [],
             });
             Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
+            Vue.prototype.$socket.sendObj('get_directory', { path: 'config' }, 'getDirectory');
+            Vue.prototype.$socket.sendObj('get_directory', { path: 'config_examples' }, 'getDirectory');
             Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
         }
 

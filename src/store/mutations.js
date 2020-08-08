@@ -216,18 +216,21 @@ export default {
     },
 
     setFileChangeAdded(state, data) {
-        let filename = data.filename.substr(data.filename.lastIndexOf("/")).replace("/", "");
+        let filename = data.filename;
+        if (data.filename.lastIndexOf("/") >= 0) filename = data.filename.substr(data.filename.lastIndexOf("/")).replace("/", "");
         let path = data.filename.substr(0, data.filename.lastIndexOf("/"));
         let parent = findDirectory(state.filetree, (data.root+"/"+path).split("/"));
 
         if (parent) {
-            parent.push({
-                isDirectory: false,
-                filename: filename,
-                modified: new Date(),
-                size: 0,
-                metadataPulled: false,
-            });
+            if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
+                parent.push({
+                    isDirectory: false,
+                    filename: filename,
+                    modified: new Date(),
+                    size: 0,
+                    metadataPulled: false,
+                });
+            }
 
             setTimeout(function() {
                 Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
@@ -317,6 +320,8 @@ export default {
                         modified: Date.parse(dir.modified),
                         childrens: [],
                     });
+
+                    Vue.prototype.$socket.sendObj('get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
                 }
             }
         }

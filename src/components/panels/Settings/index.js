@@ -6,6 +6,7 @@ import DashboardPanel from "./DashboardPanel";
 import MacrosPanel from "./MacrosPanel";
 import EndstopPanel from "./EndstopPanel";
 import LimitsPanel from "./LimitsPanel";
+import ConfigFilesPanel from "./ConfigFilesPanel";
 import RunoutPanel from "./RunoutPanel";
 import SystemPanel from "./SystemPanel";
 
@@ -17,6 +18,7 @@ Vue.component('settings-endstop-panel', EndstopPanel);
 Vue.component('settings-limits-panel', LimitsPanel);
 Vue.component('settings-runout-panel', RunoutPanel);
 Vue.component('settings-system-panel', SystemPanel);
+Vue.component('settings-config-files-panel', ConfigFilesPanel);
 
 export default {
 

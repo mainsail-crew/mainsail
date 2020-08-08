@@ -45,108 +45,108 @@
 
 <template>
     <div>
-        <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
-            <v-card-title>
-                G-Code Files
-                <v-spacer></v-spacer>
-                <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
-                <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
-                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn color="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
-            </v-card-title>
-            <v-card-subtitle>
-                Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}
-            </v-card-subtitle>
-            <v-card-text>
-                <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        hide-details
-                ></v-text-field>
-            </v-card-text>
-            <v-data-table
-                :items="files"
-                class="files-table"
-                :headers="headers"
-                :options="options"
-                :custom-sort="sortFiles"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :items-per-page="countPerPage"
-                item-key="name"
-                :search="search"
-                :custom-filter="advancedSearch"
-                @pagination="refreshMetadata">
+      <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+        <v-card-title>
+          G-Code Files
+          <v-spacer></v-spacer>
+          <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
+          <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
+          <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
+          <v-btn color="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+        </v-card-title>
+        <v-card-subtitle>
+          Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}
+        </v-card-subtitle>
+        <v-card-text>
+          <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              single-line
+              hide-details
+          ></v-text-field>
+        </v-card-text>
+        <v-data-table
+            :items="files"
+            class="files-table"
+            :headers="headers"
+            :options="options"
+            :custom-sort="sortFiles"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :items-per-page="countPerPage"
+            item-key="name"
+            :search="search"
+            :custom-filter="advancedSearch"
+            @pagination="refreshMetadata">
 
-                <template #no-data>
-                    <div class="text-center">empty</div>
-                </template>
+          <template #no-data>
+            <div class="text-center">empty</div>
+          </template>
 
-                <template v-slot:body.prepend>
-                    <tr
-                        v-if="(currentPath !== 'gcodes')"
-                        class="file-list-cursor"
-                        @click="clickRowGoBack"
-                        @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
-                        >
-                        <td class=" ">
-                            <v-icon>mdi-folder-upload</v-icon>
-                        </td>
-                        <td class=" " colspan="8">
-                            ..
-                        </td>
-                    </tr>
-                </template>
+          <template v-slot:body.prepend>
+            <tr
+                v-if="(currentPath !== 'gcodes')"
+                class="file-list-cursor"
+                @click="clickRowGoBack"
+                @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
+            >
+              <td class=" ">
+                <v-icon>mdi-folder-upload</v-icon>
+              </td>
+              <td class=" " colspan="8">
+                ..
+              </td>
+            </tr>
+          </template>
 
-                <template #item="{ item }">
-                    <tr
-                        @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
-                        class="file-list-cursor"
-                        draggable="true"
-                        @drag="dragFile($event, item)"
-                        @dragend="dragendFile($event)"
-                        @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
-                        :data-name="item.filename"
-                        >
-                        <td class=" ">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
-                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
-                        </td>
-                        <td class=" ">
-                            {{ item.filename }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
-                        </td>
-                        <td class="text-right">
-                            {{ formatDate(item.modified) }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ formatPrintTime(item.estimated_time) }}
-                        </td>
-                        <td class="text-no-wrap text-right">
-                            {{ item.slicer ? item.slicer : '--' }}
-                        </td>
-                    </tr>
-                </template>
-            </v-data-table>
-            <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
-                <div class="textnode">Drop files to add gcode.</div>
-            </div>
-        </v-card>
+          <template #item="{ item }">
+            <tr
+                @contextmenu="showContextMenu($event, item)"
+                @click="clickRow(item)"
+                class="file-list-cursor"
+                draggable="true"
+                @drag="dragFile($event, item)"
+                @dragend="dragendFile($event)"
+                @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
+                :data-name="item.filename"
+            >
+              <td class=" ">
+                <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
+                <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
+                <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
+              </td>
+              <td class=" ">
+                {{ item.filename }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
+              </td>
+              <td class="text-right">
+                {{ formatDate(item.modified) }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ formatPrintTime(item.estimated_time) }}
+              </td>
+              <td class="text-no-wrap text-right">
+                {{ item.slicer ? item.slicer : '--' }}
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+        <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
+          <div class="textnode">Drop files to add gcode.</div>
+        </div>
+      </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="downloadFile" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
