@@ -5,7 +5,7 @@
 <template>
     <v-row>
         <v-col class="col-auto"><v-icon @click="decrement">mdi-minus</v-icon></v-col>
-        <v-col class="col"><v-slider v-model="value" thumb-label="always" :label="label" :min="min" :max="max" @change="sendCmd" hide-details></v-slider></v-col>
+        <v-col class="col"><v-slider v-model="value" thumb-label="always" :label="label" :min="min" :max="variableMax" @change="sendCmd" hide-details></v-slider></v-col>
         <v-col class="col-auto"><v-icon @click="increment">mdi-plus</v-icon></v-col>
     </v-row>
 </template>
@@ -16,7 +16,7 @@
         data: function() {
             return {
                 value: this.target * this.multi,
-                variableMax: 0,
+                variableMax: this.max,
             }
         },
         props: {
@@ -79,11 +79,31 @@
                 this.value++;
                 this.sendCmd();
             },
+            checkExpand() {
+                window.console.log("checkExpand: "+this.attributeName);
+                window.console.log(this.value);
+                window.console.log(this.variableMax);
+                window.console.log(this.extenderSteps);
+
+                if (this.value > 0) {
+                    if (this.value > this.variableMax) {
+                        let tmpMulti = Math.ceil((this.value - this.variableMax) / this.extenderSteps);
+                        this.variableMax += tmpMulti * this.extenderSteps;
+                    } else if (this.value > (this.variableMax - this.extenderSteps)) {
+                        this.variableMax += this.extenderSteps;
+                    }
+                }
+            }
         },
         watch: {
             target: function() {
                 this.value = this.target * this.multi;
             },
+            value: function() {
+                setTimeout(() => {
+                    this.checkExpand();
+                }, 1000);
+            }
             /*value: function() {
                 if (this.value > 0) {
                     if (this.value > (this.variableMax - this.extenderSteps) && this.value < (this.variableMax + this.extenderSteps)) this.variableMax += this.extenderSteps;
@@ -94,13 +114,13 @@
                 }
             }*/
         },
-        /*created: function() {
-            /!*window.console.log("Test");
-            window.console.log(this.target+' * '+this.multi);
-            this.value = this.target * this.multi;*!/
-            window.console.log(this.target+' * '+this.multi);
-            this.variableMax = (this.value / this.extenderSteps + 1).toFixed(0) * this.extenderSteps;
-            if (this.variableMax < this.max) this.variableMax = this.max;
-        }*/
+        created: function() {
+            if (this.value > this.variableMax) {
+                let tmpMulti = Math.ceil((this.value - this.variableMax) / this.extenderSteps);
+                this.variableMax += tmpMulti * this.extenderSteps;
+
+                if (this.variableMax === this.value) this.variableMax += this.extenderSteps;
+            }
+        }
     }
 </script>
