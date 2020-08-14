@@ -43,7 +43,7 @@ to:
 ```
 KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/klipper_config/printer.cfg -l /tmp/klippy.log"
 ```
-Save the file with `STRG+O` and close the editor with `STRG+X`.
+Save the file with `CTRL+O` and close the editor with `CTRL+X`.
 
 At least you have to create the config and the virtual_sdcard directory with:
 ```
