@@ -102,7 +102,7 @@ export default {
     },
 
     current_file_size: state =>  {
-        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+        if (state.printer.print_stats.filename === state.printer.current_file.filename) {
             return state.printer.current_file.size;
         }
 
@@ -114,7 +114,7 @@ export default {
     },
 
     current_file_estimated_time: state =>  {
-        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+        if (state.printer.print_stats.filename === state.printer.current_file.filename) {
             return state.printer.current_file.estimated_time;
         }
 
@@ -122,7 +122,7 @@ export default {
     },
 
     current_file_filament_total: state =>  {
-        if (state.printer.virtual_sdcard.filename === state.printer.current_file.filename) {
+        if (state.printer.print_stats.filename === state.printer.current_file.filename) {
             return state.printer.current_file.filament_total;
         }
 

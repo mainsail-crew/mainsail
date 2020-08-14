@@ -39,23 +39,23 @@ export default {
 
             case 'notify_filelist_changed':
                 switch(data.params[0].action) {
-                    case 'added':
-                        commit('setFileChangeAdded', data.params[0]);
+                    case 'upload_file':
+                        commit('setFileChangeUploadFile', data.params[0]);
                         break;
 
-                    case 'removed':
-                        commit('setFileChangeRemoved', data.params[0]);
+                    case 'delete_file':
+                        commit('setFileChangeDeleteFile', data.params[0]);
                         break;
 
-                    case 'file_move':
-                        commit('setFileChangeFileMove', data.params[0]);
+                    case 'move_item':
+                        commit('setFileChangeMoveItem', data.params[0]);
                         break;
 
-                    case 'add_directory':
-                        commit('setFileChangeAddDirectory', data.params[0]);
+                    case 'create_dir':
+                        commit('setFileChangeCreateDirectory', data.params[0]);
                         break;
 
-                    case 'delete_directory':
+                    case 'delete_dir':
                         commit('setFileChangeDeleteDirectory', data.params[0]);
                         break;
 
@@ -114,6 +114,7 @@ export default {
                 gcode: [],
                 toolhead: [],
                 virtual_sdcard: [],
+                print_stats: [],
                 heaters: [],
                 fan: [],
                 pause_resume: [],

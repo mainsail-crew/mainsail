@@ -91,12 +91,16 @@ export default new Vuex.Store({
             },
             virtual_sdcard: {
                 progress: 0,
-                filename: "",
                 is_active: false,
-                filament_used: 0,
                 file_position: 0,
+            },
+            print_stats: {
                 print_duration: 0,
+                filament_used: 0,
                 total_duration: 0,
+                filename: "",
+                state: "",
+                message: ""
             },
             current_file: {
 
@@ -121,7 +125,6 @@ export default new Vuex.Store({
         temperaturChart: {
             labels: [],
             datasets: [],
-            updateTicks: []
         },
         helplist: [],
         filetree: [

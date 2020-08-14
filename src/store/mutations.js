@@ -40,7 +40,6 @@ export default {
     setPrinterData(state, data) {
         if (data.requestParams) delete data.requestParams;
         let now = Date.now();
-        let updateTicks = false;
 
         Object.entries(data).forEach(([key, value]) => {
             Vue.set(state.printer, key, value);
@@ -56,20 +55,6 @@ export default {
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
                     else if (keySplit[0] === "temperature_sensor") key = keySplit[1];
                     else if (keySplit[0] === "temperature_probe") key = "probe";
-
-                    // increment update ticks array only 1 time per setPrinterData with heaters/sensors
-                    if (!updateTicks) {
-                        for (let index in state.temperaturChart.updateTicks) {
-                            state.temperaturChart.updateTicks[index] += 1;
-                        }
-
-                        updateTicks = true;
-                    }
-
-                    // add object to update ticks array if it doesn't exists
-                    if (state.temperaturChart.updateTicks[key] === undefined) {
-                        state.temperaturChart.updateTicks[key] = 1;
-                    }
 
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
                 }
@@ -125,23 +110,11 @@ export default {
         }
         let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
 
-        let ticks = 1;
-
-        // find missing ticks in update ticks array and reset it
-        if (state.temperaturChart.updateTicks[payload.name] !== undefined) {
-            ticks = state.temperaturChart.updateTicks[payload.name];
-            state.temperaturChart.updateTicks[payload.name] = 0;
-        }
-
         // update current temp in temperature chart
-        if (index >= 0) {
-            for (let i = 0; i < ticks; i++) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
-        }
+        if (index >= 0) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
 
         // update target temp in temperature chart
-        if (index_target >= 0 && payload.value.target !== undefined) {
-            for (let i = 0; i < ticks; i++) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
-        }
+        if (index_target >= 0 && payload.value.target !== undefined) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
 
         if (index >= 0 && state.temperaturChart.datasets[index].data.length > temperaturChartSampleLength) {
             state.temperaturChart.datasets[index].data = state.temperaturChart.datasets[index].data.splice(state.temperaturChart.datasets[index].data.length - temperaturChartSampleLength)
@@ -215,19 +188,21 @@ export default {
         if (data.configfile) Vue.set(state, 'config', data.configfile.config);
     },
 
-    setFileChangeAdded(state, data) {
-        let filename = data.filename;
-        if (data.filename.lastIndexOf("/") >= 0) filename = data.filename.substr(data.filename.lastIndexOf("/")).replace("/", "");
-        let path = data.filename.substr(0, data.filename.lastIndexOf("/"));
-        let parent = findDirectory(state.filetree, (data.root+"/"+path).split("/"));
+    setFileChangeUploadFile(state, data) {
+        let filename = data.item.path;
+        if (data.item.path.lastIndexOf("/") >= 0) filename = data.item.path.substr(data.item.path.lastIndexOf("/")).replace("/", "");
+        let path = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
+        let parent = findDirectory(state.filetree, (data.item.root+"/"+path).split("/"));
 
         if (parent) {
             if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
+                let modified = new Date(data.item.modified);
+
                 parent.push({
                     isDirectory: false,
                     filename: filename,
-                    modified: new Date(),
-                    size: 0,
+                    modified: modified,
+                    size: data.item.size,
                     metadataPulled: false,
                 });
             }
@@ -238,41 +213,42 @@ export default {
         }
     },
 
-    setFileChangeRemoved(state, data) {
-        let currentPath = data.filename.substr(0, data.filename.lastIndexOf("/"));
-        let delPath = data.filename.substr(data.filename.lastIndexOf("/")+1);
-        currentPath = findDirectory(state.filetree, (data.root+"/"+currentPath).split("/"));
+    setFileChangeDeleteFile(state, data) {
+        let currentPath = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
+        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.item.root+"/"+currentPath).split("/"));
         let index = currentPath.findIndex(element => element.filename === delPath);
 
         if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
     },
 
-    setFileChangeFileMove(state, data) {
-        let oldPath = data.prev_file.substr(0, data.prev_file.lastIndexOf("/") + 1);
-        let newPath = data.filename.substr(0, data.filename.lastIndexOf("/") + 1);
-        let filenameOld = data.prev_file.substr(data.prev_file.lastIndexOf("/")+1);
-        let filenameNew = data.filename.substr(data.filename.lastIndexOf("/")+1);
+    setFileChangeMoveItem(state, data) {
+        let filenameOld = data.source_item.path.substr(data.source_item.path.lastIndexOf("/")+1);
+        let oldPath = data.source_item.path.substr(0, data.source_item.path.lastIndexOf("/") + 1);
 
-        oldPath = findDirectory(state.filetree, (data.root+"/"+oldPath).split("/"));
+        let filenameNew = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
+        let newPath = data.item.path.substr(0, data.item.path.lastIndexOf("/") + 1);
+
+        oldPath = findDirectory(state.filetree, (data.source_item.root+"/"+oldPath).split("/"));
         let indexFile = oldPath.findIndex(element => element.filename === filenameOld);
 
         if (indexFile >= 0 && oldPath[indexFile]) {
             let file = oldPath.splice(indexFile, 1)[0];
             file.filename = filenameNew;
-            newPath = findDirectory(state.filetree, (data.root+"/"+newPath).split("/"));
+            newPath = findDirectory(state.filetree, (data.item.root+"/"+newPath).split("/"));
             newPath.push(file);
         }
     },
 
-    setFileChangeAddDirectory(state, data) {
-        let filename = data.filename.substr(data.filename.lastIndexOf("/") + 1);
-        let path = data.filename.substr(0, data.filename.lastIndexOf("/"));
-        let parent = findDirectory(state.filetree, (data.root+"/"+path).split("/"));
+    setFileChangeCreateDirectory(state, data) {
+        let dirname = data.item.path.substr(data.item.path.lastIndexOf("/") + 1);
+        let path = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
+        let parent = findDirectory(state.filetree, (data.item.root+"/"+path).split("/"));
 
         if (parent) {
             parent.push({
                 isDirectory: true,
-                filename: filename,
+                filename: dirname,
                 modified: new Date(),
                 childrens: [],
             });
@@ -280,9 +256,9 @@ export default {
     },
 
     setFileChangeDeleteDirectory(state, data) {
-        let currentPath = data.filename.substr(0, data.filename.lastIndexOf("/"));
-        let delPath = data.filename.substr(data.filename.lastIndexOf("/")+1);
-        currentPath = findDirectory(state.filetree, (data.root+"/"+currentPath).split("/"));
+        let currentPath = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
+        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.item.root+"/"+currentPath).split("/"));
         let index = currentPath.findIndex(element => element.filename === delPath);
 
         if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);

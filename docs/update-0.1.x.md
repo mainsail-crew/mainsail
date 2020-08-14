@@ -1,5 +1,3 @@
-# This manual is outdated!
-
 # Update from 0.1.x to latest
 Updates after 0.1.x are easier than 0.0.x to 0.1.x.
 
@@ -11,7 +9,7 @@ sudo service moonraker restart
 ```
 
 create a new file ~/moonraker.conf
-```editorconfig
+```
 [server]
 host: 0.0.0.0
 config_path: ~/klipper_config
