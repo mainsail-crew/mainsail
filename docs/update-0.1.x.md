@@ -28,7 +28,7 @@ git checkout origin/master
 ```
 
 ### Move klipper config files to the subdirectory
-create the new subdirectory andmove `printer.cfg` in `~/klipper_config`:
+create the new subdirectory and move `printer.cfg` in `~/klipper_config`:
 ```
 mkdir ~/klipper_config/
 mv ~/printer.cfg ~/klipper_config/
