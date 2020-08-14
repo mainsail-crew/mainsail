@@ -118,7 +118,7 @@ export default {
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
             virtual_sdcard: state => state.printer.virtual_sdcard,
-            current_file: state => state.printer.virtual_sdcard.filename,
+            current_file: state => state.printer.print_stats.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
             klippy_state: state => state.socket.klippy_state,
             is_ready: state => state.socket.is_ready,
