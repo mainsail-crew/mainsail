@@ -1,3 +1,5 @@
+# This manual is outdated!
+
 # Update from 0.1.x to latest
 Updates after 0.1.x are easier than 0.0.x to 0.1.x.
 
