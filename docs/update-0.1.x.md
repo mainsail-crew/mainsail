@@ -54,5 +54,5 @@ and rename `RESET_SD` in your cancel print macro to `SDCARD_RESET_FILE`.
 ```
 rm -R ~/mainsail/*
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.2/mainsail-beta-0.1.2.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.3/mainsail-beta-0.1.3.zip && unzip mainsail.zip && rm mainsail.zip
 ```
