@@ -80,11 +80,6 @@
                 this.sendCmd();
             },
             checkExpand() {
-                window.console.log("checkExpand: "+this.attributeName);
-                window.console.log(this.value);
-                window.console.log(this.variableMax);
-                window.console.log(this.extenderSteps);
-
                 if (this.value > 0) {
                     if (this.value > this.variableMax) {
                         let tmpMulti = Math.ceil((this.value - this.variableMax) / this.extenderSteps);
@@ -104,15 +99,6 @@
                     this.checkExpand();
                 }, 1000);
             }
-            /*value: function() {
-                if (this.value > 0) {
-                    if (this.value > (this.variableMax - this.extenderSteps) && this.value < (this.variableMax + this.extenderSteps)) this.variableMax += this.extenderSteps;
-                    else if (this.value > (this.variableMax - this.extenderSteps)) {
-                        this.variableMax = (this.value / this.extenderSteps).toFixed(0) * this.extenderSteps;
-                        if (this.variableMax < this.max) this.variableMax = this.max;
-                    }
-                }
-            }*/
         },
         created: function() {
             if (this.value > this.variableMax) {

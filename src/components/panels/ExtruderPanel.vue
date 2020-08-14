@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="!(printer_state === 'Printing' && printer_is_printing)">
+    <v-card v-if="(['standby', 'paused', 'complete'].includes(printer_state))">
         <v-row class="px-3">
             <v-col class="col-12 col-md-6">
                 <v-label>Feed amount in mm:</v-label>
@@ -56,14 +56,11 @@
             ...mapState({
                 config: state => state.config,
                 loadings: state => state.loadings,
-                printer_state: state => state.printer.idle_timeout.state,
-                printer_is_paused: state => state.printer.pause_resume.is_paused,
-                printer_is_printing: state => state.printer.virtual_sdcard.is_active,
+                printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
                 'getMacros',
                 'getCurrentExtruder',
-                'is_printing'
             ]),
             extruder: {
                 get: function() {

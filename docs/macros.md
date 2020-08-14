@@ -16,7 +16,7 @@ gcode:
     M141 S0
     M106 S0
     CLEAR_PAUSE
-    RESET_SD
+    SDCARD_RESET_FILE
     BASE_CANCEL_PRINT
 
 [gcode_macro PAUSE]

@@ -1,5 +1,3 @@
-# This manual is outdated!
-
 # Installation
 This document provides a guide on how to install Moonraker & Mainsail on a Raspberry
 Pi running Raspian/Rasperry Pi OS. Other SBCs and/or linux distributions
@@ -23,29 +21,47 @@ sudo apt install git dfu-util
 ```
 
 ## Install Klipper
-Moonraker is still in alpha development, and thus some of its dependencies
-in Klipper have yet to be merged.  Until this has been done it will be
-necessary to add a remote and work off a developmental branch of Klipper
-to correctly run Moonraker.
-
-In this step, we install klipper and change to the development branch of Klipper.
+In this step, we install klipper.
 ```
 cd ~
 git clone https://github.com/KevinOConnor/klipper
 cd ~/klipper
-git remote add arksine https://github.com/arksine/klipper
-git fetch arksine
-git reset --hard arksine/dev-moonraker-testing
 ./scripts/install-octopi.sh
 ```
 
-Note that you are now in a detached head state and you cannot pull. Any
-time you want to update to the latest version of this branch you have to
-`git fetch arksine` and `git reset --hard arksine/dev-moonraker-testing`.
+After you install Klipper with its dependencies you have to change the location
+of the `printer.cfg`. This is definied in the `/etc/default/klipper` file. To edit
+this file type:
+```
+sudo nano /etc/default/klipper
+```
+and then change:
+```
+KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/printer.cfg -l /tmp/klippy.log"
+```
+to:
+```
+KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/klipper_config/printer.cfg -l /tmp/klippy.log"
+```
+Save the file with `STRG+O` and close the editor with `STRG+X`.
 
-Now you can copy your `printer.cfg` in your home directory and restart klipper.
-Please check the `klippy.log`, if Klipper starts correctly and then continue
-the guide.
+At least you have to create the config and the virtual_sdcard directory with:
+```
+mkdir ~/klipper_config
+mkdir ~/sdcard
+```
+and copy your `printer.cfg` in the `~/klipper_config` directory and restart klipper with
+`sudo service klipper restart`. Please check the `klippy.log`, if Klipper starts
+correctly and then continue the guide.
+
+and check if you have following lines in your `printer.cfg`:
+```
+[virtual_sdcard]
+path: ~/sdcard
+
+[pause_resume]
+[display_status]
+```
 
 ## Install Moonraker (API)
 You can now install the Moonraker application:
@@ -69,22 +85,16 @@ All other configuration is sent to the server via Klippy, thus it is done
 in printer.cfg. A basic configuration that authorizes clients on a range
 from 192.168.1.1 - 192.168.1.254 is as follows.
 
-Edit your printer.cfg with nano ~/printer.cfg and add the following lines:
+Create the configfile with `nano ~/moonraker.conf` and add the following lines:
 ```
-[moonraker]
+[server]
+host: 0.0.0.0
+config_path: ~/klipper_config
+
+[authorization]
+enabled: true
 trusted_clients:
     192.168.1.0/24
-```
-
-We also need a `virtual_sdcard` for store the gcode files:
-```
-[virtual_sdcard]
-path: /home/pi/sdcard
-```
-
-Finally, we create the virtual_sdcard directory:
-```
-mkdir ~/sdcard
 ```
 
 Restart klipper (sudo service klipper restart`) and check your klippy.log if klipper is starting correct again.
@@ -233,7 +243,7 @@ Now we can install Mainsail (static httpdocs).
 Now you can download the current mainsail static data
 ```
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.2/mainsail-beta-0.1.2.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.3/mainsail-beta-0.1.3.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 

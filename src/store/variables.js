@@ -14,4 +14,4 @@ export const colorArray = [
 
 export const colorHeaterBed = '#2196F3';
 export const colorChamber = '#4CAF50';
-export const temperaturChartSampleLength = 600;
+export const temperaturChartSampleLength = 1200;

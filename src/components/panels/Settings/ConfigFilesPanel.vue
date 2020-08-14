@@ -170,6 +170,7 @@
     // import highlighting library (you can use any library you want just return html string)
     import { highlight, languages } from 'prismjs/components/prism-core';
     import 'prismjs/components/prism-editorconfig';
+    import 'prismjs/components/prism-ini';
     import 'prismjs/themes/prism-okaidia.css';
     import axios from "axios"; // import syntax highlighting styles
 
@@ -241,7 +242,8 @@
         },
         methods: {
             highlighter(code) {
-                return highlight(code, languages.editorconfig); //returns html
+                //return highlight(code, languages.editorconfig); //returns html
+                return highlight(code, languages.ini); //returns html
             },
             refreshFileList: function() {
                 window.console.log(this.currentPath.substring(1));
@@ -316,8 +318,8 @@
                     this.editor.sourcecode = "";
                     this.editor.item = item;
 
-                    let url = 'http://'+this.hostname+':'+this.port+'/server/files'+this.currentPath+'/'+item.filename;
-                    fetch(url).then(res => res.text()).then(file => {
+                    let url = 'http://'+this.hostname+':'+this.port+'/server/files'+this.currentPath+'/'+item.filename+'?time='+Date.now();
+                    fetch(url, { cache: "no-cache" }).then(res => res.text()).then(file => {
                         this.editor.sourcecode = file;
                         this.editor.show = true;
                         this.editor.showLoader = false;
@@ -346,10 +348,11 @@
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 ).then(() => {
+                    this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
                     this.editor.show = false;
                     this.editor.sourcecode = "";
                 }).catch(() => {
-                    window.console.error("Error save "+this.editor.item.filename);
+                    this.$toast.error("Error save "+this.editor.item.filename);
                 });
             },
             showContextMenu (e, item) {

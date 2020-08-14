@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="(printer_state === 'Printing' && printer_is_printing)">
+    <v-card v-if="(['printing', 'paused'].includes(printer_state))">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>Z Baby Stepping</span>
@@ -52,9 +52,7 @@
             ...mapState({
                 loadings: state => state.loadings,
                 base_zpos: state => state.printer.gcode.base_zpos,
-                printer_state: state => state.printer.idle_timeout.state,
-                printer_is_paused: state => state.printer.pause_resume.is_paused,
-                printer_is_printing: state => state.printer.virtual_sdcard.is_active,
+                printer_state: state => state.printer.print_stats.state,
                 homed_axis: state => state.printer.toolhead.homed_axes,
             }),
         },

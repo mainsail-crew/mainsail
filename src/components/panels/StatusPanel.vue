@@ -10,11 +10,11 @@
             <v-list-item-avatar color="grey"><v-icon dark>mdi-information-variant</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Status</v-list-item-title>
-                <v-list-item-subtitle class="mr-3">{{ printer_is_paused ? "Pause" : printer_state }}{{ printer_is_printing || printer_is_paused ? " - "+current_file : "" }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="mr-3">{{ printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown" }}{{ ['printing', 'paused', 'complete'].includes(printer_state) ? " - "+current_file : "" }}</v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn class="orange" v-if="printer_state === 'Printing' && printer_is_printing && !printer_is_paused" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
-            <v-btn class="red" v-if="(is_printing && printer_is_paused)" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
-            <v-btn class="orange ml-2" v-if="(is_printing && printer_is_paused)" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
+            <v-btn class="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
+            <v-btn class="red" v-if="(printer_state === 'paused')" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
+            <v-btn class="orange ml-2" v-if="(printer_state === 'paused')" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
@@ -48,8 +48,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="is_printing"></v-divider>
-            <v-layout wrap class=" text-center" v-if="is_printing">
+            <v-divider class="my-2" v-if="['printing', 'paused', 'compleded'].includes(printer_state)"></v-divider>
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'compleded'].includes(printer_state)">
                 <v-flex col tag="strong" class="category-header">
                     Printstatus
                 </v-flex>
@@ -72,8 +72,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="is_printing"></v-divider>
-            <v-layout wrap class=" text-center" v-if="is_printing">
+            <v-divider class="my-2" v-if="['printing', 'paused'].includes(printer_state)"></v-divider>
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused'].includes(printer_state)">
                 <v-flex col tag="strong" class="category-header py-0">
                     Estimations<br />based on
                 </v-flex>
@@ -96,7 +96,7 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-layout wrap class=" text-center" v-if="is_printing">
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused'].includes(printer_state)">
                 <v-layout column class="mt-2" >
                     <v-progress-linear
                         :value="printProgress * 100"
@@ -127,14 +127,13 @@
                 estimated_print_time: state => state.printer.toolhead.estimated_print_time,
 
                 printProgress: state => state.printer.virtual_sdcard.progress,
-                print_time: state => state.printer.virtual_sdcard.print_duration,
-                print_time_total: state => state.printer.virtual_sdcard.total_duration,
-                filament_used: state => state.printer.virtual_sdcard.filament_used,
                 file_position: state => state.printer.virtual_sdcard.file_position,
-                current_file: state => state.printer.virtual_sdcard.filename,
-                printer_state: state => state.printer.idle_timeout.state,
-                printer_is_paused: state => state.printer.pause_resume.is_paused,
-                printer_is_printing: state => state.printer.virtual_sdcard.is_active,
+
+                print_time: state => state.printer.print_stats.print_duration,
+                print_time_total: state => state.printer.print_stats.total_duration,
+                filament_used: state => state.printer.print_stats.filament_used,
+                current_file: state => state.printer.print_stats.filename,
+                printer_state: state => state.printer.print_stats.state,
 
                 display_message: state => state.printer.display_status.message,
             }),
