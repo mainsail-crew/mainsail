@@ -1,3 +1,5 @@
+# This manual is outdated!
+
 # Installation
 This document provides a guide on how to install Moonraker & Mainsail on a Raspberry
 Pi running Raspian/Rasperry Pi OS. Other SBCs and/or linux distributions
