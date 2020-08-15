@@ -81,8 +81,7 @@ When the script completes it should start both Moonraker and Klipper. In
 `Moonraker: server connection detected`
 
 ### Configure Moonraker
-All other configuration is sent to the server via Klippy, thus it is done
-in printer.cfg. A basic configuration that authorizes clients on a range
+A basic configuration that authorizes clients on a range
 from 192.168.1.1 - 192.168.1.254 is as follows.
 
 Create the configfile with `nano ~/moonraker.conf` and add the following lines:
@@ -97,10 +96,9 @@ trusted_clients:
     192.168.1.0/24
 ```
 
-Restart klipper (sudo service klipper restart`) and check your klippy.log if klipper is starting correct again.
+Restart Moonraker (sudo service mooonraker restart) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
 
-When klipper is running, open the url `http://<printer-ip>:7125/printer/info` in your browser. If you see a content like this
-
+If you see a content like this
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
