@@ -58,6 +58,11 @@
                 required: false,
                 default: 100
             },
+            extender: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
             multi: {
                 type: Number,
                 required: false,
@@ -95,13 +100,16 @@
                 this.value = this.target * this.multi;
             },
             value: function() {
-                setTimeout(() => {
-                    this.checkExpand();
-                }, 1000);
+                if (this.extender) {
+
+                    setTimeout(() => {
+                        this.checkExpand();
+                    }, 1000);
+                }
             }
         },
         created: function() {
-            if (this.value > this.variableMax) {
+            if (this.extender && this.value > this.variableMax) {
                 let tmpMulti = Math.ceil((this.value - this.variableMax) / this.extenderSteps);
                 this.variableMax += tmpMulti * this.extenderSteps;
 
