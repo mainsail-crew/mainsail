@@ -125,7 +125,7 @@ now we create the config file with:
 sudo nano /etc/nginx/sites-available/mainsail
 ```
 
-and fill it with the following content:
+and fill it with the following content (change pi at - "root /home/pi/mainsail;" to you user name or user folder):
 ```
 map $http_upgrade $connection_upgrade {
     default upgrade;
