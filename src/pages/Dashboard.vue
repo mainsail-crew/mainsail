@@ -12,6 +12,7 @@
             <tools-panel></tools-panel>
             <peripherie-panel class="mt-6" v-if="is_ready"></peripherie-panel>
             <miniconsole-panel class="mt-6" v-if="is_ready && showDashboardConsole"></miniconsole-panel>
+            <power-control-panel class="mt-6"></power-control-panel>
         </v-col>
     </v-row>
 </template>

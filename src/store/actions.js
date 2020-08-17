@@ -5,14 +5,16 @@ import axios from "axios";
 
 
 export default {
-    socket_on_open ({ commit }) {
+    socket_on_open({ commit }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('get_printer_objects_status', { }, 'getHelpData');
+        Vue.prototype.$socket.sendObj('get_printer_objects_status', {}, 'getHelpData');
         Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
+        Vue.prototype.$socket.sendObj('get_power_devices', {}, 'getPowerDevices');
+        Vue.prototype.$socket.sendObj('get_power_status', {}, 'getPowerDevicesStatus');
     },
 
-    socket_on_close ({ commit }, event) {
+    socket_on_close({ commit }, event) {
         commit('setDisconnect');
         if (event.wasClean) window.console.log('Socket closed clear')
         else window.console.error('Connection failure')
@@ -20,9 +22,9 @@ export default {
         window.console.error('Code: ' + event.code)
     },
 
-    socket_on_message ({ commit, state }, data) {
+    socket_on_message({ commit, state }, data) {
         if (!state.socket.isConnected) commit('setConnected');
-        switch(data.method) {
+        switch (data.method) {
             case 'notify_status_update':
                 commit('setPrinterData', data.params[0]);
                 break;
@@ -38,7 +40,7 @@ export default {
                 break;
 
             case 'notify_filelist_changed':
-                switch(data.params[0].action) {
+                switch (data.params[0].action) {
                     case 'upload_file':
                         commit('setFileChangeUploadFile', data.params[0]);
                         break;
@@ -60,7 +62,7 @@ export default {
                         break;
 
                     default:
-                        window.console.error("Unknown filelist_changed action: "+data.params[0].action);
+                        window.console.error("Unknown filelist_changed action: " + data.params[0].action);
                         break;
                 }
                 break;
@@ -74,10 +76,10 @@ export default {
 
     getDirectoryRoot({ commit }, data) {
         if (data.files && data.files.filter((file) => file.filename === "gui.json")) {
-            fetch('http://'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/gcodes/gui.json?time='+Date.now())
+            fetch('http://' + store.state.socket.hostname + ':' + store.state.socket.port + '/server/files/gcodes/gui.json?time=' + Date.now())
                 .then(res => res.json()).then(file => {
-                commit('setSettings', file);
-            });
+                    commit('setSettings', file);
+                });
         }
     },
 
@@ -90,8 +92,8 @@ export default {
 
         axios.post('http://' + state.socket.hostname + ':' + state.socket.port + '/server/files/upload',
             formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            }
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
         ).then(() => {
             commit('setLoadingSaveGuiConfige', false);
         }).catch(() => {
@@ -129,7 +131,7 @@ export default {
 
         commit('setPrinterStatusDetails', data);
 
-        setTimeout(function() {
+        setTimeout(function () {
             if (state.socket.is_ready) Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
         }, 5000);
     },
@@ -148,7 +150,7 @@ export default {
                 nameSplit[0] === "temperature_sensor" ||
                 nameSplit[0] === "filament_switch_sensor" ||
                 nameSplit[0] === "bed_mesh"
-            )  subscripts = {...subscripts, [key]: []}
+            ) subscripts = { ...subscripts, [key]: [] }
         }
 
         if (subscripts !== {}) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
@@ -165,11 +167,11 @@ export default {
         if (data.heaters && data.heaters.available_heaters && data.heaters.available_heaters.length) {
             let subscripts = {};
 
-            data.heaters.available_heaters.forEach(function(heater) {
-                subscripts = {...subscripts, [heater]: []}
+            data.heaters.available_heaters.forEach(function (heater) {
+                subscripts = { ...subscripts, [heater]: [] }
             });
 
-            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts );
+            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
             Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
         }
 
@@ -179,7 +181,7 @@ export default {
         commit('setHeaterHistory', data);
     },
 
-    getPrinterConfig({commit}, data) {
+    getPrinterConfig({ commit }, data) {
         commit('setPrinterConfig', data);
     },
 
@@ -200,9 +202,9 @@ export default {
         if (data.error) {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
-            let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
+            let newPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/") + 1);
 
-            Vue.$toast.success("Successfully created "+newPath);
+            Vue.$toast.success("Successfully created " + newPath);
             commit('voidMutation');
         }
     },
@@ -211,9 +213,9 @@ export default {
         if (data.error) {
             Vue.$toast.error(data.error.message);
         } else if (data.result === "ok") {
-            let delPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/")+1);
+            let delPath = data.requestParams.path.substr(data.requestParams.path.lastIndexOf("/") + 1);
 
-            Vue.$toast.success("Successfully deleted "+delPath);
+            Vue.$toast.success("Successfully deleted " + delPath);
             commit('voidMutation');
         }
     },
@@ -226,8 +228,8 @@ export default {
             let sourceDir = data.requestParams.dest.substr(0, data.requestParams.dest.lastIndexOf("/"));
             let destDir = data.requestParams.dest.substr(0, data.requestParams.dest.lastIndexOf("/"));
 
-            if (sourceDir === destDir) Vue.$toast.success("Successfully renamed "+filename);
-            else Vue.$toast.success("Successfully moved "+filename);
+            if (sourceDir === destDir) Vue.$toast.success("Successfully renamed " + filename);
+            else Vue.$toast.success("Successfully moved " + filename);
             commit('voidMutation');
         }
     },
@@ -236,61 +238,77 @@ export default {
         commit('setHelpList', data);
     },
 
+    getPowerDevices({ commit }, data) {
+        if (data.error) {
+            Vue.$toast.error(data.error.message);
+        } else {
+            commit('setPowerDevices', data.devices);
+        }
+    },
+
+    getPowerDevicesStatus({ commit }, data) {
+        if (data.error) {
+            Vue.$toast.error(data.error.message);
+        } else {
+            commit('setPowerDevicesStatus', data);
+        }
+    },
+
     setHeaterChartVisibility({ commit, dispatch }, data) {
         commit('setHeaterChartVisibility', data);
         dispatch('saveGuiSettings');
     },
 
-    setLoadingEmergencyStop({commit}) {
+    setLoadingEmergencyStop({ commit }) {
         commit('setLoadingEmergencyStop', false);
     },
 
-    setLoadingPrintPause({commit}) {
+    setLoadingPrintPause({ commit }) {
         commit('setLoadingPrintPause', false);
     },
 
-    setLoadingPrintResume({commit}) {
+    setLoadingPrintResume({ commit }) {
         commit('setLoadingPrintResume', false);
     },
 
-    setLoadingPrintCancel({commit}) {
+    setLoadingPrintCancel({ commit }) {
         commit('setLoadingPrintCancel', false);
     },
 
-    sendGcode({commit}, data) {
+    sendGcode({ commit }, data) {
         commit('removeLoading', { name: 'loadingSendGcode' });
         commit('addGcodeResponse', data);
     },
 
-    responseHome({commit}) {
+    responseHome({ commit }) {
         commit('removeLoading', { name: 'controlHomeAll' });
     },
 
-    responseHomeX({commit}) {
+    responseHomeX({ commit }) {
         commit('removeLoading', { name: 'controlHomeX' });
     },
 
-    responseHomeY({commit}) {
+    responseHomeY({ commit }) {
         commit('removeLoading', { name: 'controlHomeY' });
     },
 
-    responseHomeZ({commit}) {
+    responseHomeZ({ commit }) {
         commit('removeLoading', { name: 'controlHomeZ' });
     },
 
-    responseQGL({commit}) {
+    responseQGL({ commit }) {
         commit('removeLoading', { name: 'controlQGL' });
     },
 
-    responseZTilt({commit}) {
+    responseZTilt({ commit }) {
         commit('removeLoading', { name: 'controlZTilt' });
     },
 
-    responseRestart({commit}) {
+    responseRestart({ commit }) {
         commit('setLoadingRestart', false);
     },
 
-    responseRestartFirmware({commit}) {
+    responseRestartFirmware({ commit }) {
         commit('setLoadingRestartFirmware', false);
     },
 
@@ -299,47 +317,47 @@ export default {
         commit('setEndstopStatus', data);
     },
 
-    respondeExtruderRetract({commit}) {
+    respondeExtruderRetract({ commit }) {
         commit('removeLoading', { name: 'extruderRetract' });
     },
 
-    respondeExtruderDetract({commit}) {
+    respondeExtruderDetract({ commit }) {
         commit('removeLoading', { name: 'extruderDetract' });
     },
 
-    respondeBabySteppingDownFine({commit}) {
+    respondeBabySteppingDownFine({ commit }) {
         commit('removeLoading', { name: 'babySteppingDownFine' });
     },
 
-    respondeBabySteppingDown({commit}) {
+    respondeBabySteppingDown({ commit }) {
         commit('removeLoading', { name: 'babySteppingDown' });
     },
 
-    respondeBabySteppingUpFine({commit}) {
+    respondeBabySteppingUpFine({ commit }) {
         commit('removeLoading', { name: 'babySteppingUpFine' });
     },
 
-    respondeBabySteppingUp({commit}) {
+    respondeBabySteppingUp({ commit }) {
         commit('removeLoading', { name: 'babySteppingUp' });
     },
 
-    responseBedMeshLoad({commit}) {
+    responseBedMeshLoad({ commit }) {
         commit('removeLoading', { name: 'bedMeshLoad' });
     },
 
-    responseBedMeshClear({commit}) {
+    responseBedMeshClear({ commit }) {
         commit('removeLoading', { name: 'bedMeshClear' });
     },
 
-    responseBedMeshCalibrate({commit}) {
+    responseBedMeshCalibrate({ commit }) {
         commit('removeLoading', { name: 'bedMeshCalibrate' });
     },
 
-    responseBedMeshSave({commit}) {
+    responseBedMeshSave({ commit }) {
         commit('removeLoading', { name: 'bedMeshSave' });
     },
 
-    responseBedMeshRemove({commit}) {
+    responseBedMeshRemove({ commit }) {
         commit('removeLoading', { name: 'bedMeshRemove' });
     },
 

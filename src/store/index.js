@@ -122,6 +122,9 @@ export default new Vuex.Store({
                 available_heaters: []
             }
         },
+        power: {
+            devices: []
+        },
         temperaturChart: {
             labels: [],
             datasets: [],
