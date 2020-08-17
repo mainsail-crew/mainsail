@@ -5,35 +5,35 @@ import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleLength }
 
 export default {
 
-    setConnected(state) {
+    setConnected (state) {
         state.socket.isConnected = true;
 
         //TODO reset store
     },
 
-    setDisconnected(state) {
+    setDisconnected (state) {
         state.socket.isConnected = false;
     },
 
     resetPrinter(state) {
         //TODO check reset in storage
         Vue.set(state, '', {
-            state: {
-                loadings: [],
-                config: {},
-                object: {
-                    heaters: {
-                        available_heaters: []
-                    }
-                },
-                temperaturChart: {
-                    labels: [],
-                    datasets: [],
-                },
-                helplist: [],
-                filetree: [],
+                state: {
+                    loadings: [],
+                    config: {},
+                    object: {
+                        heaters: {
+                            available_heaters: []
+                        }
+                    },
+                    temperaturChart: {
+                        labels: [],
+                        datasets: [],
+                    },
+                    helplist: [],
+                    filetree: [],
+                }
             }
-        }
         );
     },
 
@@ -100,15 +100,15 @@ export default {
             }
         }
 
-        let index = state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+        let index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
         if (index < 0) {
             this.commit('addTemperatureChartHeater', {
                 name: payload.name,
                 type: payload.type,
             });
-            index = state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+            index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
         }
-        let index_target = state.temperaturChart.datasets.findIndex(element => element.label === payload.name + '_target');
+        let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
 
         // update current temp in temperature chart
         if (index >= 0) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
@@ -153,10 +153,10 @@ export default {
 
         if (payload.type !== "temperature_sensor") {
             state.temperaturChart.datasets.push({
-                label: payload.name + "_target",
+                label: payload.name+"_target",
                 data: [],
                 borderColor: color,
-                backgroundColor: color + '20',
+                backgroundColor: color+'20',
                 fill: true,
                 borderDash: undefined,
                 borderWidth: 0,
@@ -192,7 +192,7 @@ export default {
         let filename = data.item.path;
         if (data.item.path.lastIndexOf("/") >= 0) filename = data.item.path.substr(data.item.path.lastIndexOf("/")).replace("/", "");
         let path = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
-        let parent = findDirectory(state.filetree, (data.item.root + "/" + path).split("/"));
+        let parent = findDirectory(state.filetree, (data.item.root+"/"+path).split("/"));
 
         if (parent) {
             if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
@@ -207,7 +207,7 @@ export default {
                 });
             }
 
-            setTimeout(function () {
+            setTimeout(function() {
                 Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
             }, 1000);
         }
@@ -215,27 +215,27 @@ export default {
 
     setFileChangeDeleteFile(state, data) {
         let currentPath = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
-        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/") + 1);
-        currentPath = findDirectory(state.filetree, (data.item.root + "/" + currentPath).split("/"));
+        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.item.root+"/"+currentPath).split("/"));
         let index = currentPath.findIndex(element => element.filename === delPath);
 
         if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
     },
 
     setFileChangeMoveItem(state, data) {
-        let filenameOld = data.source_item.path.substr(data.source_item.path.lastIndexOf("/") + 1);
+        let filenameOld = data.source_item.path.substr(data.source_item.path.lastIndexOf("/")+1);
         let oldPath = data.source_item.path.substr(0, data.source_item.path.lastIndexOf("/") + 1);
 
-        let filenameNew = data.item.path.substr(data.item.path.lastIndexOf("/") + 1);
+        let filenameNew = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
         let newPath = data.item.path.substr(0, data.item.path.lastIndexOf("/") + 1);
 
-        oldPath = findDirectory(state.filetree, (data.source_item.root + "/" + oldPath).split("/"));
+        oldPath = findDirectory(state.filetree, (data.source_item.root+"/"+oldPath).split("/"));
         let indexFile = oldPath.findIndex(element => element.filename === filenameOld);
 
         if (indexFile >= 0 && oldPath[indexFile]) {
             let file = oldPath.splice(indexFile, 1)[0];
             file.filename = filenameNew;
-            newPath = findDirectory(state.filetree, (data.item.root + "/" + newPath).split("/"));
+            newPath = findDirectory(state.filetree, (data.item.root+"/"+newPath).split("/"));
             newPath.push(file);
         }
     },
@@ -243,7 +243,7 @@ export default {
     setFileChangeCreateDirectory(state, data) {
         let dirname = data.item.path.substr(data.item.path.lastIndexOf("/") + 1);
         let path = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
-        let parent = findDirectory(state.filetree, (data.item.root + "/" + path).split("/"));
+        let parent = findDirectory(state.filetree, (data.item.root+"/"+path).split("/"));
 
         if (parent) {
             parent.push({
@@ -257,8 +257,8 @@ export default {
 
     setFileChangeDeleteDirectory(state, data) {
         let currentPath = data.item.path.substr(0, data.item.path.lastIndexOf("/"));
-        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/") + 1);
-        currentPath = findDirectory(state.filetree, (data.item.root + "/" + currentPath).split("/"));
+        let delPath = data.item.path.substr(data.item.path.lastIndexOf("/")+1);
+        currentPath = findDirectory(state.filetree, (data.item.root+"/"+currentPath).split("/"));
         let index = currentPath.findIndex(element => element.filename === delPath);
 
         if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
@@ -297,7 +297,7 @@ export default {
                         childrens: [],
                     });
 
-                    Vue.prototype.$socket.sendObj('get_directory', { path: data.requestParams.path + '/' + dir.dirname }, 'getDirectoryRoot');
+                    Vue.prototype.$socket.sendObj('get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
                 }
             }
         }
@@ -321,9 +321,9 @@ export default {
 
     setMetadata(state, data) {
         if (data !== undefined && data.filename !== "") {
-            let filename = "gcodes/" + data.filename;
+            let filename = "gcodes/"+data.filename;
             let dirArray = filename.split("/");
-            filename = dirArray[dirArray.length - 1];
+            filename = dirArray[dirArray.length-1];
             let path = findDirectory(state.filetree, dirArray);
 
             let index = path.findIndex(element => element.filename === filename);
@@ -356,19 +356,19 @@ export default {
 
     renameMetadataFilename(state, data) {
         let sourceDirArray = data.source.split("/");
-        let sourceFilename = sourceDirArray[sourceDirArray.length - 1];
+        let sourceFilename = sourceDirArray[sourceDirArray.length-1];
 
-        sourceDirArray.splice(-1, 1);
+        sourceDirArray.splice(-1,1);
         let sourcePath = findDirectory(state.filetree, sourceDirArray);
 
         let destDirArray = data.dest.split("/");
-        let destFilename = destDirArray[destDirArray.length - 1];
+        let destFilename = destDirArray[destDirArray.length-1];
 
         let index = sourcePath.findIndex(element => element.filename === sourceFilename);
 
         if (destFilename === sourceFilename) {
-            destDirArray.splice(-1, 1);
-            if (destDirArray[destDirArray.length - 1] === "..") destDirArray.splice(-2, 2);
+            destDirArray.splice(-1,1);
+            if (destDirArray[destDirArray.length-1] === "..") destDirArray.splice(-2,2);
 
             let destPath = findDirectory(state.filetree, destDirArray);
             destPath.push(sourcePath[index]);
@@ -402,7 +402,7 @@ export default {
             message: message
         });
 
-        if (message !== undefined && message.substring(0, 2) === "!!") {
+        if (message !== undefined && message.substring(0,2) === "!!") {
             Vue.$toast.error(message);
         }
     },
@@ -420,7 +420,7 @@ export default {
     },
 
     removeLoading(state, data) {
-        state.loadings = state.loadings.filter(function (ele) { return ele !== data.name; });
+        state.loadings = state.loadings.filter(function(ele){ return ele !== data.name; });
     },
 
     setKlippyStatus(state, value) {
