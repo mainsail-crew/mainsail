@@ -166,12 +166,12 @@ export default {
     getAllMacros: state => {
         let array = [];
 
-        for (let prop in state.config) {
+        for (let prop in state.printer.configfile.config) {
             if (prop.startsWith('gcode_macro') &&
-                !Object.hasOwnProperty.call(state.config[prop], 'rename_existing')) {
+                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], 'rename_existing')) {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
-                    'prop': state.config[prop]
+                    'prop': state.printer.configfile.config[prop]
                 });
             }
         }
