@@ -2,17 +2,17 @@
     <v-card>
         <v-list-item>
             <v-list-item-avatar color="grey">
-                <v-icon dark v-if="error_detected">mdi-alert-circle</v-icon>
-                <v-icon dark v-if="!error_detected">mdi-information-variant</v-icon>
+                <v-icon dark>mdi-alert-circle</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Klippy-Status</v-list-item-title>
+                <v-list-item-title class="subtitle-1">{{ state }}</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
-                <v-flex col class="text-left"><pre>{{ klippy_message }}</pre></v-flex>
+                <v-flex col class="text-left"><pre>{{ state_message }}</pre></v-flex>
             </v-layout>
         </v-card-text>
         <v-divider class="my-2" ></v-divider>
@@ -29,8 +29,8 @@
     export default {
         computed: {
             ...mapState({
-                error_detected: state => state.socket.error_detected,
-                klippy_message: state => state.socket.klippy_message,
+                state: state => state.printer.webhooks.state,
+                state_message: state => state.printer.webhooks.state_message,
                 loadingRestart: state => state.socket.loadingRestart,
                 loadingRestartFirmware: state => state.socket.loadingRestartFirmware,
             }),

@@ -51,7 +51,7 @@
         computed: {
             ...mapState({
                 loadings: state => state.loadings,
-                base_zpos: state => state.printer.gcode.base_zpos,
+                base_zpos: state => state.printer.gcode_move.base_zpos,
                 printer_state: state => state.printer.print_stats.state,
                 homed_axis: state => state.printer.toolhead.homed_axes,
             }),

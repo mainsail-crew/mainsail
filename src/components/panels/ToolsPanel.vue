@@ -93,15 +93,13 @@
                 extruderTemps: [250,215,195,0],
                 loaded: false,
                 chartdata: {
-                    labels: [],
                     datasets: []
                 }
             }
         },
         computed: {
             ...mapState({
-                labels: state => state.temperaturChart.labels,
-                datasets: state => state.temperaturChart.datasets,
+                datasets: state => state.temperaturChart,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
             }),
             ...mapGetters([
@@ -118,7 +116,6 @@
             fillData () {
                 this.loaded = true;
                 this.chartdata = {
-                    labels: this.labels,
                     datasets: this.datasets
                 }
             }
@@ -126,11 +123,6 @@
         mounted () {
             this.fillData();
         },
-        watch: {
-            labels() {
-                this.fillData();
-            }
-        }
     }
 </script>
 
