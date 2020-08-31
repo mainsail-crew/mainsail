@@ -30,8 +30,8 @@ cd ~/klipper
 ```
 
 After you install Klipper with its dependencies you have to change the location
-of the `printer.cfg`. This is definied in the `/etc/default/klipper` file. To edit
-this file type:
+of the `printer.cfg` and add the UDS. This is definied in the `/etc/default/klipper` file.
+To edit this file type:
 ```
 sudo nano /etc/default/klipper
 ```
@@ -41,7 +41,7 @@ KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/printer.cfg -l /tmp/klip
 ```
 to:
 ```
-KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/klipper_config/printer.cfg -l /tmp/klippy.log"
+KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/klipper_config/printer.cfg -l /tmp/klippy.log -a /tmp/klippy_uds"
 ```
 Save the file with `CTRL+O` and close the editor with `CTRL+X`.
 
@@ -96,7 +96,7 @@ trusted_clients:
     192.168.1.0/24
 ```
 
-Restart Moonraker (sudo service moonraker restart) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
+Restart Moonraker (`sudo service moonraker restart`) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
 
 If you see a content like this
 ```
@@ -241,7 +241,7 @@ Now we can install Mainsail (static httpdocs).
 Now you can download the current mainsail static data
 ```
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.1.3/mainsail-beta-0.1.3.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.0/mainsail-beta-0.2.0.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
