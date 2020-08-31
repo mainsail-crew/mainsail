@@ -220,7 +220,7 @@ export default {
             currentProfile = state.printer.bed_mesh.profile_name;
         }
 
-        for (let [key, value] of Object.entries(state.config)) {
+        for (let [key, value] of Object.entries(state.printer.configfile.config)) {
             let nameSplit = key.split(" ");
 
             if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
