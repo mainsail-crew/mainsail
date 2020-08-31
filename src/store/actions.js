@@ -65,7 +65,6 @@ export default {
                 break;
 
             default:
-                window.console.log(data);
                 if (data.result !== "ok") {
                     if (data.error && data.error.message !== "Klippy Request Timed Out") window.console.error("JSON-RPC: " + data.error.message);
                 }
