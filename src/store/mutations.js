@@ -269,9 +269,12 @@ export default {
                 });
             }
 
-            setTimeout(function() {
-                Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
-            }, 1000);
+            let extension = filename.substring(filename.lastIndexOf("."));
+            if (extension.toLowerCase() === ".gcode") {
+                setTimeout(function() {
+                    Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.item.path }, "getMetadata");
+                }, state.socket.metadataRequestDelay);
+            }
         }
     },
 

@@ -245,7 +245,8 @@ export default {
 
     getTitle: state => {
         if (state.socket.isConnected) {
-            if (state.printer.print_stats.state === "paused") return "Pause Print";
+            if (state.printer.webhooks.state !== "ready") return "ERROR";
+            else if (state.printer.print_stats.state === "paused") return "Pause Print";
             else if (state.printer.print_stats.state === "printing") return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.print_stats.filename;
             else if (state.printer.print_stats.state === "complete") return "Complete - "+state.printer.print_stats.filename;
 
