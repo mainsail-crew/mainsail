@@ -96,7 +96,7 @@ trusted_clients:
     192.168.1.0/24
 ```
 
-Restart Moonraker (sudo service mooonraker restart) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
+Restart Moonraker (sudo service moonraker restart) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
 
 If you see a content like this
 ```
