@@ -37,7 +37,7 @@
                         <b>{{ heater.name }}</b><br />
                         <small>{{ heater.target > 0 ? "active" : "off" }}</small>
                     </v-col>
-                    <v-col class="text-center py-0 vertical_align_center"><span>{{ heater.temperature.toFixed(1) }}°C</span></v-col>
+                    <v-col class="text-center py-0 vertical_align_center"><span>{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</span></v-col>
                     <v-col class="text-center py-0 vertical_align_center">
                         <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
                     </v-col>
@@ -50,7 +50,7 @@
                         <b>{{ fan.name }}</b><br />
                         <small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
                     </v-col>
-                    <v-col class="text-center py-0 vertical_align_center"><span>{{ fan.temperature.toFixed(1) }}°C</span></v-col>
+                    <v-col class="text-center py-0 vertical_align_center"><span>{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span></v-col>
                     <v-col class="text-center py-0 vertical_align_center">
                         <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" ></toolInput>
                     </v-col>
@@ -63,8 +63,8 @@
                         <b>Temperature<br />Sensors</b>
                     </v-col>
                     <v-col class="text-center py-0 vertical_align_center" v-for="(sensor,index) in temperature_sensors" v-bind:key="index+999" >
-                        <span style="cursor: default;" :title="'min: '+sensor.measured_min_temp.toFixed(1)+'° / max: '+sensor.measured_max_temp.toFixed(1)+'°'">{{ sensor.temperature.toFixed(1) }}°C</span><br />
-                        <small style="cursor: default;" :title="'min: '+sensor.measured_min_temp.toFixed(1)+'° / max: '+sensor.measured_max_temp.toFixed(1)+'°'">{{ sensor.name }}</small>
+                        <span style="cursor: default;" :title="'min: '+(sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0)+'° / max: '+(sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0)+'°'">{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span><br />
+                        <small style="cursor: default;" :title="'min: '+( sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0)+'° / max: '+(sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0)+'°'">{{ sensor.name }}</small>
                     </v-col>
                 </v-row>
             </div>
