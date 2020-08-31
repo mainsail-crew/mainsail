@@ -76,7 +76,8 @@
         </v-dialog>
 
         <v-footer app class="d-block">
-            <span v-if="version">{{ version }}</span>
+            <span>v0.2.0</span>
+            <span v-if="version"> - {{ version }}</span>
             <span class="float-right">Made with <img src="/img/heard.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
     </v-app>
