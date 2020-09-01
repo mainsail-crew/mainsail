@@ -14,11 +14,10 @@
 
     .config-editor-overlay div.v-card {
         position: relative;
-        padding-top: 64px !important;
     }
 
     .config-editor-overlay div.v-card header {
-        position: fixed;
+        position: sticky;
         top: 0;
         width: 100%;
         z-index: 1;
@@ -105,7 +104,7 @@
         </v-dialog>
         <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
             <v-card d-flex>
-                <v-toolbar dark color="primary" class="pr-5">
+                <v-toolbar dark color="primary">
                     <v-btn icon dark @click="editor.show = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
