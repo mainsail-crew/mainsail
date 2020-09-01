@@ -123,11 +123,8 @@ export default new Vuex.Store({
                 config: {}
             }
         },
-        temperaturChart: {
-            labels: [],
-            datasets: [],
-        },
         object: [],
+        temperaturChart: [],
         power: {
             devices: []
         },
