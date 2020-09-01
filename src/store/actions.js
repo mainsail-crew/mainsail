@@ -209,11 +209,11 @@ export default {
     },
 
     respondPrintPause({commit}) {
-        commit('removeLoading', { name: 'statusPrintCancel' });
+        commit('removeLoading', { name: 'statusPrintPause' });
     },
 
     respondPrintResume({commit}) {
-        commit('removeLoading', { name: 'statusPrintCancel' });
+        commit('removeLoading', { name: 'statusPrintResume' });
     },
 
     respondPrintCancel({commit}) {
