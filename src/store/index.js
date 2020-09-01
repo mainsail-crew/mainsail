@@ -110,7 +110,7 @@ export default new Vuex.Store({
             gcode_move: {
                 extrude_factor: 1,
                 speed_factor: 1,
-                base_zpos: 0,
+                homing_origin: [0,0,0,0],
                 absolute_coordinates: true,
                 absolute_extrude: true,
                 speed: 0,
