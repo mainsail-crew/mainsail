@@ -27,7 +27,9 @@
             <v-row>
                 <v-col
                     class="col-12 pv-0 col-sm-4 pr-sm-0"
-                    v-if="current_file_metadata &&
+                    v-if="
+                        ['printing', 'paused', 'complete'].includes(printer_state) &&
+                        current_file_metadata &&
                         current_file_metadata.thumbnails &&
                         current_file_metadata.thumbnails.length &&
                         current_file_metadata.thumbnails.find(element => element.width === 400)
@@ -39,7 +41,8 @@
                 </v-col>
                 <v-col
                     :class="
-                        (current_file_metadata &&
+                        (['printing', 'paused', 'complete'].includes(printer_state) &&
+                        current_file_metadata &&
                         current_file_metadata.thumbnails &&
                         current_file_metadata.thumbnails.length &&
                         current_file_metadata.thumbnails.find(element => element.width === 400)) ? 'col-12 pv-0 col-sm-8 pl-sm-0' : 'col-12 pv-0'
