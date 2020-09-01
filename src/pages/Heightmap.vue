@@ -242,14 +242,23 @@
                     let x_count = 0;
                     let y_count = 0;
 
+                    let min = -1;
+                    let max = 1;
+
                     if (this.showMeshType === 'probed') {
                         x_count = this.bed_mesh.probed_matrix[0].length;
                         y_count = this.bed_mesh.probed_matrix.length;
                         this.data[0].z = this.bed_mesh.probed_matrix;
+
+                        min = Math.min.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.min.apply(Math, row); }));
+                        max = Math.max.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.max.apply(Math, row); }));
                     } else if (this.showMeshType === 'mesh') {
                         x_count = this.bed_mesh.mesh_matrix[0].length;
                         y_count = this.bed_mesh.mesh_matrix.length;
                         this.data[0].z = this.bed_mesh.mesh_matrix;
+
+                        min = Math.min.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.min.apply(Math, row); }));
+                        max = Math.max.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.max.apply(Math, row); }));
                     }
 
                     let x_step = (this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / (x_count - 1);
@@ -261,6 +270,11 @@
                     for(let i = 0; i < y_count; i++) {
                         this.data[0].y.push(parseFloat(this.bed_mesh.mesh_min[1]) + parseFloat(y_step) * i);
                     }
+
+                    if (min > -1) min = -1;
+                    if (max < 1) max = 1;
+
+                    this.layout.scene.zaxis.range = [min, max];
 
                     this.boolShowBedMesh = true;
                 } else this.boolShowBedMesh = false;
