@@ -259,6 +259,8 @@ export default {
     },
 
     getCurrentExtruder: state => {
+        if (state.printer.configfile.config === null) return null;
+
         let extruder = {
             name: "",
             status: null,
