@@ -214,7 +214,7 @@
         },
         computed: {
             ...mapState({
-                config: state => state.config,
+                config: state => state.printer.configfile.config,
                 bed_mesh: state => state.printer.bed_mesh,
                 loadings: state => state.loadings,
             }),
@@ -304,6 +304,7 @@
         },
         watch: {
             config: function() {
+                window.console.log(this.config);
                 this.profiles = this.$store.getters.getBedMeshProfiles;
             },
             profile: function() {

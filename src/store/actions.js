@@ -7,15 +7,14 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('get_printer_objects_status', { }, 'getHelpData');
-        Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectoryRoot');
+        Vue.prototype.$socket.sendObj('get_directory', { path: '/gcodes' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
         Vue.prototype.$socket.sendObj('get_power_devices', {}, 'getPowerDevices');
         Vue.prototype.$socket.sendObj('get_power_status', {}, 'getPowerDevicesStatus');
     },
 
     socket_on_close ({ commit }, event) {
-        commit('setDisconnect');
+        commit('setDisconnected');
         if (event.wasClean) window.console.log('Socket closed clear')
         else window.console.error('Connection failure')
 
@@ -24,6 +23,7 @@ export default {
 
     socket_on_message ({ commit, state }, data) {
         if (!state.socket.isConnected) commit('setConnected');
+
         switch(data.method) {
             case 'notify_status_update':
                 commit('setPrinterData', data.params[0]);
@@ -33,10 +33,9 @@ export default {
                 commit('addGcodeResponse', data.params[0]);
                 break;
 
-            case 'notify_klippy_state_changed':
-                window.console.log('notify_klippy_state_changed');
-                window.console.log(data.params[0]);
-                commit('setKlippyStatus', data.params[0]);
+            case 'notify_klippy_disconnected':
+                commit('setKlippyDisconnected');
+                commit('resetPrinter');
                 break;
 
             case 'notify_filelist_changed':
@@ -101,80 +100,44 @@ export default {
         });
     },
 
-    getKlipperInfo({ commit, state }, data) {
-        if (data !== undefined && data.is_ready && !state.socket.is_ready) {
-            commit('resetPrinter');
-            commit('setPrinterData', {
-                hostname: data.hostname,
-                version: data.version
-            });
+    getKlipperInfo({ commit }, data) {
+        commit('setPrinterData', {
+            hostname: data.hostname,
+            software_version: data.software_version,
+            cpu_info: data.cpu_info,
+            webhooks: {
+                state: data.state,
+                state_message: data.state_message,
+            }
+        });
 
-            Vue.prototype.$socket.sendObj('get_printer_objects_list', {}, 'getObjectInfo');
-            Vue.prototype.$socket.sendObj('get_printer_objects_status', { heaters: [] }, 'getHeatersInfo');
-            Vue.prototype.$socket.sendObj('get_printer_objects_status', { configfile: ['config'] }, 'getPrinterConfig');
-            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', {
-                gcode: [],
-                toolhead: [],
-                virtual_sdcard: [],
-                print_stats: [],
-                heaters: [],
-                fan: [],
-                pause_resume: [],
-                idle_timeout: [],
-                display_status: [],
-            });
-            Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
-            Vue.prototype.$socket.sendObj('get_directory', { path: 'config' }, 'getDirectory');
-            Vue.prototype.$socket.sendObj('get_directory', { path: 'config_examples' }, 'getDirectory');
-            Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
-        }
-
-        commit('setPrinterStatusDetails', data);
-
-        setTimeout(function() {
-            if (state.socket.is_ready) Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-        }, 5000);
+        Vue.prototype.$socket.sendObj('get_printer_objects_list', {}, 'getObjectsList');
+        Vue.prototype.$socket.sendObj('get_directory', { path: 'gcodes' }, 'getDirectory');
+        Vue.prototype.$socket.sendObj('get_directory', { path: 'config' }, 'getDirectory');
+        Vue.prototype.$socket.sendObj('get_directory', { path: 'config_examples' }, 'getDirectory');
+        Vue.prototype.$socket.sendObj('get_printer_gcode_help', {}, 'getHelpList');
     },
 
-    getObjectInfo({ commit }, data) {
-        commit('setObjectData', data);
+    getObjectsList({ commit }, data) {
+        commit('setObjectData', data.objects);
 
         let subscripts = {}
 
-        for (let key of Object.keys(data)) {
+        for (let key of data.objects) {
             let nameSplit = key.split(" ");
 
             if (
-                nameSplit[0] === "temperature_fan" ||
-                nameSplit[0] === "temperature_probe" ||
-                nameSplit[0] === "temperature_sensor" ||
-                nameSplit[0] === "filament_switch_sensor" ||
-                nameSplit[0] === "bed_mesh"
-            )  subscripts = {...subscripts, [key]: []}
+                nameSplit[0] !== "gcode_macro" &&
+                nameSplit[0] !== "menu"
+            ) subscripts = {...subscripts, [key]: null }
         }
 
-        if (subscripts !== {}) Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts);
-        if (subscripts.bed_mesh) Vue.prototype.$socket.sendObj('get_printer_objects_status', { bed_mesh: [] }, 'getPrinterData');
+        if (subscripts !== {}) Vue.prototype.$socket.sendObj('post_printer_objects_subscribe', { objects: subscripts }, "getPrinterData");
+        Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
     },
 
     getPrinterData({ commit }, data) {
-        commit('setPrinterData', data);
-    },
-
-    getHeatersInfo({ commit }, data) {
-        commit('setObjectData', data);
-
-        if (data.heaters && data.heaters.available_heaters && data.heaters.available_heaters.length) {
-            let subscripts = {};
-
-            data.heaters.available_heaters.forEach(function(heater) {
-                subscripts = {...subscripts, [heater]: []}
-            });
-
-            Vue.prototype.$socket.sendObj('post_printer_objects_subscription', subscripts );
-            Vue.prototype.$socket.sendObj("get_server_temperature_store", {}, "getHeatersHistory");
-        }
-
+        if (data.status) commit('setPrinterData', data.status);
     },
 
     getHeatersHistory({ commit }, data) {
@@ -263,16 +226,24 @@ export default {
         commit('setLoadingEmergencyStop', false);
     },
 
-    setLoadingPrintPause({commit}) {
-        commit('setLoadingPrintPause', false);
+    respondPrintPause({commit}) {
+        commit('removeLoading', { name: 'statusPrintCancel' });
     },
 
-    setLoadingPrintResume({commit}) {
-        commit('setLoadingPrintResume', false);
+    respondPrintResume({commit}) {
+        commit('removeLoading', { name: 'statusPrintCancel' });
     },
 
-    setLoadingPrintCancel({commit}) {
-        commit('setLoadingPrintCancel', false);
+    respondPrintCancel({commit}) {
+        commit('removeLoading', { name: 'statusPrintCancel' });
+    },
+
+    respondPrintClear({commit}) {
+        commit('removeLoading', { name: 'statusPrintClear' });
+    },
+
+    respondPrintReprint({commit}) {
+        commit('removeLoading', { name: 'statusPrintReprint' });
     },
 
     sendGcode({commit}, data) {
@@ -363,10 +334,6 @@ export default {
 
     switchToDashboard() {
         router.push("/");
-    },
-
-    getHelpData({ commit }, data) {
-        commit('voidMutation', data);
     },
 
     setSettings({ commit }, data) {

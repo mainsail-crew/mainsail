@@ -4,14 +4,14 @@
 
 <template>
     <v-card>
-        <v-row class="" v-if="['standby', 'complete'].includes(printer_state)">
+        <v-row class="" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 pb-0 text-center">
                 <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHomeAll" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
                 <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('z_tilt')"><v-btn @click="doZtilt" :loading="loadingZTilt" color="primary">Z Tilt</v-btn></div>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('X-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left class="d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">X-100</span></v-btn>
@@ -24,7 +24,7 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('Y-100')" cols="1" class="flex-grow-1 flex-shrink-0 d-none d-sm-flex"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Y-100</span></v-btn>
@@ -37,7 +37,7 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle borderless no-gutters style="flex-wrap: nowrap; width: 100%;" >
                     <v-btn @click="doSendMove('Z-25')" cols="1" class="flex-grow-1 flex-shrink-0"><v-icon left  class="d-none d-sm-flex">mdi-chevron-left</v-icon><span class="body-2">Z-25</span></v-btn>
@@ -81,7 +81,7 @@
         computed: {
             ...mapState({
                 homedAxes: state => state.printer.toolhead.homed_axes,
-                config: state => state.config,
+                config: state => state.printer.configfile.config,
                 loadings: state => state.loadings,
                 printer_state: state => state.printer.print_stats.state
             }),

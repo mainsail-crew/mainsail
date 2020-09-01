@@ -28,7 +28,7 @@
                             (
                                 category.title !== 'Webcam' &&
                                 category.title !== 'Heightmap' &&
-                                (is_ready || category.alwaysShow)
+                                (klippy_state !== 'error' || category.alwaysShow)
                             )
                         ">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
@@ -38,7 +38,7 @@
 
                     <ul class="child">
                         <li v-for="(page, pageIndex) in category.children" class="nav-item" v-bind:key="`${index}-${pageIndex}`">
-                            <router-link :to="page.path" class="nav-link" @click.prevent v-if="is_ready || page.alwaysShow">
+                            <router-link :to="page.path" class="nav-link" @click.prevent v-if="klippy_state !== 'error' || page.alwaysShow">
                                 <v-icon>mdi-{{ page.icon }}</v-icon>
                                 <span class="nav-title">{{ page.title }}</span>
                             </router-link>
@@ -76,8 +76,9 @@
         </v-dialog>
 
         <v-footer app class="d-block">
-            <span v-if="version">{{ version }}</span>
-            <span class="float-right">Made with <img src="/img/heard.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
+            <span>v0.2.0</span>
+            <span v-if="version"> - {{ version }}</span>
+            <span class="float-right">Made with <img src="/img/heart.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
     </v-app>
 </template>
@@ -113,16 +114,15 @@ export default {
             toolhead: state => state.printer.toolhead,
             hostname: state => state.printer.hostname,
             printername: state => state.gui.general.printername,
-            version: state => state.printer.version,
+            version: state => state.printer.software_version,
             loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
             virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
-            klippy_state: state => state.socket.klippy_state,
-            is_ready: state => state.socket.is_ready,
-            config: state => state.config,
+            klippy_state: state => state.printer.webhooks.state,
+            config: state => state.printer.configfile.config,
         }),
         ...mapGetters([
             'getTitle'

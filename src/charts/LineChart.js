@@ -12,15 +12,26 @@ export default {
     props: ['chartData'],
     data() {
         return {
+            timer: '',
             options: {
+                events: ['onHover'],
                 animation: {
                     duration: 0					// general animation time
                 },
+                hover: {
+                    animationDuration: 0 // duration of animations when hovering an item
+                },
                 elements: {
                     line: {
-                        tension: 0				// disable bezier curves
+                        tension: 0.4,				// disable bezier curves
+                        borderDash: undefined,
+                    },
+                    point: {
+                        radius: 0,
+                        hoverRadius: 0,
                     }
                 },
+                showLines: true,
                 legend: {
                     labels: {
                         fontColor: 'rgb(203, 203, 203)',
@@ -49,16 +60,19 @@ export default {
                 },
                 tooltips: {
                     enabled: true,
+                    mode: 'nearest',
+                    caretPadding: 20,
+                    intersect: false,
                     callbacks: {
                         title: function (tooltipItem) {
                             let date = new Date(tooltipItem[0].label);
-                            return date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                            return date.getHours()+":"+(date.getMinutes() < 10 ? "0" : "")+date.getMinutes()+":"+(date.getSeconds() < 10 ? "0" : "")+date.getSeconds();
                         },
-                        label: function (tooltipItem, data) {
-                            let label_target = data['datasets'][tooltipItem.datasetIndex].label+"_target";
+                        label: function (tooltipItem/*, data*/) {
+                            /*let label_target = data['datasets'][tooltipItem.datasetIndex].label+"_target";
                             let target_dataset = data['datasets'].find(dataset => dataset.label === label_target);
 
-                            if (target_dataset !== undefined) return tooltipItem.value+" / "+target_dataset.data[tooltipItem.index];
+                            if (target_dataset !== undefined && target_dataset.data[tooltipItem.index] !== undefined) return tooltipItem.value+" / "+target_dataset.data[tooltipItem.index].y;*/
                             return tooltipItem.value;
                         },
                     }
@@ -67,33 +81,27 @@ export default {
                 responsive: true,
                 responsiveAnimationDuration: 0, // animation duration after a resize
                 scales: {
-                    xAxes: [
-                        {
-                            gridLines: {
-                                color: 'rgba(0,0,0,0.2)',
-                                display: true
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'minute',
+                            displayFormats: {
+                                second: 'HH:mm:ss',
+                                minute: 'HH:mm'
+                            }
+                        },
+                        ticks: {
+                            minor: {
+                                fontColor: 'rgb(203, 203, 203)',
+                                fontFamily: 'Roboto,sans-serif'
                             },
-                            ticks: {
-                                minor: {
-                                    fontColor: 'rgb(203, 203, 203)',
-                                    fontFamily: 'Roboto,sans-serif'
-                                },
-                                major: {
-                                    fontColor: 'rgb(203, 203, 203)',
-                                    fontFamily: 'Roboto,sans-serif'
-                                },
-                                min: new Date() - maxSampleTime,
-                                max: new Date()
-                            },
-                            time: {
-                                unit: 'minute',
-                                displayFormats: {
-                                    minute: 'HH:mm'
-                                }
-                            },
-                            type: 'time',
-                        }
-                    ],
+                            min: new Date() - maxSampleTime,
+                            max: new Date(),
+                        },
+                        gridLines: {
+                            color: 'rgba(203,203,203,0.1)',
+                        },
+                    }],
                     yAxes: [
                         {
                             gridLines: {
@@ -120,8 +128,11 @@ export default {
             }
         }
     },
+    created () {
+        this.timer = setInterval(this.update, 500);
+    },
     mounted () {
-        this.renderChart(this.chartData, this.options)
+        this.renderChart(this.chartData, this.options);
     },
     methods: {
         update() {
@@ -131,9 +142,4 @@ export default {
             this.$data._chart.update();
         }
     },
-    watch: {
-        chartData () {
-            this.update();
-        }
-    }
 }

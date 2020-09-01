@@ -1,16 +1,12 @@
 
 
 export default {
-    toolhead(state) {
-        return (state.socket.isConnected) ? state.printer.toolhead : null;
-    },
-
     heaters: state => {
         let heaters = [];
 
-        if (state.object.heaters.available_heaters) {
+        if (state.printer.heaters.available_heaters) {
             for (let [key, value] of Object.entries(state.printer)) {
-                if (state.object.heaters.available_heaters.includes(key)) {
+                if (state.printer.heaters.available_heaters.includes(key)) {
                     heaters.push({
                         name: key,
                         target: value.target,
@@ -129,12 +125,12 @@ export default {
         return 0;
     },
 
-    bool_fan: state => {
-        return Object.entries(state.object).indexOf('fan');
+    fan: state => {
+        return Object.entries(state.object).indexOf('fan') ? state.printer.fan : false;
     },
 
     is_printing: state => {
-        return (state.printer.virtual_sdcard.filename !== "");
+        return (state.printer.print_stats.filename !== "");
     },
 
     getMacros: state => {
@@ -144,9 +140,9 @@ export default {
             hiddenMacros[index] = item.toLowerCase();
         });
 
-        for (let prop in state.config) {
+        for (let prop in state.printer.configfile.config) {
             if (prop.startsWith('gcode_macro') &&
-                !Object.hasOwnProperty.call(state.config[prop], 'rename_existing') &&
+                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], 'rename_existing') &&
                 !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
             ) {
                 array.push({
@@ -170,12 +166,12 @@ export default {
     getAllMacros: state => {
         let array = [];
 
-        for (let prop in state.config) {
+        for (let prop in state.printer.configfile.config) {
             if (prop.startsWith('gcode_macro') &&
-                !Object.hasOwnProperty.call(state.config[prop], 'rename_existing')) {
+                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], 'rename_existing')) {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
-                    'prop': state.config[prop]
+                    'prop': state.printer.configfile.config[prop]
                 });
             }
         }
@@ -224,7 +220,7 @@ export default {
             currentProfile = state.printer.bed_mesh.profile_name;
         }
 
-        for (let [key, value] of Object.entries(state.config)) {
+        for (let [key, value] of Object.entries(state.printer.configfile.config)) {
             let nameSplit = key.split(" ");
 
             if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
@@ -249,8 +245,10 @@ export default {
 
     getTitle: state => {
         if (state.socket.isConnected) {
-            if (state.printer.pause_resume && state.printer.pause_resume.is_paused) return "Pause Print";
-            else if (state.printer.virtual_sdcard && state.printer.virtual_sdcard.is_active) return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.virtual_sdcard.filename;
+            if (state.printer.webhooks.state !== "ready") return "ERROR";
+            else if (state.printer.print_stats.state === "paused") return "Pause Print";
+            else if (state.printer.print_stats.state === "printing") return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.print_stats.filename;
+            else if (state.printer.print_stats.state === "complete") return "Complete - "+state.printer.print_stats.filename;
 
             return state.gui.general.printername ? state.gui.general.printername : state.printer.hostname;
         } else return "Mainsail";
