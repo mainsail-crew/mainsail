@@ -50,22 +50,19 @@
                 feedrate: 5,
                 loadingRetract: false,
                 loadingDetract: false,
+                extruder: null,
             }
         },
         computed: {
             ...mapState({
                 loadings: state => state.loadings,
                 printer_state: state => state.printer.print_stats.state,
+                config: state => state.printer.configfile.config,
             }),
             ...mapGetters([
                 'getMacros',
                 'getCurrentExtruder',
             ]),
-            extruder: {
-                get: function() {
-                    return this.$store.getters.getCurrentExtruder;
-                }
-            }
         },
         methods: {
             setFeedAmount(value) {
@@ -92,6 +89,12 @@
                 this.loadingRetract = loadings.includes('extruderRetract');
                 this.loadingDetract = loadings.includes('extruderDetract');
             },
+            config: {
+                handler() {
+                    this.extruder = this.getCurrentExtruder;
+                },
+                immediate: true
+            }
         }
     }
 </script>
