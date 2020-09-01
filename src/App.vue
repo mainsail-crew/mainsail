@@ -135,8 +135,7 @@ export default {
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');
-            if (val === 0) favicon.href = "/favicon.ico";
-            else {
+            if (val > 0 && val < 100) {
                 let faviconSize = 64;
 
                 let canvas = document.createElement('canvas');
@@ -175,7 +174,7 @@ export default {
                 context.fill();
 
                 favicon.href = canvas.toDataURL('image/png');
-            }
+            } else favicon.href = "/favicon.ico"
         }
     },
     watch: {
