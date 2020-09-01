@@ -311,8 +311,9 @@
             ])
         },
         created() {
-            let dirArray = this.currentPath.split("/");
-            this.files = findDirectory(this.filetree, dirArray);
+            /*let dirArray = this.currentPath.split("/");
+            this.files = findDirectory(this.filetree, dirArray);*/
+            this.loadPath();
         },
         methods: {
             uploadFile: function() {
@@ -367,11 +368,19 @@
                 if (totalSeconds) {
                     let output = "";
 
+                    let days = Math.floor(totalSeconds / (3600 * 24));
+                    if (days) {
+                        totalSeconds %= (3600 * 24);
+                        output += days+"d";
+                    }
+
                     let hours = Math.floor(totalSeconds / 3600);
                     totalSeconds %= 3600;
-                    if (hours) output += hours+"h";
+                    if (hours) output += " "+hours+"h";
+
                     let minutes = Math.floor(totalSeconds / 60);
                     if (minutes) output += " "+minutes+"m";
+
                     let seconds = totalSeconds % 60;
                     if (seconds) output += " "+seconds.toFixed(0)+"s";
 

@@ -15,22 +15,15 @@ export default new Vuex.Store({
             port: window.location.port,
             reconnectInterval: 3000,
             isConnected: false,
-            loadingGcodeUpload: false,
-            loadingGcodeRefresh: false,
+            metadataRequestDelay: 1000,
+
             loadingEmergencyStop: false,
-            loadingPrintPause: false,
-            loadingPrintResume: false,
             loadingRestart: false,
             loadingRestartFirmware: false,
             loadingRebootHost: false,
             loadingShutdownHost: false,
             loadingSaveGuiConfig: false,
             loadingEndstopStatus: false,
-            printer_state: "",
-            klippy_state: "disconnect",
-            klippy_message: "",
-            is_ready: false,
-            error_detected: false,
         },
         webcam: {
             url: ""
@@ -63,11 +56,20 @@ export default new Vuex.Store({
 
         },
         printer: {
+            software_version: '',
             hostname: '',
-            version: '',
+            cpu_info: '',
+            webhooks: {
+                state: '',
+                state_message: '',
+            },
+            heaters: {
+                available_heaters: [],
+
+            },
             toolhead: {
                 position: [],
-                homed_axes: [],
+                homed_axes: "",
                 extruder: "",
                 status: "",
                 print_time: 0,
@@ -105,29 +107,29 @@ export default new Vuex.Store({
             current_file: {
 
             },
-            gcode: {
+            gcode_move: {
                 extrude_factor: 1,
                 speed_factor: 1,
                 base_zpos: 0,
                 absolute_coordinates: true,
                 absolute_extrude: true,
-            },
-            fan: {
                 speed: 0,
             },
+            /*fan: {
+                speed: 0,
+            },*/
             endstops: {},
-        },
-        object: {
-            heaters: {
-                available_heaters: []
+            configfile: {
+                config: {}
             }
-        },
-        power: {
-            devices: []
         },
         temperaturChart: {
             labels: [],
             datasets: [],
+        },
+        object: [],
+        power: {
+            devices: []
         },
         helplist: [],
         filetree: [

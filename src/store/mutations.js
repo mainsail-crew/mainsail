@@ -1,7 +1,8 @@
 import Vue from "vue";
 const objectAssignDeep = require(`object-assign-deep`);
 import { findDirectory } from '../plugins/helpers';
-import { colorArray, colorChamber, colorHeaterBed, temperaturChartSampleLength } from './variables';
+import { colorArray, colorChamber, colorHeaterBed/*, temperaturChartSampleLength*/ } from './variables';
+
 
 export default {
 
@@ -15,6 +16,15 @@ export default {
         state.socket.isConnected = false;
     },
 
+    setKlippyDisconnected(state) {
+        Vue.set(state, '', {
+            webhooks: {
+                state: 'disconnected',
+                state_message: 'Disconnected...'
+            }
+        });
+    },
+
     resetPrinter(state) {
         //TODO check reset in storage
         Vue.set(state, '', {
@@ -26,12 +36,34 @@ export default {
                             available_heaters: []
                         }
                     },
-                    temperaturChart: {
-                        labels: [],
-                        datasets: [],
-                    },
+                    temperaturChart: [],
                     helplist: [],
-                    filetree: [],
+                    printer: {
+                        print_stats: {
+                            print_duration: 0,
+                            filament_used: 0,
+                            total_duration: 0,
+                            filename: "",
+                            state: "",
+                            message: ""
+                        },
+                        pause_resume: {
+                            is_paused: false
+                        },
+                        idle_timeout: {
+                            printing_time: 0,
+                            state: "",
+                        },
+                        display_status: {
+                            message: null,
+                            progress: 0,
+                        },
+                        virtual_sdcard: {
+                            progress: 0,
+                            is_active: false,
+                            file_position: 0,
+                        },
+                    }
                 }
             }
         );
@@ -42,16 +74,25 @@ export default {
         let now = Date.now();
 
         Object.entries(data).forEach(([key, value]) => {
-            Vue.set(state.printer, key, value);
+            if (typeof(value) === "object") {
+                Vue.set(state.printer, key, {
+                    ...state.printer[key],
+                    ...value
+                });
+            } else Vue.set(state.printer, key, value);
 
-            if (Array.isArray(state.object.heaters.available_heaters) && state.object.heaters.available_heaters.length) {
+            if (
+                Array.isArray(state.printer.heaters.available_heaters) &&
+                state.printer.heaters.available_heaters.length
+            ) {
                 let keySplit = key.split(" ");
 
                 if (
-                    state.object.heaters.available_heaters.includes(key) ||
+                    state.printer.heaters.available_heaters.includes(key) ||
                     keySplit[0] === "temperature_fan" ||
                     keySplit[0] === "temperature_sensor" ||
                     keySplit[0] === "temperature_probe") {
+
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
                     else if (keySplit[0] === "temperature_sensor") key = keySplit[1];
                     else if (keySplit[0] === "temperature_probe") key = "probe";
@@ -92,36 +133,67 @@ export default {
     },
 
     addTemperatureChartValue(state, payload) {
-        if (state.temperaturChart.labels.map(Number).indexOf(+payload.time) < 0) {
-            state.temperaturChart.labels.push(payload.time);
+        // definations for delete old entries
+        let timeOld = new Date().getTime() - (1000 * 60 * 10);
+        let minResolution = 1000;   // value in ms
+        let deletedIndex;
 
-            if (state.temperaturChart.labels.length > temperaturChartSampleLength) {
-                state.temperaturChart.labels = state.temperaturChart.labels.splice(state.temperaturChart.labels.length - temperaturChartSampleLength)
-            }
-        }
-
-        let index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+        let index =  state.temperaturChart.findIndex(element => element.label === payload.name);
         if (index < 0) {
             this.commit('addTemperatureChartHeater', {
                 name: payload.name,
                 type: payload.type,
             });
-            index =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name);
+            index =  state.temperaturChart.findIndex(element => element.label === payload.name);
         }
-        let index_target =  state.temperaturChart.datasets.findIndex(element => element.label === payload.name+'_target');
+        let index_target =  state.temperaturChart.findIndex(element => element.label === payload.name+'_target');
 
         // update current temp in temperature chart
-        if (index >= 0) state.temperaturChart.datasets[index].data.push(payload.value.temperature.toFixed(1));
+        if (index >= 0) {
+            let temperature = 0;
+            if (payload.value.temperature !== undefined) temperature = payload.value.temperature.toFixed(1);
+            else if (state.temperaturChart[index].data.length) temperature = state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].y;
 
-        // update target temp in temperature chart
-        if (index_target >= 0 && payload.value.target !== undefined) state.temperaturChart.datasets[index_target].data.push(payload.value.target.toFixed(1));
+            if (
+                (state.temperaturChart[index].data.length && (
+                    state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].y !== temperature ||
+                    payload.time-state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].x > minResolution
+                )) || state.temperaturChart[index].data.length === 0
+            ) {
+                state.temperaturChart[index].data.push({
+                    x: payload.time,
+                    y: temperature
+                });
+            }
 
-        if (index >= 0 && state.temperaturChart.datasets[index].data.length > temperaturChartSampleLength) {
-            state.temperaturChart.datasets[index].data = state.temperaturChart.datasets[index].data.splice(state.temperaturChart.datasets[index].data.length - temperaturChartSampleLength)
+            // delete old entries
+            while ((deletedIndex = state.temperaturChart[index].data.findIndex(item => item.x < timeOld)) > -1) {
+                state.temperaturChart[index].data.splice(deletedIndex, 1);
+            }
         }
 
-        if (index_target >= 0 && state.temperaturChart.datasets[index_target].data.length > temperaturChartSampleLength) {
-            state.temperaturChart.datasets[index_target].data = state.temperaturChart.datasets[index_target].data.splice(state.temperaturChart.datasets[index_target].data.length - temperaturChartSampleLength)
+        // update target temp in temperature chart
+        if (index_target >= 0) {
+            let target = 0;
+            if (payload.value.target !== undefined) target = payload.value.target.toFixed(1);
+            else if (state.temperaturChart[index_target].data.length) target = state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].y;
+
+            if (
+                (state.temperaturChart[index_target].data.length && (
+                    state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].y !== target ||
+                    payload.time-state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].x > minResolution
+                )) || state.temperaturChart[index_target].data.length === 0
+            ) {
+                state.temperaturChart[index_target].data.push({
+                    x: payload.time,
+                    y: target
+                });
+            }
+
+            // delete old entries
+            while ((deletedIndex = state.temperaturChart[index_target].data.findIndex(item => item.x < timeOld)) > -1) {
+                state.temperaturChart[index_target].data.splice(deletedIndex, 1);
+            }
         }
     },
 
@@ -131,39 +203,29 @@ export default {
         switch (payload.name) {
             case 'heater_bed': color = colorHeaterBed; break;
             case 'chamber': color = colorChamber; break;
-            default: color = colorArray[state.temperaturChart.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
+            default: color = colorArray[state.temperaturChart.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
         }
 
         let hidden = state.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0 ? true : null;
 
-        state.temperaturChart.datasets.push({
+        state.temperaturChart.push({
             label: payload.name,
             data: [],
             borderColor: color,
             backgroundColor: color,
             fill: false,
-            borderDash: undefined,
             borderWidth: 2,
-            pointRadius: 0,
-            pointHitRadius: 5,
-            showLine: true,
-            lineTension: 0,
             hidden: hidden,
         });
 
         if (payload.type !== "temperature_sensor") {
-            state.temperaturChart.datasets.push({
+            state.temperaturChart.push({
                 label: payload.name+"_target",
                 data: [],
                 borderColor: color,
                 backgroundColor: color+'20',
                 fill: true,
-                borderDash: undefined,
                 borderWidth: 0,
-                pointRadius: 0,
-                pointHitRadius: 0,
-                showLine: true,
-                lineTension: 0,
                 hidden: hidden,
             });
         }
@@ -207,9 +269,12 @@ export default {
                 });
             }
 
-            setTimeout(function() {
-                Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.filename }, "getMetadata");
-            }, 1000);
+            let extension = filename.substring(filename.lastIndexOf("."));
+            if (extension.toLowerCase() === ".gcode") {
+                setTimeout(function() {
+                    Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.item.path }, "getMetadata");
+                }, state.socket.metadataRequestDelay);
+            }
         }
     },
 
@@ -423,17 +488,6 @@ export default {
         state.loadings = state.loadings.filter(function(ele){ return ele !== data.name; });
     },
 
-    setKlippyStatus(state, value) {
-        if (value !== undefined) {
-            state.socket.klippy_state = value;
-
-            if (value === "disconnect") {
-                state.socket.is_ready = false;
-                state.socket.klippy_message = "";
-            } else if (value === "ready") Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
-        }
-    },
-
     setPrinterStatusDetails(state, data) {
         if (data !== undefined && data.is_ready !== undefined) {
             state.socket.error_detected = data.error_detected;
@@ -455,32 +509,8 @@ export default {
         }
     },
 
-    setLoadingGcodeUpload(state, value) {
-        state.socket.loadingGcodeUpload = value;
-    },
-
-    setLoadingGcodeRefresh(state, value) {
-        state.socket.loadingGcodeRefresh = value;
-    },
-
     setLoadingEmergencyStop(state, value) {
         state.socket.loadingEmergencyStop = value;
-    },
-
-    setLoadingPrintPause(state, value) {
-        state.socket.loadingPrintPause = value;
-    },
-
-    setLoadingPrintResume(state, value) {
-        state.socket.loadingPrintResume = value;
-    },
-
-    setLoadingPrintCancel(state, value) {
-        state.socket.loadingPrintCancel = value;
-    },
-
-    setLoadingQGL(state, value) {
-        state.socket.loadingQGL = value;
     },
 
     setLoadingRestart(state, value) {

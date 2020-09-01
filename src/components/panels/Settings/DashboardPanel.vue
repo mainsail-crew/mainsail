@@ -1,3 +1,8 @@
+<style>
+    .settings_dashboard_switch .v-messages {
+        display: none;
+    }
+</style>
 
 <template>
     <v-card>
@@ -8,20 +13,20 @@
             </v-list-item-content>
         </v-list-item>
         <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 pb-0 pt-3 content">
+        <v-card-text class="px-0 pt-3 content">
             <v-row>
                 <v-col class="px-10 py-0">
-                    <v-switch v-model="boolShowWebcamOnDashboard" label="Webcam"></v-switch>
+                    <v-switch v-model="boolShowWebcamOnDashboard" label="Webcam" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="px-10 py-0">
-                    <v-switch v-model="boolShowTempchartOnDashboard" label="Tempchart"></v-switch>
+                    <v-switch v-model="boolShowTempchartOnDashboard" label="Tempchart" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
             </v-row>
             <v-row>
                 <v-col class="px-10 py-0">
-                    <v-switch v-model="boolShowConsoleOnDashboard" label="Console"></v-switch>
+                    <v-switch v-model="boolShowConsoleOnDashboard" label="Console" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
             </v-row>
         </v-card-text>

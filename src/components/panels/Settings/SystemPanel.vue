@@ -47,10 +47,22 @@
         methods: {
             doRestart() {
                 this.$store.commit('setLoadingRestart', true);
+                this.$store.commit('setPrinterData', {
+                    webhooks: {
+                        state: 'shutdown',
+                        state_message: 'RESTART'
+                    }
+                });
                 this.$socket.sendObj('post_printer_restart', { }, "responseRestart");
             },
             doRestartFirmware() {
                 this.$store.commit('setLoadingRestartFirmware', true);
+                this.$store.commit('setPrinterData', {
+                    webhooks: {
+                        state: 'shutdown',
+                        state_message: 'FIRMWARE RESTART'
+                    }
+                });
                 this.$socket.sendObj('post_printer_firmware_restart', { }, "responseRestartFirmware");
             },
             doRebootHost() {

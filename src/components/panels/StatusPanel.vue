@@ -10,11 +10,13 @@
             <v-list-item-avatar color="grey"><v-icon dark>mdi-information-variant</v-icon></v-list-item-avatar>
             <v-list-item-content>
                 <v-list-item-title class="headline">Status</v-list-item-title>
-                <v-list-item-subtitle class="mr-3">{{ printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown" }}{{ ['printing', 'paused', 'complete'].includes(printer_state) ? " - "+current_file : "" }}</v-list-item-subtitle>
+                <v-list-item-subtitle class="mr-3">{{ printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown" }}{{ ['printing', 'paused', 'complete', 'error'].includes(printer_state) ? " - "+current_file : "" }}</v-list-item-subtitle>
             </v-list-item-content>
-            <v-btn class="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="btnStatusPause">pause job</v-btn>
-            <v-btn class="red" v-if="(printer_state === 'paused')" :loading="btnStatusCancel" @click="btnCancelJob">cancel job</v-btn>
-            <v-btn class="orange ml-2" v-if="(printer_state === 'paused')" :loading="btnStatusResume" @click="btnResumeJob">resume job</v-btn>
+            <v-btn class="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadingStatusPause">pause job</v-btn>
+            <v-btn class="red" v-if="(printer_state === 'paused')" :loading="loadingStatusCancel" @click="btnCancelJob">cancel job</v-btn>
+            <v-btn class="orange ml-2" v-if="(printer_state === 'paused')" :loading="loadingStatusResume" @click="btnResumeJob">resume job</v-btn>
+            <v-btn class="orange ml-2" v-if="(printer_state === 'error')" :loading="loadingStatusClear" @click="btnClearJob">clear job</v-btn>
+            <v-btn class="primary ml-2" v-if="(printer_state === 'complete')" :loading="loadingStatusReprint" @click="btnReprintJob">reprint job</v-btn>
         </v-list-item>
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
@@ -48,8 +50,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="['printing', 'paused', 'compleded'].includes(printer_state)"></v-divider>
-            <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'compleded'].includes(printer_state)">
+            <v-divider class="my-2" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)"></v-divider>
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">
                 <v-flex col tag="strong" class="category-header">
                     Printstatus
                 </v-flex>
@@ -72,8 +74,8 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-divider class="my-2" v-if="['printing', 'paused'].includes(printer_state)"></v-divider>
-            <v-layout wrap class=" text-center" v-if="['printing', 'paused'].includes(printer_state)">
+            <v-divider class="my-2" v-if="['printing', 'paused', 'error'].includes(printer_state)"></v-divider>
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
                 <v-flex col tag="strong" class="category-header py-0">
                     Estimations<br />based on
                 </v-flex>
@@ -96,7 +98,7 @@
                     </v-layout>
                 </v-flex>
             </v-layout>
-            <v-layout wrap class=" text-center" v-if="['printing', 'paused'].includes(printer_state)">
+            <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
                 <v-layout column class="mt-2" >
                     <v-progress-linear
                         :value="printProgress * 100"
@@ -116,13 +118,20 @@
     import { mapState, mapGetters } from 'vuex';
 
     export default {
+        data: function() {
+            return {
+                loadingStatusCancel: false,
+                loadingStatusResume: false,
+                loadingStatusPause: false,
+                loadingStatusClear: false,
+                loadingStatusReprint: false,
+            }
+        },
         computed: {
             ...mapState({
                 toolhead: state => state.printer.toolhead,
                 position: state => state.printer.toolhead.position,
-                btnStatusPause: state => state.socket.loadingPrintPause,
-                btnStatusResume: state => state.socket.loadingPrintResume,
-                btnStatusCancel: state => state.socket.loadingPrintCancel,
+                loadings: state => state.loadings,
 
                 estimated_print_time: state => state.printer.toolhead.estimated_print_time,
 
@@ -134,6 +143,8 @@
                 filament_used: state => state.printer.print_stats.filament_used,
                 current_file: state => state.printer.print_stats.filename,
                 printer_state: state => state.printer.print_stats.state,
+                klippy_state: state => state.printer.webhooks.state,
+                klippy_state_message: state => state.printer.webhooks.state_message,
 
                 display_message: state => state.printer.display_status.message,
             }),
@@ -143,21 +154,28 @@
                 'current_file_metadata',
                 'current_file_estimated_time',
                 'current_file_filament_total',
-                'is_printing',
             ]),
         },
         methods: {
             btnPauseJob() {
-                this.$store.commit('setLoadingPrintPause', true);
-                this.$socket.sendObj('post_printer_print_pause', { }, 'setLoadingPrintPause');
+                this.$store.commit('setLoading', { name: 'statusPrintPause' });
+                this.$socket.sendObj('post_printer_print_pause', { }, 'respondPrintPause');
             },
             btnResumeJob() {
-                this.$store.commit('setLoadingPrintResume', true);
-                this.$socket.sendObj('post_printer_print_resume', { }, 'setLoadingPrintResume');
+                this.$store.commit('setLoading', { name: 'statusPrintResume' });
+                this.$socket.sendObj('post_printer_print_resume', { }, 'respondPrintResume');
             },
             btnCancelJob() {
-                this.$store.commit('setLoadingPrintCancel', true);
-                this.$socket.sendObj('post_printer_print_cancel', { }, 'setLoadingPrintCancel');
+                this.$store.commit('setLoading', { name: 'statusPrintCancel' });
+                this.$socket.sendObj('post_printer_print_cancel', { }, 'respondPrintCancel');
+            },
+            btnClearJob() {
+                this.$store.commit('setLoading', {name: 'statusPrintClear'});
+                this.$socket.sendObj('post_printer_gcode_script', {script: 'SDCARD_RESET_FILE'}, 'respondPrintClear');
+            },
+            btnReprintJob() {
+                this.$store.commit('setLoading', {name: 'statusPrintReprint'});
+                this.$socket.sendObj('post_printer_print_start', { filename: this.current_file }, 'respondPrintReprint');
             },
             formatTime(seconds) {
                 let h = Math.floor(seconds / 3600);
@@ -168,6 +186,15 @@
                 return h+':'+m+':'+s;
             },
         },
+        watch: {
+            loadings: function(loadings) {
+                this.loadingStatusCancel = loadings.includes('statusPrintCancel');
+                this.loadingStatusResume = loadings.includes('statusPrintResume');
+                this.loadingStatusPause = loadings.includes('statusPrintPause');
+                this.loadingStatusClear = loadings.includes('statusPrintClear');
+                this.loadingStatusReprint = loadings.includes('statusPrintReprint');
+            }
+        }
     }
 </script>
 
