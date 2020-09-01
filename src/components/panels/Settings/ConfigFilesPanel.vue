@@ -105,7 +105,7 @@
         </v-dialog>
         <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
             <v-card d-flex>
-                <v-toolbar dark color="primary">
+                <v-toolbar dark color="primary" class="pr-5">
                     <v-btn icon dark @click="editor.show = false">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
