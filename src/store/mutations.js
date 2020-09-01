@@ -415,6 +415,7 @@ export default {
 
     setMetadataCurrentFile(state, data) {
         if (data !== undefined && data.filename !== "") {
+            state.printer.current_file.thumbnails = [];
             Vue.set(state.printer, 'current_file', data);
         }
     },
