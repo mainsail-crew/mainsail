@@ -54,7 +54,6 @@
         },
         computed: {
             ...mapState({
-                config: state => state.config,
                 loadings: state => state.loadings,
                 printer_state: state => state.printer.print_stats.state,
             }),

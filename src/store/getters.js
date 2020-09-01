@@ -267,8 +267,8 @@ export default {
         let extruderName = state.printer.toolhead.extruder;
         extruder.name = extruderName;
 
-        if (state.config[extruderName]) {
-            extruder.config = state.config[extruderName];
+        if (state.printer.configfile.config[extruderName]) {
+            extruder.config = state.printer.configfile.config[extruderName];
         }
 
         if (state.printer[extruderName]) {
