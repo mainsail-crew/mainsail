@@ -2,7 +2,7 @@
 </style>
 
 <template>
-    <div v-if="devices.length > 0">
+    <div>
         <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 import Vue from "vue";
 
 export default {
@@ -45,21 +45,15 @@ export default {
         ...mapState({
             devices: (state) => state.power.devices,
         }),
-        ...mapGetters(["powerDevices"]),
-        powerDevicesCount() {
-            return this.powerDevices.length;
-        },
     },
     methods: {
         setPower(index, value) {
-            let rpc = value == 1 ? "post_power_on" : "post_power_off";
-            this.devices[index].status = value;
+            let rpc = value === 1 ? "post_power_on" : "post_power_off";
             let deviceId = this.devices[index].id;
-            this.$store.commit("setPowerDevice", this.devices);
             Vue.prototype.$socket.sendObj(
                 rpc,
                 { [deviceId]: "" },
-                "voidMutation"
+                "responsePowerToggle"
             );
         },
     },

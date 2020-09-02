@@ -12,7 +12,7 @@
             <tools-panel></tools-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
             <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
-            <power-control-panel class="mt-6"></power-control-panel>
+            <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
         </v-col>
     </v-row>
 </template>
@@ -32,7 +32,8 @@
                 klippy_state: state => state.printer.webhooks.state,
             }),
             ...mapGetters([
-                'showDashboardWebcam'
+                'showDashboardWebcam',
+                'powerDevicesCount'
             ])
         },
         /*created() {
