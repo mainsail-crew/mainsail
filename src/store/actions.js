@@ -10,7 +10,6 @@ export default {
         Vue.prototype.$socket.sendObj('get_directory', { path: '/gcodes' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('get_printer_info', {}, 'getKlipperInfo');
         Vue.prototype.$socket.sendObj('get_power_devices', {}, 'getPowerDevices');
-        Vue.prototype.$socket.sendObj('get_power_status', {}, 'getPowerDevicesStatus');
     },
 
     socket_on_close ({ commit }, event) {
@@ -203,15 +202,21 @@ export default {
 
     getPowerDevices({ commit }, data) {
         if (data.error) {
-            Vue.$toast.error(data.error.message);
+            if (data.error.code != -32601) {
+                Vue.$toast.error(data.error.message);
+            }
         } else {
             commit('setPowerDevices', data.devices);
+            
+            Vue.prototype.$socket.sendObj('get_power_status', {}, 'getPowerDevicesStatus');
         }
     },
 
     getPowerDevicesStatus({ commit }, data) {
         if (data.error) {
-            Vue.$toast.error(data.error.message);
+            if (data.error.code != -32601) {
+                Vue.$toast.error(data.error.message);
+            }
         } else {
             commit('setPowerDevicesStatus', data);
         }
@@ -330,6 +335,10 @@ export default {
 
     responseBedMeshRemove({commit}) {
         commit('removeLoading', { name: 'bedMeshRemove' });
+    },
+
+    responsePowerToggle({ commit }, data) {
+        commit('setPowerDevicesStatus', data);
     },
 
     switchToDashboard() {
