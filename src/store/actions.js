@@ -64,9 +64,14 @@ export default {
                 }
                 break;
 
+            case 'notify_metadata_update':
+                commit('setMetadata', data.params[0]);
+                break;
+
             default:
                 if (data.result !== "ok") {
                     if (data.error && data.error.message !== "Klippy Request Timed Out") window.console.error("JSON-RPC: " + data.error.message);
+                    else if (!data.error) window.console.log(data);
                 }
         }
     },

@@ -268,13 +268,6 @@ export default {
                     metadataPulled: false,
                 });
             }
-
-            let extension = filename.substring(filename.lastIndexOf("."));
-            if (extension.toLowerCase() === ".gcode") {
-                setTimeout(function() {
-                    Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.item.path }, "getMetadata");
-                }, state.socket.metadataRequestDelay);
-            }
         }
     },
 
