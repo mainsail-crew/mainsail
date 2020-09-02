@@ -15,7 +15,6 @@ export default new Vuex.Store({
             port: window.location.port,
             reconnectInterval: 3000,
             isConnected: false,
-            metadataRequestDelay: 1000,
 
             loadingEmergencyStop: false,
             loadingRestart: false,
