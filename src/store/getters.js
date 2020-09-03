@@ -126,11 +126,11 @@ export default {
     },
 
     fan: state => {
-        return Object.entries(state.object).indexOf('fan') ? state.printer.fan : false;
+        return Object.entries(state.printer).indexOf('fan') ? state.printer.fan : false;
     },
 
     is_printing: state => {
-        return (state.printer.print_stats.filename !== "");
+        return (['printing', 'paused'].includes(state.printer.print_stats.state));
     },
 
     getMacros: state => {
