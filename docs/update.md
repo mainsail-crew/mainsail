@@ -36,6 +36,6 @@ If you see a content like this
 ```
 cd ~/mainsail
 rm -R ./*
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.1/mainsail-beta-0.2.1.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.2/mainsail-beta-0.2.2.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
