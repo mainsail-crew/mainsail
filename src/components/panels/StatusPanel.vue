@@ -188,23 +188,23 @@
         methods: {
             btnPauseJob() {
                 this.$store.commit('setLoading', { name: 'statusPrintPause' });
-                this.$socket.sendObj('post_printer_print_pause', { }, 'respondPrintPause');
+                this.$socket.sendObj('printer.print.pause', { }, 'respondPrintPause');
             },
             btnResumeJob() {
                 this.$store.commit('setLoading', { name: 'statusPrintResume' });
-                this.$socket.sendObj('post_printer_print_resume', { }, 'respondPrintResume');
+                this.$socket.sendObj('printer.print.resume', { }, 'respondPrintResume');
             },
             btnCancelJob() {
                 this.$store.commit('setLoading', { name: 'statusPrintCancel' });
-                this.$socket.sendObj('post_printer_print_cancel', { }, 'respondPrintCancel');
+                this.$socket.sendObj('printer.print.cancel', { }, 'respondPrintCancel');
             },
             btnClearJob() {
                 this.$store.commit('setLoading', {name: 'statusPrintClear'});
-                this.$socket.sendObj('post_printer_gcode_script', {script: 'SDCARD_RESET_FILE'}, 'respondPrintClear');
+                this.$socket.sendObj('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'respondPrintClear');
             },
             btnReprintJob() {
                 this.$store.commit('setLoading', {name: 'statusPrintReprint'});
-                this.$socket.sendObj('post_printer_print_start', { filename: this.current_file }, 'respondPrintReprint');
+                this.$socket.sendObj('printer.print.start', { filename: this.current_file }, 'respondPrintReprint');
             },
             formatTime(seconds) {
                 let h = Math.floor(seconds / 3600);

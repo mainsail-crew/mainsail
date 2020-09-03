@@ -93,32 +93,32 @@
             doHome() {
                 this.$store.commit('addGcodeResponse', "G28");
                 this.$store.commit('setLoading', { name: 'controlHomeAll' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "G28" }, "responseHome");
+                this.$socket.sendObj('printer.gcode.script', { script: "G28" }, "responseHome");
             },
             doHomeX() {
                 this.$store.commit('addGcodeResponse', "G28 X");
                 this.$store.commit('setLoading', { name: 'controlHomeX' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "G28 X" }, "responseHomeX");
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 X" }, "responseHomeX");
             },
             doHomeY() {
                 this.$store.commit('addGcodeResponse', "G28 Y");
                 this.$store.commit('setLoading', { name: 'controlHomeY' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "G28 Y" }, "responseHomeY");
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 Y" }, "responseHomeY");
             },
             doHomeZ() {
                 this.$store.commit('addGcodeResponse', "G28 Z");
                 this.$store.commit('setLoading', { name: 'controlHomeZ' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "G28 Z" }, "responseHomeZ");
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 Z" }, "responseHomeZ");
             },
             doQGL() {
                 this.$store.commit('addGcodeResponse', "QUAD_GANTRY_LEVEL");
               this.$store.commit('setLoading', { name: 'controlQGL' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
+                this.$socket.sendObj('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
             },
             doZtilt() {
                 this.$store.commit('addGcodeResponse', "Z_TILT_ADJUST");
               this.$store.commit('setLoading', { name: 'controlZTilt' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "Z_TILT_ADJUST" }, "responseZTilt");
+                this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "responseZTilt");
             },
             doSendMove(gcode) {
                 gcode = "G91" + "\n" +
@@ -129,7 +129,7 @@
             },
             doSend(gcode) {
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "sendGcode");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "sendGcode");
             },
         },
         watch: {

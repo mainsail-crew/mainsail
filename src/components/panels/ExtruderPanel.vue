@@ -75,13 +75,13 @@
                 let gcode = "M83\nG1 E-"+this.feedAmount+" F"+(this.feedrate * 60);
                 this.$store.commit('setLoading', { name: 'extruderRetract' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeExtruderRetract");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeExtruderRetract");
             },
             sendDetract() {
                 let gcode = "M83\nG1 E"+this.feedAmount+" F"+(this.feedrate * 60);
                 this.$store.commit('setLoading', { name: 'extruderDetract' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeExtruderDetract");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeExtruderDetract");
             },
         },
         watch: {

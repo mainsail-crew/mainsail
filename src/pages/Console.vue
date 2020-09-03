@@ -128,7 +128,7 @@
             doSend() {
                 this.$store.commit('setLoading', { name: 'loadingSendGcode' });
                 this.$store.commit('addGcodeResponse', this.gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: this.gcode }, "sendGcode");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "sendGcode");
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;

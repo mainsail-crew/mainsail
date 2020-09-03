@@ -131,7 +131,7 @@ export default {
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
-            this.$socket.sendObj('post_printer_emergency_stop', {}, 'setLoadingEmergencyStop');
+            this.$socket.sendObj('printer.emergency_stop', {}, 'setLoadingEmergencyStop');
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');
@@ -188,7 +188,7 @@ export default {
         },
         current_file: {
             handler: function(newVal) {
-                this.$socket.sendObj("get_file_metadata", { filename: newVal }, "getMetadataCurrentFile");
+                this.$socket.sendObj("server.files.metadata", { filename: newVal }, "getMetadataCurrentFile");
             }
         },
         config() {

@@ -249,9 +249,9 @@
                 this.$store.commit('setLoading', { name: 'loadingConfigRefresh' });
 
                 if (this.currentPath === "") {
-                    this.$socket.sendObj('get_directory', { path: 'config' }, 'getDirectory');
-                    this.$socket.sendObj('get_directory', { path: 'config_examples' }, 'getDirectory');
-                } else this.$socket.sendObj('get_directory', { path: this.currentPath.substring(1) }, 'getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
+                } else this.$socket.sendObj('server.files.get_directory', { path: this.currentPath.substring(1) }, 'getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -380,7 +380,7 @@
             createFolderAction() {
                 this.dialogCreateFolder.show = false;
 
-                this.$socket.sendObj('post_directory', {
+                this.$socket.sendObj('server.files.post_directory', {
                     path: this.currentPath.substring(1)+"/"+this.dialogCreateFolder.name
                 }, 'getPostDirectory');
             },
@@ -414,7 +414,7 @@
             },
             renameFileAction() {
                 this.dialogRenameFile.show = false;
-                this.$socket.sendObj('post_file_move', {
+                this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameFile.newName
                 }, 'getPostFileMove');
@@ -430,7 +430,7 @@
                 });
             },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
             },
         },
         watch: {

@@ -53,7 +53,7 @@
                         state_message: 'RESTART'
                     }
                 });
-                this.$socket.sendObj('post_printer_restart', { }, "responseRestart");
+                this.$socket.sendObj('printer.restart', { }, "responseRestart");
             },
             doRestartFirmware() {
                 this.$store.commit('setLoadingRestartFirmware', true);
@@ -63,15 +63,15 @@
                         state_message: 'FIRMWARE RESTART'
                     }
                 });
-                this.$socket.sendObj('post_printer_firmware_restart', { }, "responseRestartFirmware");
+                this.$socket.sendObj('printer.firmware_restart', { }, "responseRestartFirmware");
             },
             doRebootHost() {
                 this.$store.commit('setLoadingRebootHost', true);
-                this.$socket.sendObj('post_machine_reboot', { });
+                this.$socket.sendObj('machine.reboot', { });
             },
             doShutdownHost() {
                 this.$store.commit('setLoadingShutdownHost', true);
-                this.$socket.sendObj('post_machine_shutdown', { });
+                this.$socket.sendObj('machine.shutdown', { });
             },
         }
     }

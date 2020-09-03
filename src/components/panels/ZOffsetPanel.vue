@@ -61,25 +61,25 @@
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingDownFine' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDownFine");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeBabySteppingDownFine");
             },
             sendBabySteppingDown() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingDown' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingDown");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeBabySteppingDown");
             },
             sendBabySteppingUpFine() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingUpFine' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUpFine");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeBabySteppingUpFine");
             },
             sendBabySteppingUp() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('setLoading', { name: 'babySteppingUp' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeBabySteppingUp");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeBabySteppingUp");
             },
         },
         watch: {
