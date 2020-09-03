@@ -56,7 +56,7 @@
         methods: {
             syncEndstops() {
                 this.$store.commit('setLoadingEndstopStatus', true);
-                this.$socket.sendObj('get_printer_query_endstops_status', { }, "responseEndstopStatus");
+                this.$socket.sendObj('printer.query_endstops.status', { }, "responseEndstopStatus");
             },
             getEndstops() {
                 this.sortEndstops = {};

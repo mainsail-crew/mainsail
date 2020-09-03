@@ -347,7 +347,7 @@
             },
             refreshFileList: function() {
                 this.$store.commit('setLoading', { name: 'loadingGcodeRefresh' });
-                this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
+                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -415,7 +415,7 @@
             },
             renameFileAction() {
                 this.dialogRenameFile.show = false;
-                this.$socket.sendObj('post_file_move', {
+                this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameFile.newName
                 }, 'getPostFileMove');
@@ -427,7 +427,7 @@
             },
             renameDirectoryAction() {
                 this.dialogRenameDirectory.show = false;
-                this.$socket.sendObj('post_file_move', {
+                this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
                 }, 'getPostFileMove');
@@ -449,11 +449,11 @@
             createDirectoryAction: function() {
                 if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(" ") === -1) {
                     this.dialogCreateDirectory.show = false;
-                    this.$socket.sendObj('post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
+                    this.$socket.sendObj('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
                 }
             },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
             },
             clickRow: function(item) {
                 if (!item.isDirectory) {
@@ -468,14 +468,14 @@
                 this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
             },
             loadPath: function() {
-                this.$socket.sendObj('get_directory', { path: this.currentPath }, 'getDirectory');
+                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'getDirectory');
                 let dirArray = this.currentPath.split("/");
                 this.files = findDirectory(this.filetree, dirArray);
             },
             startPrint(filename = "") {
                 filename = (this.currentPath+"/"+filename).substring(7);
                 this.dialogPrintFile.show = false;
-                this.$socket.sendObj('post_printer_print_start', { filename: filename }, 'switchToDashboard');
+                this.$socket.sendObj('printer.print.start', { filename: filename }, 'switchToDashboard');
             },
             dragOverUpload(e) {
                 if (!this.draggingFile.status) {
@@ -545,7 +545,7 @@
                       dest = this.currentPath.substring(0, this.currentPath.lastIndexOf("/") + 1)+this.draggingFile.item.filename;
                     } else dest = this.currentPath+"/"+row.filename+"/"+this.draggingFile.item.filename;
 
-                    this.$socket.sendObj('post_file_move', {
+                    this.$socket.sendObj('server.files.move', {
                         source: this.currentPath+"/"+this.draggingFile.item.filename,
                         dest: dest
                     }, 'getPostFileMove');
@@ -591,7 +591,7 @@
                 for (let i = data.pageStart; i < data.pageStop; i++) {
                     if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                         let filename = (this.currentPath+"/"+items[i].filename).substring(7);
-                        this.$socket.sendObj("get_file_metadata", { filename: filename }, "getMetadata");
+                        this.$socket.sendObj("server.files.metadata", { filename: filename }, "getMetadata");
                     }
                 }
 

@@ -291,26 +291,26 @@
             },
             loadProfile: function() {
                 this.$store.commit('setLoading', { name: 'bedMeshLoad' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "BED_MESH_PROFILE LOAD="+this.profile }, "responseBedMeshLoad");
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+this.profile }, "responseBedMeshLoad");
             },
             saveProfile: function() {
                 this.saveDialog = false;
                 this.$store.commit('setLoading', { name: 'bedMeshSave' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "responseBedMeshSave");
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "responseBedMeshSave");
             },
             removeProfile: function() {
                 this.removeDialog = false;
                 this.$store.commit('setLoading', { name: 'bedMeshRemove' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "BED_MESH_PROFILE REMOVE="+this.profile }, "responseBedMeshRemove");
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.profile }, "responseBedMeshRemove");
             },
             clearBedMesh: function() {
                 this.$store.commit('setLoading', { name: 'bedMeshClear' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "BED_MESH_CLEAR" }, "responseBedMeshClear");
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "responseBedMeshClear");
             },
             calibrateMesh: function() {
                 this.calibrateDialog = false;
                 this.$store.commit('setLoading', { name: 'bedMeshCalibrate' });
-                this.$socket.sendObj('post_printer_gcode_script', { script: "BED_MESH_CALIBRATE" }, "responseBedMeshCalibrate");
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "responseBedMeshCalibrate");
             }
         },
         created: function() {

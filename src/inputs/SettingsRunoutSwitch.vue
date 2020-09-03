@@ -43,7 +43,7 @@
         methods: {
             changeSensor() {
                 let gcode = 'SET_FILAMENT_SENSOR SENSOR='+this.name+' ENABLE='+(this.enabled ? 1 : 0);
-                this.$socket.sendObj('post_printer_gcode_script', { script: gcode });
+                this.$socket.sendObj('printer.gcode.script', { script: gcode });
             }
         },
         watch: {

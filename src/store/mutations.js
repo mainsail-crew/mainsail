@@ -355,7 +355,7 @@ export default {
                         childrens: [],
                     });
 
-                    Vue.prototype.$socket.sendObj('get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
+                    Vue.prototype.$socket.sendObj('server.files.get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
                 }
             }
         }
