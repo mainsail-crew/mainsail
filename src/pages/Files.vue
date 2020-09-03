@@ -156,10 +156,10 @@
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
                 </v-list-item>
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete

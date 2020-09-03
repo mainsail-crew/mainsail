@@ -80,11 +80,14 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
+                </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
