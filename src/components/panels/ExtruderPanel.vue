@@ -29,8 +29,8 @@
         </v-row>
         <v-row class="px-3">
             <v-col class="col-12 text-center">
-                <v-btn @click="sendRetract()" class="mx-2" :loading="loadingRetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && (extruder.config.min_extrude_temp < extruder.status.temperature || !extruder.config.min_extrude_temp))"><v-icon>mdi-arrow-up-bold</v-icon> Retract</v-btn>
-                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && (extruder.config.min_extrude_temp < extruder.status.temperature || !extruder.config.min_extrude_temp))"><v-icon>mdi-arrow-down-bold</v-icon> Extrude</v-btn>
+                <v-btn @click="sendRetract()" class="mx-2" :loading="loadingRetract" :disabled="!(config !== undefined && config.extruder !== null && (config.extruder.min_extrude_temp < extruder.temperature || !config.extruder.min_extrude_temp))"><v-icon>mdi-arrow-up-bold</v-icon> Retract</v-btn>
+                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(config !== undefined && config.extruder !== null && (config.extruder.min_extrude_temp < extruder.temperature || !config.extruder.min_extrude_temp))"><v-icon>mdi-arrow-down-bold</v-icon> Extrude</v-btn>
             </v-col>
         </v-row>
     </v-card>
@@ -50,14 +50,14 @@
                 feedrate: 5,
                 loadingRetract: false,
                 loadingDetract: false,
-                extruder: null,
             }
         },
         computed: {
             ...mapState({
                 loadings: state => state.loadings,
                 printer_state: state => state.printer.print_stats.state,
-                config: state => state.printer.configfile.config,
+                extruder: state => state.printer.extruder,
+                config: state => state.printer.configfile.config
             }),
             ...mapGetters([
                 'getMacros',
@@ -89,12 +89,6 @@
                 this.loadingRetract = loadings.includes('extruderRetract');
                 this.loadingDetract = loadings.includes('extruderDetract');
             },
-            config: {
-                handler() {
-                    this.extruder = this.getCurrentExtruder;
-                },
-                immediate: true
-            }
         }
     }
 </script>
