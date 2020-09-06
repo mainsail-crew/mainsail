@@ -76,7 +76,7 @@
         </v-dialog>
 
         <v-footer app class="d-block">
-            <span>v0.2.0</span>
+            <span>v0.2.2</span>
             <span v-if="version"> - {{ version }}</span>
             <span class="float-right">Made with <img src="/img/heart.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
@@ -131,12 +131,11 @@ export default {
     methods: {
         emergencyStop: function() {
             this.$store.commit('setLoadingEmergencyStop', true);
-            this.$socket.sendObj('post_printer_emergency_stop', {}, 'setLoadingEmergencyStop');
+            this.$socket.sendObj('printer.emergency_stop', {}, 'setLoadingEmergencyStop');
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');
-            if (val === 0) favicon.href = "/favicon.ico";
-            else {
+            if (val > 0 && val < 100) {
                 let faviconSize = 64;
 
                 let canvas = document.createElement('canvas');
@@ -175,7 +174,7 @@ export default {
                 context.fill();
 
                 favicon.href = canvas.toDataURL('image/png');
-            }
+            } else favicon.href = "/favicon.ico"
         }
     },
     watch: {
@@ -189,7 +188,7 @@ export default {
         },
         current_file: {
             handler: function(newVal) {
-                this.$socket.sendObj("get_file_metadata", { filename: newVal }, "getMetadataCurrentFile");
+                this.$socket.sendObj("server.files.metadata", { filename: newVal }, "getMetadataCurrentFile");
             }
         },
         config() {

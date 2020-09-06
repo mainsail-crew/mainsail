@@ -86,12 +86,14 @@ export default class WebSocketClient {
     }
 
     sendObj (method, params, action = '') {
-        let id = Math.floor(Math.random() * 10000) + 1
-        this.wsData.push({
-            id: id,
-            action: action,
-            params: params
-        })
-        this.instance.send(this.createMessage(method, params, id))
+        if (this.instance.readyState === WebSocket.OPEN) {
+            let id = Math.floor(Math.random() * 10000) + 1
+            this.wsData.push({
+                id: id,
+                action: action,
+                params: params
+            })
+            this.instance.send(this.createMessage(method, params, id));
+        }
     }
 }
