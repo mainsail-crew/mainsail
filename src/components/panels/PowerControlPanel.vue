@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         setPower(index, value) {
-            let rpc = value === 1 ? "post_power_on" : "post_power_off";
+            let rpc = value === 1 ? "machine.gpio_power.on" : "machine.gpio_power.off";
             let deviceId = this.devices[index].id;
             Vue.prototype.$socket.sendObj(
                 rpc,
