@@ -9,6 +9,7 @@ export default {
         commit('setConnected');
         Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/gcodes' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
+        Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
     },
 
     socket_on_close ({ commit }, event) {
@@ -212,7 +213,7 @@ export default {
         } else {
             commit('setPowerDevices', data.devices);
             
-            Vue.prototype.$socket.sendObj('get_power_status', {}, 'getPowerDevicesStatus');
+            Vue.prototype.$socket.sendObj('machine.gpio_power.status', {}, 'getPowerDevicesStatus');
         }
     },
 
