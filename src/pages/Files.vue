@@ -403,7 +403,7 @@
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = 'http://' + this.hostname + ':' + this.port + '/server/files/' + encodeURIComponent(filename);
+                link.href = 'http://' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -435,7 +435,7 @@
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 axios.delete(
-                    'http://'+ this.hostname + ':' + this.port +'/server/files/'+encodeURIComponent(filename)
+                    'http://'+ this.hostname + ':' + this.port +'/server/files/' + encodeURI(filename)
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
                 }).catch(() => {
