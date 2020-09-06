@@ -14,11 +14,10 @@
 
     .config-editor-overlay div.v-card {
         position: relative;
-        padding-top: 64px !important;
     }
 
     .config-editor-overlay div.v-card header {
-        position: fixed;
+        position: sticky;
         top: 0;
         width: 100%;
         z-index: 1;
@@ -81,11 +80,14 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
+                <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
+                </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                     <v-icon class="mr-1">mdi-delete</v-icon> Delete
@@ -250,9 +252,9 @@
                 this.$store.commit('setLoading', { name: 'loadingConfigRefresh' });
 
                 if (this.currentPath === "") {
-                    this.$socket.sendObj('get_directory', { path: 'config' }, 'getDirectory');
-                    this.$socket.sendObj('get_directory', { path: 'config_examples' }, 'getDirectory');
-                } else this.$socket.sendObj('get_directory', { path: this.currentPath.substring(1) }, 'getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
+                } else this.$socket.sendObj('server.files.get_directory', { path: this.currentPath.substring(1) }, 'getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -381,7 +383,7 @@
             createFolderAction() {
                 this.dialogCreateFolder.show = false;
 
-                this.$socket.sendObj('post_directory', {
+                this.$socket.sendObj('server.files.post_directory', {
                     path: this.currentPath.substring(1)+"/"+this.dialogCreateFolder.name
                 }, 'getPostDirectory');
             },
@@ -415,7 +417,7 @@
             },
             renameFileAction() {
                 this.dialogRenameFile.show = false;
-                this.$socket.sendObj('post_file_move', {
+                this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameFile.newName
                 }, 'getPostFileMove');
@@ -431,7 +433,7 @@
                 });
             },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
             },
         },
         watch: {

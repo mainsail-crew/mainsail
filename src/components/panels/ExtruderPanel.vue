@@ -29,8 +29,8 @@
         </v-row>
         <v-row class="px-3">
             <v-col class="col-12 text-center">
-                <v-btn @click="sendRetract()" class="mx-2" :loading="loadingRetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && (extruder.config.min_extrude_temp < extruder.status.temperature || !extruder.config.min_extrude_temp))"><v-icon>mdi-arrow-up-bold</v-icon> Retract</v-btn>
-                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(extruder !== undefined && extruder.config !== null && extruder.status !== null && (extruder.config.min_extrude_temp < extruder.status.temperature || !extruder.config.min_extrude_temp))"><v-icon>mdi-arrow-down-bold</v-icon> Extrude</v-btn>
+                <v-btn @click="sendRetract()" class="mx-2" :loading="loadingRetract" :disabled="!(config !== undefined && config.extruder !== null && (config.extruder.min_extrude_temp < extruder.temperature || !config.extruder.min_extrude_temp))"><v-icon>mdi-arrow-up-bold</v-icon> Retract</v-btn>
+                <v-btn @click="sendDetract()" class="mx-2" :loading="loadingDetract" :disabled="!(config !== undefined && config.extruder !== null && (config.extruder.min_extrude_temp < extruder.temperature || !config.extruder.min_extrude_temp))"><v-icon>mdi-arrow-down-bold</v-icon> Extrude</v-btn>
             </v-col>
         </v-row>
     </v-card>
@@ -54,19 +54,15 @@
         },
         computed: {
             ...mapState({
-                config: state => state.config,
                 loadings: state => state.loadings,
                 printer_state: state => state.printer.print_stats.state,
+                extruder: state => state.printer.extruder,
+                config: state => state.printer.configfile.config
             }),
             ...mapGetters([
                 'getMacros',
                 'getCurrentExtruder',
             ]),
-            extruder: {
-                get: function() {
-                    return this.$store.getters.getCurrentExtruder;
-                }
-            }
         },
         methods: {
             setFeedAmount(value) {
@@ -76,16 +72,16 @@
                 this.feedrate = value;
             },
             sendRetract() {
-                let gcode = "M120\nM83\nG1 E-"+this.feedAmount+" F"+(this.feedrate * 60)+"\nM121";
+                let gcode = "M83\nG1 E-"+this.feedAmount+" F"+(this.feedrate * 60);
                 this.$store.commit('setLoading', { name: 'extruderRetract' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeExtruderRetract");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeExtruderRetract");
             },
             sendDetract() {
-                let gcode = "M120\nM83\nG1 E"+this.feedAmount+" F"+(this.feedrate * 60)+"\nM121";
+                let gcode = "M83\nG1 E"+this.feedAmount+" F"+(this.feedrate * 60);
                 this.$store.commit('setLoading', { name: 'extruderDetract' });
                 this.$store.commit('addGcodeResponse', gcode);
-                Vue.prototype.$socket.sendObj('post_printer_gcode_script', { script: gcode }, "respondeExtruderDetract");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "respondeExtruderDetract");
             },
         },
         watch: {

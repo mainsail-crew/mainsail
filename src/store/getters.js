@@ -126,11 +126,11 @@ export default {
     },
 
     fan: state => {
-        return Object.entries(state.object).indexOf('fan') ? state.printer.fan : false;
+        return Object.entries(state.printer).indexOf('fan') ? state.printer.fan : false;
     },
 
     is_printing: state => {
-        return (state.printer.print_stats.filename !== "");
+        return (['printing', 'paused'].includes(state.printer.print_stats.state));
     },
 
     getMacros: state => {
@@ -259,6 +259,8 @@ export default {
     },
 
     getCurrentExtruder: state => {
+        if (state.printer.configfile.config === null) return null;
+
         let extruder = {
             name: "",
             status: null,
@@ -267,8 +269,8 @@ export default {
         let extruderName = state.printer.toolhead.extruder;
         extruder.name = extruderName;
 
-        if (state.config[extruderName]) {
-            extruder.config = state.config[extruderName];
+        if (state.printer.configfile.config[extruderName]) {
+            extruder.config = state.printer.configfile.config[extruderName];
         }
 
         if (state.printer[extruderName]) {

@@ -43,11 +43,11 @@
 
             doRestart() {
                 this.$store.commit('setLoadingRestart', true);
-                this.$socket.sendObj('post_printer_restart', { }, "responseRestart");
+                this.$socket.sendObj('printer.restart', { }, "responseRestart");
             },
             doRestartFirmware() {
                 this.$store.commit('setLoadingRestartFirmware', true);
-                this.$socket.sendObj('post_printer_firmware_restart', { }, "responseRestartFirmware");
+                this.$socket.sendObj('printer.firmware_restart', { }, "responseRestartFirmware");
             },
         },
     }

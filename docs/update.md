@@ -7,7 +7,7 @@ git fetch
 git checkout origin/master
 ```
 
-Please check the location of the `printer.cfg` and the UDS in the `/etc/default/klipper` file. This
+Please check the location of the `~/klipper_config/printer.cfg` and the UDS (`-a /tmp/klippy_uds`) in the `/etc/default/klipper` file. This
 should look like:
 ```
 KLIPPY_ARGS="/home/pi/klipper/klippy/klippy.py /home/pi/klipper_config/printer.cfg -l /tmp/klippy.log -a /tmp/klippy_uds"
@@ -36,6 +36,6 @@ If you see a content like this
 ```
 cd ~/mainsail
 rm -R ./*
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.0/mainsail-beta-0.2.0.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.2/mainsail-beta-0.2.2.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.

@@ -74,7 +74,7 @@
         },
         methods: {
             sendCmd() {
-                this.$socket.sendObj('post_printer_gcode_script', { script: this.command+' '+this.attributeName+(this.value*this.attributeScale).toFixed(0) });
+                this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+(this.value*this.attributeScale).toFixed(0) });
             },
             decrement() {
                 this.value--;

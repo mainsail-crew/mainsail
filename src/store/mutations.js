@@ -268,13 +268,6 @@ export default {
                     metadataPulled: false,
                 });
             }
-
-            let extension = filename.substring(filename.lastIndexOf("."));
-            if (extension.toLowerCase() === ".gcode") {
-                setTimeout(function() {
-                    Vue.prototype.$socket.sendObj("get_file_metadata", { filename: data.item.path }, "getMetadata");
-                }, state.socket.metadataRequestDelay);
-            }
         }
     },
 
@@ -362,7 +355,7 @@ export default {
                         childrens: [],
                     });
 
-                    Vue.prototype.$socket.sendObj('get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
+                    Vue.prototype.$socket.sendObj('server.files.get_directory', { path: data.requestParams.path+'/'+dir.dirname }, 'getDirectoryRoot');
                 }
             }
         }
@@ -415,6 +408,7 @@ export default {
 
     setMetadataCurrentFile(state, data) {
         if (data !== undefined && data.filename !== "") {
+            state.printer.current_file.thumbnails = [];
             Vue.set(state.printer, 'current_file', data);
         }
     },

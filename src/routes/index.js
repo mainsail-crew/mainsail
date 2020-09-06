@@ -1,5 +1,4 @@
 import Dashboard from '../pages/Dashboard.vue'
-//import Status from '../pages/Status.vue'
 import Webcam from '../pages/Webcam.vue'
 import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
