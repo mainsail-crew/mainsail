@@ -1,4 +1,12 @@
+function caseInsensitiveNameSort(a, b) {
+    let nameA = a.name.toUpperCase();
+    let nameB = b.name.toUpperCase();
 
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+
+    return 0;
+}
 
 export default {
     heaters: state => {
@@ -18,15 +26,7 @@ export default {
             }
         }
 
-        return heaters.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return heaters.sort(caseInsensitiveNameSort);
     },
 
     heatersCount: (state, getters) => {
@@ -49,15 +49,7 @@ export default {
             }
         }
 
-        return fans.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return fans.sort(caseInsensitiveNameSort);
     },
 
     temperature_sensors: state => {
@@ -86,15 +78,7 @@ export default {
             }
         }
 
-        return sensors.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return sensors.sort(caseInsensitiveNameSort);
     },
 
     current_file_size: state =>  {
@@ -126,11 +110,11 @@ export default {
     },
 
     fan: state => {
-        return Object.entries(state.printer).indexOf('fan') ? state.printer.fan : false;
+        return Object.entries(state.printer).indexOf("fan") ? state.printer.fan : false;
     },
 
     is_printing: state => {
-        return (['printing', 'paused'].includes(state.printer.print_stats.state));
+        return (["printing", "paused"].includes(state.printer.print_stats.state));
     },
 
     getMacros: state => {
@@ -141,50 +125,34 @@ export default {
         });
 
         for (let prop in state.printer.configfile.config) {
-            if (prop.startsWith('gcode_macro') &&
-                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], 'rename_existing') &&
-                !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
+            if (prop.startsWith("gcode_macro") &&
+                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], "rename_existing") &&
+                !(hiddenMacros.indexOf(prop.replace("gcode_macro ", "").toLowerCase()) > -1)
             ) {
                 array.push({
-                    'name': prop.replace('gcode_macro ', ''),
-                    'prop': state.config[prop]
+                    "name": prop.replace("gcode_macro ", ""),
+                    "prop": state.config[prop]
                 });
             }
         }
 
-        return array.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return array.sort(caseInsensitiveNameSort);
     },
 
     getAllMacros: state => {
         let array = [];
 
         for (let prop in state.printer.configfile.config) {
-            if (prop.startsWith('gcode_macro') &&
-                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], 'rename_existing')) {
+            if (prop.startsWith("gcode_macro") &&
+                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], "rename_existing")) {
                 array.push({
-                    'name': prop.replace('gcode_macro ', ''),
-                    'prop': state.printer.configfile.config[prop]
+                    "name": prop.replace("gcode_macro ", ""),
+                    "prop": state.printer.configfile.config[prop]
                 });
             }
         }
 
-        return array.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return array.sort(caseInsensitiveNameSort);
     },
 
     getFilamentSwitchSensors: state => {
@@ -202,15 +170,7 @@ export default {
             }
         }
 
-        return sensors.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return sensors.sort(caseInsensitiveNameSort);
     },
 
     getBedMeshProfiles: state => {
@@ -232,15 +192,7 @@ export default {
             }
         }
 
-        return profiles.sort((a, b) => {
-            let nameA = a.name.toUpperCase();
-            let nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) return -1;
-            if (nameA > nameB) return 1;
-
-            return 0;
-        });
+        return profiles.sort(caseInsensitiveNameSort);
     },
 
     getTitle: state => {
