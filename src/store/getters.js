@@ -255,7 +255,7 @@ export default {
     },
 
     showDashboardWebcam: state => {
-        return (state.webcam.url !== "" && state.gui.dashboard.boolWebcam);
+        return (state.gui.webcam.url !== "" && state.gui.dashboard.boolWebcam);
     },
 
     getCurrentExtruder: state => {

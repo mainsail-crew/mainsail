@@ -24,9 +24,6 @@ export default new Vuex.Store({
             loadingSaveGuiConfig: false,
             loadingEndstopStatus: false,
         },
-        webcam: {
-            url: ""
-        },
         gui: {
             general: {
                 printername: "",
@@ -39,6 +36,11 @@ export default new Vuex.Store({
                 hiddenTempChart: [],
             },
             webcam: {
+                url: "",
+                rotate: false,
+                rotateDegrees: 90,
+                flipX: false,
+                flipY: false,
                 bool: false,
             },
             gcodefiles: {
