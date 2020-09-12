@@ -278,5 +278,13 @@ export default {
         }
 
         return extruder;
-    }
+    },
+
+    powerDevices: state => {
+        return state.power.devices;
+    },
+
+    powerDevicesCount: (state, getters) => {
+        return getters.powerDevices.length;
+    },
 }
