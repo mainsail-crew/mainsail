@@ -490,6 +490,19 @@ export default {
         }
     },
 
+    setPowerDevices(state, data) {
+        Vue.set(state.power, 'devices', data);
+    },
+
+    setPowerDevicesStatus(state, data) {
+        for (var key in data) {
+            let devIdx = state.power.devices.findIndex(device => device.id === key);
+            if (devIdx >= 0) {
+                Vue.set(state.power.devices[devIdx], 'status', data[key] === 'off' ? 0 : 1);
+            }
+        }
+    },
+
     setLoadingEmergencyStop(state, value) {
         state.socket.loadingEmergencyStop = value;
     },

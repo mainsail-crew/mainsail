@@ -126,6 +126,9 @@ export default new Vuex.Store({
         },
         object: [],
         temperaturChart: [],
+        power: {
+            devices: []
+        },
         helplist: [],
         filetree: [
             {
