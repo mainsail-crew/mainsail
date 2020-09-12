@@ -35,6 +35,7 @@
                         solo
                         class="gcode-command-field"
                         ref="gcodeCommandField"
+                        autocomplete="off"
                         v-on:keyup.enter="doSend"
                         v-on:keyup.up="onKeyUp"
                         v-on:keyup.down="onKeyDown"
