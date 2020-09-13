@@ -80,7 +80,7 @@
                     <v-divider class="my-2" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)"></v-divider>
                     <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">
                         <v-flex col tag="strong" class="category-header">
-                            Printstatus
+                            Print Status
                         </v-flex>
                         <v-flex grow class="equal-width">
                             <v-layout column>
