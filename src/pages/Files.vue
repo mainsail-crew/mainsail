@@ -138,7 +138,8 @@
                 {{ formatPrintTime(item.estimated_time) }}
               </td>
               <td class="text-no-wrap text-right">
-                {{ item.slicer ? item.slicer : '--' }}
+                {{ item.slicer ? item.slicer : '--' }}<br />
+                <small v-if="item.slicer_version">{{ item.slicer_version}}</small>
               </td>
             </tr>
           </template>
