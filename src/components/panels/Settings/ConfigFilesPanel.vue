@@ -28,7 +28,7 @@
     <div>
         <v-card>
             <v-card-title>
-                Configfiles
+                Config Files
                 <v-spacer></v-spacer>
                 <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
                 <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
