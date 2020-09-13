@@ -379,6 +379,10 @@ export default {
 
     setMetadata(state, data) {
         if (data !== undefined && data.filename !== "") {
+            if (data.filename === state.printer.print_stats.filename) {
+                this.commit('setMetadataCurrentFile', { data: data });
+            }
+
             let filename = "gcodes/"+data.filename;
             let dirArray = filename.split("/");
             filename = dirArray[dirArray.length-1];
@@ -390,9 +394,12 @@ export default {
                     estimated_time: data.estimated_time ? data.estimated_time : undefined,
                     filament_total: data.filament_total ? data.filament_total : undefined,
                     first_layer_height: data.first_layer_height ? data.first_layer_height : undefined,
+                    first_layer_bed_temp: data.first_layer_bed_temp ? data.first_layer_bed_temp : undefined,
+                    first_layer_extr_temp: data.first_layer_extr_temp ? data.first_layer_extr_temp : undefined,
                     layer_height: data.layer_height ? data.layer_height : undefined,
                     object_height: data.object_height ? data.object_height : undefined,
                     slicer: data.slicer ? data.slicer : undefined,
+                    slicer_version: data.slicer_version ? data.slicer_version : undefined,
                     thumbnails: data.thumbnails ? data.thumbnails : undefined,
                     metadataPulled: true,
                     modified: Date.parse(data.modified),
