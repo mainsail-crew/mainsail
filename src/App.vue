@@ -48,8 +48,7 @@
             </ul>
         </v-navigation-drawer>
 
-        <v-app-bar app absolute
-                   elevate-on-scroll>
+        <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <!--<v-btn color="green" v-if="!isConnected" :loading="loadingEmergencyStop" @click="emergencyStop"><v-icon class="mr-2">mdi-refresh-circle</v-icon> reconnect</v-btn>-->
