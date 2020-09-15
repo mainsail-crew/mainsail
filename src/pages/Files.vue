@@ -330,7 +330,7 @@
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
                 this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
 
-                axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
+                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
@@ -404,7 +404,7 @@
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = 'http://' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename);
+                link.href = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename);
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -436,7 +436,7 @@
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 axios.delete(
-                    'http://'+ this.hostname + ':' + this.port +'/server/files/' + encodeURI(filename)
+                    '//'+ this.hostname + ':' + this.port +'/server/files/' + encodeURI(filename)
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
                 }).catch(() => {
