@@ -245,6 +245,12 @@ wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
+### Important macros
+if you want to get the full experience with mainsail and klipper virtual_sdcard print,
+you should use these macros, or use them as templates for your own.
+
+[Link to the macros doc](macros.md)
+
 ### Change the Hostname (optional)
 to use the hostname instate of the ip, you can install the avahi-daemon:
 ```
