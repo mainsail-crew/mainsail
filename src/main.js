@@ -24,7 +24,8 @@ fetch('/config.json')
 .then(file => {
     store.commit('setSettings', file);
 
-    const socketClient = new WebSocketClient('ws://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
+    const websocketProtocol = document.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    const socketClient = new WebSocketClient(websocketProtocol + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
         store: store,
         reconnectEnabled: true,
         reconnectInterval: store.state.socket.reconnectInterval,
