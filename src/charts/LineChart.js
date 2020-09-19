@@ -14,7 +14,7 @@ export default {
         return {
             timer: '',
             options: {
-                events: ['onHover'],
+                events: ['click'],
                 animation: {
                     duration: 0					// general animation time
                 },
@@ -59,7 +59,7 @@ export default {
                     }
                 },
                 tooltips: {
-                    enabled: true,
+                    enabled: false,
                     mode: 'nearest',
                     caretPadding: 20,
                     intersect: false,
