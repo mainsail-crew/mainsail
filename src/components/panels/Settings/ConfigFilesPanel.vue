@@ -320,7 +320,7 @@
                     this.editor.sourcecode = "";
                     this.editor.item = item;
 
-                    let url = 'http://'+this.hostname+':'+this.port+'/server/files'+this.currentPath+'/'+item.filename+'?time='+Date.now();
+                    let url = '//'+this.hostname+':'+this.port+'/server/files'+this.currentPath+'/'+item.filename+'?time='+Date.now();
                     fetch(url, { cache: "no-cache" }).then(res => res.text()).then(file => {
                         this.editor.sourcecode = file;
                         this.editor.show = true;
@@ -345,7 +345,7 @@
                 formData.append('root', 'config');
                 if(this.currentPath.length > 7) formData.append('path', this.currentPath.substring(8));
 
-                axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
+                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
@@ -371,7 +371,7 @@
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = 'http://' + this.hostname + ':' + this.port + '/server/files/' + filename;
+                link.href = '//' + this.hostname + ':' + this.port + '/server/files/' + filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -399,7 +399,7 @@
                 formData.append('root', 'config');
                 if(this.currentPath.length > 7) formData.append('path', this.currentPath.substring(8));
 
-                axios.post('http://' + this.hostname + ':' + this.port + '/server/files/upload',
+                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
@@ -425,7 +425,7 @@
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 axios.delete(
-                    'http://'+ this.hostname + ':' + this.port +'/server/files/'+filename
+                    '//'+ this.hostname + ':' + this.port +'/server/files/'+filename
                 ).then((result) => {
                     this.$toast.success(result.data.result+" successfully deleted.");
                 }).catch(() => {
