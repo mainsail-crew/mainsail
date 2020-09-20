@@ -53,7 +53,7 @@
         <v-row class="" v-if="getMacros.length > 0">
             <v-col class="col-12 px-4 py-2 text-center">
                 <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
-                    <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name.replace("_", " ") }}</v-btn>
+                    <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
                 </div>
             </v-col>
         </v-row>
