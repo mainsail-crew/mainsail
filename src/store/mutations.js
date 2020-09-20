@@ -390,17 +390,18 @@ export default {
 
             let index = path.findIndex(element => element.filename === filename);
             if (index >= 0 && path[index]) {
+                const safeDefault = (value, def = undefined) => value ? value : def;
                 let newData = {
-                    estimated_time: data.estimated_time ? data.estimated_time : undefined,
-                    filament_total: data.filament_total ? data.filament_total : undefined,
-                    first_layer_height: data.first_layer_height ? data.first_layer_height : undefined,
-                    first_layer_bed_temp: data.first_layer_bed_temp ? data.first_layer_bed_temp : undefined,
-                    first_layer_extr_temp: data.first_layer_extr_temp ? data.first_layer_extr_temp : undefined,
-                    layer_height: data.layer_height ? data.layer_height : undefined,
-                    object_height: data.object_height ? data.object_height : undefined,
-                    slicer: data.slicer ? data.slicer : undefined,
-                    slicer_version: data.slicer_version ? data.slicer_version : undefined,
-                    thumbnails: data.thumbnails ? data.thumbnails : undefined,
+                    estimated_time: safeDefault(data.estimated_time),
+                    filament_total: safeDefault(data.filament_total),
+                    first_layer_height: safeDefault(data.first_layer_height),
+                    first_layer_bed_temp: safeDefault(data.first_layer_bed_temp),
+                    first_layer_extr_temp: safeDefault(data.first_layer_extr_temp),
+                    layer_height: safeDefault(data.layer_height),
+                    object_height: safeDefault(data.object_height),
+                    slicer: safeDefault(data.slicer),
+                    slicer_version: safeDefault(data.slicer_version),
+                    thumbnails: safeDefault(data.thumbnails),
                     metadataPulled: true,
                     modified: Date.parse(data.modified),
                     size: parseInt(data.size),
