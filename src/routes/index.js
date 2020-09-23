@@ -17,7 +17,7 @@ const routes = [
     },
     {
         title: "Webcam",
-        path: '/webcam',
+        path: '/cam',
         icon: 'webcam',
         component: Webcam,
         alwaysShow: false,
