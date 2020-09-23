@@ -8,22 +8,13 @@
             <v-col class="col-12 col-md-6">
                 <v-label>Feed amount in mm:</v-label>
                 <v-btn-toggle class="mt-2" no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="setFeedAmount(100)" cols="1" :class="(feedAmount === 100 ? 'v-btn--active' : '') + ' flex-grow-1'">100</v-btn>
-                    <v-btn @click="setFeedAmount(50)" cols="1" :class="(feedAmount === 50 ? 'v-btn--active' : '') + ' flex-grow-1'">50</v-btn>
-                    <v-btn @click="setFeedAmount(20)" cols="1" :class="(feedAmount === 20 ? 'v-btn--active' : '') + ' flex-grow-1'">20</v-btn>
-                    <v-btn @click="setFeedAmount(10)" cols="1" :class="(feedAmount === 10 ? 'v-btn--active' : '') + ' flex-grow-1'">10</v-btn>
-                    <v-btn @click="setFeedAmount(5)" cols="1" :class="(feedAmount === 5 ? 'v-btn--active' : '') + ' flex-grow-1'">5</v-btn>
-                    <v-btn @click="setFeedAmount(1)" cols="1" :class="(feedAmount === 1 ? 'v-btn--active' : '') + ' flex-grow-1'">1</v-btn>
+                    <v-btn v-for="amount in feedAmounts" v-bind:key="amount" @click="setFeedAmount(amount)" cols="1" :class="(amount === feedAmount ? 'v-btn--active' : '') + ' flex-grow-1'">{{ amount }}</v-btn>
                 </v-btn-toggle>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <v-label>Feedrate in mm/s:</v-label>
                 <v-btn-toggle class="mt-2" no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="setFeedrate(100)" cols="1" :class="(feedrate === 60 ? 'v-btn--active' : '') + ' flex-grow-1'">60</v-btn>
-                    <v-btn @click="setFeedrate(50)" cols="1" :class="(feedrate === 30 ? 'v-btn--active' : '') + ' flex-grow-1'">30</v-btn>
-                    <v-btn @click="setFeedrate(20)" cols="1" :class="(feedrate === 15 ? 'v-btn--active' : '') + ' flex-grow-1'">15</v-btn>
-                    <v-btn @click="setFeedrate(10)" cols="1" :class="(feedrate === 5 ? 'v-btn--active' : '') + ' flex-grow-1'">5</v-btn>
-                    <v-btn @click="setFeedrate(1)" cols="1" :class="(feedrate === 1 ? 'v-btn--active' : '') + ' flex-grow-1'">1</v-btn>
+                    <v-btn v-for="rate in feedrates" v-bind:key="rate" @click="setFeedrate(rate)" cols="1" :class="(feedrate === rate ? 'v-btn--active' : '') + ' flex-grow-1'">{{ rate }}</v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>
@@ -48,6 +39,8 @@
             return {
                 feedAmount: 20,
                 feedrate: 5,
+                feedAmounts: [ 100, 50, 20, 10, 5, 1 ],
+                feedrates: [ 60, 30, 15, 5, 1 ],
                 loadingRetract: false,
                 loadingDetract: false,
             }
