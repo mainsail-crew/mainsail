@@ -13,9 +13,12 @@ export default class WebSocketClient {
         this.onMessage = null;
         this.onClose = null;
         this.onError = null;
-        this.blackErrorList = [
+        this.blacklistMessages = [
             "Metadata not available for",
             "Klippy Request Timed Out",
+        ];
+        this.blacklistFunctions = [
+            "getPowerDevices",
         ];
     }
 
@@ -64,7 +67,10 @@ export default class WebSocketClient {
                 if (this.wsData.filter(item => item.id === data.id).length > 0 &&
                     this.wsData.filter(item => item.id === data.id)[0].action !== "") {
                     if (data.error && data.error.message) {
-                        if (!this.blackErrorList.find(element => data.error.message.startsWith(element))) {
+                        if (
+                            !this.blacklistMessages.find(element => data.error.message.startsWith(element)) &&
+                            !this.blacklistFunctions.find(element => this.wsData.filter(item => item.id === data.id)[0].action.startsWith(element))
+                        ) {
                             window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
                             this.store.dispatch(
                                 this.wsData.filter(item => item.id === data.id)[0].action,
