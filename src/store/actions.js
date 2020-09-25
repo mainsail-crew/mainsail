@@ -7,7 +7,7 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/gcodes' }, 'getDirectoryRoot');
+        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
         Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
     },
@@ -78,8 +78,8 @@ export default {
     },
 
     getDirectoryRoot({ commit }, data) {
-        if (data.files && data.files.filter((file) => file.filename === "gui.json")) {
-            fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/gcodes/gui.json?time='+Date.now())
+        if (data.files && data.files.filter((file) => file.filename === "gui.json").length) {
+            fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/gui.json?time='+Date.now())
                 .then(res => res.json()).then(file => {
                 commit('setSettings', file);
             });
@@ -92,6 +92,7 @@ export default {
 
         let formData = new FormData();
         formData.append('file', file);
+        formData.append('root', 'config');
 
         axios.post('//' + state.socket.hostname + ':' + state.socket.port + '/server/files/upload',
             formData, {
