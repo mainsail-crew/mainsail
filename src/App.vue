@@ -174,7 +174,7 @@ export default {
                 context.fill();
 
                 favicon.href = canvas.toDataURL('image/png');
-            } else favicon.href = "/favicon.ico"
+            } else favicon.href = "./img/icon/favicon-32x32.png"
         }
     },
     watch: {
