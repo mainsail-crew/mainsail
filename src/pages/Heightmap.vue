@@ -318,7 +318,6 @@
         },
         watch: {
             config: function() {
-                window.console.log(this.config);
                 this.profiles = this.$store.getters.getBedMeshProfiles;
             },
             profile: function() {

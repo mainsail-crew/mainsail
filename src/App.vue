@@ -52,8 +52,8 @@
                    elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <!--<v-btn color="green" v-if="!isConnected" :loading="loadingEmergencyStop" @click="emergencyStop"><v-icon class="mr-2">mdi-refresh-circle</v-icon> reconnect</v-btn>-->
-            <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="emergencyStop">Emergency Stop</v-btn>
+            <v-btn color="primary" class="mr-5" v-if="isConnected && config_changed" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
         <v-main id="content">
@@ -76,7 +76,7 @@
         </v-dialog>
 
         <v-footer app class="d-block">
-            <span>v0.2.2</span>
+            <span>v0.2.3</span>
             <span v-if="version"> - {{ version }}</span>
             <span class="float-right">Made with <img src="/img/heart.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
@@ -100,6 +100,8 @@ export default {
         routes: routes,
         //is_ready: false,
         boolNaviHeightmap: false,
+        loadingEmergencyStop: false,
+        loadingConfigChanged: false,
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -115,23 +117,29 @@ export default {
             hostname: state => state.printer.hostname,
             printername: state => state.gui.general.printername,
             version: state => state.printer.software_version,
-            loadingEmergencyStop: state => state.socket.loadingEmergencyStop,
             isConnected: state => state.socket.isConnected,
             isConnecting: state => !state.socket.isConnected,
             virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
             klippy_state: state => state.printer.webhooks.state,
+            loadings: state => state.loadings,
             config: state => state.printer.configfile.config,
+            config_changed: state => state.printer.configfile.config_changed,
         }),
         ...mapGetters([
             'getTitle'
         ])
     },
     methods: {
-        emergencyStop: function() {
-            this.$store.commit('setLoadingEmergencyStop', true);
-            this.$socket.sendObj('printer.emergency_stop', {}, 'setLoadingEmergencyStop');
+        clickEmergencyStop: function() {
+            this.$store.commit('setLoading', { name: 'btnEmergencyStop' });
+            this.$socket.sendObj('printer.emergency_stop', {});
+        },
+        clickSaveConfig: function() {
+            this.$store.commit('addGcodeResponse', "SAVE_CONFIG");
+            this.$store.commit('setLoading', { name: 'btnSaveConfig' });
+            this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
         },
         drawFavicon(val) {
             let favicon = document.getElementById('favicon');
@@ -193,6 +201,10 @@ export default {
         },
         config() {
             this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
+        },
+        loadings: function(loadings) {
+            this.loadingEmergencyStop = loadings.includes('btnEmergencyStop');
+            this.loadingConfigChanged = loadings.includes('btnSaveConfig');
         }
     },
 }

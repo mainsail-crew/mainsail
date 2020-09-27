@@ -16,6 +16,7 @@ export default class WebSocketClient {
         this.blacklistMessages = [
             "Metadata not available for",
             "Klippy Request Timed Out",
+            "Klippy Host not connected",
         ];
         this.blacklistFunctions = [
             "getPowerDevices",

@@ -19,8 +19,8 @@ export default {
                         name: key,
                         target: value.target,
                         temperature: value.temperature,
-                        min_temp: state.config[key] !== undefined ? parseFloat(state.config[key].min_temp) : undefined,
-                        max_temp: state.config[key] !== undefined ? parseFloat(state.config[key].max_temp) : undefined,
+                        min_temp: state.printer.configfile.config[key] !== undefined ? parseFloat(state.printer.configfile.config[key].min_temp) : undefined,
+                        max_temp: state.printer.configfile.config[key] !== undefined ? parseFloat(state.printer.configfile.config[key].max_temp) : undefined,
                     });
                 }
             }
@@ -131,7 +131,7 @@ export default {
             ) {
                 array.push({
                     "name": prop.replace("gcode_macro ", ""),
-                    "prop": state.config[prop]
+                    "prop": state.printer.configfile.config[prop]
                 });
             }
         }
