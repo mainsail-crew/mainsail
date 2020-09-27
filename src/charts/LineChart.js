@@ -142,4 +142,12 @@ export default {
             this.$data._chart.update();
         }
     },
+    watch: {
+        chartData: function(newData, oldData) {
+            window.console.log("watch chartData");
+            window.console.log(newData);
+            window.console.log(oldData);
+            this.$data._chart.reset();
+        }
+    }
 }

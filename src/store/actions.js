@@ -5,11 +5,9 @@ import axios from "axios";
 
 
 export default {
-    socket_on_open ({ commit }) {
+    socket_on_open ({ commit, dispatch }) {
         commit('setConnected');
-        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot');
-        Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
-        Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
+        dispatch('initPrinter');
     },
 
     socket_on_close ({ commit }, event) {
@@ -34,7 +32,6 @@ export default {
 
             case 'notify_klippy_disconnected':
                 commit('setKlippyDisconnected');
-                commit('resetPrinter');
                 break;
 
             case 'notify_filelist_changed':
@@ -71,10 +68,20 @@ export default {
 
             default:
                 if (data.result !== "ok") {
-                    if (data.error && data.error.message !== "Klippy Request Timed Out") window.console.error("JSON-RPC: " + data.error.message);
+                    if (
+                        data.error &&
+                        data.error.message !== "Klippy Request Timed Out" &&
+                        data.error.message !== "Klippy Disconnected"
+                    ) window.console.error("JSON-RPC: " + data.error.message);
                     else if (!data.error) window.console.log(data);
                 }
         }
+    },
+
+    initPrinter() {
+        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot');
+        Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
+        Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
     },
 
     getDirectoryRoot({ commit }, data) {
@@ -149,10 +156,6 @@ export default {
         commit('setHeaterHistory', data);
     },
 
-    getPrinterConfig({commit}, data) {
-        commit('setPrinterConfig', data);
-    },
-
     getDirectory({ commit }, data) {
         commit('setDirectory', data);
         commit('removeLoading', { name: 'loadingGcodeRefresh' });
@@ -208,7 +211,7 @@ export default {
 
     getPowerDevices({ commit }, data) {
         if (data.error) {
-            if (data.error.code != -32601) {
+            if (data.error.code !== -32601) {
                 Vue.$toast.error(data.error.message);
             }
         } else {
@@ -220,7 +223,7 @@ export default {
 
     getPowerDevicesStatus({ commit }, data) {
         if (data.error) {
-            if (data.error.code != -32601) {
+            if (data.error.code !== -32601) {
                 Vue.$toast.error(data.error.message);
             }
         } else {
@@ -231,10 +234,6 @@ export default {
     setHeaterChartVisibility({ commit, dispatch }, data) {
         commit('setHeaterChartVisibility', data);
         dispatch('saveGuiSettings');
-    },
-
-    setLoadingEmergencyStop({commit}) {
-        commit('setLoadingEmergencyStop', false);
     },
 
     respondPrintPause({commit}) {

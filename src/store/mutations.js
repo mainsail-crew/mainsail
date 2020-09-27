@@ -2,6 +2,7 @@ import Vue from "vue";
 const objectAssignDeep = require(`object-assign-deep`);
 import { findDirectory } from '../plugins/helpers';
 import { colorArray, colorChamber, colorHeaterBed/*, temperaturChartSampleLength*/ } from './variables';
+import defaultPrinter from './printer';
 
 
 export default {
@@ -27,46 +28,14 @@ export default {
 
     resetPrinter(state) {
         //TODO check reset in storage
-        Vue.set(state, '', {
-                state: {
-                    loadings: [],
-                    config: {},
-                    object: {
-                        heaters: {
-                            available_heaters: []
-                        }
-                    },
-                    temperaturChart: [],
-                    helplist: [],
-                    printer: {
-                        print_stats: {
-                            print_duration: 0,
-                            filament_used: 0,
-                            total_duration: 0,
-                            filename: "",
-                            state: "",
-                            message: ""
-                        },
-                        pause_resume: {
-                            is_paused: false
-                        },
-                        idle_timeout: {
-                            printing_time: 0,
-                            state: "",
-                        },
-                        display_status: {
-                            message: null,
-                            progress: 0,
-                        },
-                        virtual_sdcard: {
-                            progress: 0,
-                            is_active: false,
-                            file_position: 0,
-                        },
-                    }
-                }
-            }
-        );
+        let printer = { ...defaultPrinter };
+        Object.assign(printer, { webhooks: state.printer.webhooks });
+
+        Vue.set(state, "printer", printer);
+        Vue.set(state, "helplist", []);
+        Vue.set(state, "loadings", []);
+
+        this.dispatch("initPrinter");
     },
 
     setPrinterData(state, data) {
@@ -74,6 +43,18 @@ export default {
         let now = Date.now();
 
         Object.entries(data).forEach(([key, value]) => {
+
+            //update/restart printer state
+            if (
+                key === "webhooks" &&
+                state.printer.webhooks.state !== "ready" &&
+                state.printer.webhooks.state !== "" &&
+                value.state === "ready"
+            ) {
+                this.commit("resetPrinter");
+            }
+
+            //update printer state
             if (typeof(value) === "object") {
                 Vue.set(state.printer, key, {
                     ...state.printer[key],
@@ -81,6 +62,7 @@ export default {
                 });
             } else Vue.set(state.printer, key, value);
 
+            //update heaters
             if (
                 Array.isArray(state.printer.heaters.available_heaters) &&
                 state.printer.heaters.available_heaters.length
@@ -156,8 +138,10 @@ export default {
 
             if (
                 (state.temperaturChart[index].data.length && (
-                    state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].y !== temperature ||
-                    payload.time-state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].x > minResolution
+                    (
+                        state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].y !== temperature ||
+                        payload.time-state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].x > minResolution
+                    ) && state.temperaturChart[index].data[state.temperaturChart[index].data.length - 1].x < payload.time
                 )) || state.temperaturChart[index].data.length === 0
             ) {
                 state.temperaturChart[index].data.push({
@@ -180,8 +164,10 @@ export default {
 
             if (
                 (state.temperaturChart[index_target].data.length && (
-                    state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].y !== target ||
-                    payload.time-state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].x > minResolution
+                    (
+                        state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].y !== target ||
+                        payload.time-state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].x > minResolution
+                    ) && state.temperaturChart[index_target].data[state.temperaturChart[index_target].data.length - 1].x < payload.time
                 )) || state.temperaturChart[index_target].data.length === 0
             ) {
                 state.temperaturChart[index_target].data.push({
@@ -246,10 +232,6 @@ export default {
 
     setObjectData(state, data) {
         Object.assign(state.object, data);
-    },
-
-    setPrinterConfig(state, data) {
-        if (data.configfile) Vue.set(state, 'config', data.configfile.config);
     },
 
     setFileChangeUploadFile(state, data) {
@@ -505,16 +487,12 @@ export default {
     },
 
     setPowerDevicesStatus(state, data) {
-        for (var key in data) {
+        for (let key in data) {
             let devIdx = state.power.devices.findIndex(device => device.id === key);
             if (devIdx >= 0) {
                 Vue.set(state.power.devices[devIdx], 'status', data[key] === 'off' ? 0 : 1);
             }
         }
-    },
-
-    setLoadingEmergencyStop(state, value) {
-        state.socket.loadingEmergencyStop = value;
     },
 
     setLoadingRestart(state, value) {
