@@ -17,7 +17,7 @@ More information about the installtion of Raspberry Pi OS are
 ## Install Requirements
 ```
 sudo apt update && sudo apt upgrade
-sudo apt install git dfu-util
+sudo apt install git dfu-util unzip
 ```
 
 ## Install Klipper
