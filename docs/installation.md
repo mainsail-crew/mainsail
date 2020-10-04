@@ -93,7 +93,7 @@ config_path: ~/klipper_config
 [authorization]
 enabled: true
 trusted_clients:
-    192.168.1.0/24    #edit this line to match your network
+    192.168.1.0/24
 ```
 Note that the above configuration can differ! Make sure you determine your local IP and replace the IP from the example configuration above with the one from your own network.
 
