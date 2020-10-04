@@ -149,8 +149,11 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    gzip on;
+    access_log /var/log/nginx/mainsail-access.log;
+    error_log /var/log/nginx/mainsail-error.log;
 
+    #disable this section on smaller hardware like a pi zero
+    gzip on;
     gzip_vary on;
     gzip_proxied any;
     gzip_proxied expired no-cache no-store private auth;
@@ -158,10 +161,6 @@ server {
     gzip_buffers 16 8k;
     gzip_http_version 1.1;
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/json application/xml;
-
-
-    access_log /var/log/nginx/mainsail-access.log;
-    error_log /var/log/nginx/mainsail-error.log;
 
     #web_path from mainsail static files
     root /home/pi/mainsail;
