@@ -48,8 +48,7 @@
             </ul>
         </v-navigation-drawer>
 
-        <v-app-bar app absolute
-                   elevate-on-scroll>
+        <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <v-btn color="primary" class="mr-5" v-if="isConnected && config_changed" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
