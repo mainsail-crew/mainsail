@@ -93,8 +93,9 @@ config_path: ~/klipper_config
 [authorization]
 enabled: true
 trusted_clients:
-    192.168.1.0/24
+    192.168.1.0/24    #edit this line to match your network
 ```
+Note that the above configuration can differ! Make sure you determine your local IP and replace the IP from the example configuration above with the one from your own network.
 
 Restart Moonraker (`sudo service moonraker restart`) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
 
@@ -254,7 +255,7 @@ you should use these macros, or use them as templates for your own.
 ### Change the Hostname (optional)
 to use the hostname instate of the ip, you can install the avahi-daemon:
 ```
-sudo apt install avahi-daemon 
+sudo apt install avahi-daemon
 ```
 
 and you can config your hostname:
