@@ -7,7 +7,6 @@ import './components'
 import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
-//import './registerServiceWorker'
 
 Vue.config.productionTip = false;
 

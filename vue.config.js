@@ -6,7 +6,7 @@ module.exports = {
     serviceWorker:false,
     workboxPluginMode:"InjectManifest",
     workboxOptions: {
-      swSrc: './src/registerServiceWorker.js', /* Empty file. */
+      //swSrc: './src/registerServiceWorker.js',
     },
     iconPaths: {
       favicon32: 'img/icons/favicon-32x32.png',
@@ -25,7 +25,7 @@ module.exports = {
     manifestOptions: {
       "name": "Mainsail",
       "short_name": "Mainsail",
-      "start_url": "index.html",
+      "start_url": "/",
       "prefer_related_applications": false,
       "display": "standalone",
       "theme_color": "#000000",
