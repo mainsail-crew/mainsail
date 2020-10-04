@@ -15,8 +15,13 @@ export default {
         if (state.printer.heaters.available_heaters) {
             for (let [key, value] of Object.entries(state.printer)) {
                 if (state.printer.heaters.available_heaters.includes(key)) {
+                    let name = key;
+                    let nameSplit = key.split(" ");
+
+                    if (nameSplit.length > 1 && nameSplit[1] === "heater_generic") name = nameSplit[1];
+
                     heaters.push({
-                        name: key,
+                        name: name,
                         target: value.target,
                         temperature: value.temperature,
                         min_temp: state.printer.configfile.config[key] !== undefined ? parseFloat(state.printer.configfile.config[key].min_temp) : undefined,
