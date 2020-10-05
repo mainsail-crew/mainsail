@@ -120,18 +120,19 @@ To install nginx you only need to execute:
 sudo apt install nginx
 ```
 
-now we create the config file with:
+now we create the config files with:
 
 ```
-sudo nano /etc/nginx/sites-available/mainsail
+sudo touch /etc/nginx/sites-available/mainsail
+sudo touch /etc/nginx/conf.d/upstreams.conf
+sudo touch /etc/nginx/conf.d/common_vars.conf
 ```
 
-and fill it with the following content:
+Each file can be filled with the following content:
+
+`sudo nano /etc/nginx/conf.d/upstreams.conf`
 ```
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
+# /etc/nginx/conf.d/upstreams.conf
 
 upstream apiserver {
     #edit your api port here
@@ -144,6 +145,23 @@ upstream mjpgstreamer {
     ip_hash;
     server 127.0.0.1:8081;
 }
+```
+
+`sudo nano /etc/nginx/conf.d/common_vars.conf`
+
+```
+# /etc/nginx/conf.d/common_vars.conf
+
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+```
+
+`sudo nano /etc/nginx/sites-available/mainsail`
+
+```
+# /etc/nginx/sites-available/mainsail
 
 server {
     listen 80 default_server;
