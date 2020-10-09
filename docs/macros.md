@@ -32,14 +32,8 @@ gcode:
 
 [gcode_macro CANCEL_PRINT]
 rename_existing: BASE_CANCEL_PRINT
-default_parameter_X: 230    #edit to your park position
-default_parameter_Y: 230    #edit to your park position
-default_parameter_Z: 10     #edit to your park position
 gcode:
-    M104 S0
-    M140 S0
-    M141 S0
-    M106 S0
+    TURN_OFF_HEATERS
     CLEAR_PAUSE
     SDCARD_RESET_FILE
     BASE_CANCEL_PRINT
