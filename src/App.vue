@@ -51,7 +51,7 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mr-5" v-if="isConnected && config_changed" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="primary" class="mr-5" v-if="isConnected && save_config_pending" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
             <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop">Emergency Stop</v-btn>
         </v-app-bar>
 
@@ -124,7 +124,7 @@ export default {
             klippy_state: state => state.printer.webhooks.state,
             loadings: state => state.loadings,
             config: state => state.printer.configfile.config,
-            config_changed: state => state.printer.configfile.config_changed,
+            save_config_pending: state => state.printer.configfile.save_config_pending,
         }),
         ...mapGetters([
             'getTitle'
