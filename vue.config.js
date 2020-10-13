@@ -4,13 +4,9 @@ module.exports = {
   ],
   pwa: {
     serviceWorker:false,
-    workboxPluginMode:"InjectManifest",
-    workboxOptions: {
-      //swSrc: './src/registerServiceWorker.js',
-    },
     iconPaths: {
-      favicon32: 'img/icons/favicon-32x32.png',
       favicon16: 'img/icons/favicon-16x16.png',
+      favicon32: 'img/icons/favicon-32x32.png',
       appleTouchIcon: 'img/icons/apple-touch-icon-180x180.png',
       maskIcon: 'img/icons/safari-pinned-tab.svg',
       msTileImage: 'img/icons/mstile-150x150.png'

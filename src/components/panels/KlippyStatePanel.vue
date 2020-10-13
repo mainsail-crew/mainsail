@@ -12,11 +12,14 @@
         <v-divider class="my-2" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
-                <v-flex col class="text-left"><pre>{{ state_message }}</pre></v-flex>
+                <v-flex col class="text-left" v-if="klippy_connected"><pre>{{ state_message }}</pre></v-flex>
+                <v-flex col class="text-left" v-if="!klippy_connected">
+                    <p>Moonraker can't connect to Klippy!<br />Please check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.</p>
+                </v-flex>
             </v-layout>
         </v-card-text>
-        <v-divider class="my-2" ></v-divider>
-        <v-card-text class="px-4 pt-2 pb-4 content text-center text-lg-left">
+        <v-divider class="my-2" v-if="klippy_connected" ></v-divider>
+        <v-card-text class="px-4 pt-2 pb-4 content text-center text-lg-left" v-if="klippy_connected">
             <v-btn @click="doRestart" :loading="loadingRestart" color="error" class=""><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn>
             <v-btn @click="doRestartFirmware" :loading="loadingRestartFirmware" class="ml-4" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>FIRMWARE_Restart</v-btn>
         </v-card-text>
@@ -33,6 +36,7 @@
                 state_message: state => state.printer.webhooks.state_message,
                 loadingRestart: state => state.socket.loadingRestart,
                 loadingRestartFirmware: state => state.socket.loadingRestartFirmware,
+                klippy_connected: state => state.socket.klippy_connected,
             }),
             ...mapMutations([
                 'setLoadingRestart',

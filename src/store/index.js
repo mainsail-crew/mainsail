@@ -16,6 +16,7 @@ export default new Vuex.Store({
             port: window.location.port,
             reconnectInterval: 3000,
             isConnected: false,
+            klippy_conntected: null,
 
             loadingRestart: false,
             loadingRestartFirmware: false,

@@ -7,7 +7,7 @@ import axios from "axios";
 export default {
     socket_on_open ({ commit, dispatch }) {
         commit('setConnected');
-        dispatch('initPrinter');
+        dispatch('initServer');
     },
 
     socket_on_close ({ commit }, event) {
@@ -78,10 +78,18 @@ export default {
         }
     },
 
-    initPrinter() {
+    initServer() {
         Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot');
+        Vue.prototype.$socket.sendObj('server.info', {}, 'getServerInfo');
+        Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'getGcodeStore');
+    },
+
+    initPrinter() {
+
         Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
-        Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
+
+        // only available with klipper is ready
+        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'gcodes' }, 'getDirectory');
     },
 
     getDirectoryRoot({ commit }, data) {
@@ -112,6 +120,30 @@ export default {
         });
     },
 
+    getServerInfo({ commit, dispatch }, data) {
+        commit('setServerInfo', {
+            klippy_connected: data.klippy_connected,
+        })
+
+        if (data.klippy_connected) {
+            Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'getDirectory');
+            Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
+
+            //load plug data
+            if (data.plugins.includes("gpio_power") !== false) Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
+
+            dispatch('initPrinter');
+        } else {
+            setTimeout(function(){
+                Vue.prototype.$socket.sendObj('server.info', {}, 'getServerInfo');
+            }, 1000);
+        }
+    },
+
+    getGcodeStore({ commit }, data) {
+        commit('setGcodeStore', data);
+    },
+
     getKlipperInfo({ commit }, data) {
         commit('setPrinterData', {
             hostname: data.hostname,
@@ -124,9 +156,6 @@ export default {
         });
 
         Vue.prototype.$socket.sendObj('printer.objects.list', {}, 'getObjectsList');
-        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'gcodes' }, 'getDirectory');
-        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'getDirectory');
-        Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
         Vue.prototype.$socket.sendObj('printer.gcode.help', {}, 'getHelpList');
     },
 

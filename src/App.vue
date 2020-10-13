@@ -141,7 +141,8 @@ export default {
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
         },
         drawFavicon(val) {
-            let favicon = document.getElementById('favicon');
+            let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']");
+            let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']");
             if (val > 0 && val < 100) {
                 let faviconSize = 64;
 
@@ -180,8 +181,12 @@ export default {
                 context.fillStyle = "#e41313";
                 context.fill();
 
-                favicon.href = canvas.toDataURL('image/png');
-            } else favicon.href = "./img/icon/favicon-32x32.png"
+                favicon16.href = canvas.toDataURL('image/png');
+                favicon32.href = canvas.toDataURL('image/png');
+            } else {
+                favicon16.href = "/img/icon/favicon-16x16.png"
+                favicon32.href = "/img/icon/favicon-32x32.png"
+            }
         }
     },
     watch: {

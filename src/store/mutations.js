@@ -38,6 +38,12 @@ export default {
         this.dispatch("initPrinter");
     },
 
+    setServerInfo(state, data) {
+        Object.entries(data).forEach(([key, value]) => {
+            Vue.set(state.socket, key, value);
+        });
+    },
+
     setPrinterData(state, data) {
         if (data.requestParams) delete data.requestParams;
         let now = Date.now();
@@ -438,6 +444,23 @@ export default {
                 'commandLow': command.toLowerCase(),
                 'command': command,
                 'description': description,
+            });
+        }
+    },
+
+    setGcodeStore(state, data) {
+        let splits = data.gcode_store.split('\n');
+        let length = splits.length;
+        let number = 0;
+
+        if (splits.length) {
+            splits.forEach(split => {
+                state.events.push({
+                    date: new Date(Date.now() - (length - number) * 1000),
+                    message: split
+                });
+
+                number++;
             });
         }
     },
