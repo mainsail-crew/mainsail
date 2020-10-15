@@ -9,6 +9,10 @@ function caseInsensitiveNameSort(a, b) {
 }
 
 export default {
+    getVersion: state => {
+        return state.packageVersion
+    },
+
     heaters: state => {
         let heaters = [];
 

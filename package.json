@@ -1,6 +1,6 @@
 {
-  "name": "kwc",
-  "version": "0.1.0",
+  "name": "mainsail",
+  "version": "0.2.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

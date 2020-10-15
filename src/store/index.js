@@ -11,6 +11,7 @@ Vue.use(VueToast);
 
 export default new Vuex.Store({
     state: {
+        packageVersion: process.env.PACKAGE_VERSION || '0.0.0',
         socket: {
             hostname: window.location.hostname,
             port: window.location.port,

@@ -75,7 +75,7 @@
         </v-dialog>
 
         <v-footer app class="d-block">
-            <span>v0.2.3</span>
+            <span>v{{ getVersion }}</span>
             <span v-if="version" class="d-none d-sm-inline"> - {{ version }}</span>
             <span class="float-right">Made with <img src="/img/heart.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
         </v-footer>
@@ -127,7 +127,8 @@ export default {
             save_config_pending: state => state.printer.configfile.save_config_pending,
         }),
         ...mapGetters([
-            'getTitle'
+            'getTitle',
+            'getVersion'
         ])
     },
     methods: {
