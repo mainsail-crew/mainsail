@@ -270,7 +270,7 @@ Now we can install Mainsail (static httpdocs).
 Now you can download the current mainsail static data
 ```
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.2/mainsail-beta-0.2.2.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.4/mainsail-beta-0.2.4.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 

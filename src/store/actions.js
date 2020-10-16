@@ -130,7 +130,7 @@ export default {
             Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
 
             //load plug data
-            if (data.plugins.includes("gpio_power") !== false) Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
+            if (data.plugins.includes("power") !== false) Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
 
             dispatch('initPrinter');
         } else {
@@ -245,7 +245,7 @@ export default {
             }
         } else {
             commit('setPowerDevices', data.devices);
-            
+
             Vue.prototype.$socket.sendObj('machine.gpio_power.status', {}, 'getPowerDevicesStatus');
         }
     },
