@@ -39,7 +39,7 @@ rm -R ./*
 wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/v0.2.4/mainsail-beta-0.2.4.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 ### Move gui.json from gcodes to klipper_config
-This is only necessary if you update from 0.2.2 to 0.2.3 or higher.
+This is only necessary if you update from 0.2.2 to 0.2.3 or higher. If you use MainsailOS, the virtual_sdcard directory is `gcode_files` instead of `sdcard`.
 ```
 mv ~/sdcard/gui.json ~/klipper_config/
 ```
