@@ -22,7 +22,7 @@ export default {
                     let name = key;
                     let nameSplit = key.split(" ");
 
-                    if (nameSplit.length > 1 && nameSplit[1] === "heater_generic") name = nameSplit[1];
+                    if (nameSplit.length > 1 && nameSplit[0] === "heater_generic") name = nameSplit[1];
 
                     heaters.push({
                         name: name,
