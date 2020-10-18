@@ -83,6 +83,7 @@ export default {
 
                     if (keySplit[0] === "temperature_fan") key = keySplit[1];
                     else if (keySplit[0] === "temperature_sensor") key = keySplit[1];
+                    else if (keySplit[0] === "heater_generic") key = keySplit[1];
                     else if (keySplit[0] === "temperature_probe") key = "probe";
 
                     this.commit('addTemperatureChartValue', { name: key, value: value, time: now });
