@@ -450,20 +450,12 @@ export default {
     },
 
     setGcodeStore(state, data) {
-        let splits = data.gcode_store.split('\n');
-        let length = splits.length;
-        let number = 0;
-
-        if (splits.length) {
-            splits.forEach(split => {
-                state.events.push({
-                    date: new Date(Date.now() - (length - number) * 1000),
-                    message: split
-                });
-
-                number++;
+        data.gcode_store.forEach(message => {
+            state.events.push({
+                date: new Date(message.time * 1000),
+                message: message.message
             });
-        }
+        });
     },
 
     addGcodeResponse(state, data) {
