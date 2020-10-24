@@ -1,5 +1,9 @@
 <style>
     @import './assets/styles/fonts.css';
+
+    .button-min-width-auto {
+        min-width: auto !important;
+    }
 </style>
 
 <template>
@@ -52,7 +56,38 @@
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <v-btn color="primary" class="mr-5" v-if="isConnected && save_config_pending" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
-            <v-btn color="error" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop">Emergency Stop</v-btn>
+            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
+            <v-menu
+                bottom
+                left
+                :offset-y="true"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        dark
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon>mdi-dots-vertical</v-icon>
+                    </v-btn>
+                </template>
+
+                <v-list dense>
+                    <v-list-item link @click="doRestart()">
+                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Restart</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link @click="doFirmwareRestart()">
+                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>FW Restart</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link @click="doHostReboot()">
+                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Reboot Host</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item link @click="doHostShutdown()">
+                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Shutdown Host</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-app-bar>
 
         <v-main id="content">
@@ -140,6 +175,20 @@ export default {
             this.$store.commit('addGcodeResponse', "SAVE_CONFIG");
             this.$store.commit('setLoading', { name: 'btnSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
+        },
+        doRestart: function() {
+            this.$store.commit('addGcodeResponse', "RESTART");
+            this.$socket.sendObj('printer.gcode.script', { script: "RESTART" });
+        },
+        doFirmwareRestart: function() {
+            this.$store.commit('addGcodeResponse', "FIRMWARE_RESTART");
+            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" });
+        },
+        doHostReboot: function() {
+            this.$socket.sendObj('machine.reboot', { });
+        },
+        doHostShutdown: function() {
+            this.$socket.sendObj('machine.shutdown', { });
         },
         drawFavicon(val) {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']");
