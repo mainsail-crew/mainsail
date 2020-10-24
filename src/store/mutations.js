@@ -450,11 +450,15 @@ export default {
     },
 
     setGcodeStore(state, data) {
-        let splits = data.gcode_store.split('\n');
-        let length = splits.length;
-        let number = 0;
 
-        if (splits.length) {
+        // Moonraker was changed with 8a6503da8a4b2efe806ea4b00be9552827fe8ea9 from
+        // a string, to an array of objects. Handle both formats for a while.
+        if (typeof(data.gcode_store) == 'string') {
+
+            let splits = data.gcode_store.split('\n');
+            let length = splits.length;
+            let number = 0;
+
             splits.forEach(split => {
                 state.events.push({
                     date: new Date(Date.now() - (length - number) * 1000),
@@ -462,6 +466,14 @@ export default {
                 });
 
                 number++;
+            });
+        }
+        else {
+            data.gcode_store.forEach(message => {
+                state.events.push({
+                    date: new Date(message.time * 1000),
+                    message: message.message
+                });
             });
         }
     },
