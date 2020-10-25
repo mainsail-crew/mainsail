@@ -52,6 +52,10 @@ export default new Vuex.Store({
                 configfiles: {
                     countPerPage: 10,
                 }
+            },
+            console: {
+                filters: [
+                ]
             }
         },
         loadings: [],

@@ -81,7 +81,6 @@ export default {
     initServer() {
         Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot');
         Vue.prototype.$socket.sendObj('server.info', {}, 'getServerInfo');
-        Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'getGcodeStore');
     },
 
     initPrinter() {
@@ -93,11 +92,18 @@ export default {
     },
 
     getDirectoryRoot({ commit }, data) {
+        let getGcodeStore = () => {
+            Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'getGcodeStore');
+        };
         if (data.files && data.files.filter((file) => file.filename === "gui.json").length) {
             fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/gui.json?time='+Date.now())
                 .then(res => res.json()).then(file => {
-                commit('setSettings', file);
-            });
+                    commit('setSettings', file);
+                })
+                .then(getGcodeStore);
+        }
+        else {
+            getGcodeStore();
         }
     },
 

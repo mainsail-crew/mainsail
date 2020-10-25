@@ -9,6 +9,7 @@ import LimitsPanel from "./LimitsPanel";
 import ConfigFilesPanel from "./ConfigFilesPanel";
 import RunoutPanel from "./RunoutPanel";
 import SystemPanel from "./SystemPanel";
+import ConsolePanel from "./ConsolePanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -19,6 +20,7 @@ Vue.component('settings-limits-panel', LimitsPanel);
 Vue.component('settings-runout-panel', RunoutPanel);
 Vue.component('settings-system-panel', SystemPanel);
 Vue.component('settings-config-files-panel', ConfigFilesPanel);
+Vue.component('settings-console-panel', ConsolePanel);
 
 export default {
 

@@ -4,6 +4,15 @@ import { findDirectory } from '../plugins/helpers';
 import { colorArray, colorChamber, colorHeaterBed/*, temperaturChartSampleLength*/ } from './variables';
 import defaultPrinter from './printer';
 
+const expressionCache = {};
+function filterMessage(state, text) {
+    for (let filter of state.gui.console.filters) {
+        const expr = expressionCache[filter] || (expressionCache[filter] = new RegExp(filter));
+        if (expr.test(text))
+            return true;
+    }
+    return false;
+}
 
 export default {
 
@@ -450,11 +459,13 @@ export default {
     },
 
     setGcodeStore(state, data) {
-        data.gcode_store.forEach(message => {
-            state.events.push({
-                date: new Date(message.time * 1000),
-                message: message.message
-            });
+        data.gcode_store.forEach(item => {
+            if (!filterMessage(state, item.message)) {
+                state.events.push({
+                    date: new Date(item.time * 1000),
+                    message: item.message
+                });
+            }
         });
     },
 
@@ -464,10 +475,12 @@ export default {
         if (message.result !== undefined) message = message.result;
         else if (message.error !== undefined) message = message.error.message;
 
-        state.events.push({
-            date: new Date(),
-            message: message
-        });
+        if (!filterMessage(state, message)) {
+            state.events.push({
+                date: new Date(),
+                message: message
+            });
+        }
 
         if (message !== undefined && message.substring(0,2) === "!!") {
             Vue.$toast.error(message);
