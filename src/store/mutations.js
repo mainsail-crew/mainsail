@@ -4,11 +4,25 @@ import { findDirectory } from '../plugins/helpers';
 import { colorArray, colorChamber, colorHeaterBed/*, temperaturChartSampleLength*/ } from './variables';
 import defaultPrinter from './printer';
 
-const expressionCache = {};
-function filterMessage(state, text) {
-    for (let filter of state.gui.console.filters) {
-        const expr = expressionCache[filter] || (expressionCache[filter] = new RegExp(filter));
-        if (expr.test(text))
+let consoleFilterCache = [];
+
+function updateConsoleFilterCache(filters) {
+    consoleFilterCache = [];
+    [...new Set(filters)].forEach(filter => {
+        if (filter && filter.length) {
+            try {
+                const expr = new RegExp(filter);
+                consoleFilterCache.push((t) => expr.test(t));
+            } catch {
+                console.error('Error compiling filter: ' + filter);
+            }
+        }
+    });
+}
+
+function filterConsoleMessage(text) {
+    for (let filterFunc of consoleFilterCache) {
+        if (filterFunc(text))
             return true;
     }
     return false;
@@ -244,6 +258,10 @@ export default {
 
     setSettings(state, data) {
         state = objectAssignDeep(state, data);
+
+        if (data.gui && data.gui.console) {
+            updateConsoleFilterCache(data.gui.console.filters)
+        }
     },
 
     setObjectData(state, data) {
@@ -460,7 +478,7 @@ export default {
 
     setGcodeStore(state, data) {
         data.gcode_store.forEach(item => {
-            if (!filterMessage(state, item.message)) {
+            if (!filterConsoleMessage(item.message)) {
                 state.events.push({
                     date: new Date(item.time * 1000),
                     message: item.message
@@ -475,7 +493,7 @@ export default {
         if (message.result !== undefined) message = message.result;
         else if (message.error !== undefined) message = message.error.message;
 
-        if (!filterMessage(state, message)) {
+        if (!filterConsoleMessage(message)) {
             state.events.push({
                 date: new Date(),
                 message: message

@@ -18,6 +18,9 @@
                         name="input-7-4"
                         label="Filters"
                         v-model="filters"
+                        validate-on-blur
+                        :error-messages="filterErrors"
+                        :error-count="filterErrors.length"
                         @blur="updateFilters($event)"
                     ></v-textarea>
                 </v-col>
@@ -27,13 +30,35 @@
 </template>
 
 <script>
+
+    function getFiltersFromText(text) {
+        let inputValue = text.trim();
+        let filters = [...new Set(inputValue.split('\n'))];
+        return filters;
+    }
+
+    function getFilterErrors(filters) {
+
+        let errors = [];
+        filters.forEach(filter => {
+            try { new RegExp(filter); }
+            catch { errors.push(filter); }
+        });
+
+        if (errors.length) {
+            errors.splice(0, 0, 'Invalid filters:');
+        }
+
+        return errors;
+    }
+
     export default {
         components: {
 
         },
         data: function() {
             return {
-
+                filterErrors: []
             }
         },
         computed: {
@@ -44,15 +69,17 @@
                 },
                 set() {
                 }
-            },
+            }
         },
         methods: {
             updateFilters($event) {
 
-                let inputValue = $event.currentTarget.value.trim();
-                let filters = [...new Set(inputValue.split('\n'))];
+                let filters = getFiltersFromText($event.currentTarget.value);
+                this.filterErrors = getFilterErrors(filters);
 
-                return this.$store.dispatch('setSettings', { gui: { console: { filters: filters } } });
+                if (this.filterErrors.length === 0) {
+                    this.$store.dispatch('setSettings', { gui: { console: { filters: filters } } });
+                }
             }
         }
     }
