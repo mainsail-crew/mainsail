@@ -249,7 +249,7 @@ export default {
 
         if (parent) {
             if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
-                let modified = new Date(data.item.modified);
+                let modified = new Date(data.item.modified * 1000);
 
                 parent.push({
                     isDirectory: false,
@@ -342,7 +342,7 @@ export default {
                     parent.push({
                         isDirectory: true,
                         filename: dir.dirname,
-                        modified: Date.parse(dir.modified),
+                        modified: new Date(dir.modified * 1000),
                         childrens: [],
                     });
 
@@ -359,7 +359,7 @@ export default {
                     parent.push({
                         isDirectory: false,
                         filename: file.filename,
-                        modified: Date.parse(file.modified),
+                        modified: new Date(file.modified * 1000),
                         size: parseInt(file.size),
                         metadataPulled: false,
                     });
@@ -394,7 +394,7 @@ export default {
                     slicer_version: safeDefault(data.slicer_version),
                     thumbnails: safeDefault(data.thumbnails),
                     metadataPulled: true,
-                    modified: Date.parse(data.modified),
+                    modified: new Date(data.modified * 1000),
                     size: parseInt(data.size),
                 };
 
