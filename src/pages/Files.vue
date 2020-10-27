@@ -319,7 +319,10 @@
         methods: {
             uploadFile: function() {
                 if (this.$refs.fileUpload.files.length) {
-                    this.doUploadFile(this.$refs.fileUpload.files[0]);
+                    this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
+                        this.$refs.fileUpload.value = '';
+                    });
+
                 }
             },
             doUploadFile: function(file) {
@@ -330,7 +333,7 @@
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
                 this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
 
-                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
+                return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
