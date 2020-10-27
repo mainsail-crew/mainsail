@@ -24,30 +24,29 @@
                 </v-toolbar-title>
             </v-toolbar>
 
-            <v-card-text class="pb-0">
+            <v-card-text class="py-2">
                 <tool-slider :target="fan.speed" :multi="100" command="M106" attribute-name="S" :attribute-scale="2.55" ></tool-slider>
             </v-card-text>
         </v-card>
         <v-card class="mt-6" v-if="['printing', 'paused'].includes(printer_state)">
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon class="mdi mdi-timer" left></v-icon>Speed Factor</span>
+                    <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>Print Settings</span>
                 </v-toolbar-title>
             </v-toolbar>
 
-            <v-card-text class="pb-0">
-                <tool-slider :target="speed_factor" :max="200" :multi="100" command="M220" attribute-name="S" ></tool-slider>
-            </v-card-text>
-        </v-card>
-        <v-card class="mt-6" v-if="['printing', 'paused'].includes(printer_state)">
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon class="mdi mdi-texture" left></v-icon>Extrusion Factor</span>
-                </v-toolbar-title>
-            </v-toolbar>
+            <v-card-text class="py-2">
+                <v-row>
+                    <v-col class="py-0">
+                        <tool-slider prependIcon="mdi-timer" :target="speed_factor" :max="200" :multi="100" command="M220" attribute-name="S" ></tool-slider>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-0">
+                        <tool-slider prependIcon="mdi-texture" :target="extrude_factor" :max="200" :multi="100" command="M221" attribute-name="S" ></tool-slider>
+                    </v-col>
+                </v-row>
 
-            <v-card-text class="pb-0">
-                <tool-slider :target="extrude_factor" :max="200" :multi="100" command="M221" attribute-name="S" ></tool-slider>
             </v-card-text>
         </v-card>
     </div>
