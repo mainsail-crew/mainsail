@@ -34,10 +34,10 @@
 
                     <template #item="{ item }">
                         <tr>
-                            <td class="log-cell title-cell">
-                                {{ item.date.toLocaleString() }}
+                            <td class="log-cell title-cell pr-1 py-2">
+                                <small>{{ formatTime(item.date)}}</small>
                             </td>
-                            <td class="log-cell content-cell" colspan="2">
+                            <td class="log-cell content-cell pl-1 py-2" colspan="2">
                                 <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
                             </td>
                         </tr>
@@ -82,6 +82,17 @@
         },
         methods: {
 
+            formatTime(date) {
+                let hours = date.getHours();
+                if (hours < 10) hours = "0"+hours.toString();
+                let minutes = date.getMinutes();
+                if (minutes < 10) minutes = "0"+minutes.toString();
+                let seconds = date.getSeconds();
+                if (seconds < 10) seconds = "0"+seconds.toString();
+
+
+                return hours+":"+minutes+":"+seconds;
+            },
             formatMessage(message) {
                 message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
 
