@@ -4,6 +4,14 @@
         max-height: 250px;
         overflow-y: auto;
     }
+
+    .miniConsole .title-cell {
+        white-space: nowrap;
+    }
+
+    .miniConsole .content-cell {
+        width: 100%;
+    }
 </style>
 
 <template>
@@ -24,7 +32,7 @@
                         hide-default-footer
                         hide-default-header
                         disable-pagination
-                        class="minievent-table"
+                        class="minievent-table miniConsole"
                         :custom-sort="customSort"
                         sort-by="date"
                 >
@@ -34,10 +42,10 @@
 
                     <template #item="{ item }">
                         <tr>
-                            <td class="log-cell title-cell pr-1 py-2">
-                                <small>{{ formatTime(item.date)}}</small>
+                            <td class="log-cell title-cell py-2">
+                                {{ formatTime(item.date)}}
                             </td>
-                            <td class="log-cell content-cell pl-1 py-2" colspan="2">
+                            <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
                                 <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
                             </td>
                         </tr>
