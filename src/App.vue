@@ -234,8 +234,8 @@ export default {
                 favicon16.href = canvas.toDataURL('image/png');
                 favicon32.href = canvas.toDataURL('image/png');
             } else {
-                favicon16.href = "/img/icon/favicon-16x16.png"
-                favicon32.href = "/img/icon/favicon-32x32.png"
+                favicon16.href = "/img/icons/favicon-16x16.png"
+                favicon32.href = "/img/icons/favicon-32x32.png"
             }
         }
     },
