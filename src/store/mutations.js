@@ -468,10 +468,6 @@ export default {
             date: new Date(),
             message: message
         });
-
-        if (message !== undefined && message.substring(0,2) === "!!") {
-            Vue.$toast.error(message);
-        }
     },
 
     setEndstopStatus(state, data) {
@@ -509,6 +505,10 @@ export default {
                 Vue.set(state.power.devices[devIdx], 'status', data[key] === 'off' ? 0 : 1);
             }
         }
+    },
+
+    setGuiGcodefilesMetadata(state, data) {
+        Vue.set(state.gui.gcodefiles.showMetadata, data.name, data.newValue);
     },
 
     setLoadingRestart(state, value) {
