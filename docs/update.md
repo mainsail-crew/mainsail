@@ -32,6 +32,12 @@ If you see a content like this
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
 
+### Update moonraker dependence
+This is only nessasary, if your moonraker version is older than 31. october 2020.
+```
+~/moonraker/scripts/install-moonraker.sh
+```
+
 ## Update Mainsail (webinterface)
 ```
 cd ~/mainsail
