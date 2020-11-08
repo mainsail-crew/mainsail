@@ -265,6 +265,16 @@ export default {
         dispatch('saveGuiSettings');
     },
 
+    setGuiGcodefilesMetadata({ commit, dispatch }, data) {
+        commit('setGuiGcodefilesMetadata', data);
+        dispatch('saveGuiSettings');
+    },
+
+    setGuiGcodefilesShowHiddenFiles({ commit, dispatch }, data) {
+        commit('setGuiGcodefilesShowHiddenFiles', data);
+        dispatch('saveGuiSettings');
+    },
+
     respondPrintPause({commit}) {
         commit('removeLoading', { name: 'statusPrintPause' });
     },

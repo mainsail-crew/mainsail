@@ -41,113 +41,112 @@
         vertical-align: middle;
         transition: font-size 175ms;
     }
+
+    .minHeight36 {
+        min-height: 36px;
+    }
 </style>
 
 <template>
     <div>
-      <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
-        <v-card-title>
-          G-Code Files
-          <v-spacer></v-spacer>
-          <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
-          <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
-          <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-          <v-btn color="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
-        </v-card-title>
-        <v-card-subtitle>
-          Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}
-        </v-card-subtitle>
-        <v-card-text>
-          <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Search"
-              single-line
-              hide-details
-          ></v-text-field>
-        </v-card-text>
-        <v-data-table
-            :items="files"
-            class="files-table"
-            :headers="headers"
-            :options="options"
-            :custom-sort="sortFiles"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :items-per-page="countPerPage"
-            item-key="name"
-            :search="search"
-            :custom-filter="advancedSearch"
-            @pagination="refreshMetadata">
+        <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+            <v-card-title>
+                G-Code Files
+                <v-spacer></v-spacer>
+                <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
+                <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
+                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
+                <v-btn class="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+                <v-menu :offset-y="true">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="ml-4" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
+                        </v-list-item>
+                        <v-divider></v-divider>
+                        <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
+                            <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-card-title>
+            <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
+            <v-card-text>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+            </v-card-text>
+            <v-data-table
+                :items="files"
+                class="files-table"
+                :headers="filteredHeaders"
+                :options="options"
+                :custom-sort="sortFiles"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                :items-per-page="countPerPage"
+                item-key="name"
+                :search="search"
+                :custom-filter="advancedSearch"
+                @pagination="refreshMetadata">
 
-          <template #no-data>
-            <div class="text-center">empty</div>
-          </template>
+                <template slot="items" slot-scope="props">
+                  <td v-for="header in filteredHeaders" v-bind:key="header.text">{{ props.item[header.value] }}</td>
+                </template>
 
-          <template v-slot:body.prepend>
-            <tr
-                v-if="(currentPath !== 'gcodes')"
-                class="file-list-cursor"
-                @click="clickRowGoBack"
-                @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
-            >
-              <td class=" ">
-                <v-icon>mdi-folder-upload</v-icon>
-              </td>
-              <td class=" " colspan="8">
-                ..
-              </td>
-            </tr>
-          </template>
+                <template #no-data>
+                    <div class="text-center">empty</div>
+                </template>
 
-          <template #item="{ item }">
-            <tr
-                @contextmenu="showContextMenu($event, item)"
-                @click="clickRow(item)"
-                class="file-list-cursor"
-                draggable="true"
-                @drag="dragFile($event, item)"
-                @dragend="dragendFile($event)"
-                @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
-                :data-name="item.filename"
-            >
-              <td class=" ">
-                <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
-                <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
-              </td>
-              <td class=" ">
-                {{ item.filename }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
-              </td>
-              <td class="text-right">
-                {{ formatDate(item.modified) }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ formatPrintTime(item.estimated_time) }}
-              </td>
-              <td class="text-no-wrap text-right">
-                {{ item.slicer ? item.slicer : '--' }}<br />
-                <small v-if="item.slicer_version">{{ item.slicer_version}}</small>
-              </td>
-            </tr>
-          </template>
-        </v-data-table>
-        <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
-          <div class="textnode">Drop files to add gcode.</div>
-        </div>
-      </v-card>
+                <template v-slot:body.prepend>
+                    <tr
+                        v-if="(currentPath !== 'gcodes')"
+                        class="file-list-cursor"
+                        @click="clickRowGoBack"
+                        @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
+                        >
+                        <td class=" "><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class=" " colspan="8">..</td>
+                    </tr>
+                </template>
+
+                <template #item="{ item }">
+                    <tr
+                        @contextmenu="showContextMenu($event, item)"
+                        @click="clickRow(item)"
+                        class="file-list-cursor"
+                        draggable="true"
+                        @drag="dragFile($event, item)"
+                        @dragend="dragendFile($event)"
+                        @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
+                        :data-name="item.filename"
+                        >
+                        <td class=" ">
+                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
+                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
+                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
+                        </td>
+                        <td class=" ">{{ item.filename }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
+                        <td class="text-right" v-if="headers.filter(header => header.value === 'modified')[0].visible">{{ formatDate(item.modified) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'object_height')[0].visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'layer_height')[0].visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'filament_total')[0].visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'estimated_time')[0].visible">{{ formatPrintTime(item.estimated_time) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
+                    </tr>
+                </template>
+            </v-data-table>
+            <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
+                <div class="textnode">Drop files to add gcode.</div>
+            </div>
+        </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
@@ -231,8 +230,7 @@
 <script>
     import { mapState, mapGetters } from 'vuex';
     import axios from 'axios';
-    import { findDirectory } from "../plugins/helpers";
-    /*import Vue from "vue";*/
+    import { findDirectory } from "@/plugins/helpers";
 
     export default {
         data () {
@@ -241,6 +239,7 @@
                 sortBy: 'modified',
                 sortDesc: true,
                 selected: [],
+                hideHeaderColums: [],
                 dialogPrintFile: {
                     show: false,
                     item: {}
@@ -260,15 +259,15 @@
                     item: {}
                 },
                 headers: [
-                    { text: '', value: '', },
-                    { text: 'Name', value: 'filename', },
-                    { text: 'Filesize', value: 'size', align: 'right', },
-                    { text: 'Last modified', value: 'modified', align: 'right', },
-                    { text: 'Object Height', value: 'object_height', align: 'right', },
-                    { text: 'Layer Height', value: 'layer_height', align: 'right', },
-                    { text: 'Filament Usage', value: 'filament_total', align: 'right', },
-                    { text: 'Print Time', value: 'estimated_time', align: 'right', },
-                    { text: 'Generated by', value: 'slicer', align: 'right', },
+                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true },
+                    { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
+                    { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
+                    { text: 'Object Height',  value: 'object_height',   align: 'right', configable: true,   visible: true },
+                    { text: 'Layer Height',   value: 'layer_height',    align: 'right', configable: true,   visible: true },
+                    { text: 'Filament Usage', value: 'filament_total',  align: 'right', configable: true,   visible: true },
+                    { text: 'Print Time',     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
+                    { text: 'Slicer',         value: 'slicer',          align: 'right', configable: true,   visible: true },
                 ],
                 options: {
 
@@ -306,14 +305,28 @@
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
                 loadings: state => state.loadings,
+
+                displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
             ...mapGetters([
                 'is_printing'
-            ])
+            ]),
+            configHeaders() {
+                return this.headers.filter(header => header.configable === true);
+            },
+            filteredHeaders() {
+                return this.headers.filter(header => header.visible === true);
+            },
+            showHiddenFiles: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.showHiddenFiles;
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("setGuiGcodefilesShowHiddenFiles", newVal);
+                }
+            }
         },
         created() {
-            /*let dirArray = this.currentPath.split("/");
-            this.files = findDirectory(this.filetree, dirArray);*/
             this.loadPath();
         },
         methods: {
@@ -475,6 +488,9 @@
                 this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'getDirectory');
                 let dirArray = this.currentPath.split("/");
                 this.files = findDirectory(this.filetree, dirArray);
+                if (!this.showHiddenFiles) {
+                    this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+                }
             },
             startPrint(filename = "") {
                 filename = (this.currentPath+"/"+filename).substring(7);
@@ -605,7 +621,14 @@
                     search != null &&
                     typeof value === 'string' &&
                     value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-            }
+            },
+            changeMetadataVisible: function(name) {
+                if (this.headers.filter(header => header.value === name).length) {
+                    let value = this.headers.filter(header => header.value === name)[0].visible;
+
+                    this.$store.dispatch("setGuiGcodefilesMetadata", {name: name, value: value});
+                }
+            },
         },
         watch: {
             filetree: {
@@ -613,17 +636,38 @@
                 handler(newVal) {
                     let dirArray = this.currentPath.split("/");
                     this.files = findDirectory(newVal, dirArray);
+
+                    if (!this.showHiddenFiles) {
+                        this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+                    }
                 }
             },
             currentPath: {
                 handler(newVal) {
                     let dirArray = newVal.split("/");
                     this.files = findDirectory(this.filetree, dirArray);
+
+                    if (!this.showHiddenFiles) {
+                        this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+                    }
                 }
             },
             loadings: function(loadings) {
                 this.loadingGcodeRefresh = loadings.includes('loadingGcodeRefresh');
                 this.loadingGcodeUpload = loadings.includes('loadingGcodeUpload');
+            },
+            displayMetadata: {
+                deep: true,
+                handler(newVal) {
+                    Object.entries(newVal).forEach(value => {
+                        if (this.headers.filter(header => header.value === value[0]).length) {
+                            this.headers.filter(header => header.value === value[0])[0].visible = value[1];
+                        }
+                    });
+                }
+            },
+            showHiddenFiles: function() {
+                this.loadPath();
             }
         }
     }
