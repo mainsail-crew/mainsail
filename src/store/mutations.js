@@ -508,7 +508,12 @@ export default {
     },
 
     setGuiGcodefilesMetadata(state, data) {
-        Vue.set(state.gui.gcodefiles.showMetadata, data.name, data.newValue);
+        Vue.set(state.gui.gcodefiles.showMetadata, data.name, data.value);
+    },
+
+
+    setGuiGcodefilesShowHiddenFiles(state, value) {
+        Vue.set(state.gui.gcodefiles, "showHiddenFiles", value);
     },
 
     setLoadingRestart(state, value) {
