@@ -369,9 +369,10 @@ export default {
     },
 
     setMetadata(state, data) {
+
         if (data !== undefined && data.filename !== "") {
             if (data.filename === state.printer.print_stats.filename) {
-                this.commit('setMetadataCurrentFile', { data: data });
+                this.commit('setMetadataCurrentFile', data );
             }
 
             let filename = "gcodes/"+data.filename;
