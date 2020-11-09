@@ -18,6 +18,8 @@ export default {
     },
 
     setKlippyDisconnected(state) {
+        Vue.set(state.printer.configfile, 'config', {});
+
         Vue.set(state, '', {
             webhooks: {
                 state: 'disconnected',
@@ -56,9 +58,7 @@ export default {
                 state.printer.webhooks.state !== "ready" &&
                 state.printer.webhooks.state !== "" &&
                 value.state === "ready"
-            ) {
-                this.commit("resetPrinter");
-            }
+            ) this.commit("resetPrinter");
 
             //update printer state
             if (typeof(value) === "object") {

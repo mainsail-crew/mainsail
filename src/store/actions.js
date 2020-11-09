@@ -85,7 +85,6 @@ export default {
     },
 
     initPrinter() {
-
         Vue.prototype.$socket.sendObj('printer.info', {}, 'getKlipperInfo');
 
         // only available with klipper is ready

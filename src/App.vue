@@ -177,10 +177,12 @@ export default {
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
         },
         doRestart: function() {
+            this.$store.commit('setPrinterData', { webhooks: { state: "restart", state_message: "Printer is restarting..."}});
             this.$store.commit('addGcodeResponse', "RESTART");
             this.$socket.sendObj('printer.gcode.script', { script: "RESTART" });
         },
         doFirmwareRestart: function() {
+            this.$store.commit('setPrinterData', { webhooks: { state: "restart", state_message: "Printer is restarting..."}});
             this.$store.commit('addGcodeResponse', "FIRMWARE_RESTART");
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" });
         },

@@ -241,6 +241,39 @@ export default {
         return extruder;
     },
 
+    existPrinterConfig: state => {
+        if (
+            typeof(state.printer.configfile.config) === "object" &&
+            Object.keys(state.printer.configfile.config).length > 0
+        ) return true;
+
+        return false;
+    },
+
+    checkConfigVirtualSdcard: state => {
+        return 'virtual_sdcard' in state.printer.configfile.config;
+    },
+
+    checkConfigPauseResume: state => {
+        return 'pause_resume' in state.printer.configfile.config;
+    },
+
+    checkConfigDisplayStatus: state => {
+        return 'display_status' in state.printer.configfile.config;
+    },
+
+    checkConfigMacroPause: state => {
+        return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro pause') !== -1;
+    },
+
+    checkConfigMacroResume: state => {
+        return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro resume') !== -1;
+    },
+
+    checkConfigMacroCancel: state => {
+        return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
+    },
+
     powerDevices: state => {
         return state.power.devices;
     },
