@@ -4,7 +4,7 @@ Mainsail is a lightweight & responsive web interface for the [Klipper](https://g
 
 ![screenshot-dashboard](docs/images/screenshot-dashboard.png)
 
-To begin using Mainsail start by [installing](docs/installation.md) it or read the [documentation](docs/README.md) for more informations.
+To begin using Mainsail start by [installing](wiki/Installertion) it or read the [Wikipedia Pages](wiki) for more informations.
 
 ## Credit, sources and inspiration
 * [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
