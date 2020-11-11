@@ -23,6 +23,13 @@
             </v-list-item-content>
         </v-list-item>
         <v-divider class="mt-2"></v-divider>
+      <form @submit="doSend">
+        <v-text-field
+            v-model="gcode"
+            placeholder="Send code..."
+            class="pa-3"
+        ></v-text-field>
+      </form>
         <v-card-text class="px-0 py-0 content">
                 <v-data-table
                         :headers="headers"
@@ -57,6 +64,7 @@
 
 <script>
     import { mapState } from 'vuex'
+    import Vue from "vue";
 
     export default {
         components: {
@@ -64,6 +72,7 @@
         },
         data: function() {
             return {
+                gcode : '',
                 headers: [
                     {
                         text: 'Date',
@@ -89,7 +98,14 @@
             })
         },
         methods: {
-
+            doSend(ev) {
+              ev.preventDefault();
+                this.$store.commit('setLoading', { name: 'loadingSendGcode' });
+                this.$store.commit('addGcodeResponse', this.gcode);
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "sendGcode");
+                this.gcode = "";
+                this.lastCommandNumber = null;
+            },
             formatTime(date) {
                 let hours = date.getHours();
                 if (hours < 10) hours = "0"+hours.toString();
