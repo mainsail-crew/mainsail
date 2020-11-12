@@ -24,13 +24,27 @@
         </v-list-item>
         <v-divider class="mt-2"></v-divider>
       <form @submit="doSend">
-        <v-text-field
-            v-model="gcode"
-            placeholder="Send code..."
-            class="pa-3"
-        ></v-text-field>
+        <v-row class="ml-3 mr-3">
+          <v-col class="col ma-0 pa-0">
+            <v-text-field
+                v-model="gcode"
+                placeholder="Send code..."
+                class="pt-4"
+                v-on:keydown.tab="getAutocomplete"
+                ref="gcodeCommandField"
+            ></v-text-field>
+          </v-col>
+
+          <v-col class="col-auto align-content-center">
+            <v-btn color="info" class="gcode-command-btn" @click="doSend">
+              <v-icon class="mr-2">mdi-send</v-icon> send
+            </v-btn>
+          </v-col>
+        </v-row>
       </form>
-        <v-card-text class="px-0 py-0 content">
+      <v-divider class="mt-2"></v-divider>
+
+      <v-card-text class="px-0 py-0 content">
                 <v-data-table
                         :headers="headers"
                         :options="options"
@@ -95,9 +109,28 @@
         computed: {
             ...mapState({
                 events: state => state.events,
+              helplist: state => state.helplist,
+
             })
         },
         methods: {
+          getAutocomplete(e) {
+            e.preventDefault();
+            if (this.gcode.length) {
+              let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
+              if (commands && commands.length === 1) this.gcode = commands[0].command;
+              else {
+                let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
+                if (commands && commands.length) {
+                  let output = "";
+                  commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+
+                  this.$store.commit('addGcodeResponse', output);
+                }
+              }
+            }
+            this.$refs.gcodeCommandField.focus();
+          },
             doSend(ev) {
               ev.preventDefault();
                 this.$store.commit('setLoading', { name: 'loadingSendGcode' });
