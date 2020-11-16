@@ -41,12 +41,13 @@
         },
         data: function() {
             return {
-                sortEndstops: {}
+                sortEndstops: {},
+                loading: false
             }
         },
         computed: {
             ...mapState({
-                loading: state => state.socket.loadingEndstopStatus,
+                //loading: state => state.socket.loadingEndstopStatus,
                 endstops: state => state.printer.endstops,
             })
         },
@@ -55,8 +56,9 @@
         },
         methods: {
             syncEndstops() {
-                this.$store.commit('setLoadingEndstopStatus', true);
-                this.$socket.sendObj('printer.query_endstops.status', { }, "responseEndstopStatus");
+                // TODO loading
+                //this.$store.commit('setLoadingEndstopStatus', true);
+                this.$socket.sendObj('printer.query_endstops.status', { }, "printer/getEndstopStatus");
             },
             getEndstops() {
                 this.sortEndstops = {};

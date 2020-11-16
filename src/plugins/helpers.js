@@ -1,5 +1,5 @@
 export function findDirectory (folder, dirArray) {
-    if (dirArray.length) {
+    if (folder !== undefined && dirArray.length) {
         if (folder.childrens) folder = folder.childrens;
 
         let parent = folder.find(element => (element.isDirectory && element.filename === dirArray[0]));

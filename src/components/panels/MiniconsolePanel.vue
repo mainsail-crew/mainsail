@@ -9,6 +9,10 @@
         white-space: nowrap;
     }
 
+    .miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+        height: auto;
+    }
+
     .miniConsole .content-cell {
         width: 100%;
     }
@@ -24,33 +28,33 @@
         </v-list-item>
         <v-divider class="mt-2"></v-divider>
         <v-card-text class="px-0 py-0 content">
-                <v-data-table
-                        :headers="headers"
-                        :options="options"
-                        :items="events"
-                        item-key="date"
-                        hide-default-footer
-                        hide-default-header
-                        disable-pagination
-                        class="minievent-table miniConsole"
-                        :custom-sort="customSort"
-                        sort-by="date"
-                >
-                    <template #no-data>
-                        <div class="text-center">empty</div>
-                    </template>
+            <v-data-table
+                :headers="headers"
+                :options="options"
+                :items="events"
+                item-key="date"
+                hide-default-footer
+                hide-default-header
+                disable-pagination
+                class="minievent-table miniConsole"
+                :custom-sort="customSort"
+                sort-by="date"
+            >
+                <template #no-data>
+                    <div class="text-center">empty</div>
+                </template>
 
-                    <template #item="{ item }">
-                        <tr>
-                            <td class="log-cell title-cell py-2">
-                                {{ formatTime(item.date)}}
-                            </td>
-                            <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                                <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
+                <template #item="{ item }">
+                    <tr>
+                        <td class="log-cell title-cell py-2">
+                            {{ formatTime(item.date)}}
+                        </td>
+                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
+                            <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
         </v-card-text>
     </v-card>
 </template>
@@ -85,7 +89,7 @@
         },
         computed: {
             ...mapState({
-                events: state => state.events,
+                events: state => state.server.events,
             })
         },
         methods: {

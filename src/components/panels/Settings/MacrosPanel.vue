@@ -9,7 +9,7 @@
         </v-list-item>
         <v-divider class="my-2"></v-divider>
         <v-card-text class="px-0 pb-3 pt-3 content">
-            <div v-for="(macro, index) in getAllMacros" v-bind:key="index">
+            <div v-for="(macro, index) in this['printer/getAllMacros']" v-bind:key="index">
                 <v-row>
                     <v-col class="px-10 py-0">
                         <settings-macro-switch :name="macro.name"></settings-macro-switch>
@@ -27,7 +27,6 @@
     export default {
         components: {
             SettingsMacroSwitch
-
         },
         data: function() {
             return {
@@ -39,7 +38,7 @@
                 hiddenMacros: state => state.gui.dashboard.hiddenMacros,
             }),
             ...mapGetters([
-                'getAllMacros',
+                'printer/getAllMacros',
             ])
         },
         methods: {

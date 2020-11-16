@@ -49,7 +49,7 @@
                     return this.$store.state.gui.dashboard.boolWebcam;
                 },
                 set(status) {
-                    return this.$store.dispatch('setSettings', { gui: { dashboard: { boolWebcam: status } } });
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolWebcam: status } });
                 }
             },
             boolShowTempchartOnDashboard: {
@@ -57,7 +57,7 @@
                     return this.$store.state.gui.dashboard.boolTempchart;
                 },
                 set(status) {
-                    return this.$store.dispatch('setSettings', { gui: { dashboard: { boolTempchart: status } } });
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolTempchart: status } });
                 }
             },
             boolShowConsoleOnDashboard: {
@@ -65,7 +65,7 @@
                     return this.$store.state.gui.dashboard.boolConsole;
                 },
                 set(status) {
-                    return this.$store.dispatch('setSettings', { gui: { dashboard: { boolConsole: status } } });
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolConsole: status } });
                 }
             },
         },

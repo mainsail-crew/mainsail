@@ -54,7 +54,7 @@
                     return this.$store.state.gui.webcam.url;
                 },
                 set(url) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { url } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { url } });
                 }
             },
             flipX: {
@@ -62,7 +62,7 @@
                     return this.$store.state.gui.webcam.flipX;
                 },
                 set(flipX) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { flipX } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { flipX } });
                 }
             },
             flipY: {
@@ -70,7 +70,7 @@
                     return this.$store.state.gui.webcam.flipY;
                 },
                 set(flipY) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { flipY } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { flipY } });
                 }
             },
             rotate: {
@@ -78,7 +78,7 @@
                     return this.$store.state.gui.webcam.rotate;
                 },
                 set(rotate) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { rotate } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { rotate } });
                 }
             },
             rotateDegrees: {
@@ -86,7 +86,7 @@
                     return this.$store.state.gui.webcam.rotateDegrees;
                 },
                 set(rotateDegrees) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { rotateDegrees } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { rotateDegrees } });
                 }
             },
             boolNavi: {
@@ -94,7 +94,7 @@
                     return this.$store.state.gui.webcam.bool;
                 },
                 set(showNav) {
-                    return this.$store.dispatch('setSettings', { gui: { webcam: { bool: showNav } } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
                 }
             },
         },

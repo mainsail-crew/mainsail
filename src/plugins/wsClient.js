@@ -31,7 +31,7 @@ export default class WebSocketClient {
     }
 
     passToStore (eventName, event) {
-        if (!eventName.startsWith('socket_')) { return }
+        if (!eventName.startsWith('socket/')) { return }
         let method = 'dispatch'
         let target = eventName
         let msg = event
@@ -45,12 +45,12 @@ export default class WebSocketClient {
         this.instance = new WebSocket(this.url);
 
         this.instance.onopen = () => {
-            if (this.store) this.passToStore('socket_on_open', event);
+            if (this.store) this.passToStore('socket/onOpen', event);
         };
 
         this.instance.onclose = (e) => {
             window.console.log("Websocket Closed, reconnecting in "+this.reconnectInterval+"ms: ", e.reason);
-            this.passToStore('socket_on_close', e);
+            this.passToStore('socket/onClose', e);
 
             setTimeout(() => {
                 this.connect();
@@ -87,7 +87,7 @@ export default class WebSocketClient {
                             Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, result)
                         )
                     }
-                } else this.passToStore('socket_on_message', data)
+                } else this.passToStore('socket/onMessage', data)
             }
         };
     }

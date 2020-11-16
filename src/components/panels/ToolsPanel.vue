@@ -99,7 +99,7 @@
         },
         computed: {
             ...mapState({
-                datasets: state => state.temperaturChart,
+                datasets: state => state.printer.tempHistory.datasets,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
             }),
             ...mapGetters([

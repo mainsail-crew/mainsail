@@ -39,7 +39,7 @@
         }),
         computed: {
             ...mapState({
-                klippy_state: state => state.printer.webhooks.state,
+                klippy_state: state => state.server.klippy_state,
             }),
         },
         created() {

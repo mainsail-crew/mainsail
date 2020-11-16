@@ -117,8 +117,8 @@
         },
         computed: {
             ...mapState({
-                events: state => state.events,
-                helplist: state => state.helplist,
+                events: state => state.server.events,
+                helplist: state => state.printer.helplist,
                 loadings: state => state.loadings,
             }),
             ...mapGetters([
@@ -127,9 +127,9 @@
         },
         methods: {
             doSend() {
-                this.$store.commit('setLoading', { name: 'loadingSendGcode' });
-                this.$store.commit('addGcodeResponse', this.gcode);
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "sendGcode");
+                //this.$store.commit('setLoading', { name: 'loadingSendGcode' });
+                this.$store.commit('server/addEvent', this.gcode);
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "server/getGcodeRespond");
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;
@@ -168,7 +168,7 @@
                             let output = "";
                             commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
-                            this.$store.commit('addGcodeResponse', output);
+                            this.$store.commit('server/addEvent', output);
                         }
                     }
                 }

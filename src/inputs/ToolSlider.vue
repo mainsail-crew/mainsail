@@ -1,31 +1,34 @@
 <style>
-
+    ._tool-slider-subheader {
+        height: auto;
+    }
 </style>
 
 <template>
     <v-row>
-        <v-col class="py-1">
-            <v-slider
-                v-model="value"
-                :label="label"
-                :min="min"
-                :max="max"
-                @change="sendCmd"
-                :prepend-icon="prependIcon"
-                hide-details>
+        <v-col class="pb-1 pt-3">
+            <v-subheader class="_tool-slider-subheader">
+                <span>{{ label }}</span>
+                <v-spacer></v-spacer>
+                <span class="font-weight-bold">{{ value }} {{ unit }}</span>
+            </v-subheader>
+            <v-card-text class="py-0">
+                <v-slider
+                    v-model="value"
+                    :min="min"
+                    :max="max"
+                    @change="sendCmd"
+                    hide-details>
 
-                <template v-slot:append>
-                    <v-text-field
-                        v-model="value"
-                        class="mt-0 pt-0"
-                        hide-details
-                        single-line
-                        type="number"
-                        style="width: 80px"
-                        @change="sendCmd"
-                    ></v-text-field>
-                </template>
-            </v-slider>
+                    <template v-slot:prepend>
+                        <v-icon @click="decrement">mdi-minus</v-icon>
+                    </template>
+
+                    <template v-slot:append>
+                        <v-icon @click="increment">mdi-plus</v-icon>
+                    </template>
+                </v-slider>
+            </v-card-text>
         </v-col>
     </v-row>
 </template>
@@ -44,7 +47,6 @@
                 required: true,
             },
             command: {
-                type: String,
                 required: true,
             },
             attributeName: {
@@ -57,10 +59,10 @@
                 required: false,
                 default: ''
             },
-            prependIcon: {
+            unit: {
                 type: String,
                 required: false,
-                default: ''
+                default: '%'
             },
             attributeScale: {
                 type: Number,
@@ -77,15 +79,10 @@
                 required: false,
                 default: 100
             },
-            extenderSteps: {
+            step: {
                 type: Number,
                 required: false,
-                default: 100
-            },
-            extender: {
-                type: Boolean,
-                required: false,
-                default: false
+                default: 1
             },
             multi: {
                 type: Number,
@@ -98,12 +95,22 @@
         },
         methods: {
             sendCmd() {
-                this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+(this.value*this.attributeScale).toFixed(0) });
+                let gcode = this.command+' '+this.attributeName+(this.value*this.attributeScale).toFixed(0)
+                this.$store.commit('server/addEvent', gcode)
+                this.$socket.sendObj('printer.gcode.script', { script: gcode })
             },
+            decrement() {
+                this.value = this.value > this.min ? (this.value - this.step).toFixed(0) : this.min
+                this.sendCmd();
+            },
+            increment() {
+                this.value = this.value < this.max ? (this.value + this.step).toFixed(0) : this.max
+                this.sendCmd();
+            }
         },
         watch: {
-            target: function() {
-                this.value = this.target * this.multi;
+            target: function(newVal) {
+                this.value = newVal * this.multi;
             },
         },
         created: function() {

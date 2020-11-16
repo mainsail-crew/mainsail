@@ -22,7 +22,7 @@ Vue.component('vue-headful', vueHeadful);
 fetch('/config.json')
 .then(res => res.json())
 .then(file => {
-    store.commit('setSettings', file);
+    store.commit('socket/setData', file);
 
     const websocketProtocol = document.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const socketClient = new WebSocketClient(websocketProtocol + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {

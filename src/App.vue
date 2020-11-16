@@ -80,6 +80,7 @@
                     <v-list-item link @click="doFirmwareRestart()">
                         <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>FW Restart</v-list-item-title>
                     </v-list-item>
+                    <v-divider></v-divider>
                     <v-list-item link @click="doHostReboot()">
                         <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Reboot Host</v-list-item-title>
                     </v-list-item>
@@ -100,7 +101,7 @@
             </v-scroll-y-transition>
         </v-main>
 
-        <v-dialog v-model="isConnecting"  persistent width="300">
+        <v-dialog v-model="overlayDisconnect" persistent width="300">
             <v-card color="primary" dark >
                 <v-card-text class="pt-2">
                     Connecting...
@@ -129,6 +130,7 @@ export default {
 
     },
     data: () => ({
+        overlayDisconnect: true,
         drawer: null,
         activeClass: 'active',
         routes: routes,
@@ -139,7 +141,6 @@ export default {
     }),
     created () {
         this.$vuetify.theme.dark = true;
-        //this.is_ready = (this.klippy_state === "ready") ? true : false;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
@@ -147,17 +148,16 @@ export default {
           return this.$route.fullPath;
         },
         ...mapState({
-            toolhead: state => state.printer.toolhead,
-            hostname: state => state.printer.hostname,
-            printername: state => state.gui.general.printername,
-            version: state => state.printer.software_version,
             isConnected: state => state.socket.isConnected,
-            isConnecting: state => !state.socket.isConnected,
+            hostname: state => state.printer.hostname,
+            version: state => state.printer.software_version,
+            klippy_state: state => state.server.klippy_state,
+
+            toolhead: state => state.printer.toolhead,
+            printername: state => state.gui.general.printername,
             virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
-            klippy_state: state => state.printer.webhooks.state,
-            loadings: state => state.loadings,
             config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
         }),
@@ -168,22 +168,22 @@ export default {
     },
     methods: {
         clickEmergencyStop: function() {
-            this.$store.commit('setLoading', { name: 'btnEmergencyStop' });
+            // TODO loading emergency stop
+            //this.$store.commit('setLoading', { name: 'btnEmergencyStop' });
             this.$socket.sendObj('printer.emergency_stop', {});
         },
         clickSaveConfig: function() {
-            this.$store.commit('addGcodeResponse', "SAVE_CONFIG");
-            this.$store.commit('setLoading', { name: 'btnSaveConfig' });
+            this.$store.commit('server/addEvent', "SAVE_CONFIG");
+            // TODO loading save_config button
+            //this.$store.commit('setLoading', { name: 'btnSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
         },
         doRestart: function() {
-            this.$store.commit('setPrinterData', { webhooks: { state: "restart", state_message: "Printer is restarting..."}});
-            this.$store.commit('addGcodeResponse', "RESTART");
+            this.$store.commit('server/addEvent', "RESTART");
             this.$socket.sendObj('printer.gcode.script', { script: "RESTART" });
         },
         doFirmwareRestart: function() {
-            this.$store.commit('setPrinterData', { webhooks: { state: "restart", state_message: "Printer is restarting..."}});
-            this.$store.commit('addGcodeResponse', "FIRMWARE_RESTART");
+            this.$store.commit('server/addEvent', "FIRMWARE_RESTART");
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" });
         },
         doHostReboot: function() {
@@ -258,9 +258,8 @@ export default {
         config() {
             this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         },
-        loadings: function(loadings) {
-            this.loadingEmergencyStop = loadings.includes('btnEmergencyStop');
-            this.loadingConfigChanged = loadings.includes('btnSaveConfig');
+        isConnected(newVal) {
+            this.overlayDisconnect = !newVal;
         }
     },
 }

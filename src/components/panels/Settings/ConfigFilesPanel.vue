@@ -231,9 +231,7 @@
         },
         computed: {
             ...mapState({
-                config_examples: state => state.filetree.config_examples,
-                config: state => state.filetree.config,
-                filetree: state => state.filetree,
+                filetree: state => state.files.filetree,
                 countPerPage: state => state.gui.settings.configfiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
@@ -244,17 +242,17 @@
         },
         methods: {
             highlighter(code) {
-                //return highlight(code, languages.editorconfig); //returns html
                 return highlight(code, languages.ini); //returns html
             },
             refreshFileList: function() {
                 window.console.log(this.currentPath.substring(1));
-                this.$store.commit('setLoading', { name: 'loadingConfigRefresh' });
+                // TODO loading refresh
+                //this.$store.commit('setLoading', { name: 'loadingConfigRefresh' });
 
                 if (this.currentPath === "") {
-                    this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'getDirectory');
-                    this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'getDirectory');
-                } else this.$socket.sendObj('server.files.get_directory', { path: this.currentPath.substring(1) }, 'getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory');
+                    this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
+                } else this.$socket.sendObj('server.files.get_directory', { path: this.currentPath.substring(1) }, 'files/getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -385,7 +383,7 @@
 
                 this.$socket.sendObj('server.files.post_directory', {
                     path: this.currentPath.substring(1)+"/"+this.dialogCreateFolder.name
-                }, 'getPostDirectory');
+                }, 'files/getCreateDir');
             },
             createFile() {
                 this.dialogCreateFile.name = "";
@@ -420,7 +418,7 @@
                 this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameFile.newName
-                }, 'getPostFileMove');
+                }, 'files/getMove');
             },
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
@@ -433,7 +431,7 @@
                 });
             },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
         },
         watch: {
