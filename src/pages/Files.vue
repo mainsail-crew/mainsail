@@ -127,7 +127,7 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td class=" ">
+                        <td class=" " style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
                             <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
                             <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
@@ -172,9 +172,10 @@
         <v-dialog v-model="dialogPrintFile.show" max-width="400">
             <v-card>
                 <v-img
-                    v-if="dialogPrintFile.item.thumbnails && dialogPrintFile.item.thumbnails.find(element => element.width === 400)"
-                    :src="'data:image/gif;base64,'+(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400).data : '')"
-                    :height="(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400).height : '')+'px'"
+                    contain
+                    v-if="dialogPrintFile.item.thumbnails && dialogPrintFile.item.thumbnails.find(element => element.width === 300 || element.width === 400)"
+                    :src="'data:image/gif;base64,'+(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 300 || element.width === 400).data : '')"
+                    :height="(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400 || element.width === 300).height : '')+'px'"
                 ></v-img>
                 <v-card-title class="headline">Start Job</v-card-title>
                 <v-card-text>Do you want to start {{ dialogPrintFile.item.filename }}?</v-card-text>
@@ -203,7 +204,7 @@
             <v-card>
                 <v-card-title class="headline">Rename File</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
+                    <v-text-field label="Name" required v-model="dialogRenameFile.newName" ref="inputFieldNewName"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -300,7 +301,7 @@
         },
         computed: {
             ...mapState({
-                filetree: state => state.filetree,
+                filetree: state => state.files.filetree,
                 countPerPage: state => state.gui.gcodefiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
@@ -344,18 +345,21 @@
                 let filename = file.name.replace(" ", "_");
 
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
-                this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
+                // TODO loading upload
+                //this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
 
                 return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
                         headers: { 'Content-Type': 'multipart/form-data' }
                     }
                 ).then((result) => {
-                    this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
+                    // TODO loading upload
+                    //this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
                     toast.success("Upload of "+result.data.result+" successful!");
                 })
                 .catch(() => {
-                    this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
+                    // TODO loading upload
+                    //this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
                     toast.error("Cannot upload the file!");
                 });
             },
@@ -363,8 +367,9 @@
                 this.$refs.fileUpload.click();
             },
             refreshFileList: function() {
-                this.$store.commit('setLoading', { name: 'loadingGcodeRefresh' });
-                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'getDirectory');
+                // TODO loading button
+                //this.$store.commit('setLoading', { name: 'loadingGcodeRefresh' });
+                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -435,7 +440,7 @@
                 this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameFile.newName
-                }, 'getPostFileMove');
+                }, 'files/getMove');
             },
             renameDirectory(item) {
                 this.dialogRenameDirectory.item = item;
@@ -447,7 +452,7 @@
                 this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
-                }, 'getPostFileMove');
+                }, 'files/getFileMove');
             },
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
@@ -466,11 +471,11 @@
             createDirectoryAction: function() {
                 if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(" ") === -1) {
                     this.dialogCreateDirectory.show = false;
-                    this.$socket.sendObj('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'getPostDirectory');
+                    this.$socket.sendObj('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'files/getCreateDir');
                 }
             },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'getDeleteDirectory');
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             clickRow: function(item) {
                 if (!item.isDirectory) {
@@ -485,7 +490,7 @@
                 this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
             },
             loadPath: function() {
-                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'getDirectory');
+                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory');
                 let dirArray = this.currentPath.split("/");
                 this.files = findDirectory(this.filetree, dirArray);
                 if (!this.showHiddenFiles) {
@@ -611,7 +616,7 @@
                 for (let i = data.pageStart; i < data.pageStop; i++) {
                     if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                         let filename = (this.currentPath+"/"+items[i].filename).substring(7);
-                        this.$socket.sendObj("server.files.metadata", { filename: filename }, "getMetadata");
+                        this.$socket.sendObj("server.files.metadata", { filename: filename }, "files/getMetadata");
                     }
                 }
 

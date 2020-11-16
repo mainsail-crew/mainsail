@@ -7,6 +7,15 @@
 
     .tool-input .v-input__slot { margin-bottom: 0; }
     .tool-input .v-text-field__details { display: none; }
+
+    .tool-input input {
+        -moz-appearance: textfield;
+    }
+    .tool-input input::-webkit-outer-spin-button,
+    .tool-input input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 </style>
 
 <template>
@@ -43,7 +52,7 @@
                 } else if (this.min_temp !== undefined && this.value < this.min_temp && parseFloat(this.value) !== 0) {
                     this.value = this.target;
                     Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
-                } else this.$socket.sendObj('printer.gcode.script', {script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value});
+                } else this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value });
             }
         },
         watch: {

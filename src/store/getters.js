@@ -118,10 +118,6 @@ export default {
         return 0;
     },
 
-    fan: state => {
-        return Object.entries(state.printer).indexOf("fan") ? state.printer.fan : false;
-    },
-
     is_printing: state => {
         return (["printing", "paused"].includes(state.printer.print_stats.state));
     },
@@ -138,22 +134,6 @@ export default {
                 !Object.hasOwnProperty.call(state.printer.configfile.config[prop], "rename_existing") &&
                 !(hiddenMacros.indexOf(prop.replace("gcode_macro ", "").toLowerCase()) > -1)
             ) {
-                array.push({
-                    "name": prop.replace("gcode_macro ", ""),
-                    "prop": state.printer.configfile.config[prop]
-                });
-            }
-        }
-
-        return array.sort(caseInsensitiveNameSort);
-    },
-
-    getAllMacros: state => {
-        let array = [];
-
-        for (let prop in state.printer.configfile.config) {
-            if (prop.startsWith("gcode_macro") &&
-                !Object.hasOwnProperty.call(state.printer.configfile.config[prop], "rename_existing")) {
                 array.push({
                     "name": prop.replace("gcode_macro ", ""),
                     "prop": state.printer.configfile.config[prop]
@@ -206,7 +186,7 @@ export default {
 
     getTitle: state => {
         if (state.socket.isConnected) {
-            if (state.printer.webhooks.state !== "ready") return "ERROR";
+            if (state.server.klippy_state !== "ready") return "ERROR";
             else if (state.printer.print_stats.state === "paused") return "Pause Print";
             else if (state.printer.print_stats.state === "printing") return (state.printer.virtual_sdcard.progress * 100).toFixed(0)+"% Printing - "+state.printer.print_stats.filename;
             else if (state.printer.print_stats.state === "complete") return "Complete - "+state.printer.print_stats.filename;
@@ -250,6 +230,8 @@ export default {
         return false;
     },
 
+
+
     checkConfigVirtualSdcard: state => {
         return 'virtual_sdcard' in state.printer.configfile.config;
     },
@@ -272,13 +254,5 @@ export default {
 
     checkConfigMacroCancel: state => {
         return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
-    },
-
-    powerDevices: state => {
-        return state.power.devices;
-    },
-
-    powerDevicesCount: (state, getters) => {
-        return getters.powerDevices.length;
     },
 }

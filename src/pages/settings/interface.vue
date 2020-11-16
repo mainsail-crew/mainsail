@@ -12,11 +12,6 @@
                 <settings-macros-panel></settings-macros-panel>
             </v-col>
         </v-row>
-        <v-fab-transition>
-            <v-btn fab fixed large bottom right :loading="loadingUpload" @click="saveGuiSettings">
-                <v-icon>mdi-check</v-icon>
-            </v-btn>
-        </v-fab-transition>
     </div>
 </template>
 <script>
@@ -25,12 +20,12 @@
     export default {
         computed: {
             ...mapState({
-                loadingUpload: state => state.socket.loadingSaveGuiConfig,
+
             }),
         },
         methods: {
             ...mapActions([
-                'saveGuiSettings'
+
             ]),
         }
     }

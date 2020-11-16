@@ -53,7 +53,7 @@ export default {
                             meta_target.hidden = meta.hidden;
                         }
 
-                        store.dispatch('setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
+                        store.dispatch('gui/setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
 
                         ci.update();
                     }
@@ -129,10 +129,12 @@ export default {
         }
     },
     created () {
-        this.timer = setInterval(this.update, 500);
+        /*this.timer = setInterval(function() {
+            this.update;
+        }, 2000);*/
     },
     mounted () {
-        this.renderChart(this.chartData, this.options);
+        //this.renderChart(this.chartData, this.options)
     },
     methods: {
         update() {
@@ -143,11 +145,6 @@ export default {
         }
     },
     watch: {
-        chartData: function(newData, oldData) {
-            window.console.log("watch chartData");
-            window.console.log(newData);
-            window.console.log(oldData);
-            this.$data._chart.reset();
-        }
+
     }
 }

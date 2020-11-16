@@ -6,34 +6,31 @@
                 <v-list-item-title class="headline">Machine Limits</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 pt-0 pb-2 content">
-            <v-row class="px-6" >
-                <v-col sm-12>
-                    <toolSlider label="VELOCITY" v-bind:target="current_velocity" v-bind:max="max_velocity" command="SET_VELOCITY_LIMIT" attribute-name="VELOCITY=" ></toolSlider>
-                    <toolSlider label="ACCEL" v-bind:target="current_accel" v-bind:max="max_accel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL=" ></toolSlider>
-                    <toolSlider label="DECEL" v-bind:target="current_accel_to_decel" v-bind:max="max_accel_to_decel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL_TO_DECEL=" ></toolSlider>
-                    <toolSlider label="SCV" v-bind:target="current_square_corner_velocity" v-bind:max="max_square_corner_velocity" command="SET_VELOCITY_LIMIT" attribute-name="SQUARE_CORNER_VELOCITY=" ></toolSlider>
-                </v-col>
-            </v-row>
-        </v-card-text>
+        <v-divider class="mt-2"></v-divider>
+        <tool-slider label="Velocity" unit="mm/s" :target="current_velocity" :max="max_velocity" command="SET_VELOCITY_LIMIT" attribute-name="VELOCITY=" ></tool-slider>
+        <v-divider></v-divider>
+        <tool-slider label="Acceleration" unit="mm/s²" :target="current_accel" :max="max_accel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL=" ></tool-slider>
+        <v-divider></v-divider>
+        <tool-slider label="Deceleration" unit="mm/s²" :target="current_accel_to_decel" :max="max_accel_to_decel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL_TO_DECEL=" ></tool-slider>
+        <v-divider></v-divider>
+        <tool-slider label="Square corner velocity" unit="mm/s" :target="current_square_corner_velocity" :max="max_square_corner_velocity" command="SET_VELOCITY_LIMIT" attribute-name="SQUARE_CORNER_VELOCITY=" ></tool-slider>
     </v-card>
 </template>
 
 <script>
     import { mapState } from 'vuex'
-    import toolSlider from '../../../inputs/ToolSlider'
+    import ToolSlider from '../../../inputs/ToolSlider'
 
     export default {
         components: {
-            toolSlider
+            ToolSlider
         },
         data: function() {
             return {
-                max_velocity: 200,
-                max_accel: 5000,
-                max_accel_to_decel: 2500,
-                max_square_corner_velocity: 10,
+                max_velocity: 0,
+                max_accel: 0,
+                max_accel_to_decel: 0,
+                max_square_corner_velocity: 0,
             }
         },
         computed: {

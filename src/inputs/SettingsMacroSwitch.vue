@@ -30,17 +30,19 @@
             setValue() {
                 if (this.value) {
                     let index = this.hiddenMacros.indexOf(this.name.toUpperCase());
-                    if (index > -1) this.hiddenMacros.splice(index, 1);
-                } else this.hiddenMacros.push(this.name.toUpperCase());
+                    if (index > -1) this.hiddenMacros.splice(index, 1)
+                } else this.hiddenMacros.push(this.name.toUpperCase())
+
+                this.$store.dispatch("gui/upload")
             }
         },
         watch: {
             hiddenMacros: function() {
-                this.value = !this.hiddenMacros.includes(this.name.toUpperCase());
+                this.value = !this.hiddenMacros.includes(this.name.toUpperCase())
             }
         },
         created() {
-            this.value = !this.hiddenMacros.includes(this.name.toUpperCase());
+            this.value = !this.hiddenMacros.includes(this.name.toUpperCase())
         }
     }
 </script>

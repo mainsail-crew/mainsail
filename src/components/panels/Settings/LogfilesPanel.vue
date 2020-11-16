@@ -36,7 +36,7 @@
             ...mapState({
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
-                klippy_state: state => state.printer.webhooks.state,
+                klippy_state: state => state.server.klippy_state,
             }),
         },
     }

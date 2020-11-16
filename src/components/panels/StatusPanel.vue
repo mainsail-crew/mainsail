@@ -157,7 +157,6 @@
             ...mapState({
                 toolhead: state => state.printer.toolhead,
                 position: state => state.printer.toolhead.position,
-                loadings: state => state.loadings,
 
                 estimated_print_time: state => state.printer.toolhead.estimated_print_time,
 
@@ -169,8 +168,6 @@
                 filament_used: state => state.printer.print_stats.filament_used,
                 current_file: state => state.printer.print_stats.filename,
                 printer_state: state => state.printer.print_stats.state,
-                klippy_state: state => state.printer.webhooks.state,
-                klippy_state_message: state => state.printer.webhooks.state_message,
 
                 display_message: state => state.printer.display_status.message,
             }),
@@ -184,23 +181,28 @@
         },
         methods: {
             btnPauseJob() {
-                this.$store.commit('setLoading', { name: 'statusPrintPause' });
+                // TODO loading button
+                //this.$store.commit('setLoading', { name: 'statusPrintPause' });
                 this.$socket.sendObj('printer.print.pause', { }, 'respondPrintPause');
             },
             btnResumeJob() {
-                this.$store.commit('setLoading', { name: 'statusPrintResume' });
+                // TODO loading button
+                //this.$store.commit('setLoading', { name: 'statusPrintResume' });
                 this.$socket.sendObj('printer.print.resume', { }, 'respondPrintResume');
             },
             btnCancelJob() {
-                this.$store.commit('setLoading', { name: 'statusPrintCancel' });
+                // TODO loading button
+                //this.$store.commit('setLoading', { name: 'statusPrintCancel' });
                 this.$socket.sendObj('printer.print.cancel', { }, 'respondPrintCancel');
             },
             btnClearJob() {
-                this.$store.commit('setLoading', {name: 'statusPrintClear'});
+                // TODO loading button
+                //this.$store.commit('setLoading', {name: 'statusPrintClear'});
                 this.$socket.sendObj('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'respondPrintClear');
             },
             btnReprintJob() {
-                this.$store.commit('setLoading', {name: 'statusPrintReprint'});
+                // TODO loading button
+                //this.$store.commit('setLoading', {name: 'statusPrintReprint'});
                 this.$socket.sendObj('printer.print.start', { filename: this.current_file }, 'respondPrintReprint');
             },
             formatTime(seconds) {
@@ -213,13 +215,13 @@
             },
         },
         watch: {
-            loadings: function(loadings) {
+            /*loadings: function(loadings) {
                 this.loadingStatusCancel = loadings.includes('statusPrintCancel');
                 this.loadingStatusResume = loadings.includes('statusPrintResume');
                 this.loadingStatusPause = loadings.includes('statusPrintPause');
                 this.loadingStatusClear = loadings.includes('statusPrintClear');
                 this.loadingStatusReprint = loadings.includes('statusPrintReprint');
-            }
+            }*/
         }
     }
 </script>
