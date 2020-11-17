@@ -28,4 +28,13 @@ export default {
 		if (payload.hidden && index === -1) state.dashboard.hiddenTempChart.push(payload.name.toUpperCase())
 		else if (payload.hidden !== true && index > -1) state.dashboard.hiddenTempChart.splice(index, 1)
 	},
+
+	setGcodefilesMetadata(state, data) {
+		Vue.set(state.gcodefiles.showMetadata, data.name, data.value)
+	},
+
+
+	setGcodefilesShowHiddenFiles(state, value) {
+		Vue.set(state.gcodefiles, "showHiddenFiles", value)
+	},
 }
