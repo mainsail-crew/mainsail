@@ -1,5 +1,3 @@
-import Vue from "vue";
-
 export default {
 
 
@@ -14,18 +12,8 @@ export default {
     },*/
 
 
-
-    setGuiGcodefilesMetadata(state, data) {
-        Vue.set(state.gui.gcodefiles.showMetadata, data.name, data.value);
-    },
-
-
-    setGuiGcodefilesShowHiddenFiles(state, value) {
-        Vue.set(state.gui.gcodefiles, "showHiddenFiles", value);
-    },
-
     reportError(state, payload) {
-        window.console.log(payload);
+        window.console.log(payload)
     },
 
     void() {

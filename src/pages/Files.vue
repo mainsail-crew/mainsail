@@ -127,7 +127,7 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td class=" " style="width: 32px;">
+                        <td class="pr-0" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
                             <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
                             <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
@@ -323,7 +323,7 @@
                     return this.$store.state.gui.gcodefiles.showHiddenFiles;
                 },
                 set: function(newVal) {
-                    return this.$store.dispatch("setGuiGcodefilesShowHiddenFiles", newVal);
+                    return this.$store.dispatch("gui/setGcodefilesShowHiddenFiles", newVal);
                 }
             }
         },
@@ -631,7 +631,7 @@
                 if (this.headers.filter(header => header.value === name).length) {
                     let value = this.headers.filter(header => header.value === name)[0].visible;
 
-                    this.$store.dispatch("setGuiGcodefilesMetadata", {name: name, value: value});
+                    this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
                 }
             },
         },

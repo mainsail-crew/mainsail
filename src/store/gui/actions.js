@@ -31,4 +31,14 @@ export default {
 			window.console.error("Error save gui.json!")
 		});
 	},
+
+	setGcodefilesMetadata({ commit, dispatch }, data) {
+		commit('setGcodefilesMetadata', data)
+		dispatch('upload')
+	},
+
+	setGcodefilesShowHiddenFiles({ commit, dispatch }, data) {
+		commit('setGcodefilesShowHiddenFiles', data)
+		dispatch('upload')
+	},
 }
