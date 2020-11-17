@@ -63,7 +63,11 @@ const getDefaultState = () => {
 		},
 		endstops: {},
 		configfile: {
-			config: {},
+			config: {
+				printer: {
+
+				}
+			},
 			config_changed: false,
 		},
 		helplist: [],

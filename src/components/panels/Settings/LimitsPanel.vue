@@ -27,10 +27,6 @@
         },
         data: function() {
             return {
-                max_velocity: 0,
-                max_accel: 0,
-                max_accel_to_decel: 0,
-                max_square_corner_velocity: 0,
             }
         },
         computed: {
@@ -40,20 +36,14 @@
                 current_accel_to_decel: state => state.printer.toolhead.max_accel_to_decel,
                 current_square_corner_velocity: state => state.printer.toolhead.square_corner_velocity,
                 config: state => state.printer.configfile.config,
-            })
-        },
-        methods: {
-
+                max_velocity: state => parseInt(state.printer.configfile.config.printer.max_velocity) || 0,
+                max_accel: state => parseInt(state.printer.configfile.config.printer.max_accel) || 0,
+                max_accel_to_decel: state => parseInt(state.printer.configfile.config.printer.max_accel_to_decel) || parseInt(state.printer.configfile.config.printer.max_accel) / 2,
+                max_square_corner_velocity: state => parseInt(state.printer.configfile.config.printer.square_corner_velocity) || 5,
+            }),
         },
         watch: {
-            config: function(value) {
-                if (value.printer) {
-                    this.max_velocity = parseInt(value.printer.max_velocity);
-                    this.max_accel = parseInt(value.printer.max_accel);
-                    this.max_accel_to_decel = parseInt(value.printer.max_accel_to_decel) || this.max_accel / 2;
-                    this.max_square_corner_velocity = parseInt(value.printer.square_corner_velocity);
-                }
-            }
+
         }
     }
 </script>
