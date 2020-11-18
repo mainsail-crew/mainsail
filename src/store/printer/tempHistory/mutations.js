@@ -28,7 +28,7 @@ export default {
 							},
 							type: keySplit[0],
 							time: time
-						}, { root: true});
+						});
 					}
 				}
 			});
@@ -82,7 +82,7 @@ export default {
 			this.commit('printer/tempHistory/addHeater', {
 				name: payload.name,
 				type: payload.type,
-			}, { root: true });
+			});
 			index =  state.datasets.findIndex(element => element.label === payload.name);
 		}
 		let index_target =  state.datasets.findIndex(element => element.label === payload.name+'_target');

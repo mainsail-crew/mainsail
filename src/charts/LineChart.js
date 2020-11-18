@@ -1,4 +1,4 @@
-import store from '../store'
+//import store from '../store'
 import { Line, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins;
 
@@ -14,7 +14,7 @@ export default {
         return {
             timer: '',
             options: {
-                events: ['click'],
+                events: [],
                 animation: {
                     duration: 0					// general animation time
                 },
@@ -37,10 +37,10 @@ export default {
                         fontColor: 'rgb(203, 203, 203)',
                         fontFamily: 'Roboto,sans-serif',
                         filter: function(item) {
-                            return !item.text.includes('_target');
+                            return (item && item.text) ? !item.text.includes('_target') : false;
                         }
                     },
-                    onClick: function(e, legendItem) {
+                    /*onClick: function(e, legendItem) {
                         let ci = this.chart;
                         let index = legendItem.datasetIndex;
                         let index_target = ci.data.datasets.findIndex(dataset => dataset.label === legendItem.text+'_target');
@@ -56,9 +56,9 @@ export default {
                         store.dispatch('gui/setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
 
                         ci.update();
-                    }
+                    }*/
                 },
-                tooltips: {
+                /*tooltips: {
                     enabled: false,
                     mode: 'nearest',
                     caretPadding: 20,
@@ -68,15 +68,15 @@ export default {
                             let date = new Date(tooltipItem[0].label);
                             return date.getHours()+":"+(date.getMinutes() < 10 ? "0" : "")+date.getMinutes()+":"+(date.getSeconds() < 10 ? "0" : "")+date.getSeconds();
                         },
-                        label: function (tooltipItem/*, data*/) {
-                            /*let label_target = data['datasets'][tooltipItem.datasetIndex].label+"_target";
+                        label: function (tooltipItem/!*, data*!/) {
+                            /!*let label_target = data['datasets'][tooltipItem.datasetIndex].label+"_target";
                             let target_dataset = data['datasets'].find(dataset => dataset.label === label_target);
 
-                            if (target_dataset !== undefined && target_dataset.data[tooltipItem.index] !== undefined) return tooltipItem.value+" / "+target_dataset.data[tooltipItem.index].y;*/
+                            if (target_dataset !== undefined && target_dataset.data[tooltipItem.index] !== undefined) return tooltipItem.value+" / "+target_dataset.data[tooltipItem.index].y;*!/
                             return tooltipItem.value;
                         },
                     }
-                },
+                },*/
                 maintainAspectRatio: false,
                 responsive: true,
                 responsiveAnimationDuration: 0, // animation duration after a resize
@@ -129,22 +129,24 @@ export default {
         }
     },
     created () {
-        /*this.timer = setInterval(function() {
-            this.update;
-        }, 2000);*/
+        this.timer = setInterval(() => {
+            if (
+                this.$data._chart.config &&
+                this.$data._chart.config.options &&
+                this.$data._chart.config.options.scales &&
+                this.$data._chart.config.options.scales.xAxes &&
+                this.$data._chart.config.options.scales.xAxes.length &&
+                this.$data._chart.config.options.scales.yAxes &&
+                this.$data._chart.config.options.scales.yAxes.length
+            ) {
+                this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature
+                this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime
+                this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date()
+                this.$data._chart.update()
+            }
+        }, 1000)
     },
     mounted () {
-        //this.renderChart(this.chartData, this.options)
+        this.renderChart(this.chartData, this.options)
     },
-    methods: {
-        update() {
-            this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature;
-            this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime;
-            this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date();
-            this.$data._chart.update();
-        }
-    },
-    watch: {
-
-    }
 }
