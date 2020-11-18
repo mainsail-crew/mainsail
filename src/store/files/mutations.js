@@ -74,6 +74,7 @@ export default {
 
 		let index = path.findIndex(element => element.filename === filename);
 		if (index >= 0 && path[index]) {
+
 			const safeDefault = (value, def = undefined) => value ? value : def;
 			let newData = {
 				estimated_time: safeDefault(payload.estimated_time),
@@ -81,6 +82,8 @@ export default {
 				first_layer_height: safeDefault(payload.first_layer_height),
 				first_layer_bed_temp: safeDefault(payload.first_layer_bed_temp),
 				first_layer_extr_temp: safeDefault(payload.first_layer_extr_temp),
+				gcode_start_byte: safeDefault(payload.gcode_start_byte),
+				gcode_end_byte: safeDefault(payload.gcode_end_byte),
 				layer_height: safeDefault(payload.layer_height),
 				object_height: safeDefault(payload.object_height),
 				slicer: safeDefault(payload.slicer),

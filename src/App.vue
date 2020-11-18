@@ -157,6 +157,7 @@ export default {
             printername: state => state.gui.general.printername,
             virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
+            current_file_position: state => state.printer.virtual_sdcard.file_position,
             boolNaviWebcam: state => state.gui.webcam.bool,
             config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
@@ -164,7 +165,12 @@ export default {
         ...mapGetters([
             'getTitle',
             'getVersion'
-        ])
+        ]),
+        print_percent: {
+            get() {
+                return this.$store.getters["printer/getPrintPercent"];
+            }
+        }
     },
     methods: {
         clickEmergencyStop: function() {
@@ -242,17 +248,12 @@ export default {
         }
     },
     watch: {
-        virtual_sdcard: {
-            deep: true,
-            handler: function(val) {
-                let progress = (val && val.progress) ? val.progress : 0;
-
-                this.drawFavicon(progress);
-            }
+        current_file_position() {
+            this.drawFavicon(this.print_percent);
         },
         current_file: {
             handler: function(newVal) {
-                this.$socket.sendObj("server.files.metadata", { filename: newVal }, "getMetadataCurrentFile");
+                this.$socket.sendObj("server.files.metadata", { filename: newVal }, "files/getMetadataCurrentFile");
             }
         },
         config() {
