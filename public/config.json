@@ -1,7 +1,3 @@
 {
-  "socket": {
-    "hostname": "voron250.local",
-    "port": 80,
-    "metadataRequestDelay": 2000
-  }
+
 }
