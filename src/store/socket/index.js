@@ -4,9 +4,9 @@ import getters from './getters'
 
 const getDefaultState = () => {
 	return {
-		hostname: window.location.hostname,
-		port: window.location.port,
-		reconnectInterval: 5000,
+		hostname: process.env.VUE_APP_HOSTNAME || window.location.hostname,
+		port: process.env.VUE_APP_PORT || window.location.port,
+		reconnectInterval: process.env.VUE_APP_RECONNECT_INTERVAL || 5000,
 		isConnected: false,
 
 		loadings: []
