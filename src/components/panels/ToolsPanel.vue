@@ -107,21 +107,27 @@
                 'heatersCount',
                 'temperature_fans',
                 'temperature_sensors',
-            ])
+            ]),
+            datasets: {
+                get () {
+                    return this.$store.state.printer.tempHistory.datasets
+                }
+            }
         },
         created() {
 
         },
         methods: {
-            fillData () {
-                this.loaded = true;
-                this.chartdata = {
-                    datasets: this.datasets
-                }
-            }
+
         },
         mounted () {
-            this.fillData();
+            this.chartdata = {
+                datasets: this.datasets
+            }
+
+            setTimeout(() => {
+                this.loaded = true
+            }, 1000)
         },
     }
 </script>
