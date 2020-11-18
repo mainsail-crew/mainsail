@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(runout, index) of getFilamentSwitchSensors" v-bind:key="index">
+        <div v-for="(runout, index) of this['printer/getFilamentSwitchSensors']" v-bind:key="index">
             <v-card class="mt-6">
                 <v-list-item>
                     <v-list-item-avatar color="grey"><v-icon dark>mdi-printer-3d-nozzle-alert</v-icon></v-list-item-avatar>
@@ -10,7 +10,7 @@
                 </v-list-item>
                 <v-divider class="my-2"></v-divider>
                 <v-card-text class="px-0 pt-0 pb-2 content">
-                    <settings-runout-switch :name="runout.name "></settings-runout-switch>
+                    <settings-runout-switch :name="runout.name" :enabled="runout.enabled" :filament_detected="runout.filament_detected"></settings-runout-switch>
                 </v-card-text>
             </v-card>
         </div>
@@ -32,7 +32,7 @@
         },
         computed: {
             ...mapGetters([
-                'getFilamentSwitchSensors'
+                'printer/getFilamentSwitchSensors'
             ])
         },
         methods: {

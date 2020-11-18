@@ -51,9 +51,8 @@
                     <div class="text-center">empty</div>
                 </template>
 
-                <template v-slot:body.prepend>
-                    <tr
-                        v-if="(currentPath !== '')"
+                <template v-slot:top v-if="(currentPath !== '')">
+                   <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack">
                         <td class=" "><v-icon>mdi-folder-upload</v-icon></td>

@@ -50,9 +50,9 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="" v-if="getMacros.length > 0">
+        <v-row class="" v-if="this['printer/getMacros'].length > 0">
             <v-col class="col-12 px-4 py-2 text-center">
-                <div v-for="(macro, index) in getMacros" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
+                <div v-for="(macro, index) in this['printer/getMacros']" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
                     <v-btn color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
                 </div>
             </v-col>
@@ -86,7 +86,7 @@
                 printer_state: state => state.printer.print_stats.state
             }),
             ...mapGetters([
-                'getMacros',
+                'printer/getMacros',
             ])
         },
         methods: {

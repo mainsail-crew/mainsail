@@ -15,11 +15,11 @@
             <v-list-item-content>
                 <v-list-item-title class="headline">Temperatures</v-list-item-title>
                 <v-list-item-subtitle>
-                    {{ heatersCount }} heaters
-                    <span v-if="temperature_fans.length === 1">, {{ temperature_fans.length }} fan</span>
-                    <span v-if="temperature_fans.length > 1">, {{ temperature_fans.length }} fans</span>
-                    <span v-if="temperature_sensors.length === 1">, {{ temperature_sensors.length }} sensor</span>
-                    <span v-if="temperature_sensors.length > 1">, {{ temperature_sensors.length }} sensors</span>
+                    {{ this['printer/getHeaters'].length }} heaters
+                    <span v-if="this['printer/getTemperatureFans'].length === 1">, {{ this['printer/getTemperatureFans'].length }} fan</span>
+                    <span v-if="this['printer/getTemperatureFans'].length > 1">, {{ this['printer/getTemperatureFans'].length }} fans</span>
+                    <span v-if="this['printer/getTemperatureSensors'].length === 1">, {{ this['printer/getTemperatureSensors'].length }} sensor</span>
+                    <span v-if="this['printer/getTemperatureSensors'].length > 1">, {{ this['printer/getTemperatureSensors'].length }} sensors</span>
                 </v-list-item-subtitle>
             </v-list-item-content>
         </v-list-item>
@@ -30,7 +30,7 @@
                 <v-col class="text-center py-0"><b>Current</b></v-col>
                 <v-col class="text-center py-0"><b>Target</b></v-col>
             </v-row>
-            <div v-for="(heater, index) in heaters" v-bind:key="index" >
+            <div v-for="(heater, index) in this['printer/getHeaters']" v-bind:key="index" >
                 <v-divider class="my-2"></v-divider>
                 <v-row class="pl-3 pr-3 heater-row">
                     <v-col class="text-center py-0">
@@ -43,7 +43,7 @@
                     </v-col>
                 </v-row>
             </div>
-            <div v-for="(fan, index) in temperature_fans" v-bind:key="index+99" >
+            <div v-for="(fan, index) in this['printer/getTemperatureFans']" v-bind:key="index+99" >
                 <v-divider class="my-2"></v-divider>
                 <v-row class="pl-3 pr-3 heater-row">
                     <v-col class="text-center py-0">
@@ -56,13 +56,13 @@
                     </v-col>
                 </v-row>
             </div>
-            <div v-if="temperature_sensors.length" >
+            <div v-if="this['printer/getTemperatureSensors'].length" >
                 <v-divider class="my-2"></v-divider>
                 <v-row class="pl-3 pr-3 heater-row">
                     <v-col class="text-center py-0">
                         <b>Temperature<br />Sensors</b>
                     </v-col>
-                    <v-col class="text-center py-0 vertical_align_center" v-for="(sensor,index) in temperature_sensors" v-bind:key="index+999" >
+                    <v-col class="text-center py-0 vertical_align_center" v-for="(sensor,index) in this['printer/getTemperatureSensors']" v-bind:key="index+999" >
                         <span style="cursor: default;" :title="'min: '+(sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0)+'° / max: '+(sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0)+'°'">{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span><br />
                         <small style="cursor: default;" :title="'min: '+( sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0)+'° / max: '+(sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0)+'°'">{{ sensor.name }}</small>
                     </v-col>
@@ -103,10 +103,9 @@
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
             }),
             ...mapGetters([
-                'heaters',
-                'heatersCount',
-                'temperature_fans',
-                'temperature_sensors',
+                'printer/getHeaters',
+                'printer/getTemperatureFans',
+                'printer/getTemperatureSensors',
             ]),
             datasets: {
                 get () {
