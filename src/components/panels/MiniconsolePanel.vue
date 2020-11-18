@@ -41,7 +41,7 @@
                 sort-by="date"
             >
                 <template #no-data>
-                    <div class="text-center">empty</div>
+                    <div class="py-2">empty</div>
                 </template>
 
                 <template #item="{ item }">
