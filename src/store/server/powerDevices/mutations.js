@@ -1,9 +1,9 @@
 import Vue from 'vue'
-import { getDefaultStore } from './index'
+import { getDefaultState } from './index'
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultStore)
+		Object.assign(state, getDefaultState)
 	},
 
 	setDevices(state, payload) {

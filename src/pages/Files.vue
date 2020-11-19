@@ -104,9 +104,8 @@
                     <div class="text-center">empty</div>
                 </template>
 
-                <template v-slot:body.prepend>
+                <template slot="body.prepend" v-if="(currentPath !== 'gcodes')">
                     <tr
-                        v-if="(currentPath !== 'gcodes')"
                         class="file-list-cursor"
                         @click="clickRowGoBack"
                         @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"

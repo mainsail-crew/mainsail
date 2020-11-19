@@ -38,11 +38,11 @@
                 <v-btn class="button-min-width-auto primary" v-if="(printer_state === 'complete')" :loading="loadingStatusReprint" @click="btnReprintJob" title="Reprint job"><v-icon>mdi-autorenew</v-icon></v-btn>
             </v-btn-toggle>
         </v-list-item>
-        <v-divider class="my-2" ></v-divider>
+        <v-divider class="mt-0 mb-0" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-row>
                 <v-col
-                    class="col-12 col-sm-4 pl-sm-5 pr-sm-2"
+                    class="col-12 col-sm-4 pl-sm-3 pt-0 pr-sm-0 pb-0"
                     v-if="
                         ['printing', 'paused', 'complete'].includes(printer_state) &&
                         current_file &&
@@ -63,77 +63,59 @@
                         current_file.thumbnails.length &&
                         current_file.thumbnails.find(element => element.width === 400 || element.width === 300)) ? 'col-12 py-0 col-sm-8 pl-sm-0' : 'col-12 py-0'
                     ">
-                    <v-layout wrap class=" text-center">
-                        <v-flex col tag="strong" class="category-header col-auto">
+                    <v-row class="text-center pt-2" align="center">
+                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
                             <v-icon>mdi-axis-arrow</v-icon>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">X</v-flex>
-                                <v-flex tag="span">{{ position.length ? position[0].toFixed(2) : "--" }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Y</v-flex>
-                                <v-flex tag="span">{{ position.length ? position[1].toFixed(2) : "--" }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Z</v-flex>
-                                <v-flex tag="span">{{ position.length ? position[2].toFixed(2) : "--" }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>X</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>Y</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0 pr-sm-6">
+                            <v-row><v-col class="px-0 py-0"><strong>Z</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[2].toFixed(2) : "--" }}</v-col></v-row>
+                        </v-col>
+                    </v-row>
                     <v-divider class="my-2" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)"></v-divider>
-                    <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">
-                        <v-flex col tag="strong" class="category-header col-auto">
+                    <v-row class="text-center" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">
+                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
                             <v-icon>mdi-poll</v-icon>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Filament</v-flex>
-                                <v-flex tag="span">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Print</v-flex>
-                                <v-flex tag="span">{{ formatTime(print_time) }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Total</v-flex>
-                                <v-flex tag="span">{{ formatTime(print_time_total) }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>Filament</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>Print</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ formatTime(print_time) }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0 pr-sm-6">
+                            <v-row><v-col class="px-0 py-0"><strong>Total</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ formatTime(print_time_total) }}</v-col></v-row>
+                        </v-col>
+                    </v-row>
                     <v-divider class="my-2" v-if="['printing', 'paused', 'error'].includes(printer_state)"></v-divider>
-                    <v-layout wrap class=" text-center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
-                        <v-flex col tag="strong" class="category-header col-auto">
+                    <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
+                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
                             <v-icon>mdi-clock-outline</v-icon>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">File</v-flex>
-                                <v-flex tag="span">{{ print_time > 0 && printPercent > 0 ? formatTime(print_time / printPercent - print_time) : '--' }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Filament</v-flex>
-                                <v-flex tag="span">{{ (filament_used > 0 && 'filament_total' in current_file && current_file.filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file.filament_total) - print_time) : '--' }}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                        <v-flex grow class="equal-width">
-                            <v-layout column>
-                                <v-flex tag="strong">Slicer</v-flex>
-                                <v-flex tag="span">{{ 'estimated_time' in current_file && current_file.estimated_time > print_time ? formatTime(current_file.estimated_time - print_time) : '--'}}</v-flex>
-                            </v-layout>
-                        </v-flex>
-                    </v-layout>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>File</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ print_time > 0 && printPercent > 0 ? formatTime(print_time / printPercent - print_time) : '--' }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0">
+                            <v-row><v-col class="px-0 py-0"><strong>Filament</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ (filament_used > 0 && 'filament_total' in current_file && current_file.filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file.filament_total) - print_time) : '--' }}</v-col></v-row>
+                        </v-col>
+                        <v-col class="equal-width py-0 pr-sm-6">
+                            <v-row><v-col class="px-0 py-0"><strong>Slicer</strong></v-col></v-row>
+                            <v-row><v-col class="px-0 py-0">{{ 'estimated_time' in current_file && current_file.estimated_time > print_time ? formatTime(current_file.estimated_time - print_time) : '--'}}</v-col></v-row>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
         </v-card-text>

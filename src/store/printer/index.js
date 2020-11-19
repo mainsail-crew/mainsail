@@ -5,7 +5,7 @@ import getters from './getters'
 // import modules
 import tempHistory from './tempHistory'
 
-const getDefaultState = () => {
+export function getDefaultState() {
 	return {
 		software_version: '',
 		hostname: '',

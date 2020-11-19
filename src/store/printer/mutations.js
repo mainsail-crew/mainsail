@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import { getDefaultStore } from './index'
+import { getDefaultState } from './index'
 
 export default {
 	reset(state) {
 		window.console.log("printer/reset");
-		Object.assign(state, getDefaultStore)
+		Object.assign(state, getDefaultState)
 	},
 
 	setData(state, payload) {

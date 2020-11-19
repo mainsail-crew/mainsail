@@ -1,9 +1,9 @@
-import { getDefaultStore } from './index'
-import {colorArray, colorChamber, colorHeaterBed} from "@/store/variables";
+import { getDefaultState } from './index'
+import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables";
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultStore)
+		Object.assign(state, getDefaultState)
 	},
 	
 	setHistory(state, payload) {

@@ -49,7 +49,6 @@ export default class WebSocketClient {
         };
 
         this.instance.onclose = (e) => {
-            window.console.log("Websocket Closed, reconnecting in "+this.reconnectInterval+"ms: ", e.reason);
             this.passToStore('socket/onClose', e);
 
             setTimeout(() => {
@@ -57,8 +56,7 @@ export default class WebSocketClient {
             }, this.reconnectInterval);
         };
 
-        this.instance.onerror = (err) => {
-            console.log("Websocket Error: ", err);
+        this.instance.onerror = () => {
             this.instance.close();
         };
 

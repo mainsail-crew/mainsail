@@ -55,20 +55,11 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mr-5" v-if="isConnected && save_config_pending" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
             <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
-            <v-menu
-                bottom
-                left
-                :offset-y="true"
-            >
+            <v-menu bottom left :offset-y="true">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        dark
-                        icon
-                        v-bind="attrs"
-                        v-on="on"
-                    >
+                    <v-btn dark icon v-bind="attrs" v-on="on">
                         <v-icon>mdi-dots-vertical</v-icon>
                     </v-btn>
                 </template>
