@@ -20,8 +20,8 @@
         </v-card-text>
         <v-divider class="my-2" v-if="klippy_connected" ></v-divider>
         <v-card-text class="px-4 pt-2 pb-4 content text-center text-lg-left" v-if="klippy_connected">
-            <v-btn @click="doRestart" color="error" class=""><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn>
-            <v-btn @click="doRestartFirmware" class="ml-4" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>FIRMWARE_Restart</v-btn>
+            <v-btn small @click="doRestart" color="error" class=""><v-icon class="mr-sm-2">mdi-cached</v-icon>Restart</v-btn>
+            <v-btn small @click="doRestartFirmware" class="ml-4" color="error"><v-icon class="mr-sm-2">mdi-cached</v-icon>FIRMWARE_Restart</v-btn>
         </v-card-text>
     </v-card>
 </template>
@@ -38,16 +38,13 @@
             }),
         },
         methods: {
-
             doRestart() {
-                // TODO loading restart button
-                //this.$store.commit('setLoadingRestart', true);
-                this.$socket.sendObj('printer.restart', { });
+                this.$store.commit('socket/addLoading', { name: 'restart' });
+                this.$socket.sendObj('printer.restart', { }, 'socket/removeLoading', { name: 'restart' });
             },
             doRestartFirmware() {
-                // TODO loading fw restart button
-                //this.$store.commit('setLoadingRestartFirmware', true);
-                this.$socket.sendObj('printer.firmware_restart', { });
+                this.$store.commit('socket/addLoading', { name: 'firmwareRestart' });
+                this.$socket.sendObj('printer.firmware_restart', { }, 'socket/removeLoading', { name: 'firmwareRestart' });
             },
         },
     }

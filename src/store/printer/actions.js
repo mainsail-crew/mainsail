@@ -56,7 +56,7 @@ export default {
 	},
 
 	getEndstopStatus({ commit }, payload) {
-		//commit('setLoadingEndstopStatus', false);
+		commit('socket/removeLoading', { name: 'queryEndstops' }, { root: true });
 		commit('setEndstopStatus', payload);
 	},
 }

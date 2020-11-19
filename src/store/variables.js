@@ -1,7 +1,3 @@
-//export const hostname = window.location.host;
-export const hostname = "voron250.local:8080";
-//export const hostname = "kossel.local:8080";
-
 export const colorArray = [
     '#F44336',
     '#9C27B0',

@@ -20,5 +20,16 @@ export default {
 		Object.entries(payload).forEach(([key, value]) => {
 			Vue.set(state, key, value)
 		});
-	}
+	},
+
+	addLoading(state, payload) {
+		state.loadings.push(payload.name)
+	},
+
+	removeLoading(state, payload) {
+		const index = state.loadings.indexOf(payload.name);
+		if (index > -1) {
+			state.loadings.splice(index, 1);
+		}
+	},
 }

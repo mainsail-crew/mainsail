@@ -24,8 +24,7 @@
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
-
-            <v-btn icon @click="syncEndstops" :loading="loading">
+            <v-btn icon @click="syncEndstops" :loading="loadings.includes('queryEndstops')">
                 <v-icon>mdi-sync</v-icon>
             </v-btn>
     </v-card-actions>
@@ -42,12 +41,11 @@
         data: function() {
             return {
                 sortEndstops: {},
-                loading: false
             }
         },
         computed: {
             ...mapState({
-                //loading: state => state.socket.loadingEndstopStatus,
+                loadings: state => state.socket.loadings,
                 endstops: state => state.printer.endstops,
             })
         },
@@ -56,8 +54,7 @@
         },
         methods: {
             syncEndstops() {
-                // TODO loading
-                //this.$store.commit('setLoadingEndstopStatus', true);
+                this.$store.commit('socket/addLoading', { name: 'queryEndstops' });
                 this.$socket.sendObj('printer.query_endstops.status', { }, "printer/getEndstopStatus");
             },
             getEndstops() {

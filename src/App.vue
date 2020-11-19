@@ -55,8 +55,8 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :loading="loadingConfigChanged" @click="clickSaveConfig">SAVE CONFIG</v-btn>
-            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadingEmergencyStop" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
             <v-menu bottom left :offset-y="true">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn dark icon v-bind="attrs" v-on="on">
@@ -125,10 +125,7 @@ export default {
         drawer: null,
         activeClass: 'active',
         routes: routes,
-        //is_ready: false,
         boolNaviHeightmap: false,
-        loadingEmergencyStop: false,
-        loadingConfigChanged: false,
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -143,12 +140,12 @@ export default {
             hostname: state => state.printer.hostname,
             version: state => state.printer.software_version,
             klippy_state: state => state.server.klippy_state,
+            loadings: state => state.socket.loadings,
 
             toolhead: state => state.printer.toolhead,
             printername: state => state.gui.general.printername,
             virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
-            current_file_position: state => state.printer.virtual_sdcard.file_position,
             boolNaviWebcam: state => state.gui.webcam.bool,
             config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
@@ -165,15 +162,13 @@ export default {
     },
     methods: {
         clickEmergencyStop: function() {
-            // TODO loading emergency stop
-            //this.$store.commit('setLoading', { name: 'btnEmergencyStop' });
-            this.$socket.sendObj('printer.emergency_stop', {});
+            this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
+            this.$socket.sendObj('printer.emergency_stop', {}, 'socket/removeLoading',{ name: 'topbarEmergencyStop' });
         },
         clickSaveConfig: function() {
             this.$store.commit('server/addEvent', "SAVE_CONFIG");
-            // TODO loading save_config button
-            //this.$store.commit('setLoading', { name: 'btnSaveConfig' });
-            this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" });
+            this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
+            this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
         },
         doRestart: function() {
             this.$store.commit('server/addEvent', "RESTART");

@@ -76,5 +76,9 @@ export default {
 					else if (!payload.error) window.console.log(payload)
 				}
 		}
+	},
+
+	removeLoading({ commit }, payload) {
+		commit('removeLoading', payload)
 	}
 }

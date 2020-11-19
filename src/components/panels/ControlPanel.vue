@@ -13,9 +13,9 @@
     <v-card>
         <v-row class="" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 pb-0 text-center">
-                <div class="d-inline-block mx-2 my-1"><v-btn @click="doHome" :loading="loadingHomeAll" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" class=""><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn></div>
-                <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('quad_gantry_level')"><v-btn @click="doQGL" :loading="loadingQGL" color="primary">QGL</v-btn></div>
-                <div class="d-inline-block mx-2 my-1" v-if="config.hasOwnProperty('z_tilt')"><v-btn @click="doZtilt" :loading="loadingZTilt" color="primary">Z Tilt</v-btn></div>
+                <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn>
+                <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
+               <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
             </v-col>
         </v-row>
         <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
@@ -24,7 +24,7 @@
                     <v-btn @click="doSendMove('X-100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-100</span></v-btn>
                     <v-btn @click="doSendMove('X-10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-10</span></v-btn>
                     <v-btn @click="doSendMove('X-1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
-                    <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadingHomeX" class="font-weight-bold flex-grow-0 btnHomeAxis">X</v-btn>
+                    <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold flex-grow-0 btnHomeAxis">X</v-btn>
                     <v-btn @click="doSendMove('X+1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
                     <v-btn @click="doSendMove('X+10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+10</span></v-btn>
                     <v-btn @click="doSendMove('X+100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+100</span></v-btn>
@@ -37,7 +37,7 @@
                     <v-btn @click="doSendMove('Y-100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-100</span></v-btn>
                     <v-btn @click="doSendMove('Y-10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-10</span></v-btn>
                     <v-btn @click="doSendMove('Y-1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
-                    <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadingHomeY" class="font-weight-bold btnHomeAxis">Y</v-btn>
+                    <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">Y</v-btn>
                     <v-btn @click="doSendMove('Y+1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
                     <v-btn @click="doSendMove('Y+10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+10</span></v-btn>
                     <v-btn @click="doSendMove('Y+100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+100</span></v-btn>
@@ -50,7 +50,7 @@
                     <v-btn @click="doSendMove('Z-25')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-25</span></v-btn>
                     <v-btn @click="doSendMove('Z-1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
                     <v-btn @click="doSendMove('Z-0.1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-0.1</span></v-btn>
-                    <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadingHomeZ" class="font-weight-bold btnHomeAxis">Z</v-btn>
+                    <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">Z</v-btn>
                     <v-btn @click="doSendMove('Z+0.1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+0.1</span></v-btn>
                     <v-btn @click="doSendMove('Z+1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
                     <v-btn @click="doSendMove('Z+25')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+25</span></v-btn>
@@ -60,7 +60,7 @@
         <v-row class="" v-if="this['printer/getMacros'].length > 0">
             <v-col class="col-12 px-4 py-2 text-center">
                 <div v-for="(macro, index) in this['printer/getMacros']" v-bind:key="index+99" class="d-inline-block mx-1 my-1">
-                    <v-btn small color="primary" class="mx-1 my-1" @click="doSend(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
+                    <v-btn small color="primary" class="mx-1 my-1" :loading="loadings.includes('macro_'+macro.name)" @click="doSendMacro(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
                 </div>
             </v-col>
         </v-row>
@@ -77,19 +77,14 @@
         },
         data: function() {
             return {
-                loadingHomeAll: false,
-                loadingHomeX: false,
-                loadingHomeY: false,
-                loadingHomeZ: false,
-                loadingQGL: false,
-                loadingZTilt: false,
+
             }
         },
         computed: {
             ...mapState({
                 homedAxes: state => state.printer.toolhead.homed_axes,
                 config: state => state.printer.configfile.config,
-                loadings: state => state.loadings,
+                loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state
             }),
             ...mapGetters([
@@ -99,33 +94,33 @@
         methods: {
             doHome() {
                 this.$store.commit('server/addEvent', "G28");
-                //this.$store.commit('setLoading', { name: 'controlHomeAll' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28" }, "responseHome");
+                this.$store.commit('socket/addLoading', { name: 'homeAll' });
+                this.$socket.sendObj('printer.gcode.script', { script: "G28" }, "socket/removeLoading", { name: 'homeAll' });
             },
             doHomeX() {
                 this.$store.commit('server/addEvent', "G28 X");
-                //this.$store.commit('setLoading', { name: 'controlHomeX' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 X" }, "responseHomeX");
+                this.$store.commit('socket/addLoading', { name: 'homeX' });
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 X" }, "socket/removeLoading", { name: 'homeX' });
             },
             doHomeY() {
                 this.$store.commit('server/addEvent', "G28 Y");
-                //this.$store.commit('setLoading', { name: 'controlHomeY' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 Y" }, "responseHomeY");
+                this.$store.commit('socket/addLoading', { name: 'homeY' });
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 Y" }, "socket/removeLoading", { name: 'homeY' });
             },
             doHomeZ() {
                 this.$store.commit('server/addEvent', "G28 Z");
-                //this.$store.commit('setLoading', { name: 'controlHomeZ' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 Z" }, "responseHomeZ");
+                this.$store.commit('socket/addLoading', { name: 'homeZ' });
+                this.$socket.sendObj('printer.gcode.script', { script: "G28 Z" }, "socket/removeLoading", { name: 'homeZ' });
             },
             doQGL() {
                 this.$store.commit('server/addEvent', "QUAD_GANTRY_LEVEL");
-                //this.$store.commit('setLoading', { name: 'controlQGL' });
-                this.$socket.sendObj('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, "responseQGL");
+                this.$store.commit('socket/addLoading', { name: 'qgl' });
+                this.$socket.sendObj('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, "socket/removeLoading", { name: 'qgl' });
             },
             doZtilt() {
                 this.$store.commit('server/addEvent', "Z_TILT_ADJUST");
-                //this.$store.commit('setLoading', { name: 'controlZTilt' });
-                this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "responseZTilt");
+                this.$store.commit('socket/addLoading', { name: 'zTilt' });
+                this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "socket/removeLoading", { name: 'zTilt' });
             },
             doSendMove(gcode) {
                 gcode = "G91" + "\n" +
@@ -138,16 +133,11 @@
                 this.$store.commit('server/addEvent', gcode);
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "server/getGcodeRespond");
             },
-        },
-        watch: {
-            loadings: function(loadings) {
-                this.loadingHomeAll = loadings.includes('controlHomeAll');
-                this.loadingHomeX = loadings.includes('controlHomeX');
-                this.loadingHomeY = loadings.includes('controlHomeY');
-                this.loadingHomeZ = loadings.includes('controlHomeZ');
-                this.loadingQGL = loadings.includes('controlQGL');
-                this.loadingZTilt = loadings.includes('controlZTilt');
-            }
+            doSendMacro(gcode) {
+                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('socket/addLoading', { name: 'macro_'+gcode });
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'macro_'+gcode });
+            },
         }
     }
 </script>

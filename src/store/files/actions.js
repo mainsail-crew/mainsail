@@ -7,9 +7,6 @@ export default {
 
 	getDirectory({ commit }, payload) {
 		commit('setDirectory', payload)
-
-		//TODO refresh reload
-		//commit('removeLoading', { name: 'loadingGcodeRefresh' })
 	},
 
 	getMetadata({ commit, rootState }, payload) {
