@@ -15,12 +15,15 @@
         margin-top: 5px;
     }
 
-    .log-cell {
-        padding: 16px !important;
-    }
-
     .log-cell.title-cell {
         vertical-align: top;
+        height: auto !important;
+    }
+
+    .log-cell.content-cell {
+        vertical-align: top;
+        min-height: auto;
+        height: auto !important;
     }
 </style>
 
@@ -68,10 +71,10 @@
 
                     <template #item="{ item }">
                         <tr>
-                            <td class="log-cell title-cell">
+                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0">
                                 {{ item.date.toLocaleString() }}
                             </td>
-                            <td class="log-cell content-cell" colspan="2">
+                            <td class="log-cell content-cell py-2" colspan="2">
                                 <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
                             </td>
                         </tr>
