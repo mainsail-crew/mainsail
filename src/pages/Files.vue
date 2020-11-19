@@ -53,10 +53,10 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer></v-spacer>
-                <v-btn :loading="loadingMakeDirectory" @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
-                <v-btn color="primary ml-4" :loading="loadingGcodeRefresh" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
+                <v-btn @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
+                <v-btn color="primary ml-4" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn class="primary ml-4 " :loading="loadingGcodeUpload" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
+                <v-btn class="primary ml-4 " :loading="loadings.includes('gcodeUpload')" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
                 <v-menu :offset-y="true">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="ml-4" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
@@ -286,9 +286,6 @@
                 },
                 files: [],
                 currentPath: 'gcodes',
-                loadingGcodeUpload: false,
-                loadingGcodeRefresh: false,
-                loadingMakeDirectory: false,
                 draggingFile: {
                     status: false,
                     item: {}
@@ -304,7 +301,7 @@
                 countPerPage: state => state.gui.gcodefiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
-                loadings: state => state.loadings,
+                loadings: state => state.socket.loadings,
 
                 displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
@@ -327,15 +324,14 @@
             }
         },
         created() {
-            this.loadPath();
+            this.loadPath()
         },
         methods: {
             uploadFile: function() {
                 if (this.$refs.fileUpload.files.length) {
                     this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
-                        this.$refs.fileUpload.value = '';
-                    });
-
+                        this.$refs.fileUpload.value = ''
+                    })
                 }
             },
             doUploadFile: function(file) {
@@ -344,81 +340,71 @@
                 let filename = file.name.replace(" ", "_");
 
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
-                // TODO loading upload
-                //this.$store.commit('setLoading', { name: 'loadingGcodeUpload' });
+                this.$store.commit('socket/addLoading', { name: 'gcodeUpload' });
 
                 return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    }
+                    formData, { headers: { 'Content-Type': 'multipart/form-data' } }
                 ).then((result) => {
-                    // TODO loading upload
-                    //this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
+                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' });
                     toast.success("Upload of "+result.data.result+" successful!");
-                })
-                .catch(() => {
-                    // TODO loading upload
-                    //this.$store.commit('removeLoading', { name: 'loadingGcodeUpload' });
+                }).catch(() => {
+                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' });
                     toast.error("Cannot upload the file!");
                 });
             },
             clickUploadButton: function() {
-                this.$refs.fileUpload.click();
+                this.$refs.fileUpload.click()
             },
             refreshFileList: function() {
-                // TODO loading button
-                //this.$store.commit('setLoading', { name: 'loadingGcodeRefresh' });
-                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory');
+                this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory')
             },
             formatDate(date) {
-                let tmp2 = new Date(date);
+                let tmp2 = new Date(date)
 
-                return tmp2.toLocaleString().replace(',', '');
+                return tmp2.toLocaleString().replace(',', '')
             },
             formatFilesize(fileSizeInBytes) {
-                let i = -1;
-                let byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+                let i = -1
+                let byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
                 do {
-                    fileSizeInBytes = fileSizeInBytes / 1024;
-                    i++;
-                } while (fileSizeInBytes > 1024);
+                    fileSizeInBytes = fileSizeInBytes / 1024
+                    i++
+                } while (fileSizeInBytes > 1024)
 
-                return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+                return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
             },
             formatPrintTime(totalSeconds) {
                 if (totalSeconds) {
-                    let output = "";
+                    let output = ""
 
-                    let days = Math.floor(totalSeconds / (3600 * 24));
+                    let days = Math.floor(totalSeconds / (3600 * 24))
                     if (days) {
-                        totalSeconds %= (3600 * 24);
-                        output += days+"d";
+                        totalSeconds %= (3600 * 24)
+                        output += days+"d"
                     }
 
-                    let hours = Math.floor(totalSeconds / 3600);
-                    totalSeconds %= 3600;
-                    if (hours) output += " "+hours+"h";
+                    let hours = Math.floor(totalSeconds / 3600)
+                    totalSeconds %= 3600
+                    if (hours) output += " "+hours+"h"
 
-                    let minutes = Math.floor(totalSeconds / 60);
-                    if (minutes) output += " "+minutes+"m";
+                    let minutes = Math.floor(totalSeconds / 60)
+                    if (minutes) output += " "+minutes+"m"
 
-                    let seconds = totalSeconds % 60;
-                    if (seconds) output += " "+seconds.toFixed(0)+"s";
+                    let seconds = totalSeconds % 60
+                    if (seconds) output += " "+seconds.toFixed(0)+"s"
 
-                    return output;
+                    return output
                 }
 
-                return '--';
+                return '--'
             },
             showContextMenu (e, item) {
-                e.preventDefault();
-                this.contextMenu.shown = true;
-                this.contextMenu.x = e.clientX;
-                this.contextMenu.y = e.clientY;
-                this.contextMenu.item = item;
-                this.$nextTick(() => {
-                    this.contextMenu.shown = true
-                });
+                e.preventDefault()
+                this.contextMenu.shown = true
+                this.contextMenu.x = e.clientX
+                this.contextMenu.y = e.clientY
+                this.contextMenu.item = item
+                this.$nextTick(() => { this.contextMenu.shown = true })
             },
             downloadFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
@@ -655,10 +641,6 @@
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
                     }
                 }
-            },
-            loadings: function(loadings) {
-                this.loadingGcodeRefresh = loadings.includes('loadingGcodeRefresh');
-                this.loadingGcodeUpload = loadings.includes('loadingGcodeUpload');
             },
             displayMetadata: {
                 deep: true,

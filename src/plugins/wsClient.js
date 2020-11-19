@@ -77,26 +77,29 @@ export default class WebSocketClient {
                             );
                         }
                     } else {
-                        let result = data.result;
-                        if (result === "ok") result = { result: result };
+                        let result = data.result
+                        if (result === "ok") result = { result: result }
 
-                        this.store.dispatch(
-                            this.wsData.filter(item => item.id === data.id)[0].action,
-                            Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, result)
-                        )
+                        let preload = {}
+                        let wsData = this.wsData.filter(item => item.id === data.id)[0]
+                        if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
+                        Object.assign(preload, { requestParams: wsData.params })
+                        Object.assign(preload, result)
+                        this.store.dispatch(wsData.action, preload)
                     }
                 } else this.passToStore('socket/onMessage', data)
             }
         };
     }
 
-    sendObj (method, params, action = '') {
+    sendObj (method, params, action = '', actionPreload = null) {
         if (this.instance.readyState === WebSocket.OPEN) {
             let id = Math.floor(Math.random() * 10000) + 1
             this.wsData.push({
                 id: id,
                 action: action,
-                params: params
+                params: params,
+                actionPreload: actionPreload,
             })
             this.instance.send(this.createMessage(method, params, id));
         }

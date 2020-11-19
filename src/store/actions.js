@@ -2,64 +2,9 @@ import router from "../plugins/router";
 
 
 export default {
-
-
-
     setHeaterChartVisibility({ commit, dispatch }, data) {
         commit('setHeaterChartVisibility', data);
         dispatch('saveGuiSettings');
-    },
-
-    respondPrintPause({commit}) {
-        commit('removeLoading', { name: 'statusPrintPause' });
-    },
-
-    respondPrintResume({commit}) {
-        commit('removeLoading', { name: 'statusPrintResume' });
-    },
-
-    respondPrintCancel({commit}) {
-        commit('removeLoading', { name: 'statusPrintCancel' });
-    },
-
-    respondPrintClear({commit}) {
-        commit('removeLoading', { name: 'statusPrintClear' });
-    },
-
-    respondPrintReprint({commit}) {
-        commit('removeLoading', { name: 'statusPrintReprint' });
-    },
-
-    responseHome({commit}) {
-        commit('removeLoading', { name: 'controlHomeAll' });
-    },
-
-    responseHomeX({commit}) {
-        commit('removeLoading', { name: 'controlHomeX' });
-    },
-
-    responseHomeY({commit}) {
-        commit('removeLoading', { name: 'controlHomeY' });
-    },
-
-    responseHomeZ({commit}) {
-        commit('removeLoading', { name: 'controlHomeZ' });
-    },
-
-    responseQGL({commit}) {
-        commit('removeLoading', { name: 'controlQGL' });
-    },
-
-    responseZTilt({commit}) {
-        commit('removeLoading', { name: 'controlZTilt' });
-    },
-
-    responseRestart({commit}) {
-        commit('setLoadingRestart', false);
-    },
-
-    responseRestartFirmware({commit}) {
-        commit('setLoadingRestartFirmware', false);
     },
 
     respondeExtruderRetract({commit}) {

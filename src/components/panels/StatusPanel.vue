@@ -31,11 +31,11 @@
                 dense
                 multiple
             >
-                <v-btn class="button-min-width-auto orange px-2" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadingStatusPause" title="Pause print"><v-icon>mdi-pause</v-icon></v-btn>
-                <v-btn class="button-min-width-auto red" v-if="(printer_state === 'paused')" :loading="loadingStatusCancel" @click="btnCancelJob" title="Cancel print"><v-icon>mdi-stop</v-icon></v-btn>
-                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'paused')" :loading="loadingStatusResume" @click="btnResumeJob" title="Resume job"><v-icon>mdi-play</v-icon></v-btn>
-                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'error')" :loading="loadingStatusClear" @click="btnClearJob" title="Clear job"><v-icon>mdi-close</v-icon></v-btn>
-                <v-btn class="button-min-width-auto primary" v-if="(printer_state === 'complete')" :loading="loadingStatusReprint" @click="btnReprintJob" title="Reprint job"><v-icon>mdi-autorenew</v-icon></v-btn>
+                <v-btn class="button-min-width-auto orange px-2" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')" title="Pause print"><v-icon>mdi-pause</v-icon></v-btn>
+                <v-btn class="button-min-width-auto red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon>mdi-stop</v-icon></v-btn>
+                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon>mdi-play</v-icon></v-btn>
+                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'error')" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon>mdi-close</v-icon></v-btn>
+                <v-btn class="button-min-width-auto primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon>mdi-autorenew</v-icon></v-btn>
             </v-btn-toggle>
         </v-list-item>
         <v-divider class="mt-0 mb-0" ></v-divider>
@@ -128,11 +128,7 @@
     export default {
         data: function() {
             return {
-                loadingStatusCancel: false,
-                loadingStatusResume: false,
-                loadingStatusPause: false,
-                loadingStatusClear: false,
-                loadingStatusReprint: false,
+
             }
         },
         computed: {
@@ -151,6 +147,7 @@
                 printer_state: state => state.printer.print_stats.state,
 
                 display_message: state => state.printer.display_status.message,
+                loadings: state => state.socket.loadings,
             }),
             printPercent: {
                 get() {
@@ -160,29 +157,24 @@
         },
         methods: {
             btnPauseJob() {
-                // TODO loading button
-                //this.$store.commit('setLoading', { name: 'statusPrintPause' });
-                this.$socket.sendObj('printer.print.pause', { }, 'respondPrintPause');
+                this.$store.commit('socket/addLoading', { name: 'statusPrintPause' });
+                this.$socket.sendObj('printer.print.pause', { }, 'socket/removeLoading', { name: 'statusPrintPause' });
             },
             btnResumeJob() {
-                // TODO loading button
-                //this.$store.commit('setLoading', { name: 'statusPrintResume' });
-                this.$socket.sendObj('printer.print.resume', { }, 'respondPrintResume');
+                this.$store.commit('socket/addLoading', { name: 'statusPrintResume' });
+                this.$socket.sendObj('printer.print.resume', { }, 'socket/removeLoading', { name: 'statusPrintResume' });
             },
             btnCancelJob() {
-                // TODO loading button
-                //this.$store.commit('setLoading', { name: 'statusPrintCancel' });
-                this.$socket.sendObj('printer.print.cancel', { }, 'respondPrintCancel');
+                this.$store.commit('socket/addLoading', { name: 'statusPrintCancel' });
+                this.$socket.sendObj('printer.print.cancel', { }, 'socket/removeLoading', { name: 'statusPrintCancel' });
             },
             btnClearJob() {
-                // TODO loading button
-                //this.$store.commit('setLoading', {name: 'statusPrintClear'});
-                this.$socket.sendObj('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'respondPrintClear');
+                this.$store.commit('socket/addLoading', {name: 'statusPrintClear'});
+                this.$socket.sendObj('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'socket/removeLoading', { name: 'statusPrintClear' });
             },
             btnReprintJob() {
-                // TODO loading button
-                //this.$store.commit('setLoading', {name: 'statusPrintReprint'});
-                this.$socket.sendObj('printer.print.start', { filename: this.current_filename }, 'respondPrintReprint');
+                this.$store.commit('socket/addLoading', {name: 'statusPrintReprint'});
+                this.$socket.sendObj('printer.print.start', { filename: this.current_filename }, 'socket/removeLoading', { name: 'statusPrintReprint' });
             },
             formatTime(seconds) {
                 let h = Math.floor(seconds / 3600);
@@ -192,15 +184,6 @@
 
                 return h+':'+m+':'+s;
             },
-        },
-        watch: {
-            /*loadings: function(loadings) {
-                this.loadingStatusCancel = loadings.includes('statusPrintCancel');
-                this.loadingStatusResume = loadings.includes('statusPrintResume');
-                this.loadingStatusPause = loadings.includes('statusPrintPause');
-                this.loadingStatusClear = loadings.includes('statusPrintClear');
-                this.loadingStatusReprint = loadings.includes('statusPrintReprint');
-            }*/
         }
     }
 </script>

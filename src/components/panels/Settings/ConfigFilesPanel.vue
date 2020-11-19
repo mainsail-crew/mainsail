@@ -32,7 +32,7 @@
                 <v-spacer></v-spacer>
                 <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
                 <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                <v-btn color="primary ml-4" :loading="loadingConfigRefresh" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
+                <v-btn color="primary ml-4" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
             </v-card-title>
             <v-card-subtitle>Current path: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
             <v-data-table
@@ -195,7 +195,6 @@
                 currentPage: 1,
                 files: [],
                 currentPath: '',
-                loadingConfigRefresh: false,
                 editor: {
                     show: false,
                     showLoader: false,
@@ -244,10 +243,6 @@
                 return highlight(code, languages.ini); //returns html
             },
             refreshFileList: function() {
-                window.console.log(this.currentPath.substring(1));
-                // TODO loading refresh
-                //this.$store.commit('setLoading', { name: 'loadingConfigRefresh' });
-
                 if (this.currentPath === "") {
                     this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory');
                     this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
