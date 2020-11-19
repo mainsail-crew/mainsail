@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col class="col-sm-12 col-md-7">
+        <v-col class="col-sm-12 col-md-5">
             <min-settings-panel v-if="klippy_state === 'ready' && configExists"></min-settings-panel>
             <status-panel v-if="klippy_state === 'ready'"></status-panel>
             <klippy-state-panel v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
@@ -8,10 +8,10 @@
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
-        </v-col>
-        <v-col class="col-sm-12 col-md-5">
-            <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
+        </v-col>
+        <v-col class="col-sm-12 col-md-7">
+            <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
             <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
             <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
         </v-col>

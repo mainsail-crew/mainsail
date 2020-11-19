@@ -48,19 +48,18 @@
         }),
         computed: {
             ...mapState({
-                state: state => state.printer.webhooks.state,
                 config: state => state.printer.configfile.config,
             }),
             ...mapMutations([
 
             ]),
             ...mapGetters([
-                'checkConfigVirtualSdcard',
-                'checkConfigPauseResume',
-                'checkConfigDisplayStatus',
-                'checkConfigMacroPause',
-                'checkConfigMacroResume',
-                'checkConfigMacroCancel',
+                'printer/checkConfigVirtualSdcard',
+                'printer/checkConfigPauseResume',
+                'printer/checkConfigDisplayStatus',
+                'printer/checkConfigMacroPause',
+                'printer/checkConfigMacroResume',
+                'printer/checkConfigMacroCancel',
             ]),
         },
         created() {
@@ -68,12 +67,12 @@
         },
         methods: {
             refreshConfig() {
-                this.boolVirtualSdcard = this.checkConfigVirtualSdcard;
-                this.boolPauseResume = this.checkConfigPauseResume;
-                this.boolDisplayStatus = this.checkConfigDisplayStatus;
-                this.boolMacroPause = this.checkConfigMacroPause;
-                this.boolMacroResume = this.checkConfigMacroResume;
-                this.boolMacroCancelPrint = this.checkConfigMacroCancel;
+                this.boolVirtualSdcard = this['printer/checkConfigVirtualSdcard'];
+                this.boolPauseResume = this['printer/checkConfigPauseResume'];
+                this.boolDisplayStatus = this['printer/checkConfigDisplayStatus'];
+                this.boolMacroPause = this['printer/checkConfigMacroPause'];
+                this.boolMacroResume = this['printer/checkConfigMacroResume'];
+                this.boolMacroCancelPrint = this['printer/checkConfigMacroCancel'];
             }
         },
         watch: {

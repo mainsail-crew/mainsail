@@ -12,7 +12,6 @@ export default {
 		commit('setDisconnected');
 
 		if (event.wasClean) window.console.log('Socket closed clear')
-		else window.console.error('Connection failure')
 	},
 
 	onMessage ({ commit, state }, payload) {

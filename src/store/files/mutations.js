@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import { getDefaultStore } from './index'
+import { getDefaultState } from './index'
 import { findDirectory } from "@/plugins/helpers"
 import store from "@/store";
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultStore)
+		Object.assign(state, getDefaultState)
 	},
 
 	setDirectory(state, payload) {

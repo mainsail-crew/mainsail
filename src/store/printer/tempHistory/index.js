@@ -2,7 +2,7 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 
-const getDefaultState = () => {
+export function getDefaultState() {
 	return {
 		datasets: [],
 	}
@@ -16,5 +16,6 @@ export default {
 	state,
 	getters,
 	actions,
-	mutations
+	mutations,
+	getDefaultState
 }

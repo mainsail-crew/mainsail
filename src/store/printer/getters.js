@@ -46,6 +46,8 @@ export default {
 
 	getHeaters: state => {
 		let heaters = []
+		let colorOff = "grey darken-2"
+		let colorHot = "grey lighten-5"
 
 		if (state.heaters.available_heaters) {
 			for (let [key, value] of Object.entries(state)) {
@@ -55,8 +57,23 @@ export default {
 
 					if (nameSplit.length > 1 && nameSplit[0] === "heater_generic") name = nameSplit[1];
 
+					let icon = "printer-3d-nozzle-alert"
+					let color = colorOff
+					if (value.target) color = colorHot
+
+					if(nameSplit[0].startsWith("extruder")) {
+						let min_extrude_temp = parseFloat(state.configfile.config[key].min_extrude_temp) || 170
+						if (value.temperature >= min_extrude_temp) icon = "printer-3d-nozzle"
+					} else if (nameSplit[0] === "heater_bed") {
+						icon = "radiator-disabled"
+						if (value.temperature > 50 || (value.target && value.temperature > value.target-5)) icon = "radiator"
+					} else if (nameSplit[0].startsWith("heater_generic")) icon = "fire"
+
 					heaters.push({
 						name: name,
+						type: nameSplit[0],
+						icon: icon,
+						color: color,
 						target: value.target,
 						temperature: value.temperature,
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
@@ -211,5 +228,38 @@ export default {
 		}
 
 		return true;
+	},
+
+	existPrinterConfig: state => {
+		if (
+			typeof(state.printer.configfile.config) === "object" &&
+			Object.keys(state.printer.configfile.config).length > 0
+		) return true;
+
+		return false;
+	},
+
+	checkConfigVirtualSdcard: state => {
+		return 'virtual_sdcard' in state.printer.configfile.config;
+	},
+
+	checkConfigPauseResume: state => {
+		return 'pause_resume' in state.printer.configfile.config;
+	},
+
+	checkConfigDisplayStatus: state => {
+		return 'display_status' in state.printer.configfile.config;
+	},
+
+	checkConfigMacroPause: state => {
+		return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro pause') !== -1;
+	},
+
+	checkConfigMacroResume: state => {
+		return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro resume') !== -1;
+	},
+
+	checkConfigMacroCancel: state => {
+		return Object.keys(state.printer.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
 	},
 }

@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import { getDefaultStore } from './index'
+import { getDefaultState } from './index'
 
 const objectAssignDeep = require(`object-assign-deep`);
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultStore)
+		Object.assign(state, getDefaultState)
 	},
 
 	setData(state, payload) {

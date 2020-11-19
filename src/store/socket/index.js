@@ -2,7 +2,7 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 
-const getDefaultState = () => {
+export function getDefaultState() {
 	return {
 		hostname: process.env.VUE_APP_HOSTNAME || window.location.hostname,
 		port: process.env.VUE_APP_PORT || window.location.port,

@@ -5,7 +5,8 @@ import getters from './getters'
 // import modules
 import powerDevices from './powerDevices'
 
-const getDefaultState = () => {
+// create getDefaultState
+export function getDefaultState() {
 	return {
 		klippy_connected: false,
 		klippy_state: "",
