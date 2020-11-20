@@ -30,9 +30,13 @@
             <v-card-title>
                 Config Files
                 <v-spacer></v-spacer>
-                <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
-                <v-btn color=" ml-4" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                <v-btn color="primary ml-4" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
+                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
+                <v-item-group class="v-btn-toggle">
+                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
+                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
+                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                    <v-btn color="primary" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
+                </v-item-group>
             </v-card-title>
             <v-card-subtitle>Current path: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
             <v-data-table
@@ -44,14 +48,14 @@
                 :custom-sort="sortFiles"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
-                :items-per-page="countPerPage"
+                :items-per-page.sync="countPerPage"
                 item-key="name">
 
                 <template #no-data>
                     <div class="text-center">empty</div>
                 </template>
 
-                <template v-slot:top v-if="(currentPath !== '')">
+                <template slot="body.prepend" v-if="(currentPath !== '')">
                    <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack">
@@ -230,10 +234,18 @@
         computed: {
             ...mapState({
                 filetree: state => state.files.filetree,
-                countPerPage: state => state.gui.settings.configfiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
-            })
+                loadings: state => state.socket.loadings,
+            }),
+            countPerPage: {
+                get: function() {
+                    return this.$store.state.gui.settings.configfiles.countPerPage
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { countPerPage: newVal } } });
+                }
+            },
         },
         created() {
             this.loadPath();
@@ -427,6 +439,34 @@
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
+            uploadFileButton: function() {
+                this.$refs.fileUpload.click()
+            },
+            uploadFile: function() {
+                if (this.$refs.fileUpload.files.length) {
+                    this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
+                        this.$refs.fileUpload.value = ''
+                    })
+                }
+            },
+            doUploadFile: function(file) {
+                let toast = this.$toast;
+                let formData = new FormData();
+                let filename = file.name.replace(" ", "_");
+                formData.append('root', 'config');
+                formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
+                this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
+
+                return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
+                    formData, { headers: { 'Content-Type': 'multipart/form-data' } }
+                ).then((result) => {
+                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
+                    toast.success("Upload of "+result.data.result+" successful!");
+                }).catch(() => {
+                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
+                    toast.error("Cannot upload the file!");
+                });
+            },
         },
         watch: {
             config: {
@@ -445,7 +485,7 @@
                 handler() {
                     this.loadPath();
                 }
-            },
+            }
         }
     }
 </script>

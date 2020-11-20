@@ -12,7 +12,8 @@ export default {
 	getMetadata({ commit, rootState }, payload) {
 		if (payload !== undefined && payload.filename !== "") {
 			if (payload.filename === rootState.printer.print_stats.filename) {
-				this.commit('getMetadataCurrentFile', payload);
+				commit('printer/clearCurrentFile', null, { root: true });
+				commit('printer/setData', { current_file: payload }, { root: true });
 			}
 
 			commit('setMetadata', payload);
