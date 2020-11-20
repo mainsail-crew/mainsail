@@ -33,7 +33,6 @@ export default {
 		Vue.set(state.gcodefiles.showMetadata, data.name, data.value)
 	},
 
-
 	setGcodefilesShowHiddenFiles(state, value) {
 		Vue.set(state.gcodefiles, "showHiddenFiles", value)
 	},

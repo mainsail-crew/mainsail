@@ -53,24 +53,26 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer></v-spacer>
-                <v-btn @click="createDirectory"><v-icon class="mr-1">mdi-folder-plus</v-icon> new Directory</v-btn>
-                <v-btn color="primary ml-4" @click="refreshFileList"><v-icon class="mr-1">mdi-refresh</v-icon> Refresh</v-btn>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-btn class="primary ml-4 " :loading="loadings.includes('gcodeUpload')" @click="clickUploadButton"><v-icon>mdi-upload</v-icon>Upload</v-btn>
-                <v-menu :offset-y="true">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="ml-4" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
-                            <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                <v-item-group class="v-btn-toggle" name="controllers">
+                    <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
+                    <v-btn @click="createDirectory" title="Create new Directory"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                    <v-btn @click="refreshFileList" title="Refresh current Directory"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <v-menu :offset-y="true" title="Setup current list">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn class="" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
+                            </v-list-item>
+                            <v-divider></v-divider>
+                            <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
+                                <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-item-group>
             </v-card-title>
             <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
             <v-card-text>
@@ -90,7 +92,7 @@
                 :custom-sort="sortFiles"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
-                :items-per-page="countPerPage"
+                :items-per-page.sync="countPerPage"
                 item-key="name"
                 :search="search"
                 :custom-filter="advancedSearch"
@@ -298,7 +300,6 @@
         computed: {
             ...mapState({
                 filetree: state => state.files.filetree,
-                countPerPage: state => state.gui.gcodefiles.countPerPage,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
                 loadings: state => state.socket.loadings,
@@ -319,9 +320,17 @@
                     return this.$store.state.gui.gcodefiles.showHiddenFiles;
                 },
                 set: function(newVal) {
-                    return this.$store.dispatch("gui/setGcodefilesShowHiddenFiles", newVal);
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { showHiddenFiles: newVal } });
                 }
-            }
+            },
+            countPerPage: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.countPerPage
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { countPerPage: newVal } });
+                }
+            },
         },
         created() {
             this.loadPath()
