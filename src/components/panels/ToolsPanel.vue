@@ -19,7 +19,7 @@
             <v-list-item-content>
                 <v-list-item-title class="headline">Temperatures</v-list-item-title>
                 <v-list-item-subtitle>
-                    {{ this['printer/getHeaters'].length }} heaters
+                    {{ heaters.length }} heaters
                     <span v-if="this['printer/getTemperatureFans'].length === 1">, {{ this['printer/getTemperatureFans'].length }} fan</span>
                     <span v-if="this['printer/getTemperatureFans'].length > 1">, {{ this['printer/getTemperatureFans'].length }} fans</span>
                     <span v-if="this['printer/getTemperatureSensors'].length === 1">, {{ this['printer/getTemperatureSensors'].length }} sensor</span>
@@ -35,7 +35,7 @@
                 <v-col class="py-0 text-center font-weight-bold">Current</v-col>
                 <v-col class="text-center py-0 pr-8 font-weight-bold">Target</v-col>
             </v-row>
-            <div v-for="(heater, index) in this['printer/getHeaters']" v-bind:key="index" >
+            <div v-for="(heater, index) in heaters" v-bind:key="index" >
                 <v-divider class="my-2"></v-divider>
                 <v-row align="center">
                     <v-col class="flex-grow-0 py-0 pl-8 pr-0  colHeaterIcons">
@@ -110,13 +110,17 @@
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
             }),
             ...mapGetters([
-                'printer/getHeaters',
                 'printer/getTemperatureFans',
                 'printer/getTemperatureSensors',
             ]),
             datasets: {
                 get () {
                     return this.$store.state.printer.tempHistory.datasets
+                }
+            },
+            heaters: {
+                get () {
+                    return this.$store.getters["printer/getHeaters"]
                 }
             }
         },
