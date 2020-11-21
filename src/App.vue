@@ -1,5 +1,6 @@
 <style>
     @import './assets/styles/fonts.css';
+    @import './assets/styles/toastr.css';
 
     .button-min-width-auto {
         min-width: auto !important;
@@ -8,12 +9,10 @@
 
 <template>
     <v-app>
-        <vue-headful
-                :title="getTitle"
-        />
+        <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
-            :src="require('./assets/bg-navi.jpg')"
+            :src="require('./assets/bg-navi.png')"
         >
             <div id="nav-header">
                 <img :src="require('./assets/logo.svg')" />
@@ -253,13 +252,16 @@ export default {
 </script>
 
 <style>
-    .sidebar-wrapper:before {
+    body {
+      background: #121212;
+    }
+    /*.sidebar-wrapper:before {
         position: absolute;
         content: ' ';
         top: 0; right: 0; bottom: 0; left: 0;
         background: #000;
-        opacity: .7;
-    }
+        opacity: .5;
+    }*/
 
     #nav-header {
         text-align: center;
