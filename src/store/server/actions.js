@@ -18,9 +18,7 @@ export default {
 			Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory');
 			Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
 
-			//TODO load power plugin
-			//load plug data
-			//if (data.plugins.includes("power") !== false) Vue.prototype.$socket.sendObj('machine.gpio_power.devices', {}, 'getPowerDevices');
+			if (payload.plugins.includes("power") !== false) Vue.prototype.$socket.sendObj('machine.device_power.devices', {}, 'server/power/getDevices');
 
 			dispatch('printer/init', null, { root: true });
 		} else {

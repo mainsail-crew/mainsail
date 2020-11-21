@@ -10,8 +10,6 @@ export default {
 			Vue.$toast.error(payload.error.message);
 		} else {
 			commit('setDevices', payload.devices);
-
-			Vue.prototype.$socket.sendObj('machine.gpio_power.status', {}, 'server.powerDevices.getStatus');
 		}
 	},
 
@@ -20,4 +18,12 @@ export default {
 			Vue.$toast.error(payload.error.message);
 		} else commit('setStatus', payload);
 	},
+
+	responseToggle({ commit }, payload) {
+		if ('requestParams' in payload) delete payload.requestParams
+
+		for (const [key, value] of Object.entries(payload)) {
+			commit('setStatus', { device: key, status: value })
+		}
+	}
 }

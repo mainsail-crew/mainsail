@@ -9,11 +9,11 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
+            <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
             <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
-            <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
         </v-col>
     </v-row>
 </template>
@@ -38,7 +38,7 @@
             }),
             ...mapGetters({
                 showDashboardWebcam: 'showDashboardWebcam',
-                powerDevicesCount: 'server/powerDevices/count',
+                powerDevicesCount: 'server/power/count',
                 existPrinterConfig: 'existPrinterConfig'
             })
         },

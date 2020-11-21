@@ -12,24 +12,21 @@
                 </v-toolbar-title>
             </v-toolbar>
 
-            <v-card-text class="pb-0">
-                <div v-for="(device, index) in devices" v-bind:key="index">
-                    <v-divider class="my-2" v-if="index > 0"></v-divider>
-                    <v-row class="pl-2 pr-2 pb-2">
-                        <v-col class="col-auto py-0 vertical_align_center col-6">{{ device.name }}</v-col>
-                        <v-col class="col-auto py-0 vertical_align_center col-6">
-                            <v-btn
-                                :disabled="device.status === 1"
-                                v-on="device.status === 0 ? { click: () => setPower(index,1) } : {}"
-                            >On</v-btn>
-                            <v-btn
-                                :disabled="device.status === 0"
-                                v-on="device.status === 1 ? { click: () => setPower(index,0) } : {}"
-                            >Off</v-btn>
+            <div v-for="(device, index) in devices" v-bind:key="index">
+                <v-divider class="mt-0" v-if="index > 0"></v-divider>
+                <v-card-text class="py-2">
+                    <v-row>
+                        <v-col class="py-0">{{ device.device }}</v-col>
+                        <v-col class="py-0 text-right">
+                            <v-btn-toggle v-model="device.status">
+                                <v-btn small v-if="device.status === 'error'" disabled>Error</v-btn>
+                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'on'" @click="setPower(device,1)">On</v-btn>
+                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'off'" @click="setPower(device,0)">Off</v-btn>
+                            </v-btn-toggle>
                         </v-col>
                     </v-row>
-                </div>
-            </v-card-text>
+                </v-card-text>
+            </div>
         </v-card>
     </div>
 </template>
@@ -43,18 +40,13 @@ export default {
 
     computed: {
         ...mapState({
-            devices: (state) => state.power.devices,
+            devices: (state) => state.server.power.devices,
         }),
     },
     methods: {
-        setPower(index, value) {
-            let rpc = value === 1 ? "machine.gpio_power.on" : "machine.gpio_power.off";
-            let deviceId = this.devices[index].id;
-            Vue.prototype.$socket.sendObj(
-                rpc,
-                { [deviceId]: "" },
-                "responsePowerToggle"
-            );
+        setPower(device, value) {
+            let rpc = value === 1 ? "machine.device_power.on" : "machine.device_power.off";
+            Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle");
         },
     },
 };
