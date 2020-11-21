@@ -14,21 +14,12 @@
 
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-thermometer</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Temperatures</v-list-item-title>
-                <v-list-item-subtitle>
-                    {{ heaters.length }} heaters
-                    <span v-if="this['printer/getTemperatureFans'].length === 1">, {{ this['printer/getTemperatureFans'].length }} fan</span>
-                    <span v-if="this['printer/getTemperatureFans'].length > 1">, {{ this['printer/getTemperatureFans'].length }} fans</span>
-                    <span v-if="this['printer/getTemperatureSensors'].length === 1">, {{ this['printer/getTemperatureSensors'].length }} sensor</span>
-                    <span v-if="this['printer/getTemperatureSensors'].length > 1">, {{ this['printer/getTemperatureSensors'].length }} sensors</span>
-                </v-list-item-subtitle>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 pt-0 pb-2 content">
+        <v-toolbar flat dense>
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>Temperatures</span>
+            </v-toolbar-title>
+        </v-toolbar>
+        <v-card-text class="px-0 py-2 content">
             <v-row align="center">
                 <v-col class="py-0 font-weight-bold" style="padding-left: 68px;">Name</v-col>
                 <v-col class="py-0 text-center font-weight-bold">Status</v-col>
@@ -66,7 +57,9 @@
             <div v-for="(sensor,index) in this['printer/getTemperatureSensors']" v-bind:key="index+999">
                 <v-divider class="my-2"></v-divider>
                 <v-row align="center">
-                    <v-col class="flex-grow-0 py-0 pl-8 pr-0 colHeaterIcons"><v-icon color="grey darken-2">mdi-thermometer</v-icon></v-col>
+                    <v-col class="flex-grow-0 py-0 pl-8 pr-0 colHeaterIcons">
+                        <v-icon color="grey darken-2" :title="'min: '+sensor.min_temp+'° / max: '+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
+                    </v-col>
                     <v-col class="py-0 font-weight-bold">{{ sensor.name }}</v-col>
                     <v-col class="py-0"><span>&nbsp;</span></v-col>
                     <v-col class="py-0 text-center">
