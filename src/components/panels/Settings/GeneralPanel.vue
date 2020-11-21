@@ -6,16 +6,14 @@
 
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-cog</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">General</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 pb-0 pt-3 content">
+        <v-toolbar flat dense >
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-cog</v-icon>General</span>
+            </v-toolbar-title>
+        </v-toolbar>
+        <v-card-text class="py-0">
             <v-row>
-                <v-col class="px-10 py-0">
+                <v-col class="py-0">
                     <v-text-field
                         v-model="printerName"
                         label="Printer Name"

@@ -62,7 +62,7 @@ export default {
 					if (value.target) color = colorHot
 
 					if(nameSplit[0].startsWith("extruder")) {
-						let min_extrude_temp = parseFloat(state.configfile.config[key].min_extrude_temp) || 170
+						let min_extrude_temp = key in state.configfile.config ? parseFloat(state.configfile.config[key].min_extrude_temp) : 170
 						if (value.temperature >= min_extrude_temp) icon = "printer-3d-nozzle"
 					} else if (nameSplit[0] === "heater_bed") {
 						icon = "radiator-disabled"

@@ -49,7 +49,7 @@
 
 <template>
     <div>
-        <v-card class="fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+        <v-card class="fileupload-card my-3" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
             <v-card-title>
                 G-Code Files
                 <v-spacer></v-spacer>
