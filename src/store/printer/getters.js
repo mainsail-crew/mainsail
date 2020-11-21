@@ -105,16 +105,27 @@ export default {
 		return fans.sort(caseInsensitiveNameSort)
 	},
 
-	getTemperatureSensors: state => {
+	getTemperatureSensors: (state) => {
 		let sensors = []
 
 		for (let [key, value] of Object.entries(state)) {
 			let nameSplit = key.split(" ")
 
 			if (nameSplit[0] === "temperature_sensor") {
+				let icon = "mdi-thermometer"
+				let min_temp = (state.configfile.config[key] && state.configfile.config[key].min_temp) ? parseInt(state.configfile.config[key].min_temp) : 0
+				let max_temp = (state.configfile.config[key] && state.configfile.config[key].max_temp) ? parseInt(state.configfile.config[key].max_temp) : 210
+				let split = (max_temp - min_temp) / 3
+
+				if (value.temperature <= min_temp + split) icon = "mdi-thermometer-low"
+				if (value.temperature >= max_temp - split) icon = "mdi-thermometer-high"
+
 				sensors.push({
 					name: nameSplit[1],
 					temperature: value.temperature,
+					icon: icon,
+					min_temp: min_temp,
+					max_temp: max_temp,
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
 				})
