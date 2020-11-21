@@ -3,7 +3,7 @@ import mutations from './mutations'
 import getters from './getters'
 
 // import modules
-import powerDevices from './powerDevices'
+import power from './power'
 
 // create getDefaultState
 export function getDefaultState() {
@@ -26,6 +26,6 @@ export default {
 	actions,
 	mutations,
 	modules: {
-		powerDevices
+		power
 	}
 }
