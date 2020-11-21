@@ -20,13 +20,13 @@
 
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-console-line</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Console</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="mt-2"></v-divider>
+        <v-toolbar flat dense>
+            <v-toolbar-title>
+                    <span class="subheading">
+                        <v-icon>mdi-console-line</v-icon>Console
+                    </span>
+            </v-toolbar-title>
+        </v-toolbar>
         <v-card-text class="px-0 py-0 content">
             <v-data-table
                 :headers="headers"
