@@ -1,23 +1,21 @@
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-arrow-expand-vertical</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Endstops</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 pt-0 pb-2 content">
+        <v-toolbar flat dense >
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>Endstops</span>
+            </v-toolbar-title>
+        </v-toolbar>
+        <v-card-text class="pb-0">
             <div v-for="(status, index) of sortEndstops" v-bind:key="index">
-                <v-row class="px-6" >
-                    <v-col sm-12>
+                <v-row>
+                    <v-col class="py-2">
                         <label class="mt-1 d-inline-block">Endstop <b>{{ index.toUpperCase() }}</b></label>
                         <v-chip class="float-right" :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
                     </v-col>
                 </v-row>
             </div>
-            <v-row class="px-6" v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
-                <v-col sm-12>
+            <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
+                <v-col class="py-0">
                     <p>Press the sync-button on the right-bottom to load the current endstop status.</p>
                 </v-col>
             </v-row>

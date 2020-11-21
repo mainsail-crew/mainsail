@@ -6,38 +6,45 @@
     .statusPanel-image-preview {
         width: 100%;
     }
+
+    .v-btn.minwidth-0 {
+        min-width: auto !important;
+    }
 </style>
 
 <template>
     <v-card>
-        <v-list-item>
-            <v-progress-circular
-                :rotate="-90"
-                :size="50"
-                :width="7"
-                :value="printPercent * 100"
-                color="red"
-                class="mr-5 mt-2"
-                v-if="['printing', 'paused', 'error'].includes(printer_state)"
-            >
-            </v-progress-circular>
-            <v-list-item-avatar color="grey" v-if="!['printing', 'paused', 'error'].includes(printer_state)"><v-icon dark>mdi-information-variant</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">{{ ['printing', 'paused', 'error'].includes(printer_state) ? Math.round(printPercent * 100)+"% - " : "" }}{{ display_message ? display_message : (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown") }}</v-list-item-title>
-                <v-list-item-subtitle class="mr-3" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">{{ "File: "+current_filename }}</v-list-item-subtitle>
-            </v-list-item-content>
-            <v-btn-toggle
-                color="primary"
-                dense
-                multiple
-            >
-                <v-btn class="button-min-width-auto orange px-2" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')" title="Pause print"><v-icon>mdi-pause</v-icon></v-btn>
-                <v-btn class="button-min-width-auto red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon>mdi-stop</v-icon></v-btn>
-                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon>mdi-play</v-icon></v-btn>
-                <v-btn class="button-min-width-auto orange" v-if="(printer_state === 'error')" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon>mdi-close</v-icon></v-btn>
-                <v-btn class="button-min-width-auto primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon>mdi-autorenew</v-icon></v-btn>
-            </v-btn-toggle>
-        </v-list-item>
+        <v-toolbar flat dense>
+            <v-toolbar-title>
+                <span class="subheading">
+                    <v-icon left>mdi-information</v-icon>Status: {{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown") }}
+                </span>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-item-group class="v-btn-toggle" name="controllers">
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')" title="Pause print"><v-icon small>mdi-pause</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon small>mdi-stop</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon small>mdi-play</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'error')" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon small>mdi-close</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
+            </v-item-group>
+        </v-toolbar>
+        <v-row v-if="current_filename" class="mx-0">
+            <v-col class="col-auto py-3 pr-0">
+                <v-progress-circular
+                    :rotate="-90"
+                    :size="50"
+                    :width="7"
+                    :value="printPercent * 100"
+                    color="red"
+                >
+                </v-progress-circular>
+            </v-col>
+            <v-col class="col py-3" style="width: 100px;">
+                <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ display_message ? " - "+display_message : "" }}</h3>
+                <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
+            </v-col>
+        </v-row>
         <v-divider class="mt-0 mb-0" ></v-divider>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-row>

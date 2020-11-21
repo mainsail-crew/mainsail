@@ -1,12 +1,10 @@
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-exclamation-thick</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Machine Limits</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="mt-2"></v-divider>
+        <v-toolbar flat dense >
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>Machine Limits</span>
+            </v-toolbar-title>
+        </v-toolbar>
         <tool-slider label="Velocity" unit="mm/s" :target="current_velocity" :max="max_velocity" command="SET_VELOCITY_LIMIT" attribute-name="VELOCITY=" ></tool-slider>
         <v-divider></v-divider>
         <tool-slider label="Acceleration" unit="mm/s²" :target="current_accel" :max="max_accel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL=" ></tool-slider>

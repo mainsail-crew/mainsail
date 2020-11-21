@@ -23,7 +23,7 @@ export default new Vuetify({
   theme: {
     themes: {
       dark: {
-        red: '#f7240a'
+
       }
     }
   },
