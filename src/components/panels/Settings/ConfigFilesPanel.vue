@@ -198,7 +198,7 @@
                 },
                 currentPage: 1,
                 files: [],
-                currentPath: '',
+                currentPath: '/config',
                 editor: {
                     show: false,
                     showLoader: false,

@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <v-col class="col-sm-12 col-md-5">
-            <min-settings-panel v-if="klippy_state === 'ready' && configExists"></min-settings-panel>
+            <min-settings-panel v-if="klippy_state === 'ready' && existsPrinterConfig"></min-settings-panel>
             <status-panel v-if="klippy_state === 'ready'"></status-panel>
             <klippy-state-panel v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
             <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
@@ -9,7 +9,7 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
-            <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
+            <power-control-panel class="mt-6" v-if="countPowerDevices > 0"></power-control-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
@@ -19,13 +19,13 @@
 </template>
 
 <script>
-    import { mapState, mapGetters } from 'vuex'
+    import { mapState } from 'vuex'
     import ZOffsetPanel from "../components/panels/ZOffsetPanel";
 
     export default {
         components: { ZOffsetPanel },
         data: () => ({
-            configExists: false
+
         }),
         computed: {
             ...mapState({
@@ -33,25 +33,20 @@
                 klippy_connected: state => state.server.klippy_connected,
                 klippy_state: state => state.server.klippy_state,
 
+                showDashboardWebcam: state => state.gui.dashboard.boolWebcam,
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
                 config: state => state.printer.configfile.config,
             }),
-            ...mapGetters({
-                showDashboardWebcam: 'showDashboardWebcam',
-                powerDevicesCount: 'server/power/count',
-                existPrinterConfig: 'existPrinterConfig'
-            })
-        },
-        created() {
-
-        },
-        watch: {
-            config: {
-                deep: true,
-                handler() {
-                    this.configExists = this.$store.getters.existPrinterConfig;
+            countPowerDevices: {
+                get() {
+                    return this.$store.getters["server/power/count"]
+                }
+            },
+            existsPrinterConfig: {
+                get() {
+                    return this.$store.getters["printer/existPrinterConfig"]
                 }
             }
-        }
+        },
     }
 </script>
