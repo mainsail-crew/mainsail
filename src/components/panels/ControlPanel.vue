@@ -1,7 +1,7 @@
 <style>
     .btnHomeAxis {
-        width: 32px;
-        min-width: 32px !important;
+        width: 36px;
+        min-width: 36px !important;
     }
 
     .btnMinWidthAuto {
@@ -20,40 +20,40 @@
         </v-row>
         <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
-                <v-btn-toggle dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="doSendMove('X-100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-100</span></v-btn>
-                    <v-btn @click="doSendMove('X-10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-10</span></v-btn>
-                    <v-btn @click="doSendMove('X-1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
-                    <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold flex-grow-0 btnHomeAxis">X</v-btn>
-                    <v-btn @click="doSendMove('X+1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
-                    <v-btn @click="doSendMove('X+10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+10</span></v-btn>
-                    <v-btn @click="doSendMove('X+100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+100</span></v-btn>
+                <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
+                    <v-btn @click="doSendMove('X-100')" class="btnMinWidthAuto col"><span class="body-2">-100</span></v-btn>
+                    <v-btn @click="doSendMove('X-10')" class="btnMinWidthAuto col"><span class="body-2">-10</span></v-btn>
+                    <v-btn @click="doSendMove('X-1')" class="btnMinWidthAuto col"><span class="body-2">-1</span></v-btn>
+                    <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold btnHomeAxis">X</v-btn>
+                    <v-btn @click="doSendMove('X+1')" class="btnMinWidthAuto col"><span class="body-2">+1</span></v-btn>
+                    <v-btn @click="doSendMove('X+10')" class="btnMinWidthAuto col"><span class="body-2">+10</span></v-btn>
+                    <v-btn @click="doSendMove('X+100')" class="btnMinWidthAuto col"><span class="body-2">+100</span></v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>
         <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
-                <v-btn-toggle dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="doSendMove('Y-100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-100</span></v-btn>
-                    <v-btn @click="doSendMove('Y-10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-10</span></v-btn>
-                    <v-btn @click="doSendMove('Y-1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
+                <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
+                    <v-btn @click="doSendMove('Y-100')" class="btnMinWidthAuto col"><span class="body-2">-100</span></v-btn>
+                    <v-btn @click="doSendMove('Y-10')" class="btnMinWidthAuto col"><span class="body-2">-10</span></v-btn>
+                    <v-btn @click="doSendMove('Y-1')" class="btnMinWidthAuto col"><span class="body-2">-1</span></v-btn>
                     <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">Y</v-btn>
-                    <v-btn @click="doSendMove('Y+1')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
-                    <v-btn @click="doSendMove('Y+10')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+10</span></v-btn>
-                    <v-btn @click="doSendMove('Y+100')" class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+100</span></v-btn>
+                    <v-btn @click="doSendMove('Y+1')" class="btnMinWidthAuto col"><span class="body-2">+1</span></v-btn>
+                    <v-btn @click="doSendMove('Y+10')" class="btnMinWidthAuto col"><span class="body-2">+10</span></v-btn>
+                    <v-btn @click="doSendMove('Y+100')" class="btnMinWidthAuto col"><span class="body-2">+100</span></v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>
         <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
-                <v-btn-toggle dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn @click="doSendMove('Z-25')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-25</span></v-btn>
-                    <v-btn @click="doSendMove('Z-1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">-1</span></v-btn>
-                    <v-btn @click="doSendMove('Z-0.1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">-0.1</span></v-btn>
+                <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
+                    <v-btn @click="doSendMove('Z-25')" dense class="btnMinWidthAuto col"><span class="body-2">-25</span></v-btn>
+                    <v-btn @click="doSendMove('Z-1')" dense class="btnMinWidthAuto col"><span class="body-2">-1</span></v-btn>
+                    <v-btn @click="doSendMove('Z-0.1')" dense class="btnMinWidthAuto col"><span class="body-2">-0.1</span></v-btn>
                     <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">Z</v-btn>
-                    <v-btn @click="doSendMove('Z+0.1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0 d-none d-sm-flex"><span class="body-2">+0.1</span></v-btn>
-                    <v-btn @click="doSendMove('Z+1')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+1</span></v-btn>
-                    <v-btn @click="doSendMove('Z+25')" dense class="btnMinWidthAuto flex-grow-1 flex-shrink-0"><span class="body-2">+25</span></v-btn>
+                    <v-btn @click="doSendMove('Z+0.1')" dense class="btnMinWidthAuto col"><span class="body-2">+0.1</span></v-btn>
+                    <v-btn @click="doSendMove('Z+1')" dense class="btnMinWidthAuto col"><span class="body-2">+1</span></v-btn>
+                    <v-btn @click="doSendMove('Z+25')" dense class="btnMinWidthAuto col"><span class="body-2">+25</span></v-btn>
                 </v-btn-toggle>
             </v-col>
         </v-row>

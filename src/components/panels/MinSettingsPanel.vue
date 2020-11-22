@@ -9,15 +9,13 @@
             !boolMacroResume ||
             !boolMacroCancelPrint
         ">
-        <v-list-item>
-            <v-list-item-avatar color="grey">
-                <v-icon dark>mdi-alert-circle</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Missing configuration</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2" ></v-divider>
+        <v-toolbar flat dense>
+            <v-toolbar-title>
+                    <span class="subheading">
+                        <v-icon class="mdi mdi-alert-circle" left></v-icon>Missing configuration
+                    </span>
+            </v-toolbar-title>
+        </v-toolbar>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
                 <v-flex col class="text-left">

@@ -5,6 +5,10 @@
     .button-min-width-auto {
         min-width: auto !important;
     }
+
+    #page-container {
+        max-width: 1400px;
+    }
 </style>
 
 <template>
@@ -83,7 +87,7 @@
 
         <v-main id="content">
             <v-scroll-y-transition>
-                <v-container fluid id="page-container" class="container px-sm-6 px-3">
+                <v-container fluid id="page-container" class="container px-sm-6 px-3 mx-auto">
                     <keep-alive>
                         <router-view></router-view>
                     </keep-alive>

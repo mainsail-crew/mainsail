@@ -7,9 +7,6 @@ import tempHistory from './tempHistory'
 
 export function getDefaultState() {
 	return {
-		software_version: '',
-		hostname: '',
-		cpu_info: '',
 		heaters: {
 			available_heaters: [],
 		},
