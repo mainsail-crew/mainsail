@@ -16,7 +16,7 @@
     <v-card>
         <v-toolbar flat dense>
             <v-toolbar-title>
-                <span class="subheading">
+                <span class="subheading align-baseline">
                     <v-icon left>mdi-information</v-icon>Status: {{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown") }}
                 </span>
             </v-toolbar-title>

@@ -102,8 +102,7 @@
 
         <v-footer app class="d-block">
             <span>v{{ getVersion }}</span>
-            <span v-if="version" class="d-none d-sm-inline"> - {{ version }}</span>
-            <span class="float-right">Made with <img src="/img/heart.png" height="15" title="love" alt="heard" /> by <a href="http://www.vorondesign.com/" target="_blank"><img src="/img/voron.png" height="15" title="VoronDesign" alt="Logo - VoronDesign" /></a></span>
+            <span class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
         </v-footer>
     </v-app>
 </template>
@@ -184,8 +183,10 @@ export default {
             this.$socket.sendObj('machine.shutdown', { });
         },
         drawFavicon(val) {
-            let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']");
-            let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']");
+            let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
+            let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']")
+
+
             if (val > 0 && val < 100) {
                 let faviconSize = 64;
 
@@ -224,8 +225,8 @@ export default {
                 context.fillStyle = "#e41313";
                 context.fill();
 
-                favicon16.href = canvas.toDataURL('image/png');
-                favicon32.href = canvas.toDataURL('image/png');
+                favicon16.href = canvas.toDataURL('image/png')
+                favicon32.href = canvas.toDataURL('image/png')
             } else {
                 favicon16.href = "/img/icons/favicon-16x16.png"
                 favicon32.href = "/img/icons/favicon-32x32.png"
