@@ -3,7 +3,7 @@ import { getDefaultState } from './index'
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultState)
+		Object.assign(state, getDefaultState())
 	},
 
 	setDevices(state, payload) {

@@ -18,29 +18,28 @@ export default {
                 animation: {
                     duration: 0					// general animation time
                 },
-                hover: {
-                    animationDuration: 0 // duration of animations when hovering an item
-                },
                 elements: {
                     line: {
-                        tension: 0.4,				// disable bezier curves
-                        borderDash: undefined,
+                        tension: 0,
+                        borderWidth: 1,
                     },
                     point: {
                         radius: 0,
-                        hoverRadius: 0,
                     }
                 },
                 showLines: true,
                 legend: {
                     labels: {
                         fontColor: 'rgb(203, 203, 203)',
-                        fontFamily: 'Roboto,sans-serif',
+                        //fontFamily: 'Roboto,sans-serif',
                         filter: function(item) {
-                            return (item && item.text) ? !item.text.includes('_target') : false;
+                            if (item && item.text) return !item.text.includes('_target');
                         }
                     },
-                    /*onClick: function(e, legendItem) {
+                    onClick: function(e, legendItem) {
+                        window.console.log(e)
+                        window.console.log(legendItem)
+
                         let ci = this.chart;
                         let index = legendItem.datasetIndex;
                         let index_target = ci.data.datasets.findIndex(dataset => dataset.label === legendItem.text+'_target');
@@ -53,10 +52,16 @@ export default {
                             meta_target.hidden = meta.hidden;
                         }
 
-                        store.dispatch('gui/setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
+                        //store.dispatch('gui/setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
 
                         ci.update();
-                    }*/
+                    }
+                },
+                tooltips: {
+                    enabled: false
+                },
+                hover: {
+                    mode:undefined
                 },
                 /*tooltips: {
                     enabled: false,
@@ -136,8 +141,10 @@ export default {
                 this.$data._chart.config.options.scales &&
                 this.$data._chart.config.options.scales.xAxes &&
                 this.$data._chart.config.options.scales.xAxes.length &&
+                this.$data._chart.config.options.scales.xAxes[0].ticks &&
                 this.$data._chart.config.options.scales.yAxes &&
-                this.$data._chart.config.options.scales.yAxes.length
+                this.$data._chart.config.options.scales.yAxes.length &&
+                this.$data._chart.config.options.scales.yAxes[0].ticks
             ) {
                 this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature
                 this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime

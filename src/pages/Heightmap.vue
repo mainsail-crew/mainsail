@@ -53,15 +53,15 @@
                         </v-row>
                         <v-row>
                             <v-col class="col-12">
-                                <v-btn color="primary" class="mr-3" @click="loadProfile" :loading="loadingLoad" :disabled="disabledLoad">LOAD</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="saveDialog = true; newName = profile" :loading="loadingSave" :disabled="disabledSave">SAVE</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="removeDialog = true" :loading="loadingRemove" :disabled="disabledRemove">REMOVE</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="loadProfile" :loading="loadings.includes('bedMeshLoad')" :disabled="disabledLoad">LOAD</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="saveDialog = true; newName = profile" :loading="loadings.includes('bedMeshSave')" :disabled="disabledSave">SAVE</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="removeDialog = true" :loading="loadings.includes('bedMeshRemove')" :disabled="disabledRemove">REMOVE</v-btn>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col class="col-12">
-                                <v-btn color="primary" class="mr-3" @click="clearBedMesh" :loading="loadingClear" :disabled="disabledClear">CLEAR</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="calibrateDialog = true" :loading="loadingCalibrate" :disabled="is_printing">Calibrate</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" :disabled="disabledClear">CLEAR</v-btn>
+                                <v-btn color="primary" class="mr-3" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing">Calibrate</v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -193,18 +193,12 @@
                         }
                     }
                 },
-                profiles: [],
                 profile: {},
                 boolShowBedMesh: false,
-                loadingLoad: false,
                 disabledLoad: true,
-                loadingSave: false,
                 disabledSave: true,
-                loadingRemove: false,
                 disabledRemove: true,
-                loadingClear: false,
                 disabledClear: true,
-                loadingCalibrate: false,
                 showMeshType: 'probed',
                 saveDialog: false,
                 removeDialog: false,
@@ -216,12 +210,20 @@
             ...mapState({
                 config: state => state.printer.configfile.config,
                 bed_mesh: state => state.printer.bed_mesh,
-                loadings: state => state.loadings,
+                loadings: state => state.socket.loadings,
             }),
 
             ...mapGetters([
                 'is_printing',
             ]),
+            profiles: {
+                get() {
+                    return this.$store.getters["printer/getBedMeshProfiles"]
+                },
+                set() {
+
+                }
+            }
         },
         methods: {
             showBedMesh: function() {
@@ -290,35 +292,35 @@
                 this.showBedMesh();
             },
             loadProfile: function() {
-                this.$store.commit('setLoading', { name: 'bedMeshLoad' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+this.profile }, "responseBedMeshLoad");
+                this.$store.commit('socket/addLoading', { name: 'bedMeshLoad' });
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+this.profile }, "socket/removeLoading", { name: 'bedMeshLoad' });
             },
             saveProfile: function() {
                 this.saveDialog = false;
-                this.$store.commit('setLoading', { name: 'bedMeshSave' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "responseBedMeshSave");
+                this.$store.commit('socket/addLoading', { name: 'bedMeshSave' });
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "socket/removeLoading", { name: 'bedMeshSave' });
             },
             removeProfile: function() {
                 this.removeDialog = false;
-                this.$store.commit('setLoading', { name: 'bedMeshRemove' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.profile }, "responseBedMeshRemove");
+                this.$store.commit('socket/addLoading', { name: 'bedMeshRemove' });
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.profile }, "socket/removeLoading", { name: 'bedMeshRemove' });
             },
             clearBedMesh: function() {
-                this.$store.commit('setLoading', { name: 'bedMeshClear' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "responseBedMeshClear");
+                this.$store.commit('socket/addLoading', { name: 'bedMeshClear' });
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "socket/removeLoading", { name: 'bedMeshClear' });
             },
             calibrateMesh: function() {
                 this.calibrateDialog = false;
-                this.$store.commit('setLoading', { name: 'bedMeshCalibrate' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "responseBedMeshCalibrate");
+                this.$store.commit('socket/addLoading', { name: 'bedMeshCalibrate' });
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' });
             }
         },
         created: function() {
-            this.profiles = this.$store.getters.getBedMeshProfiles;
+
         },
         watch: {
             config: function() {
-                this.profiles = this.$store.getters.getBedMeshProfiles;
+                this.profiles = this.$store.getters["printer/getBedMeshProfiles"];
             },
             profile: function() {
                 if (this.profile !== "" && this.bed_mesh !== undefined && this.profile === this.bed_mesh.profile_name) {
@@ -336,7 +338,7 @@
                 deep: false,
                 handler(newVal) {
                     if (newVal !== undefined) {
-                        this.profiles = this.$store.getters.getBedMeshProfiles;
+                        this.profiles = this.$store.getters["printer/getBedMeshProfiles"];
                         this.showBedMesh();
 
                         if (this.profile !== "" && this.profile === this.bed_mesh.profile_name) this.disabledLoad = true;
@@ -355,13 +357,6 @@
                     }
                 }
             },
-            loadings: function(loadings) {
-                this.loadingLoad = loadings.includes('bedMeshLoad');
-                this.loadingClear = loadings.includes('bedMeshClear');
-                this.loadingSave = loadings.includes('bedMeshSave');
-                this.loadingRemove = loadings.includes('bedMeshRemove');
-                this.loadingCalibrate = loadings.includes('bedMeshCalibrate');
-            }
         }
     }
 </script>

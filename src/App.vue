@@ -13,7 +13,7 @@
 
 <template>
     <v-app>
-        <vue-headful :title="getTitle" />
+        <vue-headful :title="getTitle" :head="{ 'meta[version]': {version: version}, }" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
             :src="require('./assets/bg-navi.png')"

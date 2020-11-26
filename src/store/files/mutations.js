@@ -5,7 +5,7 @@ import store from "@/store";
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultState)
+		Object.assign(state, getDefaultState())
 	},
 
 	setDirectory(state, payload) {
