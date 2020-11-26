@@ -1,9 +1,9 @@
 import { getDefaultState } from './index'
-import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables";
+import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables"
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultState)
+		Object.assign(state, getDefaultState())
 	},
 	
 	setHistory(state, payload) {
@@ -22,10 +22,14 @@ export default {
 
 						this.commit('printer/tempHistory/addValue', {
 							name: key,
-							value: {
-								temperature: datasets.temperatures[i],
-								target: datasets.targets[i],
-							},
+							value: datasets.temperatures[i],
+							type: keySplit[0],
+							time: time
+						});
+
+						this.commit('printer/tempHistory/addValue', {
+							name: key+'_target',
+							value: datasets.targets[i],
 							type: keySplit[0],
 							time: time
 						});
@@ -35,107 +39,92 @@ export default {
 		}
 	},
 
-	addHeater( state, payload) {
-		let color = '';
-
-		switch (payload.name) {
-			case 'heater_bed': color = colorHeaterBed; break;
-			case 'chamber': color = colorChamber; break;
-			default: color = colorArray[state.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
-		}
-
-		let hidden = this.state.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0 ? true : null;
-
-		state.datasets.push({
-			label: payload.name,
-			data: [],
-			borderColor: color,
-			backgroundColor: color,
-			pointBackgroundColor: color,
-			fill: false,
-			borderWidth: 2,
-			hidden: hidden,
-		});
-
-		if (payload.type !== "temperature_sensor") {
-			state.datasets.push({
-				label: payload.name+"_target",
-				data: [],
-				borderColor: color,
-				backgroundColor: color+'20',
-				pointBackgroundColor: color,
-				fill: true,
-				borderWidth: 0,
-				hidden: hidden,
-			});
-		}
-	},
-
 	addValue(state, payload) {
 		// definations for delete old entries
-		let timeOld = new Date().getTime() - (1000 * 60 * 10);
-		let minResolution = 1000;   // value in ms
-		let deletedIndex;
+		let timeOld = new Date().getTime() - (1000 * 60 * 10)
+		let minResolution = 1000   // value in ms
+		//let deletedIndex
 
-		let index =  state.datasets.findIndex(element => element.label === payload.name);
-		if (index < 0) {
-			this.commit('printer/tempHistory/addHeater', {
-				name: payload.name,
-				type: payload.type,
-			});
-			index =  state.datasets.findIndex(element => element.label === payload.name);
+		let mainDataset = state.datasets.find(element => element.label === payload.name)
+		if (!mainDataset) {
+			//TODO load hidden sensors from gui store
+			//let hidden = this.rootState.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0;
+			let hidden = false
+
+			if (payload.name.includes('_target')) {
+				let masterDataset = state.datasets.find(element => element.label === payload.name.replace('_target', ''))
+
+				if (masterDataset) {
+					mainDataset = {
+						label: payload.name,
+						data:[],
+						fill: true,
+						borderWidth: 0,
+						hidden: hidden,
+						backgroundColor: masterDataset.borderColor+'40',
+					}
+				}
+			} else {
+				let color = '';
+
+				switch (payload.name) {
+					case 'heater_bed': color = colorHeaterBed; break;
+					case 'chamber': color = colorChamber; break;
+					default: color = colorArray[state.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
+				}
+
+				mainDataset = {
+					label: payload.name,
+					data:[],
+					fill: false,
+					borderWidth: 2,
+					hidden: hidden,
+					borderColor: color,
+				}
+			}
+
+			mainDataset = state.datasets.push(mainDataset);
 		}
-		let index_target =  state.datasets.findIndex(element => element.label === payload.name+'_target');
 
 		// update current temp in temperature chart
-		if (index >= 0) {
-			let temperature = 0;
-			if (payload.value.temperature !== undefined) temperature = payload.value.temperature.toFixed(1);
-			else if (state.datasets[index].data.length) temperature = state.datasets[index].data[state.datasets[index].data.length - 1].y;
+		if (mainDataset && payload.value !== undefined) {
+			if (Array.isArray(payload.value)) {
+				window.console.log("array")
+			} else {
+				if (mainDataset.data && mainDataset.data.length) {
+					let lastTemp = mainDataset.data[mainDataset.data.length - 1].y
+					let lastTime = mainDataset.data[mainDataset.data.length - 1].x
 
-			if (
-				(state.datasets[index].data.length && (
-					(
-						state.datasets[index].data[state.datasets[index].data.length - 1].y !== temperature ||
-						payload.time-state.datasets[index].data[state.datasets[index].data.length - 1].x > minResolution
-					) && state.datasets[index].data[state.datasets[index].data.length - 1].x < payload.time
-				)) || state.datasets[index].data.length === 0
-			) {
-				state.datasets[index].data.push({
-					x: payload.time,
-					y: temperature
-				});
-			}
+					if (
+						payload.time - lastTime > minResolution &&
+						(lastTemp !== payload.value || payload.time - lastTime > minResolution)
+					) {
+						if (
+							payload.name.includes('_target') &&
+							lastTemp !== payload.value
+						) {
+							mainDataset.data.push({
+								x: payload.time-1,
+								y: lastTemp
+							});
+						}
 
-			// delete old entries
-			while ((deletedIndex = state.datasets[index].data.findIndex(item => item.x < timeOld)) > -1) {
-				state.datasets[index].data.splice(deletedIndex, 1);
-			}
-		}
+						mainDataset.data.push({
+							x: payload.time,
+							y: payload.value
+						});
+					}
 
-		// update target temp in temperature chart
-		if (index_target >= 0) {
-			let target = 0;
-			if (payload.value.target !== undefined) target = payload.value.target.toFixed(1);
-			else if (state.datasets[index_target].data.length) target = state.datasets[index_target].data[state.datasets[index_target].data.length - 1].y;
-
-			if (
-				(state.datasets[index_target].data.length && (
-					(
-						state.datasets[index_target].data[state.datasets[index_target].data.length - 1].y !== target ||
-						payload.time-state.datasets[index_target].data[state.datasets[index_target].data.length - 1].x > minResolution
-					) && state.datasets[index_target].data[state.datasets[index_target].data.length - 1].x < payload.time
-				)) || state.datasets[index_target].data.length === 0
-			) {
-				state.datasets[index_target].data.push({
-					x: payload.time,
-					y: target
-				});
-			}
-
-			// delete old entries
-			while ((deletedIndex = state.datasets[index_target].data.findIndex(item => item.x < timeOld)) > -1) {
-				state.datasets[index_target].data.splice(deletedIndex, 1);
+					let i
+					while ((i = mainDataset.data.findIndex(item => timeOld > item.x)) > -1) {
+						mainDataset.data.splice(i, 1)
+					}
+				} else if (mainDataset.data) {
+					mainDataset.data.push({
+						x: payload.time,
+						y: payload.value
+					});
+				}
 			}
 		}
 	},

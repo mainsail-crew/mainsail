@@ -62,7 +62,7 @@ export default {
 					if (value.target) color = colorHot
 
 					if(nameSplit[0].startsWith("extruder")) {
-						let min_extrude_temp = key in state.configfile.config ? parseFloat(state.configfile.config[key].min_extrude_temp) : 170
+						let min_extrude_temp = key in state.configfile.config && 'min_extrude_temp' in state.configfile.config[key] ? parseFloat(state.configfile.config[key].min_extrude_temp) : 170
 						if (value.temperature >= min_extrude_temp) icon = "printer-3d-nozzle"
 					} else if (nameSplit[0] === "heater_bed") {
 						icon = "radiator-disabled"
@@ -224,6 +224,28 @@ export default {
 		}
 
 		return sensors.sort(caseInsensitiveNameSort)
+	},
+
+	getBedMeshProfiles: state => {
+		let profiles = [];
+		let currentProfile = "";
+		if (state.bed_mesh) {
+			currentProfile = state.bed_mesh.profile_name;
+		}
+
+		for (let [key, value] of Object.entries(state.configfile.config)) {
+			let nameSplit = key.split(" ");
+
+			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+				profiles.push({
+					name: nameSplit[1],
+					data: value,
+					is_active: (currentProfile === nameSplit[1]),
+				});
+			}
+		}
+
+		return profiles.sort(caseInsensitiveNameSort);
 	},
 
 	getExtrudePossible: state => {

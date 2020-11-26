@@ -13,11 +13,11 @@ module.exports = {
         'process.env': {
           PACKAGE_VERSION: '"' + version + '"'
         }
-      })
+      }),
     ]
   },
   pwa: {
-    serviceWorker:false,
+    serviceWorker:true,
     iconPaths: {
       favicon16: 'img/icons/favicon-16x16.png',
       favicon32: 'img/icons/favicon-32x32.png',

@@ -5,13 +5,15 @@ export default {
 		commit('reset')
 	},
 
-	init() {
+	init({ dispatch }) {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
 		Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'server/getGcodeStore')
 		//Vue.prototype.$socket.sendObj('server.files.get_directory', { path: '/config' }, 'getDirectoryRoot')
+
+		dispatch('printer/init', null, { root: true })
 	},
 
-	getInfo({ commit, dispatch }, payload) {
+	getInfo({ commit }, payload) {
 		commit('setData', payload)
 
 		if (payload.klippy_connected) {
@@ -19,8 +21,6 @@ export default {
 			Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
 
 			if (payload.plugins.includes("power") !== false) Vue.prototype.$socket.sendObj('machine.device_power.devices', {}, 'server/power/getDevices');
-
-			dispatch('printer/init', null, { root: true });
 		} else {
 			setTimeout(function(){
 				Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo');

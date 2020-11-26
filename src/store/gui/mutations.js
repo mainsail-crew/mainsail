@@ -5,7 +5,7 @@ const objectAssignDeep = require(`object-assign-deep`);
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultState)
+		Object.assign(state, getDefaultState())
 	},
 
 	setData(state, payload) {

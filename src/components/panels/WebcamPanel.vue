@@ -6,13 +6,11 @@
 
 <template>
     <v-card>
-        <v-list-item>
-            <v-list-item-avatar color="grey"><v-icon dark>mdi-webcam</v-icon></v-list-item-avatar>
-            <v-list-item-content>
-                <v-list-item-title class="headline">Webcam</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider class="my-2"></v-divider>
+        <v-toolbar flat dense >
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-webcam</v-icon>Webcam</span>
+            </v-toolbar-title>
+        </v-toolbar>
         <v-card-text class="px-0 py-0 content">
             <img :src="webcamConfig.url" class="webcamImage" :style="webcamStyle" />
         </v-card-text>

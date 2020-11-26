@@ -16,7 +16,7 @@
                 <v-divider class="mt-0" v-if="index > 0"></v-divider>
                 <v-card-text class="py-2">
                     <v-row>
-                        <v-col class="py-0">{{ device.device }}</v-col>
+                        <v-col class="py-0 pt-1">{{ device.device }}</v-col>
                         <v-col class="py-0 text-right">
                             <v-btn-toggle v-model="device.status">
                                 <v-btn small v-if="device.status === 'error'" disabled>Error</v-btn>
