@@ -13,12 +13,3 @@ Mainsail is a lightweight & responsive web interface for the Klipper 3D printer 
 
 ## Screenshots
 ![Dashboard](assets/img/screenshot.png)
-
-## Features
-- Installationsanleitung
-- fast
-- alles
-- was
-- das
-- herz
-- begehrt
