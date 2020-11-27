@@ -49,14 +49,16 @@ module.exports = {
       "background_color": "#121212",
       "icons": [
         {
-          "src": "./img/icons/icon-192.png",
-          "sizes": "192x192",
+          "src": "./img/icons/icon-196-maskable.png",
+          "sizes": "196x196",
           "type": "image/png",
+          "purpose": "maskable",
         },
         {
-          "src": "./img/icons/icon-512.png",
+          "src": "./img/icons/icon-512-maskable.png",
           "sizes": "512x512",
           "type": "image/png",
+          "purpose": "maskable",
         },
       ]
     }
