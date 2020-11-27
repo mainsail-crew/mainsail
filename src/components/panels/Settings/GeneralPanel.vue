@@ -13,7 +13,7 @@
         </v-toolbar>
         <v-card-text class="py-0">
             <v-row>
-                <v-col class="py-0">
+                <v-col class="pt-2 pb-0">
                     <v-text-field
                         v-model="printerName"
                         label="Printer Name"
@@ -40,7 +40,7 @@
                     return this.$store.state.gui.general.printername;
                 },
                 set(newName) {
-                    return this.$store.dispatch('setSettings', { gui: { general: { printername: newName } } });
+                    return this.$store.dispatch('gui/setSettings', { general: { printername: newName } });
                 }
             },
         },

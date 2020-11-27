@@ -13,7 +13,7 @@
 
 <template>
     <v-app>
-        <vue-headful :title="getTitle" :head="{ 'meta[version]': {version: version}, }" />
+        <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
             :src="require('./assets/bg-navi.png')"
@@ -190,7 +190,6 @@ export default {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
             let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
-
             if (val > 0 && val < 100) {
                 let faviconSize = 64;
 
@@ -238,7 +237,7 @@ export default {
         }
     },
     watch: {
-        current_file_position() {
+        print_percent() {
             this.drawFavicon(this.print_percent);
         },
         current_file: {
