@@ -1,0 +1,6 @@
+title: "Mainsail"
+logo: "/assets/img/logo-mainsail.png"
+description: A web interface for Klipper
+remote_theme: pmarsceill/just-the-docs
+color_scheme: "mainsail"
+search_enabled: true
