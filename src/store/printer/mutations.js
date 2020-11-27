@@ -36,15 +36,16 @@ export default {
 						keySplit[0] === "temperature_fan" ||
 						keySplit[0] === "temperature_sensor") {
 
-						if (keySplit[0] === "temperature_fan") key = keySplit[1]
-						else if (keySplit[0] === "temperature_sensor") key = keySplit[1]
-						else if (keySplit[0] === "heater_generic") key = keySplit[1]
+						let name = keySplit[0]
+						if (keySplit[0] === "temperature_fan") name = keySplit[1]
+						else if (keySplit[0] === "temperature_sensor") name = keySplit[1]
+						else if (keySplit[0] === "heater_generic") name = keySplit[1]
 
-						if (value.temperature) this.commit('printer/tempHistory/addValue', { name: key, value: value.temperature, time: now })
-						else if (key in state && 'temperature' in state[key]) this.commit('printer/tempHistory/addValue', { name: key, value:  state[key].temperature, time: now })
+						if (value.temperature) this.commit('printer/tempHistory/addValue', { name: name, value: value.temperature, time: now })
+						else if (key in state && 'temperature' in state[key]) this.commit('printer/tempHistory/addValue', { name: name, value:  state[key].temperature, time: now })
 
-						if (value.target) this.commit('printer/tempHistory/addValue', { name: key+'_target', value: value.target, time: now })
-						else if (key in state && 'target' in state[key]) this.commit('printer/tempHistory/addValue', { name: key+'_target', value:  state[key].target, time: now })
+						if (value.target) this.commit('printer/tempHistory/addValue', { name: name+'_target', value: value.target, time: now })
+						else if (key in state && 'target' in state[key]) this.commit('printer/tempHistory/addValue', { name: name+'_target', value:  state[key].target, time: now })
 					}
 				}
 			}
