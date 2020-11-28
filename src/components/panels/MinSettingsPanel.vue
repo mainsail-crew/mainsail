@@ -25,7 +25,7 @@
                     <p v-if="!boolMacroPause"><code>gcode_macro PAUSE</code> is not defined in config.</p>
                     <p v-if="!boolMacroResume"><code>gcode_macro RESUME</code> is not defined in config.</p>
                     <p v-if="!boolMacroCancelPrint"><code>gcode_macro CANCEL_PRINT</code> is not defined in config.</p>
-                    <p class="mb-0"><a href="https://github.com/meteyou/mainsail/wiki/Printer.cfg" target="_blank">Here you will find more information.</a></p>
+                    <p class="mb-0"><a href="https://meteyou.github.io/mainsail/necessary-configuration" target="_blank">Here you will find more information.</a></p>
                 </v-flex>
             </v-layout>
         </v-card-text>
