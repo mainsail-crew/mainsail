@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Necessary Configuration
-nav_order: 3
+nav_order: 4
 has_children: false
 permalink: /necessary-configuration
 ---

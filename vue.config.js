@@ -1,5 +1,4 @@
 const webpack = require('webpack')
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const fs = require('fs')
 const packageJson = fs.readFileSync('./package.json')
 const version = JSON.parse(packageJson).version || 0
@@ -15,18 +14,10 @@ module.exports = {
           PACKAGE_VERSION: '"' + version + '"'
         }
       }),
-      new SWPrecacheWebpackPlugin({
-        cacheId: 'mailsail',
-        filename: 'service-worker-cache.js',
-        staticFileGlobs: ['dist/**/*.{js,css}', '/'],
-        minify: true,
-        stripPrefix: 'dist/',
-        dontCacheBustUrlsMatching: /\.\w{6}\./
-      }),
     ]
   },
   pwa: {
-    serviceWorker:true,
+    serviceWorker:false,
     iconPaths: {
       favicon16: 'img/icons/favicon-16x16.png',
       favicon32: 'img/icons/favicon-32x32.png',
