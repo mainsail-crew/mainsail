@@ -173,7 +173,7 @@ Now you can download the current mainsail static data
 
 ```
 cd ~/mainsail
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/latest/mainsail.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/latest/download/mainsail.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 
 Now it should be possible to open the interface: `http://<printer-ip>/`.

@@ -10,7 +10,7 @@ permalink: /update/mainsail
 ```bash
 cd ~/mainsail
 rm -R ./*
-wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/download/latest/mainsail.zip && unzip mainsail.zip && rm mainsail.zip
+wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/latest/download/mainsail.zip && unzip mainsail.zip && rm mainsail.zip
 ```
 
 ### Move gui.json from gcodes to klipper_config
