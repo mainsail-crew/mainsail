@@ -1,0 +1,1 @@
+Welcome to the Mainsail documentation. The [index](http://meteyou.github.io/mainsail) of the docs is here.
