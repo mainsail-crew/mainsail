@@ -71,7 +71,7 @@
             <v-divider class="my-2" v-if="boolTempchart"></v-divider>
             <v-row v-if="boolTempchart">
                 <v-col class="px-8">
-                    <line-chart :chart-data="chartdata" v-if="loaded"></line-chart>
+                    <temp-chart ></temp-chart>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -81,20 +81,16 @@
 <script>
     import { mapGetters, mapState } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
-    import LineChart from '../../charts/LineChart.js'
+    import TempChart from '@/components/charts/TempChart'
 
     export default {
         components: {
             toolInput,
-            LineChart
+            TempChart,
         },
         data: function() {
             return {
                 extruderTemps: [250,215,195,0],
-                loaded: false,
-                chartdata: {
-                    datasets: []
-                }
             }
         },
         computed: {
@@ -106,11 +102,6 @@
                 'printer/getTemperatureFans',
                 'printer/getTemperatureSensors',
             ]),
-            datasets: {
-                get () {
-                    return this.$store.state.printer.tempHistory.datasets
-                }
-            },
             heaters: {
                 get () {
                     return this.$store.getters["printer/getHeaters"]
@@ -124,13 +115,7 @@
 
         },
         mounted () {
-            this.chartdata = {
-                datasets: this.datasets
-            }
 
-            setTimeout(() => {
-                this.loaded = true
-            }, 1000)
         },
     }
 </script>
