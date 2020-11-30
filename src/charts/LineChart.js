@@ -134,8 +134,9 @@ export default {
         }
     },
     created () {
-        this.timer = setInterval(() => {
+        /*this.timer = setInterval(() => {
             if (
+                this.$data._chart &&
                 this.$data._chart.config &&
                 this.$data._chart.config.options &&
                 this.$data._chart.config.options.scales &&
@@ -149,11 +150,12 @@ export default {
                 this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature
                 this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime
                 this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date()
-                this.$data._chart.update()
+                //this.$data._chart.update()
             }
-        }, 1000)
+        }, 1000)*/
     },
     mounted () {
-        this.renderChart(this.chartData, this.options)
+        //TODO enable after restart fix
+        // this.renderChart(this.chartData, this.options)
     },
 }
