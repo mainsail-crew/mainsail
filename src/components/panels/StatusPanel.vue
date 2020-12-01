@@ -36,7 +36,7 @@
                     :size="50"
                     :width="7"
                     :value="printPercent * 100"
-                    color="red"
+                    color="blue lighten-1"
                 >
                 </v-progress-circular>
             </v-col>
