@@ -12,7 +12,7 @@ To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail
 * [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
 * [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
 * [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
-* [Logo](https://www.flaticon.com/free-icon/3d-print_1530234) for the Logo
-* [Mainsail](https://github.com/meteyou/mainsail) for the original Mainsail
+* [Flaticon](https://www.flaticon.com/free-icon/3d-print_1530234): for the Logo
+* [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.
