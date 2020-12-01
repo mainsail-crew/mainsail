@@ -8,7 +8,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashbaord</span>
+                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashboard</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">
@@ -25,6 +25,11 @@
             <v-row>
                 <v-col class="py-0">
                     <v-switch v-model="boolShowConsoleOnDashboard" label="Console" class="settings_dashboard_switch mt-0"></v-switch>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="py-0">
+                    <v-switch v-model="boolShowScaleOnDashboard" label="Scale" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -64,6 +69,14 @@
                 },
                 set(status) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { boolConsole: status } });
+                }
+            },
+            boolShowScaleOnDashboard: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolScale;
+                },
+                set(status) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { boolScale: status } });
                 }
             },
         },

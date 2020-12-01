@@ -11,8 +11,12 @@ export function getDefaultState() {
 			boolWebcam: true,
 			boolTempchart: true,
 			boolConsole: false,
+			boolScale: false,
 			hiddenMacros: [],
 			hiddenTempChart: [],
+		},
+		scale: {
+			offset: 0,
 		},
 		webcam: {
 			url: "",

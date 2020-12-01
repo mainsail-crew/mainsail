@@ -5,6 +5,7 @@
             <status-panel v-if="klippy_state === 'ready'"></status-panel>
             <klippy-state-panel v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
             <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
+            <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
@@ -34,6 +35,7 @@
                 klippy_state: state => state.server.klippy_state,
 
                 showDashboardWebcam: state => state.gui.dashboard.boolWebcam,
+                showDashboardScale: state => state.gui.dashboard.boolScale,
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
                 config: state => state.printer.configfile.config,
             }),
