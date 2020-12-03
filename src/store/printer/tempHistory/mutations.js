@@ -1,5 +1,5 @@
 import { getDefaultState } from './index'
-//import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables"
+import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables"
 
 export default {
 	reset(state) {
@@ -60,20 +60,22 @@ export default {
 						name: payload.name,
 						legendText: payload.name,
 						xValueType: "dateTime",
-						data:[],
-						showInLegend: true,
+						dataPoints:[],
+						showInLegend: false,
 						fillOpacity: .3,
 						lineThickness: 0,
+						toolTipContent: "{name}: {y}°C",
+						color: masterDataset.color || '#666'
 					}
 				}
 			} else {
-				/*let color = '';
+				let color = '';
 
 				switch (payload.name) {
 					case 'heater_bed': color = colorHeaterBed; break;
 					case 'chamber': color = colorChamber; break;
-					default: color = colorArray[state.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
-				}*/
+					default: color = colorArray[state.datasets.filter(element => !element.name.endsWith("_target") && element.name !== "heater_bed" && element.name !== "chamber").length]; break;
+				}
 
 				mainDataset = {
 					type: "spline",
@@ -82,6 +84,8 @@ export default {
 					xValueType: "dateTime",
 					dataPoints:[],
 					showInLegend: true,
+					toolTipContent: "{name}: {y}°C",
+					color: color,
 				}
 			}
 
@@ -91,7 +95,12 @@ export default {
 		// update current temp in temperature chart
 		if (mainDataset && payload.value !== undefined) {
 			if (Array.isArray(payload.value)) {
-				window.console.log("array")
+				for (let i = 0; i < payload.value.length; i++) {
+					mainDataset.data.push({
+						x: payload.time - 1000 * i,
+						y: Math.round(payload.value[i]*100)/100
+					})
+				}
 			} else {
 				if (mainDataset.dataPoints && mainDataset.dataPoints.length) {
 					let lastTemp = mainDataset.dataPoints[mainDataset.dataPoints.length - 1].y
@@ -101,19 +110,9 @@ export default {
 						payload.time - lastTime > minResolution &&
 						(lastTemp !== payload.value || payload.time - lastTime > minResolution)
 					) {
-						if (
-							payload.name.includes('_target') &&
-							lastTemp !== payload.value
-						) {
-							mainDataset.dataPoints.push({
-								x: payload.time-1,
-								y: lastTemp
-							});
-						}
-
 						mainDataset.dataPoints.push({
 							x: payload.time,
-							y: payload.value
+							y: Math.round(payload.value*100)/100
 						});
 					}
 
@@ -124,7 +123,7 @@ export default {
 				} else if (mainDataset.dataPoints) {
 					mainDataset.dataPoints.push({
 						x: payload.time,
-						y: payload.value
+						y:  Math.round(payload.value*100)/100
 					});
 				}
 			}
