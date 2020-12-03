@@ -3,6 +3,7 @@ import Vue from 'vue'
 import GeneralPanel from './GeneralPanel'
 import WebcamPanel from './WebcamPanel'
 import ScalePanel from './ScalePanel'
+import DiscordPanel from './DiscordPanel'
 import DashboardPanel from "./DashboardPanel";
 import MacrosPanel from "./MacrosPanel";
 import EndstopPanel from "./EndstopPanel";
@@ -14,6 +15,7 @@ import LogfilesPanel from "./LogfilesPanel";
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
 Vue.component('settings-scale-panel', ScalePanel);
+Vue.component('settings-discord-panel', DiscordPanel);
 Vue.component('settings-dashboard-panel', DashboardPanel);
 Vue.component('settings-macros-panel', MacrosPanel);
 Vue.component('settings-endstop-panel', EndstopPanel);

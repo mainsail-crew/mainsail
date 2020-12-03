@@ -9,7 +9,7 @@
                 <span class="subheading"><v-icon left>mdi-scale</v-icon>Scale</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text>
+        <v-card-text class="py-3">
             <v-row>
                 <v-col class="py-0">
                     <v-text-field

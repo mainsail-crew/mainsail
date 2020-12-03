@@ -26,6 +26,10 @@ export function getDefaultState() {
 			flipY: false,
 			bool: false,
 		},
+		discord: {
+			token: "",
+			prefix: "ms!",
+		},
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: true,

@@ -11,6 +11,8 @@
     "axios": "^0.21.0",
     "chart.js": "^2.9.4",
     "core-js": "^3.7.0",
+    "discord.js": "^12.5.1",
+    "hx711": "^0.3.0",
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
     "vue": "^2.6.12",
@@ -42,7 +44,6 @@
     "vue-cli-plugin-vuetify": "^2.0.7",
     "vue-router": "^3.4.9",
     "vue-template-compiler": "^2.6.12",
-    "hx711": "^0.3.0",
     "vuetify-loader": "^1.6.0"
   },
   "eslintConfig": {

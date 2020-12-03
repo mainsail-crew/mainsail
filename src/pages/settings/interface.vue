@@ -7,12 +7,11 @@
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-dashboard-panel></settings-dashboard-panel>
+                <settings-discord-panel class="mt-6"></settings-discord-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-macros-panel></settings-macros-panel>
-            </v-col>
-            <v-col class="col-12 col-md-6 col-lg-4" v-if="showDashboardScale">
-                <settings-scale-panel></settings-scale-panel>
+                <settings-scale-panel v-if="showDashboardScale" class="mt-6"></settings-scale-panel>
             </v-col>
         </v-row>
     </div>
