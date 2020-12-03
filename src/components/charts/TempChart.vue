@@ -32,7 +32,8 @@ export default {
                     gridThickness: 1,
                     gridColor: '#ffffff30',
                     minimum: new Date() - 60*10,
-                    maximum: new Date()
+                    maximum: new Date(),
+                    margin: 15,
                 },
                 axisY: {
                     gridThickness: 1,
@@ -64,7 +65,10 @@ export default {
     },
     created() {
         this.timer = setInterval(() => {
-            if (this.chart) {
+            if (
+                this.chart &&
+                this.chart._toolBar
+            ) {
                 this.chartOptions.data = this.datasets
                 this.chartOptions.axisX.minimum = new Date() - 60* this.tempchartDisplayMinutes *1000
                 this.chartOptions.axisX.maximum = new Date()
