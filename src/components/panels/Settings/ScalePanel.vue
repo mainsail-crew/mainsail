@@ -20,12 +20,28 @@
                 </v-col>
             </v-row>
             <v-row>
-                <br>
+                <v-col class="py-0">
+                    <v-text-field
+                        v-model="scalePosition"
+                        hide-details
+                        label="Position"
+                    ></v-text-field>
+                </v-col>
             </v-row>
             <v-row>
+                <br>
+            </v-row>
+            <!--<v-row><v-col class="py-0">
+                    <v-text-field
+                        v-model="rawValue"
+                        hide-details
+                        label="raw DEV ONLY"
+                    ></v-text-field>
+                </v-col>
+            </v-row>-->
+            <v-row>
                 <v-col class="py-0">
-                    <v-btn v-model="boolNavi" rounded color="blue-grey darken-3">Tare</v-btn>
-                    <v-btn v-model="boolNavi" rounded color="blue-grey darken-3" style="margin-left: 10px;">Apply Offset</v-btn>
+                    <v-btn v-on:click="executeTare" rounded color="blue-grey darken-3">Tare</v-btn>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -43,57 +59,36 @@
             }
         },
         computed: {
-            webcamUrl: {
+            scaleOffset: {
                 get() {
-                    return this.$store.state.gui.webcam.url;
+                    return this.$store.state.gui.scale.offset;
                 },
-                set(url) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { url } });
+                set(offset) {
+                    return this.$store.dispatch('gui/setSettings', { scale: { offset } });
                 }
             },
-            flipX: {
+            scalePosition: {
                 get() {
-                    return this.$store.state.gui.webcam.flipX;
+                    return this.$store.state.gui.scale.position;
                 },
-                set(flipX) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipX } });
+                set(position) {
+                    return this.$store.dispatch('gui/setSettings', { scale: { position } });
                 }
             },
-            flipY: {
+            rawValue: {
                 get() {
-                    return this.$store.state.gui.webcam.flipY;
+                    return this.$store.state.gui.scale.raw;
                 },
-                set(flipY) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipY } });
-                }
-            },
-            rotate: {
-                get() {
-                    return this.$store.state.gui.webcam.rotate;
-                },
-                set(rotate) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { rotate } });
-                }
-            },
-            rotateDegrees: {
-                get() {
-                    return this.$store.state.gui.webcam.rotateDegrees;
-                },
-                set(rotateDegrees) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { rotateDegrees } });
-                }
-            },
-            boolNavi: {
-                get() {
-                    return this.$store.state.gui.webcam.bool;
-                },
-                set(showNav) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
+                set(raw) {
+                    return this.$store.dispatch('gui/setSettings', { scale: { raw } });
                 }
             },
         },
         methods: {
-
+            executeTare:function(){
+                var tare = this.$store.state.gui.scale.raw;
+                this.$store.dispatch('gui/setSettings', { scale: { tare } });
+            }
         }
     }
 </script>

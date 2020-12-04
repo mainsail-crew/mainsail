@@ -12,11 +12,15 @@ export function getDefaultState() {
 			boolTempchart: true,
 			boolConsole: false,
 			boolScale: false,
+			boolScaleAvailable: true,
 			hiddenMacros: [],
 			hiddenTempChart: [],
 		},
 		scale: {
 			offset: 0,
+			tare: 0,
+			raw: 0,
+			position: '',
 		},
 		webcam: {
 			url: "",
@@ -27,7 +31,7 @@ export function getDefaultState() {
 			bool: false,
 		},
 		discord: {
-			token: "",
+			token: "NzY0NTEyODg5NTk4OTAyMjgy.X4HWHA.tDzlhNgMxXNCem5R1DMcJlMmia4",
 			prefix: "ms!",
 		},
 		gcodefiles: {

@@ -12,7 +12,13 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="webcamConfig.url" class="webcamImage" :style="webcamStyle" />
+            <v-row class="text-center" align="center">
+                <v-col class="equal-width py-0 pr-sm-6">
+                            <v-col class="px-0 py-3"><strong>Weight: {{getWeight}} G</strong></v-col>
+                            <v-col class="px-0 py-3">Position: {{getPosition}}</v-col>
+                </v-col>
+            </v-row>
+            <h1></h1>
         </v-card-text>
     </v-card>
 </template>
@@ -26,25 +32,17 @@
         },
         computed: {
             ...mapState({
-                'webcamConfig': state => state.gui.webcam
+                'scaleConfig': state => state.gui.scale
             }),
-            webcamStyle() {
-                var transforms = '';
-                if (this.webcamConfig.flipX) {
-                    transforms += ' scaleX(-1)'
+            getWeight(){
+                var calculatedWeight = this.scaleConfig.raw -this.scaleConfig.tare - this.scaleConfig.offset;
+                if(calculatedWeight < 0){
+                    return 0;
                 }
-                if (this.webcamConfig.flipY) {
-                    transforms += ' scaleY(-1)'
-                }
-                if (this.webcamConfig.rotate && this.webcamConfig.rotateDegrees) {
-                    transforms += ` rotate(${this.webcamConfig.rotateDegrees}deg)`
-                }
-                if (transforms.trimLeft().length) {
-                    return {
-                        transform: transforms.trimLeft(),
-                    }
-                }
-                return '';
+                return this.scaleConfig.raw -this.scaleConfig.tare - this.scaleConfig.offset;
+            },
+            getPosition(){
+                return this.scaleConfig.position;
             }
         },
     }

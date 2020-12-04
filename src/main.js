@@ -47,3 +47,4 @@ fetch('/config.json')
     document.getElementById('app').append(p);
     window.console.error('Error:', error);
 });
+require('./scale/index');

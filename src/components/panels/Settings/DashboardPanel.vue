@@ -27,7 +27,7 @@
                     <v-switch v-model="boolShowConsoleOnDashboard" label="Console" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
             </v-row>
-            <v-row>
+            <v-row v-if="boolShowScaleSetting">
                 <v-col class="py-0">
                     <v-switch v-model="boolShowScaleOnDashboard" label="Scale" class="settings_dashboard_switch mt-0"></v-switch>
                 </v-col>
@@ -77,6 +77,11 @@
                 },
                 set(status) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { boolScale: status } });
+                }
+            },
+            boolShowScaleSetting: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolScaleAvailable;
                 }
             },
         },
