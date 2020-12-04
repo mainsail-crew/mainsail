@@ -93,6 +93,9 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
+                :footer-props="{
+                    itemsPerPageText: 'Files'
+                }"
                 item-key="name"
                 :search="search"
                 :custom-filter="advancedSearch"
