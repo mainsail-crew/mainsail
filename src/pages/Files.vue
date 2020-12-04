@@ -52,15 +52,15 @@
         <v-card class="fileupload-card my-3" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
             <v-card-title>
                 G-Code Files
-                <v-spacer></v-spacer>
+                <v-spacer class="d-none d-sm-block"></v-spacer>
                 <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-item-group class="v-btn-toggle" name="controllers">
-                    <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
-                    <v-btn @click="createDirectory" title="Create new Directory"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                    <v-btn @click="refreshFileList" title="Refresh current Directory"><v-icon>mdi-refresh</v-icon></v-btn>
+                <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
+                    <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
+                    <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                    <v-btn @click="refreshFileList" title="Refresh current Directory" class="flex-grow-1"><v-icon>mdi-refresh</v-icon></v-btn>
                     <v-menu :offset-y="true" title="Setup current list">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                            <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
@@ -96,6 +96,7 @@
                 item-key="name"
                 :search="search"
                 :custom-filter="advancedSearch"
+                mobile-breakpoint="0"
                 @pagination="refreshMetadata">
 
                 <template slot="items" slot-scope="props">
@@ -261,7 +262,7 @@
                     item: {}
                 },
                 headers: [
-                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true },
+                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
                     { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
                     { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
