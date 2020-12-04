@@ -255,8 +255,9 @@ export default {
 			if (extruderName in state && extruderName in state.configfile.config) {
 				let extruder = state[extruderName];
 				let extruderConfig = state.configfile.config[extruderName];
+				let min_extrude_temp = "min_extrude_temp" in extruderConfig ? extruderConfig["min_extrude_temp"] : 170
 
-				return  ("min_extrude_temp" in extruderConfig && extruderConfig["min_extrude_temp"] <= extruder["temperature"])
+				return  (min_extrude_temp <= extruder["temperature"])
 			}
 		}
 
