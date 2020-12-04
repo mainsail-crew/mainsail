@@ -31,7 +31,7 @@ export function getDefaultState() {
 			bool: false,
 		},
 		discord: {
-			token: "NzY0NTEyODg5NTk4OTAyMjgy.X4HWHA.tDzlhNgMxXNCem5R1DMcJlMmia4",
+			token: "",
 			prefix: "ms!",
 		},
 		gcodefiles: {
