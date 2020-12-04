@@ -14,5 +14,6 @@ To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail
 * [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
 * [Flaticon](https://www.flaticon.com/free-icon/3d-print_1530234): for the Logo
 * [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
+* [dangire158](https://github.com/dangrie158/hx711-driver): for the hx711 Driver
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.
