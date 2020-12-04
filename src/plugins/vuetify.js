@@ -10,8 +10,6 @@ Vue.use(VueToast, {
   duration: 3000,
 })
 
-Vue.use(require('vue-chartist'))
-
 Vue.use(Vuetify,{
   components: {
     VSnackbar,

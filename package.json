@@ -9,13 +9,10 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
-    "chart.js": "^2.9.4",
     "core-js": "^3.7.0",
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
     "vue": "^2.6.12",
-    "vue-chartist": "^2.3.1",
-    "vue-chartjs": "^3.5.1",
     "vue-context": "^6.0.0",
     "vue-headful": "^2.1.0",
     "vue-plotly": "^1.1.0",
