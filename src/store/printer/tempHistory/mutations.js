@@ -62,6 +62,7 @@ export default {
 						xValueType: "dateTime",
 						dataPoints:[],
 						showInLegend: false,
+						markerType: 'none',
 						fillOpacity: .3,
 						lineThickness: 0,
 						toolTipContent: "{name}: {y}°C",
@@ -84,6 +85,7 @@ export default {
 					xValueType: "dateTime",
 					dataPoints:[],
 					showInLegend: true,
+					markerType: 'none',
 					toolTipContent: "{name}: {y}°C",
 					color: color,
 				}

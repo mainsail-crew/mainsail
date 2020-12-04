@@ -44,7 +44,7 @@ export default {
 		return array.sort(caseInsensitiveNameSort);
 	},
 
-	getHeaters: state => {
+	getHeaters: (state, getters) => {
 		let heaters = []
 		let colorOff = "grey darken-2"
 		let colorHot = "grey lighten-5"
@@ -76,6 +76,7 @@ export default {
 						color: color,
 						target: value.target,
 						temperature: value.temperature,
+						chartColor: getters["tempHistory/getDatasetColor"](name),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -86,7 +87,7 @@ export default {
 		return heaters.sort(caseInsensitiveNameSort);
 	},
 
-	getTemperatureFans: state => {
+	getTemperatureFans: (state, getters) => {
 		let fans = []
 
 		for (let [key, value] of Object.entries(state)) {
@@ -98,6 +99,7 @@ export default {
 					target: value.target,
 					temperature: value.temperature,
 					speed: value.speed,
+					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 				})
 			}
 		}
@@ -105,7 +107,7 @@ export default {
 		return fans.sort(caseInsensitiveNameSort)
 	},
 
-	getTemperatureSensors: (state) => {
+	getTemperatureSensors: (state, getters) => {
 		let sensors = []
 
 		for (let [key, value] of Object.entries(state)) {
@@ -128,6 +130,7 @@ export default {
 					max_temp: max_temp,
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
+					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 				})
 			}
 		}
