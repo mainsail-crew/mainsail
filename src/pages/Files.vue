@@ -234,9 +234,9 @@
     </div>
 </template>
 <script>
-    import { mapState, mapGetters } from 'vuex';
-    import axios from 'axios';
-    import { findDirectory } from "@/plugins/helpers";
+    import { mapState, mapGetters } from 'vuex'
+    import axios from 'axios'
+    import { findDirectory } from "@/plugins/helpers"
 
     export default {
         data () {
@@ -314,17 +314,17 @@
                 'is_printing'
             ]),
             configHeaders() {
-                return this.headers.filter(header => header.configable === true);
+                return this.headers.filter(header => header.configable === true)
             },
             filteredHeaders() {
-                return this.headers.filter(header => header.visible === true);
+                return this.headers.filter(header => header.visible === true)
             },
             showHiddenFiles: {
                 get: function() {
-                    return this.$store.state.gui.gcodefiles.showHiddenFiles;
+                    return this.$store.state.gui.gcodefiles.showHiddenFiles
                 },
                 set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { showHiddenFiles: newVal } });
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { showHiddenFiles: newVal } })
                 }
             },
             countPerPage: {
@@ -332,7 +332,7 @@
                     return this.$store.state.gui.gcodefiles.countPerPage
                 },
                 set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { countPerPage: newVal } });
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { countPerPage: newVal } })
                 }
             },
         },
@@ -348,21 +348,21 @@
                 }
             },
             doUploadFile: function(file) {
-                let toast = this.$toast;
-                let formData = new FormData();
-                let filename = file.name.replace(" ", "_");
+                let toast = this.$toast
+                let formData = new FormData()
+                let filename = file.name.replace(" ", "_")
 
-                formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
-                this.$store.commit('socket/addLoading', { name: 'gcodeUpload' });
+                formData.append('file', file, (this.currentPath+"/"+filename).substring(7))
+                this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
 
                 return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, { headers: { 'Content-Type': 'multipart/form-data' } }
                 ).then((result) => {
-                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' });
+                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
                     toast.success("Upload of "+result.data.result+" successful!");
                 }).catch(() => {
-                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' });
-                    toast.error("Cannot upload the file!");
+                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+                    toast.error("Cannot upload the file!")
                 });
             },
             clickUploadButton: function() {
