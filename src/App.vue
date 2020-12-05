@@ -16,7 +16,7 @@
         <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
-            :src="bg_navi"
+            :src="sidebarBackground"
         >
             <div id="nav-header">
                 <img :src="require('./assets/logo.svg')" />
@@ -31,8 +31,7 @@
                         slot="activator" class="nav-link" exact :to="category.path" @click.prevent
                         v-if="
                             (category.title === 'Webcam' && boolNaviWebcam) ||
-                            (category.title === 'Heightmap' && boolNaviHeightmap) ||
-                            (
+                            (category.title === 'Heightmap' && boolNaviHeightmap) || (
                                 category.title !== 'Webcam' &&
                                 category.title !== 'Heightmap' &&
                                 (klippy_state !== 'error' || category.alwaysShow)
@@ -161,11 +160,16 @@ export default {
                 return this.$store.getters["printer/getPrintPercent"]
             }
         },
-        bg_navi: {
+        sidebarBackground: {
             get() {
-                return this.$store.getters["files/getBgNavi"]
+                return this.$store.getters["files/getSidebarBackground"]
             }
-        }
+        },
+        customStylesheet: {
+            get() {
+                return this.$store.getters["files/getCustomStylesheet"]
+            }
+        },
     },
     methods: {
         clickEmergencyStop: function() {
@@ -255,6 +259,23 @@ export default {
         },
         isConnected(newVal) {
             this.overlayDisconnect = !newVal;
+        },
+        customStylesheet(newVal) {
+            if (newVal !== null) {
+                let style = document.getElementById("customStylesheet")
+                if (!style) {
+                    style = document.createElement('link')
+                    style.id = "customStylesheet"
+                    style.type = "text/css"
+                    style.rel = "stylesheet"
+                }
+
+                style.href = newVal
+                document.head.appendChild(style)
+            } else {
+                let style = document.getElementById("customStylesheet")
+                if (style) style.remove()
+            }
         }
     },
 }

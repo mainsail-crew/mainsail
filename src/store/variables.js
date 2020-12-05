@@ -6,8 +6,9 @@ export const colorArray = [
     '#00BCD4',
     '#009688',
     '#E91E63',
-];
+]
 
-export const colorHeaterBed = '#2196F3';
-export const colorChamber = '#4CAF50';
-export const temperaturChartSampleLength = 1200;
+export const colorHeaterBed = '#2196F3'
+export const colorChamber = '#4CAF50'
+export const temperaturChartSampleLength = 1200
+export const themeDir = '.theme'

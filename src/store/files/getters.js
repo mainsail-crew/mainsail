@@ -1,13 +1,29 @@
-import { findDirectory } from "@/plugins/helpers";
+import { findDirectory } from "@/plugins/helpers"
+import { themeDir } from "@/store/variables"
 
 export default {
 
-	getBgNavi: (state, getters, rootState, rootGetters) => {
-		let configDir = findDirectory(state.filetree, ['config'])
+	getSidebarBackground: (state, getters, rootState, rootGetters) => {
+		let configDir = findDirectory(state.filetree, ['config', themeDir])
 
-		let file = configDir.find(element => element.filename !== undefined && element.filename.startsWith('bg-navi.'))
-		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+file.filename
+		let file = configDir.find(element =>
+			element.filename !== undefined && (
+				element.filename === 'sidebar-background.jpg' ||
+				element.filename === 'sidebar-background.png' ||
+				element.filename === 'sidebar-background.gif'
+			)
+		)
+		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
 
-		return '/img/bg-navi.png'
+		return '/img/sidebar-background.png'
+	},
+
+	getCustomStylesheet: (state, getters, rootState, rootGetters) => {
+		let configDir = findDirectory(state.filetree, ['config', themeDir])
+
+		let file = configDir.find(element => element.filename !== undefined && element.filename === 'custom.css')
+		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
+
+		return null
 	}
 }
