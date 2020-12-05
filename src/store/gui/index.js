@@ -17,10 +17,14 @@ export function getDefaultState() {
 			hiddenTempChart: [],
 		},
 		scale: {
-			offset: 0,
-			tare: 0,
-			raw: 0,
-			position: '',
+			offset1: 0,
+			tare1: 0,
+			raw1: 0,
+			position1: '',
+			offset2: 0,
+			tare2: 0,
+			raw2: 0,
+			position2: '',
 		},
 		webcam: {
 			url: "",
