@@ -121,7 +121,7 @@
             ...mapState({
                 events: state => state.server.events,
                 helplist: state => state.printer.helplist,
-                loadings: state => state.loadings,
+                loadings: state => state.socket.loadings,
             }),
             ...mapGetters([
                 'getMacros'
