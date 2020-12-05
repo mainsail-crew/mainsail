@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { getDefaultState } from './index'
 import { findDirectory } from "@/plugins/helpers"
 import store from "@/store";
+import axios from "axios";
 
 export default {
 	reset(state) {
@@ -56,10 +57,20 @@ export default {
 					})
 				}
 
+				if (file.filename === ".mainsail.json" && payload.requestParams.path === "config") {
+					fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
+						.then(res => res.json()).then(file => {
+						this.commit('gui/setData', file, { root: true })
+					})
+				}
+
 				if (file.filename === "gui.json" && payload.requestParams.path === "config") {
 					fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/gui.json?time='+Date.now())
 						.then(res => res.json()).then(file => {
-						this.commit('gui/setData', file, { root: true });
+						this.commit('gui/setData', file, { root: true })
+						this.dispatch('gui/upload', {}, { root: true })
+
+						axios.delete('//'+ store.state.socket.hostname+':'+store.state.socket.port +'/server/files/config/gui.json');
 					})
 				}
 			}
