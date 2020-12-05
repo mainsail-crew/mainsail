@@ -26,7 +26,7 @@ export default {
 				headers: { 'Content-Type': 'multipart/form-data' }
 			}
 		).then(() => {
-			window.console.info(".mainsail.json successfully uploaded")
+
 		}).catch(() => {
 			window.console.error("Error save .mainsail.json!")
 		});
