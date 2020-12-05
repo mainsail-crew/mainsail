@@ -16,7 +16,7 @@
         <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
-            :src="require('./assets/bg-navi.png')"
+            :src="bg_navi"
         >
             <div id="nav-header">
                 <img :src="require('./assets/logo.svg')" />
@@ -154,11 +154,16 @@ export default {
         }),
         ...mapGetters([
             'getTitle',
-            'getVersion'
+            'getVersion',
         ]),
         print_percent: {
             get() {
-                return this.$store.getters["printer/getPrintPercent"];
+                return this.$store.getters["printer/getPrintPercent"]
+            }
+        },
+        bg_navi: {
+            get() {
+                return this.$store.getters["files/getBgNavi"]
             }
         }
     },
