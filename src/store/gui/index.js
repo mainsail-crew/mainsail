@@ -38,6 +38,7 @@ export function getDefaultState() {
 		settings: {
 			configfiles: {
 				countPerPage: 10,
+				showHiddenFiles: false,
 			}
 		}
 	}
