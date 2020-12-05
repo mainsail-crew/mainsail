@@ -25,7 +25,32 @@
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
             </v-toolbar-title>
         </v-toolbar>
+        <v-card-text class="py-0">
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        label="Send code..."
+                        ref="gcodeCommandField"
+                        solo
+                        hide-details
+                        autocomplete="off"
+                        v-model="gcode"
+                        v-on:keyup.enter="doSend"
+                        v-on:keyup.up="onKeyUp"
+                        v-on:keyup.down="onKeyDown"
+                        :items="items"
+                        v-on:keydown.tab="getAutocomplete"
+                    ></v-text-field>
+                </v-col>
+                <v-col class="col-auto align-content-center">
+                    <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
+                        <v-icon class="mr-2">mdi-send</v-icon> send
+                    </v-btn>
+                </v-col>
+            </v-row>
+        </v-card-text>
         <v-card-text class="px-0 py-0 content">
+            <v-divider></v-divider>
             <v-data-table
                 :headers="headers"
                 :options="options"
@@ -59,6 +84,7 @@
 
 <script>
     import { mapState } from 'vuex'
+    import Vue from "vue";
 
     export default {
         components: {
@@ -83,15 +109,65 @@
                 options: {
 
                 },
+                gcode: "",
+                lastCommands: [
+
+                ],
+                lastCommandNumber: null,
+                items: [],
             }
         },
         computed: {
             ...mapState({
                 events: state => state.server.events,
+                helplist: state => state.printer.helplist,
+                loadings: state => state.socket.loadings,
             })
         },
         methods: {
+            doSend() {
+                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
+                this.$store.commit('server/addEvent', this.gcode);
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
+                this.lastCommands.push(this.gcode);
+                this.gcode = "";
+                this.lastCommandNumber = null;
+            },
+            onKeyUp() {
+                if (this.lastCommandNumber === null && this.lastCommands.length) {
+                    this.lastCommandNumber = this.lastCommands.length - 1;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber > 0) {
+                    this.lastCommandNumber--;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                }
+            },
+            onKeyDown() {
+                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber++;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber = null;
+                    this.gcode = "";
+                }
+            },
+            getAutocomplete(e) {
+                e.preventDefault();
+                if (this.gcode.length) {
+                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
+                    if (commands && commands.length === 1) this.gcode = commands[0].command;
+                    else {
+                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
+                        if (commands && commands.length) {
+                            let output = "";
+                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
+                            this.$store.commit('server/addEvent', output);
+                        }
+                    }
+                }
+                this.$refs.gcodeCommandField.focus();
+            },
             formatTime(date) {
                 let hours = date.getHours();
                 if (hours < 10) hours = "0"+hours.toString();
