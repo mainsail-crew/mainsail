@@ -32,22 +32,22 @@
         <v-row>
             <v-col class="col">
                 <v-text-field
-                        v-model="gcode"
-                        :items="items"
-                        label="Send code..."
-                        solo
-                        class="gcode-command-field"
-                        ref="gcodeCommandField"
-                        autocomplete="off"
-                        v-on:keyup.enter="doSend"
-                        v-on:keyup.up="onKeyUp"
-                        v-on:keyup.down="onKeyDown"
-                        v-on:keydown.tab="getAutocomplete"
+                    v-model="gcode"
+                    :items="items"
+                    label="Send code..."
+                    solo
+                    class="gcode-command-field"
+                    ref="gcodeCommandField"
+                    autocomplete="off"
+                    v-on:keyup.enter="doSend"
+                    v-on:keyup.up="onKeyUp"
+                    v-on:keyup.down="onKeyDown"
+                    v-on:keydown.tab="getAutocomplete"
                 ></v-text-field>
             </v-col>
 
             <v-col class="col-auto align-content-center">
-                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadingSendGcode" :disabled="loadingSendGcode" >
+                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
                     <v-icon class="mr-2">mdi-send</v-icon> send
                 </v-btn>
             </v-col>
@@ -115,7 +115,6 @@
                 ],
                 lastCommandNumber: null,
                 items: [],
-                loadingSendGcode: false,
             }
         },
         computed: {
@@ -130,9 +129,9 @@
         },
         methods: {
             doSend() {
-                //this.$store.commit('setLoading', { name: 'loadingSendGcode' });
+                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
                 this.$store.commit('server/addEvent', this.gcode);
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "server/getGcodeRespond");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;
@@ -193,12 +192,5 @@
                 return items;
             }
         },
-        watch: {
-            loadings: {
-                handler: function(newVal) {
-                    this.loadingSendGcode = newVal.includes('loadingSendGcode');
-                }
-            }
-        }
     }
 </script>
