@@ -267,6 +267,13 @@ export default {
 		return true;
 	},
 
+	getBedMeshProfileName: state => {
+		window.console.log("bla bla")
+		if ('bed_mesh' in state && 'profile_name' in state.bed_mesh) return state.bed_mesh.profile_name
+
+		return ''
+	},
+
 	existPrinterConfig: state => {
 		if (
 			typeof(state.configfile.config) === "object" &&

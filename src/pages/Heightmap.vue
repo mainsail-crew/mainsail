@@ -7,71 +7,78 @@
         <v-row>
             <v-col class="col-12 col-md-8">
                 <v-card>
-                    <v-list-item>
-                        <v-list-item-avatar color="grey"><v-icon dark>mdi-grid</v-icon></v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="headline">Heightmap</v-list-item-title>
-                            <v-list-item-subtitle class="mr-3" v-if="boolShowBedMesh">Current profile: {{ this.bed_mesh ? this.bed_mesh.profile_name : "unknown" }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider class="my-2"></v-divider>
-                    <v-card-text class="px-0 py-0 content" v-if="boolShowBedMesh">
-                        <Plotly ref="heightmap" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
-                    </v-card-text>
-                    <v-card-text v-if="!boolShowBedMesh">
+                    <v-toolbar flat dense>
+                        <v-toolbar-title>
+                            <span class="subheading">
+                                <v-icon left>mdi-grid</v-icon>
+                                Heightmap
+                            </span>
+                            <v-btn
+                                text
+                                color="primary"
+                                class="ml-1"
+                                @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-item-group class="v-btn-toggle" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                        </v-item-group>
+                    </v-toolbar>
+                    <v-card-text v-if="!(this.bed_mesh && this.bed_mesh.profile_name)">
                         No bed_mesh has been loaded yet.
                     </v-card-text>
-                    <v-card-actions v-if="boolShowBedMesh">
+                    <v-card-text class="px-0 py-0 content" v-if="this.bed_mesh && this.bed_mesh.profile_name">
+                        <v-row>
+                            <v-col class="pb-0 pt-5">
+                                <Plotly ref="heightmap" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions v-if="this.bed_mesh && this.bed_mesh.profile_name" class="py-0">
                         <v-spacer></v-spacer>
                         <v-btn text :color="(this.showMeshType === 'probed' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToProbed">Probed</v-btn>
                         <v-btn text :color="(this.showMeshType === 'mesh' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToMesh">Mesh</v-btn>
                         <v-spacer></v-spacer>
+                        <v-switch class="mr-3" v-model="colorbarType" label="Scale"></v-switch>
                     </v-card-actions>
                 </v-card>
             </v-col>
             <v-col class="col-12 col-md-4">
                 <v-card>
-                    <v-list-item>
-                        <v-list-item-avatar color="grey"><v-icon dark>mdi-cogs</v-icon></v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="headline">Profile</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider class="my-2"></v-divider>
-                    <v-card-text>
+                    <v-toolbar flat dense>
+                        <v-toolbar-title>
+                            <span class="subheading"><v-icon left>mdi-cogs</v-icon>Profile</span>
+                        </v-toolbar-title>
+                    </v-toolbar>
+                    <v-card-text class="py-0">
                         <v-row>
-                            <v-col class="col-12">
-                                <v-select
-                                    :items="profiles"
-                                    v-model="profile"
-                                    item-text="name"
-                                    item-value="name"
-                                    label="Profile"
-                                    outlined
-                                ></v-select>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col class="col-12">
-                                <v-btn color="primary" class="mr-3" @click="loadProfile" :loading="loadings.includes('bedMeshLoad')" :disabled="disabledLoad">LOAD</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="saveDialog = true; newName = profile" :loading="loadings.includes('bedMeshSave')" :disabled="disabledSave">SAVE</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="removeDialog = true" :loading="loadings.includes('bedMeshRemove')" :disabled="disabledRemove">REMOVE</v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col class="col-12">
-                                <v-btn color="primary" class="mr-3" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" :disabled="disabledClear">CLEAR</v-btn>
-                                <v-btn color="primary" class="mr-3" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing">Calibrate</v-btn>
+                            <v-col class="px-0 py-1">
+                                <v-simple-table>
+                                    <template v-slot:default>
+                                        <tbody>
+                                            <tr v-for="(profile, index) in profiles" :key="index" >
+                                                <td>{{ profile.name }}<small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
+                                                <td class="text-right">
+                                                    <v-btn-toggle dense no-gutters>
+                                                        <v-btn class="btnMinWidthAuto" @click="loadProfile(profile.name)" :loading="loadings.includes('bedMeshLoad_'+profile.name)" :disabled="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) || 'deleted' in profile.data" ><v-icon small>mdi-view-grid-plus</v-icon></v-btn>
+                                                        <v-btn class="btnMinWidthAuto" @click="openRemoveProfile(profile.name)" :loading="loadings.includes('bedMeshRemove_'+profile.name)" :disabled="'deleted' in profile.data" ><v-icon small>mdi-delete</v-icon></v-btn>
+                                                    </v-btn-toggle>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </template>
+                                </v-simple-table>
                             </v-col>
                         </v-row>
                     </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
-        <v-dialog v-model="saveDialog" persistent max-width="600px">
+        <v-dialog v-model="renameDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Mesh Profile</span>
+                    <span class="headline">Rename Bed Mesh Profile</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
@@ -84,8 +91,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="saveDialog = false">abort</v-btn>
-                    <v-btn color="blue darken-1" text @click="saveProfile">save</v-btn>
+                    <v-btn color="waring darken-1" text @click="renameDialog = false">abort</v-btn>
+                    <v-btn color="blue darken-1" text @click="renameProfile">rename</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -113,13 +120,13 @@
         <v-dialog v-model="removeDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Bed Mesh Profile</span>
+                    <span class="headline">Delete Bed Mesh Profile</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <p>Do you really want to delete the profile "{{ this.profile }}"?</p>
+                                <p>Do you really want to delete the profile "{{ removeDialogProfile }}"?</p>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -167,7 +174,7 @@
                     paper_bgcolor: 'transparent',
                     margin: {
                         l: 0,
-                        r: 100,
+                        r: 120,
                         b: 0,
                         t: 0
                     },
@@ -189,33 +196,39 @@
                         },
                         zaxis: {
                             color: '#fff',
-                            range: [-1,1]
+                            range: [-0.5,0.5]
                         }
                     }
                 },
-                profile: {},
-                boolShowBedMesh: false,
-                disabledLoad: true,
-                disabledSave: true,
-                disabledRemove: true,
-                disabledClear: true,
                 showMeshType: 'probed',
-                saveDialog: false,
+                renameDialog: false,
+                removeDialogProfile: '',
                 removeDialog: false,
                 calibrateDialog: false,
                 newName: '',
+                colorbarType: false,
             }
         },
         computed: {
             ...mapState({
                 config: state => state.printer.configfile.config,
-                bed_mesh: state => state.printer.bed_mesh,
                 loadings: state => state.socket.loadings,
             }),
 
             ...mapGetters([
                 'is_printing',
             ]),
+            bed_mesh: {
+                get() {
+                    return this.$store.state.printer.bed_mesh || null
+                },
+                set() {}
+            },
+            profileName: {
+                get() {
+                    return this.$store.getters["printer/getBedMeshProfileName"]
+                }
+            },
             profiles: {
                 get() {
                     return this.$store.getters["printer/getBedMeshProfiles"]
@@ -233,7 +246,7 @@
 
                 if (this.bed_mesh && this.bed_mesh.profile_name !== "") {
 
-                    if (this.config.stepper_x !== undefined && this.config.stepper_y !== undefined) {
+                    if ('stepper_x 'in this.config && 'stepper_y' in this.config) {
                         this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max];
                         this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max];
                     } else {
@@ -244,8 +257,8 @@
                     let x_count = 0;
                     let y_count = 0;
 
-                    let min = -1;
-                    let max = 1;
+                    let min = -0.5;
+                    let max = 0.5;
 
                     if (this.showMeshType === 'probed') {
                         x_count = this.bed_mesh.probed_matrix[0].length;
@@ -273,13 +286,19 @@
                         this.data[0].y.push(parseFloat(this.bed_mesh.mesh_min[1]) + parseFloat(y_step) * i);
                     }
 
-                    if (min > -1) min = -1;
-                    if (max < 1) max = 1;
+                    if(this.colorbarType) {
+                        this.data[0].cmin = min
+                        this.data[0].cmax = max
+                    } else {
+                        this.data[0].cmin = -0.1
+                        this.data[0].cmax = 0.1
+                    }
 
-                    this.layout.scene.zaxis.range = [min, max];
+                    if (min > -0.5) min = -0.5
+                    if (max < 0.5) max = 0.5
 
-                    this.boolShowBedMesh = true;
-                } else this.boolShowBedMesh = false;
+                    this.layout.scene.zaxis.range = [min, max]
+                }
 
                 //this.$refs.heightmap.update();
             },
@@ -291,72 +310,62 @@
                 this.showMeshType = 'mesh';
                 this.showBedMesh();
             },
-            loadProfile: function() {
-                this.$store.commit('socket/addLoading', { name: 'bedMeshLoad' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+this.profile }, "socket/removeLoading", { name: 'bedMeshLoad' });
+            loadProfile: function(name) {
+                this.$store.commit('socket/addLoading', { name: 'bedMeshLoad_'+name })
+                this.$store.commit('server/addEvent', "BED_MESH_PROFILE LOAD="+name)
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+name }, "socket/removeLoading", { name: 'bedMeshLoad_'+name })
             },
-            saveProfile: function() {
-                this.saveDialog = false;
-                this.$store.commit('socket/addLoading', { name: 'bedMeshSave' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "socket/removeLoading", { name: 'bedMeshSave' });
+            openRenameProfile: function() {
+                this.newName = this.bed_mesh.profile_name || ""
+                this.renameDialog = true;
+            },
+            renameProfile: function() {
+                this.renameDialog = false;
+                this.$store.commit('socket/addLoading', { name: 'bedMeshRename' })
+                this.$store.commit('server/addEvent', "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase())
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "socket/removeLoading", { name: 'bedMeshRename' })
+            },
+            openRemoveProfile: function(name) {
+                this.newName = name
+                this.removeDialog = true;
             },
             removeProfile: function() {
                 this.removeDialog = false;
-                this.$store.commit('socket/addLoading', { name: 'bedMeshRemove' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.profile }, "socket/removeLoading", { name: 'bedMeshRemove' });
+                this.$store.commit('socket/addLoading', { name: 'bedMeshRemove_'+this.newName })
+                this.$store.commit('server/addEvent', "BED_MESH_PROFILE REMOVE="+this.newName)
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, "printer/removeBedMeshProfile", { name: this.newName })
+                this.removeDialogProfile = ""
             },
             clearBedMesh: function() {
-                this.$store.commit('socket/addLoading', { name: 'bedMeshClear' });
-                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "socket/removeLoading", { name: 'bedMeshClear' });
+                this.$store.commit('socket/addLoading', { name: 'bedMeshClear' })
+                this.$store.commit('server/addEvent', "BED_MESH_CLEAR")
+                this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "socket/removeLoading", { name: 'bedMeshClear' })
             },
             calibrateMesh: function() {
                 this.calibrateDialog = false;
                 this.$store.commit('socket/addLoading', { name: 'bedMeshCalibrate' });
+                this.$store.commit('server/addEvent', "BED_MESH_CALIBRATE")
                 this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' });
             }
         },
         created: function() {
 
         },
+        mounted() {
+            this.showBedMesh()
+        },
         watch: {
             config: function() {
                 this.profiles = this.$store.getters["printer/getBedMeshProfiles"];
             },
-            profile: function() {
-                if (this.profile !== "" && this.bed_mesh !== undefined && this.profile === this.bed_mesh.profile_name) {
-                    this.disabledLoad = true;
-                    this.disabledRemove = false;
-                } else if (this.profile !== "") {
-                    this.disabledLoad = false;
-                    this.disabledRemove = false;
-                } else {
-                    this.disabledLoad = true;
-                    this.disabledRemove = true;
-                }
+            bed_mesh: function(val, newVal) {
+                this.bed_mesh = newVal
+                this.showBedMesh()
             },
-            bed_mesh: {
-                deep: false,
-                handler(newVal) {
-                    if (newVal !== undefined) {
-                        this.profiles = this.$store.getters["printer/getBedMeshProfiles"];
-                        this.showBedMesh();
-
-                        if (this.profile !== "" && this.profile === this.bed_mesh.profile_name) this.disabledLoad = true;
-                        else if (this.profile !== "") this.disabledLoad = false;
-                        else this.disabledLoad = true;
-
-                        if (
-                            this.bed_mesh.probed_matrix.length &&
-                            this.bed_mesh.probed_matrix[0].length) {
-                            this.disabledClear = false;
-                            this.disabledSave = false;
-                        } else {
-                            this.disabledClear = true;
-                            this.disabledSave = true;
-                        }
-                    }
-                }
-            },
+            colorbarType: function(newVal) {
+                this.colorbarType = newVal
+                this.showBedMesh()
+            }
         }
     }
 </script>
