@@ -19,6 +19,7 @@
                         hide-details
                         label="Printer Name"
                         @click.native="show"
+                        @blur="hide"
                         data-layout="normal" 
                     ></v-text-field>
                 </v-col>
@@ -33,7 +34,7 @@
 </template>
 
 <script>
-    /*import {bus} from "../../../main";*/
+    import {bus} from "../../../main";
     
     export default {
         components: {
@@ -64,9 +65,11 @@
             },
         },
         methods: {
-            show(e){
-                console.log(e.target);
-                this.$root.$emit("showkeyboard",e);
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
             }
         }
     }

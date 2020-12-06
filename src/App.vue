@@ -109,14 +109,14 @@
         <v-footer app class="d-block">
             <span style="z-index=10">v{{ getVersion }}</span>
             <span style="z-index=10" class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
-            <vue-touch-keyboard :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
             <!--<SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>-->
         </v-footer>
-            <div @click="showkeyboard"></div>
+            <vue-touch-keyboard style="z-index: 200; padding: 10px;" :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
     </v-app>
 </template>
 
 <script>
+    import {bus} from "./main";
     import routes from './routes';
     /*import SimpleKeyboard from "./components/SimpleKeyboard";*/
     import { mapState, mapGetters } from 'vuex';
@@ -134,12 +134,12 @@ export default {
         activeClass: 'active',
         routes: routes,
         boolNaviHeightmap: false,
-        visible: true,
+        visible: false,
         layout: "normal",
         input: null,
         options: {
             useKbEvents: false,
-            preventClickEvent: false
+            preventClickEvent: true
         }
     }),
     created () {
@@ -180,23 +180,23 @@ export default {
             },
         },
     },
-    events: {
-        showkeyboard:function(e) {
-            console.log("show ");
-            this.input = e.target;
-            this.layout = e.target.dataset.layout;
+    mounted() {
+        bus.$on('showkeyboard', (event) => {
+            this.input = event.target;
+            this.layout = event.target.dataset.layout;
 
             if (!this.visible)
                 this.visible = true
-        },
+        });
+        bus.$on('hidekeyboard', () => {
+          this.visible = false;
+        });
     },
     methods: {
-        accept(text) {
-          alert("Input text: " + text);
+        accept() {
           this.hide();
         },
-        showkeyboard(e) {
-            console.log("show ");
+        showkeyboard:function(e) {
             this.input = e.target;
             this.layout = e.target.dataset.layout;
 

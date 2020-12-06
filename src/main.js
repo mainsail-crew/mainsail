@@ -8,9 +8,8 @@ import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
-import "vue-touch-keyboard/dist/vue-touch-keyboard.css"; // load default style
 
-export var bus;
+export const bus = new Vue();
 
 Vue.config.productionTip = false;
 
@@ -42,7 +41,7 @@ fetch('/config.json')
     socketClient.connect();
     Vue.prototype.$socket = socketClient;
 
-    bus = new Vue({
+    new Vue({
       vuetify,
       router,
       store,

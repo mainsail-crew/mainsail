@@ -17,7 +17,6 @@
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
     "readdir-enhanced": "^6.0.4",
-    "simple-keyboard": "^2.32.56",
     "vue": "^2.6.12",
     "vue-chartjs": "^3.5.1",
     "vue-context": "^6.0.0",
