@@ -1,0 +1,81 @@
+.vue-touch-keyboard .keyboard{
+    width:100%;margin:0
+}
+
+.vue-touch-keyboard .keyboard .line{
+    display:flex;
+    justify-content:space-around
+}
+.vue-touch-keyboard .keyboard .line:not(:last-child){
+    margin-bottom:.5em
+}
+.vue-touch-keyboard .keyboard .key{
+    flex:40;
+    height:2.2em;
+    line-height:2.2em;
+    overflow:hidden;
+    vertical-align:middle;
+    border:1px solid #ccc;
+    color:#333;
+    background-color:#fff;
+    box-shadow:0 2px 2px rgba(0,0,0,.6);
+    border-radius:.35em;
+    font-size:1.25em;
+    text-align:center;
+    white-space:nowrap;
+    user-select:none;
+    cursor:pointer
+}
+.vue-touch-keyboard .keyboard .key:not(:last-child){
+    margin-right:.5em
+}
+.vue-touch-keyboard .keyboard .key.backspace{
+    background-image:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI0OCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB3aWR0aD0iNDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTAgMGg0OHY0OGgtNDh6IiBmaWxsPSJub25lIi8+PHBhdGggZD0iTTQ0IDZoLTMwYy0xLjM4IDAtMi40Ny43LTMuMTkgMS43NmwtMTAuODEgMTYuMjMgMTAuODEgMTYuMjNjLjcyIDEuMDYgMS44MSAxLjc4IDMuMTkgMS43OGgzMGMyLjIxIDAgNC0xLjc5IDQtNHYtMjhjMC0yLjIxLTEuNzktNC00LTR6bS02IDI1LjE3bC0yLjgzIDIuODMtNy4xNy03LjE3LTcuMTcgNy4xNy0yLjgzLTIuODMgNy4xNy03LjE3LTcuMTctNy4xNyAyLjgzLTIuODMgNy4xNyA3LjE3IDcuMTctNy4xNyAyLjgzIDIuODMtNy4xNyA3LjE3IDcuMTcgNy4xN3oiIGZpbGw9IndoaXRlIi8+PC9zdmc+);
+    background-position:50%;
+    background-repeat:no-repeat;
+    background-size:35%
+}
+.vue-touch-keyboard .keyboard .key.half{
+    flex:20
+}
+.vue-touch-keyboard .keyboard .key.control{
+    color:#fff;
+    background-color:#7d7d7d;
+    border-color:#656565
+}
+.vue-touch-keyboard .keyboard .key.featured{
+    color:#fff;
+    background-color:#337ab7;
+    border-color:#2e6da4
+}
+.vue-touch-keyboard .keyboard .key:hover{
+    color:#333;
+    background-color:#d6d6d6;
+    border-color:#adadad
+}
+.vue-touch-keyboard .keyboard .key:active{
+    transform:scale(.98);
+    color:#333;
+    background-color:#d4d4d4;
+    border-color:#8c8c8c
+}
+.vue-touch-keyboard .keyboard .key.activated{
+    color:#fff;
+    background-color:#5bc0de;
+    border-color:#46b8da
+}
+.vue-touch-keyboard .keyboard .placeholder{
+    flex:20;
+    height:2.2em;
+    line-height:2.2em
+}
+.vue-touch-keyboard .keyboard .placeholder:not(:last-child){
+    margin-right:.5em
+}
+.vue-touch-keyboard .keyboard:after,.vue-touch-keyboard .keyboard:before{
+    content:"";
+    display:table
+}
+.vue-touch-keyboard .keyboard:after{
+    clear:both
+}

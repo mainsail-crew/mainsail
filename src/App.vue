@@ -1,6 +1,7 @@
 <style>
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
+    @import './assets/styles/keyboard.css';
 
     .button-min-width-auto {
         min-width: auto !important;
@@ -108,6 +109,7 @@
             <span>v{{ getVersion }}</span>
             <span class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
         </v-footer>
+        <vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
     </v-app>
 </template>
 
@@ -128,6 +130,13 @@ export default {
         activeClass: 'active',
         routes: routes,
         boolNaviHeightmap: false,
+        visible: false,
+        layout: "normal",
+        input: null,
+        options: {
+            useKbEvents: false,
+            preventClickEvent: false
+        }
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -163,6 +172,22 @@ export default {
         }
     },
     methods: {
+        accept(text) {
+          alert("Input text: " + text);
+          this.hide();
+        },
+
+        show(e) {
+          this.input = e.target;
+          this.layout = e.target.dataset.layout;
+
+          if (!this.visible)
+            this.visible = true
+        },
+
+        hide() {
+          this.visible = false;
+        },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
             this.$socket.sendObj('printer.emergency_stop', {}, 'socket/removeLoading',{ name: 'topbarEmergencyStop' });
