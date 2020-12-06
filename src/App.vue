@@ -130,7 +130,7 @@ export default {
         activeClass: 'active',
         routes: routes,
         boolNaviHeightmap: false,
-        visible: false,
+        visible: true,
         layout: "normal",
         input: null,
         options: {
@@ -176,15 +176,14 @@ export default {
           alert("Input text: " + text);
           this.hide();
         },
-
         show(e) {
-          this.input = e.target;
-          this.layout = e.target.dataset.layout;
+            console.log("Change Input: "+e);
+            this.input = e.target;
+            this.layout = e.target.dataset.layout;
 
-          if (!this.visible)
-            this.visible = true
+            if (!this.visible)
+                this.visible = true
         },
-
         hide() {
           this.visible = false;
         },

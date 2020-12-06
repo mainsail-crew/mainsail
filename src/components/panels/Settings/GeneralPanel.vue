@@ -38,13 +38,6 @@
 
         },
         data: () => ({
-            visible: false,
-            layout: "normal",
-            input: null,
-            options: {
-                useKbEvents: false,
-                preventClickEvent: false
-            }
         }),
         computed: {
             printerName: {
