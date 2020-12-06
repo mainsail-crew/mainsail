@@ -30,7 +30,7 @@ module.exports = {
     msTileColor: '#121212',
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: 'black',
-
+    
     manifestOptions: {
       "short_name": "Mainsail",
       "name": "Mainsail",

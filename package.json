@@ -17,6 +17,7 @@
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
     "readdir-enhanced": "^6.0.4",
+    "simple-keyboard": "^2.32.56",
     "vue": "^2.6.12",
     "vue-chartjs": "^3.5.1",
     "vue-context": "^6.0.0",
@@ -27,7 +28,6 @@
     "vue-resource": "^1.5.1",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.0",
-    "vue-touch-keyboard": "^0.3.2",
     "vuetify": "^2.3.18",
     "vuex": "^3.5.1"
   },
@@ -72,5 +72,10 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
+  ],
+  "vue/custom-event-name-casing": ["error", "camelCase",
+    {
+      "ignores": ["onChange", "onKeyPress", "/^[a-z]+(?:-[a-z]+)*:[a-z]+(?:-[a-z]+)*$/u"]
+    }
   ]
 }

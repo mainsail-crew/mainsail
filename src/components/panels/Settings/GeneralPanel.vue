@@ -18,8 +18,10 @@
                         v-model="printerName"
                         hide-details
                         label="Printer Name"
-                        focus="show"
-                        data-layout="normal"
+                        input="onInputChange"
+                        class="input"
+                        value="input"
+                        focus="onChange"
                     ></v-text-field>
                 </v-col>
             </v-row>

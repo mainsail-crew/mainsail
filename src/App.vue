@@ -18,6 +18,7 @@
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
             :src="require('./assets/bg-navi.png')"
+            
         >
             <div id="nav-header">
                 <img :src="require('./assets/logo.svg')" />
@@ -84,6 +85,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
+            
         </v-app-bar>
 
         <v-main id="content">
@@ -96,25 +98,26 @@
             </v-scroll-y-transition>
         </v-main>
 
-        <v-dialog v-model="overlayDisconnect" persistent width="300">
+        <!--<v-dialog v-model="overlayDisconnect" persistent width="300">
             <v-card color="primary" dark >
                 <v-card-text class="pt-2">
                     Connecting...
                     <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
                 </v-card-text>
             </v-card>
-        </v-dialog>
-
+        </v-dialog>-->
         <v-footer app class="d-block">
-            <span>v{{ getVersion }}</span>
-            <span class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
+            <span style="z-index=10">v{{ getVersion }}</span>
+            <span style="z-index=10" class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
+            <SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>
         </v-footer>
-        <vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
+        
     </v-app>
 </template>
 
 <script>
     import routes from './routes';
+    import SimpleKeyboard from "./components/SimpleKeyboard";
     import { mapState, mapGetters } from 'vuex';
 
 export default {
@@ -122,7 +125,7 @@ export default {
         source: String,
     },
     components: {
-
+        SimpleKeyboard
     },
     data: () => ({
         overlayDisconnect: true,
@@ -130,13 +133,8 @@ export default {
         activeClass: 'active',
         routes: routes,
         boolNaviHeightmap: false,
-        visible: true,
-        layout: "normal",
         input: null,
-        options: {
-            useKbEvents: false,
-            preventClickEvent: false
-        }
+        theme: "hg-theme-default mainsail-theme"
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -169,23 +167,23 @@ export default {
             get() {
                 return this.$store.getters["printer/getPrintPercent"];
             }
-        }
+        },
+        virtualKeyboard: {
+            get() {
+                return this.$cookies.isKey("enableVirtualKeyboard");
+            },
+        },
     },
     methods: {
-        accept(text) {
-          alert("Input text: " + text);
-          this.hide();
+        onChange(input) {
+            this.input = input;
+            console.log("change input to "+input);
         },
-        show(e) {
-            console.log("Change Input: "+e);
-            this.input = e.target;
-            this.layout = e.target.dataset.layout;
-
-            if (!this.visible)
-                this.visible = true
+        onKeyPress(button) {
+            console.log("button", button);
         },
-        hide() {
-          this.visible = false;
+        onInputChange(input) {
+            this.input = input.target.value;
         },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });

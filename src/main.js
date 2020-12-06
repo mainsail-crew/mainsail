@@ -7,13 +7,12 @@ import './components'
 import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
-import VueTouchKeyboard from "vue-touch-keyboard";
+
 
 Vue.config.productionTip = false;
 
 Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
-Vue.use(VueTouchKeyboard);
 
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
