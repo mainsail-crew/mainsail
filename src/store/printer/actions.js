@@ -60,4 +60,9 @@ export default {
 		commit('socket/removeLoading', { name: 'queryEndstops' }, { root: true });
 		commit('setEndstopStatus', payload);
 	},
+
+	removeBedMeshProfile({ commit }, payload) {
+		commit('socket/removeLoading', { name: 'bedMeshRemove_'+payload.name }, { root: true })
+		commit('removeBedMeshProfile', payload)
+	}
 }

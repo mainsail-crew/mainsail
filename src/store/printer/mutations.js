@@ -75,4 +75,10 @@ export default {
 
 		Vue.set(state, 'endstops', payload);
 	},
+
+	removeBedMeshProfile(state, payload) {
+		if ('bed_mesh '+payload.name in state.configfile.config) {
+			Object.assign(state.configfile.config['bed_mesh '+payload.name], { deleted: true })
+		}
+	}
 }
