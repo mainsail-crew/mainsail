@@ -18,10 +18,8 @@
                         v-model="printerName"
                         hide-details
                         label="Printer Name"
-                        input="onInputChange"
-                        class="input"
-                        value="input"
-                        focus="onChange"
+                        @click.native="show"
+                        data-layout="normal" 
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -35,11 +33,13 @@
 </template>
 
 <script>
+    
     export default {
         components: {
 
         },
         data: () => ({
+
         }),
         computed: {
             printerName: {
@@ -63,22 +63,10 @@
             },
         },
         methods: {
-            accept(text) {
-                alert("Input text: " + text);
-                this.hide();
-            },
-
-            show(e) {
-                this.input = e.target;
-                this.layout = e.target.dataset.layout;
-
-            if (!this.visible)
-                this.visible = true
-            },
-
-            hide() {
-            this.visible = false;
-            },
+            show(e){
+                console.log(e.target);
+                this.$emit("show",e);
+            }
         }
     }
 </script>

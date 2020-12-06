@@ -7,12 +7,16 @@ import './components'
 import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
+import VueTouchKeyboard from "vue-touch-keyboard";
+import "vue-touch-keyboard/dist/vue-touch-keyboard.css"; // load default style
 
+export var bus;
 
 Vue.config.productionTip = false;
 
 Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
+Vue.use(VueTouchKeyboard);
 
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -38,7 +42,7 @@ fetch('/config.json')
     socketClient.connect();
     Vue.prototype.$socket = socketClient;
 
-    new Vue({
+    bus = new Vue({
       vuetify,
       router,
       store,

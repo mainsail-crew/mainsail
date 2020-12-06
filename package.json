@@ -28,6 +28,7 @@
     "vue-resource": "^1.5.1",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.0",
+    "vue-touch-keyboard": "^0.3.2",
     "vuetify": "^2.3.18",
     "vuex": "^3.5.1"
   },
@@ -73,9 +74,15 @@
     "> 1%",
     "last 2 versions"
   ],
-  "vue/custom-event-name-casing": ["error", "camelCase",
+  "vue/custom-event-name-casing": [
+    "error",
+    "camelCase",
     {
-      "ignores": ["onChange", "onKeyPress", "/^[a-z]+(?:-[a-z]+)*:[a-z]+(?:-[a-z]+)*$/u"]
+      "ignores": [
+        "onInputChange",
+        "onInputFocus",
+        "/^[a-z]+(?:-[a-z]+)*:[a-z]+(?:-[a-z]+)*$/u"
+      ]
     }
   ]
 }

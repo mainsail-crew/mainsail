@@ -109,7 +109,8 @@
         <v-footer app class="d-block">
             <span style="z-index=10">v{{ getVersion }}</span>
             <span style="z-index=10" class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
-            <SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>
+             <vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
+            <!--<SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>-->
         </v-footer>
         
     </v-app>
@@ -117,7 +118,7 @@
 
 <script>
     import routes from './routes';
-    import SimpleKeyboard from "./components/SimpleKeyboard";
+    /*import SimpleKeyboard from "./components/SimpleKeyboard";*/
     import { mapState, mapGetters } from 'vuex';
 
 export default {
@@ -125,7 +126,7 @@ export default {
         source: String,
     },
     components: {
-        SimpleKeyboard
+
     },
     data: () => ({
         overlayDisconnect: true,
@@ -133,8 +134,13 @@ export default {
         activeClass: 'active',
         routes: routes,
         boolNaviHeightmap: false,
+        visible: true,
+        layout: "normal",
         input: null,
-        theme: "hg-theme-default mainsail-theme"
+        options: {
+            useKbEvents: false,
+            preventClickEvent: false
+        }
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -175,15 +181,20 @@ export default {
         },
     },
     methods: {
-        onChange(input) {
-            this.input = input;
-            console.log("change input to "+input);
+        accept(text) {
+          alert("Input text: " + text);
+          this.hide();
         },
-        onKeyPress(button) {
-            console.log("button", button);
+        show(e) {
+            console.log("show ");
+            this.input = e.target;
+            this.layout = e.target.dataset.layout;
+
+            if (!this.visible)
+                this.visible = true
         },
-        onInputChange(input) {
-            this.input = input.target.value;
+        hide() {
+          this.visible = false;
         },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
