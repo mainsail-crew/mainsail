@@ -109,10 +109,10 @@
         <v-footer app class="d-block">
             <span style="z-index=10">v{{ getVersion }}</span>
             <span style="z-index=10" class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
-             <vue-touch-keyboard :options="options" v-if="visible" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
+            <vue-touch-keyboard :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
             <!--<SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>-->
         </v-footer>
-        
+            <div @click="showkeyboard"></div>
     </v-app>
 </template>
 
@@ -180,12 +180,22 @@ export default {
             },
         },
     },
+    events: {
+        showkeyboard:function(e) {
+            console.log("show ");
+            this.input = e.target;
+            this.layout = e.target.dataset.layout;
+
+            if (!this.visible)
+                this.visible = true
+        },
+    },
     methods: {
         accept(text) {
           alert("Input text: " + text);
           this.hide();
         },
-        show(e) {
+        showkeyboard(e) {
             console.log("show ");
             this.input = e.target;
             this.layout = e.target.dataset.layout;

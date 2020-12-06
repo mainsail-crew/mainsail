@@ -33,6 +33,7 @@
 </template>
 
 <script>
+    /*import {bus} from "../../../main";*/
     
     export default {
         components: {
@@ -65,7 +66,7 @@
         methods: {
             show(e){
                 console.log(e.target);
-                this.$emit("show",e);
+                this.$root.$emit("showkeyboard",e);
             }
         }
     }
