@@ -16,6 +16,9 @@
                         v-model="webcamUrl"
                         hide-details
                         label="Webcam URL"
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal" 
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -47,6 +50,8 @@
 </template>
 
 <script>
+
+    import {bus} from "../../../main";
     export default {
         components: {
 
@@ -107,7 +112,12 @@
             },
         },
         methods: {
-
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            }
         }
     }
 </script>

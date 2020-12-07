@@ -34,6 +34,9 @@
                                 v-model="scaleOffset1"
                                 hide-details
                                 label="Offset"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                         <v-col class="py-0">
@@ -41,6 +44,9 @@
                                 v-model="scaleOffset2"
                                 hide-details
                                 label="Offset"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -54,6 +60,9 @@
                                 v-model="scalePosition1"
                                 hide-details
                                 label="Position"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                         <v-col class="py-0">
@@ -61,6 +70,9 @@
                                 v-model="scalePosition2"
                                 hide-details
                                 label="Position"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -94,6 +106,7 @@
 </template>
 
 <script>
+    import {bus} from "../../../main";
     export default {
         components: {
 
@@ -138,6 +151,12 @@
             },
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             executeTare1:function(){
                 var tare1 = this.$store.state.gui.scale.raw1;
                 this.$store.dispatch('gui/setSettings', { scale: { tare1 } });
