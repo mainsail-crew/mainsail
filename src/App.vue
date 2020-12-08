@@ -59,29 +59,7 @@
             <v-spacer></v-spacer>
             <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
             <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
-            <v-menu bottom left :offset-y="true">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-list dense>
-                    <v-list-item link @click="doRestart()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Restart</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link @click="doFirmwareRestart()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>FW Restart</v-list-item-title>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item link @click="doHostReboot()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Reboot Host</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link @click="doHostShutdown()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Shutdown Host</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+            <top-corner-menu></top-corner-menu>
         </v-app-bar>
 
         <v-main id="content">
@@ -111,15 +89,16 @@
 </template>
 
 <script>
-    import routes from './routes';
-    import { mapState, mapGetters } from 'vuex';
+    import routes from './routes'
+    import { mapState, mapGetters } from 'vuex'
+    import TopCornerMenu from "@/components/TopCornerMenu";
 
 export default {
     props: {
         source: String,
     },
     components: {
-
+        TopCornerMenu
     },
     data: () => ({
         overlayDisconnect: true,
@@ -180,20 +159,6 @@ export default {
             this.$store.commit('server/addEvent', "SAVE_CONFIG");
             this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
-        },
-        doRestart: function() {
-            this.$store.commit('server/addEvent', "RESTART");
-            this.$socket.sendObj('printer.gcode.script', { script: "RESTART" });
-        },
-        doFirmwareRestart: function() {
-            this.$store.commit('server/addEvent', "FIRMWARE_RESTART");
-            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" });
-        },
-        doHostReboot: function() {
-            this.$socket.sendObj('machine.reboot', { });
-        },
-        doHostShutdown: function() {
-            this.$socket.sendObj('machine.shutdown', { });
         },
         drawFavicon(val) {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
