@@ -268,7 +268,6 @@ export default {
 	},
 
 	getBedMeshProfileName: state => {
-		window.console.log("bla bla")
 		if ('bed_mesh' in state && 'profile_name' in state.bed_mesh) return state.bed_mesh.profile_name
 
 		return ''

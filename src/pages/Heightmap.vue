@@ -48,7 +48,7 @@
                 <v-card>
                     <v-toolbar flat dense>
                         <v-toolbar-title>
-                            <span class="subheading"><v-icon left>mdi-cogs</v-icon>Profile</span>
+                            <span class="subheading"><v-icon left>mdi-stack-overflow</v-icon>Profile</span>
                         </v-toolbar-title>
                     </v-toolbar>
                     <v-card-text class="py-0">
@@ -156,7 +156,6 @@
                         y: [],
                         z: [],
                         type:"surface",
-                        intensity: [0, .05, .1],
                         cmin: -0.1,
                         cmax: 0.1,
                         showscale: true,
@@ -289,9 +288,11 @@
                     if(this.colorbarType) {
                         this.data[0].cmin = min
                         this.data[0].cmax = max
+                        this.data[0].autocolorscale = false
                     } else {
                         this.data[0].cmin = -0.1
                         this.data[0].cmax = 0.1
+                        this.data[0].autocolorscale = true
                     }
 
                     if (min > -0.5) min = -0.5
