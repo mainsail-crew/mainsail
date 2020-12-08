@@ -113,8 +113,16 @@
             
             <span style="z-index=200" v-if="showVersion">v{{ getVersion }}</span>
             <span style="z-index=200" class="float-right d-none d-sm-inline" v-if="version&showVersion">{{ version }} </span>
-            <span style="z-index=200">{{ virtualKeyboardName }}</span>
-            <div style="text-align:center"><span >{{virtualKeyboardInput}}</span></div>
+            
+            <div class="keyboard-context" v-if="visible&virtualKeyboard">
+                <div class="keyboard-context-name">
+                    <span style="z-index=200">{{ virtualKeyboardName }}</span>
+                </div>
+                    
+                <div class="keyboard-context-input">
+                        <span>{{virtualKeyboardInput}}</span>
+                </div>
+            </div>
             
             <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
         </v-footer>
@@ -251,6 +259,8 @@ export default {
         },
         hide() {
           this.visible = false;
+          this.inputvalue = null;
+          this.inputname = null;
           this.input = null;
         },
         clickEmergencyStop: function() {

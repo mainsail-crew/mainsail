@@ -89,5 +89,27 @@
 .vue-touch-keyboard .keyboard:after{
     clear:both
 }
+.keyboard-context {
+    margin-top: 6px;
+    width: 100%;
+    padding: 10px;
+    /* padding-bottom: 10px; */
+    background-color: #3c3c3c;
+    margin-bottom: 10px;
+    border-radius: .35em;
+}
+.keyboard-context-input{
+    position: absolute;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%;
+    top: 22px;
+    left: 0px;
+}
+.keyboard-context-name{
+    text-align: left;
+    max-width: 256px;
+    color: #7d7d7d;
+}
 
   
