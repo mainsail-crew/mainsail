@@ -63,7 +63,7 @@
                         bus.$emit("updatekeyboardcookie");
                         return cookieValue;
                     }
-                    cookieValue = this.$cookies.set('enableVirtualKeyboard','enabled');
+                    cookieValue = this.$cookies.set('enableVirtualKeyboard','default');
                     bus.$emit("updatekeyboardcookie");
                     return cookieValue;
                 }
