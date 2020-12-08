@@ -9,7 +9,6 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
-            <power-control-panel class="mt-6" v-if="countPowerDevices > 0"></power-control-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
@@ -37,11 +36,6 @@
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
                 config: state => state.printer.configfile.config,
             }),
-            countPowerDevices: {
-                get() {
-                    return this.$store.getters["server/power/count"]
-                }
-            },
             existsPrinterConfig: {
                 get() {
                     return this.$store.getters["printer/existPrinterConfig"]

@@ -27,12 +27,10 @@ export default {
 				break
 
 			case 'notify_klippy_ready':
-				window.console.log("ready bla bla")
 				commit('server/setKlippyReady', null, { root: true })
 				break
 
 			case 'notify_klippy_disconnected':
-				window.console.log("disconnected bla bla")
 				commit('server/setKlippyDisconnected', null, { root: true })
 				break
 
