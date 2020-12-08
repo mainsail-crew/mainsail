@@ -19,7 +19,6 @@
                         hide-details
                         label="Printer Name"
                         @click.native="show"
-                        @blur="hide"
                         data-layout="normal" 
                     ></v-text-field>
                 </v-col>

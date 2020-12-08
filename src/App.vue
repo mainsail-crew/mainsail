@@ -89,6 +89,7 @@
         </v-app-bar>
 
         <v-main id="content">
+            
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container px-sm-6 px-3 mx-auto">
                     <keep-alive>
@@ -106,12 +107,17 @@
                 </v-card-text>
             </v-card>
         </v-dialog>-->
-        <v-footer app class="d-block">
-            <span style="z-index=10">v{{ getVersion }}</span>
-            <span style="z-index=10" class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
-            <!--<SimpleKeyboard v-if="virtualKeyboard" @onChange="onChange" @onKeyPress="onKeyPress" :input="input" :theme="theme"/>-->
+            
+        
+        <v-footer app class="d-block" style="z-index:200">
+            
+            <span style="z-index=200" v-if="showVersion">v{{ getVersion }}</span>
+            <span style="z-index=200" class="float-right d-none d-sm-inline" v-if="version&showVersion">{{ version }} </span>
+            <span style="z-index=200">{{ virtualKeyboardName }}</span>
+            <div style="text-align:center"><span >{{virtualKeyboardInput}}</span></div>
+            
+            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
         </v-footer>
-            <vue-touch-keyboard style="z-index: 200; padding: 10px;" :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
     </v-app>
 </template>
 
@@ -137,6 +143,8 @@ export default {
         visible: false,
         layout: "normal",
         input: null,
+        inputvalue: null,
+        inputname: null,
         options: {
             useKbEvents: false,
             preventClickEvent: true
@@ -179,10 +187,40 @@ export default {
                 return this.$cookies.isKey("enableVirtualKeyboard");
             },
         },
+        showVersion: {
+            get() {
+                if(this.visible==false){
+                    return true;
+                }
+                return false;
+            },
+        },
+        virtualKeyboardInput: {
+            get() {
+                if(this.inputvalue==null){
+                    return null;
+                }
+                return this.inputvalue;
+            },
+        },
+        virtualKeyboardName: {
+            get() {
+                if(this.inputname==null){
+                    return null;
+                }
+                return this.inputname;
+            },
+        },
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
+            if(!this.$cookies.isKey("enableVirtualKeyboard")){
+                return;
+            }
             this.input = event.target;
+            this.inputvalue = this.input.value;
+            this.inputname = this.input.labels[0].textContent;
+            console.log(this.inputname)
             this.layout = event.target.dataset.layout;
 
             if (!this.visible)
@@ -190,9 +228,17 @@ export default {
         });
         bus.$on('hidekeyboard', () => {
           this.visible = false;
+          this.inputvalue = null;
+          this.inputname = null;
+          this.input = null;
         });
     },
     methods: {
+        keyboardClick(){
+            if(this.input!=null){
+                this.inputvalue=this.input.value;
+            }
+        },
         accept() {
           this.hide();
         },
@@ -205,6 +251,7 @@ export default {
         },
         hide() {
           this.visible = false;
+          this.input = null;
         },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
