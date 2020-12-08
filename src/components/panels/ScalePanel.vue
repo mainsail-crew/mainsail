@@ -38,9 +38,13 @@
                     <v-row><v-col class="px-0 py-0">{{getPosition1}}</v-col></v-row>
                 </v-col>
                 <v-col class="equal-width py-0 pr-sm-6">
-                    <v-text-field class="py-0"
+                    <v-text-field class="py-0 scalepanel-dashboard"
                                 v-model="scaleOffset1"
                                 hide-details
+                                label="Offset 1"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric" 
                             ></v-text-field>
                 </v-col>
             </v-row>
@@ -56,9 +60,13 @@
                     <v-row><v-col class="px-0 py-0">{{getPosition2}}</v-col></v-row>
                 </v-col>
                 <v-col class="equal-width py-0 pr-sm-6">
-                    <v-text-field class="py-0"
+                    <v-text-field class="py-0 scalepanel-dashboard"
                                 v-model="scaleOffset2"
                                 hide-details
+                                label="Offset 2"
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric" 
                             ></v-text-field>
                 </v-col>
             </v-row>
@@ -67,6 +75,7 @@
 </template>
 
 <script>
+    import {bus} from "../../main";
     import { mapState } from 'vuex'
 
     export default {
@@ -104,7 +113,7 @@
                 if(calculatedWeight2 < 0){
                     return 0;
                 }
-                return this.scaleConfig.raw1 -this.scaleConfig.tare1 - this.scaleConfig.offset1;
+                return this.scaleConfig.raw2 -this.scaleConfig.tare2 - this.scaleConfig.offset2;
             },
             getPosition2(){
                 var position2 = this.scaleConfig.position2;
@@ -120,6 +129,14 @@
                 set(offset2) {
                     return this.$store.dispatch('gui/setSettings', { scale: { offset2 } });
                 }
+            }
+        },
+        methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
             }
         },
     }

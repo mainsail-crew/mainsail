@@ -32,6 +32,9 @@
         <v-row>
             <v-col class="col">
                 <v-text-field
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal"  
                         v-model="gcode"
                         :items="items"
                         label="Send code..."
@@ -85,6 +88,7 @@
     </div>
 </template>
 <script>
+    import {bus} from "../main";
     import { mapState, mapGetters } from 'vuex';
     import Vue from "vue";
 
@@ -129,6 +133,12 @@
             ]),
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             doSend() {
                 //this.$store.commit('setLoading', { name: 'loadingSendGcode' });
                 this.$store.commit('server/addEvent', this.gcode);

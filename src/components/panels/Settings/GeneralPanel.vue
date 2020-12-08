@@ -19,6 +19,7 @@
                         hide-details
                         label="Printer Name"
                         @click.native="show"
+                        @blur="hide"
                         data-layout="normal" 
                     ></v-text-field>
                 </v-col>
@@ -56,10 +57,15 @@
                     return this.$cookies.isKey("enableVirtualKeyboard");
                 },
                 set(newStatus) {
+                    var cookieValue
                     if(newStatus==false){
-                        return this.$cookies.remove('enableVirtualKeyboard');
+                        cookieValue = this.$cookies.remove('enableVirtualKeyboard')
+                        bus.$emit("updatekeyboardcookie");
+                        return cookieValue;
                     }
-                    return this.$cookies.set('enableVirtualKeyboard','default');
+                    cookieValue = this.$cookies.set('enableVirtualKeyboard','enabled');
+                    bus.$emit("updatekeyboardcookie");
+                    return cookieValue;
                 }
             },
         },

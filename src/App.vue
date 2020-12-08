@@ -2,6 +2,7 @@
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
     @import './assets/styles/keyboard.css';
+    @import './assets/styles/misc.css';
 
     .button-min-width-auto {
         min-width: auto !important;
@@ -143,6 +144,7 @@ export default {
 
     },
     data: () => ({
+        enabledKeyboard: false,
         overlayDisconnect: true,
         drawer: null,
         activeClass: 'active',
@@ -159,6 +161,7 @@ export default {
         }
     }),
     created () {
+        this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
         this.$vuetify.theme.dark = true;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
@@ -192,7 +195,7 @@ export default {
         },
         virtualKeyboard: {
             get() {
-                return this.$cookies.isKey("enableVirtualKeyboard");
+                return this.enabledKeyboard;
             },
         },
         showVersion: {
@@ -228,11 +231,13 @@ export default {
             this.input = event.target;
             this.inputvalue = this.input.value;
             this.inputname = this.input.labels[0].textContent;
-            console.log(this.inputname)
             this.layout = event.target.dataset.layout;
 
             if (!this.visible)
                 this.visible = true
+        });
+        bus.$on('updatekeyboardcookie', () => {
+            this.enabledKeyboard=this.$cookies.isKey("enableVirtualKeyboard")
         });
         bus.$on('hidekeyboard', () => {
           this.visible = false;

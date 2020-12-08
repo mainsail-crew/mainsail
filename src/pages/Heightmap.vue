@@ -77,7 +77,14 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Name" required v-model="newName"></v-text-field>
+                                <v-text-field 
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="normal"  
+                                    label="Name" 
+                                    required 
+                                    v-model="newName"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -134,6 +141,8 @@
     </div>
 </template>
 <script>
+
+    import {bus} from "../main";
     import {mapGetters, mapState} from 'vuex';
     import { Plotly } from 'vue-plotly'
 
@@ -226,6 +235,12 @@
             }
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             showBedMesh: function() {
                 this.data[0].x = [];
                 this.data[0].y = [];
