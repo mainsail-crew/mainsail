@@ -31,6 +31,7 @@ export default {
 		for (let prop in state.configfile.config) {
 			if (
 				prop.startsWith("gcode_macro") &&
+				!prop.startsWith("gcode_macro _") &&
 				!("rename_existing" in state.configfile.config[prop]) &&
 				!(hiddenMacros.indexOf(prop.replace("gcode_macro ", "").toLowerCase()) > -1)
 			) {
@@ -76,6 +77,7 @@ export default {
 						color: color,
 						target: value.target,
 						temperature: value.temperature,
+						power: 'power' in value ? value.power : null,
 						chartColor: getters["tempHistory/getDatasetColor"](name),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
