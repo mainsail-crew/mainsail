@@ -59,7 +59,17 @@
                     <v-col class="py-0 font-weight-bold">{{ sensor.name }}</v-col>
                     <v-col class="py-0 d-none d-sm-block"><span>&nbsp;</span></v-col>
                     <v-col class="py-0 text-center">
-                        <span style="cursor: default;" class=" px-0" :title="'min: '+(sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0)+'° / max: '+(sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0)+'°'">{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <span
+                              style="cursor: default;"
+                              class=" px-0"
+                              v-bind="attrs"
+                              v-on="on"
+                          >{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span>
+                        </template>
+                        <span>min: {{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />max: {{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
+                      </v-tooltip>
                     </v-col>
                     <v-col class="text-center py-0 pr-8 vertical_align_center"><span>&nbsp;</span></v-col>
                 </v-row>
