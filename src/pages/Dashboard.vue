@@ -10,7 +10,7 @@
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel class="mt-6" v-if="klippy_state === 'ready'"></peripherie-panel>
         </v-col>
-        <v-col class="col-sm-12 col-md-7">
+        <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
             <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
         </v-col>
