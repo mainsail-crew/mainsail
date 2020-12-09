@@ -110,7 +110,7 @@
         </v-dialog>-->
             
         
-        <v-footer app class="d-block" style="z-index:200">
+        <v-footer app class="d-block" style="z-index:20000">
             
             <span style="z-index=200" v-if="showVersion">v{{ getVersion }}</span>
             <span style="z-index=200" class="float-right d-none d-sm-inline" v-if="version&showVersion">{{ version }} </span>
@@ -133,6 +133,7 @@
 <script>
     import {bus} from "./main";
     import routes from './routes';
+    import layouts from "./inputs/KeyboardLayouts";
     /*import SimpleKeyboard from "./components/SimpleKeyboard";*/
     import { mapState, mapGetters } from 'vuex';
 
@@ -156,7 +157,7 @@ export default {
         inputvalue: null,
         inputname: null,
         options: {
-            useKbEvents: false,
+            useKbEvents: true,
             preventClickEvent: true
         }
     }),
@@ -228,10 +229,13 @@ export default {
             if(!this.$cookies.isKey("enableVirtualKeyboard")){
                 return;
             }
+            
+            console.log(event.target)
             this.input = event.target;
             this.inputvalue = this.input.value;
             this.inputname = this.input.labels[0].textContent;
-            this.layout = event.target.dataset.layout;
+            this.layout = layouts[this.input.dataset.layout];
+            
 
             if (!this.visible)
                 this.visible = true
