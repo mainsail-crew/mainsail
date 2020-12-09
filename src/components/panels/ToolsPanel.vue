@@ -18,7 +18,7 @@
         <v-card-text class="px-0 py-2 content">
             <v-row align="center">
                 <v-col class="py-0 font-weight-bold" style="padding-left: 68px;">Name</v-col>
-                <v-col class="py-0 text-center font-weight-bold d-none d-sm-block">Status</v-col>
+                <v-col class="py-0 text-center font-weight-bold d-none d-sm-block">State</v-col>
                 <v-col class="py-0 text-center font-weight-bold">Current</v-col>
                 <v-col class="text-center py-0 pr-8 font-weight-bold">Target</v-col>
             </v-row>
@@ -29,7 +29,7 @@
                         <v-icon :color="heater.color">mdi-{{ heater.icon }}</v-icon>
                     </v-col>
                     <v-col class="py-0 font-weight-bold">{{ heater.name }}</v-col>
-                    <v-col class="py-0 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? "active" : "off" }}</small></v-col>
+                    <v-col class="py-0 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
                     <v-col class="py-0 text-center">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</v-col>
                     <v-col class="text-center py-0 pr-8 pr-0  vertical_align_center">
                         <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
