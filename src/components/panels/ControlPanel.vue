@@ -11,14 +11,14 @@
 
 <template>
     <v-card>
-        <v-row class="" v-if="['standby', 'complete', 'error'].includes(printer_state)">
+        <v-row class="" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 pb-0 text-center">
                 <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn>
                 <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
                <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
                     <v-btn @click="doSendMove('X-100')" class="btnMinWidthAuto col"><span class="body-2">-100</span></v-btn>
@@ -31,7 +31,7 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
                     <v-btn @click="doSendMove('Y-100')" class="btnMinWidthAuto col"><span class="body-2">-100</span></v-btn>
@@ -44,7 +44,7 @@
                 </v-btn-toggle>
             </v-col>
         </v-row>
-        <v-row class="mt-3" v-if="['standby', 'complete', 'error'].includes(printer_state)">
+        <v-row class="mt-3" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
             <v-col class="col-12 py-0 px-6 text-center">
                 <v-btn-toggle dense no-gutters class="row mx-auto" style="flex-wrap: nowrap;" >
                     <v-btn @click="doSendMove('Z-25')" dense class="btnMinWidthAuto col"><span class="body-2">-25</span></v-btn>
