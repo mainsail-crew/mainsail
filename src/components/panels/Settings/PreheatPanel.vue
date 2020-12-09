@@ -31,6 +31,20 @@
                     </v-row>
                 </v-col>
             </v-row>
+            <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
+                <v-divider class="my-2"></v-divider>
+                <v-row class="text-center py-1 pb-2" align="center">
+                    <v-col class="equal-width py-0 px-0">
+                        <v-row><v-col class="px-0 py-0">{{profile.material}}</v-col></v-row>
+                    </v-col>
+                    <v-col class="equal-width py-0 px-0">
+                        <v-row><v-col class="px-0 py-0">{{profile.heater}}</v-col></v-row>
+                    </v-col>
+                    <v-col class="equal-width py-0 px-0">
+                        <v-row><v-col class="px-0 py-0">{{profile.bed}}</v-col></v-row>
+                    </v-col>
+                </v-row>
+            </div>
             <v-row>
                 <v-col class="py-0 px-3 equal-width">
                     <v-row>
