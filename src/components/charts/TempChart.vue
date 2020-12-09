@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
 import CanvasJS from '@/assets/canvasjs-3.2.3/canvasjs.min'
 
 export default {
@@ -48,17 +47,16 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-
-        }),
-        ...mapGetters([
-            //'printer/getMacros',
-        ]),
         datasets: {
             get () {
                 return this.$store.state.printer.tempHistory.datasets
             }
         },
+        maxTemp: {
+            get() {
+                return this.$store.getters["printer/getMaxTemp"]
+            }
+        }
     },
     methods: {
 
@@ -72,6 +70,7 @@ export default {
                 this.chartOptions.data = this.datasets
                 this.chartOptions.axisX.minimum = new Date() - 60* this.tempchartDisplayMinutes *1000
                 this.chartOptions.axisX.maximum = new Date()
+                this.chartOptions.axisY.maximum = this.maxTemp
                 this.chart.render()
             }
         }, 1000);
