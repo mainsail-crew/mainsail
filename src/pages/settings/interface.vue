@@ -7,6 +7,7 @@
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-dashboard-panel></settings-dashboard-panel>
+                <settings-preheat-panel></settings-preheat-panel>
                 <settings-scale-panel v-if="showDashboardScale" class="mt-6"></settings-scale-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">

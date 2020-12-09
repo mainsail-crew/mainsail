@@ -125,7 +125,7 @@
                 </div>
             </div>
             
-            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" />
+            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
     </v-app>
 </template>
@@ -244,10 +244,10 @@ export default {
             this.enabledKeyboard=this.$cookies.isKey("enableVirtualKeyboard")
         });
         bus.$on('hidekeyboard', () => {
-          this.visible = false;
-          this.inputvalue = null;
-          this.inputname = null;
-          this.input = null;
+            this.visible = false;
+            this.inputvalue = null;
+            this.inputname = null;
+            this.input = null;
         });
     },
     methods: {
@@ -255,6 +255,10 @@ export default {
             if(this.input!=null){
                 this.inputvalue=this.input.value;
             }
+        },
+        clearKeyboard(){
+            this.input.value=null,
+            this.inputvalue=null
         },
         accept() {
           this.hide();

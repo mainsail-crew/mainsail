@@ -19,7 +19,7 @@ try {
     },1000);
 } catch (err){
     console.log("HX711 is not installed, disable scale Feature!");
-    status = false;
+    status = true;
     store.dispatch('gui/setSettings', { dashboard: { boolScaleAvailable: status } });
     store.dispatch('gui/setSettings', { dashboard: { boolScale: status } });
  }

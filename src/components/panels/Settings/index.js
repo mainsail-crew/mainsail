@@ -10,6 +10,7 @@ import LimitsPanel from "./LimitsPanel";
 import ConfigFilesPanel from "./ConfigFilesPanel";
 import RunoutPanel from "./RunoutPanel";
 import LogfilesPanel from "./LogfilesPanel";
+import PreheatPanel from "./PreheatPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -20,6 +21,7 @@ Vue.component('settings-endstop-panel', EndstopPanel);
 Vue.component('settings-limits-panel', LimitsPanel);
 Vue.component('settings-runout-panel', RunoutPanel);
 Vue.component('settings-logfiles-panel', LogfilesPanel);
+Vue.component('settings-preheat-panel',PreheatPanel)
 Vue.component('settings-config-files-panel', ConfigFilesPanel);
 
 export default {

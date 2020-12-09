@@ -6,6 +6,7 @@
             <klippy-state-panel v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
             <webcam-panel v-if="showDashboardWebcam" class="mt-6"></webcam-panel>
             <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
+            <preheat-panel class="mt-6"></preheat-panel>
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>

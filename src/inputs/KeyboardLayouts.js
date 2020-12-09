@@ -11,7 +11,7 @@ module.exports = {
 			"enter": { key: "\r\n", width: 80, classes: "control enter"},
 			"backspace": { func: "backspace", classes: "control backspace", width: 65},
 			"accept": { func: "accept", classes: "control featured close"},
-			"next": { func: "next", text: "Next", classes: "control featured"}
+			"clear": { func: "next", classes: "control featured clear"}
 		},
 
 		default: [
@@ -19,14 +19,14 @@ module.exports = {
 			"{tab} q w e r t y u i o p [ ] \\",
 			"{caps} a s d f g h j k l ; ' {enter}",
 			"{shiftl} z x c v b n m , . / {shiftr}",
-			"{next} {space} {accept}"
+			"{clear} {space} {accept}"
 		],
 		shifted: [
 			"~ ! @ # $ % ^ & * ( ) _ + {backspace}",
 			"{tab} Q W E R T Y U I O P { } |",
 			"{caps} A S D F G H J K L : \" {enter}",
 			"{shiftl} Z X C V B N M < > ? {shiftr}",
-			"{next} {space} {accept}"
+			"{clear} {space} {accept}"
 		],
 		
 		capsed: [
@@ -34,7 +34,7 @@ module.exports = {
 			"{tab} Q W E R T Y U I O P [ ] \\",
 			"{caps} A S D F G H J K L ; ' {enter}",
 			"{shiftl} Z X C V B N M , . / {shiftr}", 
-			"{next} {space} {accept}"
+			"{clear} {space} {accept}"
 		]		
 	},
 
@@ -48,7 +48,7 @@ module.exports = {
 			"space": { key: " ", width: 200},
 			"backspace": { func: "backspace", classes: "control"},
 			"accept": { func: "accept", classes: "control featured close"},
-			"next": { func: "next", text: "Next", classes: "featured"},
+			"clear": { func: "next", classes: "control featured clear"},
 			"zero": { key: "0", width: 130}
 		},
 
@@ -56,21 +56,21 @@ module.exports = {
 			"q w e r t y u i o p",
 			" a s d f g h j k l ",
 			"{shift} z x c v b n m {backspace}",
-			"{numbers} , {space} . {next} {accept}"
+			"{numbers} , {space} . {clear} {accept}"
 		],
 
 		shifted: [
 			"Q W E R T Y U I O P",
 			" A S D F G H J K L ",
 			"{default} Z X C V B N M ",
-			"{numbers} _ {space} {backspace} {next} {accept}"
+			"{numbers} _ {space} {backspace} {clear} {accept}"
 		],
 
 		numbers: [
 			"1 2 3",
 			"4 5 6",
 			"7 8 9",
-			"  {alpha} . {zero} {backspace} {next} {accept}"
+			"  {alpha} . {zero} {backspace} {clear} {accept}"
 		]
 	},
 
@@ -79,7 +79,7 @@ module.exports = {
 		_meta: {
 			"backspace": { func: "backspace", classes: "control"},
 			"accept": { func: "accept", classes: "control featured close"},
-			"next": { func: "next", text: "Next", classes: "control featured"},
+			"clear": { func: "next", classes: "control featured clear"},
 			"zero": { key: "0", width: 130}
 		},
 
@@ -87,7 +87,7 @@ module.exports = {
 			"1 2 3",
 			"4 5 6",
 			"7 8 9",
-			"_ - . {zero} {backspace} {next} {accept}"
+			"_ - . {zero} {backspace} {clear} {accept}"
 		]
 	}
 

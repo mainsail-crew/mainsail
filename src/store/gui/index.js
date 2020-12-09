@@ -34,9 +34,22 @@ export function getDefaultState() {
 			flipY: false,
 			bool: false,
 		},
-		discord: {
-			token: "",
-			prefix: "ms!",
+		preheatbutton: {
+			material1: "pla",
+			heater1: 185,
+			bed1: 50,
+			material2: "petg",
+			heater2: 200,
+			bed2: 70,
+			material3: "abs",
+			heater3: 230,
+			bed3: 90,
+			material4: "",
+			heater4: 0,
+			bed4: 0,
+			material5: "",
+			heater5: 0,
+			bed5: 0
 		},
 		gcodefiles: {
 			countPerPage: 10,
