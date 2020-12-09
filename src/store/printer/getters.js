@@ -275,6 +275,31 @@ export default {
 		return ''
 	},
 
+	getMaxTemp: state => {
+		let maxtemp = 0
+
+		Object.entries(state.configfile.config).forEach(([key, value]) => {
+			if (
+				Array.isArray(state.heaters.available_heaters) &&
+				state.heaters.available_heaters.length
+			) {
+				let keySplit = key.split(" ")
+
+				if (
+					(
+						state.heaters.available_heaters.includes(key) ||
+						keySplit[0] === "temperature_fan" ||
+						keySplit[0] === "temperature_sensor"
+					) &&
+					'max_temp' in value &&
+					maxtemp < parseInt(value.max_temp)
+				) maxtemp = parseInt(value.max_temp)
+			}
+		})
+
+		return (maxtemp > 0 ? maxtemp + 10 : 300)
+	},
+
 	existPrinterConfig: state => {
 		if (
 			typeof(state.configfile.config) === "object" &&
