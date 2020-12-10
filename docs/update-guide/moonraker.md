@@ -9,8 +9,7 @@ permalink: /update/moonraker
 ## Moonraker
 ```bash
 cd ~/moonraker
-git fetch
-git checkout origin/master
+git pull
 ```
 
 Restart Moonraker (`sudo service moonraker restart`) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
@@ -20,8 +19,15 @@ If you see a content like this
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
 
-### Update Moonraker dependence
+### Change Moonraker to systemd service (December 6th 2020)
 This is only nessasary, if your Moonraker version is older than 31. october 2020.
+```bash
+~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
+```
+This allows logging to stdout which can be viewed with the journalctl -u moonraker command`.
+
+### Update Moonraker dependence
+This is only nessasary, if you see missing modules in the moonraker log.
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -r
 ```
