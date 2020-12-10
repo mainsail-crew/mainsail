@@ -10,8 +10,7 @@ permalink: /update/klipper
 ### Update from Repository
 ```bash
 cd ~/klipper
-git fetch
-git checkout origin/master
+git pull
 ```
 
 Restart Klipper (`sudo service klipper restart`) and check the `klippy.log`, if Klipper starts
