@@ -24,7 +24,7 @@ This is only nessasary, if your Moonraker version is older than 31. october 2020
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
 ```
-This allows logging to stdout which can be viewed with the journalctl -u moonraker command`.
+This allows logging to stdout which can be viewed with the `journalctl -u moonraker command`.
 
 ### Update Moonraker dependence
 This is only nessasary, if you see missing modules in the moonraker log.
