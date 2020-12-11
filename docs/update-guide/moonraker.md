@@ -20,7 +20,7 @@ If you see a content like this
 ```
 
 ### Change Moonraker to systemd service (December 6th 2020)
-This is only nessasary, if your Moonraker version is older than 31. october 2020.
+Moonraker is now installed as a systemd service. If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
 ```
