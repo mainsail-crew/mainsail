@@ -13,7 +13,6 @@
     "core-js": "^3.7.0",
     "discord.js": "^12.5.1",
     "fs": "0.0.1-security",
-    "hx711": "^0.3.0",
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
     "readdir-enhanced": "^6.0.4",
