@@ -14,6 +14,10 @@ export default {
 		dispatch('upload')
 	},
 
+	setData({ commit }, payload) {
+		commit('setSettings', payload)
+	},
+
 	upload({ state, rootState }) {
 		let file = new File([JSON.stringify({ state })], 'gui.json');
 

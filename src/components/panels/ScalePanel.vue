@@ -87,6 +87,7 @@
                 'scaleConfig': state => state.gui.scale
             }),
             getWeight1(){
+                console.log(this.scaleConfig.raw1)
                 var calculatedWeight1 = this.scaleConfig.raw1 -this.scaleConfig.tare1 - this.scaleConfig.offset1;
                 if(calculatedWeight1 < 0){
                     return 0;
