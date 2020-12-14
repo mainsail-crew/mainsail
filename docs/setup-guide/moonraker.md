@@ -18,7 +18,7 @@ git clone https://github.com/Arksine/moonraker.git
 Run Moonrakers install script:
 ```bash
 cd ~/moonraker/scripts
-./install-moonraker.sh
+./install-moonraker.sh -c /home/pi/klipper_config/moonraker.conf
 ```
 
 Once the script is finished, both Moonraker and Klipper should be started.  
@@ -30,7 +30,7 @@ Misconfigured trusted_clients are a very common source of failure.
 
 For Moonraker you'll need to create a separate config file.
 
-`nano ~/moonraker.conf`
+`nano ~/klipper_config/moonraker.conf`
 
 Insert the following part and modify `trusted_clients` according to arksines description below.
 Also consider further IP ranges, e.g. when connecting via VPN. To determine your local ip `ip a` and `ifconfig -a` are common ways to do so on Linux and `ipconfig` on Windows.
