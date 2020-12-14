@@ -82,7 +82,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                    <v-col class="pt-3 py-0 px-3 equal-width">
+                    <v-col class="py-5 px-3 equal-width">
                         <v-row>
                             <v-col class="py-0 px-3">
                                 <v-btn v-on:click="executeTare1" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
@@ -92,9 +92,6 @@
                             </v-col>
                         </v-row>
                     </v-col>
-                </v-row>
-                <v-row>
-                    <br>
                 </v-row>
                 <v-row>
                     <v-col class="py-0 px-3 equal-width">
