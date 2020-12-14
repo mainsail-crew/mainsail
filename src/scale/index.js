@@ -7,7 +7,7 @@ var raw2 = 0;
 
 setInterval(retrieveData,1000);
 function retrieveData(){
-    axios.get("http://raspberrypi:8081/get.json")
+    axios.get("http://192.168.178.71:8081/")
     .then(function (response){
         var data = response.data;
         raw1=data[0].value

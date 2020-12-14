@@ -30,7 +30,7 @@
                 <v-divider class="my-2" v-if="profile.heater!=0"></v-divider>
                 <v-row class="text-center py-1 pb-2" v-if="profile.heater!=0" align="center">
                     <v-col class="py-0 flex-grow-0 pl-6 pr-0 ">
-                            <v-btn v-on:click="executePreheat(profile.heater,profile.bed)" rounded color="blue-grey darken-3">Heat</v-btn>
+                            <v-btn v-on:click="executePreheat(profile.heater,profile.bed)" rounded color="blue-grey darken-4">Heat</v-btn>
                     </v-col>
                     <v-col class="equal-width py-0 px-0">
                         <v-row><v-col class="px-0 py-0">{{profile.material}}</v-col></v-row>

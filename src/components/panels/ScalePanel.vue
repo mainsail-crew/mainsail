@@ -45,6 +45,7 @@
                                 @click.native="show"
                                 @blur="hide"
                                 data-layout="numeric" 
+                                append-icon="mdi-weight-gram"
                             ></v-text-field>
                 </v-col>
             </v-row>
@@ -67,6 +68,7 @@
                                 @click.native="show"
                                 @blur="hide"
                                 data-layout="numeric" 
+                                append-icon="mdi-weight-gram"
                             ></v-text-field>
                 </v-col>
             </v-row>
@@ -87,12 +89,12 @@
                 'scaleConfig': state => state.gui.scale
             }),
             getWeight1(){
-                console.log(this.scaleConfig.raw1)
-                var calculatedWeight1 = this.scaleConfig.raw1 -this.scaleConfig.tare1 - this.scaleConfig.offset1;
-                if(calculatedWeight1 < 0){
+                var calculatedWeight1 = (this.scaleConfig.raw1 - this.scaleConfig.tare1) / this.scaleConfig.referenceunit1 - this.scaleConfig.offset1;
+                calculatedWeight1=calculatedWeight1.toFixed(2);
+                if(calculatedWeight1 < 0 || !isFinite(calculatedWeight1)){
                     return 0;
                 }
-                return this.scaleConfig.raw1 -this.scaleConfig.tare1 - this.scaleConfig.offset1;
+                return calculatedWeight1;
             },
             getPosition1(){
                 var position1 = this.scaleConfig.position1;
@@ -110,11 +112,12 @@
                 }
             },
             getWeight2(){
-                var calculatedWeight2 = this.scaleConfig.raw2 -this.scaleConfig.tare2 - this.scaleConfig.offset2;
-                if(calculatedWeight2 < 0){
+                var calculatedWeight2 = (this.scaleConfig.raw2 - this.scaleConfig.tare2) / this.scaleConfig.referenceunit2 - this.scaleConfig.offset2;
+                calculatedWeight2=calculatedWeight2.toFixed(2);
+                if(calculatedWeight2 < 0 || !isFinite(calculatedWeight2)){
                     return 0;
                 }
-                return this.scaleConfig.raw2 -this.scaleConfig.tare2 - this.scaleConfig.offset2;
+                return calculatedWeight2;
             },
             getPosition2(){
                 var position2 = this.scaleConfig.position2;
