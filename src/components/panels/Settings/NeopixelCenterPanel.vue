@@ -24,7 +24,7 @@
                         data-layout="numeric" 
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="py-0">
                     <v-color-picker
                         dot-size="25"
                         hide-mode-switch
