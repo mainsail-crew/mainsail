@@ -4,19 +4,6 @@ const axios = require('axios');
 
 var URL = store.state.gui.modules.neopixelcenterUrl;
 
-var numbleds = store.state.gui.neopixelcenter.numbleds;
-
-
-if(URL.startsWith("https://")||URL.startsWith("http://")){
-    axios.get(URL+"/updateLeds?amount="+numbleds)
-    .then(function (){
-        
-    })
-    .catch(function (){
-        
-    });
-}
-
 var ledmaxid = store.state.gui.neopixelcenter.numbleds;
 ledmaxid=ledmaxid - 1;
 var ledcolor = hexAToRGBA(store.state.gui.neopixelcenter.color);
@@ -56,6 +43,7 @@ function hexAToRGBA(h) {
 }
 
 function retrieveData(){
+    URL = store.state.gui.modules.neopixelcenterUrl;
     if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
         return;
     }

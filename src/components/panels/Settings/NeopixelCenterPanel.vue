@@ -59,16 +59,6 @@
                     return this.$store.state.gui.neopixelcenter.numbleds;
                 },
                 set(numbleds) {
-                    var URL = this.$store.state.gui.modules.neopixelcenterUrl;
-                    if(URL.startsWith("https://")||URL.startsWith("http://")){
-                        axios.get(URL+"/updateLeds?amount="+numbleds)
-                        .then(function (){
-                            
-                        })
-                        .catch(function (){
-                            
-                        });
-                    }
                     return this.$store.dispatch('gui/setSettings', { neopixelcenter: { numbleds } });
                 }
             },

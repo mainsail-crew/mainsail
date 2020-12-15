@@ -11,7 +11,6 @@
     "axios": "^0.21.0",
     "chart.js": "^2.9.4",
     "core-js": "^3.7.0",
-    "discord.js": "^12.5.1",
     "fs": "0.0.1-security",
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.22.0",
