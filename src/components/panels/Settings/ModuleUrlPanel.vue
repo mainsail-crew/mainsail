@@ -25,7 +25,7 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col class="py-0">
+                <v-col class="py-0 pb-3">
                     <v-text-field
                         v-model="neopixelcenterUrl"
                         hide-details

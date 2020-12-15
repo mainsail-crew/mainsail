@@ -7,3 +7,7 @@
 .preheat-setting-panel label{
     display:none;
 }
+.scaleguide:hover {
+    color: #29B6F6;
+    cursor: pointer;
+}
