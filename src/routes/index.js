@@ -6,6 +6,7 @@ import Files from '../pages/Files.vue'
 import Settings from '../pages/Settings.vue'
 import SettingsInterface from '../pages/settings/interface.vue'
 import SettingsMachine from '../pages/settings/machine.vue'
+import SettingsModules from '../pages/settings/modules.vue'
 
 const routes = [
     {
@@ -67,6 +68,12 @@ const routes = [
                 title: 'Interface',
                 path: '/settings/interface',
                 component: SettingsInterface,
+                alwaysShow: true,
+            },
+            {
+                title: 'Modules',
+                path: '/settings/modules',
+                component: SettingsModules,
                 alwaysShow: true,
             },
         ]

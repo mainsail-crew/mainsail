@@ -11,6 +11,7 @@ import ConfigFilesPanel from "./ConfigFilesPanel";
 import RunoutPanel from "./RunoutPanel";
 import LogfilesPanel from "./LogfilesPanel";
 import PreheatPanel from "./PreheatPanel";
+import ModuleUrlPanel from "./ModuleUrlPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -23,6 +24,7 @@ Vue.component('settings-runout-panel', RunoutPanel);
 Vue.component('settings-logfiles-panel', LogfilesPanel);
 Vue.component('settings-preheat-panel',PreheatPanel)
 Vue.component('settings-config-files-panel', ConfigFilesPanel);
+Vue.component('settings-module-url', ModuleUrlPanel);
 
 export default {
 

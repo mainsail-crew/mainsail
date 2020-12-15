@@ -2,14 +2,13 @@
     <div>
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-general-panel></settings-general-panel>
-                <settings-webcam-panel class="mt-6"></settings-webcam-panel>
+                <settings-module-url></settings-module-url>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-dashboard-panel></settings-dashboard-panel>
+                <settings-preheat-panel class="mt-0"></settings-preheat-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-macros-panel></settings-macros-panel>
+                <settings-scale-panel></settings-scale-panel>
             </v-col>
         </v-row>
     </div>
@@ -20,6 +19,7 @@
     export default {
         computed: {
             ...mapState({
+                showDashboardScale: state => state.gui.dashboard.boolScale,
             }),
         },
         methods: {

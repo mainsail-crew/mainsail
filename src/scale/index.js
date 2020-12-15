@@ -7,7 +7,7 @@ var raw2 = 0;
 
 setInterval(retrieveData,1000);
 function retrieveData(){
-    axios.get("http://192.168.178.71:8081/")
+    axios.get(store.state.gui.modules.scaleUrl)
     .then(function (response){
         var data = response.data;
         raw1=data[0].value
