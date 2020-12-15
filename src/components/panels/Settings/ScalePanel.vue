@@ -148,7 +148,7 @@
                 <v-row>
                     <v-col class="pt-3 py-0 px-3 equal-width">
                             <v-col class="py-0 px-0">
-                                <v-btn @click="dialogCalibrateGuide.show = true" rounded color="blue-grey darken-4" style="width: 100%">Guide</v-btn>
+                                <div @click="dialogCalibrateGuide.show = true" style="width: 100%;text-align: center;">Guide</div>
                             </v-col>
                     </v-col>
                 </v-row>
