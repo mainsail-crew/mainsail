@@ -3,6 +3,7 @@
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-module-url></settings-module-url>
+                <settings-neopixelcenter class="mt-6"></settings-neopixelcenter>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-preheat-panel class="mt-0"></settings-preheat-panel>

@@ -12,9 +12,14 @@ export function getDefaultState() {
 			boolTempchart: true,
 			boolConsole: false,
 			boolScale: false,
-			boolScaleAvailable: true,
+			boolScaleAvailable: false,
+			boolNeopixelCenterAvailable: false,
 			hiddenMacros: [],
 			hiddenTempChart: [],
+		},
+		neopixelcenter:{
+			color:"#FFFFFFFF",
+			numbleds:1,
 		},
 		modules: {
 			scaleUrl: "",
@@ -96,6 +101,7 @@ export function getDefaultState() {
 		}
 	}
 }
+
 
 // initial state
 const state = getDefaultState()
