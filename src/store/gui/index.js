@@ -16,6 +16,10 @@ export function getDefaultState() {
 			hiddenMacros: [],
 			hiddenTempChart: [],
 		},
+		modules: {
+			scaleUrl: "",
+			neopixelcenterUrl: ""
+		},
 		scale: {
 			calibrateweight1: 0,
 			offset1: 0,
