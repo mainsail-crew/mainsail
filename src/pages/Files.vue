@@ -58,7 +58,7 @@
                     <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                     <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
                     <v-btn @click="refreshFileList" title="Refresh current Directory" class="flex-grow-1"><v-icon>mdi-refresh</v-icon></v-btn>
-                    <v-menu :offset-y="true" title="Setup current list">
+                    <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
                         </template>
@@ -335,9 +335,23 @@
                     return this.$store.dispatch("gui/setSettings", { gcodefiles: { countPerPage: newVal } })
                 }
             },
+            hideMetadataColums: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.hideMetadataColums
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { hideMetadataColums: newVal } })
+                }
+            },
         },
         created() {
             this.loadPath()
+        },
+        mounted() {
+            this.hideMetadataColums.forEach((key) => {
+                let headerElement = this.headers.find(element => element.value === key)
+                if (headerElement) headerElement.visible = false
+            })
         },
         methods: {
             uploadFile: function() {
@@ -667,7 +681,23 @@
             },
             showHiddenFiles: function() {
                 this.loadPath();
+            },
+            hideMetadataColums: function(newVal) {
+                newVal.forEach((key) => {
+                    let headerElement = this.headers.find(element => element.value === key)
+                    if (headerElement) headerElement.visible = false
+                })
             }
+            /*headers: {
+                deep: true,
+                handler(newVal) {
+                    window.console.log(newVal)
+                    newVal.forEach((element) => {
+                        if (element.visible && this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.splice(this.hideMetadataColums.indexOf(element.value), 1)
+                        else if (!element.visible && !this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.push(element.value)
+                    })
+                }
+            }*/
         }
     }
 </script>

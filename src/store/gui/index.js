@@ -25,15 +25,7 @@ export function getDefaultState() {
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: true,
-			showMetadata: {
-				size: true,
-				modified: true,
-				object_height: true,
-				layer_height: true,
-				filament_total: true,
-				estimated_time: true,
-				slicer: true,
-			}
+			hideMetadataColums: []
 		},
 		settings: {
 			configfiles: {
