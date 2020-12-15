@@ -16,15 +16,26 @@
                             <v-btn
                                 text
                                 color="primary"
-                                class="ml-1"
+                                class="ml-1 d-none d-sm-inline-flex"
                                 @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
                         </v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-item-group class="v-btn-toggle" name="controllers">
+                        <v-spacer class=""></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            class=" d-sm-none"
+                            @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
+                        <v-item-group class="v-btn-toggle d-none d-sm-flex" name="controllers">
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
                         </v-item-group>
                     </v-toolbar>
+                    <v-card-text class="d-sm-none text-center pb-0">
+                        <v-item-group class="v-btn-toggle" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                        </v-item-group>
+                    </v-card-text>
                     <v-card-text v-if="!(this.bed_mesh && this.bed_mesh.profile_name)">
                         No bed_mesh has been loaded yet.
                     </v-card-text>
