@@ -8,6 +8,7 @@
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-scale</v-icon>Scale</span>
+                    <span class="subheading" v-if="!scaleAviable" style="color:#D32F2F;">  Module not found!</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="px-3 py-3 content">
@@ -66,6 +67,7 @@
                                     @click.native="show"
                                     @blur="hide"
                                     data-layout="normal"
+                                    append-icon="mdi-map-marker"
                                 ></v-text-field>
                             </v-col>
                             <v-col class="py-0">
@@ -76,6 +78,7 @@
                                     @click.native="show"
                                     @blur="hide"
                                     data-layout="normal"
+                                    append-icon="mdi-map-marker"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -185,7 +188,6 @@
     import {bus} from "../../../main";
     export default {
         components: {
-
         },
         data: function() {
             return {
@@ -195,6 +197,11 @@
             }
         },
         computed: {
+            scaleAviable: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolScaleAvailable;
+                }
+            },
             scaleOffset1: {
                 get() {
                     return this.$store.state.gui.scale.offset1;
