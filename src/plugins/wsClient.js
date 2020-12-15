@@ -65,15 +65,20 @@ export default class WebSocketClient {
             if (this.store) {
                 if (this.wsData.filter(item => item.id === data.id).length > 0 &&
                     this.wsData.filter(item => item.id === data.id)[0].action !== "") {
+                    let tmpWsData = this.wsData.filter(item => item.id === data.id)[0]
+
                     if (data.error && data.error.message) {
                         if (
                             !this.blacklistMessages.find(element => data.error.message.startsWith(element)) &&
-                            !this.blacklistFunctions.find(element => this.wsData.filter(item => item.id === data.id)[0].action.startsWith(element))
+                            !this.blacklistFunctions.find(element => tmpWsData.action.startsWith(element))
                         ) {
-                            window.console.error("Response Error: "+this.wsData.filter(item => item.id === data.id)[0].action+" > "+data.error.message);
-                            this.store.dispatch(
-                                this.wsData.filter(item => item.id === data.id)[0].action,
-                                Object.assign({requestParams: this.wsData.filter(item => item.id === data.id)[0].params }, {error: data.error})
+                            window.console.error("Response Error: "+tmpWsData.action+" > "+data.error.message);
+
+                            this.store.dispatch(tmpWsData.action,
+                                Object.assign(tmpWsData.actionPreload || {}, {
+                                    error: data.error,
+                                    requestParams: tmpWsData.params
+                                })
                             );
                         }
                     } else {

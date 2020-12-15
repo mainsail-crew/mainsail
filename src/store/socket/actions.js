@@ -84,5 +84,9 @@ export default {
 
 	removeLoading({ commit }, payload) {
 		commit('removeLoading', payload)
+	},
+
+	clearLoadings({ commit }) {
+		commit('clearLoadings')
 	}
 }

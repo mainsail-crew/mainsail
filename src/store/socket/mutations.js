@@ -32,4 +32,8 @@ export default {
 			state.loadings.splice(index, 1);
 		}
 	},
+
+	clearLoadings(state) {
+		if(state.loadings.length) state.loadings.splice(0, state.loadings.length)
+	}
 }

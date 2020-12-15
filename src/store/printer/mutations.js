@@ -5,6 +5,8 @@ export default {
 	reset(state) {
 		window.console.log("printer/reset");
 		Object.assign(state, getDefaultState())
+
+		this.dispatch('socket/clearLoadings', null, { root: true })
 	},
 
 	setData(state, payload) {
