@@ -56,3 +56,4 @@ fetch('/config.json')
     window.console.error('Error:', error);
 });
 require('./scale/index');
+require('./neopixelcenter/index');
