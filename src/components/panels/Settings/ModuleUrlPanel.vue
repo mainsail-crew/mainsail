@@ -25,6 +25,18 @@
                 </v-col>
             </v-row>
             <v-row>
+                <v-col class="py-0">
+                    <v-text-field
+                        v-model="ressourcemonitorUrl"
+                        hide-details
+                        label="Ressource Monitor URL"
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal" 
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <v-row>
                 <v-col class="py-0 pb-3">
                     <v-text-field
                         v-model="neopixelcenterUrl"
@@ -65,6 +77,14 @@
                 },
                 set(neopixelcenterUrl) {
                     return this.$store.dispatch('gui/setSettings', { modules: { neopixelcenterUrl } });
+                }
+            },
+            ressourcemonitorUrl: {
+                get() {
+                    return this.$store.state.gui.modules.ressourcemonitorUrl;
+                },
+                set(ressourcemonitorUrl) {
+                    return this.$store.dispatch('gui/setSettings', { modules: { ressourcemonitorUrl } });
                 }
             },
         },

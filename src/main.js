@@ -57,3 +57,4 @@ fetch('/config.json')
 });
 require('./scale/index');
 require('./neopixelcenter/index');
+require('./ressourcemonitor/index');

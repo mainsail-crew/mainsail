@@ -14,6 +14,7 @@ export function getDefaultState() {
 			boolScale: false,
 			boolScaleAvailable: false,
 			boolNeopixelCenterAvailable: false,
+			boolRessourceMonitorAvailable: false,
 			hiddenMacros: [],
 			hiddenTempChart: [],
 		},
@@ -23,6 +24,7 @@ export function getDefaultState() {
 		},
 		modules: {
 			scaleUrl: "",
+			ressourcemonitorUrl: "",
 			neopixelcenterUrl: ""
 		},
 		scale: {

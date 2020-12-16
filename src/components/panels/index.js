@@ -12,6 +12,7 @@ import WebcamPanel from "./WebcamPanel";
 import ScalePanel from "./ScalePanel";
 import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
+import Ressourcemonitor from "./Ressourcemonitor/";
 import PowerControlPanel from "./PowerControlPanel.vue";
 import PreheatPanel from "./PreheatPanel.vue";
 
@@ -30,5 +31,6 @@ Vue.component('miniconsole-panel', MiniconsolePanel);
 Vue.component('power-control-panel', PowerControlPanel);
 
 export default {
-    Settings
+    Settings,
+    Ressourcemonitor
 }

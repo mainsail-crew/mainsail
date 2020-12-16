@@ -4,6 +4,7 @@ import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import Settings from '../pages/Settings.vue'
+import Ressourcemonitor from '../pages/Ressourcemonitor.vue'
 import SettingsInterface from '../pages/settings/interface.vue'
 import SettingsMachine from '../pages/settings/machine.vue'
 import SettingsModules from '../pages/settings/modules.vue'
@@ -49,6 +50,13 @@ const routes = [
         icon: 'printer-3d-nozzle',
         component: Files,
         alwaysShow: false,
+    },
+    {
+        title: "Ressource Monitor",
+        path: '/ressourcemonitor',
+        icon: 'server',
+        component: Ressourcemonitor,
+        alwaysShow: true,
     },
     {
         title: "Settings",

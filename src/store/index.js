@@ -11,6 +11,7 @@ import server from './server'
 import printer from './printer'
 import files from './files'
 import gui from './gui'
+import ressourcemonitor from './ressourcemonitor'
 
 Vue.use(Vuex);
 Vue.use(VueToast);
@@ -25,6 +26,7 @@ export default new Vuex.Store({
         printer,
         files,
         gui,
+        ressourcemonitor,
     },
     getters: getters,
     mutations: mutations,
