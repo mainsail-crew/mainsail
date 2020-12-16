@@ -79,7 +79,7 @@
                                 {{ formatTimeMobile(item.date)}}
                             </td>
                             <td class="log-cell content-cell py-2" colspan="2">
-                                <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
+                                <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
                             </td>
                         </tr>
                     </template>
@@ -91,6 +91,7 @@
 <script>
     import { mapState, mapGetters } from 'vuex';
     import Vue from "vue";
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
     export default {
         data () {
@@ -151,11 +152,8 @@
 
                 return hours+":"+minutes+":"+seconds;
             },
-            formatMessage(message) {
-                if (typeof message === "string") message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
-
-                return message;
-            },
+            colorConsoleMessage: colorConsoleMessage,
+            formatConsoleMessage: formatConsoleMessage,
             onKeyUp() {
                 if (this.lastCommandNumber === null && this.lastCommands.length) {
                     this.lastCommandNumber = this.lastCommands.length - 1;
