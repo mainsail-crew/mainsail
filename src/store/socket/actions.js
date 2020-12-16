@@ -23,7 +23,7 @@ export default {
 				break
 
 			case 'notify_gcode_response':
-				commit('server/addEvent', payload.params[0], { root: true })
+				commit('server/addEvent', Object.assign({ result: payload.params[0] }, { send: false }), { root: true })
 				break
 
 			case 'notify_klippy_ready':

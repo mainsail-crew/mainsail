@@ -73,7 +73,7 @@
                             {{ formatTime(item.date)}}
                         </td>
                         <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                            <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
+                            <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
                         </td>
                     </tr>
                 </template>
@@ -85,6 +85,7 @@
 <script>
     import { mapState } from 'vuex'
     import Vue from "vue";
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
     export default {
         components: {
@@ -179,11 +180,8 @@
 
                 return hours+":"+minutes+":"+seconds;
             },
-            formatMessage(message) {
-                message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
-
-                return message;
-            },
+            colorConsoleMessage: colorConsoleMessage,
+            formatConsoleMessage: formatConsoleMessage,
             customSort: function(items, index, isDesc) {
                 items.sort((a, b) => {
                     if (index[0] === 'date') {
