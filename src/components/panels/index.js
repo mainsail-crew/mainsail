@@ -15,6 +15,7 @@ import Settings from "./Settings/";
 import Ressourcemonitor from "./Ressourcemonitor/";
 import PowerControlPanel from "./PowerControlPanel.vue";
 import PreheatPanel from "./PreheatPanel.vue";
+import NeopixelPanel from "./NeopixelPanel.vue";
 
 Vue.component('status-panel', StatusPanel);
 Vue.component('klippy-state-panel', KlippyStatePanel);
@@ -29,6 +30,7 @@ Vue.component('scale-panel', ScalePanel);
 Vue.component('preheat-panel', PreheatPanel);
 Vue.component('miniconsole-panel', MiniconsolePanel);
 Vue.component('power-control-panel', PowerControlPanel);
+Vue.component('neopixel-panel', NeopixelPanel);
 
 export default {
     Settings,

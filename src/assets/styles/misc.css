@@ -11,3 +11,8 @@
     color: #29B6F6;
     cursor: pointer;
 }
+.neopixel-swatchesonly .v-color-picker__controls{
+    padding: 0;
+    margin: 0;
+    display: none;
+}

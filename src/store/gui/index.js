@@ -14,18 +14,16 @@ export function getDefaultState() {
 			boolScale: false,
 			boolScaleAvailable: false,
 			boolNeopixelCenterAvailable: false,
-			boolRessourceMonitorAvailable: false,
 			hiddenMacros: [],
 			hiddenTempChart: [],
 		},
 		neopixelcenter:{
 			color:"#FFFFFFFF",
-			numbleds:1,
+			stripname:"",
 		},
 		modules: {
 			scaleUrl: "",
 			ressourcemonitorUrl: "",
-			neopixelcenterUrl: ""
 		},
 		scale: {
 			calibrateweight1: 0,

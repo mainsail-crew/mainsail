@@ -25,23 +25,11 @@
                 </v-col>
             </v-row>
             <v-row>
-                <v-col class="py-0">
+                <v-col class="py-0 pb-3">
                     <v-text-field
                         v-model="ressourcemonitorUrl"
                         hide-details
                         label="Ressource Monitor URL"
-                        @click.native="show"
-                        @blur="hide"
-                        data-layout="normal" 
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0 pb-3">
-                    <v-text-field
-                        v-model="neopixelcenterUrl"
-                        hide-details
-                        label="Neopixelcenter URL"
                         @click.native="show"
                         @blur="hide"
                         data-layout="normal" 
