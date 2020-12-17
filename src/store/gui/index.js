@@ -23,7 +23,7 @@ export function getDefaultState() {
 		},
 		modules: {
 			scaleUrl: "",
-			ressourcemonitorUrl: "",
+			ressourcemonitorUrl: "http://localhost:8082",
 		},
 		scale: {
 			calibrateweight1: 0,

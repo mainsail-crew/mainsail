@@ -56,5 +56,5 @@ fetch('/config.json')
     window.console.error('Error:', error);
 });
 require('./scale/index');
-require('./neopixel/index');
 require('./ressourcemonitor/index');
+require('./neopixel/index');

@@ -12,7 +12,6 @@ import WebcamPanel from "./WebcamPanel";
 import ScalePanel from "./ScalePanel";
 import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
-import Ressourcemonitor from "./Ressourcemonitor/";
 import PowerControlPanel from "./PowerControlPanel.vue";
 import PreheatPanel from "./PreheatPanel.vue";
 import NeopixelPanel from "./NeopixelPanel.vue";
@@ -34,5 +33,4 @@ Vue.component('neopixel-panel', NeopixelPanel);
 
 export default {
     Settings,
-    Ressourcemonitor
 }

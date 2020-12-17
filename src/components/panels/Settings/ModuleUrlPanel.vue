@@ -59,14 +59,6 @@
                     return this.$store.dispatch('gui/setSettings', { modules: { scaleUrl } });
                 }
             },
-            neopixelcenterUrl: {
-                get() {
-                    return this.$store.state.gui.modules.neopixelcenterUrl;
-                },
-                set(neopixelcenterUrl) {
-                    return this.$store.dispatch('gui/setSettings', { modules: { neopixelcenterUrl } });
-                }
-            },
             ressourcemonitorUrl: {
                 get() {
                     return this.$store.state.gui.modules.ressourcemonitorUrl;

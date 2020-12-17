@@ -3,6 +3,7 @@
     @import './assets/styles/toastr.css';
     @import './assets/styles/keyboard.css';
     @import './assets/styles/misc.css';
+    @import './assets/styles/scrollbar.css';
 
     .button-min-width-auto {
         min-width: auto !important;
