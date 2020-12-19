@@ -11,7 +11,7 @@ function retrieveData(){
     if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
         return;
     }
-    axios.get(store.state.gui.modules.ressourcemonitorUrl)
+    axios.get(URL)
     .then(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: true } });
         retrieveCPU();
@@ -26,7 +26,7 @@ function retrieveData(){
     });
 }
 function retrieveCPU(){
-    axios.get(store.state.gui.modules.ressourcemonitorUrl+"/getCPU")
+    axios.get(URL+"/getCPU")
     .then(function (response){
         store.state.ressourcemonitor.cpu.vendor=response.data.manufacturer
         store.state.ressourcemonitor.cpu.brand=response.data.brand
@@ -42,7 +42,7 @@ function retrieveCPU(){
     });
 }
 function retrieveCPULoad(){
-    axios.get(store.state.gui.modules.ressourcemonitorUrl+"/getCPULoad")
+    axios.get(URL+"/getCPULoad")
     .then(function (response){
         store.state.ressourcemonitor.cpu.load=response.data.currentload.toFixed(2)
         store.state.ressourcemonitor.cpu.loads=response.data.cpus
@@ -52,7 +52,7 @@ function retrieveCPULoad(){
     });
 }
 function retrieveCPUTemp(){
-    axios.get(store.state.gui.modules.ressourcemonitorUrl+"/getCPUTemp")
+    axios.get(URL+"/getCPUTemp")
     .then(function (response){
         store.state.ressourcemonitor.cpu.temp=response.data.main.toFixed(2)
         store.state.ressourcemonitor.cpu.temps=response.data.cores
@@ -62,7 +62,7 @@ function retrieveCPUTemp(){
     });
 }
 function retrieveRAM(){
-    axios.get(store.state.gui.modules.ressourcemonitorUrl+"/getRAM")
+    axios.get(URL+"/getRAM")
     .then(function (response){
         store.state.ressourcemonitor.ram.modules=response.data
     })
@@ -71,7 +71,7 @@ function retrieveRAM(){
     });
 }
 function retrieveRAMLoad(){
-    axios.get(store.state.gui.modules.ressourcemonitorUrl+"/getRAMLoad")
+    axios.get(URL+"/getRAMLoad")
     .then(function (response){
         store.state.ressourcemonitor.ram.total=response.data.total;
         store.state.ressourcemonitor.ram.used=response.data.used;
