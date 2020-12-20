@@ -59,6 +59,9 @@ export default {
                 tooltips: {
                     enabled: false
                 },
+                hover: {
+                    mode:undefined
+                },
                 /*tooltips: {
                     enabled: false,
                     mode: 'nearest',
@@ -120,8 +123,6 @@ export default {
                                     fontFamily: 'Roboto,sans-serif'
                                 },
                                 min: 0,
-                                beginAtZero: true,
-                                stepSize: 1
                             }
                         }
                     ]

@@ -76,11 +76,12 @@ export default {
 				mainDataset = {
 					label: payload.name,
 					data:[],
-					fill: false,
+					fill: true,
 					borderWidth: 2,
 					markerType: 'none',
 					hidden: hidden,
 					borderColor: color,
+					backgroundColor: color+'40',
 				}
 			}
 

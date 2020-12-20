@@ -4,15 +4,17 @@ const axios = require('axios');
 
 var URL = store.state.gui.modules.ressourcemonitorUrl;
 
-let now = Date.now();
+var now = Date.now();
 
 setInterval(retrieveData,1000);
+store.dispatch('ressourcemonitor/ramHistory/getHistory', {  });
 
 function retrieveData(){
     URL = store.state.gui.modules.ressourcemonitorUrl;
     if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
         return;
     }
+    now = Date.now();
     axios.get(URL)
     .then(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: true } });
@@ -88,10 +90,8 @@ function retrieveRAMLoad(){
         store.state.ressourcemonitor.ram.used=response.data.used;
         store.state.ressourcemonitor.ram.totalswap=response.data.swaptotal;
         store.state.ressourcemonitor.ram.usedswap=response.data.swapused;
-        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram", value: (response.data.used/1024/1024/1024).toFixed(0), time: now });
-        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram_target", value: (response.data.used/1024/1024/1024).toFixed(0), time: now });
-        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Swap", value: (response.data.swapused/1024/1024/1024).toFixed(0), time: now });
-        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Swap_target", value: (response.data.used/1024/1024/1024).toFixed(0), time: now });
+        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram", value: (response.data.used/1024/1024/1024).toFixed(2), time: now });
+        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Swap", value: (response.data.swapused/1024/1024/1024).toFixed(2), time: now });
     })
     .catch(function (){
         

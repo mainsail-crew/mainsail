@@ -2,48 +2,57 @@
 <template>
     <div>
         <v-card elevation="0">
+            <v-toolbar flat dense >
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-chart-donut</v-icon>Usage</span>
+                </v-toolbar-title>
+            </v-toolbar>
             <v-card-text class="py-1">
-                <v-row>
-                    <v-col class="py-0 px-3 equal-width" style="max-width: 200px">
-                            <v-row class="pb-3" v-if="!ifsoc">
-                                <v-col class="py-0 px-0" v-for="modules in this.$store.state.ressourcemonitor.ram.modules" :key="modules.bank" style="writing-mode:vertical-lr;margin-left: -4px;">
-                                    <strong>{{modules.bank}} </strong>
+                <v-col class="py-0 px-3 equal-width">
+                    <v-row>
+                        <v-col class="py-0 px-3">
+                            <v-row>
+                                
+                                <v-col class="py-0 px-3 pt-3">
+                                    <line-chart :chart-data="chartdata" :max="(this.$store.state.ressourcemonitor.ram.total/1024/1024/1024).toFixed(0)+1"></line-chart>
                                 </v-col>
+                                
                             </v-row>
                             <v-row>
-                                <v-col class="py-0 pl-0" v-for="modules in this.$store.state.ressourcemonitor.ram.modules" :key="modules.bank">
-                                    <div>
-                                        <img @click="openRamDetails(modules)" v-if="modules.type!='Empty'&&!ifsoc" :src="require('../../assets/ressourcemonitor/ram_populated.png')" width="15px" height="450px">
-                                        <img @click="openRamDetails(modules)" v-if="modules.type=='Empty'&&!ifsoc" :src="require('../../assets/ressourcemonitor/ram_empty.png')" width="15px" height="450px">
-                                        <img @click="openRamDetails(modules)" v-if="modules.type!='Empty'&&ifsoc" :src="require('../../assets/ressourcemonitor/ram_populated_soc.png')" width="" height="" style="margin-left:-5px">
-                                        <img @click="openRamDetails(modules)" v-if="modules.type=='Empty'&&ifsoc" :src="require('../../assets/ressourcemonitor/ram_empty_soc.png')" width="" height="" style="margin-left:-5px">
-                                        <div class="pb-4" v-if="ifsoc&&modules.bank!=''" style="margin-top: -30px; margin-left: 7px;">
-                                            <strong>{{modules.bank}} </strong>
-                                        </div>
-                                    </div>
+                                <v-col class="py-10">
+                                    <v-col class="py-0 px-3 equal-width">
+                                        <v-row>
+                                            <v-col class="py-0 pl-5">
+                                                
+                                            </v-col>
+                                            <v-col class="py-0 pl-5">
+                                                <img :src="require('@/assets/ressourcemonitor/ram.png')" width="" height="" style="margin-left:-5px">
+                                                <div style="margin-top:-57px" class="pl-2">
+                                                    <strong>Total: </strong> {{(this.$store.state.ressourcemonitor.ram.total/1024/1024/1024).toFixed(2)}} GB <br>
+                                                    <strong>Used: </strong> {{(this.$store.state.ressourcemonitor.ram.used/1024/1024/1024).toFixed(2)}} GB<br>
+                                                </div>
+                                            </v-col>
+                                            <v-col class="py-0 pl-5">
+                                                
+                                            </v-col>
+                                            <v-col class="py-0 pl-5">
+                                                <img :src="require('@/assets/ressourcemonitor/swap.png')" width="" height="" style="margin-left:-5px">
+                                                <div style="margin-top:-57px" class="pl-2">
+                                                    <strong>Total: </strong> {{(this.$store.state.ressourcemonitor.ram.totalswap/1024/1024/1024).toFixed(2)}} GB <br>
+                                                    <strong>Used: </strong> {{(this.$store.state.ressourcemonitor.ram.usedswap/1024/1024/1024).toFixed(2)}} GB<br>
+                                                </div>
+                                            </v-col>
+                                            <v-col class="py-0 pl-5">
+                                                
+                                            </v-col>
+                                        </v-row>
+                                    </v-col>
                                 </v-col>
+                                
                             </v-row>
-                            <v-row class="pt-6 px-0">
-                                <img :src="require('../../assets/ressourcemonitor/swap.png')" width="" height="" style="margin-left:-5px">
-                                <div style="margin-top:-50px" class="pl-2">
-                                    <strong>Total: </strong> {{(this.$store.state.ressourcemonitor.ram.totalswap/1024/1024/1024).toFixed(2)}} GB <br>
-                                    <strong>Used: </strong> {{(this.$store.state.ressourcemonitor.ram.usedswap/1024/1024/1024).toFixed(2)}} GB<br>
-                                </div>
-                            </v-row>
-                    
-                    </v-col>
-                    
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                            
-                            <v-col class="py-0 pl-0">
-                                <line-chart :chart-data="chartdata"></line-chart>
-                                {{(this.$store.state.ressourcemonitor.ram.used/1024/1024/1024).toFixed(2)}} GB 
-                            </v-col>
-                            
-                        </v-row>
-                    </v-col> 
-                </v-row>
+                        </v-col> 
+                    </v-row>
+                </v-col>
             </v-card-text>
         </v-card>
          <v-dialog v-model="dialogRAM.show" max-width="535">
@@ -87,7 +96,7 @@
 
 <script>
     import { mapState } from 'vuex'
-    import LineChart from '../../charts/LineChartUsage.js'
+    import LineChart from '@/charts/LineChartUsage.js'
     export default {
         components: {
             LineChart
@@ -101,7 +110,18 @@
                 },
                 chartdata: {
                     datasets: []
-                }
+                },
+                chartoptions: {
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    max: 15
+                                }
+                            }
+                        ]
+                    }
+                },
             }
         },
         computed: {
