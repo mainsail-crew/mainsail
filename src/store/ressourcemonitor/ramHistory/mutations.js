@@ -60,6 +60,7 @@ export default {
 						data:[],
 						fill: true,
 						borderWidth: 0,
+						markerType: 'none',
 						hidden: hidden,
 						backgroundColor: masterDataset.borderColor+'40',
 					}
@@ -77,6 +78,7 @@ export default {
 					data:[],
 					fill: false,
 					borderWidth: 2,
+					markerType: 'none',
 					hidden: hidden,
 					borderColor: color,
 				}

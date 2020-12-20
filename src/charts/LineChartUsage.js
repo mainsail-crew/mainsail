@@ -30,7 +30,7 @@ export default {
                 legend: {
                     labels: {
                         fontColor: 'rgb(203, 203, 203)',
-                        //fontFamily: 'Roboto,sans-serif',
+                        fontFamily: 'Roboto,sans-serif',
                         filter: function(item) {
                             if (item && item.text) return !item.text.includes('_target');
                         }
@@ -58,9 +58,6 @@ export default {
                 },
                 tooltips: {
                     enabled: false
-                },
-                hover: {
-                    mode:undefined
                 },
                 /*tooltips: {
                     enabled: false,
@@ -124,7 +121,7 @@ export default {
                                 },
                                 min: 0,
                                 beginAtZero: true,
-                                stepSize: 5
+                                stepSize: 1
                             }
                         }
                     ]
