@@ -3,7 +3,6 @@ import { Line, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins;
 
 //const sampleInterval = 1000;			// ms
-const defaultMaxTemperature = 20;	// degC
 const maxSampleTime = 600000;		// 10min (in ms)
 
 export default {
@@ -124,7 +123,7 @@ export default {
                                     fontFamily: 'Roboto,sans-serif'
                                 },
                                 min: 0,
-                                max: defaultMaxTemperature,
+                                beginAtZero: true,
                                 stepSize: 5
                             }
                         }
@@ -146,7 +145,6 @@ export default {
                 this.$data._chart.config.options.scales.yAxes.length &&
                 this.$data._chart.config.options.scales.yAxes[0].ticks
             ) {
-                this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature
                 this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime
                 this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date()
                 this.$data._chart.update()

@@ -38,6 +38,7 @@
                             
                             <v-col class="py-0 pl-0">
                                 <line-chart :chart-data="chartdata"></line-chart>
+                                {{(this.$store.state.ressourcemonitor.ram.used/1024/1024/1024).toFixed(2)}} GB 
                             </v-col>
                             
                         </v-row>

@@ -7,7 +7,6 @@ export default {
 	},
 	
 	setHistory(state, payload) {
-		console.log("Trigger")
 		let now = new Date();
 
 		if (payload !== undefined) {
