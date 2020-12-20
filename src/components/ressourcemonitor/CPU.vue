@@ -6,7 +6,7 @@
         <strong> Cores: </strong> {{this.$store.state.ressourcemonitor.cpu.cores}} <br>
         <strong> Threads: </strong> {{this.$store.state.ressourcemonitor.cpu.threads}} <br>
         <strong> Socket: </strong> {{this.$store.state.ressourcemonitor.cpu.socket}} <br>
-        <strong> Current Frequency: </strong> {{this.$store.state.ressourcemonitor.cpu.freqcurrent}} GHz<br>
+        <strong> Current Frequency: </strong> {{this.$store.state.ressourcemonitor.cpu.freqcores}} GHz<br>
         <strong> Min Frequency: </strong> {{this.$store.state.ressourcemonitor.cpu.freqmin}} GHz<br>
         <strong> Max Frequency: </strong> {{this.$store.state.ressourcemonitor.cpu.freqmax}} GHz<br>
         <strong> Current Temp: </strong> {{this.$store.state.ressourcemonitor.cpu.temp}} °C<br>

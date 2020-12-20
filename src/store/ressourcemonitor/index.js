@@ -2,6 +2,9 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 
+// import modules
+import ramHistory from './ramHistory'
+
 export function getDefaultState() {
 	return {
 		cpu: {
@@ -10,7 +13,7 @@ export function getDefaultState() {
 			socket: "",
 			cores: 0,
 			threads: 0,
-			freqcurrent: 0.0,
+			freqcores: [],
 			freqmin: 0.0,
 			freqmax: 0.0,
 			temp: 0.0,
@@ -37,5 +40,8 @@ export default {
 	state,
 	getters,
 	actions,
-	mutations
+	mutations,
+	modules: {
+		ramHistory
+	}
 }

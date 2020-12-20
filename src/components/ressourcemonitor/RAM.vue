@@ -37,7 +37,7 @@
                         <v-row>
                             
                             <v-col class="py-0 pl-0">
-                                <strong>Placeholder</strong>
+                                <line-chart :chart-data="chartdata"></line-chart>
                             </v-col>
                             
                         </v-row>
@@ -85,8 +85,11 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+    import LineChart from '../../charts/LineChartUsage.js'
     export default {
         components: {
+            LineChart
         },
         data: function() {
             return {
@@ -95,9 +98,20 @@
                     emptySlot: false,
                     module: []
                 },
+                chartdata: {
+                    datasets: []
+                }
             }
         },
         computed: {
+            ...mapState ({
+                datasets: state => state.ressourcemonitor.ramHistory.datasets,
+            }),
+            datasets: {
+                get () {
+                    return this.$store.state.ressourcemonitor.ramHistory.datasets
+                }
+            },
             ifsoc:function(){
                 var socket=this.$store.state.ressourcemonitor.cpu.socket;
                 console.log(socket)
@@ -116,6 +130,12 @@
                     this.dialogRAM.emptySlot = false
                 }
                 this.dialogRAM.show = true
+            }
+
+        },
+        mounted(){
+            this.chartdata = {
+                datasets: this.datasets
             }
 
         }
