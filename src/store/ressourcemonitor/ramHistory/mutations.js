@@ -62,7 +62,7 @@ export default {
 						borderWidth: 0,
 						markerType: 'none',
 						hidden: hidden,
-						backgroundColor: masterDataset.borderColor+'40',
+						backgroundColor: masterDataset.borderColor+'00',
 					}
 				}
 			} else {

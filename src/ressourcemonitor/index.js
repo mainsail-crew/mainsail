@@ -10,9 +10,13 @@ setInterval(retrieveData,1000);
 store.dispatch('ressourcemonitor/ramHistory/getHistory', {  });
 
 function retrieveData(){
+    var oldURL = URL;
     URL = store.state.gui.modules.ressourcemonitorUrl;
     if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
         return;
+    }
+    if(URL!=oldURL){
+        store.commit('ressourcemonitor/ramHistory/reset');
     }
     now = Date.now();
     axios.get(URL)
@@ -91,6 +95,7 @@ function retrieveRAMLoad(){
         store.state.ressourcemonitor.ram.totalswap=response.data.swaptotal;
         store.state.ressourcemonitor.ram.usedswap=response.data.swapused;
         store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram", value: (response.data.used/1024/1024/1024).toFixed(2), time: now });
+        store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram_target", value: (response.data.total/1024/1024/1024).toFixed(0), time: now });
         store.commit('ressourcemonitor/ramHistory/addValue', { name: "Swap", value: (response.data.swapused/1024/1024/1024).toFixed(2), time: now });
     })
     .catch(function (){
