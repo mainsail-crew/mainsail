@@ -4,10 +4,14 @@ import getters from './getters'
 
 // import modules
 import ramHistory from './ramHistory'
+import cpuTempHistory from './cpuTempHistory'
+import cpuLoadHistory from './cpuLoadHistory'
+import cpuFreqHistory from './cpuFreqHistory'
 
 export function getDefaultState() {
 	return {
 		cpu: {
+			colors: [],
 			vendor: "",
 			brand: "",
 			socket: "",
@@ -42,6 +46,9 @@ export default {
 	actions,
 	mutations,
 	modules: {
-		ramHistory
+		ramHistory,
+		cpuLoadHistory,
+		cpuFreqHistory,
+		cpuTempHistory
 	}
 }

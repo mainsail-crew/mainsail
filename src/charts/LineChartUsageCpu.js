@@ -28,34 +28,8 @@ export default {
                 },
                 showLines: true,
                 legend: {
-                    labels: {
-                        pointBackgroundColor:'rgba(203, 203, 203,0)',
-                        fontColor: 'rgb(203, 203, 203)',
-                        fontFamily: 'Roboto,sans-serif',
-                        filter: function(item) {
-                            if (item && item.text) return !item.text.includes('_target');
-                        }
-                    },
-                    onClick: function(e, legendItem) {
-                        window.console.log(e)
-                        window.console.log(legendItem)
-
-                        let ci = this.chart;
-                        let index = legendItem.datasetIndex;
-                        let index_target = ci.data.datasets.findIndex(dataset => dataset.label === legendItem.text+'_target');
-                        let meta = ci.getDatasetMeta(index);
-
-                        // See controller.isDatasetVisible comment
-                        meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-                        if (index_target !== -1) {
-                            let meta_target = ci.getDatasetMeta(index_target);
-                            meta_target.hidden = meta.hidden;
-                        }
-
-                        //store.dispatch('gui/setHeaterChartVisibility', { name: legendItem.text, hidden: meta.hidden });
-
-                        ci.update();
-                    }
+                    pointBackgroundColor:'rgba(203, 203, 203,0)',
+                    display:false
                 },
                 hover: {
                     mode:undefined

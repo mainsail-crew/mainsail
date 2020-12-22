@@ -30,8 +30,9 @@ export default {
                 showLines: true,
                 legend: {
                     labels: {
+                        pointBackgroundColor:'rgba(203, 203, 203,0)',
                         fontColor: 'rgb(203, 203, 203)',
-                        //fontFamily: 'Roboto,sans-serif',
+                        fontFamily: 'Roboto,sans-serif',
                         filter: function(item) {
                             if (item && item.text) return !item.text.includes('_target');
                         }
@@ -135,22 +136,9 @@ export default {
     },
     created () {
         this.timer = setInterval(() => {
-            if (
-                this.$data._chart.config &&
-                this.$data._chart.config.options &&
-                this.$data._chart.config.options.scales &&
-                this.$data._chart.config.options.scales.xAxes &&
-                this.$data._chart.config.options.scales.xAxes.length &&
-                this.$data._chart.config.options.scales.xAxes[0].ticks &&
-                this.$data._chart.config.options.scales.yAxes &&
-                this.$data._chart.config.options.scales.yAxes.length &&
-                this.$data._chart.config.options.scales.yAxes[0].ticks
-            ) {
-                this.$data._chart.config.options.scales.yAxes[0].ticks.max = defaultMaxTemperature
-                this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime
-                this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date()
-                this.$data._chart.update()
-            }
+            this.$data._chart.config.options.scales.xAxes[0].ticks.min = new Date() - maxSampleTime
+            this.$data._chart.config.options.scales.xAxes[0].ticks.max = new Date()
+            this.$data._chart.update()
         }, 1000)
     },
     mounted () {

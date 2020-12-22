@@ -6,6 +6,8 @@ var URL = store.state.gui.modules.ressourcemonitorUrl;
 
 var now = Date.now();
 
+var colorArray;
+
 setInterval(retrieveData,1000);
 store.dispatch('ressourcemonitor/ramHistory/getHistory', {  });
 
@@ -16,12 +18,20 @@ function retrieveData(){
         return;
     }
     if(URL!=oldURL){
-        store.commit('ressourcemonitor/ramHistory/reset');
+        store.dispatch('ressourcemonitor/ramHistory/reset',{});
+        store.dispatch('ressourcemonitor/cpuLoadHistory/reset',{});
+        store.dispatch('ressourcemonitor/cpuFreqHistory/reset',{});
+        store.dispatch('ressourcemonitor/cpuTempHistory/reset',{});
+        colorArray=undefined;
     }
     now = Date.now();
     axios.get(URL)
     .then(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: true } });
+        if(typeof(colorArray)==="undefined"){
+            setCPUColors();
+        }
+        store.state.ressourcemonitor.cpu.colors=colorArray;
         retrieveCPU();
         retrieveCPUSpeed();
         retrieveCPULoad();
@@ -35,6 +45,7 @@ function retrieveData(){
     });
 }
 function retrieveCPU(){
+    store.commit('ressourcemonitor/cpuFreqHistory/setColors', { colors: colorArray});
     axios.get(URL+"/getCPU")
     .then(function (response){
         store.state.ressourcemonitor.cpu.vendor=response.data.manufacturer
@@ -44,39 +55,100 @@ function retrieveCPU(){
         store.state.ressourcemonitor.cpu.socket=response.data.socket
         store.state.ressourcemonitor.cpu.freqmin=response.data.speedmin
         store.state.ressourcemonitor.cpu.freqmax=response.data.speedmax
+        store.commit('ressourcemonitor/cpuFreqHistory/addValue', { name: "All", value: response.data.speed, time: now });
+        store.commit('ressourcemonitor/cpuFreqHistory/addValue', { name: "All_target", value: response.data.speedmax, time: now });
+    })
+    .catch(function (){
+        
+    });
+}
+function setCPUColors(){
+    axios.get(URL+"/getCPU")
+    .then(function (response){
+        if(typeof(colorArray)==="undefined"){
+            colorArray= new Array(response.data.cores+1)
+            for(var color = 0;color < colorArray.length;color++){
+                colorArray[color]=getRandomColor();
+            }
+        }
     })
     .catch(function (){
         
     });
 }
 function retrieveCPUSpeed(){
+    store.commit('ressourcemonitor/cpuLoadHistory/setColors', { colors: colorArray});
     axios.get(URL+"/getCPUSpeed")
     .then(function (response){
         store.state.ressourcemonitor.cpu.freqcores=response.data.cores
+        fetchCPUFreqChart(response.data.cores)
     })
     .catch(function (){
         
     });
 }
+function fetchCPUFreqChart(cores){
+    if(typeof(cores) === undefined){
+        return;
+    }
+    var core = 0;
+    for(core=0;core < store.state.ressourcemonitor.cpu.threads;core++){
+        var coreFreq = cores[core];
+        if(typeof(coreFreq) !== "undefined"){
+            store.commit('ressourcemonitor/cpuFreqHistory/addValue', { name: "Core "+core, value: coreFreq.toFixed(2), time: now });
+        }
+    }
+}
 function retrieveCPULoad(){
+    store.commit('ressourcemonitor/cpuTempHistory/setColors', { colors: colorArray});
     axios.get(URL+"/getCPULoad")
     .then(function (response){
         store.state.ressourcemonitor.cpu.load=response.data.currentload.toFixed(2)
         store.state.ressourcemonitor.cpu.loads=response.data.cpus
+        store.commit('ressourcemonitor/cpuLoadHistory/addValue', { name: "All", value: response.data.currentload.toFixed(2), time: now });
+        store.commit('ressourcemonitor/cpuLoadHistory/addValue', { name: "All_target", value: 100, time: now });
+        fetchCPULoadChart(response.data.cpus)
     })
     .catch(function (){
         
     });
+}
+function fetchCPULoadChart(cores){
+    if(typeof(cores) === undefined){
+        return;
+    }
+    var core = 0;
+    for(core=0;core < store.state.ressourcemonitor.cpu.threads;core++){
+        var coreLoad = cores[core].load;
+        if(typeof(coreLoad) !== "undefined"){
+            store.commit('ressourcemonitor/cpuLoadHistory/addValue', { name: "Core "+core, value: coreLoad.toFixed(2), time: now });
+        }
+    }
 }
 function retrieveCPUTemp(){
     axios.get(URL+"/getCPUTemp")
     .then(function (response){
         store.state.ressourcemonitor.cpu.temp=response.data.main.toFixed(2)
         store.state.ressourcemonitor.cpu.temps=response.data.cores
+        store.commit('ressourcemonitor/cpuTempHistory/addValue', { name: "All", value: response.data.main.toFixed(2), time: now });
+        store.commit('ressourcemonitor/cpuTempHistory/addValue', { name: "All_target", value: 100, time: now });
+        fetchCPUTempChart(response.data.cores)
     })
     .catch(function (){
         
     });
+}
+function fetchCPUTempChart(cores){
+    if(typeof(cores) === undefined){
+        return;
+    }
+    var core = 0;
+    for(core=0;core < store.state.ressourcemonitor.cpu.threads;core++){
+        var coreTemp = cores[core];
+        if(typeof(coreTemp) !== "undefined"){
+            store.commit('ressourcemonitor/cpuTempHistory/addValue', { name: "Core "+core, value: coreTemp.toFixed(2), time: now });
+        }
+    }
 }
 function retrieveRAM(){
     axios.get(URL+"/getRAM")
@@ -101,4 +173,8 @@ function retrieveRAMLoad(){
     .catch(function (){
         
     });
+}
+function getRandomColor() {
+	var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
+	return randomColor.toUpperCase();
 }

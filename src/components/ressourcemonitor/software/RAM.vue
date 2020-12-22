@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <v-card elevation="0">
+        <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-chart-donut</v-icon>Usage</span>
@@ -55,42 +55,6 @@
                 </v-col>
             </v-card-text>
         </v-card>
-         <v-dialog v-model="dialogRAM.show" max-width="535">
-                <v-card>
-                    <v-card-title class="headline">RAM Details</v-card-title>
-                    <v-card-text>
-                    <v-row>
-                        <v-col class="py-0 px-3 equal-width">
-                            <v-row>
-                                    <v-col class="py-0 px-3">
-                                                <div v-if="dialogRAM.emptySlot">
-                                                    <strong>Slot: </strong>{{this.dialogRAM.module.bank}} <br>
-                                                    <br>
-                                                    <strong>This Slot is unpopulated or has a Faulty RAM Module!</strong><br>
-                                                </div>
-                                                <div v-if="dialogRAM.emptySlot==false">
-                                                    <strong>Slot: </strong>{{this.dialogRAM.module.bank}} <br>
-                                                    <strong>Size: </strong>{{(this.dialogRAM.module.size/1024/1024).toFixed(2)}} MB <br>
-                                                    <strong>Clock: </strong>{{this.dialogRAM.module.clockSpeed}} MHz<br>
-                                                    <strong>Type: </strong>{{this.dialogRAM.module.type}} <br>
-                                                    <strong>PartNum: </strong>{{this.dialogRAM.module.partNum}} <br>
-                                                    <strong>Serial: </strong>{{this.dialogRAM.module.serialNum}} <br>
-                                                    <strong>Manufacturer: </strong>{{this.dialogRAM.module.manufacturer}} <br>
-                                                    <strong>Voltage Configured: </strong>{{this.dialogRAM.module.voltageConfigured}} V<br>
-                                                    <strong>Voltage Min: </strong>{{this.dialogRAM.module.voltageMin}} V<br>
-                                                    <strong>Voltage Max: </strong>{{this.dialogRAM.module.voltageMax}} V<br>
-                                                </div>
-                                    </v-col>
-                            </v-row>
-                        </v-col>
-                    </v-row>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="" text @click="dialogRAM.show = false">Close</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
     </div>
 </template>
 
@@ -143,15 +107,6 @@
             }
         },
         methods: {
-            openRamDetails:function(module){
-                this.dialogRAM.module=module
-                if(module.type=="Empty"){
-                    this.dialogRAM.emptySlot = true
-                }else{
-                    this.dialogRAM.emptySlot = false
-                }
-                this.dialogRAM.show = true
-            }
 
         },
         mounted(){

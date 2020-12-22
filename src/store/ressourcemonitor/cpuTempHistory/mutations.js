@@ -1,5 +1,6 @@
 import { getDefaultState } from './index'
-import { colorArray, swap} from "./variables"
+
+var colorArray = []
 
 export default {
 	reset(state) {
@@ -20,14 +21,14 @@ export default {
 					for (let i = 0; i < max; i++) {
 						let time = new Date(now.getTime() - 1000 * (max - i));
 
-						this.commit('ressourcenmonitor/ramHistory/addValue', {
+						this.commit('ressourcenmonitor/cpuTempHistory/addValue', {
 							name: key,
 							value: datasets.ramusage[i],
 							type: keySplit[0],
 							time: time
 						});
 
-						this.commit('ressourcenmonitor/ramHistory/addValue', {
+						this.commit('ressourcenmonitor/cpuTempHistory/addValue', {
 							name: key+'_target',
 							value: datasets.targets[i],
 							type: keySplit[0],
@@ -38,7 +39,9 @@ export default {
 			});
 		}
 	},
-
+	setColors(state,payload){
+		colorArray=payload.colors;
+	},
 	addValue(state, payload) {
 		// definations for delete old entries
 		let timeOld = new Date().getTime() - (1000 * 60 * 10)
@@ -67,21 +70,20 @@ export default {
 				}
 			} else {
 				let color = '';
+				
 
 				switch (payload.name) {
-					case 'Swap': color = swap; break;
 					default: color = colorArray[state.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
 				}
 
 				mainDataset = {
 					label: payload.name,
 					data:[],
-					fill: true,
+					fill: false,
 					borderWidth: 2,
 					markerType: 'none',
 					hidden: hidden,
 					borderColor: color,
-					backgroundColor: color+'40',
 				}
 			}
 
