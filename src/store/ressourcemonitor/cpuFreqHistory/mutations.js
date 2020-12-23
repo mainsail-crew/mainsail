@@ -1,7 +1,5 @@
 import { getDefaultState } from './index'
 
-var colorArray = []
-
 export default {
 	reset(state) {
 		Object.assign(state, getDefaultState())
@@ -40,7 +38,7 @@ export default {
 		}
 	},
 	setColors(state,payload){
-		colorArray=payload.colors;
+		console.log(payload)
 	},
 	addValue(state, payload) {
 		// definations for delete old entries
@@ -48,45 +46,18 @@ export default {
 		let minResolution = 1000   // value in ms
 		//let deletedIndex
 
-		let mainDataset = state.datasets.find(element => element.label === payload.name)
+		let mainDataset = state.datasets.find(element => element.name === payload.name)
+		console.log(mainDataset)
 		if (!mainDataset) {
-			//TODO load hidden sensors from gui store
-			//let hidden = this.rootState.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0;
-			let hidden = false
-
-			if (payload.name.includes('_target')) {
-				let masterDataset = state.datasets.find(element => element.label === payload.name.replace('_target', ''))
-
-				if (masterDataset) {
-					mainDataset = {
-						label: payload.name,
-						data:[],
-						fill: true,
-						borderWidth: 0,
-						markerType: 'none',
-						hidden: hidden,
-						backgroundColor: masterDataset.borderColor+'00',
-					}
-				}
-			} else {
-				let color = '';
-				
-
-				switch (payload.name) {
-					default: color = colorArray[state.datasets.filter(element => !element.label.endsWith("_target") && element.label !== "heater_bed" && element.label !== "chamber").length]; break;
-				}
-
-				mainDataset = {
-					label: payload.name,
-					data:[],
-					fill: false,
-					borderWidth: 2,
-					markerType: 'none',
-					hidden: hidden,
-					borderColor: color,
-				}
+			switch (payload.name) {
+				default: break;
 			}
 
+			mainDataset = {
+				name: payload.name,
+				data: [],
+				type: "line",
+			}
 			mainDataset = state.datasets.push(mainDataset);
 		}
 
@@ -96,8 +67,8 @@ export default {
 				window.console.log("array")
 			} else {
 				if (mainDataset.data && mainDataset.data.length) {
-					let lastTemp = mainDataset.data[mainDataset.data.length - 1].y
-					let lastTime = mainDataset.data[mainDataset.data.length - 1].x
+					let lastTemp = mainDataset.data[mainDataset.data.length - 1][1]
+					let lastTime = mainDataset.data[mainDataset.data.length - 1][0]
 
 					if (
 						payload.time - lastTime > minResolution &&
@@ -107,16 +78,16 @@ export default {
 							payload.name.includes('_target') &&
 							lastTemp !== payload.value
 						) {
-							mainDataset.data.push({
-								x: payload.time-1,
-								y: lastTemp
-							});
+							mainDataset.data.push([
+								payload.time-1,
+								lastTemp
+							]);
 						}
 
-						mainDataset.data.push({
-							x: payload.time,
-							y: payload.value
-						});
+						mainDataset.data.push([
+							payload.time-1,
+							lastTemp
+						]);
 					}
 
 					let i
@@ -124,10 +95,10 @@ export default {
 						mainDataset.data.splice(i, 1)
 					}
 				} else if (mainDataset.data) {
-					mainDataset.data.push({
-						x: payload.time,
-						y: payload.value
-					});
+					mainDataset.data.push([
+						payload.time,
+						payload.value
+					]);
 				}
 			}
 		}

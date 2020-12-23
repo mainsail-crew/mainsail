@@ -56,7 +56,6 @@ function retrieveCPU(){
         store.state.ressourcemonitor.cpu.freqmin=response.data.speedmin
         store.state.ressourcemonitor.cpu.freqmax=response.data.speedmax
         store.commit('ressourcemonitor/cpuFreqHistory/addValue', { name: "All", value: response.data.speed, time: now });
-        store.commit('ressourcemonitor/cpuFreqHistory/addValue', { name: "All_target", value: response.data.speedmax, time: now });
     })
     .catch(function (){
         

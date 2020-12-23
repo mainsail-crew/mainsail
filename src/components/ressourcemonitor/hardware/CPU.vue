@@ -53,7 +53,7 @@
                 <v-col class="py-0 px-3 equal-width pt-2">
                     <v-row>
                         <v-col class="py-0 px-3">
-                            <line-chart :chart-data="freqchartdata" :styles="minimizeChart"></line-chart>
+                            <CPUFreq></CPUFreq>
                         </v-col> 
                     </v-row>
                 </v-col>
@@ -132,11 +132,11 @@
 
 <script>
     import { mapState } from 'vuex'
-    import LineChart from '@/charts/LineChartUsageCpu.js'
+    import CPUFreq from '@/charts/CPUFreq'
 
     export default {
         components: {
-            LineChart
+            CPUFreq
         },
         data: function() {
             return {
