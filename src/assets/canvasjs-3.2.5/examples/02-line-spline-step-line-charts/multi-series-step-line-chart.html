@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>  
+<meta charset="UTF-8">
+<script>
+window.onload = function () {
+
+var chart= new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Multi-Series StepLine Chart with Null Data"
+	},
+	axisX: {
+		valueFormatString: "DD MMM"
+	},
+	axisY:{
+		includeZero: false
+	}, 
+	axisY2:{
+		includeZero: false,
+		minimum:25
+	},
+	toolTip: {
+		shared: true
+	},
+	data: [{
+		type: "stepLine",
+		connectNullData: true,
+		xValueFormatString: "MMM",
+		dataPoints: [
+			{ x: new Date(2008,02), y: 15.00 },
+			{ x: new Date(2008,03), y: 14.50 },
+			{ x: new Date(2008,04), y: 14.00 },
+			{ x: new Date(2008,05), y: 14.50 },
+			{ x: new Date(2008,06), y: 14.75 },
+			{ x: new Date(2008,07), y: null },
+			{ x: new Date(2008,08), y: 15.80 },
+			{ x: new Date(2008,09), y: 17.50 }
+		]
+	},
+	{
+		type: "stepLine",  
+		axisYType: "secondary",
+		connectNullData: true,
+		xValueFormatString: "MMM",
+		dataPoints: [
+			{ x: new Date(2008,02), y: 41.00 },
+			{ x: new Date(2008,03), y: 43.50 },
+			{ x: new Date(2008,04), y: 41.00 },
+			{ x: new Date(2008,05), y: null },
+			{ x: new Date(2008,06), y: 47.55 },
+			{ x: new Date(2008,07), y: 45.00 },
+			{ x: new Date(2008,08), y: 40.70 },
+			{ x: new Date(2008,09), y: 37.00 }
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

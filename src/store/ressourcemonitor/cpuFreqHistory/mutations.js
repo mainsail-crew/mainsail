@@ -37,9 +37,6 @@ export default {
 			});
 		}
 	},
-	setColors(state,payload){
-		console.log(payload)
-	},
 	addValue(state, payload) {
 		// definations for delete old entries
 		let timeOld = new Date().getTime() - (1000 * 60 * 10)
@@ -47,7 +44,6 @@ export default {
 		//let deletedIndex
 
 		let mainDataset = state.datasets.find(element => element.name === payload.name)
-		console.log(mainDataset)
 		if (!mainDataset) {
 			switch (payload.name) {
 				default: break;
@@ -56,7 +52,6 @@ export default {
 			mainDataset = {
 				name: payload.name,
 				data: [],
-				type: "line",
 			}
 			mainDataset = state.datasets.push(mainDataset);
 		}

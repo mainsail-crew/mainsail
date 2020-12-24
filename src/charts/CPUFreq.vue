@@ -1,7 +1,10 @@
 
 <template>
     <div>
-        {{this.freqchartdata.datasets}}
+        <div id="chart">
+            <apexchart type="line" height="150" ref="chart" :options="chartOptions" :series="chartdata.datasets"></apexchart>
+        </div>
+        {{this.chartdata.datasets}}
     </div>
 </template>
 
@@ -9,38 +12,78 @@
     import { mapState } from 'vuex'
 
     export default {
-        components: {
-        },
         data: function() {
             return {
-                dialogCPU: {
-                    show: false,
-                },
-                freqchartdata: {
+                chartdata: {
                     datasets: []
                 },
+                chartOptions: {
+                    colors: this.$store.state.ressourcemonitor.cpucolors,
+                    chart: {
+                        id: 'realtime',
+                        height: 350,
+                        type: 'line',
+                        animations: {
+                            enabled: true,
+                            easing: 'linear',
+                            stacked: false,
+                            dynamicAnimation: {
+                                speed: 1000,
+                            }
+                        },
+                        toolbar: {
+                            show: false
+                        },
+                        zoom: {
+                            type: 'x',
+                            enabled: true,
+                            autoScaleYaxis: true
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
+                    title: {
+                        show: false
+                    },
+                    markers: {
+                     size: 1
+                    },
+                    xaxis: {
+                        type: 'datetime'
+                    },
+                    legend: {
+                        show: false
+                    },
+                }
             }
         },
         computed: {
             ...mapState ({
-                freqdatasets: state => state.ressourcemonitor.cpuFreqHistory.datasets,
+                datasets: state => state.ressourcemonitor.cpuFreqHistory.datasets,
             }),
-            minimizeChart() {
-                return {height: '130px'}
-            },
-            freqdatasets: {
+            datasets: {
                 get () {
                     return this.$store.state.ressourcemonitor.cpuFreqHistory.datasets
                 }
             },
         },
         methods: {
-
-        },
-        mounted(){
-            this.freqchartdata = {
-                datasets: this.freqdatasets
+            interval:function(){
+                var me = this
+                window.setInterval(function(){
+                    console.log(me.chartOptions.xaxis.range)
+                },1000)
             }
+        },
+        mounted:function(){
+            this.chartdata = {
+                datasets: this.datasets
+            },
+            this.interval()
         }
     }
 </script>

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+
+var chart = null;
+var dps = [];
+
+window.onload = function() {
+
+chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	exportEnabled: true,
+	title: {
+		text: "Intel Stock Price - January 2017"
+	},
+	axisX: {
+		valueFormatString: "DD MMM"
+	},
+	axisY: {
+		title: "Price",
+		includeZero: false,
+		prefix: "$"
+	},
+	data: [{
+		type: "ohlc",
+		name: "Intel Stock Price",
+		color: "#DD7E86",
+		showInLegend: true,
+		yValueFormatString: "$##0.00",
+		xValueType: "dateTime",
+		dataPoints: dps
+	}]
+});
+
+$.getJSON("https://canvasjs.com/data/gallery/javascript/intel-stock.json?callback=?", callback);
+
+}
+
+function callback(result) {
+	for (var i = 0; i < result.dps.length; i++) {
+		dps.push({
+			x: result.dps[i].x,
+			y: result.dps[i].y
+		});
+	}
+	chart.render();
+}
+
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

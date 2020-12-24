@@ -1,0 +1,4 @@
+﻿For JavaScript Standalone Version - use canvasjs.min.js **ONLY**
+For jQuery Version - use jquery.canvasjs.min.js **ONLY**
+
+For React - use canvasjs.min.js **AND** canvasjs.react.js

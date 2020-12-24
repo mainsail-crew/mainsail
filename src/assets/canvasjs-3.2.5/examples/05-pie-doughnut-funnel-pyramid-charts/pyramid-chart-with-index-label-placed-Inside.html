@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	exportEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Advertisement Risk Pyramid"
+	},
+	data: [{
+		type: "pyramid",
+		toolTipContent: "<b>{label}</b>: {y}%",
+		indexLabelFontColor: "#5A5757",
+		indexLabelFontSize: 16,
+		indexLabel: "{label}({y}%)",
+		indexLabelPlacement: "inside",
+		dataPoints: [
+			{ y: 15, label: "Pay Per Click Advertising" },
+			{ y: 25, label: "Website Sponsorship" },
+			{ y: 25, label: "Banner Advertising" },
+			{ y: 40, label: "Interactive Advertising" },
+			{ y: 60, label: "Traditional Media" }
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

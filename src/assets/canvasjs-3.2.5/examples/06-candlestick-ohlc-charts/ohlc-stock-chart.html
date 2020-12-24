@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	exportEnabled: true,
+	exportFileName: "Tesla-StockChart",	
+	title:{
+		text: "Tesla Stock Price - 2016"
+	},
+	axisX: {
+		interval:1,
+		intervalType: "month",
+		valueFormatString: "MMM"
+	},
+	axisY: {
+		includeZero:false,
+		prefix: "$",
+		title: "Price (in USD)"
+	},
+	data: [{
+		type: "ohlc",
+		yValueFormatString: "$###0.00", 
+		xValueFormatString: "MMM YYYY",
+		dataPoints: [
+			{ x: new Date(2016, 00, 01), y: [230.720001, 231.380005, 182.410004, 191.199997] },
+			{ x: new Date(2016, 01, 01), y: [188.759995, 199.520004, 141.050003, 191.929993] },
+			{ x: new Date(2016, 02, 01), y: [194.250000, 239.880005, 181.500000, 229.770004] },
+			{ x: new Date(2016, 03, 01), y: [244.830002, 269.339996, 233.250000, 240.759995] },
+			{ x: new Date(2016, 04, 01), y: [241.500000, 243.190002, 203.660004, 223.229996] },
+			{ x: new Date(2016, 05, 01), y: [221.479996, 240.850006, 187.869995, 212.279999] },
+			{ x: new Date(2016, 06, 01), y: [206.139999, 235.279999, 206.000000, 234.789993] },
+			{ x: new Date(2016, 07, 01), y: [235.500000, 236.630005, 208.649994, 212.009995] },
+			{ x: new Date(2016, 08, 01), y: [209.009995, 211.100006, 193.449997, 204.029999] },
+			{ x: new Date(2016, 09, 01), y: [212.300003, 215.669998, 192.000000, 197.729996] },
+			{ x: new Date(2016, 10, 01), y: [198.039993, 199.350006, 178.190002, 189.399994] },
+			{ x: new Date(2016, 11, 01), y: [188.250000, 223.800003, 180.000000, 213.690002] }
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

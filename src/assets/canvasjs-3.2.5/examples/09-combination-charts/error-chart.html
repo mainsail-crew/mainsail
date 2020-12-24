@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+window.onload = function () {
+	
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Average Lifespan of a Machinery"
+	},
+	axisY:{
+		title: "Lifespan (in Years)"
+	},
+	toolTip: {
+		shared: true
+	},
+	data: [{
+		type: "column",
+		name: "Avg. Lifespan",
+		toolTipContent: "{label} <br> <b>{name}:</b> {y} years",
+		dataPoints: [
+			{ y: 14, label: "Washing Machine" },
+			{ y: 16, label: "Refrigerator" },
+			{ y: 12, label: "Water Heater" },
+			{ y: 35, label: "Boilers" },
+			{ y: 11, label: "Television" },
+			{ y: 18, label: "AC" },
+			{ y: 9, label: "Dishwasher" }
+		]
+	},
+	{
+		type: "error",
+		name: "Variability ",
+		toolTipContent: "<b>{name}:</b> {y[0]} - {y[1]} years",
+		dataPoints: [
+			{ y: [13, 16], label:"Washing Machine" },
+			{ y: [14, 17], label:"Refrigerator" },
+			{ y: [9, 13], label:"Water Heater" },
+			{ y: [30, 36], label:"Boilers" },
+			{ y: [9, 12], label:"Television" },
+			{ y: [15, 20], label:"AC" },
+			{ y: [8, 10], label:"Dishwasher" }
+			
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

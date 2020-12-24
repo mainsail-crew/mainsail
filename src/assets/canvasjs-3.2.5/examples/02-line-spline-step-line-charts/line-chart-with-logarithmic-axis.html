@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<script>
+window.onload = function () {
+
+var step = Math.pow(10, .05);
+var chart = new CanvasJS.Chart("chartContainer", {
+	zoomEnabled: true,
+	zoomType: "xy",
+	exportEnabled: true,
+	title: {
+		text: "Frequency Response of Low Pass Filters"
+	},
+	subtitles:[{
+		text: "X Axis scale is Logarithmic",
+		fontSize: 14
+	}],
+	axisX: {
+		logarithmic: true,
+		title: "Frequency \u03C9(rad/s)",
+		minimum: .01,
+		suffix: "\u03C9\u2099",
+		stripLines: [{
+			value: 1,
+			label: "Cutoff Frequency",
+			labelFontColor: "#808080",
+			labelAlign: "near"
+		}]
+	},
+	axisY: {
+		title: "Type 1 Magnitude (db)",
+		titleFontColor: "#4F81BC",
+		labelFontColor: "#4F81BC"
+	},
+	axisY2: {
+		title: "Type 2 Magnitude (db)",
+		titleFontColor: "#C0504E",
+		labelFontColor: "#C0504E"
+	},
+	toolTip: {
+		shared: true
+	},
+	legend:{
+		cursor:"pointer",
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		name: "Type 1 Filter",
+		showInLegend: true,
+		yValueFormatString: "#,##0.00 db",
+		xValueFormatString: "\u03C9 = #,##0.00#\u03C9\u2099",
+		dataPoints: type1DataPoints(step)
+	},
+	{
+		type: "line",
+		name: "Type 2 Filter",
+		color: "#C0504E",
+		showInLegend: true,
+		axisYType: "secondary",
+		yValueFormatString: "#,##0.00 db",
+		xValueFormatString: "\u03C9 = #,##0.00#\u03C9\u2099",
+		dataPoints: type2DataPoints(.02, step)
+	}]
+});
+
+chart.render();
+
+function type1DataPoints(step){
+	var dataPoints = [];
+	var h;
+	for(var w = .01; w < 100 ; w *= step){
+		h =  -5 * Math.log(w*w + 1);
+		dataPoints.push({x: w, y: h});
+	}
+	return dataPoints
+}
+
+function type2DataPoints(e, step){
+	var dataPoints = [];
+	var h;
+	for(var w = .01; w < 100 ; w *= step){
+		h =  -5 * Math.log(Math.pow((1 - w*w), 2) + 4 *e*e*w*w);
+		dataPoints.push({x: w, y: h});
+	}
+	return dataPoints;
+}
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="../../canvasjs.min.js"></script>
+</body>
+</html>

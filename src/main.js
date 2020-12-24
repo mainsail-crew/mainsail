@@ -8,6 +8,7 @@ import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
+import VueApexCharts from 'vue-apexcharts' ;
 
 export const bus = new Vue();
 
@@ -16,6 +17,7 @@ Vue.config.productionTip = false;
 Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
 Vue.use(VueTouchKeyboard);
+Vue.use(VueApexCharts);
 
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -24,6 +26,7 @@ Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Conte
 Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIONS, DELETE, OPTIONS';
 
 Vue.component('vue-headful', vueHeadful);
+Vue.component('apexchart', VueApexCharts)
 
 Vue.$cookies.config('1y')
 

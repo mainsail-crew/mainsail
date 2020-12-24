@@ -1,0 +1,16 @@
+*
+* @preserve CanvasJS HTML5 & JavaScript Charts - v3.2.4 GA - https://canvasjs.com/ 
+* Copyright 2020 fenopix
+*
+*  --------------------- License Information --------------------
+* CanvasJS is a commercial product which requires purchase of license. Without a commercial license you can use it for evaluation purposes for upto 30 days. Please refer to the following link for further details.
+*     https://canvasjs.com/license/
+*
+*
+*---------------------Free for Non-Commercial Use--------------------
+* 
+*For non-commercial purposes you can use the software for free under Creative Commons Attribution-NonCommercial 3.0 License. 
+*A credit Link is added to the bottom right of the chart which should be preserved. Refer to the following link for further details on the same.
+*    https://creativecommons.org/licenses/by-nc/3.0/deed.en_US
+*
+*
