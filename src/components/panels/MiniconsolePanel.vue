@@ -7,6 +7,7 @@
 
     .miniConsole .title-cell {
         white-space: nowrap;
+        width: 1% !important;
     }
 
     .miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
@@ -24,6 +25,8 @@
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn small class="px-2 minwidth-0" color="lightgray"  title="Pause print"><v-icon small>mdi-pause</v-icon></v-btn>
         </v-toolbar>
         <v-card-text class="py-0">
             <v-row>
