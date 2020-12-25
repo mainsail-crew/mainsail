@@ -84,16 +84,19 @@
             },
             selectGeneral:function(){
                 this.showGeneral=true
+                bus.$emit("resetChart");
                 this.currentHardwareComponent=General
                 this.currentSoftwareComponent=General
             },
             selectCPU:function(){
                 this.showGeneral=false
+                bus.$emit("resetChart");
                 this.currentSoftwareComponent=SoftwareCPU
                 this.currentHardwareComponent=HardwareCPU
             },
             selectRAM:function(){
                 this.showGeneral=false
+                bus.$emit("resetChart");
                 this.currentSoftwareComponent=SoftwareRAM
                 this.currentHardwareComponent=HardwareRAM
             },

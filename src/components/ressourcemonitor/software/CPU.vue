@@ -27,7 +27,7 @@
                 <v-col class="py-0 px-3 equal-width">
                     <v-row>
                         <v-col class="py-0 px-3 pt-2">
-                            <line-chart :chart-data="loadchartdata" :styles="minimizeChart"></line-chart>
+                            <CPULoad></CPULoad>
                         </v-col> 
                     </v-row>
                 </v-col>
@@ -38,10 +38,12 @@
 
 <script>
     import { mapState } from 'vuex'
+    import CPULoad from '@/charts/CPULoad'
     import LineChart from '@/charts/LineChartUsageCpu.js'
     export default {
         components: {
-            LineChart
+            LineChart,
+            CPULoad
         },
         data: function() {
             return {
@@ -53,15 +55,11 @@
                 tempchartdata: {
                     datasets: []
                 },
-                loadchartdata: {
-                    datasets: []
-                },
             }
         },
         computed: {
             ...mapState ({
                 tempdatasets: state => state.ressourcemonitor.cpuTempHistory.datasets,
-                loaddatasets: state => state.ressourcemonitor.cpuLoadHistory.datasets,
             }),
             minimizeChart() {
                 return {height: '230px'}
@@ -69,11 +67,6 @@
             tempdatasets: {
                 get () {
                     return this.$store.state.ressourcemonitor.cpuTempHistory.datasets
-                }
-            },
-            loaddatasets: {
-                get () {
-                    return this.$store.state.ressourcemonitor.cpuLoadHistory.datasets
                 }
             },
             ifsoc:function(){
@@ -91,9 +84,6 @@
         mounted(){
             this.tempchartdata = {
                 datasets: this.tempdatasets
-            },
-            this.loadchartdata = {
-                datasets: this.loaddatasets
             }
 
         }

@@ -23,14 +23,14 @@
         },
         computed: {
             ...mapState ({
-                datasets: state => state.ressourcemonitor.cpuFreqHistory.datasets,
+                datasets: state => state.ressourcemonitor.cpuLoadHistory.datasets,
             }),
             minimizeChart() {
                 return {height: '130px'}
             },
             datasets: {
                 get () {
-                    return this.$store.state.ressourcemonitor.cpuFreqHistory.datasets
+                    return this.$store.state.ressourcemonitor.cpuLoadHistory.datasets
                 }
             },
         },
@@ -38,14 +38,14 @@
         },
         mounted:function(){
             bus.$on('resetChart', () => {
-                this.$forceUpdate();
+                this.$forceUpdate ();
+
             });
             this.chartdata = {
                 datasets: this.datasets
             }
         },
         beforeDestroy() {
-            
         }
     }
 </script>

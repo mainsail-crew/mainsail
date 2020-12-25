@@ -18,6 +18,11 @@ Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
 Vue.use(VueTouchKeyboard);
 Vue.use(VueApexCharts);
+Vue.use({
+    install() {
+      Vue.prototype.destroy = Vue.prototype.$destroy;
+    },
+  });
 
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';

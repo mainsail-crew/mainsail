@@ -45,6 +45,7 @@ function retrieveData(){
     });
 }
 function retrieveCPU(){
+    store.commit('ressourcemonitor/cpuFreqHistory/setColors', { colors: colorArray});
     axios.get(URL+"/getCPU")
     .then(function (response){
         store.state.ressourcemonitor.cpu.vendor=response.data.manufacturer
