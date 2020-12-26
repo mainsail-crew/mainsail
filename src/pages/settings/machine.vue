@@ -21,7 +21,8 @@
                         <settings-runout-panel></settings-runout-panel>
                     </v-col>
                     <v-col :class="(klippy_state !== 'ready' ? 'col-md-12' : 'col-md-6')">
-                        <settings-logfiles-panel></settings-logfiles-panel>
+                        <settings-update-panel v-if="updateManager"></settings-update-panel>
+                        <settings-logfiles-panel :class="updateManager ? 'mt-6' : ''"></settings-logfiles-panel>
                     </v-col>
                 </v-row>
             </v-col>
@@ -41,6 +42,11 @@
             ...mapState({
                 klippy_state: state => state.server.klippy_state,
             }),
+            updateManager:{
+                get() {
+                    return this.$store.state.server.plugins.includes('update_manager')
+                }
+            }
         },
         created() {
 

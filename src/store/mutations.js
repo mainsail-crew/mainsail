@@ -1,6 +1,6 @@
 export default {
     reportError(state, payload) {
-        window.console.log(payload)
+        window.console.error(payload)
     },
 
     void() {
