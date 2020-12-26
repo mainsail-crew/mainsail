@@ -3,6 +3,7 @@ import Vue from 'vue'
 import GeneralPanel from './GeneralPanel'
 import WebcamPanel from './WebcamPanel'
 import DashboardPanel from "./DashboardPanel";
+import ConsolePanel from "./ConsolePanel";
 import MacrosPanel from "./MacrosPanel";
 import EndstopPanel from "./EndstopPanel";
 import LimitsPanel from "./LimitsPanel";
@@ -14,6 +15,7 @@ import UpdatePanel from "./UpdatePanel";
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
 Vue.component('settings-dashboard-panel', DashboardPanel);
+Vue.component('settings-console-panel', ConsolePanel);
 Vue.component('settings-macros-panel', MacrosPanel);
 Vue.component('settings-endstop-panel', EndstopPanel);
 Vue.component('settings-limits-panel', LimitsPanel);

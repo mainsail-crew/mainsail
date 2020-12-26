@@ -22,6 +22,11 @@ export function getDefaultState() {
 			flipY: false,
 			bool: false,
 		},
+		console: {
+			hideWaitTemperatures: true,
+			boolCustomFilters: false,
+			customFilters: "",
+		},
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: true,
