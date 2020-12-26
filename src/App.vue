@@ -9,6 +9,12 @@
     #page-container {
         max-width: 1400px;
     }
+
+    #sidebarVersions {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
 </style>
 
 <template>
@@ -52,6 +58,9 @@
                     </ul>
                 </li>
             </ul>
+            <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2">
+                v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
+            </p>
         </v-navigation-drawer>
 
         <v-app-bar app elevate-on-scroll>
@@ -76,15 +85,19 @@
             <v-card color="primary" dark >
                 <v-card-text class="pt-2">
                     Connecting...
-                    <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                    <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
                 </v-card-text>
             </v-card>
         </v-dialog>
 
-        <v-footer app class="d-block">
-            <span>v{{ getVersion }}</span>
-            <span class="float-right d-none d-sm-inline" v-if="version">{{ version }}</span>
-        </v-footer>
+        <v-dialog :value="!updateStatus" persistent width="500">
+            <v-card color="primary" dark >
+                <v-card-text class="pt-2">
+                    {{ updateMessage}}
+                    <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -118,7 +131,6 @@ export default {
         ...mapState({
             isConnected: state => state.socket.isConnected,
             hostname: state => state.printer.hostname,
-            version: state => state.printer.software_version,
             klippy_state: state => state.server.klippy_state,
             printer_state: state => state.printer.print_stats.state,
             loadings: state => state.socket.loadings,
@@ -130,6 +142,11 @@ export default {
             boolNaviWebcam: state => state.gui.webcam.bool,
             config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
+
+            klipperVersion: state => state.printer.software_version,
+
+            updateStatus: state => state.server.updateManager.updateResponse.complete,
+            updateMessage: state => state.server.updateManager.updateResponse.message,
         }),
         ...mapGetters([
             'getTitle',

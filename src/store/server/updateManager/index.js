@@ -2,18 +2,16 @@ import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
 
-// import modules
-import power from './power'
-import updateManager from './updateManager'
-
-// create getDefaultState
 export function getDefaultState() {
 	return {
-		klippy_connected: false,
-		klippy_state: "",
-		klippy_message: "",
-		plugins: [],
-		events: [],
+		moonraker: {},
+		klipper: {},
+		client: {},
+		updateResponse: {
+			application: "",
+			complete: true,
+			message: "",
+		}
 	}
 }
 
@@ -25,9 +23,5 @@ export default {
 	state,
 	getters,
 	actions,
-	mutations,
-	modules: {
-		power,
-		updateManager,
-	}
+	mutations
 }

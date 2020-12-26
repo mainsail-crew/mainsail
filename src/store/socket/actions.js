@@ -70,6 +70,10 @@ export default {
 				commit('server/power/setStatus', payload.params[0], { root: true })
 				break
 
+			case 'notify_update_response':
+				commit('server/updateManager/setUpdateResponse', payload.params[0], { root: true })
+				break
+
 			default:
 				if (payload.result !== "ok") {
 					if (
@@ -88,5 +92,10 @@ export default {
 
 	clearLoadings({ commit }) {
 		commit('clearLoadings')
-	}
+	},
+
+	reportDebug({ commit }, payload) {
+		window.console.log(payload)
+		commit('void', {}, { root: true })
+	},
 }

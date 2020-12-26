@@ -3,7 +3,6 @@
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-general-panel></settings-general-panel>
-                <settings-update-panel></settings-update-panel>
                 <settings-webcam-panel class="mt-6"></settings-webcam-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
