@@ -144,7 +144,7 @@
                 loadings: state => state.socket.loadings,
             }),
             ...mapGetters([
-                'getMacros'
+
             ]),
             events: {
                 get() {
