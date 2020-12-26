@@ -59,11 +59,20 @@ export default {
         }
     },
     methods: {
+        createChart() {
+            if (document.getElementById("tempchart")) {
+                this.chart = new CanvasJS.Chart("tempchart", this.chartOptions)
+            } else setTimeout(() => {
+                this.createChart()
+            }, 500)
+        }
 
     },
     created() {
+
         this.timer = setInterval(() => {
             if (
+                document.getElementById("tempchart") &&
                 this.chart &&
                 this.chart._toolBar
             ) {
@@ -76,7 +85,7 @@ export default {
         }, 1000);
     },
     mounted: function() {
-        this.chart = new CanvasJS.Chart("tempchart", this.chartOptions)
+        this.createChart()
     }
 }
 </script>
