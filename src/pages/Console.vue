@@ -51,6 +51,22 @@
                     <v-icon class="mr-2">mdi-send</v-icon> send
                 </v-btn>
             </v-col>
+
+            <v-col class="col-auto align-content-center">
+                <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                        </v-list-item>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-col>
         </v-row>
         <v-row>
             <v-col xs12>
@@ -124,13 +140,33 @@
         },
         computed: {
             ...mapState({
-                events: state => state.server.events,
                 helplist: state => state.printer.helplist,
                 loadings: state => state.socket.loadings,
             }),
             ...mapGetters([
                 'getMacros'
             ]),
+            events: {
+                get() {
+                    return this.$store.getters["server/getFilterdEvents"]
+                }
+            },
+            hideWaitTemperatures: {
+                get() {
+                    return this.$store.state.gui.console.hideWaitTemperatures
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
+                }
+            },
+            boolCustomFilters: {
+                get() {
+                    return this.$store.state.gui.console.boolCustomFilters
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
+                }
+            }
         },
         methods: {
             doSend() {

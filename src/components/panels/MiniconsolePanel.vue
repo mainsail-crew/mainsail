@@ -26,7 +26,19 @@
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn small class="px-2 minwidth-0" color="lightgray"  title="Pause print"><v-icon small>mdi-pause</v-icon></v-btn>
+            <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn small class="px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                    </v-list-item>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-toolbar>
         <v-card-text class="py-0">
             <v-row>
@@ -86,7 +98,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+import {mapState} from 'vuex'
     import Vue from "vue";
     import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
@@ -123,10 +135,30 @@
         },
         computed: {
             ...mapState({
-                events: state => state.server.events,
                 helplist: state => state.printer.helplist,
                 loadings: state => state.socket.loadings,
-            })
+            }),
+            events: {
+                get() {
+                    return this.$store.getters["server/getFilterdEvents"]
+                }
+            },
+            hideWaitTemperatures: {
+                get() {
+                    return this.$store.state.gui.console.hideWaitTemperatures
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
+                }
+            },
+            boolCustomFilters: {
+                get() {
+                    return this.$store.state.gui.console.boolCustomFilters
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
+                }
+            }
         },
         methods: {
             doSend() {
