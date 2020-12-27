@@ -464,7 +464,7 @@
                 this.$socket.sendObj('server.files.move', {
                     source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
                     dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
-                }, 'files/getFileMove');
+                }, 'files/getMove');
             },
             removeFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
@@ -585,7 +585,7 @@
                     this.$socket.sendObj('server.files.move', {
                         source: this.currentPath+"/"+this.draggingFile.item.filename,
                         dest: dest
-                    }, 'getPostFileMove');
+                    }, 'files/getMove');
                 }
             },
             sortFiles(items, sortBy, sortDesc) {
