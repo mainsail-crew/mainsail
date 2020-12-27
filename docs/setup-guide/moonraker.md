@@ -47,6 +47,10 @@ config_path: ~/klipper_config
 enabled: true
 trusted_clients:
     192.168.1.0/24
+
+[update_manager]
+client_repo: meteyou/mainsail
+client_path: ~/mainsail
 ```
 
 > 🔥 **trusted_clients - read carefully** 🔥  

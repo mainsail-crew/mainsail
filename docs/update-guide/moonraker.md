@@ -19,6 +19,14 @@ If you see a content like this
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
 
+### Add Moonraker update manager
+To use the update manager in Mainsail you have to add this in your moonraker.conf:
+```
+[update_manager]
+client_repo: meteyou/mainsail
+client_path: ~/mainsail
+```
+
 ### Change Moonraker to systemd service (December 6th 2020)
 Moonraker is now installed as a systemd service. If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
 ```bash
