@@ -5,5 +5,6 @@ export default {
 
 	getStatus({ commit }, payload) {
 		commit('setStatus', payload)
+		commit('socket/removeLoading', { name: "loadingBtnSyncUpdateManager" }, { root: true })
 	},
 }
