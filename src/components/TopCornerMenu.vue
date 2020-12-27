@@ -14,6 +14,14 @@
             <v-list-item link @click="doFirmwareRestart()">
                 <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Firmware Restart</v-list-item-title>
             </v-list-item>
+            <v-divider class="mt-2"></v-divider>
+            <v-subheader>Restart Services</v-subheader>
+            <v-list-item link @click="doServiceRestartKlipper()">
+                <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Klipper</v-list-item-title>
+            </v-list-item>
+            <v-list-item link @click="doServiceRestartMoonraker()">
+                <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Moonraker</v-list-item-title>
+            </v-list-item>
             <div v-if="countPowerDevices">
                 <v-divider class="mt-2"></v-divider>
                 <v-subheader>Power Devices</v-subheader>
@@ -66,6 +74,12 @@ export default {
         doFirmwareRestart: function() {
             this.$store.commit('server/addEvent', "FIRMWARE_RESTART")
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
+        },
+        doServiceRestartKlipper: function() {
+            this.$socket.sendObj('machine.services.restart', { service: "klipper" })
+        },
+        doServiceRestartMoonraker: function() {
+            this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
         },
         doHostReboot: function() {
             this.$socket.sendObj('machine.reboot', { })
