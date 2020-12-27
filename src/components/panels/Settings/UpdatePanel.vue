@@ -7,7 +7,7 @@
             <v-spacer></v-spacer>
             <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
+                    <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
                 </template>
                 <span>Check for updates</span>
             </v-tooltip>
@@ -109,6 +109,7 @@
                 package_version: state => state.packageVersion,
                 klipper: state => state.server.updateManager.klipper,
                 moonraker: state => state.server.updateManager.moonraker,
+                loadings: state => state.socket.loadings,
             }),
             mainsail:{
                 get() {
@@ -121,6 +122,7 @@
         },
         methods: {
             btnSync() {
+                this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' });
                 this.$socket.sendObj('machine.update.status', { refresh: true }, 'server/updateManager/getStatus')
             },
             getColor(object) {
