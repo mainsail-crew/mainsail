@@ -116,7 +116,7 @@
                         @click="clickRowGoBack"
                         @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
                         >
-                        <td class=" "><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
                         <td class=" " colspan="8">..</td>
                     </tr>
                 </template>
@@ -132,7 +132,7 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td class="pr-0" style="width: 32px;">
+                        <td class="pr-0 text-center" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
                             <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
                             <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />

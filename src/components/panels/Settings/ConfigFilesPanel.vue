@@ -73,7 +73,7 @@
                    <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack">
-                        <td class=" "><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
                         <td class=" " colspan="8">..</td>
                     </tr>
                 </template>
@@ -84,7 +84,7 @@
                         @click="clickRow(item)"
                         class="file-list-cursor"
                         :data-name="item.filename">
-                        <td class=" ">
+                        <td class="pr-0 text-center" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
                             <v-icon v-if="!item.isDirectory">mdi-file</v-icon>
                         </td>
