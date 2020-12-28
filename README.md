@@ -12,7 +12,7 @@ To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail
 * [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
 * [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
 * [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
-* [Flaticon](https://www.flaticon.com/free-icon/3d-print_1530234): for the Logo
+* [Flaticon](https://www.flaticon.com): for the Logo and Ressource Manager Icons
 * [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
 * [dangire158](https://github.com/dangrie158/hx711-driver): for the hx711 Driver
 
