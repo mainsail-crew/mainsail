@@ -9,7 +9,11 @@ var now = Date.now();
 var colorArray;
 
 setInterval(retrieveData,1000);
-store.dispatch('ressourcemonitor/ramHistory/getHistory', {  });
+setInterval(resetData,60000);
+
+function resetData(){
+    console.log("reste")
+}
 
 function retrieveData(){
     var oldURL = URL;

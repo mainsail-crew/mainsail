@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import {bus} from "@/main";
     import { mapState } from 'vuex'
     import LineChart from '@/charts/LineChartUsageCpu.js'
 
@@ -26,7 +25,7 @@
                 datasets: state => state.ressourcemonitor.cpuLoadHistory.datasets,
             }),
             minimizeChart() {
-                return {height: '130px'}
+                return {height: '230px'}
             },
             datasets: {
                 get () {
@@ -37,10 +36,6 @@
         methods: {
         },
         mounted:function(){
-            bus.$on('resetChart', () => {
-                this.$forceUpdate ();
-
-            });
             this.chartdata = {
                 datasets: this.datasets
             }

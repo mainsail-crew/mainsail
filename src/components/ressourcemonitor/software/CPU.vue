@@ -11,7 +11,9 @@
                 <v-col class="py-0 px-3 equal-width">
                     <v-row>
                         <v-col class="py-0 px-3 pt-2">
-                            <line-chart :chart-data="tempchartdata" :styles="minimizeChart"></line-chart>
+                            <keep-alive>
+                                <CPUTemp></CPUTemp>
+                            </keep-alive>
                         </v-col> 
                     </v-row>
                 </v-col>
@@ -27,7 +29,9 @@
                 <v-col class="py-0 px-3 equal-width">
                     <v-row>
                         <v-col class="py-0 px-3 pt-2">
-                            <CPULoad></CPULoad>
+                            <keep-alive>
+                                <CPULoad></CPULoad>
+                            </keep-alive>
                         </v-col> 
                     </v-row>
                 </v-col>
@@ -37,12 +41,11 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
     import CPULoad from '@/charts/CPULoad'
-    import LineChart from '@/charts/LineChartUsageCpu.js'
+    import CPUTemp from '@/charts/CPUTemp'
     export default {
         components: {
-            LineChart,
+            CPUTemp,
             CPULoad
         },
         data: function() {
@@ -52,23 +55,9 @@
                     emptySlot: false,
                     module: []
                 },
-                tempchartdata: {
-                    datasets: []
-                },
             }
         },
         computed: {
-            ...mapState ({
-                tempdatasets: state => state.ressourcemonitor.cpuTempHistory.datasets,
-            }),
-            minimizeChart() {
-                return {height: '230px'}
-            },
-            tempdatasets: {
-                get () {
-                    return this.$store.state.ressourcemonitor.cpuTempHistory.datasets
-                }
-            },
             ifsoc:function(){
                 var socket=this.$store.state.ressourcemonitor.cpu.socket;
                 console.log(socket)
@@ -82,9 +71,6 @@
 
         },
         mounted(){
-            this.tempchartdata = {
-                datasets: this.tempdatasets
-            }
 
         }
     }

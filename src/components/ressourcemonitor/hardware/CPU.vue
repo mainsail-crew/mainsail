@@ -53,7 +53,9 @@
                 <v-col class="py-0 px-3 equal-width pt-2">
                     <v-row>
                         <v-col class="py-0 px-3">
-                            <CPUFreq></CPUFreq>
+                            <keep-alive>
+                                <CPUFreq></CPUFreq>
+                            </keep-alive>
                         </v-col> 
                     </v-row>
                 </v-col>

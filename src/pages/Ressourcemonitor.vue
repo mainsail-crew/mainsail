@@ -39,14 +39,15 @@
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col v-if="showGeneral" class="col-sm-12 col-md-7">
-            <general v-if="showGeneral"/>
+        <v-col class="col-sm-12 col-md-3">
+            <keep-alive>
+                <component v-bind:is="currentHardwareComponent" />
+            </keep-alive>
         </v-col>
-        <v-col v-if="!showGeneral" class="col-sm-12 col-md-3">
-            <component v-if="!showGeneral" v-bind:is="currentHardwareComponent" />
-        </v-col>
-        <v-col v-if="!showGeneral" class="col-sm-12 col-md-7">
-            <component v-if="!showGeneral" v-bind:is="currentSoftwareComponent" />
+        <v-col class="col-sm-12 col-md-7">
+            <keep-alive>
+                <component v-bind:is="currentSoftwareComponent" />
+            </keep-alive>
         </v-col>
     </v-row>
     
@@ -66,7 +67,6 @@
             selectedItem: 0,
             currentHardwareComponent: General,
             currentSoftwareComponent: General,
-            showGeneral: true,
         }),
         computed: {
             ressourcemanagerAviable: {
@@ -83,20 +83,14 @@
                 bus.$emit("hidekeyboard");
             },
             selectGeneral:function(){
-                this.showGeneral=true
-                bus.$emit("resetChart");
                 this.currentHardwareComponent=General
                 this.currentSoftwareComponent=General
             },
             selectCPU:function(){
-                this.showGeneral=false
-                bus.$emit("resetChart");
                 this.currentSoftwareComponent=SoftwareCPU
                 this.currentHardwareComponent=HardwareCPU
             },
             selectRAM:function(){
-                this.showGeneral=false
-                bus.$emit("resetChart");
                 this.currentSoftwareComponent=SoftwareRAM
                 this.currentHardwareComponent=HardwareRAM
             },
