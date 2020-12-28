@@ -30,6 +30,11 @@
                                                     <v-list-item-title><strong>RAM</strong></v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-content v-on:click="selectGPU()">
+                                                    <v-list-item-title><strong>GPU</strong></v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
                                         </v-list-item-group>
                                     </v-list>
                                 </v-navigation-drawer>
@@ -56,8 +61,10 @@
 <script>
     import HardwareCPU from "../components/ressourcemonitor/hardware/CPU";
     import HardwareRAM from "../components/ressourcemonitor/hardware/RAM";
+    import HardwareGPU from "../components/ressourcemonitor/hardware/GPU";
     import SoftwareCPU from "../components/ressourcemonitor/software/CPU";
     import SoftwareRAM from "../components/ressourcemonitor/software/RAM";
+    import SoftwareGPU from "../components/ressourcemonitor/software/GPU";
     import General from "../components/ressourcemonitor/General";
     import {bus} from "../main";
 
@@ -89,6 +96,10 @@
             selectCPU:function(){
                 this.currentSoftwareComponent=SoftwareCPU
                 this.currentHardwareComponent=HardwareCPU
+            },
+            selectGPU:function(){
+                this.currentSoftwareComponent=SoftwareGPU
+                this.currentHardwareComponent=HardwareGPU
             },
             selectRAM:function(){
                 this.currentSoftwareComponent=SoftwareRAM

@@ -31,7 +31,9 @@ export function getDefaultState() {
 			totalswap: 0.0,
 			usedswap: 0.0,
 			modules: [],
-		}
+		},
+		gpu: [],
+		screens: []
 	}
 }
 

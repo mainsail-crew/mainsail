@@ -22,10 +22,6 @@ function retrieveData(){
         return;
     }
     if(URL!=oldURL){
-        store.dispatch('ressourcemonitor/ramHistory/reset',{});
-        store.dispatch('ressourcemonitor/cpuLoadHistory/reset',{});
-        store.dispatch('ressourcemonitor/cpuFreqHistory/reset',{});
-        store.dispatch('ressourcemonitor/cpuTempHistory/reset',{});
         colorArray=undefined;
     }
     now = Date.now();
@@ -42,6 +38,7 @@ function retrieveData(){
         retrieveCPUTemp();
         retrieveRAM();
         retrieveRAMLoad();
+        retrieveGPU();
     })
     .catch(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
@@ -172,6 +169,16 @@ function retrieveRAMLoad(){
         store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram", value: (response.data.used/1024/1024/1024).toFixed(2), time: now });
         store.commit('ressourcemonitor/ramHistory/addValue', { name: "Ram_target", value: (response.data.total/1024/1024/1024).toFixed(0), time: now });
         store.commit('ressourcemonitor/ramHistory/addValue', { name: "Swap", value: (response.data.swapused/1024/1024/1024).toFixed(2), time: now });
+    })
+    .catch(function (){
+        
+    });
+}
+function retrieveGPU(){
+    axios.get(URL+"/getGPU")
+    .then(function (response){
+        store.state.ressourcemonitor.gpu=response.data.controllers
+        store.state.ressourcemonitor.screens=response.data.displays
     })
     .catch(function (){
         
