@@ -18,9 +18,24 @@ export default {
 		}
 	},
 
-	setUpdateResponse(state, payload) {
-		Vue.set(state, 'updateResponse', payload)
+	addUpdateResponse(state, payload) {
+		if (state.updateResponse.application !== payload.application)
+			Vue.set(state.updateResponse, 'application', payload.application)
 
-		if (payload.application === "client" && payload.complete) window.location.reload(true)
+		if (state.updateResponse.complete !== payload.complete)
+			Vue.set(state.updateResponse, 'complete', payload.complete)
+
+		state.updateResponse.messages.push({
+			date: new Date(),
+			message: payload.message
+		})
+	},
+
+	resetUpdateResponse(state) {
+		Vue.set(state, 'updateResponse', {
+			application: '',
+			complete: true,
+			messages: []
+		})
 	}
 }
