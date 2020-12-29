@@ -13,10 +13,10 @@ are not many possibilities, but i will expand them continuously. If some feature
 are not yet listed below, please create a FR (feature request) on Github.
 
 ### currently supported functions
-- [change sidebar image](sidebar.md)
+- [change sidebar logo](sidebar.md)
+- [change sidebar background](sidebar.md)
 - [upload custom.css](custom-css.md)
 
 ### cooming soon
 - change favicon
-- change logo
 - change primary color (all blue buttons atm)

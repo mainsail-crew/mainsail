@@ -25,7 +25,7 @@
             :src="sidebarBackground"
         >
             <div id="nav-header">
-                <img :src="require('./assets/logo.svg')" />
+                <img :src="sidebarLogo" />
                 <v-toolbar-title>{{ printername !== "" ? printername : hostname }}</v-toolbar-title>
             </div>
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
@@ -148,6 +148,11 @@ export default {
         print_percent: {
             get() {
                 return this.$store.getters["printer/getPrintPercent"]
+            }
+        },
+        sidebarLogo: {
+            get() {
+                return this.$store.getters["files/getSidebarLogo"]
             }
         },
         sidebarBackground: {
