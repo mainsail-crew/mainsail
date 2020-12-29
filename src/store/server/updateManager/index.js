@@ -10,7 +10,7 @@ export function getDefaultState() {
 		updateResponse: {
 			application: "",
 			complete: true,
-			message: "",
+			messages: [],
 		}
 	}
 }

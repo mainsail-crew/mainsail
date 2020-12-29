@@ -90,28 +90,24 @@
             </v-card>
         </v-dialog>
 
-        <v-dialog :value="!updateStatus" persistent width="500">
-            <v-card color="primary" dark >
-                <v-card-text class="pt-2">
-                    {{ updateMessage}}
-                    <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
+        <update-dialog></update-dialog>
     </v-app>
 </template>
 
 <script>
     import routes from './routes'
     import { mapState, mapGetters } from 'vuex'
-    import TopCornerMenu from "@/components/TopCornerMenu";
+    import TopCornerMenu from "@/components/TopCornerMenu"
+    import UpdateDialog from "@/components/UpdateDialog"
 
 export default {
     props: {
         source: String,
     },
     components: {
-        TopCornerMenu
+        UpdateDialog,
+        TopCornerMenu,
+
     },
     data: () => ({
         overlayDisconnect: true,
@@ -144,9 +140,6 @@ export default {
             save_config_pending: state => state.printer.configfile.save_config_pending,
 
             klipperVersion: state => state.printer.software_version,
-
-            updateStatus: state => state.server.updateManager.updateResponse.complete,
-            updateMessage: state => state.server.updateManager.updateResponse.message,
         }),
         ...mapGetters([
             'getTitle',

@@ -71,7 +71,7 @@ export default {
 				break
 
 			case 'notify_update_response':
-				commit('server/updateManager/setUpdateResponse', payload.params[0], { root: true })
+				commit('server/updateManager/addUpdateResponse', payload.params[0], { root: true })
 				break
 
 			default:
