@@ -41,5 +41,23 @@ export default {
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
 
 		return null
-	}
+	},
+
+	getFavicons: (state, getters, rootState, rootGetters) => {
+		let configDir = findDirectory(state.filetree, ['config', themeDir])
+
+		let favicon16 = configDir.find(element => element.filename !== undefined &&  element.filename === 'favicon-16x16.png')
+		if (favicon16) favicon16 = rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+favicon16.filename
+		let favicon16Default = '/img/favicon-16x16.png'
+
+		let favicon32 = configDir.find(element => element.filename !== undefined &&  element.filename === 'favicon-32x32.png')
+		if (favicon32) favicon32 = rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+favicon32.filename
+		let favicon32Default = '/img/favicon-32x32.png'
+
+		if (favicon16 && favicon32) return [favicon16, favicon32]
+		else if (favicon16) return [favicon16, favicon16]
+		else if (favicon32) return [favicon32, favicon32]
+
+		return [favicon16Default, favicon32Default]
+	},
 }

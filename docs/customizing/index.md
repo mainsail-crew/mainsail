@@ -15,8 +15,8 @@ are not yet listed below, please create a FR (feature request) on Github.
 ### currently supported functions
 - [change sidebar logo](sidebar.md)
 - [change sidebar background](sidebar.md)
+- [change favicon](favicon.md)
 - [upload custom.css](custom-css.md)
 
 ### cooming soon
-- change favicon
 - change primary color (all blue buttons atm)
