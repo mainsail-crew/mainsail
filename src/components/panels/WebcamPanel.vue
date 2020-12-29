@@ -12,7 +12,7 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="webcamConfig.url" class="webcamImage" :style="webcamStyle" />
+            <img :src="url" class="webcamImage" :style="webcamStyle" />
         </v-card-text>
     </v-card>
 </template>
@@ -21,6 +21,21 @@
     import { mapState } from 'vuex'
 
     export default {
+        data: function() {
+            return {
+                refresh: 0
+            }
+        },
+        created: function () {
+            const handleRefreshChange = () => {
+                if (!document.hidden) {
+                    this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
+                }
+            }
+
+            document.addEventListener("focus", () => handleRefreshChange(), false);
+            document.addEventListener("visibilitychange", handleRefreshChange, false);
+        },
         components: {
 
         },
@@ -28,6 +43,12 @@
             ...mapState({
                 'webcamConfig': state => state.gui.webcam
             }),
+            url() {
+                    const url = this.webcamConfig.url
+                    const params = new URLSearchParams(url);
+                    params.set('bypassCache', this.refresh);
+                    return decodeURIComponent(params)
+            },
             webcamStyle() {
                 var transforms = '';
                 if (this.webcamConfig.flipX) {
