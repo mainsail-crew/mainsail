@@ -4,6 +4,7 @@ const packageJson = fs.readFileSync('./package.json')
 const version = JSON.parse(packageJson).version || 0
 
 module.exports = {
+  productionSourceMap: false,
   "transpileDependencies": [
     "vuetify"
   ],
