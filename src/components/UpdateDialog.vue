@@ -19,17 +19,16 @@
         <v-card
             dark
             :loading="!complete"
-            color="primary"
         >
             <template slot="progress">
-                <v-progress-linear color="white" indeterminate></v-progress-linear>
+                <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </template>
-            <v-toolbar color="transparent" flat dense >
+            <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>Updating {{ application }}...</span>
+                    <span class="subheading"><v-icon left>mdi-update</v-icon>Updating {{ application }}{{ complete ? " done!" : "..." }}</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text class="pt-2 pb-2">
+            <v-card-text class="pt-6 pb-2">
                 <v-data-table
                     :headers="headers"
                     :options="options"
@@ -62,7 +61,7 @@
                 </v-data-table>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn @click="close" :disabled="!complete" color="white" outlined>close</v-btn>
+                        <v-btn @click="close" :disabled="!complete" color="primary">close</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
