@@ -53,7 +53,7 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer class="d-none d-sm-block"></v-spacer>
-                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
+                <input type="file" ref="fileUpload" accept=".gcode" style="display: none" @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
                     <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                     <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
@@ -231,6 +231,30 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-snackbar
+            :timeout="-1"
+            :value="true"
+            fixed
+            right
+            bottom
+            dark
+            v-model="uploadSnackbar.status"
+        >
+            <strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="red"
+                    text
+                    v-bind="attrs"
+                    @click="cancelUpload"
+                    style="min-width: auto;"
+                >
+                    <v-icon class="0">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -298,7 +322,19 @@
                 },
                 input_rules: [
                     value => value.indexOf(" ") === -1 || 'Name contain spaces!'
-                ]
+                ],
+                uploadSnackbar: {
+                    status: false,
+                    filename: "",
+                    percent: 0,
+                    speed: 0,
+                    total: 0,
+                    cancelTokenSource: "",
+                    lastProgress: {
+                        time: 0,
+                        loaded: 0
+                    }
+                }
             }
         },
         computed: {
@@ -366,21 +402,51 @@
                 let formData = new FormData()
                 let filename = file.name.replace(" ", "_")
 
+                this.uploadSnackbar.filename = filename
+                this.uploadSnackbar.status = true
+                this.uploadSnackbar.percent = 0
+                this.uploadSnackbar.speed = 0
+                this.uploadSnackbar.lastProgress.loaded = 0
+                this.uploadSnackbar.lastProgress.time = 0
+
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7))
                 this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
 
+                this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
                 return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, { headers: { 'Content-Type': 'multipart/form-data' } }
+                    formData, {
+                        cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                        onUploadProgress: (progressEvent) => {
+                            this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                            if (this.uploadSnackbar.lastProgress.time) {
+                                const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
+                                const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
+
+                                if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                            }
+
+                            this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
+                            this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
+                            this.uploadSnackbar.total = progressEvent.total
+                        }
+                    }
                 ).then((result) => {
+                    this.uploadSnackbar.status = false
                     this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
-                    toast.success("Upload of "+result.data.result+" successful!");
+                    toast.success("Upload of "+result.data.result+" successful!")
                 }).catch(() => {
+                    this.uploadSnackbar.status = false
                     this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
                     toast.error("Cannot upload the file!")
-                });
+                })
             },
             clickUploadButton: function() {
                 this.$refs.fileUpload.click()
+            },
+            cancelUpload: function() {
+                this.uploadSnackbar.cancelTokenSource.cancel()
+                this.uploadSnackbar.status = false
             },
             refreshFileList: function() {
                 this.$socket.sendObj('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory')
@@ -672,11 +738,13 @@
             displayMetadata: {
                 deep: true,
                 handler(newVal) {
-                    Object.entries(newVal).forEach(value => {
-                        if (this.headers.filter(header => header.value === value[0]).length) {
-                            this.headers.filter(header => header.value === value[0])[0].visible = value[1];
-                        }
-                    });
+                    if (newVal !== undefined && typeof(newVal) === 'object') {
+                        Object.entries(newVal).forEach(value => {
+                            if (this.headers.filter(header => header.value === value[0]).length) {
+                                this.headers.filter(header => header.value === value[0])[0].visible = value[1];
+                            }
+                        })
+                    }
                 }
             },
             showHiddenFiles: function() {
