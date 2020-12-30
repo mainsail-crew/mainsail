@@ -84,6 +84,7 @@ export default class WebSocketClient {
                     } else {
                         let result = data.result
                         if (result === "ok") result = { result: result }
+                        if (typeof(result) === "string") result = { result: result }
 
                         let preload = {}
                         let wsData = this.wsData.filter(item => item.id === data.id)[0]

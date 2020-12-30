@@ -533,14 +533,7 @@
                 }, 'files/getMove');
             },
             removeFile() {
-                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
-                axios.delete(
-                    '//'+ this.hostname + ':' + this.port +'/server/files/' + encodeURI(filename)
-                ).then((result) => {
-                    this.$toast.success(result.data.result+" successfully deleted.");
-                }).catch(() => {
-                    this.$toast.error("Error! Cannot delete file.");
-                });
+                this.$socket.sendObj('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
             },
             createDirectory: function() {
                 this.dialogCreateDirectory.name = "";

@@ -60,4 +60,15 @@ export default {
 			commit('void', null, { root: true });
 		}
 	},
+
+	getDeleteFile({ commit }, payload) {
+		if (payload.error) {
+			Vue.$toast.error(payload.error.message);
+		} else if ('result' in payload) {
+			let delPath = payload.result.substr(payload.result.lastIndexOf("/")+1);
+
+			Vue.$toast.success("Successfully deleted "+delPath);
+			commit('void', null, { root: true });
+		}
+	},
 }
