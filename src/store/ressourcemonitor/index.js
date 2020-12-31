@@ -7,6 +7,11 @@ import ramHistory from './ramHistory'
 import cpuTempHistory from './cpuTempHistory'
 import cpuLoadHistory from './cpuLoadHistory'
 import cpuFreqHistory from './cpuFreqHistory'
+import gpuCoreFreqHistory from './gpuCoreFreqHistory'
+import gpuMemFreqHistory from './gpuMemFreqHistory'
+import gpuTempHistory from './gpuTempHistory'
+import gpuCoreHistory from './gpuCoreHistory'
+import gpuMemHistory from './gpuMemHistory'
 
 export function getDefaultState() {
 	return {
@@ -32,7 +37,10 @@ export function getDefaultState() {
 			usedswap: 0.0,
 			modules: [],
 		},
-		gpu: [],
+		gpu: {
+			cards: [],
+			colors: []
+		},
 		screens: []
 	}
 }
@@ -51,6 +59,11 @@ export default {
 		ramHistory,
 		cpuLoadHistory,
 		cpuFreqHistory,
-		cpuTempHistory
+		cpuTempHistory,
+		gpuCoreFreqHistory,
+		gpuMemFreqHistory,
+		gpuTempHistory,
+		gpuCoreHistory,
+		gpuMemHistory
 	}
 }

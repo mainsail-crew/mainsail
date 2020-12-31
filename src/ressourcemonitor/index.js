@@ -6,7 +6,8 @@ var URL = store.state.gui.modules.ressourcemonitorUrl;
 
 var now = Date.now();
 
-var colorArray;
+var cpuColorArray;
+var gpuColorArray;
 
 setInterval(retrieveData,1000);
 setInterval(resetData,60000);
@@ -22,16 +23,21 @@ function retrieveData(){
         return;
     }
     if(URL!=oldURL){
-        colorArray=undefined;
+        cpuColorArray=undefined;
+        gpuColorArray=undefined;
     }
     now = Date.now();
     axios.get(URL)
     .then(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: true } });
-        if(typeof(colorArray)==="undefined"){
+        if(typeof(cpuColorArray)==="undefined"){
             setCPUColors();
         }
-        store.state.ressourcemonitor.cpu.colors=colorArray;
+        if(typeof(gpuColorArray)==="undefined"){
+            setGPUColors();
+        }
+        store.state.ressourcemonitor.cpu.colors=cpuColorArray;
+        store.state.ressourcemonitor.gpu.colors=gpuColorArray;
         retrieveCPU();
         retrieveCPUSpeed();
         retrieveCPULoad();
@@ -46,7 +52,7 @@ function retrieveData(){
     });
 }
 function retrieveCPU(){
-    store.commit('ressourcemonitor/cpuFreqHistory/setColors', { colors: colorArray});
+    store.commit('ressourcemonitor/cpuFreqHistory/setColors', { colors: cpuColorArray});
     axios.get(URL+"/getCPU")
     .then(function (response){
         store.state.ressourcemonitor.cpu.vendor=response.data.manufacturer
@@ -66,9 +72,23 @@ function setCPUColors(){
     axios.get(URL+"/getCPU")
     .then(function (response){
         if(typeof(colorArray)==="undefined"){
-            colorArray= new Array(response.data.cores+1)
-            for(var color = 0;color < colorArray.length;color++){
-                colorArray[color]=getRandomColor();
+            cpuColorArray= new Array(response.data.cores+1)
+            for(var color = 0;color < cpuColorArray.length;color++){
+                cpuColorArray[color]=getRandomColor();
+            }
+        }
+    })
+    .catch(function (){
+        
+    });
+}
+function setGPUColors(){
+    axios.get(URL+"/getGPU")
+    .then(function (response){
+        if(typeof(colorArray)==="undefined"){
+            gpuColorArray= new Array(response.data.controllers.length)
+            for(var color = 0;color < gpuColorArray.length;color++){
+                gpuColorArray[color]=getRandomColor();
             }
         }
     })
@@ -77,7 +97,7 @@ function setCPUColors(){
     });
 }
 function retrieveCPUSpeed(){
-    store.commit('ressourcemonitor/cpuLoadHistory/setColors', { colors: colorArray});
+    store.commit('ressourcemonitor/cpuLoadHistory/setColors', { colors: cpuColorArray});
     axios.get(URL+"/getCPUSpeed")
     .then(function (response){
         store.state.ressourcemonitor.cpu.freqcores=response.data.cores
@@ -100,7 +120,7 @@ function fetchCPUFreqChart(cores){
     }
 }
 function retrieveCPULoad(){
-    store.commit('ressourcemonitor/cpuTempHistory/setColors', { colors: colorArray});
+    store.commit('ressourcemonitor/cpuTempHistory/setColors', { colors: cpuColorArray});
     axios.get(URL+"/getCPULoad")
     .then(function (response){
         store.state.ressourcemonitor.cpu.load=response.data.currentload.toFixed(2)
@@ -175,14 +195,40 @@ function retrieveRAMLoad(){
     });
 }
 function retrieveGPU(){
+    store.commit('ressourcemonitor/gpuCoreFreqHistory/setColors', { colors: gpuColorArray});
+    store.commit('ressourcemonitor/gpuMemFreqHistory/setColors', { colors: gpuColorArray});
+    store.commit('ressourcemonitor/gpuTempHistory/setColors', { colors: gpuColorArray});
+    store.commit('ressourcemonitor/gpuCoreHistory/setColors', { colors: gpuColorArray});
+    store.commit('ressourcemonitor/gpuMemHistory/setColors', { colors: gpuColorArray});
     axios.get(URL+"/getGPU")
     .then(function (response){
-        store.state.ressourcemonitor.gpu=response.data.controllers
+        store.state.ressourcemonitor.gpu.cards=response.data.controllers
         store.state.ressourcemonitor.screens=response.data.displays
+        fetchGPUChart(response.data.controllers)
     })
     .catch(function (){
         
     });
+}
+
+function fetchGPUChart(controllers){
+    if(typeof(controllers) === "undefined"){
+        return;
+    }
+    var card = 0;
+    for(card=0;card < controllers.length+1;card++){
+        var singleController = controllers[card];
+        if(typeof(singleController) !== undefined){
+            store.commit('ressourcemonitor/gpuCoreFreqHistory/addValue', { name: "Card"+card, value: singleController.clockCore.toFixed(2), time: now });
+            store.commit('ressourcemonitor/gpuMemFreqHistory/addValue', { name: "Card"+card, value: singleController.clockMemory.toFixed(2), time: now });
+            store.commit('ressourcemonitor/gpuTempHistory/addValue', { name: "Card"+card, value: singleController.temperatureGpu.toFixed(2), time: now });
+            store.commit('ressourcemonitor/gpuTempHistory/addValue', { name: "Card"+card+"_target", value: 100, time: now });
+            store.commit('ressourcemonitor/gpuCoreHistory/addValue', { name: "Card"+card, value: singleController.utilizationGpu.toFixed(2), time: now });
+            store.commit('ressourcemonitor/gpuCoreHistory/addValue', { name: "Card"+card+"_target", value: 100, time: now });
+            store.commit('ressourcemonitor/gpuMemHistory/addValue', { name: "Card"+card, value: singleController.memoryUsed.toFixed(2), time: now });
+            store.commit('ressourcemonitor/gpuMemHistory/addValue', { name: "Card"+card+"_target", value: singleController.memoryTotal.toFixed(2), time: now });
+        }
+    }
 }
 function getRandomColor() {
 	var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});

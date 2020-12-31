@@ -52,6 +52,71 @@
             </v-card-text>
         </v-card>
         
+        <v-card height=200 class="mb-5" v-if="this.$store.state.ressourcemonitor.gpu.cards.length!=0">
+            <v-toolbar flat dense >
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-fire</v-icon>Temperature</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-card-text class="py-1">
+                <v-col class="py-0 px-3 equal-width pt-2">
+                    <v-row>
+                        <v-col class="py-0 px-3">
+                            <keep-alive>
+                                <GPUTemp></GPUTemp>
+                            </keep-alive>
+                        </v-col> 
+                    </v-row>
+                </v-col>
+            </v-card-text>
+        </v-card>
+        
+        <v-col class="py-0 px-0 equal-width ">
+            <v-row>
+                <v-col class="py-0 px-3" style="width:45%">
+                    <v-card height=250 class="mb-5" v-if="this.$store.state.ressourcemonitor.gpu.cards.length!=0">
+                        <v-toolbar flat dense >
+                            <v-toolbar-title>
+                                <span class="subheading"><v-icon left>mdi-chart-donut</v-icon>Core Usage</span>
+                            </v-toolbar-title>
+                        </v-toolbar>
+                        <v-card-text class="py-1">
+                            <v-col class="py-0 px-3 equal-width pt-2">
+                                <v-row>
+                                    <v-col class="py-0 px-3">
+                                        <keep-alive>
+                                            <GPUCore></GPUCore>
+                                        </keep-alive>
+                                    </v-col> 
+                                </v-row>
+                            </v-col>
+                        </v-card-text>
+                    </v-card>
+                </v-col> 
+                
+                <v-col class="py-0 px-3" style="width:45%">
+                    <v-card height=250 class="mb-5" v-if="this.$store.state.ressourcemonitor.gpu.cards.length!=0">
+                        <v-toolbar flat dense >
+                            <v-toolbar-title>
+                                <span class="subheading"><v-icon left>mdi-chart-donut</v-icon>Mem Usage</span>
+                            </v-toolbar-title>
+                        </v-toolbar>
+                        <v-card-text class="py-1">
+                            <v-col class="py-0 px-3 equal-width pt-2">
+                                <v-row>
+                                    <v-col class="py-0 px-3">
+                                        <keep-alive>
+                                            <GPUMem></GPUMem>
+                                        </keep-alive>
+                                    </v-col> 
+                                </v-row>
+                            </v-col>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-col>
+        
        
         <v-dialog v-model="dialogGPU.show" max-width="400">
             <v-card>
@@ -85,9 +150,15 @@
 </template>
 
 <script>
+    import GPUTemp from '@/charts/GPUTemp'
+    import GPUCore from '@/charts/GPUCore'
+    import GPUMem from '@/charts/GPUMem'
 
     export default {
         components: {
+            GPUTemp,
+            GPUCore,
+            GPUMem
         },
         data: function() {
             return {
