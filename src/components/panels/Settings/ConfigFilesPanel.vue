@@ -30,7 +30,7 @@
             <v-card-title>
                 Config Files
                 <v-spacer class="d-none d-sm-block"></v-spacer>
-                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
+                <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0">
                     <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
                     <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
@@ -176,6 +176,30 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-snackbar
+            :timeout="-1"
+            :value="true"
+            fixed
+            right
+            bottom
+            dark
+            v-model="uploadSnackbar.status"
+        >
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="red"
+                    text
+                    v-bind="attrs"
+                    @click="cancelUpload"
+                    style="min-width: auto;"
+                >
+                    <v-icon class="0">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
     </div>
 </template>
 
@@ -243,6 +267,20 @@
                     show: false,
                     name: "",
                 },
+                uploadSnackbar: {
+                    status: false,
+                    filename: "",
+                    percent: 0,
+                    speed: 0,
+                    total: 0,
+                    number: 0,
+                    max: 0,
+                    cancelTokenSource: "",
+                    lastProgress: {
+                        time: 0,
+                        loaded: 0
+                    }
+                }
             }
         },
         computed: {
@@ -461,30 +499,75 @@
             uploadFileButton: function() {
                 this.$refs.fileUpload.click()
             },
-            uploadFile: function() {
+            async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
-                    this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
-                        this.$refs.fileUpload.value = ''
-                    })
+                    this.$store.commit('socket/addLoading', { name: 'configFileUpload' })
+                    let successFiles = []
+                    this.uploadSnackbar.number = 0
+                    this.uploadSnackbar.max = this.$refs.fileUpload.files.length
+                    for (const file of this.$refs.fileUpload.files) {
+                        this.uploadSnackbar.number++
+                        const result = await this.doUploadFile(file)
+                        successFiles.push(result)
+                    }
+
+                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' })
+                    for(const file of successFiles) {
+                        this.$toast.success("Upload of "+file+" successful!")
+                    }
+
+                    this.$refs.fileUpload.value = ''
                 }
             },
             doUploadFile: function(file) {
                 let toast = this.$toast;
                 let formData = new FormData();
                 let filename = file.name.replace(" ", "_");
+
+                this.uploadSnackbar.filename = filename
+                this.uploadSnackbar.status = true
+                this.uploadSnackbar.percent = 0
+                this.uploadSnackbar.speed = 0
+                this.uploadSnackbar.lastProgress.loaded = 0
+                this.uploadSnackbar.lastProgress.time = 0
+
                 formData.append('root', 'config');
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
                 this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
 
-                return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, { headers: { 'Content-Type': 'multipart/form-data' } }
-                ).then((result) => {
-                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
-                    toast.success("Upload of "+result.data.result+" successful!");
-                }).catch(() => {
-                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
-                    toast.error("Cannot upload the file!");
-                });
+                return new Promise(resolve => {
+                    this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+                    axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
+                        formData, {
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                            cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                            onUploadProgress: (progressEvent) => {
+                                this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                                if (this.uploadSnackbar.lastProgress.time) {
+                                    const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
+                                    const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
+
+                                    if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                                }
+
+                                this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
+                                this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
+                                this.uploadSnackbar.total = progressEvent.total
+                            }
+                        }
+                    ).then((result) => {
+                        this.uploadSnackbar.status = false
+                        resolve(result.data.result)
+                    }).catch(() => {
+                        this.uploadSnackbar.status = false
+                        this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
+                        toast.error("Cannot upload the file!");
+                    })
+                })
+            },
+            cancelUpload: function() {
+                this.uploadSnackbar.cancelTokenSource.cancel()
+                this.uploadSnackbar.status = false
             },
         },
         watch: {

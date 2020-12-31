@@ -53,7 +53,7 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer class="d-none d-sm-block"></v-spacer>
-                <input type="file" ref="fileUpload" accept=".gcode" style="display: none" @change="uploadFile" />
+                <input type="file" ref="fileUpload" accept=".gcode" style="display: none" multiple @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
                     <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                     <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
@@ -240,7 +240,7 @@
             dark
             v-model="uploadSnackbar.status"
         >
-            <strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
@@ -329,6 +329,8 @@
                     percent: 0,
                     speed: 0,
                     total: 0,
+                    number: 0,
+                    max: 0,
                     cancelTokenSource: "",
                     lastProgress: {
                         time: 0,
@@ -390,11 +392,24 @@
             })
         },
         methods: {
-            uploadFile: function() {
+            async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
-                    this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
-                        this.$refs.fileUpload.value = ''
-                    })
+                    this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
+                    let successFiles = []
+                    this.uploadSnackbar.number = 0
+                    this.uploadSnackbar.max = this.$refs.fileUpload.files.length
+                    for (const file of this.$refs.fileUpload.files) {
+                        this.uploadSnackbar.number++
+                        const result = await this.doUploadFile(file)
+                        successFiles.push(result)
+                    }
+
+                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+                    for(const file of successFiles) {
+                        this.$toast.success("Upload of "+file+" successful!")
+                    }
+
+                    this.$refs.fileUpload.value = ''
                 }
             },
             doUploadFile: function(file) {
@@ -410,35 +425,35 @@
                 this.uploadSnackbar.lastProgress.time = 0
 
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7))
-                this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
 
-                this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
-                return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, {
-                        cancelToken: this.uploadSnackbar.cancelTokenSource.token,
-                        headers: { 'Content-Type': 'multipart/form-data' },
-                        onUploadProgress: (progressEvent) => {
-                            this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
-                            if (this.uploadSnackbar.lastProgress.time) {
-                                const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
-                                const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
+                return new Promise(resolve => {
+                    this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+                    axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
+                        formData, {
+                            cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                            onUploadProgress: (progressEvent) => {
+                                this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                                if (this.uploadSnackbar.lastProgress.time) {
+                                    const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
+                                    const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
 
-                                if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                                    if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                                }
+
+                                this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
+                                this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
+                                this.uploadSnackbar.total = progressEvent.total
                             }
-
-                            this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
-                            this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
-                            this.uploadSnackbar.total = progressEvent.total
                         }
-                    }
-                ).then((result) => {
-                    this.uploadSnackbar.status = false
-                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
-                    toast.success("Upload of "+result.data.result+" successful!")
-                }).catch(() => {
-                    this.uploadSnackbar.status = false
-                    this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
-                    toast.error("Cannot upload the file!")
+                    ).then((result) => {
+                        this.uploadSnackbar.status = false
+                        resolve(result.data.result)
+                    }).catch(() => {
+                        this.uploadSnackbar.status = false
+                        this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+                        toast.error("Cannot upload the file!")
+                    })
                 })
             },
             clickUploadButton: function() {
