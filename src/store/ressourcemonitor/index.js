@@ -12,6 +12,8 @@ import gpuMemFreqHistory from './gpuMemFreqHistory'
 import gpuTempHistory from './gpuTempHistory'
 import gpuCoreHistory from './gpuCoreHistory'
 import gpuMemHistory from './gpuMemHistory'
+import networkTransmitHistory from './networkTransmitHistory'
+import networkReceiveHistory from './networkReceiveHistory'
 
 export function getDefaultState() {
 	return {
@@ -41,7 +43,11 @@ export function getDefaultState() {
 			cards: [],
 			colors: []
 		},
-		screens: []
+		screens: [],
+		network: {
+			colors: [],
+			interfaces: []
+		}
 	}
 }
 
@@ -64,6 +70,8 @@ export default {
 		gpuMemFreqHistory,
 		gpuTempHistory,
 		gpuCoreHistory,
-		gpuMemHistory
+		gpuMemHistory,
+		networkTransmitHistory,
+		networkReceiveHistory
 	}
 }

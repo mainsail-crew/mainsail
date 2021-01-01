@@ -35,6 +35,11 @@
                                                     <v-list-item-title><strong>GPU</strong></v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-content v-on:click="selectNetwork()">
+                                                    <v-list-item-title><strong>Network</strong></v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
                                         </v-list-item-group>
                                     </v-list>
                                 </v-navigation-drawer>
@@ -62,9 +67,11 @@
     import HardwareCPU from "../components/ressourcemonitor/hardware/CPU";
     import HardwareRAM from "../components/ressourcemonitor/hardware/RAM";
     import HardwareGPU from "../components/ressourcemonitor/hardware/GPU";
+    import HardwareNetwork from "../components/ressourcemonitor/hardware/Network";
     import SoftwareCPU from "../components/ressourcemonitor/software/CPU";
     import SoftwareRAM from "../components/ressourcemonitor/software/RAM";
     import SoftwareGPU from "../components/ressourcemonitor/software/GPU";
+    import SoftwareNetwork from "../components/ressourcemonitor/software/Network";
     import General from "../components/ressourcemonitor/General";
     import {bus} from "../main";
 
@@ -104,6 +111,10 @@
             selectRAM:function(){
                 this.currentSoftwareComponent=SoftwareRAM
                 this.currentHardwareComponent=HardwareRAM
+            },
+            selectNetwork:function(){
+                this.currentSoftwareComponent=SoftwareNetwork
+                this.currentHardwareComponent=HardwareNetwork
             },
         }
     }

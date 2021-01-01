@@ -8,6 +8,7 @@ var now = Date.now();
 
 var cpuColorArray;
 var gpuColorArray;
+var networkColorArray;
 
 setInterval(retrieveData,1000);
 setInterval(resetData,60000);
@@ -25,6 +26,7 @@ function retrieveData(){
     if(URL!=oldURL){
         cpuColorArray=undefined;
         gpuColorArray=undefined;
+        networkColorArray=undefined;
     }
     now = Date.now();
     axios.get(URL)
@@ -36,8 +38,12 @@ function retrieveData(){
         if(typeof(gpuColorArray)==="undefined"){
             setGPUColors();
         }
+        if(typeof(networkColorArray)==="undefined"){
+            setNetworkColors();
+        }
         store.state.ressourcemonitor.cpu.colors=cpuColorArray;
         store.state.ressourcemonitor.gpu.colors=gpuColorArray;
+        store.state.ressourcemonitor.network.colors=networkColorArray;
         retrieveCPU();
         retrieveCPUSpeed();
         retrieveCPULoad();
@@ -45,6 +51,8 @@ function retrieveData(){
         retrieveRAM();
         retrieveRAMLoad();
         retrieveGPU();
+        retrieveNetwork();
+        retrieveNetworkLoad();
     })
     .catch(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
@@ -89,6 +97,20 @@ function setGPUColors(){
             gpuColorArray= new Array(response.data.controllers.length)
             for(var color = 0;color < gpuColorArray.length;color++){
                 gpuColorArray[color]=getRandomColor();
+            }
+        }
+    })
+    .catch(function (){
+        
+    });
+}
+function setNetworkColors(){
+    axios.get(URL+"/getNetwork")
+    .then(function (response){
+        if(typeof(colorArray)==="undefined"){
+            networkColorArray= new Array(response.data.length)
+            for(var color = 0;color < networkColorArray.length;color++){
+                networkColorArray[color]=getRandomColor();
             }
         }
     })
@@ -230,6 +252,49 @@ function fetchGPUChart(controllers){
         }
     }
 }
+
+function retrieveNetwork(){
+    axios.get(URL+"/getNetwork")
+    .then(function (response){
+        store.state.ressourcemonitor.network.interfaces=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveNetworkLoad(){
+    store.commit('ressourcemonitor/networkTransmitHistory/setColors', { colors: networkColorArray});
+    store.commit('ressourcemonitor/networkReceiveHistory/setColors', { colors: networkColorArray});
+    axios.get(URL+"/getNetworkStats")
+    .then(function (response){
+        fetchNetworkChart(response.data)
+    })
+    .catch(function (){
+        
+    });
+}
+
+function fetchNetworkChart(interfaces){
+    if(typeof(interfaces) === "undefined"){
+        return;
+    }
+    var card = 0;
+    for(card=0;card < interfaces.length+1;card++){
+        var singleInterface = interfaces[card];
+        if(typeof(singleInterface) !== "undefined"){
+            var transmit = singleInterface.tx_sec
+            var receive = singleInterface.rx_sec
+            if(transmit!=-1){
+                store.commit('ressourcemonitor/networkTransmitHistory/addValue', { name: "Interface"+singleInterface.iface, value: (transmit/1024/1024).toFixed(2), time: now });
+            }
+            if(receive!=-1){
+                store.commit('ressourcemonitor/networkReceiveHistory/addValue', { name: "Interface"+singleInterface.iface, value: (receive/1024/1024).toFixed(2), time: now });
+            }
+        }
+    }
+}
+
 function getRandomColor() {
 	var randomColor = "#000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
 	return randomColor.toUpperCase();
