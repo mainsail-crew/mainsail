@@ -5,32 +5,34 @@
 </style>
 
 <template>
-    <v-row>
-        <v-col class="pb-1 pt-3">
-            <v-subheader class="_tool-slider-subheader">
-                <span>{{ label }}</span>
-                <v-spacer></v-spacer>
-                <span class="font-weight-bold">{{ value }} {{ unit }}</span>
-            </v-subheader>
-            <v-card-text class="py-0">
-                <v-slider
-                    v-model="value"
-                    :min="min"
-                    :max="max"
-                    @change="sendCmd"
-                    hide-details>
+    <v-container class="px-0 py-2">
+        <v-row>
+            <v-col class="pb-1 pt-3">
+                <v-subheader class="_tool-slider-subheader">
+                    <span>{{ label }}</span>
+                    <v-spacer></v-spacer>
+                    <span class="font-weight-bold">{{ value }} {{ unit }}</span>
+                </v-subheader>
+                <v-card-text class="py-0">
+                    <v-slider
+                        v-model="value"
+                        :min="min"
+                        :max="max"
+                        @change="sendCmd"
+                        hide-details>
 
-                    <template v-slot:prepend>
-                        <v-icon @click="decrement">mdi-minus</v-icon>
-                    </template>
+                        <template v-slot:prepend>
+                            <v-icon @click="decrement">mdi-minus</v-icon>
+                        </template>
 
-                    <template v-slot:append>
-                        <v-icon @click="increment">mdi-plus</v-icon>
-                    </template>
-                </v-slider>
-            </v-card-text>
-        </v-col>
-    </v-row>
+                        <template v-slot:append>
+                            <v-icon @click="increment">mdi-plus</v-icon>
+                        </template>
+                    </v-slider>
+                </v-card-text>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 

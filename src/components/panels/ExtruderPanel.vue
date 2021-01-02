@@ -4,26 +4,28 @@
 
 <template>
     <v-card v-if="(['standby', 'paused', 'complete'].includes(printer_state))">
-        <v-row class="px-3">
-            <v-col class="col-12 col-md-6">
-                <v-label>Feed amount in mm:</v-label>
-                <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn v-for="amount in feedAmounts" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
-                </v-btn-toggle>
-            </v-col>
-            <v-col class="col-12 col-md-6">
-                <v-label>Feedrate in mm/s:</v-label>
-                <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn v-for="rate in feedrates" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
-                </v-btn-toggle>
-            </v-col>
-        </v-row>
-        <v-row class="px-3">
-            <v-col class="col-12 text-center">
-                <v-btn small @click="sendRetract()" class="mx-2" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> Retract</v-btn>
-                <v-btn small @click="sendDetract()" class="mx-2" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> Extrude</v-btn>
-            </v-col>
-        </v-row>
+        <v-container>
+            <v-row class="">
+                <v-col class="col col-md-6">
+                    <v-label>Feed amount in mm:</v-label>
+                    <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                        <v-btn v-for="amount in feedAmounts" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                    </v-btn-toggle>
+                </v-col>
+                <v-col class="col col-md-6">
+                    <v-label>Feedrate in mm/s:</v-label>
+                    <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                        <v-btn v-for="rate in feedrates" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                    </v-btn-toggle>
+                </v-col>
+            </v-row>
+            <v-row class="">
+                <v-col class="col text-center">
+                    <v-btn small @click="sendRetract()" class="mx-2" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> Retract</v-btn>
+                    <v-btn small @click="sendDetract()" class="mx-2" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> Extrude</v-btn>
+                </v-col>
+            </v-row>
+        </v-container>
     </v-card>
 </template>
 

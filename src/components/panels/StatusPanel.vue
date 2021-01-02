@@ -29,102 +29,115 @@
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
             </v-item-group>
         </v-toolbar>
-        <v-row v-if="current_filename" class="mx-0">
-            <v-col class="col-auto py-3 pr-0">
-                <v-progress-circular
-                    :rotate="-90"
-                    :size="50"
-                    :width="7"
-                    :value="printPercent * 100"
-                    color="red"
-                >
-                </v-progress-circular>
-            </v-col>
-            <v-col class="col py-3" style="width: 100px;">
-                <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ display_message ? " - "+display_message : "" }}</h3>
-                <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
-            </v-col>
-        </v-row>
-        <v-divider class="mt-0 mb-0" ></v-divider>
-        <v-card-text class="px-0 pt-0 pb-2 content">
+        <v-container v-if="current_filename ">
             <v-row>
-                <v-col
-                    class="col-12 col-sm-4 pl-sm-3 pt-0 pr-sm-0 pb-0"
-                    v-if="
-                        ['printing', 'paused', 'complete'].includes(printer_state) &&
-                        current_file &&
-                        current_file.thumbnails &&
-                        current_file.thumbnails.length &&
-                        current_file.thumbnails.find(element => element.width === 400)
-                    ">
-                    <img
-                        class="statusPanel-image-preview"
-                        :src="'data:image/gif;base64,'+(current_file.thumbnails ? current_file.thumbnails.find(element => element.width === 400).data : '')"
-                    />
+                <v-col class="col-auto pr-0 py-2">
+                    <v-progress-circular
+                        :rotate="-90"
+                        :size="50"
+                        :width="7"
+                        :value="printPercent * 100"
+                        color="red"
+                    >
+                    </v-progress-circular>
                 </v-col>
-                <v-col
-                    :class="
-                        (['printing', 'paused', 'complete'].includes(printer_state) &&
-                        current_file &&
-                        current_file.thumbnails &&
-                        current_file.thumbnails.length &&
-                        current_file.thumbnails.find(element => element.width === 400 || element.width === 300)) ? 'col-12 py-0 col-sm-8 pl-sm-0' : 'col-12 py-0'
-                    ">
-                    <v-row class="text-center pt-2" align="center">
-                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
-                            <v-icon>mdi-axis-arrow</v-icon>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>X</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>Y</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0 pr-sm-6">
-                            <v-row><v-col class="px-0 py-0"><strong>Z</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ position.length ? position[2].toFixed(2) : "--" }}</v-col></v-row>
-                        </v-col>
-                    </v-row>
-                    <v-divider class="my-2" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)"></v-divider>
-                    <v-row class="text-center" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state)">
-                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
-                            <v-icon>mdi-poll</v-icon>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>Filament</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>Print</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ formatTime(print_time) }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0 pr-sm-6">
-                            <v-row><v-col class="px-0 py-0"><strong>Total</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ formatTime(print_time_total) }}</v-col></v-row>
-                        </v-col>
-                    </v-row>
-                    <v-divider class="my-2" v-if="['printing', 'paused', 'error'].includes(printer_state)"></v-divider>
-                    <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
-                        <v-col class="py-0 flex-grow-0 pl-8 pr-3">
-                            <v-icon>mdi-clock-outline</v-icon>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>File</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ print_time > 0 && printPercent > 0 ? formatTime(print_time / printPercent - print_time) : '--' }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0">
-                            <v-row><v-col class="px-0 py-0"><strong>Filament</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ (filament_used > 0 && 'filament_total' in current_file && current_file.filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file.filament_total) - print_time) : '--' }}</v-col></v-row>
-                        </v-col>
-                        <v-col class="equal-width py-0 pr-sm-6">
-                            <v-row><v-col class="px-0 py-0"><strong>Slicer</strong></v-col></v-row>
-                            <v-row><v-col class="px-0 py-0">{{ 'estimated_time' in current_file && current_file.estimated_time > print_time ? formatTime(current_file.estimated_time - print_time) : '--'}}</v-col></v-row>
-                        </v-col>
-                    </v-row>
+                <v-col class="col py-2" style="width: 100px;">
+                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ display_message ? " - "+display_message : "" }}</h3>
+                    <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
                 </v-col>
             </v-row>
+        </v-container>
+        <v-divider v-if="current_filename " class="mt-0 mb-0" ></v-divider>
+        <v-card-text class="px-0 py-0 content">
+            <v-container>
+                <v-row>
+                    <v-col
+                        class="col-12 col-sm-4 pl-sm-0 pt-0 pr-sm-0 pb-0"
+                        v-if="
+                            ['printing', 'paused', 'complete'].includes(printer_state) &&
+                            current_file &&
+                            current_file.thumbnails &&
+                            current_file.thumbnails.length &&
+                            current_file.thumbnails.find(element => element.width === 400)
+
+                        ">
+                        <img
+                            class="statusPanel-image-preview"
+                            :src="'data:image/gif;base64,'+(current_file.thumbnails ? current_file.thumbnails.find(element => element.width === 400).data : '')"
+                        />
+                    </v-col>
+                    <v-col
+                        :class="
+                            (['printing', 'paused', 'complete'].includes(printer_state) &&
+                            current_file &&
+                            current_file.thumbnails &&
+                            current_file.thumbnails.length &&
+                            current_file.thumbnails.find(element => element.width === 400 || element.width === 300))  ? 'col-12 col-sm-8 pl-sm-0' : 'col-12'
+                        ">
+                        <v-row class="text-center" align="center">
+                            <v-col class="flex-grow-0 pl-8 py-2">
+                                <v-icon>mdi-axis-arrow</v-icon>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>X</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Y</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Z</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[2].toFixed(2) : "--" }}</v-col></v-row>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
+                            <v-col class="px-0">
+                                <v-divider></v-divider>
+                            </v-col>
+                        </v-row>
+                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
+                            <v-col class="flex-grow-0 pl-8 py-2">
+                                <v-icon>mdi-poll</v-icon>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Print</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time) }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Total</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time_total) }}</v-col></v-row>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
+                            <v-col class="px-0">
+                                <v-divider></v-divider>
+                            </v-col>
+                        </v-row>
+                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) ">
+                            <v-col class="flex-grow-0 pl-8 py-2">
+                                <v-icon>mdi-clock-outline</v-icon>
+                            </v-col>
+                            <v-col class="equal-width py-2 ">
+                                <v-row><v-col class="px-0 pb-1"><strong>File</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ print_time > 0 && printPercent > 0 ? formatTime(print_time / printPercent - print_time) : '--' }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ (filament_used > 0 && 'filament_total' in current_file && current_file.filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file.filament_total) - print_time) : '--' }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Slicer</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ 'estimated_time' in current_file && current_file.estimated_time > print_time ? formatTime(current_file.estimated_time - print_time) : '--'}}</v-col></v-row>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

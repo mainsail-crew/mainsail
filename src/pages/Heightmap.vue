@@ -40,11 +40,13 @@
                         No bed_mesh has been loaded yet.
                     </v-card-text>
                     <v-card-text class="px-0 py-0 content" v-if="this.bed_mesh && this.bed_mesh.profile_name">
-                        <v-row>
-                            <v-col class="pb-0 pt-5">
-                                <Plotly ref="heightmap" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
-                            </v-col>
-                        </v-row>
+                        <v-container class="px-0 py-0">
+                            <v-row>
+                                <v-col class="pb-0 pt-5">
+                                    <Plotly ref="heightmap" :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+                                </v-col>
+                            </v-row>
+                        </v-container>
                     </v-card-text>
                     <v-card-actions v-if="this.bed_mesh && this.bed_mesh.profile_name" class="py-0">
                         <v-spacer></v-spacer>
@@ -62,26 +64,22 @@
                             <span class="subheading"><v-icon left>mdi-stack-overflow</v-icon>Profile</span>
                         </v-toolbar-title>
                     </v-toolbar>
-                    <v-card-text class="py-0">
-                        <v-row>
-                            <v-col class="px-0 py-1">
-                                <v-simple-table>
-                                    <template v-slot:default>
-                                        <tbody>
-                                            <tr v-for="(profile, index) in profiles" :key="index" >
-                                                <td>{{ profile.name }}<small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
-                                                <td class="text-right">
-                                                    <v-btn-toggle dense no-gutters>
-                                                        <v-btn class="btnMinWidthAuto" @click="loadProfile(profile.name)" :loading="loadings.includes('bedMeshLoad_'+profile.name)" :disabled="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) || 'deleted' in profile.data" ><v-icon small>mdi-view-grid-plus</v-icon></v-btn>
-                                                        <v-btn class="btnMinWidthAuto" @click="openRemoveProfile(profile.name)" :loading="loadings.includes('bedMeshRemove_'+profile.name)" :disabled="'deleted' in profile.data" ><v-icon small>mdi-delete</v-icon></v-btn>
-                                                    </v-btn-toggle>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </template>
-                                </v-simple-table>
-                            </v-col>
-                        </v-row>
+                    <v-card-text class="py-0 px-0">
+                        <v-simple-table>
+                            <template v-slot:default>
+                                <tbody>
+                                <tr v-for="(profile, index) in profiles" :key="index" >
+                                    <td>{{ profile.name }}<small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
+                                    <td class="text-right">
+                                        <v-btn-toggle dense no-gutters>
+                                            <v-btn class="btnMinWidthAuto" @click="loadProfile(profile.name)" :loading="loadings.includes('bedMeshLoad_'+profile.name)" :disabled="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) || 'deleted' in profile.data" ><v-icon small>mdi-view-grid-plus</v-icon></v-btn>
+                                            <v-btn class="btnMinWidthAuto" @click="openRemoveProfile(profile.name)" :loading="loadings.includes('bedMeshRemove_'+profile.name)" :disabled="'deleted' in profile.data" ><v-icon small>mdi-delete</v-icon></v-btn>
+                                        </v-btn-toggle>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </template>
+                        </v-simple-table>
                     </v-card-text>
                 </v-card>
             </v-col>
