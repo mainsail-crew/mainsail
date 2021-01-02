@@ -6,19 +6,19 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="pb-0">
-            <div v-for="(status, index) of sortEndstops" v-bind:key="index">
-                <v-row>
-                    <v-col class="py-2">
+            <v-container px-0 py-0>
+                <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
+                    <v-col>
                         <label class="mt-1 d-inline-block">Endstop <b>{{ index.toUpperCase() }}</b></label>
                         <v-chip class="float-right" :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
                     </v-col>
                 </v-row>
-            </div>
-            <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
-                <v-col class="py-0">
-                    <p>Press the sync-button on the right-bottom to load the current endstop status.</p>
-                </v-col>
-            </v-row>
+                <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
+                    <v-col>
+                        <p>Press the sync-button on the right-bottom to load the current endstop status.</p>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
         <v-card-actions>
             <v-spacer></v-spacer>
