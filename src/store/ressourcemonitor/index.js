@@ -14,6 +14,7 @@ import gpuCoreHistory from './gpuCoreHistory'
 import gpuMemHistory from './gpuMemHistory'
 import networkTransmitHistory from './networkTransmitHistory'
 import networkReceiveHistory from './networkReceiveHistory'
+import filesystemPartitionUsageHistory from './filesystemPartitionUsageHistory'
 
 export function getDefaultState() {
 	return {
@@ -47,6 +48,10 @@ export function getDefaultState() {
 		network: {
 			colors: [],
 			interfaces: []
+		},
+		filesystem: {
+			disks: [],
+			partitions: []
 		}
 	}
 }
@@ -72,6 +77,7 @@ export default {
 		gpuCoreHistory,
 		gpuMemHistory,
 		networkTransmitHistory,
-		networkReceiveHistory
+		networkReceiveHistory,
+		filesystemPartitionUsageHistory
 	}
 }

@@ -40,6 +40,11 @@
                                                     <v-list-item-title><strong>Network</strong></v-list-item-title>
                                                 </v-list-item-content>
                                             </v-list-item>
+                                            <v-list-item>
+                                                <v-list-item-content v-on:click="selectFilesystem()">
+                                                    <v-list-item-title><strong>Filesystem</strong></v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
                                         </v-list-item-group>
                                     </v-list>
                                 </v-navigation-drawer>
@@ -68,10 +73,12 @@
     import HardwareRAM from "../components/ressourcemonitor/hardware/RAM";
     import HardwareGPU from "../components/ressourcemonitor/hardware/GPU";
     import HardwareNetwork from "../components/ressourcemonitor/hardware/Network";
+    import HardwareFilesystem from "../components/ressourcemonitor/hardware/Filesystem";
     import SoftwareCPU from "../components/ressourcemonitor/software/CPU";
     import SoftwareRAM from "../components/ressourcemonitor/software/RAM";
     import SoftwareGPU from "../components/ressourcemonitor/software/GPU";
     import SoftwareNetwork from "../components/ressourcemonitor/software/Network";
+    import SoftwareFilesystem from "../components/ressourcemonitor/software/Filesystem";
     import General from "../components/ressourcemonitor/General";
     import {bus} from "../main";
 
@@ -115,6 +122,10 @@
             selectNetwork:function(){
                 this.currentSoftwareComponent=SoftwareNetwork
                 this.currentHardwareComponent=HardwareNetwork
+            },
+            selectFilesystem:function(){
+                this.currentSoftwareComponent=SoftwareFilesystem
+                this.currentHardwareComponent=HardwareFilesystem
             },
         }
     }

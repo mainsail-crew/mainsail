@@ -22,27 +22,27 @@
                                 <v-col class="py-10">
                                     <v-col class="py-0 px-3 equal-width">
                                         <v-row>
-                                            <v-col class="py-0 pl-5">
+                                            <v-col class="py-1 pl-5">
                                                 
                                             </v-col>
-                                            <v-col class="py-0 pl-5">
+                                            <v-col class="py-1 pl-5">
                                                 <img :src="require('@/assets/ressourcemonitor/ram.png')" width="" height="" style="margin-left:-5px">
                                                 <div style="margin-top:-57px" class="pl-2">
                                                     <strong>Total: </strong> {{(this.$store.state.ressourcemonitor.ram.total/1024/1024/1024).toFixed(2)}} GB <br>
                                                     <strong>Used: </strong> {{(this.$store.state.ressourcemonitor.ram.used/1024/1024/1024).toFixed(2)}} GB<br>
                                                 </div>
                                             </v-col>
-                                            <v-col class="py-0 pl-5">
+                                            <v-col class="py-1 pl-5">
                                                 
                                             </v-col>
-                                            <v-col class="py-0 pl-5">
+                                            <v-col class="py-1 pl-5">
                                                 <img :src="require('@/assets/ressourcemonitor/swap.png')" width="" height="" style="margin-left:-5px">
                                                 <div style="margin-top:-57px" class="pl-2">
                                                     <strong>Total: </strong> {{(this.$store.state.ressourcemonitor.ram.totalswap/1024/1024/1024).toFixed(2)}} GB <br>
                                                     <strong>Used: </strong> {{(this.$store.state.ressourcemonitor.ram.usedswap/1024/1024/1024).toFixed(2)}} GB<br>
                                                 </div>
                                             </v-col>
-                                            <v-col class="py-0 pl-5">
+                                            <v-col class="py-1 pl-5">
                                                 
                                             </v-col>
                                         </v-row>

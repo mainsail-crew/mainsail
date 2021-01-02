@@ -104,7 +104,7 @@
         </v-card>
         
        
-        <v-dialog v-model="dialogGPU.show" max-width="400">
+        <v-dialog v-model="dialogGPU.show" max-width="400" v-if="this.$store.state.ressourcemonitor.gpu.cards.length>0">
             <v-card>
                 <v-card-title class="headline">GPU {{this.dialogGPU.index}} Details</v-card-title>
                 <v-card-text>

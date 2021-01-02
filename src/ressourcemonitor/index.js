@@ -53,6 +53,8 @@ function retrieveData(){
         retrieveGPU();
         retrieveNetwork();
         retrieveNetworkLoad();
+        retrieveDisks();
+        retrievePartitions();
     })
     .catch(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
@@ -79,7 +81,7 @@ function retrieveCPU(){
 function setCPUColors(){
     axios.get(URL+"/getCPU")
     .then(function (response){
-        if(typeof(colorArray)==="undefined"){
+        if(typeof(cpuColorArray)==="undefined"){
             cpuColorArray= new Array(response.data.cores+1)
             for(var color = 0;color < cpuColorArray.length;color++){
                 cpuColorArray[color]=getRandomColor();
@@ -93,7 +95,7 @@ function setCPUColors(){
 function setGPUColors(){
     axios.get(URL+"/getGPU")
     .then(function (response){
-        if(typeof(colorArray)==="undefined"){
+        if(typeof(gpuColorArray)==="undefined"){
             gpuColorArray= new Array(response.data.controllers.length)
             for(var color = 0;color < gpuColorArray.length;color++){
                 gpuColorArray[color]=getRandomColor();
@@ -107,7 +109,7 @@ function setGPUColors(){
 function setNetworkColors(){
     axios.get(URL+"/getNetwork")
     .then(function (response){
-        if(typeof(colorArray)==="undefined"){
+        if(typeof(networkColorArray)==="undefined"){
             networkColorArray= new Array(response.data.length)
             for(var color = 0;color < networkColorArray.length;color++){
                 networkColorArray[color]=getRandomColor();
@@ -291,6 +293,42 @@ function fetchNetworkChart(interfaces){
             if(receive!=-1){
                 store.commit('ressourcemonitor/networkReceiveHistory/addValue', { name: "Interface"+singleInterface.iface, value: (receive/1024/1024).toFixed(2), time: now });
             }
+        }
+    }
+}
+
+function retrieveDisks(){
+    axios.get(URL+"/getDisks")
+    .then(function (response){
+        store.state.ressourcemonitor.filesystem.disks=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrievePartitions(){
+    axios.get(URL+"/getPartitions")
+    .then(function (response){
+        store.state.ressourcemonitor.filesystem.partitions=response.data
+        fetchPartitionChart(response.data)
+    })
+    .catch(function (){
+        
+    });
+}
+
+
+function fetchPartitionChart(partitions){
+    if(typeof(partitions) === "undefined"){
+        return;
+    }
+    var part = 0;
+    for(part=0;part < partitions.length+1;part++){
+        var partition = partitions[part];
+        if(typeof(partition) !== "undefined"){
+            store.commit('ressourcemonitor/filesystemPartitionUsageHistory/addValue', { name: "Partition"+partition.fs, value: (partition.used/1024/1024/1024).toFixed(2), time: now });
+            store.commit('ressourcemonitor/filesystemPartitionUsageHistory/addValue', { name: "Partition"+partition.fs+"_target", value: (partition.size/1024/1024/1024).toFixed(2), time: now });
         }
     }
 }
