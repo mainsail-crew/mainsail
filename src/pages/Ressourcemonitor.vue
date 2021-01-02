@@ -74,6 +74,7 @@
     import HardwareGPU from "../components/ressourcemonitor/hardware/GPU";
     import HardwareNetwork from "../components/ressourcemonitor/hardware/Network";
     import HardwareFilesystem from "../components/ressourcemonitor/hardware/Filesystem";
+    import HardwareGeneral from "../components/ressourcemonitor/hardware/General";
     import SoftwareCPU from "../components/ressourcemonitor/software/CPU";
     import SoftwareRAM from "../components/ressourcemonitor/software/RAM";
     import SoftwareGPU from "../components/ressourcemonitor/software/GPU";
@@ -86,7 +87,7 @@
         components: {General },
         data: () => ({
             selectedItem: 0,
-            currentHardwareComponent: General,
+            currentHardwareComponent: HardwareGeneral,
             currentSoftwareComponent: General,
         }),
         computed: {
@@ -104,7 +105,7 @@
                 bus.$emit("hidekeyboard");
             },
             selectGeneral:function(){
-                this.currentHardwareComponent=General
+                this.currentHardwareComponent=HardwareGeneral
                 this.currentSoftwareComponent=General
             },
             selectCPU:function(){

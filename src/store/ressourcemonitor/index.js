@@ -52,7 +52,8 @@ export function getDefaultState() {
 		filesystem: {
 			disks: [],
 			partitions: []
-		}
+		},
+		os: ""
 	}
 }
 

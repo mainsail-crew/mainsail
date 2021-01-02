@@ -55,6 +55,7 @@ function retrieveData(){
         retrieveNetworkLoad();
         retrieveDisks();
         retrievePartitions();
+        retrieveOS()
     })
     .catch(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
@@ -312,6 +313,16 @@ function retrievePartitions(){
     .then(function (response){
         store.state.ressourcemonitor.filesystem.partitions=response.data
         fetchPartitionChart(response.data)
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveOS(){
+    axios.get(URL+"/getOS")
+    .then(function (response){
+        store.state.ressourcemonitor.os=response.data
     })
     .catch(function (){
         
