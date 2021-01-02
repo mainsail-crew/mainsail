@@ -6,7 +6,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashbaord</span>
+                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashboard</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
