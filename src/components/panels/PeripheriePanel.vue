@@ -35,7 +35,7 @@
             </v-toolbar>
             <div v-for="(fan, index) of this['printer/getFans']" v-bind:key="index">
                 <v-divider v-if="index"></v-divider>
-                <fan-slider :name="fan.name" :type="fan.type" :target="fan.speed" :controllable="fan.controllable" :multi="100" class="py-0" ></fan-slider>
+                <fan-slider :name="fan.name" :type="fan.type" :target="fan.speed" :controllable="fan.controllable" :multi="100" ></fan-slider>
             </div>
         </v-card>
     </div>

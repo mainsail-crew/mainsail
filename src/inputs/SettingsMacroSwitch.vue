@@ -1,11 +1,9 @@
 <style>
-    .settings_macro_switch .v-messages {
-        display: none;
-    }
+
 </style>
 
 <template>
-    <v-switch v-model="value" :label="name.toUpperCase()" @change="setValue" class="settings_macro_switch mt-0"></v-switch>
+    <v-switch v-model="value" :label="name.toUpperCase()" @change="setValue" hide-details class="mt-0"></v-switch>
 </template>
 
 

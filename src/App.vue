@@ -73,7 +73,7 @@
 
         <v-main id="content">
             <v-scroll-y-transition>
-                <v-container fluid id="page-container" class="container px-sm-6 px-3 mx-auto">
+                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <keep-alive>
                         <router-view></router-view>
                     </keep-alive>

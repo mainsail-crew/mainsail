@@ -10,26 +10,29 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">
-            <v-row>
-                <v-col class="py-0">
-                    <v-switch v-model="hideWaitTemperatures" label="Hide temperatures" hide-details class="mt-1"></v-switch>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0">
-                    <v-switch v-model="boolCustomFilters" label="Custom filter" hide-details class="mt-1"></v-switch>
-                </v-col>
-            </v-row>
-            <v-row v-if="boolCustomFilters">
-                <v-col class="">
-                    <v-textarea
-                        outlined
-                        label="Rules"
-                        v-model="customFilters"
-                        hide-details
-                    ></v-textarea>
-                </v-col>
-            </v-row>
+            <v-container px-0 py-0>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="hideWaitTemperatures" label="Hide temperatures" hide-details class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="boolCustomFilters" label="Custom filter" hide-details class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
+                <v-row v-if="boolCustomFilters">
+                    <v-col class="py-2">
+                        <v-textarea
+                            outlined
+                            label="Rules"
+                            v-model="customFilters"
+                            hide-details
+                            class="mb-2"
+                        ></v-textarea>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

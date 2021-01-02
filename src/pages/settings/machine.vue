@@ -1,35 +1,25 @@
 <template>
-    <div>
+    <v-container fluid py-0 px-0>
         <v-row>
             <v-col class="col-12 col-sm-6">
                 <settings-config-files-panel></settings-config-files-panel>
             </v-col>
             <v-col class="col-12 col-sm-6">
-                <v-row v-if="klippy_state === 'ready'">
-                    <v-col class="col-12 pt-0">
-                        <settings-limits-panel></settings-limits-panel>
-                    </v-col>
-                </v-row>
-                <v-row v-if="klippy_state !== 'ready'">
-                    <v-col class="col-12 pt-0">
-                        <klippy-state-panel></klippy-state-panel>
-                    </v-col>
-                </v-row>
-                <v-row>
+                <settings-limits-panel v-if="klippy_state === 'ready'"></settings-limits-panel>
+                <klippy-state-panel v-if="klippy_state !== 'ready'"></klippy-state-panel>
+                <settings-update-panel v-if="updateManager" class="mt-6"></settings-update-panel>
+                <v-row class="mt-3">
                     <v-col class="col-md-6" v-if="klippy_state === 'ready'">
                         <settings-endstop-panel></settings-endstop-panel>
                         <settings-runout-panel></settings-runout-panel>
                     </v-col>
                     <v-col :class="(klippy_state !== 'ready' ? 'col-md-12' : 'col-md-6')">
-                        <settings-update-panel v-if="updateManager"></settings-update-panel>
-                        <settings-logfiles-panel :class="updateManager ? 'mt-6' : ''"></settings-logfiles-panel>
+                        <settings-logfiles-panel></settings-logfiles-panel>
                     </v-col>
                 </v-row>
             </v-col>
         </v-row>
-        <v-row>
-        </v-row>
-    </div>
+    </v-container>
 </template>
 <script>
     import {mapState} from "vuex";

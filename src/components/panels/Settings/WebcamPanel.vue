@@ -1,5 +1,5 @@
 <style>
-    .content { overflow: hidden; }
+
 </style>
 
 <template>
@@ -10,38 +10,40 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
-            <v-row>
-                <v-col class="py-0">
-                    <v-text-field
-                        v-model="webcamUrl"
-                        hide-details
-                        label="Webcam URL"
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row v-if="rotationEnabled">
-                <v-col class="py-0" col-auto>
-                    <v-switch v-model="rotate" hide-details label="Rotate"></v-switch>
-                </v-col>
-                <v-col>
-                    <v-select :items="[{ text: '90 degrees', value: 90 }, { text: '270 degrees', value: 270 }]" v-model="rotateDegrees" hide-details></v-select>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0">
-                    <v-switch v-model="flipX" hide-details label="Flip webcam horizontally"></v-switch>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0">
-                    <v-switch v-model="flipY" hide-details label="Flip webcam vertically"></v-switch>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0">
-                    <v-switch v-model="boolNavi" hide-details label="Show in navigation"></v-switch>
-                </v-col>
-            </v-row>
+            <v-container px-0 py-0>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-text-field
+                            v-model="webcamUrl"
+                            hide-details
+                            label="Webcam URL"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row v-if="rotationEnabled">
+                    <v-col class="py-2" col-auto>
+                        <v-switch v-model="rotate" hide-details label="Rotate" class="mt-0"></v-switch>
+                    </v-col>
+                    <v-col>
+                        <v-select :items="[{ text: '90 degrees', value: 90 }, { text: '270 degrees', value: 270 }]" v-model="rotateDegrees" hide-details></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="flipX" hide-details label="Flip webcam horizontally" class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="flipY" hide-details label="Flip webcam vertically" class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

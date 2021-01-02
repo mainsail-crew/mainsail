@@ -12,14 +12,10 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-0">
-            <v-row>
-                <v-col class="pt-2 pb-0">
-                    <v-text-field
-                        v-model="printerName"
-                        label="Printer Name"
-                    ></v-text-field>
-                </v-col>
-            </v-row>
+            <v-text-field
+                v-model="printerName"
+                label="Printer Name"
+            ></v-text-field>
         </v-card-text>
     </v-card>
 </template>

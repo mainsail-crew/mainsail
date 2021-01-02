@@ -40,29 +40,31 @@
                 </v-list>
             </v-menu>
         </v-toolbar>
-        <v-card-text class="py-0">
-            <v-row>
-                <v-col>
-                    <v-text-field
-                        label="Send code..."
-                        ref="gcodeCommandField"
-                        solo
-                        hide-details
-                        autocomplete="off"
-                        v-model="gcode"
-                        v-on:keyup.enter="doSend"
-                        v-on:keyup.up="onKeyUp"
-                        v-on:keyup.down="onKeyDown"
-                        :items="items"
-                        v-on:keydown.tab="getAutocomplete"
-                    ></v-text-field>
-                </v-col>
-                <v-col class="col-auto align-content-center">
-                    <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
-                        <v-icon class="mr-2">mdi-send</v-icon> send
-                    </v-btn>
-                </v-col>
-            </v-row>
+        <v-card-text>
+            <v-container class="py-0 px-0">
+                <v-row>
+                    <v-col>
+                        <v-text-field
+                            label="Send code..."
+                            ref="gcodeCommandField"
+                            solo
+                            hide-details
+                            autocomplete="off"
+                            v-model="gcode"
+                            v-on:keyup.enter="doSend"
+                            v-on:keyup.up="onKeyUp"
+                            v-on:keyup.down="onKeyDown"
+                            :items="items"
+                            v-on:keydown.tab="getAutocomplete"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col class="col-auto align-content-center">
+                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
+                            <v-icon class="mr-2">mdi-send</v-icon> send
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
         <v-card-text class="px-0 py-0 content">
             <v-divider></v-divider>

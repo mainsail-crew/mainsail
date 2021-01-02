@@ -7,13 +7,13 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">
-            <div v-for="(macro, index) in this['printer/getAllMacros']" v-bind:key="index">
-                <v-row>
-                    <v-col class="py-0">
+            <v-container px-0 py-0>
+                <v-row v-for="(macro, index) in this['printer/getAllMacros']" v-bind:key="index">
+                    <v-col class="py-2">
                         <settings-macro-switch :name="macro.name"></settings-macro-switch>
                     </v-col>
                 </v-row>
-            </div>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

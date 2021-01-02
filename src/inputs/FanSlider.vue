@@ -5,32 +5,34 @@
 </style>
 
 <template>
-    <v-row>
-        <v-col :class="controllable ? 'pb-1 pt-3' : 'py-2'">
-            <v-subheader class="_fan-slider-subheader">
-                <span>{{ convertName }}</span>
-                <v-spacer></v-spacer>
-                <span class="font-weight-bold">{{ Math.round(value) }} %</span>
-            </v-subheader>
-            <v-card-text class="py-0" v-if="controllable">
-                <v-slider
-                    v-model="value"
-                    :min="0"
-                    :max="100"
-                    @change="sendCmd"
-                    hide-details>
+    <v-container class="px-0 py-2">
+        <v-row>
+            <v-col>
+                <v-subheader class="_fan-slider-subheader">
+                    <span>{{ convertName }}</span>
+                    <v-spacer></v-spacer>
+                    <span class="font-weight-bold">{{ Math.round(value) }} %</span>
+                </v-subheader>
+                <v-card-text class="py-0" v-if="controllable">
+                    <v-slider
+                        v-model="value"
+                        :min="0"
+                        :max="100"
+                        @change="sendCmd"
+                        hide-details>
 
-                    <template v-slot:prepend>
-                        <v-icon @click="decrement">mdi-minus</v-icon>
-                    </template>
+                        <template v-slot:prepend>
+                            <v-icon @click="decrement">mdi-minus</v-icon>
+                        </template>
 
-                    <template v-slot:append>
-                        <v-icon @click="increment">mdi-plus</v-icon>
-                    </template>
-                </v-slider>
-            </v-card-text>
-        </v-col>
-    </v-row>
+                        <template v-slot:append>
+                            <v-icon @click="increment">mdi-plus</v-icon>
+                        </template>
+                    </v-slider>
+                </v-card-text>
+            </v-col>
+        </v-row>
+    </v-container>
 </template>
 
 
