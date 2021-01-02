@@ -8,7 +8,7 @@
                 <settings-limits-panel v-if="klippy_state === 'ready'"></settings-limits-panel>
                 <klippy-state-panel v-if="klippy_state !== 'ready'"></klippy-state-panel>
                 <settings-update-panel v-if="updateManager" class="mt-6"></settings-update-panel>
-                <v-row class="mt-3">
+                <v-row class="mt-6">
                     <v-col class="col-md-6" v-if="klippy_state === 'ready'">
                         <settings-endstop-panel></settings-endstop-panel>
                         <settings-runout-panel></settings-runout-panel>
