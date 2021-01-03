@@ -44,6 +44,10 @@ function retrieveData(){
         store.state.ressourcemonitor.cpu.colors=cpuColorArray;
         store.state.ressourcemonitor.gpu.colors=gpuColorArray;
         store.state.ressourcemonitor.network.colors=networkColorArray;
+        retrieveChassis();
+        retrieveSystem();
+        retrieveBIOS()
+        retrieveMainboard();
         retrieveCPU();
         retrieveCPUSpeed();
         retrieveCPULoad();
@@ -62,6 +66,48 @@ function retrieveData(){
         return;
     });
 }
+
+
+function retrieveSystem(){
+    axios.get(URL+"/getSystem")
+    .then(function (response){
+        store.state.ressourcemonitor.system=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveChassis(){
+    axios.get(URL+"/getChassis")
+    .then(function (response){
+        store.state.ressourcemonitor.chassis=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveBIOS(){
+    axios.get(URL+"/getBIOS")
+    .then(function (response){
+        store.state.ressourcemonitor.bios=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveMainboard(){
+    axios.get(URL+"/getMainboard")
+    .then(function (response){
+        store.state.ressourcemonitor.mainboard=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
 function retrieveCPU(){
     store.commit('ressourcemonitor/cpuFreqHistory/setColors', { colors: cpuColorArray});
     axios.get(URL+"/getCPU")

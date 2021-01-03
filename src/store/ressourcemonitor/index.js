@@ -18,6 +18,10 @@ import filesystemPartitionUsageHistory from './filesystemPartitionUsageHistory'
 
 export function getDefaultState() {
 	return {
+		system: [],
+		bios: [],
+		chassis: [],
+		mainboard: [],
 		cpu: {
 			colors: [],
 			vendor: "",

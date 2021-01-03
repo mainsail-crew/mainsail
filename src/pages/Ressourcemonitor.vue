@@ -80,15 +80,15 @@
     import SoftwareGPU from "../components/ressourcemonitor/software/GPU";
     import SoftwareNetwork from "../components/ressourcemonitor/software/Network";
     import SoftwareFilesystem from "../components/ressourcemonitor/software/Filesystem";
-    import General from "../components/ressourcemonitor/General";
+    import SoftwareGeneral from "../components/ressourcemonitor/software/General";
     import {bus} from "../main";
 
     export default {
-        components: {General },
+        components: { },
         data: () => ({
             selectedItem: 0,
             currentHardwareComponent: HardwareGeneral,
-            currentSoftwareComponent: General,
+            currentSoftwareComponent: SoftwareGeneral,
         }),
         computed: {
             ressourcemanagerAviable: {
@@ -106,7 +106,7 @@
             },
             selectGeneral:function(){
                 this.currentHardwareComponent=HardwareGeneral
-                this.currentSoftwareComponent=General
+                this.currentSoftwareComponent=SoftwareGeneral
             },
             selectCPU:function(){
                 this.currentSoftwareComponent=SoftwareCPU
