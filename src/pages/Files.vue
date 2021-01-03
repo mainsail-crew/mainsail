@@ -134,8 +134,8 @@
                         >
                         <td class="pr-0 text-center" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.length > 0)">mdi-file</v-icon>
-                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.length > 0" :src="'data:image/gif;base64,'+(item.thumbnails.length ? item.thumbnails[0].data : '--')"  />
+                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32))">mdi-file</v-icon>
+                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32)" :src="'data:image/gif;base64,'+(item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32).data)"  />
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
