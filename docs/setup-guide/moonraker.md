@@ -21,9 +21,6 @@ cd ~/moonraker/scripts
 ./install-moonraker.sh -c /home/pi/klipper_config/moonraker.conf
 ```
 
-Once the script is finished, both Moonraker and Klipper should be started.  
-In `/tmp/klippy.log` the following entry should appear: `Moonraker: server connection detected`
-
 ### Configuration
 > ⚠️ **Please pay attention to the following steps!**  
 Misconfigured trusted_clients are a very common source of failure.

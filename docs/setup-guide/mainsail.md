@@ -195,7 +195,7 @@ and you can config your hostname:
 
 `sudo raspi-config`
 
-in 2 Network Options > N1 Hostname you can edit your hostname of your raspberry pi. After a reboot you can use http://<hostname>.local/ to open the webinterface.
+in 2 Network Options > N1 Hostname you can edit your hostname of your raspberry pi. After a reboot you can use http://\<hostname\>.local/ to open the webinterface.
 
 
 ---
