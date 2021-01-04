@@ -3,9 +3,9 @@
   "version": "0.3.0",
   "private": true,
   "scripts": {
-    "serve": "./node_modules/.bin/vue-cli-service serve",
-    "build": "./node_modules/.bin/vue-cli-service build",
-    "lint": "./node_modules/.bin/vue-cli-service lint"
+    "serve": "./node_modules/.bin/vue-cli-service serve --modern",
+    "build": "./node_modules/.bin/vue-cli-service build --modern",
+    "lint": "./node_modules/.bin/vue-cli-service lint --modern"
   },
   "dependencies": {
     "@types/chart.js": "^2.9.29",

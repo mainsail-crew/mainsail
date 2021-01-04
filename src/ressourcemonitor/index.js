@@ -10,7 +10,9 @@ var cpuColorArray;
 var gpuColorArray;
 var networkColorArray;
 
-setInterval(retrieveData,1000);
+retrieveData();
+
+setInterval(retrieveData,5000);
 setInterval(resetData,60000);
 
 function resetData(){
