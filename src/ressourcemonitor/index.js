@@ -59,7 +59,8 @@ function retrieveData(){
         retrieveNetworkLoad();
         retrieveDisks();
         retrievePartitions();
-        retrieveOS()
+        retrieveOS();
+        retrieveProcesses();
     })
     .catch(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
@@ -369,6 +370,28 @@ function retrieveOS(){
     axios.get(URL+"/getOS")
     .then(function (response){
         store.state.ressourcemonitor.os=response.data
+    })
+    .catch(function (){
+        
+    });
+}
+
+function retrieveProcesses(){
+    axios.get(URL+"/getProcesses")
+    .then(function (response){
+        var data = []
+        response.data.list.forEach(function(process){
+            let miniprocess = {
+                "pid" : process.pid,
+                "name" : process.name,
+                "pcpu" : process.pcpu.toFixed(2),
+                "pmem" : process.pmem.toFixed(2),
+                "mem_rss" : (process.mem_rss/1024).toFixed(2),
+                "path" : process.path
+            }
+            data.push(miniprocess)
+        })
+        store.state.ressourcemonitor.processes=data
     })
     .catch(function (){
         

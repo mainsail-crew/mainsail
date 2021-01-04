@@ -57,6 +57,7 @@ export function getDefaultState() {
 			disks: [],
 			partitions: []
 		},
+		processes: [],
 		os: ""
 	}
 }

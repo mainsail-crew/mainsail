@@ -4,7 +4,7 @@
         <v-col class="py-0 px-0 equal-width ">
             <v-row>
                 <v-col class="py-0 px-3" style="width:45%">
-                    <v-card class="mb-5">
+                    <v-card class="mb-3">
                         <v-toolbar flat dense >
                             <v-toolbar-title>
                                 <span class="subheading"><v-icon left>mdi-memory</v-icon>Mainboard</span>
@@ -35,8 +35,7 @@
                     </v-card>
                 </v-col>
                 <v-col class="py-0 px-3" style="width:45%">
-                    
-                    <v-card class="mb-5">
+                    <v-card class="mb-3">
                         <v-toolbar flat dense >
                             <v-toolbar-title>
                                 <span class="subheading"><v-icon left>mdi-desktop-classic</v-icon>System</span>
@@ -65,22 +64,94 @@
                     </v-card>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col>
+                    <v-card class="">
+                        <v-toolbar flat dense >
+                            <v-toolbar-title>
+                                <span class="subheading"><v-icon left>mdi-apps</v-icon>Processes</span>
+                            </v-toolbar-title>
+                            <div style="position: absolute;right: 20px;">
+                                <v-text-field
+                                    v-model="search"
+                                    append-icon="mdi-magnify"
+                                    label="Search"
+                                    single-line
+                                    hide-details
+                                    @click.native="show"
+                                    @blur="hide"
+                                ></v-text-field>
+                            </div>
+                        </v-toolbar>
+                        <v-data-table
+                            dense
+                            :headers="headers"
+                            :items="this.$store.state.ressourcemonitor.processes"
+                            :items-per-page="8"
+                            class="elevation-0"
+                            :search="search"
+                            :footer-props="{
+                                showFirstLastPage: true,
+                                itemsPerPageOptions: [8],
+                                firstIcon: 'mdi-arrow-collapse-left',
+                                lastIcon: 'mdi-arrow-collapse-right',
+                                prevIcon: 'mdi-arrow-left',
+                                nextIcon: 'mdi-arrow-right'
+                            }"
+                        ></v-data-table>
+                    </v-card>
+                </v-col>
+            </v-row>
         </v-col>
     </div>
 </template>
 
 <script>
+    import {bus} from "@/main";
     export default {
         components: {
 
         },
         data: () => ({
-            
+            search: "",
+            headers: [
+                {
+                    text: 'pid',
+                    align: 'start',
+                    value: 'pid'
+                },
+                {
+                    text: 'Name',
+                    value: 'name'
+                },
+                {
+                    text: 'CPULoad (%)',
+                    value: 'pcpu'
+                },
+                {
+                    text: 'MemLoad (%)',
+                    value: 'pmem'
+                },
+                {
+                    text: 'MemLoad (MB)',
+                    value: 'mem_rss'
+                },
+                {
+                    text: 'Path',
+                    value: 'path'
+                }
+            ]
         }),
         computed: {
 
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
 
         }
     }
