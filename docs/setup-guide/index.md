@@ -9,5 +9,5 @@ permalink: /setup/
 There are different ways to install Mainsail.
 
 - [MainsailOS (recommend)](mainsail-os.md)
-- Kiauh (Klipper Install And Update Helper)
+- [Kiauh (Klipper Install And Update Helper)](kiauh.md)
 - [Manual Setup](manual-setup/index.md)
