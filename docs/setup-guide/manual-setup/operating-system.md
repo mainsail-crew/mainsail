@@ -2,6 +2,7 @@
 layout: default
 title: Operating System
 parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 2
 permalink: /setup/manual-setup/operating-systen
 ---

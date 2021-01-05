@@ -2,6 +2,7 @@
 layout: default
 title: Klipper
 parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 3
 permalink: /setup/manual-setup/klipper
 ---
