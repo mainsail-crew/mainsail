@@ -1,7 +1,7 @@
 ---
 layout: default
 title: MainsailOS Guide
-parent: Setup Guide
+parent: Setup Guides
 nav_order: 1
 has_children: false
 permalink: /setup/mainsail-os

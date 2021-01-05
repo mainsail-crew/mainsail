@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Kiauh Guide
-parent: Setup Guide
+parent: Setup Guides
 nav_order: 2
 has_children: false
 permalink: /setup/kiauh

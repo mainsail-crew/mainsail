@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Manual Setup Guide
-parent: Setup Guide
+parent: Setup Guides
 nav_order: 3
 has_children: true
 permalink: /setup/manual-setup
