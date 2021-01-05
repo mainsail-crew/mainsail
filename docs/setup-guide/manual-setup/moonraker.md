@@ -2,6 +2,7 @@
 layout: default
 title: Moonraker
 parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 4
 permalink: /setup/manual-setup/moonraker
 ---

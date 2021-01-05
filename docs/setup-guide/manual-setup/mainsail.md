@@ -2,6 +2,7 @@
 layout: default
 title: Mainsail
 parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 5
 permalink: /setup/manual-setup/mainsail
 ---

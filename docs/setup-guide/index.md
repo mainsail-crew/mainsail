@@ -4,6 +4,7 @@ title: Setup Guides
 nav_order: 2
 has_children: true
 permalink: /setup/
+has_toc: false
 ---
 # Setup Guides
 There are different ways to install Mainsail.
