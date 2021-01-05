@@ -9,6 +9,7 @@ import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
 import VueApexCharts from 'vue-apexcharts' ;
+import VueApng from 'vue-apng';
 
 export const bus = new Vue();
 
@@ -18,6 +19,7 @@ Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
 Vue.use(VueTouchKeyboard);
 Vue.use(VueApexCharts);
+Vue.use(VueApng);
 Vue.use({
     install() {
       Vue.prototype.destroy = Vue.prototype.$destroy;

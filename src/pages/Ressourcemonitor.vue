@@ -5,7 +5,6 @@
                 <v-toolbar flat dense >
                     <v-toolbar-title>
                         <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Navigation</span>
-                        <span class="subheading" v-if="!ressourcemanagerAviable" style="color:#D32F2F;">  Module not found!</span>
                     </v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
@@ -13,7 +12,7 @@
                         <v-row>
                             <v-col class="py-0 pl-0">
                                 <v-navigation-drawer permanent dark style="background: none;">
-                                    <v-list nav dense>
+                                    <v-list nav dense :disabled="!ressourcemanagerAviable">
                                         <v-list-item-group v-model="selectedItem" color="primary">
                                             <v-list-item>
                                                 <v-list-item-content v-on:click="selectGeneral()">
@@ -65,6 +64,7 @@
             </keep-alive>
         </v-col>
     </v-row>
+    
     
 </template>
 
@@ -128,6 +128,15 @@
                 this.currentSoftwareComponent=SoftwareFilesystem
                 this.currentHardwareComponent=HardwareFilesystem
             },
+        },
+        mounted: function() {
+            var here = this;
+            setInterval(function(){
+                if(!here.ressourcemanagerAviable){
+                    here.selectGeneral(),
+                    here.selectedItem=0
+                }
+            },1000)
         }
     }
 </script>

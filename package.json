@@ -19,6 +19,7 @@
     "readdir-enhanced": "^6.0.4",
     "vue": "^2.6.12",
     "vue-apexcharts": "^1.6.0",
+    "vue-apng": "^1.1.1",
     "vue-chartjs": "^3.5.1",
     "vue-context": "^6.0.0",
     "vue-cookies": "^1.7.4",

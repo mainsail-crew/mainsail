@@ -10,16 +10,46 @@ var cpuColorArray;
 var gpuColorArray;
 var networkColorArray;
 
-retrieveData();
+var functiontimerload=0;
+var functiontimerhw=0;
 
-setInterval(retrieveData,5000);
-setInterval(resetData,60000);
+retrieveDataOnce();
 
-function resetData(){
-    console.log("reste")
-}
+setGPUColors();
+setNetworkColors();
+setCPUColors();
 
-function retrieveData(){
+setInterval(checkURL,1000);
+setInterval(retrieveDataLoad,500);
+setInterval(retrieveDataHW,2000);
+//setInterval(resetData,10000);
+
+//function resetData(){
+//    console.log(store.state.ressourcemonitor.cpuFreqHistory.datasets[0])
+//    store.commit('ressourcemonitor/cpuFreqHistory/setHistory', retrieveNewestDataset(store.state.ressourcemonitor.cpuFreqHistory.datasets));
+//}
+
+//function retrieveNewestDataset(dataset){
+//var newdataset = []
+//    dataset.forEach(function(data){
+//        var newdata = []
+//        var newestdata = data.data[data.data.length-1]
+//        newdata.push(newestdata)
+//        let newmarker = {
+//            borderColor : data.borderColor,
+//            borderWidth : data.borderWidth,
+//            data : newdata,
+//            fill : data.fill,
+//            hidden : data.hidden,
+//            label : data.label,
+//            markerType : data.markerType
+//        }
+//        newdataset.push(newmarker)
+//    })
+//    return(newdataset)
+//}
+
+function checkURL(){
     var oldURL = URL;
     URL = store.state.gui.modules.ressourcemonitorUrl;
     if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
@@ -29,23 +59,88 @@ function retrieveData(){
         cpuColorArray=undefined;
         gpuColorArray=undefined;
         networkColorArray=undefined;
+        functiontimerhw=0;
+        functiontimerload=0;
+        store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
     }
     now = Date.now();
-    axios.get(URL)
+    axios.get(URL,{timeout:900})
     .then(function (){
         store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: true } });
-        if(typeof(cpuColorArray)==="undefined"){
-            setCPUColors();
-        }
         if(typeof(gpuColorArray)==="undefined"){
             setGPUColors();
         }
         if(typeof(networkColorArray)==="undefined"){
             setNetworkColors();
         }
-        store.state.ressourcemonitor.cpu.colors=cpuColorArray;
-        store.state.ressourcemonitor.gpu.colors=gpuColorArray;
-        store.state.ressourcemonitor.network.colors=networkColorArray;
+        if(URL!=oldURL){
+            retrieveDataOnce();
+            if(typeof(cpuColorArray)==="undefined"){
+                setCPUColors();
+            }
+            store.state.ressourcemonitor.cpu.colors=cpuColorArray;
+        }
+    })
+    .catch(function (){
+        store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
+        return;
+    });
+}
+
+function retrieveDataLoad(){
+    if(store.state.gui.dashboard.boolRessourceMonitorAvailable==true){
+        if(functiontimerload==0){
+            retrieveCPUSpeed();
+            retrieveCPUTemp();
+            retrieveCPULoad();
+        }
+        if(functiontimerload==1){
+            retrieveRAMLoad();
+        }
+        if(functiontimerload==2){
+            retrieveGPU();
+        }
+        if(functiontimerload==3){
+            retrieveNetworkLoad();
+        }
+        if(functiontimerload==4){
+            retrieveProcesses();
+            functiontimerload=-1
+        }
+        functiontimerload++
+    }
+}
+function retrieveDataHW(){
+    if(store.state.gui.dashboard.boolRessourceMonitorAvailable==true){
+        if(functiontimerhw==0){
+            retrieveBIOS();
+            retrieveMainboard();
+        }
+        if(functiontimerhw==1){
+            retrieveChassis();
+            retrieveSystem();
+            retrieveOS();
+        }
+        if(functiontimerhw==2){
+            retrieveCPU();
+        }
+        if(functiontimerhw==3){
+            retrieveRAM();
+        }
+        if(functiontimerhw==4){
+            retrieveNetwork();
+        }
+        if(functiontimerhw==5){
+            retrieveDisks();
+            retrievePartitions();
+            functiontimerhw=-1
+        }
+        functiontimerhw++
+    }
+}
+
+function retrieveDataOnce(){
+    if(store.state.gui.dashboard.boolRessourceMonitorAvailable==true){
         retrieveChassis();
         retrieveSystem();
         retrieveBIOS()
@@ -63,13 +158,8 @@ function retrieveData(){
         retrievePartitions();
         retrieveOS();
         retrieveProcesses();
-    })
-    .catch(function (){
-        store.dispatch('gui/setData', { dashboard: { boolRessourceMonitorAvailable: false } });
-        return;
-    });
+    }
 }
-
 
 function retrieveSystem(){
     axios.get(URL+"/getSystem")
@@ -137,6 +227,7 @@ function setCPUColors(){
                 cpuColorArray[color]=getRandomColor();
             }
         }
+        store.state.ressourcemonitor.cpu.colors=cpuColorArray;
     })
     .catch(function (){
         
@@ -151,6 +242,7 @@ function setGPUColors(){
                 gpuColorArray[color]=getRandomColor();
             }
         }
+        store.state.ressourcemonitor.gpu.colors=gpuColorArray;
     })
     .catch(function (){
         
@@ -165,6 +257,7 @@ function setNetworkColors(){
                 networkColorArray[color]=getRandomColor();
             }
         }
+        store.state.ressourcemonitor.network.colors=networkColorArray;
     })
     .catch(function (){
         

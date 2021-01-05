@@ -16,14 +16,14 @@ export default {
 
 				if (keySplit.length > 1) key = keySplit[1];
 
-				if (datasets.ramusage) {
-					let max = datasets.ramusage.length;
+				if (datasets.cpufrequsage) {
+					let max = datasets.cpufrequsage.length;
 					for (let i = 0; i < max; i++) {
 						let time = new Date(now.getTime() - 1000 * (max - i));
 
 						this.commit('ressourcenmonitor/cpuFreqHistory/addValue', {
 							name: key,
-							value: datasets.ramusage[i],
+							value: datasets.cpufrequsage[i],
 							type: keySplit[0],
 							time: time
 						});

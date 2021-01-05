@@ -1,7 +1,7 @@
 
 <template>
     <div>
-        <v-col class="py-0 px-0 equal-width ">
+        <v-col class="py-0 px-0 equal-width " v-if="ressourcemanagerAviable">
             <v-row>
                 <v-col class="py-0 px-3" style="width:45%">
                     <v-card class="mb-3">
@@ -143,7 +143,11 @@
             ]
         }),
         computed: {
-
+            ressourcemanagerAviable: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolRessourceMonitorAvailable;
+                }
+            },
         },
         methods: {
             show:function(e){

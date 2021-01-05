@@ -1,7 +1,27 @@
 
 <template>
     <div>
-        <v-card class="mb-5">
+        <v-card class="mb-5" v-if="!ressourcemanagerAviable">
+            <v-toolbar flat dense >
+                <v-toolbar-title>
+                    <span class="subheading" style="color:#D32F2F;"><v-icon left style="color:#D32F2F;">mdi-collage</v-icon>Module not Found!</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-card-text class="py-1">
+                <v-col class="py-0 px-3 pt-3 equal-width">
+                    <v-row>
+                        <v-col class="py-0 px-3 equal-width">
+                            <v-row class="pb-3 px-0">
+                                <v-col class="py-2 px-2">
+                                    <span>Please configure in the Settings the hsinfoserver</span>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-card-text>
+        </v-card>
+        <v-card class="mb-5" v-if="ressourcemanagerAviable">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-collage</v-icon>OS</span>
@@ -31,7 +51,7 @@
             </v-card-text>
         </v-card>
         
-        <v-card class="mb-5">
+        <v-card class="mb-5" v-if="ressourcemanagerAviable">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-collage</v-icon>Load</span>
@@ -47,7 +67,7 @@
                                         <v-progress-linear :color="getCPUColor" height="8" v-model="this.$store.state.ressourcemonitor.cpu.load"></v-progress-linear>
                                     </div>
                                 </v-col>
-                                <v-col class="py-0 pl-3 px-0 col-md-5">
+                                <v-col class="py-0 pl-3 px-0 col-md-6">
                                     <strong>CPU: </strong>{{(this.$store.state.ressourcemonitor.cpu.load+1-1).toFixed(0)}}%<br>
                                 </v-col>
                             </v-row>
@@ -57,10 +77,10 @@
                                         <v-progress-linear :color="getRAMColor" height="8" v-model="getRAMBar"></v-progress-linear>
                                     </div>
                                 </v-col>
-                                <v-col class="py-0 pl-3 px-0 col-md-5">
+                                <v-col class="py-0 pl-3 px-0 col-md-6">
                                     <strong>RAM: </strong>{{(this.$store.state.ressourcemonitor.ram.used/1024/1024/1024).toFixed(0)}}
                                     /
-                                    {{(this.$store.state.ressourcemonitor.ram.total/1024/1024/1024).toFixed(0)}}GB<br>
+                                    {{(this.$store.state.ressourcemonitor.ram.total/1024/1024/1024).toFixed(0)}} GB<br>
                                 </v-col>
                             </v-row>
                         </v-col>
@@ -80,6 +100,11 @@
             
         }),
         computed: {
+            ressourcemanagerAviable: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolRessourceMonitorAvailable;
+                }
+            },
             getRAMBar:function(){
                 var used = this.$store.state.ressourcemonitor.ram.used;
                 var total = this.$store.state.ressourcemonitor.ram.total;
