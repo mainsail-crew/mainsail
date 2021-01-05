@@ -1,9 +1,9 @@
 ---
 layout: default
 title: Mainsail
-parent: Setup Guide
+parent: Manual Setup Guide
 nav_order: 5
-permalink: /setup/mainsail
+permalink: /setup/manual-setup/mainsail
 ---
 
 
@@ -182,7 +182,7 @@ Now it should be possible to open the interface: `http://<printer-ip>/`.
 
 if you want to get the full experience with mainsail and klipper virtual_sdcard print, you should use these macros, or use them as templates for your own.
 
-[Macro Link](../necessary-cfg.md){: .btn target="_blank"}
+[Macro Link](../../necessary-cfg.md){: .btn target="_blank"}
 
 
 ### Change the Hostname (optional)
