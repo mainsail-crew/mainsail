@@ -1,9 +1,9 @@
 ---
 layout: default
 title: Moonraker
-parent: Setup Guide
+parent: Manual Setup Guide
 nav_order: 4
-permalink: /setup/moonraker
+permalink: /setup/manual-setup/moonraker
 ---
 ## Moonraker
 Moonraker is a web server that exposes APIs which lets Mainsail interact with Klipper.
