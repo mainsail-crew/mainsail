@@ -8,7 +8,7 @@ permalink: /setup/kiauh
 ---
 # Installing Mainsail with Kiauh
 
-Kiauh is a tool that helps you install or upgrade Klipper and various extensions easily
-and comfortable way.
+Kiauh is a tool that helps you install or upgrade Klipper, Moonraker, Mainsail and various
+other extensions easily and comfortably.
 
 For more informations and get to the guide click [here](https://github.com/th33xitus/kiauh).

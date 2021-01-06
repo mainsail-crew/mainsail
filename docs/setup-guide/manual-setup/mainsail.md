@@ -40,7 +40,7 @@ upstream apiserver {
 upstream mjpgstreamer {
     #if you need to change your webcam port, edit it here
     ip_hash;
-    server 127.0.0.1:8081;
+    server 127.0.0.1:8080;
 }
 ```
 Save the file with `CTRL+O` and close the editor with `CTRL+X`.
