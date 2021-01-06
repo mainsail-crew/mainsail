@@ -45,6 +45,7 @@ config_path: ~/klipper_config
 enabled: true
 trusted_clients:
     192.168.1.0/24
+    2a02:810d:9340:33f6::/64
 
 [update_manager]
 client_repo: meteyou/mainsail
