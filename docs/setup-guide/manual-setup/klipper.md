@@ -39,14 +39,14 @@ You have to create the directories for your klipper configuration and the virtua
 
 ```bash
 mkdir ~/klipper_config
-mkdir ~/sdcard
+mkdir ~/gcode_files
 ```
 
 Move your printer.cfg to ~/klipper_config and check if the following entries are present in the config.
 ```ini
 [virtual_sdcard]
 # for gcode upload
-path: ~/sdcard
+path: ~/gcode_files
 
 [display_status]
 # for display messages in status panel

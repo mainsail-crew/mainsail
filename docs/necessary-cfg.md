@@ -13,7 +13,7 @@ Mainsail requires a minimum configuration to function properly. It should give y
 This allows gcode file uploads.
 ```yaml
 [virtual_sdcard]
-path: ~/sdcard
+path: ~/gcode_files
 ```
 
 ### display_status
