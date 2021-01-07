@@ -7,6 +7,7 @@
 
     .miniConsole .title-cell {
         white-space: nowrap;
+        width: 1% !important;
     }
 
     .miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
@@ -24,8 +25,49 @@
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn small class="px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                    </v-list-item>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-toolbar>
+        <v-card-text>
+            <v-container class="py-0 px-0">
+                <v-row>
+                    <v-col>
+                        <v-text-field
+                            label="Send code..."
+                            ref="gcodeCommandField"
+                            solo
+                            hide-details
+                            autocomplete="off"
+                            v-model="gcode"
+                            v-on:keyup.enter="doSend"
+                            v-on:keyup.up="onKeyUp"
+                            v-on:keyup.down="onKeyDown"
+                            :items="items"
+                            v-on:keydown.tab="getAutocomplete"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col class="col-auto align-content-center">
+                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
+                            <v-icon class="mr-2">mdi-send</v-icon> send
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-card-text>
         <v-card-text class="px-0 py-0 content">
+            <v-divider></v-divider>
             <v-data-table
                 :headers="headers"
                 :options="options"
@@ -48,7 +90,7 @@
                             {{ formatTime(item.date)}}
                         </td>
                         <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                            <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
+                            <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
                         </td>
                     </tr>
                 </template>
@@ -58,7 +100,9 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+import {mapState} from 'vuex'
+    import Vue from "vue";
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
     export default {
         components: {
@@ -83,15 +127,85 @@
                 options: {
 
                 },
+                gcode: "",
+                lastCommands: [
+
+                ],
+                lastCommandNumber: null,
+                items: [],
             }
         },
         computed: {
             ...mapState({
-                events: state => state.server.events,
-            })
+                helplist: state => state.printer.helplist,
+                loadings: state => state.socket.loadings,
+            }),
+            events: {
+                get() {
+                    return this.$store.getters["server/getFilterdEvents"]
+                }
+            },
+            hideWaitTemperatures: {
+                get() {
+                    return this.$store.state.gui.console.hideWaitTemperatures
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
+                }
+            },
+            boolCustomFilters: {
+                get() {
+                    return this.$store.state.gui.console.boolCustomFilters
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
+                }
+            }
         },
         methods: {
+            doSend() {
+                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
+                this.$store.commit('server/addEvent', this.gcode);
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
+                this.lastCommands.push(this.gcode);
+                this.gcode = "";
+                this.lastCommandNumber = null;
+            },
+            onKeyUp() {
+                if (this.lastCommandNumber === null && this.lastCommands.length) {
+                    this.lastCommandNumber = this.lastCommands.length - 1;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber > 0) {
+                    this.lastCommandNumber--;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                }
+            },
+            onKeyDown() {
+                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber++;
+                    this.gcode = this.lastCommands[this.lastCommandNumber];
+                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+                    this.lastCommandNumber = null;
+                    this.gcode = "";
+                }
+            },
+            getAutocomplete(e) {
+                e.preventDefault();
+                if (this.gcode.length) {
+                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
+                    if (commands && commands.length === 1) this.gcode = commands[0].command;
+                    else {
+                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
+                        if (commands && commands.length) {
+                            let output = "";
+                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
+                            this.$store.commit('server/addEvent', output);
+                        }
+                    }
+                }
+                this.$refs.gcodeCommandField.focus();
+            },
             formatTime(date) {
                 let hours = date.getHours();
                 if (hours < 10) hours = "0"+hours.toString();
@@ -103,11 +217,8 @@
 
                 return hours+":"+minutes+":"+seconds;
             },
-            formatMessage(message) {
-                message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
-
-                return message;
-            },
+            colorConsoleMessage: colorConsoleMessage,
+            formatConsoleMessage: formatConsoleMessage,
             customSort: function(items, index, isDesc) {
                 items.sort((a, b) => {
                     if (index[0] === 'date') {

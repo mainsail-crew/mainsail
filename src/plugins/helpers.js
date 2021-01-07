@@ -21,3 +21,19 @@ export function caseInsensitiveNameSort(a, b) {
 
     return 0;
 }
+
+export function colorConsoleMessage(item) {
+    if (item.message.startsWith('!! ')) return "red--text"
+    if ('send' in item && item.send) return "blue--text"
+
+    return '';
+}
+
+export function formatConsoleMessage(message) {
+    message = message.replaceAll('!! ', '')
+    message = message.replaceAll('// ', '')
+    message = message.replace('\n// ', '<br>')
+    message = message.replace(/(?:\r\n|\r|\n)/g, '<br>')
+
+    return message;
+}

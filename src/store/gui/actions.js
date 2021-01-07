@@ -19,7 +19,7 @@ export default {
 	},
 
 	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], 'gui.json');
+		let file = new File([JSON.stringify({ state })], '.mainsail.json');
 
 		let formData = new FormData();
 		formData.append('file', file);
@@ -30,9 +30,9 @@ export default {
 				headers: { 'Content-Type': 'multipart/form-data' }
 			}
 		).then(() => {
-			window.console.info("gui.json successfully uploaded")
+
 		}).catch(() => {
-			window.console.error("Error save gui.json!")
+			window.console.error("Error save .mainsail.json!")
 		});
 	},
 

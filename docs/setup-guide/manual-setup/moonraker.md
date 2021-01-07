@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Moonraker
-parent: Setup Guide
+parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 4
-permalink: /setup/moonraker
+permalink: /setup/manual-setup/moonraker
 ---
 ## Moonraker
 Moonraker is a web server that exposes APIs which lets Mainsail interact with Klipper.
@@ -18,11 +19,8 @@ git clone https://github.com/Arksine/moonraker.git
 Run Moonrakers install script:
 ```bash
 cd ~/moonraker/scripts
-./install-moonraker.sh
+./install-moonraker.sh -c /home/pi/klipper_config/moonraker.conf
 ```
-
-Once the script is finished, both Moonraker and Klipper should be started.  
-In `/tmp/klippy.log` the following entry should appear: `Moonraker: server connection detected`
 
 ### Configuration
 > ⚠️ **Please pay attention to the following steps!**  
@@ -30,7 +28,7 @@ Misconfigured trusted_clients are a very common source of failure.
 
 For Moonraker you'll need to create a separate config file.
 
-`nano ~/moonraker.conf`
+`nano ~/klipper_config/moonraker.conf`
 
 Insert the following part and modify `trusted_clients` according to arksines description below.
 Also consider further IP ranges, e.g. when connecting via VPN. To determine your local ip `ip a` and `ifconfig -a` are common ways to do so on Linux and `ipconfig` on Windows.
@@ -47,6 +45,11 @@ config_path: ~/klipper_config
 enabled: true
 trusted_clients:
     192.168.1.0/24
+    2a02:810d:9340:33f6::/64
+
+[update_manager]
+client_repo: meteyou/mainsail
+client_path: ~/mainsail
 ```
 
 > 🔥 **trusted_clients - read carefully** 🔥  

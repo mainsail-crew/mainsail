@@ -1,8 +1,14 @@
 ---
 layout: default
-title: Setup Guide
+title: Setup Guides
 nav_order: 2
 has_children: true
 permalink: /setup/
+has_toc: false
 ---
-This is a guide to setting up Klipper, Moonraker & Mainsail on a Raspberry Pi with Raspberry Pi OS. Other SBCs and/or Linux distributions might work, but may require a customized installation script or configs.
+# Setup Guides
+There are different ways to install Mainsail.
+
+- [MainsailOS (recommend)](mainsail-os.md)
+- [Kiauh (Klipper Install And Update Helper)](kiauh.md)
+- [Manual Setup](manual-setup/index.md)

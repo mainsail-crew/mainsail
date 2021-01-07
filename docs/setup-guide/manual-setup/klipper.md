@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Klipper
-parent: Setup Guide
+parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 3
-permalink: /setup/klipper
+permalink: /setup/manual-setup/klipper
 ---
 
 ## Klipper
@@ -38,14 +39,14 @@ You have to create the directories for your klipper configuration and the virtua
 
 ```bash
 mkdir ~/klipper_config
-mkdir ~/sdcard
+mkdir ~/gcode_files
 ```
 
 Move your printer.cfg to ~/klipper_config and check if the following entries are present in the config.
 ```ini
 [virtual_sdcard]
 # for gcode upload
-path: ~/sdcard
+path: ~/gcode_files
 
 [display_status]
 # for display messages in status panel
@@ -55,7 +56,7 @@ path: ~/sdcard
 # Mainsail needs gcode macros for `PAUSE`, `RESUME` and `CANCEL_PRINT` to make the buttons work.
 ```
 > ℹ️ **These entries are very important.**  
-For the full functionality of mainsail, you should also define gcode macros for `PAUSE`, `RESUME` and `CANCEL_PRINT`. You'll find further information in [this](../necessary-cfg.md){: target="_blank"} document.
+For the full functionality of mainsail, you should also define gcode macros for `PAUSE`, `RESUME` and `CANCEL_PRINT`. You'll find further information in [this](../../necessary-cfg.md){: target="_blank"} document.
 
 After your config is in place, restart klipper with `sudo service klipper restart`.  Check the `/tmp/klippy.log` for errors, if Klipper starts correctly you can continue the guide.
 

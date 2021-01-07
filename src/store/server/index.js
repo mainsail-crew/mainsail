@@ -4,6 +4,7 @@ import getters from './getters'
 
 // import modules
 import power from './power'
+import updateManager from './updateManager'
 
 // create getDefaultState
 export function getDefaultState() {
@@ -26,6 +27,7 @@ export default {
 	actions,
 	mutations,
 	modules: {
-		power
+		power,
+		updateManager,
 	}
 }

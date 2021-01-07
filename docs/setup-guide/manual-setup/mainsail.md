@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Mainsail
-parent: Setup Guide
+parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 5
-permalink: /setup/mainsail
+permalink: /setup/manual-setup/mainsail
 ---
 
 
@@ -31,15 +32,15 @@ Each file can be filled with the following content:
 # /etc/nginx/conf.d/upstreams.conf
 
 upstream apiserver {
-    #edit your api port here
+    #if you need to change your api port, edit it here
     ip_hash;
     server 127.0.0.1:7125;
 }
 
 upstream mjpgstreamer {
-    #edit your webcam port here
+    #if you need to change your webcam port, edit it here
     ip_hash;
-    server 127.0.0.1:8081;
+    server 127.0.0.1:8080;
 }
 ```
 Save the file with `CTRL+O` and close the editor with `CTRL+X`.
@@ -159,7 +160,7 @@ sudo ln -s /etc/nginx/sites-available/mainsail /etc/nginx/sites-enabled/
 sudo service nginx restart
 ```
 
-Now you can check again the API if it works with the reverse proxy. Open the url http://<printer-ip>/printer/info in your browser. if you see a content like this:
+Now you can check again the API if it works with the reverse proxy. Open the url http://\<printer-ip\>/printer/info in your browser. if you see a content like this:
 
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
@@ -182,7 +183,7 @@ Now it should be possible to open the interface: `http://<printer-ip>/`.
 
 if you want to get the full experience with mainsail and klipper virtual_sdcard print, you should use these macros, or use them as templates for your own.
 
-[Macro Link](../necessary-cfg.md){: .btn target="_blank"}
+[Macro Link](../../necessary-cfg.md){: .btn target="_blank"}
 
 
 ### Change the Hostname (optional)
@@ -195,7 +196,7 @@ and you can config your hostname:
 
 `sudo raspi-config`
 
-in 2 Network Options > N1 Hostname you can edit your hostname of your raspberry pi. After a reboot you can use http://<hostname>.local/ to open the webinterface.
+in 2 Network Options > N1 Hostname you can edit your hostname of your raspberry pi. After a reboot you can use http://\<hostname\>.local/ to open the webinterface.
 
 
 ---

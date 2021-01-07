@@ -8,8 +8,7 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 
 Vue.use(VueToast, {
   duration: 3000,
-});
-
+})
 
 Vue.use(Vuetify,{
   components: {
@@ -17,7 +16,7 @@ Vue.use(Vuetify,{
     VBtn,
     VIcon,
   }
-});
+})
 
 export default new Vuetify({
   theme: {
@@ -30,4 +29,4 @@ export default new Vuetify({
   icons: {
     iconfont: 'mdi',
   },
-});
+})

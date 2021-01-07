@@ -12,6 +12,12 @@
     #page-container {
         max-width: 1400px;
     }
+
+    #sidebarVersions {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
 </style>
 
 <template>
@@ -19,11 +25,10 @@
         <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app
-            :src="require('./assets/bg-navi.png')"
-            
+            :src="sidebarBackground"
         >
             <div id="nav-header">
-                <img :src="require('./assets/logo.svg')" />
+                <img :src="sidebarLogo" />
                 <v-toolbar-title>{{ printername !== "" ? printername : hostname }}</v-toolbar-title>
             </div>
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
@@ -35,8 +40,7 @@
                         slot="activator" class="nav-link" exact :to="category.path" @click.prevent
                         v-if="
                             (category.title === 'Webcam' && boolNaviWebcam) ||
-                            (category.title === 'Heightmap' && boolNaviHeightmap) ||
-                            (
+                            (category.title === 'Heightmap' && boolNaviHeightmap) || (
                                 category.title !== 'Webcam' &&
                                 category.title !== 'Heightmap' &&
                                 (klippy_state !== 'error' || category.alwaysShow)
@@ -57,59 +61,29 @@
                     </ul>
                 </li>
             </ul>
+            <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2">
+                v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
+            </p>
         </v-navigation-drawer>
 
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
             <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
-            <v-menu bottom left :offset-y="true">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn dark icon v-bind="attrs" v-on="on">
-                        <v-icon>mdi-dots-vertical</v-icon>
-                    </v-btn>
-                </template>
-
-                <v-list dense>
-                    <v-list-item link @click="doRestart()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>Restart</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link @click="doFirmwareRestart()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-sync</v-icon>FW Restart</v-list-item-title>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item link @click="doHostReboot()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Reboot Host</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item link @click="doHostShutdown()">
-                        <v-list-item-title><v-icon class="mr-3">mdi-power</v-icon>Shutdown Host</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-            
+            <top-corner-menu></top-corner-menu>
         </v-app-bar>
 
         <v-main id="content">
             
             <v-scroll-y-transition>
-                <v-container fluid id="page-container" class="container px-sm-6 px-3 mx-auto">
+                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <keep-alive>
                         <router-view></router-view>
                     </keep-alive>
                 </v-container>
             </v-scroll-y-transition>
-        </v-main>
-
-        <!--<v-dialog v-model="overlayDisconnect" persistent width="300">
-            <v-card color="primary" dark >
-                <v-card-text class="pt-2">
-                    Connecting...
-                    <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
-                </v-card-text>
-            </v-card>
-        </v-dialog>-->
-            
+        </v-main> 
         
         <v-footer app class="d-block" style="z-index:20000">
             
@@ -128,21 +102,34 @@
             
             <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
+        <v-dialog v-model="overlayDisconnect" persistent width="300">
+            <v-card color="primary" dark >
+                <v-card-text class="pt-2">
+                    Connecting...
+                    <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <update-dialog></update-dialog>
     </v-app>
 </template>
 
 <script>
-    import {bus} from "./main";
-    import routes from './routes';
-    import layouts from "./inputs/KeyboardLayouts";
-    /*import SimpleKeyboard from "./components/SimpleKeyboard";*/
-    import { mapState, mapGetters } from 'vuex';
+    import {bus} from "./main"
+    import { mapState, mapGetters } from 'vuex'
+    import routes from './routes'
+    import layouts from "./inputs/KeyboardLayouts"
+    import TopCornerMenu from "@/components/TopCornerMenu"
+    import UpdateDialog from "@/components/UpdateDialog"
 
 export default {
     props: {
         source: String,
     },
     components: {
+        UpdateDialog,
+        TopCornerMenu,
 
     },
     data: () => ({
@@ -174,8 +161,8 @@ export default {
         ...mapState({
             isConnected: state => state.socket.isConnected,
             hostname: state => state.printer.hostname,
-            version: state => state.printer.software_version,
             klippy_state: state => state.server.klippy_state,
+            printer_state: state => state.printer.print_stats.state,
             loadings: state => state.socket.loadings,
 
             toolhead: state => state.printer.toolhead,
@@ -185,14 +172,16 @@ export default {
             boolNaviWebcam: state => state.gui.webcam.bool,
             config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
+
+            klipperVersion: state => state.printer.software_version,
         }),
         ...mapGetters([
             'getTitle',
-            'getVersion'
+            'getVersion',
         ]),
         print_percent: {
             get() {
-                return this.$store.getters["printer/getPrintPercent"];
+                return this.$store.getters["printer/getPrintPercent"]
             }
         },
         virtualKeyboard: {
@@ -250,6 +239,26 @@ export default {
             this.inputname = null;
             this.input = null;
         });
+        defaultFavicons: {
+            get() {
+                return this.$store.getters["files/getFavicons"]
+            }
+        },
+        sidebarLogo: {
+            get() {
+                return this.$store.getters["files/getSidebarLogo"]
+            }
+        },
+        sidebarBackground: {
+            get() {
+                return this.$store.getters["files/getSidebarBackground"]
+            }
+        },
+        customStylesheet: {
+            get() {
+                return this.$store.getters["files/getCustomStylesheet"]
+            }
+        },
     },
     methods: {
         keyboardClick(){
@@ -285,20 +294,6 @@ export default {
             this.$store.commit('server/addEvent', "SAVE_CONFIG");
             this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
-        },
-        doRestart: function() {
-            this.$store.commit('server/addEvent', "RESTART");
-            this.$socket.sendObj('printer.gcode.script', { script: "RESTART" });
-        },
-        doFirmwareRestart: function() {
-            this.$store.commit('server/addEvent', "FIRMWARE_RESTART");
-            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" });
-        },
-        doHostReboot: function() {
-            this.$socket.sendObj('machine.reboot', { });
-        },
-        doHostShutdown: function() {
-            this.$socket.sendObj('machine.shutdown', { });
         },
         drawFavicon(val) {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
@@ -342,11 +337,12 @@ export default {
                 context.fillStyle = "#e41313";
                 context.fill();
 
-                favicon16.href = canvas.toDataURL('image/png')
+                //favicon16.href = canvas.toDataURL('image/png')
                 favicon32.href = canvas.toDataURL('image/png')
             } else {
-                favicon16.href = "/img/icons/favicon-16x16.png"
-                favicon32.href = "/img/icons/favicon-32x32.png"
+                const [favicon16Default, favicon32Default] = this.defaultFavicons
+                favicon16.href = favicon16Default
+                favicon32.href = favicon32Default
             }
         }
     },
@@ -364,6 +360,26 @@ export default {
         },
         isConnected(newVal) {
             this.overlayDisconnect = !newVal;
+        },
+        customStylesheet(newVal) {
+            if (newVal !== null) {
+                let style = document.getElementById("customStylesheet")
+                if (!style) {
+                    style = document.createElement('link')
+                    style.id = "customStylesheet"
+                    style.type = "text/css"
+                    style.rel = "stylesheet"
+                }
+
+                style.href = newVal
+                document.head.appendChild(style)
+            } else {
+                let style = document.getElementById("customStylesheet")
+                if (style) style.remove()
+            }
+        },
+        defaultFavicons() {
+            this.drawFavicon(this.print_percent);
         }
     },
 }

@@ -1,9 +1,10 @@
 ---
 layout: default
 title: Operating System
-parent: Setup Guide
+parent: Manual Setup Guide
+grand_parent: Setup Guides
 nav_order: 2
-permalink: /setup/operating-systen
+permalink: /setup/manual-setup/operating-systen
 ---
 ## Operation System
 > ⚠️ **Please don't use an OctoPi image!**  

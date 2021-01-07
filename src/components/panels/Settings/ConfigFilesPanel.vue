@@ -25,144 +25,184 @@
 </style>
 
 <template>
-    <div>
-        <v-card>
-            <v-card-title>
-                Config Files
-                <v-spacer></v-spacer>
-                <input type="file" ref="fileUpload" style="display: none" @change="uploadFile" />
-                <v-item-group class="v-btn-toggle">
-                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
-                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
-                    <v-btn color="" v-if="currentPath !== '' && currentPath !== '/config_examples'" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                    <v-btn color="primary" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
-                </v-item-group>
-            </v-card-title>
-            <v-card-subtitle>Current path: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
-            <v-data-table
-                :items="files"
-                class="files-table"
-                :headers="headers"
-                :options="options"
-                :page.sync="currentPage"
-                :custom-sort="sortFiles"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :items-per-page.sync="countPerPage"
-                item-key="name">
+    <v-row>
+        <v-col>
+            <v-card>
+                <v-card-title>
+                    Config Files
+                    <v-spacer class="d-none d-sm-block"></v-spacer>
+                    <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                    <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0">
+                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
+                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
+                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <v-btn class="flex-grow-1" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-menu :offset-y="true" title="Setup current list">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-item-group>
+                </v-card-title>
+                <v-card-subtitle>Current path: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
+                <v-data-table
+                    :items="files"
+                    class="files-table"
+                    :headers="headers"
+                    :options="options"
+                    :page.sync="currentPage"
+                    :custom-sort="sortFiles"
+                    :sort-by.sync="sortBy"
+                    :sort-desc.sync="sortDesc"
+                    :items-per-page.sync="countPerPage"
+                    :footer-props="{
+                        itemsPerPageText: 'Files'
+                    }"
+                    mobile-breakpoint="0"
+                    item-key="name">
 
-                <template #no-data>
-                    <div class="text-center">empty</div>
-                </template>
+                    <template #no-data>
+                        <div class="text-center">empty</div>
+                    </template>
 
-                <template slot="body.prepend" v-if="(currentPath !== '')">
-                   <tr
-                        class="file-list-cursor"
-                        @click="clickRowGoBack">
-                        <td class=" "><v-icon>mdi-folder-upload</v-icon></td>
-                        <td class=" " colspan="8">..</td>
-                    </tr>
-                </template>
+                    <template slot="body.prepend" v-if="(currentPath !== '')">
+                       <tr
+                            class="file-list-cursor"
+                            @click="clickRowGoBack">
+                            <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
+                            <td class=" " colspan="8">..</td>
+                        </tr>
+                    </template>
 
-                <template #item="{ item }">
-                    <tr
-                        @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
-                        class="file-list-cursor"
-                        :data-name="item.filename">
-                        <td class=" ">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory">mdi-file</v-icon>
-                        </td>
-                        <td class=" ">{{ item.filename }}</td>
-                        <td class="text-no-wrap text-right">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
-                        <td class="text-right">{{ formatDate(item.modified) }}</td>
-                    </tr>
-                </template>
-            </v-data-table>
-        </v-card>
-        <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
-            <v-list>
-                <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
-                </v-list-item>
-                <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
-                </v-list-item>
-                <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
-                </v-list-item>
-                <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
-                </v-list-item>
-                <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
-                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
-                </v-list-item>
-            </v-list>
-        </v-menu>
-        <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300" >
-            <v-card color="primary" dark >
-                <v-card-text>
-                    Please stand by
-                    <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
-                </v-card-text>
+                    <template #item="{ item }">
+                        <tr
+                            @contextmenu="showContextMenu($event, item)"
+                            @click="clickRow(item)"
+                            class="file-list-cursor"
+                            :data-name="item.filename">
+                            <td class="pr-0 text-center" style="width: 32px;">
+                                <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
+                                <v-icon v-if="!item.isDirectory">mdi-file</v-icon>
+                            </td>
+                            <td class=" ">{{ item.filename }}</td>
+                            <td class="text-no-wrap text-right">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
+                            <td class="text-right">{{ formatDate(item.modified) }}</td>
+                        </tr>
+                    </template>
+                </v-data-table>
             </v-card>
-        </v-dialog>
-        <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
-            <v-card d-flex>
-                <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="editor.show = false">
-                        <v-icon>mdi-close</v-icon>
+            <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
+                <v-list>
+                    <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                        <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
+                    </v-list-item>
+                    <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
+                        <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
+                    </v-list-item>
+                    <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                        <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
+                    </v-list-item>
+                    <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                        <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                    </v-list-item>
+                    <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
+                        <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+            <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300" >
+                <v-card color="primary" dark >
+                    <v-card-text>
+                        Please stand by
+                        <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
+                <v-card d-flex>
+                    <v-toolbar dark color="primary">
+                        <v-btn icon dark @click="editor.show = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                        <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                            <v-btn dark text @click="saveFile" v-if="currentPath !== '/config_examples'">Save</v-btn>
+                        </v-toolbar-items>
+                    </v-toolbar>
+                    <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogRenameFile.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">Rename File</v-card-title>
+                    <v-card-text>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogRenameFile.show = false">Cancel</v-btn>
+                        <v-btn color="primary" text @click="renameFileAction">rename</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogCreateFile.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">Create File</v-card-title>
+                    <v-card-text>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFile.name"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogCreateFile.show = false">Cancel</v-btn>
+                        <v-btn color="primary" text @click="createFileAction">create</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogCreateFolder.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">Create Folder</v-card-title>
+                    <v-card-text>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFolder.name"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogCreateFolder.show = false">Cancel</v-btn>
+                        <v-btn color="primary" text @click="createFolderAction">create</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-snackbar
+                :timeout="-1"
+                :value="true"
+                fixed
+                right
+                bottom
+                dark
+                v-model="uploadSnackbar.status"
+            >
+                <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+                {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+                <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="red"
+                        text
+                        v-bind="attrs"
+                        @click="cancelUpload"
+                        style="min-width: auto;"
+                    >
+                        <v-icon class="0">mdi-close</v-icon>
                     </v-btn>
-                    <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark text @click="saveFile" v-if="currentPath !== '/config_examples'">Save</v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-                <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogRenameFile.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">Rename File</v-card-title>
-                <v-card-text>
-                    <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">rename</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogCreateFile.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">Create File</v-card-title>
-                <v-card-text>
-                    <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFile.name"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateFile.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="createFileAction">create</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogCreateFolder.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">Create Folder</v-card-title>
-                <v-card-text>
-                    <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFolder.name"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateFolder.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="createFolderAction">create</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </div>
+                </template>
+            </v-snackbar>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -230,6 +270,20 @@
                     show: false,
                     name: "",
                 },
+                uploadSnackbar: {
+                    status: false,
+                    filename: "",
+                    percent: 0,
+                    speed: 0,
+                    total: 0,
+                    number: 0,
+                    max: 0,
+                    cancelTokenSource: "",
+                    lastProgress: {
+                        time: 0,
+                        loaded: 0
+                    }
+                }
             }
         },
         computed: {
@@ -245,6 +299,14 @@
                 },
                 set: function(newVal) {
                     return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { countPerPage: newVal } } });
+                }
+            },
+            showHiddenFiles: {
+                get: function() {
+                    return this.$store.state.gui.settings.configfiles.showHiddenFiles
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { showHiddenFiles: newVal } } })
                 }
             },
         },
@@ -323,6 +385,10 @@
                 this.files = findDirectory(this.filetree, dirArray);
                 if (dirArray.length === 1 && this.currentPath === "") {
                     this.files = this.files.filter(element => element.filename !== "gcodes");
+                }
+
+                if (!this.showHiddenFiles) {
+                    this.files = this.files.filter(file => file.filename.substr(0, 1) !== ".");
                 }
             },
             clickRow: function(item) {
@@ -434,14 +500,7 @@
                 }, 'files/getMove');
             },
             removeFile() {
-                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
-                axios.delete(
-                    '//'+ this.hostname + ':' + this.port +'/server/files/'+filename
-                ).then((result) => {
-                    this.$toast.success(result.data.result+" successfully deleted.");
-                }).catch(() => {
-                    this.$toast.error("Error! Cannot delete file.");
-                });
+                this.$socket.sendObj('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
             },
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
@@ -449,30 +508,75 @@
             uploadFileButton: function() {
                 this.$refs.fileUpload.click()
             },
-            uploadFile: function() {
+            async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
-                    this.doUploadFile(this.$refs.fileUpload.files[0]).finally(() => {
-                        this.$refs.fileUpload.value = ''
-                    })
+                    this.$store.commit('socket/addLoading', { name: 'configFileUpload' })
+                    let successFiles = []
+                    this.uploadSnackbar.number = 0
+                    this.uploadSnackbar.max = this.$refs.fileUpload.files.length
+                    for (const file of this.$refs.fileUpload.files) {
+                        this.uploadSnackbar.number++
+                        const result = await this.doUploadFile(file)
+                        successFiles.push(result)
+                    }
+
+                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' })
+                    for(const file of successFiles) {
+                        this.$toast.success("Upload of "+file+" successful!")
+                    }
+
+                    this.$refs.fileUpload.value = ''
                 }
             },
             doUploadFile: function(file) {
                 let toast = this.$toast;
                 let formData = new FormData();
                 let filename = file.name.replace(" ", "_");
+
+                this.uploadSnackbar.filename = filename
+                this.uploadSnackbar.status = true
+                this.uploadSnackbar.percent = 0
+                this.uploadSnackbar.speed = 0
+                this.uploadSnackbar.lastProgress.loaded = 0
+                this.uploadSnackbar.lastProgress.time = 0
+
                 formData.append('root', 'config');
                 formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
                 this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
 
-                return axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, { headers: { 'Content-Type': 'multipart/form-data' } }
-                ).then((result) => {
-                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
-                    toast.success("Upload of "+result.data.result+" successful!");
-                }).catch(() => {
-                    this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
-                    toast.error("Cannot upload the file!");
-                });
+                return new Promise(resolve => {
+                    this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+                    axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
+                        formData, {
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                            cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                            onUploadProgress: (progressEvent) => {
+                                this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                                if (this.uploadSnackbar.lastProgress.time) {
+                                    const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
+                                    const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
+
+                                    if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                                }
+
+                                this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
+                                this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
+                                this.uploadSnackbar.total = progressEvent.total
+                            }
+                        }
+                    ).then((result) => {
+                        this.uploadSnackbar.status = false
+                        resolve(result.data.result)
+                    }).catch(() => {
+                        this.uploadSnackbar.status = false
+                        this.$store.commit('socket/removeLoading', { name: 'configFileUpload' });
+                        toast.error("Cannot upload the file!");
+                    })
+                })
+            },
+            cancelUpload: function() {
+                this.uploadSnackbar.cancelTokenSource.cancel()
+                this.uploadSnackbar.status = false
             },
         },
         watch: {
@@ -488,7 +592,18 @@
                     this.loadPath();
                 }
             },
+            filetree: {
+                deep: true,
+                handler() {
+                    this.loadPath();
+                }
+            },
             currentPath: {
+                handler() {
+                    this.loadPath();
+                }
+            },
+            showHiddenFiles: {
                 handler() {
                     this.loadPath();
                 }

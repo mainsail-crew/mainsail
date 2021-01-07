@@ -32,27 +32,43 @@
         <v-row>
             <v-col class="col">
                 <v-text-field
-                        @click.native="show"
-                        @blur="hide"
-                        data-layout="normal"  
-                        v-model="gcode"
-                        :items="items"
-                        label="Send code..."
-                        solo
-                        class="gcode-command-field"
-                        ref="gcodeCommandField"
-                        autocomplete="off"
-                        v-on:keyup.enter="doSend"
-                        v-on:keyup.up="onKeyUp"
-                        v-on:keyup.down="onKeyDown"
-                        v-on:keydown.tab="getAutocomplete"
+                    @click.native="show"
+                    @blur="hide"
+                    data-layout="normal"  
+                    v-model="gcode"
+                    :items="items"
+                    label="Send code..."
+                    solo
+                    class="gcode-command-field"
+                    ref="gcodeCommandField"
+                    autocomplete="off"
+                    v-on:keyup.enter="doSend"
+                    v-on:keyup.up="onKeyUp"
+                    v-on:keyup.down="onKeyDown"
+                    v-on:keydown.tab="getAutocomplete"
                 ></v-text-field>
             </v-col>
 
             <v-col class="col-auto align-content-center">
-                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadingSendGcode" :disabled="loadingSendGcode" >
+                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
                     <v-icon class="mr-2">mdi-send</v-icon> send
                 </v-btn>
+            </v-col>
+
+            <v-col class="col-auto align-content-center">
+                <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                        </v-list-item>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
             </v-col>
         </v-row>
         <v-row>
@@ -67,6 +83,7 @@
                     disable-pagination
                     class="event-table"
                     :custom-sort="customSort"
+                    mobile-breakpoint="0"
                 >
                     <template #no-data>
                         <div class="text-center">empty</div>
@@ -74,11 +91,14 @@
 
                     <template #item="{ item }">
                         <tr>
-                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0">
+                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-none d-sm-table-cell">
                                 {{ item.date.toLocaleString() }}
                             </td>
+                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-sm-none">
+                                {{ formatTimeMobile(item.date)}}
+                            </td>
                             <td class="log-cell content-cell py-2" colspan="2">
-                                <span v-if="item.message" class="message" v-html="formatMessage(item.message)"></span>
+                                <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
                             </td>
                         </tr>
                     </template>
@@ -91,6 +111,7 @@
     import {bus} from "../main";
     import { mapState, mapGetters } from 'vuex';
     import Vue from "vue";
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
     export default {
         data () {
@@ -119,18 +140,37 @@
                 ],
                 lastCommandNumber: null,
                 items: [],
-                loadingSendGcode: false,
             }
         },
         computed: {
             ...mapState({
-                events: state => state.server.events,
                 helplist: state => state.printer.helplist,
-                loadings: state => state.loadings,
+                loadings: state => state.socket.loadings,
             }),
             ...mapGetters([
-                'getMacros'
+
             ]),
+            events: {
+                get() {
+                    return this.$store.getters["server/getFilterdEvents"]
+                }
+            },
+            hideWaitTemperatures: {
+                get() {
+                    return this.$store.state.gui.console.hideWaitTemperatures
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
+                }
+            },
+            boolCustomFilters: {
+                get() {
+                    return this.$store.state.gui.console.boolCustomFilters
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
+                }
+            }
         },
         methods: {
             show:function(e){
@@ -140,18 +180,26 @@
                 bus.$emit("hidekeyboard");
             },
             doSend() {
-                //this.$store.commit('setLoading', { name: 'loadingSendGcode' });
+                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
                 this.$store.commit('server/addEvent', this.gcode);
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "server/getGcodeRespond");
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;
             },
-            formatMessage(message) {
-                if (typeof message === "string") message = message.replace(/(?:\r\n|\r|\n)/g, '<br>');
+            formatTimeMobile(date) {
+                let hours = date.getHours();
+                if (hours < 10) hours = "0"+hours.toString();
+                let minutes = date.getMinutes();
+                if (minutes < 10) minutes = "0"+minutes.toString();
+                let seconds = date.getSeconds();
+                if (seconds < 10) seconds = "0"+seconds.toString();
 
-                return message;
+
+                return hours+":"+minutes+":"+seconds;
             },
+            colorConsoleMessage: colorConsoleMessage,
+            formatConsoleMessage: formatConsoleMessage,
             onKeyUp() {
                 if (this.lastCommandNumber === null && this.lastCommands.length) {
                     this.lastCommandNumber = this.lastCommands.length - 1;
@@ -203,12 +251,5 @@
                 return items;
             }
         },
-        watch: {
-            loadings: {
-                handler: function(newVal) {
-                    this.loadingSendGcode = newVal.includes('loadingSendGcode');
-                }
-            }
-        }
     }
 </script>
