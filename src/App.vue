@@ -61,7 +61,7 @@
                     </ul>
                 </li>
             </ul>
-            <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2">
+            <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2" v-if="showVersion">
                 v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
             </p>
         </v-navigation-drawer>
@@ -75,7 +75,6 @@
         </v-app-bar>
 
         <v-main id="content">
-            
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <keep-alive>
@@ -85,12 +84,9 @@
             </v-scroll-y-transition>
         </v-main> 
         
-        <v-footer app class="d-block" style="z-index:20000">
+        <v-footer app class="d-block" style="z-index:20000" v-if="visible&virtualKeyboard">
             
-            <span style="z-index=200" v-if="showVersion">v{{ getVersion }}</span>
-            <span style="z-index=200" class="float-right d-none d-sm-inline" v-if="version&showVersion">{{ version }} </span>
-            
-            <div class="keyboard-context" v-if="visible&virtualKeyboard">
+            <div class="keyboard-context" >
                 <div class="keyboard-context-name">
                     <span style="z-index=200">{{ virtualKeyboardName }}</span>
                 </div>
@@ -100,16 +96,16 @@
                 </div>
             </div>
             
-            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options" v-if="visible&virtualKeyboard" :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
+            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
-        <v-dialog v-model="overlayDisconnect" persistent width="300">
+        <!--<v-dialog v-model="overlayDisconnect" persistent width="300">
             <v-card color="primary" dark >
                 <v-card-text class="pt-2">
                     Connecting...
                     <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
                 </v-card-text>
             </v-card>
-        </v-dialog>
+        </v-dialog>-->
 
         <update-dialog></update-dialog>
     </v-app>
@@ -213,6 +209,26 @@ export default {
                 return this.inputname;
             },
         },
+        defaultFavicons: {
+            get() {
+                return this.$store.getters["files/getFavicons"]
+            }
+        },
+        sidebarLogo: {
+            get() {
+                return this.$store.getters["files/getSidebarLogo"]
+            }
+        },
+        sidebarBackground: {
+            get() {
+                return this.$store.getters["files/getSidebarBackground"]
+            }
+        },
+        customStylesheet: {
+            get() {
+                return this.$store.getters["files/getCustomStylesheet"]
+            }
+        },
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
@@ -239,26 +255,6 @@ export default {
             this.inputname = null;
             this.input = null;
         });
-        defaultFavicons: {
-            get() {
-                return this.$store.getters["files/getFavicons"]
-            }
-        },
-        sidebarLogo: {
-            get() {
-                return this.$store.getters["files/getSidebarLogo"]
-            }
-        },
-        sidebarBackground: {
-            get() {
-                return this.$store.getters["files/getSidebarBackground"]
-            }
-        },
-        customStylesheet: {
-            get() {
-                return this.$store.getters["files/getCustomStylesheet"]
-            }
-        },
     },
     methods: {
         keyboardClick(){

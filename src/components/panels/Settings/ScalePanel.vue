@@ -11,147 +11,121 @@
                     <span class="subheading" v-if="!scaleAviable" style="color:#D32F2F;">  Module not found!</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text class="px-3 py-3 content">
-                <v-row class="text-center" align="center">
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0">
-                                <strong>
-                                    Scale 1
-                                </strong>
-                            </v-col>
-                            <v-col class="py-0">
-                                <strong>
-                                    Scale 2
-                                </strong>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scaleOffset1"
-                                    hide-details
-                                    label="Offset"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="numeric"
-                                    append-icon="mdi-weight-gram"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scaleOffset2"
-                                    hide-details
-                                    label="Offset"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="numeric"
-                                    append-icon="mdi-weight-gram"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scalePosition1"
-                                    hide-details
-                                    label="Position"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="normal"
-                                    append-icon="mdi-map-marker"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scalePosition2"
-                                    hide-details
-                                    label="Position"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="normal"
-                                    append-icon="mdi-map-marker"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-5 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0 px-3">
-                                <v-btn v-on:click="executeTare1" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
-                            </v-col>
-                            <v-col class="py-0 px-3">
-                                <v-btn v-on:click="executeTare2" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scaleCalibrate1"
-                                    hide-details
-                                    label="Known Weight"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="numeric"
-                                    append-icon="mdi-weight-gram"
-                                ></v-text-field>
-                            </v-col>
-                            <v-col class="py-0">
-                                <v-text-field
-                                    v-model="scaleCalibrate2"
-                                    hide-details
-                                    label="Known Weight"
-                                    @click.native="show"
-                                    @blur="hide"
-                                    data-layout="numeric"
-                                    append-icon="mdi-weight-gram"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                <!--<v-row><v-col class="py-0">
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="text-center">
+                        <strong>Scale 1</strong>
+                    </v-flex>
+                    <v-flex col class="text-center">
+                        <strong>Scale 2</strong>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-divider class="my-2"></v-divider>
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="py-1 text-center">
                         <v-text-field
-                            v-model="rawValue"
+                            v-model="scaleOffset1"
                             hide-details
-                            label="raw DEV ONLY"
+                            label="Offset"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric"
+                            append-icon="mdi-weight-gram"
                         ></v-text-field>
-                    </v-col>
-                </v-row>-->
-                <v-row>
-                    <v-col class="pt-3 py-0 px-3 equal-width">
-                        <v-row>
-                            <v-col class="py-0 px-3">
-                                <v-btn v-on:click="executeCalibrate1" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
-                            </v-col>
-                            <v-col class="py-0 px-3">
-                                <v-btn v-on:click="executeCalibrate2" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-                
-                <v-row>
-                    <v-col class="pt-3 py-0 px-3 equal-width">
-                            <v-col class="py-0 px-0">
-                                <div @click="dialogCalibrateGuide.show = true" class="scaleguide" style="width: 100%;text-align: center;">Guide</div>
-                            </v-col>
-                    </v-col>
-                </v-row>
+                    </v-flex>
+                    <v-flex col class="py-1 text-center">
+                        <v-text-field
+                            v-model="scaleOffset2"
+                            hide-details
+                            label="Offset"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric"
+                            append-icon="mdi-weight-gram"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="py-1 text-center">
+                       <v-text-field
+                            v-model="scalePosition1"
+                            hide-details
+                            label="Position"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="normal"
+                            append-icon="mdi-map-marker"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex col class="py-1 text-center">
+                        <v-text-field
+                            v-model="scalePosition2"
+                            hide-details
+                            label="Position"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="normal"
+                            append-icon="mdi-map-marker"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="py-2 text-center">
+                        <v-btn v-on:click="executeTare1" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
+                    </v-flex>
+                    <v-flex col class="py-2 text-center">
+                        <v-btn v-on:click="executeTare2" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="py-1 text-center">
+                        <v-text-field
+                            v-model="scaleCalibrate1"
+                            hide-details
+                            label="Known Weight"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric"
+                            append-icon="mdi-weight-gram"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex col class="py-1 text-center">
+                        <v-text-field
+                            v-model="scaleCalibrate2"
+                            hide-details
+                            label="Known Weight"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric"
+                            append-icon="mdi-weight-gram"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-card-text class="px-0 py-0">
+                <v-layout wrap class=" text-center">
+                    <v-flex col class="py-2 text-center">
+                        <v-btn v-on:click="executeCalibrate1" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
+                    </v-flex>
+                    <v-flex col class="py-2 text-center">
+                        <v-btn v-on:click="executeCalibrate2" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-card-text>
+            <v-card-text class="px-0 py-0 content">
+                <v-layout wrap class="text-center">
+                    <v-flex col class="py-1 text-center">
+                        <div @click="dialogCalibrateGuide.show = true" class="scaleguide" style="width: 100%;text-align: center;">Guide</div>
+                    </v-flex>
+                </v-layout>
             </v-card-text>
         </v-card>
         
@@ -159,21 +133,18 @@
             <v-card>
                 <v-card-title class="headline">Calibrate Guide</v-card-title>
                 <v-card-text>
-                <v-row>
-                    <v-col class="py-0 px-3 equal-width">
-                        <v-row>
-                                <v-col class="py-0 px-3">
-                                            1. Press "TARE" with a empty scale <br>
-                                            2. Put a known weight on the scale <br>
-                                            3. Put the weight in "Known Weight" <br>
-                                            4. Press "CAL" 
-                                </v-col>
-                                <v-col class="py-0 px-1">
-                                           <img :src="require('../../../assets/scaleGuide.gif')" style="width: 250px;">
-                                </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
+                    
+                <v-layout wrap class="text-center">
+                    <v-flex col class="py-1 text-left">
+                        1. Press "TARE" with a empty scale <br>
+                        2. Put a known weight on the scale <br>
+                        3. Put the weight in "Known Weight" <br>
+                        4. Press "CAL"
+                    </v-flex>
+                    <v-flex col class="py-1 text-center">
+                        <img :src="require('../../../assets/scaleGuide.gif')" style="width: 250px;">
+                    </v-flex>
+                </v-layout>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>

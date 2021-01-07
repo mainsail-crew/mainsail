@@ -9,30 +9,22 @@
                 <span class="subheading"><v-icon left>mdi-fire</v-icon>Preheat Button</span>
             </v-toolbar-title>
         </v-toolbar>
+        <v-card-text class="px-0 py-0 content">
+            <v-layout wrap class=" text-center">
+                <v-flex col class="text-center">
+                    <strong>Material</strong>
+                </v-flex>
+                <v-flex col class="text-center">
+                    <strong>Heater Temp</strong>
+                </v-flex>
+                <v-flex col class="text-center">
+                    <strong>Bed Temp</strong>
+                </v-flex>
+            </v-layout>
+        </v-card-text>
+        <v-divider class="my-1"></v-divider>
         <v-card-text class="px-3 py-3 content">
-            <v-row class="text-center" align="center">
-                <v-col class="py-0 px-3 equal-width">
-                    <v-row>
-                        <v-col class="py-0">
-                            <strong>
-                                Material
-                            </strong>
-                        </v-col>
-                        <v-col class="py-0">
-                            <strong>
-                                Heater Temp
-                            </strong>
-                        </v-col>
-                        <v-col class="py-0">
-                            <strong>
-                                Bed Temp
-                            </strong>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
             <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
-                <v-divider class="my-2"></v-divider>
                 <v-row class="text-center py-1 pb-2" align="center">
                     <v-col class="equal-width py-0 px-0">
                         <v-col class="px-3 py-0">

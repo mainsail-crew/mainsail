@@ -19,7 +19,9 @@
                 @blur="hide"
                 data-layout="normal"
             ></v-text-field>
+            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0"></v-switch>
         </v-card-text>
+        
     </v-card>
 </template>
 

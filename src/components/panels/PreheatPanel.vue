@@ -10,27 +10,29 @@
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-fire</v-icon>Preheat {{profile.material}}</span>
             </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn v-on:click="executePreheat(profile.heater,profile.bed)"  rounded color="blue-grey darken-4"><v-icon left>mdi-radiator</v-icon>Heat</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn v-on:click="executePreheat(profile.heater,profile.bed)"  rounded color="blue-grey darken-4"><v-icon left>mdi-radiator</v-icon>Heat</v-btn>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <v-row class="text-center pt-2" align="center">
-                <v-col class="equal-width py-0 px-0">
-                    <v-row><v-col class="px-0 py-0"><strong>Heater Temp</strong></v-col></v-row>
-                </v-col>
-                <v-col class="equal-width py-0 px-0">
-                    <v-row><v-col class="px-0 py-0"><strong>Bed Temp</strong></v-col></v-row>
-                </v-col>
-            </v-row>
-            <v-divider class="my-2"></v-divider>
-            <v-row class="text-center py-1 pb-2" v-if="profile.heater!=0" align="center">
-                <v-col class="equal-width py-0 px-0">
-                    <v-row><v-col class="px-0 py-0">{{profile.heater}}°C</v-col></v-row>
-                </v-col>
-                <v-col class="equal-width py-0 px-0">
-                    <v-row><v-col class="px-0 py-0">{{profile.bed}}°C</v-col></v-row>
-                </v-col>
-            </v-row>
+            <v-layout wrap class=" text-center">
+                <v-flex col class="text-center">
+                    <strong>Heater Temp</strong>
+                </v-flex>
+                <v-flex col class="text-center">
+                    <strong>Bed Temp</strong>
+                </v-flex>
+            </v-layout>
+        </v-card-text>
+        <v-divider class="my-1"></v-divider>
+        <v-card-text class="px-0 py-0 content">
+            <v-layout wrap class=" text-center">
+                <v-flex col class="text-center">
+                    <strong>{{profile.heater}}°C</strong>
+                </v-flex>
+                <v-flex col class="text-center">
+                    <strong>{{profile.bed}}°C</strong>
+                </v-flex>
+            </v-layout>
         </v-card-text>
     </v-card>
 </template>
