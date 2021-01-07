@@ -98,14 +98,14 @@
             
             <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
-        <!--<v-dialog v-model="overlayDisconnect" persistent width="300">
+        <v-dialog v-model="overlayDisconnect" persistent width="300">
             <v-card color="primary" dark >
                 <v-card-text class="pt-2">
                     Connecting...
                     <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
                 </v-card-text>
             </v-card>
-        </v-dialog>-->
+        </v-dialog>
 
         <update-dialog></update-dialog>
     </v-app>
