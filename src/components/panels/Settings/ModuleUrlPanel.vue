@@ -13,23 +13,11 @@
         </v-toolbar>
         <v-card-text>
             <v-row>
-                <v-col class="py-0">
+                <v-col class="py-0 pb-3">
                     <v-text-field
                         v-model="scaleUrl"
                         hide-details
                         label="Scale URL"
-                        @click.native="show"
-                        @blur="hide"
-                        data-layout="normal" 
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col class="py-0 pb-3">
-                    <v-text-field
-                        v-model="ressourcemonitorUrl"
-                        hide-details
-                        label="Ressource Monitor URL"
                         @click.native="show"
                         @blur="hide"
                         data-layout="normal" 
@@ -57,14 +45,6 @@
                 },
                 set(scaleUrl) {
                     return this.$store.dispatch('gui/setSettings', { modules: { scaleUrl } });
-                }
-            },
-            ressourcemonitorUrl: {
-                get() {
-                    return this.$store.state.gui.modules.ressourcemonitorUrl;
-                },
-                set(ressourcemonitorUrl) {
-                    return this.$store.dispatch('gui/setSettings', { modules: { ressourcemonitorUrl } });
                 }
             },
         },

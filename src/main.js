@@ -8,8 +8,6 @@ import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
 import VueTouchKeyboard from "vue-touch-keyboard";
-import VueApexCharts from 'vue-apexcharts' ;
-import VueApng from 'vue-apng';
 
 export const bus = new Vue();
 
@@ -18,8 +16,6 @@ Vue.config.productionTip = false;
 Vue.use(VueResource);
 Vue.use(require('vue-cookies'));
 Vue.use(VueTouchKeyboard);
-Vue.use(VueApexCharts);
-Vue.use(VueApng);
 Vue.use({
     install() {
       Vue.prototype.destroy = Vue.prototype.$destroy;
@@ -33,7 +29,6 @@ Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Conte
 Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIONS, DELETE, OPTIONS';
 
 Vue.component('vue-headful', vueHeadful);
-Vue.component('apexchart', VueApexCharts)
 
 Vue.$cookies.config('1y')
 
@@ -66,5 +61,4 @@ fetch('/config.json')
     window.console.error('Error:', error);
 });
 require('./scale/index');
-require('./ressourcemonitor/index');
 require('./neopixel/index');
