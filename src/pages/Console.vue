@@ -30,22 +30,22 @@
 <template>
     <div>
         <v-row>
-            <v-col class="col">
+            <v-col class="col ">
                 <v-text-field
-                    @click.native="show"
-                    @blur="hide"
-                    data-layout="normal"  
                     v-model="gcode"
                     :items="items"
                     label="Send code..."
-                    solo
-                    class="gcode-command-field"
+                    hide-details
+                    class="gcode-command-field console"
                     ref="gcodeCommandField"
                     autocomplete="off"
                     v-on:keyup.enter="doSend"
                     v-on:keyup.up="onKeyUp"
                     v-on:keyup.down="onKeyDown"
                     v-on:keydown.tab="getAutocomplete"
+                    @click.native="show"
+                    @blur="hide"
+                    data-layout="normal"
                 ></v-text-field>
             </v-col>
 

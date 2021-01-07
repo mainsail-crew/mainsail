@@ -11,20 +11,18 @@
                 <span class="subheading"><v-icon left>mdi-led-off</v-icon>Neopixel</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text>
-            <v-row class="text-center" align="center">
-                <v-col class="py-0 px-3 equal-width">
-                    <v-row>
-                        <v-col class="py-0 pt-2">
-                            <v-color-picker
+        <v-card-text class="px-0 py-0">
+            <v-layout wrap class=" text-center">
+                <v-flex col class="text-center">
+                    <v-color-picker
                                 dot-size="25"
                                 hide-mode-switch
                                 hide-inputs
                                 v-model="color"
                             ></v-color-picker>
-                        </v-col>
-                        <v-col class="py-0 neopixel-swatchesonly">
-                            <v-color-picker
+                </v-flex>
+                <v-flex col class="text-center neopixel-swatchesonly">
+                    <v-color-picker
                                 dot-size="25"
                                 hide-canvas
                                 hide-inputs
@@ -33,10 +31,8 @@
                                 swatches-max-height="240"
                                 v-model="color"
                             ></v-color-picker>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
+                </v-flex>
+            </v-layout>
         </v-card-text>
     </v-card>
 </template>

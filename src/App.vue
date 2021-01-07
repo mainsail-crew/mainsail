@@ -235,14 +235,10 @@ export default {
             if(!this.$cookies.isKey("enableVirtualKeyboard")){
                 return;
             }
-            
-            console.log(event.target)
             this.input = event.target;
             this.inputvalue = this.input.value;
             this.inputname = this.input.labels[0].textContent;
             this.layout = layouts[this.input.dataset.layout];
-            
-
             if (!this.visible)
                 this.visible = true
         });
