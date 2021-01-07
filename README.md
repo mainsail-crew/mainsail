@@ -15,6 +15,7 @@ To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail
 * [Flaticon](https://www.flaticon.com): for the Logo and Ressource Manager Icons
 * [Meteyou](https://github.com/meteyou/mainsail): for the original Mainsail
 * [dangire158](https://github.com/dangrie158/hx711-driver): for the hx711 Driver
+* [eliteSCHW31N](https://github.com/eliteSchwein/hx711server): for the hx711 Server
 * [WallpaperCraft](https://wallpaperscraft.com/): for the main Background
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.
