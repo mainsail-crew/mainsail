@@ -6,6 +6,8 @@ Mainsail is a lightweight & responsive web interface for the [Klipper](https://g
 
 To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail/setup/) it or read the [pages](https://meteyou.github.io/mainsail/) for more informations.
 
+For support join our discord server -> [https://discord.gg/skWTwTD](https://discord.gg/skWTwTD)
+
 ## Credit, sources and inspiration
 * [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
 * [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mainsail would not be possible.
