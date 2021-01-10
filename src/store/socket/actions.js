@@ -91,6 +91,10 @@ export default {
 				commit('server/updateManager/addUpdateResponse', payload.params[0], { root: true })
 				break
 
+			case 'notify_update_refreshed':
+				commit('server/updateManager/setStatus', payload.params[0], { root: true })
+				break
+
 			default:
 				if (payload.result !== "ok") {
 					if (
