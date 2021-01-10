@@ -61,6 +61,7 @@ export default {
 					fetch('//'+store.state.socket.hostname+':'+store.state.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
 						.then(res => res.json()).then(file => {
 						this.commit('gui/setData', file, { root: true })
+						if (!store.state.socket.remoteMode) this.dispatch('farm/readStoredPrinters', {}, { root: true })
 					})
 				}
 

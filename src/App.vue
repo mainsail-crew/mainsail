@@ -29,6 +29,7 @@
                 <v-toolbar-title>{{ printername !== "" ? printername : hostname }}</v-toolbar-title>
             </div>
             <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
+                <printer-selecter></printer-selecter>
                 <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon"
                     :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
                     :value="true"
@@ -81,15 +82,8 @@
             </v-scroll-y-transition>
         </v-main>
 
-        <v-dialog v-model="overlayDisconnect" persistent width="300">
-            <v-card color="primary" dark >
-                <v-card-text class="pt-2">
-                    Connecting...
-                    <v-progress-linear indeterminate color="white" class="mb-0 mt-2"></v-progress-linear>
-                </v-card-text>
-            </v-card>
-        </v-dialog>
-
+        <select-printer-dialog v-if="remoteMode"></select-printer-dialog>
+        <connecting-dialog v-if="!remoteMode"></connecting-dialog>
         <update-dialog></update-dialog>
     </v-app>
 </template>
@@ -99,21 +93,25 @@
     import { mapState, mapGetters } from 'vuex'
     import TopCornerMenu from "@/components/TopCornerMenu"
     import UpdateDialog from "@/components/UpdateDialog"
+    import ConnectingDialog from "@/components/ConnectingDialog";
+    import SelectPrinterDialog from "@/components/SelectPrinterDialog";
+    import PrinterSelecter from "@/components/PrinterSelecter"
 
 export default {
     props: {
         source: String,
     },
     components: {
+        PrinterSelecter,
+        ConnectingDialog,
+        SelectPrinterDialog,
         UpdateDialog,
         TopCornerMenu,
-
     },
     data: () => ({
-        overlayDisconnect: true,
         drawer: null,
         activeClass: 'active',
-        routes: routes,
+        routes: routes.filter((element) => element.title !== "Printers"),
         boolNaviHeightmap: false,
     }),
     created () {
@@ -140,6 +138,7 @@ export default {
             save_config_pending: state => state.printer.configfile.save_config_pending,
 
             klipperVersion: state => state.printer.software_version,
+            remoteMode: state => state.socket.remoteMode,
         }),
         ...mapGetters([
             'getTitle',
@@ -244,9 +243,6 @@ export default {
         config() {
             this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         },
-        isConnected(newVal) {
-            this.overlayDisconnect = !newVal;
-        },
         customStylesheet(newVal) {
             if (newVal !== null) {
                 let style = document.getElementById("customStylesheet")
@@ -318,7 +314,7 @@ export default {
         margin: 0;
     }
 
-    nav ul.navi a.nav-link {
+    nav ul.navi .nav-link {
         display: block;
         color: white;
         border-radius: .5em;
@@ -332,25 +328,25 @@ export default {
         margin: 0.5em 1em;
     }
 
-    nav ul.navi a.nav-link:hover,
-    nav ul.navi li.active>a.nav-link,
-    nav ul.navi a.nav-link.router-link-active {
+    nav ul.navi .nav-link:hover,
+    nav ul.navi li.active>.nav-link,
+    nav ul.navi .nav-link.router-link-active {
         background: rgba(255,255,255,.3);
         opacity: 1;
     }
 
-    nav ul.navi li.active>a.nav-link i.nav-arrow ,
-    nav ul.navi a.nav-link.router-link-active i.nav-arrow {
+    nav ul.navi li.active>.nav-link i.nav-arrow ,
+    nav ul.navi .nav-link.router-link-active i.nav-arrow {
         transform: rotate(0);
     }
 
-    nav ul.navi a.nav-link>i.v-icon {
+    nav ul.navi .nav-link>i.v-icon {
         color: white;
         font-size: 1.7em;
         margin-right: .5em;
     }
 
-    nav ul.navi a.nav-link>span.nav-title {
+    nav ul.navi .nav-link>span.nav-title {
         line-height: 30px;
         font-weight: 600;
         text-transform: uppercase;
@@ -358,11 +354,14 @@ export default {
         letter-spacing: 1px;
     }
 
-    nav ul.navi a.nav-link>i.nav-arrow {
+    nav ul.navi .nav-link>.nav-arrow {
         float: right;
         margin-top: 5px;
         margin-right: 0;
         transform: rotate(90deg);
+    }
+    nav ul.navi .nav-link>.nav-arrow.right {
+        transform: rotate(-90deg);
     }
 
     nav ul.navi>li>ul.child {
@@ -377,16 +376,16 @@ export default {
         display: block;
     }
 
-    nav ul.navi>li>ul.child a.nav-link {
+    nav ul.navi>li>ul.child .nav-link {
         padding: 5px 15px 5px 15px;
     }
 
-    nav ul.navi>li>ul.child a.nav-link:hover,
-    nav ul.navi>li>ul.child a.nav-link.router-link-active {
+    nav ul.navi>li>ul.child .nav-link:hover,
+    nav ul.navi>li>ul.child .nav-link.router-link-active {
         background: rgba(255,255,255,.2);
     }
 
-    nav ul.navi>li>ul.child a.nav-link>span.nav-title {
+    nav ul.navi>li>ul.child .nav-link>span.nav-title {
         text-transform: capitalize;
         font-weight: 400;
         font-size: 14px;

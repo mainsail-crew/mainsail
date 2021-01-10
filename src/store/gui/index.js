@@ -37,7 +37,8 @@ export function getDefaultState() {
 				countPerPage: 10,
 				showHiddenFiles: false,
 			}
-		}
+		},
+		remotePrinters: []
 	}
 }
 

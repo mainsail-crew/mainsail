@@ -11,6 +11,7 @@ import ConfigFilesPanel from "./ConfigFilesPanel";
 import RunoutPanel from "./RunoutPanel";
 import LogfilesPanel from "./LogfilesPanel";
 import UpdatePanel from "./UpdatePanel";
+import RemotePrintersPanel from "./RemotePrintersPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -23,6 +24,7 @@ Vue.component('settings-runout-panel', RunoutPanel);
 Vue.component('settings-logfiles-panel', LogfilesPanel);
 Vue.component('settings-config-files-panel', ConfigFilesPanel);
 Vue.component('settings-update-panel', UpdatePanel);
+Vue.component('settings-remote-printers-panel', RemotePrintersPanel);
 
 export default {
 
