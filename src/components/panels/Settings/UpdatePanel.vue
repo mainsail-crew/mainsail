@@ -79,7 +79,7 @@
                     <v-row class="pt-2">
                         <v-col class="pl-6 text-no-wrap">
                             <strong>System</strong><br />
-                            <v-tooltip top v-if="system.package_count > 0">
+                            <v-tooltip top v-if="system.package_count > 0" :max-width="300">
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">{{ system.package_count }} packages can be upgraded</span>
                                 </template>
