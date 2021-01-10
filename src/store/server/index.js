@@ -13,6 +13,7 @@ export function getDefaultState() {
 		klippy_state: "",
 		klippy_message: "",
 		plugins: [],
+		failed_plugins: [],
 		events: [],
 	}
 }
