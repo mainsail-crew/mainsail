@@ -12,7 +12,7 @@
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
-                    <v-col class="py-2">
+                    <v-col class="pt-2 mb-1">
                         <v-text-field
                             v-model="webcamUrl"
                             hide-details

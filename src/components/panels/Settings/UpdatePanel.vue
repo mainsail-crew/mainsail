@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-update</v-icon>Update</span>
+                <span class="subheading"><v-icon left>mdi-update</v-icon>Update Manager</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-tooltip top>
@@ -12,82 +12,95 @@
                 <span>Check for updates</span>
             </v-tooltip>
         </v-toolbar>
-        <v-card-text class="px-0 pt-0 pb-0 content">
-            <v-row v-if="'version' in klipper">
-                <v-col class="pl-6 py-2 text-no-wrap">
-                    <strong>Klipper</strong><br />
-                    {{ klipper.version }}
-                </v-col>
-                <v-col class="pr-6 py-2 text-right">
-                    <v-chip
-                        small
-                        label
-                        outlined
-                        :color="getColor(klipper)"
-                        @click="updateKlipper"
-                        :disabled="is_disabled(klipper)"
-                        class="minwidth-0 mt-2 px-2 text-uppercase"
-                    ><v-icon small class="mr-1">mdi-{{ getIcon(klipper) }}</v-icon>{{ getText(klipper) }}</v-chip>
-                </v-col>
-            </v-row>
-            <div v-if="'version' in moonraker">
-                <v-divider class="mt-0 mb-0" ></v-divider>
-                <v-row>
-                    <v-col class="pl-6 py-2 text-no-wrap">
-                        <strong>Moonraker</strong><br />
-                        {{ moonraker.version }}
+        <v-card-text class="px-0 py-0">
+            <v-container py-0 px-0>
+                <v-row v-if="'version' in klipper" class="py-2">
+                    <v-col class="pl-6 text-no-wrap">
+                        <strong>Klipper</strong><br />
+                        <span v-if="'remote_version' in klipper && klipper.version !== klipper.remote_version">{{ klipper.version+' &gt; '+klipper.remote_version }}</span>
+                        <span v-if="!('remote_version' in klipper && klipper.version !== klipper.remote_version)">{{ klipper.version }}</span>
                     </v-col>
-                    <v-col class="pr-6 py-2 text-right">
+                    <v-col class="pr-6 text-right">
                         <v-chip
                             small
                             label
                             outlined
-                            :color="getColor(moonraker)"
-                            @click="updateMoonraker"
-                            :disabled="is_disabled(moonraker)"
-                            class="minwidth-0 mt-2 px-2 text-uppercase"
-                        ><v-icon small class="mr-1">mdi-{{ getIcon(moonraker) }}</v-icon>{{ getText(moonraker) }}</v-chip>
+                            :color="getColor(klipper)"
+                            @click="updateKlipper"
+                            :disabled="is_disabled(klipper)"
+                            class="minwidth-0 mt-3 px-2 text-uppercase"
+                        ><v-icon small class="mr-1">mdi-{{ getIcon(klipper) }}</v-icon>{{ getText(klipper) }}</v-chip>
                     </v-col>
                 </v-row>
-            </div>
-            <div v-if="mainsail !== false && 'version' in mainsail">
-                <v-divider class="mt-0 mb-0" ></v-divider>
-                <v-row>
-                    <v-col class="pl-6 py-2 text-no-wrap">
-                        <strong>Mainsail</strong><br />
-                        {{ 'v'+package_version }}
-                        <span v-if="!is_disabled(mainsail)"> &gt; {{ mainsail.remote_version.replace('Version ', 'v') }}</span>
-                    </v-col>
-                    <v-col class="pr-6 py-2 text-right">
-                        <v-chip
-                            small
-                            label
-                            outlined
-                            :color="getColor(mainsail)"
-                            @click="updateMainsail"
-                            :disabled="is_disabled(mainsail)"
-                            class="minwidth-0 mt-2 px-2 text-uppercase"
-                        ><v-icon small class="mr-1">mdi-{{ getIcon(mainsail) }}</v-icon>{{ getText(mainsail) }}</v-chip>
-                    </v-col>
-                </v-row>
-            </div>
-            <v-divider class="mt-0 mb-0 border-top-2" ></v-divider>
-            <v-row>
-                <v-col class="pl-6 py-2 text-no-wrap">
-                    <strong>System</strong><br />
-                    OS-Packages
-                </v-col>
-                <v-col class="pr-6 py-2 text-right">
-                    <v-chip
-                        small
-                        label
-                        outlined
-                        color="gray"
-                        @click="updateSystem"
-                        class="minwidth-0 mt-2 px-2 text-uppercase"
-                    ><v-icon small class="mr-1">mdi-progress-upload</v-icon>upgrade</v-chip>
-                </v-col>
-            </v-row>
+                <div v-if="'version' in moonraker">
+                    <v-divider class="my-0" ></v-divider>
+                    <v-row class="py-2">
+                        <v-col class="pl-6 text-no-wrap">
+                            <strong>Moonraker</strong><br />
+                            <span v-if="'remote_version' in moonraker && moonraker.version !== moonraker.remote_version">{{ moonraker.version+' &gt; '+moonraker.remote_version }}</span>
+                            <span v-if="!('remote_version' in moonraker && moonraker.version !== moonraker.remote_version)">{{ moonraker.version }}</span>
+                        </v-col>
+                        <v-col class="pr-6 text-right">
+                            <v-chip
+                                small
+                                label
+                                outlined
+                                :color="getColor(moonraker)"
+                                @click="updateMoonraker"
+                                :disabled="is_disabled(moonraker)"
+                                class="minwidth-0 mt-3 px-2 text-uppercase"
+                            ><v-icon small class="mr-1">mdi-{{ getIcon(moonraker) }}</v-icon>{{ getText(moonraker) }}</v-chip>
+                        </v-col>
+                    </v-row>
+                </div>
+                <div v-if="mainsail !== false && 'version' in mainsail">
+                    <v-divider class="mt-0 mb-0" ></v-divider>
+                    <v-row class="py-2">
+                        <v-col class="pl-6 text-no-wrap">
+                            <strong>Mainsail</strong><br />
+                            {{ 'v'+package_version }}
+                            <span v-if="!is_disabled(mainsail)"> &gt; {{ mainsail.remote_version.replace('Version ', 'v') }}</span>
+                        </v-col>
+                        <v-col class="pr-6 text-right">
+                            <v-chip
+                                small
+                                label
+                                outlined
+                                :color="getColor(mainsail)"
+                                @click="updateMainsail"
+                                :disabled="is_disabled(mainsail)"
+                                class="minwidth-0 mt-3 px-2 text-uppercase"
+                            ><v-icon small class="mr-1">mdi-{{ getIcon(mainsail) }}</v-icon>{{ getText(mainsail) }}</v-chip>
+                        </v-col>
+                    </v-row>
+                </div>
+                <div v-if="system !== false && 'package_count' in system">
+                    <v-divider class="my-0 border-top-2" ></v-divider>
+                    <v-row class="pt-2">
+                        <v-col class="pl-6 text-no-wrap">
+                            <strong>System</strong><br />
+                            <v-tooltip top v-if="system.package_count > 0" :max-width="300">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">{{ system.package_count }} packages can be upgraded</span>
+                                </template>
+                                <span>{{ system.package_list.join(', ') }}</span>
+                            </v-tooltip>
+                            <span v-if="system.package_count === 0">OS-Packages</span>
+                        </v-col>
+                        <v-col class="pr-6 text-right">
+                            <v-chip
+                                small
+                                label
+                                outlined
+                                :color="system.package_count ? 'primary' : 'green'"
+                                :disabled="!(system.package_count)"
+                                @click="updateSystem"
+                                class="minwidth-0 mt-3 px-2 text-uppercase"
+                            ><v-icon small class="mr-1">mdi-{{ system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ system.package_count ? 'upgrade' : 'up-to-date' }}</v-chip>
+                        </v-col>
+                    </v-row>
+                </div>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>
@@ -109,6 +122,7 @@
                 package_version: state => state.packageVersion,
                 klipper: state => state.server.updateManager.klipper,
                 moonraker: state => state.server.updateManager.moonraker,
+                system: state => state.server.updateManager.system,
                 loadings: state => state.socket.loadings,
             }),
             mainsail:{

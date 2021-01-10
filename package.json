@@ -1,11 +1,12 @@
 {
   "name": "mainsail",
-  "version": "0.4.1",
+  "version": "0.5.0-beta",
   "private": true,
   "scripts": {
-    "serve": "./node_modules/.bin/vue-cli-service serve --modern",
-    "build": "./node_modules/.bin/vue-cli-service build --modern",
-    "lint": "./node_modules/.bin/vue-cli-service lint --modern"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build && npm run build.zip",
+    "lint": "vue-cli-service lint",
+    "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd .."
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -36,6 +37,7 @@
     "css-loader": "^5.0.1",
     "eslint": "^7.16.0",
     "eslint-plugin-vue": "^7.4.0",
+    "generate-file-webpack-plugin": "^1.0.1",
     "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
     "sw-precache-webpack-plugin": "^1.0.0",

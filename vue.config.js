@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const generate = require('generate-file-webpack-plugin')
 const fs = require('fs')
 const packageJson = fs.readFileSync('./package.json')
 const version = JSON.parse(packageJson).version || 0
@@ -15,6 +16,10 @@ module.exports = {
           PACKAGE_VERSION: '"' + version + '"'
         }
       }),
+      generate({
+        file: '.version',
+        content: version
+      })
     ]
   },
   pwa: {

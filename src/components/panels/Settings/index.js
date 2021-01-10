@@ -15,6 +15,7 @@ import UpdatePanel from "./UpdatePanel";
 import PreheatPanel from "./PreheatPanel";
 import ModuleUrlPanel from "./ModuleUrlPanel";
 import NeopixelPanel from "./NeopixelPanel";
+import RemotePrintersPanel from "./RemotePrintersPanel";
 
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
@@ -31,6 +32,7 @@ Vue.component('settings-config-files-panel', ConfigFilesPanel);
 Vue.component('settings-update-panel', UpdatePanel);
 Vue.component('settings-module-url', ModuleUrlPanel);
 Vue.component('settings-neopixel', NeopixelPanel);
+Vue.component('settings-remote-printers-panel', RemotePrintersPanel);
 
 export default {
 
