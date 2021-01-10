@@ -84,6 +84,10 @@
                 </v-container>
             </v-scroll-y-transition>
         </v-main> 
+
+        <select-printer-dialog v-if="remoteMode"></select-printer-dialog>
+        <connecting-dialog v-if="!remoteMode"></connecting-dialog>
+        <update-dialog></update-dialog>
         
         <v-footer app class="d-block" style="z-index:20000" v-if="visible&virtualKeyboard">
             
@@ -107,12 +111,6 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-
-        </v-main>
-
-        <select-printer-dialog v-if="remoteMode"></select-printer-dialog>
-        <connecting-dialog v-if="!remoteMode"></connecting-dialog>
-        <update-dialog></update-dialog>
     </v-app>
 </template>
 
