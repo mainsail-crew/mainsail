@@ -3,6 +3,7 @@ import Vue from 'vue'
 import StatusPanel from './StatusPanel.vue'
 import KlippyStatePanel from './KlippyStatePanel.vue'
 import MinSettingsPanel from './MinSettingsPanel.vue'
+import MoonrakerFailedPluginsPanel from './MoonrakerFailedPluginsPanel.vue'
 import ToolsPanel from './ToolsPanel.vue'
 import ControlPanel from "./ControlPanel";
 import ExtruderPanel from "./ExtruderPanel";
@@ -16,6 +17,7 @@ import PowerControlPanel from "./PowerControlPanel.vue";
 Vue.component('status-panel', StatusPanel);
 Vue.component('klippy-state-panel', KlippyStatePanel);
 Vue.component('min-settings-panel', MinSettingsPanel);
+Vue.component('moonraker-failed-plugins-panel', MoonrakerFailedPluginsPanel);
 Vue.component('tools-panel', ToolsPanel);
 Vue.component('control-panel', ControlPanel);
 Vue.component('extruder-panel', ExtruderPanel);

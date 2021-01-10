@@ -2,6 +2,7 @@
     <v-row>
         <v-col class="col-sm-12 col-md-5">
             <min-settings-panel v-if="klippy_state === 'ready' && existsPrinterConfig"></min-settings-panel>
+            <moonraker-failed-plugins-panel v-if="moonrakerFailedPlugins.length"></moonraker-failed-plugins-panel>
             <status-panel v-if="klippy_state === 'ready'"></status-panel>
             <klippy-state-panel class="mt-6" v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
             <webcam-panel class="mt-6" v-if="showDashboardWebcam"></webcam-panel>
@@ -31,6 +32,7 @@
                 socket_connected: state => state.socket.isConnected,
                 klippy_connected: state => state.server.klippy_connected,
                 klippy_state: state => state.server.klippy_state,
+                moonrakerFailedPlugins: state => state.server.failed_plugins,
 
                 showDashboardWebcam: state => state.gui.dashboard.boolWebcam,
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
