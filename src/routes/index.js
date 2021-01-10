@@ -1,5 +1,6 @@
 import Dashboard from '../pages/Dashboard.vue'
 import Webcam from '../pages/Webcam.vue'
+import Farm from '../pages/Farm.vue'
 import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
@@ -11,9 +12,15 @@ const routes = [
     {
         title: "Dashboard",
         path: '/',
-        icon: 'view-dashboard',
+        icon: 'monitor-dashboard',
         component: Dashboard,
         alwaysShow: true,
+    },
+    {
+        title: "Printers",
+        path: '/allPrinters',
+        component: Farm,
+        alwaysShow: false,
     },
     {
         title: "Webcam",

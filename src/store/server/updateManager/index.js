@@ -7,6 +7,10 @@ export function getDefaultState() {
 		moonraker: {},
 		klipper: {},
 		client: {},
+		system: {
+			package_count: 0,
+			package_list: []
+		},
 		updateResponse: {
 			application: "",
 			complete: true,

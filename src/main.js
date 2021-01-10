@@ -24,13 +24,13 @@ fetch('/config.json')
 .then(file => {
     store.commit('socket/setData', file);
 
-    const websocketProtocol = document.location.protocol === 'https:' ? 'wss://' : 'ws://';
-    const socketClient = new WebSocketClient(websocketProtocol + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
+    const socketClient = new WebSocketClient(store.state.socket.protocol + '://' + store.state.socket.hostname + ':' + store.state.socket.port + '/websocket', {
         store: store,
         reconnectEnabled: true,
         reconnectInterval: store.state.socket.reconnectInterval,
     });
-    socketClient.connect();
+
+    if (!store.state.socket.remoteMode) socketClient.connect()
     Vue.prototype.$socket = socketClient;
 
     new Vue({

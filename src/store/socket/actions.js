@@ -1,6 +1,22 @@
+import Vue from 'vue'
+
 export default {
 	reset({ commit }) {
 		commit('reset')
+	},
+
+	setData({ commit }, payload) {
+		commit('setData', payload)
+	},
+
+	setSocket({ commit, state }, payload) {
+		commit('setData', payload)
+
+		if ('$socket' in Vue.prototype) {
+			Vue.prototype.$socket.close()
+			Vue.prototype.$socket.setUrl(state.protocol+"://"+payload.hostname+":"+payload.port+"/websocket")
+			Vue.prototype.$socket.connect()
+		}
 	},
 
 	onOpen ({ commit, dispatch }) {
@@ -10,6 +26,7 @@ export default {
 
 	onClose ({ commit }, event) {
 		commit('setDisconnected');
+		window.console.log(event)
 
 		if (event.wasClean) window.console.log('Socket closed clear')
 	},

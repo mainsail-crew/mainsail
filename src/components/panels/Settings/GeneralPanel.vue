@@ -11,7 +11,7 @@
                 <span class="subheading"><v-icon left>mdi-cog</v-icon>General</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text class="py-0">
+        <v-card-text class="pt-2 pb-0">
             <v-text-field
                 v-model="printerName"
                 label="Printer Name"
