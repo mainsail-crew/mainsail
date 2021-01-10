@@ -12,67 +12,72 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-center">
-                    <strong>Weight</strong>
-                </v-flex>
-                <v-flex col class="text-center">
-                    <strong>Position</strong>
-                </v-flex>
-                <v-flex col class="text-center">
-                    <strong>Offset</strong>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 py-0">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-left flex-grow-0 py-2">
-                    <v-icon>mdi-numeric-1-circle</v-icon>
-                </v-flex>
-                <v-flex col class="text-center py-2 px-0">
-                    {{getWeight1}}g
-                </v-flex>
-                <v-flex col class="text-center py-2 px-0">
-                    {{getPosition1}}
-                </v-flex>
-                <v-flex col class="text-center py-0 ">
-                    <v-text-field class="py-0 scalepanel-dashboard"
-                        v-model="scaleOffset1"
-                        hide-details
-                        label="Offset 1"
-                        @click.native="show"
-                        @blur="hide"
-                        data-layout="numeric" 
-                        append-icon="mdi-weight-gram"
-                    ></v-text-field>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-        <v-divider class="my-2"></v-divider>
-        <v-card-text class="px-0 py-0 pb-3">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-left flex-grow-0 py-2">
-                    <v-icon>mdi-numeric-2-circle</v-icon>
-                </v-flex>
-                <v-flex col class="text-center py-2 px-0">
-                    {{getWeight2}}g
-                </v-flex>
-                <v-flex col class="text-center py-2 px-0">
-                    {{getPosition2}}
-                </v-flex>
-                <v-flex col class="text-center py-0 ">
-                    <v-text-field class="py-0 scalepanel-dashboard"
-                        v-model="scaleOffset2"
-                        hide-details
-                        label="Offset 1"
-                        @click.native="show"
-                        @blur="hide"
-                        data-layout="numeric" 
-                        append-icon="mdi-weight-gram"
-                    ></v-text-field>
-                </v-flex>
-            </v-layout>
+            <v-container class="px-0 pt-5">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2 pl-3 pr-0 col-md-2">
+                        
+                    </v-col>
+                    <v-col class="py-2">
+                        <strong>Weight</strong>
+                    </v-col>
+                    <v-col class="py-2">
+                        <strong>Position</strong>
+                    </v-col>
+                    <v-col class="py-2 pr-8">
+                        <strong>Offset</strong>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="my-2"></v-divider>
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2 pl-3 pr-0 col-md-2">
+                        <v-icon left>mdi-numeric-1-circle</v-icon>
+                    </v-col>
+                    <v-col class="py-2">
+                        {{getWeight1}}g
+                    </v-col>
+                    <v-col class="py-2">
+                        {{getPosition1}}
+                    </v-col>
+                    <v-col class="py-2 scalepanel-dashboard pr-8">
+                        <v-text-field class="py-0 scalepanel-dashboard"
+                            v-model="scaleOffset1"
+                            hide-details
+                            label="Offset 1"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric" 
+                            append-icon="mdi-weight-gram"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="my-2"></v-divider>
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2 pl-3 pr-0 col-md-2">
+                        <v-icon left>mdi-numeric-2-circle</v-icon>
+                    </v-col>
+                    <v-col class="py-2">
+                        {{getWeight2}}g
+                    </v-col>
+                    <v-col class="py-2">
+                        {{getPosition2}}
+                    </v-col>
+                    <v-col class="py-2 pr-8 scalepanel-dashboard">
+                        <v-text-field class="py-0 scalepanel-dashboard"
+                            v-model="scaleOffset2"
+                            hide-details
+                            label="Offset 2"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="numeric" 
+                            append-icon="mdi-weight-gram"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

@@ -12,16 +12,17 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-center">
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2 px-5">
                     <v-color-picker
                                 dot-size="25"
                                 hide-mode-switch
                                 hide-inputs
                                 v-model="color"
                             ></v-color-picker>
-                </v-flex>
-                <v-flex col class="text-center neopixel-swatchesonly">
+                    </v-col>
+                    <v-col class="py-2 px-5 neopixel-swatchesonly">
                     <v-color-picker
                                 dot-size="25"
                                 hide-canvas
@@ -31,8 +32,9 @@
                                 swatches-max-height="240"
                                 v-model="color"
                             ></v-color-picker>
-                </v-flex>
-            </v-layout>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

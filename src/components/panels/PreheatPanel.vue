@@ -14,25 +14,27 @@
             <v-btn v-on:click="executePreheat(profile.heater,profile.bed)"  rounded color="blue-grey darken-4"><v-icon left>mdi-radiator</v-icon>Heat</v-btn>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-center">
-                    <strong>Heater Temp</strong>
-                </v-flex>
-                <v-flex col class="text-center">
-                    <strong>Bed Temp</strong>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-        <v-divider class="my-1"></v-divider>
-        <v-card-text class="px-0 py-0 content">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-center">
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2">
+                        <strong>Heater Temp</strong>
+                    </v-col>
+                    <v-col class="py-2">
+                        <strong>Bed Temp</strong>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="my-1"></v-divider>
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2">
                     <strong>{{profile.heater}}°C</strong>
-                </v-flex>
-                <v-flex col class="text-center">
+                    </v-col>
+                    <v-col class="py-2">
                     <strong>{{profile.bed}}°C</strong>
-                </v-flex>
-            </v-layout>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card-text>
     </v-card>
 </template>

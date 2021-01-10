@@ -10,22 +10,23 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-center">
-                    <strong>Material</strong>
-                </v-flex>
-                <v-flex col class="text-center">
-                    <strong>Heater Temp</strong>
-                </v-flex>
-                <v-flex col class="text-center">
-                    <strong>Bed Temp</strong>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-        <v-divider class="my-1"></v-divider>
-        <v-card-text class="px-3 py-3 content">
+            
+            <v-container class="px-0">
+                <v-row align="center" class="text-center">
+                    <v-col class="py-2">
+                        <strong>Material</strong>
+                    </v-col>
+                    <v-col class="py-2">
+                        <strong>Heater Temp</strong>
+                    </v-col>
+                    <v-col class="py-2">
+                        <strong>Bed Temp</strong>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="my-1"></v-divider>
             <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
-                <v-row class="text-center py-1 pb-2" align="center">
+                <v-row class="text-center py-1 pb-3 px-3" align="center">
                     <v-col class="equal-width py-0 px-0">
                         <v-col class="px-3 py-0">
                             <v-text-field
