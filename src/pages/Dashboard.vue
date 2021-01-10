@@ -11,9 +11,9 @@
             <peripherie-panel v-if="klippy_state === 'ready'"></peripherie-panel>
             <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
                 <preheat-panel class="mt-6" :profile="profile"></preheat-panel>
+            </div>
             <neopixel-panel v-if="this.$store.state.gui.neopixelcenter.stripname!=''" class="mt-6"></neopixel-panel>
             <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
-            </div>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
