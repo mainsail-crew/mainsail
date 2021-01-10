@@ -5,15 +5,15 @@
             <status-panel v-if="klippy_state === 'ready'"></status-panel>
             <klippy-state-panel class="mt-6" v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
             <webcam-panel class="mt-6" v-if="showDashboardWebcam"></webcam-panel>
-            <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
-                <preheat-panel class="mt-6" :profile="profile"></preheat-panel>
-            </div>
-            <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
-            <neopixel-panel v-if="this.$store.state.gui.neopixelcenter.stripname!=''" class="mt-6"></neopixel-panel>
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel v-if="klippy_state === 'ready'"></peripherie-panel>
+            <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
+                <preheat-panel class="mt-6" :profile="profile"></preheat-panel>
+            <neopixel-panel v-if="this.$store.state.gui.neopixelcenter.stripname!=''" class="mt-6"></neopixel-panel>
+            <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
+            </div>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
             <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
