@@ -46,6 +46,8 @@
         },
         methods: {
             setTemps() {
+                if (parseFloat(this.value) === 0) this.value = 0
+
                 if (this.max_temp !== undefined && this.value > this.max_temp) {
                     this.value = this.target;
                     Vue.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")");
