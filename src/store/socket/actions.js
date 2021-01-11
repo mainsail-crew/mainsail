@@ -26,7 +26,6 @@ export default {
 
 	onClose ({ commit }, event) {
 		commit('setDisconnected');
-		window.console.log(event)
 
 		if (event.wasClean) window.console.log('Socket closed clear')
 	},

@@ -1,8 +1,10 @@
 import Vue from 'vue'
 
 export default {
-	reset({ commit }) {
+	reset({ commit, dispatch }) {
 		commit('reset')
+		dispatch('power/reset')
+		dispatch('updateManager/reset')
 	},
 
 	init({ dispatch, state }) {
