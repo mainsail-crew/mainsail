@@ -53,7 +53,7 @@
                         </v-col>
                     </v-row>
                 </div>
-                <div v-if="mainsail !== false && 'version' in mainsail">
+                <div v-if="mainsail !== false && 'version' in mainsail && !remoteMode">
                     <v-divider class="mt-0 mb-0" ></v-divider>
                     <v-row class="py-2">
                         <v-col class="pl-6 text-no-wrap">
@@ -124,6 +124,7 @@
                 moonraker: state => state.server.updateManager.moonraker,
                 system: state => state.server.updateManager.system,
                 loadings: state => state.socket.loadings,
+                remoteMode: state => state.socket.remoteMode,
             }),
             mainsail:{
                 get() {
