@@ -74,11 +74,11 @@ export default {
             Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle")
         },
         doRestart: function() {
-            this.$store.commit('server/addEvent', "RESTART")
+            this.$store.commit('server/addEvent', { message: "RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "RESTART" })
         },
         doFirmwareRestart: function() {
-            this.$store.commit('server/addEvent', "FIRMWARE_RESTART")
+            this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
         },
         doServiceRestartKlipper: function() {

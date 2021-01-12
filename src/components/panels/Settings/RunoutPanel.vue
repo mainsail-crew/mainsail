@@ -37,7 +37,7 @@
         methods: {
             changeSensor(runout) {
                 const gcode = 'SET_FILAMENT_SENSOR SENSOR='+runout.name+' ENABLE='+(runout.enabled ? 1 : 0)
-                this.$store.commit('server/addEvent', gcode)
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.sendObj('printer.gcode.script', { script: gcode })
             }
         }

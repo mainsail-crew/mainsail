@@ -59,25 +59,25 @@
             sendBabySteppingDownFine() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('socket/addLoading', { name: 'babySteppingDownFine' });
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDownFine' });
             },
             sendBabySteppingDown() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('socket/addLoading', { name: 'babySteppingDown' });
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDown' });
             },
             sendBabySteppingUpFine() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('socket/addLoading', { name: 'babySteppingUpFine' });
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUpFine' });
             },
             sendBabySteppingUp() {
                 let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
                 this.$store.commit('socket/addLoading', { name: 'babySteppingUp' });
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUp' });
             },
         }

@@ -98,7 +98,7 @@
         methods: {
             sendCmd() {
                 let gcode = this.command+' '+this.attributeName+(this.value*this.attributeScale).toFixed(0)
-                this.$store.commit('server/addEvent', gcode)
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.sendObj('printer.gcode.script', { script: gcode })
             },
             decrement() {
