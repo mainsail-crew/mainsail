@@ -171,7 +171,7 @@
         methods: {
             doSend() {
                 this.$store.commit('socket/addLoading', { name: 'sendGcode' });
-                this.$store.commit('server/addEvent', this.gcode);
+                this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
@@ -184,7 +184,6 @@
                 if (minutes < 10) minutes = "0"+minutes.toString();
                 let seconds = date.getSeconds();
                 if (seconds < 10) seconds = "0"+seconds.toString();
-
 
                 return hours+":"+minutes+":"+seconds;
             },
