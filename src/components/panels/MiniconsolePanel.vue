@@ -165,7 +165,7 @@ import {mapState} from 'vuex'
         methods: {
             doSend() {
                 this.$store.commit('socket/addLoading', { name: 'sendGcode' });
-                this.$store.commit('server/addEvent', this.gcode);
+                this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";

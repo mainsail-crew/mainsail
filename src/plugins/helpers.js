@@ -24,7 +24,7 @@ export function caseInsensitiveNameSort(a, b) {
 
 export function colorConsoleMessage(item) {
     if (item.message.startsWith('!! ')) return "red--text"
-    if ('send' in item && item.send) return "blue--text"
+    if ('type' in item && item.type === 'command') return "blue--text"
 
     return '';
 }
