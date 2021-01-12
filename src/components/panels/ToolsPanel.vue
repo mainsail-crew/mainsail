@@ -37,7 +37,7 @@
                         </v-col>
                     </v-row>
                 </div>
-                <div v-for="(fan, index) in this['printer/getTemperatureFans']" v-bind:key="index+99" >
+                <div v-for="(fan, index) in temperatureFans" v-bind:key="index+99" >
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
                         <v-col class="flex-grow-0 py-2 pl-8 pr-0  colHeaterIcons">
@@ -51,7 +51,7 @@
                         </v-col>
                     </v-row>
                 </div>
-                <div v-for="(sensor,index) in this['printer/getTemperatureSensors']" v-bind:key="index+999">
+                <div v-for="(sensor,index) in temperatureSensors" v-bind:key="index+999">
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
                         <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapState } from 'vuex'
+    import { mapState } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
     import TempChart from '@/components/charts/TempChart'
 
@@ -105,14 +105,21 @@
             ...mapState({
                 datasets: state => state.printer.tempHistory.datasets,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
+                printer: state => state.printer,
             }),
-            ...mapGetters([
-                'printer/getTemperatureFans',
-                'printer/getTemperatureSensors',
-            ]),
             heaters: {
                 get () {
                     return this.$store.getters["printer/getHeaters"]
+                }
+            },
+            temperatureFans: {
+                get () {
+                    return this.$store.getters["printer/getTemperatureFans"]
+                }
+            },
+            temperatureSensors: {
+                get () {
+                    return this.$store.getters["printer/getTemperatureSensors"]
                 }
             }
         },

@@ -86,7 +86,7 @@
                 if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value/100);
 
                 if (gcode !== "") {
-                    this.$store.commit('server/addEvent', gcode);
+                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                     this.$socket.sendObj('printer.gcode.script', { script: gcode });
                 }
             },
