@@ -58,7 +58,6 @@ export default class WebSocketClient {
 
         this.instance.onclose = (e) => {
             this.passToStore('socket/onClose', e)
-            window.console.log("reconnectInterval: "+this.reconnectInterval)
 
             if (!e.wasClean && this.reconnects < this.maxReconnects) {
                 this.reconnects++
