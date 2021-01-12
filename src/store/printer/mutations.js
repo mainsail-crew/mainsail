@@ -3,7 +3,17 @@ import { getDefaultState } from './index'
 
 export default {
 	reset(state) {
-		Object.assign(state, getDefaultState())
+		const defaultState = getDefaultState()
+
+		for (const key of Object.keys(state)) {
+			if (!(key in defaultState) && key !== "tempHistory") {
+				delete state[key]
+			}
+		}
+
+		for (const [key, value] of Object.entries(defaultState)) {
+			Vue.set(state, key, value)
+		}
 
 		this.dispatch('socket/clearLoadings', null, { root: true })
 		if (this.state.server.plugins.includes("update_manager"))
