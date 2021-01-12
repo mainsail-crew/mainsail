@@ -16,7 +16,12 @@
             <v-container py-0 px-0>
                 <v-row v-if="'version' in klipper" class="py-2">
                     <v-col class="pl-6 text-no-wrap">
-                        <strong>Klipper</strong><br />
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <strong v-bind="attrs" v-on="on">Klipper</strong>
+                            </template>
+                            <span>{{ klipperBranch }}</span>
+                        </v-tooltip><br />
                         <span v-if="'remote_version' in klipper && klipper.version !== klipper.remote_version">{{ klipper.version+' &gt; '+klipper.remote_version }}</span>
                         <span v-if="!('remote_version' in klipper && klipper.version !== klipper.remote_version)">{{ klipper.version }}</span>
                     </v-col>
@@ -36,7 +41,12 @@
                     <v-divider class="my-0" ></v-divider>
                     <v-row class="py-2">
                         <v-col class="pl-6 text-no-wrap">
-                            <strong>Moonraker</strong><br />
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <strong v-bind="attrs" v-on="on">Moonraker</strong>
+                                </template>
+                                <span>{{ moonrakerBranch }}</span>
+                            </v-tooltip><br />
                             <span v-if="'remote_version' in moonraker && moonraker.version !== moonraker.remote_version">{{ moonraker.version+' &gt; '+moonraker.remote_version }}</span>
                             <span v-if="!('remote_version' in moonraker && moonraker.version !== moonraker.remote_version)">{{ moonraker.version }}</span>
                         </v-col>
@@ -93,7 +103,7 @@
                                 label
                                 outlined
                                 :color="system.package_count ? 'primary' : 'green'"
-                                :disabled="!(system.package_count)"
+                                :disabled="!(system.package_count) || printer_state === 'printing'"
                                 @click="updateSystem"
                                 class="minwidth-0 mt-3 px-2 text-uppercase"
                             ><v-icon small class="mr-1">mdi-{{ system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ system.package_count ? 'upgrade' : 'up-to-date' }}</v-chip>
@@ -125,6 +135,7 @@
                 system: state => state.server.updateManager.system,
                 loadings: state => state.socket.loadings,
                 remoteMode: state => state.socket.remoteMode,
+                printer_state: state => state.printer.print_stats.state,
             }),
             mainsail:{
                 get() {
@@ -132,6 +143,16 @@
                         return this.$store.state.server.updateManager.client
 
                     return false
+                }
+            },
+            klipperBranch: {
+                get() {
+                    return this.$store.getters["server/updateManager/getKlipperBranch"]
+                }
+            },
+            moonrakerBranch: {
+                get() {
+                    return this.$store.getters["server/updateManager/getMoonrakerBranch"]
                 }
             }
         },
@@ -189,6 +210,8 @@
                 return 'ERROR'
             },
             is_disabled(object) {
+                if (this.printer_state === "printing") return true
+
                 if (typeof object === 'object' && object !== false) {
                     if ('current_hash' in object && 'remote_hash' in object && object.current_hash !== object.remote_hash) return false
 
