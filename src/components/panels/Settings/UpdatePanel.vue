@@ -163,8 +163,9 @@
             },
             getColor(object) {
                 if (typeof object === 'object' && object !== false) {
+                    if ('detached' in object && object.detached) return 'orange'
+                    if ('is_dirty' in object && object.is_dirty) return 'orange'
                     if ('is_valid' in object && !object.is_valid) return 'red'
-                    if ('is_dirty' in object && object.is_dirty) return 'red'
 
                     if ('current_hash' in object && 'remote_hash' in object && object.current_hash !== object.remote_hash) return 'primary'
 
@@ -179,6 +180,7 @@
             },
             getText(object) {
                 if (typeof object === 'object' && object !== false) {
+                    if ('detached' in object && object.detached) return 'detached'
                     if ('is_valid' in object && !object.is_valid) return 'invalid'
                     if ('is_dirty' in object && object.is_dirty) return 'dirty'
 
@@ -195,6 +197,7 @@
             },
             getIcon(object) {
                 if (typeof object === 'object' && object !== false) {
+                    if ('detached' in object && object.detached) return 'alert-circle'
                     if ('is_valid' in object && !object.is_valid) return 'alert-circle'
                     if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
 
@@ -211,8 +214,10 @@
             },
             is_disabled(object) {
                 if (this.printer_state === "printing") return true
+                if ('detached' in object && object.detached) return true
 
                 if (typeof object === 'object' && object !== false) {
+                    if ('is_valid' in object && !object.is_valid) return true
                     if ('current_hash' in object && 'remote_hash' in object && object.current_hash !== object.remote_hash) return false
 
                     if ('name' in object && object.name === "mainsail") {
