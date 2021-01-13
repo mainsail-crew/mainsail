@@ -25,7 +25,7 @@
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')" title="Pause print"><v-icon small>mdi-pause</v-icon></v-btn>
                 <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon small>mdi-stop</v-icon></v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon small>mdi-play</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'error')" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon small>mdi-close</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon small>mdi-close</v-icon></v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
             </v-item-group>
         </v-toolbar>
