@@ -27,15 +27,15 @@
             <v-divider></v-divider>
             <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
         </v-card>
-        <v-card class="mt-6" v-if="this['printer/getFans'].length">
+        <v-card class="mt-6" v-if="this['printer/getPeripherie'].length">
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon :class="'mdi mdi-fan '+(this['printer/getPartFanSpeed'] ? 'icon-rotate' : '')" left></v-icon>Fans</span>
+                    <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>Peripherie</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <div v-for="(fan, index) of this['printer/getFans']" v-bind:key="index">
+            <div v-for="(object, index) of this['printer/getPeripherie']" v-bind:key="index">
                 <v-divider v-if="index"></v-divider>
-                <fan-slider :name="fan.name" :type="fan.type" :target="fan.speed" :controllable="fan.controllable" :multi="100" ></fan-slider>
+                <peripherie-slider :name="object.name" :type="object.type" :target="object.power" :controllable="object.controllable" :pwm="object.pwm" :multi="parseInt(object.scale)" ></peripherie-slider>
             </div>
         </v-card>
     </div>
@@ -43,12 +43,12 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex'
-    import FanSlider from '../../inputs/FanSlider'
+    import PeripherieSlider from '../../inputs/PeripherieSlider'
     import ToolSlider from '../../inputs/ToolSlider'
 
     export default {
         components: {
-            FanSlider,
+            PeripherieSlider,
             ToolSlider
         },
         data () {
@@ -63,8 +63,7 @@
                 printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
-                'printer/getFans',
-                'printer/getPartFanSpeed',
+                'printer/getPeripherie',
             ]),
         },
     }
