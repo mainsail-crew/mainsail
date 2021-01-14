@@ -26,7 +26,7 @@
                 <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon small>mdi-stop</v-icon></v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon small>mdi-play</v-icon></v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon small>mdi-close</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
             </v-item-group>
         </v-toolbar>
         <v-container v-if="current_filename ">
@@ -42,7 +42,7 @@
                     </v-progress-circular>
                 </v-col>
                 <v-col class="col py-2" style="width: 100px;">
-                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ display_message ? " - "+display_message : "" }}</h3>
+                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ printer_state !== "error" ? (display_message ? " - "+display_message : "") : print_stats_message }}</h3>
                     <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
                 </v-col>
             </v-row>
@@ -165,6 +165,7 @@
                 filament_used: state => state.printer.print_stats.filament_used,
                 current_filename: state => state.printer.print_stats.filename,
                 printer_state: state => state.printer.print_stats.state,
+                print_stats_message: state => state.printer.print_stats.message,
 
                 display_message: state => state.printer.display_status.message,
                 loadings: state => state.socket.loadings,
