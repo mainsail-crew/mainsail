@@ -225,7 +225,7 @@ export default {
 						) {
 							if (
 								'pwm' in state.configfile.config[key] &&
-								state.configfile.config[key].pwm
+								state.configfile.config[key].pwm.toLowerCase() === "true"
 							) pwm = true
 
 							if (
