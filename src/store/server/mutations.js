@@ -4,6 +4,8 @@ import { getDefaultState } from './index'
 export default {
 	reset(state) {
 		Object.assign(state, getDefaultState())
+
+
 	},
 
 	setKlippyReady() {
@@ -32,7 +34,7 @@ export default {
 				state.events.push({
 					date: new Date(message.time * 1000),
 					message: message.message,
-					send: false
+					type: message.type
 				})
 			})
 		}
@@ -40,17 +42,18 @@ export default {
 
 	addEvent(state, payload) {
 		let message = payload
-		let send = true
+		let type = 'response'
 
-		if (typeof payload === 'object' && 'send' in payload) send = payload.send
+		if (typeof payload === 'object' && 'type' in payload) type = payload.type
 
-		if (message.result !== undefined) message = message.result
-		else if (message.error !== undefined) message = message.error.message
+		if ('message' in payload) message = payload.message
+		else if ('result' in payload) message = payload.result
+		else if ('error' in payload) message = message.error.message
 
 		state.events.push({
 			date: new Date(),
 			message: message,
-			send: send,
+			type: type,
 		})
 	},
 }

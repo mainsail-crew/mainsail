@@ -3,7 +3,7 @@ import Vue from 'vue'
 export default {
 	reset({ commit }) {
 		commit('reset')
-		//commit('tempHistory/reset')
+		commit('tempHistory/reset')
 	},
 
 	init() {

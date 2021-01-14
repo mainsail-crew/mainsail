@@ -28,7 +28,7 @@
                     <span class="subheading"><v-icon left>mdi-update</v-icon>Updating {{ application }}{{ complete ? " done!" : "..." }}</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text class="pt-6 pb-2">
+            <v-card-text class="py-6">
                 <v-data-table
                     :headers="headers"
                     :options="options"

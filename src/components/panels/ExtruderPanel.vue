@@ -65,13 +65,13 @@
             },
             sendRetract() {
                 let gcode = "M83\nG1 E-"+this.feedAmount+" F"+(this.feedrate * 60);
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'btnRetract' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnRetract' });
             },
             sendDetract() {
                 let gcode = "M83\nG1 E"+this.feedAmount+" F"+(this.feedrate * 60);
-                this.$store.commit('server/addEvent', gcode);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'btnDetract' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnDetract' });
             },
