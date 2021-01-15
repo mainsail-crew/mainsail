@@ -218,7 +218,7 @@
                             let output = "";
                             commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
-                            this.$store.commit('server/addEvent', output);
+                            this.$store.commit('server/addEvent', { message: output, type: 'command' });
                         }
                     }
                 }
