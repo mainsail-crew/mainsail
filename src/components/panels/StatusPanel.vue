@@ -150,8 +150,8 @@
                                     <v-col class="px-0 pt-1">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on, attrs }">
-                                                <span v-bind="attrs" v-on="on" v-if="filament_used >= 1000">{{ (filament_used / 1000).toFixed(2) }} m</span>
-                                                <span v-bind="attrs" v-on="on" v-if="filament_used < 1000">{{ filament_used.toFixed(2) }} mm</span>
+                                                <span v-bind="attrs" v-on="on" v-if="filament_used >= 1000" class=" text-no-wrap">{{ (filament_used / 1000).toFixed(2) }} m</span>
+                                                <span v-bind="attrs" v-on="on" v-if="filament_used < 1000" class=" text-no-wrap">{{ filament_used.toFixed(2) }} mm</span>
                                             </template>
                                             <span v-if="'filament_total' in current_file">{{ (filament_used / 1000).toFixed(2) }} / {{ (current_file.filament_total / 1000).toFixed(2) }}m = {{ ( 100 / current_file.filament_total * filament_used).toFixed(0) }}% </span>
                                         </v-tooltip>
@@ -182,7 +182,7 @@
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>ETA</strong></v-col></v-row>
@@ -260,7 +260,8 @@
                         'layer_height' in this.current_file &&
                         'object_height' in this.current_file
                     ) {
-                        return Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                        const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                        return max > 0 ? max : 0
                     }
 
                     return 0
@@ -274,8 +275,10 @@
                         this.gcode_position !== undefined &&
                         this.gcode_position.length >= 3
                     ) {
-                        const current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-                        return (current_layer <= this.max_layers) ? current_layer : this.max_layers
+                        let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                        current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+
+                        return current_layer > 0 ? current_layer : 0
                     }
 
                     return 0
