@@ -44,4 +44,9 @@ export default {
 	setGcodefilesShowHiddenFiles(state, value) {
 		Vue.set(state.gcodefiles, "showHiddenFiles", value)
 	},
+
+	addPreset(state, preload) {
+		window.console.log(state.presets)
+		window.console.log(preload)
+	}
 }

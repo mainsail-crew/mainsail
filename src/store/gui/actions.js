@@ -41,4 +41,8 @@ export default {
 		commit('setGcodefilesShowHiddenFiles', data)
 		dispatch('upload')
 	},
+
+	addPreset({ commit }, payload) {
+		commit("addPreset", payload)
+	}
 }
