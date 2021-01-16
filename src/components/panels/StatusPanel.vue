@@ -129,7 +129,7 @@
                                             <template v-slot:activator="{ on, attrs }">
                                                 <span v-bind="attrs" v-on="on">{{ position.length ? position[2].toFixed(2) : "--" }}</span>
                                             </template>
-                                            <span v-if="gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
+                                            <span v-if="gcode_position !== undefined && gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
                                         </v-tooltip>
                                     </v-col>
                                 </v-row>
@@ -271,6 +271,7 @@
                     if (
                         'first_layer_height' in this.current_file &&
                         'layer_height' in this.current_file &&
+                        this.gcode_position !== undefined &&
                         this.gcode_position.length >= 3
                     ) {
                         const current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
