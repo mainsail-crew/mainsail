@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <v-menu bottom left :offset-y="true" :close-on-content-click="false">
+    <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
         <template v-slot:activator="{ on, attrs }">
             <v-btn dark icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
@@ -55,6 +55,11 @@ import Vue from "vue";
 
 export default {
     name: "TopCornerMenu.vue",
+    data: function () {
+        return {
+            showMenu: false,
+        }
+    },
     computed: {
         ...mapState({
             devices: (state) => state.server.power.devices,
@@ -74,23 +79,29 @@ export default {
             Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle")
         },
         doRestart: function() {
+            this.showMenu = false
             this.$store.commit('server/addEvent', { message: "RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "RESTART" })
         },
         doFirmwareRestart: function() {
+            this.showMenu = false
             this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
         },
         doServiceRestartKlipper: function() {
+            this.showMenu = false
             this.$socket.sendObj('machine.services.restart', { service: "klipper" })
         },
         doServiceRestartMoonraker: function() {
+            this.showMenu = false
             this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
         },
         doHostReboot: function() {
+            this.showMenu = false
             this.$socket.sendObj('machine.reboot', { })
         },
         doHostShutdown: function() {
+            this.showMenu = false
             this.$socket.sendObj('machine.shutdown', { })
         },
     }
