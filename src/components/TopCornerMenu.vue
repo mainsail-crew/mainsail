@@ -15,18 +15,18 @@
         <v-list dense>
             <v-subheader class="" style="height: auto;">Klipper Control</v-subheader>
             <v-list-item class="minheight30" link @click="doRestart()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-sync</v-icon>Restart</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Restart</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30" link @click="doFirmwareRestart()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-sync</v-icon>Firmware Restart</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Firmware Restart</v-list-item-title>
             </v-list-item>
             <v-divider class="mt-0"></v-divider>
             <v-subheader class="pt-2" style="height: auto;">Restart Services</v-subheader>
             <v-list-item class="minheight30"  link @click="doServiceRestartKlipper()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-sync</v-icon>Klipper</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Klipper</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30"  link @click="doServiceRestartMoonraker()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-sync</v-icon>Moonraker</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Moonraker</v-list-item-title>
             </v-list-item>
             <div v-if="countPowerDevices">
                 <v-divider class="mt-0"></v-divider>
