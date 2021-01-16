@@ -133,7 +133,7 @@
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
                             <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
-                            <v-btn dark text @click="saveFile" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon>Save</v-btn>
+                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon>Save</v-btn>
                             <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                         </v-toolbar-items>
                     </v-toolbar>

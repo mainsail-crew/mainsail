@@ -38,7 +38,8 @@ export function getDefaultState() {
 				showHiddenFiles: false,
 			}
 		},
-		remotePrinters: []
+		remotePrinters: [],
+		presets: [],
 	}
 }
 
