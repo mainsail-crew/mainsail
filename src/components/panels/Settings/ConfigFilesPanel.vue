@@ -132,7 +132,9 @@
                         <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
-                            <v-btn dark text @click="saveFile" v-if="currentPath !== '/config_examples'">Save</v-btn>
+                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
+                            <v-btn dark text @click="saveFile" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon>Save</v-btn>
+                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
                     <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
@@ -291,6 +293,7 @@
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
                 loadings: state => state.socket.loadings,
+                printer_state: state => state.printer.print_stats.state,
             }),
             countPerPage: {
                 get: function() {
@@ -407,7 +410,7 @@
             clickRowGoBack: function() {
                 this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
             },
-            saveFile: function() {
+            saveFile: function(boolRestart = false) {
                 let file = new File([this.editor.sourcecode], this.editor.item.filename);
 
                 let formData = new FormData();
@@ -423,6 +426,11 @@
                     this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
                     this.editor.show = false;
                     this.editor.sourcecode = "";
+
+                    if (boolRestart) {
+                        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
+                    }
                 }).catch(() => {
                     this.$toast.error("Error save "+this.editor.item.filename);
                 });
