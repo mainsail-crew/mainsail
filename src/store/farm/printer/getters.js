@@ -157,18 +157,86 @@ export default {
 		if (
 			'print_stats' in state.data &&
 			'state' in state.data.print_stats &&
-			'print_duration' in state.data.print_stats &&
 			state.data.print_stats.state === "printing" &&
-			state.data.print_stats.print_duration &&
 			getters["getPrintPercent"] > 0
 		) {
-			const eta = new Date(new Date().getTime() + (state.data.print_stats.print_duration / getters["getPrintPercent"] - state.data.print_stats.print_duration).toFixed() * 1000)
+			const eta = new Date(getters.estimated_time_eta)
+			const h = eta.getHours() >= 10 ? eta.getHours() : "0"+eta.getHours()
+			const m = eta.getMinutes() >= 10 ? eta.getMinutes() : "0"+eta.getMinutes()
+
 			output.push({
 				name: "ETA",
-				value: (eta.getHours() > 9 ? eta.getHours() : '0'+eta.getHours())+":"+(eta.getMinutes() > 9 ? eta.getMinutes() : '0'+eta.getMinutes())
+				value: h+":"+m,
+				file: getters.estimated_time_file,
+				filament: getters.estimated_time_filament,
+				slicer: getters.estimated_time_slicer,
+				eta: getters.estimated_time_eta,
 			})
 		}
 
 		return output
+	},
+
+	estimated_time_file: (state, getters) => {
+		if (
+			'print_stats' in state.data &&
+			'print_duration' in state.data.print_stats &&
+			state.data.print_stats.print_duration > 0 && getters.getPrintPercent > 0) {
+			return (state.data.print_stats.print_duration / getters.getPrintPercent - state.data.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	estimated_time_filament: (state) => {
+		if (
+			'print_stats' in state.data &&
+			'print_duration' in state.data.print_stats &&
+			'filament_used' in state.data.print_stats &&
+			'filament_total' in state.current_file &&
+
+			state.data.print_stats.filament_used > 0 &&
+			state.current_file.filament_total > state.data.print_stats.filament_used) {
+			return (state.data.print_stats.print_duration / (state.data.print_stats.filament_used / state.current_file.filament_total) - state.data.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	estimated_time_slicer: (state) => {
+		if (
+			'print_stats' in state.data &&
+			'print_duration' in state.data.print_stats &&
+			'estimated_time' in state.current_file &&
+
+			state.current_file.estimated_time > state.data.print_stats.print_duration) {
+			return (state.current_file.estimated_time - state.data.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	estimated_time_eta: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.estimated_time_file > 0) {
+			time += parseInt(getters.estimated_time_file)
+			timeCount++
+		}
+
+		if (getters.estimated_time_filament > 0) {
+			time += parseInt(getters.estimated_time_filament)
+			timeCount++
+		}
+
+		if (getters.estimated_time_slicer > 0) {
+			time += parseInt(getters.estimated_time_slicer)
+			timeCount++
+		}
+
+		if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+
+		return 0
 	},
 }
