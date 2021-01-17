@@ -11,7 +11,7 @@
                 <settings-macros-panel></settings-macros-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-preheats-panel></settings-preheats-panel>
+                <settings-presets-panel></settings-presets-panel>
                 <settings-remote-printers-panel class="mt-6"></settings-remote-printers-panel>
             </v-col>
         </v-row>
