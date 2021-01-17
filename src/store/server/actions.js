@@ -1,8 +1,10 @@
 import Vue from 'vue'
 
 export default {
-	reset({ commit }) {
+	reset({ commit, dispatch }) {
 		commit('reset')
+		dispatch('power/reset')
+		dispatch('updateManager/reset')
 	},
 
 	init({ dispatch, state }) {
@@ -29,9 +31,10 @@ export default {
 
 		commit('setData', payload)
 
-		if (!payload.klippy_connected) {
+		if (!payload.klippy_connected || payload.klippy_state === "startup") {
 			setTimeout(function(){
 				Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
+				Vue.prototype.$socket.sendObj('printer.info', {}, 'printer/getStateMessage')
 			}, 1000)
 		}
 	},

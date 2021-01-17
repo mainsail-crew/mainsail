@@ -188,6 +188,83 @@ export default {
 		})
 	},
 
+	getPeripherie: state => {
+		let output = [];
+		const supportedObjects = [
+			'controller_fan',
+			'heater_fan',
+			'fan_generic',
+			'fan',
+			'output_pin'
+		]
+
+		const controllableFans = [
+			'fan_generic',
+			'fan',
+		]
+
+		for (const [key, value] of Object.entries(state)) {
+			let nameSplit = key.split(" ")
+
+			if (supportedObjects.includes(nameSplit[0])) {
+				let name = nameSplit.length > 1 ? nameSplit[1] : nameSplit[0]
+				if (!name.startsWith("_")) {
+					let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
+					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+					let pwm = controllable
+					let scale = 1
+
+					if (nameSplit[0].toLowerCase() === "fan") scale = 255
+
+					if (nameSplit[0].toLowerCase() === "output_pin") {
+						controllable = true
+						pwm = false
+						if (
+							'config' in state.configfile &&
+							key in state.configfile.config
+						) {
+							if (
+								'pwm' in state.configfile.config[key] &&
+								state.configfile.config[key].pwm.toLowerCase() === "true"
+							) pwm = true
+
+							if (
+								'scale' in state.configfile.config[key]
+							) scale = state.configfile.config[key].scale
+						}
+					}
+
+					output.push({
+						name: name,
+						type: nameSplit[0],
+						power: power,
+						controllable: controllable,
+						pwm: pwm,
+						scale: scale,
+						object: value,
+						config: state.configfile.config[key]
+					})
+				}
+			}
+		}
+
+		return output.sort((a, b) => {
+			if (a.type === "fan") return -1
+			if (b.type === "fan") return 1
+
+			if (a.controllable < b.controllable) return 1
+			if (a.controllable > b.controllable) return -1
+
+			let nameA = a.name.toUpperCase()
+			let nameB = b.name.toUpperCase()
+
+			if (nameA < nameB) return -1
+			if (nameA > nameB) return 1
+
+			return 0
+		})
+	},
+
 	getAllMacros: state => {
 		let array = []
 

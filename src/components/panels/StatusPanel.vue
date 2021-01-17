@@ -22,11 +22,46 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-item-group class="v-btn-toggle" name="controllers">
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')" title="Pause print"><v-icon small>mdi-pause</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob" title="Cancel print"><v-icon small>mdi-stop</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob" title="Resume job"><v-icon small>mdi-play</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'error')" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob" title="Clear job"><v-icon small>mdi-close</v-icon></v-btn>
-                <v-btn small class="px-2 minwidth-0" color="primary" v-if="(printer_state === 'complete')" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob" title="Reprint job"><v-icon small>mdi-autorenew</v-icon></v-btn>
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-pause</v-icon>
+                        </template>
+                        <span>Pause print</span>
+                    </v-tooltip>
+                </v-btn>
+                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
+                        </template>
+                        <span>Cancel print</span>
+                    </v-tooltip>
+                </v-btn>
+                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-play</v-icon>
+                        </template>
+                        <span>Resume print</span>
+                    </v-tooltip>
+                </v-btn>
+                <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-broom</v-icon>
+                        </template>
+                        <span>Clear print stats</span>
+                    </v-tooltip>
+                </v-btn>
+                <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-printer</v-icon>
+                        </template>
+                        <span>Reprint job</span>
+                    </v-tooltip>
+                </v-btn>
             </v-item-group>
         </v-toolbar>
         <v-container v-if="current_filename ">
@@ -42,7 +77,7 @@
                     </v-progress-circular>
                 </v-col>
                 <v-col class="col py-2" style="width: 100px;">
-                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ display_message ? " - "+display_message : "" }}</h3>
+                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ printer_state !== "error" ? (display_message ? " - "+display_message : "") : print_stats_message }}</h3>
                     <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
                 </v-col>
             </v-row>
@@ -59,7 +94,6 @@
                             current_file.thumbnails &&
                             current_file.thumbnails.length &&
                             current_file.thumbnails.find(element => element.width === 400)
-
                         ">
                         <img
                             class="statusPanel-image-preview"
@@ -72,10 +106,10 @@
                             current_file &&
                             current_file.thumbnails &&
                             current_file.thumbnails.length &&
-                            current_file.thumbnails.find(element => element.width === 400 || element.width === 300))  ? 'col-12 col-sm-8 pl-sm-0' : 'col-12'
+                            current_file.thumbnails.find(element => element.width === 400 || element.width === 300))  ? 'col-12 col-sm-8' : 'col-12'
                         ">
                         <v-row class="text-center" align="center">
-                            <v-col class="flex-grow-0 pl-8 py-2">
+                            <v-col class="flex-grow-0 py-2">
                                 <v-icon>mdi-axis-arrow</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2">
@@ -88,7 +122,17 @@
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Z</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[2].toFixed(2) : "--" }}</v-col></v-row>
+                                <v-row>
+                                    <v-col class="px-0 pt-1">
+
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <span v-bind="attrs" v-on="on">{{ position.length ? position[2].toFixed(2) : "--" }}</span>
+                                            </template>
+                                            <span v-if="gcode_position !== undefined && gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
+                                        </v-tooltip>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                         </v-row>
                         <v-row v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
@@ -97,12 +141,22 @@
                             </v-col>
                         </v-row>
                         <v-row class="text-center" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 pl-8 py-2">
+                            <v-col class="flex-grow-0 py-2">
                                 <v-icon>mdi-poll</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ filament_used > 1000 ? (filament_used / 1000).toFixed(2)+"m" : filament_used.toFixed(2)+"mm" }}</v-col></v-row>
+                                <v-row>
+                                    <v-col class="px-0 pt-1">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <span v-bind="attrs" v-on="on" v-if="filament_used >= 1000" class=" text-no-wrap">{{ (filament_used / 1000).toFixed(2) }} m</span>
+                                                <span v-bind="attrs" v-on="on" v-if="filament_used < 1000" class=" text-no-wrap">{{ filament_used.toFixed(2) }} mm</span>
+                                            </template>
+                                            <span v-if="'filament_total' in current_file">{{ (filament_used / 1000).toFixed(2) }} / {{ (current_file.filament_total / 1000).toFixed(2) }}m = {{ ( 100 / current_file.filament_total * filament_used).toFixed(0) }}% </span>
+                                        </v-tooltip>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Print</strong></v-col></v-row>
@@ -118,21 +172,43 @@
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
+                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) && 'filament_total' in current_file ">
+                            <v-col class="flex-grow-0 py-2">
+                                <v-icon>mdi-printer-3d</v-icon>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Speed</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ (requested_speed / 60).toFixed(0) }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
+                            </v-col>
+                            <v-col class="equal-width py-2">
+                                <v-row><v-col class="px-0 pb-1"><strong>ETA</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
+                            <v-col class="px-0">
+                                <v-divider></v-divider>
+                            </v-col>
+                        </v-row>
                         <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 pl-8 py-2">
+                            <v-col class="flex-grow-0 py-2">
                                 <v-icon>mdi-clock-outline</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2 ">
                                 <v-row><v-col class="px-0 pb-1"><strong>File</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ print_time > 0 && printPercent > 0 ? formatTime(print_time / printPercent - print_time) : '--' }}</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ (filament_used > 0 && 'filament_total' in current_file && current_file.filament_total > filament_used) ? formatTime(print_time / (filament_used / current_file.filament_total) - print_time) : '--' }}</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Slicer</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ 'estimated_time' in current_file && current_file.estimated_time > print_time ? formatTime(current_file.estimated_time - print_time) : '--'}}</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -155,6 +231,8 @@
             ...mapState({
                 toolhead: state => state.printer.toolhead,
                 position: state => state.printer.toolhead.position,
+                gcode_position: state => state.printer.gcode_move.gcode_position,
+                requested_speed: state => state.printer.gcode_move.speed,
 
                 printProgress: state => state.printer.virtual_sdcard.progress,
                 file_position: state => state.printer.virtual_sdcard.file_position,
@@ -165,6 +243,7 @@
                 filament_used: state => state.printer.print_stats.filament_used,
                 current_filename: state => state.printer.print_stats.filename,
                 printer_state: state => state.printer.print_stats.state,
+                print_stats_message: state => state.printer.print_stats.message,
 
                 display_message: state => state.printer.display_status.message,
                 loadings: state => state.socket.loadings,
@@ -172,6 +251,89 @@
             printPercent: {
                 get() {
                     return this.$store.getters["printer/getPrintPercent"];
+                }
+            },
+            max_layers: {
+                get() {
+                    if (
+                        'first_layer_height' in this.current_file &&
+                        'layer_height' in this.current_file &&
+                        'object_height' in this.current_file
+                    ) {
+                        const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                        return max > 0 ? max : 0
+                    }
+
+                    return 0
+                }
+            },
+            current_layer: {
+                get() {
+                    if (
+                        'first_layer_height' in this.current_file &&
+                        'layer_height' in this.current_file &&
+                        this.gcode_position !== undefined &&
+                        this.gcode_position.length >= 3
+                    ) {
+                        let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                        current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+
+                        return current_layer > 0 ? current_layer : 0
+                    }
+
+                    return 0
+                }
+            },
+            estimated_time_file: {
+                get() {
+                    if (this.print_time > 0 && this.printPercent > 0) {
+                        return (this.print_time / this.printPercent - this.print_time).toFixed(0)
+                    }
+
+                    return 0
+                }
+            },
+            estimated_time_filament: {
+                get() {
+                    if (this.filament_used > 0 && 'filament_total' in this.current_file && this.current_file.filament_total > this.filament_used) {
+                        return (this.print_time / (this.filament_used / this.current_file.filament_total) - this.print_time).toFixed(0)
+                    }
+
+                    return 0
+                }
+            },
+            estimated_time_slicer: {
+                get() {
+                    if ('estimated_time' in this.current_file && this.current_file.estimated_time > this.print_time) {
+                        return (this.current_file.estimated_time - this.print_time).toFixed(0)
+                    }
+
+                    return 0
+                }
+            },
+            eta: {
+                get() {
+                    let time = 0
+                    let timeCount = 0
+
+                    if (this.estimated_time_file > 0) {
+                        time += parseInt(this.estimated_time_file)
+                        timeCount++
+                    }
+
+                    if (this.estimated_time_filament > 0) {
+                        time += parseInt(this.estimated_time_filament)
+                        timeCount++
+                    }
+
+                    if (this.estimated_time_slicer > 0) {
+                        time += parseInt(this.estimated_time_slicer)
+                        timeCount++
+                    }
+
+                    if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+
+                    return 0
                 }
             }
         },
@@ -203,6 +365,13 @@
                 let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
 
                 return h+':'+m+':'+s;
+            },
+            formatDateTime(msec) {
+                const date = new Date(msec)
+                const h = date.getHours() >= 10 ? date.getHours() : "0"+date.getHours()
+                const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
+
+                return h+":"+m
             },
         }
     }

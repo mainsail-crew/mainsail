@@ -9,15 +9,18 @@
         <v-row>
             <v-col>
                 <v-subheader class="_fan-slider-subheader">
+                    <v-icon small :class="'mr-2 '+(value ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName }}</span>
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold">{{ Math.round(value) }} %</span>
+                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
+                    <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
                 </v-subheader>
-                <v-card-text class="py-0" v-if="controllable">
+                <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
                         :min="0"
-                        :max="100"
+                        :max="1"
+                        :step="0.01"
                         @change="sendCmd"
                         hide-details>
 
@@ -40,7 +43,7 @@
     export default {
         data: function() {
             return {
-                value: this.target * this.multi,
+                value: this.target,
             }
         },
         props: {
@@ -63,6 +66,11 @@
                 required: false,
                 default: false
             },
+            pwm: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
             multi: {
                 type: Number,
                 required: false,
@@ -71,37 +79,48 @@
         },
         computed: {
             convertName() {
-                let tmp = this.name;
-                tmp = tmp.replaceAll("_", " ");
-                tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
+                let tmp = this.name
+                let output = ""
+                tmp = tmp.replaceAll("_", " ")
+                tmp.split(" ").forEach(split => {
+                    output += " "+split.charAt(0).toUpperCase() + split.slice(1)
+                })
+                output = output.slice(1)
 
-                return tmp;
+                return output;
             }
         },
         methods: {
             sendCmd() {
                 let gcode = "";
 
-                if (this.type === "fan") gcode = "M106 S"+(this.value * 2.55).toFixed(0);
-                if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value/100);
+                if (this.type === "fan") gcode = "M106 S"+(this.value * this.multi).toFixed(0)
+                if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value*this.multi)
+                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
 
                 if (gcode !== "") {
-                    this.$store.commit('server/addEvent', gcode);
-                    this.$socket.sendObj('printer.gcode.script', { script: gcode });
+                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                    this.$socket.sendObj('printer.gcode.script', { script: gcode })
                 }
             },
+            switchOutputPin() {
+                this.value = this.value ? 0 : 1
+                const gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                this.$socket.sendObj('printer.gcode.script', { script: gcode })
+            },
             decrement() {
-                this.value = this.value > 0 ? (this.value - 1).toFixed(0) : 0;
+                this.value = this.value > 0 ? (this.value - 0.01).toFixed(2) : 0;
                 this.sendCmd();
             },
             increment() {
-                this.value = this.value < 100 ? (this.value + 1).toFixed(0) : 100;
+                this.value = this.value < 1 ? (this.value + 0.01).toFixed(2) : 100;
                 this.sendCmd();
             }
         },
         watch: {
             target: function(newVal) {
-                this.value = newVal * this.multi;
+                this.value = newVal;
             },
         },
         created: function() {
