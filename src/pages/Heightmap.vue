@@ -26,12 +26,14 @@
                             class=" d-sm-none"
                             @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
                         <v-item-group class="v-btn-toggle d-none d-sm-flex" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
                         </v-item-group>
                     </v-toolbar>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group class="v-btn-toggle" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
                         </v-item-group>
@@ -345,6 +347,11 @@
                 this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
                 this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, "printer/removeBedMeshProfile", { name: this.newName })
                 this.removeDialogProfile = ""
+            },
+            homePrinter: function() {
+                this.$store.commit('socket/addLoading', { name: 'homeAll' })
+                this.$store.commit('server/addEvent', { message: "G28", type: 'command' })
+                this.$socket.sendObj('printer.gcode.script', { script: "G28" }, "socket/removeLoading", { name: 'homeAll' })
             },
             clearBedMesh: function() {
                 this.$store.commit('socket/addLoading', { name: 'bedMeshClear' })
