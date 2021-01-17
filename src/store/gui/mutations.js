@@ -48,17 +48,15 @@ export default {
 	addPreset(state, payload) {
 		state.presets.push({
 			name: payload.name,
+			gcode: payload.gcode,
 			values: payload.values
 		})
 	},
 
 	updatePreset(state, payload) {
 		if (state.presets[payload.index]) {
-			for (const [heaterName, temp] of Object.entries(payload.values)) {
-				if (temp === "") delete payload.values[heaterName]
-			}
-
 			Vue.set(state.presets[payload.index], 'name', payload.name)
+			Vue.set(state.presets[payload.index], 'gcode', payload.gcode)
 			Vue.set(state.presets[payload.index], 'values', payload.values)
 		}
 	},
