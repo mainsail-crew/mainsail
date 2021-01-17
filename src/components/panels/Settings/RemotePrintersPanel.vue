@@ -57,6 +57,9 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="normal"
                                 ></v-text-field>
                             </v-col>
                             <v-col class="col-4">
@@ -65,6 +68,9 @@
                                     :rules="[v => !!v || 'Port is required']"
                                     label="Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -91,6 +97,9 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="normal"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -101,6 +110,9 @@
                                     :rules="[v => !!v || 'Web-Port is required']"
                                     label="Web-Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                             <v-col class="col-6">
@@ -109,6 +121,9 @@
                                     :rules="[v => !!v || 'API-Port is required']"
                                     label="API-Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -149,6 +164,9 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="normal"
                                 ></v-text-field>
                             </v-col>
                             <v-col class="col-4">
@@ -157,6 +175,9 @@
                                     :rules="[v => !!v || 'Port is required']"
                                     label="Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -193,6 +214,9 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="normal"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -203,6 +227,9 @@
                                     :rules="[v => !!v || 'Web-Port is required']"
                                     label="Web-Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                             <v-col class="col-6">
@@ -211,6 +238,9 @@
                                     :rules="[v => !!v || 'API-Port is required']"
                                     label="API-Port"
                                     required
+                                    @click.native="show"
+                                    @blur="hide"
+                                    data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -244,6 +274,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState, mapGetters } from 'vuex';
 
     export default {
@@ -277,6 +308,12 @@
             ])
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             addPrinter() {
                 this.$store.commit('farm/addPrinter',{
                     hostname: this.dialogAddPrinter.hostname,

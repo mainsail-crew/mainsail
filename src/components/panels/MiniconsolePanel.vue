@@ -56,6 +56,9 @@
                             v-on:keyup.down="onKeyDown"
                             :items="items"
                             v-on:keydown.tab="getAutocomplete"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="normal"
                         ></v-text-field>
                     </v-col>
                     <v-col class="col-auto align-content-center">
@@ -100,6 +103,7 @@
 </template>
 
 <script>
+import {bus} from "@/main";
 import {mapState} from 'vuex'
     import Vue from "vue";
     import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
@@ -163,6 +167,12 @@ import {mapState} from 'vuex'
             }
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             doSend() {
                 this.$store.commit('socket/addLoading', { name: 'sendGcode' });
                 this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });

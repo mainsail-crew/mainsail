@@ -56,6 +56,9 @@
                                         hide-details="auto"
                                         :rules="[rules.required, rules.unique]"
                                         dense
+                                        @click.native="show"
+                                        @blur="hide"
+                                        data-layout="normal"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -65,6 +68,9 @@
                                         v-model="dialog.values[heater.name]"
                                         :label="convertName(heater.name)"
                                         hide-details="auto"
+                                        @click.native="show"
+                                        @blur="hide"
+                                        data-layout="numeric"
                                         type="number"
                                         suffix="°C"
                                         dense
@@ -77,6 +83,9 @@
                                         v-model="dialog.values[fan.name]"
                                         :label="convertName(fan.name)"
                                         hide-details
+                                        @click.native="show"
+                                        @blur="hide"
+                                        data-layout="numeric"
                                         type="number"
                                         suffix="°C"
                                         dense
@@ -113,6 +122,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState, mapGetters } from 'vuex';
 
     export default {
@@ -145,6 +155,12 @@
             ])
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             convertName(name) {
                 let output = ""
                 name = name.replaceAll("_", " ")
