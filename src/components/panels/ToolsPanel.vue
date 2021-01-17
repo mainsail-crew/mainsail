@@ -14,6 +14,33 @@
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>Temperatures</span>
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu :offset-y="true" title="Preheat">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">Preheat <v-icon small>mdi-menu-down</v-icon></v-btn>
+                </template>
+                <v-list dense class="py-0">
+                    <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
+                        <v-list-item-icon class="mr-0">
+                            <v-icon small>mdi-fire</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title v-text="preset.name"></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+                <v-divider v-if="this['gui/getPreheatPresets'].length"></v-divider>
+                <v-list dense class="py-0">
+                    <v-list-item link @click="cooldown()">
+                        <v-list-item-icon class="mr-0">
+                            <v-icon small>mdi-snowflake</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Cooldown</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-toolbar>
         <v-card-text class="px-0 py-2 content">
             <v-container class="px-0">
@@ -87,7 +114,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import { mapState, mapGetters } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
     import TempChart from '@/components/charts/TempChart'
 
@@ -107,6 +134,9 @@
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
                 printer: state => state.printer,
             }),
+            ...mapGetters([
+                'gui/getPreheatPresets'
+            ]),
             heaters: {
                 get () {
                     return this.$store.getters["printer/getHeaters"]
@@ -127,30 +157,32 @@
 
         },
         methods: {
+            preheat(preset) {
+                window.console.log("preheat")
+                window.console.log(preset)
 
-        },
-        mounted () {
+                for (const [name, temp] of Object.entries(preset.values)) {
 
+                    const heater = this.heaters.findIndex((heater) => heater.name === name)
+                    if (heater !== -1) {
+                        const gcode = "SET_HEATER_TEMPERATURE HEATER="+name+" TARGET="+temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+
+                    const temperatureFan = this.temperatureFans.findIndex((fan) => fan.name === name)
+                    if (temperatureFan !== -1) {
+                        const gcode = "SET_TEMPERATURE_FAN_TARGET temperature_fan="+name+" TARGET="+temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+                }
+            },
+            cooldown() {
+                const gcode = "TURN_OFF_HEATERS"
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                this.$socket.sendObj('printer.gcode.script', { script: gcode })
+            }
         },
     }
 </script>
-
-<style scoped>
-    .equal-width {
-        flex-basis: 0;
-    }
-
-    .category-header {
-        flex: 0 0 100px;
-    }
-    a:not(:hover) {
-        color: inherit;
-    }
-
-    .content span,
-    .content strong {
-        padding-left: 8px;
-        padding-right: 8px;
-        white-space: pre-wrap;
-    }
-</style>

@@ -42,7 +42,18 @@ export default {
 		dispatch('upload')
 	},
 
-	addPreset({ commit }, payload) {
+	addPreset({ commit, dispatch }, payload) {
 		commit("addPreset", payload)
+		dispatch("upload")
+	},
+
+	updatePreset({ commit, dispatch }, payload) {
+		commit("updatePreset", payload)
+		dispatch("upload")
+	},
+
+	deletePreset({ commit, dispatch }, payload) {
+		commit("deletePreset", payload)
+		dispatch("upload")
 	}
 }

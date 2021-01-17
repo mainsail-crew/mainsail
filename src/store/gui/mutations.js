@@ -45,8 +45,27 @@ export default {
 		Vue.set(state.gcodefiles, "showHiddenFiles", value)
 	},
 
-	addPreset(state, preload) {
-		window.console.log(state.presets)
-		window.console.log(preload)
+	addPreset(state, payload) {
+		state.presets.push({
+			name: payload.name,
+			values: payload.values
+		})
+	},
+
+	updatePreset(state, payload) {
+		if (state.presets[payload.index]) {
+			for (const [heaterName, temp] of Object.entries(payload.values)) {
+				if (temp === "") delete payload.values[heaterName]
+			}
+
+			Vue.set(state.presets[payload.index], 'name', payload.name)
+			Vue.set(state.presets[payload.index], 'values', payload.values)
+		}
+	},
+
+	deletePreset(state, payload) {
+		if (state.presets[payload.index]) {
+			state.presets.splice(payload.index, 1)
+		}
 	}
 }
