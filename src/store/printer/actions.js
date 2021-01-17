@@ -13,20 +13,26 @@ export default {
 		Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'gcodes' }, 'files/getDirectory')
 	},
 
-	getInfo({ commit }, preload) {
+	getInfo({ commit }, payload) {
 		commit('server/setData', {
-			klippy_state: preload.state,
-			klippy_message: preload.state_message,
+			klippy_state: payload.state,
+			klippy_message: payload.state_message,
 		}, { root: true })
 
 		commit('setData', {
-			hostname: preload.hostname,
-			software_version: preload.software_version,
-			cpu_info: preload.cpu_info,
+			hostname: payload.hostname,
+			software_version: payload.software_version,
+			cpu_info: payload.cpu_info,
 		})
 
 		Vue.prototype.$socket.sendObj('printer.objects.list', {}, 'printer/getObjectsList')
 		Vue.prototype.$socket.sendObj('printer.gcode.help', {}, 'printer/getHelpList')
+	},
+
+	getStateMessage({ commit }, payload) {
+		commit('server/setData', {
+			klippy_message: payload.state_message,
+		}, { root: true })
 	},
 
 	getObjectsList({ commit }, payload) {
