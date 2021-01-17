@@ -70,7 +70,9 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
+            <input type="file" ref="fileUploadAndStart" accept=".gcode" style="display: none" @change="uploadAndStart" />
             <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>Upload & Print</v-btn>
             <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
             <top-corner-menu></top-corner-menu>
         </v-app-bar>
@@ -100,6 +102,31 @@
             <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
 
+        <v-snackbar
+            :timeout="-1"
+            :value="true"
+            fixed
+            right
+            bottom
+            dark
+            v-model="uploadSnackbar.status"
+        >
+            <strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="red"
+                    text
+                    v-bind="attrs"
+                    @click="cancelUpload"
+                    style="min-width: auto;"
+                >
+                    <v-icon class="0">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
+
         <select-printer-dialog v-if="remoteMode"></select-printer-dialog>
         <connecting-dialog v-if="!remoteMode"></connecting-dialog>
         <update-dialog></update-dialog>
@@ -116,6 +143,7 @@
     import ConnectingDialog from "@/components/ConnectingDialog";
     import SelectPrinterDialog from "@/components/SelectPrinterDialog";
     import PrinterSelecter from "@/components/PrinterSelecter"
+    import axios from "axios";
 
 export default {
     props: {
@@ -143,6 +171,18 @@ export default {
         options: {
             useKbEvents: true,
             preventClickEvent: true
+        },
+        uploadSnackbar: {
+            status: false,
+            filename: "",
+            percent: 0,
+            speed: 0,
+            total: 0,
+            cancelTokenSource: "",
+            lastProgress: {
+                time: 0,
+                loaded: 0
+            }
         }
     }),
     created () {
@@ -157,6 +197,8 @@ export default {
         ...mapState({
             isConnected: state => state.socket.isConnected,
             hostname: state => state.printer.hostname,
+            apiHost: state => state.socket.hostname,
+            apiPort: state => state.socket.port,
             klippy_state: state => state.server.klippy_state,
             printer_state: state => state.printer.print_stats.state,
             loadings: state => state.socket.loadings,
@@ -292,6 +334,86 @@ export default {
             this.$store.commit('server/addEvent', "SAVE_CONFIG");
             this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
+        },
+        btnUploadAndStart: function() {
+            this.$refs.fileUploadAndStart.click()
+        },
+        async uploadAndStart() {
+            if (this.$refs.fileUploadAndStart.files.length) {
+                this.$store.commit('socket/addLoading', { name: 'btnUploadAndStart' })
+                let successFiles = []
+                for (const file of this.$refs.fileUploadAndStart.files) {
+                    const result = await this.doUploadAndStart(file)
+                    successFiles.push(result)
+                }
+
+                this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+                for(const file of successFiles) {
+                    this.$toast.success("Upload of "+file+" successful!")
+                }
+
+                this.$refs.fileUploadAndStart.value = ''
+                this.$router.push("/");
+            }
+        },
+        doUploadAndStart(file) {
+            let toast = this.$toast
+            let formData = new FormData()
+            let filename = file.name.replace(" ", "_")
+
+            this.uploadSnackbar.filename = filename
+            this.uploadSnackbar.status = true
+            this.uploadSnackbar.percent = 0
+            this.uploadSnackbar.speed = 0
+            this.uploadSnackbar.lastProgress.loaded = 0
+            this.uploadSnackbar.lastProgress.time = 0
+
+            formData.append('file', file, filename)
+            formData.append('print', true)
+
+            return new Promise(resolve => {
+                this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+                axios.post('//' + this.apiHost + ':' + this.apiPort + '/server/files/upload',
+                    formData, {
+                        cancelToken: this.uploadSnackbar.cancelTokenSource.token,
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                        onUploadProgress: (progressEvent) => {
+                            this.uploadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                            if (this.uploadSnackbar.lastProgress.time) {
+                                const time = progressEvent.timeStamp - this.uploadSnackbar.lastProgress.time
+                                const data = progressEvent.loaded - this.uploadSnackbar.lastProgress.loaded
+
+                                if (time) this.uploadSnackbar.speed = data / (time / 1000)
+                            }
+
+                            this.uploadSnackbar.lastProgress.time = progressEvent.timeStamp
+                            this.uploadSnackbar.lastProgress.loaded = progressEvent.loaded
+                            this.uploadSnackbar.total = progressEvent.total
+                        }
+                    }
+                ).then((result) => {
+                    this.uploadSnackbar.status = false
+                    resolve(result.data.result)
+                }).catch(() => {
+                    this.uploadSnackbar.status = false
+                    this.$store.commit('socket/removeLoading', { name: 'btnUploadAndStart' })
+                    toast.error("Cannot upload the file!")
+                })
+            })
+        },
+        cancelUpload: function() {
+            this.uploadSnackbar.cancelTokenSource.cancel()
+            this.uploadSnackbar.status = false
+        },
+        formatFilesize(fileSizeInBytes) {
+            let i = -1
+            let byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
+            do {
+                fileSizeInBytes = fileSizeInBytes / 1024
+                i++
+            } while (fileSizeInBytes > 1024)
+
+            return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
         },
         drawFavicon(val) {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")

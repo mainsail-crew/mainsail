@@ -79,11 +79,15 @@
         },
         computed: {
             convertName() {
-                let tmp = this.name;
-                tmp = tmp.replaceAll("_", " ");
-                tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
+                let tmp = this.name
+                let output = ""
+                tmp = tmp.replaceAll("_", " ")
+                tmp.split(" ").forEach(split => {
+                    output += " "+split.charAt(0).toUpperCase() + split.slice(1)
+                })
+                output = output.slice(1)
 
-                return tmp;
+                return output;
             }
         },
         methods: {

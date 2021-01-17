@@ -4,8 +4,6 @@ import { getDefaultState } from './index'
 export default {
 	reset(state) {
 		Object.assign(state, getDefaultState())
-
-
 	},
 
 	setKlippyReady() {

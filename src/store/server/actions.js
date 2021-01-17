@@ -31,9 +31,10 @@ export default {
 
 		commit('setData', payload)
 
-		if (!payload.klippy_connected) {
+		if (!payload.klippy_connected || payload.klippy_state === "startup") {
 			setTimeout(function(){
 				Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
+				Vue.prototype.$socket.sendObj('printer.info', {}, 'printer/getStateMessage')
 			}, 1000)
 		}
 	},
