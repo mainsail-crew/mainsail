@@ -6,9 +6,6 @@
                 <settings-neopixel class="mt-6"></settings-neopixel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-preheat-panel class="mt-0"></settings-preheat-panel>
-            </v-col>
-            <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-scale-panel></settings-scale-panel>
             </v-col>
         </v-row>

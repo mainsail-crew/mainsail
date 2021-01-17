@@ -10,9 +10,6 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <peripherie-panel v-if="klippy_state === 'ready'"></peripherie-panel>
-            <div v-for="profile in this.$store.state.gui.preheatbutton.profiles" :key="profile.id">
-                <preheat-panel class="mt-6" :profile="profile"></preheat-panel>
-            </div>
             <neopixel-panel v-if="this.$store.state.gui.neopixelcenter.stripname!=''" class="mt-6"></neopixel-panel>
             <scale-panel v-if="showDashboardScale" class="mt-6"></scale-panel>
         </v-col>

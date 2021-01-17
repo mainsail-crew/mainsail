@@ -14,7 +14,6 @@ import ScalePanel from "./ScalePanel";
 import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
 import PowerControlPanel from "./PowerControlPanel.vue";
-import PreheatPanel from "./PreheatPanel.vue";
 import NeopixelPanel from "./NeopixelPanel.vue";
 
 Vue.component('status-panel', StatusPanel);
@@ -28,7 +27,6 @@ Vue.component('zoffset-panel', ZOffsetPanel);
 Vue.component('peripherie-panel', Peripherie);
 Vue.component('webcam-panel', WebcamPanel);
 Vue.component('scale-panel', ScalePanel);
-Vue.component('preheat-panel', PreheatPanel);
 Vue.component('miniconsole-panel', MiniconsolePanel);
 Vue.component('power-control-panel', PowerControlPanel);
 Vue.component('neopixel-panel', NeopixelPanel);
