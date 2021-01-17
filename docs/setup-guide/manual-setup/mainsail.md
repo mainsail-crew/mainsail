@@ -93,30 +93,6 @@ server {
         try_files $uri $uri/ /index.html;
     }
 
-    location /printer {
-        proxy_pass http://apiserver/printer;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /api {
-        proxy_pass http://apiserver/api;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /access {
-        proxy_pass http://apiserver/access;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
     location /websocket {
         proxy_pass http://apiserver/websocket;
         proxy_http_version 1.1;
@@ -128,16 +104,8 @@ server {
         proxy_read_timeout 86400;
     }
 
-    location /machine {
-        proxy_pass http://apiserver/machine;
-        proxy_set_header Host $http_host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-    }
-
-    location /server {
-        proxy_pass http://apiserver/server;
+    location ~ ^/(printer|api|access|machine|server)$ {
+        proxy_pass http://apiserver/$1;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
