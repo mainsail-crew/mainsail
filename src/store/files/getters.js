@@ -48,11 +48,11 @@ export default {
 
 		let favicon16 = configDir.find(element => element.filename !== undefined &&  element.filename === 'favicon-16x16.png')
 		if (favicon16) favicon16 = rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+favicon16.filename
-		let favicon16Default = '/img/favicon-16x16.png'
+		let favicon16Default = '/img/icons/favicon-16x16.png'
 
 		let favicon32 = configDir.find(element => element.filename !== undefined &&  element.filename === 'favicon-32x32.png')
 		if (favicon32) favicon32 = rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+favicon32.filename
-		let favicon32Default = '/img/favicon-32x32.png'
+		let favicon32Default = '/img/icons/favicon-32x32.png'
 
 		if (favicon16 && favicon32) return [favicon16, favicon32]
 		else if (favicon16) return [favicon16, favicon16]
