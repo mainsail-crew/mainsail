@@ -98,6 +98,7 @@ export function getDefaultState() {
 		},
 		remotePrinters: [],
 		presets: [],
+		cooldownGcode: "TURN_OFF_HEATERS"
 	}
 }
 

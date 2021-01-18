@@ -331,7 +331,7 @@ export default {
             this.$socket.sendObj('printer.emergency_stop', {}, 'socket/removeLoading',{ name: 'topbarEmergencyStop' });
         },
         clickSaveConfig: function() {
-            this.$store.commit('server/addEvent', "SAVE_CONFIG");
+            this.$store.commit('server/addEvent', { message: "SAVE_CONFIG", type: "command" });
             this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
             this.$socket.sendObj('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
         },
