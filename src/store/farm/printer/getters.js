@@ -133,14 +133,22 @@ export default {
 			}
 		})
 
-		if ('heater_bed' in state.data) {
+		if (
+			'heater_bed' in state.data &&
+			'temperature' in state.data.heater_bed &&
+			'target' in state.data.heater_bed
+		) {
 			output.push({
 				name: 'heater_bed',
 				value: state.data.heater_bed.temperature.toFixed(0)+"° / "+state.data.heater_bed.target.toFixed(0)+"°"
 			})
 		}
 
-		if ('temperature_fan chamber' in state.data) {
+		if (
+			'temperature_fan chamber' in state.data &&
+			'temperature' in state.data['temperature_fan chamber'] &&
+			'target' in state.data['temperature_fan chamber']
+		) {
 			output.push({
 				name: 'chamber',
 				value: state.data['temperature_fan chamber'].temperature.toFixed(0)+"° / "+state.data['temperature_fan chamber'].target.toFixed(0)+"°"
