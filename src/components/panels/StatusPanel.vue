@@ -270,6 +270,7 @@
             current_layer: {
                 get() {
                     if (
+                        this.print_time > 0 &&
                         'first_layer_height' in this.current_file &&
                         'layer_height' in this.current_file &&
                         this.gcode_position !== undefined &&
