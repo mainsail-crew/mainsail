@@ -46,8 +46,8 @@
                     <v-col>
                         <v-text-field
                             label="Send code..."
+                            class="console mb-0"
                             ref="gcodeCommandField"
-                            solo
                             hide-details
                             autocomplete="off"
                             v-model="gcode"
