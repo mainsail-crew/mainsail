@@ -46,7 +46,7 @@
                     <v-col>
                         <v-text-field
                             label="Send code..."
-                            class="console"
+                            class="console mb-0"
                             ref="gcodeCommandField"
                             hide-details
                             autocomplete="off"
