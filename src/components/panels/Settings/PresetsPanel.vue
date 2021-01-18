@@ -71,6 +71,9 @@
                                                     hide-details="auto"
                                                     :rules="[rules.required, rules.unique]"
                                                     dense
+                                                    @click.native="show"
+                                                    @blur="hide"
+                                                    data-layout="normal"
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
@@ -83,6 +86,9 @@
                                             <v-text-field
                                                 v-model="dialog.values[heater.name].value"
                                                 :label="convertName(heater.name)"
+                                                @click.native="show"
+                                                @blur="hide"
+                                                data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
@@ -97,6 +103,9 @@
                                             <v-text-field
                                                 v-model="dialog.values['temperature_fan '+fan.name].value"
                                                 :label="convertName(fan.name)"
+                                                @click.native="show"
+                                                @blur="hide"
+                                                data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
@@ -109,6 +118,9 @@
                                             name="input-7-4"
                                             label="Custom G-Code"
                                             v-model="dialog.gcode"
+                                            @click.native="show"
+                                            @blur="hide"
+                                            data-layout="normal"
                                         ></v-textarea>
                                     </v-col>
                                 </v-row>
@@ -187,6 +199,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState, mapGetters } from 'vuex';
 
     export default {
@@ -229,6 +242,12 @@
             this.clearDialog()
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             convertName(name) {
                 let output = ""
                 name = name.replaceAll("_", " ")
