@@ -17,7 +17,7 @@
             <v-spacer></v-spacer>
             <v-menu :offset-y="true" title="Preheat" v-if="this['gui/getPreheatPresets'].length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
+                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -134,7 +134,8 @@
                 datasets: state => state.printer.tempHistory.datasets,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
                 printer: state => state.printer,
-                cooldownGcode: state => state.gui.cooldownGcode
+                cooldownGcode: state => state.gui.cooldownGcode,
+                printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
                 'gui/getPreheatPresets'
