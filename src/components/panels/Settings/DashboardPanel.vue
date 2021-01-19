@@ -32,8 +32,8 @@
                     </v-col>
                 </v-row>
                 <v-row v-if="boolShowScaleSetting">
-                    <v-col class="py-0">
-                        <v-switch v-model="boolShowScaleOnDashboard" label="Scale" class="settings_dashboard_switch mt-0"></v-switch>
+                    <v-col class="py-2">
+                        <v-switch v-model="boolShowScaleOnDashboard" label="Scale" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
             </v-container>

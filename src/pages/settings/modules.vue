@@ -2,8 +2,7 @@
     <div>
         <v-row>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-module-url></settings-module-url>
-                <settings-neopixel class="mt-6"></settings-neopixel>
+                <settings-neopixel></settings-neopixel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-scale-panel></settings-scale-panel>
