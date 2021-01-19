@@ -31,7 +31,7 @@
                 <img :src="sidebarLogo" />
                 <v-toolbar-title>{{ printername !== "" ? printername : hostname }}</v-toolbar-title>
             </div>
-            <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
+            <ul :class="'navi '+getTheme" :expand="$vuetify.breakpoint.mdAndUp">
                 <printer-selecter></printer-selecter>
                 <li v-for="(category, index) in routes" :key="index" :prepend-icon="category.icon"
                     :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
@@ -63,7 +63,8 @@
                 </li>
             </ul>
             <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2" v-if="showVersion">
-                v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
+                
+            v{{ getVersion }}<span class="" v-if="klipperVersion"> - {{ klipperVersion.substr(0, klipperVersion.lastIndexOf('-')) }}</span>
             </p>
         </v-navigation-drawer>
 
@@ -89,7 +90,7 @@
         
         <v-footer app class="d-block" style="z-index:20000" v-if="visible&virtualKeyboard">
             
-            <div class="keyboard-context" >
+            <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
                     <span style="z-index=200">{{ virtualKeyboardName }}</span>
                 </div>
@@ -99,7 +100,7 @@
                 </div>
             </div>
             
-            <vue-touch-keyboard @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
+            <vue-touch-keyboard :class="getTheme" @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
         </v-footer>
 
         <v-snackbar
@@ -108,7 +109,6 @@
             fixed
             right
             bottom
-            dark
             v-model="uploadSnackbar.status"
         >
             <strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
@@ -187,10 +187,17 @@ export default {
     }),
     created () {
         this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
-        this.$vuetify.theme.dark = false;
+        this.$vuetify.theme.dark = !this.$cookies.isKey("lightMode");
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
+        getTheme: function(){
+            if(this.$vuetify.theme.dark){
+                return "theme--dark"
+            }else{
+                return "theme--light"
+            }
+        },
         currentPage: function() {
           return this.$route.fullPath;
         },
@@ -264,11 +271,23 @@ export default {
         },
         sidebarBackground: {
             get() {
+                var background = this.$store.getters["files/getSidebarBackground"]
+                if(background=="/img/sidebar-background.png"){
+                    if(!this.$vuetify.theme.dark){
+                        return "/img/sidebar-background-light.png"
+                    }
+                }
                 return this.$store.getters["files/getSidebarBackground"]
             }
         },
         mainBackground: {
             get() {
+                var background = this.$store.getters["files/getMainBackground"]
+                if(background=="/img/main-background.jpg"){
+                    if(!this.$vuetify.theme.dark){
+                        return "/img/main-background-light.jpg"
+                    }
+                }
                 return this.$store.getters["files/getMainBackground"]
             }
         },
@@ -549,7 +568,7 @@ export default {
         margin: 0;
     }
 
-    nav ul.navi .nav-link {
+    .theme--dark nav ul.navi .nav-link {
         display: block;
         color: white;
         border-radius: .5em;
@@ -563,10 +582,31 @@ export default {
         margin: 0.5em 1em;
     }
 
-    nav ul.navi .nav-link:hover,
+    .theme--light nav ul.navi .nav-link  {
+        display: block;
+        color: rgb(0, 0, 0);
+        border-radius: .5em;
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 15px;
+        opacity: .85;
+        transition: all .15s ease-in;
+        text-decoration: none;
+        margin: 0.5em 1em;
+    }
+
+    .theme--dark nav ul.navi .nav-link:hover,
     nav ul.navi li.active>.nav-link,
     nav ul.navi .nav-link.router-link-active {
         background: rgba(255,255,255,.3);
+        opacity: 1;
+    }
+
+    .theme--light nav ul.navi .nav-link:hover,
+    nav ul.navi li.active>.nav-link,
+    nav ul.navi .nav-link.router-link-active {
+        background: rgba(70, 70, 70, 0.3);
         opacity: 1;
     }
 
@@ -575,8 +615,14 @@ export default {
         transform: rotate(0);
     }
 
-    nav ul.navi .nav-link>i.v-icon {
+    .theme--dark nav ul.navi .nav-link>i.v-icon {
         color: white;
+        font-size: 1.7em;
+        margin-right: .5em;
+    }
+
+    .theme--light nav ul.navi .nav-link>i.v-icon {
+        color: rgb(0, 0, 0);
         font-size: 1.7em;
         margin-right: .5em;
     }
@@ -615,9 +661,13 @@ export default {
         padding: 5px 15px 5px 15px;
     }
 
-    nav ul.navi>li>ul.child .nav-link:hover,
+    .theme--dark nav ul.navi>li>ul.child .nav-link:hover,
     nav ul.navi>li>ul.child .nav-link.router-link-active {
         background: rgba(255,255,255,.2);
+    }
+    .theme--light nav ul.navi>li>ul.child .nav-link:hover,
+    nav ul.navi>li>ul.child .nav-link.router-link-active {
+        background: rgba(70, 70, 70, 0.3);
     }
 
     nav ul.navi>li>ul.child .nav-link>span.nav-title {

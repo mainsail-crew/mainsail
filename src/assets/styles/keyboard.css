@@ -13,7 +13,7 @@
 .vue-touch-keyboard .keyboard .line:not(:last-child){
     margin-bottom:.5em
 }
-.vue-touch-keyboard .keyboard .key{    
+.theme--dark.vue-touch-keyboard .keyboard .key{    
     -webkit-box-flex: 40;
     -ms-flex: 40;
     flex: 40;
@@ -24,6 +24,29 @@
     border: none;
     color: #fff;
     background-color: #3c3c3c;
+    -webkit-box-shadow: 0 2px 2px rgba(0,0,0,.6);
+    box-shadow: none;
+    border-radius: .35em;
+    font-size: 1.25em;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+.theme--light.vue-touch-keyboard .keyboard .key{    
+    -webkit-box-flex: 40;
+    -ms-flex: 40;
+    flex: 40;
+    height: 2.2em;
+    line-height: 2.2em;
+    overflow: hidden;
+    vertical-align: middle;
+    border: none;
+    color: #000;
+    background-color: #ffffff;
     -webkit-box-shadow: 0 2px 2px rgba(0,0,0,.6);
     box-shadow: none;
     border-radius: .35em;
@@ -84,29 +107,32 @@
 .vue-touch-keyboard .keyboard .key.half{
     flex:20
 }
-.vue-touch-keyboard .keyboard .key.control{
-    color:#fff;
-    background-color:#7d7d7d;
+.theme--dark.vue-touch-keyboard .keyboard .key.control{
+    background-color:#5e5e5e;
+    border-color:none
+}
+.theme--light.vue-touch-keyboard .keyboard .key.control{
+    background-color:#d4d4d4;
     border-color:none
 }
 .vue-touch-keyboard .keyboard .key.featured{
-    color:#fff;
-    background-color:#2196f3;
+    background-color:#2196f3!important;
     border-color:none
 }
-.vue-touch-keyboard .keyboard .key:hover{
-    color:#fff;
+.theme--dark.vue-touch-keyboard .keyboard .key:hover{
     background-color:#555555;
+    border-color:none
+}
+.theme--light.vue-touch-keyboard .keyboard .key:hover{
+    background-color:#cccccc;
     border-color:none
 }
 .vue-touch-keyboard .keyboard .key:active{
     transform:scale(.98);
-    color:#fff;
     background-color:#555555;
     border-color:none
 }
 .vue-touch-keyboard .keyboard .key.activated{
-    color:#fff;
     background-color:#017294;
     border-color:none
 }
@@ -125,12 +151,21 @@
 .vue-touch-keyboard .keyboard:after{
     clear:both
 }
-.keyboard-context {
+.theme--dark.keyboard-context {
     margin-top: 6px;
     width: 100%;
     padding: 10px;
     /* padding-bottom: 10px; */
     background-color: #3c3c3c;
+    margin-bottom: 10px;
+    border-radius: .35em;
+}
+.theme--light.keyboard-context {
+    margin-top: 6px;
+    width: 100%;
+    padding: 10px;
+    /* padding-bottom: 10px; */
+    background-color: #ffffff;
     margin-bottom: 10px;
     border-radius: .35em;
 }

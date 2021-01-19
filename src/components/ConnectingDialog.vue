@@ -4,7 +4,7 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <v-card dark>
+        <v-card>
             <v-toolbar flat dense color="primary">
                 <v-toolbar-title>
                     <span class="subheading">
@@ -13,7 +13,7 @@
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pt-5" v-if="isConnecting">
-                <v-progress-linear color="white" indeterminate></v-progress-linear>
+                <v-progress-linear color="primary" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
                 <p>Cannot not connect to {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>

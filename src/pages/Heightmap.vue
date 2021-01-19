@@ -206,15 +206,15 @@
                             }
                         },
                         xaxis: {
-                            color: '#fff',
+                            color: this.getGridColor(),
                             range: [0,200]
                         },
                         yaxis: {
-                            color: '#fff',
+                            color: this.getGridColor(),
                             range: [0,200]
                         },
                         zaxis: {
-                            color: '#fff',
+                            color: this.getGridColor(),
                             range: [-0.5,0.5]
                         }
                     }
@@ -258,6 +258,12 @@
             }
         },
         methods: {
+            getGridColor:function(){
+                if(!this.$vuetify.theme.dark){
+                    return "#111"
+                }
+                return "#fff"
+            },
             show:function(e){
                 bus.$emit("showkeyboard",e);
             },
@@ -380,8 +386,12 @@
                 this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' });
             }
         },
-        created: function() {
-
+        created() {
+            setInterval(() => {
+                this.layout.scene.xaxis.color=this.getGridColor()
+                this.layout.scene.yaxis.color=this.getGridColor()
+                this.layout.scene.zaxis.color=this.getGridColor()
+            }, 1000);
         },
         mounted() {
             this.showBedMesh()
