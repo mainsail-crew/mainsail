@@ -7,7 +7,7 @@
             <v-spacer></v-spacer>
             <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
+                    <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
                 </template>
                 <span>Check for updates</span>
             </v-tooltip>
@@ -213,7 +213,7 @@
                 return 'ERROR'
             },
             is_disabled(object) {
-                if (this.printer_state === "printing") return true
+                if (['printing', 'paused'].includes(this.printer_state)) return true
                 if ('detached' in object && object.detached) return true
 
                 if (typeof object === 'object' && object !== false) {
