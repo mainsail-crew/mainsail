@@ -186,7 +186,7 @@ export default {
         }),
         currentUrl: {
             get() {
-                return "http://"+window.location.hostname+(window.location.port !== 80 ? ':'+window.location.port : '')
+                return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
             }
         },
         showCorsInfo: {
