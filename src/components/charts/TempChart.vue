@@ -14,7 +14,7 @@ export default {
             tempchartDisplayMinutes: 10,
             timer: '',
             chartOptions: {
-                theme: "dark1",
+                theme: this.getTheme(),
                 backgroundColor: 'transparent',
                 animationEnabled: true,
                 legend: {
@@ -29,14 +29,14 @@ export default {
                     valueFormatString: "HH:mm" ,
                     //labelAngle: -50
                     gridThickness: 1,
-                    gridColor: '#ffffff30',
+                    gridColor: this.getGridColor(),
                     minimum: new Date() - 60*10,
                     maximum: new Date(),
                     margin: 15,
                 },
                 axisY: {
                     gridThickness: 1,
-                    gridColor: '#ffffff30',
+                    gridColor: this.getGridColor(),
                     minimum: 0,
                     maximum: 300,
                     interval: 50,
@@ -59,6 +59,18 @@ export default {
         }
     },
     methods: {
+        getTheme:function(){
+            if(!this.$vuetify.theme.dark){
+                return "light1"
+            }
+            return "dark1"
+        },
+        getGridColor:function(){
+            if(!this.$vuetify.theme.dark){
+                return "#11111130"
+            }
+            return "#ffffff30"
+        },
         createChart() {
             if (document.getElementById("tempchart")) {
                 this.chart = new CanvasJS.Chart("tempchart", this.chartOptions)
@@ -71,6 +83,9 @@ export default {
     created() {
 
         this.timer = setInterval(() => {
+            this.chartOptions.theme=this.getTheme()
+            this.chartOptions.axisX.gridColor=this.getGridColor()
+            this.chartOptions.axisY.gridColor=this.getGridColor()
             if (
                 document.getElementById("tempchart") &&
                 this.chart &&

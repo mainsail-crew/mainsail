@@ -178,7 +178,7 @@
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Speed</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ (requested_speed / 60).toFixed(0) }}</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ (requested_speed / 60).toFixed(0) }} mm/s</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
@@ -270,6 +270,7 @@
             current_layer: {
                 get() {
                     if (
+                        this.print_time > 0 &&
                         'first_layer_height' in this.current_file &&
                         'layer_height' in this.current_file &&
                         this.gcode_position !== undefined &&

@@ -86,11 +86,15 @@ server {
     index index.html;
     server_name _;
 
-    #max upload size for gcodes
-    client_max_body_size 200M;
+    #disable max upload size
+    client_max_body_size 0;
 
     location / {
         try_files $uri $uri/ /index.html;
+    }
+    
+    location = /index.html {
+        add_header Cache-Control "no-store, no-cache, must-revalidate";
     }
 
     location /websocket {
@@ -104,8 +108,8 @@ server {
         proxy_read_timeout 86400;
     }
 
-    location ~ ^/(printer|api|access|machine|server)$ {
-        proxy_pass http://apiserver/$1;
+    location ~ ^/(printer|api|access|machine|server)/ {
+        proxy_pass http://apiserver$request_uri;
         proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

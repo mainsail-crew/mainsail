@@ -78,10 +78,10 @@
                 <v-container class="px-4">
                     <v-row align="center" class="text-center">
                         <v-col class="py-2">
-                            <v-btn v-on:click="executeTare1" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
+                            <v-btn v-on:click="executeTare1" rounded style="width: 100%">Tare</v-btn>
                         </v-col>
                         <v-col class="py-2">
-                            <v-btn v-on:click="executeTare2" rounded color="blue-grey darken-4" style="width: 100%">Tare</v-btn>
+                            <v-btn v-on:click="executeTare2" rounded style="width: 100%">Tare</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -114,10 +114,10 @@
                 <v-container class="px-4">
                     <v-row align="center" class="text-center">
                         <v-col class="py-2">
-                            <v-btn v-on:click="executeCalibrate1" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
+                            <v-btn v-on:click="executeCalibrate1" rounded style="width: 100%">Cal</v-btn>
                         </v-col>
                         <v-col class="py-2">
-                            <v-btn v-on:click="executeCalibrate2" rounded color="blue-grey darken-4" style="width: 100%">Cal</v-btn>
+                            <v-btn v-on:click="executeCalibrate2" rounded style="width: 100%">Cal</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>

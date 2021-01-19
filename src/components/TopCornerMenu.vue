@@ -7,7 +7,7 @@
 <template>
     <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn dark icon v-bind="attrs" v-on="on">
+            <v-btn icon v-bind="attrs" v-on="on">
                 <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
         </template>

@@ -26,6 +26,11 @@
                         <v-switch v-model="boolShowConsoleOnDashboard" label="Console" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="boolLightMode" label="Light Mode" hide-details class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
                 <v-row v-if="boolShowScaleSetting">
                     <v-col class="py-0">
                         <v-switch v-model="boolShowScaleOnDashboard" label="Scale" class="settings_dashboard_switch mt-0"></v-switch>
@@ -53,6 +58,22 @@
                 },
                 set(status) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { boolWebcam: status } });
+                }
+            },
+            boolLightMode: {
+                get() {
+                    return this.$cookies.isKey("lightMode");
+                },
+                set(newStatus) {
+                    var cookieValue
+                    if(newStatus==false){
+                        this.$vuetify.theme.dark = true;
+                        cookieValue = this.$cookies.remove('lightMode')
+                        return cookieValue;
+                    }
+                    this.$vuetify.theme.dark = false;
+                    cookieValue = this.$cookies.set('lightMode','default');
+                    return cookieValue;
                 }
             },
             boolShowTempchartOnDashboard: {
