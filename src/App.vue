@@ -187,7 +187,7 @@ export default {
     }),
     created () {
         this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
-        this.$vuetify.theme.dark = true;
+        this.$vuetify.theme.dark = false;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
