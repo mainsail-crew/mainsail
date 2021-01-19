@@ -8,7 +8,7 @@ import ToolsPanel from './ToolsPanel.vue'
 import ControlPanel from "./ControlPanel";
 import ExtruderPanel from "./ExtruderPanel";
 import ZOffsetPanel from "./ZOffsetPanel";
-import Peripherie from "./PeripheriePanel";
+import Miscellaneous from "./MiscellaneousPanel";
 import WebcamPanel from "./WebcamPanel";
 import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
@@ -22,7 +22,7 @@ Vue.component('tools-panel', ToolsPanel);
 Vue.component('control-panel', ControlPanel);
 Vue.component('extruder-panel', ExtruderPanel);
 Vue.component('zoffset-panel', ZOffsetPanel);
-Vue.component('peripherie-panel', Peripherie);
+Vue.component('miscellaneous-panel', Miscellaneous);
 Vue.component('webcam-panel', WebcamPanel);
 Vue.component('miniconsole-panel', MiniconsolePanel);
 Vue.component('power-control-panel', PowerControlPanel);

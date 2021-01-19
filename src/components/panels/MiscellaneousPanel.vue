@@ -27,15 +27,15 @@
             <v-divider></v-divider>
             <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
         </v-card>
-        <v-card class="mt-6" v-if="this['printer/getPeripherie'].length">
+        <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>Peripherie</span>
+                    <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>Miscellaneous</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <div v-for="(object, index) of this['printer/getPeripherie']" v-bind:key="index">
+            <div v-for="(object, index) of this['printer/getMiscellaneous']" v-bind:key="index">
                 <v-divider v-if="index"></v-divider>
-                <peripherie-slider :name="object.name" :type="object.type" :target="object.power" :controllable="object.controllable" :pwm="object.pwm" :multi="parseInt(object.scale)" ></peripherie-slider>
+                <miscellaneous-slider :name="object.name" :type="object.type" :target="object.power" :controllable="object.controllable" :pwm="object.pwm" :multi="parseInt(object.scale)" ></miscellaneous-slider>
             </div>
         </v-card>
     </div>
@@ -43,12 +43,12 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex'
-    import PeripherieSlider from '../../inputs/PeripherieSlider'
     import ToolSlider from '../../inputs/ToolSlider'
+    import MiscellaneousSlider from "@/inputs/MiscellaneousSlider";
 
     export default {
         components: {
-            PeripherieSlider,
+            MiscellaneousSlider,
             ToolSlider
         },
         data () {
@@ -63,7 +63,7 @@
                 printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
-                'printer/getPeripherie',
+                'printer/getMiscellaneous',
             ]),
         },
     }
