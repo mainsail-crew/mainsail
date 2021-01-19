@@ -49,7 +49,16 @@ export default {
     computed: {
         datasets: {
             get () {
-                return this.$store.state.printer.tempHistory.datasets
+                const datasets = this.$store.state.printer.tempHistory.datasets
+
+                return datasets.sort((a,b) => {
+                    if ('name' in a && 'name' in b) {
+                        if (a.name.endsWith("_target") > b.name.endsWith("_target")) return -1
+                        if (a.name.endsWith("_target") < b.name.endsWith("_target")) return 1
+                    }
+
+                    return 0
+                })
             }
         },
         maxTemp: {
