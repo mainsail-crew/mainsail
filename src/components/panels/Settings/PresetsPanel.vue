@@ -188,6 +188,7 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex';
+    import {convertName} from "@/plugins/helpers";
 
     export default {
         components: {
@@ -229,20 +230,10 @@
             this.clearDialog()
         },
         methods: {
-            convertName(name) {
-                let output = ""
-                name = name.replaceAll("_", " ")
-                name.split(" ").forEach(split => {
-                    output += " "+split.charAt(0).toUpperCase() + split.slice(1)
-                })
-                output = output.slice(1)
-
-                return output;
-            },
             convertPresetName(name, value) {
                 if (value.type === "temperature_fan") name = name.replace("temperature_fan ", "")
 
-                return this.convertName(name)
+                return convertName(name)
             },
             existsPresetName(name) {
                 return (this["gui/getPreheatPresets"].findIndex((preset) => preset.name === name && preset.index !== this.dialog.index) >= 0)
@@ -283,6 +274,10 @@
             },
             savePreset() {
                 if (this.dialog.valid) {
+                    for (const key of Object.keys(this.dialog.values)) {
+                        this.dialog.values[key].value = parseInt(this.dialog.values[key].value)
+                    }
+
                     if (this.dialog.index) {
                         this.$store.dispatch('gui/updatePreset',  this.dialog )
                     } else this.$store.dispatch('gui/addPreset',  this.dialog )
