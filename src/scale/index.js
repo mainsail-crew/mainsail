@@ -7,11 +7,7 @@ var raw2 = 0;
 
 setInterval(retrieveData,1000);
 function retrieveData(){
-    var URL = store.state.gui.modules.scaleUrl;
-    if(!URL.startsWith("https://")&&!URL.startsWith("http://")){
-        return;
-    }
-    axios.get(store.state.gui.modules.scaleUrl)
+    axios.get("/scales")
     .then(function (response){
         var data = response.data;
         raw1=data[0].value
