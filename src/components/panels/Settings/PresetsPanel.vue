@@ -230,10 +230,11 @@
             this.clearDialog()
         },
         methods: {
+            convertName: convertName,
             convertPresetName(name, value) {
                 if (value.type === "temperature_fan") name = name.replace("temperature_fan ", "")
 
-                return convertName(name)
+                return this.convertName(name)
             },
             existsPresetName(name) {
                 return (this["gui/getPreheatPresets"].findIndex((preset) => preset.name === name && preset.index !== this.dialog.index) >= 0)
