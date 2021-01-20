@@ -188,7 +188,7 @@ export default {
 		})
 	},
 
-	getPeripherie: state => {
+	getMiscellaneous: state => {
 		let output = [];
 		const supportedObjects = [
 			'controller_fan',

@@ -201,6 +201,7 @@
 <script>
     import {bus} from "@/main";
     import { mapState, mapGetters } from 'vuex';
+    import {convertName} from "@/plugins/helpers";
 
     export default {
         components: {
@@ -248,16 +249,7 @@
             hide:function(){
                 bus.$emit("hidekeyboard");
             },
-            convertName(name) {
-                let output = ""
-                name = name.replaceAll("_", " ")
-                name.split(" ").forEach(split => {
-                    output += " "+split.charAt(0).toUpperCase() + split.slice(1)
-                })
-                output = output.slice(1)
-
-                return output;
-            },
+            convertName: convertName,
             convertPresetName(name, value) {
                 if (value.type === "temperature_fan") name = name.replace("temperature_fan ", "")
 
@@ -302,6 +294,10 @@
             },
             savePreset() {
                 if (this.dialog.valid) {
+                    for (const key of Object.keys(this.dialog.values)) {
+                        this.dialog.values[key].value = parseInt(this.dialog.values[key].value)
+                    }
+
                     if (this.dialog.index) {
                         this.$store.dispatch('gui/updatePreset',  this.dialog )
                     } else this.$store.dispatch('gui/addPreset',  this.dialog )
