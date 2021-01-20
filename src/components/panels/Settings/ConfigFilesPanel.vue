@@ -449,7 +449,7 @@
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = '//' + this.hostname + ':' + this.port + '/server/files/' + filename;
+                link.href = '//' + this.hostname + ':' + this.port + '/server/files' + filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
