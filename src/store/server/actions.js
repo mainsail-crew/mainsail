@@ -7,19 +7,14 @@ export default {
 		dispatch('updateManager/reset')
 	},
 
-	init({ dispatch, state }) {
+	init({ dispatch }) {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
-		Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'server/getGcodeStore')
-		Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory')
-		Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory')
-
-		if (state.plugins.length > 0 && state.plugins.includes("update_manager"))
-			Vue.prototype.$socket.sendObj('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
 
 		dispatch('printer/init', null, { root: true })
 	},
 
-	getInfo({ commit, state }, payload) {
+	getInfo({ commit, state, rootState }, payload) {
+		Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'server/getGcodeStore')
 
 		if (state.plugins.length === 0) {
 			if (payload.plugins.includes("power") !== false)
@@ -27,6 +22,14 @@ export default {
 
 			if (payload.plugins.includes("update_manager") !== false)
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
+		}
+
+		if (state.registered_directories.length === 0) {
+			for (const directory of payload.registered_directories) {
+				if (rootState.files.filetree.findIndex((element) => element.isDirectory && element.filename === directory) !== -1) {
+					Vue.prototype.$socket.sendObj('server.files.get_directory', { path: directory }, 'files/getDirectory')
+				}
+			}
 		}
 
 		commit('setData', payload)
