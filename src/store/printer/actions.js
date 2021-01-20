@@ -10,7 +10,7 @@ export default {
 		Vue.prototype.$socket.sendObj('printer.info', {}, 'printer/getInfo')
 
 		// only available with klipper is ready
-		Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'gcodes' }, 'files/getDirectory')
+		//Vue.prototype.$socket.sendObj('server.files.get_directory', { path: 'gcodes' }, 'files/getDirectory')
 	},
 
 	getInfo({ commit }, payload) {
