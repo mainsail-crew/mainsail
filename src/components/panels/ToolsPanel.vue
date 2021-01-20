@@ -17,7 +17,7 @@
             <v-spacer></v-spacer>
             <v-menu :offset-y="true" title="Preheat" v-if="this['gui/getPreheatPresets'].length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
+                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -57,7 +57,7 @@
                         <v-col class="pl-8 pr-0 flex-grow-0 py-2colHeaterIcons">
                             <v-icon :color="heater.color">mdi-{{ heater.icon }}</v-icon>
                         </v-col>
-                        <v-col class="py-2 font-weight-bold">{{ heater.name }}</v-col>
+                        <v-col class="py-2 font-weight-bold">{{ convertName(heater.name) }}</v-col>
                         <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
                         <v-col class="py-2 text-center">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</v-col>
                         <v-col class="text-center py-2 pr-8 vertical_align_center">
@@ -71,7 +71,7 @@
                         <v-col class="flex-grow-0 py-2 pl-8 pr-0  colHeaterIcons">
                             <v-icon :color="(fan.target ? 'grey lighten-5' : 'grey darken-2')" :class="(fan.speed ? ' icon-rotate' : '')">mdi-fan</v-icon>
                         </v-col>
-                        <v-col class="py-2 font-weight-bold">{{ fan.name }}</v-col>
+                        <v-col class="py-2 font-weight-bold">{{ convertName(fan.name) }}</v-col>
                         <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
                         <v-col class="py-2 text-center">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</v-col>
                         <v-col class="text-center py-2 pr-8 pr-0  vertical_align_center">
@@ -85,7 +85,7 @@
                         <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
                             <v-icon color="grey darken-2" :title="'min: '+sensor.min_temp+'° / max: '+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
                         </v-col>
-                        <v-col class="py-2 font-weight-bold">{{ sensor.name }}</v-col>
+                        <v-col class="py-2 font-weight-bold">{{ convertName(sensor.name) }}</v-col>
                         <v-col class="py-2 d-none d-sm-block"><span>&nbsp;</span></v-col>
                         <v-col class="py-2 text-center">
                           <v-tooltip top>
@@ -118,6 +118,7 @@
     import { mapState, mapGetters } from 'vuex'
     import toolInput from '../../inputs/ToolInput'
     import TempChart from '@/components/charts/TempChart'
+    import {convertName} from "@/plugins/helpers"
 
     export default {
         components: {
@@ -134,7 +135,8 @@
                 datasets: state => state.printer.tempHistory.datasets,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
                 printer: state => state.printer,
-                cooldownGcode: state => state.gui.cooldownGcode
+                cooldownGcode: state => state.gui.cooldownGcode,
+                printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
                 'gui/getPreheatPresets'
@@ -159,6 +161,7 @@
 
         },
         methods: {
+            convertName: convertName,
             preheat(preset) {
                 for (const [name, attributes] of Object.entries(preset.values)) {
                     if (attributes.bool) {

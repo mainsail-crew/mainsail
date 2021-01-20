@@ -63,7 +63,7 @@ export default {
 						dataPoints:[],
 						showInLegend: false,
 						markerType: 'none',
-						fillOpacity: .3,
+						fillOpacity: .1,
 						lineThickness: 0,
 						toolTipContent: "{name}: {y}°C",
 						color: masterDataset.color || '#666'

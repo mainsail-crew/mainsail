@@ -448,7 +448,7 @@ export default {
                 let centerX = canvas.width / 2;
                 let centerY = canvas.height / 2;
                 let radius = 32;
-                let percent = val * 100;
+                let percent = (val * 100).toFixed(0);
 
                 /* draw the grey circle */
                 context.beginPath();
@@ -476,7 +476,7 @@ export default {
                 context.fillStyle = "#e41313";
                 context.fill();
 
-                //favicon16.href = canvas.toDataURL('image/png')
+                favicon16.href = canvas.toDataURL('image/png')
                 favicon32.href = canvas.toDataURL('image/png')
             } else {
                 const [favicon16Default, favicon32Default] = this.defaultFavicons

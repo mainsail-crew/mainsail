@@ -1,6 +1,6 @@
 {
   "name": "mainsail",
-  "version": "0.5.0-beta",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

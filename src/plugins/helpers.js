@@ -37,3 +37,14 @@ export function formatConsoleMessage(message) {
 
     return message;
 }
+
+export function convertName(name) {
+    let output = ""
+    name = name.replaceAll("_", " ")
+    name.split(" ").forEach(split => {
+        output += " "+split.charAt(0).toUpperCase() + split.slice(1)
+    })
+    output = output.slice(1)
+
+    return output;
+}

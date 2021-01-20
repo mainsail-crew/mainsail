@@ -10,7 +10,7 @@
             <v-col>
                 <v-subheader class="_fan-slider-subheader">
                     <v-icon small :class="'mr-2 '+(value ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
-                    <span>{{ convertName }}</span>
+                    <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
                     <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
@@ -40,6 +40,8 @@
 
 
 <script>
+    import {convertName} from "@/plugins/helpers";
+
     export default {
         data: function() {
             return {
@@ -77,20 +79,8 @@
                 default: 1
             },
         },
-        computed: {
-            convertName() {
-                let tmp = this.name
-                let output = ""
-                tmp = tmp.replaceAll("_", " ")
-                tmp.split(" ").forEach(split => {
-                    output += " "+split.charAt(0).toUpperCase() + split.slice(1)
-                })
-                output = output.slice(1)
-
-                return output;
-            }
-        },
         methods: {
+            convertName: convertName,
             sendCmd() {
                 let gcode = "";
 
