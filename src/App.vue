@@ -21,7 +21,7 @@
 </style>
 
 <template>
-    <v-app>
+    <v-app :class="getTheme">
         <vue-headful :title="getTitle" />
         <v-navigation-drawer
             class="sidebar-wrapper" persistent v-model="drawer" enable-resize-watcher fixed app

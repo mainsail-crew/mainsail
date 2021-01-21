@@ -38,6 +38,9 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                         <v-col class="col-4">
@@ -46,13 +49,26 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
+                        <v-col class="">
+                            <v-btn
+                                color="red"
+                                outlined
+                                class="middle minwidth-0"
+                                @click="cancelAddPrinter"
+                            >
+                                Cancel
+                            </v-btn>
+                        </v-col>
                         <v-col class="text-right">
                             <v-btn
-                                color="white"
+                                color="primary"
                                 outlined
                                 class="middle"
                                 @click="addPrinter"
@@ -72,6 +88,9 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                         <v-col class="col-4">
@@ -80,6 +99,9 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -96,7 +118,7 @@
                         </v-col>
                         <v-col class="text-right">
                             <v-btn
-                                color="white"
+                                color="primary"
                                 outlined
                                 class="middle"
                                 @click="updatePrinter"
@@ -136,6 +158,9 @@
                         </v-col>
                     </v-row>
                     <v-row>
+                        <v-col class="text-center mt-0 pb-0 mb-0">
+                            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="mt-0 pb-0"></v-switch>
+                        </v-col>
                         <v-col class="text-center mt-0">
                             <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
                         </v-col>
@@ -147,6 +172,7 @@
 </template>
 
 <script>
+import {bus} from "../main";
 import { mapState, mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
@@ -189,6 +215,22 @@ export default {
                 return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
             }
         },
+        virtualKeyboard: {
+            get() {
+                return this.$cookies.isKey("enableVirtualKeyboard");
+            },
+            set(newStatus) {
+                var cookieValue
+                if(newStatus==false){
+                    cookieValue = this.$cookies.remove('enableVirtualKeyboard')
+                    bus.$emit("updatekeyboardcookie");
+                    return cookieValue;
+                }
+                cookieValue = this.$cookies.set('enableVirtualKeyboard','default');
+                bus.$emit("updatekeyboardcookie");
+                return cookieValue;
+            }
+        },
         showCorsInfo: {
             get() {
                 if (this["farm/countPrinters"]) {
@@ -204,6 +246,12 @@ export default {
         }
     },
     methods: {
+        show:function(e){
+            bus.$emit("showkeyboard",e);
+        },
+        hide:function(){
+            bus.$emit("hidekeyboard");
+        },
         addPrinter() {
             this.$store.commit('farm/addPrinter',{
                 hostname: this.dialogAddPrinter.hostname,
@@ -229,9 +277,13 @@ export default {
                 isConnecting: true,
             })
             this.$store.dispatch("farm/"+this.dialogEditPrinter.index+"/reconnect")
+            this.$store.dispatch("farm/savePrinters")
             this.dialogEditPrinter.bool = false
 
             this.checkPrinters()
+        },
+        cancelAddPrinter() {
+            this.dialogAddPrinter.bool = false
         },
         delPrinter() {
             this.$store.commit("farm/removePrinter", { name: this.dialogEditPrinter.index })
