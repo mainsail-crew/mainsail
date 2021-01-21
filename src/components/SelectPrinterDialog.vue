@@ -137,6 +137,9 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
+                            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0 pb-0"></v-switch>
+                        </v-col>
+                        <v-col class="text-center mt-0">
                             <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
                         </v-col>
                     </v-row>
@@ -147,6 +150,7 @@
 </template>
 
 <script>
+import {bus} from "../../../main";
 import { mapState, mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
@@ -187,6 +191,22 @@ export default {
         currentUrl: {
             get() {
                 return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
+            }
+        },
+        virtualKeyboard: {
+            get() {
+                return this.$cookies.isKey("enableVirtualKeyboard");
+            },
+            set(newStatus) {
+                var cookieValue
+                if(newStatus==false){
+                    cookieValue = this.$cookies.remove('enableVirtualKeyboard')
+                    bus.$emit("updatekeyboardcookie");
+                    return cookieValue;
+                }
+                cookieValue = this.$cookies.set('enableVirtualKeyboard','default');
+                bus.$emit("updatekeyboardcookie");
+                return cookieValue;
             }
         },
         showCorsInfo: {
