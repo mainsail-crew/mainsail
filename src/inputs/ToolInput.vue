@@ -24,7 +24,7 @@
         label="Tool Temp"
         @click.native="show"
         @blur="hide"
-        data-layout="numberic" 
+        data-layout="numeric" 
         type="number" 
         min="0" 
         :max="max_temp" 
