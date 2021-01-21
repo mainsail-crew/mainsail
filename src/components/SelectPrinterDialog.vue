@@ -38,6 +38,9 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                         <v-col class="col-4">
@@ -46,13 +49,16 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-right">
                             <v-btn
-                                color="white"
+                                color="primary"
                                 outlined
                                 class="middle"
                                 @click="addPrinter"
@@ -72,6 +78,9 @@
                                 :rules="[v => !!v || 'Hostname is required']"
                                 label="Hostname/IP"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="normal"
                             ></v-text-field>
                         </v-col>
                         <v-col class="col-4">
@@ -80,6 +89,9 @@
                                 :rules="[v => !!v || 'Port is required']"
                                 label="Port"
                                 required
+                                @click.native="show"
+                                @blur="hide"
+                                data-layout="numeric"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -96,7 +108,7 @@
                         </v-col>
                         <v-col class="text-right">
                             <v-btn
-                                color="white"
+                                color="primary"
                                 outlined
                                 class="middle"
                                 @click="updatePrinter"
@@ -136,8 +148,8 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="text-center mt-0">
-                            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0 pb-0"></v-switch>
+                        <v-col class="text-center mt-0 pb-0 mb-0">
+                            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="mt-0 pb-0"></v-switch>
                         </v-col>
                         <v-col class="text-center mt-0">
                             <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
@@ -150,7 +162,7 @@
 </template>
 
 <script>
-import {bus} from "@/main";
+import {bus} from "../main";
 import { mapState, mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
@@ -224,6 +236,12 @@ export default {
         }
     },
     methods: {
+        show:function(e){
+            bus.$emit("showkeyboard",e);
+        },
+        hide:function(){
+            bus.$emit("hidekeyboard");
+        },
         addPrinter() {
             this.$store.commit('farm/addPrinter',{
                 hostname: this.dialogAddPrinter.hostname,
