@@ -77,11 +77,13 @@
             <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
             <v-card-text>
                 <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
+                    @click.native="show"
+                    @blur="hide"
+                    data-layout="normal" 
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    hide-details
                 ></v-text-field>
             </v-card-text>
             <v-data-table
@@ -196,7 +198,16 @@
                 <v-card-title class="headline">New Directory</v-card-title>
                 <v-card-text>
                     Please enter a new directory name:
-                    <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name"></v-text-field>
+                    <v-text-field 
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal" 
+                        label="Name" 
+                        :rules="input_rules" 
+                        @keypress.enter="createDirectoryAction" 
+                        required 
+                        v-model="dialogCreateDirectory.name"
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -209,7 +220,15 @@
             <v-card>
                 <v-card-title class="headline">Rename File</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameFile.newName" ref="inputFieldNewName"></v-text-field>
+                    <v-text-field
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal"  
+                        label="Name" 
+                        required 
+                        v-model="dialogRenameFile.newName" 
+                        ref="inputFieldNewName"
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -222,7 +241,14 @@
             <v-card>
                 <v-card-title class="headline">Rename Directory</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameDirectory.newName"></v-text-field>
+                    <v-text-field
+                        @click.native="show"
+                        @blur="hide"
+                        data-layout="normal"  
+                        label="Name" 
+                        required 
+                        v-model="dialogRenameDirectory.newName"
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -258,9 +284,10 @@
     </div>
 </template>
 <script>
-    import { mapState, mapGetters } from 'vuex'
-    import axios from 'axios'
-    import { findDirectory } from "@/plugins/helpers"
+    import {bus} from "../main";
+    import { mapState, mapGetters } from 'vuex';
+    import axios from 'axios';
+    import { findDirectory } from "@/plugins/helpers";
 
     export default {
         data () {
@@ -720,6 +747,12 @@
                     this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
                 }
             },
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            }
         },
         watch: {
             filetree: {

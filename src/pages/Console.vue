@@ -30,19 +30,22 @@
 <template>
     <div>
         <v-row>
-            <v-col class="col">
+            <v-col class="col ">
                 <v-text-field
                     v-model="gcode"
                     :items="items"
                     label="Send code..."
-                    solo
-                    class="gcode-command-field"
+                    hide-details
+                    class="gcode-command-field console"
                     ref="gcodeCommandField"
                     autocomplete="off"
                     v-on:keyup.enter="doSend"
                     v-on:keyup.up="onKeyUp"
                     v-on:keyup.down="onKeyDown"
                     v-on:keydown.tab="getAutocomplete"
+                    @click.native="show"
+                    @blur="hide"
+                    data-layout="normal"
                 ></v-text-field>
             </v-col>
 
@@ -105,6 +108,7 @@
     </div>
 </template>
 <script>
+    import {bus} from "../main";
     import { mapState, mapGetters } from 'vuex';
     import Vue from "vue";
     import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
@@ -169,6 +173,12 @@
             }
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             doSend() {
                 this.$store.commit('socket/addLoading', { name: 'sendGcode' });
                 this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });

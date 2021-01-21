@@ -29,6 +29,9 @@
                             v-model="customFilters"
                             hide-details
                             class="mb-2"
+                            @click.native="show"
+                            @blur="hide"
+                            data-layout="normal"
                         ></v-textarea>
                     </v-col>
                 </v-row>
@@ -38,6 +41,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     export default {
         components: {
 
@@ -74,7 +78,12 @@
             },
         },
         methods: {
-
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
         }
     }
 </script>

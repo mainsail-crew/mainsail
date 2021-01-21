@@ -1,6 +1,8 @@
 <style>
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
+    @import './assets/styles/keyboard.css';
+    @import './assets/styles/misc.css';
 
     .button-min-width-auto {
         min-width: auto !important;
@@ -83,6 +85,21 @@
                 </v-container>
             </v-scroll-y-transition>
         </v-main>
+        
+        <v-footer app class="d-block" style="z-index:20000" v-if="visible&virtualKeyboard">
+            
+            <div :class="getTheme+' keyboard-context'" >
+                <div class="keyboard-context-name">
+                    <span style="z-index=200">{{ virtualKeyboardName }}</span>
+                </div>
+                    
+                <div class="keyboard-context-input">
+                        <span>{{virtualKeyboardInput}}</span>
+                </div>
+            </div>
+            
+            <vue-touch-keyboard :class="getTheme" @click.native="keyboardClick" style="z-index: 200; " :options="options"  :layout="layout" :cancel="hide" :accept="accept" :input="input" :next="clearKeyboard" />
+        </v-footer>
 
         <v-snackbar
             :timeout="-1"
@@ -116,8 +133,10 @@
 </template>
 
 <script>
+    import {bus} from "./main"
     import routes from './routes'
     import { mapState, mapGetters } from 'vuex'
+    import layouts from "./inputs/KeyboardLayouts"
     import TopCornerMenu from "@/components/TopCornerMenu"
     import UpdateDialog from "@/components/UpdateDialog"
     import ConnectingDialog from "@/components/ConnectingDialog";
@@ -137,6 +156,16 @@ export default {
         TopCornerMenu,
     },
     data: () => ({
+        enabledKeyboard: false,
+        visible: false,
+        layout: "normal",
+        input: null,
+        inputvalue: null,
+        inputname: null,
+        options: {
+            useKbEvents: true,
+            preventClickEvent: true
+        },
         drawer: null,
         activeClass: 'active',
         routes: routes.filter((element) => element.title !== "Printers"),
@@ -155,10 +184,18 @@ export default {
         }
     }),
     created () {
+        this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
         this.$vuetify.theme.dark = true;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
     computed: {
+        getTheme: function(){
+            if(this.$vuetify.theme.dark){
+                return "theme--dark"
+            }else{
+                return "theme--light"
+            }
+        },
         currentPage: function() {
           return this.$route.fullPath;
         },
@@ -191,6 +228,27 @@ export default {
                 return this.$store.getters["printer/getPrintPercent"]
             }
         },
+        virtualKeyboard: {
+            get() {
+                return this.enabledKeyboard;
+            },
+        },
+        virtualKeyboardInput: {
+            get() {
+                if(this.inputvalue==null){
+                    return null;
+                }
+                return this.inputvalue;
+            },
+        },
+        virtualKeyboardName: {
+            get() {
+                if(this.inputname==null){
+                    return null;
+                }
+                return this.inputname;
+            },
+        },
         defaultFavicons: {
             get() {
                 return this.$store.getters["files/getFavicons"]
@@ -212,7 +270,54 @@ export default {
             }
         },
     },
+    mounted() {
+        bus.$on('showkeyboard', (event) => {
+            if(!this.$cookies.isKey("enableVirtualKeyboard")){
+                return;
+            }
+            this.input = event.target;
+            this.inputvalue = this.input.value;
+            this.inputname = this.input.labels[0].textContent;
+            this.layout = layouts[this.input.dataset.layout];
+            if (!this.visible)
+                this.visible = true
+        });
+        bus.$on('updatekeyboardcookie', () => {
+            this.enabledKeyboard=this.$cookies.isKey("enableVirtualKeyboard")
+        });
+        bus.$on('hidekeyboard', () => {
+            this.visible = false;
+            this.inputvalue = null;
+            this.inputname = null;
+            this.input = null;
+        });
+    },
     methods: {
+        keyboardClick(){
+            if(this.input!=null){
+                this.inputvalue=this.input.value;
+            }
+        },
+        clearKeyboard(){
+            this.input.value=null,
+            this.inputvalue=null
+        },
+        accept() {
+          this.hide();
+        },
+        showkeyboard:function(e) {
+            this.input = e.target;
+            this.layout = e.target.dataset.layout;
+
+            if (!this.visible)
+                this.visible = true
+        },
+        hide() {
+          this.visible = false;
+          this.inputvalue = null;
+          this.inputname = null;
+          this.input = null;
+        },
         clickEmergencyStop: function() {
             this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
             this.$socket.sendObj('printer.emergency_stop', {}, 'socket/removeLoading',{ name: 'topbarEmergencyStop' });

@@ -1,0 +1,42 @@
+.scalepanel-dashboard label{
+    display:none;
+}
+.tool-input label{
+    display:none;
+}
+.preheat-setting-panel label{
+    display:none;
+}
+.theme--dark.console {
+    margin-top: -3px;
+    width: 100%;
+    padding: 10px;
+    padding-left: 15px;
+    /* padding-bottom: 10px; */
+    background-color: #1e1e1e;
+    margin-bottom: 10px;
+    border-radius: .35em;
+}
+
+.theme--light.console {
+    margin-top: -3px;
+    width: 100%;
+    padding: 10px;
+    padding-left: 15px;
+    /* padding-bottom: 10px; */
+    background-color: #ffffff;
+    margin-bottom: 10px;
+    border-radius: .35em;
+}
+.console label.v-label--active {
+    display: none;
+
+}
+.console .v-input__slot:before {
+    background-color: rgba(0, 0, 0, 0)!important;
+    border-color: rgba(0, 0, 0, 0)!important;
+}
+.console .v-input__slot:after {
+    background-color: rgba(0, 0, 0, 0)!important;
+    border-color: rgba(0, 0, 0, 0)!important;
+}

@@ -19,12 +19,28 @@
 </style>
 
 <template>
-    <v-text-field type="number" min="0" :max="max_temp" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps" onClick="this.select();">
+    <v-text-field 
+        hide-details
+        label="Tool Temp"
+        @click.native="show"
+        @blur="hide"
+        data-layout="numeric" 
+        type="number" 
+        min="0" 
+        :max="max_temp" 
+        step="any" 
+        ref="toolField" 
+        v-model="value" 
+        class="tool-input" 
+        @change="setTemps" 
+        onClick="this.select();"
+    >
     </v-text-field>
 </template>
 
 
 <script>
+    import {bus} from "../main";
     import Vue from "vue";
 
     export default {
@@ -55,6 +71,12 @@
                     this.value = this.target;
                     Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
                 } else this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value });
+            },
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
             }
         },
         watch: {

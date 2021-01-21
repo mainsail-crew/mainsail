@@ -71,6 +71,9 @@
                                                     hide-details="auto"
                                                     :rules="[rules.required, rules.unique]"
                                                     dense
+                                                    @click.native="show"
+                                                    @blur="hide"
+                                                    data-layout="normal"
                                                 ></v-text-field>
                                             </v-col>
                                         </v-row>
@@ -86,6 +89,9 @@
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
+                                                @click.native="show"
+                                                @blur="hide"
+                                                data-layout="numeric"
                                             ></v-text-field>
                                         </v-row>
                                         <v-row class="mt-2 mx-0 mb-2" v-for="(fan) of this['printer/getTemperatureFans']" v-bind:key="'temperature_fan '+fan.name" align="center">
@@ -100,6 +106,9 @@
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
+                                                @click.native="show"
+                                                @blur="hide"
+                                                data-layout="numeric"
                                             ></v-text-field>
                                         </v-row>
                                     </v-col>
@@ -109,6 +118,9 @@
                                             name="input-7-4"
                                             label="Custom G-Code"
                                             v-model="dialog.gcode"
+                                            @click.native="show"
+                                            @blur="hide"
+                                            data-layout="normal"
                                         ></v-textarea>
                                     </v-col>
                                 </v-row>
@@ -164,6 +176,9 @@
                                         label="Custom G-Code"
                                         v-model="cooldownDialog.gcode"
                                         :rules="[rules.required]"
+                                        @click.native="show"
+                                        @blur="hide"
+                                        data-layout="normal"
                                     ></v-textarea>
                                 </v-col>
                             </v-row>
@@ -187,6 +202,7 @@
 </template>
 
 <script>
+    import {bus} from "@/main";
     import { mapState, mapGetters } from 'vuex';
     import {convertName} from "@/plugins/helpers";
 
@@ -230,6 +246,12 @@
             this.clearDialog()
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             convertName: convertName,
             convertPresetName(name, value) {
                 if (value.type === "temperature_fan") name = name.replace("temperature_fan ", "")

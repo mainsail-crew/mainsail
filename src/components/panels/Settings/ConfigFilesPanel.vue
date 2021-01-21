@@ -144,7 +144,7 @@
                 <v-card>
                     <v-card-title class="headline">Rename File</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -157,7 +157,7 @@
                 <v-card>
                     <v-card-title class="headline">Create File</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogCreateFile.name"></v-text-field>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFile.name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -170,7 +170,7 @@
                 <v-card>
                     <v-card-title class="headline">Create Folder</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogCreateFolder.name"></v-text-field>
+                        <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="dialogCreateFolder.name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -208,6 +208,7 @@
 </template>
 
 <script>
+    import {bus} from "../../../main";
     import { mapState } from 'vuex'
     import {findDirectory} from "@/plugins/helpers";
 
@@ -316,6 +317,12 @@
             this.loadPath();
         },
         methods: {
+            show:function(e){
+                bus.$emit("showkeyboard",e);
+            },
+            hide:function(){
+                bus.$emit("hidekeyboard");
+            },
             highlighter(code) {
                 return highlight(code, languages.ini); //returns html
             },
