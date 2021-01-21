@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import {bus} from "../../../main";
+import {bus} from "@/main";
 import { mapState, mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
