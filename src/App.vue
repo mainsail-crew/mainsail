@@ -88,7 +88,7 @@
             <top-corner-menu></top-corner-menu>
         </v-app-bar>
 
-        <v-main id="content">
+        <v-main id="content" v-bind:style="{backgroundImage:'url('+mainBackground+')',backgroundAttachment:'fixed',backgroundSize: 'cover',backgroundRepeat: 'no-repeat'}">
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <keep-alive>
@@ -218,6 +218,11 @@ export default {
         sidebarBackground: {
             get() {
                 return this.$store.getters["files/getSidebarBackground"]
+            }
+        },
+        mainBackground: {
+            get() {
+                return this.$store.getters["files/getMainBackground"]
             }
         },
         customStylesheet: {
