@@ -19,7 +19,7 @@
                 @blur="hideKeyboard"
                 data-layout="normal"
             ></v-text-field>
-            <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0"></v-switch>
+            <v-switch v-model="toggleVirtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0"></v-switch>
         </v-card-text>
     </v-card>
 </template>
@@ -46,18 +46,12 @@
             },
             toggleVirtualKeyboard: {
                 get() {
-                    return this.$cookies.isKey("enableVirtualKeyboard");
+                    return localStorage.virtualKeyboard;
                 },
                 set(newStatus) {
-                    var cookieValue
-                    if(newStatus==false){
-                        cookieValue = this.$cookies.remove('enableVirtualKeyboard')
-                        bus.$emit("updatekeyboardcookie");
-                        return cookieValue;
-                    }
-                    cookieValue = this.$cookies.set('enableVirtualKeyboard','default');
-                    bus.$emit("updatekeyboardcookie");
-                    return cookieValue;
+                    localStorage.virtualKeyboard = newStatus
+                    bus.$emit("updatekeyboardstatus");
+                    return localStorage.virtualKeyboard;
                 }
             },
         },

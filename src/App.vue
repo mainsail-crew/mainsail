@@ -86,7 +86,7 @@
             </v-scroll-y-transition>
         </v-main>
         
-        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&virtualKeyboardEnabled">
+        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardVisible">
             
             <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
@@ -98,7 +98,7 @@
                 </div>
             </div>
             
-            <vue-touch-keyboard :class="getTheme" @click.native="clickKeyboard" style="z-index: 200; " :options="keyboardOptions"  :layout="keyboardLayout" :cancel="keyboardHide" :accept="keyboardAccept" :input="keyboardInput" :next="clearKeyboard" />
+            <vue-touch-keyboard :class="getTheme" @click.native="clickKeyboard" style="z-index: 200; " :options="keyboardOptions"  :layout="keyboardLayout" :cancel="hideKeyboard" :accept="clickAcceptKeyboard" :input="keyboardInput" :next="clearKeyboard" />
         </v-footer>
 
         <v-snackbar
@@ -156,7 +156,7 @@ export default {
         TopCornerMenu,
     },
     data: () => ({
-        enabledKeyboard: false,
+        keyboardActivated: false,
         keyboardVisible: false,
         keyboardLayout: "normal",
         keyboardInput: null,
@@ -184,7 +184,7 @@ export default {
         }
     }),
     created () {
-        this.enabledKeyboard = this.$cookies.isKey("enableVirtualKeyboard");
+        this.keyboardActivated = localStorage.virtualKeyboard;
         this.$vuetify.theme.dark = true;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
@@ -227,11 +227,6 @@ export default {
             get() {
                 return this.$store.getters["printer/getPrintPercent"]
             }
-        },
-        virtualKeyboardEnabled: {
-            get() {
-                return this.enabledKeyboard;
-            },
         },
         showVersion: {
             get() {
@@ -280,7 +275,7 @@ export default {
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
-            if(!this.$cookies.isKey("enableVirtualKeyboard")){
+            if(!localStorage.virtualKeyboard){
                 return;
             }
             this.keyboardInput = event.target;
@@ -290,8 +285,8 @@ export default {
             if (!this.keyboardVisible)
                 this.keyboardVisible = true
         });
-        bus.$on('updatekeyboardcookie', () => {
-            this.enabledKeyboard=this.$cookies.isKey("enableVirtualKeyboard")
+        bus.$on('updatekeyboardstatus', () => {
+            this.keyboardActivated=localStorage.virtualKeyboard
         });
         bus.$on('hidekeyboard', () => {
             this.keyboardVisible = false;

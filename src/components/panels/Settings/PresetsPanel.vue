@@ -176,8 +176,8 @@
                                         label="Custom G-Code"
                                         v-model="cooldownDialog.gcode"
                                         :rules="[rules.required]"
-                                        @click.native="show"
-                                        @blur="hide"
+                                        @click.native="showKeyboard"
+                                        @blur="hideKeyboard"
                                         data-layout="normal"
                                     ></v-textarea>
                                 </v-col>

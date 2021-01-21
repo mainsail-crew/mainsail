@@ -14,7 +14,6 @@ Vue.config.productionTip = false;
 export const bus = new Vue();
 
 Vue.use(VueResource);
-Vue.use(require('vue-cookies'));
 Vue.use(VueTouchKeyboard);
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
@@ -23,8 +22,6 @@ Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Conte
 Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIONS, DELETE, OPTIONS';
 
 Vue.component('vue-headful', vueHeadful);
-
-Vue.$cookies.config('1y')
 
 fetch('/config.json')
 .then(res => res.json())
