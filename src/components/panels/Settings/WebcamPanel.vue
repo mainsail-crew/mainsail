@@ -17,8 +17,8 @@
                             v-model="webcamUrl"
                             hide-details
                             label="Webcam URL"
-                            @click.native="show"
-                            @blur="hide"
+                            @click.native="showKeyboard"
+                            @blur="hideKeyboard"
                             data-layout="normal" 
                         ></v-text-field>
                     </v-col>
@@ -113,13 +113,12 @@
             },
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             }
-
         }
     }
 </script>

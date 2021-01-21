@@ -15,8 +15,8 @@
             <v-text-field
                 v-model="printerName"
                 label="Printer Name"
-                @click.native="show"
-                @blur="hide"
+                @click.native="showKeyboard"
+                @blur="hideKeyboard"
                 data-layout="normal"
             ></v-text-field>
             <v-switch v-model="virtualKeyboard" label="Virtual Keyboard" class="settings_dashboard_switch mt-0"></v-switch>
@@ -44,7 +44,7 @@
                     return this.$store.dispatch('gui/setSettings', { general: { printername: newName } });
                 }
             },
-            virtualKeyboard: {
+            toggleVirtualKeyboard: {
                 get() {
                     return this.$cookies.isKey("enableVirtualKeyboard");
                 },
@@ -62,10 +62,10 @@
             },
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             }
 

@@ -56,8 +56,8 @@
                             v-on:keyup.down="onKeyDown"
                             :items="items"
                             v-on:keydown.tab="getAutocomplete"
-                            @click.native="show"
-                            @blur="hide"
+                            @click.native="showKeyboard"
+                            @blur="hideKeyboard"
                             data-layout="normal"
                         ></v-text-field>
                     </v-col>
@@ -167,10 +167,10 @@ import {mapState} from 'vuex'
             }
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             doSend() {

@@ -57,8 +57,8 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="normal"
                                 ></v-text-field>
                             </v-col>
@@ -68,8 +68,8 @@
                                     :rules="[v => !!v || 'Port is required']"
                                     label="Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -97,8 +97,8 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="normal"
                                 ></v-text-field>
                             </v-col>
@@ -110,8 +110,8 @@
                                     :rules="[v => !!v || 'Web-Port is required']"
                                     label="Web-Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -121,8 +121,8 @@
                                     :rules="[v => !!v || 'API-Port is required']"
                                     label="API-Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -164,8 +164,8 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="normal"
                                 ></v-text-field>
                             </v-col>
@@ -175,8 +175,8 @@
                                     :rules="[v => !!v || 'Port is required']"
                                     label="Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -214,8 +214,8 @@
                                     :rules="[v => !!v || 'Hostname is required']"
                                     label="Hostname/IP"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="normal"
                                 ></v-text-field>
                             </v-col>
@@ -227,8 +227,8 @@
                                     :rules="[v => !!v || 'Web-Port is required']"
                                     label="Web-Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -238,8 +238,8 @@
                                     :rules="[v => !!v || 'API-Port is required']"
                                     label="API-Port"
                                     required
-                                    @click.native="show"
-                                    @blur="hide"
+                                    @click.native="showKeyboard"
+                                    @blur="hideKeyboard"
                                     data-layout="numeric"
                                 ></v-text-field>
                             </v-col>
@@ -308,10 +308,10 @@
             ])
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             addPrinter() {

@@ -71,8 +71,8 @@
                                                     hide-details="auto"
                                                     :rules="[rules.required, rules.unique]"
                                                     dense
-                                                    @click.native="show"
-                                                    @blur="hide"
+                                                    @click.native="showKeyboard"
+                                                    @blur="hideKeyboard"
                                                     data-layout="normal"
                                                 ></v-text-field>
                                             </v-col>
@@ -86,12 +86,12 @@
                                             <v-text-field
                                                 v-model="dialog.values[heater.name].value"
                                                 :label="convertName(heater.name)"
+                                                @click.native="showKeyboard"
+                                                @blur="hideKeyboard"
+                                                data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
-                                                @click.native="show"
-                                                @blur="hide"
-                                                data-layout="numeric"
                                             ></v-text-field>
                                         </v-row>
                                         <v-row class="mt-2 mx-0 mb-2" v-for="(fan) of this['printer/getTemperatureFans']" v-bind:key="'temperature_fan '+fan.name" align="center">
@@ -103,12 +103,12 @@
                                             <v-text-field
                                                 v-model="dialog.values['temperature_fan '+fan.name].value"
                                                 :label="convertName(fan.name)"
+                                                @click.native="showKeyboard"
+                                                @blur="hideKeyboard"
+                                                data-layout="numeric"
                                                 hide-details="auto"
                                                 type="number"
                                                 suffix="°C"
-                                                @click.native="show"
-                                                @blur="hide"
-                                                data-layout="numeric"
                                             ></v-text-field>
                                         </v-row>
                                     </v-col>
@@ -118,8 +118,8 @@
                                             name="input-7-4"
                                             label="Custom G-Code"
                                             v-model="dialog.gcode"
-                                            @click.native="show"
-                                            @blur="hide"
+                                            @click.native="showKeyboard"
+                                            @blur="hideKeyboard"
                                             data-layout="normal"
                                         ></v-textarea>
                                     </v-col>
@@ -246,10 +246,10 @@
             this.clearDialog()
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             convertName: convertName,

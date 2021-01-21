@@ -95,7 +95,7 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field @click.native="show" @blur="hide" data-layout="normal" label="Name" required v-model="newName"></v-text-field>
+                                <v-text-field @click.native="showKeyboard" @blur="hideKeyboard" data-layout="normal" label="Name" required v-model="newName"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -250,10 +250,10 @@
             }
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             showBedMesh: function() {

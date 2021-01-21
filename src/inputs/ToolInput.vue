@@ -22,8 +22,8 @@
     <v-text-field 
         hide-details
         label="Tool Temp"
-        @click.native="show"
-        @blur="hide"
+        @click.native="showKeyboard"
+        @blur="hideKeyboard"
         data-layout="numeric" 
         type="number" 
         min="0" 
@@ -72,10 +72,10 @@
                     Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
                 } else this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value });
             },
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             }
         },

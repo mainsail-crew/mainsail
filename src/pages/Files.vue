@@ -77,8 +77,8 @@
             <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
             <v-card-text>
                 <v-text-field
-                    @click.native="show"
-                    @blur="hide"
+                    @click.native="showKeyboard"
+                    @blur="hideKeyboard"
                     data-layout="normal" 
                     v-model="search"
                     append-icon="mdi-magnify"
@@ -199,8 +199,8 @@
                 <v-card-text>
                     Please enter a new directory name:
                     <v-text-field 
-                        @click.native="show"
-                        @blur="hide"
+                        @click.native="showKeyboard"
+                        @blur="hideKeyboard"
                         data-layout="normal" 
                         label="Name" 
                         :rules="input_rules" 
@@ -221,8 +221,8 @@
                 <v-card-title class="headline">Rename File</v-card-title>
                 <v-card-text>
                     <v-text-field
-                        @click.native="show"
-                        @blur="hide"
+                        @click.native="showKeyboard"
+                        @blur="hideKeyboard"
                         data-layout="normal"  
                         label="Name" 
                         required 
@@ -242,8 +242,8 @@
                 <v-card-title class="headline">Rename Directory</v-card-title>
                 <v-card-text>
                     <v-text-field
-                        @click.native="show"
-                        @blur="hide"
+                        @click.native="showKeyboard"
+                        @blur="hideKeyboard"
                         data-layout="normal"  
                         label="Name" 
                         required 

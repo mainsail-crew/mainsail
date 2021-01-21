@@ -43,8 +43,8 @@
                     v-on:keyup.up="onKeyUp"
                     v-on:keyup.down="onKeyDown"
                     v-on:keydown.tab="getAutocomplete"
-                    @click.native="show"
-                    @blur="hide"
+                    @click.native="showKeyboard"
+                    @blur="hideKeyboard"
                     data-layout="normal"
                 ></v-text-field>
             </v-col>
@@ -173,10 +173,10 @@
             }
         },
         methods: {
-            show:function(e){
+            showKeyboard:function(e){
                 bus.$emit("showkeyboard",e);
             },
-            hide:function(){
+            hideKeyboard:function(){
                 bus.$emit("hidekeyboard");
             },
             doSend() {
