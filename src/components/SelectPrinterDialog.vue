@@ -4,7 +4,7 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <v-card>
+        <v-card dark>
             <v-toolbar flat dense color="primary">
                 <v-toolbar-title>
                     <span class="subheading">
@@ -20,7 +20,7 @@
                 <v-btn v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool && this['farm/countPrinters'] > 0" small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn>
             </v-toolbar>
             <v-card-text class="pt-5" v-if="isConnecting">
-                <v-progress-linear color="primary" indeterminate></v-progress-linear>
+                <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
                 <p>Cannot not connect to {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
@@ -56,16 +56,6 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="">
-                            <v-btn
-                                color="red"
-                                outlined
-                                class="middle minwidth-0"
-                                @click="cancelAddPrinter"
-                            >
-                                Cancel
-                            </v-btn>
-                        </v-col>
                         <v-col class="text-right">
                             <v-btn
                                 color="primary"
@@ -118,7 +108,7 @@
                         </v-col>
                         <v-col class="text-right">
                             <v-btn
-                                color="primary"
+                                color="white"
                                 outlined
                                 class="middle"
                                 @click="updatePrinter"
@@ -281,9 +271,6 @@ export default {
             this.dialogEditPrinter.bool = false
 
             this.checkPrinters()
-        },
-        cancelAddPrinter() {
-            this.dialogAddPrinter.bool = false
         },
         delPrinter() {
             this.$store.commit("farm/removePrinter", { name: this.dialogEditPrinter.index })
