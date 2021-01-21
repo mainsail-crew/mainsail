@@ -14,5 +14,6 @@ For support join our discord server -> [https://discord.gg/skWTwTD](https://disc
 * [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
 * [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
 * [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
+* [WallpaperCraft](https://wallpaperscraft.com/): for the main Background
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.
