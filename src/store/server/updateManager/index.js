@@ -4,13 +4,7 @@ import getters from './getters'
 
 export function getDefaultState() {
 	return {
-		moonraker: {},
-		klipper: {},
-		client: {},
-		system: {
-			package_count: 0,
-			package_list: []
-		},
+		version_info: {},
 		updateResponse: {
 			application: "",
 			complete: true,
