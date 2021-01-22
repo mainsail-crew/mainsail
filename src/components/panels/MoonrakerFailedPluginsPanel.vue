@@ -40,14 +40,5 @@
                 port: state => state.socket.port,
             }),
         },
-        created() {
-            this.refreshConfig();
-        },
-        methods: {
-
-        },
-        watch: {
-
-        }
     }
 </script>
