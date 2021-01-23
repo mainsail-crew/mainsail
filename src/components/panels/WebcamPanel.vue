@@ -12,7 +12,7 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle"  alt="Webcanm"/>
+            <img :src="url" class="webcamImage" :style="webcamStyle"  alt="Webcam"/>
         </v-card-text>
     </v-card>
 </template>
