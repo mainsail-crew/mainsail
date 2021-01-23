@@ -427,7 +427,9 @@
                     this.editor.show = false;
                     this.editor.sourcecode = "";
 
-                    if (boolRestart) {
+                    if (boolRestart && this.editor.item.filename === "moonraker.conf") {
+                        this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
+                    } else if (boolRestart) {
                         this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
                         this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                     }
