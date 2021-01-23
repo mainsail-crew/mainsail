@@ -78,7 +78,7 @@
                                             <v-checkbox
                                                 v-model="dialog.values[heater.name].bool"
                                                 hide-details
-                                                class="shrink mr-2 mt-0"
+                                                class="shrink mt-0"
                                             ></v-checkbox>
                                             <v-text-field
                                                 v-model="dialog.values[heater.name].value"
@@ -92,7 +92,7 @@
                                             <v-checkbox
                                                 v-model="dialog.values['temperature_fan '+fan.name].bool"
                                                 hide-details
-                                                class="shrink mr-2 mt-0"
+                                                class="shrink mt-0"
                                             ></v-checkbox>
                                             <v-text-field
                                                 v-model="dialog.values['temperature_fan '+fan.name].value"
