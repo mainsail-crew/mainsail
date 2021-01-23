@@ -12,7 +12,7 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle" />
+            <img :src="url" class="webcamImage" :style="webcamStyle"  alt="Webcanm"/>
         </v-card-text>
     </v-card>
 </template>
@@ -23,18 +23,12 @@
     export default {
         data: function() {
             return {
-                refresh: 0
+                refresh: Math.ceil(Math.random() * Math.pow(10, 12))
             }
         },
         created: function () {
-            const handleRefreshChange = () => {
-                if (!document.hidden) {
-                    this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
-                }
-            }
-
-            document.addEventListener("focus", () => handleRefreshChange(), false);
-            document.addEventListener("visibilitychange", handleRefreshChange, false);
+            document.addEventListener("focus", () => this.handleRefreshChange(), false);
+            document.addEventListener("visibilitychange", this.handleRefreshChange, false);
         },
         components: {
 
@@ -44,13 +38,12 @@
                 'webcamConfig': state => state.gui.webcam
             }),
             url() {
-                    const url = this.webcamConfig.url
-                    const params = new URLSearchParams(url);
-                    params.set('bypassCache', this.refresh);
-                    return decodeURIComponent(params)
+                const params = new URLSearchParams(this.webcamConfig.url);
+                params.set('bypassCache', ""+this.refresh);
+                return decodeURIComponent(params.toString())
             },
             webcamStyle() {
-                var transforms = '';
+                let transforms = '';
                 if (this.webcamConfig.flipX) {
                     transforms += ' scaleX(-1)'
                 }
@@ -68,5 +61,12 @@
                 return '';
             }
         },
+        methods: {
+            handleRefreshChange() {
+                if (!document.hidden) {
+                    this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
+                }
+            }
+        }
     }
 </script>
