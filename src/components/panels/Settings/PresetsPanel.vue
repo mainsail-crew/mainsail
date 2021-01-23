@@ -109,10 +109,11 @@
                                             name="input-7-4"
                                             label="Custom G-Code"
                                             v-model="dialog.gcode"
+                                            hide-details="auto"
                                         ></v-textarea>
                                     </v-col>
                                 </v-row>
-                                <v-row v-if="dialog.boolInvalidMin">
+                                <v-row class="mt-3" v-if="dialog.boolInvalidMin">
                                     <v-col class="py-0">
                                         <v-alert dense text type="error">You have to set minimum a target temperature or a custom gcode.</v-alert>
                                     </v-col>
