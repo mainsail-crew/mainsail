@@ -134,8 +134,14 @@
                         >
                         <td class="pr-0 text-center" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(item.thumbnails && item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32))">mdi-file</v-icon>
-                            <img v-if="!item.isDirectory && item.thumbnails && item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32)" :src="'data:image/gif;base64,'+(item.thumbnails.find(thumb => thumb.width === 32 && thumb.height === 32).data)"  />
+                            <v-icon v-if="!item.isDirectory && !(existsSmallThumbnail(item))">mdi-file</v-icon>
+                            <v-tooltip v-if="!item.isDirectory && existsSmallThumbnail(item) && existsBigThumbnail(item)" top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <img :src="'data:image/gif;base64,'+getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
+                                </template>
+                                <span><img :src="'data:image/gif;base64,'+getBigThumbnail(item)" width="250" /></span>
+                            </v-tooltip>
+                            <img v-if="!item.isDirectory && existsSmallThumbnail(item) && !existsBigThumbnail(item)" :src="'data:image/gif;base64,'+getSmallThumbnail(item)" width="32" height="32" />
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
@@ -178,9 +184,8 @@
             <v-card>
                 <v-img
                     contain
-                    v-if="dialogPrintFile.item.thumbnails && dialogPrintFile.item.thumbnails.find(element => element.width === 300 || element.width === 400)"
-                    :src="'data:image/gif;base64,'+(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 300 || element.width === 400).data : '')"
-                    :height="(dialogPrintFile.item.thumbnails ? dialogPrintFile.item.thumbnails.find(element => element.width === 400 || element.width === 300).height : '')+'px'"
+                    v-if="existsBigThumbnail(dialogPrintFile.item)"
+                    :src="'data:image/gif;base64,'+getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">Start Job</v-card-title>
                 <v-card-text>Do you want to start {{ dialogPrintFile.item.filename }}?</v-card-text>
@@ -720,6 +725,46 @@
                     this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
                 }
             },
+            existsSmallThumbnail(item) {
+                if (
+                    'thumbnails' in item &&
+                    item.thumbnails.find(thumb =>
+                        thumb.width >= 32 && thumb.width <= 64 &&
+                        thumb.height >= 32 && thumb.height <= 64
+                    )
+                ) return true
+
+                return false
+            },
+            getSmallThumbnail(item) {
+                if ('thumbnails' in item) {
+                    const thumbnail = item.thumbnails.find(thumb =>
+                        thumb.width >= 32 && thumb.width <= 64 &&
+                        thumb.height >= 32 && thumb.height <= 64
+                    )
+
+                    if (thumbnail) return thumbnail.data
+                }
+
+                return ""
+            },
+            existsBigThumbnail(item) {
+                if (
+                    'thumbnails' in item &&
+                    item.thumbnails.find(thumb => thumb.width === 400)
+                ) return true
+
+                return false
+            },
+            getBigThumbnail(item) {
+                if ('thumbnails' in item) {
+                    const thumbnail = item.thumbnails.find(thumb => thumb.width === 400)
+
+                    if (thumbnail) return thumbnail.data
+                }
+
+                return ""
+            }
         },
         watch: {
             filetree: {
