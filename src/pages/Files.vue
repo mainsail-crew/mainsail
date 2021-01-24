@@ -726,10 +726,14 @@
                 }
             },
             existsSmallThumbnail(item) {
-                return ('thumbnails' in item && item.thumbnails.find(thumb => thumb.width >= 32 && thumb.width <= 64 && thumb.height >= 32 && thumb.height <= 64))
+                return (
+                    'thumbnails' in item &&
+                    item.thumbnails !== undefined &&
+                    item.thumbnails.findIndex(thumb => thumb.width >= 32 && thumb.width <= 64 && thumb.height >= 32 && thumb.height <= 64) !== -1
+                )
             },
             getSmallThumbnail(item) {
-                if ('thumbnails' in item) {
+                if (this.existsSmallThumbnail(item)) {
                     const thumbnail = item.thumbnails.find(thumb =>
                         thumb.width >= 32 && thumb.width <= 64 &&
                         thumb.height >= 32 && thumb.height <= 64
@@ -741,10 +745,14 @@
                 return ""
             },
             existsBigThumbnail(item) {
-                return ('thumbnails' in item && item.thumbnails.find(thumb => thumb.width === 400))
+                return (
+                    'thumbnails' in item &&
+                    item.thumbnails !== undefined &&
+                    item.thumbnails.findIndex(thumb => thumb.width === 400) !== -1
+                )
             },
             getBigThumbnail(item) {
-                if ('thumbnails' in item) {
+                if (this.existsBigThumbnail(item)) {
                     const thumbnail = item.thumbnails.find(thumb => thumb.width === 400)
 
                     if (thumbnail) return thumbnail.data
