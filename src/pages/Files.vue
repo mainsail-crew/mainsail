@@ -726,15 +726,7 @@
                 }
             },
             existsSmallThumbnail(item) {
-                if (
-                    'thumbnails' in item &&
-                    item.thumbnails.find(thumb =>
-                        thumb.width >= 32 && thumb.width <= 64 &&
-                        thumb.height >= 32 && thumb.height <= 64
-                    )
-                ) return true
-
-                return false
+                return ('thumbnails' in item && item.thumbnails.find(thumb => thumb.width >= 32 && thumb.width <= 64 && thumb.height >= 32 && thumb.height <= 64))
             },
             getSmallThumbnail(item) {
                 if ('thumbnails' in item) {
@@ -749,12 +741,7 @@
                 return ""
             },
             existsBigThumbnail(item) {
-                if (
-                    'thumbnails' in item &&
-                    item.thumbnails.find(thumb => thumb.width === 400)
-                ) return true
-
-                return false
+                return ('thumbnails' in item && item.thumbnails.find(thumb => thumb.width === 400))
             },
             getBigThumbnail(item) {
                 if ('thumbnails' in item) {
