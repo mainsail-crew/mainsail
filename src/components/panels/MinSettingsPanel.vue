@@ -26,7 +26,7 @@
                     <p v-if="!boolMacroResume" class="orange--text"><code>gcode_macro RESUME</code> is not defined in config.</p>
                     <p v-if="!boolMacroCancelPrint" class="orange--text"><code>gcode_macro CANCEL_PRINT</code> is not defined in config.</p>
                     <div class="text-center">
-                        <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>more informations</v-btn>
+                        <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>more information</v-btn>
                     </div>
                 </v-flex>
             </v-layout>
