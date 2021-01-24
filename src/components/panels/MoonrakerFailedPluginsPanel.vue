@@ -1,7 +1,7 @@
 <template>
     <v-card
         class="mb-6">
-        <v-toolbar flat dense>
+        <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">
                     <v-icon class="mdi mdi-alert-circle" left></v-icon>Moonraker Failed Plugins
@@ -11,10 +11,10 @@
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
                 <v-flex col class="text-left">
-                    <p>An error was detected while loading the moonraker plugins. Please check the logfile and fix the issue.</p>
-                    <p class="mb-2">Following plugin has an error:</p>
+                    <p class="orange--text">An error was detected while loading the moonraker plugins. Please check the logfile and fix the issue.</p>
+                    <p class="mb-2 orange--text">Following plugin has an error:</p>
                     <ul class="mt-0 pt-0">
-                        <li v-for="plugin in failedPlugins" v-bind:key="plugin"><code>{{ plugin }}</code></li>
+                        <li v-for="plugin in failedPlugins" v-bind:key="plugin" class="orange--text"><code>{{ plugin }}</code></li>
                     </ul>
                 </v-flex>
             </v-layout>
