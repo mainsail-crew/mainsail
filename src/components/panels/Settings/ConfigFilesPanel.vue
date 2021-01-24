@@ -380,7 +380,7 @@
 
                 this.files = findDirectory(this.filetree, dirArray);
                 if (dirArray.length === 1 && this.currentPath === "") {
-                    this.files = this.files.filter(element => element.filename !== "gcodes");
+                    this.files = this.files.filter(element => !["gcodes", "docs"].includes(element.filename))
                 }
 
                 if (!this.showHiddenFiles) {
