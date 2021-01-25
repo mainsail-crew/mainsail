@@ -22,6 +22,9 @@ export function getDefaultState() {
 			flipY: false,
 			bool: false,
 		},
+		tempchart: {
+			autoscale: false,
+		},
 		console: {
 			hideWaitTemperatures: true,
 			boolCustomFilters: false,

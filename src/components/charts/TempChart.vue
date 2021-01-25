@@ -1,5 +1,5 @@
 <template>
-    <div id="tempchart" style="height: 270px; width: 100%;"></div>
+    <div id="tempchart" style="height: 300px; width: 100%;"></div>
 </template>
 
 <script>
@@ -61,6 +61,11 @@ export default {
                 })
             }
         },
+        autoscale: {
+            get() {
+                return this.$store.state.gui.tempchart.autoscale
+            }
+        },
         maxTemp: {
             get() {
                 return this.$store.getters["printer/getMaxTemp"]
@@ -88,7 +93,8 @@ export default {
                 this.chartOptions.data = this.datasets
                 this.chartOptions.axisX.minimum = new Date() - 60* this.tempchartDisplayMinutes *1000
                 this.chartOptions.axisX.maximum = new Date()
-                this.chartOptions.axisY.maximum = this.maxTemp
+                this.chartOptions.axisY.maximum = this.autoscale ? null : this.maxTemp
+                this.chartOptions.axisY.interval = this.autoscale ? 25 : 50
                 this.chart.render()
             }
         }, 1000);
