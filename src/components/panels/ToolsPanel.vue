@@ -41,7 +41,20 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small>mdi-snowflake</v-icon>Cooldown</v-btn>
+            <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>Cooldown</v-btn>
+            <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Temperatures">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn small class="px-2 minwidth-0 ml-2" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="boolTempchart" hide-details label="Show Chart"></v-checkbox>
+                    </v-list-item>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details label="Autoscale Chart"></v-checkbox>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-toolbar>
         <v-card-text class="px-0 py-2 content">
             <v-container class="px-0">
@@ -155,7 +168,23 @@
                 get () {
                     return this.$store.getters["printer/getTemperatureSensors"]
                 }
-            }
+            },
+            boolTempchart: {
+                get() {
+                    return this.$store.state.gui.dashboard.boolTempchart
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { dashboard: { boolTempchart: newVal } })
+                }
+            },
+            autoscaleTempchart: {
+                get() {
+                    return this.$store.state.gui.tempchart.autoscale
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { tempchart: { autoscale: newVal } })
+                }
+            },
         },
         created() {
 
