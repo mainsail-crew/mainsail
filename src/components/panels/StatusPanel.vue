@@ -71,7 +71,7 @@
                         :rotate="-90"
                         :size="50"
                         :width="7"
-                        :value="printPercent * 100"
+                        :value="Math.round(printPercent * 100)"
                         color="red"
                     >
                     </v-progress-circular>

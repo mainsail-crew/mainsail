@@ -22,7 +22,7 @@ export default {
 			for (const [key, item] of Object.entries(parent)) {
 				if (
 					item.isDirectory &&
-					payload.dirs !== undefined &&
+					'dirs' in payload &&
 					payload.dirs.length > 0 &&
 					payload.dirs.findIndex(element => element.dirname === item.filename) < 0
 				) parent.splice(key, 1)

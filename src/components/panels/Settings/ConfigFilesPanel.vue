@@ -132,9 +132,9 @@
                         <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
-                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
-                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon>Save</v-btn>
-                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
+                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
+                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
+                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
                     <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
@@ -380,7 +380,7 @@
 
                 this.files = findDirectory(this.filetree, dirArray);
                 if (dirArray.length === 1 && this.currentPath === "") {
-                    this.files = this.files.filter(element => element.filename !== "gcodes");
+                    this.files = this.files.filter(element => !["gcodes", "docs"].includes(element.filename))
                 }
 
                 if (!this.showHiddenFiles) {
@@ -427,7 +427,9 @@
                     this.editor.show = false;
                     this.editor.sourcecode = "";
 
-                    if (boolRestart) {
+                    if (boolRestart && this.editor.item.filename === "moonraker.conf") {
+                        this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
+                    } else if (boolRestart) {
                         this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
                         this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                     }
@@ -449,7 +451,7 @@
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
                 let link = document.createElement("a");
                 link.download = name;
-                link.href = '//' + this.hostname + ':' + this.port + '/server/files/' + filename;
+                link.href = '//' + this.hostname + ':' + this.port + '/server/files' + filename;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);

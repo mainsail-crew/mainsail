@@ -14,6 +14,7 @@ export function getDefaultState() {
 		klippy_message: "",
 		plugins: [],
 		failed_plugins: [],
+		registered_directories: [],
 		events: [],
 	}
 }

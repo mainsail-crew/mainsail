@@ -45,7 +45,15 @@
                             )
                         ">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
-                        <span class="nav-title">{{ category.title }}</span>
+                        <v-badge
+                            dot
+                            color="warning"
+                            style="top: -9px; left: -16px;"
+                            v-if="category.title === 'Settings' && isUpdateAvailable"
+                        ></v-badge>
+                        <span class="nav-title">
+                            {{ category.title }}
+                        </span>
                         <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
                     </router-link>
 
@@ -185,6 +193,7 @@ export default {
         ...mapGetters([
             'getTitle',
             'getVersion',
+            'server/updateManager/isUpdateAvailable',
         ]),
         print_percent: {
             get() {
@@ -216,6 +225,11 @@ export default {
                 return this.$store.getters["files/getCustomStylesheet"]
             }
         },
+        isUpdateAvailable: {
+            get() {
+                return this.$store.getters["server/updateManager/isUpdateAvailable"]
+            }
+        }
     },
     methods: {
         clickEmergencyStop: function() {

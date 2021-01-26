@@ -128,8 +128,11 @@ export default {
             return items;
         },
         close() {
-            if (this.application === "client" && this.complete) window.location.reload(true)
-            else this.$store.commit('server/updateManager/resetUpdateResponse')
+            if (this.application !== null && this.complete && ["client", "mainsail"].includes(this.application.toLowerCase())) window.location.reload(true)
+            else {
+                this.$store.commit('server/updateManager/resetUpdateResponse')
+                this.$socket.sendObj('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
+            }
         }
     },
     updated(){

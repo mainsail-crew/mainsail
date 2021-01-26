@@ -54,7 +54,11 @@
                 } else if (this.min_temp !== undefined && this.value < this.min_temp && parseFloat(this.value) !== 0) {
                     this.value = this.target;
                     Vue.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")");
-                } else this.$socket.sendObj('printer.gcode.script', { script: this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value });
+                } else {
+                    const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
+                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
+                    this.$socket.sendObj('printer.gcode.script', { script: gcode });
+                }
             }
         },
         watch: {
