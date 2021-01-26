@@ -300,7 +300,6 @@ export default {
                 this.keyboardVisible = true
         });
         bus.$on('updatekeyboardstatus', () => {
-            console.log(localStorage.virtualKeyboard=="enabled")
             this.keyboardActivated=localStorage.virtualKeyboard=="enabled"
         });
         bus.$on('hidekeyboard', () => {
