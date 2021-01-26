@@ -44,9 +44,9 @@ export default {
 				element.filename === 'main-background.gif'
 			)
 		)
-		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
+		if (file) return 'url('+rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename+')'
 
-		return '/img/main-background.jpg'
+		return 'transparent'
 	},
 
 	getCustomStylesheet: (state, getters, rootState, rootGetters) => {
