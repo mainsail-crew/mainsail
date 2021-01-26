@@ -18,7 +18,7 @@ module.exports = {
       }),
       generate({
         file: '.version',
-        content: version
+        content: 'v'+version
       })
     ]
   },

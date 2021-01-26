@@ -22,6 +22,12 @@ export function getDefaultState() {
 				filename: 'config',
 				modified: new Date(),
 				childrens: []
+			},
+			{
+				isDirectory: true,
+				filename: 'docs',
+				modified: new Date(),
+				childrens: []
 			}
 		],
 	}

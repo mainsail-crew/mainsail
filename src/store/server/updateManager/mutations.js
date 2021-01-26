@@ -9,7 +9,7 @@ export default {
 	setStatus(state, payload) {
 		if ('version_info' in payload) {
 			Object.entries(payload.version_info).forEach(([key, value]) => {
-				Vue.set(state, key, value)
+				Vue.set(state.version_info, key, value)
 			})
 		}
 
@@ -24,6 +24,9 @@ export default {
 
 		if (state.updateResponse.complete !== payload.complete)
 			Vue.set(state.updateResponse, 'complete', payload.complete)
+
+		if ('complete' in payload && payload.complete)
+			Vue.prototype.$socket.sendObj('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
 
 		state.updateResponse.messages.push({
 			date: new Date(),

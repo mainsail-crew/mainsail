@@ -22,6 +22,7 @@ export default {
 	onOpen ({ commit, dispatch }) {
 		commit('setConnected')
 		dispatch('server/init', null, { root: true })
+		commit('server/updateManager/setStatus', { busy: false}, { root: true })
 	},
 
 	onClose ({ commit }, event) {
