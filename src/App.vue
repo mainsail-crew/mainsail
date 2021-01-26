@@ -94,7 +94,7 @@
             </v-scroll-y-transition>
         </v-main>
         
-        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardVisible">
+        <v-footer app class="d-block" style="z-index:20000" v-if="keyboardVisible&&keyboardActivated">
             
             <div :class="getTheme+' keyboard-context'" >
                 <div class="keyboard-context-name">
@@ -192,7 +192,7 @@ export default {
         }
     }),
     created () {
-        this.keyboardActivated = localStorage.virtualKeyboard;
+        this.keyboardActivated = localStorage.virtualKeyboard=="enabled";
         this.$vuetify.theme.dark = true;
         this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
     },
@@ -289,7 +289,7 @@ export default {
     },
     mounted() {
         bus.$on('showkeyboard', (event) => {
-            if(!localStorage.virtualKeyboard){
+            if(!localStorage.virtualKeyboard=="enabled"){
                 return;
             }
             this.keyboardInput = event.target;
@@ -300,7 +300,8 @@ export default {
                 this.keyboardVisible = true
         });
         bus.$on('updatekeyboardstatus', () => {
-            this.keyboardActivated=localStorage.virtualKeyboard
+            console.log(localStorage.virtualKeyboard=="enabled")
+            this.keyboardActivated=localStorage.virtualKeyboard=="enabled"
         });
         bus.$on('hidekeyboard', () => {
             this.keyboardVisible = false;
