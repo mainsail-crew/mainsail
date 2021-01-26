@@ -757,7 +757,7 @@
             },
             hide:function(){
                 bus.$emit("hidekeyboard");
-            };
+            },
             existsSmallThumbnail(item) {
                 return (
                     'thumbnails' in item &&
