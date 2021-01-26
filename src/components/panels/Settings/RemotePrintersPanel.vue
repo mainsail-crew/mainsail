@@ -54,7 +54,11 @@
                             <v-col class="col-8">
                                 <v-text-field
                                     v-model="dialogAddPrinter.hostname"
-                                    :rules="[v => !!v || 'Hostname is required']"
+                                    :rules="[
+                                        v => !!v || 'Hostname is required',
+                                        v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                        v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    ]"
                                     label="Hostname/IP"
                                     required
                                     @click.native="showKeyboard"
@@ -94,7 +98,11 @@
                             <v-col class="col-12">
                                 <v-text-field
                                     v-model="dialogAddPrinter.hostname"
-                                    :rules="[v => !!v || 'Hostname is required']"
+                                    :rules="[
+                                        v => !!v || 'Hostname is required',
+                                        v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                        v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    ]"
                                     label="Hostname/IP"
                                     required
                                     @click.native="showKeyboard"
@@ -161,7 +169,11 @@
                             <v-col class="col-8">
                                 <v-text-field
                                     v-model="dialogEditPrinter.hostname"
-                                    :rules="[v => !!v || 'Hostname is required']"
+                                    :rules="[
+                                        v => !!v || 'Hostname is required',
+                                        v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                        v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    ]"
                                     label="Hostname/IP"
                                     required
                                     @click.native="showKeyboard"
@@ -211,7 +223,11 @@
                             <v-col class="col-12">
                                 <v-text-field
                                     v-model="dialogEditPrinter.hostname"
-                                    :rules="[v => !!v || 'Hostname is required']"
+                                    :rules="[
+                                        v => !!v || 'Hostname is required',
+                                        v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                        v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    ]"
                                     label="Hostname/IP"
                                     required
                                     @click.native="showKeyboard"

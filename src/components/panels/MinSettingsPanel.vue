@@ -9,7 +9,7 @@
             !boolMacroResume ||
             !boolMacroCancelPrint
         ">
-        <v-toolbar flat dense>
+        <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-alert-circle" left></v-icon>Missing configuration
@@ -19,13 +19,15 @@
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
                 <v-flex col class="text-left">
-                    <p v-if="!boolVirtualSdcard"><code>virtual_sdcard</code> is not defined in config.</p>
-                    <p v-if="!boolPauseResume"><code>pause_resume</code> is not defined in config.</p>
-                    <p v-if="!boolDisplayStatus"><code>display_status</code> is not defined in config.</p>
-                    <p v-if="!boolMacroPause"><code>gcode_macro PAUSE</code> is not defined in config.</p>
-                    <p v-if="!boolMacroResume"><code>gcode_macro RESUME</code> is not defined in config.</p>
-                    <p v-if="!boolMacroCancelPrint"><code>gcode_macro CANCEL_PRINT</code> is not defined in config.</p>
-                    <p class="mb-0"><a href="https://meteyou.github.io/mainsail/necessary-configuration" target="_blank">Here you will find more information.</a></p>
+                    <p v-if="!boolVirtualSdcard" class="orange--text"><code>virtual_sdcard</code> is not defined in config.</p>
+                    <p v-if="!boolPauseResume" class="orange--text"><code>pause_resume</code> is not defined in config.</p>
+                    <p v-if="!boolDisplayStatus" class="orange--text"><code>display_status</code> is not defined in config.</p>
+                    <p v-if="!boolMacroPause" class="orange--text"><code>gcode_macro PAUSE</code> is not defined in config.</p>
+                    <p v-if="!boolMacroResume" class="orange--text"><code>gcode_macro RESUME</code> is not defined in config.</p>
+                    <p v-if="!boolMacroCancelPrint" class="orange--text"><code>gcode_macro CANCEL_PRINT</code> is not defined in config.</p>
+                    <div class="text-center">
+                        <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>more information</v-btn>
+                    </div>
                 </v-flex>
             </v-layout>
         </v-card-text>

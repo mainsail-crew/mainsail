@@ -72,8 +72,15 @@ export default {
 	mutations: {
 		addPrinter(state, payload) {
 			if ('hostname' in payload && payload.hostname !== "") {
+				const pritnerExist = Object.entries(state).findIndex((printer) =>
+					printer.length > 0 &&
+					'socket' in printer[1] &&
+					'hostname' in printer[1].socket && printer[1].socket.hostname === payload.hostname &&
+					'port' in printer[1].socket && printer[1].socket.port === payload.port
+				)
+
 				const nextPrinterName = 'printer'+Object.entries(state).length
-				if (!this.hasModule(['farm', nextPrinterName])) {
+				if (pritnerExist === -1 && !this.hasModule(['farm', nextPrinterName])) {
 					this.registerModule(['farm', nextPrinterName], printer)
 					this.commit('farm/'+nextPrinterName+'/setSocketData', {...payload, _namespace: nextPrinterName })
 					this.dispatch('farm/'+nextPrinterName+'/connect', {}, { root: true })

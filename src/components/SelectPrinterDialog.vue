@@ -18,6 +18,8 @@
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool && this['farm/countPrinters'] > 0" small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn>
+                <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogEditPrinter.bool" @click="dialogEditPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
             </v-toolbar>
             <v-card-text class="pt-5" v-if="isConnecting">
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
@@ -35,7 +37,11 @@
                         <v-col class="col-8">
                             <v-text-field
                                 v-model="dialogAddPrinter.hostname"
-                                :rules="[v => !!v || 'Hostname is required']"
+                                :rules="[
+                                    v => !!v || 'Hostname is required',
+                                    v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                    v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                ]"
                                 label="Hostname/IP"
                                 required
                                 @click.native="showKeyboard"
@@ -75,7 +81,11 @@
                         <v-col class="col-8">
                             <v-text-field
                                 v-model="dialogEditPrinter.hostname"
-                                :rules="[v => !!v || 'Hostname is required']"
+                                :rules="[
+                                    v => !!v || 'Hostname is required',
+                                    v => !v.startsWith('http:') || 'invalid hostname/IP',
+                                    v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                ]"
                                 label="Hostname/IP"
                                 required
                                 @click.native="showKeyboard"

@@ -81,7 +81,7 @@
                                             <v-checkbox
                                                 v-model="dialog.values[heater.name].bool"
                                                 hide-details
-                                                class="shrink mr-2 mt-0"
+                                                class="shrink mt-0"
                                             ></v-checkbox>
                                             <v-text-field
                                                 v-model="dialog.values[heater.name].value"
@@ -98,7 +98,7 @@
                                             <v-checkbox
                                                 v-model="dialog.values['temperature_fan '+fan.name].bool"
                                                 hide-details
-                                                class="shrink mr-2 mt-0"
+                                                class="shrink mt-0"
                                             ></v-checkbox>
                                             <v-text-field
                                                 v-model="dialog.values['temperature_fan '+fan.name].value"
@@ -121,7 +121,13 @@
                                             @click.native="showKeyboard"
                                             @blur="hideKeyboard"
                                             data-layout="normal"
+                                            hide-details="auto"
                                         ></v-textarea>
+                                    </v-col>
+                                </v-row>
+                                <v-row class="mt-3" v-if="dialog.boolInvalidMin">
+                                    <v-col class="py-0">
+                                        <v-alert dense text type="error">You have to set minimum a target temperature or a custom gcode.</v-alert>
                                     </v-col>
                                 </v-row>
                                 <v-row class="mt-3">
@@ -218,6 +224,7 @@
                     name: "",
                     gcode: "",
                     index: null,
+                    boolInvalidMin: false,
                     values: {},
                 },
                 rules: {
@@ -270,6 +277,7 @@
                 this.dialog.index = null
                 this.dialog.name = ""
                 this.dialog.gcode = ""
+                this.dialog.boolInvalidMin = false
                 this.dialog.values = {}
 
                 for(const heater of this["printer/getHeaters"]) {
@@ -296,7 +304,14 @@
                 this.dialog.bool = true
             },
             savePreset() {
-                if (this.dialog.valid) {
+                let setValues = 0
+                for (const key of Object.keys(this.dialog.values)) {
+                    if (this.dialog.values[key].bool) setValues++
+                }
+                if (this.dialog.gcode.length) setValues++
+
+                if (setValues === 0) this.dialog.boolInvalidMin = true
+                else if (this.dialog.valid) {
                     for (const key of Object.keys(this.dialog.values)) {
                         this.dialog.values[key].value = parseInt(this.dialog.values[key].value)
                     }
