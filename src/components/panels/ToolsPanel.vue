@@ -53,6 +53,9 @@
                     <v-list-item class="minHeight36">
                         <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details label="Autoscale Chart"></v-checkbox>
                     </v-list-item>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="boolPowerDatasets" hide-details label="Show PWM-Datasets"></v-checkbox>
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </v-toolbar>
@@ -183,6 +186,14 @@
                 },
                 set: function(newVal) {
                     return this.$store.dispatch("gui/setSettings", { tempchart: { autoscale: newVal } })
+                }
+            },
+            boolPowerDatasets: {
+                get() {
+                    return this.$store.state.gui.tempchart.boolPowerDatasets
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { tempchart: { boolPowerDatasets: newVal } })
                 }
             },
         },

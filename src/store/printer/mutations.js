@@ -59,6 +59,9 @@ export default {
 
 						if (value.target) this.commit('printer/tempHistory/addValue', { name: name+'_target', value: value.target, time: now })
 						else if (key in state && 'target' in state[key]) this.commit('printer/tempHistory/addValue', { name: name+'_target', value:  state[key].target, time: now })
+
+						if (value.power) this.commit('printer/tempHistory/addValue', { name: name+'_power', value: value.power, time: now })
+						else if (key in state && 'power' in state[key]) this.commit('printer/tempHistory/addValue', { name: name+'_power', value:  state[key].power, time: now })
 					}
 				}
 			}
