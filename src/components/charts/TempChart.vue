@@ -41,6 +41,13 @@ export default {
                     maximum: 300,
                     interval: 50,
                 },
+                axisY2: {
+                    gridThickness: 0,
+                    gridColor: '#ffffff30',
+                    minimum: 0,
+                    maximum: 1,
+                    interval: 0.25,
+                },
                 data: [ ]
             },
             chart : null
@@ -53,6 +60,8 @@ export default {
 
                 return datasets.sort((a,b) => {
                     if ('name' in a && 'name' in b) {
+                        if (a.name.endsWith("_target") > b.name.endsWith("_power")) return -1
+                        if (a.name.endsWith("_power") < b.name.endsWith("_target")) return 1
                         if (a.name.endsWith("_target") > b.name.endsWith("_target")) return -1
                         if (a.name.endsWith("_target") < b.name.endsWith("_target")) return 1
                     }
