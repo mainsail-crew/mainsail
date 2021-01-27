@@ -24,6 +24,7 @@ export function getDefaultState() {
 		},
 		tempchart: {
 			autoscale: false,
+			boolPowerDatasets: false,
 		},
 		console: {
 			hideWaitTemperatures: true,
