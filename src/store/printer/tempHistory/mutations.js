@@ -1,4 +1,5 @@
 import { getDefaultState } from './index'
+import Vue from "vue";
 
 export default {
 	reset(state) {
@@ -6,9 +7,6 @@ export default {
 	},
 
 	addDataset(state, payload) {
-		window.console.log("addDataset")
-		window.console.log(payload.name)
-
 		state.datasets.push(payload)
 	},
 
@@ -16,6 +14,7 @@ export default {
 		// definations for delete old entries
 		let timeOld = new Date().getTime() - (1000 * 60 * 10)
 		let minResolution = 1000   // value in ms
+		const multi = payload.name.endsWith("_power") ? 100 : 1
 		//let deletedIndex
 
 		let mainDataset = state.datasets.find(element => element.name === payload.name)
@@ -26,7 +25,7 @@ export default {
 				for (let i = payload.value.length; i > 0; i--) {
 					mainDataset.dataPoints.push({
 						x: payload.time - (i*1000),
-						y: Math.round(payload.value[payload.value.length - i]*100)/100
+						y: Math.round(payload.value[payload.value.length - i] * multi * 100)/100
 					})
 				}
 			} else {
@@ -40,7 +39,7 @@ export default {
 					) {
 						mainDataset.dataPoints.push({
 							x: payload.time,
-							y: Math.round(payload.value*100)/100
+							y: Math.round(payload.value * multi * 100)/100
 						});
 					}
 
@@ -51,7 +50,7 @@ export default {
 				} else if (mainDataset.dataPoints) {
 					mainDataset.dataPoints.push({
 						x: payload.time,
-						y:  Math.round(payload.value*100)/100
+						y:  Math.round(payload.value * multi * 100)/100
 					});
 				}
 			}
@@ -70,6 +69,29 @@ export default {
 		state.datasets.forEach(element => {
 			if (element.name.endsWith("_power")) {
 				element.visible = true
+			}
+		})
+	},
+
+	setVisible(state, payload) {
+		const datasetName = payload.type !== 'temperature' ? payload.name+'_'+payload.type : payload.name
+
+		const datasetIndex = state.datasets.findIndex(element => element.name === datasetName)
+		if (datasetIndex !== -1) {
+			Vue.set(state.datasets[datasetIndex], 'visible', payload.value)
+
+
+		}
+	},
+
+	setColor(state, payload) {
+		state.datasets.forEach(element => {
+			if (
+				element.name === payload.name ||
+				element.name === payload.name+'_target' ||
+				element.name === payload.name+'_power'
+			) {
+				element.color = payload.value
 			}
 		})
 	},

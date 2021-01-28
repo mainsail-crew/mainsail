@@ -79,6 +79,9 @@ export default {
 						temperature: value.temperature,
 						power: 'power' in value ? value.power : null,
 						chartColor: getters["tempHistory/getDatasetColor"](name),
+						chartTemperature: getters["tempHistory/getDataset"](name),
+						chartTarget: getters["tempHistory/getDataset"](name+"_target"),
+						chartPower: getters["tempHistory/getDataset"](name+'_power'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -102,6 +105,9 @@ export default {
 					temperature: value.temperature,
 					speed: value.speed,
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
+					chartTarget: getters["tempHistory/getDataset"](nameSplit[1]+"_target"),
+					chartPower: getters["tempHistory/getDataset"](nameSplit[1]+'_power'),
 				})
 			}
 		}
@@ -133,6 +139,7 @@ export default {
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
 				})
 			}
 		}

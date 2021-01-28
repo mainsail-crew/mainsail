@@ -65,5 +65,12 @@ export default {
 		if (state.presets[payload.index]) {
 			state.presets.splice(payload.index, 1)
 		}
+	},
+
+	setTempchartDatasetSetting(state, payload) {
+		if (!(payload.name in state.tempchart.datasetSettings))
+			Vue.set(state.tempchart.datasetSettings, payload.name, {})
+
+		Vue.set(state.tempchart.datasetSettings[payload.name], payload.type, payload.value)
 	}
 }
