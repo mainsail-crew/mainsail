@@ -40,13 +40,15 @@ export default {
                     minimum: 0,
                     maximum: 300,
                     interval: 50,
+                    suffix: '°C'
                 },
                 axisY2: {
                     gridThickness: 0,
                     gridColor: '#ffffff30',
                     minimum: 0,
-                    maximum: 1,
-                    interval: 0.25,
+                    maximum: 100,
+                    interval: 25,
+                    suffix: '%'
                 },
                 data: [ ]
             },

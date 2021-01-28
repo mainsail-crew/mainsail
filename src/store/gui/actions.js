@@ -61,5 +61,10 @@ export default {
 	deletePreset({ commit, dispatch }, payload) {
 		commit("deletePreset", payload)
 		dispatch("upload")
+	},
+
+	setTempchartDatasetSetting({ commit, dispatch }, payload) {
+		commit("setTempchartDatasetSetting", payload)
+		dispatch("upload")
 	}
 }
