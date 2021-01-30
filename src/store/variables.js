@@ -17,3 +17,8 @@ export const datasetTypes = [
 	"target",
 	"power",
 ]
+
+export const additionalSensors = [
+	"bme280",
+	"htu21d",
+]

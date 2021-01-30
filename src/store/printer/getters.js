@@ -1,4 +1,5 @@
 import { caseInsensitiveNameSort } from '@/plugins/helpers'
+import { additionalSensors } from '@/store/variables'
 
 export default {
 
@@ -77,6 +78,7 @@ export default {
 						color: color,
 						target: value.target,
 						temperature: value.temperature,
+						additionValues: getters.getAdditionSensors(nameSplit[1]),
 						power: 'power' in value ? value.power : null,
 						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
@@ -104,6 +106,7 @@ export default {
 					name: nameSplit[1],
 					target: value.target,
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
 					speed: value.speed,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
@@ -132,9 +135,12 @@ export default {
 				if (value.temperature <= min_temp + split) icon = "mdi-thermometer-low"
 				if (value.temperature >= max_temp - split) icon = "mdi-thermometer-high"
 
+
+
 				sensors.push({
 					name: nameSplit[1],
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
 					icon: icon,
 					min_temp: min_temp,
 					max_temp: max_temp,
@@ -275,6 +281,38 @@ export default {
 
 			return 0
 		})
+	},
+
+	getAdditionSensors: state => (name) => {
+		let additionValues = {}
+		additionalSensors.forEach(sensorName => {
+			if (sensorName+" "+name in state) {
+				Object.keys(state[sensorName+" "+name]).forEach(key => {
+					if (key !== "temperature") {
+						let tmp = {}
+						tmp[key] = {}
+						tmp[key]['value'] = state[sensorName+" "+name][key]
+
+						switch(key) {
+							case 'pressure':
+								tmp[key]['unit'] = "hPa"
+								break
+
+							case 'humidity':
+								tmp[key]['unit'] = "%"
+								break
+
+							default:
+								tmp[key]['unit'] = ""
+						}
+
+						additionValues = Object.assign(additionValues, tmp)
+					}
+				})
+			}
+		})
+
+		return additionValues
 	},
 
 	getAllMacros: state => {
