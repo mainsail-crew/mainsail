@@ -618,7 +618,7 @@
                     this.dropzone.visibility = 'hidden';
                     this.dropzone.opacity = 0;
 
-                    if (!this.is_printing && e.dataTransfer.files.length) {
+                    if (e.dataTransfer.files.length) {
                         await this.doUploadFile(e.dataTransfer.files[0]);
                     }
                 }
