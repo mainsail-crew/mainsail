@@ -19,13 +19,26 @@
 </style>
 
 <template>
-    <v-text-field type="number" min="0" :max="max_temp" step="any" ref="toolField" v-model="value" class="tool-input" @change="setTemps" onClick="this.select();">
-    </v-text-field>
+    <v-combobox
+        dense
+        hide-details
+        onClick="this.select();"
+        v-model="value"
+        :items="items"
+        item-text="value"
+        @change="setTemps"
+    ></v-combobox>
 </template>
+
 
 
 <script>
     import Vue from "vue";
+
+    /*
+<v-text-field v-if="false" type="number" min="0" :max="max_temp" step="any" ref="toolField"  class="tool-input">
+</v-text-field>
+*/
 
     export default {
         data: function() {
@@ -40,12 +53,14 @@
             max_temp: Number,
             command: String,
             attributeName: String,
+            items: Array,
         },
         computed: {
 
         },
         methods: {
             setTemps() {
+                if (typeof this.value === 'object' && this.value !== null) this.value = this.value.value
                 if (parseFloat(this.value) === 0) this.value = 0
 
                 if (this.max_temp !== undefined && this.value > this.max_temp) {

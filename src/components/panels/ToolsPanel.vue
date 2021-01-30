@@ -16,46 +16,48 @@
                     <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>Temperatures</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-menu :offset-y="true" title="Preheat" v-if="this['gui/getPreheatPresets'].length">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
-                    </template>
-                    <v-list dense class="py-0">
-                        <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
-                            <v-list-item-icon class="mr-0">
-                                <v-icon small>mdi-fire</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title v-text="preset.name"></v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-divider></v-divider>
-                    <v-list dense class="py-0">
-                        <v-list-item link @click="cooldown()">
-                            <v-list-item-icon class="mr-0">
-                                <v-icon small>mdi-snowflake</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>Cooldown</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-                <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>Cooldown</v-btn>
-                <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Temperatures">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0 ml-2" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
-                    </template>
-                    <v-list>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="boolTempchart" hide-details label="Show Chart"></v-checkbox>
-                        </v-list-item>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details label="Autoscale Chart"></v-checkbox>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                <v-item-group class="v-btn-toggle" name="controllers">
+                    <v-menu :offset-y="true" title="Preheat" v-if="this['gui/getPreheatPresets'].length">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
+                        </template>
+                        <v-list dense class="py-0">
+                            <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
+                                <v-list-item-icon class="mr-0">
+                                    <v-icon small>mdi-fire</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title v-text="preset.name"></v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                        <v-divider></v-divider>
+                        <v-list dense class="py-0">
+                            <v-list-item link @click="cooldown()">
+                                <v-list-item-icon class="mr-0">
+                                    <v-icon small>mdi-snowflake</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title>Cooldown</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                    <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>Cooldown</v-btn>
+                    <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Temperatures">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" v-model="boolTempchart" hide-details label="Show Chart"></v-checkbox>
+                            </v-list-item>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details label="Autoscale Chart"></v-checkbox>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-item-group>
             </v-toolbar>
             <v-card-text class="px-0 py-2 content">
                 <v-container class="px-0">
@@ -75,7 +77,7 @@
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
                             <v-col class="py-2 text-center">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</v-col>
                             <v-col class="text-center py-2 pr-8 vertical_align_center">
-                                <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
+                                <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" :items="heater.presets" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
                             </v-col>
                         </v-row>
                     </div>
@@ -89,7 +91,7 @@
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
                             <v-col class="py-2 text-center">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</v-col>
                             <v-col class="text-center py-2 pr-8 pr-0  vertical_align_center">
-                                <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" ></toolInput>
+                                <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" :items="fan.presets" ></toolInput>
                             </v-col>
                         </v-row>
                     </div>
@@ -208,7 +210,6 @@
         },
         data: function() {
             return {
-                extruderTemps: [250,215,195,0],
                 editHeater: {
                     bool: false,
                     object: {},
