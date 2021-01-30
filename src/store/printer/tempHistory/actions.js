@@ -1,4 +1,5 @@
-import {colorArray, colorChamber, colorHeaterBed} from "@/store/variables";
+import {colorArray, colorChamber, colorHeaterBed, datasetTypes} from "@/store/variables";
+import {convertName} from "@/plugins/helpers";
 
 export default {
 	reset({ commit }) {
@@ -6,6 +7,7 @@ export default {
 	},
 
 	getHistory({ commit, state, rootGetters }, payload) {
+		const now = new Date()
 		if (payload !== undefined) {
 			Object.entries(payload).sort().forEach(([name, datasets]) => {
 				let keySplit = name.split(" ")
@@ -13,8 +15,6 @@ export default {
 				const type = keySplit[0]
 
 				if ('temperatures' in datasets) {
-					let now = new Date()
-
 					let datasetTemperature = state.datasets.find(element => element.name === name)
 					if (datasetTemperature === undefined) {
 						let color = ''
@@ -34,14 +34,13 @@ export default {
 						}
 
 						datasetTemperature = {
-							type: "spline",
+							type: "line",
 							name: name,
-							legendText: name,
+							legendText: convertName(name),
 							xValueType: "dateTime",
 							dataPoints:[],
 							showInLegend: true,
 							markerType: 'none',
-							toolTipContent: "{name}: {y}°C",
 							color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
 							visible: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 1 : 0,
 						}
@@ -62,12 +61,10 @@ export default {
 							datasetTarget = {
 								type: "stepArea",
 								name: name+"_target",
-								legendText: name+"_target",
 								xValueType: "dateTime",
 								dataPoints:[],
 								showInLegend: false,
 								markerType: 'none',
-								toolTipContent: "{name}: {y}°C",
 								color: datasetTemperature.color,
 								fillOpacity: .1,
 								lineThickness: 0,
@@ -89,9 +86,8 @@ export default {
 						let datasetPower = state.datasets.find(element => element.name === name+"_power")
 						if (datasetPower === undefined) {
 							datasetPower = {
-								type: "spline",
+								type: "line",
 								name: name+"_power",
-								legendText: name+"_power",
 								xValueType: "dateTime",
 								axisYType: "secondary",
 								dataPoints:[],
@@ -100,7 +96,6 @@ export default {
 								lineDashType: "dot",
 								lineThickness: 1,
 								visible: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'power' })) ? 1 : 0,
-								toolTipContent: "{name}: {y}%",
 								color: datasetTemperature.color,
 							}
 
@@ -118,4 +113,32 @@ export default {
 			})
 		}
 	},
+
+	updateDatasets({ commit, rootState }) {
+		if (
+			'heaters' in rootState.printer &&
+			'available_sensors' in rootState.printer.heaters &&
+			rootState.printer.heaters.available_sensors.length
+		) {
+			const now = new Date()
+			rootState.printer.heaters.available_sensors.forEach((objectName) => {
+				if (objectName in rootState.printer) {
+					const objectNameSplits = objectName.split(" ")
+					let name = objectNameSplits[0]
+					if (["temperature_fan", "temperature_sensor", "heater_generic"].includes(objectNameSplits[0])) name = objectNameSplits[1]
+
+					datasetTypes.forEach(datasetType => {
+						if (datasetType in rootState.printer[objectName]) {
+							commit('addValue', {
+								name: datasetType === "temperature" ? name : name+"_"+datasetType,
+								value: rootState.printer[objectName][datasetType],
+								type: objectNameSplits[0],
+								time: now
+							})
+						}
+					})
+				}
+			})
+		}
+	}
 }
