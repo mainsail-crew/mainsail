@@ -33,7 +33,8 @@ export default {
 		for (const [, preset] of Object.entries(state.presets)) {
 			if (
 				payload.name in preset.values &&
-				preset.values[payload.name].bool
+				preset.values[payload.name].bool &&
+				output.findIndex(entry => entry.value === preset.values[payload.name].value) === -1
 			) {
 				output.push({
 					value: preset.values[payload.name].value,
