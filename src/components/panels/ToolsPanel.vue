@@ -68,7 +68,7 @@
                     <div v-for="(heater, index) in heaters" v-bind:key="index" >
                         <v-divider class="my-2"></v-divider>
                         <v-row align="center">
-                            <v-col class="pl-8 pr-0 flex-grow-0 py-2colHeaterIcons">
+                            <v-col class="pl-8 pr-0 flex-grow-0 py-2 colHeaterIcons">
                                 <v-icon :color="heater.color">mdi-{{ heater.icon }}</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(heater)">{{ convertName(heater.name) }}</span></v-col>
@@ -267,6 +267,11 @@
         },
         methods: {
             convertName: convertName,
+            cssBorderLeftColor(color) {
+                return {
+                  "border-left-color": color
+                }
+            },
             preheat(preset) {
                 for (const [name, attributes] of Object.entries(preset.values)) {
                     if (attributes.bool) {
