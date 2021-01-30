@@ -23,6 +23,8 @@ export function getDefaultState() {
 			bool: false,
 		},
 		tempchart: {
+			intervalChartUpdate: 1000,
+			intervalDatasetUpdate: 500,
 			autoscale: false,
 			datasetSettings: {
 

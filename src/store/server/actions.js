@@ -45,7 +45,6 @@ export default {
 		if (state.registered_directories.length === 0 && 'registered_directories' in payload) {
 			for (const directory of payload.registered_directories) {
 				if (rootState.files.filetree.findIndex((element) => element.isDirectory && element.filename === directory) !== -1) {
-					//Vue.prototype.$socket.sendObj('server.files.list', { root: directory }, 'files/getFileList')
 					Vue.prototype.$socket.sendObj('server.files.get_directory', { path: directory }, 'files/getDirectory')
 				}
 			}
