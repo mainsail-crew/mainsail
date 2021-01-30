@@ -252,11 +252,14 @@ export default {
 			if (a.type === "fan") return -1
 			if (b.type === "fan") return 1
 
+			if (a.pwm < b.pwm) return 1
+			if (a.pwm > b.pwm) return -1
+
 			if (a.controllable < b.controllable) return 1
 			if (a.controllable > b.controllable) return -1
 
-			let nameA = a.name.toUpperCase()
-			let nameB = b.name.toUpperCase()
+			const nameA = a.name.toUpperCase()
+			const nameB = b.name.toUpperCase()
 
 			if (nameA < nameB) return -1
 			if (nameA > nameB) return 1
