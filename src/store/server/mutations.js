@@ -26,6 +26,10 @@ export default {
 		});
 	},
 
+	clearGcodeStore(state) {
+		Vue.set(state, 'events', [])
+	},
+
 	setGcodeStore(state, payload) {
 		if ("gcode_store" in payload && Array.isArray(payload.gcode_store)) {
 			payload.gcode_store.forEach(message => {

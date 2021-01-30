@@ -65,6 +65,7 @@ export default {
 	},
 
 	getGcodeStore({ commit }, payload) {
+		commit('clearGcodeStore')
 		commit('setGcodeStore', payload)
 	},
 
