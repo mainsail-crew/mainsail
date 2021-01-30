@@ -40,7 +40,7 @@ export default {
 							xValueType: "dateTime",
 							dataPoints:[],
 							showInLegend: true,
-							markerType: 'none',
+							markerType: 'circle',
 							color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
 							visible: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 1 : 0,
 						}
