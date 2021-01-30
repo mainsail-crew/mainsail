@@ -45,7 +45,7 @@ export default {
 		return array.sort(caseInsensitiveNameSort);
 	},
 
-	getHeaters: (state, getters) => {
+	getHeaters: (state, getters, rootState, rootGetters) => {
 		let heaters = []
 		let colorOff = "grey darken-2"
 		let colorHot = "grey lighten-5"
@@ -78,6 +78,7 @@ export default {
 						target: value.target,
 						temperature: value.temperature,
 						power: 'power' in value ? value.power : null,
+						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
 						chartTemperature: getters["tempHistory/getDataset"](name),
 						chartTarget: getters["tempHistory/getDataset"](name+"_target"),
@@ -92,7 +93,7 @@ export default {
 		return heaters.sort(caseInsensitiveNameSort);
 	},
 
-	getTemperatureFans: (state, getters) => {
+	getTemperatureFans: (state, getters, rootState, rootGetters) => {
 		let fans = []
 
 		for (let [key, value] of Object.entries(state)) {
@@ -104,6 +105,7 @@ export default {
 					target: value.target,
 					temperature: value.temperature,
 					speed: value.speed,
+					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
 					chartTarget: getters["tempHistory/getDataset"](nameSplit[1]+"_target"),

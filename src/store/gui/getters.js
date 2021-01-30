@@ -21,5 +21,31 @@ export default {
 		if (["temperature", "target"].includes(payload.type)) return true
 
 		return false
+	},
+
+	getPresetsFromHeater: state => (payload) => {
+		const output = []
+
+		output.push({
+			value: 0
+		})
+
+		for (const [, preset] of Object.entries(state.presets)) {
+			if (
+				payload.name in preset.values &&
+				preset.values[payload.name].bool
+			) {
+				output.push({
+					value: preset.values[payload.name].value,
+				})
+			}
+		}
+
+		return output.sort((a,b) => {
+			if (a.value > b.value) return -1
+			if (a.value < b.value) return 1
+
+			return 0
+		})
 	}
 }
