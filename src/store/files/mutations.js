@@ -98,7 +98,7 @@ export default {
 		let parent = findDirectory(state.filetree, (payload.item.root+"/"+path).split("/"));
 
 		if (parent) {
-			if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) < 0) {
+			if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) === -1) {
 				let modified = new Date(payload.item.modified * 1000);
 
 				parent.push({
@@ -108,7 +108,7 @@ export default {
 					size: payload.item.size,
 					metadataPulled: false,
 				});
-			}
+			} else Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.item.path }, "files/getMetadata")
 		}
 	},
 
