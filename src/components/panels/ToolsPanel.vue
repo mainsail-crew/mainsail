@@ -6,6 +6,11 @@
     .colHeaterIcons {
         width: 68px;
     }
+
+    .canvasjs-chart-tooltip>div {
+        border-radius: 10px !important;
+    }
+
 </style>
 
 <template>
