@@ -85,6 +85,7 @@ export default {
 						chartTemperature: getters["tempHistory/getDataset"](name),
 						chartTarget: getters["tempHistory/getDataset"](name+"_target"),
 						chartPower: getters["tempHistory/getDataset"](name+'_power'),
+						chartSpeed: getters["tempHistory/getDataset"](name+'_speed'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -113,6 +114,7 @@ export default {
 					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
 					chartTarget: getters["tempHistory/getDataset"](nameSplit[1]+"_target"),
 					chartPower: getters["tempHistory/getDataset"](nameSplit[1]+'_power'),
+					chartSpeed: getters["tempHistory/getDataset"](nameSplit[1]+'_speed'),
 				})
 			}
 		}
