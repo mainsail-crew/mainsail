@@ -72,5 +72,18 @@ export default {
 			Vue.set(state.tempchart.datasetSettings, payload.name, {})
 
 		Vue.set(state.tempchart.datasetSettings[payload.name], payload.type, payload.value)
+	},
+
+	setTempchartDatasetAdditionalSensorSetting(state, payload) {
+		if (!(payload.name in state.tempchart.datasetSettings))
+			Vue.set(state.tempchart.datasetSettings, payload.name, {})
+
+		if (!('additionalSensors' in state.tempchart.datasetSettings[payload.name]))
+			Vue.set(state.tempchart.datasetSettings[payload.name], 'additionalSensors', {})
+
+		if (!(payload.sensor in state.tempchart.datasetSettings[payload.name]['additionalSensors']))
+			Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'], payload.sensor, {})
+
+		Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor], 'boolList', payload.value)
 	}
 }

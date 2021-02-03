@@ -23,6 +23,18 @@ export default {
 		return false
 	},
 
+	getDatasetAdditionalSensorValue: (state) => (payload) => {
+		if (
+			payload.name in state.tempchart.datasetSettings &&
+			'additionalSensors' in state.tempchart.datasetSettings[payload.name] &&
+			payload.sensor in state.tempchart.datasetSettings[payload.name]['additionalSensors']
+		) return state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor]
+
+		return {
+			'boolList': true
+		}
+	},
+
 	getPresetsFromHeater: state => (payload) => {
 		const output = []
 
