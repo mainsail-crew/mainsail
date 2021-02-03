@@ -21,7 +21,7 @@ export default {
 	},
 
 	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], '.mainsail.json');
+		let file = new File([JSON.stringify({ state })], '.mainsail.json')
 
 		window.console.log("upload .mainsail.json")
 		window.console.log(state)
