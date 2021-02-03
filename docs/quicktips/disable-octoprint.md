@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/disable-octoprint-lcd-menu
 description: >-
-  Klipper is shipped with an Octoprint entry in the LCD menu. Let's be honest: who needs this?
+  Klipper is shipped with an Octoprint entry in the LCD menu. These menu points don't work with Mainsail.
 ---
  
 # {{ page.title }}

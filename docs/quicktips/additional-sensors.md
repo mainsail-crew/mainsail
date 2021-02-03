@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/additional-sensors
 description: >-
-  Integrate additional sensors into the temperature graph. For example Raspberry Pi, MCU, MAXxxxxx, BMExxx, HTU21D, LM75 and more..
+  Integrate additional sensors into the temperature graph. For example Raspberry Pi, MCU, BMExxx, HTU21D, LM75 and more..
 ---
 
 # {{ page.title }}
