@@ -69,5 +69,10 @@ export default {
 	setTempchartDatasetSetting({ commit, dispatch }, payload) {
 		commit("setTempchartDatasetSetting", payload)
 		dispatch("upload")
+	},
+
+	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch }, payload) {
+		commit("setTempchartDatasetAdditionalSensorSetting", payload)
+		dispatch("upload")
 	}
 }
