@@ -156,39 +156,47 @@
                 </v-toolbar>
                 <v-card-text class="pt-3">
                     <v-container class="px-0 py-0">
-                        <v-row>
+                        <v-row v-if="'chartTemperature' in editHeater.object && editHeater.object.chartTemperature">
                             <v-col class="col-12">
                                 <v-checkbox
                                     v-model="editHeater.boolTemperature"
                                     label="Show current temperature in chart"
                                     hide-details
                                     class="mt-0"
-                                    v-if="'chartTemperature' in editHeater.object && editHeater.object.chartTemperature"
-                                    @change="setVisibleTemperature"
+                                    @change="setVisible('temperature')"
                                 ></v-checkbox>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="'chartTarget' in editHeater.object && editHeater.object.chartTarget">
                             <v-col class="col-12">
                                 <v-checkbox
                                     v-model="editHeater.boolTarget"
                                     label="Show target temperature in chart"
                                     hide-details
                                     class="mt-0"
-                                    v-if="'chartTarget' in editHeater.object && editHeater.object.chartTarget"
-                                    @change="setVisibleTarget"
+                                    @change="setVisible('target')"
                                 ></v-checkbox>
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row v-if="'chartPower' in editHeater.object && editHeater.object.chartPower">
                             <v-col class="col-12">
                                 <v-checkbox
                                     v-model="editHeater.boolPower"
                                     label="Show PWM-power in chart"
                                     hide-details
                                     class="mt-0"
-                                    v-if="'chartPower' in editHeater.object && editHeater.object.chartPower"
-                                    @change="setVisiblePower"
+                                    @change="setVisible('power')"
+                                ></v-checkbox>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="'chartSpeed' in editHeater.object && editHeater.object.chartSpeed">
+                            <v-col class="col-12">
+                                <v-checkbox
+                                    v-model="editHeater.boolSpeed"
+                                    label="Show PWM-power in chart"
+                                    hide-details
+                                    class="mt-0"
+                                    @change="setVisible('speed')"
                                 ></v-checkbox>
                             </v-col>
                         </v-row>
@@ -230,6 +238,7 @@
                     boolTemperature: false,
                     boolTarget: false,
                     boolPower: false,
+                    boolSpeed: false,
                     color: "",
                 }
             }
@@ -318,26 +327,15 @@
                 this.editHeater.boolTemperature = 'chartTemperature' in object && object.chartTemperature !== undefined && 'visible' in object.chartTemperature ? object.chartTemperature.visible : false
                 this.editHeater.boolTarget = 'chartTarget' in object && object.chartTarget !== undefined && 'visible' in object.chartTarget ? object.chartTarget.visible : false
                 this.editHeater.boolPower = 'chartPower' in object && object.chartPower !== undefined && 'visible' in object.chartPower ? object.chartPower.visible : false
+                this.editHeater.boolSpeed = 'chartSpeed' in object && object.chartSpeed !== undefined && 'visible' in object.chartSpeed ? object.chartSpeed.visible : false
 
                 this.editHeater.bool = true
             },
-            setVisibleTemperature() {
-                if ("name" in this.editHeater.object) {
-                    this.$store.commit('printer/tempHistory/setVisible', { name: this.editHeater.object.name, type: 'temperature', value: this.editHeater.boolTemperature })
-                    this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: 'temperature', value: this.editHeater.boolTemperature })
-                }
-            },
-            setVisibleTarget() {
-                if ("name" in this.editHeater.object) {
-                    this.$store.commit('printer/tempHistory/setVisible', { name: this.editHeater.object.name, type: 'target', value: this.editHeater.boolTarget })
-                    this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: 'target', value: this.editHeater.boolTarget })
-                }
-            },
-            setVisiblePower() {
-                if ("name" in this.editHeater.object) {
-                    this.$store.commit('printer/tempHistory/setVisible', { name: this.editHeater.object.name, type: 'power', value: this.editHeater.boolPower })
-                    this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: 'power', value: this.editHeater.boolPower })
-                }
+            setVisible(type) {
+              if ("name" in this.editHeater.object) {
+                this.$store.commit('printer/tempHistory/setVisible', { name: this.editHeater.object.name, type: type, value: this.editHeater['bool'+type.charAt(0).toUpperCase() + type.slice(1)] })
+                this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: type, value: this.editHeater['bool'+type.charAt(0).toUpperCase() + type.slice(1)] })
+              }
             },
             setChartColor(value) {
                 if ("name" in this.editHeater.object) {
