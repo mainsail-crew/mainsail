@@ -62,6 +62,11 @@ export default {
                                 if (datasetPower) {
                                   output += " at "+datasetPower.dataPoint.y.toFixed(0)+"%"
                                 }
+
+                                const datasetSpeed = e.entries.find(datasetPower => datasetPower.dataSeries.name === dataset.dataSeries.name+"_speed")
+                                if (datasetSpeed) {
+                                  output += " at "+datasetSpeed.dataPoint.y.toFixed(0)+"%"
+                                }
                             })
                         }
 
