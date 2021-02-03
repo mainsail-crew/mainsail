@@ -46,7 +46,7 @@ export default {
 						}
 
 						commit('addDataset', datasetTemperature)
-					}
+					} else commit('clearDataset', name)
 
 					commit('addValue', {
 						name: name,
@@ -55,7 +55,7 @@ export default {
 						time: now
 					})
 
-					if ('targets' in datasets && (type.startsWith("extruder") || type === "heater_bed" || type === "temperature_fan")) {
+					if ('targets' in datasets && (type.startsWith("extruder") || ["heater_bed", "temperature_fan"].includes(type))) {
 						let datasetTarget = state.datasets.find(element => element.name === name+"_target")
 						if (datasetTarget === undefined) {
 							datasetTarget = {
@@ -72,7 +72,7 @@ export default {
 							}
 
 							commit('addDataset', datasetTarget)
-						}
+						} else commit('clearDataset', name+"_target")
 
 						commit('addValue', {
 							name: name+"_target",
@@ -82,33 +82,35 @@ export default {
 						})
 					}
 
-					if ('powers' in datasets && (type.startsWith("extruder") || type === "heater_bed")) {
-						let datasetPower = state.datasets.find(element => element.name === name+"_power")
-						if (datasetPower === undefined) {
-							datasetPower = {
-								type: "line",
-								name: name+"_power",
-								xValueType: "dateTime",
-								axisYType: "secondary",
-								dataPoints:[],
-								showInLegend: false,
-								markerType: 'none',
-								lineDashType: "dot",
-								lineThickness: 1,
-								visible: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'power' })) ? 1 : 0,
-								color: datasetTemperature.color,
-							}
+					['power', 'speed'].forEach(additionalType => {
+						if (additionalType+"s" in datasets && (type.startsWith("extruder") || ["heater_bed", "temperature_fan"].includes(type))) {
+							let datasetAdditinal = state.datasets.find(element => element.name === name+"_"+additionalType)
+							if (datasetAdditinal === undefined) {
+								datasetAdditinal = {
+									type: "line",
+									name: name+"_"+additionalType,
+									xValueType: "dateTime",
+									axisYType: "secondary",
+									dataPoints:[],
+									showInLegend: false,
+									markerType: 'none',
+									lineDashType: "dot",
+									lineThickness: 1,
+									visible: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 1 : 0,
+									color: datasetTemperature.color,
+								}
 
-							commit('addDataset', datasetPower)
+								commit('addDataset', datasetAdditinal)
+							} else commit('clearDataset', name+"_"+additionalType)
+
+							commit('addValue', {
+								name: name+"_"+additionalType,
+								value: datasets[additionalType+"s"],
+								type: type,
+								time: now
+							})
 						}
-
-						commit('addValue', {
-							name: name+"_power",
-							value: datasets.powers,
-							type: type,
-							time: now
-						})
-					}
+					})
 				}
 			})
 		}

@@ -1,4 +1,5 @@
 import { getDefaultState } from './index'
+import { datasetTypesInPercents } from '@/store/variables'
 import Vue from "vue";
 
 export default {
@@ -11,7 +12,11 @@ export default {
 	},
 
 	addValue(state, payload) {
-		const multi = payload.name.endsWith("_power") ? 100 : 1
+		let multi = 1
+		datasetTypesInPercents.forEach(element => {
+			if (payload.name.endsWith("_"+element)) multi = 100
+		})
+
 		const dataset = state.datasets.find(element => element.name === payload.name)
 
 		if (dataset !== undefined && payload.value !== undefined) {
@@ -34,6 +39,13 @@ export default {
 					dataset.dataPoints.splice(i, 1)
 				}
 			}
+		}
+	},
+
+	clearDataset(state, payload) {
+		const dataset = state.datasets.find(dataset => dataset.name === payload)
+		if (dataset) {
+			Vue.set(dataset, 'dataPoints', [])
 		}
 	},
 

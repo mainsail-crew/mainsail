@@ -16,6 +16,12 @@ export const datasetTypes = [
 	"temperature",
 	"target",
 	"power",
+	"speed",
+]
+
+export const datasetTypesInPercents = [
+	"power",
+	"speed",
 ]
 
 export const additionalSensors = [
