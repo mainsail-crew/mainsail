@@ -18,6 +18,13 @@ export default {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo');
 	},
 
+	setKlippyShutdown(state) {
+		Vue.set(state, 'klippy_state', 'shutdown')
+		Vue.set(state, 'klippy_message', 'Shutdown...')
+
+		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo');
+	},
+
 	setData(state, payload) {
 		if ("requestParams" in payload) delete payload.requestParams
 
