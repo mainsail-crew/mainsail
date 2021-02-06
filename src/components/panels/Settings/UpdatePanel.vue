@@ -18,11 +18,11 @@
                 <div v-for="(value, key) of updateableSoftwares" v-bind:key="key">
                     <v-divider class="my-0" ></v-divider>
                     <v-row class="py-2">
-                        <v-col class="pl-6 text-no-wrap">
+                        <v-col class="pl-6">
                             {{ 'name' in value ? value.name : key }}<br />
                             {{ getVersionOutput(value) }}
                         </v-col>
-                        <v-col class="pr-6 text-right">
+                        <v-col class="col-auto pr-6 text-right" align-self="center">
                             <v-chip
                                 small
                                 label
@@ -30,7 +30,7 @@
                                 :color="getBtnColor(value)"
                                 @click="updateModule(key)"
                                 :disabled="getBtnDisabled(value)"
-                                class="minwidth-0 mt-3 px-2 text-uppercase"
+                                class="minwidth-0 px-2 text-uppercase"
                             ><v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>{{ getBtnText(value) }}</v-chip>
                         </v-col>
                     </v-row>
@@ -38,7 +38,7 @@
                 <div v-if="'system' in version_info">
                     <v-divider class="my-0 border-top-2" ></v-divider>
                     <v-row class="pt-2">
-                        <v-col class="pl-6 text-no-wrap">
+                        <v-col class="col-auto pl-6 text-no-wrap">
                             <strong>System</strong><br />
                             <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
                                 <template v-slot:activator="{ on, attrs }">
@@ -48,7 +48,7 @@
                             </v-tooltip>
                             <span v-if="version_info.system.package_count === 0">OS-Packages</span>
                         </v-col>
-                        <v-col class="pr-6 text-right">
+                        <v-col class="pr-6 text-right" align-self="center">
                             <v-chip
                                 small
                                 label
@@ -56,7 +56,7 @@
                                 :color="version_info.system.package_count ? 'primary' : 'green'"
                                 :disabled="!(version_info.system.package_count) || printer_state === 'printing'"
                                 @click="updateSystem"
-                                class="minwidth-0 mt-3 px-2 text-uppercase"
+                                class="minwidth-0 px-2 text-uppercase"
                             ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? 'upgrade' : 'up-to-date' }}</v-chip>
                         </v-col>
                     </v-row>
@@ -151,7 +151,18 @@
                 const local_version = 'version' in object ? object.version : '?'
                 const remote_version = 'remote_version' in object ? object.remote_version : '?'
 
-                return local_version !== remote_version ? local_version+" > "+remote_version : local_version
+                let output = ""
+                if ('remote_alias' in object && object.remote_alias !== "origin") output += object.remote_alias
+                if ('branch' in object && object.branch !== "master") {
+                    if (output !== "") output += "/"
+
+                    output += object.branch
+                }
+                if (output !== "") output += ": "
+
+                output += local_version !== remote_version ? local_version+" > "+remote_version : local_version
+
+                return output
             },
             updateModule(key) {
                 if (["klipper", "moonraker"].includes(key)) this.$socket.sendObj('machine.update.'+key, { })
