@@ -7,6 +7,15 @@ export default {
 
 	getDirectory({ commit }, payload) {
 		commit('setDirectory', payload)
+
+		if (
+			'requestParams' in payload &&
+			'path' in payload.requestParams &&
+			'disk_usage' in payload
+		) commit('setDiskUsage', {
+			disk_usage: payload.disk_usage,
+			path: payload.requestParams.path
+		})
 	},
 
 	getMetadata({ commit, rootState }, payload) {

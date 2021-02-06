@@ -162,4 +162,12 @@ export default {
 
 		if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
 	},
+
+	setDiskUsage(state, payload) {
+		let path = payload.path
+		if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
+
+		const dir = state.filetree.find(dir => dir.filename === path)
+		if (dir && 'disk_usage' in dir) Vue.set(dir, "disk_usage", payload.disk_usage)
+	}
 }
