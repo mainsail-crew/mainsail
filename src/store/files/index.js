@@ -9,25 +9,29 @@ export function getDefaultState() {
 				isDirectory: true,
 				filename: 'gcodes',
 				modified: new Date(),
-				childrens: []
+				childrens: [],
+				disk_usage: {}
 			},
 			{
 				isDirectory: true,
 				filename: 'config_examples',
 				modified: new Date(),
-				childrens: []
+				childrens: [],
+				disk_usage: {}
 			},
 			{
 				isDirectory: true,
 				filename: 'config',
 				modified: new Date(),
-				childrens: []
+				childrens: [],
+				disk_usage: {}
 			},
 			{
 				isDirectory: true,
 				filename: 'docs',
 				modified: new Date(),
-				childrens: []
+				childrens: [],
+				disk_usage: {}
 			}
 		],
 	}

@@ -74,7 +74,21 @@
                     </v-menu>
                 </v-item-group>
             </v-card-title>
-            <v-card-subtitle>Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</v-card-subtitle>
+            <v-card-subtitle>
+                Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
+                <div v-if="this.disk_usage !== null">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <span v-bind="attrs" v-on="on">Free disk: {{ formatFilesize(disk_usage.free) }}</span>
+                        </template>
+                        <span>
+                            Used: {{ formatFilesize(this.disk_usage.used) }}<br />
+                            Free: {{ formatFilesize(this.disk_usage.free) }}<br />
+                            Total: {{ formatFilesize(this.disk_usage.total) }}
+                        </span>
+                    </v-tooltip>
+                </div>
+            </v-card-subtitle>
             <v-card-text>
                 <v-text-field
                   v-model="search"
@@ -153,6 +167,7 @@
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
+                <v-data-footer>bla bla</v-data-footer>
             </v-data-table>
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
                 <div class="textnode">Drop files to add gcode.</div>
@@ -386,6 +401,11 @@
                     return this.$store.dispatch("gui/setSettings", { gcodefiles: { hideMetadataColums: newVal } })
                 }
             },
+            disk_usage: {
+                get: function() {
+                    return this.$store.getters["files/getDiskUsage"](this.currentPath)
+                }
+            }
         },
         created() {
             this.loadPath()

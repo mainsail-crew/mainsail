@@ -60,4 +60,17 @@ export default {
 
 		return [favicon16Default, favicon32Default]
 	},
+
+	getDiskUsage: (state) => (path) => {
+		if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
+
+		const dir = state.filetree.find(dir => dir.filename === path)
+		if (dir && 'disk_usage' in dir) return dir.disk_usage
+
+		return {
+			free: 0,
+			total: 0,
+			used: 0,
+		}
+	}
 }
