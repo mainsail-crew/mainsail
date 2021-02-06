@@ -38,8 +38,11 @@
                 'webcamConfig': state => state.gui.webcam
             }),
             url() {
-                const params = new URLSearchParams(this.webcamConfig.url);
-                params.set('bypassCache', ""+this.refresh);
+                let basicUrl = this.webcamConfig.url
+                if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
+
+                const params = new URLSearchParams(basicUrl)
+                params.set('bypassCache', ""+this.refresh)
                 return decodeURIComponent(params.toString())
             },
             webcamStyle() {
