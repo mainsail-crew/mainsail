@@ -109,7 +109,7 @@ export default {
 					target: value.target,
 					temperature: value.temperature,
 					additionValues: getters.getAdditionSensors(nameSplit[1]),
-					tempListAdditionValues: getters.getgetTempListAdditionSensorsAdditionSensors(nameSplit[1]),
+					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
