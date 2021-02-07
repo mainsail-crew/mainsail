@@ -148,8 +148,8 @@
                 get() {
                     return this.$store.state.gui.dashboard.control.feedrateXY
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: value } } })
+                set(feedrate) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: feedrate } } })
                 }
             },
             stepsXY: {
@@ -157,8 +157,10 @@
                     const steps = this.$store.state.gui.dashboard.control.stepsXY
                     return steps.sort(function (a,b) { return b-a })
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsXY: value } } })
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsXY: absSteps } } })
                 }
             },
             feedrateZ: {
@@ -174,8 +176,10 @@
                     const steps = this.$store.state.gui.dashboard.control.stepsZ
                     return steps.sort(function (a,b) { return b-a })
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsZ: value } } })
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsZ: absSteps } } })
                 }
             },
             feedamountsE: {
@@ -183,8 +187,10 @@
                     const steps = this.$store.state.gui.dashboard.extruder.feedamounts
                     return steps.sort(function (a,b) { return b-a })
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamounts: value } } })
+                set(amounts) {
+                    const absAmounts = []
+                    for(const value of amounts) absAmounts.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamounts: absAmounts } } })
                 }
             },
             feedratesE: {
@@ -192,8 +198,10 @@
                     const steps = this.$store.state.gui.dashboard.extruder.feedrates
                     return steps.sort(function (a,b) { return b-a })
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrates: value } } })
+                set(rates) {
+                    const absRates = []
+                    for(const value of rates) absRates.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrates: absRates } } })
                 }
             },
         },
