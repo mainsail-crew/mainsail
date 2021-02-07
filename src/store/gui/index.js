@@ -13,6 +13,10 @@ export function getDefaultState() {
 			boolConsole: true,
 			hiddenMacros: [],
 			hiddenTempChart: [],
+			control: {
+				feedrateXY: 100,
+				feedrateZ: 25,
+			}
 		},
 		webcam: {
 			url: "",

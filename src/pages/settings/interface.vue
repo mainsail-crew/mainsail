@@ -8,7 +8,8 @@
                 <settings-console-panel class="mt-6"></settings-console-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-macros-panel></settings-macros-panel>
+                <settings-control-panel></settings-control-panel>
+                <settings-macros-panel class="mt-6"></settings-macros-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-presets-panel></settings-presets-panel>
