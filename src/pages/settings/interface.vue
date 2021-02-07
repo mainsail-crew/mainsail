@@ -8,12 +8,12 @@
                 <settings-console-panel class="mt-6"></settings-console-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
-                <settings-control-panel></settings-control-panel>
-                <settings-macros-panel class="mt-6"></settings-macros-panel>
+                <settings-macros-panel></settings-macros-panel>
             </v-col>
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-presets-panel></settings-presets-panel>
                 <settings-remote-printers-panel class="mt-6"></settings-remote-printers-panel>
+                <settings-control-panel class="mt-6"></settings-control-panel>
             </v-col>
         </v-row>
     </div>

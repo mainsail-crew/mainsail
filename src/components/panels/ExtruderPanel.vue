@@ -9,13 +9,13 @@
                 <v-col class="col col-md-6">
                     <v-label>Feed amount in mm:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn v-for="amount in feedAmounts" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                        <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
                     </v-btn-toggle>
                 </v-col>
                 <v-col class="col col-md-6">
                     <v-label>Feedrate in mm/s:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn v-for="rate in feedrates" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                        <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
                     </v-btn-toggle>
                 </v-col>
             </v-row>
@@ -41,8 +41,6 @@
             return {
                 feedAmount: 25,
                 feedrate: 5,
-                feedAmounts: [ 100, 25, 10, 5, 1 ],
-                feedrates: [ 60, 30, 15, 5, 1 ],
             }
         },
         computed: {
@@ -50,11 +48,24 @@
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
                 extruder: state => state.printer.extruder,
-                config: state => state.printer.configfile.config
+                config: state => state.printer.configfile.config,
+
+                feedamounts: state => state.gui.dashboard.extruder.feedamounts,
+                feedrates: state => state.gui.dashboard.extruder.feedrates,
             }),
             ...mapGetters([
                 'printer/getExtrudePossible',
             ]),
+            feedamountsSorted: {
+                get() {
+                    return [...this.feedamounts].sort((a,b) => { return b-a })
+                }
+            },
+            feedratesSorted: {
+                get() {
+                    return [...this.feedrates].sort((a,b) => { return b-a })
+                }
+            }
         },
         methods: {
             setFeedAmount(value) {
