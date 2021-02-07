@@ -23,9 +23,6 @@ export default {
 	upload({ state, rootState }) {
 		let file = new File([JSON.stringify({ state })], '.mainsail.json')
 
-		window.console.log("upload .mainsail.json")
-		window.console.log(state)
-
 		let formData = new FormData();
 		formData.append('file', file);
 		formData.append('root', 'config');
