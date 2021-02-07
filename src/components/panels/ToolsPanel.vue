@@ -361,10 +361,8 @@
                 }
             },
             setChartColor(value) {
-                if (
-                    "name" in this.editHeater.object &&
-                    typeof value === "string"
-                ) {
+                if ("name" in this.editHeater.object) {
+                    if (typeof value === "object" && 'hex' in value) value = value.hex
                     this.$store.commit('printer/tempHistory/setColor', { name: this.editHeater.object.name, value: value })
                     this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: 'color', value: value })
                 }
