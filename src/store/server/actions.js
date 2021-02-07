@@ -18,7 +18,6 @@ export default {
 		Object.entries(payload).forEach(([, file]) => {
 			if ('filename' in file && file.filename === '.mainsail.json') {
 				boolFallback = false
-				window.console.log(".mainsail.json gefunden")
 
 				fetch('//'+rootState.socket.hostname+':'+rootState.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
 					.then(res => res.json()).then(file => {
