@@ -278,7 +278,32 @@
                 this.dialog.name = preset.name
                 this.dialog.index = preset.index
                 this.dialog.gcode = preset.gcode
-                this.dialog.values = {...preset.values}
+                this.dialog.values = {}
+
+                for(const heater of this["printer/getHeaters"]) {
+                    if (heater.name in preset.values) {
+                        this.dialog.values[heater.name] = {...preset.values[heater.name]}
+                    } else {
+                        this.dialog.values[heater.name] = {
+                            bool: false,
+                            value: 0,
+                            type: 'heater',
+                        }
+                    }
+                }
+
+                for(const fan of this["printer/getTemperatureFans"]) {
+                    if ('temperature_fan '+fan.name in preset.values) {
+                        this.dialog.values['temperature_fan '+fan.name] = {...preset.values['temperature_fan '+fan.name]}
+                    } else {
+                        this.dialog.values['temperature_fan '+fan.name] = {
+                            bool: false,
+                            value: 0,
+                            type: 'temperature_fan',
+                        }
+                    }
+                }
+
                 this.dialog.bool = true
             },
             savePreset() {
