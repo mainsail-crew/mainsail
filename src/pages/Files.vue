@@ -178,6 +178,18 @@
                 <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> Print start
                 </v-list-item>
+                <v-list-item
+                    @click="preheat"
+                    v-if="
+                        'first_layer_extr_temp' in contextMenu.item &&
+                        contextMenu.item.first_layer_extr_temp > 0 &&
+                        'first_layer_bed_temp' in contextMenu.item &&
+                        contextMenu.item.first_layer_bed_temp > 0
+                    "
+                    :disabled="['error', 'printing', 'paused'].includes(printer_state)"
+                    >
+                    <v-icon class="mr-1">mdi-fire</v-icon> Preheat
+                </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
                 </v-list-item>
@@ -365,6 +377,7 @@
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
                 loadings: state => state.socket.loadings,
+                printer_state: state => state.printer.print_stats.state,
 
                 displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
@@ -538,6 +551,26 @@
                 this.contextMenu.y = e.clientY
                 this.contextMenu.item = item
                 this.$nextTick(() => { this.contextMenu.shown = true })
+            },
+            preheat() {
+                if (
+                    'first_layer_extr_temp' in this.contextMenu.item &&
+                    'first_layer_bed_temp' in this.contextMenu.item &&
+                    !['error', 'printing', 'paused'].includes(this.printer_state)
+                ) {
+                    let gcode = ""
+                    if (this.contextMenu.item.first_layer_extr_temp > 0) {
+                        gcode = "M104 S"+this.contextMenu.item.first_layer_extr_temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                      this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+
+                    if (this.contextMenu.item.first_layer_bed_temp > 0) {
+                        gcode = "M140 S"+this.contextMenu.item.first_layer_bed_temp
+                        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                      this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    }
+                }
             },
             downloadFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
