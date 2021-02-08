@@ -324,8 +324,10 @@
                 }
 
                 if (preset.gcode !== "") {
-                    this.$store.commit('server/addEvent', { message: preset.gcode, type: 'command' })
-                    this.$socket.sendObj('printer.gcode.script', { script: preset.gcode })
+                    setTimeout(() => {
+                        this.$store.commit('server/addEvent', { message: preset.gcode, type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: preset.gcode })
+                    }, 100)
                 }
             },
             cooldown() {
