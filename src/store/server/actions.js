@@ -7,10 +7,29 @@ export default {
 		dispatch('updateManager/reset')
 	},
 
-	init({ dispatch }) {
+	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
+		Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+	},
 
-		dispatch('printer/init', null, { root: true })
+	checkMainsailJson({ dispatch, rootState }, payload) {
+		let boolFallback = true
+
+		Object.entries(payload).forEach(([, file]) => {
+			if ('filename' in file && file.filename === '.mainsail.json') {
+				boolFallback = false
+				window.console.log(".mainsail.json gefunden")
+
+				fetch('//'+rootState.socket.hostname+':'+rootState.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
+					.then(res => res.json()).then(file => {
+					dispatch('gui/getData', file, { root: true })
+					if (!rootState.socket.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
+					dispatch('printer/init', null, { root: true })
+				})
+			}
+		})
+
+		if (boolFallback) dispatch('printer/init', null, { root: true })
 	},
 
 	getInfo({ commit, state, rootState }, payload) {
@@ -47,6 +66,7 @@ export default {
 	},
 
 	getGcodeStore({ commit }, payload) {
+		commit('clearGcodeStore')
 		commit('setGcodeStore', payload)
 	},
 

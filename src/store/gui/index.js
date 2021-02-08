@@ -13,6 +13,16 @@ export function getDefaultState() {
 			boolConsole: true,
 			hiddenMacros: [],
 			hiddenTempChart: [],
+			control: {
+				feedrateXY: 100,
+				stepsXY: [ 100, 10, 1 ],
+				feedrateZ: 25,
+				stepsZ: [ 25, 1, 0.1 ],
+			},
+			extruder: {
+				feedamounts: [ 50, 25, 10, 5, 1 ],
+				feedrates: [ 60, 30, 15, 5, 1 ],
+			}
 		},
 		webcam: {
 			url: "",
@@ -21,6 +31,14 @@ export function getDefaultState() {
 			flipX: false,
 			flipY: false,
 			bool: false,
+		},
+		tempchart: {
+			intervalChartUpdate: 1000,
+			intervalDatasetUpdate: 500,
+			autoscale: false,
+			datasetSettings: {
+
+			},
 		},
 		console: {
 			hideWaitTemperatures: true,

@@ -1,6 +1,15 @@
 title: "Mainsail"
+tagline: A web interface for Klipper
+description: Mainsail is a lightweight & responsive web interface for the Klipper 3D printer firmware. It communicates with Moonraker (Klipper-API) from Arksine.
 logo: "/assets/img/logo-mainsail.png"
-description: A web interface for Klipper
+theme: just-the-docs
 remote_theme: pmarsceill/just-the-docs
 color_scheme: "mainsail"
 search_enabled: true
+
+defaults:
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      image: assets/img/rtfm.png

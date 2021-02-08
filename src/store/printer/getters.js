@@ -1,4 +1,5 @@
 import { caseInsensitiveNameSort } from '@/plugins/helpers'
+import { additionalSensors } from '@/store/variables'
 
 export default {
 
@@ -45,7 +46,7 @@ export default {
 		return array.sort(caseInsensitiveNameSort);
 	},
 
-	getHeaters: (state, getters) => {
+	getHeaters: (state, getters, rootState, rootGetters) => {
 		let heaters = []
 		let colorOff = "grey darken-2"
 		let colorHot = "grey lighten-5"
@@ -77,8 +78,15 @@ export default {
 						color: color,
 						target: value.target,
 						temperature: value.temperature,
+						additionValues: getters.getAdditionSensors(nameSplit[1]),
+						tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 						power: 'power' in value ? value.power : null,
+						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
+						chartTemperature: getters["tempHistory/getDataset"](name),
+						chartTarget: getters["tempHistory/getDataset"](name+"_target"),
+						chartPower: getters["tempHistory/getDataset"](name+'_power'),
+						chartSpeed: getters["tempHistory/getDataset"](name+'_speed'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -89,7 +97,7 @@ export default {
 		return heaters.sort(caseInsensitiveNameSort);
 	},
 
-	getTemperatureFans: (state, getters) => {
+	getTemperatureFans: (state, getters, rootState, rootGetters) => {
 		let fans = []
 
 		for (let [key, value] of Object.entries(state)) {
@@ -100,8 +108,15 @@ export default {
 					name: nameSplit[1],
 					target: value.target,
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
+					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
+					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
+					chartTarget: getters["tempHistory/getDataset"](nameSplit[1]+"_target"),
+					chartPower: getters["tempHistory/getDataset"](nameSplit[1]+'_power'),
+					chartSpeed: getters["tempHistory/getDataset"](nameSplit[1]+'_speed'),
 				})
 			}
 		}
@@ -124,15 +139,20 @@ export default {
 				if (value.temperature <= min_temp + split) icon = "mdi-thermometer-low"
 				if (value.temperature >= max_temp - split) icon = "mdi-thermometer-high"
 
+
+
 				sensors.push({
 					name: nameSplit[1],
 					temperature: value.temperature,
+					additionValues: getters.getAdditionSensors(nameSplit[1]),
+					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					icon: icon,
 					min_temp: min_temp,
 					max_temp: max_temp,
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
 				})
 			}
 		}
@@ -252,17 +272,96 @@ export default {
 			if (a.type === "fan") return -1
 			if (b.type === "fan") return 1
 
+			if (a.pwm < b.pwm) return 1
+			if (a.pwm > b.pwm) return -1
+
 			if (a.controllable < b.controllable) return 1
 			if (a.controllable > b.controllable) return -1
 
-			let nameA = a.name.toUpperCase()
-			let nameB = b.name.toUpperCase()
+			const nameA = a.name.toUpperCase()
+			const nameB = b.name.toUpperCase()
 
 			if (nameA < nameB) return -1
 			if (nameA > nameB) return 1
 
 			return 0
 		})
+	},
+
+	getAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
+		let additionValues = {}
+		additionalSensors.forEach(sensorName => {
+			if (sensorName+" "+name in state) {
+				Object.keys(state[sensorName+" "+name]).forEach(key => {
+					if (key !== "temperature") {
+						let tmp = {}
+						tmp[key] = {}
+						tmp[key]['value'] = state[sensorName+" "+name][key]
+						tmp[key]['gui'] = rootGetters["gui/getDatasetAdditionalSensorValue"]({
+							name: name,
+							sensor: key
+						})
+
+						switch(key) {
+							case 'pressure':
+								tmp[key]['unit'] = "hPa"
+								break
+
+							case 'humidity':
+								tmp[key]['unit'] = "%"
+								break
+
+							default:
+								tmp[key]['unit'] = ""
+						}
+
+						additionValues = Object.assign(additionValues, tmp)
+					}
+				})
+			}
+		})
+
+		return additionValues
+	},
+
+	getTempListAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
+		let additionValues = {}
+		additionalSensors.forEach(sensorName => {
+			if (sensorName+" "+name in state) {
+				Object.keys(state[sensorName+" "+name]).forEach(key => {
+					if (key !== "temperature") {
+						const settings = rootGetters["gui/getDatasetAdditionalSensorValue"]({
+							name: name,
+							sensor: key
+						})
+
+						if (settings.boolList) {
+							let tmp = {}
+							tmp[key] = {}
+							tmp[key]['value'] = state[sensorName+" "+name][key]
+
+
+							switch(key) {
+								case 'pressure':
+									tmp[key]['unit'] = "hPa"
+									break
+
+								case 'humidity':
+									tmp[key]['unit'] = "%"
+									break
+
+								default:
+									tmp[key]['unit'] = ""
+							}
+
+							additionValues = Object.assign(additionValues, tmp)
+						}
+					}
+				})
+			}
+		})
+
+		return additionValues
 	},
 
 	getAllMacros: state => {

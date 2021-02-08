@@ -31,7 +31,7 @@
             <div v-if="countPowerDevices">
                 <v-divider class="mt-0"></v-divider>
                 <v-subheader class="pt-2" style="height: auto;">Power Devices</v-subheader>
-                <v-list-item v-for="(device, index) in devices" v-bind:key="index" class="minheight30" @click="changeSwitch(device, device.status)" :disabled="(device.status === 'error')">
+                <v-list-item v-for="(device, index) in devices" v-bind:key="index" class="minheight30" @click="changeSwitch(device, device.status)" :disabled="(device.status === 'error' || device.locked_while_printing && ['printing', 'paused'].includes(printer_state))">
                     <v-list-item-title>
                         <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">mdi-{{ device.status === 'on' ? 'toggle-switch' : 'toggle-switch-off' }}</v-icon>{{ device.device }}
                     </v-list-item-title>
@@ -62,6 +62,7 @@ export default {
     },
     computed: {
         ...mapState({
+            printer_state: state => state.printer.print_stats.state,
             devices: (state) => state.server.power.devices,
         }),
         countPowerDevices: {

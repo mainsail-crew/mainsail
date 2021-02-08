@@ -23,13 +23,12 @@ export default {
 	},
 
 	isUpdateAvailable(state) {
-		if (
-			'klipper' in state &&
-			'remote_hash' in state.klipper &&
-			'current_hash' in state.klipper &&
-			state.klipper.current_hash !== state.klipper.current_hash
-		) {
-			return true
+		for (const key of Object.keys(state.version_info)) {
+			if (
+				'version' in state.version_info[key] &&
+				'remote_version' in state.version_info[key] &&
+				state.version_info[key].version !== state.version_info[key].remote_version
+			) return true
 		}
 
 		return false

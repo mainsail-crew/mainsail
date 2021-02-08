@@ -51,6 +51,10 @@ export default {
 				commit('server/setKlippyDisconnected', null, { root: true })
 				break
 
+			case 'notify_klippy_shutdown':
+				commit('server/setKlippyShutdown', null, { root: true })
+				break
+
 			case 'notify_filelist_changed':
 				switch(payload.params[0].action) {
 					case 'upload_file':

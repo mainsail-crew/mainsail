@@ -5,17 +5,38 @@ export default {
 		commit('reset')
 	},
 
-	getData({ commit }, payload) {
+	getData({ commit, dispatch }, payload) {
 		commit('setData', payload)
+
+		if (
+			'state' in payload &&
+			'tempchart' in payload.state &&
+			'datasetSettings' in payload.state.tempchart
+		) {
+			for (const key of Object.keys(payload.state.tempchart.datasetSettings)) {
+				if (
+					'color' in payload.state.tempchart.datasetSettings[key] &&
+					typeof payload.state.tempchart.datasetSettings[key].color === "object"
+				) {
+					dispatch('setTempchartDatasetSetting', { name: key, type: 'color', value: payload.state.tempchart.datasetSettings[key].color.hex })
+				}
+			}
+		}
 	},
 
 	setSettings({ commit, dispatch }, payload) {
 		commit('setSettings', payload)
+
+		if ('tempchart' in payload && 'boolPowerDatasets' in payload.tempchart) {
+			if (payload.tempchart.boolPowerDatasets) commit('printer/tempHistory/showPowerDatasets', {}, { root: true })
+			else commit('printer/tempHistory/hidePowerDatasets', {}, { root: true })
+		}
+
 		dispatch('upload')
 	},
 
 	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], '.mainsail.json');
+		let file = new File([JSON.stringify({ state })], '.mainsail.json')
 
 		let formData = new FormData();
 		formData.append('file', file);
@@ -54,6 +75,16 @@ export default {
 
 	deletePreset({ commit, dispatch }, payload) {
 		commit("deletePreset", payload)
+		dispatch("upload")
+	},
+
+	setTempchartDatasetSetting({ commit, dispatch }, payload) {
+		commit("setTempchartDatasetSetting", payload)
+		dispatch("upload")
+	},
+
+	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch }, payload) {
+		commit("setTempchartDatasetAdditionalSensorSetting", payload)
 		dispatch("upload")
 	}
 }

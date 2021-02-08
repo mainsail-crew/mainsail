@@ -1,134 +1,90 @@
 import { getDefaultState } from './index'
-import { colorArray, colorChamber, colorHeaterBed } from "@/store/variables"
+import { datasetTypesInPercents } from '@/store/variables'
+import Vue from "vue";
 
 export default {
 	reset(state) {
 		Object.assign(state, getDefaultState())
 	},
-	
-	setHistory(state, payload) {
-		let now = new Date();
 
-		if (payload !== undefined) {
-			Object.entries(payload).sort().forEach(([key, datasets]) => {
-				let keySplit = key.split(" ");
-
-				if (keySplit.length > 1) key = keySplit[1];
-
-				if (datasets.temperatures) {
-					let max = datasets.temperatures.length;
-					for (let i = 0; i < max; i++) {
-						let time = new Date(now.getTime() - 1000 * (max - i));
-
-						this.commit('printer/tempHistory/addValue', {
-							name: key,
-							value: datasets.temperatures[i],
-							type: keySplit[0],
-							time: time
-						});
-
-						this.commit('printer/tempHistory/addValue', {
-							name: key+'_target',
-							value: datasets.targets[i],
-							type: keySplit[0],
-							time: time
-						});
-					}
-				}
-			});
-		}
+	addDataset(state, payload) {
+		state.datasets.push(payload)
 	},
 
 	addValue(state, payload) {
-		// definations for delete old entries
-		let timeOld = new Date().getTime() - (1000 * 60 * 10)
-		let minResolution = 1000   // value in ms
-		//let deletedIndex
+		let multi = 1
+		datasetTypesInPercents.forEach(element => {
+			if (payload.name.endsWith("_"+element)) multi = 100
+		})
 
-		let mainDataset = state.datasets.find(element => element.name === payload.name)
-		if (!mainDataset) {
-			//TODO load hidden sensors from gui store
-			//let hidden = this.rootState.gui.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase()) >= 0;
-			//let hidden = false
+		const dataset = state.datasets.find(element => element.name === payload.name)
 
-			if (payload.name.includes('_target')) {
-				let masterDataset = state.datasets.find(element => element.name === payload.name.replace('_target', ''))
-
-				if (masterDataset) {
-					mainDataset = {
-						type: "stepArea",
-						name: payload.name,
-						legendText: payload.name,
-						xValueType: "dateTime",
-						dataPoints:[],
-						showInLegend: false,
-						markerType: 'none',
-						fillOpacity: .1,
-						lineThickness: 0,
-						toolTipContent: "{name}: {y}°C",
-						color: masterDataset.color || '#666'
-					}
-				}
-			} else {
-				let color = '';
-
-				switch (payload.name) {
-					case 'heater_bed': color = colorHeaterBed; break;
-					case 'chamber': color = colorChamber; break;
-					default: color = colorArray[state.datasets.filter(element => !element.name.endsWith("_target") && element.name !== "heater_bed" && element.name !== "chamber").length]; break;
-				}
-
-				mainDataset = {
-					type: "spline",
-					name: payload.name,
-					legendText: payload.name,
-					xValueType: "dateTime",
-					dataPoints:[],
-					showInLegend: true,
-					markerType: 'none',
-					toolTipContent: "{name}: {y}°C",
-					color: color,
-				}
-			}
-
-			mainDataset = state.datasets.push(mainDataset);
-		}
-
-		// update current temp in temperature chart
-		if (mainDataset && payload.value !== undefined) {
+		if (dataset !== undefined && payload.value !== undefined) {
 			if (Array.isArray(payload.value)) {
-				for (let i = 0; i < payload.value.length; i++) {
-					mainDataset.data.push({
-						x: payload.time - 1000 * i,
-						y: Math.round(payload.value[i]*100)/100
+				for (let i = payload.value.length; i > 0; i--) {
+					dataset.dataPoints.push({
+						x: payload.time - (i*1000),
+						y: Math.round(payload.value[payload.value.length - i] * multi * 100)/100
 					})
 				}
 			} else {
-				if (mainDataset.dataPoints && mainDataset.dataPoints.length) {
-					let lastTemp = mainDataset.dataPoints[mainDataset.dataPoints.length - 1].y
-					let lastTime = mainDataset.dataPoints[mainDataset.dataPoints.length - 1].x
+				dataset.dataPoints.push({
+					x: payload.time,
+					y: Math.round(payload.value * multi * 100)/100
+				})
 
-					if (
-						payload.time - lastTime > minResolution &&
-						(lastTemp !== payload.value || payload.time - lastTime > minResolution)
-					) {
-						mainDataset.dataPoints.push({
-							x: payload.time,
-							y: Math.round(payload.value*100)/100
-						});
-					}
-
-					let i
-					while ((i = mainDataset.dataPoints.findIndex(item => timeOld > item.x)) > -1) {
-						mainDataset.dataPoints.splice(i, 1)
-					}
-				} else if (mainDataset.dataPoints) {
-					mainDataset.dataPoints.push({
-						x: payload.time,
-						y:  Math.round(payload.value*100)/100
-					});
+				let i
+				const timeOld = new Date().getTime() - (1000 * 60 * 10)
+				while ((i = dataset.dataPoints.findIndex(item => timeOld > item.x)) > -1) {
+					dataset.dataPoints.splice(i, 1)
 				}
 			}
 		}
+	},
+
+	clearDataset(state, payload) {
+		const dataset = state.datasets.find(dataset => dataset.name === payload)
+		if (dataset) {
+			Vue.set(dataset, 'dataPoints', [])
+		}
+	},
+
+	hidePowerDatasets(state) {
+		state.datasets.forEach(element => {
+			if (element.name.endsWith("_power")) {
+				element.visible = false
+			}
+		})
+	},
+
+	showPowerDatasets(state) {
+		state.datasets.forEach(element => {
+			if (element.name.endsWith("_power")) {
+				element.visible = true
+			}
+		})
+	},
+
+	setVisible(state, payload) {
+		const datasetName = payload.type !== 'temperature' ? payload.name+'_'+payload.type : payload.name
+
+		const datasetIndex = state.datasets.findIndex(element => element.name === datasetName)
+		if (datasetIndex !== -1) {
+			Vue.set(state.datasets[datasetIndex], 'visible', payload.value)
+
+
+		}
+	},
+
+	setColor(state, payload) {
+		state.datasets.forEach(element => {
+			if (
+				element.name === payload.name ||
+				element.name === payload.name+'_target' ||
+				element.name === payload.name+'_power'
+			) {
+				element.color = payload.value
+			}
+		})
 	},
 }
