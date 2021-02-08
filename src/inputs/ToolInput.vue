@@ -1,29 +1,20 @@
 <style>
-    .tool-input {
-        min-width: 5rem;
-        margin-top: 0;
-        padding: 0;
-    }
-
-    .tool-input .v-input__slot { margin-bottom: 0; }
-    .tool-input .v-text-field__details { display: none; }
-
-    .tool-input input {
-        -moz-appearance: textfield;
-    }
-    .tool-input input::-webkit-outer-spin-button,
-    .tool-input input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+    .tool-input .v-select__slot label{
+        display:none!important;
     }
 </style>
 
 <template>
     <v-combobox
+        :label="convertName(this.name)"
         dense
         hide-details
+        @click.native="showKeyboard"
+        @blur="hideKeyboard"
+        data-layout="numeric" 
         onClick="this.select();"
         v-model="value"
+        class="tool-input"
         :items="items"
         item-text="value"
         @change="setTemps"
@@ -33,6 +24,7 @@
 
 
 <script>
+    import {convertName} from "@/plugins/helpers"
     import {bus} from "../main";
     import Vue from "vue";
 
@@ -60,6 +52,7 @@
 
         },
         methods: {
+            convertName: convertName,
             setTemps() {
                 if (typeof this.value === 'object' && this.value !== null) this.value = this.value.value
                 if (parseFloat(this.value) === 0) this.value = 0
