@@ -1,11 +1,9 @@
 <style>
-    .webcamImage {
-        width: 100%;
-    }
+
 </style>
 
 <template>
-    <div>
+    <v-form ref="formControlExtruder">
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
@@ -19,18 +17,27 @@
                             <v-text-field
                                 label="Speed XY"
                                 v-model="feedrateXY"
+                                @blur="blurFeedrateXY"
                                 type="number"
                                 suffix="mm/s"
                                 hide-details="auto"
+                                :rules="[
+                                    v => v > 0 || 'Minimum speed is 1'
+                                ]"
                             ></v-text-field>
                         </v-col>
                         <v-col col-6>
                             <v-text-field
                                 label="Speed Z"
                                 v-model="feedrateZ"
+                                @blur="blurFeedrateZ"
                                 type="number"
                                 suffix="mm/s"
                                 hide-details="auto"
+                                ref="feedrateZ"
+                                :rules="[
+                                    v => v > 1 || 'Minimum speed is 1'
+                                ]"
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -58,7 +65,6 @@
                             <v-combobox
                                 label="Move distances Z in mm"
                                 v-model="stepsZ"
-                                :items="defaultStepsZ"
                                 hide-selected
                                 hide-details="auto"
                                 multiple
@@ -89,7 +95,6 @@
                             <v-combobox
                                 label="Move distances E in mm"
                                 v-model="feedamountsE"
-                                :items="defaultFeedamounts"
                                 hide-selected
                                 hide-details="auto"
                                 multiple
@@ -109,7 +114,6 @@
                             <v-combobox
                                 label="Speed E in mm/s"
                                 v-model="feedratesE"
-                                :items="defaultFeedrates"
                                 hide-selected
                                 hide-details="auto"
                                 multiple
@@ -127,7 +131,7 @@
                 </v-container>
             </v-card-text>
         </v-card>
-    </div>
+    </v-form>
 </template>
 
 <script>
@@ -137,10 +141,7 @@
         },
         data: function() {
             return {
-                defaultStepsXY: [100,10,1],
-                defaultStepsZ: [25,1,0.1],
-                defaultFeedamounts: [ 50, 25, 10, 5, 1 ],
-                defaultFeedrates: [ 60, 30, 15, 5, 1 ],
+
             }
         },
         computed: {
@@ -205,8 +206,16 @@
                 }
             },
         },
+        mounted() {
+            this.$refs.formControlExtruder.validate()
+        },
         methods: {
-
+            blurFeedrateXY() {
+                if (!(this.feedrateXY > 0)) this.feedrateXY = 100
+            },
+            blurFeedrateZ() {
+                if (!(this.feedrateZ > 0)) this.feedrateZ = 25
+            }
         }
     }
 </script>
