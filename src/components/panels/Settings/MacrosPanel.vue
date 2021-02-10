@@ -3,7 +3,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-code-tags</v-icon>Macros</span>
+                <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Setting.Macros') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">

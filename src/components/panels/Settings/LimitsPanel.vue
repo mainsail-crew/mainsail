@@ -2,16 +2,16 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>Machine Limits</span>
+                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>{{ $t('Setting.MachineLimits')}}</span>
             </v-toolbar-title>
         </v-toolbar>
-        <tool-slider label="Velocity" unit="mm/s" :target="current_velocity" :max="max_velocity" command="SET_VELOCITY_LIMIT" attribute-name="VELOCITY=" ></tool-slider>
+        <tool-slider :label="$t('Setting.Velocity')" unit="mm/s" :target="current_velocity" :max="max_velocity" command="SET_VELOCITY_LIMIT" attribute-name="VELOCITY=" ></tool-slider>
         <v-divider></v-divider>
-        <tool-slider label="Acceleration" unit="mm/s²" :target="current_accel" :max="max_accel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL=" ></tool-slider>
+        <tool-slider :label="$t('Setting.Acceleration')" unit="mm/s²" :target="current_accel" :max="max_accel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL=" ></tool-slider>
         <v-divider></v-divider>
-        <tool-slider label="Deceleration" unit="mm/s²" :target="current_accel_to_decel" :max="max_accel_to_decel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL_TO_DECEL=" ></tool-slider>
+        <tool-slider :label="$t('Setting.Deceleration')" unit="mm/s²" :target="current_accel_to_decel" :max="max_accel_to_decel" command="SET_VELOCITY_LIMIT" attribute-name="ACCEL_TO_DECEL=" ></tool-slider>
         <v-divider></v-divider>
-        <tool-slider label="Square corner velocity" unit="mm/s" :target="current_square_corner_velocity" :max="max_square_corner_velocity" command="SET_VELOCITY_LIMIT" attribute-name="SQUARE_CORNER_VELOCITY=" ></tool-slider>
+        <tool-slider :label="$t('Setting.SquareCornerVelocity')" unit="mm/s" :target="current_square_corner_velocity" :max="max_square_corner_velocity" command="SET_VELOCITY_LIMIT" attribute-name="SQUARE_CORNER_VELOCITY=" ></tool-slider>
     </v-card>
 </template>
 

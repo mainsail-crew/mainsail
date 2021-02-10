@@ -2,14 +2,14 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-update</v-icon>Update Manager</span>
+                <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Setting.UpdateManager')}}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-tooltip top>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
                 </template>
-                <span>Check for updates</span>
+                <span>{{ $t('Setting.CheckForUpdates')}}</span>
             </v-tooltip>
         </v-toolbar>
         <v-card-text class="px-0 py-0">
@@ -39,14 +39,14 @@
                     <v-divider class="my-0 border-top-2" ></v-divider>
                     <v-row class="pt-2">
                         <v-col class="col-auto pl-6 text-no-wrap">
-                            <strong>System</strong><br />
+                            <strong>{{ $t('Setting.System')}}</strong><br />
                             <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
                                 <template v-slot:activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">{{ version_info.system.package_count }} packages can be upgraded</span>
+                                    <span v-bind="attrs" v-on="on">{{ version_info.system.package_count }} {{ $t('Setting.PackagesCanBeUpgraded')}}</span>
                                 </template>
                                 <span>{{ version_info.system.package_list.join(', ') }}</span>
                             </v-tooltip>
-                            <span v-if="version_info.system.package_count === 0">OS-Packages</span>
+                            <span v-if="version_info.system.package_count === 0">{{ $t('Setting.OSPackages')}}</span>
                         </v-col>
                         <v-col class="pr-6 text-right" align-self="center">
                             <v-chip

@@ -14,9 +14,9 @@
         <v-container class="pt-0">
             <v-row no-gutters class="" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
                 <v-col class="col-12 mt-3 pb-0 text-center">
-                    <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn>
-                    <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
-                    <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
+                    <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">{{ $t("Dashboard.Home")}} </span>{{ $t("Dashboard.All")}}</v-btn>
+                    <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t("Dashboard.QGL")}}</v-btn>
+                    <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">{{ $t("Dashboard.ZTilt")}}</v-btn>
                 </v-col>
             </v-row>
             <v-row no-gutters class="mt-3" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">

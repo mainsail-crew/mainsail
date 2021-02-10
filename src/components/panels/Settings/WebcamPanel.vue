@@ -6,7 +6,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-webcam</v-icon>Webcam</span>
+                <span class="subheading"><v-icon left>mdi-webcam</v-icon>{{ $t('Setting.Webcam') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
@@ -16,13 +16,13 @@
                         <v-text-field
                             v-model="webcamUrl"
                             hide-details
-                            label="Webcam URL"
+                            :label="$t('Setting.WebcamURL')"
                         ></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row v-if="rotationEnabled">
                     <v-col class="py-2" col-auto>
-                        <v-switch v-model="rotate" hide-details label="Rotate" class="mt-0"></v-switch>
+                        <v-switch v-model="rotate" hide-details :label="$t('Setting.Rotate')" class="mt-0"></v-switch>
                     </v-col>
                     <v-col>
                         <v-select :items="[{ text: '90 degrees', value: 90 }, { text: '270 degrees', value: 270 }]" v-model="rotateDegrees" hide-details></v-select>
@@ -30,17 +30,17 @@
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="flipX" hide-details label="Flip webcam horizontally" class="mt-0"></v-switch>
+                        <v-switch v-model="flipX" hide-details :label="$t('Setting.FlipWebcamHorizontally')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="flipY" hide-details label="Flip webcam vertically" class="mt-0"></v-switch>
+                        <v-switch v-model="flipY" hide-details :label="$t('Setting.FlipWebcamVertically')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
+                        <v-switch v-model="boolNavi" hide-details :label="$t('Setting.ShowInNavigation')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
             </v-container>

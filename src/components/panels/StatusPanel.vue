@@ -17,7 +17,7 @@
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading align-baseline">
-                    <v-icon left>mdi-information</v-icon>{{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown") }}
+                    <v-icon left>mdi-information</v-icon>{{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : $t("Dashboard.Unknown")) }}
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-pause</v-icon>
                         </template>
-                        <span>Pause print</span>
+                        <span>{{ $t("Dashboard.PausePrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
@@ -35,7 +35,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
                         </template>
-                        <span>Cancel print</span>
+                        <span>{{ $t("Dashboard.CancelPrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob">
@@ -43,7 +43,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-play</v-icon>
                         </template>
-                        <span>Resume print</span>
+                        <span>{{ $t("Dashboard.ResumePrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob">
@@ -51,7 +51,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-broom</v-icon>
                         </template>
-                        <span>Clear print stats</span>
+                        <span>{{ $t("Dashboard.ClearPrintStats") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob">
@@ -59,7 +59,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-printer</v-icon>
                         </template>
-                        <span>Reprint job</span>
+                        <span>{{ $t("Dashboard.ReprintJob") }}</span>
                     </v-tooltip>
                 </v-btn>
             </v-item-group>
@@ -145,7 +145,7 @@
                                 <v-icon>mdi-poll</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Filament") }}</strong></v-col></v-row>
                                 <v-row>
                                     <v-col class="px-0 pt-1">
                                         <v-tooltip top>
@@ -159,11 +159,11 @@
                                 </v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Print</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Print") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time) }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Total</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Total") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time_total) }}</v-col></v-row>
                             </v-col>
                         </v-row>
@@ -177,15 +177,15 @@
                                 <v-icon>mdi-printer-3d</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Speed</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Speed") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ (requested_speed / 60).toFixed(0) }} mm/s</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Layer") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>ETA</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.ETA") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
@@ -199,15 +199,15 @@
                                 <v-icon>mdi-clock-outline</v-icon>
                             </v-col>
                             <v-col class="equal-width py-2 ">
-                                <v-row><v-col class="px-0 pb-1"><strong>File</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.File") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Filament") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Slicer</strong></v-col></v-row>
+                                <v-row><v-col class="px-0 pb-1"><strong>{{ $t("Dashboard.Slicer") }}</strong></v-col></v-row>
                                 <v-row><v-col class="px-0 pt-1">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>

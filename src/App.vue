@@ -57,7 +57,7 @@
                             v-if="category.title === 'Settings' && isUpdateAvailable"
                         >mdi-progress-upload</v-icon>
                         <span class="nav-title">
-                            {{ category.title }}
+                            {{ $t(`Router.${category.title}`) }}
                         </span>
                         <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
                     </router-link>
@@ -66,7 +66,7 @@
                         <li v-for="(page, pageIndex) in category.children" class="nav-item" v-bind:key="`${index}-${pageIndex}`">
                             <router-link :to="page.path" class="nav-link" @click.prevent v-if="klippy_state !== 'error' || page.alwaysShow">
                                 <v-icon>mdi-{{ page.icon }}</v-icon>
-                                <span class="nav-title">{{ page.title }}</span>
+                                <span class="nav-title">{{ $t(`Router.${page.title}`) }}</span>
                             </router-link>
                         </li>
                     </ul>
@@ -81,9 +81,9 @@
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
             <input type="file" ref="fileUploadAndStart" accept=".gcode, .ufp" style="display: none" @change="uploadAndStart" />
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">SAVE CONFIG</v-btn>
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>Upload & Print</v-btn>
-            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">Emergency Stop</span></v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">{{ $t("App.SAVECONFIG")}}</v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>{{ $t("App.UploadPrint")}}</v-btn>
+            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">{{ $t("App.EmergencyStop")}}</span></v-btn>
             <top-corner-menu></top-corner-menu>
         </v-app-bar>
 
@@ -106,7 +106,7 @@
             dark
             v-model="uploadSnackbar.status"
         >
-            <strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            <strong>{{ $t("App.Uploading")}} {{ uploadSnackbar.filename }}</strong><br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
