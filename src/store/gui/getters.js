@@ -22,7 +22,6 @@ export default {
 
 		return false
 	},
-
 	getDatasetAdditionalSensorValue: (state) => (payload) => {
 		if (
 			payload.name in state.tempchart.datasetSettings &&
@@ -34,7 +33,6 @@ export default {
 			'boolList': true
 		}
 	},
-
 	getPresetsFromHeater: state => (payload) => {
 		const output = []
 

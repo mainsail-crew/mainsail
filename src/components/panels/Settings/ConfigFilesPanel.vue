@@ -29,7 +29,7 @@
         <v-col>
             <v-card>
                 <v-card-title>
-                    Config Files
+                    {{ $t('Setting.ConfigFiles') }}
                     <v-spacer class="d-none d-sm-block"></v-spacer>
                     <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
                     <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0">
@@ -43,13 +43,13 @@
                             </template>
                             <v-list>
                                 <v-list-item class="minHeight36">
-                                    <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
+                                    <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Setting.HiddenFiles')"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
                     </v-item-group>
                 </v-card-title>
-                <v-card-subtitle>Current path: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
+                <v-card-subtitle>{{ $t('Setting.CurrentPath') }} {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
                 <v-data-table
                     :items="files"
                     class="files-table"
@@ -61,13 +61,13 @@
                     :sort-desc.sync="sortDesc"
                     :items-per-page.sync="countPerPage"
                     :footer-props="{
-                        itemsPerPageText: 'Files'
+                        itemsPerPageText:  $t('Setting.Files') 
                     }"
                     mobile-breakpoint="0"
                     item-key="name">
 
                     <template #no-data>
-                        <div class="text-center">empty</div>
+                        <div class="text-center">{{ $t('Setting.Empty')  }}</div>
                     </template>
 
                     <template slot="body.prepend" v-if="(currentPath !== '')">
@@ -99,26 +99,26 @@
             <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
                 <v-list>
                     <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                        <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
+                        <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon>  {{ $t('Setting.EditFile') }}
                     </v-list-item>
                     <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                        <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
+                        <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Setting.Download') }}
                     </v-list-item>
                     <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                        <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
+                        <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Setting.Rename') }}
                     </v-list-item>
                     <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
-                        <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                        <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Setting.Delete') }}
                     </v-list-item>
                     <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
-                        <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                        <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Setting.Delete') }}
                     </v-list-item>
                 </v-list>
             </v-menu>
             <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300" >
                 <v-card color="primary" dark >
                     <v-card-text>
-                        Please stand by
+                        {{ $t('Setting.PleaseStandBy') }}
                         <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
                     </v-card-text>
                 </v-card>
@@ -132,11 +132,11 @@
                         <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
-                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
+                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Setting.ConfigReference') }}</v-btn>
                             <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
+                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Setting.Save') }}</span></v-btn>
                             <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
+                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Setting.SaveRestart') }}</v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
                     <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
@@ -144,40 +144,40 @@
             </v-dialog>
             <v-dialog v-model="dialogRenameFile.show" max-width="400">
                 <v-card>
-                    <v-card-title class="headline">Rename File</v-card-title>
+                    <v-card-title class="headline">{{ $t('Setting.RenameFile') }}</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogRenameFile.newName"></v-text-field>
+                        <v-text-field  :label="$t('Setting.Name')" required v-model="dialogRenameFile.newName"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="" text @click="dialogRenameFile.show = false">Cancel</v-btn>
-                        <v-btn color="primary" text @click="renameFileAction">rename</v-btn>
+                        <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Setting.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="renameFileAction">{{ $t('Setting.Rename') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
             <v-dialog v-model="dialogCreateFile.show" max-width="400">
                 <v-card>
-                    <v-card-title class="headline">Create File</v-card-title>
+                    <v-card-title class="headline">{{ $t('Setting.CreateFile') }}</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogCreateFile.name"></v-text-field>
+                        <v-text-field  :label="$t('Setting.Name')" required v-model="dialogCreateFile.name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="" text @click="dialogCreateFile.show = false">Cancel</v-btn>
-                        <v-btn color="primary" text @click="createFileAction">create</v-btn>
+                        <v-btn color="" text @click="dialogCreateFile.show = false">{{ $t('Setting.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="createFileAction">{{ $t('Setting.Create') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
             <v-dialog v-model="dialogCreateFolder.show" max-width="400">
                 <v-card>
-                    <v-card-title class="headline">Create Folder</v-card-title>
+                    <v-card-title class="headline">{{ $t('Setting.CreateFolder') }}</v-card-title>
                     <v-card-text>
-                        <v-text-field label="Name" required v-model="dialogCreateFolder.name"></v-text-field>
+                        <v-text-field :label="$t('Setting.Name')" required v-model="dialogCreateFolder.name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="" text @click="dialogCreateFolder.show = false">Cancel</v-btn>
-                        <v-btn color="primary" text @click="createFolderAction">create</v-btn>
+                        <v-btn color="" text @click="dialogCreateFolder.show = false">{{ $t('Setting.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="createFolderAction">{{ $t('Setting.Create') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -190,7 +190,7 @@
                 dark
                 v-model="uploadSnackbar.status"
             >
-                <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+                <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t('Setting.Uploading') }} {{ uploadSnackbar.filename }}</strong><br />
                 {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
                 <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
                 <template v-slot:action="{ attrs }">
@@ -234,9 +234,9 @@
                 selected: [],
                 headers: [
                     { text: '', value: '', },
-                    { text: 'Name', value: 'filename', },
-                    { text: 'Filesize', value: 'size', align: 'right', },
-                    { text: 'Last modified', value: 'modified', align: 'right', },
+                    { text: this.$t('Setting.Name'), value: 'filename', },
+                    { text: this.$t('Setting.Filesize'), value: 'size', align: 'right', },
+                    { text: this.$t('Setting.LastModified'), value: 'modified', align: 'right', },
                 ],
                 options: {
                 },

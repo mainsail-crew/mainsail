@@ -8,11 +8,11 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-webcam</v-icon>Webcam</span>
+                <span class="subheading"><v-icon left>mdi-webcam</v-icon>{{ $t('Setting.Webcam')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle"  alt="Webcam"/>
+            <img :src="url" class="webcamImage" :style="webcamStyle"  :alt="$t('Setting.Webcam')"/>
         </v-card-text>
     </v-card>
 </template>

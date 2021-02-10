@@ -323,7 +323,7 @@ export default {
 
 		return additionValues
 	},
-
+	
 	getTempListAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
 		let additionValues = {}
 		additionalSensors.forEach(sensorName => {

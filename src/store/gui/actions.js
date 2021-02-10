@@ -7,7 +7,6 @@ export default {
 
 	getData({ commit, dispatch }, payload) {
 		commit('setData', payload)
-
 		if (
 			'state' in payload &&
 			'tempchart' in payload.state &&
@@ -22,6 +21,7 @@ export default {
 				}
 			}
 		}
+
 	},
 
 	setSettings({ commit, dispatch }, payload) {
@@ -36,7 +36,7 @@ export default {
 	},
 
 	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], '.mainsail.json')
+		let file = new File([JSON.stringify({ state })], '.mainsail.json');
 
 		let formData = new FormData();
 		formData.append('file', file);

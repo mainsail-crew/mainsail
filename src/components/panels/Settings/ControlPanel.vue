@@ -1,137 +1,31 @@
 <style>
-
+    .webcamImage {
+        width: 100%;
+    }
 </style>
 
 <template>
-    <v-form ref="formControlExtruder">
-        <v-card>
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Control</span>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-card-text class="pa-0">
-                <v-container>
-                    <v-row>
-                        <v-col col-6>
-                            <v-text-field
-                                label="Speed XY"
-                                v-model="feedrateXY"
-                                @blur="blurFeedrateXY"
-                                type="number"
-                                suffix="mm/s"
-                                hide-details="auto"
-                                :rules="[
-                                    v => v > 0 || 'Minimum speed is 1'
-                                ]"
-                            ></v-text-field>
-                        </v-col>
-                        <v-col col-6>
-                            <v-text-field
-                                label="Speed Z"
-                                v-model="feedrateZ"
-                                @blur="blurFeedrateZ"
-                                type="number"
-                                suffix="mm/s"
-                                hide-details="auto"
-                                ref="feedrateZ"
-                                :rules="[
-                                    v => v > 1 || 'Minimum speed is 1'
-                                ]"
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances XY in mm"
-                                v-model="stepsXY"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances Z in mm"
-                                v-model="stepsZ"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card-text>
-        </v-card>
-        <v-card class="mt-6">
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Extruder</span>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-card-text class="pa-0">
-                <v-container>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances E in mm"
-                                v-model="feedamountsE"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Speed E in mm/s"
-                                v-model="feedratesE"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card-text>
-        </v-card>
-    </v-form>
+    <v-card>
+        <v-toolbar flat dense >
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Setting.ControlExtruder') }}</span>
+            </v-toolbar-title>
+        </v-toolbar>
+        <v-card-text class="pt-2 pb-0">
+            <v-text-field
+                :label="$t('Setting.FeedrateXY')"
+                v-model="feedrateXY"
+                type="number"
+                suffix="mm/s"
+            ></v-text-field>
+            <v-text-field
+                :label="$t('Setting.FeedrateZ')"
+                v-model="feedrateZ"
+                type="number"
+                suffix="mm/s"
+            ></v-text-field>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -149,19 +43,8 @@
                 get() {
                     return this.$store.state.gui.dashboard.control.feedrateXY
                 },
-                set(feedrate) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: feedrate } } })
-                }
-            },
-            stepsXY: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.control.stepsXY
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(steps) {
-                    const absSteps = []
-                    for(const value of steps) absSteps.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsXY: absSteps } } })
+                set(value) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: value } } })
                 }
             },
             feedrateZ: {
@@ -172,50 +55,9 @@
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateZ: value } } })
                 }
             },
-            stepsZ: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.control.stepsZ
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(steps) {
-                    const absSteps = []
-                    for(const value of steps) absSteps.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsZ: absSteps } } })
-                }
-            },
-            feedamountsE: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.extruder.feedamounts
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(amounts) {
-                    const absAmounts = []
-                    for(const value of amounts) absAmounts.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamounts: absAmounts } } })
-                }
-            },
-            feedratesE: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.extruder.feedrates
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(rates) {
-                    const absRates = []
-                    for(const value of rates) absRates.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrates: absRates } } })
-                }
-            },
-        },
-        mounted() {
-            this.$refs.formControlExtruder.validate()
         },
         methods: {
-            blurFeedrateXY() {
-                if (!(this.feedrateXY > 0)) this.feedrateXY = 100
-            },
-            blurFeedrateZ() {
-                if (!(this.feedrateZ > 0)) this.feedrateZ = 25
-            }
+
         }
     }
 </script>
