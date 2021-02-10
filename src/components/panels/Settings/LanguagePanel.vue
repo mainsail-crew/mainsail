@@ -1,7 +1,5 @@
 <style>
-    .webcamImage {
-        width: 100%;
-    }
+
 </style>
 
 <template>
@@ -49,15 +47,7 @@
                 set(newName){
                     return localStorage.setItem("lang",newName)
                 }
-            },
-            printerName: {
-                get() {
-                    return this.$store.state.gui.general.printername;
-                },
-                set(newName) {
-                    return this.$store.dispatch('gui/setSettings', { general: { printername: newName } });
-                }
-            },
+            }
         },
         methods: {
             changeLanguage(val){
