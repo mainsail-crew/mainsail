@@ -45,7 +45,21 @@ export default {
 
 		if (payload.files && payload.files.length) {
 			for (let file of payload.files) {
-				if (!parent.find(element => (element.isDirectory === false && element.filename === file.filename))) {
+				const existingFile = parent.find(element => (element.isDirectory === false && element.filename === file.filename))
+
+				if (
+					existingFile && (
+						existingFile.size !== file.size ||
+						existingFile.modified.getTime() !== new Date(file.modified*1000).getTime()
+					)
+				) {
+					Vue.set(existingFile, 'modified', new Date(file.modified*1000))
+					Vue.set(existingFile, 'size', file.size)
+
+					if (existingFile.metadataPulled) {
+						Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.requestParams.path+'/'+file.filename }, "files/getMetadata")
+					}
+				} else if (!existingFile) {
 					parent.push({
 						isDirectory: false,
 						filename: file.filename,
