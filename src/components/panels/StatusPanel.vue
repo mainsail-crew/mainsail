@@ -172,7 +172,7 @@
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) && 'filament_total' in current_file ">
+                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
                             <v-col class="flex-grow-0 py-2">
                                 <v-icon>mdi-printer-3d</v-icon>
                             </v-col>

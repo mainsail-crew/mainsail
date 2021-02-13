@@ -1,12 +1,12 @@
 export default {
 
 	getDatasetColor: state => (name) => {
-		let dataset = state.datasets.find(element => element.name === name)
+		let dataset = state.series.find(element => element.name === name)
 
-		return (dataset) ? dataset.color : null
+		return (dataset && 'lineStyle' in dataset) ? dataset.lineStyle.color : null
 	},
 
-	getDataset: state => (name) => {
-		return state.datasets.find(element => element.name === name)
+	getSeries: state => (name) => {
+		return state.series.find(element => element.name === name)
 	},
 }
