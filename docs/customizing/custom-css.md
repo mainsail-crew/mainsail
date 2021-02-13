@@ -24,22 +24,22 @@ You need to be familiar with the CSS (**C**ascading **S**tyle **S**heets) syntax
 There are many resources to learn CSS online, for example:
 - https://www.w3schools.com/css/default.asp
 
-#### find the Element selector 
+#### find the Element selector (example based on Chrome Browser)
 
 Use your browser's built-in developer tools to find the right selector of the element you want to add your own flair to.
 
-Open the developer tools (example based on Chrome Browser):
+Open the developer tools:
 
 right click anywhere on the page and select "inspect" (or F12 on the keyboard)
+
 ![open dev-tools](../assets/img/customizing/screenshot-custom-css-inspect.png "open dev-tools")
-
-
-![find element](../assets/img/customizing/screenshot-custom-css-find-element.png "find the right element")
 
 1. Activate the "inspector" 
 2. Select the desired element
 3. Find the selector
 4. Use the style editor and fiddle arround 
+
+![find element](../assets/img/customizing/screenshot-custom-css-find-element.png "find the right element")
 
 ![fiddle](../assets/img/customizing/screenshot-custom-css-fiddle.png "fiddle")
 
