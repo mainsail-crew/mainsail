@@ -48,8 +48,11 @@ trusted_clients:
     2a02:810d:9340:33f6::/64
 
 [update_manager]
-client_repo: meteyou/mainsail
-client_path: ~/mainsail
+
+[update_manager client mainsail]
+type: web
+repo: meteyou/mainsail
+path: ~/mainsail
 ```
 
 > 🔥 **trusted_clients - read carefully** 🔥  
