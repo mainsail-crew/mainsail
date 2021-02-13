@@ -4,7 +4,7 @@ import getters from './getters'
 
 export function getDefaultState() {
 	return {
-		datasets: [],
+		series: [],
 	}
 }
 
