@@ -45,9 +45,14 @@
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolWebsocket" hide-details label="Use Websocket Method" class="mt-0"></v-switch>
+                        <v-switch v-model="adaptiveFps" hide-details label="(Experimental) Adaptive FPS" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
+                <v-row v-if="adaptiveFps">
+                    <v-col class="py-2">
+                        <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
+                    </v-col>
+                </v-row> 
             </v-container>
         </v-card-text>
     </v-card>
@@ -69,6 +74,8 @@
                     return this.$store.state.gui.webcam.url;
                 },
                 set(url) {
+                    if(this.$store.state.gui.webcam.adaptiveFps)
+                        url = url.replace("action=stream", "action=snapshot");
                     return this.$store.dispatch('gui/setSettings', { webcam: { url } });
                 }
             },
@@ -112,14 +119,22 @@
                     return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
                 }
             },
-            boolWebsocket: {
+            adaptiveFps: {
                 get() {
-                    return this.$store.state.gui.webcam.boolWebsocket;
+                    return this.$store.state.gui.webcam.adaptiveFps;
                 },
-                set(useWebsocket) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { boolWebsocket: useWebsocket } });
+                set(useAdaptiveFps) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { adaptiveFps: useAdaptiveFps } });
                 }
             },
+            targetFps: {
+                get() {
+                    return this.$store.state.gui.webcam.targetFps;
+                },
+                set(fps) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { targetFps: fps } });
+                }
+            }
         },
         methods: {
 
