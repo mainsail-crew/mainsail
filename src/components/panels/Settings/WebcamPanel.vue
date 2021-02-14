@@ -43,6 +43,11 @@
                         <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="boolWebsocket" hide-details label="Use Websocket Method" class="mt-0"></v-switch>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-card-text>
     </v-card>
@@ -105,6 +110,14 @@
                 },
                 set(showNav) {
                     return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
+                }
+            },
+            boolWebsocket: {
+                get() {
+                    return this.$store.state.gui.webcam.boolWebsocket;
+                },
+                set(useWebsocket) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { boolWebsocket: useWebsocket } });
                 }
             },
         },
