@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "core-js": "^3.8.2",
     "echarts": "^5.0.2",
+    "echarts-gl": "^2.0.1",
     "object-assign-deep": "^0.4.0",
     "prismjs": "^1.23.0",
     "vue": "^2.6.12",
