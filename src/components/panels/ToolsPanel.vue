@@ -93,7 +93,7 @@
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</span>
-                                <span v-for="(values, key) of heater.additionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
+                                <span v-for="(values, key) of heater.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 vertical_align_center">
                                 <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" :items="heater.presets" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
@@ -113,7 +113,7 @@
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span>
-                                <span v-for="(values, key) of fan.additionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
+                                <span v-for="(values, key) of fan.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 pr-0  vertical_align_center">
                                 <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" :items="fan.presets" ></toolInput>
