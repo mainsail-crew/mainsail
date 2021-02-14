@@ -58,6 +58,58 @@
                         <v-switch class="mr-3" v-model="colorbarType" label="Scale"></v-switch>
                     </v-card-actions>
                 </v-card>
+                <v-card>
+                    <v-toolbar flat dense>
+                        <v-toolbar-title>
+                            <span class="subheading">
+                                <v-icon left>mdi-grid</v-icon>
+                                Heightmap
+                            </span>
+                            <v-btn
+                                text
+                                color="primary"
+                                class="ml-1 d-none d-sm-inline-flex"
+                                @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
+                        </v-toolbar-title>
+                        <v-spacer class=""></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            class=" d-sm-none"
+                            @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
+                        <v-item-group class="v-btn-toggle d-none d-sm-flex" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                        </v-item-group>
+                    </v-toolbar>
+                    <v-card-text class="d-sm-none text-center pb-0">
+                        <v-item-group class="v-btn-toggle" name="controllers">
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                        </v-item-group>
+                    </v-card-text>
+                    <v-card-text v-if="!(this.bed_mesh && this.bed_mesh.profile_name)">
+                        No bed_mesh has been loaded yet.
+                    </v-card-text>
+                    <v-card-text class="px-0 py-0 content" v-if="this.bed_mesh && this.bed_mesh.profile_name">
+                        <v-container class="px-0 py-0">
+                            <v-row>
+                                <v-col class="pb-0 pt-5">
+                                    <div id="heightmap" style="height: 400px; width: 100%;"></div>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions v-if="this.bed_mesh && this.bed_mesh.profile_name" class="py-0">
+                        <v-spacer></v-spacer>
+                        <v-btn text :color="(this.showMeshType === 'probed' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToProbed">Probed</v-btn>
+                        <v-btn text :color="(this.showMeshType === 'mesh' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToMesh">Mesh</v-btn>
+                        <v-spacer></v-spacer>
+                        <v-switch class="mr-3" v-model="colorbarType" label="Scale"></v-switch>
+                    </v-card-actions>
+                </v-card>
             </v-col>
             <v-col class="col-12 col-md-4">
                 <v-card>
@@ -152,8 +204,10 @@
     </div>
 </template>
 <script>
-    import {mapGetters, mapState} from 'vuex';
+    import {mapGetters, mapState} from 'vuex'
     import { Plotly } from 'vue-plotly'
+    import * as echarts from "echarts"
+    import 'echarts-gl'
 
     export default {
         components: {
@@ -217,11 +271,45 @@
                 calibrateDialog: false,
                 newName: '',
                 colorbarType: false,
+                chart : null,
+                chartOptions: {
+                    animation: false,
+                    visualMap: {
+                        show: false,
+                        dimension: 2,
+                        min: -1,
+                        max: 1,
+                        inRange: {
+                            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                        }
+                    },
+                    xAxis3D: {
+                        type: 'value'
+                    },
+                    yAxis3D: {
+                        type: 'value'
+                    },
+                    zAxis3D: {
+                        type: 'value'
+                    },
+                    grid3D: {
+                        viewControl: {
+                            // projection: 'orthographic'
+                        }
+                    },
+                    series: [{
+                        type: 'surface',
+                        wireframe: {
+                            //show: false
+                        },
+                        data: []
+                    }]
+                },
             }
         },
         computed: {
             ...mapState({
-                config: state => state.printer.configfile.config,
+                config: state => state.printer.configfile.settings,
                 loadings: state => state.socket.loadings,
             }),
 
@@ -249,42 +337,51 @@
             }
         },
         methods: {
+            createChart() {
+                if (document.getElementById("heightmap") && this.chart === null) {
+                    this.chart = echarts.init(document.getElementById("heightmap") )
+                } else setTimeout(() => {
+                    this.createChart()
+                }, 500)
+            },
             showBedMesh: function() {
+                const heightmapData = []
                 this.data[0].x = [];
                 this.data[0].y = [];
                 this.data[0].z = [];
 
-                if (this.bed_mesh && this.bed_mesh.profile_name !== "") {
+                if (this.bed_mesh && this.bed_mesh.profile_name !== "" && this.chart) {
+                    const meshXmin = this.bed_mesh.mesh_min[0]
+                    const meshXmax = this.bed_mesh.mesh_max[0]
+                    const meshYmin = this.bed_mesh.mesh_min[1]
+                    const meshYmax = this.bed_mesh.mesh_max[1]
+                    window.console.log(this.config)
 
-                    if ('stepper_x 'in this.config && 'stepper_y' in this.config) {
+                    if ('stepper_x' in this.config && 'stepper_y' in this.config) {
+                        this.chartOptions.xAxis3D.min = this.config.stepper_x.position_min
+                        this.chartOptions.xAxis3D.max = this.config.stepper_x.position_max
+                        this.chartOptions.yAxis3D.min = this.config.stepper_y.position_min
+                        this.chartOptions.yAxis3D.max = this.config.stepper_y.position_max
+
                         this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max];
                         this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max];
                     } else {
+                        this.chartOptions.xAxis3D.min = meshXmin
+                        this.chartOptions.xAxis3D.max = meshXmax
+                        this.chartOptions.yAxis3D.min = meshYmin
+                        this.chartOptions.yAxis3D.max = meshYmax
+
                         this.layout.scene.xaxis.range = [this.bed_mesh.mesh_min[0], this.bed_mesh.mesh_max[0]];
                         this.layout.scene.yaxis.range = [this.bed_mesh.mesh_min[1], this.bed_mesh.mesh_max[1]];
                     }
 
-                    let x_count = 0;
-                    let y_count = 0;
+                    const meshData = this.showMeshType === "probed" ? this.bed_mesh.probed_matrix : this.bed_mesh.mesh_matrix
+                    const x_count = meshData[0].length;
+                    const y_count = meshData.length;
+                    this.data[0].z = meshData;
 
-                    let min = -0.5;
-                    let max = 0.5;
-
-                    if (this.showMeshType === 'probed') {
-                        x_count = this.bed_mesh.probed_matrix[0].length;
-                        y_count = this.bed_mesh.probed_matrix.length;
-                        this.data[0].z = this.bed_mesh.probed_matrix;
-
-                        min = Math.min.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.min.apply(Math, row); }));
-                        max = Math.max.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.max.apply(Math, row); }));
-                    } else if (this.showMeshType === 'mesh') {
-                        x_count = this.bed_mesh.mesh_matrix[0].length;
-                        y_count = this.bed_mesh.mesh_matrix.length;
-                        this.data[0].z = this.bed_mesh.mesh_matrix;
-
-                        min = Math.min.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.min.apply(Math, row); }));
-                        max = Math.max.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.max.apply(Math, row); }));
-                    }
+                    let min = Math.min.apply(null, meshData.map(function(row){ return Math.min.apply(Math, row); }));
+                    let max = Math.max.apply(null, meshData.map(function(row){ return Math.max.apply(Math, row); }));
 
                     let x_step = (this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / (x_count - 1);
                     for(let i = 0; i < x_count; i++) {
@@ -294,6 +391,16 @@
                     let y_step = (this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / (y_count - 1);
                     for(let i = 0; i < y_count; i++) {
                         this.data[0].y.push(parseFloat(this.bed_mesh.mesh_min[1]) + parseFloat(y_step) * i);
+                    }
+
+                    for (let y = 0; y < y_count; y++) {
+                        for (let x = 0; x < x_count; x++) {
+                            heightmapData.push([
+                                Math.round(meshXmin + (meshXmax-meshXmin) / (x_count - 1) * x * 1000) /  1000,
+                                Math.round(meshYmin + (meshYmax-meshYmin) / (y_count - 1) * y * 1000) /  1000,
+                                meshData[y][x]
+                            ])
+                        }
                     }
 
                     if(this.colorbarType) {
@@ -310,6 +417,12 @@
                     if (max < 0.5) max = 0.5
 
                     this.layout.scene.zaxis.range = [min, max]
+                    this.chartOptions.zAxis3D.min = min
+                    this.chartOptions.zAxis3D.max = max
+
+                    this.chartOptions.series[0].data = heightmapData
+                    window.console.log(this.chartOptions)
+                    this.chart.setOption(this.chartOptions)
                 }
 
                 //this.$refs.heightmap.update();
@@ -365,10 +478,13 @@
                 this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' });
             }
         },
-        created: function() {
-
+        created() {
+            window.addEventListener('resize', () => {
+                if (this.chart) this.chart.resize()
+            })
         },
         mounted() {
+            this.createChart()
             this.showBedMesh()
         },
         watch: {

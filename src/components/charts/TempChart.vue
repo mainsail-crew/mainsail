@@ -5,7 +5,7 @@
 <script>
 import { mapState } from 'vuex'
 import * as echarts from 'echarts'
-import {convertName} from "@/plugins/helpers";
+import { convertName } from "@/plugins/helpers";
 
 export default {
     components: {
@@ -186,7 +186,7 @@ export default {
     methods: {
         createChart() {
             if (document.getElementById("tempchart") && this.chart === null) {
-                this.chart = echarts.init(document.getElementById("tempchart"))
+                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'svg'})
                 this.chart.setOption(this.chartOptions)
             } else setTimeout(() => {
                 this.createChart()
