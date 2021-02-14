@@ -5,14 +5,14 @@
 </style>
 
 <template>
-    <v-card>
+    <v-card v-observe-visibility="visibilityChanged">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-webcam</v-icon>{{subHeading}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle"  alt="Webcam"/>
+            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad"  alt="Webcam"/>
         </v-card-text>
     </v-card>
 </template>
@@ -29,19 +29,19 @@
 
                 request_start_time: performance.now(),
                 start_time: performance.now(),
-                time: 1,
+                time: 0,
                 request_time: 0,
-                time_smoothing: 0.9,
-                request_time_smoothing: 0.2,
-                target_fps: 24
+                time_smoothing: 0.6,
+                request_time_smoothing: 0.1,
+                isVisible: true,
             };
         },
         created: function () {
             document.addEventListener("focus", () => this.handleRefreshChange(), false);
             document.addEventListener("visibilitychange", this.handleRefreshChange, false);
 
-            if(this.webcamConfig.boolWebsocket) {
-                this.connect();
+            if(this.webcamConfig.adaptiveFps) {
+                this.requestMjpeg();
             }
 
         },
@@ -54,11 +54,11 @@
             }),
 
             subHeading() {
-                return "Webcam" + (this.webcamConfig.boolWebsocket ? " - FPS: " + Math.round(1000 / this.time) : "");
+                return "Webcam" + (this.webcamConfig.adaptiveFps ? " - FPS: " + Math.round(1000 / this.time) : "");
             },
 
             url() {
-                if(!this.webcamConfig.boolWebsocket) {
+                if(!this.webcamConfig.adaptiveFps) {
                     let basicUrl = this.webcamConfig.url
                     if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 
@@ -100,51 +100,45 @@
                 }
             },
 
-            connect() {
-                var wsProtocol = (location.protocol === "https:") ? "wss://" : "ws://";
-                this.connection = new WebSocket(wsProtocol + this.webcamConfig.url)
-                this.connection.binaryType = 'arraybuffer';
+            onLoad() {
+                var end_time = performance.now();
+                var current_time = end_time - this.start_time;
+                this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing));
+                this.start_time = end_time;
 
-                console.log(wsProtocol + this.webcamConfig.url);
-                console.log(this.connection);
-                
-                this.connection.onmessage = (event) => {
-                    var arrayBuffer = event.data; 
-                    /*this.blobUrl = 'data:image/jpeg;base64,' + btoa(
-                        new Uint8Array(arrayBuffer)
-                            .reduce((data, byte) => data.String.fromCharCode(byte), '')
-                    );*/
-                    //this.imageData = 'data:image/jpeg;base64,' + arrayBuffer;
-                    this.imageData = window.URL.createObjectURL(new Blob([new Uint8Array(arrayBuffer)], {type: "image/jpeg"}));
-                    console.log(this.imageData);
+                var target_time = 1000/this.webcamConfig.targetFps
 
+                var current_request_time = performance.now() - this.request_start_time;
+                this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing));
+                var timeout = Math.max(0, target_time - this.request_time);
 
-                    var end_time = performance.now();
-                    var current_time = end_time - this.start_time;
-                    // smooth with moving average
-                    this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing));
-                    this.start_time = end_time;
-
-                    var current_request_time = performance.now() - this.request_start_time;
-                    // smooth with moving average
-                    this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing));
-                    var timeout = Math.max(0, this.target_time - this.request_time);
-
-                    setTimeout(this.requestImage(), timeout);
-                };
-
-
-                this.connection.onopen = () => {
-                    console.log("Connection to websocket was established");
-                    this.start_time = performance.now();
-                    this.requestImage();
-                }
+                this.$nextTick(() => {
+                    console.log(end_time + " " + timeout);
+                    setTimeout(this.requestMjpeg, timeout);
+                })
             },
 
-            requestImage() {
+            requestMjpeg() {
+                if(!this.isVisible)
+                    return;
                 this.request_start_time = performance.now();
-                this.connection.send('more');
+                let basicUrl = this.webcamConfig.url
+                if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
+
+                const params = new URLSearchParams(basicUrl)
+                params.set('bypassCache', ""+ this.refresh + (Math.random() * 1000))
+
+                this.$nextTick(() => {
+                    this.imageData = decodeURIComponent(params.toString())
+                })
             },
+
+            visibilityChanged(isVisible, entry) {
+                this.isVisible = isVisible;
+                console.log(entry);
+                if(isVisible)
+                    this.requestMjpeg();
+            }
         }
     }
 </script>
