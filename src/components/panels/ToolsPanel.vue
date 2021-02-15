@@ -87,7 +87,7 @@
                                 <v-icon :color="heater.color">mdi-{{ heater.icon }}</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(heater)">{{ convertName(heater.name) }}</span></v-col>
-                            <v-col class="py-2 flex-grow-0 text-center" style="min-width: 70px;">
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
                                 <div :style="'background-color: '+heater.chartColor+'66; border-color: '+heater.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(heater)"></div>
                             </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
@@ -107,7 +107,7 @@
                                 <v-icon :color="(fan.target ? 'grey lighten-5' : 'grey darken-2')" :class="(fan.speed ? ' icon-rotate' : '')">mdi-fan</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(fan)">{{ convertName(fan.name) }}</span></v-col>
-                            <v-col class="py-2 flex-grow-0 text-center" style="min-width: 70px;">
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
                                 <div :style="'background-color: '+fan.chartColor+'66; border-color: '+fan.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(fan)"></div>
                             </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
@@ -129,7 +129,7 @@
                             <v-col class="py-2 font-weight-bold">
                               <span style="cursor: pointer;" @click="openHeater(sensor)">{{ convertName(sensor.name) }}</span>
                             </v-col>
-                            <v-col class="py-2 flex-grow-0 text-center" style="min-width: 70px;">
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
                                 <div :style="'background-color: '+sensor.chartColor+'66; border-color: '+sensor.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(sensor)"></div>
                             </v-col>
                             <v-col class="py-2 d-none d-sm-block"><span>&nbsp;</span></v-col>
@@ -152,7 +152,7 @@
                     </div>
                     <v-divider class="my-2" v-if="boolTempchart"></v-divider>
                     <v-row v-if="boolTempchart">
-                        <v-col class="py-5 px-5">
+                        <v-col class="py-0 px-3">
                             <temp-chart ></temp-chart>
                         </v-col>
                     </v-row>
