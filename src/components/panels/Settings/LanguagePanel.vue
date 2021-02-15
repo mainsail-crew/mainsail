@@ -42,18 +42,16 @@
         computed: {
             lang: {
                 get() {
-                    return localStorage.getItem("lang");
-                    // return this.$store.state.gui.general.language;
+                    return this.$store.state.gui.general.language;
                 },
-                set(language){
-                    return localStorage.setItem("lang",language);
-                    // return this.$store.dispatch('gui/setSettings', { general: { language: language } });
+                set(newVal){
+                    return this.$store.dispatch('gui/setSettings', { general: { language: newVal } });
                 }
             }
         },
         methods: {
             changeLanguage(val){
-                this.$i18n.locale = this.lang = val
+                this.lang = val
             }
         }
     }

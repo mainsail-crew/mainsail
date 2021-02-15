@@ -176,6 +176,7 @@ export default {
           return this.$route.fullPath;
         },
         ...mapState({
+            language: state => state.gui.general.language,
             isConnected: state => state.socket.isConnected,
             hostname: state => state.printer.hostname,
             apiHost: state => state.socket.hostname,
@@ -372,6 +373,9 @@ export default {
         }
     },
     watch: {
+        language(){
+            this.$i18n.locale = this.language;
+        },
         print_percent() {
             this.drawFavicon(this.print_percent);
         },
