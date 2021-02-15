@@ -10,7 +10,7 @@
                     <v-switch v-model="runout.enabled" hide-details @change="changeSensor(runout)" class="settingsRunoutSwitchInput my-0"></v-switch>
                 </v-toolbar>
                 <v-card-text v-if="runout.enabled">
-                    <v-chip label block :color="runout.filament_detected ? 'green' : 'red' " class="d-block text-center">{{ runout.filament_detected ? $t('Setting.detected') : $t('Setting.Empty') }}</v-chip>
+                    <v-chip label block :color="runout.filament_detected ? 'green' : 'red' " class="d-block text-center">{{ runout.filament_detected ? $t('Setting.Detected') : $t('Setting.Empty') }}</v-chip>
                 </v-card-text>
             </v-card>
         </div>
