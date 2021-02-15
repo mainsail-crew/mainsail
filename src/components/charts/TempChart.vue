@@ -91,15 +91,16 @@ export default {
                     }
                 },
                 grid: {
-                    top: 10,
-                    right: 40,
+                    top: 30,
+                    right: 25,
                     bottom: 20,
-                    left: 40,
+                    left: 25,
                 },
                 xAxis: {
                     type: 'time',
                     min: new Date() - 60*10,
                     max: new Date(),
+                    minInterval: 60 * 2 * 1000 + 1,
                     splitLine: {
                         show: true,
                         lineStyle: {
@@ -107,16 +108,24 @@ export default {
                         },
                     },
                     axisLabel: {
-                        color: 'rgba(255, 255, 255, 0.24)'
+                        color: 'rgba(255, 255, 255, 0.24)',
+                        margin: 10
                     },
                 },
                 yAxis: [
                     {
+                        name: 'Celsius',
                         type: 'value',
                         min: 0,
                         max: 300,
                         minInterval: 10,
-                        maxInterval: 50,
+                        maxInterval: 100,
+                        nameLocation: 'end',
+                        nameGap: 5,
+                        nameTextStyle: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            align: 'left',
+                        },
                         splitLine: {
                             lineStyle: {
                                 color: 'rgba(255, 255, 255, 0.12)',
@@ -124,7 +133,10 @@ export default {
                         },
                         axisLabel: {
                             color: 'rgba(255, 255, 255, 0.24)',
-                            formatter: '{value}°'
+                            formatter: '{value}',
+                            rotate: 90,
+                            showMaxLabel: false,
+                            margin: 5,
                         },
                         axisLine: {
                             show: true,
@@ -134,16 +146,25 @@ export default {
                         }
                     },
                     {
+                        name: 'PWM',
                         min: 0,
                         max: 100,
-                        minInterval: 25,
+                        minInterval: 100,
                         type: 'value',
+                        nameLocation: 'end',
+                        nameGap: 5,
+                        nameTextStyle: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            align: 'right',
+                        },
                         splitLine: {
                             show: false,
                         },
                         axisLabel: {
                             color: 'rgba(255, 255, 255, 0.24)',
-                            formatter: '{value}%'
+                            formatter: '{value}',
+                            rotate: 90,
+                            margin: 5,
                         },
                         axisLine: {
                             show: true,
@@ -153,7 +174,42 @@ export default {
                         }
                     },
                 ],
-                series: []
+                series: [],
+                media: [{
+                    query: {
+                        minWidth: 500,
+                    },
+                    option: {
+                        xAxis: {
+                            minInterval: 60 * 1000 + 1,
+                        }
+                    }
+                }, {
+                    query: {
+                        minWidth: 680,
+                    },
+                    option: {
+                        grid: {
+                            right: 40,
+                            left: 40,
+                        },
+                        yAxis: [
+                            {
+                                maxInterval: 50,
+                                showMaxLabel: true,
+                                axisLabel: {
+                                    rotate: 0
+                                }
+                            },
+                            {
+                                maxInterval: 25,
+                                axisLabel: {
+                                    rotate: 0
+                                }
+                            },
+                        ],
+                    }
+                }],
             },
         }
     },
