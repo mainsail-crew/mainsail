@@ -6,6 +6,7 @@ export function getDefaultState() {
 	return {
 		general: {
 			printername: "",
+			language: "en"
 		},
 		dashboard: {
 			boolWebcam: false,

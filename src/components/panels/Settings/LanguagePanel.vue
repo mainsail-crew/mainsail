@@ -42,10 +42,12 @@
         computed: {
             lang: {
                 get() {
-                    return localStorage.getItem("lang")
+                    return localStorage.getItem("lang");
+                    // return this.$store.state.gui.general.language;
                 },
-                set(newName){
-                    return localStorage.setItem("lang",newName)
+                set(language){
+                    return localStorage.setItem("lang",language);
+                    // return this.$store.dispatch('gui/setSettings', { general: { language: language } });
                 }
             }
         },
