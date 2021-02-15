@@ -40,7 +40,7 @@
             document.addEventListener("focus", () => this.handleRefreshChange(), false);
             document.addEventListener("visibilitychange", this.handleRefreshChange, false);
 
-            if(this.webcamConfig.adaptiveFps) {
+            if(this.webcamConfig.serviceMethod == 1) {
                 this.requestMjpeg();
             }
 
@@ -54,11 +54,11 @@
             }),
 
             subHeading() {
-                return "Webcam" + (this.webcamConfig.adaptiveFps ? " - FPS: " + Math.round(1000 / this.time) : "");
+                return "Webcam" + (this.webcamConfig.serviceMethod == 1 ? " - FPS: " + Math.round(1000 / this.time) : "");
             },
 
             url() {
-                if(!this.webcamConfig.adaptiveFps) {
+                if(!this.webcamConfig.serviceMethod) {
                     let basicUrl = this.webcamConfig.url
                     if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 
@@ -67,10 +67,6 @@
                     return decodeURIComponent(params.toString())
                 } else {
                     return this.imageData;
-                    /*return 'data:image/jpeg;base64,' + btoa(
-                        new Uint8Array(this.blobData)
-                            .reduce((data, byte) => data.String.fromCharCode(byte), '')
-                    )*/
                 }
             },
 
@@ -121,6 +117,7 @@
             requestMjpeg() {
                 if(!this.isVisible)
                     return;
+
                 this.request_start_time = performance.now();
                 let basicUrl = this.webcamConfig.url
                 if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
@@ -133,9 +130,8 @@
                 })
             },
 
-            visibilityChanged(isVisible, entry) {
+            visibilityChanged(isVisible) {
                 this.isVisible = isVisible;
-                console.log(entry);
                 if(isVisible)
                     this.requestMjpeg();
             }

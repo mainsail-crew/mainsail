@@ -45,10 +45,10 @@
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="adaptiveFps" hide-details label="(Experimental) Adaptive FPS" class="mt-0"></v-switch>
+                        <v-select v-model="serviceMethod" :items="serviceMethodItems" hide-details label="Service Method" class="mt-0"></v-select>
                     </v-col>
                 </v-row>
-                <v-row v-if="adaptiveFps">
+                <v-row v-if="serviceMethod == 1">
                     <v-col class="py-2">
                         <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
                     </v-col>
@@ -65,7 +65,11 @@
         },
         data: function() {
             return {
-                rotationEnabled: false
+                rotationEnabled: false,
+                serviceMethodItems: [
+                    { value: 0, text: 'MJPEG-Streamer' },
+                    { value: 1, text: 'MJPEG-Streamer (Adaptive)' },
+                ]
             }
         },
         computed: {
@@ -74,8 +78,6 @@
                     return this.$store.state.gui.webcam.url;
                 },
                 set(url) {
-                    if(this.$store.state.gui.webcam.adaptiveFps)
-                        url = url.replace("action=stream", "action=snapshot");
                     return this.$store.dispatch('gui/setSettings', { webcam: { url } });
                 }
             },
@@ -119,12 +121,12 @@
                     return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
                 }
             },
-            adaptiveFps: {
+            serviceMethod: {
                 get() {
-                    return this.$store.state.gui.webcam.adaptiveFps;
+                    return this.$store.state.gui.webcam.serviceMethod;
                 },
-                set(useAdaptiveFps) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { adaptiveFps: useAdaptiveFps } });
+                set(selectedMethod) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { serviceMethod: selectedMethod } });
                 }
             },
             targetFps: {
