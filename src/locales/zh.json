@@ -32,7 +32,9 @@
     "PowerDevices": "电力设备",
     "HostControl": "主机控制",
     "Reboot": "重启",
-    "Shutdown": "关机"
+    "Shutdown": "关机",
+    "Updating": "更新",
+    "done": " 完成！"
   },
   "Router" : {
     "Dashboard": "仪表盘",
@@ -232,6 +234,12 @@
     "AddPrinter": "添加打印机",
     "EditPrinter": "编辑打印机",
     "UpdatePrinter": "更新打印机",
-    "detected": "发现"
+    "Detected": "发现",
+    "Upgrade": "升级",
+    "UpToDate": "最新的",
+    "Detached": "独立的",
+    "Invalid": "无效",
+    "Dirty": "脏的",
+    "ERROR": "错误"
   }
 }

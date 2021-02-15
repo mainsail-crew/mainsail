@@ -57,7 +57,7 @@
                                 :disabled="!(version_info.system.package_count) || printer_state === 'printing'"
                                 @click="updateSystem"
                                 class="minwidth-0 px-2 text-uppercase"
-                            ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? 'upgrade' : 'up-to-date' }}</v-chip>
+                            ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? $t('Setting.Upgrade') : $t('Setting.UpToDate')}}</v-chip>
                         </v-col>
                     </v-row>
                 </div>
@@ -112,16 +112,16 @@
             },
             getBtnText(object) {
                 if (typeof object === 'object' && object !== false) {
-                    if ('detached' in object && object.detached) return 'detached'
-                    if ('is_valid' in object && !object.is_valid) return 'invalid'
-                    if ('is_dirty' in object && object.is_dirty) return 'dirty'
+                    if ('detached' in object && object.detached) return this.$t('Setting.Detached')
+                    if ('is_valid' in object && !object.is_valid) return this.$t('Setting.Invalid')
+                    if ('is_dirty' in object && object.is_dirty) return this.$t('Setting.Dirty')
 
-                    if ('version' in object && 'remote_version' in object && object.version !== object.remote_version) return 'update'
+                    if ('version' in object && 'remote_version' in object && object.version !== object.remote_version) return this.$t('Setting.Update')
 
-                    return 'up-to-date'
+                    return this.$t('Setting.UpToDate')
                 }
 
-                return 'ERROR'
+                return this.$t('Setting.ERROR')
             },
             getBtnIcon(object) {
                 if (typeof object === 'object' && object !== false) {

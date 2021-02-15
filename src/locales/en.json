@@ -32,7 +32,9 @@
     "PowerDevices": "Power Devices",
     "HostControl": "Host Control",
     "Reboot": "Reboot",
-    "Shutdown": "Shutdown"
+    "Shutdown": "Shutdown",
+    "Updating": "Updating",
+    "done": " done!"
   },
   "Router" : {
     "Dashboard": "Dashboard",
@@ -232,6 +234,12 @@
     "AddPrinter": "Add Printer",
     "EditPrinter": "Edit Printer",
     "UpdatePrinter": "Update Printer",
-    "detected": "detected"
+    "Detected": "detected",
+    "Upgrade": "upgrade",
+    "UpToDate": "up-to-date",
+    "Detached": "detached",
+    "Invalid": "invalid",
+    "Dirty": "dirty",
+    "ERROR": "ERROR"
   }
 }
