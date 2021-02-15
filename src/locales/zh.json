@@ -73,7 +73,7 @@
     "QGL": "QGL",
     "ZTilt": "Z 倾斜",
     "FeedAmountIn": "进料量",
-    "FeedrateIn": "输入",
+    "FeedrateIn": "输入速度",
     "Retract": "回抽",
     "Extrude": "挤出",
     "PrintSettings": "打印设置",
