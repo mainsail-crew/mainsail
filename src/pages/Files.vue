@@ -121,7 +121,7 @@
                 </template>
 
                 <template #no-data>
-                    <div class="text-center">{{ $t('Files.empty') }}</div>
+                    <div class="text-center">{{ $t('Files.Empty') }}</div>
                 </template>
 
                 <template slot="body.prepend" v-if="(currentPath !== 'gcodes')">
