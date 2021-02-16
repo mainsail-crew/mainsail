@@ -14,7 +14,6 @@ export default {
     data: function() {
         return {
             chart : null,
-            tempchartDisplayMinutes: 10,
             timerChart: '',
             timerDataset: '',
             chartOptions: {
@@ -100,7 +99,8 @@ export default {
                     type: 'time',
                     min: new Date() - 60*10,
                     max: new Date(),
-                    minInterval: 60 * 2 * 1000 + 1,
+                    splitNumber: 5,
+                    //minInterval: 60 * 2 * 1000 + 1,
                     splitLine: {
                         show: true,
                         lineStyle: {
@@ -181,7 +181,7 @@ export default {
                     },
                     option: {
                         xAxis: {
-                            minInterval: 60 * 1000 + 1,
+                            splitNumber: 10,
                         }
                     }
                 }, {
@@ -218,6 +218,11 @@ export default {
             intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
             intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
         }),
+        maxHistory: {
+            get() {
+                return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') || 1200
+            }
+        },
         series: {
             get () {
                 return this.$store.state.printer.tempHistory.series
@@ -236,6 +241,11 @@ export default {
         maxTemp: {
             get() {
                 return this.$store.getters["printer/getMaxTemp"]
+            }
+        },
+        currentMaxTemp: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
             }
         }
     },
@@ -256,13 +266,13 @@ export default {
                 this.chart.setOption({
                     series: this.series,
                     xAxis: {
-                        min: new Date() - 60* this.tempchartDisplayMinutes * 1000,
-                        max: new Date()
+                        min: new Date() - this.maxHistory * 1000,
+                        max: new Date(),
                     },
                     yAxis: [{
-                        max: this.autoscale ? null : this.maxTemp,
-                        scale: this.autoscale
-                    }]
+                        max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
+                        //scale: this.autoscale
+                    }],
                 })
             }
         }, this.intervalChartUpdate)

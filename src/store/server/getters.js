@@ -20,4 +20,13 @@ export default {
 
 		return events
 	},
+
+	getConfig: (state) => (section, attribute) => {
+		if (
+			section in state.config &&
+			attribute in state.config[section]
+		) return state.config[section][attribute]
+
+		return null
+	}
 }
