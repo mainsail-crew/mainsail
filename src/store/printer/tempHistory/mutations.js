@@ -33,7 +33,7 @@ export default {
 				])
 
 				let i
-				const timeOld = new Date().getTime() - (1000 * 60 * 10)
+				const timeOld = new Date().getTime() - (1000 * payload.maxHistory)
 				while ((i = dataset.data.findIndex(item => timeOld > item[0])) > -1) {
 					dataset.data.splice(i, 1)
 				}

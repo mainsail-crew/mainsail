@@ -7,6 +7,8 @@ export default {
 
 	getHistory({ commit, state, rootGetters }, payload) {
 		const now = new Date()
+		const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
+
 		if (payload !== undefined) {
 			Object.entries(payload).sort().forEach(([name, datasets]) => {
 				let keySplit = name.split(" ")
@@ -54,7 +56,8 @@ export default {
 						name: name,
 						value: datasets.temperatures,
 						type: type,
-						time: now
+						time: now,
+						maxHistory: maxHistory
 					})
 
 					if ('targets' in datasets && (type.startsWith("extruder") || ["heater_bed", "temperature_fan"].includes(type))) {
@@ -82,7 +85,8 @@ export default {
 							name: name+"_target",
 							value: datasets.targets,
 							type: type,
-							time: now
+							time: now,
+							maxHistory: maxHistory
 						})
 					}
 
@@ -111,7 +115,8 @@ export default {
 								name: name+"_"+additionalType,
 								value: datasets[additionalType+"s"],
 								type: type,
-								time: now
+								time: now,
+								maxHistory: maxHistory
 							})
 						}
 					})
@@ -120,13 +125,15 @@ export default {
 		}
 	},
 
-	updateDatasets({ commit, rootState }) {
+	updateDatasets({ commit, rootState, rootGetters }) {
 		if (
 			'heaters' in rootState.printer &&
 			'available_sensors' in rootState.printer.heaters &&
 			rootState.printer.heaters.available_sensors.length
 		) {
 			const now = new Date()
+			const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
+
 			rootState.printer.heaters.available_sensors.forEach((objectName) => {
 				if (objectName in rootState.printer) {
 					const objectNameSplits = objectName.split(" ")
@@ -139,7 +146,8 @@ export default {
 								name: datasetType === "temperature" ? name : name+"_"+datasetType,
 								value: rootState.printer[objectName][datasetType],
 								type: objectNameSplits[0],
-								time: now
+								time: now,
+								maxHistory: maxHistory
 							})
 						}
 					})
