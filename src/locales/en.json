@@ -210,6 +210,8 @@
     "OSPackages": "OS-Packages",
     "Endstops": "Endstops",
     "Endstop": "Endstop",
+    "TRIGGERED": "TRIGGERED",
+    "open": "OPEN",
     "EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status.",
     "Logfiles": "Logfiles",
     "WebcamURL": "Webcam URL",
