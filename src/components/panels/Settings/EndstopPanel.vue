@@ -10,7 +10,7 @@
                 <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
                     <v-col>
                         <label class="mt-1 d-inline-block">{{ $t('Setting.Endstop')}} <b>{{ index.toUpperCase() }}</b></label>
-                        <v-chip class="float-right" :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
+                        <v-chip class="float-right" :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ $t(`Setting.${status}`) }}</v-chip>
                     </v-col>
                 </v-row>
                 <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >

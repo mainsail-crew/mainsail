@@ -210,6 +210,8 @@
     "OSPackages": "OS包",
     "Endstops": "限位开关",
     "Endstop": "限位",
+    "TRIGGERED": "触发",
+    "open": "打开",
     "EndstopInfo": "按右下角的同步按钮加载当前的限位状态。",
     "Logfiles": "日志文件",
     "WebcamURL": "摄像头链接",
