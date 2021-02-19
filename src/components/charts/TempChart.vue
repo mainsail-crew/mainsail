@@ -90,17 +90,20 @@ export default {
                     }
                 },
                 grid: {
-                    top: 30,
+                    top: 35,
                     right: 25,
-                    bottom: 20,
+                    bottom: 25,
                     left: 25,
                 },
+                dataZoom: [{
+                    type: 'inside',
+                }],
                 xAxis: {
                     type: 'time',
                     min: new Date() - 60*10,
                     max: new Date(),
                     splitNumber: 5,
-                    //minInterval: 60 * 2 * 1000 + 1,
+                    minInterval: 60*1000,
                     splitLine: {
                         show: true,
                         lineStyle: {
@@ -109,7 +112,7 @@ export default {
                     },
                     axisLabel: {
                         color: 'rgba(255, 255, 255, 0.24)',
-                        margin: 10
+                        margin: 10,
                     },
                 },
                 yAxis: [
@@ -135,7 +138,8 @@ export default {
                             color: 'rgba(255, 255, 255, 0.24)',
                             formatter: '{value}',
                             rotate: 90,
-                            showMaxLabel: false,
+                            //showMaxLabel: false,
+                            showMinLabel: true,
                             margin: 5,
                         },
                         axisLine: {
@@ -144,8 +148,7 @@ export default {
                                 color: 'rgba(255, 255, 255, 0.12)',
                             },
                         }
-                    },
-                    {
+                    }, {
                         name: 'PWM',
                         min: 0,
                         max: 100,
@@ -163,6 +166,7 @@ export default {
                         axisLabel: {
                             color: 'rgba(255, 255, 255, 0.24)',
                             formatter: '{value}',
+                            showMinLabel: true,
                             rotate: 90,
                             margin: 5,
                         },
@@ -181,12 +185,12 @@ export default {
                     },
                     option: {
                         xAxis: {
-                            splitNumber: 10,
+                            //splitNumber: 10,
                         }
                     }
                 }, {
                     query: {
-                        minWidth: 680,
+                        minWidth: 500,
                     },
                     option: {
                         grid: {
@@ -196,14 +200,16 @@ export default {
                         yAxis: [
                             {
                                 maxInterval: 50,
-                                showMaxLabel: true,
                                 axisLabel: {
+                                    showMinLabel: false,
+                                    showMaxLabel: true,
                                     rotate: 0
                                 }
                             },
                             {
                                 maxInterval: 25,
                                 axisLabel: {
+                                    showMinLabel: false,
                                     rotate: 0
                                 }
                             },
@@ -273,6 +279,16 @@ export default {
                         max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
                         //scale: this.autoscale
                     }],
+                    /*media: [{
+                        query: {
+                            minWidth: 500,
+                        },
+                        option: {
+                            xAxis: {
+                                maxInterval: this.maxHistory * 1000 / 10
+                            }
+                        }
+                    }],*/
                 })
             }
         }, this.intervalChartUpdate)
