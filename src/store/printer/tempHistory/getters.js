@@ -37,6 +37,6 @@ export default {
 			}
 		})
 
-		return maxTemp + 10
+		return Math.ceil((maxTemp + 1) / 10) * 10
 	}
 }
