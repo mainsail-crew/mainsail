@@ -17,7 +17,7 @@ Append the following section to your printer.cfg:
 
 ```yaml
 [temperature_sensor raspberry_pi]
-sensor_type: rpi_temperature
+sensor_type: temperature_host
 min_temp: 10
 max_temp: 100
 ```
