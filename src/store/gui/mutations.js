@@ -13,7 +13,7 @@ export default {
 		if ("gui" in payload) payload = payload.gui
 
 		Object.entries(payload).forEach(([key, value]) => {
-			if (typeof value === 'object' && key in state) {
+			if (typeof value === 'object' && !Array.isArray(value) && key in state) {
 				Object.entries(value).forEach(([key2, value2]) => {
 					if (key2 in state[key]) Vue.set(state[key], key2, value2)
 				})
