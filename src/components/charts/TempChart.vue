@@ -16,6 +16,7 @@ export default {
             chart : null,
             timerChart: '',
             timerDataset: '',
+            chartFocus: false,
             chartOptions: {
                 darkMode: true,
                 animation: false,
@@ -263,12 +264,15 @@ export default {
             } else setTimeout(() => {
                 this.createChart()
             }, 500)
-        }
-
+        },
     },
     created() {
         this.timerChart = setInterval(() => {
-            if (this.chart) {
+            if (
+                this.chart &&
+                document.visibilityState === "visible" &&
+                this.$route.path === "/"
+            ) {
                 this.chart.setOption({
                     series: this.series,
                     xAxis: {
@@ -277,18 +281,7 @@ export default {
                     },
                     yAxis: [{
                         max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
-                        //scale: this.autoscale
                     }],
-                    /*media: [{
-                        query: {
-                            minWidth: 500,
-                        },
-                        option: {
-                            xAxis: {
-                                maxInterval: this.maxHistory * 1000 / 10
-                            }
-                        }
-                    }],*/
                 })
             }
         }, this.intervalChartUpdate)
