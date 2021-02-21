@@ -34,7 +34,7 @@ export function getDefaultState() {
 		},
 		tempchart: {
 			intervalChartUpdate: 1000,
-			intervalDatasetUpdate: 500,
+			intervalDatasetUpdate: 1000,
 			autoscale: false,
 			datasetSettings: {
 
