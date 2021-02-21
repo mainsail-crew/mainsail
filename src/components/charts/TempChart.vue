@@ -224,6 +224,7 @@ export default {
         ...mapState({
             intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
             intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
+            boolTempchart: state => state.gui.dashboard.boolTempchart,
         }),
         maxHistory: {
             get() {
@@ -270,6 +271,7 @@ export default {
         this.timerChart = setInterval(() => {
             if (
                 this.chart &&
+                this.boolTempchart &&
                 document.visibilityState === "visible" &&
                 this.$route.path === "/"
             ) {
