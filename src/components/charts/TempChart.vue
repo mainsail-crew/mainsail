@@ -118,7 +118,7 @@ export default {
                 },
                 yAxis: [
                     {
-                        name: 'Celsius',
+                        name: '[°C] Temperature',
                         type: 'value',
                         min: 0,
                         max: 300,
@@ -150,7 +150,7 @@ export default {
                             },
                         }
                     }, {
-                        name: 'PWM',
+                        name: 'PWM [%]',
                         min: 0,
                         max: 100,
                         minInterval: 100,
