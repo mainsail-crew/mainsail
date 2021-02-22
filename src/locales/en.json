@@ -104,7 +104,8 @@
     "Setup Console": "Setup Console",
     "Hide temperatures": "Hide temperatures",
     "Custom filters": "Custom filters",
-    "Unknown": "Unknown"
+    "Unknown": "Unknown",
+    "Color": "Color"
   },
   "Files": {
     "GCodeFiles": "G-Code Files",

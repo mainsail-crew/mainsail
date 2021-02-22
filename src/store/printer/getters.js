@@ -83,10 +83,10 @@ export default {
 						power: 'power' in value ? value.power : null,
 						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
-						chartTemperature: getters["tempHistory/getDataset"](name),
-						chartTarget: getters["tempHistory/getDataset"](name+"_target"),
-						chartPower: getters["tempHistory/getDataset"](name+'_power'),
-						chartSpeed: getters["tempHistory/getDataset"](name+'_speed'),
+						chartTemperature: getters["tempHistory/getSeries"](name),
+						chartTarget: getters["tempHistory/getSeries"](name+"_target"),
+						chartPower: getters["tempHistory/getSeries"](name+'_power'),
+						chartSpeed: getters["tempHistory/getSeries"](name+'_speed'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -113,10 +113,10 @@ export default {
 					speed: value.speed,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
-					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
-					chartTarget: getters["tempHistory/getDataset"](nameSplit[1]+"_target"),
-					chartPower: getters["tempHistory/getDataset"](nameSplit[1]+'_power'),
-					chartSpeed: getters["tempHistory/getDataset"](nameSplit[1]+'_speed'),
+					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
+					chartTarget: getters["tempHistory/getSeries"](nameSplit[1]+"_target"),
+					chartPower: getters["tempHistory/getSeries"](nameSplit[1]+'_power'),
+					chartSpeed: getters["tempHistory/getSeries"](nameSplit[1]+'_speed'),
 				})
 			}
 		}
@@ -152,7 +152,7 @@ export default {
 					measured_min_temp: value.measured_min_temp,
 					measured_max_temp: value.measured_max_temp,
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
-					chartTemperature: getters["tempHistory/getDataset"](nameSplit[1]),
+					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
 				})
 			}
 		}

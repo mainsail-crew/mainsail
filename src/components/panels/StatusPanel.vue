@@ -93,11 +93,11 @@
                             current_file &&
                             current_file.thumbnails &&
                             current_file.thumbnails.length &&
-                            current_file.thumbnails.find(element => element.width === 400)
+                            current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400)
                         ">
                         <img
                             class="statusPanel-image-preview"
-                            :src="'data:image/gif;base64,'+(current_file.thumbnails ? current_file.thumbnails.find(element => element.width === 400).data : '')"
+                            :src="'data:image/gif;base64,'+(current_file.thumbnails ? current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400).data : '')"
                         />
                     </v-col>
                     <v-col
@@ -106,7 +106,7 @@
                             current_file &&
                             current_file.thumbnails &&
                             current_file.thumbnails.length &&
-                            current_file.thumbnails.find(element => element.width === 400 || element.width === 300))  ? 'col-12 col-sm-8' : 'col-12'
+                            current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400))  ? 'col-12 col-sm-8' : 'col-12'
                         ">
                         <v-row class="text-center" align="center">
                             <v-col class="flex-grow-0 py-2">
@@ -172,7 +172,7 @@
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) && 'filament_total' in current_file ">
+                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
                             <v-col class="flex-grow-0 py-2">
                                 <v-icon>mdi-printer-3d</v-icon>
                             </v-col>

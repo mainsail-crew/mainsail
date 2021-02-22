@@ -11,6 +11,13 @@
         border-radius: 10px !important;
     }
 
+    .datasetColorSymbol {
+        width: 15px;
+        height: 15px;
+        border-style: solid;
+        border-width: 1px;
+    }
+
 </style>
 
 <template>
@@ -68,6 +75,7 @@
                 <v-container class="px-0">
                     <v-row align="center">
                         <v-col class="py-2 font-weight-bold" style="padding-left: 68px;">{{ $t("Dashboard.Name") }}</v-col>
+                        <v-col class="py-2 text-center flex-grow-0 font-weight-bold d-none d-sm-block" style="min-width: 70px;">{{ $t("Dashboard.Color") }}Color</v-col>
                         <v-col class="py-2 text-center font-weight-bold d-none d-sm-block">{{ $t("Dashboard.State") }}</v-col>
                         <v-col class="py-2 text-center font-weight-bold">{{ $t("Dashboard.Current") }}</v-col>
                         <v-col class="py-2 pr-8 text-center font-weight-bold">{{ $t("Dashboard.Target") }}</v-col>
@@ -79,10 +87,13 @@
                                 <v-icon :color="heater.color">mdi-{{ heater.icon }}</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(heater)">{{ convertName(heater.name) }}</span></v-col>
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
+                                <div :style="'background-color: '+heater.chartColor+'66; border-color: '+heater.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(heater)"></div>
+                            </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</span>
-                                <span v-for="(values, key) of heater.additionValues" v-bind:key="key" class="d-block">{{ values.value.toFixed(1) }} {{ values.unit }}</span>
+                                <span v-for="(values, key) of heater.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 vertical_align_center">
                                 <toolInput :name="heater.name" :target="heater.target" :min_temp="heater.min_temp" :max_temp="heater.max_temp" :items="heater.presets" command="SET_HEATER_TEMPERATURE" attribute-name="HEATER" ></toolInput>
@@ -96,10 +107,13 @@
                                 <v-icon :color="(fan.target ? 'grey lighten-5' : 'grey darken-2')" :class="(fan.speed ? ' icon-rotate' : '')">mdi-fan</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(fan)">{{ convertName(fan.name) }}</span></v-col>
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
+                                <div :style="'background-color: '+fan.chartColor+'66; border-color: '+fan.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(fan)"></div>
+                            </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span>
-                                <span v-for="(values, key) of fan.additionValues" v-bind:key="key" class="d-block">{{ values.value.toFixed(1) }} {{ values.unit }}</span>
+                                <span v-for="(values, key) of fan.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 pr-0  vertical_align_center">
                                 <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" :items="fan.presets" ></toolInput>
@@ -115,6 +129,9 @@
                             <v-col class="py-2 font-weight-bold">
                               <span style="cursor: pointer;" @click="openHeater(sensor)">{{ convertName(sensor.name) }}</span>
                             </v-col>
+                            <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" style="min-width: 70px;">
+                                <div :style="'background-color: '+sensor.chartColor+'66; border-color: '+sensor.chartColor+'; cursor: pointer;'" class="datasetColorSymbol d-inline-block" @click="openHeater(sensor)"></div>
+                            </v-col>
                             <v-col class="py-2 d-none d-sm-block"><span>&nbsp;</span></v-col>
                             <v-col class="py-2 text-center">
                               <v-tooltip top>
@@ -128,14 +145,14 @@
                                 </template>
                                 <span>{{ $t('Dashboard.Min') }}{{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />{{ $t('Dashboard.Max')}}{{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
                               </v-tooltip>
-                              <span v-for="(values, key) of sensor.tempListAdditionValues" v-bind:key="key" class="d-block">{{ values.value.toFixed(1) }} {{ values.unit }}</span>
+                              <span v-for="(values, key) of sensor.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 vertical_align_center"><span>&nbsp;</span></v-col>
                         </v-row>
                     </div>
                     <v-divider class="my-2" v-if="boolTempchart"></v-divider>
                     <v-row v-if="boolTempchart">
-                        <v-col class="px-8 pt-6">
+                        <v-col class="py-0 px-3">
                             <temp-chart ></temp-chart>
                         </v-col>
                     </v-row>
@@ -338,10 +355,10 @@
                 this.editHeater.object = object
 
                 this.editHeater.color = object.chartColor
-                this.editHeater.boolTemperature = 'chartTemperature' in object && object.chartTemperature !== undefined && 'visible' in object.chartTemperature ? object.chartTemperature.visible : false
-                this.editHeater.boolTarget = 'chartTarget' in object && object.chartTarget !== undefined && 'visible' in object.chartTarget ? object.chartTarget.visible : false
-                this.editHeater.boolPower = 'chartPower' in object && object.chartPower !== undefined && 'visible' in object.chartPower ? object.chartPower.visible : false
-                this.editHeater.boolSpeed = 'chartSpeed' in object && object.chartSpeed !== undefined && 'visible' in object.chartSpeed ? object.chartSpeed.visible : false
+                this.editHeater.boolTemperature = 'chartTemperature' in object && object.chartTemperature !== undefined && 'lineStyle' in object.chartTemperature && 'opacity' in object.chartTemperature.lineStyle ? object.chartTemperature.lineStyle.opacity : false
+                this.editHeater.boolTarget = 'chartTarget' in object && object.chartTarget !== undefined && 'areaStyle' in object.chartTarget && 'opacity' in object.chartTarget.areaStyle ? (object.chartTarget.areaStyle.opacity > 0) : false
+                this.editHeater.boolPower = 'chartPower' in object && object.chartPower !== undefined && 'lineStyle' in object.chartPower && 'opacity' in object.chartPower.lineStyle ? object.chartPower.lineStyle.opacity : false
+                this.editHeater.boolSpeed = 'chartSpeed' in object && object.chartSpeed !== undefined && 'lineStyle' in object.chartSpeed && 'opacity' in object.chartSpeed.lineStyle ? object.chartSpeed.lineStyle.opacity : false
 
                 let additionalSensors = {}
                 Object.keys(object.additionValues).forEach(sensor => {

@@ -1,10 +1,11 @@
 <template>
-    <div id="tempchart" style="height: 300px; width: 100%;"></div>
+    <div id="tempchart" style="height: 250px; width: 100%;"></div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import CanvasJS from '@/assets/canvasjs-3.2.3/canvasjs.min'
+import * as echarts from 'echarts'
+import { convertName } from "@/plugins/helpers";
 
 export default {
     components: {
@@ -13,92 +14,209 @@ export default {
     data: function() {
         return {
             chart : null,
-            tempchartDisplayMinutes: 10,
             timerChart: '',
             timerDataset: '',
+            chartFocus: false,
             chartOptions: {
-                theme: "dark1",
-                zoomEnabled: true,
-                backgroundColor: 'transparent',
-                animationEnabled: true,
-                legend: {
-                    horizontalAlign: "center",
-                    verticalAlign: "top",
-                },
-                toolTip:{
-                    shared: true,
-                    borderColor: "#ffffff30",
-                    content: (e) => {
+                darkMode: true,
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(0,0,0,0.9)',
+                    borderWidth: 0,
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: '14px'
+                    },
+                    padding: 15,
+                    formatter: (datasets) => {
                         let output = ""
 
-                        if (e.entries[0].dataPoint.x) {
-                            const date = new Date(e.entries[0].dataPoint.x)
-                            const hours = "0" + date.getHours();
-                            const minutes = "0" + date.getMinutes();
-                            const seconds = "0" + date.getSeconds();
-                            output += "<strong>"+hours.substr(-2) + ':' + minutes.substr(-2) + ':' + seconds.substr(-2)+"</strong>"
+                        if (datasets.length) {
+                            let outputTime = datasets[0]['axisValueLabel']
+                            outputTime = outputTime.substr(outputTime.indexOf(" "))
+
+                            output += "<div class=\"row mb-2\">" +
+                                    "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
+                                        "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
+                                        "<span class='font-weight-bold'>"+outputTime+"</span>" +
+                                    "</div>" +
+                                "</div>"
                         }
 
-                        const mainEntries = e.entries.filter(dataset => dataset.dataSeries.showInLegend && dataset.dataSeries.visible).sort((a,b) => {
-                            if (a.dataSeries.legendText > b.dataSeries.legendText) return 1
-                            if (a.dataSeries.legendText < b.dataSeries.legendText) return -1
+                        datasets.forEach(dataset => {
+                            if (
+                                !dataset.seriesName.endsWith('_target') &&
+                                !dataset.seriesName.endsWith('_power') &&
+                                !dataset.seriesName.endsWith('_speed')
+                            ) {
+                                output += "<div class=\"row\">"
+                                output += "<div class=\"col-auto pt-2 pb-1\">"
 
-                            return 0
-                        })
+                                const mainDataset = this.series.find(tmpDataset => tmpDataset.name === dataset.seriesName)
+                                if (mainDataset)
+                                    output += "<span style=\"" +
+                                        "display:inline-block;" +
+                                        "margin-right:6px;" +
+                                        "width:10px;" +
+                                        "height:10px;" +
+                                        "border:1px solid "+mainDataset.lineStyle.color+";" +
+                                        "background-color:"+mainDataset.lineStyle.color+"66;" +
+                                        "\"></span>"
 
-                        if (mainEntries.length) {
-                            mainEntries.forEach(dataset => {
-                                output += "<br />"
-                                output += dataset.dataSeries.legendText+": "+dataset.dataPoint.y.toFixed(1)
+                                output += convertName(dataset.seriesName)+":"
 
-                                const datasetTarget = e.entries.find(datasetTarget => datasetTarget.dataSeries.name === dataset.dataSeries.name+"_target")
-                                if (datasetTarget) {
-                                    output += " / "+datasetTarget.dataPoint.y.toFixed(1)
-                                }
+                                output += "</div>"
+                                output += "<div class=\"col text-right pt-2 pb-1 font-weight-bold\">"
+
+                                if (dataset.value[1]) output += dataset.value[1].toFixed(1)
+
+                                const target = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_target")
+                                if (target) output += " / "+target.value[1].toFixed(1)
 
                                 output += "°C"
 
-                                const datasetPower = e.entries.find(datasetPower => datasetPower.dataSeries.name === dataset.dataSeries.name+"_power")
-                                if (datasetPower) {
-                                  output += " at "+datasetPower.dataPoint.y.toFixed(0)+"%"
-                                }
-                                
-                                const datasetSpeed = e.entries.find(datasetPower => datasetPower.dataSeries.name === dataset.dataSeries.name+"_speed")
-                                if (datasetSpeed) {
-                                  output += " at "+datasetSpeed.dataPoint.y.toFixed(0)+"%"
-                                }
-                            })
-                        }
+                                const power = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_power")
+                                if (power) output += " [ "+power.value[1].toFixed(0)+"% ]"
+
+                                const speed = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_speed")
+                                if (speed) output += " [ "+speed.value[1].toFixed(0)+"% ]"
+
+                                output += "</div>"
+                                output += "</div>"
+                            }
+                        })
 
                         return output
                     }
                 },
-                axisX:{
-                    valueFormatString: "HH:mm" ,
-                    //labelAngle: -50
-                    gridThickness: 1,
-                    gridColor: '#ffffff30',
-                    minimum: new Date() - 60*10,
-                    maximum: new Date(),
-                    margin: 15,
+                grid: {
+                    top: 35,
+                    right: 25,
+                    bottom: 25,
+                    left: 25,
                 },
-                axisY: {
-                    gridThickness: 1,
-                    gridColor: '#ffffff30',
-                    minimum: 0,
-                    maximum: 300,
-                    interval: 50,
-                    suffix: '°C'
+                dataZoom: [{
+                    type: 'inside',
+                }],
+                xAxis: {
+                    type: 'time',
+                    min: new Date() - 60*10,
+                    max: new Date(),
+                    splitNumber: 5,
+                    minInterval: 60*1000,
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: 'rgba(255, 255, 255, 0.06)',
+                        },
+                    },
+                    axisLabel: {
+                        color: 'rgba(255, 255, 255, 0.24)',
+                        margin: 10,
+                    },
                 },
-                axisY2: {
-                    gridThickness: 0,
-                    gridColor: '#ffffff30',
-                    minimum: 0,
-                    maximum: 100,
-                    interval: 25,
-                    suffix: '%'
-                },
-                data: [ ]
+                yAxis: [
+                    {
+                        name: '[°C] Temperature',
+                        type: 'value',
+                        min: 0,
+                        max: 300,
+                        minInterval: 10,
+                        maxInterval: 100,
+                        nameLocation: 'end',
+                        nameGap: 5,
+                        nameTextStyle: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            align: 'left',
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.12)',
+                            },
+                        },
+                        axisLabel: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            formatter: '{value}',
+                            rotate: 90,
+                            //showMaxLabel: false,
+                            showMinLabel: true,
+                            margin: 5,
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.12)',
+                            },
+                        }
+                    }, {
+                        name: 'PWM [%]',
+                        min: 0,
+                        max: 100,
+                        minInterval: 100,
+                        type: 'value',
+                        nameLocation: 'end',
+                        nameGap: 5,
+                        nameTextStyle: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            align: 'right',
+                        },
+                        splitLine: {
+                            show: false,
+                        },
+                        axisLabel: {
+                            color: 'rgba(255, 255, 255, 0.24)',
+                            formatter: '{value}',
+                            showMinLabel: true,
+                            rotate: 90,
+                            margin: 5,
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: 'rgba(255, 255, 255, 0.12)',
+                            },
+                        }
+                    },
+                ],
+                series: [],
+                media: [{
+                    query: {
+                        minWidth: 500,
+                    },
+                    option: {
+                        xAxis: {
+                            //splitNumber: 10,
+                        }
+                    }
+                }, {
+                    query: {
+                        minWidth: 500,
+                    },
+                    option: {
+                        grid: {
+                            right: 40,
+                            left: 40,
+                        },
+                        yAxis: [
+                            {
+                                maxInterval: 50,
+                                axisLabel: {
+                                    showMinLabel: false,
+                                    showMaxLabel: true,
+                                    rotate: 0
+                                }
+                            },
+                            {
+                                maxInterval: 25,
+                                axisLabel: {
+                                    showMinLabel: false,
+                                    rotate: 0
+                                }
+                            },
+                        ],
+                    }
+                }],
             },
         }
     },
@@ -106,21 +224,21 @@ export default {
         ...mapState({
             intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
             intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
+            boolTempchart: state => state.gui.dashboard.boolTempchart,
         }),
+        maxHistory: {
+            get() {
+                return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') || 1200
+            }
+        },
+        series: {
+            get () {
+                return this.$store.state.printer.tempHistory.series
+            }
+        },
         datasets: {
             get () {
-                const datasets = this.$store.state.printer.tempHistory.datasets
-
-                return datasets.sort((a,b) => {
-                    if ('name' in a && 'name' in b) {
-                        if (a.name.endsWith("_target") > b.name.endsWith("_power")) return -1
-                        if (a.name.endsWith("_power") < b.name.endsWith("_target")) return 1
-                        if (a.name.endsWith("_target") > b.name.endsWith("_target")) return -1
-                        if (a.name.endsWith("_target") < b.name.endsWith("_target")) return 1
-                    }
-
-                    return 0
-                })
+                return this.$store.state.printer.tempHistory.datasets
             }
         },
         autoscale: {
@@ -132,37 +250,51 @@ export default {
             get() {
                 return this.$store.getters["printer/getMaxTemp"]
             }
+        },
+        currentMaxTemp: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
+            }
         }
     },
     methods: {
         createChart() {
-            if (document.getElementById("tempchart")) {
-                this.chart = new CanvasJS.Chart("tempchart", this.chartOptions)
+            if (document.getElementById("tempchart") && this.chart === null) {
+                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'svg'})
+                this.chart.setOption(this.chartOptions)
             } else setTimeout(() => {
                 this.createChart()
             }, 500)
-        }
-
+        },
     },
     created() {
         this.timerChart = setInterval(() => {
             if (
-                document.getElementById("tempchart") &&
                 this.chart &&
-                this.chart._toolBar
+                this.boolTempchart &&
+                document.visibilityState === "visible" &&
+                this.$route.path === "/"
             ) {
-                this.chartOptions.data = this.datasets
-                this.chartOptions.axisX.minimum = new Date() - 60* this.tempchartDisplayMinutes *1000
-                this.chartOptions.axisX.maximum = new Date()
-                this.chartOptions.axisY.maximum = this.autoscale ? null : this.maxTemp
-                //this.chartOptions.axisY.interval = this.autoscale ? 25 : 50
-                this.chart.render()
+                this.chart.setOption({
+                    series: this.series,
+                    xAxis: {
+                        min: new Date() - this.maxHistory * 1000,
+                        max: new Date(),
+                    },
+                    yAxis: [{
+                        max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
+                    }],
+                })
             }
         }, this.intervalChartUpdate)
 
-      this.timerDataset = setInterval(() => {
-          this.$store.dispatch("printer/tempHistory/updateDatasets")
-      }, this.intervalDatasetUpdate)
+        this.timerDataset = setInterval(() => {
+            this.$store.dispatch("printer/tempHistory/updateDatasets")
+        }, this.intervalDatasetUpdate)
+
+        window.addEventListener('resize', () => {
+            if (this.chart) this.chart.resize()
+        })
     },
     mounted: function() {
         this.createChart()
