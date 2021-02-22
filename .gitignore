@@ -16,6 +16,5 @@ docker/gcode
 docker/logs
 docker/config/*.cfg
 docker/config/*.conf
-docker/*.json
-
 docker/config/.mainsail.json
+docker/config/.theme
