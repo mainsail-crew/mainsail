@@ -275,8 +275,6 @@ export default {
 			}
 		}
 
-		console.log(output);
-
 		return output.sort((a, b) => {
 			if (a.type === "fan") return -1
 			if (b.type === "fan") return 1
