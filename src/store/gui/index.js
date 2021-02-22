@@ -27,6 +27,8 @@ export function getDefaultState() {
 			}
 		},
 		webcam: {
+			service: 'mjpegstreamer',
+			targetFps: 25,
 			url: "",
 			rotate: false,
 			rotateDegrees: 90,
