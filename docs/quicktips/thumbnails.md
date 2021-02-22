@@ -17,7 +17,7 @@ description: >-
 In "Expert" mode PrusaSlicer has an option in the "Printer Settings" tab to activate previews.
 Under `General / Firmware`, enter `32x32,400x300` as "G-code thumbnails".
 
-![SuperSlicer](../assets/img/additional/PrusaSlicer2.3.0-thumbnails.png)
+![PrusaSlicer](../assets/img/additional/PrusaSlicer2.3.0-thumbnails.png)
 
 ### SuperSlicer (since v2.2.54.0)
 
@@ -33,3 +33,10 @@ Open your printer profile in a text editor and find `thumbnails =` and add the r
 ![PrusaSlicer](../assets/img/additional/PrusaSlicer-thumbnails.png)
 
 From now on the gcode files contain thumbnails displayed by mainsail.
+
+### Cura
+
+The Cura plugin "Cura2Moonraker" is required for this. You can find this plugin and a install guide
+here: [https://github.com/emtrax-ltd/Cura2MoonrakerPlugin](https://github.com/emtrax-ltd/Cura2MoonrakerPlugin)
+
+![Cura](../assets/img/additional/Cura-thumbnails.png)

@@ -104,7 +104,8 @@
     "SetupConsole": "设置控制台",
     "HideTemperatures": "隐藏温度",
     "CustomFilters": "自定义筛选器",
-    "Unknown": "未知"
+    "Unknown": "未知",
+    "Color": "颜色"
   },
   "Files": {
     "GCodeFiles": "G-Code 文件",

@@ -16,6 +16,7 @@ export function getDefaultState() {
 		failed_plugins: [],
 		registered_directories: [],
 		events: [],
+		config: {},
 	}
 }
 

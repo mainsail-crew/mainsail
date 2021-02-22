@@ -152,7 +152,7 @@
     </div>
 </template>
 <script>
-    import {mapGetters, mapState} from 'vuex';
+    import {mapGetters, mapState} from 'vuex'
     import { Plotly } from 'vue-plotly'
 
     export default {
@@ -221,7 +221,7 @@
         },
         computed: {
             ...mapState({
-                config: state => state.printer.configfile.config,
+                config: state => state.printer.configfile.settings,
                 loadings: state => state.socket.loadings,
             }),
 
@@ -250,41 +250,32 @@
         },
         methods: {
             showBedMesh: function() {
+                window.console.log("showBedMesh")
                 this.data[0].x = [];
                 this.data[0].y = [];
                 this.data[0].z = [];
 
                 if (this.bed_mesh && this.bed_mesh.profile_name !== "") {
+                    const meshXmin = this.bed_mesh.mesh_min[0]
+                    const meshXmax = this.bed_mesh.mesh_max[0]
+                    const meshYmin = this.bed_mesh.mesh_min[1]
+                    const meshYmax = this.bed_mesh.mesh_max[1]
 
-                    if ('stepper_x 'in this.config && 'stepper_y' in this.config) {
-                        this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max];
-                        this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max];
+                    if ('stepper_x' in this.config && 'stepper_y' in this.config) {
+                        this.layout.scene.xaxis.range = [this.config.stepper_x.position_min, this.config.stepper_x.position_max]
+                        this.layout.scene.yaxis.range= [this.config.stepper_y.position_min, this.config.stepper_y.position_max]
                     } else {
-                        this.layout.scene.xaxis.range = [this.bed_mesh.mesh_min[0], this.bed_mesh.mesh_max[0]];
-                        this.layout.scene.yaxis.range = [this.bed_mesh.mesh_min[1], this.bed_mesh.mesh_max[1]];
+                        this.layout.scene.xaxis.range = [meshXmin, meshXmax];
+                        this.layout.scene.yaxis.range = [meshYmin, meshYmax];
                     }
 
-                    let x_count = 0;
-                    let y_count = 0;
+                    const meshData = this.showMeshType === "probed" ? this.bed_mesh.probed_matrix : this.bed_mesh.mesh_matrix
+                    const x_count = meshData[0].length;
+                    const y_count = meshData.length;
+                    this.data[0].z = meshData;
 
-                    let min = -0.5;
-                    let max = 0.5;
-
-                    if (this.showMeshType === 'probed') {
-                        x_count = this.bed_mesh.probed_matrix[0].length;
-                        y_count = this.bed_mesh.probed_matrix.length;
-                        this.data[0].z = this.bed_mesh.probed_matrix;
-
-                        min = Math.min.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.min.apply(Math, row); }));
-                        max = Math.max.apply(null, this.bed_mesh.probed_matrix.map(function(row){ return Math.max.apply(Math, row); }));
-                    } else if (this.showMeshType === 'mesh') {
-                        x_count = this.bed_mesh.mesh_matrix[0].length;
-                        y_count = this.bed_mesh.mesh_matrix.length;
-                        this.data[0].z = this.bed_mesh.mesh_matrix;
-
-                        min = Math.min.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.min.apply(Math, row); }));
-                        max = Math.max.apply(null, this.bed_mesh.mesh_matrix.map(function(row){ return Math.max.apply(Math, row); }));
-                    }
+                    let min = Math.min.apply(null, meshData.map(function(row){ return Math.min.apply(Math, row); }));
+                    let max = Math.max.apply(null, meshData.map(function(row){ return Math.max.apply(Math, row); }));
 
                     let x_step = (this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / (x_count - 1);
                     for(let i = 0; i < x_count; i++) {
@@ -365,7 +356,7 @@
                 this.$socket.sendObj('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' });
             }
         },
-        created: function() {
+        created() {
 
         },
         mounted() {

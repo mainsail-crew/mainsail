@@ -33,6 +33,12 @@ export default {
 		});
 	},
 
+	setConfig(state, payload) {
+		Object.entries(payload.config).forEach(([key, value]) => {
+			Vue.set(state.config, key, value)
+		})
+	},
+
 	clearGcodeStore(state) {
 		Vue.set(state, 'events', [])
 	},

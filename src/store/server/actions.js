@@ -9,6 +9,7 @@ export default {
 
 	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
+		Vue.prototype.$socket.sendObj('server.config', {}, 'server/getConfig')
 		Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
 	},
 
@@ -32,8 +33,6 @@ export default {
 	},
 
 	getInfo({ commit, state, rootState }, payload) {
-		Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'server/getGcodeStore')
-
 		if (state.plugins.length === 0) {
 			if (payload.plugins.includes("power") !== false)
 				Vue.prototype.$socket.sendObj('machine.device_power.devices', {}, 'server/power/getDevices')
@@ -58,6 +57,12 @@ export default {
 				Vue.prototype.$socket.sendObj('printer.info', {}, 'printer/getStateMessage')
 			}, 1000)
 		}
+	},
+
+	getConfig({ commit }, payload) {
+		commit('setConfig', payload)
+
+		Vue.prototype.$socket.sendObj('server.gcode_store', {}, 'server/getGcodeStore')
 	},
 
 	getData({ commit }, payload){
