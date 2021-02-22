@@ -1,0 +1,14 @@
+# moonraker.conf
+
+[server]
+host: 0.0.0.0
+port: 7125
+enable_debug_logging: True
+config_path: /home/node/printer_config/
+
+[authorization]
+enabled: True
+trusted_clients:
+ 0.0.0.0/0
+cors_domains:
+ *

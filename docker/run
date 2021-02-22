@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export APP_NAME=mainsail
+
+export USERID=${USERID:-$UID}
+export GRPID=${GRPID:-$(id -g)}
+
+docker-compose "$@"

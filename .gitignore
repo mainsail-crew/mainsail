@@ -9,5 +9,10 @@ temp
 .version
 .versions
 .changelog
+.idea
 package-lock.json
 *.local
+docker/gcode
+docker/logs
+docker/config/*.cfg
+docker/config/*.conf
