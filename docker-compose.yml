@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  application:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: mainsail-stack/1
+    volumes:
+      - ./:/home/node/mainsail
+      - ./docker/config:/home/node/printer_config
+      - ./docker/logs:/tmp/logs
+      - ./docker/gcode:/home/node/gcode
+    container_name: ${APP_NAME}-stack
+    ports:
+      - 8080:8080
+      - 7125:7125
+    networks:
+      - dev_net
+networks:
+  dev_net:
+    driver: bridge
