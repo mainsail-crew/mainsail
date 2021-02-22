@@ -118,7 +118,7 @@ export default {
                 },
                 yAxis: [
                     {
-                        name: '[°C] Temperature',
+                        name: 'Temperature [°C]',
                         type: 'value',
                         min: 0,
                         max: 300,
