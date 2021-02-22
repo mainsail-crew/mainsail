@@ -12,7 +12,17 @@
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
-                    <v-col class="pt-2 mb-1">
+                    <v-col class="py-2">
+                        <v-select v-model="service" :items="serviceItems" hide-details label="Service" class="mt-0"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row v-if="service === 'mjpegstreamer-adaptive'">
+                    <v-col class="py-2 mt-2">
+                        <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="pt-2 mt-2 mb-1">
                         <v-text-field
                             v-model="webcamUrl"
                             hide-details
@@ -43,16 +53,6 @@
                         <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-select v-model="serviceMethod" :items="serviceMethodItems" hide-details label="Service Method" class="mt-0"></v-select>
-                    </v-col>
-                </v-row>
-                <v-row v-if="serviceMethod == 1">
-                    <v-col class="py-2">
-                        <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
-                    </v-col>
-                </v-row> 
             </v-container>
         </v-card-text>
     </v-card>
@@ -66,9 +66,9 @@
         data: function() {
             return {
                 rotationEnabled: false,
-                serviceMethodItems: [
-                    { value: 0, text: 'MJPEG-Streamer' },
-                    { value: 1, text: 'MJPEG-Streamer (Adaptive)' },
+                serviceItems: [
+                    { value: 'mjpegstreamer', text: 'MJPEG-Streamer' },
+                    { value: 'mjpegstreamer-adaptive', text: 'Adaptive MJPEG-Streamer (experimental)' },
                 ]
             }
         },
@@ -121,12 +121,12 @@
                     return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
                 }
             },
-            serviceMethod: {
+            service: {
                 get() {
-                    return this.$store.state.gui.webcam.serviceMethod;
+                    return this.$store.state.gui.webcam.service;
                 },
                 set(selectedMethod) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { serviceMethod: selectedMethod } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { service: selectedMethod } });
                 }
             },
             targetFps: {

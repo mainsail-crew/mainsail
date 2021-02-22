@@ -8,7 +8,10 @@
     <v-card v-observe-visibility="visibilityChanged">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-webcam</v-icon>{{subHeading}}</span>
+                <span class="subheading">
+                    <v-icon left>mdi-webcam</v-icon> Webcam
+                    <small v-if="this.webcamConfig.service === 'mjpegstreamer-adaptive' &&  this.time">(FPS: {{ currentFPS }})</small>
+                </span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
@@ -34,14 +37,15 @@
                 time_smoothing: 0.6,
                 request_time_smoothing: 0.1,
                 isVisible: true,
+                currentFPS: 0,
             };
         },
         created: function () {
             document.addEventListener("focus", () => this.handleRefreshChange(), false);
             document.addEventListener("visibilitychange", this.handleRefreshChange, false);
 
-            if(this.webcamConfig.serviceMethod == 1) {
-                this.requestMjpeg();
+            if(this.webcamConfig.service === 'mjpegstreamer-adaptive') {
+                this.requestMjpeg()
             }
 
         },
@@ -53,20 +57,16 @@
                 'webcamConfig': state => state.gui.webcam
             }),
 
-            subHeading() {
-                return "Webcam" + (this.webcamConfig.serviceMethod == 1 ? " - FPS: " + Math.round(1000 / this.time) : "");
-            },
-
             url() {
-                if(!this.webcamConfig.serviceMethod) {
+                if(this.webcamConfig.service === 'mjpegstreamer-adaptive') {
+                    return this.imageData;
+                } else {
                     let basicUrl = this.webcamConfig.url
                     if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 
                     const params = new URLSearchParams(basicUrl)
                     params.set('bypassCache', ""+this.refresh)
                     return decodeURIComponent(params.toString())
-                } else {
-                    return this.imageData;
                 }
             },
 
@@ -97,33 +97,35 @@
             },
 
             onLoad() {
-                var end_time = performance.now();
-                var current_time = end_time - this.start_time;
-                this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing));
-                this.start_time = end_time;
+                const end_time = performance.now()
+                const current_time = end_time - this.start_time
+                this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing))
+                this.start_time = end_time
 
-                var target_time = 1000/this.webcamConfig.targetFps
+                const target_time = 1000/this.webcamConfig.targetFps
 
-                var current_request_time = performance.now() - this.request_start_time;
-                this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing));
-                var timeout = Math.max(0, target_time - this.request_time);
+                const current_request_time = performance.now() - this.request_start_time
+                this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing))
+                const timeout = Math.max(0, target_time - this.request_time)
 
                 this.$nextTick(() => {
-                    console.log(end_time + " " + timeout);
-                    setTimeout(this.requestMjpeg, timeout);
+                    setTimeout(this.requestMjpeg, timeout)
                 })
             },
 
             requestMjpeg() {
-                if(!this.isVisible)
-                    return;
+                if(!this.isVisible) return
 
-                this.request_start_time = performance.now();
+                this.request_start_time = performance.now()
                 let basicUrl = this.webcamConfig.url
+                basicUrl = basicUrl.replace("action=stream", "action=snapshot")
                 if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 
                 const params = new URLSearchParams(basicUrl)
                 params.set('bypassCache', ""+ this.refresh + (Math.random() * 1000))
+
+
+                this.currentFPS = Math.round(1000 / this.time)
 
                 this.$nextTick(() => {
                     this.imageData = decodeURIComponent(params.toString())
@@ -131,9 +133,8 @@
             },
 
             visibilityChanged(isVisible) {
-                this.isVisible = isVisible;
-                if(isVisible)
-                    this.requestMjpeg();
+                this.isVisible = isVisible
+                if(isVisible) this.requestMjpeg()
             }
         }
     }
