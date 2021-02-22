@@ -32,12 +32,9 @@ docker/run up
 ```
 
 # Development
-For development its sometimes needed to restart the simulavr process.
-For this run:
+####Commands
 ```shell
-docker exec -it mainsail-stack bash
-```
-in the spawnin shell run:
-```shell
-~/restart-services.sh
+docker/run ps #showing running containers
+docker/run restart <api/npm> #restarting container
+docker/run bash <api/npm> #spawning bash shell inside container
 ```
