@@ -246,18 +246,18 @@ export default {
 							key in state.configfile.settings
 						) {
 							if (
-								'pwm' in state.configfile.settings[key] &&
-								state.configfile.settings[key].pwm.toLowerCase() === "true"
-							) pwm = true
+								'pwm' in state.configfile.settings[key]
+							) pwm = state.configfile.settings[key].pwm
 
 							if (
 								'scale' in state.configfile.settings[key]
 							) scale = state.configfile.settings[key].scale
 						}
 					}
-					if (state.configfile.settings[key].off_below) off_below = parseFloat(state.configfile.settings[key].off_below)
+					
+					if (state.configfile.settings[key].off_below) off_below = state.configfile.settings[key].off_below
 
-					if (state.configfile.settings[key].max_power) max_power = parseFloat(state.configfile.settings[key].max_power)
+					if (state.configfile.settings[key].max_power) max_power = state.configfile.settings[key].max_power
 
 					output.push({
 						name: name,
