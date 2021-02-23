@@ -20,6 +20,6 @@ VUE_APP_HOSTNAME=192.168.0.15 #for your printer with moonraker running on 192.16
 In moonraker you need to add your local ip at the cors_domains:
 ```yaml
 cors_domains:
-  http://<your local ip>
+  http://<your local ip>:<local port>
 ```
-access the local running dev environment with `http://<your local ip>`.
+access the local running dev environment with `http://<your local ip>:<local port>`.
