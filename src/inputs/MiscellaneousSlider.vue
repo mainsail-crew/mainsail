@@ -9,7 +9,7 @@
         <v-row>
             <v-col>
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value >= min ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-icon small :class="'mr-2 '+(value >= min && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
                     <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
@@ -18,7 +18,7 @@
                 <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
-                        :min="0"
+                        :min="0.0"
                         :max="max"
                         :step="0.01"
                         @change="sendCmd"
@@ -94,9 +94,21 @@
             sendCmd() {
                 let gcode = "";
 
-                if (this.type === "fan") gcode = "M106 S"+(this.value * this.multi).toFixed(0)
-                if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value*this.multi)
-                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
+                if (this.value < this.min) {
+                    this.value = 0;
+                }
+
+                if (this.target === this.value) {
+                    return;
+                }
+
+                const l_value = (this.value / this.max) * this.multi;
+
+                if (this.type === "fan") gcode = "M106 S"+(l_value).toFixed(0)
+                if (this.type === "fan_generic") {
+                  gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(l_value)
+                }
+                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(l_value).toFixed(2)
 
                 if (gcode !== "") {
                     this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
@@ -114,14 +126,17 @@
                 this.sendCmd();
             },
             increment() {
-                this.value = this.value < 1 ? (this.value + 0.01).toFixed(2) : 100;
+                this.value = this.value < this.max ? (this.value + 0.01).toFixed(2) : this.max;
+                if (this.value < this.min) {
+                    this.value = this.min;
+                }
                 this.sendCmd();
             }
         },
         watch: {
             target: function(newVal) {
                 this.value = newVal;
-            },
+            }
         },
         created: function() {
 
