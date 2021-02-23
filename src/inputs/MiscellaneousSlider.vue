@@ -19,10 +19,19 @@
                     <v-slider
                         v-model="value"
                         :min="0.0"
-                        :max="max"
+                        :max="1.0"
                         :step="0.01"
-                        @change="sendCmd"
-                        hide-details>
+                        :thumb-color="value >= min ? undefined : 'red'"
+                        :color="value >= min ? undefined : 'red'"
+                        :thumb-label="value >= min ? undefined : true"
+                        @start="sliding = true"
+                        @end="sendCmd()"
+                        hide-details
+                    >
+
+                        <template #thumb-label="{ value }">
+                            {{ value >= min ? (value * 100).toFixed(0) + '%' : 'OFF'}}
+                        </template>
 
                         <template v-slot:prepend>
                             <v-icon @click="decrement">mdi-minus</v-icon>
@@ -43,11 +52,6 @@
     import {convertName} from "@/plugins/helpers";
 
     export default {
-        data: function() {
-            return {
-                value: this.target,
-            }
-        },
         props: {
             target: {
                 type: Number,
@@ -89,30 +93,40 @@
               default: 0.0
             }
         },
+        data() {
+            return {
+                value: this.target / this.max,
+                sliding: false
+            }
+        },
         methods: {
             convertName: convertName,
             sendCmd() {
-                let gcode = "";
+                if (this.sliding) {
+                    let gcode = "";
 
-                if (this.value < this.min) {
-                    this.value = 0;
-                }
+                    if (this.value < this.min) {
+                        this.value = 0;
+                    }
 
-                if (this.target === this.value) {
-                    return;
-                }
+                    if (this.target === this.value) {
+                        return;
+                    }
 
-                const l_value = (this.value / this.max) * this.multi;
+                    const l_value = this.value * this.multi;
 
-                if (this.type === "fan") gcode = "M106 S"+(l_value).toFixed(0)
-                if (this.type === "fan_generic") {
-                  gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(l_value)
-                }
-                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(l_value).toFixed(2)
+                    if (this.type === "fan") gcode = "M106 S" + (l_value).toFixed(0)
+                    if (this.type === "fan_generic") {
+                        gcode = "SET_FAN_SPEED FAN=" + this.name + " SPEED=" + (l_value)
+                    }
+                    if (this.type === "output_pin") gcode = "SET_PIN PIN=" + this.name + " VALUE=" + (l_value).toFixed(2)
 
-                if (gcode !== "") {
-                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-                    this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    if (gcode !== "") {
+                        this.$store.commit('server/addEvent', {message: gcode, type: 'command'})
+                        this.$socket.sendObj('printer.gcode.script', {script: gcode})
+                    }
+
+                    this.sliding = false;
                 }
             },
             switchOutputPin() {
@@ -126,7 +140,7 @@
                 this.sendCmd();
             },
             increment() {
-                this.value = this.value < this.max ? (this.value + 0.01).toFixed(2) : this.max;
+                this.value = this.value < 1.0 ? (this.value + 0.01).toFixed(2) : 1.0;
                 if (this.value < this.min) {
                     this.value = this.min;
                 }
@@ -134,12 +148,9 @@
             }
         },
         watch: {
-            target: function(newVal) {
-                this.value = newVal;
+            target(newVal) {
+                this.value = newVal / this.max;
             }
-        },
-        created: function() {
-
-        },
+        }
     }
 </script>
