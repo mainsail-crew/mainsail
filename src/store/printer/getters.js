@@ -254,7 +254,7 @@ export default {
 							) scale = state.configfile.settings[key].scale
 						}
 					}
-					
+
 					if (state.configfile.settings[key].off_below) off_below = state.configfile.settings[key].off_below
 
 					if (state.configfile.settings[key].max_power) max_power = state.configfile.settings[key].max_power
