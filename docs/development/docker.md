@@ -38,3 +38,7 @@ docker/run ps #showing running containers
 docker/run restart <api/npm> #restarting container
 docker/run bash <api/npm> #spawning bash shell inside container
 ```
+Example for restarting 'npm run serve'
+```shell
+docker/run restart npm
+```
