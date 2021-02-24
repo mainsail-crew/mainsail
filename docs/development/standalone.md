@@ -5,13 +5,13 @@ parent: Development
 has_children: false
 permalink: /development/standalone
 description: >-
-Setup the project and start developing with your local printer(s)
+  Setup the project and start developing with your local printer(s)
 ---
 
 # {{ page.title }}
 {{ page.description }}
 
-# Setup
+## Setup
 Make a copy of the '.env.development.local.example' and omit the .example.
 In the new file edit it to refect your desired printer:
 ```dotenv
@@ -24,7 +24,7 @@ cors_domains:
 ```
 access the local running dev environment with `http://<your local ip>:<local port>`.
 
-####Nodejs Environment >= v15.9.0
+###Nodejs Environment >= v15.9.0
 Linux
 ```shell
 curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
@@ -36,7 +36,7 @@ sudo apt-get install -y nodejs
 For other package-managers look here:
 https://nodejs.org/en/download/package-manager/
 
-# Start
+## Start
 ```shell
 npm install   # only once and if you updated/installed packages
 npm run serve # starting current build with hot module reloading
