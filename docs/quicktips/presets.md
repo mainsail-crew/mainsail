@@ -16,7 +16,7 @@ In Mainsails interface settings you will find a section called "Preheat Presets"
 
 ### Preheat
 
-Enter a name \(e.g. name, color and type of filament\) and the temperatures obtained. You can disable individual heaters and even specify a custom gcode for the preheat phase.
+Enter a name \(e.g. name, color and type of filament\) and the temperatures obtained. You can disable individual heaters and even specify a custom gcode for the preheat phase. The gcode will be executed after the selected temperatures are set.
 
 ![](../assets/img/quicktips/presets/preheat.png)
 

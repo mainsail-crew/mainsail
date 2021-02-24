@@ -12,7 +12,17 @@
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
-                    <v-col class="pt-2 mb-1">
+                    <v-col class="py-2">
+                        <v-select v-model="service" :items="serviceItems" hide-details label="Service" class="mt-0"></v-select>
+                    </v-col>
+                </v-row>
+                <v-row v-if="service === 'mjpegstreamer-adaptive'">
+                    <v-col class="py-2 mt-2">
+                        <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="pt-2 mt-2 mb-1">
                         <v-text-field
                             v-model="webcamUrl"
                             hide-details
@@ -55,7 +65,11 @@
         },
         data: function() {
             return {
-                rotationEnabled: false
+                rotationEnabled: false,
+                serviceItems: [
+                    { value: 'mjpegstreamer', text: 'MJPEG-Streamer' },
+                    { value: 'mjpegstreamer-adaptive', text: 'Adaptive MJPEG-Streamer (experimental)' },
+                ]
             }
         },
         computed: {
@@ -107,6 +121,22 @@
                     return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
                 }
             },
+            service: {
+                get() {
+                    return this.$store.state.gui.webcam.service;
+                },
+                set(selectedMethod) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { service: selectedMethod } });
+                }
+            },
+            targetFps: {
+                get() {
+                    return this.$store.state.gui.webcam.targetFps;
+                },
+                set(fps) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { targetFps: fps } });
+                }
+            }
         },
         methods: {
 
