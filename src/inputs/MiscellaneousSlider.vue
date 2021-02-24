@@ -77,7 +77,7 @@
                 type: Number,
                 required: false,
                 default: 1
-            },
+            }
         },
         methods: {
             convertName: convertName,

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+PYTHONPATH="/home/node/simulavr/build/pysimulavr/" /home/node/klipper/scripts/avrsim.py -m atmega644 -s 20000000 -b 250000 /home/node/klipper/simulavr.elf &
+/home/node/klippy-env/bin/python /home/node/klipper/klippy/klippy.py /home/node/printer_config/printer.cfg -l /tmp/logs/klippy.log -a /tmp/klippy_uds &
+/home/node/moonraker-env/bin/python /home/node/moonraker/moonraker/moonraker.py -l /tmp/logs/moonraker.log -c /home/node/printer_config/moonraker.conf &
+echo "Starting ..." >> /tmp/logs/klippy.log
+tail -f /tmp/logs/klippy.log
