@@ -34,11 +34,13 @@ docker/run up
 # Development
 ####Commands
 ```shell
-docker/run ps #showing running containers
-docker/run restart <api/npm> #restarting container
-docker/run bash <api/npm> #spawning bash shell inside container
+docker/run ps                 # showing running containers
+docker/run restart <api/npm>  # restarting container
+                              # api: restarting complete api container with simulavr/moonraker/klipper services,
+                              # npm: restarting nodejs container with running 'npm run serve' 
+docker/run bash <api/npm>     # spawning bash shell inside container
 ```
-Example for restarting 'npm run serve'
-```shell
-docker/run restart npm
-```
+Restarting the api container will happen a lot, because simulavr WILL crash a lot! Timings within simulavr are not precise and klipper will bug alot about that.
+# Todo
+1. The current implementation of simulavr/moonraker/klipper is kinda naiv, because docker wont run with systemd.
+I will fix that in later versions of the docker container, so you can restart specific containers and omit simulavr and bind a real connected printer for example.
