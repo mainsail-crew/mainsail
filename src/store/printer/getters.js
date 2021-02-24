@@ -233,8 +233,6 @@ export default {
 					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
 					let pwm = controllable
 					let scale = 1
-					let off_below = 0.0
-					let max_power = 1.0
 
 					if (nameSplit[0].toLowerCase() === "fan") scale = 255
 
@@ -255,9 +253,6 @@ export default {
 							) scale = state.configfile.config[key].scale
 						}
 					}
-					if (state.configfile.config[key].off_below) off_below = parseFloat(state.configfile.config[key].off_below)
-
-					if (state.configfile.config[key].max_power) max_power = parseFloat(state.configfile.config[key].max_power)
 
 					output.push({
 						name: name,
@@ -267,8 +262,6 @@ export default {
 						pwm: pwm,
 						scale: scale,
 						object: value,
-						off_below: off_below,
-						max_power: max_power,
 						config: state.configfile.config[key]
 					})
 				}

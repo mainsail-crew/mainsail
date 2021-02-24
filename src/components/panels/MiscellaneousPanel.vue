@@ -35,17 +35,7 @@
             </v-toolbar>
             <div v-for="(object, index) of this['printer/getMiscellaneous']" v-bind:key="index">
                 <v-divider v-if="index"></v-divider>
-                <miscellaneous-slider
-                    :name="object.name"
-                    :type="object.type"
-                    :target="object.power"
-                    :controllable="object.controllable"
-                    :pwm="object.pwm"
-                    :multi="parseInt(object.scale)"
-                    :max="object.max_power"
-                    :min="object.off_below"
-                >
-                </miscellaneous-slider>
+                <miscellaneous-slider :name="object.name" :type="object.type" :target="object.power" :controllable="object.controllable" :pwm="object.pwm" :multi="parseInt(object.scale)"></miscellaneous-slider>
             </div>
         </v-card>
     </div>
