@@ -15,7 +15,7 @@
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad"  alt="Webcam"/>
+            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad"  alt="Webcam" v-if="['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcamConfig.service)" />
         </v-card-text>
     </v-card>
 </template>
@@ -58,15 +58,15 @@
             }),
 
             url() {
-                if(this.webcamConfig.service === 'mjpegstreamer-adaptive') {
-                    return this.imageData;
-                } else {
+                if (this.webcamConfig.service === 'mjpegstreamer' && this.webcamConfig.url.indexOf("?") !== -1) {
                     let basicUrl = this.webcamConfig.url
-                    if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
-
                     const params = new URLSearchParams(basicUrl)
                     params.set('bypassCache', ""+this.refresh)
                     return decodeURIComponent(params.toString())
+                } else if (this.webcamConfig.service === 'mjpegstreamer-adaptive') {
+                    return this.imageData
+                } else {
+                    return this.webcamConfig.url
                 }
             },
 
