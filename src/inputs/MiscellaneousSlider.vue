@@ -21,9 +21,9 @@
                         :min="0.0"
                         :max="1.0"
                         :step="0.01"
-                        :thumb-color="value >= min ? undefined : 'red'"
-                        :color="value >= min ? undefined : 'red'"
-                        :thumb-label="value >= min ? undefined : true"
+                        :thumb-color="value >= min || value === 0 ? undefined : 'danger'"
+                        :color="value >= min || value === 0 ? undefined : 'danger'"
+                        :thumb-label="value >= min || value === 0 ? undefined : true"
                         @start="sliding = true"
                         @end="sendCmd()"
                         hide-details
