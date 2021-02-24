@@ -24,7 +24,7 @@ cors_domains:
 ```
 access the local running dev environment with `http://<your local ip>:<local port>`.
 
-###Nodejs Environment >= v15.9.0
+### Nodejs Environment >= v15.9.0
 Linux
 ```shell
 curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -

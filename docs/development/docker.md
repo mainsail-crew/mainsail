@@ -14,13 +14,13 @@ description: >-
 ## Setup
 Install docker and docker-compose on your desired machine.
 
-###Debian/Ubuntu
+### Debian/Ubuntu
 ```shell
 sudo apt install docker docker-compose
 ```
-###Mac
+### Mac
 https://docs.docker.com/docker-for-mac/install/
-###Windows
+### Windows
 https://docs.docker.com/docker-for-windows/install/
 
 ## Start
@@ -32,7 +32,7 @@ docker/run up
 ```
 
 ## Development
-###Commands
+### Commands
 ```shell
 docker/run ps                 # showing running containers
 docker/run restart <api/npm>  # restarting container
