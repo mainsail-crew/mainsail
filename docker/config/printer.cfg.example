@@ -1,0 +1,179 @@
+[virtual_sdcard]
+path: ~/gcode
+
+[pause_resume]
+[display_status]
+
+[mcu]
+serial: /tmp/pseudoserial
+pin_map: arduino
+baud: 250000
+
+[stepper_x]
+step_pin: PD7
+dir_pin: !PC5
+enable_pin: !PD6
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC2
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+homing_retract_dist: 0
+
+[stepper_y]
+step_pin: PC6
+dir_pin: !PC7
+enable_pin: !PD6
+microsteps: 16
+rotation_distance: 40
+endstop_pin: ^PC3
+position_endstop: 0
+position_max: 235
+homing_speed: 50
+homing_retract_dist: 0
+
+[stepper_z]
+step_pin: PB3
+dir_pin: PB2
+enable_pin: !PA5
+microsteps: 16
+rotation_distance: 8
+endstop_pin: ^PC4
+position_endstop: 0.0
+position_max: 250
+homing_retract_dist: 0
+
+[extruder]
+max_extrude_only_distance: 100.0
+step_pin: PB1
+dir_pin: !PB0
+enable_pin: !PD6
+microsteps: 16
+rotation_distance: 33.683
+nozzle_diameter: 0.400
+filament_diameter: 1.750
+heater_pin: PD5
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PA7
+control: watermark
+min_temp: 0
+max_temp: 250
+min_extrude_temp: 50
+
+[heater_bed]
+heater_pin: PD4
+sensor_type: EPCOS 100K B57560G104F
+sensor_pin: PA6
+control: watermark
+min_temp: 0
+max_temp: 130
+
+[fan]
+pin: PB4
+
+[heater_fan nozzle_fan]
+pin: PB5
+off_below: 0.0
+shutdown_speed: 1.0
+max_power: 1.0
+
+[controller_fan mcu_fan]
+pin: PB6
+off_below: 0.2
+shutdown_speed: 1.0
+max_power: 1.0
+
+[printer]
+kinematics: cartesian
+max_velocity: 300
+max_accel: 3000
+max_z_velocity: 5
+max_z_accel: 100
+
+#[display]
+#lcd_type: st7920
+#cs_pin: PA3
+#sclk_pin: PA1
+#sid_pin: PC1
+#encoder_pins: ^PD2, ^PD3
+#click_pin: ^!PC0
+
+# The print bed can move so far to the front, that the nozzle can reach the
+# plastic cover of the print bed heater cable (only when the bed is moved by
+# hand). By homing the Y axis before the X axis, it is ensured the nozzle will
+# not melt through the plastic part.
+# BEWARE: You will lose the ability to home axes individually. The printer will
+# always home all axes for every G28 command.
+#[homing_override]
+#gcode:
+# G28 Y0
+# G28 X0
+# G28 Z0
+
+[gcode_macro PAUSE]
+rename_existing: BASE_PAUSE
+default_parameter_X: 230    #edit to your park position
+default_parameter_Y: 230    #edit to your park position
+default_parameter_Z: 10     #edit to your park position
+default_parameter_E: 1      #edit to your retract length
+gcode:
+    SAVE_GCODE_STATE NAME=PAUSE_state
+    BASE_PAUSE
+    G91
+    G1 E-{E} F2100
+    G1 Z{Z}
+    G90
+    G1 X{X} Y{Y} F6000
+[gcode_macro RESUME]
+rename_existing: BASE_RESUME
+default_parameter_E: 1      #edit to your retract length
+gcode:
+    G91
+    G1 E{E} F2100
+    G90
+    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
+    BASE_RESUME
+[gcode_macro CANCEL_PRINT]
+rename_existing: BASE_CANCEL_PRINT
+gcode:
+    TURN_OFF_HEATERS
+    CLEAR_PAUSE
+    SDCARD_RESET_FILE
+    BASE_CANCEL_PRINT
+
+[gcode_macro START_PRINT]
+default_parameter_BED_TEMP: 103.3
+default_parameter_EXTRUDER_TEMP: 103.3
+gcode:
+# Start bed heating
+    M140 S103.3
+# Use absolute coordinates
+    G90
+# Reset the G-Code Z offset (adjust Z offset if needed)
+    SET_GCODE_OFFSET Z=0.0
+# Home the printer
+    G28
+# Move the nozzle near the bed
+    G1 Z5 F3000
+# Move the nozzle very close to the bed
+    G1 Z0.15 F300
+# Wait for bed to reach temperature
+    M190 S103.3
+# Set and wait for nozzle to reach temperature
+    M109 S103.3
+
+[gcode_macro END_PRINT]
+gcode:
+# Turn off bed, extruder, and fan
+    M140 S0
+    M104 S0
+    M106 S0
+# Move nozzle away from print while retracting
+    G91
+    G1 X-2 Y-2 E-3 F300
+# Raise nozzle by 10mm
+    G1 Z10 F3000
+    G90
+# Disable steppers
+    M84

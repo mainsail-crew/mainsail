@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+export APP_NAME=mainsail
+
+if [ $# -gt 0 ]; then
+  if [ "$1" == "restart" ]; then
+    docker-compose restart "$2"
+  elif [ "$1" == "bash" ]; then
+    docker exec -it "$APP_NAME-stack-$2" bash
+  else
+    docker-compose "$@"
+  fi
+else
+    docker-compose ps
+fi
