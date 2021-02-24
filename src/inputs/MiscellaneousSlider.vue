@@ -9,7 +9,7 @@
         <v-row>
             <v-col>
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value >= min ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-icon small :class="'mr-2 '+(value ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
                     <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
@@ -19,7 +19,7 @@
                     <v-slider
                         v-model="value"
                         :min="0"
-                        :max="max"
+                        :max="1"
                         :step="0.01"
                         @change="sendCmd"
                         hide-details>
@@ -77,16 +77,6 @@
                 type: Number,
                 required: false,
                 default: 1
-            },
-            max: {
-              type: Number,
-              required: false,
-              default: 1.0
-            },
-            min: {
-              type: Number,
-              required: false,
-              default: 0.0
             }
         },
         methods: {
