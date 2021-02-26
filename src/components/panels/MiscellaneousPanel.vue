@@ -17,15 +17,15 @@
 
 <template>
     <div>
-        <v-card class="mt-6" v-if="['printing', 'paused'].includes(printer_state)">
+        <v-card class="mt-6" v-if="['printing', 'paused', 'standby'].includes(printer_state)">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>Print Settings</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <tool-slider label="Speed factor" :target="speed_factor" :max="200" :multi="100" :step="5" command="M220" attribute-name="S" ></tool-slider>
+            <tool-slider label="Speed factor" :target="speed_factor" :max="200" :multi="100" :step="5" :dynamic-range="true" command="M220" attribute-name="S" ></tool-slider>
             <v-divider></v-divider>
-            <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
+            <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" :dynamic-range="true" command="M221" attribute-name="S" ></tool-slider>
         </v-card>
         <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
             <v-toolbar flat dense >
@@ -66,5 +66,8 @@
                 'printer/getMiscellaneous',
             ]),
         },
+        mounted() {
+            console.log(this.printer_state);
+        }
     }
 </script>
