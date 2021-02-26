@@ -137,6 +137,7 @@
 
                 <template #item="{ item }">
                     <tr
+                        v-longpress="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
                         class="file-list-cursor"
@@ -545,12 +546,16 @@
                 return '--'
             },
             showContextMenu (e, item) {
-                e.preventDefault()
-                this.contextMenu.shown = true
-                this.contextMenu.x = e.clientX
-                this.contextMenu.y = e.clientY
-                this.contextMenu.item = item
-                this.$nextTick(() => { this.contextMenu.shown = true })
+                if (!this.contextMenu.shown) {
+                    e?.preventDefault();
+                    this.contextMenu.shown = true
+                    this.contextMenu.x = e?.clientX ?? 0
+                    this.contextMenu.y = e?.clientY ?? 0
+                    this.contextMenu.item = item
+                    this.$nextTick(() => {
+                        this.contextMenu.shown = true
+                    })
+                }
             },
             preheat() {
                 if (
@@ -622,12 +627,14 @@
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             clickRow: function(item) {
-                if (!item.isDirectory) {
-                    this.dialogPrintFile.show = true;
-                    this.dialogPrintFile.item = item;
-                } else {
-                    this.currentPath += "/"+item.filename;
-                    this.loadPath();
+                if (!this.contextMenu.shown) {
+                    if (!item.isDirectory) {
+                        this.dialogPrintFile.show = true;
+                        this.dialogPrintFile.item = item;
+                    } else {
+                        this.currentPath += "/" + item.filename;
+                        this.loadPath();
+                    }
                 }
             },
             clickRowGoBack: function() {

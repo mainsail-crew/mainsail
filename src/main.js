@@ -2,6 +2,7 @@ import Vue from 'vue'
 import WebSocketClient from './plugins/wsClient'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import './plugins/longpress';
 import VueResource from 'vue-resource'
 import './components'
 import store from './store'
