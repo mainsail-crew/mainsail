@@ -21,14 +21,16 @@
                     </v-btn>
                     <v-spacer></v-spacer>
                     <span class="font-weight-bold">
-                        <v-progress-circular
-                            v-if="sliding && (value === processedMin || value === processedMax)"
-                            class="mr-2"
-                            indeterminate
-                            color="info"
-                            :size="20"
-                            :width="2"
-                        ></v-progress-circular>
+                        <template v-if="dynamicRange">
+                            <v-progress-circular
+                                v-if="sliding && (value === processedMin || value === processedMax)"
+                                class="mr-2"
+                                indeterminate
+                                color="info"
+                                :size="20"
+                                :width="2"
+                            ></v-progress-circular>
+                        </template>
                         {{ value }} {{ unit }}
                     </span>
                 </v-subheader>
