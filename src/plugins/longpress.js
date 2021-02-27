@@ -13,6 +13,8 @@ Vue.directive('longpress', {
             console.warn(warn)
         }
 
+        const debounceTime = parseInt(binding.arg ?? 1000);
+
         // Run Function
         const handler = (e) => {
             binding.value(e)
@@ -24,7 +26,6 @@ Vue.directive('longpress', {
         // Define funtion handlers
         // Create timeout ( run function after 1s )
         let start = (e) => {
-            console.log(e);
             if ((e.type === 'click' && e.button !== 0)) {
                 return;
             }
@@ -60,7 +61,7 @@ Vue.directive('longpress', {
                     setTimeout(() => {
                         el.setAttribute('style', before);
                     }, 100);
-                }, 1000)
+                }, debounceTime);
             }
             return false;
         }
@@ -72,6 +73,7 @@ Vue.directive('longpress', {
                 clearTimeout(pressTimer)
                 pressTimer = null
             }
+
             if (e.type === "touchend" && vNode.data.on.click) {
                 vNode.data.on.click();
             }
@@ -81,9 +83,8 @@ Vue.directive('longpress', {
         // el.addEventListener("mousedown", start);
         el.addEventListener("touchstart", start);
         // Cancel timeouts if this events happen
-        console.log(vNode);
-        el.addEventListener("click", cancel);
-        el.addEventListener("mouseout", cancel);
+        //el.addEventListener("click", cancel);
+        //el.addEventListener("mouseout", cancel);
         el.addEventListener("touchend", cancel);
         el.addEventListener("touchcancel", cancel);
     }
