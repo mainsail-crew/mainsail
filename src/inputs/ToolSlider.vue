@@ -143,7 +143,6 @@
                         clearTimeout(this.processingTimer);
                         this.processingTimer = null;
                     }
-                    console.log(this.value, this.processedMax);
                     if (this.value >= this.processedMax) {
                         this.processingTimer = setTimeout(() => {
                             this.processedMin = Math.max(0, this.value - this.dynamicStep);
