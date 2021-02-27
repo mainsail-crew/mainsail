@@ -447,8 +447,6 @@
             },
             showContextMenu (e, item) {
                 if (!this.contextMenu.shown) {
-                    e?.preventDefault();
-                    console.log(e);
                     this.contextMenu.shown = true;
                     this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
                     this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
