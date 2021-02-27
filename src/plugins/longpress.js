@@ -34,15 +34,15 @@ Vue.directive('longpress', {
                 return;
             }
 
-            e.preventDefault();
-            e.stopPropagation();
-            e.cancelBubble = true;
-
             const before = el.getAttribute('style');
             el.setAttribute('style', (before ?? '') + 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
 
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+                    e.cancelBubble = true;
                     // Run function
                     handler({
                         clientX: e.touches[0].clientX,
@@ -72,10 +72,10 @@ Vue.directive('longpress', {
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
-            }
-
-            if (e.type === "touchend" && vNode.data.on.click) {
-                vNode.data.on.click();
+                console.log(e.type);
+                if (e.type === "touchend" && vNode.data.on.click) {
+                    vNode.data.on.click();
+                }
             }
         }
 
@@ -85,7 +85,10 @@ Vue.directive('longpress', {
         // Cancel timeouts if this events happen
         //el.addEventListener("click", cancel);
         //el.addEventListener("mouseout", cancel);
+        el.addEventListener("touchmove", cancel);
         el.addEventListener("touchend", cancel);
         el.addEventListener("touchcancel", cancel);
+
+        document.addEventListener("scroll", cancel);
     }
 });
