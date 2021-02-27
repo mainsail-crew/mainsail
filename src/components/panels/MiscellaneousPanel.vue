@@ -17,7 +17,7 @@
 
 <template>
     <div>
-        <v-card class="mt-6" v-if="['printing', 'paused', 'standby'].includes(printer_state)">
+        <v-card class="mt-6" v-if="['printing', 'paused'].includes(printer_state)">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>Print Settings</span>
