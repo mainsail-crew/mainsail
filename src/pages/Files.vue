@@ -137,7 +137,7 @@
 
                 <template #item="{ item }">
                     <tr
-                        v-longpress="(e) => showContextMenu(e, item)"
+                        v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
                         class="file-list-cursor"
@@ -627,7 +627,6 @@
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             clickRow(item, force = false) {
-                console.log(item, force);
                 if (!this.contextMenu.shown || force) {
                     if (force) {
                         this.contextMenu.shown = false;
