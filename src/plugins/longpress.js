@@ -55,6 +55,7 @@ Vue.directive('longpress', {
                         rotationAngle: e.touches[0].rotationAngle,
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
+                        preventDefault: () => {}
                     });
                     setTimeout(() => {
                         el.setAttribute('style', before);
