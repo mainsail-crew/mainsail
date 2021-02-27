@@ -93,6 +93,16 @@
                 required: false,
                 default: false
             },
+            dynamicDebounceTime: {
+                type: Number,
+                required: false,
+                default: 500
+            },
+            dynamicClamp: {
+                type: Array,
+                required: false,
+                default: () => ([0, 1000])
+            },
             defaultValue: {
                 type: Number,
                 required: false,
@@ -145,9 +155,10 @@
                     }
                     if (this.value >= this.processedMax) {
                         this.processingTimer = setTimeout(() => {
-                            this.processedMin = Math.max(0, this.value - this.dynamicStep);
-                            this.processedMax = Math.min(1000, this.value + this.dynamicStep);
-                        }, 1000);
+                            const [min, max] = this.dynamicClamp;
+                            this.processedMin = Math.max(min, this.value - this.dynamicStep);
+                            this.processedMax = Math.min(max, this.value + this.dynamicStep);
+                        }, this.dynamicDebounceTime);
                     }
                 }
             },
