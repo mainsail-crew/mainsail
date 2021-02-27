@@ -176,7 +176,7 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> Print start
                 </v-list-item>
                 <v-list-item
@@ -549,8 +549,8 @@
                 if (!this.contextMenu.shown) {
                     e?.preventDefault();
                     this.contextMenu.shown = true
-                    this.contextMenu.x = e?.clientX ?? 0
-                    this.contextMenu.y = e?.clientY ?? 0
+                    this.contextMenu.x = e?.clientX || e?.x || 0
+                    this.contextMenu.y = e?.clientY || e?.y || 0
                     this.contextMenu.item = item
                     this.$nextTick(() => {
                         this.contextMenu.shown = true
@@ -626,8 +626,11 @@
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
-            clickRow: function(item) {
-                if (!this.contextMenu.shown) {
+            clickRow(item, force = false) {
+                if (!this.contextMenu.shown || force) {
+                    if (force) {
+                        this.contextMenu.shown = false;
+                    }
                     if (!item.isDirectory) {
                         this.dialogPrintFile.show = true;
                         this.dialogPrintFile.item = item;
