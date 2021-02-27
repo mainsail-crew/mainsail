@@ -241,7 +241,7 @@
             target: {
                 immediate: true,
                 handler(newVal) {
-                    this.value = newVal * this.multi;
+                    this.value = Math.round(newVal * this.multi);
                     if (!this.dynamicRange) {
                         return;
                     }
@@ -264,7 +264,7 @@
                     try {
                         const newValue = parseInt(this.$refs.editInput.internalValue);
                         if (!isNaN(newValue)) {
-                            this.value = this.clamp(newValue, 1, 1000);
+                            this.value = this.clamp(newValue, Math.max(1, this.min), this.max);
                             this.sendCmd(true);
                         }
                     } catch(e) {
@@ -280,7 +280,6 @@
                 }
                 const normalised = this.dynamicValue - 30;
                 const step = Math.abs(normalised) / 10;
-                console.log(normalised, step);
                 this.dynamicTimer = setInterval(() => {
                     let addVal = 0;
                     if (normalised < 0) {
@@ -288,8 +287,8 @@
                     } else if(normalised > 0) {
                         addVal = 1;
                     }
-                    this.value = this.value + addVal;
-                }, 500 * (1 / (step * 10)));
+                    this.value = this.clamp(this.value + addVal, this.min, this.max);
+                }, 500 * (1 / Math.pow(5, step)));
             },
             processNewRange() {
                 if (!this.dynamicRange || !this.sliding) {
@@ -331,11 +330,11 @@
                 return Math.max(min, Math.min(max, value ?? 0));
             },
             decrement() {
-                this.value = this.value > this.min ? this.value - this.step : this.min
+                this.value = this.value > this.min ? Math.round(this.value - this.step) : this.min
                 this.sendCmd(true);
             },
             increment() {
-                this.value = this.value < this.max ? this.value + this.step : this.max
+                this.value = this.value < this.max ? Math.round(this.value + this.step) : this.max
                 this.sendCmd(true);
             }
         }
