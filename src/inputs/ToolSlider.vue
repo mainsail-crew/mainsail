@@ -154,7 +154,6 @@
         },
         methods: {
             sendCmd(btnPress = false) {
-                console.log(this.value, this.target, this.sliding, btnPress);
                 if (this.sliding || btnPress) {
                     let gcode = this.command + ' ' + this.attributeName + (Math.max(1, this.value) * this.attributeScale).toFixed(0)
                     this.$store.commit('server/addEvent', {message: gcode, type: 'command'})
