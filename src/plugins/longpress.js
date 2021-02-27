@@ -15,11 +15,7 @@ Vue.directive('longpress', {
 
         // Run Function
         const handler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            e.cancelBubble = true;
             binding.value(e)
-            return false;
         }
 
         // Define variable
@@ -28,21 +24,44 @@ Vue.directive('longpress', {
         // Define funtion handlers
         // Create timeout ( run function after 1s )
         let start = (e) => {
-            if (e.type === 'click' && e.button !== 0) {
+            console.log(e);
+            if ((e.type === 'click' && e.button !== 0)) {
                 return;
             }
+
+            if (!e.touches || e.touches.length < 1) {
+                return;
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.cancelBubble = true;
+
+            const before = el.getAttribute('style');
+            el.setAttribute('style', (before ?? '') + 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
 
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
                     // Run function
-                    const before = el.style.userSelect;
-                    el.style.userSelect = 'none';
-                    handler(e)
+                    handler({
+                        clientX: e.touches[0].clientX,
+                        clientY: e.touches[0].clientY,
+                        force: e.touches[0].force,
+                        identifier: e.touches[0].identifier,
+                        pageX: e.touches[0].pageX,
+                        pageY: e.touches[0].pageY,
+                        radiusX: e.touches[0].radiusX,
+                        radiusY: e.touches[0].radiusY,
+                        rotationAngle: e.touches[0].rotationAngle,
+                        screenX: e.touches[0].screenX,
+                        screenY: e.touches[0].screenY,
+                    });
                     setTimeout(() => {
-                        el.style.userSelect = before;
+                        el.setAttribute('style', before);
                     }, 100);
                 }, 1000)
             }
+            return false;
         }
 
         // Cancel Timeout
@@ -55,7 +74,7 @@ Vue.directive('longpress', {
         }
 
         // Add Event listeners
-        el.addEventListener("mousedown", start);
+        // el.addEventListener("mousedown", start);
         el.addEventListener("touchstart", start);
         // Cancel timeouts if this events happen
         el.addEventListener("click", cancel);
