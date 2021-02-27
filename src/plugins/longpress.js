@@ -35,7 +35,12 @@ Vue.directive('longpress', {
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
                     // Run function
+                    const before = el.style.userSelect;
+                    el.style.userSelect = 'none';
                     handler(e)
+                    setTimeout(() => {
+                        el.style.userSelect = before;
+                    }, 100);
                 }, 1000)
             }
         }
