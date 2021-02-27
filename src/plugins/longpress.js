@@ -56,7 +56,7 @@ Vue.directive('longpress', {
                         rotationAngle: e.touches[0].rotationAngle,
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
-                        preventDefault: () => {}
+                        preventDefault: () => e.preventDefault()
                     });
                     setTimeout(() => {
                         el.setAttribute('style', before);
@@ -67,15 +67,15 @@ Vue.directive('longpress', {
         }
 
         // Cancel Timeout
-        let cancel = (e) => {
+        let cancel = () => {
             // Check if timer has a value or not
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
-                console.log(e.type);
+                /*console.log(e.type);
                 if (e.type === "touchend" && vNode.data.on.click) {
                     vNode.data.on.click();
-                }
+                }*/
             }
         }
 
