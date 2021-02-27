@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
-npm install
+if [ ! -d 'node_modules' ]; then
+  npm ci
+fi
 npm run serve
