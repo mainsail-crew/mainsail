@@ -25,7 +25,7 @@
             </v-toolbar>
             <tool-slider label="Speed factor" :target="speed_factor" :max="200" :multi="100" :step="5" :dynamic-range="true" command="M220" attribute-name="S" ></tool-slider>
             <v-divider></v-divider>
-            <tool-slider label="Extrusion factor" new-dynamic :editable="true" :target="extrude_factor" :max="200" :multi="100" :step="1" :dynamic-range="true" command="M221" attribute-name="S" ></tool-slider>
+            <tool-slider label="Extrusion factor" new-dynamic :editable="true" :target="extrude_factor" :max="1000" :multi="100" :step="1" :dynamic-range="true" command="M221" attribute-name="S" ></tool-slider>
         </v-card>
         <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
             <v-toolbar flat dense >
