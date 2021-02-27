@@ -66,11 +66,14 @@ Vue.directive('longpress', {
         }
 
         // Cancel Timeout
-        let cancel = () => {
+        let cancel = (e) => {
             // Check if timer has a value or not
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
+            }
+            if (e.type === "touchend" && vNode.data.on.click) {
+                vNode.data.on.click();
             }
         }
 
@@ -78,6 +81,7 @@ Vue.directive('longpress', {
         // el.addEventListener("mousedown", start);
         el.addEventListener("touchstart", start);
         // Cancel timeouts if this events happen
+        console.log(vNode);
         el.addEventListener("click", cancel);
         el.addEventListener("mouseout", cancel);
         el.addEventListener("touchend", cancel);

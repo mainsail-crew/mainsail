@@ -627,6 +627,7 @@
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             clickRow(item, force = false) {
+                console.log(item, force);
                 if (!this.contextMenu.shown || force) {
                     if (force) {
                         this.contextMenu.shown = false;
