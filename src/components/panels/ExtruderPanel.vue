@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="(['standby', 'paused', 'complete'].includes(printer_state))">
+    <v-card v-if="(['paused', 'complete'].includes(printer_state))">
         <v-container>
             <v-row class="">
                 <v-col class="col col-md-6">

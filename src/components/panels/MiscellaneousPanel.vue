@@ -65,9 +65,6 @@
             ...mapGetters([
                 'printer/getMiscellaneous',
             ]),
-        },
-        mounted() {
-            console.log(this.extrude_factor, this.speed_factor, this.printer_state);
         }
     }
 </script>

@@ -36,8 +36,8 @@
                 config: state => state.printer.configfile.settings,
                 max_velocity: state => state.printer.configfile.settings.printer.max_velocity,
                 max_accel: state => state.printer.configfile.settings.printer.max_accel,
-                max_accel_to_decel: state => state.printer.configfile.settings.printer.max_accel_to_decel || state.printer.configfile.settings.printer.max_accel / 2,
-                max_square_corner_velocity: state => state.printer.configfile.settings.printer.square_corner_velocity || 5,
+                max_accel_to_decel: state => state.printer.configfile.settings.printer.max_accel_to_decel,
+                max_square_corner_velocity: state => state.printer.configfile.settings.printer.square_corner_velocity,
             }),
         },
         watch: {
