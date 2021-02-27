@@ -450,8 +450,8 @@
                     e?.preventDefault();
                     console.log(e);
                     this.contextMenu.shown = true;
-                    this.contextMenu.x = undefined || e?.x || 0;
-                    this.contextMenu.y = e?.clientY || e?.y || 0;
+                    this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
+                    this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
                     this.contextMenu.item = item;
                     this.$nextTick(() => {
                         this.contextMenu.shown = true
