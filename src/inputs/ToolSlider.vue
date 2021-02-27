@@ -96,7 +96,7 @@
             dynamicDebounceTime: {
                 type: Number,
                 required: false,
-                default: 500
+                default: 250
             },
             dynamicClamp: {
                 type: Array,
