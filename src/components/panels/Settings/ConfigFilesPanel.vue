@@ -99,7 +99,7 @@
             </v-card>
             <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
                 <v-list>
-                    <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
                         <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
                     </v-list-item>
                     <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
@@ -390,8 +390,11 @@
                     this.files = this.files.filter(file => file.filename.substr(0, 1) !== ".");
                 }
             },
-            clickRow(item) {
-                if (!this.contextMenu.shown) {
+            clickRow(item, force = false) {
+                if (!this.contextMenu.shown || force) {
+                    if (force) {
+                        this.contextMenu.shown = false;
+                    }
                     if (!item.isDirectory) {
                         this.editor.showLoader = true;
                         this.editor.sourcecode = "";
@@ -445,9 +448,10 @@
             showContextMenu (e, item) {
                 if (!this.contextMenu.shown) {
                     e?.preventDefault();
+                    console.log(e);
                     this.contextMenu.shown = true;
-                    this.contextMenu.x = e?.clientX ?? 0;
-                    this.contextMenu.y = e?.clientY ?? 0;
+                    this.contextMenu.x = undefined || e?.x || 0;
+                    this.contextMenu.y = e?.clientY || e?.y || 0;
                     this.contextMenu.item = item;
                     this.$nextTick(() => {
                         this.contextMenu.shown = true
