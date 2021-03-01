@@ -140,7 +140,7 @@
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        class="file-list-cursor"
+                        class="file-list-cursor user-select-none"
                         draggable="true"
                         @drag="dragFile($event, item)"
                         @dragend="dragendFile($event)"
