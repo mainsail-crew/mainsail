@@ -111,6 +111,7 @@ export default {
 					additionValues: getters.getAdditionSensors(nameSplit[1]),
 					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
+					rpm: 'rpm' in value ? value.rpm : false,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
@@ -231,6 +232,7 @@ export default {
 				if (!name.startsWith("_")) {
 					let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
 					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+					let rpm = 'rpm' in value ? value.rpm : false
 					let pwm = controllable
 					let scale = 1
 
@@ -260,6 +262,7 @@ export default {
 						power: power,
 						controllable: controllable,
 						pwm: pwm,
+						rpm: rpm,
 						scale: scale,
 						object: value,
 						config: state.configfile.config[key]

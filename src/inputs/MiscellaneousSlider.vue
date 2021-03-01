@@ -12,6 +12,7 @@
                     <v-icon small :class="'mr-2 '+(value ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
+                    <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">{{ Math.round(rpm) }} RPM</small>
                     <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
                 </v-subheader>
@@ -70,6 +71,11 @@
             },
             pwm: {
                 type: Boolean,
+                required: false,
+                default: false
+            },
+            rpm: {
+                type: [Number, Boolean],
                 required: false,
                 default: false
             },
