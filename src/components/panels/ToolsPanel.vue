@@ -112,7 +112,10 @@
                             <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" v-if="boolTempchart" style="min-width: 70px;">
                                 <div :style="'background-color: '+fan.chartColor+'cc;'" class="datasetColorSymbol d-inline-block" @click="openHeater(fan)"></div>
                             </v-col>
-                            <v-col class="py-2 text-center d-none d-sm-block"><small>{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small></v-col>
+                            <v-col class="py-2 text-center d-none d-sm-block">
+                                <small class="d-block">{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
+                                <small v-if="fan.rpm || fan.rpm === 0" :class="'d-block ' + (fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '')">{{ Math.round(fan.rpm) }} RPM</small>
+                            </v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span>
                                 <span v-for="(values, key) of fan.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
