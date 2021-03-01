@@ -84,7 +84,7 @@
                             v-longpress:600="(e) => showContextMenu(e, item)"
                             @contextmenu="showContextMenu($event, item)"
                             @click="clickRow(item)"
-                            class="file-list-cursor"
+                            class="file-list-cursor user-select-none"
                             :data-name="item.filename">
                             <td class="pr-0 text-center" style="width: 32px;">
                                 <v-icon v-if="item.isDirectory">mdi-folder</v-icon>

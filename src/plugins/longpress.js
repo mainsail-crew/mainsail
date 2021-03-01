@@ -25,6 +25,7 @@ Vue.directive('longpress', {
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
+        let before = null;
         let start = (e) => {
             if ((e.type === 'click' && e.button !== 0)) {
                 return;
@@ -34,8 +35,8 @@ Vue.directive('longpress', {
                 return;
             }
 
-            const before = el.getAttribute('style');
-            el.setAttribute('style', (before ?? '') + 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
+            before = document.querySelector('body').getAttribute('style');
+            document.querySelector('body').setAttribute('style', (before ?? '') + 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
 
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
@@ -59,7 +60,9 @@ Vue.directive('longpress', {
                         preventDefault: () => e.preventDefault()
                     });
                     setTimeout(() => {
-                        el.setAttribute('style', before);
+                        if (before) {
+                            document.querySelector('body').setAttribute('style', before);
+                        }
                     }, 100);
                 }, debounceTime);
             }
@@ -72,6 +75,9 @@ Vue.directive('longpress', {
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
+                if (before) {
+                    document.querySelector('body').setAttribute('style', before);
+                }
                 /*console.log(e.type);
                 if (e.type === "touchend" && vNode.data.on.click) {
                     vNode.data.on.click();
