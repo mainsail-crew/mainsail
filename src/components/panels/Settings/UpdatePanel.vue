@@ -154,7 +154,7 @@
                     if ('is_dirty' in object && object.is_dirty) return 'orange'
                     if ('is_valid' in object && !object.is_valid) return 'red'
 
-                    if ('version' in object && 'remote_version' in object && semver.gt(object.remote_version, object.version)) return 'primary'
+                    if ('version' in object && 'remote_version' in object && semver.valid(object.remote_version) && semver.gt(object.remote_version, object.version)) return 'primary'
 
                     return 'green'
                 }
@@ -167,7 +167,7 @@
                     if ('is_valid' in object && !object.is_valid) return 'invalid'
                     if ('is_dirty' in object && object.is_dirty) return 'dirty'
 
-                    if ('version' in object && 'remote_version' in object && semver.gt(object.remote_version, object.version)) return 'update'
+                    if ('version' in object && 'remote_version' in object && semver.valid(object.remote_version) && semver.gt(object.remote_version, object.version)) return 'update'
 
                     return 'up-to-date'
                 }
@@ -180,7 +180,7 @@
                     if ('is_valid' in object && !object.is_valid) return 'alert-circle'
                     if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
 
-                    if ('version' in object && 'remote_version' in object && semver.gt(object.remote_version, object.version)) return 'progress-upload'
+                    if ('version' in object && 'remote_version' in object && semver.valid(object.remote_version) && semver.gt(object.remote_version, object.version)) return 'progress-upload'
 
                     return 'check'
                 }
@@ -193,7 +193,7 @@
 
                 if (typeof object === 'object' && object !== false) {
                     if ('is_valid' in object && !object.is_valid) return true
-                    if ('version' in object && 'remote_version' in object && semver.gt(object.remote_version, object.version)) return false
+                    if ('version' in object && 'remote_version' in object && semver.valid(object.remote_version) && semver.gt(object.remote_version, object.version)) return false
                 }
 
                 return true
@@ -211,7 +211,10 @@
                 }
                 if (output !== "") output += ": "
 
-                output += semver.gt(remote_version, local_version) ? local_version+" > "+remote_version : local_version
+                if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
+                    output += local_version+" > "+remote_version
+                else
+                    output += local_version
 
                 return output
             },
