@@ -162,6 +162,12 @@
                     }
                 }
             },
+            max: {
+                immediate: true,
+                handler(newVal) {
+                    this.processedMax = newVal
+                }
+            }
         },
         methods: {
             sendCmd(btnPress = false) {
