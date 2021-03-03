@@ -114,11 +114,11 @@
                             </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block">
                                 <small class="d-block">{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
-                                <small v-if="fan.rpm || fan.rpm === 0" :class="'d-block ' + (fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '')">{{ Math.round(fan.rpm) }} RPM</small>
                             </v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span>
                                 <span v-for="(values, key) of fan.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
+                                <small v-if="fan.rpm || fan.rpm === 0" :class="'d-block ' + (fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '')">{{ Math.round(fan.rpm) }} RPM</small>
                             </v-col>
                             <v-col class="text-center py-2 pr-8 pr-0  vertical_align_center">
                                 <toolInput :name="fan.name" :target="fan.target" command="SET_TEMPERATURE_FAN_TARGET" attribute-name="temperature_fan" :items="fan.presets" ></toolInput>
