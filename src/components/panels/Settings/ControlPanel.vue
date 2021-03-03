@@ -43,42 +43,75 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-combobox
-                                label="Move distances XY in mm"
-                                v-model="stepsXY"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
+                            <v-switch v-model="useCross" label="Enable movement cross"></v-switch>
                         </v-col>
                     </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances Z in mm"
-                                v-model="stepsZ"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
+                    <template v-if="useCross">
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    label="Move distances in mm"
+                                    v-model="stepsAll"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-switch v-model="reverseZ" label="Reverse Z movement"></v-switch>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <template v-else>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    label="Move distances XY in mm"
+                                    v-model="stepsXY"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    label="Move distances Z in mm"
+                                    v-model="stepsZ"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                    </template>
                 </v-container>
             </v-card-text>
         </v-card>
@@ -145,12 +178,39 @@
             }
         },
         computed: {
+            reverseZ: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseZ) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseZ } } })
+                }
+            },
+            useCross: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.useCross;
+                },
+                set(useCross) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { useCross } } })
+                }
+            },
             feedrateXY: {
                 get() {
                     return this.$store.state.gui.dashboard.control.feedrateXY
                 },
                 set(feedrate) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: feedrate } } })
+                }
+            },
+            stepsAll: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.control.stepsAll
+                    return (steps ?? []).sort(function (a,b) { return b-a })
+                },
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsAll: absSteps } } })
                 }
             },
             stepsXY: {
