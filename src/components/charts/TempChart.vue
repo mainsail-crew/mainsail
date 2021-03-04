@@ -180,43 +180,6 @@ export default {
                     },
                 ],
                 series: [],
-                media: [{
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        xAxis: {
-                            //splitNumber: 10,
-                        }
-                    }
-                }, {
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        grid: {
-                            right: 40,
-                            left: 40,
-                        },
-                        yAxis: [
-                            {
-                                maxInterval: 50,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    showMaxLabel: true,
-                                    rotate: 0
-                                }
-                            },
-                            {
-                                maxInterval: 25,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    rotate: 0
-                                }
-                            },
-                        ],
-                    }
-                }],
             },
         }
     },
@@ -255,6 +218,11 @@ export default {
             get() {
                 return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
             }
+        },
+        boolDisplayPwmAxis: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
+            }
         }
     },
     methods: {
@@ -277,12 +245,56 @@ export default {
             ) {
                 this.chart.setOption({
                     series: this.series,
+                    grid: {
+                        left: 25,
+                        right: this.boolDisplayPwmAxis ? 25 : 15,
+                    },
                     xAxis: {
                         min: new Date() - this.maxHistory * 1000,
                         max: new Date(),
                     },
                     yAxis: [{
+                        axisLabel: {
+                            rotate: 90,
+                            showMinLabel: true,
+                            margin: 5,
+                        },
                         max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
+                    }, {
+                        show: this.boolDisplayPwmAxis,
+                        axisLabel: {
+                            showMinLabel: true,
+                            rotate: 90,
+                            margin: 5,
+                        }
+                    }],
+                    media: [{
+                        query: {
+                            minWidth: 500,
+                        },
+                        option: {
+                            grid: {
+                                right: this.boolDisplayPwmAxis ? 40 : 15,
+                                left: 40,
+                            },
+                            yAxis: [
+                                {
+                                    maxInterval: 50,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        showMaxLabel: true,
+                                        rotate: 0
+                                    }
+                                },
+                                {
+                                    maxInterval: 25,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        rotate: 0
+                                    }
+                                },
+                            ],
+                        }
                     }],
                 })
             }
