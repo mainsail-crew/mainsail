@@ -7,7 +7,7 @@
 <template>
     <v-container class="px-0 py-2">
         <v-row>
-            <v-col>
+            <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
                     <v-icon small :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>

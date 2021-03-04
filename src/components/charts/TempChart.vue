@@ -36,7 +36,7 @@ export default {
                             let outputTime = datasets[0]['axisValueLabel']
                             outputTime = outputTime.substr(outputTime.indexOf(" "))
 
-                            output += "<div class=\"row mb-2\">" +
+                            output += "<div class=\"row\">" +
                                     "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
                                         "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
                                         "<span class='font-weight-bold'>"+outputTime+"</span>" +
@@ -51,7 +51,7 @@ export default {
                                 !dataset.seriesName.endsWith('_speed')
                             ) {
                                 output += "<div class=\"row\">"
-                                output += "<div class=\"col-auto pt-2 pb-1\">"
+                                output += "<div class=\"col-auto py-0\">"
 
                                 const mainDataset = this.series.find(tmpDataset => tmpDataset.name === dataset.seriesName)
                                 if (mainDataset)
@@ -67,7 +67,7 @@ export default {
                                 output += convertName(dataset.seriesName)+":"
 
                                 output += "</div>"
-                                output += "<div class=\"col text-right pt-2 pb-1 font-weight-bold\">"
+                                output += "<div class=\"col text-right py-0 font-weight-bold\">"
 
                                 if (dataset.value[1]) output += dataset.value[1].toFixed(1)
 
