@@ -425,9 +425,25 @@ export default {
 			let nameSplit = key.split(" ");
 
 			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+				let points = []
+				value.points.split("\n").forEach(function(row) {
+					if (row !== "") {
+						row.split(', ').forEach(function(col) {
+							points.push(parseFloat(col))
+						})
+					}
+				})
+
+				const min = Math.min(...points)
+				const max = Math.max(...points)
+
 				profiles.push({
 					name: nameSplit[1],
 					data: value,
+					points: points,
+					min: min,
+					max: max,
+					variance: Math.abs(min - max),
 					is_active: (currentProfile === nameSplit[1]),
 				});
 			}
