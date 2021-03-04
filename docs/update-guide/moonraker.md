@@ -23,8 +23,11 @@ If you see a content like this
 To use the update manager in Mainsail you have to add this in your moonraker.conf:
 ```
 [update_manager]
-client_repo: meteyou/mainsail
-client_path: ~/mainsail
+
+[update_manager client mainsail]
+type: web
+repo: meteyou/mainsail
+path: ~/mainsail
 ```
 
 ### Change Moonraker to systemd service (December 6th 2020)

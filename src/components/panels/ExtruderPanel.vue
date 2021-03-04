@@ -9,13 +9,13 @@
                 <v-col class="col col-md-6">
                     <v-label>Feed amount in mm:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                        <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === currentFeedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
                     </v-btn-toggle>
                 </v-col>
                 <v-col class="col col-md-6">
                     <v-label>Feedrate in mm/s:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                        <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
                     </v-btn-toggle>
                 </v-col>
             </v-row>
@@ -34,15 +34,6 @@
     import Vue from "vue";
 
     export default {
-        components: {
-
-        },
-        data: function() {
-            return {
-                feedAmount: 25,
-                feedrate: 5,
-            }
-        },
         computed: {
             ...mapState({
                 loadings: state => state.socket.loadings,
@@ -65,23 +56,39 @@
                 get() {
                     return [...this.feedrates].sort((a,b) => { return b-a })
                 }
+            },
+            currentFeedAmount: {
+                get() {
+                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedamount)
+                },
+                set(newVal) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamount: newVal } } })
+                }
+            },
+            currentFeedRate: {
+                get() {
+                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedrate)
+                },
+                set(newVal) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrate: newVal } } })
+                }
             }
         },
         methods: {
             setFeedAmount(value) {
-                this.feedAmount = value;
+                this.currentFeedAmount = value;
             },
             setFeedrate(value) {
-                this.feedrate = value;
+                this.currentFeedRate = value;
             },
             sendRetract() {
-                let gcode = "M83\nG1 E-"+this.feedAmount+" F"+(this.feedrate * 60);
+                let gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
                 this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'btnRetract' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnRetract' });
             },
             sendDetract() {
-                let gcode = "M83\nG1 E"+this.feedAmount+" F"+(this.feedrate * 60);
+                let gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
                 this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'btnDetract' });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnDetract' });

@@ -81,9 +81,10 @@
 
                     <template #item="{ item }">
                         <tr
+                            v-longpress:600="(e) => showContextMenu(e, item)"
                             @contextmenu="showContextMenu($event, item)"
                             @click="clickRow(item)"
-                            class="file-list-cursor"
+                            class="file-list-cursor user-select-none"
                             :data-name="item.filename">
                             <td class="pr-0 text-center" style="width: 32px;">
                                 <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
@@ -98,7 +99,7 @@
             </v-card>
             <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
                 <v-list>
-                    <v-list-item @click="clickRow(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
                         <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> Edit file
                     </v-list-item>
                     <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
@@ -321,7 +322,7 @@
             highlighter(code) {
                 return highlight(code, languages.ini); //returns html
             },
-            refreshFileList: function() {
+            refreshFileList() {
                 if (this.currentPath === "") {
                     this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory');
                     this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
@@ -377,7 +378,7 @@
                 }
                 return items;
             },
-            loadPath: function() {
+            loadPath() {
                 let dirArray = this.currentPath.substring(1).split("/");
 
                 this.files = findDirectory(this.filetree, dirArray);
@@ -389,30 +390,35 @@
                     this.files = this.files.filter(file => file.filename.substr(0, 1) !== ".");
                 }
             },
-            clickRow: function(item) {
-                if (!item.isDirectory) {
-                    this.editor.showLoader = true;
-                    this.editor.sourcecode = "";
-                    this.editor.item = item;
+            clickRow(item, force = false) {
+                if (!this.contextMenu.shown || force) {
+                    if (force) {
+                        this.contextMenu.shown = false;
+                    }
+                    if (!item.isDirectory) {
+                        this.editor.showLoader = true;
+                        this.editor.sourcecode = "";
+                        this.editor.item = item;
 
-                    let url = '//'+this.hostname+':'+this.port+'/server/files'+this.currentPath+'/'+item.filename+'?time='+Date.now();
-                    fetch(url, { cache: "no-cache" }).then(res => res.text()).then(file => {
-                        this.editor.sourcecode = file;
-                        this.editor.show = true;
-                        this.editor.showLoader = false;
-                        this.editor.readonly = false;
-                        if (this.currentPath === '/config_examples') this.editor.readonly = true;
-                    });
+                        let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                        fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
+                            this.editor.sourcecode = file;
+                            this.editor.show = true;
+                            this.editor.showLoader = false;
+                            this.editor.readonly = false;
+                            if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                        });
 
-                } else {
-                    this.currentPath += "/"+item.filename;
-                    this.currentPage = 1;
+                    } else {
+                        this.currentPath += "/" + item.filename;
+                        this.currentPage = 1;
+                    }
                 }
             },
-            clickRowGoBack: function() {
+            clickRowGoBack() {
                 this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"));
             },
-            saveFile: function(boolRestart = false) {
+            saveFile(boolRestart = false) {
                 let file = new File([this.editor.sourcecode], this.editor.item.filename);
 
                 let formData = new FormData();
@@ -440,14 +446,16 @@
                 });
             },
             showContextMenu (e, item) {
-                e.preventDefault();
-                this.contextMenu.shown = true;
-                this.contextMenu.x = e.clientX;
-                this.contextMenu.y = e.clientY;
-                this.contextMenu.item = item;
-                this.$nextTick(() => {
-                    this.contextMenu.shown = true
-                });
+                if (!this.contextMenu.shown) {
+                    e?.preventDefault();
+                    this.contextMenu.shown = true;
+                    this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
+                    this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+                    this.contextMenu.item = item;
+                    this.$nextTick(() => {
+                        this.contextMenu.shown = true
+                    });
+                }
             },
             downloadFile() {
                 let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
@@ -507,10 +515,10 @@
             removeFile() {
                 this.$socket.sendObj('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
             },
-            deleteDirectoryAction: function() {
+            deleteDirectoryAction() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
-            uploadFileButton: function() {
+            uploadFileButton() {
                 this.$refs.fileUpload.click()
             },
             async uploadFile() {
@@ -533,7 +541,7 @@
                     this.$refs.fileUpload.value = ''
                 }
             },
-            doUploadFile: function(file) {
+            doUploadFile(file) {
                 let toast = this.$toast;
                 let formData = new FormData();
                 let filename = file.name.replace(" ", "_");
@@ -579,7 +587,7 @@
                     })
                 })
             },
-            cancelUpload: function() {
+            cancelUpload() {
                 this.uploadSnackbar.cancelTokenSource.cancel()
                 this.uploadSnackbar.status = false
             },
