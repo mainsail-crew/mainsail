@@ -235,6 +235,8 @@ export default {
 					let rpm = 'rpm' in value ? value.rpm : false
 					let pwm = controllable
 					let scale = 1
+					let off_below = 0
+					let max_power = 1
 
 					if (nameSplit[0].toLowerCase() === "fan") scale = 255
 
