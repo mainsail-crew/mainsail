@@ -1,1 +1,49 @@
 $link-color: $red-300;
+
+.success {
+	margin: 32px 0px;
+	padding: 25px;
+	position: relative;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	background-color: #f5f6fa;
+	border-left: 4px solid;
+	border-color: rgb(38, 203, 124);
+}
+
+.info {
+	margin: 32px 0px;
+	padding: 25px;
+	position: relative;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	background-color: #f5f6fa;
+	border-left: 4px solid;
+	border-color: rgb(56, 132, 255);
+}
+
+.warning {
+	margin: 32px 0px;
+	padding: 25px;
+	position: relative;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	background-color: #f5f6fa;
+	border-left: 4px solid;
+	border-color: rgb(247, 125, 5);
+}
+
+.alert {
+	margin: 32px 0px;
+	padding: 25px;
+	position: relative;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	background-color: #f5f6fa;
+	border-left: 4px solid;
+	border-color: rgb(255, 70, 66);
+}

@@ -7,6 +7,8 @@ if [ $# -gt 0 ]; then
     docker-compose restart "$2"
   elif [ "$1" == "bash" ]; then
     docker exec -it "$APP_NAME-stack-$2" bash
+  elif [ "$1" == "npm-build" ]; then
+    docker exec "$APP_NAME-stack-npm" npm run build
   else
     docker-compose "$@"
   fi

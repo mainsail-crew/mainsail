@@ -57,11 +57,11 @@ export default {
                                 if (mainDataset)
                                     output += "<span style=\"" +
                                         "display:inline-block;" +
-                                        "margin-right:6px;" +
-                                        "width:10px;" +
-                                        "height:10px;" +
-                                        "border:1px solid "+mainDataset.lineStyle.color+";" +
-                                        "background-color:"+mainDataset.lineStyle.color+"66;" +
+                                        "margin-right:10px;" +
+                                        "width:8px;" +
+                                        "height:8px;" +
+                                        "border-radius: 50%;" +
+                                        "background-color:"+mainDataset.lineStyle.color+"CC;" +
                                         "\"></span>"
 
                                 output += convertName(dataset.seriesName)+":"
@@ -118,7 +118,7 @@ export default {
                 },
                 yAxis: [
                     {
-                        name: '[°C] Temperature',
+                        name: 'Temperature [°C]',
                         type: 'value',
                         min: 0,
                         max: 300,
@@ -260,7 +260,7 @@ export default {
     methods: {
         createChart() {
             if (document.getElementById("tempchart") && this.chart === null) {
-                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'svg'})
+                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'canvas'})
                 this.chart.setOption(this.chartOptions)
             } else setTimeout(() => {
                 this.createChart()

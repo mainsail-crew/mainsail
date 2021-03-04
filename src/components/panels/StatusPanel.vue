@@ -178,7 +178,7 @@
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Speed</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ (requested_speed / 60).toFixed(0) }} mm/s</v-col></v-row>
+                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-2">
                                 <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
@@ -233,6 +233,7 @@
                 position: state => state.printer.toolhead.position,
                 gcode_position: state => state.printer.gcode_move.gcode_position,
                 requested_speed: state => state.printer.gcode_move.speed,
+                speed_factor: state => state.printer.gcode_move.speed_factor,
 
                 printProgress: state => state.printer.virtual_sdcard.progress,
                 file_position: state => state.printer.virtual_sdcard.file_position,

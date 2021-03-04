@@ -43,9 +43,16 @@ export default {
 							lineStyle: {
 								color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
 								width: 2,
-								opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 1 : 0
+								opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 0.9 : 0
 							},
 							symbol: 'none',
+							emphasis: {
+								lineStyle: {
+									color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
+									width: 2,
+									opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 0.9 : 0
+								}
+							},
 							data: [],
 						}
 
@@ -73,6 +80,16 @@ export default {
 								areaStyle: {
 									color: datasetTemperature.lineStyle.color,
 									opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'target' })) ? 0.1 : 0
+								},
+								emphasis: {
+									lineStyle: {
+										color: datasetTemperature.lineStyle.color,
+										width: 0,
+									},
+									areaStyle: {
+										color: datasetTemperature.lineStyle.color,
+										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'target' })) ? 0.1 : 0
+									},
 								},
 								symbol: 'none',
 								data: [],
@@ -102,7 +119,15 @@ export default {
 										color: datasetTemperature.lineStyle.color,
 										width: 1,
 										type: 'dotted',
-										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 1 : 0
+										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 0.9 : 0
+									},
+									emphasis: {
+										lineStyle: {
+											color: datasetTemperature.lineStyle.color,
+											width: 1,
+											type: 'dotted',
+											opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 0.9 : 0
+										},
 									},
 									symbol: 'none',
 									data: [],

@@ -18,5 +18,5 @@ are not yet listed below, please create a FR (feature request) on Github.
 - [change favicon](favicon.md)
 - [upload custom.css](custom-css.md)
 
-### cooming soon
+### coming soon
 - change primary color (all blue buttons atm)
