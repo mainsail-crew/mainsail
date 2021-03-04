@@ -9,7 +9,7 @@
         <v-row>
             <v-col>
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-icon small :class="'mr-2 '+(value >= min && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
                     <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">{{ Math.round(rpm) }} RPM</small>
@@ -19,11 +19,20 @@
                 <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
-                        :min="0"
-                        :max="1"
+                        :min="0.0"
+                        :max="1.0"
                         :step="0.01"
-                        @change="sendCmd"
-                        hide-details>
+                        :thumb-color="value >= min || value === 0 ? undefined : 'danger'"
+                        :color="value >= min || value === 0 ? undefined : 'danger'"
+                        :thumb-label="value >= min || value === 0 ? undefined : true"
+                        @start="sliding = true"
+                        @end="sendCmd()"
+                        hide-details
+                    >
+
+                        <template #thumb-label="{ value }">
+                            {{ value >= min ? (value * 100).toFixed(0) + '%' : 'OFF'}}
+                        </template>
 
                         <template v-slot:prepend>
                             <v-icon @click="decrement">mdi-minus</v-icon>
@@ -44,11 +53,6 @@
     import {convertName} from "@/plugins/helpers";
 
     export default {
-        data: function() {
-            return {
-                value: this.target,
-            }
-        },
         props: {
             target: {
                 type: Number,
@@ -85,18 +89,40 @@
                 default: 1
             }
         },
+        data() {
+            return {
+                value: this.target / this.max,
+                sliding: false
+            }
+        },
         methods: {
             convertName: convertName,
             sendCmd() {
-                let gcode = "";
+                if (this.sliding) {
+                    let gcode = "";
 
-                if (this.type === "fan") gcode = "M106 S"+(this.value * this.multi).toFixed(0)
-                if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value*this.multi)
-                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
+                    if (this.value < this.min) {
+                        this.value = 0;
+                    }
 
-                if (gcode !== "") {
-                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-                    this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    if (this.target === this.value) {
+                        return;
+                    }
+
+                    const l_value = this.value * this.multi;
+
+                    if (this.type === "fan") gcode = "M106 S" + (l_value).toFixed(0)
+                    if (this.type === "fan_generic") {
+                        gcode = "SET_FAN_SPEED FAN=" + this.name + " SPEED=" + (l_value)
+                    }
+                    if (this.type === "output_pin") gcode = "SET_PIN PIN=" + this.name + " VALUE=" + (l_value).toFixed(2)
+
+                    if (gcode !== "") {
+                        this.$store.commit('server/addEvent', {message: gcode, type: 'command'})
+                        this.$socket.sendObj('printer.gcode.script', {script: gcode})
+                    }
+
+                    this.sliding = false;
                 }
             },
             switchOutputPin() {
@@ -110,17 +136,17 @@
                 this.sendCmd();
             },
             increment() {
-                this.value = this.value < 1 ? (this.value + 0.01).toFixed(2) : 100;
+                this.value = this.value < 1.0 ? (this.value + 0.01).toFixed(2) : 1.0;
+                if (this.value < this.min) {
+                    this.value = this.min;
+                }
                 this.sendCmd();
             }
         },
         watch: {
-            target: function(newVal) {
-                this.value = newVal;
-            },
-        },
-        created: function() {
-
-        },
+            target(newVal) {
+                this.value = newVal / this.max;
+            }
+        }
     }
 </script>
