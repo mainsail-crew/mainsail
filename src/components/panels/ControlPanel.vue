@@ -22,10 +22,98 @@
 
 <template>
     <div>
-        <v-card class="d-flex mb-4">
-            <v-container class="pt-0" style="max-width: 350px;">
+        <v-card class="mb-4">
+            <v-toolbar flat dense>
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-gamepad</v-icon>Controls</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-container>
                 <template v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
                     <template v-if="useCross">
+                        <v-row dense>
+                            <v-col cols="12" sm="6">
+                                <v-row dense class="mb-1">
+                                    <v-col cols="3"></v-col>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-chevron-up</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="3"></v-col>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-arrow-up-drop-circle-outline</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-row dense>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-chevron-left</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-chevron-down</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-chevron-right</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="3">
+                                        <v-btn class="btnMinWidthAuto fill-width">
+                                            <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </v-col>
+                            <v-col cols="12" sm="6">
+                                <div class="d-flex flex-column" style="border-radius: 4px; overflow: hidden; height: 100%; min-height: 80px;">
+                                    <v-row no-gutters class="mb-1 flex-grow-1">
+                                        <v-col cols="12">
+                                            <v-btn class="w-100 h-100"
+                                                   tile
+                                                   color="warning"
+                                            >
+                                                <v-icon>mdi-home</v-icon>
+                                                ALL
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row class="gutter-2 flex-grow-1">
+                                        <v-col cols="4" class="flex-grow-1">
+                                            <v-btn class="btnMinWidthAuto w-100 h-100"
+                                                   tile
+                                                   color="warning"
+                                            >
+                                                X
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="4" class="flex-grow-1">
+                                            <v-btn class="btnMinWidthAuto w-100 h-100"
+                                                   tile
+                                                   color="warning"
+                                            >
+                                                Y
+                                            </v-btn>
+                                        </v-col>
+                                        <v-col cols="4" class="flex-grow-1">
+                                            <v-btn class="btnMinWidthAuto w-100 h-100"
+                                                   tile
+                                                   color="warning"
+                                            >
+                                                Z
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </div>
+                            </v-col>
+                        </v-row>
+                    </template>
+<!--                    <template v-if="useCross">
                         <v-row no-gutters>
                             <v-col cols="9" class="mt-3 pb-0 text-center">
                                 <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
@@ -44,9 +132,6 @@
                         </v-row>
                         <v-row no-gutters>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
-        <!--                        <v-btn small :width="crossWidth" :height="crossHeight">
-                                    <v-icon>mdi-arrow-top-left-thick</v-icon>
-                                </v-btn>-->
                             </v-col>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
                                 <v-btn small
@@ -59,9 +144,6 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="2" class="mt-3 pb-0">
-        <!--                        <v-btn small class="mr-4" :width="crossWidth" :height="crossHeight">
-                                    <v-icon>mdi-arrow-top-right-thick</v-icon>
-                                </v-btn>-->
                             </v-col>
                             <v-col cols="3" class="mt-3 pb-0 text-center">
                                 <v-btn small
@@ -98,9 +180,6 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
-    <!--                            <v-btn small :width="crossWidth" :height="crossHeight" :loading="loadings.includes('xy')"  :color="homedAxes.includes('xy') ? 'primary' : 'warning'" @click="doHome">
-                                    <v-icon>mdi-home</v-icon>
-                                </v-btn>-->
                                 <div class="d-flex justify-center align-center fill-height">
                                     X/Y
                                 </div>
@@ -116,9 +195,6 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="3" class="mt-3 pb-0 text-center">
-    <!--                            <v-btn small :width="crossWidth" :height="crossHeight">
-                                    <v-icon>mdi-home</v-icon>
-                                </v-btn>-->
                                 <div class="fill-height d-flex justify-center align-center">
                                     Z
                                 </div>
@@ -138,9 +214,6 @@
                         </v-row>
                         <v-row no-gutters>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
-        <!--                        <v-btn small :width="crossWidth" :height="crossHeight">
-                                    <v-icon>mdi-arrow-bottom-left-thick</v-icon>
-                                </v-btn>-->
                             </v-col>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
                                 <v-btn small
@@ -153,9 +226,6 @@
                                 </v-btn>
                             </v-col>
                             <v-col cols="2" class="mt-3 pb-0 text-center">
-        <!--                        <v-btn small :width="crossWidth" :height="crossHeight">
-                                    <v-icon>mdi-arrow-bottom-right-thick</v-icon>
-                                </v-btn>-->
                             </v-col>
                             <v-col cols="3" class="mt-3 pb-0 text-center">
                                 <v-btn small
@@ -193,7 +263,7 @@
                                 </div>
                             </v-col>
                         </v-row>
-                    </template>
+                    </template>-->
                     <template v-else>
                         <v-row no-gutters>
                             <v-col class="col-12 mt-3 pb-0 text-center">
@@ -233,18 +303,25 @@
                 </template>
             </v-container>
         </v-card>
-        <v-card class="d-flex align-center pa-2">
-            <v-row no-gutters v-if="this['printer/getMacros'].length > 0">
-                <v-col class="text-center mr-fix-2 mb-fix-2">
-                    <v-btn v-for="(macro, index) in this['printer/getMacros']"
-                           :key="index+99"
-                           small
-                           color="primary"
-                           class="mr-2 mb-2"
-                           :loading="loadings.includes('macro_'+macro.name)"
-                           @click="doSendMacro(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
-                </v-col>
-            </v-row>
+        <v-card>
+            <v-toolbar flat dense>
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-code-brackets</v-icon>Macros</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-container>
+                <v-row no-gutters v-if="this['printer/getMacros'].length > 0">
+                    <v-col class="text-center mr-fix-2 mb-fix-2">
+                        <v-btn v-for="(macro, index) in this['printer/getMacros']"
+                               :key="index+99"
+                               small
+                               color="primary"
+                               class="mr-2 mb-2"
+                               :loading="loadings.includes('macro_'+macro.name)"
+                               @click="doSendMacro(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
         </v-card>
     </div>
 </template>
