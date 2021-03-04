@@ -27,6 +27,17 @@
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-gamepad</v-icon>Controls</span>
                 </v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Controls" left>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item class="minHeight36">
+                            <v-checkbox v-model="useCross" class="mt-0" hide-details label="Use Control pad"></v-checkbox>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
             </v-toolbar>
             <v-container>
                 <template v-if="useCross">
@@ -395,6 +406,14 @@
             ...mapGetters([
                 'printer/getMacros',
             ]),
+            useCross: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.useCross;
+                },
+                set(useCross) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { useCross } } })
+                }
+            },
             selectedCrossStep: {
                 get() {
                     return this.$store.state.gui.dashboard.control.selectedCrossStep;
