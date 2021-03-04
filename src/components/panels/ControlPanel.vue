@@ -22,284 +22,321 @@
 
 <template>
     <div>
-        <v-card class="mb-4">
+        <v-card class="mb-4" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-gamepad</v-icon>Controls</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-container>
-                <template v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
-                    <template v-if="useCross">
-                        <v-row dense>
-                            <v-col cols="12" sm="6">
-                                <v-row dense class="mb-1">
-                                    <v-col cols="3"></v-col>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-chevron-up</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="3"></v-col>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-arrow-up-drop-circle-outline</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                                <v-row dense>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-chevron-left</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-chevron-down</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-chevron-right</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="3">
-                                        <v-btn class="btnMinWidthAuto fill-width">
-                                            <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                            <v-col cols="12" sm="6">
-                                <div class="d-flex flex-column" style="border-radius: 4px; overflow: hidden; height: 100%; min-height: 80px;">
-                                    <v-row no-gutters class="mb-1 flex-grow-1">
-                                        <v-col cols="12">
-                                            <v-btn class="w-100 h-100"
-                                                   tile
-                                                   color="warning"
-                                            >
-                                                <v-icon>mdi-home</v-icon>
-                                                ALL
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                    <v-row class="gutter-2 flex-grow-1">
-                                        <v-col cols="4" class="flex-grow-1">
-                                            <v-btn class="btnMinWidthAuto w-100 h-100"
-                                                   tile
-                                                   color="warning"
-                                            >
-                                                X
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="4" class="flex-grow-1">
-                                            <v-btn class="btnMinWidthAuto w-100 h-100"
-                                                   tile
-                                                   color="warning"
-                                            >
-                                                Y
-                                            </v-btn>
-                                        </v-col>
-                                        <v-col cols="4" class="flex-grow-1">
-                                            <v-btn class="btnMinWidthAuto w-100 h-100"
-                                                   tile
-                                                   color="warning"
-                                            >
-                                                Z
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </template>
-<!--                    <template v-if="useCross">
-                        <v-row no-gutters>
-                            <v-col cols="9" class="mt-3 pb-0 text-center">
-                                <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
-                                <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 text-right">
-                                <v-btn @click="doHome"
-                                       :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
-                                       small
-                                       width="75"
-                                >
-                                    <v-icon>mdi-home</v-icon>
-                                    <span class="ml-2">ALL</span>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('Y-'+stepsReversed[selectedCrossStep], feedrateXY)">
-                                    <v-icon>mdi-arrow-up-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0">
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('Z'+(reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)">
-                                    <v-icon>mdi-arrow-up-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
-                                <v-btn width="75"
-                                       :loading="loadings.includes('homeX')"
-                                       :color="homedAxes.includes('x') ? 'primary' : 'warning'"
-                                       @click="doHomeX"
-                                       small
-                                >
-                                    <v-icon>mdi-home</v-icon>
-                                    <v-spacer></v-spacer>
-                                    <span class="ml-2">X</span>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('X-'+stepsReversed[selectedCrossStep], feedrateXY)">
-                                    <v-icon>mdi-arrow-left-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                                <div class="d-flex justify-center align-center fill-height">
-                                    X/Y
-                                </div>
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('X+'+stepsReversed[selectedCrossStep], feedrateXY)">
-                                    <v-icon>mdi-arrow-right-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 text-center">
-                                <div class="fill-height d-flex justify-center align-center">
-                                    Z
-                                </div>
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
-                                <v-btn width="75"
-                                       :loading="loadings.includes('homeY')"
-                                       :color="homedAxes.includes('y') ? 'primary' : 'warning'"
-                                       @click="doHomeY"
-                                       small
-                                >
-                                    <v-icon>mdi-home</v-icon>
-                                    <v-spacer></v-spacer>
-                                    <span class="ml-2">Y</span>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('Y+'+stepsReversed[selectedCrossStep], feedrateXY)">
-                                    <v-icon>mdi-arrow-down-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="2" class="mt-3 pb-0 text-center">
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 text-center">
-                                <v-btn small
-                                       class="btnMinWidthAuto"
-                                       :width="crossWidth"
-                                       :height="crossHeight"
-                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                       @click="doSendMove('Z'+(reverseZ ? '+' : '-')+stepsReversed[selectedCrossStep], feedrateZ)">
-                                    <v-icon>mdi-arrow-down-thick</v-icon>
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
-                                <v-btn width="75"
-                                       :loading="loadings.includes('homeZ')"
-                                       :color="homedAxes.includes('z') ? 'primary' : 'warning'"
-                                       @click="doHomeZ"
-                                       small
-                                >
-                                    <v-icon>mdi-home</v-icon>
-                                    <v-spacer></v-spacer>
-                                    <span class="ml-2">Z</span>
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters>
-                            <v-col class="col-12 mt-3">
-                                <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
-                                    <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'x-'+steps">
-                                        <span class="body-2">{{ steps }}</span>
+                <template v-if="useCross">
+                    <v-row>
+                        <v-col cols="12" sm="6">
+                            <v-row dense class="mb-1">
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="btnMinWidthAuto fill-width"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('Y+'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                    >
+                                        <v-icon>mdi-chevron-up</v-icon>
                                     </v-btn>
-                                </v-btn-toggle>
-                                <div class="font-weight-bold warning rounded pa-2" v-else>
-                                    Please configure steps<br>
-                                    <router-link style="color: white;" to="/settings/interface">Settings > Interface > Control</router-link>
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </template>-->
-                    <template v-else>
-                        <v-row no-gutters>
-                            <v-col class="col-12 mt-3 pb-0 text-center">
-                                <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn>
-                                <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
-                                <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters class="mt-2">
-                            <v-col class="text-center">
-                                <v-btn-toggle dense no-gutters class="row no-gutters  mx-auto" style="flex-wrap: nowrap;" >
-                                    <v-btn @click="doSendMove('X-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'x-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                    <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold btnHomeAxis">X</v-btn>
-                                    <v-btn @click="doSendMove('X+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'x+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                                </v-btn-toggle>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters class="mt-3">
-                            <v-col class="text-center">
-                                <v-btn-toggle dense no-gutters class="row no-gutters  mx-auto" style="flex-wrap: nowrap;" >
-                                    <v-btn @click="doSendMove('Y-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'y-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                    <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">Y</v-btn>
-                                    <v-btn @click="doSendMove('Y+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'y+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                                </v-btn-toggle>
-                            </v-col>
-                        </v-row>
-                        <v-row no-gutters class="mt-3">
-                            <v-col class="text-center">
-                                <v-btn-toggle dense no-gutters class="row no-gutters mx-auto" style="flex-wrap: nowrap;" >
-                                    <v-btn @click="doSendMove('Z-'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsorted" v-bind:key="'z-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                    <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">Z</v-btn>
-                                    <v-btn @click="doSendMove('Z+'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsortedReverse" v-bind:key="'z+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                                </v-btn-toggle>
-                            </v-col>
-                        </v-row>
-                    </template>
+                                </v-col>
+                                <v-col cols="3"></v-col>
+                                <v-col cols="3">
+                                    <v-btn class="btnMinWidthAuto fill-width"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('Z'+(reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
+                                    >
+                                        <v-icon>mdi-arrow-up-drop-circle-outline</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row dense>
+                                <v-col cols="3" class="p-rel">
+                                    <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('X-'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                    >
+                                        <v-icon>mdi-chevron-left</v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="btnMinWidthAuto fill-width"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('Y-'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                    >
+                                        <v-icon>mdi-chevron-down</v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3" class="p-rel">
+                                    <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('X+'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                    >
+                                        <v-icon>mdi-chevron-right</v-icon>
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="3">
+                                    <v-btn class="btnMinWidthAuto fill-width"
+                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                           @click="doSendMove('Z'+(reverseZ ? '+' : '-')+stepsReversed[selectedCrossStep], feedrateZ)"
+                                    >
+                                        <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12" sm="6">
+                            <div class="d-flex flex-column" style="border-radius: 4px; overflow: hidden; height: 100%; min-height: 80px;">
+                                <v-row no-gutters class="mb-1 flex-grow-1">
+                                    <v-col cols="12">
+                                        <v-btn class="w-100 h-100"
+                                               tile
+                                               @click="doHome"
+                                               :loading="loadings.includes('homeAll')"
+                                               :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                        >
+                                            <v-icon>mdi-home</v-icon>
+                                            ALL
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-row class="gutter-2 flex-grow-1">
+                                    <v-col cols="4" class="flex-grow-1">
+                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                               tile
+                                               :loading="loadings.includes('homeX')"
+                                               :color="homedAxes.includes('x') ? 'primary' : 'warning'"
+                                               @click="doHomeX"
+                                        >
+                                            X
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="4" class="flex-grow-1">
+                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                               tile
+                                               :loading="loadings.includes('homeY')"
+                                               :color="homedAxes.includes('y') ? 'primary' : 'warning'"
+                                               @click="doHomeY"
+                                        >
+                                            Y
+                                        </v-btn>
+                                    </v-col>
+                                    <v-col cols="4" class="flex-grow-1">
+                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                               tile
+                                               :loading="loadings.includes('homeZ')"
+                                               :color="homedAxes.includes('z') ? 'primary' : 'warning'"
+                                               @click="doHomeZ"
+                                        >
+                                            Z
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col class="col-12 mt-3">
+                            <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
+                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'x-'+steps">
+                                    <span class="body-2">{{ steps }}</span>
+                                </v-btn>
+                            </v-btn-toggle>
+                            <div class="font-weight-bold warning rounded pa-2" v-else>
+                                Please configure steps<br>
+                                <router-link style="color: white;" to="/settings/interface">Settings > Interface > Control</router-link>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </template>
+<!--                    <template v-if="useCross">
+                    <v-row no-gutters>
+                        <v-col cols="9" class="mt-3 pb-0 text-center">
+                            <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
+                            <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 text-right">
+                            <v-btn @click="doHome"
+                                   :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                   small
+                                   width="75"
+                            >
+                                <v-icon>mdi-home</v-icon>
+                                <span class="ml-2">ALL</span>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('Y-'+stepsReversed[selectedCrossStep], feedrateXY)">
+                                <v-icon>mdi-arrow-up-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0">
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('Z'+(reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)">
+                                <v-icon>mdi-arrow-up-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
+                            <v-btn width="75"
+                                   :loading="loadings.includes('homeX')"
+                                   :color="homedAxes.includes('x') ? 'primary' : 'warning'"
+                                   @click="doHomeX"
+                                   small
+                            >
+                                <v-icon>mdi-home</v-icon>
+                                <v-spacer></v-spacer>
+                                <span class="ml-2">X</span>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('X-'+stepsReversed[selectedCrossStep], feedrateXY)">
+                                <v-icon>mdi-arrow-left-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                            <div class="d-flex justify-center align-center fill-height">
+                                X/Y
+                            </div>
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('X+'+stepsReversed[selectedCrossStep], feedrateXY)">
+                                <v-icon>mdi-arrow-right-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 text-center">
+                            <div class="fill-height d-flex justify-center align-center">
+                                Z
+                            </div>
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
+                            <v-btn width="75"
+                                   :loading="loadings.includes('homeY')"
+                                   :color="homedAxes.includes('y') ? 'primary' : 'warning'"
+                                   @click="doHomeY"
+                                   small
+                            >
+                                <v-icon>mdi-home</v-icon>
+                                <v-spacer></v-spacer>
+                                <span class="ml-2">Y</span>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('Y+'+stepsReversed[selectedCrossStep], feedrateXY)">
+                                <v-icon>mdi-arrow-down-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2" class="mt-3 pb-0 text-center">
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 text-center">
+                            <v-btn small
+                                   class="btnMinWidthAuto"
+                                   :width="crossWidth"
+                                   :height="crossHeight"
+                                   :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                   @click="doSendMove('Z'+(reverseZ ? '+' : '-')+stepsReversed[selectedCrossStep], feedrateZ)">
+                                <v-icon>mdi-arrow-down-thick</v-icon>
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="3" class="mt-3 pb-0 d-flex justify-end align-center">
+                            <v-btn width="75"
+                                   :loading="loadings.includes('homeZ')"
+                                   :color="homedAxes.includes('z') ? 'primary' : 'warning'"
+                                   @click="doHomeZ"
+                                   small
+                            >
+                                <v-icon>mdi-home</v-icon>
+                                <v-spacer></v-spacer>
+                                <span class="ml-2">Z</span>
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                        <v-col class="col-12 mt-3">
+                            <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
+                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'x-'+steps">
+                                    <span class="body-2">{{ steps }}</span>
+                                </v-btn>
+                            </v-btn-toggle>
+                            <div class="font-weight-bold warning rounded pa-2" v-else>
+                                Please configure steps<br>
+                                <router-link style="color: white;" to="/settings/interface">Settings > Interface > Control</router-link>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </template>-->
+                <template v-else>
+                    <v-row no-gutters>
+                        <v-col class="col-12 mt-3 pb-0 text-center">
+                            <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">Home </span>all</v-btn>
+                            <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">QGL</v-btn>
+                            <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">Z Tilt</v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters class="mt-2">
+                        <v-col class="text-center">
+                            <v-btn-toggle dense no-gutters class="row no-gutters  mx-auto" style="flex-wrap: nowrap;" >
+                                <v-btn @click="doSendMove('X-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'x-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                                <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold btnHomeAxis">X</v-btn>
+                                <v-btn @click="doSendMove('X+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'x+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                            </v-btn-toggle>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters class="mt-3">
+                        <v-col class="text-center">
+                            <v-btn-toggle dense no-gutters class="row no-gutters  mx-auto" style="flex-wrap: nowrap;" >
+                                <v-btn @click="doSendMove('Y-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'y-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                                <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">Y</v-btn>
+                                <v-btn @click="doSendMove('Y+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'y+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                            </v-btn-toggle>
+                        </v-col>
+                    </v-row>
+                    <v-row no-gutters class="mt-3">
+                        <v-col class="text-center">
+                            <v-btn-toggle dense no-gutters class="row no-gutters mx-auto" style="flex-wrap: nowrap;" >
+                                <v-btn @click="doSendMove('Z-'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsorted" v-bind:key="'z-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                                <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">Z</v-btn>
+                                <v-btn @click="doSendMove('Z+'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsortedReverse" v-bind:key="'z+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                            </v-btn-toggle>
+                        </v-col>
+                    </v-row>
                 </template>
             </v-container>
         </v-card>
