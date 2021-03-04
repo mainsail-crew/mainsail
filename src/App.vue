@@ -2,6 +2,7 @@
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
     @import './assets/styles/page.scss';
+    @import './assets/styles/utils.scss';
 
     .button-min-width-auto {
         min-width: auto !important;

@@ -137,9 +137,10 @@
 
                 <template #item="{ item }">
                     <tr
+                        v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        class="file-list-cursor"
+                        class="file-list-cursor user-select-none"
                         draggable="true"
                         @drag="dragFile($event, item)"
                         @dragend="dragendFile($event)"
@@ -175,7 +176,7 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> Print start
                 </v-list-item>
                 <v-list-item
@@ -545,12 +546,16 @@
                 return '--'
             },
             showContextMenu (e, item) {
-                e.preventDefault()
-                this.contextMenu.shown = true
-                this.contextMenu.x = e.clientX
-                this.contextMenu.y = e.clientY
-                this.contextMenu.item = item
-                this.$nextTick(() => { this.contextMenu.shown = true })
+                if (!this.contextMenu.shown) {
+                    e?.preventDefault();
+                    this.contextMenu.shown = true
+                    this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
+                    this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+                    this.contextMenu.item = item
+                    this.$nextTick(() => {
+                        this.contextMenu.shown = true
+                    })
+                }
             },
             preheat() {
                 if (
@@ -621,13 +626,19 @@
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
-            clickRow: function(item) {
-                if (!item.isDirectory) {
-                    this.dialogPrintFile.show = true;
-                    this.dialogPrintFile.item = item;
-                } else {
-                    this.currentPath += "/"+item.filename;
-                    this.loadPath();
+            clickRow(item, force = false) {
+                console.log(item, this.contextMenu, this.dialogPrintFile, force);
+                if (!this.contextMenu.shown || force) {
+                    if (force) {
+                        this.contextMenu.shown = false;
+                    }
+                    if (!item.isDirectory) {
+                        this.dialogPrintFile.show = true;
+                        this.dialogPrintFile.item = item;
+                    } else {
+                        this.currentPath += "/" + item.filename;
+                        this.loadPath();
+                    }
                 }
             },
             clickRowGoBack: function() {
@@ -642,6 +653,7 @@
                 }
             },
             startPrint(filename = "") {
+                console.log("startPrint");
                 filename = (this.currentPath+"/"+filename).substring(7);
                 this.dialogPrintFile.show = false;
                 this.$socket.sendObj('printer.print.start', { filename: filename }, 'switchToDashboard');
