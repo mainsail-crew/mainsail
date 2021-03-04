@@ -111,6 +111,7 @@ export default {
 					additionValues: getters.getAdditionSensors(nameSplit[1]),
 					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
+					rpm: 'rpm' in value ? value.rpm : false,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
@@ -231,6 +232,7 @@ export default {
 				if (!name.startsWith("_")) {
 					let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
 					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+					let rpm = 'rpm' in value ? value.rpm : false
 					let pwm = controllable
 					let scale = 1
 
@@ -241,18 +243,21 @@ export default {
 						pwm = false
 						if (
 							'config' in state.configfile &&
-							key in state.configfile.config
+							key in state.configfile.settings
 						) {
 							if (
-								'pwm' in state.configfile.config[key] &&
-								state.configfile.config[key].pwm.toLowerCase() === "true"
-							) pwm = true
+								'pwm' in state.configfile.settings[key]
+							) pwm = state.configfile.settings[key].pwm
 
 							if (
-								'scale' in state.configfile.config[key]
-							) scale = state.configfile.config[key].scale
+								'scale' in state.configfile.settings[key]
+							) scale = state.configfile.settings[key].scale
 						}
 					}
+
+					if (state.configfile.settings[key].off_below) off_below = state.configfile.settings[key].off_below
+
+					if (state.configfile.settings[key].max_power) max_power = state.configfile.settings[key].max_power
 
 					output.push({
 						name: name,
@@ -260,9 +265,12 @@ export default {
 						power: power,
 						controllable: controllable,
 						pwm: pwm,
+						rpm: rpm,
 						scale: scale,
 						object: value,
-						config: state.configfile.config[key]
+						off_below: off_below,
+						max_power: max_power,
+						config: state.configfile.settings[key]
 					})
 				}
 			}
