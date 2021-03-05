@@ -10,7 +10,8 @@ export default {
 	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
 		Vue.prototype.$socket.sendObj('server.config', {}, 'server/getConfig')
-		Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+		//Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+		Vue.prototype.$socket.sendObj('server.database.list', { root: 'config' }, 'server/checkDatabases')
 	},
 
 	checkMainsailJson({ dispatch, rootState }, payload) {
@@ -30,6 +31,15 @@ export default {
 		})
 
 		if (boolFallback) dispatch('printer/init', null, { root: true })
+	},
+
+	checkDatabases({ dispatch }, payload) {
+		if (
+			'namespaces' in payload &&
+			payload.namespaces.includes('mainsail')
+		) {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/getData')
+		} else dispatch('printer/init', null, { root: true })
 	},
 
 	getInfo({ commit, state, rootState }, payload) {
