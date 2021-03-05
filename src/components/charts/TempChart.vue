@@ -36,7 +36,7 @@ export default {
                             let outputTime = datasets[0]['axisValueLabel']
                             outputTime = outputTime.substr(outputTime.indexOf(" "))
 
-                            output += "<div class=\"row mb-2\">" +
+                            output += "<div class=\"row\">" +
                                     "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
                                         "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
                                         "<span class='font-weight-bold'>"+outputTime+"</span>" +
@@ -51,7 +51,7 @@ export default {
                                 !dataset.seriesName.endsWith('_speed')
                             ) {
                                 output += "<div class=\"row\">"
-                                output += "<div class=\"col-auto pt-2 pb-1\">"
+                                output += "<div class=\"col-auto py-0\">"
 
                                 const mainDataset = this.series.find(tmpDataset => tmpDataset.name === dataset.seriesName)
                                 if (mainDataset)
@@ -67,7 +67,7 @@ export default {
                                 output += convertName(dataset.seriesName)+":"
 
                                 output += "</div>"
-                                output += "<div class=\"col text-right pt-2 pb-1 font-weight-bold\">"
+                                output += "<div class=\"col text-right py-0 font-weight-bold\">"
 
                                 if (dataset.value[1]) output += dataset.value[1].toFixed(1)
 
@@ -180,43 +180,6 @@ export default {
                     },
                 ],
                 series: [],
-                media: [{
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        xAxis: {
-                            //splitNumber: 10,
-                        }
-                    }
-                }, {
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        grid: {
-                            right: 40,
-                            left: 40,
-                        },
-                        yAxis: [
-                            {
-                                maxInterval: 50,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    showMaxLabel: true,
-                                    rotate: 0
-                                }
-                            },
-                            {
-                                maxInterval: 25,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    rotate: 0
-                                }
-                            },
-                        ],
-                    }
-                }],
             },
         }
     },
@@ -255,6 +218,11 @@ export default {
             get() {
                 return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
             }
+        },
+        boolDisplayPwmAxis: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
+            }
         }
     },
     methods: {
@@ -277,12 +245,56 @@ export default {
             ) {
                 this.chart.setOption({
                     series: this.series,
+                    grid: {
+                        left: 25,
+                        right: this.boolDisplayPwmAxis ? 25 : 15,
+                    },
                     xAxis: {
                         min: new Date() - this.maxHistory * 1000,
                         max: new Date(),
                     },
                     yAxis: [{
+                        axisLabel: {
+                            rotate: 90,
+                            showMinLabel: true,
+                            margin: 5,
+                        },
                         max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
+                    }, {
+                        show: this.boolDisplayPwmAxis,
+                        axisLabel: {
+                            showMinLabel: true,
+                            rotate: 90,
+                            margin: 5,
+                        }
+                    }],
+                    media: [{
+                        query: {
+                            minWidth: 500,
+                        },
+                        option: {
+                            grid: {
+                                right: this.boolDisplayPwmAxis ? 40 : 15,
+                                left: 40,
+                            },
+                            yAxis: [
+                                {
+                                    maxInterval: 50,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        showMaxLabel: true,
+                                        rotate: 0
+                                    }
+                                },
+                                {
+                                    maxInterval: 25,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        rotate: 0
+                                    }
+                                },
+                            ],
+                        }
                     }],
                 })
             }

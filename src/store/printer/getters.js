@@ -243,25 +243,16 @@ export default {
 					if (nameSplit[0].toLowerCase() === "output_pin") {
 						controllable = true
 						pwm = false
-						if (
-							'config' in state.configfile &&
-							key in state.configfile.settings
-						) {
-							if (
-								'pwm' in state.configfile.settings[key]
-							) pwm = state.configfile.settings[key].pwm
+						if ('settings' in state.configfile && key in state.configfile.settings) {
+							if ('pwm' in state.configfile.settings[key])
+								pwm = state.configfile.settings[key].pwm
 
-							if (
-								'scale' in state.configfile.settings[key]
-							) scale = state.configfile.settings[key].scale
+							if ('scale' in state.configfile.settings[key])
+								scale = state.configfile.settings[key].scale
 						}
 					}
 
-					if (state.configfile.settings[key].off_below) off_below = state.configfile.settings[key].off_below
-
-					if (state.configfile.settings[key].max_power) max_power = state.configfile.settings[key].max_power
-
-					output.push({
+					const tmp = {
 						name: name,
 						type: nameSplit[0],
 						power: power,
@@ -270,10 +261,18 @@ export default {
 						rpm: rpm,
 						scale: scale,
 						object: value,
-						off_below: off_below,
-						max_power: max_power,
 						config: state.configfile.settings[key]
-					})
+					}
+
+					if ('settings' in state.configfile && key in state.configfile.settings) {
+						if ('off_below' in state.configfile.settings[key])
+							tmp['off_below'] = state.configfile.settings[key].off_below
+
+						if ('max_power' in state.configfile.settings[key])
+							tmp['max_power'] = state.configfile.settings[key].max_power
+					}
+
+					output.push(tmp)
 				}
 			}
 		}
@@ -428,9 +427,25 @@ export default {
 			let nameSplit = key.split(" ");
 
 			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+				let points = []
+				value.points.split("\n").forEach(function(row) {
+					if (row !== "") {
+						row.split(', ').forEach(function(col) {
+							points.push(parseFloat(col))
+						})
+					}
+				})
+
+				const min = Math.min(...points)
+				const max = Math.max(...points)
+
 				profiles.push({
 					name: nameSplit[1],
 					data: value,
+					points: points,
+					min: min,
+					max: max,
+					variance: Math.abs(min - max),
 					is_active: (currentProfile === nameSplit[1]),
 				});
 			}

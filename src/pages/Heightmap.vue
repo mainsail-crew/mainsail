@@ -71,7 +71,15 @@
                             <template v-slot:default>
                                 <tbody>
                                 <tr v-for="(profile, index) in profiles" :key="index" >
-                                    <td>{{ profile.name }}<small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
+                                    <td><span @click="loadProfile(profile.name)" :class="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) ? 'font-weight-bold' : ''" style="cursor: pointer;">{{ profile.name }}</span><small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
+                                    <td>
+                                        <v-tooltip top color="rgba(0,0,0,0.8)">
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <small v-bind="attrs" v-on="on">{{ profile.variance.toFixed(3) }}</small>
+                                            </template>
+                                            <span>min: {{ profile.min }}<br/>max: {{ profile.max }}</span>
+                                        </v-tooltip>
+                                    </td>
                                     <td class="text-right">
                                         <v-btn-toggle dense no-gutters>
                                             <v-btn class="btnMinWidthAuto" @click="loadProfile(profile.name)" :loading="loadings.includes('bedMeshLoad_'+profile.name)" :disabled="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) || 'deleted' in profile.data" ><v-icon small>mdi-view-grid-plus</v-icon></v-btn>
@@ -250,7 +258,6 @@
         },
         methods: {
             showBedMesh: function() {
-                window.console.log("showBedMesh")
                 this.data[0].x = [];
                 this.data[0].y = [];
                 this.data[0].z = [];
