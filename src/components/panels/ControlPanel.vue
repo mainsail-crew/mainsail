@@ -380,7 +380,7 @@
         <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-code-brackets</v-icon>Macros</span>
+                    <span class="subheading"><v-icon left>mdi-code-tags</v-icon>Macros</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-container>
