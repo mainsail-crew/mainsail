@@ -38,5 +38,15 @@ export default {
 		})
 
 		return Math.ceil((maxTemp + 1) / 10) * 10
+	},
+
+	getBoolDisplayPwmAxis: state => {
+		return state.series.findIndex(serie =>
+			serie.name.lastIndexOf("_") &&
+			['power', 'speed'].includes(serie.name.substr(serie.name.lastIndexOf("_")+1)) &&
+			'lineStyle' in serie &&
+			'opacity' in serie.lineStyle &&
+			serie.lineStyle.opacity > 0
+		) !== -1
 	}
 }

@@ -7,13 +7,13 @@
 <template>
     <v-container class="px-0 py-2">
         <v-row>
-            <v-col>
+            <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value >= min && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-icon small :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
                     <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">{{ Math.round(rpm) }} RPM</small>
-                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
+                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(parseFloat(value)*100) }} %</span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
                 </v-subheader>
                 <v-card-text class="py-0" v-if="controllable && pwm">
@@ -22,18 +22,11 @@
                         :min="0.0"
                         :max="1.0"
                         :step="0.01"
-                        :thumb-color="value >= min || value === 0 ? undefined : 'danger'"
-                        :color="value >= min || value === 0 ? undefined : 'danger'"
-                        :thumb-label="value >= min || value === 0 ? undefined : true"
+                        :color="value < off_below && value > 0 ? 'red' : undefined"
                         @start="sliding = true"
                         @end="sendCmd()"
                         hide-details
                     >
-
-                        <template #thumb-label="{ value }">
-                            {{ value >= min ? (value * 100).toFixed(0) + '%' : 'OFF'}}
-                        </template>
-
                         <template v-slot:prepend>
                             <v-icon @click="decrement">mdi-minus</v-icon>
                         </template>
@@ -57,6 +50,11 @@
             target: {
                 type: Number,
                 required: true,
+            },
+            max: {
+                type: Number,
+                required: false,
+                default: 1,
             },
             name: {
                 type: String,
@@ -87,12 +85,18 @@
                 type: Number,
                 required: false,
                 default: 1
+            },
+            off_below: {
+                type: Number,
+                required: false,
+                default: 0
             }
         },
         data() {
             return {
-                value: this.target / this.max,
-                sliding: false
+                min: 0,
+                value: this.target,
+                sliding: false,
             }
         },
         methods: {
