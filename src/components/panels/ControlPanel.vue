@@ -42,7 +42,7 @@
             <v-container>
                 <template v-if="useCross">
                     <v-row>
-                        <v-col cols="12" sm="6">
+                        <v-col :cols="homeCols">
                             <v-row dense class="mb-1">
                                 <v-col cols="3"></v-col>
                                 <v-col cols="3">
@@ -98,25 +98,49 @@
                                 </v-col>
                             </v-row>
                         </v-col>
-                        <v-col cols="12" sm="6">
-                            <div class="d-flex flex-column" style="border-radius: 4px; overflow: hidden; height: 100%; min-height: 80px;">
-                                <v-row no-gutters class="mb-1 flex-grow-1">
-                                    <v-col cols="12">
-                                        <v-btn class="w-100 h-100"
+                        <v-col :cols="homeCols" class="d-flex align-center">
+                            <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden;">
+                                <v-row dense class="" style="margin-bottom: -2px!important;">
+                                    <v-col :cols="'quad_gantry_level' in config || 'z_tilt' in config ? 6 : 12">
+                                        <v-btn class="w-100"
                                                tile
                                                @click="doHome"
+                                               height="30"
                                                :loading="loadings.includes('homeAll')"
                                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                         >
-                                            <v-icon>mdi-home</v-icon>
-                                            ALL
+                                            <div class="d-flex align-center">
+                                                <v-icon>mdi-home</v-icon>
+                                                <span class="ml-1">ALL</span>
+                                            </div>
                                         </v-btn>
                                     </v-col>
-                                </v-row>
-                                <v-row class="gutter-2 flex-grow-1">
-                                    <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                    <v-col v-if="'quad_gantry_level' in config || 'z_tilt' in config" cols="6" class="d-flex">
+                                        <v-btn v-if="'quad_gantry_level' in config"
+                                               class="btnMinWidthAuto flex-grow-1 px-0"
                                                tile
+                                               dense
+                                               color="primary"
+                                               height="30"
+                                               :loading="loadings.includes('qgl')"
+                                               @click="doQGL"
+                                        >QGL</v-btn>
+                                        <v-btn v-if="'z_tilt' in config"
+                                               class="btnMinWidthAuto flex-grow-1 px-0"
+                                               tile
+                                               dense
+                                               color="primary"
+                                               height="30"
+                                               :loading="loadings.includes('zTilt')"
+                                               @click="doZtilt"
+                                        >Z-Tilt</v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-row dense class="">
+                                    <v-col cols="4" class="flex-grow-1">
+                                        <v-btn class="btnMinWidthAuto w-100"
+                                               tile
+                                               height="30"
                                                :loading="loadings.includes('homeX')"
                                                :color="homedAxes.includes('x') ? 'primary' : 'warning'"
                                                @click="doHomeX"
@@ -125,8 +149,9 @@
                                         </v-btn>
                                     </v-col>
                                     <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                        <v-btn class="btnMinWidthAuto w-100"
                                                tile
+                                               height="30"
                                                :loading="loadings.includes('homeY')"
                                                :color="homedAxes.includes('y') ? 'primary' : 'warning'"
                                                @click="doHomeY"
@@ -135,8 +160,9 @@
                                         </v-btn>
                                     </v-col>
                                     <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100 h-100"
+                                        <v-btn class="btnMinWidthAuto w-100"
                                                tile
+                                               height="30"
                                                :loading="loadings.includes('homeZ')"
                                                :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                                                @click="doHomeZ"
@@ -385,7 +411,8 @@
         data() {
             return {
                 crossWidth: 40,
-                crossHeight: 40
+                crossHeight: 40,
+                homeCols: 6
             }
         },
         computed: {
@@ -457,9 +484,21 @@
                 }
             }
         },
+        created() {
+            window.addEventListener('resize', this.onResize);
+        },
         mounted() {
+            if (window.screen.width < 330) {
+                this.homeCols = 12;
+            }
+        },
+        destroyed() {
+            window.removeEventListener('resize', this.onResize);
         },
         methods: {
+            onResize() {
+                this.homeCols = window.screen.width < 360 ? 12 : 6;
+            },
             doHome() {
                 this.$store.commit('server/addEvent', { message: "G28", type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'homeAll' });
