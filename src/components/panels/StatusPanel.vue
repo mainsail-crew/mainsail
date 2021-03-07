@@ -108,22 +108,22 @@
                             current_file.thumbnails.length &&
                             current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400))  ? 'col-12 col-sm-8' : 'col-12'
                         ">
-                        <v-row class="text-center" align="center">
-                            <v-col class="flex-grow-0 py-2">
+                        <v-row class="text-center py-4" align="center">
+                            <v-col class="flex-grow-0 py-0">
                                 <v-icon>mdi-axis-arrow</v-icon>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>X</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>X</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Y</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Y</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Z</strong></v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Z</strong></v-col></v-row>
                                 <v-row>
-                                    <v-col class="px-0 pt-1">
+                                    <v-col class="pa-0">
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on, attrs }">
@@ -136,18 +136,18 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
-                            <v-col class="px-0">
+                            <v-col class="pa-0">
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 py-2">
+                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
+                            <v-col class="flex-grow-0 py-0">
                                 <v-icon>mdi-poll</v-icon>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Filament</strong></v-col></v-row>
                                 <v-row>
-                                    <v-col class="px-0 pt-1">
+                                    <v-col class="pa-0">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on, attrs }">
                                                 <span v-bind="attrs" v-on="on" v-if="filament_used >= 1000" class=" text-no-wrap">{{ (filament_used / 1000).toFixed(2) }} m</span>
@@ -158,57 +158,58 @@
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Print</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time) }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Print</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ formatTime(print_time) }}</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Total</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ formatTime(print_time_total) }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Total</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ formatTime(print_time_total) }}</v-col></v-row>
                             </v-col>
                         </v-row>
                         <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="px-0">
+                            <v-col class="pa-0">
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
-                            <v-col class="flex-grow-0 py-2">
+                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
+                            <v-col class="flex-grow-0 py-0">
                                 <v-icon>mdi-printer-3d</v-icon>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Speed</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Speed</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0 text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Layer</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Layer</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>ETA</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>ETA</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
                         <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="px-0">
+                            <v-col class="pa-0">
                                 <v-divider></v-divider>
                             </v-col>
                         </v-row>
-                        <v-row class="text-center" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 py-2">
+                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) ">
+                            <v-col class="flex-grow-0 py-0">
                                 <v-icon>mdi-clock-outline</v-icon>
                             </v-col>
-                            <v-col class="equal-width py-2 ">
-                                <v-row><v-col class="px-0 pb-1"><strong>File</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
+                            <v-col class="equal-width py-0 ">
+                                <v-row><v-col class="pa-0"><strong>File</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
+
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Filament</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
                             </v-col>
-                            <v-col class="equal-width py-2">
-                                <v-row><v-col class="px-0 pb-1"><strong>Slicer</strong></v-col></v-row>
-                                <v-row><v-col class="px-0 pt-1">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
+                            <v-col class="equal-width py-0">
+                                <v-row><v-col class="pa-0"><strong>Slicer</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
                     </v-col>

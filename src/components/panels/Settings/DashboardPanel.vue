@@ -99,7 +99,7 @@
                     return this.$store.state.gui.tempchart.intervalChartUpdate
                 },
                 set(newVal) {
-                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { gui: { tempchart: { intervalChartUpdate: newVal } } })
+                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { tempchart: { intervalChartUpdate: newVal } })
                 }
             },
             intervalDatasetUpdate: {
@@ -107,7 +107,7 @@
                     return this.$store.state.gui.tempchart.intervalDatasetUpdate
                 },
                 set(newVal) {
-                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { gui: { tempchart: { intervalDatasetUpdate: newVal } } })
+                    if (newVal >= 500) return this.$store.dispatch('gui/setSettings', { tempchart: { intervalDatasetUpdate: newVal } })
                 }
             },
         },

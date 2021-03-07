@@ -1,5 +1,5 @@
 <template>
-    <div id="tempchart" style="height: 250px; width: 100%;"></div>
+    <div id="tempchart" style="height: 250px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
             chart : null,
             timerChart: '',
             timerDataset: '',
-            chartFocus: false,
+            isVisable: true,
             chartOptions: {
                 darkMode: true,
                 animation: false,
@@ -93,7 +93,7 @@ export default {
                 grid: {
                     top: 35,
                     right: 25,
-                    bottom: 25,
+                    bottom: 30,
                     left: 25,
                 },
                 dataZoom: [{
@@ -234,14 +234,17 @@ export default {
                 this.createChart()
             }, 500)
         },
+        visibilityChanged (isVisible) {
+            this.isVisible = isVisible
+            if(isVisible) this.chart.resize()
+        },
     },
     created() {
         this.timerChart = setInterval(() => {
             if (
                 this.chart &&
                 this.boolTempchart &&
-                document.visibilityState === "visible" &&
-                this.$route.path === "/"
+                this.isVisable
             ) {
                 this.chart.setOption({
                     series: this.series,
@@ -310,6 +313,6 @@ export default {
     },
     mounted: function() {
         this.createChart()
-    }
+    },
 }
 </script>

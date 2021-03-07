@@ -29,7 +29,7 @@ export function getDefaultState() {
 		webcam: {
 			service: 'mjpegstreamer',
 			targetFps: 25,
-			url: "",
+			url: "/webcam/?action=stream",
 			rotate: false,
 			rotateDegrees: 90,
 			flipX: false,
@@ -60,9 +60,11 @@ export function getDefaultState() {
 				showHiddenFiles: false,
 			}
 		},
-		remotePrinters: [],
+		//moonraker DB api dont accept camel case key names
+		remote_printers: [],
 		presets: [],
-		cooldownGcode: "TURN_OFF_HEATERS"
+		//moonraker DB api dont accept camel case key names
+		cooldown_gcode: "TURN_OFF_HEATERS"
 	}
 }
 

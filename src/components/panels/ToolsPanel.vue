@@ -73,7 +73,7 @@
                     </v-menu>
                 </v-item-group>
             </v-toolbar>
-            <v-card-text class="px-0 py-2 content">
+            <v-card-text class="pa-0 content">
                 <v-container class="px-0">
                     <v-row align="center">
                         <v-col class="py-2 font-weight-bold" style="padding-left: 68px;">Name</v-col>
@@ -282,7 +282,7 @@
                 datasets: state => state.printer.tempHistory.datasets,
                 boolTempchart: state => state.gui.dashboard.boolTempchart,
                 printer: state => state.printer,
-                cooldownGcode: state => state.gui.cooldownGcode,
+                cooldownGcode: state => state.gui.cooldown_gcode,
                 printer_state: state => state.printer.print_stats.state,
             }),
             ...mapGetters([
