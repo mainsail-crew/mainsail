@@ -42,8 +42,8 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col>
-                            <v-switch v-model="useCross" label="Enable movement cross"></v-switch>
+                        <v-col class="py-0">
+                            <v-switch v-model="useCross" label="Enable movement cross" hide-details="auto" class="mt-0"></v-switch>
                         </v-col>
                     </v-row>
                     <template v-if="useCross">
@@ -67,8 +67,8 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col>
-                                <v-switch v-model="reverseZ" label="Reverse Z movement"></v-switch>
+                            <v-col class="pt-0">
+                                <v-switch v-model="reverseZ" label="Reverse Z movement" hide-details="auto" class="mt-0"></v-switch>
                             </v-col>
                         </v-row>
                     </template>
