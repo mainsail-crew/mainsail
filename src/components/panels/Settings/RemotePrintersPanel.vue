@@ -10,7 +10,7 @@
             <v-card-text class="py-3">
                 <v-container>
                     <v-row v-for="(printer, index) in this['farm/getPrinters']" v-bind:key="index">
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-3" style="cursor: pointer;">
                             <v-row align="center">
                                 <v-col class="col-auto pr-0">
                                     <v-progress-circular

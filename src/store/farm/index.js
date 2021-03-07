@@ -34,7 +34,7 @@ export default {
 					}
 				}
 			} else {
-				rootState.gui.remotePrinters.forEach((printer) => {
+				rootState.gui.remote_printers.forEach((printer) => {
 					commit('addPrinter',{
 						hostname: printer.hostname,
 						port: printer.port,
@@ -65,7 +65,7 @@ export default {
 					})
 				}
 
-				dispatch("gui/setSettings", { remotePrinters: printers }, { root: true })
+				dispatch("gui/setSettings", { remote_printers: printers }, { root: true })
 			}
 		}
 	},

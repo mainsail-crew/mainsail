@@ -16,7 +16,7 @@
     "object-assign-deep": "^0.4.0",
     "plotly.js": "^1.58.4",
     "prismjs": "^1.23.0",
-    "semver": "^5.7.1",
+    "semver": "^7.3.4",
     "vue": "^2.6.12",
     "vue-context": "^6.0.0",
     "vue-github-api": "^0.1.7",

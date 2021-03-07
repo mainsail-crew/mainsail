@@ -78,7 +78,7 @@
                     return this.$store.state.gui.webcam.url;
                 },
                 set(url) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { url } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { url: url } })
                 }
             },
             flipX: {
@@ -86,7 +86,7 @@
                     return this.$store.state.gui.webcam.flipX;
                 },
                 set(flipX) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipX } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { flipX: flipX } });
                 }
             },
             flipY: {
@@ -94,7 +94,7 @@
                     return this.$store.state.gui.webcam.flipY;
                 },
                 set(flipY) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipY } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { flipY: flipY } });
                 }
             },
             rotate: {
@@ -110,7 +110,7 @@
                     return this.$store.state.gui.webcam.rotateDegrees;
                 },
                 set(rotateDegrees) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { rotateDegrees } });
+                    return this.$store.dispatch('gui/setSettings', { webcam: { rotateDegrees: rotateDegrees } });
                 }
             },
             boolNavi: {
