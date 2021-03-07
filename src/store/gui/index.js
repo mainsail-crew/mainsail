@@ -18,6 +18,10 @@ export function getDefaultState() {
 				stepsXY: [ 100, 10, 1 ],
 				feedrateZ: 25,
 				stepsZ: [ 25, 1, 0.1 ],
+				stepsAll: [0.1, 1, 10, 25, 50, 100],
+				selectedCrossStep: null,
+				reverseZ: false,
+				useCross: false
 			},
 			extruder: {
 				feedamount: 25,
