@@ -26,12 +26,14 @@
         },
         methods: {
             setValue() {
-                if (this.value) {
-                    let index = this.hiddenMacros.indexOf(this.name.toUpperCase());
-                    if (index > -1) this.hiddenMacros.splice(index, 1)
-                } else this.hiddenMacros.push(this.name.toUpperCase())
+                let hiddenMacros = this.hiddenMacros
 
-                this.$store.dispatch("gui/upload")
+                if (this.value) {
+                    let index = hiddenMacros.indexOf(this.name.toUpperCase());
+                    if (index > -1) hiddenMacros.splice(index, 1)
+                } else hiddenMacros.push(this.name.toUpperCase())
+
+                this.$store.dispatch("gui/setSettings", { dashboard: { hiddenMacros: hiddenMacros }})
             }
         },
         watch: {

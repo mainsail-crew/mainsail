@@ -13,6 +13,11 @@
                         <settings-macro-switch :name="macro.name"></settings-macro-switch>
                     </v-col>
                 </v-row>
+                <v-row v-if="this['printer/getAllMacros'].length === 0">
+                    <v-col>
+                        <p class="mb-0 text-center font-italic">No macros found...</p>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-card-text>
     </v-card>

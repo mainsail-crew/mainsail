@@ -10,7 +10,7 @@
             <v-card-text class="py-3">
                 <v-container>
                     <v-row v-for="(preset, index) in this['gui/getPreheatPresets']" v-bind:key="index">
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-3" style="cursor: pointer;">
                             <v-row align="center">
                                 <v-col class="pl-6">
                                     <strong>{{ preset.name }}</strong>
@@ -25,7 +25,7 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-2" style="cursor: pointer;">
                             <v-row align="center">
                                 <v-col class="pl-6">
                                     <strong>Cooldown</strong>
@@ -170,6 +170,7 @@
                                         label="Custom G-Code"
                                         v-model="cooldownDialog.gcode"
                                         :rules="[rules.required]"
+                                        hide-details="auto"
                                     ></v-textarea>
                                 </v-col>
                             </v-row>
@@ -225,7 +226,7 @@
         computed: {
             ...mapState({
                 orgState: state => state.gui.presets,
-                cooldownGcode: state => state.gui.cooldownGcode,
+                cooldownGcode: state => state.gui.cooldown_gcode,
             }),
             ...mapGetters([
                 'printer/getHeaters',
