@@ -22,12 +22,12 @@
             <v-card-text class="px-0 py-0">
                 <v-container py-0 px-0>
 
-                    <div v-for="(value, key) of updateableSoftwares" v-bind:key="key">
-                        <v-divider class="my-0" ></v-divider>
+                    <div v-for="(value, key, index) of updateableSoftwares" v-bind:key="key">
+                        <v-divider class="my-0" v-if="index" ></v-divider>
                         <v-row class="py-2">
                             <v-col class="pl-6">
                                 <strong>{{ 'name' in value ? value.name : key }}</strong><br />
-                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''">{{ getVersionOutput(value) }}</span>
+                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <v-chip
@@ -242,18 +242,7 @@
                     this.commitsOverlay.bool = true
                     this.commitsOverlay.loading = true
 
-                    let owner = ""
-                    switch(key) {
-                        case 'klipper':
-                            owner = "kevinOConnor"
-                            break
-
-                        case 'moonraker':
-                            owner = "arksine"
-                            break
-                    }
-
-                    const apiUrl = "https://api.github.com/repos/"+owner+"/"+key+"/commits"
+                    const apiUrl = "https://api.github.com/repos/"+object.owner+"/"+key+"/commits"
                     if (apiUrl) {
                         axios
                             .get(apiUrl)
