@@ -1,5 +1,6 @@
-export default {
+import semver from "semver"
 
+export default {
 	getUpdateableSoftwares(state) {
 		const output = {}
 		const sortKeys = Object.keys(state.version_info).sort((a,b) => {
@@ -27,7 +28,9 @@ export default {
 			if (
 				'version' in state.version_info[key] &&
 				'remote_version' in state.version_info[key] &&
-				state.version_info[key].version !== state.version_info[key].remote_version
+				semver.valid(state.version_info[key].version) &&
+				semver.valid(state.version_info[key].remote_version) &&
+				semver.gt(state.version_info[key].remote_version, state.version_info[key].version)
 			) return true
 		}
 
