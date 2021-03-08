@@ -65,7 +65,6 @@ export default {
     },
     methods: {
         connect() {
-            window.console.log("save connection")
             Vue.prototype.$socket.setUrl(this.protocol+"://"+this.hostname+":"+this.port+"/websocket")
             Vue.prototype.$socket.connect()
         },
