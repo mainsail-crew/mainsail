@@ -121,7 +121,7 @@ export default {
 	},
 
 	//TODO: remove it after a short time of migration. maybe april release
-	migrateMainsailJson({ state, dispatch }, payload) {
+	migrateMainsailJson({ state, dispatch, rootState }, payload) {
 		const settings = {}
 
 		Object.keys(payload.state).forEach(key => {
@@ -130,7 +130,7 @@ export default {
 			}
 
 			if (key === "cooldownGcode") settings["cooldown_gcode"] = payload.state[key]
-			if (key === "remotePrinters") settings["remote_printers"] = {...payload.state[key]}
+			if (key === "remotePrinters") settings["remote_printers"] = payload.state[key]
 		})
 
 		if (Object.keys(settings).length) {
@@ -138,6 +138,10 @@ export default {
 		}
 
 		Vue.prototype.$socket.sendObj('server.files.delete_file', { path: 'config/.mainsail.json' })
+
+		if (!rootState.socket.remoteMode) {
+			dispatch('farm/readStoredPrinters', {}, { root: true })
+		}
 		dispatch('printer/init', null, { root: true })
 	}
 }
