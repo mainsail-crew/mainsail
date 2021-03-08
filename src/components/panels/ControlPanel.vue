@@ -227,6 +227,31 @@
                         </v-col>
                     </v-row>
                 </template>
+                <v-row>
+                    <v-col class="pa-0">
+                        <v-divider></v-divider>
+                    </v-col>
+                </v-row>
+                <v-row class="">
+                    <v-col class="col col-md-6 pt-2">
+                        <span class="text--disabled" style="font-size: .9em">Feed amount [mm]</span>
+                        <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === currentFeedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                    <v-col class="col col-md-6 pt-2">
+                        <span class="text--disabled" style="font-size: .9em">Feedrate [mm/s]</span>
+                        <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+                <v-row class="">
+                    <v-col class="col text-center pt-0">
+                        <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> Retract</v-btn>
+                        <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> Extrude</v-btn>
+                    </v-col>
+                </v-row>
             </v-container>
         </v-card>
         <v-card class="mt-6" v-if="this['printer/getMacros'].length > 0">
@@ -273,6 +298,10 @@
                 config: state => state.printer.configfile.config,
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
+                extruder: state => state.printer.extruder,
+
+                feedamounts: state => state.gui.dashboard.extruder.feedamounts,
+                feedrates: state => state.gui.dashboard.extruder.feedrates,
 
                 feedrateXY: state => state.gui.dashboard.control.feedrateXY,
                 stepsXY: state => state.gui.dashboard.control.stepsXY,
@@ -284,6 +313,7 @@
             }),
             ...mapGetters([
                 'printer/getMacros',
+                'printer/getExtrudePossible',
             ]),
             reverseZ: {
                 get() {
@@ -341,6 +371,32 @@
                     return Array.from(new Set([
                         ...(this.stepsAll ?? []),
                     ])).sort((a, b) => a-b)
+                }
+            },
+            feedamountsSorted: {
+                get() {
+                    return [...this.feedamounts].sort((a,b) => { return b-a })
+                }
+            },
+            feedratesSorted: {
+                get() {
+                    return [...this.feedrates].sort((a,b) => { return b-a })
+                }
+            },
+            currentFeedAmount: {
+                get() {
+                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedamount)
+                },
+                set(newVal) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamount: newVal } } })
+                }
+            },
+            currentFeedRate: {
+                get() {
+                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedrate)
+                },
+                set(newVal) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrate: newVal } } })
                 }
             }
         },
@@ -404,6 +460,24 @@
                 this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
                 this.$store.commit('socket/addLoading', { name: 'macro_'+gcode });
                 Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'macro_'+gcode });
+            },
+            setFeedAmount(value) {
+                this.currentFeedAmount = value;
+            },
+            setFeedrate(value) {
+                this.currentFeedRate = value;
+            },
+            sendRetract() {
+                let gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
+                this.$store.commit('socket/addLoading', { name: 'btnRetract' });
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnRetract' });
+            },
+            sendDetract() {
+                let gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
+                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
+                this.$store.commit('socket/addLoading', { name: 'btnDetract' });
+                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnDetract' });
             },
         },
     }
