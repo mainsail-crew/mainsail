@@ -30,20 +30,20 @@
                         <span>Pause print</span>
                     </v-tooltip>
                 </v-btn>
-                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
-                        </template>
-                        <span>Cancel print</span>
-                    </v-tooltip>
-                </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob">
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-play</v-icon>
                         </template>
                         <span>Resume print</span>
+                    </v-tooltip>
+                </v-btn>
+                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused' || (displayCancelPrint && printer_state === 'printing'))" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
+                        </template>
+                        <span>Cancel print</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob">
@@ -249,6 +249,8 @@
 
                 display_message: state => state.printer.display_status.message,
                 loadings: state => state.socket.loadings,
+
+                displayCancelPrint: state => state.gui.general.displayCancelPrint,
             }),
             printPercent: {
                 get() {
