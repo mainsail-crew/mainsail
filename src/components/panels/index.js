@@ -6,7 +6,6 @@ import MinSettingsPanel from './MinSettingsPanel.vue'
 import MoonrakerFailedPluginsPanel from './MoonrakerFailedPluginsPanel.vue'
 import ToolsPanel from './ToolsPanel.vue'
 import ControlPanel from "./ControlPanel";
-import ExtruderPanel from "./ExtruderPanel";
 import ZOffsetPanel from "./ZOffsetPanel";
 import Miscellaneous from "./MiscellaneousPanel";
 import WebcamPanel from "./WebcamPanel";
@@ -20,7 +19,6 @@ Vue.component('min-settings-panel', MinSettingsPanel);
 Vue.component('moonraker-failed-plugins-panel', MoonrakerFailedPluginsPanel);
 Vue.component('tools-panel', ToolsPanel);
 Vue.component('control-panel', ControlPanel);
-Vue.component('extruder-panel', ExtruderPanel);
 Vue.component('zoffset-panel', ZOffsetPanel);
 Vue.component('miscellaneous-panel', Miscellaneous);
 Vue.component('webcam-panel', WebcamPanel);
