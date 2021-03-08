@@ -629,7 +629,6 @@
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             clickRow(item, force = false) {
-                console.log(item, this.contextMenu, this.dialogPrintFile, force);
                 if (!this.contextMenu.shown || force) {
                     if (force) {
                         this.contextMenu.shown = false;
@@ -655,9 +654,8 @@
                 }
             },
             startPrint(filename = "") {
-                console.log("startPrint");
-                filename = (this.currentPath+"/"+filename).substring(7);
-                this.dialogPrintFile.show = false;
+                filename = (this.currentPath+"/"+filename).substring(7)
+                this.dialogPrintFile.show = false
                 this.$socket.sendObj('printer.print.start', { filename: filename }, 'switchToDashboard');
             },
             dragOverUpload(e) {
@@ -880,16 +878,6 @@
                     if (headerElement) headerElement.visible = false
                 })
             }
-            /*headers: {
-                deep: true,
-                handler(newVal) {
-                    window.console.log(newVal)
-                    newVal.forEach((element) => {
-                        if (element.visible && this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.splice(this.hideMetadataColums.indexOf(element.value), 1)
-                        else if (!element.visible && !this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.push(element.value)
-                    })
-                }
-            }*/
         }
     }
 </script>
