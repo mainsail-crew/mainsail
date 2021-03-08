@@ -58,8 +58,10 @@ export default {
 		if (datasetIndex !== -1) {
 			if (payload.type === "target" && 'areaStyle' in state.series[datasetIndex]) {
 				Vue.set(state.series[datasetIndex].areaStyle, 'opacity', payload.value ? 0.1 : 0)
+				Vue.set(state.series[datasetIndex].emphasis.areaStyle, 'opacity', payload.value ? 0.1 : 0)
 			} else if ('lineStyle' in state.series[datasetIndex]) {
 				Vue.set(state.series[datasetIndex].lineStyle, 'opacity', payload.value ? 0.9 : 0)
+				Vue.set(state.series[datasetIndex].emphasis.lineStyle, 'opacity', payload.value ? 0.9 : 0)
 			}
 		}
 	},
