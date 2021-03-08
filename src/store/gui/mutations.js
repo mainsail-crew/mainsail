@@ -9,16 +9,15 @@ export default {
 	},
 
 	setData(state, payload) {
-		if ("state" in payload) payload = payload.state
-		if ("gui" in payload) payload = payload.gui
+		let setDataDeep = function(currentState, payload) {
+			Object.entries(payload).forEach(([key, value]) => {
+				if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
+					setDataDeep(currentState[key], value)
+				} else if (key in currentState) Vue.set(currentState, key, value)
+			})
+		}
 
-		Object.entries(payload).forEach(([key, value]) => {
-			if (typeof value === 'object' && !Array.isArray(value) && key in state) {
-				Object.entries(value).forEach(([key2, value2]) => {
-					if (key2 in state[key]) Vue.set(state[key], key2, value2)
-				})
-			} else if (key in state) Vue.set(state, key, value)
-		})
+		setDataDeep(state, payload)
 	},
 
 	// override special setting
@@ -65,6 +64,10 @@ export default {
 		if (state.presets[payload.index]) {
 			state.presets.splice(payload.index, 1)
 		}
+	},
+
+	setTempchartDatasetSettings(state, payload) {
+		Vue.set(state.tempchart, 'datasetSettings', payload)
 	},
 
 	setTempchartDatasetSetting(state, payload) {

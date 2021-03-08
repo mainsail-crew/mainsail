@@ -1,90 +1,143 @@
-import axios from "axios";
+import Vue from "vue";
+import objectAssignDeep from "object-assign-deep"
 
 export default {
 	reset({ commit }) {
 		commit('reset')
 	},
 
-	getData({ commit, dispatch }, payload) {
-		commit('setData', payload)
+	getData({ commit, dispatch, rootState }, payload) {
+		commit('setData', payload.value)
 
-		if (
-			'state' in payload &&
-			'tempchart' in payload.state &&
-			'datasetSettings' in payload.state.tempchart
-		) {
-			for (const key of Object.keys(payload.state.tempchart.datasetSettings)) {
-				if (
-					'color' in payload.state.tempchart.datasetSettings[key] &&
-					typeof payload.state.tempchart.datasetSettings[key].color === "object"
-				) {
-					dispatch('setTempchartDatasetSetting', { name: key, type: 'color', value: payload.state.tempchart.datasetSettings[key].color.hex })
-				}
-			}
+		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
+			commit('setTempchartDatasetSettings', payload.value.tempchart.datasetSettings)
 		}
+
+		if (!rootState.socket.remoteMode) {
+			dispatch('farm/readStoredPrinters', {}, { root: true })
+		}
+
+		dispatch('printer/init', null, { root: true })
 	},
 
-	setSettings({ commit, dispatch }, payload) {
+	setSettings({ commit }, payload) {
 		commit('setSettings', payload)
 
-		if ('tempchart' in payload && 'boolPowerDatasets' in payload.tempchart) {
-			if (payload.tempchart.boolPowerDatasets) commit('printer/tempHistory/showPowerDatasets', {}, { root: true })
-			else commit('printer/tempHistory/hidePowerDatasets', {}, { root: true })
+		Object.keys(payload).forEach(key => {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/updateSettings', { newVal: payload[key], keyName: key })
+		})
+	},
+
+	updateSettings({ commit }, payload) {
+		const keyName = payload.keyName
+		let newState = payload.newVal
+		if ('value' in payload && keyName in payload.value) {
+			newState = objectAssignDeep(payload.value[keyName], newState)
 		}
 
-		dispatch('upload')
+		Vue.prototype.$socket.sendObj('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
+
+		commit('void', {}, { root: true })
 	},
 
-	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], '.mainsail.json')
-
-		let formData = new FormData();
-		formData.append('file', file);
-		formData.append('root', 'config');
-
-		axios.post('//' + rootState.socket.hostname + ':' + rootState.socket.port + '/server/files/upload',
-			formData, {
-				headers: { 'Content-Type': 'multipart/form-data' }
-			}
-		).then(() => {
-
-		}).catch(() => {
-			window.console.error("Error save .mainsail.json!")
-		});
-	},
-
-	setGcodefilesMetadata({ commit, dispatch }, data) {
+	setGcodefilesMetadata({ commit, dispatch, state }, data) {
 		commit('setGcodefilesMetadata', data)
-		dispatch('upload')
+		dispatch('updateSettings', {
+			keyName: 'gcodefiles',
+			newVal: state.gcodefiles
+		})
 	},
 
-	setGcodefilesShowHiddenFiles({ commit, dispatch }, data) {
+	setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
 		commit('setGcodefilesShowHiddenFiles', data)
-		dispatch('upload')
+		dispatch('updateSettings', {
+			keyName: 'gcodefiles',
+			newVal: state.gcodefiles
+		})
 	},
 
-	addPreset({ commit, dispatch }, payload) {
+	addPreset({ commit, dispatch, state }, payload) {
 		commit("addPreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	updatePreset({ commit, dispatch }, payload) {
+	updatePreset({ commit, dispatch, state }, payload) {
 		commit("updatePreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	deletePreset({ commit, dispatch }, payload) {
+	deletePreset({ commit, dispatch, state }, payload) {
 		commit("deletePreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	setTempchartDatasetSetting({ commit, dispatch }, payload) {
+	setTempchartDatasetSetting({ commit, dispatch, state }, payload) {
 		commit("setTempchartDatasetSetting", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'tempchart',
+			newVal: state.tempchart
+		})
 	},
 
-	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch }, payload) {
+	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
 		commit("setTempchartDatasetAdditionalSensorSetting", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'tempchart',
+			newVal: state.tempchart
+		})
+	},
+
+	resetMoonrakerDB() {
+		Vue.prototype.$socket.sendObj('server.database.list', { }, 'gui/resetMoonrakerDB2')
+	},
+
+	resetMoonrakerDB2({ commit }, payload) {
+		if ('namespaces' in payload && payload.namespaces.includes('mainsail')) {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/resetMoonrakerDB3')
+		}
+
+		commit('void', {}, { root: true })
+	},
+
+	resetMoonrakerDB3({ commit }, payload) {
+		if ('value' in payload && Object.keys(payload.value).length) {
+			Object.keys(payload.value).forEach(key => {
+				Vue.prototype.$socket.sendObj('server.database.delete_item', { namespace: 'mainsail', key: key })
+			})
+
+			window.location.reload()
+		}
+
+		commit('void', {}, { root: true })
+	},
+
+	//TODO: remove it after a short time of migration. maybe april release
+	migrateMainsailJson({ state, dispatch }, payload) {
+		const settings = {}
+
+		Object.keys(payload.state).forEach(key => {
+			if (key in state) {
+				settings[key] = {...payload.state[key]}
+			}
+
+			if (key === "cooldownGcode") settings["cooldown_gcode"] = payload.state[key]
+			if (key === "remotePrinters") settings["remote_printers"] = {...payload.state[key]}
+		})
+
+		if (Object.keys(settings).length) {
+			dispatch('setSettings', settings)
+		}
+
+		Vue.prototype.$socket.sendObj('server.files.delete_file', { path: 'config/.mainsail.json' })
+		dispatch('printer/init', null, { root: true })
 	}
 }

@@ -18,6 +18,10 @@ export function getDefaultState() {
 				stepsXY: [ 100, 10, 1 ],
 				feedrateZ: 25,
 				stepsZ: [ 25, 1, 0.1 ],
+				stepsAll: [0.1, 1, 10, 25, 50, 100],
+				selectedCrossStep: null,
+				reverseZ: false,
+				useCross: false
 			},
 			extruder: {
 				feedamount: 25,
@@ -29,7 +33,7 @@ export function getDefaultState() {
 		webcam: {
 			service: 'mjpegstreamer',
 			targetFps: 25,
-			url: "",
+			url: "/webcam/?action=stream",
 			rotate: false,
 			rotateDegrees: 90,
 			flipX: false,
@@ -60,9 +64,11 @@ export function getDefaultState() {
 				showHiddenFiles: false,
 			}
 		},
-		remotePrinters: [],
+		//moonraker DB api dont accept camel case key names
+		remote_printers: [],
 		presets: [],
-		cooldownGcode: "TURN_OFF_HEATERS"
+		//moonraker DB api dont accept camel case key names
+		cooldown_gcode: "TURN_OFF_HEATERS"
 	}
 }
 
