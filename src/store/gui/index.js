@@ -6,6 +6,7 @@ export function getDefaultState() {
 	return {
 		general: {
 			printername: "",
+			displayCancelPrint: false
 		},
 		dashboard: {
 			boolWebcam: false,

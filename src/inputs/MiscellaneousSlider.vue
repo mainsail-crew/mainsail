@@ -136,20 +136,22 @@
                 this.$socket.sendObj('printer.gcode.script', { script: gcode })
             },
             decrement() {
-                this.value = this.value > 0 ? (this.value - 0.01).toFixed(2) : 0;
-                this.sendCmd();
+                this.value = this.value > 0 ? (this.value - 0.01).toFixed(2) : 0
+                this.sliding = true
+                this.sendCmd()
             },
             increment() {
                 this.value = this.value < 1.0 ? (this.value + 0.01).toFixed(2) : 1.0;
-                if (this.value < this.min) {
-                    this.value = this.min;
+                if (this.value < this.off_below) {
+                    this.value = this.off_below
                 }
-                this.sendCmd();
+                this.sliding = true
+                this.sendCmd()
             }
         },
         watch: {
             target(newVal) {
-                this.value = newVal / this.max;
+                this.value = newVal / this.max
             }
         }
     }

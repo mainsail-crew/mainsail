@@ -53,7 +53,7 @@
             <v-card-title>
                 G-Code Files
                 <v-spacer class="d-none d-sm-block"></v-spacer>
-                <input type="file" ref="fileUpload" accept=".gcode, .ufp" style="display: none" multiple @change="uploadFile" />
+                <input type="file" ref="fileUpload" :accept="validGcodeExtensions.join(', ')" style="display: none" multiple @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
                     <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                     <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
@@ -328,6 +328,7 @@
     import { mapState, mapGetters } from 'vuex'
     import axios from 'axios'
     import { findDirectory } from "@/plugins/helpers"
+    import { validGcodeExtensions } from "@/store/variables"
 
     // import { PrismEditor } from 'vue-prism-editor';
     // import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
@@ -425,7 +426,8 @@
                         time: 0,
                         loaded: 0
                     }
-                }
+                },
+                validGcodeExtensions: validGcodeExtensions
             }
         },
         computed: {
@@ -756,9 +758,8 @@
                 }
             },
             startPrint(filename = "") {
-                console.log("startPrint");
-                filename = (this.currentPath+"/"+filename).substring(7);
-                this.dialogPrintFile.show = false;
+                filename = (this.currentPath+"/"+filename).substring(7)
+                this.dialogPrintFile.show = false
                 this.$socket.sendObj('printer.print.start', { filename: filename }, 'switchToDashboard');
             },
             dragOverUpload(e) {
@@ -981,16 +982,6 @@
                     if (headerElement) headerElement.visible = false
                 })
             }
-            /*headers: {
-                deep: true,
-                handler(newVal) {
-                    window.console.log(newVal)
-                    newVal.forEach((element) => {
-                        if (element.visible && this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.splice(this.hideMetadataColums.indexOf(element.value), 1)
-                        else if (!element.visible && !this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.push(element.value)
-                    })
-                }
-            }*/
         }
     }
 </script>

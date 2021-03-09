@@ -224,7 +224,8 @@
                     object.branch === "master" &&
                     'current_hash' in object &&
                     'remote_hash' in object &&
-                    object.current_hash !== object.remote_hash
+                    object.current_hash !== object.remote_hash &&
+                    'owner' in object
                 )
             },
             updateModule(key) {
@@ -237,7 +238,8 @@
             openCommitsOverlay(key, object) {
                 if (
                     ['klipper', 'moonraker'].includes(key) &&
-                    this.getVersionClickable(object)
+                    this.getVersionClickable(object) &&
+                    'owner' in object
                 ) {
                     this.commitsOverlay.bool = true
                     this.commitsOverlay.loading = true

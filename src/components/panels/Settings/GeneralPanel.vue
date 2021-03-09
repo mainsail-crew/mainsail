@@ -7,13 +7,33 @@
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pt-2 pb-0">
-                <v-text-field
-                    v-model="printerName"
-                    label="Printer Name"
-                ></v-text-field>
                 <v-row>
-                    <v-col class="text-center mt-0">
-                        <v-btn @click="dialogResetMainsail=true" >reset mainsail</v-btn>
+                    <v-col>
+                        <v-text-field
+                            v-model="printerName"
+                            label="Printer Name"
+                            hide-details
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="displayCancelPrint" hide-details class="mt-0">
+                            <template v-slot:label>
+                                Display CANCEL_PRINT
+                                <v-tooltip right>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-icon class="text--secondary ml-2" v-bind="attrs" v-on="on">mdi mdi-information</v-icon>
+                                    </template>
+                                    <span>Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.</span>
+                                </v-tooltip>
+                            </template>
+                        </v-switch>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col class="text-center">
+                        <v-btn @click="dialogResetMainsail=true" >factory reset</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -23,7 +43,7 @@
                 <v-toolbar flat dense color="primary">
                     <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-help-circle" left></v-icon> Reset Mainsail
+                        <v-icon class="mdi mdi-help-circle" left></v-icon> Factory reset
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -72,6 +92,14 @@
                 },
                 set(newName) {
                     return this.$store.dispatch('gui/setSettings', { general: { printername: newName } })
+                }
+            },
+            displayCancelPrint: {
+                get() {
+                    return this.$store.state.gui.general.displayCancelPrint;
+                },
+                set(displayCancelPrint) {
+                    return this.$store.dispatch('gui/setSettings', { general: { displayCancelPrint: displayCancelPrint } });
                 }
             },
         },
