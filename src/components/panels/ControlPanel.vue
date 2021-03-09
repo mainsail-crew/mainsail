@@ -299,6 +299,7 @@
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
                 extruder: state => state.printer.extruder,
+                absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
 
                 feedamounts: state => state.gui.dashboard.extruder.feedamounts,
                 feedrates: state => state.gui.dashboard.extruder.feedrates,
@@ -446,9 +447,11 @@
                 this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "socket/removeLoading", { name: 'zTilt' });
             },
             doSendMove(gcode, feedrate) {
-                gcode = "G91" + "\n" +
-                    "G1 " + gcode + " F"+feedrate*60 + "\n" +
-                    "G90";
+                if (this.absolute_coordinates) {
+                    gcode = "G91" + "\n" +
+                        "G1 " + gcode + " F"+feedrate*60 + "\n" +
+                        "G90"
+                } else gcode = "G1 " + gcode + " F"+feedrate*60
 
                 this.doSend(gcode);
             },
