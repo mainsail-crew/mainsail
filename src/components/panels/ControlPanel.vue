@@ -36,7 +36,7 @@
                         <v-list-item class="minHeight36">
                           <v-checkbox v-model="useCross" class="mt-0" hide-details label="Alternate controls"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36">
+                        <v-list-item class="minHeight36" v-if="useCross">
                           <v-checkbox v-model="reverseZ" class="mt-0" hide-details label="Invert Z"></v-checkbox>
                         </v-list-item>
                     </v-list>
