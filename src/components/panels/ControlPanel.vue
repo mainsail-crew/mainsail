@@ -180,7 +180,7 @@
                     <v-row no-gutters>
                         <v-col class="col-12">
                             <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
-                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'x-'+steps">
+                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'all-'+steps">
                                     <span class="body-2">{{ steps }}</span>
                                 </v-btn>
                             </v-btn-toggle>
