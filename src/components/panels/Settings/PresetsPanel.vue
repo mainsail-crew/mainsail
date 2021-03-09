@@ -337,7 +337,7 @@
             },
             saveCooldown() {
                 if (this.cooldownDialog.valid) {
-                    this.$store.dispatch("gui/setSettings", {cooldown_gcode: this.cooldownDialog.gcode})
+                    this.$store.dispatch("gui/setSettings", { cooldown_gcode: this.cooldownDialog.gcode })
                     this.cooldownDialog.bool = false
                 }
             },
