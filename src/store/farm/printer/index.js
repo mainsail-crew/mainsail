@@ -21,6 +21,7 @@ export function getDefaultState() {
 		data: {
 
 		},
+		databases: [],
 		current_file: {},
 		theme_files: []
 	}

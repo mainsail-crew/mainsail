@@ -36,7 +36,7 @@
                         <v-list-item class="minHeight36">
                           <v-checkbox v-model="useCross" class="mt-0" hide-details label="Alternate controls"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36">
+                        <v-list-item class="minHeight36" v-if="useCross">
                           <v-checkbox v-model="reverseZ" class="mt-0" hide-details label="Invert Z"></v-checkbox>
                         </v-list-item>
                     </v-list>
@@ -180,7 +180,7 @@
                     <v-row no-gutters>
                         <v-col class="col-12">
                             <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
-                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'x-'+steps">
+                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'all-'+steps">
                                     <span class="body-2">{{ steps }}</span>
                                 </v-btn>
                             </v-btn-toggle>
@@ -299,6 +299,7 @@
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
                 extruder: state => state.printer.extruder,
+                absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
 
                 feedamounts: state => state.gui.dashboard.extruder.feedamounts,
                 feedrates: state => state.gui.dashboard.extruder.feedrates,
@@ -446,9 +447,11 @@
                 this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "socket/removeLoading", { name: 'zTilt' });
             },
             doSendMove(gcode, feedrate) {
-                gcode = "G91" + "\n" +
-                    "G1 " + gcode + " F"+feedrate*60 + "\n" +
-                    "G90";
+                if (this.absolute_coordinates) {
+                    gcode = "G91" + "\n" +
+                        "G1 " + gcode + " F"+feedrate*60 + "\n" +
+                        "G90"
+                } else gcode = "G1 " + gcode + " F"+feedrate*60
 
                 this.doSend(gcode);
             },
