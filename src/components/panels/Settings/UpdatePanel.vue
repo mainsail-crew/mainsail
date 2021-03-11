@@ -150,7 +150,12 @@
             },
             getBtnColor(object) {
                 if (typeof object === 'object' && object !== false) {
-                    if ('detached' in object && object.detached) return 'orange'
+                    if (
+                        'debug_enabled' in object &&
+                        !object.debug_enabled &&
+                        'detached' in object &&
+                        object.detached
+                    ) return 'orange'
                     if ('is_dirty' in object && object.is_dirty) return 'orange'
                     if ('is_valid' in object && !object.is_valid) return 'red'
 
@@ -169,7 +174,12 @@
             },
             getBtnText(object) {
                 if (typeof object === 'object' && object !== false) {
-                    if ('detached' in object && object.detached) return 'detached'
+                    if (
+                        'debug_enabled' in object &&
+                        !object.debug_enabled &&
+                        'detached' in object &&
+                        object.detached
+                    ) return 'detached'
                     if ('is_valid' in object && !object.is_valid) return 'invalid'
                     if ('is_dirty' in object && object.is_dirty) return 'dirty'
 
@@ -188,7 +198,12 @@
             },
             getBtnIcon(object) {
                 if (typeof object === 'object' && object !== false) {
-                    if ('detached' in object && object.detached) return 'alert-circle'
+                    if (
+                        'debug_enabled' in object &&
+                        !object.debug_enabled &&
+                        'detached' in object &&
+                        object.detached
+                    ) return 'alert-circle'
                     if ('is_valid' in object && !object.is_valid) return 'alert-circle'
                     if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
 
@@ -207,7 +222,12 @@
             },
             getBtnDisabled(object) {
                 if (['printing', 'paused'].includes(this.printer_state)) return true
-                if ('detached' in object && object.detached) return true
+                if (
+                    'debug_enabled' in object &&
+                    !object.debug_enabled &&
+                    'detached' in object &&
+                    object.detached
+                ) return true
 
                 if (typeof object === 'object' && object !== false) {
                     if ('is_valid' in object && !object.is_valid) return true
