@@ -77,7 +77,7 @@
                                             <template v-slot:activator="{ on, attrs }">
                                                 <small v-bind="attrs" v-on="on">{{ profile.variance.toFixed(3) }}</small>
                                             </template>
-                                            <span>min: {{ profile.min }}<br/>max: {{ profile.max }}</span>
+                                            <span>max: {{ profile.max }}<br />min: {{ profile.min }}</span>
                                         </v-tooltip>
                                     </td>
                                     <td class="text-right">
