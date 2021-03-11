@@ -62,7 +62,7 @@
                         >
                             <template v-if="dialog.bool">
                                 <v-row>
-                                    <v-col class="col-6">
+                                    <v-col class="col-12 col-sm-6">
                                         <v-row>
                                             <v-col class="col-12">
                                                 <v-text-field
@@ -103,7 +103,7 @@
                                             ></v-text-field>
                                         </v-row>
                                     </v-col>
-                                    <v-col class="col-6">
+                                    <v-col class="col-12 col-sm-6">
                                         <v-textarea
                                             outlined
                                             name="input-7-4"
