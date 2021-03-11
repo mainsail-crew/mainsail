@@ -71,7 +71,7 @@
                 </v-container>
             </v-card-text>
         </v-card>
-        <v-dialog v-model="commitsOverlay.bool" persistent width="60%" max-width="800">
+        <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <v-card dark>
                 <v-toolbar flat dense >
                     <v-toolbar-title>
@@ -90,7 +90,7 @@
                 <v-card-text class="py-0" v-if="!commitsOverlay.loading" style="max-height: 400px; overflow-y: scroll;">
                     <v-row>
                         <v-col class="pt-3 pl-0">
-                            <v-timeline align-top dense >
+                            <v-timeline class="updateManager" align-top dense >
                                 <v-timeline-item color="primary" small v-for="commit of commitsOverlay.outputs" v-bind:key="commit.sha">
                                     <v-row class="pt-0">
                                         <v-col>

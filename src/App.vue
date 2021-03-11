@@ -3,6 +3,7 @@
     @import './assets/styles/toastr.css';
     @import './assets/styles/page.scss';
     @import './assets/styles/utils.scss';
+    @import './assets/styles/updateManager.scss';
 
     .button-min-width-auto {
         min-width: auto !important;
