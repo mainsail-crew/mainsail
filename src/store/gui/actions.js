@@ -126,7 +126,8 @@ export default {
 
 		Object.keys(payload.state).forEach(key => {
 			if (key in state) {
-				settings[key] = {...payload.state[key]}
+				if (Array.isArray(payload.state[key])) settings[key] = payload.state[key]
+				else settings[key] = {...payload.state[key]}
 			}
 
 			if (key === "cooldownGcode") settings["cooldown_gcode"] = payload.state[key]
