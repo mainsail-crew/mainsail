@@ -236,7 +236,7 @@ export default {
         },
         visibilityChanged (isVisible) {
             this.isVisible = isVisible
-            if(isVisible) this.chart.resize()
+            if(isVisible && this.chart !== null) this.chart.resize()
         },
     },
     created() {
