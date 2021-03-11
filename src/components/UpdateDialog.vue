@@ -15,7 +15,7 @@
 </style>
 
 <template>
-    <v-dialog :value="application !== ''" persistent width="60%" max-width="800">
+    <v-dialog :value="application !== ''" persistent max-width="800" class="mx-0">
         <v-card
             dark
             :loading="!complete"
