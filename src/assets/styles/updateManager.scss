@@ -1,0 +1,15 @@
+
+
+@media screen and (max-width: 480px) {
+  .v-application--is-ltr .updateManager.v-timeline--dense:not(.v-timeline--reverse):before {
+    left: calc(24px - 1px);
+  }
+
+  .updateManager .v-timeline-item__divider {
+    min-width: 48px
+  }
+
+  .updateManager.v-timeline--dense .v-timeline-item__body {
+    max-width: calc(100% - 48px);
+  }
+}
