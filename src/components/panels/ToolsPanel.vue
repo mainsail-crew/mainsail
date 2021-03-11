@@ -176,10 +176,10 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0" @click="editHeater.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
-                <v-card-text class="pt-3">
+                <v-card-text class="pt-6">
                     <v-container class="px-0 py-0">
                         <v-row v-if="'chartTemperature' in editHeater.object && editHeater.object.chartTemperature">
-                            <v-col class="col-12">
+                            <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTemperature"
                                     label="Show current temperature in chart"
@@ -190,7 +190,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="'chartTarget' in editHeater.object && editHeater.object.chartTarget">
-                            <v-col class="col-12">
+                            <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTarget"
                                     label="Show target temperature in chart"
@@ -201,7 +201,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="'chartPower' in editHeater.object && editHeater.object.chartPower">
-                            <v-col class="col-12">
+                            <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolPower"
                                     label="Show PWM-power in chart"
@@ -212,7 +212,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-if="'chartSpeed' in editHeater.object && editHeater.object.chartSpeed">
-                            <v-col class="col-12">
+                            <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolSpeed"
                                     label="Show PWM-power in chart"
@@ -223,7 +223,7 @@
                             </v-col>
                         </v-row>
                         <v-row v-for="key in Object.keys(editHeater.additionSensors)" v-bind:key="key">
-                            <v-col class="col-12">
+                            <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.additionSensors[key]"
                                     :label="'Show '+key+' in list'"
@@ -234,7 +234,7 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col class="col-12 text-center">
+                            <v-col class="col-12 text-center py-0">
                                 <v-color-picker
                                     hide-canvas
                                     hide-mode-switch
