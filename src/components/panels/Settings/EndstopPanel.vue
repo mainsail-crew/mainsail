@@ -7,12 +7,20 @@
         </v-toolbar>
         <v-card-text class="pb-0">
             <v-container px-0 py-0>
-                <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
-                    <v-col>
-                        <label class="mt-1 d-inline-block">Endstop <b>{{ index.toUpperCase() }}</b></label>
-                        <v-chip class="float-right" :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
-                    </v-col>
-                </v-row>
+                <div class="py-2" v-if="Object.keys(endstops).length">
+                    <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
+                        <v-col class="py-1">
+                            <label class="mt-1 d-inline-block">Endstop <b>{{ index.toUpperCase() }}</b></label>
+                            <v-chip class="float-right" small :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="probe !== false">
+                        <v-col class="py-1">
+                            <label class="mt-1 d-inline-block">Probe</label>
+                            <v-chip class="float-right" small :color="probe ? 'red' : 'green' " text-color="white">{{ probe ? 'TRIGGERED' : 'open' }}</v-chip>
+                        </v-col>
+                    </v-row>
+                </div>
                 <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
                     <v-col>
                         <p>Press the sync-button on the right-bottom to load the current endstop status.</p>
@@ -45,15 +53,29 @@
             ...mapState({
                 loadings: state => state.socket.loadings,
                 endstops: state => state.printer.endstops,
-            })
+            }),
+            probe: {
+                get() {
+                    if (
+                        'probe' in this.$store.state.printer &&
+                        'last_query' in this.$store.state.printer.probe
+                    ) return this.$store.state.printer.probe.last_query
+
+                    return false
+                }
+            }
         },
         created() {
             this.getEndstops();
         },
         methods: {
             syncEndstops() {
-                this.$store.commit('socket/addLoading', { name: 'queryEndstops' });
-                this.$socket.sendObj('printer.query_endstops.status', { }, "printer/getEndstopStatus");
+                this.$store.commit('socket/addLoading', { name: 'queryEndstops' })
+                this.$socket.sendObj('printer.query_endstops.status', { }, "printer/getEndstopStatus")
+                if (this.probe !== false) {
+                    this.$store.commit('server/addEvent', { message: "QUERY_PROBE", type: 'command' })
+                    this.$socket.sendObj('printer.gcode.script', { script: "QUERY_PROBE" })
+                }
             },
             getEndstops() {
                 this.sortEndstops = {};
