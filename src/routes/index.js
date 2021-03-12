@@ -52,7 +52,7 @@ const routes = [
     {
         title: "G-Code Files",
         path: '/files',
-        icon: 'printer-3d-nozzle',
+        icon: 'file-document-multiple-outline',
         component: Files,
         alwaysShow: false,
     },
