@@ -16,7 +16,7 @@
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>Cannot not connect to {{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}.</p>
+                <p>Cannot connect to {{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}.</p>
                 <div class="text-center">
                     <v-btn @click="reconnect" color="primary">try again</v-btn>
                 </div>
