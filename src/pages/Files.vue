@@ -149,14 +149,14 @@
                         >
                         <td class="pr-0 text-center" style="width: 32px;">
                             <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(existsSmallThumbnail(item))">mdi-file</v-icon>
-                            <v-tooltip v-if="!item.isDirectory && existsSmallThumbnail(item) && existsBigThumbnail(item)" top>
+                            <v-icon v-if="!item.isDirectory && !(getSmallThumbnail(item))">mdi-file</v-icon>
+                            <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <img :src="'data:image/gif;base64,'+getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
+                                    <img :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
                                 </template>
-                                <span><img :src="'data:image/gif;base64,'+getBigThumbnail(item)" width="250" /></span>
+                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
                             </v-tooltip>
-                            <img v-if="!item.isDirectory && existsSmallThumbnail(item) && !existsBigThumbnail(item)" :src="'data:image/gif;base64,'+getSmallThumbnail(item)" width="32" height="32" />
+                            <img v-if="!item.isDirectory && getSmallThumbnail(item) && !getBigThumbnail(item)" :src="getSmallThumbnail(item)" width="32" height="32" />
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
@@ -212,8 +212,8 @@
             <v-card>
                 <v-img
                     contain
-                    v-if="existsBigThumbnail(dialogPrintFile.item)"
-                    :src="'data:image/gif;base64,'+getBigThumbnail(dialogPrintFile.item)"
+                    v-if="getBigThumbnail(dialogPrintFile.item)"
+                    :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">Start Job</v-card-title>
                 <v-card-text>Do you want to start {{ dialogPrintFile.item.filename }}?</v-card-text>
@@ -420,6 +420,11 @@
             disk_usage: {
                 get: function() {
                     return this.$store.getters["files/getDiskUsage"](this.currentPath)
+                }
+            },
+            basicUrl: {
+                get: function() {
+                    return this.$store.getters["socket/getUrl"]
                 }
             }
         },
@@ -790,43 +795,36 @@
                     this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
                 }
             },
-            existsSmallThumbnail(item) {
-                return (
+            getSmallThumbnail(item) {
+                if (
                     'thumbnails' in item &&
                     item.thumbnails !== undefined &&
-                    item.thumbnails.findIndex(thumb => thumb.width >= 32 && thumb.width <= 64 && thumb.height >= 32 && thumb.height <= 64) !== -1
-                )
-            },
-            getSmallThumbnail(item) {
-                if (this.existsSmallThumbnail(item)) {
+                    item.thumbnails.length
+                ) {
                     const thumbnail = item.thumbnails.find(thumb =>
                         thumb.width >= 32 && thumb.width <= 64 &&
                         thumb.height >= 32 && thumb.height <= 64
                     )
 
-                    if (thumbnail) return thumbnail.data
+                    if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path
                 }
 
                 return ""
             },
-            existsBigThumbnail(item) {
-                return (
+            getBigThumbnail(item) {
+                if (
                     'thumbnails' in item &&
                     item.thumbnails !== undefined &&
-                    item.thumbnails.findIndex(thumb => thumb.width >= 300 && thumb.width <= 400) !== -1
-                )
-            },
-            getBigThumbnail(item) {
-                if (this.existsBigThumbnail(item)) {
+                    item.thumbnails.length) {
                     const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
-                    if (thumbnail) return thumbnail.data
+                    if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path
                 }
 
                 return ""
             },
             getThumbnailWidth(item) {
-                if (this.existsBigThumbnail(item)) {
+                if (this.getBigThumbnail(item)) {
                     const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
                     if (thumbnail) return thumbnail.width
