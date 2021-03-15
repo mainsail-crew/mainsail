@@ -49,7 +49,7 @@
                 this.Languages = []
                 locales.keys().map(key=>{
                     let value = key.match(/([A-Za-z0-9-_]+)\./i)[1];
-                    let text = require(`@/locales/${value}.json`).title
+                    let text = locales(key).title
                     this.Languages.push({
                         text: text,
                         value: value
