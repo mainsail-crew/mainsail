@@ -8,7 +8,6 @@
             <webcam-panel class="mt-6" v-if="showDashboardWebcam"></webcam-panel>
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
-            <extruder-panel class="mt-6" v-if="klippy_state === 'ready'"></extruder-panel>
             <miscellaneous-panel v-if="klippy_state === 'ready'"></miscellaneous-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">

@@ -65,6 +65,11 @@ export function getDefaultState() {
 
 				}
 			},
+			settings: {
+				printer: {
+
+				}
+			},
 			config_changed: false,
 		},
 		helplist: [],

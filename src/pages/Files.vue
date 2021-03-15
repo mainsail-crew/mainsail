@@ -53,7 +53,7 @@
             <v-card-title>
                 {{ $t("Files.GCodeFiles")}}
                 <v-spacer class="d-none d-sm-block"></v-spacer>
-                <input type="file" ref="fileUpload" accept=".gcode, .ufp" style="display: none" multiple @change="uploadFile" />
+                <input type="file" ref="fileUpload" :accept="validGcodeExtensions.join(', ')" style="display: none" multiple @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
                     <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                     <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
@@ -137,9 +137,10 @@
 
                 <template #item="{ item }">
                     <tr
+                        v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        class="file-list-cursor"
+                        class="file-list-cursor user-select-none"
                         draggable="true"
                         @drag="dragFile($event, item)"
                         @dragend="dragendFile($event)"
@@ -175,8 +176,8 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-play</v-icon> {{ $t("Files.PrintStart")}}
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-play</v-icon> Print start
                 </v-list-item>
                 <v-list-item
                     @click="preheat"
@@ -293,6 +294,7 @@
     import { mapState, mapGetters } from 'vuex'
     import axios from 'axios'
     import { findDirectory } from "@/plugins/helpers"
+    import { validGcodeExtensions } from "@/store/variables"
 
     export default {
         data () {
@@ -368,7 +370,8 @@
                         time: 0,
                         loaded: 0
                     }
-                }
+                },
+                validGcodeExtensions: validGcodeExtensions
             }
         },
         computed: {
@@ -545,12 +548,16 @@
                 return '--'
             },
             showContextMenu (e, item) {
-                e.preventDefault()
-                this.contextMenu.shown = true
-                this.contextMenu.x = e.clientX
-                this.contextMenu.y = e.clientY
-                this.contextMenu.item = item
-                this.$nextTick(() => { this.contextMenu.shown = true })
+                if (!this.contextMenu.shown) {
+                    e?.preventDefault();
+                    this.contextMenu.shown = true
+                    this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
+                    this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+                    this.contextMenu.item = item
+                    this.$nextTick(() => {
+                        this.contextMenu.shown = true
+                    })
+                }
             },
             preheat() {
                 if (
@@ -621,13 +628,18 @@
             deleteDirectoryAction: function() {
                 this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
-            clickRow: function(item) {
-                if (!item.isDirectory) {
-                    this.dialogPrintFile.show = true;
-                    this.dialogPrintFile.item = item;
-                } else {
-                    this.currentPath += "/"+item.filename;
-                    this.loadPath();
+            clickRow(item, force = false) {
+                if (!this.contextMenu.shown || force) {
+                    if (force) {
+                        this.contextMenu.shown = false;
+                    }
+                    if (!item.isDirectory) {
+                        this.dialogPrintFile.show = true;
+                        this.dialogPrintFile.item = item;
+                    } else {
+                        this.currentPath += "/" + item.filename;
+                        this.loadPath();
+                    }
                 }
             },
             clickRowGoBack: function() {
@@ -642,8 +654,8 @@
                 }
             },
             startPrint(filename = "") {
-                filename = (this.currentPath+"/"+filename).substring(7);
-                this.dialogPrintFile.show = false;
+                filename = (this.currentPath+"/"+filename).substring(7)
+                this.dialogPrintFile.show = false
                 this.$socket.sendObj('printer.print.start', { filename: filename }, 'switchToDashboard');
             },
             dragOverUpload(e) {
@@ -866,16 +878,6 @@
                     if (headerElement) headerElement.visible = false
                 })
             }
-            /*headers: {
-                deep: true,
-                handler(newVal) {
-                    window.console.log(newVal)
-                    newVal.forEach((element) => {
-                        if (element.visible && this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.splice(this.hideMetadataColums.indexOf(element.value), 1)
-                        else if (!element.visible && !this.hideMetadataColums.includes(element.value)) this.hideMetadataColums.push(element.value)
-                    })
-                }
-            }*/
         }
     }
 </script>

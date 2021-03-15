@@ -7,13 +7,13 @@
         <v-container>
             <v-row class="">
                 <v-col class="col col-md-6">
-                    <v-label>{{ $t("Dashboard.FeedAmountIn") }} mm:</v-label>
+                    <v-label>{{ $t("Panels.ExtruderPanel.FeedAmountIn") }} mm:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
                         <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === feedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
                     </v-btn-toggle>
                 </v-col>
                 <v-col class="col col-md-6">
-                    <v-label>{{ $t("Dashboard.FeedrateIn") }} mm/s:</v-label>
+                    <v-label>{{ $t("Panels.ExtruderPanel.FeedrateIn") }} mm/s:</v-label>
                     <v-btn-toggle class="mt-2" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
                         <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(feedrate === rate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
                     </v-btn-toggle>
@@ -21,8 +21,8 @@
             </v-row>
             <v-row class="">
                 <v-col class="col text-center">
-                    <v-btn small @click="sendRetract()" class="mx-2" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t("Dashboard.Retract") }}</v-btn>
-                    <v-btn small @click="sendDetract()" class="mx-2" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t("Dashboard.Extrude") }}</v-btn>
+                    <v-btn small @click="sendRetract()" class="mx-2" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t("Panels.ExtruderPanel.Retract") }}</v-btn>
+                    <v-btn small @click="sendDetract()" class="mx-2" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t("Panels.ExtruderPanel.Extrude") }}</v-btn>
                 </v-col>
             </v-row>
         </v-container>

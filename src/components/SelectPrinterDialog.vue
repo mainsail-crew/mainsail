@@ -120,7 +120,7 @@
             <v-card-text class="pt-3" v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool">
                 <v-container class="px-0 pb-0">
                     <v-row v-for="(printer, index) in this['farm/getPrinters']" v-bind:key="index">
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;" @click="connect(printer)">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-2" style="cursor: pointer;" @click="connect(printer)">
                             <v-row align="center">
                                 <v-col class="col-auto pr-0">
                                     <v-progress-circular
@@ -142,7 +142,7 @@
                         <v-col>
                             <p class="text-center" v-if="this['farm/countPrinters'] === 0">{{ $t("App.Hello") }}</p>
                             <p class="text-center">{{ $t("App.PleaseRememberToAdd") }}<code>{{ currentUrl }}</code> {{ $t("App.InMoonrakerConf") }}</p>
-                            <p class="text-center">{{ $t("App.YouCanFindMore") }}<a href="https://docs.mainsail.xyz/remotemode" target="_blank">{{ $t("App.Remotemode") }}</a>.</p>
+                            <p class="text-center mb-0">{{ $t("App.YouCanFindMore") }} <a :href="$t('App.Remotemode')" target="_blank">{{ $t("App.Remotemode") }}</a>.</p>
                         </v-col>
                     </v-row>
                     <v-row>

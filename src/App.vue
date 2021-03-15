@@ -1,6 +1,9 @@
 <style>
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
+    @import './assets/styles/page.scss';
+    @import './assets/styles/utils.scss';
+    @import './assets/styles/updateManager.scss';
 
     .button-min-width-auto {
         min-width: auto !important;
@@ -80,14 +83,14 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <input type="file" ref="fileUploadAndStart" accept=".gcode, .ufp" style="display: none" @change="uploadAndStart" />
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">{{ $t("App.SAVECONFIG")}}</v-btn>
-            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>{{ $t("App.UploadPrint")}}</v-btn>
-            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">{{ $t("App.EmergencyStop")}}</span></v-btn>
+            <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">{{ $t("App.SAVECONFIG") }}</v-btn>
+            <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>{{ $t("App.UploadPrint") }}</v-btn>
+            <v-btn color="error" class="button-min-width-auto px-3" v-if="isConnected" :loading="loadings.includes['topbarEmergencyStop']" @click="clickEmergencyStop"><v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">{{ $t("App.EmergencyStop") }}</span></v-btn>
             <top-corner-menu></top-corner-menu>
         </v-app-bar>
 
-        <v-main id="content">
+        <v-main id="content" v-bind:style="{background:mainBackground,backgroundAttachment:'fixed',backgroundSize: 'cover',backgroundRepeat: 'no-repeat'}">
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <keep-alive>
@@ -133,10 +136,11 @@
     import { mapState, mapGetters } from 'vuex'
     import TopCornerMenu from "@/components/TopCornerMenu"
     import UpdateDialog from "@/components/UpdateDialog"
-    import ConnectingDialog from "@/components/ConnectingDialog";
-    import SelectPrinterDialog from "@/components/SelectPrinterDialog";
+    import ConnectingDialog from "@/components/ConnectingDialog"
+    import SelectPrinterDialog from "@/components/SelectPrinterDialog"
     import PrinterSelecter from "@/components/PrinterSelecter"
-    import axios from "axios";
+    import axios from "axios"
+    import { validGcodeExtensions } from "@/store/variables"
 
 export default {
     props: {
@@ -165,7 +169,8 @@ export default {
                 time: 0,
                 loaded: 0
             }
-        }
+        },
+        validGcodeExtensions: validGcodeExtensions
     }),
     created () {
         this.$vuetify.theme.dark = true;
@@ -218,6 +223,11 @@ export default {
         sidebarBackground: {
             get() {
                 return this.$store.getters["files/getSidebarBackground"]
+            }
+        },
+        mainBackground: {
+            get() {
+                return this.$store.getters["files/getMainBackground"]
             }
         },
         customStylesheet: {

@@ -6,7 +6,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-translate</v-icon>{{ $t('Setting.Language') }}</span>
+                <span class="subheading"><v-icon left>mdi-translate</v-icon>{{ $t('Settings.LanguagePanel.Language') }}</span>
             </v-toolbar-title> 
         </v-toolbar>
         <v-card-text class="pt-2 pb-0">
@@ -14,7 +14,7 @@
             v-model="lang"
             @change="changeLanguage"
           :items="items"
-          :label="$t('Setting.Language')"
+          :label="$t('Settings.LanguagePanel.Language')"
         ></v-select>
         </v-card-text>
     </v-card>

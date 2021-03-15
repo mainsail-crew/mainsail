@@ -106,7 +106,6 @@ export default {
 						payload.error.message !== "Klippy Request Timed Out" &&
 						payload.error.message !== "Klippy Disconnected"
 					) window.console.error("JSON-RPC: " + payload.error.message)
-					else if (!payload.error) window.console.log(payload)
 				}
 		}
 	},
