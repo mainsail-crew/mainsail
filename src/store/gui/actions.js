@@ -31,7 +31,12 @@ export default {
 	updateSettings({ commit }, payload) {
 		const keyName = payload.keyName
 		let newState = payload.newVal
-		if ('value' in payload && keyName in payload.value && typeof payload.value[keyName] !== "string") {
+		if (
+			'value' in payload &&
+			keyName in payload.value &&
+			typeof payload.value[keyName] !== "string" &&
+			!Array.isArray(payload.value[keyName])
+		) {
 			newState = objectAssignDeep(payload.value[keyName], newState)
 		}
 
