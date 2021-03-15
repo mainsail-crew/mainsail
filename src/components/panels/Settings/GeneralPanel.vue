@@ -32,6 +32,21 @@
                     </v-col>
                 </v-row>
                 <v-row>
+                    <v-col class="py-2">
+                        <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0">
+                            <template v-slot:label>
+                                Display Z-Offset-Panel
+                                <v-tooltip right>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-icon class="text--secondary ml-2" v-bind="attrs" v-on="on">mdi mdi-information</v-icon>
+                                    </template>
+                                    <span>Shows the Z-Offset panel permanently.</span>
+                                </v-tooltip>
+                            </template>
+                        </v-switch>
+                    </v-col>
+                </v-row>
+                <v-row>
                     <v-col class="text-center">
                         <v-btn @click="dialogResetMainsail=true" >factory reset</v-btn>
                     </v-col>
@@ -100,6 +115,14 @@
                 },
                 set(displayCancelPrint) {
                     return this.$store.dispatch('gui/setSettings', { general: { displayCancelPrint: displayCancelPrint } });
+                }
+            },
+            displayZOffsetStandby: {
+                get() {
+                    return this.$store.state.gui.general.displayZOffsetStandby;
+                },
+                set(displayZOffsetStandby) {
+                    return this.$store.dispatch('gui/setSettings', { general: { displayZOffsetStandby: displayZOffsetStandby } });
                 }
             },
         },
