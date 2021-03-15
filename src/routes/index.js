@@ -4,6 +4,7 @@ import Farm from '../pages/Farm.vue'
 import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
+import History from '../pages/History.vue'
 import Settings from '../pages/Settings.vue'
 import SettingsInterface from '../pages/settings/interface.vue'
 import SettingsMachine from '../pages/settings/machine.vue'
@@ -54,6 +55,13 @@ const routes = [
         path: '/files',
         icon: 'file-document-multiple-outline',
         component: Files,
+        alwaysShow: false,
+    },
+    {
+        title: "History",
+        path: '/history',
+        icon: 'history',
+        component: History,
         alwaysShow: false,
     },
     {
