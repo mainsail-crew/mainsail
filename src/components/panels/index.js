@@ -12,6 +12,7 @@ import WebcamPanel from "./WebcamPanel";
 import MiniconsolePanel from "./MiniconsolePanel";
 import Settings from "./Settings/";
 import PowerControlPanel from "./PowerControlPanel.vue";
+import HistoryListPanel from "./HistoryListPanel.vue";
 
 Vue.component('status-panel', StatusPanel);
 Vue.component('klippy-state-panel', KlippyStatePanel);
@@ -24,6 +25,7 @@ Vue.component('miscellaneous-panel', Miscellaneous);
 Vue.component('webcam-panel', WebcamPanel);
 Vue.component('miniconsole-panel', MiniconsolePanel);
 Vue.component('power-control-panel', PowerControlPanel);
+Vue.component('history-list-panel', HistoryListPanel);
 
 export default {
     Settings

@@ -53,6 +53,9 @@ export default {
 
 			if (payload.plugins.includes("update_manager") !== false)
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
+
+			if (payload.plugins.includes("history") !== false)
+				Vue.prototype.$socket.sendObj('server.history.list', {}, 'server/history/getHistory')
 		}
 
 		if (state.registered_directories.length === 0 && 'registered_directories' in payload) {
