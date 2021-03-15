@@ -17,10 +17,10 @@ export default {
                 darkMode: true,
                 animation: false,
                 grid: {
-                    top: 0,
+                    top: 10,
                     right: 0,
                     bottom: 0,
-                    left: 0,
+                    left: 10,
                 },
                 tooltip: {
                     trigger: 'item'
@@ -36,9 +36,7 @@ export default {
     },
     computed: {
         ...mapState({
-            intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
-            intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
-            boolTempchart: state => state.gui.dashboard.boolTempchart,
+
         }),
         getAllPrintStatusArray: {
             get: function() {
@@ -51,7 +49,6 @@ export default {
             if (document.getElementById("historyAllPrintStatus") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("historyAllPrintStatus"), null, { renderer: 'svg' })
                 this.updateChart()
-                window.console.log("create AllPrintStatus")
             } else
                 setTimeout(() => {
                     this.createChart()
@@ -60,10 +57,9 @@ export default {
         updateChart() {
             if (this.chart) {
                 const chartOptions = { series: this.chartOptions.series }
-                chartOptions.series[0].data = this.filamentUsageArray
+                chartOptions.series[0].data = this.getAllPrintStatusArray
                 this.chart.setOption(chartOptions)
                 this.chart.resize()
-                window.console.log("update AllPrintStatus")
             }
         },
     },
