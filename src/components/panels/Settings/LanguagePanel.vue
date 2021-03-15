@@ -13,7 +13,7 @@
             <v-select
             v-model="lang"
             @change="changeLanguage"
-          :items="items"
+          :items="Languages"
           :label="$t('Settings.LanguagePanel.Language')"
         ></v-select>
         </v-card-text>
@@ -27,16 +27,7 @@
         },
         data: function() {
             return {
-                items: [
-                    {
-                        text: "English",
-                        value: "en"
-                    },
-                    {
-                        text: "简体中文",
-                        value: "zh"
-                    }
-                ]
+                Languages: []
             }
         },
         computed: {
@@ -52,7 +43,22 @@
         methods: {
             changeLanguage(val){
                 this.lang = val
+            },
+            getLanguages(){
+                const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
+                this.Languages = []
+                locales.keys().map(key=>{
+                    let value = key.match(/([A-Za-z0-9-_]+)\./i)[1];
+                    let text = require(`@/locales/${value}.json`).title
+                    this.Languages.push({
+                        text: text,
+                        value: value
+                    })
+                })
             }
+        },
+        created(){
+            this.getLanguages();
         }
     }
 </script>
