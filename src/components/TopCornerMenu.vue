@@ -28,6 +28,9 @@
             <v-list-item class="minheight30"  link @click="doServiceRestartMoonraker()">
                 <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Moonraker</v-list-item-title>
             </v-list-item>
+            <v-list-item class="minheight30" v-if="boolWebcam" link @click="doServiceRestartWebcam()">
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Webcam</v-list-item-title>
+            </v-list-item>
             <div v-if="countPowerDevices">
                 <v-divider class="mt-0"></v-divider>
                 <v-subheader class="pt-2" style="height: auto;">Power Devices</v-subheader>
@@ -70,6 +73,11 @@ export default {
                 return this.$store.getters["server/power/count"]
             }
         },
+        boolWebcam: {
+            get() {
+                return this.$store.state.gui.dashboard.boolWebcam || this.$store.state.gui.webcam.bool
+            }
+        }
     },
     methods: {
         changeSwitch(device, value) {
@@ -96,6 +104,10 @@ export default {
         doServiceRestartMoonraker: function() {
             this.showMenu = false
             this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
+        },
+        doServiceRestartWebcam: function() {
+            this.showMenu = false
+            this.$socket.sendObj('machine.services.restart', { service: "webcamd" })
         },
         doHostReboot: function() {
             this.showMenu = false
