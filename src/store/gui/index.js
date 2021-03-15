@@ -6,7 +6,8 @@ export function getDefaultState() {
 	return {
 		general: {
 			printername: "",
-			language: "en"
+			language: "en",
+			displayCancelPrint: false
 		},
 		dashboard: {
 			boolWebcam: false,
@@ -19,14 +20,22 @@ export function getDefaultState() {
 				stepsXY: [ 100, 10, 1 ],
 				feedrateZ: 25,
 				stepsZ: [ 25, 1, 0.1 ],
+				stepsAll: [0.1, 1, 10, 25, 50, 100],
+				selectedCrossStep: null,
+				reverseZ: false,
+				useCross: false
 			},
 			extruder: {
+				feedamount: 25,
 				feedamounts: [ 50, 25, 10, 5, 1 ],
+				feedrate: 5,
 				feedrates: [ 60, 30, 15, 5, 1 ],
 			}
 		},
 		webcam: {
-			url: "",
+			service: 'mjpegstreamer',
+			targetFps: 25,
+			url: "/webcam/?action=stream",
 			rotate: false,
 			rotateDegrees: 90,
 			flipX: false,
@@ -57,9 +66,11 @@ export function getDefaultState() {
 				showHiddenFiles: false,
 			}
 		},
-		remotePrinters: [],
+		//moonraker DB api dont accept camel case key names
+		remote_printers: [],
 		presets: [],
-		cooldownGcode: "TURN_OFF_HEATERS"
+		//moonraker DB api dont accept camel case key names
+		cooldown_gcode: "TURN_OFF_HEATERS"
 	}
 }
 

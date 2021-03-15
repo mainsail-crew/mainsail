@@ -10,7 +10,23 @@ export default {
 	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
 		Vue.prototype.$socket.sendObj('server.config', {}, 'server/getConfig')
-		Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+		Vue.prototype.$socket.sendObj('server.database.list', { root: 'config' }, 'server/checkDatabases')
+	},
+
+	checkDatabases({ commit }, payload) {
+		if (
+			'namespaces' in payload &&
+			payload.namespaces.includes('mainsail')
+		) {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/getData')
+		} else {
+			//fallback for a short time...
+			Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+
+			//after this short migration time...
+			//dispatch('printer/init', null, { root: true })
+			commit('void', { }, { root: true })
+		}
 	},
 
 	checkMainsailJson({ dispatch, rootState }, payload) {
@@ -22,9 +38,7 @@ export default {
 
 				fetch('//'+rootState.socket.hostname+':'+rootState.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
 					.then(res => res.json()).then(file => {
-					dispatch('gui/getData', file, { root: true })
-					if (!rootState.socket.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
-					dispatch('printer/init', null, { root: true })
+					dispatch('gui/migrateMainsailJson', file, { root: true })
 				})
 			}
 		})

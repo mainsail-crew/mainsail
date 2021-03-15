@@ -34,6 +34,21 @@ export default {
 		return '/img/sidebar-background.png'
 	},
 
+	getMainBackground: (state, getters, rootState, rootGetters) => {
+		let configDir = findDirectory(state.filetree, ['config', themeDir])
+
+		let file = configDir.find(element =>
+			element.filename !== undefined && (
+				element.filename === 'main-background.jpg' ||
+				element.filename === 'main-background.png' ||
+				element.filename === 'main-background.gif'
+			)
+		)
+		if (file) return 'url('+rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename+')'
+
+		return 'transparent'
+	},
+
 	getCustomStylesheet: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
 

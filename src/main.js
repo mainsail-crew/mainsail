@@ -3,16 +3,19 @@ import WebSocketClient from './plugins/wsClient'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import i18n from './plugins/i18n'
+import './plugins/longpress';
 import VueResource from 'vue-resource'
 import './components'
 import store from './store'
 import router from './plugins/router'
 import vueHeadful from 'vue-headful';
+import VueObserveVisibility from 'vue-observe-visibility';
 
 
 Vue.config.productionTip = false;
 
 Vue.use(VueResource);
+Vue.use(VueObserveVisibility);
 Vue.http.headers.common['Content-Type'] = 'application/json';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*';

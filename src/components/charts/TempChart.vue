@@ -1,5 +1,5 @@
 <template>
-    <div id="tempchart" style="height: 250px; width: 100%;"></div>
+    <div id="tempchart" style="height: 250px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
             chart : null,
             timerChart: '',
             timerDataset: '',
-            chartFocus: false,
+            isVisable: true,
             chartOptions: {
                 darkMode: true,
                 animation: false,
@@ -36,7 +36,7 @@ export default {
                             let outputTime = datasets[0]['axisValueLabel']
                             outputTime = outputTime.substr(outputTime.indexOf(" "))
 
-                            output += "<div class=\"row mb-2\">" +
+                            output += "<div class=\"row\">" +
                                     "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
                                         "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
                                         "<span class='font-weight-bold'>"+outputTime+"</span>" +
@@ -51,23 +51,23 @@ export default {
                                 !dataset.seriesName.endsWith('_speed')
                             ) {
                                 output += "<div class=\"row\">"
-                                output += "<div class=\"col-auto pt-2 pb-1\">"
+                                output += "<div class=\"col-auto py-0\">"
 
                                 const mainDataset = this.series.find(tmpDataset => tmpDataset.name === dataset.seriesName)
                                 if (mainDataset)
                                     output += "<span style=\"" +
                                         "display:inline-block;" +
-                                        "margin-right:6px;" +
-                                        "width:10px;" +
-                                        "height:10px;" +
-                                        "border:1px solid "+mainDataset.lineStyle.color+";" +
-                                        "background-color:"+mainDataset.lineStyle.color+"66;" +
+                                        "margin-right:10px;" +
+                                        "width:8px;" +
+                                        "height:8px;" +
+                                        "border-radius: 50%;" +
+                                        "background-color:"+mainDataset.lineStyle.color+"CC;" +
                                         "\"></span>"
 
                                 output += convertName(dataset.seriesName)+":"
 
                                 output += "</div>"
-                                output += "<div class=\"col text-right pt-2 pb-1 font-weight-bold\">"
+                                output += "<div class=\"col text-right py-0 font-weight-bold\">"
 
                                 if (dataset.value[1]) output += dataset.value[1].toFixed(1)
 
@@ -93,7 +93,7 @@ export default {
                 grid: {
                     top: 35,
                     right: 25,
-                    bottom: 25,
+                    bottom: 30,
                     left: 25,
                 },
                 dataZoom: [{
@@ -118,7 +118,7 @@ export default {
                 },
                 yAxis: [
                     {
-                        name: '[°C] Temperature',
+                        name: 'Temperature [°C]',
                         type: 'value',
                         min: 0,
                         max: 300,
@@ -180,43 +180,6 @@ export default {
                     },
                 ],
                 series: [],
-                media: [{
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        xAxis: {
-                            //splitNumber: 10,
-                        }
-                    }
-                }, {
-                    query: {
-                        minWidth: 500,
-                    },
-                    option: {
-                        grid: {
-                            right: 40,
-                            left: 40,
-                        },
-                        yAxis: [
-                            {
-                                maxInterval: 50,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    showMaxLabel: true,
-                                    rotate: 0
-                                }
-                            },
-                            {
-                                maxInterval: 25,
-                                axisLabel: {
-                                    showMinLabel: false,
-                                    rotate: 0
-                                }
-                            },
-                        ],
-                    }
-                }],
             },
         }
     },
@@ -255,16 +218,25 @@ export default {
             get() {
                 return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
             }
+        },
+        boolDisplayPwmAxis: {
+            get() {
+                return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
+            }
         }
     },
     methods: {
         createChart() {
             if (document.getElementById("tempchart") && this.chart === null) {
-                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'svg'})
+                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'canvas'})
                 this.chart.setOption(this.chartOptions)
             } else setTimeout(() => {
                 this.createChart()
             }, 500)
+        },
+        visibilityChanged (isVisible) {
+            this.isVisible = isVisible
+            if(isVisible && this.chart !== null) this.chart.resize()
         },
     },
     created() {
@@ -272,17 +244,60 @@ export default {
             if (
                 this.chart &&
                 this.boolTempchart &&
-                document.visibilityState === "visible" &&
-                this.$route.path === "/"
+                this.isVisable
             ) {
                 this.chart.setOption({
                     series: this.series,
+                    grid: {
+                        left: 25,
+                        right: this.boolDisplayPwmAxis ? 25 : 15,
+                    },
                     xAxis: {
                         min: new Date() - this.maxHistory * 1000,
                         max: new Date(),
                     },
                     yAxis: [{
+                        axisLabel: {
+                            rotate: 90,
+                            showMinLabel: true,
+                            margin: 5,
+                        },
                         max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
+                    }, {
+                        show: this.boolDisplayPwmAxis,
+                        axisLabel: {
+                            showMinLabel: true,
+                            rotate: 90,
+                            margin: 5,
+                        }
+                    }],
+                    media: [{
+                        query: {
+                            minWidth: 500,
+                        },
+                        option: {
+                            grid: {
+                                right: this.boolDisplayPwmAxis ? 40 : 15,
+                                left: 40,
+                            },
+                            yAxis: [
+                                {
+                                    maxInterval: 50,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        showMaxLabel: true,
+                                        rotate: 0
+                                    }
+                                },
+                                {
+                                    maxInterval: 25,
+                                    axisLabel: {
+                                        showMinLabel: false,
+                                        rotate: 0
+                                    }
+                                },
+                            ],
+                        }
                     }],
                 })
             }
@@ -298,6 +313,6 @@ export default {
     },
     mounted: function() {
         this.createChart()
-    }
+    },
 }
 </script>

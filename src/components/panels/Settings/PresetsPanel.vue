@@ -4,13 +4,13 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-fire</v-icon>{{ $t('Setting.PreheatPresets') }}</span>
+                    <span class="subheading"><v-icon left>mdi-fire</v-icon>{{ $t('Settings.PresetsPanel.PreheatPresets') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="py-3">
                 <v-container>
                     <v-row v-for="(preset, index) in this['gui/getPreheatPresets']" v-bind:key="index">
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-3" style="cursor: pointer;">
                             <v-row align="center">
                                 <v-col class="pl-6">
                                     <strong>{{ preset.name }}</strong>
@@ -25,10 +25,10 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-6" style="cursor: pointer;">
+                        <v-col class="rounded transition-swing secondary py-2 px-2 mb-2" style="cursor: pointer;">
                             <v-row align="center">
                                 <v-col class="pl-6">
-                                    <strong>{{ $t('Setting.Cooldown')}}</strong>
+                                    <strong>{{ $t('Settings.PresetsPanel.Cooldown')}}</strong>
                                 </v-col>
                                 <v-col class="col-auto text-right"><v-btn small class="minwidth-0 float-right" v-on:click.stop.prevent="editCooldown"><v-icon small>mdi-pencil</v-icon></v-btn></v-col>
                             </v-row>
@@ -36,7 +36,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn @click="createPreset">{{ $t('Setting.AddPreset')}}</v-btn>
+                            <v-btn @click="createPreset">{{ $t('Settings.PresetsPanel.AddPreset')}}</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -48,7 +48,7 @@
                     <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-fire" left></v-icon>
-                        {{ dialog.index === null ? $t('Setting.Create') : $t('Setting.Edit') }} {{ $t('Setting.Preset') }}
+                        {{ dialog.index === null ? $t('Settings.PresetsPanel.Create') : $t('Settings.PresetsPanel.Edit') }} {{ $t('Settings.PresetsPanel.Preset') }}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -62,12 +62,12 @@
                         >
                             <template v-if="dialog.bool">
                                 <v-row>
-                                    <v-col class="col-6">
+                                    <v-col class="col-12 col-sm-6">
                                         <v-row>
                                             <v-col class="col-12">
                                                 <v-text-field
                                                     v-model="dialog.name"
-                                                    :label="$t('Setting.Name')"
+                                                    :label="$t('Settings.PresetsPanel.Name')"
                                                     hide-details="auto"
                                                     :rules="[rules.required, rules.unique]"
                                                     dense
@@ -103,11 +103,11 @@
                                             ></v-text-field>
                                         </v-row>
                                     </v-col>
-                                    <v-col class="col-6">
+                                    <v-col class="col-12 col-sm-6">
                                         <v-textarea
                                             outlined
                                             name="input-7-4"
-                                            :label="$t('Setting.CustomGCode')"
+                                            :label="$t('Settings.PresetsPanel.CustomGCode')"
                                             v-model="dialog.gcode"
                                             hide-details="auto"
                                         ></v-textarea>
@@ -115,7 +115,7 @@
                                 </v-row>
                                 <v-row class="mt-3" v-if="dialog.boolInvalidMin">
                                     <v-col class="py-0">
-                                        <v-alert dense text type="error">{{ $t('Setting.PresetInfo')}}</v-alert>
+                                        <v-alert dense text type="error">{{ $t('Settings.PresetsPanel.PresetInfo')}}</v-alert>
                                     </v-col>
                                 </v-row>
                                 <v-row class="mt-3">
@@ -135,7 +135,7 @@
                                             :class="dialog.index !== null ? 'float-right' : '' "
                                             type="submit"
                                         >
-                                            {{ dialog.index === null ? $t('Setting.Store') : $t('Setting.Update') }} {{ $t('Setting.Preset') }}
+                                            {{ dialog.index === null ? $t('Settings.PresetsPanel.Store') : $t('Settings.PresetsPanel.Update') }} {{ $t('Settings.PresetsPanel.Preset') }}
                                         </v-btn>
                                     </v-col>
                                 </v-row>
@@ -150,7 +150,7 @@
                 <v-toolbar flat dense color="primary">
                     <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-fire" left></v-icon> {{ $t('Setting.EditCooldown')}}
+                        <v-icon class="mdi mdi-fire" left></v-icon> {{ $t('Settings.PresetsPanel.EditCooldown')}}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -167,9 +167,10 @@
                                     <v-textarea
                                         outlined
                                         name="input-7-4"
-                                        :label="$t('Setting.CustomGCode')"
+                                        :label="$t('Settings.PresetsPanel.CustomGCode')"
                                         v-model="cooldownDialog.gcode"
                                         :rules="[rules.required]"
+                                        hide-details="auto"
                                     ></v-textarea>
                                 </v-col>
                             </v-row>
@@ -180,7 +181,7 @@
                                         outlined
                                         type="submit"
                                     >
-                                        {{ $t('Setting.UpdateCooldown')}}
+                                        {{ $t('Settings.PresetsPanel.UpdateCooldown')}}
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -225,7 +226,7 @@
         computed: {
             ...mapState({
                 orgState: state => state.gui.presets,
-                cooldownGcode: state => state.gui.cooldownGcode,
+                cooldownGcode: state => state.gui.cooldown_gcode,
             }),
             ...mapGetters([
                 'printer/getHeaters',
@@ -336,7 +337,7 @@
             },
             saveCooldown() {
                 if (this.cooldownDialog.valid) {
-                    this.$store.dispatch("gui/setSettings", {cooldownGcode: this.cooldownDialog.gcode})
+                    this.$store.dispatch("gui/setSettings", { cooldown_gcode: this.cooldownDialog.gcode })
                     this.cooldownDialog.bool = false
                 }
             },

@@ -59,18 +59,9 @@ export default {
 			if ("filename" in file) {
 				if (file.filename.startsWith(".theme/")) {
 					state.theme_files.push(file.filename)
-				} else if (file.filename === ".mainsail.json") {
-					fetch('//'+state.socket.hostname+':'+state.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
-					.then(res => res.json()).then(file => {
-						this.commit("farm/"+state._namespace+"/setMainsailJson", file)
-					})
 				}
 			}
 		}
-	},
-
-	setMainsailJson(state, payload) {
-		Vue.set(state.data, 'gui', payload.state)
 	},
 
 	notifyFilelistChanged( state, payload) {
@@ -84,5 +75,13 @@ export default {
 				this.commit("farm/"+state._namespace+"/setMainsailJson", file)
 			})
 		}
-	}
+	},
+
+	setDatabases(state, payload) {
+		Vue.set(state, 'databases', payload.namespaces)
+	},
+
+	setMainsailData(state, payload) {
+		Vue.set(state.data, 'gui', payload)
+	},
 }

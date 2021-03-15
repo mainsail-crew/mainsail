@@ -5,27 +5,168 @@
 </style>
 
 <template>
-    <v-card>
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Setting.ControlExtruder') }}</span>
-            </v-toolbar-title>
-        </v-toolbar>
-        <v-card-text class="pt-2 pb-0">
-            <v-text-field
-                :label="$t('Setting.FeedrateXY')"
-                v-model="feedrateXY"
-                type="number"
-                suffix="mm/s"
-            ></v-text-field>
-            <v-text-field
-                :label="$t('Setting.FeedrateZ')"
-                v-model="feedrateZ"
-                type="number"
-                suffix="mm/s"
-            ></v-text-field>
-        </v-card-text>
-    </v-card>
+    <v-form ref="formControlExtruder">
+        <v-card>
+            <v-toolbar flat dense >
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Control')}}</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-card-text class="pa-0">
+                <v-container>
+                    <v-row>
+                        <v-col col-6>
+                            <v-text-field
+                                :label="$t('Settings.ControlPanel.SpeedXY')"
+                                v-model="feedrateXY"
+                                @blur="blurFeedrateXY"
+                                type="number"
+                                suffix="mm/s"
+                                hide-details="auto"
+                                :rules="[
+                                    v => v > 0 || 'Minimum speed is 1'
+                                ]"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col col-6>
+                            <v-text-field
+                                :label="$t('Settings.ControlPanel.SpeedZ')"
+                                v-model="feedrateZ"
+                                @blur="blurFeedrateZ"
+                                type="number"
+                                suffix="mm/s"
+                                hide-details="auto"
+                                ref="feedrateZ"
+                                :rules="[
+                                    v => v > 1 || 'Minimum speed is 1'
+                                ]"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="py-0">
+                            <v-switch v-model="useCross" label="Enable movement cross" hide-details="auto" class="mt-0"></v-switch>
+                        </v-col>
+                    </v-row>
+                    <template v-if="useCross">
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesInMm')"
+                                    v-model="stepsAll"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col class="pt-0">
+                                <v-switch v-model="reverseZ" :label="$t('Settings.ControlPanel.ReverseZMovement')" hide-details="auto" class="mt-0"></v-switch>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <template v-else>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesXYInMm')"
+                                    v-model="stepsXY"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesZInMm')"
+                                    v-model="stepsZ"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                    </template>
+                </v-container>
+            </v-card-text>
+        </v-card>
+        <v-card class="mt-6">
+            <v-toolbar flat dense >
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Extruder') }}</span>
+                </v-toolbar-title>
+            </v-toolbar>
+            <v-card-text class="pa-0">
+                <v-container>
+                    <v-row>
+                        <v-col>
+                            <v-combobox
+                                :label="$t('Settings.ControlPanel.MoveDistancesEInMm')"
+                                v-model="feedamountsE"
+                                hide-selected
+                                hide-details="auto"
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                    v => v.length > 0 || 'Minimum 1 value',
+                                    v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
+                                ]"
+                            ></v-combobox>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-combobox
+                                :label="$t('Settings.ControlPanel.SpeedEInMms')"
+                                v-model="feedratesE"
+                                hide-selected
+                                hide-details="auto"
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                    v => v.length > 0 || 'Minimum 1 value',
+                                    v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
+                                ]"
+                            ></v-combobox>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+        </v-card>
+    </v-form>
 </template>
 
 <script>
@@ -39,12 +180,50 @@
             }
         },
         computed: {
+            reverseZ: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseZ) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseZ } } })
+                }
+            },
+            useCross: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.useCross;
+                },
+                set(useCross) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { useCross } } })
+                }
+            },
             feedrateXY: {
                 get() {
                     return this.$store.state.gui.dashboard.control.feedrateXY
                 },
-                set(value) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: value } } })
+                set(feedrate) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: feedrate } } })
+                }
+            },
+            stepsAll: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.control.stepsAll
+                    return (steps ?? []).sort(function (a,b) { return b-a })
+                },
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsAll: absSteps } } })
+                }
+            },
+            stepsXY: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.control.stepsXY
+                    return steps.sort(function (a,b) { return b-a })
+                },
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsXY: absSteps } } })
                 }
             },
             feedrateZ: {
