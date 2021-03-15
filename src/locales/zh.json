@@ -64,7 +64,7 @@
     "Search":"搜索",
     "Empty": "空的",
     "blabla": "巴拉巴拉",
-    "DropFilesToAddGcode": "Drop files to add gcode.",
+    "DropFilesToAddGcode": "删除文件以添加gcode.",
     "PrintStart": "开始打印",
     "Preheat": "预热",
     "Download": "下载",
@@ -104,18 +104,18 @@
   "Panels": {
     "ControlPanel":{
       "Controls": "控制台",
-      "SetupControls": "Setup Controls",
-      "AlternateControls": "Alternate controls",
-      "InvertZ": "Invert Z",
+      "SetupControls": "设置控件",
+      "AlternateControls": "备用控件",
+      "InvertZ": "反转 Z",
       "ALL": "全部",
       "QGL": "QGL",
       "ZTilt": "Z 倾斜",
       "X": "X",
       "Y": "Y",
       "Z": "Z",
-      "PleaseConfigureSteps": "Please configure steps",
-      "SettingsInterfaceControl": "Settings > Interface > Control",
-      "Home":"Home",
+      "PleaseConfigureSteps": "请配置步骤",
+      "SettingsInterfaceControl": "设置 > 界面 > 控制",
+      "Home":"家",
       "Retract": "回抽",
       "Extrude": "挤出",
       "Macros": "宏"
@@ -131,7 +131,7 @@
     },
     "KlippyStatePanel": {
       "KlippyState": "Klippy-State: ",
-      "KlippyInfo": "Moonraker can't connect to Klippy!\nPlease check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.",
+      "KlippyInfo": "Moonraker 无法连接到 Klippy!\n请检查Klipper服务是否正在运行，并且是否配置了UDS（Unix域套接字）.",
       "Restart": "重启",
       "FirmwareRestart": "固件重启"
     },
@@ -160,10 +160,10 @@
       "DownloadLog": "下载日志"
     },
     "PowerControlPanel": {
-      "PowerControl": "Power Control",
-      "Error": "Error",
-      "On": "On",
-      "Off": "Off"
+      "PowerControl": "功率控制",
+      "Error": "错误",
+      "On": "开",
+      "Off": "关"
     },
     "StatusPanel": {
       "Unknown": "未知",
@@ -251,21 +251,21 @@
       "Control": "控制",
       "SpeedXY": "XY 速度",
       "SpeedZ": "Z 速度",
-      "MoveDistancesInMm": "Move distances in mm",
-      "ReverseZMovement": "Reverse Z movement",
-      "MoveDistancesXYInMm": "Move distances XY in mm",
-      "MoveDistancesZInMm": "Move distances Z in mm",
-      "MoveDistancesEInMm": "Move distances E in mm",
+      "MoveDistancesInMm": "移动距离(mm)",
+      "ReverseZMovement": "反向Z运动",
+      "MoveDistancesXYInMm": "XY移动距离(mm)",
+      "MoveDistancesZInMm": "Z移动距离(mm)",
+      "MoveDistancesEInMm": "E移动距离(mm)",
       "Extruder": "挤出机",
-      "SpeedEInMms": "Speed E in mm/s"
+      "SpeedEInMms": "E速度(mm/s)"
     },
     "DashboardPanel": {
       "Dashboard": "仪表盘",
       "Webcam": "摄像头",
       "Tempchart": "温度图",
       "Console": "控制台",
-      "ChartUpdateInterval": "Chart update interval",
-      "DatapointInterval": "Datapoint interval"
+      "ChartUpdateInterval": "图表更新间隔",
+      "DatapointInterval": "数据点间隔"
     },
     "EndstopPanel": {
       "Endstops": "限位开关",
@@ -277,11 +277,11 @@
     "GeneralPanel": {
       "General": "一般",
       "PrinterName": "打印机名称",
-      "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
-      "ShowCANCEL_PRINT": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-      "FactoryReset": "Factory reset",
-      "FactoryInfo": "Do you really want to reset mainsail to factory settings?",
-      "ResetMainsail": "reset mainsail"
+      "DisplayCANCEL_PRINT": "显示 CANCEL_PRINT",
+      "ShowCANCEL_PRINT": "永久显示CANCEL_PRINT按钮-无需第二层确认。",
+      "FactoryReset": "恢复出厂设置",
+      "FactoryInfo": "您是否真的要将主帆重置为出厂设置？",
+      "ResetMainsail": "重置主帆"
     },
     "LanguagePanel": {
       "Language": "语言"

@@ -48,11 +48,9 @@
                 const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
                 this.Languages = []
                 locales.keys().map(key=>{
-                    let value = key.match(/([A-Za-z0-9-_]+)\./i)[1];
-                    let text = locales(key).title
                     this.Languages.push({
-                        text: text,
-                        value: value
+                        text: locales(key).title,
+                        value: key.match(/([A-Za-z0-9-_]+)\./i)[1]
                     })
                 })
             }
