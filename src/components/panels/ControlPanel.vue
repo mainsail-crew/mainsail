@@ -148,7 +148,9 @@
                                                :color="homedAxes.includes('x') ? 'primary' : 'warning'"
                                                @click="doHomeX"
                                         >
-                                            X
+                                            {{
+                                                this['printer/isKinematics'](KINEMATICS.DELTA) ? 'A' : 'X'
+                                            }}
                                         </v-btn>
                                     </v-col>
                                     <v-col cols="4" class="flex-grow-1">
@@ -159,7 +161,9 @@
                                                :color="homedAxes.includes('y') ? 'primary' : 'warning'"
                                                @click="doHomeY"
                                         >
-                                            Y
+                                            {{
+                                                this['printer/isKinematics'](KINEMATICS.DELTA) ? 'B' : 'Y'
+                                            }}
                                         </v-btn>
                                     </v-col>
                                     <v-col cols="4" class="flex-grow-1">
@@ -170,7 +174,9 @@
                                                :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                                                @click="doHomeZ"
                                         >
-                                            Z
+                                            {{
+                                                this['printer/isKinematics'](KINEMATICS.DELTA) ? 'C' : 'Z'
+                                            }}
                                         </v-btn>
                                     </v-col>
                                 </v-row>
@@ -280,6 +286,7 @@
 <script>
     import { mapState, mapGetters } from 'vuex'
     import Vue from "vue";
+    import { KINEMATICS } from "@/enums/kinematics.enums";
 
     export default {
         components: {
@@ -289,7 +296,8 @@
             return {
                 crossWidth: 40,
                 crossHeight: 40,
-                homeCols: 6
+                homeCols: 6,
+                KINEMATICS: KINEMATICS
             }
         },
         computed: {
@@ -315,6 +323,7 @@
             ...mapGetters([
                 'printer/getMacros',
                 'printer/getExtrudePossible',
+                'printer/isKinematics'
             ]),
             reverseZ: {
                 get() {

@@ -1,8 +1,11 @@
 import { caseInsensitiveNameSort } from '@/plugins/helpers'
 import { additionalSensors } from '@/store/variables'
+import {KINEMATICS} from "@/enums/kinematics.enums";
 
 export default {
 
+	isKinematics: state => kinematics =>
+		(KINEMATICS[(state.configfile?.settings?.printer?.kinematics?.toUpperCase() ?? 'OTHER')] ?? KINEMATICS.OTHER) === kinematics,
 	getPrintPercent: state => {
 		if (
 			'filename' in state.current_file &&
