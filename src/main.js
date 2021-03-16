@@ -22,9 +22,6 @@ Vue.http.headers.common['Access-Control-Allow-Methods'] = 'POST, GET, PUT, OPTIO
 
 Vue.component('vue-headful', vueHeadful);
 
-import 'prismjs';
-import 'prismjs/themes/prism-okaidia.css';
-
 fetch('/config.json')
 .then(res => res.json())
 .then(file => {

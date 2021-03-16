@@ -271,22 +271,56 @@
             <v-card color="primary" dark >
                 <v-card-title>
                     Downloading...
+                    <v-spacer></v-spacer>
+                    <v-btn small icon class="minwidth-0" @click="cancelDownload(); editor.showLoader = false">
+                        <v-icon small>mdi-close-thick</v-icon>
+                    </v-btn>
                 </v-card-title>
                 <v-card-text>
-                    Please stand by
-                    <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
+                    <v-progress-linear v-if="editor.progress.total === 0" indeterminate color="white" class="mb-0" ></v-progress-linear>
+                    <template v-else>
+                        <div class="text-right">{{ (100 * editor.progress.loaded / editor.progress.total).toFixed(0) }}%</div>
+                        <v-progress-linear :value="100 * editor.progress.loaded / editor.progress.total" color="white" class="mb-0"></v-progress-linear>
+                        <div class="d-flex justify-space-between">
+                            <span>{{ getLoadedString() }}</span>
+                            <span>{{ editor.progress.speed }}/s</span>
+                        </div>
+                    </template>
                 </v-card-text>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
+        <v-dialog v-model="editor.show" fullscreen transition="dialog-bottom-transition" content-class="config-editor-overlay">
             <v-card class="fill-height">
                 <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="editor.show = false; editor.sourcecode = null; editor.file = null;">
+                    <v-btn icon dark @click="closeEditor()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
+                        <v-menu
+                            transition="slide-y-transition"
+                            :close-on-content-click="false"
+                            offset-y
+                            bottom
+                            left
+                        >
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    dark
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list dense>
+                                <v-list-item class="minheight30">
+                                    <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
                         <v-btn dark text @click="saveFile">
                             <v-icon small class="mr-1">mdi-content-save</v-icon>
                             <span class="d-none d-sm-inline">Save</span>
@@ -294,8 +328,16 @@
                     </v-toolbar-items>
                 </v-toolbar>
 
-<!--                <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter"></prism-editor>-->
-                <monaco-editor :options="{ theme: 'vs-dark', language: 'gcode' }" style="height: 92%; width: 100%; overflow: hidden;" language="gcode" v-model="editor.sourcecode"></monaco-editor>
+                <template v-if="editor.init">
+                    <monaco-editor
+                        :options="editorOptions || editor.options"
+                        style="height: 92%; width: 100%; overflow: hidden;"
+                        v-model="editor.sourcecode"
+                        language="mySpecialLanguage"
+                        @editorWillMount="injectLanguage($event)"
+                    >
+                    </monaco-editor>
+                </template>
             </v-card>
         </v-dialog>
         <v-snackbar
@@ -330,14 +372,7 @@
     import { findDirectory } from "@/plugins/helpers"
     import { validGcodeExtensions } from "@/store/variables"
 
-    // import { PrismEditor } from 'vue-prism-editor';
-    // import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
-
-    //import highlighting library (you can use any library you want just return html string)
-
-    import { highlight, languages } from 'prismjs/components/prism-core';
-    import 'prismjs/components/prism-gcode';
-
+    import { inject } from '@/plugins/monaco.gcode';
     import MonacoEditor from 'vue-monaco'
 
     export default {
@@ -373,10 +408,24 @@
                     show: false,
                     showLoader: false,
                     readonly: false,
+                    token: null,
+                    init: false,
+                    progress: {
+                        total: 0,
+                        loaded: 0,
+                        speed: "",
+                        lastTimestamp: 0
+                    },
+                    options: {
+                        theme: 'gcode-dark',
+                        language: 'gcode',
+                        contextmenu: false,
+                        automaticLayout: true,
+                    },
                     item: {
                         filename: "",
                     },
-                    sourcecode: null,
+                    sourcecode: "",
                 },
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
@@ -449,6 +498,22 @@
             filteredHeaders() {
                 return this.headers.filter(header => header.visible === true)
             },
+            editorMinimap: {
+                get() {
+                    return this.$store.state.gui.editor.minimap;
+                },
+                set(val) {
+                    return this.$store.dispatch("gui/setSettings", { editor: { minimap: val } })
+                }
+            },
+            editorOptions() {
+              return {
+                  ...this.editor.options,
+                  minimap: {
+                      enabled: this.editorMinimap
+                  }
+              };
+            },
             showHiddenFiles: {
                 get: function() {
                     return this.$store.state.gui.gcodefiles.showHiddenFiles
@@ -489,9 +554,14 @@
             });
         },
         methods: {
-            highlighter(code) {
-                //return code;
-                return highlight(code, languages.gcode); //returns html
+            /**
+             *
+             * @param {monaco} editor
+             */
+            injectLanguage(editor) {
+                if (!editor.languages.getLanguages().find(l => l.id === 'gcode')) {
+                    inject(editor);
+                }
             },
             async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
@@ -648,49 +718,99 @@
                 link.click();
                 document.body.removeChild(link);
             },
+            cancelDownload() {
+              if (this.editor.token) {
+                  this.editor.token.cancel();
+              }
+            },
+            getLoadedString() {
+                const units = [' B', ' kB', ' MB', ' GB'];
+                let unitSelectTotal = 0;
+                let unitSelectLoaded = 0;
+                let total = this.editor.progress.total;
+                while (total > 1000) {
+                    if (unitSelectTotal + 1 >= units.length) {
+                        break;
+                    }
+                    total /= 1000;
+                    ++unitSelectTotal;
+                }
+
+                let loaded = this.editor.progress.loaded;
+                while (loaded > 1000) {
+                    if (unitSelectLoaded + 1 >= units.length) {
+                        break;
+                    }
+                    loaded /= 1000;
+                    ++unitSelectLoaded;
+                }
+
+                return `${loaded.toFixed(2)}${units[unitSelectLoaded]} / ${total.toFixed(2)}${units[unitSelectTotal]}`;
+            },
             editFile(item) {
                 this.editor.showLoader = true;
-                this.editor.sourcecode = null;
+                this.editor.sourcecode = "";
                 this.editor.item = item;
                 this.editor.init = false;
                 let filename = (this.currentPath+"/"+item.filename);
-                let url = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename);
+                let url = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename) + `?${Date.now()}`;
+                if (this.editor.token) {
+                    this.editor.token.cancel();
+                }
+                this.editor.token = axios.CancelToken.source();
                 axios.get(url, {
+                    cancelToken: this.editor.token.token,
                     onDownloadProgress: progressEvent => {
-                        console.log(progressEvent);
+                        if (this.editor.progress.total === 0) {
+                            this.editor.progress.total = progressEvent.total;
+                        }
+                        const diffData = progressEvent.loaded - this.editor.progress.loaded;
+                        const diffTime = progressEvent.timeStamp - this.editor.progress.lastTimestamp;
+                        let speed = (diffData / diffTime);
+                        const unit = ['kB', 'MB', 'GB'];
+                        let unitSelect = 0;
+                        while (speed > 1000) {
+                            speed /= 1000.0;
+                            unitSelect = Math.min(2, unitSelect + 1);
+                        }
+                        this.editor.progress.speed = speed.toFixed(2) + unit[unitSelect];
+
+                        this.editor.progress.loaded = progressEvent.loaded;
+                        this.editor.progress.lastTimestamp = progressEvent.timeStamp;
                     }
                 })  .then(res => res.data)
                     .then(file => {
                         this.editor.sourcecode = file;
-                        this.editor.show = true;
-                        this.editor.showLoader = false;
-                        this.editor.readonly = false;
-                        setTimeout(() => {
+                        this.$nextTick(() => {
+                            this.editor.show = true;
+                            this.editor.showLoader = false;
+                            this.editor.readonly = false;
                             this.editor.init = true;
-                        }, 1000);
+                        });
+                    })
+                    .finally(() => {
+                        this.editor.token = null;
+                        this.editor.progress.total = 0;
+                        this.editor.progress.loaded = 0;
+                        this.editor.progress.lastTimestamp = 0;
+                        this.editor.progress.speed = "";
                     });
             },
-            saveFile() {
+            closeEditor() {
+                this.editor.show = false;
+                this.$nextTick(() => {
+                  this.editor.sourcecode = "";
+                  this.editor.file = null;
+                })
+            },
+            async saveFile() {
                 let file = new File([this.editor.sourcecode], encodeURI(this.editor.item.filename));
 
-                this.doUploadFile(file);
+                await this.doUploadFile(file);
 
-                /*let formData = new FormData();
-                formData.append('file', file);
-                formData.append('root', 'config');
-                if(this.currentPath.length > 7) formData.append('path', this.currentPath.substring(8));
-
-                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    }
-                ).then(() => {
-                    this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
-                    this.editor.show = false;
-                    this.editor.sourcecode = "";
-                }).catch(() => {
-                    this.$toast.error("Error save "+this.editor.item.filename);
-                });*/
+                this.editor.show = false;
+                this.editor.sourcecode = "";
+                this.editor.file = null;
             },
             renameFile(item) {
                 this.dialogRenameFile.item = item;

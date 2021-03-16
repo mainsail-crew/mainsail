@@ -8,10 +8,6 @@
         padding: 5px;
     }
 
-    .prism-editor__textarea:focus {
-        outline: none;
-    }
-
     .config-editor-overlay div.v-card {
         position: relative;
     }
@@ -125,7 +121,7 @@
                 </v-card>
             </v-dialog>
             <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
-                <v-card d-flex>
+                <v-card d-flex class="fill-height">
                     <v-toolbar dark color="primary">
                         <v-btn icon dark @click="editor.show = false">
                             <v-icon>mdi-close</v-icon>
@@ -133,6 +129,29 @@
                         <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
+                            <v-menu
+                                transition="slide-y-transition"
+                                :close-on-content-click="false"
+                                offset-y
+                                bottom
+                                left
+                            >
+                                <template #activator="{ on, attrs }">
+                                    <v-btn
+                                        dark
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        <v-icon>mdi-cog</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list dense>
+                                    <v-list-item class="minheight30">
+                                        <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
                             <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
                             <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
                             <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
@@ -140,7 +159,14 @@
                             <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
-                    <prism-editor class="my-editor" v-model="editor.sourcecode" :readonly="editor.readonly" :highlight="highlighter" line-numbers></prism-editor>
+                    <template v-if="editor.init">
+                        <monaco-editor
+                            :options="editorOptions || editor.options"
+                            style="height: 92%; width: 100%; overflow: hidden;"
+                            language="gcode"
+                            v-model="editor.sourcecode">
+                        </monaco-editor>
+                    </template>
                 </v-card>
             </v-dialog>
             <v-dialog v-model="dialogRenameFile.show" max-width="400">
@@ -214,19 +240,13 @@
     import { mapState } from 'vuex'
     import {findDirectory} from "@/plugins/helpers";
 
-    import { PrismEditor } from 'vue-prism-editor';
-    import 'vue-prism-editor/dist/prismeditor.min.css'; // import the styles somewhere
+    import axios from "axios";
 
-    // import highlighting library (you can use any library you want just return html string)
-    import { highlight, languages } from 'prismjs/components/prism-core';
-    import 'prismjs/components/prism-editorconfig';
-    import 'prismjs/components/prism-ini';
-    import 'prismjs/themes/prism-okaidia.css';
-    import axios from "axios"; // import syntax highlighting styles
+    import MonacoEditor from 'vue-monaco';
 
     export default {
         components: {
-            PrismEditor,
+            MonacoEditor
         },
         data: function() {
             return {
@@ -245,13 +265,35 @@
                 files: [],
                 currentPath: '/config',
                 editor: {
-                    show: false,
+                    /*show: false,
                     showLoader: false,
                     readonly: false,
+                    init: false,
                     item: {
                         filename: "",
                     },
-                    sourcecode: ''
+                    sourcecode: ''*/
+                    show: false,
+                    showLoader: false,
+                    readonly: false,
+                    token: null,
+                    init: false,
+                    progress: {
+                        total: 0,
+                        loaded: 0,
+                        speed: "",
+                        lastTimestamp: 0
+                    },
+                    options: {
+                        theme: 'vs-dark',
+                        language: 'yaml',
+                        contextmenu: false,
+                        automaticLayout: true,
+                    },
+                    item: {
+                        filename: "",
+                    },
+                    sourcecode: "",
                 },
                 contextMenu: {
                     shown: false,
@@ -298,6 +340,22 @@
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
             }),
+            editorOptions() {
+                return {
+                    ...this.editor.options,
+                    minimap: {
+                        enabled: this.editorMinimap
+                    }
+                };
+            },
+            editorMinimap: {
+                get() {
+                    return this.$store.state.gui.editor.minimap;
+                },
+                set(val) {
+                    return this.$store.dispatch("gui/setSettings", { editor: { minimap: val } })
+                }
+            },
             countPerPage: {
                 get: function() {
                     return this.$store.state.gui.settings.configfiles.countPerPage
@@ -320,7 +378,8 @@
         },
         methods: {
             highlighter(code) {
-                return highlight(code, languages.ini); //returns html
+                //return highlight(code, languages.ini); //returns html
+                return code;
             },
             refreshFileList() {
                 if (this.currentPath === "") {
@@ -403,10 +462,13 @@
                         let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
                         fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
                             this.editor.sourcecode = file;
-                            this.editor.show = true;
-                            this.editor.showLoader = false;
-                            this.editor.readonly = false;
-                            if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                            this.$nextTick(() => {
+                                this.editor.show = true;
+                                this.editor.showLoader = false;
+                                this.editor.readonly = false;
+                                this.editor.init = true;
+                                if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                            });
                         });
 
                     } else {
