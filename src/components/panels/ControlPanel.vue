@@ -36,9 +36,17 @@
                         <v-list-item class="minHeight36">
                           <v-checkbox v-model="useCross" class="mt-0" hide-details label="Alternate controls"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36" v-if="useCross">
-                          <v-checkbox v-model="reverseZ" class="mt-0" hide-details label="Invert Z"></v-checkbox>
-                        </v-list-item>
+                        <template v-if="useCross">
+                            <v-list-item class="minHeight36">
+                              <v-checkbox v-model="reverseX" class="mt-0" hide-details label="Invert X"></v-checkbox>
+                            </v-list-item>
+                            <v-list-item class="minHeight36">
+                              <v-checkbox v-model="reverseY" class="mt-0" hide-details label="Invert Y"></v-checkbox>
+                            </v-list-item>
+                            <v-list-item class="minHeight36">
+                              <v-checkbox v-model="reverseZ" class="mt-0" hide-details label="Invert Z"></v-checkbox>
+                            </v-list-item>
+                        </template>
                     </v-list>
                 </v-menu>
             </v-toolbar>
@@ -51,7 +59,7 @@
                                 <v-col cols="3">
                                     <v-btn class="btnMinWidthAuto fill-width"
                                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Y+'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                           @click="doSendMove('Y'+(reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
                                     >
                                         <v-icon>mdi-chevron-up</v-icon>
                                     </v-btn>
@@ -70,7 +78,7 @@
                                 <v-col cols="3" class="p-rel">
                                     <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
                                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('X-'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                           @click="doSendMove('X'+(!reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
                                     >
                                         <v-icon>mdi-chevron-left</v-icon>
                                     </v-btn>
@@ -78,7 +86,7 @@
                                 <v-col cols="3">
                                     <v-btn class="btnMinWidthAuto fill-width"
                                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Y-'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                           @click="doSendMove('Y'+(!reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
                                     >
                                         <v-icon>mdi-chevron-down</v-icon>
                                     </v-btn>
@@ -86,7 +94,7 @@
                                 <v-col cols="3" class="p-rel">
                                     <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
                                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('X+'+stepsReversed[selectedCrossStep], feedrateXY)"
+                                           @click="doSendMove('X'+(reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
                                     >
                                         <v-icon>mdi-chevron-right</v-icon>
                                     </v-btn>
@@ -94,7 +102,7 @@
                                 <v-col cols="3">
                                     <v-btn class="btnMinWidthAuto fill-width"
                                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Z'+(reverseZ ? '+' : '-')+stepsReversed[selectedCrossStep], feedrateZ)"
+                                           @click="doSendMove('Z'+(!reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
                                     >
                                         <v-icon>mdi-chevron-down</v-icon>
                                     </v-btn>
@@ -316,6 +324,22 @@
                 'printer/getMacros',
                 'printer/getExtrudePossible',
             ]),
+            reverseX: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseX;
+                },
+                set(reverseX) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseX } } })
+                }
+            },
+            reverseY: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseY) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseY } } })
+                }
+            },
             reverseZ: {
                 get() {
                     return this.$store.state.gui.dashboard.control.reverseZ;
