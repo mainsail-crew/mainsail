@@ -199,7 +199,7 @@
             },
             getIconColor(status) {
                 switch(status) {
-                    case 'in_progress': return 'white'
+                    case 'in_progress': return 'blue-grey darken-1'
                     case 'completed': return 'green'
                     case 'cancelled': return 'red'
 

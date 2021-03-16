@@ -12,6 +12,11 @@ export default {
 				commit('addJob', job)
 			}
 		})
+	},
+
+	getChanged({ commit }, payload) {
+		if (payload.action === 'added') commit('addJob', payload.job)
+		else if (payload.action === 'finished') commit('updateJob', payload.job)
 	}
 
 }
