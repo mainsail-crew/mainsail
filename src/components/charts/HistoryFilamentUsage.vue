@@ -37,6 +37,8 @@ export default {
                         if (datasets.length) {
                             let outputTime = datasets[0]['axisValueLabel']
                             outputTime = outputTime.substr(0, outputTime.indexOf(" ")+1)
+                            let outputTimeDate = new Date(outputTime)
+                            outputTime = outputTimeDate.toLocaleDateString()
                             let outputValue = Math.round(datasets[0]['data'][1] * 10) / 10
 
                             output += outputTime+": "+outputValue+"m"
@@ -92,12 +94,10 @@ export default {
                         },
                     }
                 },
+                color: ['#000'],
                 series: [{
-                    type: 'line',
+                    type: 'bar',
                     data: [],
-                    lineStyle: {
-                        color: '#000',
-                    },
                     showSymbol: false
                 }],
             },
@@ -127,7 +127,7 @@ export default {
             if (this.chart) {
                 const chartOptions = { series: this.chartOptions.series }
                 chartOptions.series[0].data = this.filamentUsageArray
-                chartOptions.series[0].lineStyle.color = this.getPrimaryColor()
+                chartOptions.color = [this.getPrimaryColor()]
                 this.chart.setOption(chartOptions)
                 this.chart.resize()
             }
