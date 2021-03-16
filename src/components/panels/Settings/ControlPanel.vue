@@ -68,6 +68,8 @@
                         </v-row>
                         <v-row>
                             <v-col class="pt-0">
+                                <v-switch v-model="reverseX" label="Reverse X movement" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseY" label="Reverse Y movement" hide-details="auto" class="mt-0"></v-switch>
                                 <v-switch v-model="reverseZ" label="Reverse Z movement" hide-details="auto" class="mt-0"></v-switch>
                             </v-col>
                         </v-row>
@@ -178,6 +180,22 @@
             }
         },
         computed: {
+            reverseX: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseX) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseX } } })
+                }
+            },
+            reverseY: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseY) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseY } } })
+                }
+            },
             reverseZ: {
                 get() {
                     return this.$store.state.gui.dashboard.control.reverseZ;
