@@ -84,7 +84,10 @@ export default {
 				output.push({
 					name: current.status,
 					value: 1,
-					itemStyle: itemStyle
+					itemStyle: itemStyle,
+					label: {
+						color: '#fff'
+					}
 				})
 			}
 		})

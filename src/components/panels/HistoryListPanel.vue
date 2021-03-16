@@ -102,6 +102,100 @@
                 </v-list-item>
             </v-list>
         </v-menu>
+        <v-dialog v-model="detailsDialog.boolShow" :max-width="600" :max-height="500">
+            <v-card dark>
+                <v-toolbar flat dense >
+                    <v-toolbar-title>
+                        <span class="subheading"><v-icon left>mdi-update</v-icon>Job Details</span>
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn small class="minwidth-0" color="grey darken-3" @click="detailsDialog.boolShow = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                </v-toolbar>
+                <v-card-text class="pt-5">
+                    <v-simple-table
+                        style="
+                            height: 350px;
+                            max-height: 350px;
+                            overflow-y: auto;
+                        ">
+                        <tbody>
+                            <tr>
+                                <td>Filename</td>
+                                <td class="text-right">{{ detailsDialog.item.filename }}</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'size' in detailsDialog.item.metadata">
+                                <td>Filesize</td>
+                                <td class="text-right">{{ formatFilesize(detailsDialog.item.metadata.size) }}</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'modified' in detailsDialog.item.metadata">
+                                <td>Last Modified</td>
+                                <td class="text-right">{{ formatDate(detailsDialog.item.metadata.modified) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td class="text-right">{{ detailsDialog.item.status }}</td>
+                            </tr>
+                            <tr>
+                                <td>Start Time</td>
+                                <td class="text-right">{{ formatDate(detailsDialog.item.start_time) }}</td>
+                            </tr>
+                            <tr>
+                                <td>End Time</td>
+                                <td class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
+                                <td>Estimated Time</td>
+                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}</td>
+                            </tr>
+                            <tr v-if="detailsDialog.item.print_duration > 0">
+                                <td>Print Duration</td>
+                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.print_duration) }}</td>
+                            </tr>
+                            <tr v-if="detailsDialog.item.total_duration > 0">
+                                <td>Total Duration</td>
+                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.total_duration) }}</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
+                                <td>Estimated Filament</td>
+                                <td class="text-right">{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</td>
+                            </tr>
+                            <tr v-if="detailsDialog.item.filament_used > 0">
+                                <td>Filament Used</td>
+                                <td class="text-right">{{ Math.round(detailsDialog.item.filament_used) }} mm</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_extr_temp' in detailsDialog.item.metadata">
+                                <td>First Layer Ext. Temp.</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_bed_temp' in detailsDialog.item.metadata">
+                                <td>First Layer Bed Temp.</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_height' in detailsDialog.item.metadata">
+                                <td>First Layer Height</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_height }} mm</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata">
+                                <td>Layer Height</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.layer_height }} mm</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata">
+                                <td>Object Height</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.object_height }} mm</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'slicer' in detailsDialog.item.metadata">
+                                <td>Slicer</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.slicer }}</td>
+                            </tr>
+                            <tr v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata">
+                                <td>Slicer Version</td>
+                                <td class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</td>
+                            </tr>
+                        </tbody>
+                    </v-simple-table>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -141,12 +235,15 @@
                 },
                 contextMenu: {
                     shown: false,
-                    isDirectory: false,
                     touchTimer: undefined,
                     x: 0,
                     y: 0,
                     item: {}
                 },
+                detailsDialog: {
+                    item: {},
+                    boolShow: false,
+                }
             }
         },
         computed: {
@@ -249,6 +346,10 @@
 
                 return '--'
             },
+            clickRow(item) {
+                this.detailsDialog.item = item
+                this.detailsDialog.boolShow = true
+            },
             showContextMenu (e, item) {
                 if (!this.contextMenu.shown) {
                     e?.preventDefault();
@@ -334,6 +435,15 @@
                 }
 
                 return false
+            },
+            getThumbnailWidth(item) {
+                if (this.getBigThumbnail(item)) {
+                    const thumbnail = item.metadata.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+                    if (thumbnail) return thumbnail.width
+                }
+
+                return 400
             }
         },
         watch: {
