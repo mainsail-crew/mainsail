@@ -97,8 +97,14 @@
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item >
-                    <v-icon class="mr-1">mdi-play</v-icon> Print start
+                <v-list-item @click="clickRow(contextMenu.item)">
+                    <v-icon class="mr-1">mdi-text-box-search</v-icon> Details
+                </v-list-item>
+                <v-list-item @click="startPrint(contextMenu.item)" v-if="contextMenu.item.exists" :disabled="is_printing">
+                    <v-icon class="mr-1">mdi-printer</v-icon> Reprint
+                </v-list-item>
+                <v-list-item @click="deleteJob(contextMenu.item)" :disabled="contextMenu.item.status === 'in_progress'">
+                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -200,7 +206,7 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
     export default {
         data() {
@@ -250,6 +256,9 @@
             ...mapState({
                 jobs: state => state.server.history.jobs,
             }),
+            ...mapGetters([
+                'is_printing'
+            ]),
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
@@ -406,6 +415,12 @@
 
                     this.$store.dispatch("gui/setHistoryColumns", {name: name, value: value});
                 }
+            },
+            startPrint(item) {
+                if (item.exists) this.$socket.sendObj('printer.print.start', { filename: item.filename }, 'switchToDashboard')
+            },
+            deleteJob(item) {
+                this.$socket.sendObj('server.history.delete_job', { uid: item.job_id }, 'server/history/getDeletedJobs')
             },
             getSmallThumbnail(item) {
                 if (
