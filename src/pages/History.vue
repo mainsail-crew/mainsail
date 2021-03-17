@@ -14,7 +14,7 @@
                     </v-toolbar>
                     <v-card-text class="pa-0">
                         <v-row align="center">
-                            <v-col class="col-4">
+                            <v-col class="col-12 col-sm-6 col-md-4">
                                 <v-simple-table>
                                     <tbody>
                                         <tr>
@@ -40,10 +40,10 @@
                                     </tbody>
                                 </v-simple-table>
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="col-12 col-sm-6 col-md-4">
                                 <history-all-print-status></history-all-print-status>
                             </v-col>
-                            <v-col class="col-4">
+                            <v-col class="col-12 col-sm-12 col-md-4">
                                 <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
                                 <history-printtime-avg v-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
                                 <div class="text-center mt-3">

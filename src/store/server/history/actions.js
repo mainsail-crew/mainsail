@@ -3,20 +3,25 @@ export default {
 		commit('reset')
 	},
 
-	getHistory({ commit, state }, payload) {
+	getHistory({ commit }, payload) {
 		commit('reset')
 
 		payload.jobs.forEach(job => {
-			const index = state.jobs.findIndex(tmpJob => tmpJob.job_id === job.job_id)
-			if (index === -1) {
-				commit('addJob', job)
-			}
+			commit('addJob', job)
 		})
 	},
 
 	getChanged({ commit }, payload) {
 		if (payload.action === 'added') commit('addJob', payload.job)
 		else if (payload.action === 'finished') commit('updateJob', payload.job)
+	},
+
+	getDeletedJobs({ commit }, payload) {
+		if ('deleted_jobs' in payload && Array.isArray(payload.deleted_jobs)) {
+			payload.deleted_jobs.forEach(jobId => {
+				commit('destroyJob', jobId)
+			})
+		}
 	}
 
 }
