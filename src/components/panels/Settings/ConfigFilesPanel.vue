@@ -120,6 +120,18 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
+            <v-dialog v-model="image.show" class="fill-height">
+              <v-card style="position: relative;">
+                <v-toolbar dark color="primary">
+                  <v-btn icon dark @click="image.show = false;">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <div class="d-flex justify-center" style="max-height: calc(100% - 64px); overflow-y: auto;">
+                  <img :src="image.url" style="max-width: 100%; height: auto;" alt="image" />
+                </div>
+              </v-card>
+            </v-dialog>
             <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
                 <v-card d-flex class="fill-height">
                     <v-toolbar dark color="primary">
@@ -163,8 +175,9 @@
                         <monaco-editor
                             :options="editorOptions || editor.options"
                             style="height: 92%; width: 100%; overflow: hidden;"
-                            language="gcode"
-                            v-model="editor.sourcecode">
+                            v-model="editor.sourcecode"
+                            @editorWillMount="editorWillMount"
+                        >
                         </monaco-editor>
                     </template>
                 </v-card>
@@ -243,6 +256,7 @@
     import axios from "axios";
 
     import MonacoEditor from 'vue-monaco';
+    import {liftOff} from "@/plugins/monaco.gcode";
 
     export default {
         components: {
@@ -264,6 +278,10 @@
                 currentPage: 1,
                 files: [],
                 currentPath: '/config',
+                image: {
+                  show: false,
+                  url: null
+                },
                 editor: {
                     /*show: false,
                     showLoader: false,
@@ -285,15 +303,16 @@
                         lastTimestamp: 0
                     },
                     options: {
-                        theme: 'vs-dark',
-                        language: 'yaml',
                         contextmenu: false,
                         automaticLayout: true,
+                        language: 'klipper-config',
+                        theme: 'dark-converted'
                     },
                     item: {
                         filename: "",
                     },
                     sourcecode: "",
+                    monaco: null
                 },
                 contextMenu: {
                     shown: false,
@@ -377,6 +396,11 @@
             this.loadPath();
         },
         methods: {
+            async editorWillMount(monaco) {
+              if (!monaco.languages?.getLanguages().find(l => l.id === 'klipper-config')) {
+                await liftOff(monaco);
+              }
+            },
             highlighter(code) {
                 //return highlight(code, languages.ini); //returns html
                 return code;
@@ -455,22 +479,31 @@
                         this.contextMenu.shown = false;
                     }
                     if (!item.isDirectory) {
+                      const ext = item.filename.split('.').pop();
+                      if (['conf', 'cfg'].includes(ext)) {
                         this.editor.showLoader = true;
                         this.editor.sourcecode = "";
                         this.editor.item = item;
 
                         let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
-                        fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
-                            this.editor.sourcecode = file;
-                            this.$nextTick(() => {
-                                this.editor.show = true;
-                                this.editor.showLoader = false;
-                                this.editor.readonly = false;
-                                this.editor.init = true;
-                                if (this.currentPath === '/config_examples') this.editor.readonly = true;
-                            });
-                        });
 
+                        fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
+                          console.log(item);
+                          this.editor.sourcecode = file;
+                          this.$nextTick(() => {
+                            this.editor.show = true;
+                            this.editor.showLoader = false;
+                            this.editor.readonly = false;
+                            this.editor.init = true;
+                            if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                          });
+                        });
+                      } else if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif'].includes(ext)) {
+                        let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                        console.log(url);
+                        this.image.show = true;
+                        this.image.url = url;
+                      }
                     } else {
                         this.currentPath += "/" + item.filename;
                         this.currentPage = 1;

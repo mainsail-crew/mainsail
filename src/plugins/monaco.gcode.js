@@ -1,36 +1,54 @@
 import { loadWASM } from 'onigasm' // peer dependency of 'monaco-textmate'
 import { Registry } from 'monaco-textmate' // peer dependency
 import { wireTmGrammars } from 'monaco-editor-textmate'
+// eslint-disable-next-line no-unused-vars
 import * as monacoNamespace from 'monaco-editor';
+
+let onigasmLoaded = false;
+
+class MultiRegistry {
+    registries = new Map();
+
+    async loadGrammar(id) {
+        if (!this.registries.has(id)) {
+            this.registries.set(id,
+                new Registry({
+                    getGrammarDefinition: async () => {
+                        return Promise.resolve({
+                            format: 'json',
+                            content: await (await fetch(`/grammars/${id.split('.').pop()}.tmLanguage.json`)).text()
+                        })
+                    }
+                })
+            );
+        }
+        return await this.registries.get(id).loadGrammar(id);
+    }
+}
 
 /**
  *
  * @param {monacoNamespace} monaco
  */
 export async function liftOff(monaco) {
-    await loadWASM(`../node_modules/onigasm/lib/onigasm.wasm`) // See https://www.npmjs.com/package/onigasm#light-it-up
+    if (!onigasmLoaded) {
+        await loadWASM(`/libs/onigasm.wasm`) // See https://www.npmjs.com/package/onigasm#light-it-up
+        onigasmLoaded = true;
+    }
+    const registry = new MultiRegistry();
 
-    const registry = new Registry({
-        getGrammarDefinition: async (scopeName) => {
-            console.log(scopeName);
-            return {
-                format: 'json',
-                content: await (await fetch(`grammars/klipper-config.tmLanguage.json`)).text()
-            }
-        }
-    })
+    const grammars = new Map();
+    grammars.set('klipper-config', 'source.klipper-config');
+    grammars.set('gcode', 'source.gcode');
 
-    // map of monaco "language id's" to TextMate scopeNames
-    const grammars = new Map()
-    grammars.set('css', 'source.css')
-    grammars.set('html', 'text.html.basic')
-    grammars.set('typescript', 'source.ts')
+    monaco.languages.register({ id: 'klipper-config' });
+    monaco.languages.register({ id: 'gcode' });
 
     // monaco's built-in themes aren't powereful enough to handle TM tokens
     // https://github.com/Nishkalkashyap/monaco-vscode-textmate-theme-converter#monaco-vscode-textmate-theme-converter
-    monaco.editor.defineTheme('vs-code-theme-converted', {
-        // ... use `monaco-vscode-textmate-theme-converter` to convert vs code theme and pass the parsed object here
-    });
+    const theme = await (await fetch('/editor.theme.json')).json();
+    monaco.editor.defineTheme('dark-converted', theme);
+    monaco.editor.setTheme('dark-converted');
 
     /*var editor = monaco.editor.create(document.getElementById('container'), {
         value: [
@@ -42,7 +60,7 @@ export async function liftOff(monaco) {
         theme: 'vs-code-theme-converted' // very important, see comment above
     })*/
 
-    await wireTmGrammars(monaco, registry, grammars, editor)
+    await wireTmGrammars(monaco, registry, grammars)
 }
 
 /**

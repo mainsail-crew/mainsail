@@ -334,7 +334,7 @@
                         style="height: 92%; width: 100%; overflow: hidden;"
                         v-model="editor.sourcecode"
                         language="mySpecialLanguage"
-                        @editorWillMount="injectLanguage($event)"
+                        @editorWillMount="editorWillMount"
                     >
                     </monaco-editor>
                 </template>
@@ -372,7 +372,7 @@
     import { findDirectory } from "@/plugins/helpers"
     import { validGcodeExtensions } from "@/store/variables"
 
-    import { inject } from '@/plugins/monaco.gcode';
+    import {inject, liftOff} from '@/plugins/monaco.gcode';
     import MonacoEditor from 'vue-monaco'
 
     export default {
@@ -417,8 +417,8 @@
                         lastTimestamp: 0
                     },
                     options: {
-                        theme: 'gcode-dark',
                         language: 'gcode',
+                        theme: 'dark-converted',
                         contextmenu: false,
                         automaticLayout: true,
                     },
@@ -426,6 +426,7 @@
                         filename: "",
                     },
                     sourcecode: "",
+                    monaco: null
                 },
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
@@ -562,6 +563,11 @@
                 if (!editor.languages.getLanguages().find(l => l.id === 'gcode')) {
                     inject(editor);
                 }
+            },
+            async editorWillMount(monaco) {
+              if (!monaco.languages?.getLanguages().find(l => l.id === 'gcode')) {
+                await liftOff(monaco);
+              }
             },
             async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
