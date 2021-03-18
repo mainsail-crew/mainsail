@@ -3,6 +3,7 @@ import Vue from 'vue'
 import GeneralPanel from './GeneralPanel'
 import ControlPanel from './ControlPanel'
 import WebcamPanel from './WebcamPanel'
+import WebcamsPanel from './WebcamsPanel'
 import DashboardPanel from "./DashboardPanel";
 import ConsolePanel from "./ConsolePanel";
 import MacrosPanel from "./MacrosPanel";
@@ -18,6 +19,7 @@ import PresetsPanel from "./PresetsPanel";
 Vue.component('settings-general-panel', GeneralPanel);
 Vue.component('settings-control-panel', ControlPanel);
 Vue.component('settings-webcam-panel', WebcamPanel);
+Vue.component('settings-webcams-panel', WebcamsPanel);
 Vue.component('settings-dashboard-panel', DashboardPanel);
 Vue.component('settings-console-panel', ConsolePanel);
 Vue.component('settings-macros-panel', MacrosPanel);
