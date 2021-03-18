@@ -85,6 +85,30 @@ export default {
 		})
 	},
 
+	addWebcam({ commit, dispatch, state }, payload) {
+		commit("addWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcams',
+			newVal: state.webcams
+		})
+	},
+
+	updateWebcam({ commit, dispatch, state }, payload) {
+		commit("updateWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcams',
+			newVal: state.webcams
+		})
+	},
+
+	deleteWebcam({ commit, dispatch, state }, payload) {
+		commit("deleteWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcams',
+			newVal: state.webcams
+		})
+	},
+
 	setTempchartDatasetSetting({ commit, dispatch, state }, payload) {
 		commit("setTempchartDatasetSetting", payload)
 		dispatch('updateSettings', {

@@ -69,6 +69,7 @@ export function getDefaultState() {
 		//moonraker DB api dont accept camel case key names
 		remote_printers: [],
 		presets: [],
+		webcams: [],
 		//moonraker DB api dont accept camel case key names
 		cooldown_gcode: "TURN_OFF_HEATERS"
 	}
