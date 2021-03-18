@@ -17,6 +17,7 @@
       </v-toolbar>
       <v-card-text class="py-3">
         <v-container>
+          {{ this.$store.state.gui.webcams }}
           <v-row
             v-for="(webcam, index) in this['gui/getWebcams']"
             v-bind:key="index"
@@ -30,7 +31,7 @@
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
                 <v-col class="col-6">
-                  {{ webcam }}
+                  {{ webcam.config }}
                 </v-col>
                 <v-col class="col-auto text-right"
                   ><v-btn
@@ -272,12 +273,7 @@ export default {
       console.log(webcam);
       this.dialog.name = webcam.name;
       this.dialog.index = webcam.index;
-      this.dialog.config.service = webcam.config.service;
-      this.dialog.config.targetFps = webcam.config.targetFps;
-      this.dialog.config.url = webcam.config.url;
-      this.dialog.config.flipX = webcam.config.flipX;
-      this.dialog.config.flipY = webcam.config.flipY;
-      this.dialog.config.bool = webcam.config.bool;
+      this.dialog.config = webcam.config;
 
       this.dialog.bool = true;
     },
