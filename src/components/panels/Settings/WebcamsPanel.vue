@@ -19,7 +19,7 @@
         <v-container>
           {{ this.$store.state.gui.webcams }}
           <v-row
-            v-for="(webcam, index) in this['gui/getWebcams']"
+            v-for="(webcam, index) in this.webcams"
             v-bind:key="index"
           >
             <v-col
@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: {},
@@ -213,10 +213,9 @@ export default {
     };
   },
   computed: {
-    ...mapState({
-      orgState: (state) => state.gui.webcams,
+    ...mapGetters({
+      webcams: 'gui/getWebcams'
     }),
-    ...mapGetters(["gui/getWebcams"]),
     boolNavi: {
       get() {
         return this.$store.state.gui.webcam.bool;
@@ -249,7 +248,7 @@ export default {
   methods: {
     existsWebcamName(name) {
       return (
-        this["gui/getWebcams"].findIndex(
+        this.webcams.findIndex(
           (webcam) => webcam.name === name && webcam.index !== this.dialog.index
         ) >= 0
       );
