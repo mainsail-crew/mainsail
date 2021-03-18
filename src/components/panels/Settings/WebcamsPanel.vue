@@ -4,7 +4,7 @@
       <v-toolbar flat dense>
         <v-toolbar-title>
           <span class="subheading"
-            ><v-icon left>mdi-camera</v-icon>Webcams</span
+            ><v-icon left>mdi-webcam</v-icon>Webcams</span
           >
         </v-toolbar-title>
         <v-spacer></v-spacer>
@@ -17,7 +17,6 @@
       </v-toolbar>
       <v-card-text class="py-3">
         <v-container>
-          {{ this.$store.state.gui.webcams }}
           <v-row
             v-for="(webcam, index) in this.webcams"
             v-bind:key="index"
@@ -31,7 +30,7 @@
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
                 <v-col class="col-6">
-                  {{ webcam.config }}
+                  <span class="text-no-wrap" style="display: block;max-width: 100%;text-overflow: ellipsis;overflow: hidden;">{{ webcam.config.url }}</span>
                 </v-col>
                 <v-col class="col-auto text-right"
                   ><v-btn
@@ -57,7 +56,7 @@
         <v-toolbar flat dense color="primary">
           <v-toolbar-title>
             <span class="subheading">
-              <v-icon class="mdi mdi-camera" left></v-icon>
+              <v-icon class="mdi mdi-webcam" left></v-icon>
               {{ dialog.index === null ? "Create" : "Edit" }} Webcam
             </span>
           </v-toolbar-title>
@@ -129,7 +128,10 @@
                     </v-row>
                   </v-col>
                   <v-col class="col-12 col-sm-6">
-                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                    <v-row class="mt-2 mx-0 mb-2" align="center" style="
+                        height: 100%;
+                        margin-top: auto!important;
+                        margin-bottom: auto!important;">
                       <img
                         :src="dialog.config.url"
                         class="webcamImage"
@@ -143,7 +145,6 @@
                       />
                     </v-row>
                     <v-row class="mt-2 mx-0 mb-2" align="center">
-                      {{ this.dialog }}
                     </v-row>
                   </v-col>
                 </v-row>
@@ -197,6 +198,14 @@ export default {
           flipY: false,
           bool: false,
         },
+      },
+      defaultconfig: {
+        service: "mjpegstreamer",
+        targetFps: 25,
+        url: "/webcam/?action=stream",
+        flipX: false,
+        flipY: false,
+        bool: false,
       },
       rules: {
         required: (value) => value !== "" || "required",
@@ -261,12 +270,7 @@ export default {
       this.dialog.bool = false;
       this.dialog.index = null;
       this.dialog.name = "";
-      this.dialog.config.service = "mjpegstreamer";
-      this.dialog.config.targetFps = 25;
-      this.dialog.config.url = "/webcam/?action=stream";
-      this.dialog.config.flipX = false;
-      this.dialog.config.flipY = false;
-      this.dialog.config.bool = false;
+      this.dialog.config = this.defaultconfig;
     },
     editWebcam(webcam) {
       console.log(webcam);
