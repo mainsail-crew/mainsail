@@ -33,14 +33,7 @@ export function getDefaultState() {
 			}
 		},
 		webcam: {
-			service: 'mjpegstreamer',
-			targetFps: 25,
-			url: "/webcam/?action=stream",
-			rotate: false,
-			rotateDegrees: 90,
-			flipX: false,
-			flipY: false,
-			bool: false,
+			selectedCam: 0
 		},
 		tempchart: {
 			intervalChartUpdate: 1000,

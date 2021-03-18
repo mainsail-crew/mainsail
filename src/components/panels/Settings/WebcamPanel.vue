@@ -1,145 +1,301 @@
-<style>
-
-</style>
-
 <template>
+  <div>
     <v-card>
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-webcam</v-icon>Webcam</span>
-            </v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>
-            <v-container px-0 py-0>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-select v-model="service" :items="serviceItems" hide-details label="Service" class="mt-0"></v-select>
-                    </v-col>
-                </v-row>
-                <v-row v-if="service === 'mjpegstreamer-adaptive'">
-                    <v-col class="py-2 mt-2">
-                        <v-text-field v-model="targetFps" hide-details label="Target FPS" class="mt-0"></v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="pt-2 mt-2 mb-1">
-                        <v-text-field
-                            v-model="webcamUrl"
-                            hide-details
-                            label="Webcam URL"
-                        ></v-text-field>
-                    </v-col>
-                </v-row>
-                <v-row v-if="rotationEnabled">
-                    <v-col class="py-2" col-auto>
-                        <v-switch v-model="rotate" hide-details label="Rotate" class="mt-0"></v-switch>
-                    </v-col>
-                    <v-col>
-                        <v-select :items="[{ text: '90 degrees', value: 90 }, { text: '270 degrees', value: 270 }]" v-model="rotateDegrees" hide-details></v-select>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-switch v-model="flipX" hide-details label="Flip webcam horizontally" class="mt-0"></v-switch>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-switch v-model="flipY" hide-details label="Flip webcam vertically" class="mt-0"></v-switch>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col class="py-2">
-                        <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-card-text>
+      <v-toolbar flat dense>
+        <v-toolbar-title>
+          <span class="subheading"
+            ><v-icon left>mdi-webcam</v-icon>Webcams</span
+          >
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+      <v-card-text class="py-3">
+        <v-container>
+          <v-row>
+              <v-col class="py-2 pb-5">
+                <v-switch
+                  v-model="boolNavi"
+                  hide-details
+                  label="Show in navigation"
+                  class="mt-0"
+                ></v-switch>
+              </v-col>
+          </v-row>
+          <v-row
+            v-for="(webcam, index) in this.webcams"
+            v-bind:key="index"
+          >
+            <v-col
+              class="rounded transition-swing secondary py-2 px-2 mb-3"
+              style="cursor: pointer;"
+            >
+              <v-row align="center">
+                <v-col class="pl-6">
+                  <strong>{{ webcam.name }}</strong>
+                </v-col>
+                <v-col class="col-6">
+                  <span class="text-no-wrap" style="display: block;max-width: 100%;text-overflow: ellipsis;overflow: hidden;">{{ webcam.config.url }}</span>
+                </v-col>
+                <v-col class="col-auto text-right"
+                  ><v-btn
+                    small
+                    class="minwidth-0 float-right"
+                    v-on:click.stop.prevent="editWebcam(webcam)"
+                    ><v-icon small>mdi-pencil</v-icon></v-btn
+                  ></v-col
+                >
+              </v-row>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="text-center mt-0">
+              <v-btn @click="createWebcam">add webcam</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
     </v-card>
+    <v-dialog v-model="dialog.bool" persistent :width="600">
+      <v-card dark>
+        <v-toolbar flat dense color="primary">
+          <v-toolbar-title>
+            <span class="subheading">
+              <v-icon class="mdi mdi-webcam" left></v-icon>
+              {{ dialog.index === null ? "Create" : "Edit" }} Webcam
+            </span>
+          </v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn small class="minwidth-0" @click="dialog.bool = false"
+            ><v-icon small>mdi-close-thick</v-icon></v-btn
+          >
+        </v-toolbar>
+        <v-card-text class="pt-3">
+          <v-container class="pb-0">
+            <v-form v-model="dialog.valid" @submit.prevent="saveWebcam">
+              <template v-if="dialog.bool">
+                <v-row>
+                  <v-col class="col-12 col-sm-6">
+                    <v-row>
+                      <v-col class="col-12">
+                        <v-text-field
+                          v-model="dialog.name"
+                          label="Name"
+                          hide-details="auto"
+                          :rules="[rules.required, rules.unique]"
+                          dense
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                      <v-text-field
+                        v-model="dialog.config.url"
+                        label="URL"
+                        hide-details="auto"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                      <v-select
+                        v-model="dialog.config.service"
+                        :items="serviceItems"
+                        hide-details
+                        label="Service"
+                        class="mt-0"
+                      ></v-select>
+                    </v-row>
+                    <v-row
+                      class="mt-2 mx-0 mb-2"
+                      align="center"
+                      v-if="dialog.config.service === 'mjpegstreamer-adaptive'"
+                    >
+                      <v-text-field
+                        v-model="dialog.config.targetFps"
+                        hide-details
+                        label="Target FPS"
+                        class="mt-0"
+                      ></v-text-field>
+                    </v-row>
+                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                      <v-checkbox
+                        v-model="dialog.config.flipX"
+                        hide-details
+                        class="shrink mt-0"
+                        label="Flip webcam horizontally"
+                      ></v-checkbox>
+                    </v-row>
+                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                      <v-checkbox
+                        v-model="dialog.config.flipY"
+                        hide-details
+                        class="shrink mt-0"
+                        label="Flip webcam vertically"
+                      ></v-checkbox>
+                    </v-row>
+                  </v-col>
+                  <v-col class="col-12 col-sm-6">
+                    <v-row class="mt-2 mx-0 mb-2" align="center" style="
+                        height: 100%;
+                        margin-top: auto!important;
+                        margin-bottom: auto!important;">
+                      <img
+                        :src="dialog.config.url"
+                        class="webcamImage"
+                        :style="webcamStyle"
+                        alt="Webcam"
+                        v-if="
+                          ['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(
+                            dialog.config.service
+                          )
+                        "
+                      />
+                    </v-row>
+                    <v-row class="mt-2 mx-0 mb-2" align="center">
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row class="mt-3">
+                  <v-col class="text-center">
+                    <v-btn
+                      color="red"
+                      outlined
+                      class="float-left minwidth-0"
+                      @click="deleteWebcam"
+                      v-if="this.dialog.index !== null"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                    <v-btn
+                      color="white"
+                      outlined
+                      :class="dialog.index !== null ? 'float-right' : ''"
+                      type="submit"
+                    >
+                      {{ dialog.index === null ? "save" : "update" }} webcam
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </template>
+            </v-form>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
-    export default {
-        components: {
+import { mapGetters } from "vuex";
 
+export default {
+  components: {},
+  data: function() {
+    return {
+      dialog: {
+        bool: false,
+        index: null,
+        valid: false,
+        name: "",
+        config: {
+          service: "mjpegstreamer",
+          targetFps: 25,
+          url: "/webcam/?action=stream",
+          flipX: false,
+          flipY: false,
+          bool: false,
         },
-        data: function() {
-            return {
-                rotationEnabled: false,
-                serviceItems: [
-                    { value: 'mjpegstreamer', text: 'MJPEG-Streamer' },
-                    { value: 'mjpegstreamer-adaptive', text: 'Adaptive MJPEG-Streamer (experimental)' },
-                ]
-            }
+      },
+      defaultconfig: {
+        service: "mjpegstreamer",
+        targetFps: 25,
+        url: "/webcam/?action=stream",
+        flipX: false,
+        flipY: false,
+        bool: false,
+      },
+      rules: {
+        required: (value) => value !== "" || "required",
+        unique: (value) =>
+          !this.existsWebcamName(value) || "Name already exists",
+      },
+      serviceItems: [
+        { value: "mjpegstreamer", text: "MJPEG-Streamer" },
+        {
+          value: "mjpegstreamer-adaptive",
+          text: "Adaptive MJPEG-Streamer (experimental)",
         },
-        computed: {
-            webcamUrl: {
-                get() {
-                    return this.$store.state.gui.webcam.url;
-                },
-                set(url) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { url: url } })
-                }
-            },
-            flipX: {
-                get() {
-                    return this.$store.state.gui.webcam.flipX;
-                },
-                set(flipX) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipX: flipX } });
-                }
-            },
-            flipY: {
-                get() {
-                    return this.$store.state.gui.webcam.flipY;
-                },
-                set(flipY) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { flipY: flipY } });
-                }
-            },
-            rotate: {
-                get() {
-                    return this.$store.state.gui.webcam.rotate;
-                },
-                set(rotate) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { rotate } });
-                }
-            },
-            rotateDegrees: {
-                get() {
-                    return this.$store.state.gui.webcam.rotateDegrees;
-                },
-                set(rotateDegrees) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { rotateDegrees: rotateDegrees } });
-                }
-            },
-            boolNavi: {
-                get() {
-                    return this.$store.state.gui.webcam.bool;
-                },
-                set(showNav) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { bool: showNav } });
-                }
-            },
-            service: {
-                get() {
-                    return this.$store.state.gui.webcam.service;
-                },
-                set(selectedMethod) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { service: selectedMethod } });
-                }
-            },
-            targetFps: {
-                get() {
-                    return this.$store.state.gui.webcam.targetFps;
-                },
-                set(fps) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { targetFps: fps } });
-                }
-            }
-        },
-        methods: {
+      ],
+    };
+  },
+  computed: {
+    ...mapGetters({
+      webcams: 'gui/getWebcams'
+    }),
+    boolNavi: {
+      get() {
+        return this.$store.state.gui.webcam.bool;
+      },
+      set(showNav) {
+        return this.$store.dispatch("gui/setSettings", {
+          webcam: { bool: showNav },
+        });
+      },
+    },
+    webcamStyle() {
+      let transforms = "";
+      if (this.dialog.config.flipX) {
+        transforms += " scaleX(-1)";
+      }
+      if (this.dialog.config.flipY) {
+        transforms += " scaleY(-1)";
+      }
+      if (transforms.trimLeft().length) {
+        return {
+          transform: transforms.trimLeft(),
+        };
+      }
+      return "";
+    },
+  },
+  mounted() {
+    this.clearDialog();
+  },
+  methods: {
+    existsWebcamName(name) {
+      return (
+        this.webcams.findIndex(
+          (webcam) => webcam.name === name && webcam.index !== this.dialog.index
+        ) >= 0
+      );
+    },
+    createWebcam() {
+      this.clearDialog();
+      this.dialog.bool = true;
+    },
+    clearDialog() {
+      this.dialog.bool = false;
+      this.dialog.index = null;
+      this.dialog.name = "";
+      this.dialog.config = this.defaultconfig;
+    },
+    editWebcam(webcam) {
+      console.log(webcam);
+      this.dialog.name = webcam.name;
+      this.dialog.index = webcam.index;
+      this.dialog.config = webcam.config;
 
-        }
-    }
+      this.dialog.bool = true;
+    },
+    saveWebcam() {
+      if (this.dialog.valid) {
+        if (this.dialog.index) {
+          this.$store.dispatch("gui/updateWebcam", this.dialog);
+        } else this.$store.dispatch("gui/addWebcam", this.dialog);
+        this.clearDialog();
+      }
+    },
+    deleteWebcam() {
+      this.$store.dispatch("gui/deleteWebcam", this.dialog);
+      this.clearDialog();
+    },
+  },
+};
 </script>
