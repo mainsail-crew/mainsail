@@ -164,7 +164,7 @@
                       :class="dialog.index !== null ? 'float-right' : ''"
                       type="submit"
                     >
-                      {{ dialog.index === null ? "store" : "update" }} webcam
+                      {{ dialog.index === null ? "save" : "update" }} webcam
                     </v-btn>
                   </v-col>
                 </v-row>
