@@ -34,7 +34,7 @@
             }),
             updateManager:{
                 get() {
-                    return this.$store.state.server.plugins.includes('update_manager')
+                    return this.$store.state.server.components.includes('update_manager')
                 }
             }
         },
