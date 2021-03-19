@@ -4,17 +4,17 @@
         <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon class="mdi mdi-alert-circle" left></v-icon>Moonraker Failed Plugins
+                    <v-icon class="mdi mdi-alert-circle" left></v-icon>Moonraker Failed Components
                 </span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="px-0 pt-0 pb-2 content">
             <v-layout wrap class=" text-center">
                 <v-flex col class="text-left">
-                    <p class="orange--text">An error was detected while loading the moonraker plugins. Please check the logfile and fix the issue.</p>
+                    <p class="orange--text">An error was detected while loading the moonraker components. Please check the logfile and fix the issue.</p>
                     <p class="mb-2 orange--text">Following plugin has an error:</p>
                     <ul class="mt-0 pt-0">
-                        <li v-for="plugin in failedPlugins" v-bind:key="plugin" class="orange--text"><code>{{ plugin }}</code></li>
+                        <li v-for="component in failedComponents" v-bind:key="component" class="orange--text"><code>{{ component }}</code></li>
                     </ul>
                 </v-flex>
             </v-layout>
@@ -35,7 +35,7 @@
         }),
         computed: {
             ...mapState({
-                failedPlugins: state => state.server.failed_plugins,
+                failedComponents: state => state.server.failed_components,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
             }),

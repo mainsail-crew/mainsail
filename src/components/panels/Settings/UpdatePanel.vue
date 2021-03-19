@@ -80,24 +80,17 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
-                <v-card-text class="py-5" v-if="commitsOverlay.loading">
-                    <v-row class="pt-0">
-                        <v-col>
-                            <v-progress-linear color="primary" indeterminate></v-progress-linear>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-text class="py-0" v-if="!commitsOverlay.loading" style="max-height: 400px; overflow-y: scroll;">
+                <v-card-text class="py-0" style="max-height: 400px; overflow-y: scroll;">
                     <v-row>
                         <v-col class="pt-3 pl-0">
                             <v-timeline class="updateManager" align-top dense >
-                                <v-timeline-item color="primary" small v-for="commit of commitsOverlay.outputs" v-bind:key="commit.sha">
+                                <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
                                     <v-row class="pt-0">
                                         <v-col>
-                                            <a class="font-weight-bold white--text" :href="commit.url" target="_blank">{{ commit.title }}</a><br />
-                                            <p v-if="commit.message" class="mb-0" v-html="commit.message.replace(/(?:\r\n|\r|\n)/g, '<br />')"></p>
+                                            <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
+                                            <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
                                             <div class="caption">
-                                                <strong>{{ commit.author }}</strong> committed at {{ commit.date.toLocaleString() }}
+                                                <strong>{{ commit.author }}</strong> committed at {{ new Date(commit.date * 1000).toLocaleString() }}
                                             </div>
                                         </v-col>
                                     </v-row>
@@ -114,7 +107,6 @@
 <script>
     import { mapState } from 'vuex'
     import semver from 'semver'
-    import axios from 'axios'
 
     export default {
         components: {
@@ -124,9 +116,9 @@
             return {
                 commitsOverlay: {
                     bool: false,
-                    loading: false,
-                    response: [],
-                    outputs: [],
+                    owner: "",
+                    modul: "",
+                    commits: [],
                 }
             }
         },
@@ -264,12 +256,8 @@
             },
             getVersionClickable(object) {
                 return (
-                    'branch' in object &&
-                    object.branch === "master" &&
-                    'current_hash' in object &&
-                    'remote_hash' in object &&
-                    object.current_hash !== object.remote_hash &&
-                    'owner' in object
+                    'commits_behind' in object &&
+                    object.commits_behind.length
                 )
             },
             updateModule(key) {
@@ -281,58 +269,36 @@
             },
             openCommitsOverlay(key, object) {
                 if (
-                    ['klipper', 'moonraker'].includes(key) &&
-                    this.getVersionClickable(object) &&
-                    'owner' in object
+                    'commits_behind' in object &&
+                    'owner' in object &&
+                    object.commits_behind.length
                 ) {
+                    this.commitsOverlay.owner = object.owner
+                    this.commitsOverlay.modul = key
+                    this.commitsOverlay.commits = object.commits_behind
+
                     this.commitsOverlay.bool = true
-                    this.commitsOverlay.loading = true
-
-                    const apiUrl = "https://api.github.com/repos/"+object.owner+"/"+key+"/commits"
-                    if (apiUrl) {
-                        axios
-                            .get(apiUrl)
-                            .then(response => {
-                                this.commitsOverlay.response = response
-                                this.commitsOverlay.outputs.splice(0, this.commitsOverlay.outputs.length)
-
-                                const index = response.data.findIndex(commit => commit.sha === object.current_hash)
-                                if (index !== -1) {
-                                    this.commitsOverlay.response = response.data.splice(0, index).sort((a,b) => {
-                                        const dataA = new Date(a.commit.author.date)
-                                        const dataB = new Date(b.commit.author.date)
-
-                                        return dataB - dataA
-                                    })
-
-                                    this.commitsOverlay.response.forEach(commit => {
-                                        const date = new Date(commit.commit.author.date)
-                                        const author = commit.commit.author.name
-
-                                        const firstIndex = commit.commit.message.indexOf('\n\n')
-                                        let lastIndex = commit.commit.message.lastIndexOf('\n\n')
-                                        if (firstIndex === lastIndex && commit.commit.message.lastIndexOf('\r') > firstIndex) {
-                                            lastIndex = commit.commit.message.lastIndexOf('\r')
-                                        }
-
-                                        this.commitsOverlay.outputs.push({
-                                            sha: commit.sha,
-                                            date: date,
-                                            author: author,
-                                            url: commit.html_url,
-                                            title: commit.commit.message.substr(0, firstIndex),
-                                            message: (firstIndex+2 < lastIndex-2) ? commit.commit.message.substr(firstIndex+2, lastIndex-firstIndex-2) : "",
-                                            firstIndex: firstIndex,
-                                            lastIndex: lastIndex,
-                                        })
-                                    })
-                                }
-
-                                this.commitsOverlay.loading = false
-                            })
-                    }
                 }
             },
+            convertCommitMessage(message) {
+                const lastIndex = message.lastIndexOf('Signed-off-by:')
+                if (lastIndex !== -1) {
+                    message = message.substr(0, lastIndex)
+                }
+
+                message = this.trimEndLineBreak(message)
+                message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+
+                return message
+            },
+            trimEndLineBreak(message) {
+                if (['\n', '\r'].includes(message.substr(-1))) {
+                    message = message.substr(0, message.length - 2)
+                    this.trimEndLineBreak(message)
+                }
+
+                return message
+            }
         }
     }
 </script>

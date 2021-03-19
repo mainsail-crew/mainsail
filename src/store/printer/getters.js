@@ -241,12 +241,12 @@ export default {
 					if (nameSplit[0].toLowerCase() === "output_pin") {
 						controllable = true
 						pwm = false
-						if ('settings' in state.configfile && key in state.configfile.settings) {
-							if ('pwm' in state.configfile.settings[key])
-								pwm = state.configfile.settings[key].pwm
+						if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+							if ('pwm' in state.configfile.settings[key.toLowerCase()])
+								pwm = state.configfile.settings[key.toLowerCase()].pwm
 
-							if ('scale' in state.configfile.settings[key])
-								scale = state.configfile.settings[key].scale
+							if ('scale' in state.configfile.settings[key.toLowerCase()])
+								scale = state.configfile.settings[key.toLowerCase()].scale
 						}
 					}
 
@@ -262,12 +262,12 @@ export default {
 						config: state.configfile.settings[key]
 					}
 
-					if ('settings' in state.configfile && key in state.configfile.settings) {
-						if ('off_below' in state.configfile.settings[key])
-							tmp['off_below'] = state.configfile.settings[key].off_below
+					if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+						if ('off_below' in state.configfile.settings[key.toLowerCase()])
+							tmp['off_below'] = state.configfile.settings[key.toLowerCase()].off_below
 
-						if ('max_power' in state.configfile.settings[key])
-							tmp['max_power'] = state.configfile.settings[key].max_power
+						if ('max_power' in state.configfile.settings[key.toLowerCase()])
+							tmp['max_power'] = state.configfile.settings[key.toLowerCase()].max_power
 					}
 
 					output.push(tmp)
