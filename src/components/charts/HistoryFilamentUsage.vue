@@ -1,5 +1,5 @@
 <template>
-    <div id="historyFilamentUsage" style="height: 175px; width: 100%;"></div>
+    <div id="historyFilamentUsage" style="height: 175px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
 </template>
 
 <script>
@@ -114,6 +114,9 @@ export default {
         },
     },
     methods: {
+        visibilityChanged (isVisible) {
+            if(isVisible && this.chart !== null) this.chart.resize()
+        },
         createChart() {
             if (document.getElementById("historyFilamentUsage") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("historyFilamentUsage"), null, { renderer: 'canvas' })
