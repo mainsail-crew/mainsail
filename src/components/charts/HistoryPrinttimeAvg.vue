@@ -1,5 +1,5 @@
 <template>
-    <div id="historyPrinttimeAvg" style="height: 175px; width: 100%;"></div>
+    <div id="historyPrinttimeAvg" style="height: 175px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
 </template>
 
 <script>
@@ -91,6 +91,9 @@ export default {
         },
     },
     methods: {
+        visibilityChanged (isVisible) {
+            if(isVisible && this.chart !== null) this.chart.resize()
+        },
         createChart() {
             if (document.getElementById("historyPrinttimeAvg") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("historyPrinttimeAvg"), null, { renderer: 'canvas' })

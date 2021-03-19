@@ -1,5 +1,5 @@
 <template>
-    <div id="historyAllPrintStatus" style="height: 250px; width: 100%;"></div>
+    <div id="historyAllPrintStatus" style="height: 250px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
 </template>
 
 <script>
@@ -45,6 +45,9 @@ export default {
         },
     },
     methods: {
+        visibilityChanged (isVisible) {
+            if(isVisible && this.chart !== null) this.chart.resize()
+        },
         createChart() {
             if (document.getElementById("historyAllPrintStatus") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("historyAllPrintStatus"), null, { renderer: 'svg' })
