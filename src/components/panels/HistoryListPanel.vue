@@ -60,14 +60,28 @@
                         class="file-list-cursor user-select-none"
                     >
                         <td class="pr-0 text-center" style="width: 32px;">
-                            <v-icon v-if="!(getSmallThumbnail(item))">mdi-file</v-icon>
-                            <v-tooltip v-if="getSmallThumbnail(item) && getBigThumbnail(item)" top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <img :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
-                                </template>
-                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
-                            </v-tooltip>
-                            <img v-if="getSmallThumbnail(item) && !getBigThumbnail(item)" :src="getSmallThumbnail(item)" width="32" height="32" />
+                            <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <vue-load-image>
+                                            <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
+                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                            <v-icon slot="error">mdi-file</v-icon>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else-if="getSmallThumbnail(item)">
+                                <vue-load-image>
+                                    <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                    <v-icon slot="error">mdi-file</v-icon>
+                                </vue-load-image>
+                            </template>
+                            <template v-else>
+                                <v-icon >mdi-file</v-icon>
+                            </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class=" ">
@@ -206,9 +220,13 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex';
+import {mapGetters, mapState} from 'vuex'
+import VueLoadImage from 'vue-load-image'
 
     export default {
+        components: {
+            'vue-load-image': VueLoadImage
+        },
         data() {
             return {
                 search: '',
@@ -459,7 +477,7 @@ import {mapGetters, mapState} from 'vuex';
                 }
 
                 return 400
-            }
+            },
         },
         watch: {
             hideColums: function(newVal) {
