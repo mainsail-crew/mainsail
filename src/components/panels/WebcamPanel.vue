@@ -10,19 +10,19 @@
             <v-toolbar-title>
                 <span class="subheading">
                     <v-icon left>mdi-webcam</v-icon> Webcam
-                    <small v-if="this.webcams[this.webcamConfig.selectedCam].config.service === 'mjpegstreamer-adaptive' &&  this.time">(FPS: {{ currentFPS }})</small>
+                    <small v-if="streamAdaptiveMode()">(FPS: {{ currentFPS }})</small>
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-item-group v-if="this.webcams.length>=2">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">Cams <v-icon small>mdi-menu-down</v-icon></v-btn>
+                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">{{currentCam().name}} <v-icon small>mdi-menu-down</v-icon></v-btn>
                     </template>
                     <v-list dense class="py-0">
                         <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="selectCam(webcam.index)" :disabled="checkSelectedCam(webcam.index)">
                             <v-list-item-icon class="mr-0">
-                                <v-icon small>mdi-webcam</v-icon>
+                                <v-icon small>{{webcam.icon}}</v-icon>
                             </v-list-item-icon>
                             <v-list-item-content>
                                 <v-list-item-title v-text="webcam.name"></v-list-item-title>
@@ -33,7 +33,17 @@
             </v-item-group>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad"  alt="Webcam" v-if="['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcams[this.webcamConfig.selectedCam].config.service)" />
+            <div style="width: 100%;padding-bottom: 56.75%!important;">
+                <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad" alt="Webcam" v-if="streamValid()" @error="streamNotFound()"/>
+                <div style="position:absolute;text-align:center;width:100%;top: 50%;transform: translateY(-50%);" v-if="!streamValid() && this.webcams.length === 0">
+                    <span><v-icon size="100">mdi-camera-off</v-icon></span><br><br>
+                    <span>Please configure a Webcam in the Settings!</span>
+                </div>
+                <div style="position:absolute;text-align:center;width:100%;top: 50%;transform: translateY(-50%);" v-if="!streamValid() && this.webcams.length !== 0">
+                    <span><v-icon size="100">mdi-camera-off</v-icon></span><br><br>
+                    <span>Please check if the Stream URL is valid!</span>
+                </div>
+            </div>
         </v-card-text>
     </v-card>
 </template>
@@ -44,6 +54,7 @@
     export default {
         data: function() {
             return {
+                validURL: true,
                 refresh: Math.ceil(Math.random() * Math.pow(10, 12)),
                 connection: "",
                 imageData: "",
@@ -61,9 +72,11 @@
         created: function () {
             document.addEventListener("focus", () => this.handleRefreshChange(), false);
             document.addEventListener("visibilitychange", this.handleRefreshChange, false);
-
-            if(this.webcams[this.webcamConfig.selectedCam].config.service === 'mjpegstreamer-adaptive') {
-                this.requestMjpeg()
+            if(this.webcams.length>=1){
+                let currentWebcamConfig = this.webcams[this.webcamConfig.selectedCam].config
+                if(currentWebcamConfig.service === 'mjpegstreamer-adaptive') {
+                    this.requestMjpeg()
+                }
             }
 
         },
@@ -79,41 +92,78 @@
             }),
 
             url() {
-                let currentWebcamConfig = this.webcams[this.webcamConfig.selectedCam].config
-                if (currentWebcamConfig.service === 'mjpegstreamer' && currentWebcamConfig.url.indexOf("?") !== -1) {
-                    let basicUrl = currentWebcamConfig.url
-                    const params = new URLSearchParams(basicUrl)
-                    params.set('bypassCache', ""+this.refresh)
-                    return decodeURIComponent(params.toString())
-                } else if (currentWebcamConfig.service === 'mjpegstreamer-adaptive') {
-                    return this.imageData
-                } else {
-                    return currentWebcamConfig.url
+                if(this.webcams.length>=1){
+                    let currentWebcamConfig = this.webcams[this.webcamConfig.selectedCam].config
+                    if (currentWebcamConfig.service === 'mjpegstreamer' && currentWebcamConfig.url.indexOf("?") !== -1) {
+                        let basicUrl = currentWebcamConfig.url
+                        const params = new URLSearchParams(basicUrl)
+                        params.set('bypassCache', ""+this.refresh)
+                        return decodeURIComponent(params.toString())
+                    } else if (currentWebcamConfig.service === 'mjpegstreamer-adaptive') {
+                        return this.imageData
+                    } else {
+                        return currentWebcamConfig.url
+                    }
                 }
+                return ""
             },
             webcamStyle() {
-            let transforms = "";
-            if (this.webcams[this.webcamConfig.selectedCam].config.flipX) {
-                transforms += " scaleX(-1)";
-            }
-            if (this.webcams[this.webcamConfig.selectedCam].config.flipY) {
-                transforms += " scaleY(-1)";
-            }
-            if (transforms.trimLeft().length) {
+                let transforms = "";
+                if (this.webcams[this.webcamConfig.selectedCam].config.flipX) {
+                    transforms += " scaleX(-1)";
+                }
+                if (this.webcams[this.webcamConfig.selectedCam].config.flipY) {
+                    transforms += " scaleY(-1)";
+                }
+                if (transforms.trimLeft().length) {
+                    return {
+                        transform: transforms.trimLeft(),
+                        'position': 'absolute',
+                    };
+                }
                 return {
-                transform: transforms.trimLeft(),
+                    'position': 'absolute',
                 };
-            }
-            return "";
             },
         },
         methods: {
+            currentCam(){
+                if(this.webcams.length === 0){
+                    return ""
+                }
+                return this.webcams[this.webcamConfig.selectedCam]
+            },
+            streamNotFound(){
+                this.validURL=false;
+            },
+            streamValid(){
+                if(this.webcams.length === 0){
+                    return false
+                }
+                if(['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcams[this.webcamConfig.selectedCam].config.service)){
+                    if(!this.validURL){
+                        return false
+                    }
+                    return true
+                }
+                return false
+            },
+            streamAdaptiveMode(){
+                if(!this.streamValid()){
+                    return false
+                }
+                if(this.webcams[this.webcamConfig.selectedCam].config.service === 'mjpegstreamer-adaptive' &&  this.time){
+                    return true
+                }
+                return false
+            },
             handleRefreshChange() {
                 if (!document.hidden) {
                     this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
                 }
             },
             selectCam(index){
+                this.validURL=true
                 this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: index } })
 
             },
@@ -136,9 +186,9 @@
                     setTimeout(this.requestMjpeg, timeout)
                 })
             },
-
             requestMjpeg() {
                 if(!this.isVisible) return
+                if(!this.streamValid()) return
 
                 this.request_start_time = performance.now()
                 let basicUrl = this.webcams[this.webcamConfig.selectedCam].config.url
@@ -155,7 +205,6 @@
                     this.imageData = decodeURIComponent(params.toString())
                 })
             },
-
             visibilityChanged(isVisible) {
                 this.isVisible = isVisible
                 if(isVisible) this.requestMjpeg()

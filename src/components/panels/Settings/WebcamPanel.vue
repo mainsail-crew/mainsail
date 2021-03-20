@@ -30,10 +30,13 @@
               style="cursor: pointer;"
             >
               <v-row align="center">
-                <v-col class="pl-6">
+                <v-col class="col-1 pl-4 pr-6 mr-0">
+                  <v-icon left>{{webcam.icon}}</v-icon>
+                </v-col>
+                <v-col class="col-2">
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
-                <v-col class="col-6">
+                <v-col class="col-7">
                   <span class="text-no-wrap" style="display: block;max-width: 100%;text-overflow: ellipsis;overflow: hidden;">{{ webcam.config.url }}</span>
                 </v-col>
                 <v-col class="col-auto text-right"
@@ -76,7 +79,26 @@
                 <v-row>
                   <v-col class="col-12 col-sm-6">
                     <v-row>
-                      <v-col class="col-12">
+                      <v-col class="col-2">
+                        <v-item-group>
+                            <v-menu :offset-y="true" title="Icon">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn class="px-2 minwidth-0" color="transparent" v-bind="attrs" v-on="on" elevation="0"><v-icon>{{getCurrentIcon()}}</v-icon></v-btn>
+                                </template>
+                                <v-list dense class="py-0">
+                                    <v-list-item v-for="icon of this.iconItems" v-bind:key="icon.value" link @click="setCurrentIcon(icon.value)">
+                                        <v-list-item-icon class="mr-0">
+                                            <v-icon small>{{icon.value}}</v-icon>
+                                        </v-list-item-icon>
+                                        <v-list-item-content>
+                                            <v-list-item-title v-text="icon.text"></v-list-item-title>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-item-group>
+                      </v-col>
+                      <v-col class="col-10">
                         <v-text-field
                           v-model="dialog.name"
                           label="Name"
@@ -194,6 +216,7 @@ export default {
         index: null,
         valid: false,
         name: "",
+        icon: "mdi-webcam",
         config: {
           service: "mjpegstreamer",
           targetFps: 25,
@@ -216,6 +239,16 @@ export default {
         unique: (value) =>
           !this.existsWebcamName(value) || "Name already exists",
       },
+      iconItems: [
+        { value: "mdi-printer-3d", text: "Printer" },
+        { value: "mdi-printer-3d-nozzle", text: "Nozzle" },
+        { value: "mdi-radiator-disabled", text: "Bed" },
+        { value: "mdi-webcam", text: "Cam" },
+        { value: "mdi-album", text: "Filament" },
+        { value: "mdi-door", text: "Door" },
+        { value: "mdi-raspberry-pi", text: "MCU" },
+        { value: "mdi-campfire", text: "Hot" },
+      ],
       serviceItems: [
         { value: "mjpegstreamer", text: "MJPEG-Streamer" },
         {
@@ -259,6 +292,12 @@ export default {
     this.clearDialog();
   },
   methods: {
+    getCurrentIcon(){
+      return this.dialog.icon
+    },
+    setCurrentIcon(icon){
+      this.dialog.icon = icon
+    },
     existsWebcamName(name) {
       return (
         this.webcams.findIndex(
@@ -274,11 +313,12 @@ export default {
       this.dialog.bool = false;
       this.dialog.index = null;
       this.dialog.name = "";
+      this.dialog.icon = "mdi-webcam"
       this.dialog.config = this.defaultconfig;
     },
     editWebcam(webcam) {
-      console.log(webcam);
       this.dialog.name = webcam.name;
+      this.dialog.icon = webcam.icon;
       this.dialog.index = webcam.index;
       this.dialog.config = webcam.config;
 

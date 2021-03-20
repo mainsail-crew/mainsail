@@ -4,7 +4,6 @@
             <v-col class="col-12 col-md-6 col-lg-4">
                 <settings-general-panel></settings-general-panel>
                 <settings-webcam-panel class="mt-6"></settings-webcam-panel>
-                <settings-webcams-panel class="mt-6"></settings-webcams-panel>
                 <settings-dashboard-panel class="mt-6"></settings-dashboard-panel>
                 <settings-console-panel class="mt-6"></settings-console-panel>
             </v-col>
