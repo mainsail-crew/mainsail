@@ -45,6 +45,25 @@
     .minHeight36 {
         min-height: 36px;
     }
+
+    td.jobStatus {
+        padding-left: 6px !important;
+        border-left-width: 10px;
+        border-left-style: solid;
+        border-left-color: transparent;
+    }
+
+    td.jobStatus.jobStatusCompleted {
+        border-left-color: #388E3C99;
+    }
+
+    td.jobStatus.jobStatusInProgress {
+        border-left-color: #546E7A99;
+    }
+
+    td.jobStatus.jobStatusCanceled{
+        border-left-color: #ff525299;
+    }
 </style>
 
 <template>
@@ -147,16 +166,34 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td class="pr-0 text-center" style="width: 32px;">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(getSmallThumbnail(item))">mdi-file</v-icon>
-                            <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <img :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
+                        <td :class="'pr-0 text-center jobStatus '+getFileStatus(item)" style="width: 32px;">
+                            <template v-if="item.isDirectory">
+                                <v-icon>mdi-folder</v-icon>
+                            </template>
+                            <template v-else>
+                                <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <vue-load-image>
+                                                <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
+                                                <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                                <v-icon slot="error">mdi-file</v-icon>
+                                            </vue-load-image>
+                                        </template>
+                                        <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                    </v-tooltip>
                                 </template>
-                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
-                            </v-tooltip>
-                            <img v-if="!item.isDirectory && getSmallThumbnail(item) && !getBigThumbnail(item)" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                <template v-else-if="getSmallThumbnail(item)">
+                                    <vue-load-image>
+                                        <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                        <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                        <v-icon slot="error">mdi-file</v-icon>
+                                    </vue-load-image>
+                                </template>
+                                <template v-else>
+                                    <v-icon>mdi-file</v-icon>
+                                </template>
+                            </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
@@ -168,7 +205,6 @@
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
-                <v-data-footer>bla bla</v-data-footer>
             </v-data-table>
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
                 <div class="textnode">Drop files to add gcode.</div>
@@ -295,8 +331,12 @@
     import axios from 'axios'
     import { findDirectory } from "@/plugins/helpers"
     import { validGcodeExtensions } from "@/store/variables"
+    import VueLoadImage from "vue-load-image"
 
     export default {
+        components: {
+            'vue-load-image': VueLoadImage
+        },
         data () {
             return {
                 search: '',
@@ -831,6 +871,12 @@
                 }
 
                 return 400
+            },
+            getFileStatus(item) {
+                return this.$store.getters["server/history/getPrintStatus"]({
+                    filename: (this.currentPath+"/"+item.filename).substr(7),
+                    modified: new Date(item.modified).getTime()
+                })
             }
         },
         watch: {
