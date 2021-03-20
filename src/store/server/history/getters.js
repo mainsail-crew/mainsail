@@ -64,7 +64,7 @@ export default {
 			else {
 				let itemStyle = {
 					opacity: 0.9,
-					color: '#212121'
+					color: '#424242'
 				}
 
 				switch (current.status) {
@@ -77,7 +77,7 @@ export default {
 						break
 
 					case 'cancelled':
-						itemStyle['color'] = '#424242'
+						itemStyle['color'] = '#616161'
 						break
 				}
 
@@ -134,5 +134,27 @@ export default {
 		}
 
 		return output
+	},
+
+	getPrintStatus: (state) => (file) => {
+		if (state.jobs.length) {
+			const jobs = state.jobs.filter(job =>
+				'filename' in job &&
+				job.filename === file.filename &&
+				'status' in job &&
+				'metadata' in job &&
+				'modified' in job.metadata &&
+				parseInt(job.metadata.modified * 1000) === file.modified
+			)
+
+			if (jobs.length) {
+				if (jobs.find(job => job.status === 'completed')) return 'jobStatusCompleted'
+				if (jobs.find(job => job.status === 'in_progress')) return 'jobStatusInProgress'
+
+				return 'jobStatusCanceled'
+			}
+		}
+
+		return ""
 	}
 }
