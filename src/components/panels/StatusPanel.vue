@@ -182,7 +182,16 @@
                             </v-col>
                             <v-col class="equal-width py-0">
                                 <v-row><v-col class="pa-0"><strong>Layer</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
+                                <v-row>
+                                    <v-col class="pa-0 text-no-wrap">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <span v-bind="attrs" v-on="on">{{ current_layer }} of {{ max_layers }}</span>
+                                            </template>
+                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">Object Height: {{ current_file.object_height }}mm</span>
+                                        </v-tooltip>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
                                 <v-row><v-col class="pa-0"><strong>ETA</strong></v-col></v-row>
@@ -291,54 +300,22 @@
             },
             estimated_time_file: {
                 get() {
-                    if (this.print_time > 0 && this.printPercent > 0) {
-                        return (this.print_time / this.printPercent - this.print_time).toFixed(0)
-                    }
-
-                    return 0
+                    return this.$store.getters.getEstimatedTimeFile
                 }
             },
             estimated_time_filament: {
                 get() {
-                    if (this.filament_used > 0 && 'filament_total' in this.current_file && this.current_file.filament_total > this.filament_used) {
-                        return (this.print_time / (this.filament_used / this.current_file.filament_total) - this.print_time).toFixed(0)
-                    }
-
-                    return 0
+                    return this.$store.getters.getEstimatedTimeFilament
                 }
             },
             estimated_time_slicer: {
                 get() {
-                    if ('estimated_time' in this.current_file && this.current_file.estimated_time > this.print_time) {
-                        return (this.current_file.estimated_time - this.print_time).toFixed(0)
-                    }
-
-                    return 0
+                    return this.$store.getters.getEstimatedTimeSlicer
                 }
             },
             eta: {
                 get() {
-                    let time = 0
-                    let timeCount = 0
-
-                    if (this.estimated_time_file > 0) {
-                        time += parseInt(this.estimated_time_file)
-                        timeCount++
-                    }
-
-                    if (this.estimated_time_filament > 0) {
-                        time += parseInt(this.estimated_time_filament)
-                        timeCount++
-                    }
-
-                    if (this.estimated_time_slicer > 0) {
-                        time += parseInt(this.estimated_time_slicer)
-                        timeCount++
-                    }
-
-                    if (time && timeCount) return Date.now() + (time / timeCount) * 1000
-
-                    return 0
+                    return this.$store.getters.getEstimatedTimeETA
                 }
             }
         },
