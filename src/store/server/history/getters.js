@@ -97,19 +97,26 @@ export default {
 
 	getFilamentUsageArray(state) {
 		let output = []
-		const startDate = new Date(new Date().getDate() - 14)
+		const startDate = new Date()
+		startDate.setDate(startDate.getDate() - 14)
+		startDate.setHours(0,0,0,0)
 		const jobsFiltered = state.jobs.filter(job => job.start_time * 1000 >= startDate && job.filament_used > 0)
+
+		for (let i = 0; i <= 14; i++) {
+			const tmpDate = new Date()
+			tmpDate.setDate(startDate.getDate() + i)
+
+			output.push([
+				new Date(tmpDate).setHours(0,0,0,0),
+				0
+			])
+		}
 
 		if (jobsFiltered.length) {
 			jobsFiltered.forEach(current => {
 				const currentStartDate = new Date(current.start_time * 1000).setHours(0,0,0,0)
 				const index = output.findIndex(element => element[0] === currentStartDate)
 				if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
-				else
-					output.push([
-						currentStartDate,
-						Math.round(current.filament_used) / 1000
-					])
 			})
 		}
 
