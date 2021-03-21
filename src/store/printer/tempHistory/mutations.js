@@ -27,10 +27,15 @@ export default {
 					])
 				}
 			} else {
-				dataset.data.push([
-					payload.time,
-					Math.round(payload.value * multi * 100)/100
-				])
+				if (
+					dataset.data.length &&
+					dataset.data[dataset.data.length-1][0] < payload.time
+				) {
+					dataset.data.push([
+						payload.time,
+						Math.round(payload.value * multi * 100)/100
+					])
+				}
 
 				let i
 				const timeOld = new Date().getTime() - (1000 * payload.maxHistory)
