@@ -79,10 +79,18 @@ export default {
 					element.name === payload.name+'_target' ||
 					element.name === payload.name+'_power'
 				)
-			) element.lineStyle.color = payload.value
+			) {
+				element.lineStyle.color = payload.value
+
+				if ('emphasis' in element && 'lineStyle' in element.emphasis)
+					element.emphasis.lineStyle.color = payload.value
+			}
 
 			if (element.name === payload.name+'_target' && 'areaStyle' in element) {
 				element.areaStyle.color = payload.value
+
+				if ('emphasis' in element && 'areaStyle' in element.emphasis)
+					element.emphasis.areaStyle.color = payload.value
 			}
 		})
 	},
