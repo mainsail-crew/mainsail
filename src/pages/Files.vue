@@ -912,26 +912,37 @@
         watch: {
             filetree: {
                 deep: true,
-                handler() {
-                    /*let dirArray = this.currentPath.split("/");
+                handler(newVal) {
+                    let dirArray = this.currentPath.split("/");
                     this.files = findDirectory(newVal, dirArray);
 
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-                    }*/
+                    }
 
-                    this.loadPath()
+                    if (!this.showPrintedFiles) {
+                        this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                            filename: (this.currentPath+"/"+file.filename).substr(7),
+                            modified: new Date(file.modified).getTime()
+                        }) !== 'completed')
+                    }
                 }
             },
             currentPath: {
-                handler() {
-                    /*let dirArray = newVal.split("/");
+                handler(newVal) {
+                    let dirArray = newVal.split("/");
                     this.files = findDirectory(this.filetree, dirArray);
 
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-                    }*/
-                    this.loadPath()
+                    }
+
+                    if (!this.showPrintedFiles) {
+                        this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                            filename: (this.currentPath+"/"+file.filename).substr(7),
+                            modified: new Date(file.modified).getTime()
+                        }) !== 'completed')
+                    }
                 }
             },
             displayMetadata: {
