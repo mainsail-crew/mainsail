@@ -80,7 +80,7 @@
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon >mdi-file</v-icon>
+                                <v-icon >{{ item.exists ? "mdi-file" : "mdi-file-cancel" }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
