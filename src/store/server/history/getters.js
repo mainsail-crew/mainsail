@@ -147,11 +147,14 @@ export default {
 				parseInt(job.metadata.modified * 1000) === file.modified
 			)
 
-			if (jobs.length) {
-				if (jobs.find(job => job.status === 'completed')) return 'jobStatusCompleted'
-				if (jobs.find(job => job.status === 'in_progress')) return 'jobStatusInProgress'
+			if (jobs.length > 1) {
+				jobs.sort((a,b) => {
+					return b.start_time - a.start_time
+				})
 
-				return 'jobStatusCanceled'
+				return jobs[0].status
+			} else if (jobs.length === 1) {
+				return jobs[0].status
 			}
 		}
 
