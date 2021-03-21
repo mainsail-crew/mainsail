@@ -166,7 +166,7 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td :class="'pr-0 text-center jobStatus '+getFileStatus(item)" style="width: 32px;">
+                        <td :class="'pr-0 text-center jobStatus '+getJobStatus(item)" style="width: 32px;">
                             <template v-if="item.isDirectory">
                                 <v-icon>mdi-folder</v-icon>
                             </template>
@@ -196,13 +196,16 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
-                        <td class="text-right" v-if="headers.filter(header => header.value === 'modified')[0].visible">{{ formatDate(item.modified) }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'object_height')[0].visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'layer_height')[0].visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'filament_total')[0].visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'estimated_time')[0].visible">{{ formatPrintTime(item.estimated_time) }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
+                        <td class=" ">
+                            <v-chip :color="getJobStatusColor(getJobStatus(item))" v-if="getJobStatus(item)" small>{{ getJobStatus(item).replaceAll("_", " ") }}</v-chip>
+                        </td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'size').visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
+                        <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'slicer').visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
             </v-data-table>
@@ -365,6 +368,7 @@
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: 'Status',         value: 'status',          align: 'left',  configable: true,   visible: true },
                     { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
                     { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
                     { text: 'Object Height',  value: 'object_height',   align: 'right', configable: true,   visible: true },
@@ -872,11 +876,20 @@
 
                 return 400
             },
-            getFileStatus(item) {
+            getJobStatus(item) {
                 return this.$store.getters["server/history/getPrintStatus"]({
                     filename: (this.currentPath+"/"+item.filename).substr(7),
                     modified: new Date(item.modified).getTime()
                 })
+            },
+            getJobStatusColor(status) {
+                switch(status) {
+                    case 'in_progress': return 'blue-grey darken-1'
+                    case 'completed': return 'green'
+                    case 'cancelled': return 'red'
+
+                    default: return 'orange'
+                }
             }
         },
         watch: {

@@ -85,23 +85,23 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class=" ">
-                            <v-chip :color="getIconColor(item.status)" small>{{ item.status }}</v-chip>
+                            <v-chip :color="getIconColor(item.status)" small>{{ item.status.replaceAll("_", " ") }}</v-chip>
                         </td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'size')[0].visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'modified')[0].visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'start_time')[0].visible">{{ item.start_time > 0 ? formatDate(item.start_time) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'end_time')[0].visible">{{ item.end_time > 0 ? formatDate(item.end_time) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'estimated_time')[0].visible">{{ 'estimated_time' in item.metadata && item.metadata.estimated_time ? formatPrintTime(item.metadata.estimated_time) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'print_duration')[0].visible">{{ item.print_duration > 0 ? formatPrintTime(item.print_duration) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'total_duration')[0].visible">{{ item.total_duration > 0 ? formatPrintTime(item.total_duration) : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'filament_total')[0].visible">{{ 'filament_total' in item.metadata && item.metadata.filament_total ? item.metadata.filament_total+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'filament_used')[0].visible">{{ item.filament_used ? item.filament_used.toFixed()+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'first_layer_extr_temp')[0].visible">{{ 'first_layer_extr_temp' in item.metadata && item.metadata.first_layer_extr_temp ? item.metadata.first_layer_extr_temp+' °C' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'first_layer_bed_temp')[0].visible">{{ 'first_layer_bed_temp' in item.metadata && item.metadata.first_layer_bed_temp ? item.metadata.first_layer_bed_temp+' °C' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'first_layer_height')[0].visible">{{ 'first_layer_height' in item.metadata && item.metadata.first_layer_height ? item.metadata.first_layer_height+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'layer_height')[0].visible">{{ 'layer_height' in item.metadata && item.metadata.layer_height ? item.metadata.layer_height+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'object_height')[0].visible">{{ 'object_height' in item.metadata && item.metadata.object_height ? item.metadata.object_height+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.filter(header => header.value === 'slicer')[0].visible">
+                        <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'start_time').visible">{{ item.start_time > 0 ? formatDate(item.start_time) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'end_time').visible">{{ item.end_time > 0 ? formatDate(item.end_time) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'estimated_time').visible">{{ 'estimated_time' in item.metadata && item.metadata.estimated_time ? formatPrintTime(item.metadata.estimated_time) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'print_duration').visible">{{ item.print_duration > 0 ? formatPrintTime(item.print_duration) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'total_duration').visible">{{ item.total_duration > 0 ? formatPrintTime(item.total_duration) : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'filament_total').visible">{{ 'filament_total' in item.metadata && item.metadata.filament_total ? item.metadata.filament_total+' mm' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'filament_used').visible">{{ item.filament_used ? item.filament_used.toFixed()+' mm' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_extr_temp').visible">{{ 'first_layer_extr_temp' in item.metadata && item.metadata.first_layer_extr_temp ? item.metadata.first_layer_extr_temp+' °C' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_bed_temp').visible">{{ 'first_layer_bed_temp' in item.metadata && item.metadata.first_layer_bed_temp ? item.metadata.first_layer_bed_temp+' °C' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_height').visible">{{ 'first_layer_height' in item.metadata && item.metadata.first_layer_height ? item.metadata.first_layer_height+' mm' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'layer_height').visible">{{ 'layer_height' in item.metadata && item.metadata.layer_height ? item.metadata.layer_height+' mm' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'object_height').visible">{{ 'object_height' in item.metadata && item.metadata.object_height ? item.metadata.object_height+' mm' : '--' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'slicer').visible">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
                             <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version"><br />{{ item.metadata.slicer_version }}</small>
                         </td>
