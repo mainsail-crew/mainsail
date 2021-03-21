@@ -47,7 +47,7 @@
                                 <history-filament-usage v-if="toggleChart === 'filament_usage'"></history-filament-usage>
                                 <history-printtime-avg v-if="toggleChart === 'printtime_avg'"></history-printtime-avg>
                                 <div class="text-center mt-3">
-                                    <v-btn-toggle v-model="toggleChart" small>
+                                    <v-btn-toggle v-model="toggleChart" small mandatory>
                                         <v-btn small value="filament_usage">
                                             Filament usage
                                         </v-btn>
