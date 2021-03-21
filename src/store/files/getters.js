@@ -5,14 +5,13 @@ export default {
 
 	getSidebarLogo: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
+		const acceptName = "sidebar-logo"
+		const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
 
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
-				element.filename === 'sidebar-logo.svg' ||
-				element.filename === 'sidebar-logo.jpg' ||
-				element.filename === 'sidebar-logo.jpeg' ||
-				element.filename === 'sidebar-logo.png' ||
-				element.filename === 'sidebar-logo.gif'
+				element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
+				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
 			)
 		)
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
@@ -22,13 +21,13 @@ export default {
 
 	getSidebarBackground: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
+		const acceptName = "sidebar-background"
+		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif']
 
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
-				element.filename === 'sidebar-background.jpg' ||
-				element.filename === 'sidebar-background.jpeg' ||
-				element.filename === 'sidebar-background.png' ||
-				element.filename === 'sidebar-background.gif'
+				element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
+				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
 			)
 		)
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
@@ -38,13 +37,13 @@ export default {
 
 	getMainBackground: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
+		const acceptName = "main-background"
+		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif']
 
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
-				element.filename === 'main-background.jpg' ||
-				element.filename === 'main-background.jpeg' ||
-				element.filename === 'main-background.png' ||
-				element.filename === 'main-background.gif'
+				element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
+				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
 			)
 		)
 		if (file) return 'url('+rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename+')'
