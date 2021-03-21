@@ -37,7 +37,7 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: 'Files'
+                    itemsPerPageText: 'Jobs'
                 }"
                 item-key="name"
                 :search="search"
@@ -85,7 +85,10 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class=" ">
-                            <v-chip :color="getIconColor(item.status)" small>{{ item.status.replaceAll("_", " ") }}</v-chip>
+                            <v-chip :color="getIconColor(item.status)" small>
+                                <v-icon left small>{{ getIcon(item.status) }}</v-icon>
+                                {{ item.status.replaceAll("_", " ") }}
+                            </v-chip>
                         </td>
                         <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '--' }}</td>
                         <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '--' }}</td>
@@ -314,7 +317,7 @@ import VueLoadImage from 'vue-load-image'
         methods: {
             getIcon(status) {
                 switch(status) {
-                    case 'in_progress': return 'mdi-cogs'
+                    case 'in_progress': return 'mdi-progress-clock'
                     case 'completed': return 'mdi-check-circle'
                     case 'cancelled': return 'mdi-close-circle'
 
