@@ -85,6 +85,9 @@
                             <v-list-item class="minHeight36">
                                 <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
                             </v-list-item>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" label="Printed files"></v-checkbox>
+                            </v-list-item>
                             <v-divider></v-divider>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
                                 <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
@@ -445,6 +448,14 @@
                     return this.$store.dispatch("gui/setSettings", { gcodefiles: { showHiddenFiles: newVal } })
                 }
             },
+            showPrintedFiles: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.showPrintedFiles
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { showPrintedFiles: newVal } })
+                }
+            },
             countPerPage: {
                 get: function() {
                     return this.$store.state.gui.gcodefiles.countPerPage
@@ -701,6 +712,12 @@
                 if (!this.showHiddenFiles) {
                     this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
                 }
+                if (!this.showPrintedFiles) {
+                    this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                        filename: (this.currentPath+"/"+file.filename).substr(7),
+                        modified: new Date(file.modified).getTime()
+                    }) !== 'completed')
+                }
             },
             startPrint(filename = "") {
                 filename = (this.currentPath+"/"+filename).substring(7)
@@ -895,23 +912,26 @@
         watch: {
             filetree: {
                 deep: true,
-                handler(newVal) {
-                    let dirArray = this.currentPath.split("/");
+                handler() {
+                    /*let dirArray = this.currentPath.split("/");
                     this.files = findDirectory(newVal, dirArray);
 
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-                    }
+                    }*/
+
+                    this.loadPath()
                 }
             },
             currentPath: {
-                handler(newVal) {
-                    let dirArray = newVal.split("/");
+                handler() {
+                    /*let dirArray = newVal.split("/");
                     this.files = findDirectory(this.filetree, dirArray);
 
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-                    }
+                    }*/
+                    this.loadPath()
                 }
             },
             displayMetadata: {
