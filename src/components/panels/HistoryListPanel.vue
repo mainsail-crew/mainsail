@@ -37,7 +37,8 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: 'Jobs'
+                    itemsPerPageText: 'Jobs',
+                    itemsPerPageOptions: [10,25,50,100,-1]
                 }"
                 item-key="name"
                 :search="search"
@@ -57,7 +58,7 @@
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        class="file-list-cursor user-select-none"
+                        :class="'file-list-cursor user-select-none '+(item.exists ? '' : 'text--disabled')"
                     >
                         <td class="pr-0 text-center" style="width: 32px;">
                             <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
@@ -80,13 +81,13 @@
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon >{{ item.exists ? "mdi-file" : "mdi-file-cancel" }}</v-icon>
+                                <v-icon :class="(item.exists ? '' : 'text--disabled')">{{ item.exists ? "mdi-file" : "mdi-file-cancel" }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class=" ">
-                            <v-chip :color="getIconColor(item.status)" small>
-                                <v-icon left small>{{ getIcon(item.status) }}</v-icon>
+                            <v-chip :color="getStatusColor(item.status)" small :disabled="!item.exists">
+                                <v-icon left small>{{ getStatusIcon(item.status) }}</v-icon>
                                 {{ item.status.replaceAll("_", " ") }}
                             </v-chip>
                         </td>
@@ -277,9 +278,11 @@ import VueLoadImage from 'vue-load-image'
             ...mapState({
                 jobs: state => state.server.history.jobs,
             }),
-            ...mapGetters([
-                'is_printing'
-            ]),
+            ...mapGetters( {
+                is_printing: "is_printing",
+                getStatusIcon: "server/history/getPrintStatusChipIcon",
+                getStatusColor: "server/history/getPrintStatusChipColor",
+            }),
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
@@ -315,24 +318,6 @@ import VueLoadImage from 'vue-load-image'
             })
         },
         methods: {
-            getIcon(status) {
-                switch(status) {
-                    case 'in_progress': return 'mdi-progress-clock'
-                    case 'completed': return 'mdi-check-circle'
-                    case 'cancelled': return 'mdi-close-circle'
-
-                    default: return 'mdi-progress-question'
-                }
-            },
-            getIconColor(status) {
-                switch(status) {
-                    case 'in_progress': return 'blue-grey darken-1'
-                    case 'completed': return 'green'
-                    case 'cancelled': return 'red'
-
-                    default: return 'orange'
-                }
-            },
             refreshHistory: function() {
                 this.$socket.sendObj('server.history.list', {}, 'server/history/getHistory')
             },

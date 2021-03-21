@@ -130,7 +130,8 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: 'Files'
+                    itemsPerPageText: 'Files',
+                    itemsPerPageOptions: [10,25,50,100,-1]
                 }"
                 item-key="name"
                 :search="search"
@@ -200,7 +201,10 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class=" ">
-                            <v-chip :color="getJobStatusColor(getJobStatus(item))" v-if="getJobStatus(item)" small>{{ getJobStatus(item).replaceAll("_", " ") }}</v-chip>
+                            <v-chip :color="getStatusColor(getJobStatus(item))" v-if="getJobStatus(item)" small>
+                                <v-icon left small>{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
+                                {{ getJobStatus(item).replaceAll("_", " ") }}
+                            </v-chip>
                         </td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'size').visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
                         <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
@@ -431,9 +435,11 @@
 
                 displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
-            ...mapGetters([
-                'is_printing'
-            ]),
+            ...mapGetters( {
+                is_printing: "is_printing",
+                getStatusIcon: "server/history/getPrintStatusChipIcon",
+                getStatusColor: "server/history/getPrintStatusChipColor",
+            }),
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
@@ -899,15 +905,6 @@
                     modified: new Date(item.modified).getTime()
                 })
             },
-            getJobStatusColor(status) {
-                switch(status) {
-                    case 'in_progress': return 'blue-grey darken-1'
-                    case 'completed': return 'green'
-                    case 'cancelled': return 'red'
-
-                    default: return 'orange'
-                }
-            }
         },
         watch: {
             filetree: {
@@ -958,6 +955,9 @@
                 }
             },
             showHiddenFiles: function() {
+                this.loadPath();
+            },
+            showPrintedFiles: function() {
                 this.loadPath();
             },
             hideMetadataColums: function(newVal) {
