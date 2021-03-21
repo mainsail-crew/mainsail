@@ -58,6 +58,7 @@ export function getDefaultState() {
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: false,
+			showPrintedFiles: true,
 			hideMetadataColums: []
 		},
 		history: {
