@@ -35,12 +35,12 @@
                     <v-col class="py-2">
                         <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0">
                             <template v-slot:label>
-                                Display Z-Offset-Panel
+                                {{ $t('Settings.GeneralPanel.DisplayZOffset') }}
                                 <v-tooltip right>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-icon class="text--secondary ml-2" v-bind="attrs" v-on="on">mdi mdi-information</v-icon>
                                     </template>
-                                    <span>Shows the Z-Offset panel permanently.</span>
+                                    <span>{{ $t('Settings.GeneralPanel.ShowZOffset') }}</span>
                                 </v-tooltip>
                             </template>
                         </v-switch>
