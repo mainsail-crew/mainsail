@@ -4,7 +4,7 @@
         <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon class="mdi mdi-alert-circle" left></v-icon>{{ $t("Panels.MoonrakerFailedPluginsPanel.MoonrakerFailedPlugins") }}
+                    <v-icon class="mdi mdi-alert-circle" left></v-icon>{{ $t("Panels.MoonrakerFailedPluginsPanel.MoonrakerFailedComponents") }}
                 </span>
             </v-toolbar-title>
         </v-toolbar>
@@ -14,7 +14,7 @@
                     <p class="orange--text">{{ $t("Panels.MoonrakerFailedPluginsPanel.MoonrakerErrorInfo") }}</p>
                     <p class="mb-2 orange--text">{{ $t("Panels.MoonrakerFailedPluginsPanel.FollowingPluginHasAnError") }}</p>
                     <ul class="mt-0 pt-0">
-                        <li v-for="plugin in failedPlugins" v-bind:key="plugin" class="orange--text"><code>{{ plugin }}</code></li>
+                        <li v-for="component in failedComponents" v-bind:key="component" class="orange--text"><code>{{ component }}</code></li>
                     </ul>
                 </v-flex>
             </v-layout>
@@ -35,7 +35,7 @@
         }),
         computed: {
             ...mapState({
-                failedPlugins: state => state.server.failed_plugins,
+                failedComponents: state => state.server.failed_components,
                 hostname: state => state.socket.hostname,
                 port: state => state.socket.port,
             }),
