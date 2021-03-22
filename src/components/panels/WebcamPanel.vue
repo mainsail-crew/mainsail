@@ -20,7 +20,7 @@
                         <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">{{currentCam().name}} <v-icon small>mdi-menu-down</v-icon></v-btn>
                     </template>
                     <v-list dense class="py-0">
-                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="selectCam(webcam.index)" :disabled="checkSelectedCam(webcam.index)">
+                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="selectCam(webcam.name)" :disabled="checkSelectedCam(webcam.name)">
                             <v-list-item-icon class="mr-0">
                                 <v-icon small>{{webcam.icon}}</v-icon>
                             </v-list-item-icon>
@@ -162,12 +162,26 @@
                     this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
                 }
             },
-            selectCam(index){
+            selectCam(name){
+                let index = 0
+                for(let camindex = 0; camindex < this.webcams.length; camindex ++){
+                    if(this.webcams[camindex].name === name){
+                        index = camindex
+                        break
+                    }
+                }
                 this.validURL=true
                 this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: index } })
 
             },
-            checkSelectedCam(index){
+            checkSelectedCam(name){
+                let index = 0
+                for(let camindex = 0; camindex < this.webcams.length; camindex ++){
+                    if(this.webcams[camindex].name === name){
+                        index = camindex
+                        break
+                    }
+                }
                 return this.webcamConfig.selectedCam === index
             },
             onLoad() {

@@ -7,11 +7,10 @@
             ><v-icon left>mdi-webcam</v-icon>Webcams</span
           >
         </v-toolbar-title>
-        <v-spacer></v-spacer>
       </v-toolbar>
       <v-card-text class="py-3">
         <v-container>
-          <v-row>
+         <v-row>
               <v-col class="py-2 pb-5">
                 <v-switch
                   v-model="boolNavi"
@@ -30,16 +29,13 @@
               style="cursor: pointer;"
             >
               <v-row align="center">
-                <v-col class="col-1 pl-4 pr-6 mr-0">
+                <v-col class="px-4 mr-2 col-1">
                   <v-icon left>{{webcam.icon}}</v-icon>
                 </v-col>
-                <v-col class="col-2">
+                <v-col class="col-6">
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
-                <v-col class="col-6">
-                  <span class="text-no-wrap" style="display: block;max-width: 100%;text-overflow: ellipsis;overflow: hidden;">{{ webcam.config.url }}</span>
-                </v-col>
-                <v-col class="col-auto text-right"
+                <v-col class="col-auto text-right" style="position:absolute;right:12px"
                   ><v-btn
                     small
                     class="minwidth-0 float-right"
@@ -223,7 +219,6 @@ export default {
           url: "/webcam/?action=stream",
           flipX: false,
           flipY: false,
-          bool: false,
         },
       },
       defaultconfig: {
@@ -232,7 +227,6 @@ export default {
         url: "/webcam/?action=stream",
         flipX: false,
         flipY: false,
-        bool: false,
       },
       rules: {
         required: (value) => value !== "" || "required",
