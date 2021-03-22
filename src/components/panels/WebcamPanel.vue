@@ -33,13 +33,13 @@
             </v-item-group>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <div style="width: 100%;padding-bottom: 56.75%!important;">
-                <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad" alt="Webcam" v-if="streamValid()" @error="streamNotFound()"/>
-                <div style="position:absolute;text-align:center;width:100%;top: 50%;transform: translateY(-50%);" v-if="!streamValid() && this.webcams.length === 0">
+            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad" alt="Webcam" v-if="streamValid()" @error="streamNotFound()"/>
+            <div style="width: 100%;padding-bottom: 56.75%!important;" v-if="!streamValid()">
+                <div style="position:absolute;text-align:center;width:100%;top: 53%;transform: translateY(-50%);" v-if="this.webcams.length === 0">
                     <span><v-icon size="100">mdi-camera-off</v-icon></span><br><br>
                     <span>Please configure a Webcam in the Settings!</span>
                 </div>
-                <div style="position:absolute;text-align:center;width:100%;top: 50%;transform: translateY(-50%);" v-if="!streamValid() && this.webcams.length !== 0">
+                <div style="position:absolute;text-align:center;width:100%;top: 53%;transform: translateY(-50%);" v-if="this.webcams.length !== 0">
                     <span><v-icon size="100">mdi-camera-off</v-icon></span><br><br>
                     <span>Please check if the Stream URL is valid!</span>
                 </div>
@@ -118,12 +118,9 @@
                 if (transforms.trimLeft().length) {
                     return {
                         transform: transforms.trimLeft(),
-                        'position': 'absolute',
                     };
                 }
-                return {
-                    'position': 'absolute',
-                };
+                return "";
             },
         },
         methods: {
