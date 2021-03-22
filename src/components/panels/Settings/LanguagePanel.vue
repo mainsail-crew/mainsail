@@ -45,11 +45,11 @@
                 this.lang = val
             },
             getLanguages(){
-                const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
+                const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.js$/i)
                 this.Languages = []
                 locales.keys().map(key=>{
                     this.Languages.push({
-                        text: locales(key).title,
+                        text: locales(key).default.title,
                         value: key.match(/([A-Za-z0-9-_]+)\./i)[1]
                     })
                 })
