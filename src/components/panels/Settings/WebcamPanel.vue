@@ -32,7 +32,7 @@
                 <v-col class="px-4 mr-2 col-1">
                   <v-icon left>{{webcam.icon}}</v-icon>
                 </v-col>
-                <v-col class="col-6">
+                <v-col class="col-7">
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
                 <v-col class="col-auto text-right" style="position:absolute;right:12px"
