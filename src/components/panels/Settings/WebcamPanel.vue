@@ -36,7 +36,7 @@
                 <v-col class="col-2">
                   <strong>{{ webcam.name }}</strong>
                 </v-col>
-                <v-col class="col-7">
+                <v-col class="col-6">
                   <span class="text-no-wrap" style="display: block;max-width: 100%;text-overflow: ellipsis;overflow: hidden;">{{ webcam.config.url }}</span>
                 </v-col>
                 <v-col class="col-auto text-right"
