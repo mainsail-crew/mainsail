@@ -109,6 +109,7 @@
                         v-model="dialog.config.url"
                         label="URL"
                         hide-details="auto"
+                        :rules="[rules.required, rules.urlvalid]"
                       ></v-text-field>
                     </v-row>
                     <v-row class="mt-2 mx-0 mb-2" align="center">
@@ -155,6 +156,8 @@
                         margin-top: auto!important;
                         margin-bottom: auto!important;">
                       <img
+                        @error="streamNotFound()"
+                        @load="streamFound()"
                         :src="dialog.config.url"
                         class="webcamImage"
                         :style="webcamStyle"
@@ -213,6 +216,7 @@ export default {
         valid: false,
         name: "",
         icon: "mdi-webcam",
+        validURL: true,
         config: {
           service: "mjpegstreamer",
           targetFps: 25,
@@ -230,6 +234,9 @@ export default {
       },
       rules: {
         required: (value) => value !== "" || "required",
+        urlvalid: () => {
+          return (!this.dialog.validURL || "invalid")
+        },
         unique: (value) =>
           !this.existsWebcamName(value) || "Name already exists",
       },
@@ -286,6 +293,12 @@ export default {
     this.clearDialog();
   },
   methods: {
+    streamFound(){
+        this.dialog.validURL=true;
+    },
+    streamNotFound(){
+        this.dialog.validURL=false;
+    },
     getCurrentIcon(){
       return this.dialog.icon
     },
