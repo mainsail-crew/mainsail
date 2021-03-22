@@ -200,7 +200,7 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class=" ">
+                        <td class=" " v-if="headers.find(header => header.value === 'status').visible">
                             <v-chip :color="getStatusColor(getJobStatus(item))" v-if="getJobStatus(item)" small>
                                 <v-icon left small>{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
                                 {{ getJobStatus(item).replaceAll("_", " ") }}
