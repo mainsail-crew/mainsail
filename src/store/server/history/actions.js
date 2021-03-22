@@ -1,6 +1,12 @@
+import Vue from "vue";
+
 export default {
 	reset({ commit }) {
 		commit('reset')
+	},
+
+	getTotals({ commit }, payload) {
+		commit('setTotals', payload.job_totals)
 	},
 
 	getHistory({ commit }, payload) {
@@ -14,6 +20,8 @@ export default {
 	getChanged({ commit }, payload) {
 		if (payload.action === 'added') commit('addJob', payload.job)
 		else if (payload.action === 'finished') commit('updateJob', payload.job)
+
+		Vue.prototype.$socket.sendObj('server.history.totals', {}, 'server/history/getTotals')
 	},
 
 	getDeletedJobs({ commit }, payload) {

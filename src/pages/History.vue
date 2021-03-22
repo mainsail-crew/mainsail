@@ -35,7 +35,7 @@
                                         </tr>
                                         <tr>
                                             <td>Total Jobs</td>
-                                            <td class="text-right">{{ totalTotalJobsCount }}</td>
+                                            <td class="text-right">{{ totalJobsCount }}</td>
                                         </tr>
                                     </tbody>
                                 </v-simple-table>
@@ -90,27 +90,29 @@
         computed: {
             totalPrintTime: {
                 get() {
-                    return this.$store.getters["server/history/getTotalPrintTime"]
+                    return 'total_print_time' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_print_time : 0
                 }
             },
             longestPrintTime: {
                 get() {
-                    return this.$store.getters["server/history/getLongestPrintTime"]
+                    return 'longest_print' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.longest_print : 0
                 }
             },
             avgPrintTime: {
                 get() {
-                    return this.$store.getters["server/history/getAvgPrintTime"]
+                    if (this.totalJobsCount > 0 && this.totalPrintTime > 0) return Math.round(this.totalPrintTime / this.totalJobsCount)
+
+                    return 0
                 }
             },
             totalFilamentUsed: {
                 get() {
-                    return this.$store.getters["server/history/getTotalFilamentUsed"]
+                    return 'total_filament_used' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_filament_used : 0
                 }
             },
-            totalTotalJobsCount: {
+            totalJobsCount: {
                 get() {
-                    return this.$store.getters["server/history/getTotalJobsCount"]
+                    return 'total_jobs' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_jobs : 0
                 }
             },
             toggleChart: {

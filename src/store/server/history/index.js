@@ -4,7 +4,8 @@ import getters from './getters'
 
 export function getDefaultState() {
 	return {
-		jobs: []
+		jobs: [],
+		job_totals: {}
 	}
 }
 
