@@ -182,7 +182,16 @@
                             </v-col>
                             <v-col class="equal-width py-0">
                                 <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Layer") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0 text-no-wrap">{{ current_layer }} of {{ max_layers }}</v-col></v-row>
+                                <v-row>
+                                    <v-col class="pa-0 text-no-wrap">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <span v-bind="attrs" v-on="on">{{ current_layer }} of {{ max_layers }}</span>
+                                            </template>
+                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }} {{ current_file.object_height }}mm</span>
+                                        </v-tooltip>
+                                    </v-col>
+                                </v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
                                 <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.ETA") }}</strong></v-col></v-row>

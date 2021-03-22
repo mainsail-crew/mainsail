@@ -106,6 +106,8 @@
       "Controls": "控制台",
       "SetupControls": "设置控件",
       "AlternateControls": "备用控件",
+      "InvertX": "反转 X",
+      "InvertY": "反转 Y",
       "InvertZ": "反转 Z",
       "ALL": "全部",
       "QGL": "QGL",
@@ -155,7 +157,8 @@
     },
     "MoonrakerFailedPluginsPanel": {
       "MoonrakerFailedPlugins": "Moonraker 失败的插件",
-      "MoonrakerErrorInfo": "加载moonraker插件时检测到一个错误. 请检查日志文件并修复这个问题.",
+      "MoonrakerFailedComponents": "Moonraker 失败的组件",
+      "MoonrakerErrorInfo": "加载moonraker组件时检测到一个错误. 请检查日志文件并修复这个问题.",
       "FollowingPluginHasAnError": "以下插件有一个错误:",
       "DownloadLog": "下载日志"
     },
@@ -180,6 +183,7 @@
       "Total": "总计",
       "Speed": "速度",
       "Layer": "层",
+      "ObjectHeight": "对象高度:",
       "ETA": "ETA",
       "File": "文件",
       "Slicer": "切片"

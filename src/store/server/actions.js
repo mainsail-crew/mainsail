@@ -47,11 +47,15 @@ export default {
 	},
 
 	getInfo({ commit, state, rootState }, payload) {
-		if (state.plugins.length === 0) {
-			if (payload.plugins.includes("power") !== false)
+		if (state.components.length === 0) {
+			//reverse compatibility
+			let components = ('components' in payload) ? payload.components : []
+			if (components.length === 0 && 'plugins' in payload)  components = payload.plugins
+
+			if (components.includes("power") !== false)
 				Vue.prototype.$socket.sendObj('machine.device_power.devices', {}, 'server/power/getDevices')
 
-			if (payload.plugins.includes("update_manager") !== false)
+			if (components.includes("update_manager") !== false)
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
 		}
 

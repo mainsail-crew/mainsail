@@ -10,6 +10,7 @@ export default {
 			element.filename !== undefined && (
 				element.filename === 'sidebar-logo.svg' ||
 				element.filename === 'sidebar-logo.jpg' ||
+				element.filename === 'sidebar-logo.jpeg' ||
 				element.filename === 'sidebar-logo.png' ||
 				element.filename === 'sidebar-logo.gif'
 			)
@@ -25,6 +26,7 @@ export default {
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
 				element.filename === 'sidebar-background.jpg' ||
+				element.filename === 'sidebar-background.jpeg' ||
 				element.filename === 'sidebar-background.png' ||
 				element.filename === 'sidebar-background.gif'
 			)
@@ -40,6 +42,7 @@ export default {
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
 				element.filename === 'main-background.jpg' ||
+				element.filename === 'main-background.jpeg' ||
 				element.filename === 'main-background.png' ||
 				element.filename === 'main-background.gif'
 			)

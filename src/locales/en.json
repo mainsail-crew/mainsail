@@ -106,6 +106,8 @@
       "Controls": "Controls",
       "SetupControls": "Setup Controls",
       "AlternateControls": "Alternate controls",
+      "InvertX": "Invert X",
+      "InvertY": "Invert Y",
       "InvertZ": "Invert Z",
       "ALL": "ALL",
       "QGL": "QGL",
@@ -155,7 +157,8 @@
     },
     "MoonrakerFailedPluginsPanel": {
       "MoonrakerFailedPlugins": "Moonraker Failed Plugins",
-      "MoonrakerErrorInfo": "An error was detected while loading the moonraker plugins. Please check the logfile and fix the issue.",
+      "MoonrakerFailedComponents": "Moonraker Failed Components",
+      "MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
       "FollowingPluginHasAnError": "Following plugin has an error:",
       "DownloadLog": "Download Log"
     },
@@ -180,6 +183,7 @@
       "Total": "Total",
       "Speed": "Speed",
       "Layer": "Layer",
+      "ObjectHeight": "Object Height:",
       "ETA": "ETA",
       "File": "File",
       "Slicer": "Slicer"
@@ -252,6 +256,8 @@
       "SpeedXY": "Speed XY",
       "SpeedZ": "Speed Z",
       "MoveDistancesInMm": "Move distances in mm",
+      "ReverseXMovement": "Reverse X movement",
+      "ReverseYMovement": "Reverse Y movement",
       "ReverseZMovement": "Reverse Z movement",
       "MoveDistancesXYInMm": "Move distances XY in mm",
       "MoveDistancesZInMm": "Move distances Z in mm",
