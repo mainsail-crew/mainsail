@@ -9,7 +9,7 @@
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon left>mdi-webcam</v-icon> Webcam
+                    <v-icon left>mdi-webcam</v-icon> Webcam 
                     <small v-if="streamAdaptiveMode()">(FPS: {{ currentFPS }})</small>
                 </span>
             </v-toolbar-title>
@@ -73,7 +73,7 @@
             document.addEventListener("focus", () => this.handleRefreshChange(), false);
             document.addEventListener("visibilitychange", this.handleRefreshChange, false);
             if(this.webcams.length>=1){
-                let currentWebcamConfig = this.webcams[this.webcamConfig.selectedCam].config
+                let currentWebcamConfig = this.currentCam().config
                 if(currentWebcamConfig.service === 'mjpegstreamer-adaptive') {
                     this.requestMjpeg()
                 }
@@ -93,7 +93,7 @@
 
             url() {
                 if(this.webcams.length>=1){
-                    let currentWebcamConfig = this.webcams[this.webcamConfig.selectedCam].config
+                    let currentWebcamConfig = this.currentCam().config
                     if (currentWebcamConfig.service === 'mjpegstreamer' && currentWebcamConfig.url.indexOf("?") !== -1) {
                         let basicUrl = currentWebcamConfig.url
                         const params = new URLSearchParams(basicUrl)
@@ -109,10 +109,10 @@
             },
             webcamStyle() {
                 let transforms = "";
-                if (this.webcams[this.webcamConfig.selectedCam].config.flipX) {
+                if (this.currentCam().config.flipX) {
                     transforms += " scaleX(-1)";
                 }
-                if (this.webcams[this.webcamConfig.selectedCam].config.flipY) {
+                if (this.currentCam().config.flipY) {
                     transforms += " scaleY(-1)";
                 }
                 if (transforms.trimLeft().length) {
@@ -128,7 +128,18 @@
                 if(this.webcams.length === 0){
                     return ""
                 }
-                return this.webcams[this.webcamConfig.selectedCam]
+                let currentcam
+                for(let camindex = 0; camindex < this.webcams.length; camindex ++){
+                    if(this.webcams[camindex].name === this.webcamConfig.selectedCam){
+                        currentcam = this.webcams[camindex]
+                        break
+                    }
+                }
+                if(typeof(currentcam)==="undefined"){
+                    this.selectCam(this.webcams[0].name)
+                    return this.webcams[0]
+                }
+                return currentcam
             },
             streamNotFound(){
                 this.validURL=false;
@@ -137,7 +148,7 @@
                 if(this.webcams.length === 0){
                     return false
                 }
-                if(['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcams[this.webcamConfig.selectedCam].config.service)){
+                if(['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.currentCam().config.service)){
                     if(!this.validURL){
                         return false
                     }
@@ -149,7 +160,7 @@
                 if(!this.streamValid()){
                     return false
                 }
-                if(this.webcams[this.webcamConfig.selectedCam].config.service === 'mjpegstreamer-adaptive' &&  this.time){
+                if(this.currentCam().config.service === 'mjpegstreamer-adaptive' &&  this.time){
                     return true
                 }
                 return false
@@ -160,26 +171,11 @@
                 }
             },
             selectCam(name){
-                let index = 0
-                for(let camindex = 0; camindex < this.webcams.length; camindex ++){
-                    if(this.webcams[camindex].name === name){
-                        index = camindex
-                        break
-                    }
-                }
-                this.validURL=true
-                this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: index } })
-
+                this.validURL = true
+                this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: name } })
             },
             checkSelectedCam(name){
-                let index = 0
-                for(let camindex = 0; camindex < this.webcams.length; camindex ++){
-                    if(this.webcams[camindex].name === name){
-                        index = camindex
-                        break
-                    }
-                }
-                return this.webcamConfig.selectedCam === index
+                return this.webcamConfig.selectedCam === name
             },
             onLoad() {
                 const end_time = performance.now()
@@ -187,7 +183,7 @@
                 this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing))
                 this.start_time = end_time
 
-                const target_time = 1000/this.webcams[this.webcamConfig.selectedCam].config.targetFps
+                const target_time = 1000/this.currentCam().config.targetFps
 
                 const current_request_time = performance.now() - this.request_start_time
                 this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing))
@@ -202,7 +198,7 @@
                 if(!this.streamValid()) return
 
                 this.request_start_time = performance.now()
-                let basicUrl = this.webcams[this.webcamConfig.selectedCam].config.url
+                let basicUrl = this.currentCam().config.url
                 basicUrl = basicUrl.replace("action=stream", "action=snapshot")
                 if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 

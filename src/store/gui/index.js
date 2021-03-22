@@ -33,7 +33,7 @@ export function getDefaultState() {
 			}
 		},
 		webcam: {
-			selectedCam: 0,
+			selectedCam: "",
 			bool: false,
 		},
 		tempchart: {
