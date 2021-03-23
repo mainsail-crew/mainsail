@@ -106,8 +106,6 @@
                     </v-row>
                     <v-row class="mt-2 mx-0 mb-2" align="center">
                       <v-text-field
-                        @click="updateStreamPreview()"
-                        @input="updateStreamPreview()"
                         v-model="dialog.config.url"
                         label="URL"
                         hide-details="auto"
@@ -160,7 +158,7 @@
                       <img
                         @error="streamNotFound()"
                         @load="streamFound()"
-                        :src="dialog.previewURL"
+                        :src="dialog.config.url"
                         class="webcamImage"
                         :style="webcamStyle"
                         alt="Webcam"
@@ -218,8 +216,6 @@ export default {
         valid: false,
         name: "",
         icon: "mdi-webcam",
-        validURL: true,
-        previewURL: "",
         config: {
           service: "mjpegstreamer",
           targetFps: 25,
@@ -298,18 +294,11 @@ export default {
         flipY: false,
       }
     },
-    updateStreamPreview(){
-      let url = this.dialog.config.url
-      this.dialog.previewURL = ""
-      setTimeout(()=>{
-        this.dialog.previewURL = url
-      },10)
-    },
     streamFound(){
-        this.dialog.validURL = true;
+        this.dialog.valid = true;
     },
     streamNotFound(){
-        this.dialog.validURL = false;
+        this.dialog.valid = false;
     },
     getCurrentIcon(){
       return this.dialog.icon
@@ -334,14 +323,12 @@ export default {
       this.dialog.name = "";
       this.dialog.icon = "mdi-webcam"
       this.dialog.config = this.getDefaultConfig();
-      this.dialog.previewURL = this.dialog.config.url
     },
     editWebcam(webcam) {
       this.dialog.name = webcam.name;
       this.dialog.icon = webcam.icon;
       this.dialog.index = webcam.index;
       this.dialog.config = webcam.config;
-      this.dialog.previewURL = this.dialog.config.url
 
       this.dialog.bool = true;
     },
