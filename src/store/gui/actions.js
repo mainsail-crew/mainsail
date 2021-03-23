@@ -89,7 +89,7 @@ export default {
 		commit("addWebcam", payload)
 		dispatch('updateSettings', {
 			keyName: 'webcams',
-			newVal: state.webcams
+			newVal: state.webcam.configs
 		})
 	},
 
@@ -97,7 +97,7 @@ export default {
 		commit("updateWebcam", payload)
 		dispatch('updateSettings', {
 			keyName: 'webcams',
-			newVal: state.webcams
+			newVal: state.webcam.configs
 		})
 	},
 
@@ -105,7 +105,7 @@ export default {
 		commit("deleteWebcam", payload)
 		dispatch('updateSettings', {
 			keyName: 'webcams',
-			newVal: state.webcams
+			newVal: state.webcam.configs
 		})
 	},
 

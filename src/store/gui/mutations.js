@@ -67,7 +67,7 @@ export default {
 	},
 
 	addWebcam(state, payload) {
-		state.webcams.push({
+		state.webcam.configs.push({
 			name: payload.name,
 			icon: payload.icon,
 			config: payload.config
@@ -75,7 +75,7 @@ export default {
 	},
 
 	updateWebcam(state, payload) {
-		if (state.webcams[payload.index]) {
+		if (state.webcam.configs[payload.index]) {
 			Vue.set(state.webcams[payload.index], 'name', payload.name)
 			Vue.set(state.webcams[payload.index], 'icon', payload.icon)
 			Vue.set(state.webcams[payload.index], 'config', payload.config)
@@ -83,8 +83,8 @@ export default {
 	},
 
 	deleteWebcam(state, payload) {
-		if (state.webcams[payload.index]) {
-			state.webcams.splice(payload.index, 1)
+		if (state.webcam.configs[payload.index]) {
+			state.webcam.configs.splice(payload.index, 1)
 		}
 	},
 

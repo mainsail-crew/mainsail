@@ -15,7 +15,7 @@ export default {
 	getWebcams:(state) => {
 		const output = []
 
-		for (const [key, webcam] of Object.entries(state.webcams)) {
+		for (const [key, webcam] of Object.entries(state.webcam.configs)) {
 			output.push({ ...webcam, index: key })
 		}
 
