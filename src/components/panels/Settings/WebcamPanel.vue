@@ -106,6 +106,8 @@
                     </v-row>
                     <v-row class="mt-2 mx-0 mb-2" align="center">
                       <v-text-field
+                        @click="updateStreamPreview()"
+                        @input="updateStreamPreview()"
                         v-model="dialog.config.url"
                         label="URL"
                         hide-details="auto"
@@ -158,7 +160,7 @@
                       <img
                         @error="streamNotFound()"
                         @load="streamFound()"
-                        :src="dialog.config.url"
+                        :src="dialog.previewURL"
                         class="webcamImage"
                         :style="webcamStyle"
                         alt="Webcam"
@@ -216,7 +218,8 @@ export default {
         valid: false,
         name: "",
         icon: "mdi-webcam",
-        validURL: false,
+        validURL: true,
+        previewURL: "",
         config: {
           service: "mjpegstreamer",
           targetFps: 25,
@@ -225,17 +228,10 @@ export default {
           flipY: false,
         },
       },
-      defaultconfig: {
-        service: "mjpegstreamer",
-        targetFps: 25,
-        url: "/webcam/?action=stream",
-        flipX: false,
-        flipY: false,
-      },
       rules: {
         required: (value) => value !== "" || "required",
         urlvalid: () => {
-          return (!this.dialog.validURL || "invalid")
+          return (!this.dialog.validURL || "invalid URL")
         },
         unique: (value) =>
           !this.existsWebcamName(value) || "Name already exists",
@@ -293,11 +289,27 @@ export default {
     this.clearDialog();
   },
   methods: {
+    getDefaultConfig(){
+      return {
+        service: "mjpegstreamer",
+        targetFps: 25,
+        url: "/webcam/?action=stream",
+        flipX: false,
+        flipY: false,
+      }
+    },
+    updateStreamPreview(){
+      let url = this.dialog.config.url
+      this.dialog.previewURL = ""
+      setTimeout(()=>{
+        this.dialog.previewURL = url
+      },10)
+    },
     streamFound(){
-        this.dialog.validURL=true;
+        this.dialog.validURL = true;
     },
     streamNotFound(){
-        this.dialog.validURL=false;
+        this.dialog.validURL = false;
     },
     getCurrentIcon(){
       return this.dialog.icon
@@ -321,13 +333,15 @@ export default {
       this.dialog.index = null;
       this.dialog.name = "";
       this.dialog.icon = "mdi-webcam"
-      this.dialog.config = this.defaultconfig;
+      this.dialog.config = this.getDefaultConfig();
+      this.dialog.previewURL = this.dialog.config.url
     },
     editWebcam(webcam) {
       this.dialog.name = webcam.name;
       this.dialog.icon = webcam.icon;
       this.dialog.index = webcam.index;
       this.dialog.config = webcam.config;
+      this.dialog.previewURL = this.dialog.config.url
 
       this.dialog.bool = true;
     },
