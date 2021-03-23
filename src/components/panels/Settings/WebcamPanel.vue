@@ -216,7 +216,7 @@ export default {
         valid: false,
         name: "",
         icon: "mdi-webcam",
-        validURL: true,
+        validURL: false,
         config: {
           service: "mjpegstreamer",
           targetFps: 25,
