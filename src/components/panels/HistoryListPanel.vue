@@ -85,11 +85,15 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class=" ">
-                            <v-chip :color="getStatusColor(item.status)" small :disabled="!item.exists">
-                                <v-icon left small>{{ getStatusIcon(item.status) }}</v-icon>
-                                {{ item.status.replaceAll("_", " ") }}
-                            </v-chip>
+                        <td class="text-center">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">{{ getStatusIcon(item.status) }}</v-icon>
+                                    </span>
+                                </template>
+                                <span>{{ item.status.replaceAll("_", " ") }}</span>
+                            </v-tooltip>
                         </td>
                         <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '--' }}</td>
                         <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '--' }}</td>
@@ -241,7 +245,7 @@ import VueLoadImage from 'vue-load-image'
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: 'Status',         value: 'status',          align: 'left',  configable: false,  visible: true },
+                    { text: '',               value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: 'Filesize',       value: 'size',            align: 'left',  configable: true,   visible: false },
                     { text: 'Last modified',  value: 'modified',        align: 'left',  configable: true,  visible: false },
                     { text: 'Start Time',     value: 'start_time',      align: 'left',  configable: true,  visible: true },

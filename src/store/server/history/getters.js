@@ -184,7 +184,7 @@ export default {
 			case 'completed': return 'mdi-check-circle'
 			case 'cancelled': return 'mdi-close-circle'
 
-			default: return 'mdi-progress-question'
+			default: return 'mdi-alert'
 		}
 	}
 }
