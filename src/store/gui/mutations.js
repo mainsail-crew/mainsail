@@ -76,9 +76,9 @@ export default {
 
 	updateWebcam(state, payload) {
 		if (state.webcam.configs[payload.index]) {
-			Vue.set(state.webcams[payload.index], 'name', payload.name)
-			Vue.set(state.webcams[payload.index], 'icon', payload.icon)
-			Vue.set(state.webcams[payload.index], 'config', payload.config)
+			Vue.set(state.webcam.configs[payload.index], 'name', payload.name)
+			Vue.set(state.webcam.configs[payload.index], 'icon', payload.icon)
+			Vue.set(state.webcam.configs[payload.index], 'config', payload.config)
 		}
 	},
 
