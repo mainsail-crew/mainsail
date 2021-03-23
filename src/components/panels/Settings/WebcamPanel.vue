@@ -156,8 +156,6 @@
                         margin-top: auto!important;
                         margin-bottom: auto!important;">
                       <img
-                        @error="streamNotFound()"
-                        @load="streamFound()"
                         :src="dialog.config.url"
                         class="webcamImage"
                         :style="webcamStyle"
@@ -226,9 +224,6 @@ export default {
       },
       rules: {
         required: (value) => value !== "" || "required",
-        urlvalid: () => {
-          return (!this.dialog.validURL || "invalid URL")
-        },
         unique: (value) =>
           !this.existsWebcamName(value) || "Name already exists",
       },
@@ -293,12 +288,6 @@ export default {
         flipX: false,
         flipY: false,
       }
-    },
-    streamFound(){
-        this.dialog.valid = true;
-    },
-    streamNotFound(){
-        this.dialog.valid = false;
     },
     getCurrentIcon(){
       return this.dialog.icon
