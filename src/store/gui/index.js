@@ -33,9 +33,21 @@ export function getDefaultState() {
 			}
 		},
 		webcam: {
-			selectedCam: "",
+			selectedCam: "Default",
 			bool: false,
-			configs: [],
+			configs: [
+				{
+					name: 'Default',
+					icon: 'mdi-webcam',
+					config: {
+						service: "mjpegstreamer",
+						targetFps: 25,
+						url: "/webcam/?action=stream",
+						flipX: false,
+						flipY: false,
+					}
+				}
+			],
 		},
 		tempchart: {
 			intervalChartUpdate: 1000,

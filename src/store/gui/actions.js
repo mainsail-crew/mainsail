@@ -7,6 +7,12 @@ export default {
 	},
 
 	getData({ commit, dispatch, rootState }, payload) {
+		let oldwebcamconfig = payload.value.webcam
+
+		if (typeof (oldwebcamconfig) !== "undefined") {
+			dispatch('convertCamConfig', oldwebcamconfig)
+		}
+
 		commit('setData', payload.value)
 
 		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
@@ -18,6 +24,39 @@ export default {
 		}
 
 		dispatch('printer/init', null, { root: true })
+	},
+
+	convertCamConfig({ dispatch },payload) {
+		let oldcamconfig = {
+			index: 0,
+			name: "Default",
+			icon: "mdi-webcam",
+			config: {
+				service: "mjpegstreamer",
+				targetFps: 25,
+				url: "/webcam/?action=stream",
+				flipX: false,
+				flipY: false,
+			},
+		}
+		if (typeof (payload.url) !== "undefined") {
+			oldcamconfig.config.url = payload.url
+		}
+		if (typeof (payload.service) !== "undefined") {
+			oldcamconfig.config.service = payload.service
+		}
+		oldcamconfig.config.targetFps = payload.targetFps
+		oldcamconfig.config.flipX = payload.flipX
+		oldcamconfig.config.flipY = payload.flipY
+
+		dispatch('updateWebcam', oldcamconfig)
+
+		for (let cleanuppart in oldcamconfig.config) {
+			dispatch('updateSettings', {
+				keyName: 'webcam.' + cleanuppart,
+				newVal: undefined
+			})
+		}
 	},
 
 	setSettings({ commit }, payload) {
