@@ -94,7 +94,7 @@ export default {
                         },
                     }
                 },
-                color: ['#000'],
+                color: ['#BDBDBD'],
                 series: [{
                     type: 'bar',
                     data: [],
@@ -130,7 +130,7 @@ export default {
             if (this.chart) {
                 const chartOptions = { series: this.chartOptions.series }
                 chartOptions.series[0].data = this.filamentUsageArray
-                chartOptions.color = [this.getPrimaryColor()]
+                //chartOptions.color = [this.getPrimaryColor()]
                 this.chart.setOption(chartOptions)
                 this.chart.resize()
             }

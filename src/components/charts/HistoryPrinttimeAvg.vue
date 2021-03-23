@@ -74,7 +74,7 @@ export default {
                     type: 'bar',
                     data: [],
                     itemStyle: {
-                        color: '#000'
+                        color: '#BDBDBD'
                     }
                 }]
             },
@@ -107,7 +107,7 @@ export default {
             if (this.chart) {
                 const chartOptions = { series: this.chartOptions.series }
                 chartOptions.series[0].data = this.printtimeAvgArray
-                chartOptions.series[0].itemStyle.color = this.getPrimaryColor()
+                //chartOptions.series[0].itemStyle.color = this.getPrimaryColor()
                 this.chart.setOption(chartOptions)
             }
         },
