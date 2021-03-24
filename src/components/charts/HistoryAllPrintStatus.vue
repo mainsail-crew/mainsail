@@ -29,6 +29,13 @@ export default {
                     type: 'pie',
                     data: [],
                     radius: '50%',
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
                 }]
 
             },
@@ -51,6 +58,7 @@ export default {
         createChart() {
             if (document.getElementById("historyAllPrintStatus") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("historyAllPrintStatus"), null, { renderer: 'svg' })
+                this.chart.setOption(this.chartOptions)
                 this.updateChart()
             } else
                 setTimeout(() => {
