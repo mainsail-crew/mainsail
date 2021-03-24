@@ -62,6 +62,8 @@ Vue.directive('longpress', {
                     setTimeout(() => {
                         if (before) {
                             document.querySelector('body').setAttribute('style', before);
+                        } else {
+                            document.querySelector('body').setAttribute('style', '');
                         }
                     }, 100);
                 }, debounceTime);

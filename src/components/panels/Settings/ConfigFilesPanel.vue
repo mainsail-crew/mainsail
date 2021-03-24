@@ -8,6 +8,10 @@
         padding: 5px;
     }
 
+    #editor {
+        height: 100%;
+    }
+
     .config-editor-overlay div.v-card {
         position: relative;
     }
@@ -22,6 +26,57 @@
 
 <template>
     <v-row>
+        <v-dialog fullscreen :transition="null" v-model="editor.show">
+            <v-card d-flex class="fill-height">
+                <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="editor.show = false; editor.init = false;">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-menu
+                            transition="slide-y-transition"
+                            :close-on-content-click="false"
+                            offset-y
+                            bottom
+                            left
+                        >
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    dark
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list dense>
+                                <v-list-item class="minheight30">
+                                    <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
+                        <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
+                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
+                        <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
+                        <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+                <div v-if="editor.init" id="editor" style="height: 92%; width: 100%; overflow: hidden;">
+                    <!--                        <monaco-editor
+                                                id="editor"
+                                                :options="editorOptions || editor.options"
+                                                style="height: 92%; width: 100%; overflow: hidden;"
+                                                v-model="editor.sourcecode"
+                                                @editorWillMount="editorWillMount"
+                                            >
+                                            </monaco-editor>-->
+                </div>
+            </v-card>
+        </v-dialog>
         <v-col>
             <v-card>
                 <v-card-title>
@@ -120,7 +175,7 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
-            <v-dialog v-model="image.show" class="fill-height">
+            <v-dialog v-model="image.show" hide-overlay fullscreen class="fill-height">
               <v-card style="position: relative;">
                 <v-toolbar dark color="primary">
                   <v-btn icon dark @click="image.show = false;">
@@ -131,56 +186,6 @@
                   <img :src="image.url" style="max-width: 100%; height: auto;" alt="image" />
                 </div>
               </v-card>
-            </v-dialog>
-            <v-dialog v-model="editor.show" fullscreen hide-overlay transition="dialog-bottom-transition" content-class="config-editor-overlay">
-                <v-card d-flex class="fill-height">
-                    <v-toolbar dark color="primary">
-                        <v-btn icon dark @click="editor.show = false">
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                        <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-menu
-                                transition="slide-y-transition"
-                                :close-on-content-click="false"
-                                offset-y
-                                bottom
-                                left
-                            >
-                                <template #activator="{ on, attrs }">
-                                    <v-btn
-                                        dark
-                                        icon
-                                        v-bind="attrs"
-                                        v-on="on"
-                                    >
-                                        <v-icon>mdi-cog</v-icon>
-                                    </v-btn>
-                                </template>
-                                <v-list dense>
-                                    <v-list-item class="minheight30">
-                                        <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
-                                    </v-list-item>
-                                </v-list>
-                            </v-menu>
-                            <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
-                            <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
-                            <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
-                        </v-toolbar-items>
-                    </v-toolbar>
-                    <template v-if="editor.init">
-                        <monaco-editor
-                            :options="editorOptions || editor.options"
-                            style="height: 92%; width: 100%; overflow: hidden;"
-                            v-model="editor.sourcecode"
-                            @editorWillMount="editorWillMount"
-                        >
-                        </monaco-editor>
-                    </template>
-                </v-card>
             </v-dialog>
             <v-dialog v-model="dialogRenameFile.show" max-width="400">
                 <v-card>
@@ -250,17 +255,18 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
-    import {findDirectory} from "@/plugins/helpers";
+import {mapState} from 'vuex'
+import {findDirectory} from "@/plugins/helpers";
 
-    import axios from "axios";
+import axios from "axios";
 
-    import MonacoEditor from 'vue-monaco';
-    import {liftOff} from "@/plugins/monaco.gcode";
+import * as monaco from 'monaco-editor';
 
-    export default {
+import {LANGUAGE_MAP, liftOff} from "@/plugins/monaco";
+
+export default {
         components: {
-            MonacoEditor
+
         },
         data: function() {
             return {
@@ -397,9 +403,9 @@
         },
         methods: {
             async editorWillMount(monaco) {
-              if (!monaco.languages?.getLanguages().find(l => l.id === 'klipper-config')) {
-                await liftOff(monaco);
-              }
+                if (!monaco.languages?.getLanguages().find(l => l.id === 'klipper-config')) {
+                    await liftOff(monaco);
+                }
             },
             highlighter(code) {
                 //return highlight(code, languages.ini); //returns html
@@ -479,31 +485,37 @@
                         this.contextMenu.shown = false;
                     }
                     if (!item.isDirectory) {
-                      const ext = item.filename.split('.').pop();
-                      if (['conf', 'cfg'].includes(ext)) {
-                        this.editor.showLoader = true;
-                        this.editor.sourcecode = "";
-                        this.editor.item = item;
+                        const ext = item.filename.split('.')?.pop()?.toLowerCase();
+                        if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif', 'svg'].includes(ext)) {
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            this.image.show = true;
+                            this.image.url = url;
+                        } else {
+                            /*const query = '/server/files' + this.currentPath + '/' + item.filename;
+                            this.$router.push({
+                                name: 'edit-file', query: {
+                                    path: query
+                                }
+                            });*/
+                            this.editor.showLoader = true;
+                            this.editor.sourcecode = "";
+                            this.editor.item = item;
 
-                        let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
 
-                        fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
-                          console.log(item);
-                          this.editor.sourcecode = file;
-                          this.$nextTick(() => {
-                            this.editor.show = true;
-                            this.editor.showLoader = false;
-                            this.editor.readonly = false;
-                            this.editor.init = true;
-                            if (this.currentPath === '/config_examples') this.editor.readonly = true;
-                          });
-                        });
-                      } else if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif'].includes(ext)) {
-                        let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
-                        console.log(url);
-                        this.image.show = true;
-                        this.image.url = url;
-                      }
+                            fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
+                              this.editor.sourcecode = file;
+                              this.editor.options.language = LANGUAGE_MAP[ext] ?? ext.toString();
+
+                              this.editor.show = true;
+                              this.editor.init = true;
+                              this.$nextTick(() => {
+                                this.editor.showLoader = false;
+                                this.editor.readonly = false;
+                                if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                              });
+                            });
+                        }
                     } else {
                         this.currentPath += "/" + item.filename;
                         this.currentPage = 1;
@@ -527,14 +539,20 @@
                     }
                 ).then(() => {
                     this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
-                    this.editor.show = false;
-                    this.editor.sourcecode = "";
+                    /*this.editor.show = false;
+                    this.editor.sourcecode = "";*/
 
-                    if (boolRestart && this.editor.item.filename === "moonraker.conf") {
-                        this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
-                    } else if (boolRestart) {
-                        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
-                        this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
+                    if (boolRestart) {
+                        if (this.editor.item.filename === "moonraker.conf") {
+                            this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
+                        } else {
+                            this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+                            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
+                        }
+
+                        this.editor.show = false;
+                        this.editor.init = false;
+                        this.editor.sourcecode = '';
                     }
                 }).catch(() => {
                     this.$toast.error("Error save "+this.editor.item.filename);
@@ -688,6 +706,19 @@
             },
         },
         watch: {
+            'editor.init'(val) {
+              if (val) {
+                  setTimeout(() => {
+                      this.editor.monaco = monaco.editor.create(document.getElementById('editor'), {
+                          ...(this.editorOptions || this.editor.options),
+                          value: this.editor.sourcecode
+                      });
+                      this.editor.monaco.onDidChangeModelContent(() => {
+                          this.editor.sourcecode = this.editor.monaco.getModel().getValue();
+                      });
+                  }, 10);
+              }
+            },
             config: {
                 deep: true,
                 handler() {

@@ -1,8 +1,19 @@
 import { loadWASM } from 'onigasm' // peer dependency of 'monaco-textmate'
 import { Registry } from 'monaco-textmate' // peer dependency
-import { wireTmGrammars } from 'monaco-editor-textmate'
+import { wireTmGrammars } from 'monaco-editor-textmate';
+import * as monaco from 'monaco-editor';
 // eslint-disable-next-line no-unused-vars
 import * as monacoNamespace from 'monaco-editor';
+
+console.log(monaco.languages.getLanguages());
+
+export const LANGUAGE_MAP = {
+    cfg: 'klipper-config',
+    conf: 'klipper-config',
+    sh: 'shell',
+    log: 'plaintext',
+    js: 'javascript'
+};
 
 let onigasmLoaded = false;
 
@@ -126,3 +137,6 @@ export function inject(monaco) {
         }
     });
 }
+
+
+liftOff(monaco);

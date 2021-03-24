@@ -267,7 +267,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog v-model="editor.showLoader" persistent width="300" >
+<!--        <v-dialog v-model="editor.showLoader" persistent width="300" >
             <v-card color="primary" dark >
                 <v-card-title>
                     Downloading...
@@ -288,8 +288,36 @@
                     </template>
                 </v-card-text>
             </v-card>
-        </v-dialog>
-        <v-dialog v-model="editor.show" fullscreen transition="dialog-bottom-transition" content-class="config-editor-overlay">
+        </v-dialog>-->
+        <v-snackbar
+            :timeout="-1"
+            :value="true"
+            fixed
+            centered
+            bottom
+            dark
+            v-model="editor.showLoader"
+        >
+          <div>
+            Downloading<br />
+            <strong>{{ editor.item.filename }}</strong>
+          </div>
+          <span v-if="editor.progress.total > 1" class="mr-1">({{ formatFilesize(editor.progress.loaded) }}/{{ formatFilesize(editor.progress.total) }})</span>
+          {{ Math.round(100 * editor.progress.loaded / editor.progress.total) }} % @ {{ editor.progress.speed }}/s<br />
+          <v-progress-linear class="mt-2" :value="100 * editor.progress.loaded / editor.progress.total"></v-progress-linear>
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                text
+                v-bind="attrs"
+                @click="cancelDownload(); editor.showLoader = false"
+                style="min-width: auto;"
+            >
+              <v-icon class="0">mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
+        <v-dialog v-model="editor.show" fullscreen :transition="null">
             <v-card class="fill-height">
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="closeEditor()">
@@ -327,17 +355,7 @@
                         </v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
-
-                <template v-if="editor.init">
-                    <monaco-editor
-                        :options="editorOptions || editor.options"
-                        style="height: 92%; width: 100%; overflow: hidden;"
-                        v-model="editor.sourcecode"
-                        language="mySpecialLanguage"
-                        @editorWillMount="editorWillMount"
-                    >
-                    </monaco-editor>
-                </template>
+                <div v-if="editor.init" id="editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
             </v-card>
         </v-dialog>
         <v-snackbar
@@ -372,12 +390,10 @@
     import { findDirectory } from "@/plugins/helpers"
     import { validGcodeExtensions } from "@/store/variables"
 
-    import {inject, liftOff} from '@/plugins/monaco.gcode';
-    import MonacoEditor from 'vue-monaco'
+    import * as monaco from "monaco-editor";
 
     export default {
         components: {
-            MonacoEditor
         },
         data () {
             return {
@@ -559,7 +575,7 @@
              *
              * @param {monaco} editor
              */
-            injectLanguage(editor) {
+            /*injectLanguage(editor) {
                 if (!editor.languages.getLanguages().find(l => l.id === 'gcode')) {
                     inject(editor);
                 }
@@ -568,7 +584,7 @@
               if (!monaco.languages?.getLanguages().find(l => l.id === 'gcode')) {
                 await liftOff(monaco);
               }
-            },
+            },*/
             async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
                     this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
@@ -728,17 +744,17 @@
               if (this.editor.token) {
                   this.editor.token.cancel();
               }
-            },
+            },/*
             getLoadedString() {
                 const units = [' B', ' kB', ' MB', ' GB'];
                 let unitSelectTotal = 0;
                 let unitSelectLoaded = 0;
                 let total = this.editor.progress.total;
-                while (total > 1000) {
+                while (total > 1024) {
                     if (unitSelectTotal + 1 >= units.length) {
                         break;
                     }
-                    total /= 1000;
+                    total /= 1024;
                     ++unitSelectTotal;
                 }
 
@@ -752,7 +768,7 @@
                 }
 
                 return `${loaded.toFixed(2)}${units[unitSelectLoaded]} / ${total.toFixed(2)}${units[unitSelectTotal]}`;
-            },
+            },*/
             editFile(item) {
                 this.editor.showLoader = true;
                 this.editor.sourcecode = "";
@@ -763,20 +779,18 @@
                 if (this.editor.token) {
                     this.editor.token.cancel();
                 }
+                this.editor.progress.total = item.size;
                 this.editor.token = axios.CancelToken.source();
                 axios.get(url, {
                     cancelToken: this.editor.token.token,
                     onDownloadProgress: progressEvent => {
-                        if (this.editor.progress.total === 0) {
-                            this.editor.progress.total = progressEvent.total;
-                        }
                         const diffData = progressEvent.loaded - this.editor.progress.loaded;
                         const diffTime = progressEvent.timeStamp - this.editor.progress.lastTimestamp;
                         let speed = (diffData / diffTime);
                         const unit = ['kB', 'MB', 'GB'];
                         let unitSelect = 0;
-                        while (speed > 1000) {
-                            speed /= 1000.0;
+                        while (speed > 1024) {
+                            speed /= 1024.0;
                             unitSelect = Math.min(2, unitSelect + 1);
                         }
                         this.editor.progress.speed = speed.toFixed(2) + unit[unitSelect];
@@ -787,23 +801,24 @@
                 })  .then(res => res.data)
                     .then(file => {
                         this.editor.sourcecode = file;
-                        this.$nextTick(() => {
-                            this.editor.show = true;
-                            this.editor.showLoader = false;
-                            this.editor.readonly = false;
-                            this.editor.init = true;
-                        });
+                        this.editor.show = true;
+                        this.editor.init = true;
+                        this.editor.showLoader = false;
+                        this.editor.readonly = false;
                     })
                     .finally(() => {
-                        this.editor.token = null;
-                        this.editor.progress.total = 0;
-                        this.editor.progress.loaded = 0;
-                        this.editor.progress.lastTimestamp = 0;
-                        this.editor.progress.speed = "";
+                        setTimeout(() => {
+                            this.editor.token = null;
+                            this.editor.progress.total = 0;
+                            this.editor.progress.loaded = 0;
+                            this.editor.progress.lastTimestamp = 0;
+                            this.editor.progress.speed = "";
+                        }, 100);
                     });
             },
             closeEditor() {
                 this.editor.show = false;
+                this.editor.init = false;
                 this.$nextTick(() => {
                   this.editor.sourcecode = "";
                   this.editor.file = null;
@@ -1066,6 +1081,19 @@
             }
         },
         watch: {
+            'editor.init'(val) {
+                if (val) {
+                    setTimeout(() => {
+                        this.editor.monaco = monaco.editor.create(document.getElementById('editor'), {
+                            ...(this.editorOptions || this.editor.options),
+                            value: this.editor.sourcecode
+                        });
+                        this.editor.monaco.onDidChangeModelContent(() => {
+                            this.editor.sourcecode = this.editor.monaco.getModel().getValue();
+                        });
+                    }, 10);
+                }
+            },
             filetree: {
                 deep: true,
                 handler(newVal) {
