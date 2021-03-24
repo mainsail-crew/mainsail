@@ -10,6 +10,7 @@
 
     #editor {
         height: 100%;
+        -webkit-overflow-scrolling: touch;
     }
 
     .config-editor-overlay div.v-card {
