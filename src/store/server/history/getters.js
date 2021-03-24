@@ -170,8 +170,8 @@ export default {
 
 	getPrintStatusChipColor: () => (status) => {
 		switch(status) {
-			case 'in_progress': return 'blue-grey darken-1'
-			case 'completed': return 'green'
+			case 'in_progress': return 'blue accent-3' //'blue-grey darken-1'
+			case 'completed': return 'green' //'green'
 			case 'cancelled': return 'red'
 
 			default: return 'orange'
