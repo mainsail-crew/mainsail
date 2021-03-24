@@ -200,11 +200,15 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'status').visible">
-                            <v-chip :color="getStatusColor(getJobStatus(item))" v-if="getJobStatus(item)" small>
-                                <v-icon left small>{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
-                                {{ getJobStatus(item).replaceAll("_", " ") }}
-                            </v-chip>
+                        <td class="text-center" v-if="headers.find(header => header.value === 'status').visible">
+                            <v-tooltip top  v-if="getJobStatus(item)">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        <v-icon small :color="getStatusColor(getJobStatus(item))">{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
+                                    </span>
+                                </template>
+                                <span>{{ getJobStatus(item).replaceAll("_", " ") }}</span>
+                            </v-tooltip>
                         </td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'size').visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
                         <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
@@ -375,7 +379,7 @@
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: 'Status',         value: 'status',          align: 'left',  configable: true,   visible: true },
+                    { text: '',               value: 'status',          align: 'left',  configable: false,  visible: true },
                     { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
                     { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
                     { text: 'Object Height',  value: 'object_height',   align: 'right', configable: true,   visible: true },
