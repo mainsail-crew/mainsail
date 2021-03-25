@@ -24,8 +24,10 @@
                 </v-toolbar-title>
             </v-toolbar>
             <tool-slider label="Speed factor" :target="speed_factor" :max="200" :multi="100" :step="5" :dynamic-range="true" command="M220" attribute-name="S" ></tool-slider>
-            <v-divider></v-divider>
-            <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
+            <template v-if="existsExtruder">
+                <v-divider></v-divider>
+                <tool-slider label="Extrusion factor" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
+            </template>
         </v-card>
         <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
             <v-toolbar flat dense >
@@ -75,6 +77,11 @@
             ...mapGetters([
                 'printer/getMiscellaneous',
             ]),
+            existsExtruder: {
+                get() {
+                    return 'extruder' in this.$store.state.printer
+                }
+            },
         }
     }
 </script>
