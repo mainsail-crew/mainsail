@@ -24,13 +24,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'axis',
-                    backgroundColor: 'rgba(0,0,0,0.9)',
                     borderWidth: 0,
-                    textStyle: {
-                        color: '#fff',
-                        fontSize: '14px'
-                    },
-                    padding: 15,
                     formatter: (datasets) => {
                         let output = ""
 
