@@ -11,8 +11,8 @@
             <miscellaneous-panel v-if="klippy_state === 'ready'"></miscellaneous-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
-            <tools-panel v-if="socket_connected && klippy_connected"></tools-panel>
-            <miniconsole-panel class="mt-6" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
+            <tools-panel v-if="displayToolsPanel"></tools-panel>
+            <miniconsole-panel :class="displayToolsPanel ? 'mt-6' : ''" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>
 </template>
@@ -40,6 +40,17 @@
             existsPrinterConfig: {
                 get() {
                     return this.$store.getters["printer/existPrinterConfig"]
+                }
+            },
+            displayToolsPanel: {
+                get() {
+                    return (
+                        this.$store.state.socket.isConnected &&
+                        this.$store.state.server.klippy_connected &&
+                        'heaters' in this.$store.state.printer &&
+                        'available_heaters' in this.$store.state.printer.heaters &&
+                        this.$store.state.printer.heaters.available_heaters.length
+                    )
                 }
             }
         },
