@@ -24,6 +24,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
+                    borderWidth: 0,
                 },
                 xAxis: {
                     type: 'category',

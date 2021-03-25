@@ -23,7 +23,8 @@ export default {
                     left: 10,
                 },
                 tooltip: {
-                    trigger: 'item'
+                    trigger: 'item',
+                    borderWidth: 0,
                 },
                 series: [{
                     type: 'pie',
