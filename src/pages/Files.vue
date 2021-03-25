@@ -200,7 +200,7 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-center" v-if="headers.find(header => header.value === 'status').visible">
+                        <td class="text-center">
                             <v-tooltip top  v-if="getJobStatus(item)">
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">

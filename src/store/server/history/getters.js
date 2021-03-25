@@ -181,10 +181,10 @@ export default {
 	getPrintStatusChipIcon: () => (status) => {
 		switch(status) {
 			case 'in_progress': return 'mdi-progress-clock'
-			case 'completed': return 'mdi-check-circle'
-			case 'cancelled': return 'mdi-close-circle'
+			case 'completed': return 'mdi-checkbox-marked-circle-outline'
+			case 'cancelled': return 'mdi-close-circle-outline'
 
-			default: return 'mdi-alert'
+			default: return 'mdi-alert-outline'
 		}
 	}
 }
