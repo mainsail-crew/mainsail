@@ -9,14 +9,14 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>Update Manager</span>
+                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Settings.UpdatePanel.UpdateManager') }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
                     </template>
-                    <span>Check for updates</span>
+                    <span>{{ $t('Settings.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
             </v-toolbar>
             <v-card-text class="px-0 py-0">
@@ -46,14 +46,14 @@
                         <v-divider class="my-0 border-top-2" ></v-divider>
                         <v-row class="pt-2">
                             <v-col class="col-auto pl-6 text-no-wrap">
-                                <strong>System</strong><br />
+                                <strong>{{ $t('Settings.UpdatePanel.System') }}</strong><br />
                                 <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on">{{ version_info.system.package_count }} packages can be upgraded</span>
+                                        <span v-bind="attrs" v-on="on">{{ version_info.system.package_count }} {{ $t('Settings.UpdatePanel.PackagesCanBeUpgraded') }}</span>
                                     </template>
                                     <span>{{ version_info.system.package_list.join(', ') }}</span>
                                 </v-tooltip>
-                                <span v-if="version_info.system.package_count === 0">OS-Packages</span>
+                                <span v-if="version_info.system.package_count === 0">{{ $t('Settings.UpdatePanel.OSPackages') }}</span>
                             </v-col>
                             <v-col class="pr-6 text-right" align-self="center">
                                 <v-chip
@@ -75,7 +75,7 @@
             <v-card dark>
                 <v-toolbar flat dense >
                     <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-update</v-icon>Commits</span>
+                        <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Settings.UpdatePanel.Commits') }}</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
@@ -90,7 +90,7 @@
                                             <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
                                             <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
                                             <div class="caption">
-                                                <strong>{{ commit.author }}</strong> committed at {{ new Date(commit.date * 1000).toLocaleString() }}
+                                                <strong>{{ commit.author }}</strong> {{ $t('Settings.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
                                             </div>
                                         </v-col>
                                     </v-row>
@@ -183,10 +183,10 @@
                         semver.gt(object.remote_version, object.version)
                     ) return 'update'
 
-                    return 'up-to-date'
+                    return this.$t('Settings.UpdatePanel.UpToDate')
                 }
 
-                return 'ERROR'
+                return this.$t('Settings.UpdatePanel.ERROR')
             },
             getBtnIcon(object) {
                 if (typeof object === 'object' && object !== false) {

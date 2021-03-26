@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>Endstops</span>
+                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>{{ $t('Settings.EndstopPanel.Endstops')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="pb-0">
@@ -10,7 +10,7 @@
                 <div class="py-2" v-if="Object.keys(endstops).length">
                     <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
                         <v-col class="py-1">
-                            <label class="mt-1 d-inline-block">Endstop <b>{{ index.toUpperCase() }}</b></label>
+                            <label class="mt-1 d-inline-block">{{ $t('Settings.EndstopPanel.Endstop')}} <b>{{ index.toUpperCase() }}</b></label>
                             <v-chip class="float-right" small :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
                         </v-col>
                     </v-row>
@@ -23,7 +23,7 @@
                 </div>
                 <v-row v-if="(Object.keys(endstops).length === 0 && endstops.constructor === Object)" >
                     <v-col>
-                        <p>Press the sync-button on the right-bottom to load the current endstop status.</p>
+                        <p>{{ $t('Settings.EndstopPanel.EndstopInfo')}}</p>
                     </v-col>
                 </v-row>
             </v-container>

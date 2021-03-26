@@ -6,6 +6,7 @@ export function getDefaultState() {
 	return {
 		general: {
 			printername: "",
+			language: "en",
 			displayCancelPrint: false,
 			displayZOffsetStandby: false,
 		},

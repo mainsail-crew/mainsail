@@ -1,14 +1,14 @@
 ---
 layout: default
 title: Klipper
-parent: Manual Setup Guide
+parent: Manual Setup
 grand_parent: Setup Guides
 nav_order: 3
 permalink: /setup/manual-setup/klipper
 ---
 
-## Klipper
-### Installation
+# Klipper
+## Installation
 The following commands will clone Klipper to an appropriate directory in HOME and run the setup script.
 ```bash
 cd ~
@@ -17,7 +17,7 @@ cd ~/klipper
 ./scripts/install-octopi.sh
 ```
 
-### Configuration
+## Configuration
 After Klipper is installed, you will need to change the default location of the printer.cfg and add the UDS (unix domain socket). This is defined in the file `/etc/default/klipper` 
 
 To edit this file type:
@@ -55,8 +55,9 @@ path: ~/gcode_files
 # for pause/resume functionality. 
 # Mainsail needs gcode macros for `PAUSE`, `RESUME` and `CANCEL_PRINT` to make the buttons work.
 ```
-> ℹ️ **These entries are very important.**  
+**These entries are very important.**  
 For the full functionality of mainsail, you should also define gcode macros for `PAUSE`, `RESUME` and `CANCEL_PRINT`. You'll find further information in [this](../../necessary-cfg.md){: target="_blank"} document.
+{: .info }
 
 After your config is in place, restart klipper with `sudo service klipper restart`.  Check the `/tmp/klippy.log` for errors, if Klipper starts correctly you can continue the guide.
 

@@ -1,12 +1,37 @@
 # Mainsail
-Mainsail is a lightweight & responsive web interface for the [Klipper](https://github.com/KevinOConnor/klipper)
-3D printer firmware. It communicates with the [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine). 
 
+Mainsail a lightweight & responsive web interface for [Klipper](https://github.com/KevinOConnor/klipper), the 3D printer firmware. It communicates with [Moonraker (Klipper-API)](https://github.com/arksine/moonraker) from [Arksine](https://github.com/arksine). 
+
+[Getting Started](https://docs.mainsail.xyz/setup)
+
+Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.mainsail.xyz). Find out [more](https://docs.mainsail.xyz/setup#mymainsailxyz).
+
+[Documentation](https://docs.mainsail.xyz)  
+[Release Notes](https://github.com/meteyou/mainsail/releases)
+
+## Screenshots
 ![screenshot-dashboard](docs/assets/img/screenshot.png)
 
-To begin using Mainsail start by [installing](https://meteyou.github.io/mainsail/setup/) it or read the [pages](https://meteyou.github.io/mainsail/) for more informations.
+## Features 
+- Optimized for desktops, tablets and mobile devices
+- Supports multiple 3D printers (Printer Farm)
+- File Manager (gcode and config files)
+- Config Editor
+- Temperature Presets (with custom gcode)
+- Bed Mesh Leveling
+- Webcam support
+- Control power devices (relays, TPLink, Tasmota, ..)
+- Customizable UI (logos, backgrounds & even custom css)
 
-For support join our discord server -> [https://discord.gg/skWTwTD](https://discord.gg/skWTwTD)
+## Get support & assistance
+Do you need help or just want to talk? Join us on [Discord](https://discord.gg/skWTwTD). We have a very active community.  
+Have you found a bug? Then we would like you to create an [issue](https://github.com/meteyou/mainsail/issues).
+
+## Support this project
+The project is primarily developed and maintained by meteyou. To keep the project going he invests his free time, almost every day. To motivate him (☕🍺😜) there are several ways to support the project.
+
+- [Patreon (recurring)](https://patreon.com/meteyou)
+- [Ko-Fi (one-time)](https://ko-fi.com/mainsail)
 
 ## Credit, sources and inspiration
 * [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)

@@ -11,7 +11,7 @@
                         <v-toolbar-title>
                             <span class="subheading">
                                 <v-icon left>mdi-grid</v-icon>
-                                Heightmap
+                                {{ $t('Heightmap.Heightmap') }}
                             </span>
                             <v-btn
                                 text
@@ -27,19 +27,19 @@
                             @click="openRenameProfile()">{{ this.bed_mesh && this.bed_mesh.profile_name ? this.bed_mesh.profile_name : "" }}</v-btn>
                         <v-item-group class="v-btn-toggle d-none d-sm-flex" name="controllers">
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">{{ $t('Heightmap.Clear') }}</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
                     </v-toolbar>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group class="v-btn-toggle" name="controllers">
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" title="Home All"><v-icon small>mdi-home</v-icon></v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">Clear</v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">Calibrate</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="this.bed_mesh && this.bed_mesh.profile_name" title="Clear bed mesh">{{ $t('Heightmap.Clear') }}</v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="is_printing" title="Calibrate new bed mesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
                     </v-card-text>
                     <v-card-text v-if="!(this.bed_mesh && this.bed_mesh.profile_name)">
-                        No bed_mesh has been loaded yet.
+                        {{ $t('Heightmap.NoBedMeshHasBeenLoadedYet') }}
                     </v-card-text>
                     <v-card-text class="px-0 py-0 content" v-if="this.bed_mesh && this.bed_mesh.profile_name">
                         <v-container class="px-0 py-0">
@@ -52,10 +52,10 @@
                     </v-card-text>
                     <v-card-actions v-if="this.bed_mesh && this.bed_mesh.profile_name" class="py-0">
                         <v-spacer></v-spacer>
-                        <v-btn text :color="(this.showMeshType === 'probed' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToProbed">Probed</v-btn>
-                        <v-btn text :color="(this.showMeshType === 'mesh' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToMesh">Mesh</v-btn>
+                        <v-btn text :color="(this.showMeshType === 'probed' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToProbed">{{ $t('Heightmap.Probed') }}</v-btn>
+                        <v-btn text :color="(this.showMeshType === 'mesh' ? 'primary accent-4' : 'grey lighten-2')" @click="switchToMesh">{{ $t('Heightmap.Mesh') }}</v-btn>
                         <v-spacer></v-spacer>
-                        <v-switch class="mr-3" v-model="colorbarType" label="Scale"></v-switch>
+                        <v-switch class="mr-3" v-model="colorbarType" :label="$t('Heightmap.Scale')"></v-switch>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -63,7 +63,7 @@
                 <v-card>
                     <v-toolbar flat dense>
                         <v-toolbar-title>
-                            <span class="subheading"><v-icon left>mdi-stack-overflow</v-icon>Profile</span>
+                            <span class="subheading"><v-icon left>mdi-stack-overflow</v-icon>{{ $t('Heightmap.Profiles') }}</span>
                         </v-toolbar-title>
                     </v-toolbar>
                     <v-card-text class="py-0 px-0">
@@ -71,7 +71,7 @@
                             <template v-slot:default>
                                 <tbody>
                                 <tr v-for="(profile, index) in profiles" :key="index" >
-                                    <td><span @click="loadProfile(profile.name)" :class="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) ? 'font-weight-bold' : ''" style="cursor: pointer;">{{ profile.name }}</span><small class="ml-2" v-if="'deleted' in profile.data">(deleted)</small></td>
+                                    <td><span @click="loadProfile(profile.name)" :class="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) ? 'font-weight-bold' : ''" style="cursor: pointer;">{{ profile.name }}</span><small class="ml-2" v-if="'deleted' in profile.data">({{ $t('Heightmap.Deleted') }})</small></td>
                                     <td>
                                         <v-tooltip top color="rgba(0,0,0,0.8)">
                                             <template v-slot:activator="{ on, attrs }">
@@ -97,63 +97,63 @@
         <v-dialog v-model="renameDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Rename Bed Mesh Profile</span>
+                    <span class="headline">{{ $t('Heightmap.RenameBedMeshProfile') }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Name" required v-model="newName"></v-text-field>
+                                <v-text-field :label="$t('Heightmap.Name')" required v-model="newName"></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="renameDialog = false">abort</v-btn>
-                    <v-btn color="blue darken-1" text @click="renameProfile">rename</v-btn>
+                    <v-btn color="waring darken-1" text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="blue darken-1" text @click="renameProfile">{{ $t('Heightmap.Rename') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="calibrateDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Bed Mesh Calibrate</span>
+                    <span class="headline">{{ $t('Heightmap.BedMeshCalibrate') }}</span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <p>Do you really want to start the bed calibration?</p>
+                                <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="calibrateDialog = false">abort</v-btn>
-                    <v-btn color="blue darken-1" text @click="calibrateMesh">calibrate</v-btn>
+                    <v-btn color="waring darken-1" text @click="calibrateDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="blue darken-1" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="removeDialog" persistent max-width="600px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">Delete Bed Mesh Profile</span>
+                    <span class="headline"></span>
                 </v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <p>Do you really want to delete the profile "{{ removeDialogProfile }}"?</p>
+                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete') }} "{{ removeDialogProfile }}"?</p>
                             </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="removeDialog = false">abort</v-btn>
-                    <v-btn color="blue darken-1" text @click="removeProfile">remove</v-btn>
+                    <v-btn color="waring darken-1" text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="blue darken-1" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

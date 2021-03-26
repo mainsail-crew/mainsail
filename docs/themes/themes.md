@@ -1,0 +1,42 @@
+---
+layout: default
+title: Community Themes
+parent: Theming
+nav_order: 100
+has_children: false
+permalink: /theming/themes
+description: >-
+  A collection of community themes for Mainsail.
+---
+
+# {{ page.title }}
+{: .no_toc}
+{{ page.description }}
+
+
+## Setup Instructions
+Go to the repo of the theme and download it. Place the files according to  [these instructions](/theming/prepare#directory-structure).
+
+[KIAUH](/setup/kiauh) has an integrated theme installer  
+Go to `[Advanced] > [Theme installer]`, enter the desired theme <span class="key">id</span> and confirm with return.
+{: .info}
+
+<details closed markdown="block">
+  <summary>
+    List of themes
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+{% for theme in site.data.themes %}
+---
+## {{ theme.name }}
+<div>id: <span class="key">{{ forloop.index}}</span></div>
+  <div>author: <a href="https://github.com/{{ theme.author }}" target="_blank" alt="github.com">{{ theme.author }}</a></div>
+  <div>url: <a href="https://github.com/{{ theme.author }}/{{ theme.repo }}" target="_blank" alt="github.com">{{ theme.author }}/{{ theme.repo }}</a></div>
+  <img width="50%" src="https://raw.githubusercontent.com/{{ theme.author }}/{{ theme.repo }}/master/screenshot.png" />
+{% endfor %}
+
+

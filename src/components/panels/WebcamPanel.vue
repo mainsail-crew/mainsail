@@ -9,8 +9,8 @@
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon left>mdi-webcam</v-icon> Webcam
-                    <small v-if="this.webcamConfig.service === 'mjpegstreamer-adaptive' &&  this.time">(FPS: {{ currentFPS }})</small>
+                    <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Webcam')}}
+                    <small v-if="this.webcamConfig.service === 'mjpegstreamer-adaptive' &&  this.time">( {{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }})</small>
                 </span>
             </v-toolbar-title>
         </v-toolbar>
