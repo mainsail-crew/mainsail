@@ -25,7 +25,7 @@
             </template>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>Updating {{ application }}{{ complete ? " done!" : "..." }}</span>
+                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t("App.Updating")}} {{ application }}{{ complete ? $t("App.done") : " ..." }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="py-6">
@@ -45,7 +45,7 @@
                     color="primary"
                 >
                     <template #no-data>
-                        <div class="py-2">empty</div>
+                        <div class="py-2">{{ $t("App.Empty")}}</div>
                     </template>
 
                     <template #item="{ item }">
@@ -61,7 +61,7 @@
                 </v-data-table>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn @click="close" :disabled="!complete" color="primary">close</v-btn>
+                        <v-btn @click="close" :disabled="!complete" color="primary">{{ $t("App.Close")}}</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>

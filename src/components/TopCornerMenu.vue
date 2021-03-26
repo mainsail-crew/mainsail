@@ -13,27 +13,27 @@
         </template>
 
         <v-list dense>
-            <v-subheader class="" style="height: auto;">Klipper Control</v-subheader>
+            <v-subheader class="" style="height: auto;">{{ $t("App.KlipperControl") }}</v-subheader>
             <v-list-item class="minheight30" link @click="doRestart()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Restart</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.Restart") }}</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30" link @click="doFirmwareRestart()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Firmware Restart</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.FirmwareRestart") }}</v-list-item-title>
             </v-list-item>
             <v-divider class="mt-0"></v-divider>
-            <v-subheader class="pt-2" style="height: auto;">Restart Services</v-subheader>
+            <v-subheader class="pt-2" style="height: auto;">{{ $t("App.RestartServices") }}</v-subheader>
             <v-list-item class="minheight30"  link @click="doServiceRestartKlipper()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Klipper</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.Klipper") }}</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30"  link @click="doServiceRestartMoonraker()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Moonraker</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.Moonraker") }}</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30" v-if="boolWebcam" link @click="doServiceRestartWebcam()">
                 <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Webcam</v-list-item-title>
             </v-list-item>
             <div v-if="countPowerDevices">
                 <v-divider class="mt-0"></v-divider>
-                <v-subheader class="pt-2" style="height: auto;">Power Devices</v-subheader>
+                <v-subheader class="pt-2" style="height: auto;">{{ $t("App.PowerDevices") }}</v-subheader>
                 <v-list-item v-for="(device, index) in devices" v-bind:key="index" class="minheight30" @click="changeSwitch(device, device.status)" :disabled="(device.status === 'error' || device.locked_while_printing && ['printing', 'paused'].includes(printer_state))">
                     <v-list-item-title>
                         <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">mdi-{{ device.status === 'on' ? 'toggle-switch' : 'toggle-switch-off' }}</v-icon>{{ device.device }}
@@ -41,12 +41,12 @@
                 </v-list-item>
             </div>
             <v-divider class="mt-0"></v-divider>
-            <v-subheader class="pt-2" style="height: auto;">Host Control</v-subheader>
+            <v-subheader class="pt-2" style="height: auto;">{{ $t("App.HostControl") }}</v-subheader>
             <v-list-item class="minheight30" link @click="doHostReboot()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-power</v-icon>Reboot</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-power</v-icon>{{ $t("App.Reboot") }}</v-list-item-title>
             </v-list-item>
             <v-list-item class="minheight30" link @click="doHostShutdown()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-power</v-icon>Shutdown</v-list-item-title>
+                <v-list-item-title><v-icon class="mr-2" small>mdi-power</v-icon>{{ $t("App.Shutdown") }}</v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>

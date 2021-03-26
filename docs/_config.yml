@@ -6,6 +6,11 @@ logo: "/assets/img/logo-mainsail.png"
 remote_theme: pmarsceill/just-the-docs
 color_scheme: "mainsail"
 search_enabled: true
+aux_links:
+  "Mainsail on GitHub":
+    - "//github.com/meteyou/mainsail"
+aux_links_new_tab: true
+
 
 defaults:
   -
