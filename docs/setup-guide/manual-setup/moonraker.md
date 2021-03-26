@@ -1,15 +1,15 @@
 ---
 layout: default
 title: Moonraker
-parent: Manual Setup Guide
+parent: Manual Setup
 grand_parent: Setup Guides
 nav_order: 4
 permalink: /setup/manual-setup/moonraker
 ---
-## Moonraker
+# Moonraker
 Moonraker is a web server that exposes APIs which lets Mainsail interact with Klipper.
 
-### Installation
+## Installation
 Clone Moonraker into your HOME directory:
 ```bash
 cd ~
@@ -22,9 +22,10 @@ cd ~/moonraker/scripts
 ./install-moonraker.sh -c /home/pi/klipper_config/moonraker.conf
 ```
 
-### Configuration
-> ⚠️ **Please pay attention to the following steps!**  
+## Configuration
+**Please pay attention to the following steps!**  
 Misconfigured trusted_clients are a very common source of failure.
+{: .warning }
 
 For Moonraker you'll need to create a separate config file.
 
@@ -33,8 +34,9 @@ For Moonraker you'll need to create a separate config file.
 Insert the following part and modify `trusted_clients` according to arksines description below.
 Also consider further IP ranges, e.g. when connecting via VPN. To determine your local ip `ip a` and `ifconfig -a` are common ways to do so on Linux and `ipconfig` on Windows.
 
-> ℹ️ **This is a very basic config**  
+**This is a very basic config**  
 For more options and detailed explanations you should follow [arksines instructions](https://github.com/Arksine/moonraker/blob/master/docs/installation.md).
+{: .info }
 
 ```
 [server]
@@ -55,7 +57,7 @@ repo: meteyou/mainsail
 path: ~/mainsail
 ```
 
-> 🔥 **trusted_clients - read carefully** 🔥  
+🔥 **trusted_clients - read carefully** 🔥  
 A list of newline separated ip addresses and/or ip ranges that are
 trusted. Trusted clients are given full access to the API.  Both IPv4
 and IPv6 addresses and ranges are supported. Ranges must be expressed
@@ -64,6 +66,7 @@ For example, an entry of 192.168.1.0/24 will authorize IPs in the range of 192.1
 192.168.1.254. Note that when specifying IPv4 ranges the last segment
 of the ip address must be 0. The default is no clients or ranges are
 trusted.
+{: .alert }
 
 Save the file with `CTRL+O` and close the editor with `CTRL+X`.
 

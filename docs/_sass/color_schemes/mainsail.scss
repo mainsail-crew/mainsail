@@ -1,8 +1,9 @@
 $link-color: $red-300;
+$btn-primary-color: $red-300;
 
 .success {
-	margin: 32px 0px;
-	padding: 25px;
+	margin: 16px 0px;
+	padding: 20px;
 	position: relative;
 	border-radius: 3px;
 	width: 100%;
@@ -13,8 +14,8 @@ $link-color: $red-300;
 }
 
 .info {
-	margin: 32px 0px;
-	padding: 25px;
+	margin: 16px 0px;
+	padding: 20px;
 	position: relative;
 	border-radius: 3px;
 	width: 100%;
@@ -25,8 +26,8 @@ $link-color: $red-300;
 }
 
 .warning {
-	margin: 32px 0px;
-	padding: 25px;
+	margin: 16px 0px;
+	padding: 20px;
 	position: relative;
 	border-radius: 3px;
 	width: 100%;
@@ -37,8 +38,8 @@ $link-color: $red-300;
 }
 
 .alert {
-	margin: 32px 0px;
-	padding: 25px;
+	margin: 16px 0px;
+	padding: 20px;
 	position: relative;
 	border-radius: 3px;
 	width: 100%;
@@ -46,4 +47,14 @@ $link-color: $red-300;
 	background-color: #f5f6fa;
 	border-left: 4px solid;
 	border-color: rgb(255, 70, 66);
+}
+
+.key {
+	padding: 0px 5px;
+	border-radius: 3px;
+	border: 1px solid;
+	border-color: hsl(0,0%,70%);
+	background-color: hsl(0,0%,98%);
+	font-style: normal;
+	font-size: 14px; 	
 }
