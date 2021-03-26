@@ -118,15 +118,11 @@ export default {
       PleaseConfigureSteps: "请配置步骤",
       SettingsInterfaceControl: "设置 > 界面 > 控制",
       Home: "家",
-      Retract: "回抽",
-      Extrude: "挤出",
-      Macros: "宏"
-    },
-    ExtruderPanel: {
       FeedAmountIn: "进料量",
       FeedrateIn: "输入速度",
       Retract: "回抽",
-      Extrude: "挤出"
+      Extrude: "挤出",
+      Macros: "宏"
     },
     FarmPrinterPanel: {
 

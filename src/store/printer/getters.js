@@ -531,4 +531,74 @@ export default {
 	checkConfigMacroCancel: state => {
 		return Object.keys(state.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
 	},
+
+	getEstimatedTimeFile: (state, getters) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			state.print_stats.print_duration > 0 &&
+			getters.getPrintPercent > 0
+		) {
+			return (state.print_stats.print_duration / getters.getPrintPercent - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeFilament: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'filament_used' in state.print_stats &&
+			'current_file' in state &&
+			'filament_total' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.filament_total > 0 &&
+			state.current_file.filament_total > state.print_stats.filament_used
+		) {
+			return (state.print_stats.print_duration / (state.print_stats.filament_used / state.current_file.filament_total) - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeSlicer: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'current_file' in state &&
+			'estimated_time' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.estimated_time > 0 &&
+			state.current_file.estimated_time > state.print_stats.print_duration
+		) {
+			return (state.current_file.estimated_time - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeETA: (getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeSlicer > 0) {
+			time += parseInt(getters.getEstimatedTimeSlicer)
+			timeCount++
+		}
+
+		if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+
+		return 0
+	}
 }
