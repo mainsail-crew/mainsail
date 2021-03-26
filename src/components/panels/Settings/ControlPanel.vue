@@ -1,5 +1,7 @@
 <style>
-
+    .webcamImage {
+        width: 100%;
+    }
 </style>
 
 <template>
@@ -7,7 +9,7 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Control</span>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Control')}}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pa-0">
@@ -15,7 +17,7 @@
                     <v-row>
                         <v-col col-6>
                             <v-text-field
-                                label="Speed XY"
+                                :label="$t('Settings.ControlPanel.SpeedXY')"
                                 v-model="feedrateXY"
                                 @blur="blurFeedrateXY"
                                 type="number"
@@ -28,7 +30,7 @@
                         </v-col>
                         <v-col col-6>
                             <v-text-field
-                                label="Speed Z"
+                                :label="$t('Settings.ControlPanel.SpeedZ')"
                                 v-model="feedrateZ"
                                 @blur="blurFeedrateZ"
                                 type="number"
@@ -50,7 +52,7 @@
                         <v-row>
                             <v-col>
                                 <v-combobox
-                                    label="Move distances in mm"
+                                    :label="$t('Settings.ControlPanel.MoveDistancesInMm')"
                                     v-model="stepsAll"
                                     hide-selected
                                     hide-details="auto"
@@ -68,9 +70,9 @@
                         </v-row>
                         <v-row>
                             <v-col class="pt-0">
-                                <v-switch v-model="reverseX" label="Reverse X movement" hide-details="auto" class="mt-0"></v-switch>
-                                <v-switch v-model="reverseY" label="Reverse Y movement" hide-details="auto" class="mt-0"></v-switch>
-                                <v-switch v-model="reverseZ" label="Reverse Z movement" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseX" :label="$t('Settings.ControlPanel.ReverseXMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseY" :label="$t('Settings.ControlPanel.ReverseYMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseZ" :label="$t('Settings.ControlPanel.ReverseZMovement')" hide-details="auto" class="mt-0"></v-switch>
                             </v-col>
                         </v-row>
                     </template>
@@ -78,7 +80,7 @@
                         <v-row>
                             <v-col>
                                 <v-combobox
-                                    label="Move distances XY in mm"
+                                    :label="$t('Settings.ControlPanel.MoveDistancesXYInMm')"
                                     v-model="stepsXY"
                                     hide-selected
                                     hide-details="auto"
@@ -97,7 +99,7 @@
                         <v-row>
                             <v-col>
                                 <v-combobox
-                                    label="Move distances Z in mm"
+                                    :label="$t('Settings.ControlPanel.MoveDistancesZInMm')"
                                     v-model="stepsZ"
                                     hide-selected
                                     hide-details="auto"
@@ -120,7 +122,7 @@
         <v-card class="mt-6">
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Extruder</span>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Extruder') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pa-0">
@@ -128,7 +130,7 @@
                     <v-row>
                         <v-col>
                             <v-combobox
-                                label="Move distances E in mm"
+                                :label="$t('Settings.ControlPanel.MoveDistancesEInMm')"
                                 v-model="feedamountsE"
                                 hide-selected
                                 hide-details="auto"
@@ -147,7 +149,7 @@
                     <v-row>
                         <v-col>
                             <v-combobox
-                                label="Speed E in mm/s"
+                                :label="$t('Settings.ControlPanel.SpeedEInMms')"
                                 v-model="feedratesE"
                                 hide-selected
                                 hide-details="auto"
@@ -250,50 +252,9 @@
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateZ: value } } })
                 }
             },
-            stepsZ: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.control.stepsZ
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(steps) {
-                    const absSteps = []
-                    for(const value of steps) absSteps.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsZ: absSteps } } })
-                }
-            },
-            feedamountsE: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.extruder.feedamounts
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(amounts) {
-                    const absAmounts = []
-                    for(const value of amounts) absAmounts.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamounts: absAmounts } } })
-                }
-            },
-            feedratesE: {
-                get() {
-                    const steps = this.$store.state.gui.dashboard.extruder.feedrates
-                    return steps.sort(function (a,b) { return b-a })
-                },
-                set(rates) {
-                    const absRates = []
-                    for(const value of rates) absRates.push(Math.abs(value))
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrates: absRates } } })
-                }
-            },
-        },
-        mounted() {
-            this.$refs.formControlExtruder.validate()
         },
         methods: {
-            blurFeedrateXY() {
-                if (!(this.feedrateXY > 0)) this.feedrateXY = 100
-            },
-            blurFeedrateZ() {
-                if (!(this.feedrateZ > 0)) this.feedrateZ = 25
-            }
+
         }
     }
 </script>

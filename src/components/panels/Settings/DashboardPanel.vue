@@ -6,30 +6,30 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>Dashboard</span>
+                <span class="subheading"><v-icon left>mdi-view-dashboard</v-icon>{{ $t('Settings.DashboardPanel.Dashboard') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowWebcamOnDashboard" label="Webcam" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowWebcamOnDashboard" :label="$t('Settings.DashboardPanel.Webcam')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowTempchartOnDashboard" label="Tempchart" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowTempchartOnDashboard" :label="$t('Settings.DashboardPanel.Tempchart')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolShowConsoleOnDashboard" label="Console" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolShowConsoleOnDashboard" :label="$t('Settings.DashboardPanel.Console')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row class="mt-2">
                     <v-col col-6>
                         <v-text-field
-                            label="Chart update interval"
+                            :label="$t('Settings.DashboardPanel.ChartUpdateInterval')"
                             v-model="intervalChartUpdate"
                             @blur="blurIntervalChartUpdate"
                             type="number"
@@ -42,7 +42,7 @@
                     </v-col>
                     <v-col col-6>
                         <v-text-field
-                            label="Datapoint interval"
+                            :label="$t('Settings.DashboardPanel.DatapointInterval')"
                             type="number"
                             v-model="intervalDatasetUpdate"
                             @blur="blurIntervalDatasetUpdate"

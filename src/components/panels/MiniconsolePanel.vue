@@ -23,19 +23,19 @@
     <v-card>
         <v-toolbar flat dense>
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
+                <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
-                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36">
-                        <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                        <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details :label="$t('Panels.MiniconsolePanel.CustomFilters')"></v-checkbox>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -45,7 +45,7 @@
                 <v-row>
                     <v-col>
                         <v-text-field
-                            label="Send code..."
+                            :label="$t('Panels.MiniconsolePanel.SendCode')"
                             ref="gcodeCommandField"
                             solo
                             hide-details
@@ -60,7 +60,7 @@
                     </v-col>
                     <v-col class="col-auto align-content-center">
                         <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
-                            <v-icon class="mr-2">mdi-send</v-icon> send
+                            <v-icon class="mr-2">mdi-send</v-icon> {{ $t("Panels.MiniconsolePanel.Send") }}
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -81,7 +81,7 @@
                 sort-by="date"
             >
                 <template #no-data>
-                    <div class="py-2">empty</div>
+                    <div class="py-2">{{ $t("Panels.MiniconsolePanel.Empty") }}</div>
                 </template>
 
                 <template #item="{ item }">

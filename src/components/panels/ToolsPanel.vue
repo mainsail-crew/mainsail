@@ -27,13 +27,13 @@
         <v-card>
             <v-toolbar flat dense>
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>Temperatures</span>
+                    <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Temperatures") }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-item-group class="v-btn-toggle" name="controllers">
                     <v-menu :offset-y="true" title="Preheat" v-if="this['gui/getPreheatPresets'].length">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">Presets <v-icon small>mdi-menu-down</v-icon></v-btn>
+                            <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item v-for="preset of this['gui/getPreheatPresets']" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -52,22 +52,22 @@
                                     <v-icon small>mdi-snowflake</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
-                                    <v-list-item-title>Cooldown</v-list-item-title>
+                                    <v-list-item-title>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                         </v-list>
                     </v-menu>
-                    <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>Cooldown</v-btn>
-                    <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Temperatures">
+                    <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="this['gui/getPreheatPresets'].length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
+                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" v-model="boolTempchart" hide-details label="Show Chart"></v-checkbox>
+                                <v-checkbox class="mt-0" v-model="boolTempchart" hide-details :label="$t('Panels.ToolsPanel.ShowChart')"></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details label="Autoscale Chart"></v-checkbox>
+                                <v-checkbox class="mt-0" v-model="autoscaleTempchart" hide-details :label="$t('Panels.ToolsPanel.AutoscaleChart')"></v-checkbox>
                             </v-list-item>
                         </v-list>
                     </v-menu>
@@ -76,11 +76,11 @@
             <v-card-text class="pa-0 content">
                 <v-container class="px-0">
                     <v-row align="center">
-                        <v-col class="py-2 font-weight-bold" style="padding-left: 68px;">Name</v-col>
-                        <v-col class="py-2 text-center flex-grow-0 font-weight-bold d-none d-sm-block" v-if="boolTempchart" style="min-width: 70px;">Color</v-col>
-                        <v-col class="py-2 text-center font-weight-bold d-none d-sm-block">State</v-col>
-                        <v-col class="py-2 text-center font-weight-bold">Current</v-col>
-                        <v-col class="py-2 pr-8 text-center font-weight-bold">Target</v-col>
+                        <v-col class="py-2 font-weight-bold" style="padding-left: 68px;">{{ $t("Panels.ToolsPanel.Name") }}</v-col>
+                        <v-col class="py-2 text-center flex-grow-0 font-weight-bold d-none d-sm-block" v-if="boolTempchart" style="min-width: 70px;">{{ $t("Panels.ToolsPanel.Color") }}</v-col>
+                        <v-col class="py-2 text-center font-weight-bold d-none d-sm-block">{{ $t("Panels.ToolsPanel.State") }}</v-col>
+                        <v-col class="py-2 text-center font-weight-bold">{{ $t("Panels.ToolsPanel.Current") }}</v-col>
+                        <v-col class="py-2 pr-8 text-center font-weight-bold">{{ $t("Panels.ToolsPanel.Target") }}</v-col>
                     </v-row>
                     <div v-for="(heater, index) in heaters" v-bind:key="index" >
                         <v-divider class="my-2"></v-divider>
@@ -129,7 +129,7 @@
                         <v-divider class="my-2"></v-divider>
                         <v-row align="center">
                             <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
-                                <v-icon color="grey darken-2" :title="'min: '+sensor.min_temp+'° / max: '+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
+                                <v-icon color="grey darken-2" :title="$t('Panels.ToolsPanel.Min')+sensor.min_temp+'° / ' + $t('Panels.ToolsPanel.Max')+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold">
                               <span style="cursor: pointer;" @click="openHeater(sensor)">{{ convertName(sensor.name) }}</span>
@@ -148,7 +148,7 @@
                                       v-on="on"
                                   >{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span>
                                 </template>
-                                <span>min: {{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />max: {{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
+                                <span>{{ $t('Panels.ToolsPanel.Min') }}{{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />{{ $t('Panels.ToolsPanel.Max')}}{{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
                               </v-tooltip>
                               <span v-for="(values, key) of sensor.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
@@ -170,7 +170,7 @@
                     <v-toolbar-title>
                     <span class="subheading">
                         <v-icon left>mdi-{{ 'icon' in editHeater.object ? editHeater.object.icon : "info" }}</v-icon>
-                        {{ 'name' in editHeater.object ? convertName(editHeater.object.name) : "UNKNOWN" }}
+                        {{ 'name' in editHeater.object ? convertName(editHeater.object.name) : $t('Panels.ToolsPanel.UNKNOWN') }}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -182,7 +182,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTemperature"
-                                    label="Show current temperature in chart"
+                                    :label="$t('Panels.ToolsPanel.ShowCurrentTemperatureInChart')"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('temperature')"
@@ -193,7 +193,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTarget"
-                                    label="Show target temperature in chart"
+                                    :label="$t('Panels.ToolsPanel.ShowTargetTemperatureInChart')"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('target')"
@@ -204,7 +204,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolPower"
-                                    label="Show PWM-power in chart"
+                                    :label="$t('Panels.ToolsPanel.ShowPWMPowerInChart')"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('power')"
@@ -215,7 +215,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolSpeed"
-                                    label="Show PWM-power in chart"
+                                    :label="$t('Panels.ToolsPanel.ShowPWMPowerInChart')"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('speed')"
@@ -226,7 +226,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.additionSensors[key]"
-                                    :label="'Show '+key+' in list'"
+                                    :label="$t('Panels.ToolsPanel.Show')+key+$t('Panels.ToolsPanel.InList')"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisibleAdditionalSensor(key)"

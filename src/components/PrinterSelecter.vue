@@ -12,7 +12,7 @@
                 role="button"
             >
                 <v-icon>mdi-view-dashboard-outline</v-icon>
-                <span class="nav-title">Printers</span>
+                <span class="nav-title">{{ $t("App.Printers")}}</span>
 
                 <v-menu bottom :offset-x="true">
                     <template v-slot:activator="{ on, attrs }">
@@ -30,7 +30,7 @@
                 </v-menu>
             </div>
             <v-item-group class="v-btn-toggle mx-4 d-block row" name="printers" v-if="false">
-                <v-btn class="col" color="primary" @click="switchToPrinters">Printers</v-btn>
+                <v-btn class="col" color="primary" @click="switchToPrinters">{{ $t("App.Printers")}}</v-btn>
 
             </v-item-group>
         </li>

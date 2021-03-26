@@ -51,20 +51,20 @@
     <div>
         <v-card class="fileupload-card my-3" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
             <v-card-title>
-                G-Code Files
+                {{ $t("Files.GCodeFiles")}}
                 <v-spacer class="d-none d-sm-block"></v-spacer>
                 <input type="file" ref="fileUpload" :accept="validGcodeExtensions.join(', ')" style="display: none" multiple @change="uploadFile" />
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
-                    <v-btn @click="clickUploadButton" title="Upload new Gcode" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
-                    <v-btn @click="createDirectory" title="Create new Directory" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                    <v-btn @click="refreshFileList" title="Refresh current Directory" class="flex-grow-1"><v-icon>mdi-refresh</v-icon></v-btn>
-                    <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
+                    <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary flex-grow-1" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
+                    <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="flex-grow-1"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                    <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="flex-grow-1"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" label="Hidden files"></v-checkbox>
+                                <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Files.HiddenFiles')"></v-checkbox>
                             </v-list-item>
                             <v-divider></v-divider>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
@@ -75,16 +75,16 @@
                 </v-item-group>
             </v-card-title>
             <v-card-subtitle>
-                Current path: {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
+                {{ $t("Files.CurrentPath") }} {{  this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
                 <div v-if="this.disk_usage !== null">
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
-                            <span v-bind="attrs" v-on="on">Free disk: {{ formatFilesize(disk_usage.free) }}</span>
+                            <span v-bind="attrs" v-on="on">{{ $t('Files.FreeDisk') + formatFilesize(disk_usage.free) }}</span>
                         </template>
                         <span>
-                            Used: {{ formatFilesize(this.disk_usage.used) }}<br />
-                            Free: {{ formatFilesize(this.disk_usage.free) }}<br />
-                            Total: {{ formatFilesize(this.disk_usage.total) }}
+                            {{ $t('Files.Used') + formatFilesize(this.disk_usage.used) }}<br />
+                            {{ $t('Files.Free') + formatFilesize(this.disk_usage.free) }}<br />
+                            {{ $t('Files.Total') + formatFilesize(this.disk_usage.total) }}
                         </span>
                     </v-tooltip>
                 </div>
@@ -93,7 +93,7 @@
                 <v-text-field
                   v-model="search"
                   append-icon="mdi-magnify"
-                  label="Search"
+                  :label="$t('Files.Search')"
                   single-line
                   hide-details
                 ></v-text-field>
@@ -108,7 +108,7 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: 'Files'
+                    itemsPerPageText: $t('Files.Files')
                 }"
                 item-key="name"
                 :search="search"
@@ -121,7 +121,7 @@
                 </template>
 
                 <template #no-data>
-                    <div class="text-center">empty</div>
+                    <div class="text-center">{{ $t('Files.Empty') }}</div>
                 </template>
 
                 <template slot="body.prepend" v-if="(currentPath !== 'gcodes')">
@@ -168,10 +168,10 @@
                         <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
-                <v-data-footer>bla bla</v-data-footer>
+                <v-data-footer>{{ $t('Files.blabla')}}</v-data-footer>
             </v-data-table>
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
-                <div class="textnode">Drop files to add gcode.</div>
+                <div class="textnode">{{ $t('Files.DropFilesToAddGcode')}}</div>
             </div>
         </v-card>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
@@ -189,22 +189,22 @@
                     "
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
                     >
-                    <v-icon class="mr-1">mdi-fire</v-icon> Preheat
+                    <v-icon class="mr-1">mdi-fire</v-icon> {{ $t('Files.Preheat')}}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon> Download
+                    <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Filse.Download')}}
                 </v-list-item>
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Filse.Rename')}}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> Rename
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Filse.Rename')}}
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Filse.Delete')}}
                 </v-list-item>
                 <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Filse.Delete')}}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -215,52 +215,52 @@
                     v-if="getBigThumbnail(dialogPrintFile.item)"
                     :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
-                <v-card-title class="headline">Start Job</v-card-title>
-                <v-card-text>Do you want to start {{ dialogPrintFile.item.filename }}?</v-card-text>
+                <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
+                <v-card-text>{{ $t('Files.DoYouWantToStart') + dialogPrintFile.item.filename }}?</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">No</v-btn>
-                    <v-btn color="green darken-1" text @click="startPrint(dialogPrintFile.item.filename)">Yes</v-btn>
+                    <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">{{ $t('Files.No')}}</v-btn>
+                    <v-btn color="green darken-1" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.Yes')}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <v-card>
-                <v-card-title class="headline">New Directory</v-card-title>
+                <v-card-title class="headline">{{ $t('Files.NewDirectory') }}</v-card-title>
                 <v-card-text>
-                    Please enter a new directory name:
+                   {{ $t('Files.PleaseEnterANewDirectoryName') }}
                     <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateDirectory.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="createDirectoryAction">create</v-btn>
+                    <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Files.Create') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <v-card>
-                <v-card-title class="headline">Rename File</v-card-title>
+                <v-card-title class="headline">{{ $t('Files.RenameFile')}}</v-card-title>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameFile.newName" ref="inputFieldNewName"></v-text-field>
+                    <v-text-field :label="$t('Files.Name')" required v-model="dialogRenameFile.newName" ref="inputFieldNewName"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">rename</v-btn>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="renameFileAction">{{ $t('Files.Rename') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <v-card>
-                <v-card-title class="headline">Rename Directory</v-card-title>
+                <v-card-title class="headline">{{ $t('Files.RenameDirectory') }}</v-card-title>
                 <v-card-text>
                     <v-text-field label="Name" required v-model="dialogRenameDirectory.newName"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameDirectory.show = false">Cancel</v-btn>
-                    <v-btn color="primary" text @click="renameDirectoryAction">rename</v-btn>
+                    <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Files.Rename') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -273,7 +273,7 @@
             dark
             v-model="uploadSnackbar.status"
         >
-            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>Uploading {{ uploadSnackbar.filename }}</strong><br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t("Files.Uploading") + uploadSnackbar.filename }}</strong><br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
@@ -324,14 +324,14 @@
                 },
                 headers: [
                     { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
-                    { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
-                    { text: 'Object Height',  value: 'object_height',   align: 'right', configable: true,   visible: true },
-                    { text: 'Layer Height',   value: 'layer_height',    align: 'right', configable: true,   visible: true },
-                    { text: 'Filament Usage', value: 'filament_total',  align: 'right', configable: true,   visible: true },
-                    { text: 'Print Time',     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
-                    { text: 'Slicer',         value: 'slicer',          align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.Name'),           value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: this.$t('Files.Filesize'),       value: 'size',            align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LastModified'),  value: 'modified',        align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.ObjectHeight'),  value: 'object_height',   align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LayerHeight'),   value: 'layer_height',    align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.Slicer'),         value: 'slicer',          align: 'right', configable: true,   visible: true },
                 ],
                 options: {
 
