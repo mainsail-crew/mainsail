@@ -6,7 +6,7 @@ Mainsail a lightweight & responsive web interface for [Klipper](https://github.c
 
 Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.mainsail.xyz). Find out [more](https://docs.mainsail.xyz/setup#mymainsailxyz).
 
-[Documentation](https://docs.mainsail.xyz)
+[Documentation](https://docs.mainsail.xyz)  
 [Release Notes](https://github.com/meteyou/mainsail/releases)
 
 ## Screenshots
@@ -30,8 +30,8 @@ Have you found a bug? Then we would like you to create an [issue](https://github
 ## Support this project
 The project is primarily developed and maintained by meteyou. To keep the project going he invests his free time, almost every day. To motivate him (☕🍺😜) there are several ways to support the project.
 
-- [Patreon (recurring)](https://patreon.com/meteyou){:target="_blank"}
-- [Ko-Fi (one-time)](https://ko-fi.com/mainsail){:target="_blank"}
+- [Patreon (recurring)](https://patreon.com/meteyou)
+- [Ko-Fi (one-time)](https://ko-fi.com/mainsail)
 
 ## Credit, sources and inspiration
 * [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
