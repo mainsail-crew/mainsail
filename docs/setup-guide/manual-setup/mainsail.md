@@ -1,16 +1,15 @@
 ---
 layout: default
 title: Mainsail
-parent: Manual Setup Guide
+parent: Manual Setup
 grand_parent: Setup Guides
 nav_order: 5
 permalink: /setup/manual-setup/mainsail
 ---
 
+# Mainsail
 
-
-## Mainsail
-### Install webserver & reverse proxy (nginx)
+## Install webserver & reverse proxy (nginx)
 
 nginx is important to mount all components on port 80 and host the static files from Mainsail. To install nginx you only need to execute:
 
@@ -140,7 +139,7 @@ Now you can check again the API if it works with the reverse proxy. Open the url
 
 Now we can install Mainsail (static httpdocs).
 
-### Install httpdocs
+## Install httpdocs
 
 Now you can download the current mainsail static data
 
@@ -151,14 +150,14 @@ wget -q -O mainsail.zip https://github.com/meteyou/mainsail/releases/latest/down
 
 Now it should be possible to open the interface: `http://<printer-ip>/`.
 
-### Important macros
+## Important macros
 
 if you want to get the full experience with mainsail and klipper virtual_sdcard print, you should use these macros, or use them as templates for your own.
 
 [Macro Link](../../necessary-cfg.md){: .btn target="_blank"}
 
 
-### Change the Hostname (optional)
+## Change the Hostname (optional)
 
 to use the hostname instate of the ip, you can install the avahi-daemon:
 
