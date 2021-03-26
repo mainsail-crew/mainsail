@@ -118,15 +118,11 @@ export default {
       PleaseConfigureSteps: "Please configure steps",
       SettingsInterfaceControl: "Settings > Interface > Control",
       Home: "Home",
-      Retract: "Retract",
-      Extrude: "Extrude",
-      Macros: "Macros"
-    },
-    ExtruderPanel: {
       FeedAmountIn: "Feed amount in",
       FeedrateIn: "Feedrate in",
       Retract: "Retract",
-      Extrude: "Extrude"
+      Extrude: "Extrude",
+      Macros: "Macros"
     },
     FarmPrinterPanel: {
 
