@@ -192,19 +192,19 @@
                     <v-icon class="mr-1">mdi-fire</v-icon> {{ $t('Files.Preheat')}}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Filse.Download')}}
+                    <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Files.Download')}}
                 </v-list-item>
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Filse.Rename')}}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Filse.Rename')}}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Filse.Delete')}}
+                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
                 <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Filse.Delete')}}
+                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -323,15 +323,15 @@
                     item: {}
                 },
                 headers: [
-                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t('Files.Name'),           value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: this.$t('Files.Filesize'),       value: 'size',            align: 'right', configable: true,   visible: true },
+                    { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t('Files.Name'),          value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: this.$t('Files.Filesize'),      value: 'size',            align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.LastModified'),  value: 'modified',        align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.ObjectHeight'),  value: 'object_height',   align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.LayerHeight'),   value: 'layer_height',    align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.Slicer'),         value: 'slicer',          align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
                 ],
                 options: {
 

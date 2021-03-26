@@ -17,6 +17,16 @@
                     </v-col>
                 </v-row>
                 <v-row>
+                    <v-col>
+                        <v-select
+                            v-model="currentLanguage"
+                            :items="availableLanguages"
+                            :label="$t('Settings.LanguagePanel.Language')"
+                            hide-details
+                        ></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
                     <v-col class="py-2">
                         <v-switch v-model="displayCancelPrint" hide-details class="mt-0">
                             <template v-slot:label>
@@ -107,6 +117,29 @@
                 },
                 set(newName) {
                     return this.$store.dispatch('gui/setSettings', { general: { printername: newName } })
+                }
+            },
+            currentLanguage: {
+                get() {
+                    return this.$store.state.gui.general.language;
+                },
+                set(newVal){
+                    return this.$store.dispatch('gui/setSettings', { general: { language: newVal } });
+                }
+            },
+            availableLanguages: {
+                get() {
+                    const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.js$/i)
+                    const languages = []
+
+                    locales.keys().map(key=>{
+                        languages.push({
+                            text: locales(key).default.title,
+                            value: key.match(/([A-Za-z0-9-_]+)\./i)[1]
+                        })
+                    })
+
+                    return languages
                 }
             },
             displayCancelPrint: {
