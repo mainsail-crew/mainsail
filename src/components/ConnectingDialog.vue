@@ -8,7 +8,7 @@
             <v-toolbar flat dense color="primary">
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-connection" left></v-icon>Connecting<span v-if="connectingFailed"> failed</span><span v-if="isConnecting"> to {{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}</span>
+                        <v-icon class="mdi mdi-connection" left></v-icon>{{ $t("App.Connecting") }}<span v-if="connectingFailed"> {{ $t("App.Failed") }}</span><span v-if="isConnecting"> {{ $t("App.To") }} {{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}</span>
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
@@ -16,9 +16,9 @@
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>Cannot connect to {{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}.</p>
+                <p>{{ $t("App.CannotNotConnectTo") }}{{ parseInt(port) !== 80 && port !== "" ? hostname+":"+port : hostname }}.</p>
                 <div class="text-center">
-                    <v-btn @click="reconnect" color="primary">try again</v-btn>
+                    <v-btn @click="reconnect" color="primary">{{ $t("App.TryAgain") }}</v-btn>
                 </div>
             </v-card-text>
         </v-card>

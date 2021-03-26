@@ -88,5 +88,6 @@ export default {
 			Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'], payload.sensor, {})
 
 		Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor], 'boolList', payload.value)
+
 	}
 }

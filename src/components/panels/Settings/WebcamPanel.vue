@@ -6,14 +6,14 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-webcam</v-icon>Webcam</span>
+                <span class="subheading"><v-icon left>mdi-webcam</v-icon>{{ $t('Settings.WebcamPanel.Webcam') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <v-container px-0 py-0>
                 <v-row>
                     <v-col class="py-2">
-                        <v-select v-model="service" :items="serviceItems" hide-details label="Service" class="mt-0"></v-select>
+                        <v-select v-model="service" :items="serviceItems" hide-details :label="$t('Settings.WebcamPanel.Service')" class="mt-0"></v-select>
                     </v-col>
                 </v-row>
                 <v-row v-if="service === 'mjpegstreamer-adaptive'">
@@ -26,13 +26,13 @@
                         <v-text-field
                             v-model="webcamUrl"
                             hide-details
-                            label="Webcam URL"
+                            :label="$t('Settings.WebcamPanel.WebcamURL')"
                         ></v-text-field>
                     </v-col>
                 </v-row>
                 <v-row v-if="rotationEnabled">
                     <v-col class="py-2" col-auto>
-                        <v-switch v-model="rotate" hide-details label="Rotate" class="mt-0"></v-switch>
+                        <v-switch v-model="rotate" hide-details :label="$t('Settings.WebcamPanel.Rotate')" class="mt-0"></v-switch>
                     </v-col>
                     <v-col>
                         <v-select :items="[{ text: '90 degrees', value: 90 }, { text: '270 degrees', value: 270 }]" v-model="rotateDegrees" hide-details></v-select>
@@ -40,17 +40,17 @@
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="flipX" hide-details label="Flip webcam horizontally" class="mt-0"></v-switch>
+                        <v-switch v-model="flipX" hide-details :label="$t('Settings.WebcamPanel.FlipWebcamHorizontally')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="flipY" hide-details label="Flip webcam vertically" class="mt-0"></v-switch>
+                        <v-switch v-model="flipY" hide-details :label="$t('Settings.WebcamPanel.FlipWebcamVertically')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolNavi" hide-details label="Show in navigation" class="mt-0"></v-switch>
+                        <v-switch v-model="boolNavi" hide-details :label="$t('Settings.WebcamPanel.ShowInNavigation')" class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
             </v-container>

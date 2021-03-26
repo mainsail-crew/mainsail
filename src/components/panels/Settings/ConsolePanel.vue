@@ -6,26 +6,26 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-console-line</v-icon>Console</span>
+                <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t('Settings.ConsolePanel.Console') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">
             <v-container px-0 py-0>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="hideWaitTemperatures" label="Hide temperatures" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="hideWaitTemperatures" :label="$t('Settings.ConsolePanel.HideTemperatures')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row>
                     <v-col class="py-2">
-                        <v-switch v-model="boolCustomFilters" label="Custom filter" hide-details class="mt-0"></v-switch>
+                        <v-switch v-model="boolCustomFilters" :label="$t('Settings.ConsolePanel.CustomFilters')" hide-details class="mt-0"></v-switch>
                     </v-col>
                 </v-row>
                 <v-row v-if="boolCustomFilters">
                     <v-col class="py-2">
                         <v-textarea
                             outlined
-                            label="Rules"
+                            :label="$t('Settings.ConsolePanel.Rules')"
                             v-model="customFilters"
                             hide-details
                             class="mb-2"

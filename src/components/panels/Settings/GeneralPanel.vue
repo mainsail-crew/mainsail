@@ -3,7 +3,7 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-cog</v-icon>General</span>
+                    <span class="subheading"><v-icon left>mdi-cog</v-icon>{{ $t('Settings.GeneralPanel.General') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
@@ -11,7 +11,7 @@
                     <v-col>
                         <v-text-field
                             v-model="printerName"
-                            label="Printer Name"
+                            :label="$t('Settings.GeneralPanel.PrinterName')"
                             hide-details
                         ></v-text-field>
                     </v-col>
@@ -20,12 +20,12 @@
                     <v-col class="py-2">
                         <v-switch v-model="displayCancelPrint" hide-details class="mt-0">
                             <template v-slot:label>
-                                Display CANCEL_PRINT
+                                {{ $t('Settings.GeneralPanel.DisplayCANCEL_PRINT') }}
                                 <v-tooltip right>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-icon class="text--secondary ml-2" v-bind="attrs" v-on="on">mdi mdi-information</v-icon>
                                     </template>
-                                    <span>Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.</span>
+                                    <span>{{ $t('Settings.GeneralPanel.ShowCANCEL_PRINT') }}</span>
                                 </v-tooltip>
                             </template>
                         </v-switch>
@@ -35,12 +35,12 @@
                     <v-col class="py-2">
                         <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0">
                             <template v-slot:label>
-                                Display Z-Offset-Panel
+                                {{ $t('Settings.GeneralPanel.DisplayZOffset') }}
                                 <v-tooltip right>
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-icon class="text--secondary ml-2" v-bind="attrs" v-on="on">mdi mdi-information</v-icon>
                                     </template>
-                                    <span>Shows the Z-Offset panel permanently.</span>
+                                    <span>{{ $t('Settings.GeneralPanel.ShowZOffset') }}</span>
                                 </v-tooltip>
                             </template>
                         </v-switch>
@@ -48,7 +48,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center">
-                        <v-btn @click="dialogResetMainsail=true" >factory reset</v-btn>
+                        <v-btn @click="dialogResetMainsail=true" >{{ $t('Settings.GeneralPanel.FactoryReset') }}</v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -58,7 +58,7 @@
                 <v-toolbar flat dense color="primary">
                     <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-help-circle" left></v-icon> Factory reset
+                        <v-icon class="mdi mdi-help-circle" left></v-icon> {{ $t('Settings.GeneralPanel.FactoryReset') }}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -69,7 +69,7 @@
 
                         <v-row>
                             <v-col>
-                                <p class="text-center mb-0">Do you really want to reset mainsail to factory settings?</p>
+                                <p class="text-center mb-0">{{ $t('Settings.GeneralPanel.FactoryInfo') }}</p>
                             </v-col>
                         </v-row>
 
@@ -79,7 +79,7 @@
                                     color="red"
                                     @click="resetMainsail"
                                 >
-                                    reset mainsail
+                                    {{ $t('Settings.GeneralPanel.ResetMainsail') }}
                                 </v-btn>
                             </v-col>
                         </v-row>

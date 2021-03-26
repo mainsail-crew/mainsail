@@ -17,7 +17,7 @@
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading align-baseline">
-                    <v-icon left>mdi-information</v-icon>{{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : "Unknown") }}
+                    <v-icon left>mdi-information</v-icon>{{ (printer_state !== "" ? printer_state.charAt(0).toUpperCase() + printer_state.slice(1) : $t("Panels.StatusPanel.Unknown")) }}
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-pause</v-icon>
                         </template>
-                        <span>Pause print</span>
+                        <span>{{ $t("Panels.StatusPanel.PausePrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob">
@@ -35,7 +35,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-play</v-icon>
                         </template>
-                        <span>Resume print</span>
+                        <span>{{ $t("Panels.StatusPanel.ResumePrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused' || (displayCancelPrint && printer_state === 'printing'))" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
@@ -43,7 +43,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
                         </template>
-                        <span>Cancel print</span>
+                        <span>{{ $t("Panels.StatusPanel.CancelPrint") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob">
@@ -51,7 +51,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-broom</v-icon>
                         </template>
-                        <span>Clear print stats</span>
+                        <span>{{ $t("Panels.StatusPanel.ClearPrintStats") }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob">
@@ -59,7 +59,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on" small>mdi-printer</v-icon>
                         </template>
-                        <span>Reprint job</span>
+                        <span>{{ $t("Panels.StatusPanel.ReprintJob") }}</span>
                     </v-tooltip>
                 </v-btn>
             </v-item-group>
@@ -113,15 +113,15 @@
                                 <v-icon>mdi-axis-arrow</v-icon>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>X</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.X") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Y</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Y") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Z</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Z") }}</strong></v-col></v-row>
                                 <v-row>
                                     <v-col class="pa-0">
 
@@ -145,7 +145,7 @@
                                 <v-icon>mdi-poll</v-icon>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Filament") }}</strong></v-col></v-row>
                                 <v-row>
                                     <v-col class="pa-0">
                                         <v-tooltip top>
@@ -159,11 +159,11 @@
                                 </v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Print</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Print") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ formatTime(print_time) }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Total</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Total") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ formatTime(print_time_total) }}</v-col></v-row>
                             </v-col>
                         </v-row>
@@ -177,24 +177,24 @@
                                 <v-icon>mdi-printer-3d</v-icon>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Speed</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Speed") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0 text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Layer</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Layer") }}</strong></v-col></v-row>
                                 <v-row>
                                     <v-col class="pa-0 text-no-wrap">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on, attrs }">
                                                 <span v-bind="attrs" v-on="on">{{ current_layer }} of {{ max_layers }}</span>
                                             </template>
-                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">Object Height: {{ current_file.object_height }}mm</span>
+                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }} {{ current_file.object_height }}mm</span>
                                         </v-tooltip>
                                     </v-col>
                                 </v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>ETA</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.ETA") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
@@ -208,16 +208,16 @@
                                 <v-icon>mdi-clock-outline</v-icon>
                             </v-col>
                             <v-col class="equal-width py-0 ">
-                                <v-row><v-col class="pa-0"><strong>File</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.File") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
 
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Filament</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Filament") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
                             </v-col>
                             <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>Slicer</strong></v-col></v-row>
+                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong></v-col></v-row>
                                 <v-row><v-col class="pa-0">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
                             </v-col>
                         </v-row>
