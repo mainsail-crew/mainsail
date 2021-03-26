@@ -252,9 +252,50 @@
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateZ: value } } })
                 }
             },
+            stepsZ: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.control.stepsZ
+                    return steps.sort(function (a,b) { return b-a })
+                },
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsZ: absSteps } } })
+                }
+            },
+            feedamountsE: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.extruder.feedamounts
+                    return steps.sort(function (a,b) { return b-a })
+                },
+                set(amounts) {
+                    const absAmounts = []
+                    for(const value of amounts) absAmounts.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamounts: absAmounts } } })
+                }
+            },
+            feedratesE: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.extruder.feedrates
+                    return steps.sort(function (a,b) { return b-a })
+                },
+                set(rates) {
+                    const absRates = []
+                    for(const value of rates) absRates.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrates: absRates } } })
+                }
+            },
+        },
+        mounted() {
+            this.$refs.formControlExtruder.validate()
         },
         methods: {
-
+            blurFeedrateXY() {
+                if (!(this.feedrateXY > 0)) this.feedrateXY = 100
+            },
+            blurFeedrateZ() {
+                if (!(this.feedrateZ > 0)) this.feedrateZ = 25
+            }
         }
     }
 </script>
