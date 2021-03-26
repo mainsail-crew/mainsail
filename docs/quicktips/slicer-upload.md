@@ -4,13 +4,13 @@ title: Slicer Upload
 parent: Quicktips
 permalink: /quicktips/slicer-upload
 description: >-
-  It is possible to upload G-Code from  your slicer and have it start printing.
+  You can upload your sliced G-Code from within your slicer and have it start printing.
 ---
 
 # {{ page.title }}
 {{ page.description }}  
 Moonraker has compatibility with Octoprint's API. To enable octoprint api compatibility,
-add the following to your `moonraker.conf and restart Moonraker.
+add the following to your `moonraker.conf` and restart Moonraker.
 
 ```
 [octoprint_compat]

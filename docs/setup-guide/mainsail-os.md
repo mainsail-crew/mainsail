@@ -1,6 +1,6 @@
 ---
 layout: default
-title: MainsailOS Guide
+title: MainsailOS
 parent: Setup Guides
 nav_order: 1
 has_children: false

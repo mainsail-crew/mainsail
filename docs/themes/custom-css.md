@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Custom CSS
-parent: Customizing
-nav_order: 99
-permalink: /customizing/custom-css
+parent: Theming
+nav_order: 30
+permalink: /theming/custom-css
 ---
 
-## Custom-CSS 
+# Custom-CSS 
 
 The custom.css file allows you to customize the appearance of Mainsail
 without the need of rebuilding it. All you need to do is to place a file
@@ -18,13 +18,13 @@ your css rules in there.
 ![example result](../assets/img/customizing/screenshot-custom-css-example-result.png "custom.css result")
 
 
-### How to CSS
+## How to CSS
 
 You need to be familiar with the CSS (**C**ascading **S**tyle **S**heets) syntax.
 There are many resources to learn CSS online, for example:
 - https://www.w3schools.com/css/default.asp
 
-#### find the Element selector (example based on Chrome Browser)
+### find the Element selector (example based on Chrome Browser)
 
 Use your browser's built-in developer tools to find the right selector of the element you want to add your own flair to.
 
