@@ -15,6 +15,7 @@ description: >-
 
 
 ## Setup Instructions
+{: .no_toc}
 Go to the repo of the theme and download it. Place the files according to  [these instructions](/theming/prepare#directory-structure).
 
 [KIAUH](/setup/kiauh) has an integrated theme installer  
