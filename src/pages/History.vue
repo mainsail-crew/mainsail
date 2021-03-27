@@ -9,7 +9,7 @@
                 <v-card>
                     <v-toolbar flat dense >
                         <v-toolbar-title>
-                            <span class="subheading"><v-icon left>mdi-chart-areaspline</v-icon>Statistics</span>
+                            <span class="subheading"><v-icon left>mdi-chart-areaspline</v-icon>{{ $t('History.Statistics') }}</span>
                         </v-toolbar-title>
                     </v-toolbar>
                     <v-card-text class="pa-0">
@@ -18,23 +18,23 @@
                                 <v-simple-table>
                                     <tbody>
                                         <tr>
-                                            <td>Total Printtime</td>
+                                            <td>{{ $t('History.TotalPrinttime') }}</td>
                                             <td class="text-right">{{ formatPrintTime(totalPrintTime) }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Longest Printtime</td>
+                                            <td>{{ $t('History.LongestPrinttime') }}</td>
                                             <td class="text-right">{{ formatPrintTime(longestPrintTime) }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Avg. Printtime</td>
+                                            <td>{{ $t('History.AvgPrinttime') }}</td>
                                             <td class="text-right">{{ formatPrintTime(avgPrintTime) }}</td>
                                         </tr>
                                         <tr>
-                                            <td>Total Filament used</td>
+                                            <td>{{ $t('History.TotalFilamentUsed') }}</td>
                                             <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
                                         </tr>
                                         <tr>
-                                            <td>Total Jobs</td>
+                                            <td>{{ $t('History.TotalJobs') }}</td>
                                             <td class="text-right">{{ totalJobsCount }}</td>
                                         </tr>
                                     </tbody>
@@ -49,10 +49,10 @@
                                 <div class="text-center mt-3">
                                     <v-btn-toggle v-model="toggleChart" small mandatory>
                                         <v-btn small value="filament_usage">
-                                            Filament usage
+                                            {{ $t('History.FilamentUsage') }}
                                         </v-btn>
                                         <v-btn small value="printtime_avg">
-                                            Printime AVG
+                                            {{ $t('History.PrinttimeAvg') }}
                                         </v-btn>
                                     </v-btn-toggle>
                                 </div>

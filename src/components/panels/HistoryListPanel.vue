@@ -2,7 +2,7 @@
     <div>
         <v-card>
             <v-card-title>
-                Print History
+                {{ $t('History.PrintHistory') }}
                 <v-spacer class="d-none d-sm-block"></v-spacer>
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
                     <v-btn title="Refresh History" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
@@ -22,7 +22,7 @@
                 <v-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
-                    label="Search"
+                    :label="$t('History.Search')"
                     single-line
                     hide-details
                 ></v-text-field>
@@ -37,7 +37,7 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: 'Jobs',
+                    itemsPerPageText: $t('History.Jobs'),
                     itemsPerPageOptions: [10,25,50,100,-1]
                 }"
                 item-key="name"
@@ -50,7 +50,7 @@
                 </template>
 
                 <template #no-data>
-                    <div class="text-center">empty</div>
+                    <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
                 <template #item="{ item }">
@@ -120,13 +120,13 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-text-box-search</v-icon> Details
+                    <v-icon class="mr-1">mdi-text-box-search</v-icon> {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item @click="startPrint(contextMenu.item)" v-if="contextMenu.item.exists" :disabled="is_printing">
-                    <v-icon class="mr-1">mdi-printer</v-icon> Reprint
+                    <v-icon class="mr-1">mdi-printer</v-icon> {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)" :disabled="contextMenu.item.status === 'in_progress'">
-                    <v-icon class="mr-1">mdi-delete</v-icon> Delete
+                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -134,7 +134,7 @@
             <v-card dark>
                 <v-toolbar flat dense >
                     <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-update</v-icon>Job Details</span>
+                        <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('History.JobDetails') }}</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0" color="grey darken-3" @click="detailsDialog.boolShow = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
@@ -148,75 +148,75 @@
                         ">
                         <tbody>
                             <tr>
-                                <td>Filename</td>
+                                <td>{{ $t('History.Filename') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.filename }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'size' in detailsDialog.item.metadata">
-                                <td>Filesize</td>
+                                <td>{{ $t('History.Filesize') }}</td>
                                 <td class="text-right">{{ formatFilesize(detailsDialog.item.metadata.size) }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'modified' in detailsDialog.item.metadata">
-                                <td>Last Modified</td>
+                                <td>{{ $t('History.LastModified') }}</td>
                                 <td class="text-right">{{ formatDate(detailsDialog.item.metadata.modified) }}</td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td>{{ $t('History.Status') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.status }}</td>
                             </tr>
                             <tr>
-                                <td>Start Time</td>
+                                <td>{{ $t('History.StartTime') }}</td>
                                 <td class="text-right">{{ formatDate(detailsDialog.item.start_time) }}</td>
                             </tr>
                             <tr>
-                                <td>End Time</td>
+                                <td>{{ $t('History.EndTime') }}</td>
                                 <td class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
-                                <td>Estimated Time</td>
+                                <td>{{ $t('History.EstimatedTime') }}</td>
                                 <td class="text-right">{{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}</td>
                             </tr>
                             <tr v-if="detailsDialog.item.print_duration > 0">
-                                <td>Print Duration</td>
+                                <td>{{ $t('History.PrintDuration') }}</td>
                                 <td class="text-right">{{ formatPrintTime(detailsDialog.item.print_duration) }}</td>
                             </tr>
                             <tr v-if="detailsDialog.item.total_duration > 0">
-                                <td>Total Duration</td>
+                                <td>{{ $t('History.TotalDuration') }}</td>
                                 <td class="text-right">{{ formatPrintTime(detailsDialog.item.total_duration) }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
-                                <td>Estimated Filament</td>
+                                <td>{{ $t('History.EstimatedFilament') }}</td>
                                 <td class="text-right">{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</td>
                             </tr>
                             <tr v-if="detailsDialog.item.filament_used > 0">
-                                <td>Filament Used</td>
+                                <td>{{ $t('History.FilamentUsed') }}</td>
                                 <td class="text-right">{{ Math.round(detailsDialog.item.filament_used) }} mm</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'first_layer_extr_temp' in detailsDialog.item.metadata">
-                                <td>First Layer Ext. Temp.</td>
+                                <td>{{ $t('History.FirstLayerExtTemp') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'first_layer_bed_temp' in detailsDialog.item.metadata">
-                                <td>First Layer Bed Temp.</td>
+                                <td>{{ $t('History.FirstLayerBedTemp') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'first_layer_height' in detailsDialog.item.metadata">
-                                <td>First Layer Height</td>
+                                <td>{{ $t('History.FirstLayerHeight') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.first_layer_height }} mm</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata">
-                                <td>Layer Height</td>
+                                <td>{{ $t('History.LayerHeight') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.layer_height }} mm</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata">
-                                <td>Object Height</td>
+                                <td>{{ $t('History.ObjectHeight') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.object_height }} mm</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'slicer' in detailsDialog.item.metadata">
-                                <td>Slicer</td>
+                                <td>{{ $t('History.Slicer') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.slicer }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata">
-                                <td>Slicer Version</td>
+                                <td>{{ $t('History.SlicerVersion') }}</td>
                                 <td class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</td>
                             </tr>
                         </tbody>
@@ -243,24 +243,24 @@ import VueLoadImage from 'vue-load-image'
                 selected: [],
                 hideHeaderColums: [],
                 headers: [
-                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: '',               value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: 'Filesize',       value: 'size',            align: 'left',  configable: true,   visible: false },
-                    { text: 'Last modified',  value: 'modified',        align: 'left',  configable: true,  visible: false },
-                    { text: 'Start Time',     value: 'start_time',      align: 'left',  configable: true,  visible: true },
-                    { text: 'End Time',       value: 'end_time',        align: 'left',  configable: true,  visible: false },
-                    { text: 'Estimated Time', value: 'estimated_time',  align: 'left',  configable: true,  visible: true },
-                    { text: 'Print Time',     value: 'print_duration',  align: 'left', configable: true,  visible: true },
-                    { text: 'Total Time',     value: 'total_duration',  align: 'left', configable: true,  visible: false },
-                    { text: 'Filament Calc',  value: 'filament_total',  align: 'left', configable: true,  visible: false },
-                    { text: 'Filament Used',  value: 'filament_used',   align: 'left', configable: true,  visible: true },
-                    { text: 'Ext. Temp.',     value: 'first_layer_extr_temp',   align: 'left', configable: true,  visible: false },
-                    { text: 'Bed Temp.',      value: 'first_layer_bed_temp',   align: 'left', configable: true,  visible: false },
-                    { text: 'First Layer Height', value: 'first_layer_height',   align: 'left', configable: true,  visible: false },
-                    { text: 'Layer Height',   value: 'layer_height',    align: 'left', configable: true,  visible: false },
-                    { text: 'Object Height',  value: 'object_height',   align: 'left', configable: true,  visible: false },
-                    { text: 'Slicer',         value: 'slicer',          align: 'left', configable: true,  visible: true },
+                    { text: '',                                     value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t("History.Filename"),            value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: '',                                     value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t("History.Filesize"),            value: 'size',            align: 'left',  configable: true,   visible: false },
+                    { text: this.$t("History.LastModified"),        value: 'modified',        align: 'left',  configable: true,  visible: false },
+                    { text: this.$t("History.StartTime"),           value: 'start_time',      align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.EndTime"),             value: 'end_time',        align: 'left',  configable: true,  visible: false },
+                    { text: this.$t("History.EstimatedTime"),       value: 'estimated_time',  align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.PrintTime"),           value: 'print_duration',  align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.TotalTime"),           value: 'total_duration',  align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.FilamentCalc"),        value: 'filament_total',  align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.FilamentUsed"),        value: 'filament_used',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FirstLayerExtTemp"),   value: 'first_layer_extr_temp',   align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.FirstLayerBedTemp"),   value: 'first_layer_bed_temp',   align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.FirstLayerHeight"),    value: 'first_layer_height',   align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.LayerHeight"),         value: 'layer_height',    align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.ObjectHeight"),        value: 'object_height',   align: 'left', configable: true,  visible: false },
+                    { text: this.$t("History.Slicer"),              value: 'slicer',          align: 'left', configable: true,  visible: true },
                 ],
                 options: {
 
