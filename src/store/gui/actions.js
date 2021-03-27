@@ -149,5 +149,13 @@ export default {
 			dispatch('farm/readStoredPrinters', {}, { root: true })
 		}
 		dispatch('printer/init', null, { root: true })
-	}
+	},
+
+	setHistoryColumns({ commit, dispatch, state }, data) {
+		commit('setHistoryColumns', data)
+		dispatch('updateSettings', {
+			keyName: 'history',
+			newVal: state.history
+		})
+	},
 }

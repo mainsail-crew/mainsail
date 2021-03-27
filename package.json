@@ -22,6 +22,7 @@
     "vue-github-api": "^0.1.7",
     "vue-headful": "^2.1.0",
     "vue-i18n": "^8.22.4",
+    "vue-load-image": "^0.1.12",
     "vue-observe-visibility": "^1.0.0",
     "vue-plotly": "^1.1.0",
     "vue-prism-editor": "^1.2.2",
