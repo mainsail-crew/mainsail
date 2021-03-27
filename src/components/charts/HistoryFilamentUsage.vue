@@ -29,6 +29,7 @@ export default {
                         let output = ""
 
                         if (datasets.length) {
+                            output = datasets[0]['marker']
                             let outputTime = datasets[0]['axisValueLabel']
                             outputTime = outputTime.substr(0, outputTime.indexOf(" ")+1)
                             let outputTimeDate = new Date(outputTime)
