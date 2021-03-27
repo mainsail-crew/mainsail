@@ -110,5 +110,13 @@ export default {
 			Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'], payload.sensor, {})
 
 		Vue.set(state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor], 'boolList', payload.value)
-	}
+	},
+
+	setHistoryColumns(state, data) {
+		if (data.value && state.history.hideColums.includes(data.name)) {
+			state.history.hideColums.splice(state.history.hideColums.indexOf(data.name), 1)
+		} else if (!data.value && !state.history.hideColums.includes(data.name)) {
+			state.history.hideColums.push(data.name)
+		}
+	},
 }

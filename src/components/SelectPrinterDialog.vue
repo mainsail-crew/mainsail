@@ -9,11 +9,11 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        <span v-if="isConnecting">Connection to {{ parseInt(port) !== 80 ? hostname+':'+port : hostname }}</span>
-                        <span v-if="connectingFailed">Connection failed</span>
-                        <span v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool">Select Printer</span>
-                        <span v-if="dialogAddPrinter.bool">Add Printer</span>
-                        <span v-if="dialogEditPrinter.bool">Edit Printer</span>
+                        <span v-if="isConnecting">{{ $t("App.ConnectionTo") }}{{ parseInt(port) !== 80 ? hostname+':'+port : hostname }}</span>
+                        <span v-if="connectingFailed">{{ $t("App.ConnectionFailed") }}</span>
+                        <span v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool">{{ $t("App.SelectPrinter") }}</span>
+                        <span v-if="dialogAddPrinter.bool">{{ $t("App.AddPrinter") }}</span>
+                        <span v-if="dialogEditPrinter.bool">{{ $t("App.EditPrinter") }}</span>
                     </span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
@@ -25,10 +25,10 @@
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>Cannot not connect to {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
+                <p>{{ $t("App.CannotNotConnectTo") }} {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
                 <div class="text-center">
-                    <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">change printer</v-btn>
-                    <v-btn @click="reconnect" color="primary">try again</v-btn>
+                    <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">{{ $t("App.ChangePrinter") }}</v-btn>
+                    <v-btn @click="reconnect" color="primary">{{ $t("App.TryAgain") }}</v-btn>
                 </div>
             </v-card-text>
             <v-card-text class="pt-3" v-if="!isConnecting && dialogAddPrinter.bool">
@@ -63,7 +63,7 @@
                                 class="middle"
                                 @click="addPrinter"
                             >
-                                add printer
+                                {{ $t("App.AddPrinter") }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -111,7 +111,7 @@
                                 class="middle"
                                 @click="updatePrinter"
                             >
-                                update printer
+                                {{ $t("App.UpdatePrinter") }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -140,14 +140,14 @@
                     </v-row>
                     <v-row v-if="showCorsInfo">
                         <v-col>
-                            <p class="text-center" v-if="this['farm/countPrinters'] === 0">Hello and welcome to the remote mode of Mainsail!</p>
-                            <p class="text-center">Please remember to add <code>{{ currentUrl }}</code> in moonraker.conf within "cors_domains".</p>
-                            <p class="text-center mb-0">You can find more details at <a href="https://docs.mainsail.xyz/remotemode" target="_blank">docs.mainsail.xyz/remotemode</a>.</p>
+                            <p class="text-center" v-if="this['farm/countPrinters'] === 0">{{ $t("App.Hello") }}</p>
+                            <p class="text-center">{{ $t("App.PleaseRememberToAdd") }}<code>{{ currentUrl }}</code> {{ $t("App.InMoonrakerConf") }}</p>
+                            <p class="text-center mb-0">{{ $t("App.YouCanFindMore") }} <a :href="$t('App.Remotemode')" target="_blank">{{ $t("App.Remotemode") }}</a>.</p>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
+                            <v-btn @click="dialogAddPrinter.bool = true">{{ $t("App.AddPrinter") }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>

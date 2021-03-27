@@ -14,7 +14,7 @@ export const themeDir = '.theme'
 export const datasetTypes = [
 	"temperature",
 	"target",
-	"power",
+    "power",
 	"speed",
 ]
 

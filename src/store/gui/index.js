@@ -6,6 +6,7 @@ export function getDefaultState() {
 	return {
 		general: {
 			printername: "",
+			language: "en",
 			displayCancelPrint: false,
 			displayZOffsetStandby: false,
 		},
@@ -22,6 +23,8 @@ export function getDefaultState() {
 				stepsZ: [ 25, 1, 0.1 ],
 				stepsAll: [0.1, 1, 10, 25, 50, 100],
 				selectedCrossStep: null,
+				reverseX: false,
+				reverseY: false,
 				reverseZ: false,
 				useCross: false
 			},
@@ -65,7 +68,13 @@ export function getDefaultState() {
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: false,
+			showPrintedFiles: true,
 			hideMetadataColums: []
+		},
+		history: {
+			countPerPage: 10,
+			toggleChartCol3: 'filament_usage',
+			hideColums: []
 		},
 		settings: {
 			configfiles: {

@@ -11,22 +11,25 @@ Vue.use(VueToast, {
 })
 
 Vue.use(Vuetify,{
-  components: {
-    VSnackbar,
-    VBtn,
-    VIcon,
-  }
+	options: {
+		customProperties: true
+	},
+	components: {
+		VSnackbar,
+		VBtn,
+		VIcon,
+	}
 })
 
 export default new Vuetify({
-  theme: {
-    themes: {
-      dark: {
+	theme: {
+		themes: {
+			dark: {
 
-      }
-    }
-  },
-  icons: {
-    iconfont: 'mdi',
-  },
+			}
+		}
+	},
+	icons: {
+		iconfont: 'mdi',
+	},
 })
