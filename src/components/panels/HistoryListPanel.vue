@@ -61,7 +61,10 @@
                         :class="'file-list-cursor user-select-none '+(item.exists ? '' : 'text--disabled')"
                     >
                         <td class="pr-0 text-center" style="width: 32px;">
-                            <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                            <template v-if="!item.exists">
+                                <v-icon class="text--disabled">mdi-file-cancel</v-icon>
+                            </template>
+                            <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <vue-load-image>
@@ -81,7 +84,7 @@
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon :class="(item.exists ? '' : 'text--disabled')">{{ item.exists ? "mdi-file" : "mdi-file-cancel" }}</v-icon>
+                                <v-icon>mdi-file</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -443,7 +446,12 @@ import VueLoadImage from 'vue-load-image'
                         thumb.height >= 32 && thumb.height <= 64
                     )
 
-                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+thumbnail.relative_path
+                    let relative_url = ""
+                    if (item.filename.lastIndexOf("/") !== -1) {
+                        relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+                    }
+
+                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
                 }
 
                 return false
@@ -456,7 +464,12 @@ import VueLoadImage from 'vue-load-image'
                 ) {
                     const thumbnail = item.metadata.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
-                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+thumbnail.relative_path
+                    let relative_url = ""
+                    if (item.filename.lastIndexOf("/") !== -1) {
+                        relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+                    }
+
+                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
                 }
 
                 return false
