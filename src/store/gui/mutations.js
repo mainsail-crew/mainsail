@@ -66,6 +66,28 @@ export default {
 		}
 	},
 
+	addWebcam(state, payload) {
+		state.webcam.configs.push({
+			name: payload.name,
+			icon: payload.icon,
+			config: payload.config
+		})
+	},
+
+	updateWebcam(state, payload) {
+		if (state.webcam.configs[payload.index]) {
+			Vue.set(state.webcam.configs[payload.index], 'name', payload.name)
+			Vue.set(state.webcam.configs[payload.index], 'icon', payload.icon)
+			Vue.set(state.webcam.configs[payload.index], 'config', payload.config)
+		}
+	},
+
+	deleteWebcam(state, payload) {
+		if (state.webcam.configs[payload.index]) {
+			state.webcam.configs.splice(payload.index, 1)
+		}
+	},
+
 	setTempchartDatasetSettings(state, payload) {
 		Vue.set(state.tempchart, 'datasetSettings', payload)
 	},

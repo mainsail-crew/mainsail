@@ -36,14 +36,21 @@ export function getDefaultState() {
 			}
 		},
 		webcam: {
-			service: 'mjpegstreamer',
-			targetFps: 25,
-			url: "/webcam/?action=stream",
-			rotate: false,
-			rotateDegrees: 90,
-			flipX: false,
-			flipY: false,
+			selectedCam: "Default",
 			bool: false,
+			configs: [
+				{
+					name: 'Default',
+					icon: 'mdi-webcam',
+					config: {
+						service: "mjpegstreamer",
+						targetFps: 25,
+						url: "/webcam/?action=stream",
+						flipX: false,
+						flipY: false,
+					}
+				}
+			],
 		},
 		tempchart: {
 			intervalChartUpdate: 1000,
