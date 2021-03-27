@@ -66,6 +66,9 @@
                             <v-list-item class="minHeight36">
                                 <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Files.HiddenFiles')"></v-checkbox>
                             </v-list-item>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" label="Printed files"></v-checkbox>
+                            </v-list-item>
                             <v-divider></v-divider>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
                                 <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
@@ -147,25 +150,53 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td class="pr-0 text-center" style="width: 32px;">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory && !(getSmallThumbnail(item))">mdi-file</v-icon>
-                            <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <img :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on"  />
+                        <td :class="'pr-0 text-center jobStatus '+getJobStatus(item)" style="width: 32px;">
+                            <template v-if="item.isDirectory">
+                                <v-icon>mdi-folder</v-icon>
+                            </template>
+                            <template v-else>
+                                <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <vue-load-image>
+                                                <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
+                                                <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                                <v-icon slot="error">mdi-file</v-icon>
+                                            </vue-load-image>
+                                        </template>
+                                        <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                    </v-tooltip>
                                 </template>
-                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
-                            </v-tooltip>
-                            <img v-if="!item.isDirectory && getSmallThumbnail(item) && !getBigThumbnail(item)" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                <template v-else-if="getSmallThumbnail(item)">
+                                    <vue-load-image>
+                                        <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                        <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                        <v-icon slot="error">mdi-file</v-icon>
+                                    </vue-load-image>
+                                </template>
+                                <template v-else>
+                                    <v-icon>mdi-file</v-icon>
+                                </template>
+                            </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'size')[0].visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
-                        <td class="text-right" v-if="headers.filter(header => header.value === 'modified')[0].visible">{{ formatDate(item.modified) }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'object_height')[0].visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'layer_height')[0].visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'filament_total')[0].visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'estimated_time')[0].visible">{{ formatPrintTime(item.estimated_time) }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.filter(header => header.value === 'slicer')[0].visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
+                        <td class="text-center">
+                            <v-tooltip top  v-if="getJobStatus(item)">
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        <v-icon small :color="getStatusColor(getJobStatus(item))">{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
+                                    </span>
+                                </template>
+                                <span>{{ getJobStatus(item).replaceAll("_", " ") }}</span>
+                            </v-tooltip>
+                        </td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'size').visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>
+                        <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'slicer').visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
                 <v-data-footer>{{ $t('Files.blabla')}}</v-data-footer>
@@ -295,8 +326,12 @@
     import axios from 'axios'
     import { findDirectory } from "@/plugins/helpers"
     import { validGcodeExtensions } from "@/store/variables"
+    import VueLoadImage from "vue-load-image"
 
     export default {
+        components: {
+            'vue-load-image': VueLoadImage
+        },
         data () {
             return {
                 search: '',
@@ -332,6 +367,16 @@
                     { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
+                    { text: '',               value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: 'Name',           value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: '',               value: 'status',          align: 'left',  configable: false,  visible: true },
+                    { text: 'Filesize',       value: 'size',            align: 'right', configable: true,   visible: true },
+                    { text: 'Last modified',  value: 'modified',        align: 'right', configable: true,   visible: true },
+                    { text: 'Object Height',  value: 'object_height',   align: 'right', configable: true,   visible: true },
+                    { text: 'Layer Height',   value: 'layer_height',    align: 'right', configable: true,   visible: true },
+                    { text: 'Filament Usage', value: 'filament_total',  align: 'right', configable: true,   visible: true },
+                    { text: 'Print Time',     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
+                    { text: 'Slicer',         value: 'slicer',          align: 'right', configable: true,   visible: true },
                 ],
                 options: {
 
@@ -384,9 +429,11 @@
 
                 displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
-            ...mapGetters([
-                'is_printing'
-            ]),
+            ...mapGetters( {
+                is_printing: "is_printing",
+                getStatusIcon: "server/history/getPrintStatusChipIcon",
+                getStatusColor: "server/history/getPrintStatusChipColor",
+            }),
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
@@ -399,6 +446,14 @@
                 },
                 set: function(newVal) {
                     return this.$store.dispatch("gui/setSettings", { gcodefiles: { showHiddenFiles: newVal } })
+                }
+            },
+            showPrintedFiles: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.showPrintedFiles
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { showPrintedFiles: newVal } })
                 }
             },
             countPerPage: {
@@ -657,6 +712,12 @@
                 if (!this.showHiddenFiles) {
                     this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
                 }
+                if (!this.showPrintedFiles) {
+                    this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                        filename: (this.currentPath+"/"+file.filename).substr(7),
+                        modified: new Date(file.modified).getTime()
+                    }) !== 'completed')
+                }
             },
             startPrint(filename = "") {
                 filename = (this.currentPath+"/"+filename).substring(7)
@@ -831,7 +892,13 @@
                 }
 
                 return 400
-            }
+            },
+            getJobStatus(item) {
+                return this.$store.getters["server/history/getPrintStatus"]({
+                    filename: (this.currentPath+"/"+item.filename).substr(7),
+                    modified: new Date(item.modified).getTime()
+                })
+            },
         },
         watch: {
             filetree: {
@@ -843,6 +910,13 @@
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
                     }
+
+                    if (!this.showPrintedFiles) {
+                        this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                            filename: (this.currentPath+"/"+file.filename).substr(7),
+                            modified: new Date(file.modified).getTime()
+                        }) !== 'completed')
+                    }
                 }
             },
             currentPath: {
@@ -852,6 +926,13 @@
 
                     if (!this.showHiddenFiles) {
                         this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+                    }
+
+                    if (!this.showPrintedFiles) {
+                        this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
+                            filename: (this.currentPath+"/"+file.filename).substr(7),
+                            modified: new Date(file.modified).getTime()
+                        }) !== 'completed')
                     }
                 }
             },
@@ -868,6 +949,9 @@
                 }
             },
             showHiddenFiles: function() {
+                this.loadPath();
+            },
+            showPrintedFiles: function() {
                 this.loadPath();
             },
             hideMetadataColums: function(newVal) {

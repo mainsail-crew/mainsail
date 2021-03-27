@@ -5,6 +5,7 @@ import getters from './getters'
 // import modules
 import power from './power'
 import updateManager from './updateManager'
+import history from './history'
 
 // create getDefaultState
 export function getDefaultState() {
@@ -32,5 +33,6 @@ export default {
 	modules: {
 		power,
 		updateManager,
+		history,
 	}
 }

@@ -300,22 +300,22 @@
             },
             estimated_time_file: {
                 get() {
-                    return this.$store.getters.getEstimatedTimeFile
+                    return this.$store.getters["printer/getEstimatedTimeFile"]
                 }
             },
             estimated_time_filament: {
                 get() {
-                    return this.$store.getters.getEstimatedTimeFilament
+                    return this.$store.getters["printer/getEstimatedTimeFilament"]
                 }
             },
             estimated_time_slicer: {
                 get() {
-                    return this.$store.getters.getEstimatedTimeSlicer
+                    return this.$store.getters["printer/getEstimatedTimeSlicer"]
                 }
             },
             eta: {
                 get() {
-                    return this.$store.getters.getEstimatedTimeETA
+                    return this.$store.getters["printer/getEstimatedTimeETA"]
                 }
             }
         },

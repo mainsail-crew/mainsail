@@ -330,7 +330,7 @@ export default {
 
 		return additionValues
 	},
-	
+
 	getTempListAdditionSensors: (state, getters, rootState, rootGetters) => (name) => {
 		let additionValues = {}
 		additionalSensors.forEach(sensorName => {
@@ -578,7 +578,7 @@ export default {
 		return 0
 	},
 
-	getEstimatedTimeETA: (getters) => {
+	getEstimatedTimeETA: (state, getters) => {
 		let time = 0
 		let timeCount = 0
 

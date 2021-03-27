@@ -61,7 +61,13 @@ export function getDefaultState() {
 		gcodefiles: {
 			countPerPage: 10,
 			showHiddenFiles: false,
+			showPrintedFiles: true,
 			hideMetadataColums: []
+		},
+		history: {
+			countPerPage: 10,
+			toggleChartCol3: 'filament_usage',
+			hideColums: []
 		},
 		settings: {
 			configfiles: {

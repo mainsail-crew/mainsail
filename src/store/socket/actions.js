@@ -31,7 +31,7 @@ export default {
 		if (event.wasClean) window.console.log('Socket closed clear')
 	},
 
-	onMessage ({ commit, state }, payload) {
+	onMessage ({ commit, state, dispatch }, payload) {
 		if (!state.isConnected) commit('setConnected')
 
 		switch(payload.method) {
@@ -97,6 +97,10 @@ export default {
 
 			case 'notify_update_refreshed':
 				commit('server/updateManager/setStatus', payload.params[0], { root: true })
+				break
+
+			case 'notify_history_changed':
+				dispatch('server/history/getChanged', payload.params[0], { root: true })
 				break
 
 			default:
