@@ -274,6 +274,7 @@ export default {
 		GeneralPanel: {
 			General: "一般",
 			PrinterName: "打印机名称",
+			Language: "语言",
 			DisplayCANCEL_PRINT: "显示 CANCEL_PRINT",
 			DisplayZOffset: "显示Z偏移面板",
 			ShowCANCEL_PRINT: "永久显示CANCEL_PRINT按钮-无需第二层确认。",
@@ -281,9 +282,6 @@ export default {
 			FactoryReset: "恢复出厂设置",
 			FactoryInfo: "您是否真的要将主帆重置为出厂设置？",
 			ResetMainsail: "重置主帆"
-		},
-		LanguagePanel: {
-			Language: "语言"
 		},
 		LimitsPanel: {
 			MachineLimits: "机器限制",

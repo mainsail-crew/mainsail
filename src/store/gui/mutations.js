@@ -67,18 +67,33 @@ export default {
 	},
 
 	addWebcam(state, payload) {
-		state.webcam.configs.push({
+		const newWebcam = {
 			name: payload.name,
 			icon: payload.icon,
-			config: payload.config
-		})
+			service: payload.service,
+			targetFps: payload.targetFps,
+			url: payload.url,
+			flipX: payload.flipX,
+			flipY: payload.flipY,
+		}
+
+		state.webcam.configs.push(newWebcam)
 	},
 
 	updateWebcam(state, payload) {
 		if (state.webcam.configs[payload.index]) {
-			Vue.set(state.webcam.configs[payload.index], 'name', payload.name)
-			Vue.set(state.webcam.configs[payload.index], 'icon', payload.icon)
-			Vue.set(state.webcam.configs[payload.index], 'config', payload.config)
+			const configs = state.webcam.configs
+			configs[payload.index] = {
+				name: payload.name,
+				icon: payload.icon,
+				service: payload.service,
+				targetFps: payload.targetFps,
+				url: payload.url,
+				flipX: payload.flipX,
+				flipY: payload.flipY,
+			}
+
+			Vue.set(state.webcam, 'configs', configs)
 		}
 	},
 

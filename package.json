@@ -33,7 +33,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@mdi/font": "^5.8.55",
+    "@mdi/font": "^5.9.55",
     "@vue/cli-plugin-babel": "^4.5.10",
     "@vue/cli-plugin-eslint": "^4.5.3",
     "@vue/cli-plugin-pwa": "^4.5.10",
