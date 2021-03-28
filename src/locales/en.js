@@ -336,6 +336,7 @@ export default {
 		GeneralPanel: {
 			General: "General",
 			PrinterName: "Printer Name",
+			Language: "Language",
 			DisplayCANCEL_PRINT: "Display CANCEL_PRINT",
 			DisplayZOffset: "Display Z-Offset-Panel",
 			ShowCANCEL_PRINT: "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
@@ -343,9 +344,6 @@ export default {
 			FactoryReset: "Factory reset",
 			FactoryInfo: "Do you really want to reset mainsail to factory settings?",
 			ResetMainsail: "reset mainsail"
-		},
-		LanguagePanel: {
-			Language: "Language"
 		},
 		LimitsPanel: {
 			MachineLimits: "Machine Limits",
@@ -398,13 +396,36 @@ export default {
 			ERROR: "ERROR"
 		},
 		WebcamPanel: {
-			Webcam: "Webcam",
-			WebcamURL: "Webcam URL",
-			Rotate: "Rotate",
-			FlipWebcamHorizontally: "Flip webcam horizontally",
-			FlipWebcamVertically: "Flip webcam vertically",
+			Webcams: "Webcams",
 			ShowInNavigation: "Show in navigation",
-			Service: "Service"
+			AddWebcam: "add webcam",
+			CreateWebcam: "Create Webcam",
+			EditWebcam: "Edit Webcam",
+			SaveWebcam: "Save Webcam",
+			UpdateWebcam: "Update Webcam",
+			
+			IconPrinter: "Printer",
+			IconNozzle: "Nozzle",
+			IconBed: "Bed",
+			IconCam: "Cam",
+			IconFilament: "Filament",
+			IconDoor: "Door",
+			IconMcu: "MCU",
+			IconHot: "Hot",
+
+			Mjpegstreamer: "MJPEG-Streamer",
+			MjpegstreamerAdaptive: "Adaptive MJPEG-Streamer (experimental)",
+
+			Required: "required",
+			NameAlreadyExists: "Name already exists",
+			UrlNotAvailable: "URL not available",
+
+			Name: "Name",
+			WebcamURL: "Webcam URL",
+			Service: "Service",
+			TargetFPS: "Target FPS",
+			FlipHorizontally: "Flip webcam horizontally",
+			FlipVertically: "Flip webcam vertically",
 		}
 	}
 }

@@ -7,13 +7,23 @@ export default {
 	},
 
 	getData({ commit, dispatch, rootState }, payload) {
-		let oldwebcamconfig = payload.value.webcam
+
+		// upgrade webcam config to multi webcam support
+		if ('webcam' in payload.value &&
+			(
+				'service' in payload.value.webcam ||
+				'targetFps' in payload.value.webcam ||
+				'url' in payload.value.webcam ||
+				'flipX' in payload.value.webcam ||
+				'flipY' in payload.value.webcam
+			)
+		) {
+			window.console.log("convert to multi webcam")
+			dispatch('upgradeWebcamConfig', payload.value.webcam)
+			delete payload.value.webcam
+		}
 
 		commit('setData', payload.value)
-
-		if (typeof (oldwebcamconfig) !== "undefined") {
-			dispatch('convertCamConfig', oldwebcamconfig)
-		}
 
 		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
 			commit('setTempchartDatasetSettings', payload.value.tempchart.datasetSettings)
@@ -24,52 +34,6 @@ export default {
 		}
 
 		dispatch('printer/init', null, { root: true })
-	},
-
-	convertCamConfig({ dispatch }, payload) {
-
-		if (typeof (payload.configs) !== "undefined") {
-			return
-		}
-
-		let oldcamconfig = {
-			name: "Default",
-			icon: "mdi-webcam",
-			config: {
-				service: "mjpegstreamer",
-				targetFps: 25,
-				url: "/webcam/?action=stream",
-				flipX: false,
-				flipY: false,
-			},
-		}
-
-		let cleanupconfig = {
-			service: undefined,
-			targetFps: undefined,
-			url: undefined,
-			flipX: undefined,
-			flipY: undefined,
-			rotate: undefined,
-			rotateDegrees: undefined,
-			selectedCam: 'Default',
-			bool: payload.bool,
-			configs: [],
-		}
-
-		if (typeof (payload.url) !== "undefined") {
-			oldcamconfig.config.url = payload.url
-		}
-		if (typeof (payload.service) !== "undefined") {
-			oldcamconfig.config.service = payload.service
-		}
-		oldcamconfig.config.targetFps = payload.targetFps
-		oldcamconfig.config.flipX = payload.flipX
-		oldcamconfig.config.flipY = payload.flipY
-		
-		cleanupconfig.configs.push(oldcamconfig)
-
-		dispatch('setSettings', { 'webcam': cleanupconfig })
 	},
 
 	setSettings({ commit }, payload) {
@@ -158,6 +122,25 @@ export default {
 		dispatch('updateSettings', {
 			keyName: 'webcam.configs',
 			newVal: state.webcam.configs
+		})
+	},
+
+	upgradeWebcamConfig({ state, dispatch }, payload) {
+		const webcam = {...state.webcam}
+		webcam.bool = payload.bool
+		webcam.configs[0] = {
+			name: 'Default',
+			icon: 'mdi-webcam',
+			service: 'service' in payload ? payload.service : "mjpegstreamer-adaptive",
+			targetFps: 'targetFps' in payload ? payload.targetFps : 15,
+			url: 'url' in payload ? payload.url : "/webcam/?action=stream",
+			flipX: 'flipX' in payload ? payload.flipX : false,
+			flipY: 'flipY' in payload ? payload.flipY : false,
+		}
+
+		dispatch('updateSettings', {
+			keyName: 'webcam',
+			newVal: webcam
 		})
 	},
 

@@ -21,7 +21,7 @@
                         <v-select
                             v-model="currentLanguage"
                             :items="availableLanguages"
-                            :label="$t('Settings.LanguagePanel.Language')"
+                            :label="$t('Settings.GeneralPanel.Language')"
                             hide-details
                         ></v-select>
                     </v-col>
