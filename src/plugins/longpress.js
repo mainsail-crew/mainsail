@@ -35,8 +35,11 @@ Vue.directive('longpress', {
                 return;
             }
 
-            before = document.querySelector('body').getAttribute('style');
-            document.querySelector('body').setAttribute('style', (before ?? '') + 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
+            document.querySelector('body').setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
+
+            setTimeout(() => {
+                document.querySelector('body').setAttribute('style', '');
+            }, debounceTime + 200);
 
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
@@ -59,11 +62,6 @@ Vue.directive('longpress', {
                         screenY: e.touches[0].screenY,
                         preventDefault: () => e.preventDefault()
                     });
-                    setTimeout(() => {
-                        if (before) {
-                            document.querySelector('body').setAttribute('style', before);
-                        }
-                    }, 100);
                 }, debounceTime);
             }
             return false;

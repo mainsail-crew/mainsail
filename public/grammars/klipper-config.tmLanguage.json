@@ -1,0 +1,550 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Klipper Config",
+  "foldingStartMarker": "({%\\s*(block|filter|for|if|macro|raw))",
+  "foldingStopMarker": "({%\\s*(endblock|endfilter|endfor|endif|endmacro|endraw)\\s*%})",
+  "patterns": [
+    {
+      "include": "#single_line_comment"
+    },
+    {
+      "include": "#config_block"
+    },
+    {
+      "include": "#config_line"
+    },
+    {
+      "include": "#number"
+    },
+    {
+      "include": "#gcode_line"
+    },
+    {
+      "begin": "({%)\\s*(raw)\\s*(%})",
+      "captures": {
+        "1": {
+          "name": "entity.other.jinja.delimiter.tag"
+        },
+        "2": {
+          "name": "keyword.control.jinja"
+        },
+        "3": {
+          "name": "entity.other.jinja.delimiter.tag"
+        }
+      },
+      "end": "({%)\\s*(endraw)\\s*(%})",
+      "name": "comment.block.jinja.raw"
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "begin": "{{-?",
+      "captures": [
+        {
+          "name": "entity.other.jinja.delimiter.variable"
+        }
+      ],
+      "end": "-?}}",
+      "name": "meta.scope.jinja.variable",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    },
+    {
+      "begin": "{%-?",
+      "captures": [
+        {
+          "name": "entity.other.jinja.delimiter.tag"
+        }
+      ],
+      "end": "-?%}",
+      "name": "meta.scope.jinja.tag",
+      "patterns": [
+        {
+          "include": "#expression"
+        }
+      ]
+    }
+  ],
+  "repository": {
+    "single_line_comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign",
+          "match": "#(.+)$"
+        },
+        {
+          "name": "comment.line.gcode",
+          "match": ";(.+)$"
+        }
+      ]
+    },
+    "number": {
+      "patterns": [
+        {
+          "name": "constant.numeric",
+          "match": "\\-?\\d+([\\.,]\\d+)?\\b"
+        },
+        {
+          "name": "constant.numeric",
+          "match": "\\-?[\\.,]\\d+?\\b"
+        }
+      ]
+    },
+    "boolean": {
+      "name": "constant.language",
+      "match": "(?i)\\b(true|false)\\b"
+    },
+    "config_block": {
+      "contentName": "keyword.control",
+      "begin": "^\\[",
+      "end": "\\]$",
+      "patterns": [
+        {
+          "include": "#known_config_block_name"
+        },
+        {
+          "include": "#known_driver_type"
+        }
+      ]
+    },
+    "known_config_block_name": {
+      "name": "storage.type",
+      "match": "(?i)\\b(ad5206|adc_temperature|bed_mesh|bed_screws|bed_tilt|bltouch|board_pins|controller_fan|delayed_gcode|delta_calibrate|display|display_data|display_template|dotstar|dual_carriage|endstop_phase|extruder_stepper|extruder[1-9]{0,1}|fan|filament_switch_sensor|firmware_retraction|force_move|gcode_arcs|gcode_button|gcode_macro|hall_filament_width_sensor|heater_bed|heater_fan|heater_generic|homing_heaters|homing_override|idle_timeout|include|manual_stepper|mcp4018|mcp4451|mcp4728|mcu|menu|multi_pin|neopixel|output_pin|pause_resume|printer|probe|quad_gantry_level|replicape|respond|safe_z_home|samd_sercom|screws_tilt_adjust|servo|skew_correction|static_digital_output|stepper_(bed|arm|[abcdxy]|z[1-9]{0,1})|sx1509|temperature_fan|temperature_sensor|thermistor|tsl1401cl_filament_width_sensor|verify_heater|virtual_sdcard|z_tilt)\\b"
+    },
+    "known_driver_type": {
+      "name": "support.type",
+      "match": "(?i)\\btmc(2130|2208|2209|2660|5160)\\b"
+    },
+    "known_thermistor_type": {
+      "name": "support.type",
+      "match": "(?i)\\b(EPCOS 100K B57560G104F|ATC Semitec 104GT-2|NTC 100K beta 3950|Honeywell 100K 135-104LAG-J01|NTC 100K MGB18-104F39050L32)\\b"
+    },
+    "known_extruder_sensor_type": {
+      "name": "support.type",
+      "match": "(?i)\\b(MAX6675|MAX31855|MAX31856|MAX31865|PT100 INA826|AD595|AD8494|AD8495|AD8496|AD8497|PT1000|BME280)\\b"
+    },
+    "known_control_type": {
+      "name": "support.type",
+      "match": "(?i)\\b(watermark|pid)\\b"
+    },
+    "known_display_type": {
+      "name": "support.type",
+      "match": "(?i)\\b(hd44780|st7920|uc1701|ssd1306|sh1106)\\b"
+    },
+    "serial": {
+      "name": "support.type",
+      "match": "\\/dev\\/serial\\/by-(id|path)\\/[\\d\\w\\/\\-:\\.]+"
+    },
+    "pin": {
+      "patterns": [
+        {
+          "name": "support.type",
+          "match": "(?i)[\\^~!]*(ar|analog)\\d{1,2}"
+        },
+        {
+          "name": "support.type",
+          "match": "(?i)[\\^~!]*(z:)?[a-z]{1,2}\\d{1,2}(\\.\\d{1,2})?"
+        }
+      ]
+    },
+    "config_line": {
+      "begin": "^(\\w+)\\s*[:=]\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.name"
+        }
+      },
+      "end": "$",
+      "patterns": [
+        {
+          "include": "#known_thermistor_type"
+        },
+        {
+          "include": "#known_extruder_sensor_type"
+        },
+        {
+          "include": "#known_control_type"
+        },
+        {
+          "include": "#known_display_type"
+        },
+        {
+          "include": "#pin"
+        },
+        {
+          "include": "#serial"
+        },
+        {
+          "include": "#number"
+        },
+        {
+          "include": "#boolean"
+        },
+        {
+          "include": "#single_line_comment"
+        }
+      ]
+    },
+    "gcode_line": {
+      "patterns": [
+        {
+          "include": "#gcode_command"
+        },
+        {
+          "include": "#gcode_extended_command"
+        },
+        {
+          "include": "#gcode_parameter"
+        },
+        {
+          "include": "#gcode_extended_parameter"
+        }
+      ]
+    },
+    "gcode_command": {
+      "begin": "(?ix)^\\s* ([GMTD]) (?![a-z])",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.operator"
+        }
+      },
+      "end": "\\s",
+      "patterns": [
+        {
+          "include": "#number"
+        }
+      ]
+    },
+    "gcode_parameter": {
+      "begin": "(?ix)\\b ([a-z]) (?![a-z])",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.parameter"
+        }
+      },
+      "end": "\\s",
+      "patterns": [
+        {
+          "include": "#number"
+        }
+      ]
+    },
+    "gcode_extended_command": {
+      "name": "keyword.operator",
+      "match": "(?i)^\\s*(ABORT|ACCEPT|ACTIVATE_EXTRUDER|BED_MESH_CALIBRATE|BED_MESH_CLEAR|BED_MESH_MAP|BED_MESH_OUTPUT|BED_MESH_PROFILE|BED_SCREWS_ADJUST|BED_TILT_CALIBRATE|BLTOUCH_DEBUG|BLTOUCH_STORE|CALC_MEASURED_SKEW|CLEAR_PAUSE|DELTA_ANALYZE|DELTA_CALIBRATE|DUMP_TMC|ENDSTOP_PHASE_CALIBRATE|FIRMWARE_RESTART|FORCE_MOVE|GET_CURRENT_SKEW|GET_POSITION|GET_RETRACTION|HELP|MANUAL_PROBE|MANUAL_STEPPER|PAUSE|PID_CALIBRATE|PROBE|PROBE_ACCURACY|PROBE_CALIBRATE|QUAD_GANTRY_LEVEL|QUERY_ADC|QUERY_ENDSTOPS|QUERY_FILAMENT_SENSOR|QUERY_PROBE|RESPOND|RESTART|RESTORE_GCODE_STATE|RESUME|SAVE_CONFIG|SAVE_GCODE_STATE|SCREWS_TILT_CALCULATE|SET_DUAL_CARRIAGE|SET_EXTRUDER_STEP_DISTANCE|SET_FILAMENT_SENSOR|SET_GCODE_OFFSET|SET_GCODE_VARIABLE|SET_HEATER_TEMPERATURE|SET_IDLE_TIMEOUT|SET_KINEMATIC_POSITION|SET_LED|SET_PIN|SET_PRESSURE_ADVANCE|SET_RETRACTION|SET_SERVO|SET_SKEW|SET_STEPPER_ENABLE|SET_TMC_CURRENT|SET_TMC_FIELD|SET_VELOCITY_LIMIT|SKEW_PROFILE|STATUS|STEPPER_BUZZ|TESTZ|TUNING_TOWER|TURN_OFF_HEATERS|UPDATE_DELAYED_GCODE|Z_ENDSTOP_CALIBRATE|Z_TILT_ADJUST)\\s"
+    },
+    "gcode_extended_parameter": {
+      "begin": "(?i)\\b(AC|ACCEL|ACCEL_TO_DECEL|AD|ADVANCE|ANGLE|BAND|BD|BLUE|CARRIAGE|CLEAR|COMMAND|CURRENT|DISTANCE|DURATION|ENABLE|EXTRUDER|FACTOR|FIELD|GREEN|HEATER|HOLDCURRENT|ID|INDEX|LED|LIFT_SPEED|LOAD|MACRO|METHOD|MODE|MOVE_SPEED|MSG|NAME|PARAMETER|PGP|PIN|PREFIX|PROBE_SPEED|PULLUP|RED|REMOVE|RETRACT_LENGTH|RETRACT_SPEED|SAMPLE_RETRACT_DIST|SAMPLES|SAMPLES_RESULT|SAMPLES_TOLERANCE|SAMPLES_TOLERANCE_RETRIES|SAVE|SENSOR|SERVO|SET_POSITION|SMOOTH_TIME|SPEED|SQUARE_CORNER_VELOCITY|START|STEPPER|STOP_ON_ENDSTOP|SYNC|TARGET|TIMEOUT|TRANSMIT|TYPE|UNRETRACT_EXTRA_LENGTH|UNRETRACT_SPEED|VALUE|VARIABLE|VELOCITY|WIDTH|WRITE_FILE|X|X_ADJUST|XY|XZ|Y|Y_ADJUST|YZ|Z|Z_ADJUST)=",
+      "beginCaptures": {
+        "1": {
+          "name": "variable.parameter"
+        }
+      },
+      "end": "\\s",
+      "patterns": [
+        {
+          "name": "constant.language",
+          "match": "(?i)(5V|average|command|echo|error|manual|median|OD|output_mode_store|pin_down|pin_up|reset|self_test|set_5V_output_mode|set_5V_output_mode|set_OD_output_mode|touch_mode)"
+        },
+        {
+          "include": "#number"
+        }
+      ]
+    },
+    "gcode_macro_block": {
+      "name": "string.unquoted",
+      "begin": "{",
+      "end": "}"
+    },
+    "comments": {
+      "begin": "{#-?",
+      "captures": [
+        {
+          "name": "entity.other.jinja.delimiter.comment"
+        }
+      ],
+      "end": "-?#}",
+      "name": "comment.block.jinja",
+      "patterns": [
+        {
+          "include": "#comments"
+        }
+      ]
+    },
+    "escaped_char": {
+      "match": "\\\\x[0-9A-F]{2}",
+      "name": "constant.character.escape.hex.jinja"
+    },
+    "escaped_unicode_char": {
+      "captures": {
+        "1": {
+          "name": "constant.character.escape.unicode.16-bit-hex.jinja"
+        },
+        "2": {
+          "name": "constant.character.escape.unicode.32-bit-hex.jinja"
+        },
+        "3": {
+          "name": "constant.character.escape.unicode.name.jinja"
+        }
+      },
+      "match": "(\\\\U[0-9A-Fa-f]{8})|(\\\\u[0-9A-Fa-f]{4})|(\\\\N\\{[a-zA-Z ]+\\})"
+    },
+    "expression": {
+      "patterns": [
+        {
+          "captures": {
+            "1": {
+              "name": "keyword.control.jinja"
+            },
+            "2": {
+              "name": "variable.other.jinja.block"
+            }
+          },
+          "match": "\\s*\\b(block)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "keyword.control.jinja"
+            },
+            "2": {
+              "name": "variable.other.jinja.filter"
+            }
+          },
+          "match": "\\s*\\b(filter)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "keyword.control.jinja"
+            },
+            "2": {
+              "name": "variable.other.jinja.test"
+            }
+          },
+          "match": "\\s*\\b(is)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\b"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "keyword.control.jinja"
+            }
+          },
+          "match": "(?<=\\{\\%-|\\{\\%)\\s*\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*[,=])"
+        },
+        {
+          "match": "\\b(and|else|if|in|import|not|or|recursive|with(out)?\\s+context)\\b",
+          "name": "keyword.control.jinja"
+        },
+        {
+          "match": "\\b(true|false|none)\\b",
+          "name": "constant.language.jinja"
+        },
+        {
+          "match": "\\b(loop|super|self|varargs|kwargs)\\b",
+          "name": "variable.language.jinja"
+        },
+        {
+          "match": "[a-zA-Z_][a-zA-Z0-9_]*",
+          "name": "variable.other.jinja"
+        },
+        {
+          "match": "(\\+|\\-|\\*\\*|\\*|\/\/|\/|%)",
+          "name": "keyword.operator.arithmetic.jinja"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "punctuation.other.jinja"
+            },
+            "2": {
+              "name": "variable.other.jinja.filter"
+            }
+          },
+          "match": "(\\|)([a-zA-Z_][a-zA-Z0-9_]*)"
+        },
+        {
+          "captures": {
+            "1": {
+              "name": "punctuation.other.jinja"
+            },
+            "2": {
+              "name": "variable.other.jinja.attribute"
+            }
+          },
+          "match": "(\\.)([a-zA-Z_][a-zA-Z0-9_]*)"
+        },
+        {
+          "begin": "\\[",
+          "captures": [
+            {
+              "name": "punctuation.other.jinja"
+            }
+          ],
+          "end": "\\]",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "begin": "\\(",
+          "captures": [
+            {
+              "name": "punctuation.other.jinja"
+            }
+          ],
+          "end": "\\)",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "begin": "\\{",
+          "captures": [
+            {
+              "name": "punctuation.other.jinja"
+            }
+          ],
+          "end": "\\}",
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        },
+        {
+          "match": "(\\.|:|\\||,)",
+          "name": "punctuation.other.jinja"
+        },
+        {
+          "match": "(==|<=|=>|<|>|!=)",
+          "name": "keyword.operator.comparison.jinja"
+        },
+        {
+          "match": "=",
+          "name": "keyword.operator.assignment.jinja"
+        },
+        {
+          "begin": "\"",
+          "beginCaptures": [
+            {
+              "name": "punctuation.definition.string.begin.jinja"
+            }
+          ],
+          "end": "\"",
+          "endCaptures": [
+            {
+              "name": "punctuation.definition.string.end.jinja"
+            }
+          ],
+          "name": "string.quoted.double.jinja",
+          "patterns": [
+            {
+              "include": "#string"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "beginCaptures": [
+            {
+              "name": "punctuation.definition.string.begin.jinja"
+            }
+          ],
+          "end": "'",
+          "endCaptures": [
+            {
+              "name": "punctuation.definition.string.end.jinja"
+            }
+          ],
+          "name": "string.quoted.single.jinja",
+          "patterns": [
+            {
+              "include": "#string"
+            }
+          ]
+        },
+        {
+          "begin": "@\/",
+          "beginCaptures": [
+            {
+              "name": "punctuation.definition.regexp.begin.jinja"
+            }
+          ],
+          "end": "\/",
+          "endCaptures": [
+            {
+              "name": "punctuation.definition.regexp.end.jinja"
+            }
+          ],
+          "name": "string.regexp.jinja",
+          "patterns": [
+            {
+              "include": "#simple_escapes"
+            }
+          ]
+        }
+      ]
+    },
+    "simple_escapes": {
+      "captures": {
+        "1": {
+          "name": "constant.character.escape.newline.jinja"
+        },
+        "10": {
+          "name": "constant.character.escape.tab.jinja"
+        },
+        "11": {
+          "name": "constant.character.escape.vertical-tab.jinja"
+        },
+        "2": {
+          "name": "constant.character.escape.backlash.jinja"
+        },
+        "3": {
+          "name": "constant.character.escape.double-quote.jinja"
+        },
+        "4": {
+          "name": "constant.character.escape.single-quote.jinja"
+        },
+        "5": {
+          "name": "constant.character.escape.bell.jinja"
+        },
+        "6": {
+          "name": "constant.character.escape.backspace.jinja"
+        },
+        "7": {
+          "name": "constant.character.escape.formfeed.jinja"
+        },
+        "8": {
+          "name": "constant.character.escape.linefeed.jinja"
+        },
+        "9": {
+          "name": "constant.character.escape.return.jinja"
+        }
+      },
+      "match": "(\\\\\\n)|(\\\\\\\\)|(\\\\\\\")|(\\\\')|(\\\\a)|(\\\\b)|(\\\\f)|(\\\\n)|(\\\\r)|(\\\\t)|(\\\\v)"
+    },
+    "string": {
+      "patterns": [
+        {
+          "include": "#simple_escapes"
+        },
+        {
+          "include": "#escaped_char"
+        },
+        {
+          "include": "#escaped_unicode_char"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.klipper-config"
+}

@@ -15,3 +15,12 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.mainsail-editor {
+  height: 92%;
+  width: 100%;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  user-select: auto;
+  -webkit-user-select: auto;
+}

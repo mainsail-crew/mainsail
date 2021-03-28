@@ -228,6 +228,9 @@
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
                 </v-list-item>
+                <v-list-item @click="editFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                    <v-icon class="mr-1">mdi-pencil</v-icon> {{ $t('Files.EditFile') }}
+                </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
                 </v-list-item>
@@ -299,6 +302,75 @@
             :timeout="-1"
             :value="true"
             fixed
+            centered
+            bottom
+            dark
+            v-model="editor.showLoader"
+        >
+          <div>
+            Downloading<br />
+            <strong>{{ editor.item.filename }}</strong>
+          </div>
+          <span v-if="editor.progress.total > 1" class="mr-1">({{ formatFilesize(editor.progress.loaded) }}/{{ formatFilesize(editor.progress.total) }})</span>
+          {{ Math.round(100 * editor.progress.loaded / editor.progress.total) }} % @ {{ editor.progress.speed }}/s<br />
+          <v-progress-linear class="mt-2" :value="100 * editor.progress.loaded / editor.progress.total"></v-progress-linear>
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                text
+                v-bind="attrs"
+                @click="cancelDownload(); editor.showLoader = false"
+                style="min-width: auto;"
+            >
+              <v-icon class="0">mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
+        <v-dialog v-model="editor.show" fullscreen :transition="null">
+            <v-card class="fill-height">
+                <v-toolbar dark color="primary">
+                    <v-btn icon dark @click="closeEditor()">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                        <v-menu
+                            transition="slide-y-transition"
+                            :close-on-content-click="false"
+                            offset-y
+                            bottom
+                            left
+                        >
+                            <template #activator="{ on, attrs }">
+                                <v-btn
+                                    dark
+                                    icon
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
+                            </template>
+                            <v-list dense>
+                                <v-list-item class="minheight30">
+                                    <v-checkbox v-model="editorMinimap" :label="$t('Editor.Minimap')"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                        <v-btn dark text @click="saveFile">
+                            <v-icon small class="mr-1">mdi-content-save</v-icon>
+                            <span class="d-none d-sm-inline">{{ $t('Files.SaveClose') }}</span>
+                        </v-btn>
+                    </v-toolbar-items>
+                </v-toolbar>
+                <div v-if="editor.init" id="editor" class="mainsail-editor"></div>
+            </v-card>
+        </v-dialog>
+        <v-snackbar
+            :timeout="-1"
+            :value="true"
+            fixed
             right
             bottom
             dark
@@ -328,6 +400,8 @@
     import { validGcodeExtensions } from "@/store/variables"
     import VueLoadImage from "vue-load-image"
 
+    import * as monaco from "monaco-editor";
+
     export default {
         components: {
             'vue-load-image': VueLoadImage
@@ -356,6 +430,30 @@
                     show: false,
                     newName: "",
                     item: {}
+                },
+                editor: {
+                    show: false,
+                    showLoader: false,
+                    readonly: false,
+                    token: null,
+                    init: false,
+                    progress: {
+                        total: 0,
+                        loaded: 0,
+                        speed: "",
+                        lastTimestamp: 0
+                    },
+                    options: {
+                        language: 'gcode',
+                        theme: 'dark-converted',
+                        contextmenu: false,
+                        automaticLayout: true,
+                    },
+                    item: {
+                        filename: "",
+                    },
+                    sourcecode: "",
+                    monaco: null
                 },
                 headers: [
                     { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
@@ -440,6 +538,22 @@
             filteredHeaders() {
                 return this.headers.filter(header => header.visible === true)
             },
+            editorMinimap: {
+                get() {
+                    return this.$store.state.gui.editor.minimap;
+                },
+                set(val) {
+                    return this.$store.dispatch("gui/setSettings", { editor: { minimap: val } })
+                }
+            },
+            editorOptions() {
+              return {
+                  ...this.editor.options,
+                  minimap: {
+                      enabled: this.editorMinimap
+                  }
+              };
+            },
             showHiddenFiles: {
                 get: function() {
                     return this.$store.state.gui.gcodefiles.showHiddenFiles
@@ -490,9 +604,23 @@
             this.hideMetadataColums.forEach((key) => {
                 let headerElement = this.headers.find(element => element.value === key)
                 if (headerElement) headerElement.visible = false
-            })
+            });
         },
         methods: {
+            /**
+             *
+             * @param {monaco} editor
+             */
+            /*injectLanguage(editor) {
+                if (!editor.languages.getLanguages().find(l => l.id === 'gcode')) {
+                    inject(editor);
+                }
+            },
+            async editorWillMount(monaco) {
+              if (!monaco.languages?.getLanguages().find(l => l.id === 'gcode')) {
+                await liftOff(monaco);
+              }
+            },*/
             async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
                     this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
@@ -647,6 +775,101 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+            },
+            cancelDownload() {
+              if (this.editor.token) {
+                  this.editor.token.cancel();
+              }
+            },/*
+            getLoadedString() {
+                const units = [' B', ' kB', ' MB', ' GB'];
+                let unitSelectTotal = 0;
+                let unitSelectLoaded = 0;
+                let total = this.editor.progress.total;
+                while (total > 1024) {
+                    if (unitSelectTotal + 1 >= units.length) {
+                        break;
+                    }
+                    total /= 1024;
+                    ++unitSelectTotal;
+                }
+
+                let loaded = this.editor.progress.loaded;
+                while (loaded > 1000) {
+                    if (unitSelectLoaded + 1 >= units.length) {
+                        break;
+                    }
+                    loaded /= 1000;
+                    ++unitSelectLoaded;
+                }
+
+                return `${loaded.toFixed(2)}${units[unitSelectLoaded]} / ${total.toFixed(2)}${units[unitSelectTotal]}`;
+            },*/
+            editFile(item) {
+                this.editor.showLoader = true;
+                this.editor.sourcecode = "";
+                this.editor.item = item;
+                this.editor.init = false;
+                let filename = (this.currentPath+"/"+item.filename);
+                let url = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename) + `?${Date.now()}`;
+                if (this.editor.token) {
+                    this.editor.token.cancel();
+                }
+                this.editor.progress.total = item.size;
+                this.editor.token = axios.CancelToken.source();
+                axios.get(url, {
+                    cancelToken: this.editor.token.token,
+                    onDownloadProgress: progressEvent => {
+                        const diffData = progressEvent.loaded - this.editor.progress.loaded;
+                        const diffTime = progressEvent.timeStamp - this.editor.progress.lastTimestamp;
+                        let speed = (diffData / diffTime);
+                        const unit = ['kB', 'MB', 'GB'];
+                        let unitSelect = 0;
+                        while (speed > 1024) {
+                            speed /= 1024.0;
+                            unitSelect = Math.min(2, unitSelect + 1);
+                        }
+                        this.editor.progress.speed = speed.toFixed(2) + unit[unitSelect];
+
+                        this.editor.progress.loaded = progressEvent.loaded;
+                        this.editor.progress.lastTimestamp = progressEvent.timeStamp;
+                    }
+                })  .then(res => res.data)
+                    .then(file => {
+                        this.editor.sourcecode = file;
+                        this.editor.show = true;
+                        this.editor.init = true;
+                        this.editor.showLoader = false;
+                        this.editor.readonly = false;
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            this.editor.token = null;
+                            this.editor.progress.total = 0;
+                            this.editor.progress.loaded = 0;
+                            this.editor.progress.lastTimestamp = 0;
+                            this.editor.progress.speed = "";
+                        }, 100);
+                    });
+            },
+            closeEditor() {
+                this.editor.show = false;
+                this.editor.init = false;
+                this.$nextTick(() => {
+                  this.editor.sourcecode = "";
+                  this.editor.file = null;
+                })
+            },
+            async saveFile() {
+                let file = new File([this.editor.sourcecode], encodeURI(this.editor.item.filename));
+
+                await this.doUploadFile(file);
+
+                this.editor.show = false;
+                this.editor.init = false;
+                this.editor.monaco = null;
+                this.editor.sourcecode = "";
+                this.editor.file = null;
             },
             renameFile(item) {
                 this.dialogRenameFile.item = item;
@@ -901,6 +1124,25 @@
             },
         },
         watch: {
+            'editor.init'(val) {
+                if (val) {
+                    setTimeout(() => {
+                        this.editor.monaco = monaco.editor.create(document.getElementById('editor'), {
+                            ...(this.editorOptions || this.editor.options),
+                            value: this.editor.sourcecode
+                        });
+                        this.editor.monaco.onDidChangeModelContent(() => {
+                            this.editor.sourcecode = this.editor.monaco.getModel().getValue();
+                        });
+                    }, 10);
+                }
+            },
+            editorOptions: {
+              deep: true,
+              handler(val) {
+                this.editor.monaco?.updateOptions(val);
+              }
+            },
             filetree: {
                 deep: true,
                 handler(newVal) {

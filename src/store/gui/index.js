@@ -78,6 +78,9 @@ export function getDefaultState() {
 				showHiddenFiles: false,
 			}
 		},
+		editor: {
+			minimap: false
+		},
 		//moonraker DB api dont accept camel case key names
 		remote_printers: [],
 		presets: [],
