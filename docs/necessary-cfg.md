@@ -8,29 +8,29 @@ permalink: /necessary-configuration
 
 Mainsail requires a minimum configuration to function properly. It should give you a warning at startup if the required parts are not found in your configuration.
 
-## Required configuration
-### virtual_sdcard
+# Required configuration
+## virtual_sdcard
 This allows gcode file uploads.
 ```yaml
 [virtual_sdcard]
 path: ~/gcode_files
 ```
 
-### display_status
+## display_status
 This is required for messages in your status panel, if you don't have a `[display]` in your configuration.
 ```yaml
 [display_status]
 ```
 
-### pause / resume / cancel
+## pause / resume / cancel
 This enables pause / resume in mainsail.
 
 ```yaml
 [pause_resume]
 ```
 
-## Macros
-### for pause /resume / cancel functionality
+# Macros
+## for pause /resume / cancel functionality
 These should be modified to your own needs.
 ```yaml
 [gcode_macro PAUSE]
@@ -71,9 +71,9 @@ gcode:
     BASE_CANCEL_PRINT
 ```
 
-## Optional
+# Optional
 
-### customize klipper default commands
+## customize klipper default commands
 for example, if you want to adjust the `BED_MESH_CALIBRATE` command, which you can run from "heightmap > calibrate".
 ```yaml
 [gcode_macro BED_MESH_CALIBRATE]

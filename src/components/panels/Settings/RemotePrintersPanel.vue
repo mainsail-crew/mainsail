@@ -4,7 +4,7 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>Remote Printers</span>
+                    <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ $t('Settings.RemotePrintersPanel.RemotePrinters') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="py-3">
@@ -30,7 +30,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn @click="dialogAddPrinter.bool = true">add printer</v-btn>
+                            <v-btn @click="dialogAddPrinter.bool = true">{{ $t('Settings.RemotePrintersPanel.AddPrinter')}}</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -42,7 +42,7 @@
                     <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        Add Printer
+                        {{ $t('Settings.RemotePrintersPanel.AddPrinter')}}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -80,7 +80,7 @@
                                     class="middle"
                                     @click="addPrinter"
                                 >
-                                    add printer
+                                    {{ $t('Settings.RemotePrintersPanel.AddPrinter')}}
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -128,7 +128,7 @@
                                     class="middle"
                                     @click="addPrinter"
                                 >
-                                    add printer
+                                    {{ $t('Settings.RemotePrintersPanel.AddPrinter')}}
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -142,7 +142,7 @@
                     <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        Edit Printer
+                        {{ $t('Settings.RemotePrintersPanel.EditPrinter')}}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -190,7 +190,7 @@
                                     class="middle"
                                     @click="updatePrinter"
                                 >
-                                    update printer
+                                    {{ $t('Settings.RemotePrintersPanel.UpdatePrinter')}}
                                 </v-btn>
                             </v-col>
                         </v-row>
@@ -248,7 +248,7 @@
                                     class="middle"
                                     @click="updatePrinter"
                                 >
-                                    update printer
+                                    {{ $t('Settings.RemotePrintersPanel.UpdatePrinter')}}
                                 </v-btn>
                             </v-col>
                         </v-row>

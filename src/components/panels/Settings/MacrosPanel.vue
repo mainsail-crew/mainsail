@@ -3,7 +3,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-code-tags</v-icon>Macros</span>
+                <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Settings.MacrosPanel.Macros') }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-3">
@@ -15,7 +15,7 @@
                 </v-row>
                 <v-row v-if="this['printer/getAllMacros'].length === 0">
                     <v-col>
-                        <p class="mb-0 text-center font-italic">No macros found...</p>
+                        <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosPanel.NOMacros') }}</p>
                     </v-col>
                 </v-row>
             </v-container>

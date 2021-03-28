@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-file-document-edit</v-icon>Logfiles</span>
+                <span class="subheading"><v-icon left>mdi-file-document-edit</v-icon>{{ $t("Settings.LogfilesPanel.Logfiles")}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text :class="'text-center text-lg-left py-0'">

@@ -3,10 +3,10 @@
 </style>
 
 <template>
-    <v-card v-if="(['printing', 'paused'].includes(printer_state))">
+    <v-card v-if="(['printing', 'paused'].includes(printer_state)) || (displayZOffsetStandby && ['standby', 'complete'].includes(printer_state))">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>Z Baby Stepping</span>
+                <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>{{ $t("Panels.ZOffsetPanel.ZBabyStepping") }}</span>
             </v-toolbar-title>
         </v-toolbar>
 
@@ -14,7 +14,7 @@
             <v-container>
                 <v-row class="py-0">
                     <v-col class="pb-0 text-center">
-                        <p class="mb-0">Current Offset: {{ homing_origin.length > 1 ? homing_origin[2].toFixed(2) : 0.00 }}mm</p>
+                        <p class="mb-0">{{ $t("Panels.ZOffsetPanel.CurrentOffset") }}{{ homing_origin.length > 1 ? homing_origin[2].toFixed(2) : 0.00 }}mm</p>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -53,6 +53,7 @@
                 homing_origin: state => state.printer.gcode_move.homing_origin,
                 printer_state: state => state.printer.print_stats.state,
                 homed_axis: state => state.printer.toolhead.homed_axes,
+                displayZOffsetStandby: state => state.gui.general.displayZOffsetStandby,
             }),
         },
         methods: {

@@ -9,23 +9,57 @@
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon left>mdi-webcam</v-icon> Webcam
-                    <small v-if="this.webcamConfig.service === 'mjpegstreamer-adaptive' &&  this.time">(FPS: {{ currentFPS }})</small>
+                    <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Webcam')}}
+                    <small v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive' &&  this.time">( {{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }})</small>
                 </span>
             </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-item-group v-if="this.webcams.length > 1">
+                <v-menu :offset-y="true" title="Webcam">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">{{ 'name' in currentCam ? currentCam.name : "unknown" }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                    </template>
+                    <v-list dense class="py-0">
+                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
+                            <v-list-item-icon class="mr-0">
+                                <v-icon small>{{ webcam.icon }}</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="webcam.name"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-item-group>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <img :src="url" class="webcamImage" :style="webcamStyle" @load="onLoad"  alt="Webcam" v-if="['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(this.webcamConfig.service)" />
+            <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
+                <vue-load-image>
+                    <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
+                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                    <div slot="error" class="text-center py-5">
+                        <v-icon x-large>mdi-webcam-off</v-icon>
+                        <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
+                    </div>
+                </vue-load-image>
+            </template>
+            <template v-else>
+                <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
+            </template>
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-    import { mapState } from 'vuex'
+    import VueLoadImage from "vue-load-image";
 
     export default {
+        components: {
+            'vue-load-image': VueLoadImage
+        },
         data: function() {
             return {
+                validURL: true,
                 refresh: Math.ceil(Math.random() * Math.pow(10, 12)),
                 connection: "",
                 imageData: "",
@@ -41,53 +75,59 @@
             };
         },
         created: function () {
-            document.addEventListener("focus", () => this.handleRefreshChange(), false);
-            document.addEventListener("visibilitychange", this.handleRefreshChange, false);
-
-            if(this.webcamConfig.service === 'mjpegstreamer-adaptive') {
-                this.requestMjpeg()
-            }
-
-        },
-        components: {
-
+            document.addEventListener("focus", () => this.handleRefreshChange(), false)
+            document.addEventListener("visibilitychange", this.handleRefreshChange, false)
         },
         computed: {
-            ...mapState({
-                'webcamConfig': state => state.gui.webcam
-            }),
+            currentCamName: {
+                get() {
+                    let currentCamName = this.$store.state.gui.webcam.selectedCam
+                    if (currentCamName !== undefined && this.webcams.findIndex(webcam => webcam.name === currentCamName) !== -1)
+                        return currentCamName
 
-            url() {
-                if (this.webcamConfig.service === 'mjpegstreamer' && this.webcamConfig.url.indexOf("?") !== -1) {
-                    let basicUrl = this.webcamConfig.url
-                    const params = new URLSearchParams(basicUrl)
-                    params.set('bypassCache', ""+this.refresh)
-                    return decodeURIComponent(params.toString())
-                } else if (this.webcamConfig.service === 'mjpegstreamer-adaptive') {
-                    return this.imageData
-                } else {
-                    return this.webcamConfig.url
+                    if (this.webcams.length) return this.webcams[0].name
+
+                    return ""
+                },
+                set(newVal) {
+                    return this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: newVal } })
                 }
             },
+            currentCam() {
+                const currentCam = this.webcams.find(webcam => webcam.name === this.currentCamName)
+                if (currentCam) return currentCam
 
-            webcamStyle() {
-                let transforms = '';
-                if (this.webcamConfig.flipX) {
-                    transforms += ' scaleX(-1)'
+                return {}
+            },
+            webcams: {
+                get() {
+                    return this.$store.state.gui.webcam.configs
                 }
-                if (this.webcamConfig.flipY) {
-                    transforms += ' scaleY(-1)'
-                }
-                if (this.webcamConfig.rotate && this.webcamConfig.rotateDegrees) {
-                    transforms += ` rotate(${this.webcamConfig.rotateDegrees}deg)`
-                }
-                if (transforms.trimLeft().length) {
-                    return {
-                        transform: transforms.trimLeft(),
+            },
+            url() {
+                if('url' in this.currentCam) {
+                    if ('service' in this.currentCam && this.currentCam.service === 'mjpegstreamer' && this.currentCam.url.indexOf("?") !== -1) {
+                        let basicUrl = this.currentCam.url
+                        const params = new URLSearchParams(basicUrl)
+                        params.set('bypassCache', ""+this.refresh)
+                        return decodeURIComponent(params.toString())
+                    } else if ('service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive') {
+                        return this.imageData
                     }
+
+                    return this.currentCam.url
                 }
-                return '';
-            }
+
+                return ""
+            },
+            webcamStyle() {
+                let transforms = ""
+                if ('flipX' in this.currentCam && this.currentCam.flipX) transforms += " scaleX(-1)"
+                if ('flipX' in this.currentCam && this.currentCam.flipY) transforms += " scaleY(-1)"
+                if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+
+                return ""
+            },
         },
         methods: {
             handleRefreshChange() {
@@ -95,14 +135,13 @@
                     this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
                 }
             },
-
             onLoad() {
                 const end_time = performance.now()
                 const current_time = end_time - this.start_time
                 this.time = (this.time * this.time_smoothing) + (current_time * (1.0 - this.time_smoothing))
                 this.start_time = end_time
 
-                const target_time = 1000/this.webcamConfig.targetFps
+                const target_time = 1000 / this.currentCam.targetFps
 
                 const current_request_time = performance.now() - this.request_start_time
                 this.request_time = (this.request_time * this.request_time_smoothing) + (current_request_time * (1.0 - this.request_time_smoothing))
@@ -112,18 +151,17 @@
                     setTimeout(this.requestMjpeg, timeout)
                 })
             },
-
             requestMjpeg() {
-                if(!this.isVisible) return
+                if (!this.isVisible) return
+                if (!('url' in this.currentCam)) return
 
                 this.request_start_time = performance.now()
-                let basicUrl = this.webcamConfig.url
+                let basicUrl = this.currentCam.url
                 basicUrl = basicUrl.replace("action=stream", "action=snapshot")
                 if (basicUrl && basicUrl.indexOf("?") === -1) basicUrl += "?"
 
                 const params = new URLSearchParams(basicUrl)
                 params.set('bypassCache', ""+ this.refresh + (Math.random() * 1000))
-
 
                 this.currentFPS = Math.round(1000 / this.time)
 
@@ -131,7 +169,6 @@
                     this.imageData = decodeURIComponent(params.toString())
                 })
             },
-
             visibilityChanged(isVisible) {
                 this.isVisible = isVisible
                 if(isVisible) this.requestMjpeg()

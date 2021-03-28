@@ -25,6 +25,8 @@
     "vue-context": "^6.0.0",
     "vue-github-api": "^0.1.7",
     "vue-headful": "^2.1.0",
+    "vue-i18n": "^8.22.4",
+    "vue-load-image": "^0.1.12",
     "vue-observe-visibility": "^1.0.0",
     "vue-plotly": "^1.1.0",
     "vue-resource": "^1.5.1",
@@ -34,7 +36,7 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@mdi/font": "^5.8.55",
+    "@mdi/font": "^5.9.55",
     "@vue/cli-plugin-babel": "^4.5.10",
     "@vue/cli-plugin-eslint": "^4.5.3",
     "@vue/cli-plugin-pwa": "^4.5.10",

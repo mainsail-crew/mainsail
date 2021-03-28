@@ -7,6 +7,22 @@ export default {
 	},
 
 	getData({ commit, dispatch, rootState }, payload) {
+
+		// upgrade webcam config to multi webcam support
+		if ('webcam' in payload.value &&
+			(
+				'service' in payload.value.webcam ||
+				'targetFps' in payload.value.webcam ||
+				'url' in payload.value.webcam ||
+				'flipX' in payload.value.webcam ||
+				'flipY' in payload.value.webcam
+			)
+		) {
+			window.console.log("convert to multi webcam")
+			dispatch('upgradeWebcamConfig', payload.value.webcam)
+			delete payload.value.webcam
+		}
+
 		commit('setData', payload.value)
 
 		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
@@ -31,7 +47,12 @@ export default {
 	updateSettings({ commit }, payload) {
 		const keyName = payload.keyName
 		let newState = payload.newVal
-		if ('value' in payload && keyName in payload.value && typeof payload.value[keyName] !== "string") {
+		if (
+			'value' in payload &&
+			keyName in payload.value &&
+			typeof payload.value[keyName] !== "string" &&
+			!Array.isArray(payload.value[keyName])
+		) {
 			newState = objectAssignDeep(payload.value[keyName], newState)
 		}
 
@@ -77,6 +98,49 @@ export default {
 		dispatch('updateSettings', {
 			keyName: 'presets',
 			newVal: state.presets
+		})
+	},
+
+	addWebcam({ commit, dispatch, state }, payload) {
+		commit("addWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	updateWebcam({ commit, dispatch, state }, payload) {
+		commit("updateWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	deleteWebcam({ commit, dispatch, state }, payload) {
+		commit("deleteWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	upgradeWebcamConfig({ state, dispatch }, payload) {
+		const webcam = {...state.webcam}
+		webcam.bool = payload.bool
+		webcam.configs[0] = {
+			name: 'Default',
+			icon: 'mdi-webcam',
+			service: 'service' in payload ? payload.service : "mjpegstreamer-adaptive",
+			targetFps: 'targetFps' in payload ? payload.targetFps : 15,
+			url: 'url' in payload ? payload.url : "/webcam/?action=stream",
+			flipX: 'flipX' in payload ? payload.flipX : false,
+			flipY: 'flipY' in payload ? payload.flipY : false,
+		}
+
+		dispatch('updateSettings', {
+			keyName: 'webcam',
+			newVal: webcam
 		})
 	},
 
@@ -126,7 +190,8 @@ export default {
 
 		Object.keys(payload.state).forEach(key => {
 			if (key in state) {
-				settings[key] = {...payload.state[key]}
+				if (Array.isArray(payload.state[key])) settings[key] = payload.state[key]
+				else settings[key] = {...payload.state[key]}
 			}
 
 			if (key === "cooldownGcode") settings["cooldown_gcode"] = payload.state[key]
@@ -143,5 +208,13 @@ export default {
 			dispatch('farm/readStoredPrinters', {}, { root: true })
 		}
 		dispatch('printer/init', null, { root: true })
-	}
+	},
+
+	setHistoryColumns({ commit, dispatch, state }, data) {
+		commit('setHistoryColumns', data)
+		dispatch('updateSettings', {
+			keyName: 'history',
+			newVal: state.history
+		})
+	},
 }

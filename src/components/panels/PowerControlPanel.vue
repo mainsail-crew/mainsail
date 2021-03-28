@@ -7,7 +7,7 @@
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-power" left></v-icon>Power Control
+                        <v-icon class="mdi mdi-power" left></v-icon>{{ $t('Panels.PowerControlPanel.PowerControl') }}
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
@@ -19,9 +19,9 @@
                         <v-col class="py-0 pt-1">{{ device.device }}</v-col>
                         <v-col class="py-0 text-right">
                             <v-btn-toggle v-model="device.status">
-                                <v-btn small v-if="device.status === 'error'" disabled>Error</v-btn>
-                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'on'" @click="setPower(device,1)">On</v-btn>
-                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'off'" @click="setPower(device,0)">Off</v-btn>
+                                <v-btn small v-if="device.status === 'error'" disabled>{{ $t('Panels.PowerControlPanel.Error') }}</v-btn>
+                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'on'" @click="setPower(device,1)">{{ $t('Panels.PowerControlPanel.On') }}</v-btn>
+                                <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'off'" @click="setPower(device,0)">{{ $t('Panels.PowerControlPanel.Off') }}</v-btn>
                             </v-btn-toggle>
                         </v-col>
                     </v-row>
