@@ -10,7 +10,6 @@
             <v-toolbar-title>
                 <span class="subheading">
                     <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Webcam')}}
-                    <small v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive' &&  this.time">( {{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }})</small>
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -34,7 +33,7 @@
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
             <v-row>
-                <v-col class="pb-0">
+                <v-col class="pb-0" style="position: relative;">
                     <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
                         <vue-load-image>
                             <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
@@ -44,6 +43,19 @@
                                 <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
                             </div>
                         </vue-load-image>
+                    </template>
+                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive'">
+                        <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
+                        <span
+                            style="
+                                position:absolute;
+                                bottom: 6px;
+                                right: 12px;
+                                background: rgba(0,0,0,0.8);
+                                width: 75px;
+                                padding: 3px 10px;
+                                border-top-left-radius: 5px;
+                            ">{{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }}</span>
                     </template>
                     <template v-else>
                         <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
@@ -55,7 +67,7 @@
 </template>
 
 <script>
-    import VueLoadImage from "vue-load-image";
+    import VueLoadImage from "vue-load-image"
 
     export default {
         components: {
