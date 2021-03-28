@@ -207,7 +207,7 @@ export default {
                 valid: false,
                 name: "",
                 icon: "mdi-webcam",
-                service: "mjpegstreamer-adaptiv",
+                service: "mjpegstreamer-adaptive",
                 targetFps: 15,
                 url: "/webcam/?action=stream",
                 flipX: false,
