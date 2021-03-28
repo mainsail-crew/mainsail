@@ -8,11 +8,6 @@
         padding: 5px;
     }
 
-    #editor {
-        height: 100%;
-        -webkit-overflow-scrolling: touch;
-    }
-
     .config-editor-overlay div.v-card {
         position: relative;
     }
@@ -61,12 +56,12 @@
                         </v-menu>
                         <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save</span></v-btn>
+                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save & close</span></v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
                         <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
-                <div v-if="editor.init" id="editor" style="height: 92%; width: 100%; overflow: hidden;">
+                <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;">
                     <!--                        <monaco-editor
                                                 id="editor"
                                                 :options="editorOptions || editor.options"
@@ -540,8 +535,12 @@ export default {
                     }
                 ).then(() => {
                     this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
-                    /*this.editor.show = false;
-                    this.editor.sourcecode = "";*/
+                    
+                    this.editor.show = false;
+                    this.editor.init = false;
+                    this.editor.monaco = null;
+                    this.editor.sourcecode = "";
+                    this.editor.file = null;
 
                     if (boolRestart) {
                         if (this.editor.item.filename === "moonraker.conf") {
@@ -550,10 +549,6 @@ export default {
                             this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
                             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                         }
-
-                        this.editor.show = false;
-                        this.editor.init = false;
-                        this.editor.sourcecode = '';
                     }
                 }).catch(() => {
                     this.$toast.error("Error save "+this.editor.item.filename);
@@ -718,6 +713,12 @@ export default {
                           this.editor.sourcecode = this.editor.monaco.getModel().getValue();
                       });
                   }, 10);
+              }
+            },
+            editorOptions: {
+              deep: true,
+              handler(val) {
+                this.editor.monaco.updateOptions(val);
               }
             },
             config: {

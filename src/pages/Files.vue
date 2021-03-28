@@ -351,11 +351,11 @@
                         </v-menu>
                         <v-btn dark text @click="saveFile">
                             <v-icon small class="mr-1">mdi-content-save</v-icon>
-                            <span class="d-none d-sm-inline">Save</span>
+                            <span class="d-none d-sm-inline">Save & close</span>
                         </v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
-                <div v-if="editor.init" id="editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
+                <div v-if="editor.init" id="editor" class="mainsail-editor"></div>
             </v-card>
         </v-dialog>
         <v-snackbar
@@ -830,6 +830,8 @@
                 await this.doUploadFile(file);
 
                 this.editor.show = false;
+                this.editor.init = false;
+                this.editor.monaco = null;
                 this.editor.sourcecode = "";
                 this.editor.file = null;
             },
@@ -1093,6 +1095,12 @@
                         });
                     }, 10);
                 }
+            },
+            editorOptions: {
+              deep: true,
+              handler(val) {
+                this.editor.monaco.updateOptions(val);
+              }
             },
             filetree: {
                 deep: true,
