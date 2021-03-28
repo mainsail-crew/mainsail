@@ -79,6 +79,14 @@ export default {
 					case 'cancelled':
 						itemStyle['color'] = '#616161'
 						break
+
+					case 'klippy_shutodwn':
+						itemStyle['color'] = '#757575'
+						break
+
+					case 'klippy_disconnect':
+						itemStyle['color'] = '#888888'
+						break
 				}
 
 				output.push({
