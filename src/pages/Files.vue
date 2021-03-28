@@ -298,28 +298,6 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-<!--        <v-dialog v-model="editor.showLoader" persistent width="300" >
-            <v-card color="primary" dark >
-                <v-card-title>
-                    Downloading...
-                    <v-spacer></v-spacer>
-                    <v-btn small icon class="minwidth-0" @click="cancelDownload(); editor.showLoader = false">
-                        <v-icon small>mdi-close-thick</v-icon>
-                    </v-btn>
-                </v-card-title>
-                <v-card-text>
-                    <v-progress-linear v-if="editor.progress.total === 0" indeterminate color="white" class="mb-0" ></v-progress-linear>
-                    <template v-else>
-                        <div class="text-right">{{ (100 * editor.progress.loaded / editor.progress.total).toFixed(0) }}%</div>
-                        <v-progress-linear :value="100 * editor.progress.loaded / editor.progress.total" color="white" class="mb-0"></v-progress-linear>
-                        <div class="d-flex justify-space-between">
-                            <span>{{ getLoadedString() }}</span>
-                            <span>{{ editor.progress.speed }}/s</span>
-                        </div>
-                    </template>
-                </v-card-text>
-            </v-card>
-        </v-dialog>-->
         <v-snackbar
             :timeout="-1"
             :value="true"

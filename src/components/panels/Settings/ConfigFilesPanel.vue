@@ -61,16 +61,7 @@
                         <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
-                <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;">
-                    <!--                        <monaco-editor
-                                                id="editor"
-                                                :options="editorOptions || editor.options"
-                                                style="height: 92%; width: 100%; overflow: hidden;"
-                                                v-model="editor.sourcecode"
-                                                @editorWillMount="editorWillMount"
-                                            >
-                                            </monaco-editor>-->
-                </div>
+                <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
             </v-card>
         </v-dialog>
         <v-col>
@@ -108,7 +99,7 @@
                     :sort-desc.sync="sortDesc"
                     :items-per-page.sync="countPerPage"
                     :footer-props="{
-                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files') 
+                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files')
                     }"
                     mobile-breakpoint="0"
                     item-key="name">
@@ -535,7 +526,7 @@ export default {
                     }
                 ).then(() => {
                     this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
-                    
+
                     this.editor.show = false;
                     this.editor.init = false;
                     this.editor.monaco = null;
