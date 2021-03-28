@@ -82,7 +82,7 @@ export default {
 
 	updateWebcam(state, payload) {
 		if (state.webcam.configs[payload.index]) {
-			const configs = state.webcam.configs
+			const configs = {...state.webcam.configs}
 			configs[payload.index] = {
 				name: payload.name,
 				icon: payload.icon,
