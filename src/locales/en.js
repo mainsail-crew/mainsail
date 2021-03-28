@@ -50,6 +50,9 @@ export default {
 		Machine: "Machine",
 		Interface: "Interface"
 	},
+	Editor: {
+		Minimap: "Show minimap"
+	},
 	Files: {
 		GCodeFiles: "G-Code Files",
 		UploadNewGcode: "Upload new Gcode",
@@ -78,6 +81,8 @@ export default {
 		NewDirectory: "New Directory",
 		PleaseEnterANewDirectoryName: "Please enter a new directory name:",
 		RenameFile: "Rename File",
+		EditFile: "Edit File",
+		SaveClose: "Save & close",
 		Name: "Name",
 		Cancel: "Cancel",
 		Create: "Create",
@@ -286,6 +291,7 @@ export default {
 			PleaseStandBy: "Please stand by",
 			ConfigReference: "Config Reference",
 			Save: "Save",
+			SaveClose: "Save & close",
 			SaveRestart: "Save & restart",
 			RenameFile: "Rename File",
 			Name: "Name",
@@ -403,7 +409,7 @@ export default {
 			EditWebcam: "Edit Webcam",
 			SaveWebcam: "Save Webcam",
 			UpdateWebcam: "Update Webcam",
-			
+
 			IconPrinter: "Printer",
 			IconNozzle: "Nozzle",
 			IconBed: "Bed",
