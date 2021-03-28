@@ -229,7 +229,7 @@
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
                 </v-list-item>
                 <v-list-item @click="editFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> Edit
+                    <v-icon class="mr-1">mdi-pencil</v-icon> {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename')}}
@@ -354,13 +354,13 @@
                             </template>
                             <v-list dense>
                                 <v-list-item class="minheight30">
-                                    <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
+                                    <v-checkbox v-model="editorMinimap" :label="$t('Editor.Minimap')"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
                         <v-btn dark text @click="saveFile">
                             <v-icon small class="mr-1">mdi-content-save</v-icon>
-                            <span class="d-none d-sm-inline">Save & close</span>
+                            <span class="d-none d-sm-inline">{{ $t('Files.SaveClose') }}</span>
                         </v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
@@ -1140,7 +1140,7 @@
             editorOptions: {
               deep: true,
               handler(val) {
-                this.editor.monaco.updateOptions(val);
+                this.editor.monaco?.updateOptions(val);
               }
             },
             filetree: {

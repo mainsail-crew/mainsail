@@ -50,15 +50,15 @@
                             </template>
                             <v-list dense>
                                 <v-list-item class="minheight30">
-                                    <v-checkbox v-model="editorMinimap" label="Show minimap"></v-checkbox>
+                                    <v-checkbox v-model="editorMinimap" :label="$t('Editor.Minimap')"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
                         <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">Save & close</span></v-btn>
+                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Settings.ConfigFilesPanel.SaveClose') }}</span></v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>Save & restart</v-btn>
+                        <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Settings.ConfigFilesPanel.SaveRestart') }}</v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
                 <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
@@ -709,7 +709,7 @@ export default {
             editorOptions: {
               deep: true,
               handler(val) {
-                this.editor.monaco.updateOptions(val);
+                this.editor.monaco?.updateOptions(val);
               }
             },
             config: {
