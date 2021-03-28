@@ -164,7 +164,8 @@
                 const timeout = Math.max(0, target_time - this.request_time)
 
                 this.$nextTick(() => {
-                    setTimeout(this.requestMjpeg, timeout)
+                    if (this.isVisible) setTimeout(this.requestMjpeg, timeout)
+                    else setTimeout(this.requestMjpeg, 1000)
                 })
             },
             requestMjpeg() {
