@@ -33,19 +33,23 @@
             </v-item-group>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
-            <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
-                <vue-load-image>
-                    <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
-                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
-                    <div slot="error" class="text-center py-5">
-                        <v-icon x-large>mdi-webcam-off</v-icon>
-                        <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
-                    </div>
-                </vue-load-image>
-            </template>
-            <template v-else>
-                <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
-            </template>
+            <v-row>
+                <v-col class="pb-0">
+                    <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
+                        <vue-load-image>
+                            <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
+                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                            <div slot="error" class="text-center py-5">
+                                <v-icon x-large>mdi-webcam-off</v-icon>
+                                <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
+                            </div>
+                        </vue-load-image>
+                    </template>
+                    <template v-else>
+                        <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />
+                    </template>
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
@@ -101,7 +105,7 @@
             },
             webcams: {
                 get() {
-                    return this.$store.state.gui.webcam.configs
+                    return this.$store.getters["gui/getWebcams"]
                 }
             },
             url() {
