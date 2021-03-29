@@ -11,8 +11,23 @@
     }
   ],
   "repository": {
+    "single_line_comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign",
+          "match": "#(.*)$"
+        },
+        {
+          "name": "comment.line.gcode",
+          "match": ";(.*)$"
+        }
+      ]
+    },
     "keywords": {
       "patterns": [
+        {
+          "include": "#single_line_comment"
+        },
         {
           "name": "constant.gcode",
           "match": "[nN][ \\t]*[0-9\\.]+"
@@ -27,11 +42,7 @@
         },
         {
           "name": "string.xcode.gcode",
-          "match": "(?i)[XAUI][ \\t]*[\\-\\+]?[0-9\\.]+"
-        },
-        {
-          "name": "comment.type.ycode.gcode",
-          "match": "(?i)[YBVJ][ \\t]*[\\-\\+]?[0-9\\.]+"
+          "match": "(?i)[XAUIYBVJ][ \\t]*[\\-\\+]?[0-9\\.]+"
         },
         {
           "name": "support.function.mcode.gcode",
@@ -43,7 +54,7 @@
         },
         {
           "name": "variable.parameter.pqecode.gcode",
-          "match": "[pPqQeE][ \\t]*[0-9][0-9\\.]*"
+          "match": "[pPqQeE][ \\t]*\\-?\\.?[0-9][0-9\\.]*"
         },
         {
           "name": "string.control.mcode.gcode",
