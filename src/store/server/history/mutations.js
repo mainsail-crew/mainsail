@@ -6,6 +6,10 @@ export default {
 		Object.assign(state, getDefaultState())
 	},
 
+	resetJobs(state) {
+		Vue.set(state, 'jobs', [])
+	},
+
 	setTotals(state, payload) {
 		Vue.set(state, 'job_totals', payload)
 	},

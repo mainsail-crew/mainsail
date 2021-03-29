@@ -59,7 +59,10 @@ export default {
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
 
 			if (payload.plugins.includes("history") !== false) {
-				Vue.prototype.$socket.sendObj('server.history.list', {}, 'server/history/getHistory')
+				// load the last 14 days
+				const since = new Date().getTime() / 1000 - 60 * 60 * 24 * 14
+
+				Vue.prototype.$socket.sendObj('server.history.list', { since: since}, 'server/history/getHistory')
 				Vue.prototype.$socket.sendObj('server.history.totals', {}, 'server/history/getTotals')
 			}
 		}
