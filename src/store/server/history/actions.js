@@ -10,7 +10,7 @@ export default {
 	},
 
 	getHistory({ commit }, payload) {
-		commit('reset')
+		commit('resetJobs')
 
 		payload.jobs.forEach(job => {
 			commit('addJob', job)

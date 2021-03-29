@@ -18,6 +18,14 @@
                     </v-menu>
                 </v-item-group>
             </v-card-title>
+            <v-card-subtitle>
+                <v-tooltip top v-if="!boolAllData">
+                    <template v-slot:activator="{ on, attrs }">
+                        <span v-bind="attrs" v-on="on" @click="loadAllData" style="cursor: pointer;">{{ $t('History.Last14Days') }}</span>
+                    </template>
+                    <span>{{ $t('History.LoadAllHistoryData') }}</span>
+                </v-tooltip>
+            </v-card-subtitle>
             <v-card-text>
                 <v-text-field
                     v-model="search"
@@ -233,6 +241,7 @@
 <script>
 import {mapGetters, mapState} from 'vuex'
 import VueLoadImage from 'vue-load-image'
+import Vue from "vue";
 
     export default {
         components: {
@@ -240,6 +249,7 @@ import VueLoadImage from 'vue-load-image'
         },
         data() {
             return {
+                boolAllData: false,
                 search: '',
                 sortBy: 'start_time',
                 sortDesc: true,
@@ -483,6 +493,10 @@ import VueLoadImage from 'vue-load-image'
 
                 return 400
             },
+            loadAllData() {
+                this.boolAllData = true
+                Vue.prototype.$socket.sendObj('server.history.list', { }, 'server/history/getHistory')
+            }
         },
         watch: {
             hideColums: function(newVal) {
