@@ -5,8 +5,6 @@ import * as monaco from 'monaco-editor';
 // eslint-disable-next-line no-unused-vars
 import * as monacoNamespace from 'monaco-editor';
 
-console.log(monaco.languages.getLanguages());
-
 export const LANGUAGE_MAP = {
     cfg: 'klipper-config',
     conf: 'klipper-config',
