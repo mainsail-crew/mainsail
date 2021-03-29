@@ -15,8 +15,7 @@ export default {
         return {
             chart : null,
             timerChart: '',
-            timerDataset: '',
-            isVisable: true,
+            isVisible: true,
             chartOptions: {
                 darkMode: true,
                 animation: false,
@@ -186,7 +185,6 @@ export default {
     computed: {
         ...mapState({
             intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
-            intervalDatasetUpdate: state => state.gui.tempchart.intervalDatasetUpdate,
             boolTempchart: state => state.gui.dashboard.boolTempchart,
         }),
         maxHistory: {
@@ -230,21 +228,16 @@ export default {
             if (document.getElementById("tempchart") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'canvas'})
                 this.chart.setOption(this.chartOptions)
+                this.updateChart()
             } else setTimeout(() => {
                 this.createChart()
-            }, 500)
+            }, 1000)
         },
-        visibilityChanged (isVisible) {
-            this.isVisible = isVisible
-            if(isVisible && this.chart !== null) this.chart.resize()
-        },
-    },
-    created() {
-        this.timerChart = setInterval(() => {
+        updateChart() {
             if (
                 this.chart &&
                 this.boolTempchart &&
-                this.isVisable
+                this.isVisible
             ) {
                 this.chart.setOption({
                     series: this.series,
@@ -300,13 +293,19 @@ export default {
                         }
                     }],
                 })
+
+                setTimeout(() => {
+                    this.updateChart()
+                }, this.intervalChartUpdate)
             }
-        }, this.intervalChartUpdate)
-
-        this.timerDataset = setInterval(() => {
-            this.$store.dispatch("printer/tempHistory/updateDatasets")
-        }, this.intervalDatasetUpdate)
-
+        },
+        visibilityChanged (isVisible) {
+            this.isVisible = isVisible
+            if(isVisible && this.chart !== null) this.chart.resize()
+            if(this.chart !== null) this.updateChart()
+        },
+    },
+    created() {
         window.addEventListener('resize', () => {
             if (this.chart) this.chart.resize()
         })

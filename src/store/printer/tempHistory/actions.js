@@ -5,7 +5,7 @@ export default {
 		commit('reset')
 	},
 
-	getHistory({ commit, state, rootGetters }, payload) {
+	getHistory({ commit, state, rootGetters, rootState, dispatch }, payload) {
 		const now = new Date()
 		const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
 
@@ -147,10 +147,14 @@ export default {
 					})
 				}
 			})
+
+			setTimeout(() => {
+				dispatch("updateDatasets")
+			}, rootState.gui.tempchart.intervalDatasetUpdate)
 		}
 	},
 
-	updateDatasets({ commit, rootState, rootGetters }) {
+	updateDatasets({ commit, dispatch, rootState, rootGetters }) {
 		if (
 			'heaters' in rootState.printer &&
 			'available_sensors' in rootState.printer.heaters &&
@@ -179,5 +183,9 @@ export default {
 				}
 			})
 		}
+
+		setTimeout(() => {
+			dispatch("updateDatasets")
+		}, rootState.gui.tempchart.intervalDatasetUpdate)
 	}
 }
