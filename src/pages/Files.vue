@@ -150,7 +150,7 @@
                         @dragover="dragOverFilelist($event, item)" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, item)"
                         :data-name="item.filename"
                         >
-                        <td :class="'pr-0 text-center jobStatus '+getJobStatus(item)" style="width: 32px;">
+                        <td class="pr-0 text-center" style="width: 32px;">
                             <template v-if="item.isDirectory">
                                 <v-icon>mdi-folder</v-icon>
                             </template>
