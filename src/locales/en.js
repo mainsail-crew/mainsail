@@ -421,6 +421,7 @@ export default {
 
 			Mjpegstreamer: "MJPEG-Streamer",
 			MjpegstreamerAdaptive: "Adaptive MJPEG-Streamer (experimental)",
+			Ipstream: "IP Camera",
 
 			Required: "required",
 			NameAlreadyExists: "Name already exists",

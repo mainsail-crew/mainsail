@@ -159,6 +159,7 @@
                                                 <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
                                             </template>
                                         </vue-load-image>
+                                        <video v-if="['ipstream'].includes(dialog.service)" :src="dialog.url" autoplay :style="webcamStyle" />
                                     </v-col>
                                 </v-row>
                                 <v-row class="mt-3">
@@ -230,6 +231,7 @@ export default {
             serviceItems: [
                 { value: "mjpegstreamer",           text: this.$t("Settings.WebcamPanel.Mjpegstreamer")},
                 { value: "mjpegstreamer-adaptive",  text: this.$t("Settings.WebcamPanel.MjpegstreamerAdaptive") },
+                { value: "ipstream",                text: this.$t("Settings.WebcamPanel.Ipstream") },
             ],
         };
     },
