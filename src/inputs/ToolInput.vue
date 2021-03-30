@@ -26,6 +26,7 @@
         v-model="value"
         :items="items"
         item-text="value"
+        type="number"
         @change="setTemps"
     ></v-combobox>
 </template>
