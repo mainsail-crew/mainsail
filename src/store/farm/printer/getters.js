@@ -97,10 +97,10 @@ export default {
 			state.current_file.thumbnails.length
 		) {
 			const indexLastDir = state.current_file.filename.lastIndexOf('/')
-			const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir) : ""
+			const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+"/" : ""
 			const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
-			if (thumbnail && 'relative_path' in thumbnail) return "//"+state.socket.hostname+":"+state.socket.port+'/server/files/gcodes/'+dir+'/'+thumbnail.relative_path
+			if (thumbnail && 'relative_path' in thumbnail) return "//"+state.socket.hostname+":"+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
 		}
 
 		return "/img/sidebar-background.png"
