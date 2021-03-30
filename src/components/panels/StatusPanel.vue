@@ -353,7 +353,8 @@
                 const h = date.getHours() >= 10 ? date.getHours() : "0"+date.getHours()
                 const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
 
-                return h+":"+m
+                const diff = msec - new Date().getTime()
+                return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
             },
         }
     }
