@@ -31,7 +31,7 @@
                 </v-menu>
             </v-item-group>
         </v-toolbar>
-        <v-card-text class="px-0 py-0 content">
+        <v-card-text class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative;">
                     <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
