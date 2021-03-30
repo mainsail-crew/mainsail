@@ -137,8 +137,6 @@ export default {
 		FilamentUsage: "Filament usage",
 		PrinttimeAvg: "Printtime AVG",
 		PrintHistory: "Print History",
-		Last14Days: "Last 14 days",
-		LoadAllHistoryData: "Click to load all history data",
 		Search: "search",
 		Jobs: "Jobs",
 		Empty: "empty",
