@@ -30,15 +30,56 @@
                                 <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
-                                <v-chip
-                                    small
-                                    label
-                                    outlined
-                                    :color="getBtnColor(value)"
-                                    @click="updateModule(key)"
-                                    :disabled="getBtnDisabled(value)"
-                                    class="minwidth-0 px-2 text-uppercase"
-                                ><v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>{{ getBtnText(value) }}</v-chip>
+                                <template v-if="'is_valid' in value && 'is_dirty' in value && (!value.is_valid || value.is_dirty)">
+                                    <v-item-group>
+                                        <v-menu :offset-y="true" title="Webcam">
+                                            <template v-slot:activator="{ on, attrs }">
+                                                <v-chip
+                                                    small
+                                                    label
+                                                    outlined
+                                                    :color="getBtnColor(value)"
+                                                    :disabled="getBtnDisabled(value)"
+                                                    class="minwidth-0 px-2 text-uppercase"
+                                                    v-bind="attrs" v-on="on"
+                                                >
+                                                    <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                                    {{ getBtnText(value) }}
+                                                    <v-icon small>mdi-menu-down</v-icon>
+                                                </v-chip>
+                                            </template>
+                                            <v-list dense class="py-0">
+                                                <v-list-item @click="recovery(key, false)">
+                                                    <v-list-item-icon class="mr-0">
+                                                        <v-icon small>mdi-reload</v-icon>
+                                                    </v-list-item-icon>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Soft Recovery</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                                <v-list-item @click="recovery(key,true)">
+                                                    <v-list-item-icon class="mr-0">
+                                                        <v-icon small>mdi-reload</v-icon>
+                                                    </v-list-item-icon>
+                                                    <v-list-item-content>
+                                                        <v-list-item-title>Hard Recovery</v-list-item-title>
+                                                    </v-list-item-content>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
+                                    </v-item-group>
+                                </template>
+                                <template v-else>
+                                    <v-chip
+                                        small
+                                        label
+                                        outlined
+                                        :color="getBtnColor(value)"
+                                        @click="updateModule(key)"
+                                        :disabled="getBtnDisabled(value)"
+                                        class="minwidth-0 px-2 text-uppercase"
+                                    ><v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>{{ getBtnText(value) }}</v-chip>
+                                </template>
                             </v-col>
                         </v-row>
                     </div>
@@ -214,15 +255,11 @@
             },
             getBtnDisabled(object) {
                 if (['printing', 'paused'].includes(this.printer_state)) return true
-                if (
-                    'debug_enabled' in object &&
-                    !object.debug_enabled &&
-                    'detached' in object &&
-                    object.detached
-                ) return true
+
+                if ('is_valid' in object && !object.is_valid) return false
+                if ('is_dirty' in object && object.is_dirty) return false
 
                 if (typeof object === 'object' && object !== false) {
-                    if ('is_valid' in object && !object.is_valid) return true
                     if (
                         'version' in object &&
                         'remote_version' in object &&
@@ -263,6 +300,9 @@
             updateModule(key) {
                 if (["klipper", "moonraker"].includes(key)) this.$socket.sendObj('machine.update.'+key, { })
                 else this.$socket.sendObj('machine.update.client', { name: key })
+            },
+            recovery(name, hard) {
+                this.$socket.sendObj('machine.update.recover', { name: name, hard: hard })
             },
             updateSystem() {
                 this.$socket.sendObj('machine.update.system', { })
