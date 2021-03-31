@@ -30,6 +30,7 @@ export default {
 		Reboot: "Reboot",
 		Shutdown: "Shutdown",
 		Updating: "Updating",
+		Recovering: "Recovering",
 		done: " done!",
 		Empty: "Empty",
 		Close: "Close",
