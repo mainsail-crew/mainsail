@@ -8,7 +8,7 @@ export default {
 		Printers: "Printers",
 		CannotNotConnectTo: "Cannot not connect to",
 		ConnectionTo: "Connection to",
-		ConnectionFailed: "Connection failed",
+		ConnectionFailed: "Connecting Failed",
 		SelectPrinter: "Select Printer",
 		AddPrinter: "Add Printer",
 		EditPrinter: "Edit Printer",
