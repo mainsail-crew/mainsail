@@ -65,6 +65,11 @@ export default {
 		else if ('result' in payload) message = payload.result
 		else if ('error' in payload) message = message.error.message
 
+		const eventLimit = ('gcode_store_size' in state.config) ? state.config.gcode_store_size : 1000
+		while (state.events.length >= eventLimit) {
+			state.events.shift()
+		}
+
 		state.events.push({
 			date: new Date(),
 			message: message,
