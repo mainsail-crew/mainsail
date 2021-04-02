@@ -64,7 +64,9 @@ export default {
 			else {
 				let itemStyle = {
 					opacity: 0.9,
-					color: '#424242'
+					color: '#424242',
+					borderColor: '#BDBDBD',
+					borderWidth: 1,
 				}
 
 				switch (current.status) {
