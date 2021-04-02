@@ -169,8 +169,8 @@
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
                 </v-toolbar>
-                <div class="d-flex justify-center" style="max-height: calc(100% - 64px); overflow-y: auto;">
-                  <img :src="image.url" style="max-width: 100%; height: auto;" alt="image" />
+                <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
+                  <img :src="image.url" style="max-height: 100%; width: auto;" alt="image" />
                 </div>
               </v-card>
             </v-dialog>
