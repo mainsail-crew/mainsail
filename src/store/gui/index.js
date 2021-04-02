@@ -70,7 +70,18 @@ export function getDefaultState() {
 		history: {
 			countPerPage: 10,
 			toggleChartCol3: 'filament_usage',
-			hideColums: []
+			hideColums: [
+				'size',
+				'modified',
+				'end_time',
+				'total_duration',
+				'filament_total',
+				'first_layer_extr_temp',
+				'first_layer_bed_temp',
+				'first_layer_height',
+				'layer_height',
+				'object_height',
+			]
 		},
 		settings: {
 			configfiles: {
