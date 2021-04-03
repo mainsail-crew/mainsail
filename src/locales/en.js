@@ -400,6 +400,11 @@ export default {
 			Commits: "Commits",
 			CommittedAt: "committed at",
 			UpToDate: "up-to-date",
+			Detached: "detached",
+			Update: "update",
+			Dirty: "dirty",
+			Invalid: "invalid",
+			Unknown: "unknown",
 			ERROR: "ERROR"
 		},
 		WebcamPanel: {

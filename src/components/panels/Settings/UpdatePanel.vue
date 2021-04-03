@@ -30,7 +30,7 @@
                                 <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
-                                <template v-if="'is_valid' in value && 'is_dirty' in value && (!value.is_valid || value.is_dirty)">
+                                <template v-if="getRecoveryOptions(value)">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Webcam">
                                             <template v-slot:activator="{ on, attrs }">
@@ -200,6 +200,13 @@
                         semver.gt(object.remote_version, object.version)
                     ) return 'primary'
 
+                    if (
+                        'version' in object &&
+                        'remote_version' in object && (
+                            object.version === "?" || object.remote_version === "?"
+                        )
+                    ) return 'orange'
+
                     return 'green'
                 }
 
@@ -212,9 +219,9 @@
                         !object.debug_enabled &&
                         'detached' in object &&
                         object.detached
-                    ) return 'detached'
-                    if ('is_valid' in object && !object.is_valid) return 'invalid'
-                    if ('is_dirty' in object && object.is_dirty) return 'dirty'
+                    ) return this.$t('Settings.UpdatePanel.Detached')
+                    if ('is_valid' in object && !object.is_valid) return this.$t('Settings.UpdatePanel.Invalid')
+                    if ('is_dirty' in object && object.is_dirty) return this.$t('Settings.UpdatePanel.Dirty')
 
                     if (
                         'version' in object &&
@@ -222,7 +229,14 @@
                         semver.valid(object.remote_version) &&
                         semver.valid(object.version) &&
                         semver.gt(object.remote_version, object.version)
-                    ) return 'update'
+                    ) return this.$t('Settings.UpdatePanel.Update')
+
+                    if (
+                        'version' in object &&
+                        'remote_version' in object && (
+                            object.version === "?" || object.remote_version === "?"
+                        )
+                    ) return this.$t('Settings.UpdatePanel.Unknown')
 
                     return this.$t('Settings.UpdatePanel.UpToDate')
                 }
@@ -247,6 +261,13 @@
                         semver.valid(object.version) &&
                         semver.gt(object.remote_version, object.version)
                     ) return 'progress-upload'
+
+                    if (
+                        'version' in object &&
+                        'remote_version' in object && (
+                            object.version === "?" || object.remote_version === "?"
+                        )
+                    ) return 'help-circle-outline'
 
                     return 'check'
                 }
@@ -296,6 +317,12 @@
                     'commits_behind' in object &&
                     object.commits_behind.length
                 )
+            },
+            getRecoveryOptions(object) {
+                if ('is_valid' in object && !object.is_valid) return true
+                if ('is_dirty' in object && object.is_dirty) return true
+
+                return false
             },
             updateModule(key) {
                 if (["klipper", "moonraker"].includes(key)) this.$socket.sendObj('machine.update.'+key, { })
