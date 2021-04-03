@@ -16,7 +16,11 @@
             <v-item-group v-if="this.webcams.length > 1">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">{{ 'name' in currentCam ? currentCam.name : "unknown" }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">
+                            <v-icon small v-if="'icon' in currentCam" class="mr-2">{{ currentCam.icon }}</v-icon>
+                            {{ 'name' in currentCam ? currentCam.name : "unknown" }}
+                            <v-icon small>mdi-menu-down</v-icon>
+                        </v-btn>
                     </template>
                     <v-list dense class="py-0">
                         <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
@@ -31,7 +35,7 @@
                 </v-menu>
             </v-item-group>
         </v-toolbar>
-        <v-card-text class="px-0 py-0 content">
+        <v-card-text class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative;">
                     <template v-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
@@ -56,6 +60,9 @@
                                 padding: 3px 10px;
                                 border-top-left-radius: 5px;
                             ">{{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }}</span>
+                    </template>
+                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'ipstream'">
+                        <video :src="url" autoplay :style="webcamStyle" />
                     </template>
                     <template v-else>
                         <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" @load="onLoad" />

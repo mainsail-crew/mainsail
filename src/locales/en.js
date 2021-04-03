@@ -30,6 +30,7 @@ export default {
 		Reboot: "Reboot",
 		Shutdown: "Shutdown",
 		Updating: "Updating",
+		Recovering: "Recovering",
 		done: " done!",
 		Empty: "Empty",
 		Close: "Close",
@@ -137,8 +138,6 @@ export default {
 		FilamentUsage: "Filament usage",
 		PrinttimeAvg: "Printtime AVG",
 		PrintHistory: "Print History",
-		Last14Days: "Last 14 days",
-		LoadAllHistoryData: "Click to load all history data",
 		Search: "search",
 		Jobs: "Jobs",
 		Empty: "empty",
@@ -423,6 +422,7 @@ export default {
 
 			Mjpegstreamer: "MJPEG-Streamer",
 			MjpegstreamerAdaptive: "Adaptive MJPEG-Streamer (experimental)",
+			Ipstream: "IP Camera",
 
 			Required: "required",
 			NameAlreadyExists: "Name already exists",
