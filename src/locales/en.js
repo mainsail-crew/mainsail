@@ -270,7 +270,9 @@ export default {
 		},
 		WebcamPanel: {
 			Webcam: "Webcam",
-			FPS: "FPS"
+			FPS: "FPS",
+			All: "All",
+			UnknownWebcamService: "Unknown Webcam Service",
 		},
 		ZOffsetPanel: {
 			ZBabyStepping: "Z Baby Stepping",
