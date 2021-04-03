@@ -83,6 +83,11 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
+            <template v-if="debugMode" class="mr-3">
+                <span v-if="'jsHeapSizeLimit' in debugModeData.memory" class="mr-5">L: {{ formatFilesize(debugModeData.memory.jsHeapSizeLimit) }}</span>
+                <span v-if="'totalJSHeapSize' in debugModeData.memory" class="mr-5">T: {{ formatFilesize(debugModeData.memory.totalJSHeapSize) }}</span>
+                <span v-if="'usedJSHeapSize' in debugModeData.memory" class="mr-5">U: {{ formatFilesize(debugModeData.memory.usedJSHeapSize) }}</span>
+            </template>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
             <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && save_config_pending" :disabled="['printing', 'paused'].includes(printer_state)" :loading="loadings.includes['topbarSaveConfig']" @click="clickSaveConfig">{{ $t("App.SAVECONFIG") }}</v-btn>
             <v-btn color="primary" class="mr-5 d-none d-sm-flex" v-if="isConnected && ['standby', 'complete'].includes(printer_state)" :loading="loadings.includes['btnUploadAndStart']" @click="btnUploadAndStart"><v-icon class="mr-2">mdi-file-upload</v-icon>{{ $t("App.UploadPrint") }}</v-btn>
@@ -170,11 +175,16 @@ export default {
                 loaded: 0
             }
         },
+        debugModeData: {
+            memory: {}
+        },
         validGcodeExtensions: validGcodeExtensions
     }),
     created () {
-        this.$vuetify.theme.dark = true;
-        this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
+        this.$vuetify.theme.dark = true
+        this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined")
+
+        if(this.debugMode) this.getMemoryUsage()
     },
     computed: {
         currentPage: function() {
@@ -200,6 +210,8 @@ export default {
 
             klipperVersion: state => state.printer.software_version,
             remoteMode: state => state.socket.remoteMode,
+
+            debugMode: state => state.debugMode,
         }),
         ...mapGetters([
             'getTitle',
@@ -380,7 +392,21 @@ export default {
                 favicon16.href = favicon16Default
                 favicon32.href = favicon32Default
             }
-        }
+        },
+        getMemoryUsage() {
+            if ('memory' in performance) {
+                if ('jsHeapSizeLimit' in performance.memory)
+                    this.debugModeData.memory.jsHeapSizeLimit = performance.memory.jsHeapSizeLimit
+
+                if ('totalJSHeapSize' in performance.memory)
+                    this.debugModeData.memory.totalJSHeapSize = performance.memory.totalJSHeapSize
+
+                if ('usedJSHeapSize' in performance.memory)
+                    this.debugModeData.memory.usedJSHeapSize = performance.memory.usedJSHeapSize
+            }
+
+            setTimeout(() => { this.getMemoryUsage() }, 1000)
+        },
     },
     watch: {
         language(){
