@@ -29,7 +29,9 @@ export default {
                 series: [{
                     type: 'pie',
                     data: [],
-                    radius: '50%',
+                    //radius: '50%',
+                    avoidLabelOverlap: false,
+                    radius: ['35%', '60%'],
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
