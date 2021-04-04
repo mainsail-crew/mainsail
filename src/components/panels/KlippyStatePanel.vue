@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}{{ klippy_state}}</span>
+                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klippy_state}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="py-0">
