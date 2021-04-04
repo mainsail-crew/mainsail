@@ -1,5 +1,5 @@
 export default {
-	title: "Chinese",
+	title: "简体中文",
 	App: {
 		Connecting: "连接",
 		To: "到",
@@ -437,4 +437,3 @@ export default {
 		}
 	}
 }
-  
