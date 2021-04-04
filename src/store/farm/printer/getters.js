@@ -76,20 +76,6 @@ export default {
 	},
 
 	getImage: state => {
-		/*if (
-			'gui' in state.data &&
-			'webcam' in state.data.gui &&
-			'url' in state.data.gui.webcam &&
-			state.data.gui.webcam.url !== "" &&
-			'bool' in state.data.gui.webcam &&
-			state.data.gui.webcam.bool &&
-			'dashbaord' in state.data.gui &&
-			'boolWebcam' in state.data.gui.dashboard &&
-			state.data.gui.dashboard.boolWebcam
-		) {
-			return state.data.gui.webcam.url
-		} else*/
-
 		if (
 			state.current_file &&
 			"filename" in state.current_file &&
@@ -256,4 +242,14 @@ export default {
 
 		return 0
 	},
+
+	getPrinterWebcams: (state) => {
+		if (
+			'gui' in state.data &&
+			'webcam' in state.data.gui &&
+			'configs' in state.data.gui.webcam
+		) return state.data.gui.webcam.configs
+
+		return []
+	}
 }
