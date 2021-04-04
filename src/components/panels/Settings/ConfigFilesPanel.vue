@@ -87,7 +87,7 @@
                         </v-menu>
                     </v-item-group>
                 </v-card-title>
-                <v-card-subtitle>{{ $t('Settings.ConfigFilesPanel.CurrentPath') }} {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
+                <v-card-subtitle>{{ $t('Settings.ConfigFilesPanel.CurrentPath') }}: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
                 <v-data-table
                     :items="files"
                     class="files-table"
