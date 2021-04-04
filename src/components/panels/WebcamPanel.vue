@@ -92,6 +92,9 @@
                     if (currentCamName !== undefined && this.webcams.findIndex(webcam => webcam.name === currentCamName) !== -1)
                         return currentCamName
 
+                    if (currentCamName !== undefined && Array.isArray(this.webcams) && this.webcams.length === 1)
+                        return this.webcams[0].name
+
                     return "all"
                 },
                 set(newVal) {
