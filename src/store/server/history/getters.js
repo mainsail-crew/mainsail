@@ -65,8 +65,9 @@ export default {
 				let itemStyle = {
 					opacity: 0.9,
 					color: '#424242',
-					borderColor: '#BDBDBD',
-					borderWidth: 1,
+					borderColor: '#1E1E1E',
+					borderWidth: 2,
+					borderRadius: 3,
 				}
 
 				switch (current.status) {
@@ -80,14 +81,6 @@ export default {
 
 					case 'cancelled':
 						itemStyle['color'] = '#616161'
-						break
-
-					case 'klippy_shutodwn':
-						itemStyle['color'] = '#757575'
-						break
-
-					case 'klippy_disconnect':
-						itemStyle['color'] = '#888888'
 						break
 				}
 
