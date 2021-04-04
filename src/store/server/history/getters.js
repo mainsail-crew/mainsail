@@ -64,7 +64,9 @@ export default {
 			else {
 				let itemStyle = {
 					opacity: 0.9,
-					color: '#424242'
+					color: '#424242',
+					borderColor: '#BDBDBD',
+					borderWidth: 1,
 				}
 
 				switch (current.status) {
@@ -106,13 +108,13 @@ export default {
 	getFilamentUsageArray(state) {
 		let output = []
 		const startDate = new Date()
-		startDate.setDate(startDate.getDate() - 14)
+		startDate.setTime(startDate.getTime() - 60*60*24*14*1000)
 		startDate.setHours(0,0,0,0)
 		const jobsFiltered = state.jobs.filter(job => job.start_time * 1000 >= startDate && job.filament_used > 0)
 
 		for (let i = 0; i <= 14; i++) {
 			const tmpDate = new Date()
-			tmpDate.setDate(startDate.getDate() + i)
+			tmpDate.setTime(startDate.getTime() + 60*60*24*i*1000)
 
 			output.push([
 				new Date(tmpDate).setHours(0,0,0,0),
@@ -135,7 +137,7 @@ export default {
 
 	getPrinttimeAvgArray(state) {
 		let output = [0,0,0,0,0]
-		const startDate = new Date(new Date().getDate() - 14)
+		const startDate = new Date(new Date().getTime() - 60*60*24*14*1000)
 		const jobsFiltered = state.jobs.filter(job => job.start_time * 1000 >= startDate && job.status === 'completed')
 
 		if (jobsFiltered.length) {

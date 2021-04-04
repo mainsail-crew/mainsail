@@ -13,7 +13,9 @@ export default {
 			Object.entries(payload).forEach(([key, value]) => {
 				if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
 					setDataDeep(currentState[key], value)
-				} else if (key in currentState) Vue.set(currentState, key, value)
+				} else if (key in currentState) {
+					Vue.set(currentState, key, value)
+				}
 			})
 		}
 

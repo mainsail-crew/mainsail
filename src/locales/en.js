@@ -8,7 +8,7 @@ export default {
 		Printers: "Printers",
 		CannotNotConnectTo: "Cannot not connect to",
 		ConnectionTo: "Connection to",
-		ConnectionFailed: "Connection failed",
+		ConnectionFailed: "Connecting Failed",
 		SelectPrinter: "Select Printer",
 		AddPrinter: "Add Printer",
 		EditPrinter: "Edit Printer",
@@ -190,7 +190,9 @@ export default {
 			Extrude: "Extrude",
 			Macros: "Macros"
 		},
-		FarmPrinterPanel: {},
+		FarmPrinterPanel: {
+			WebcamOff: "Off",
+		},
 		KlippyStatePanel: {
 			KlippyState: "Klippy-State: ",
 			KlippyInfo: "Moonraker can't connect to Klippy!\nPlease check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.",
@@ -270,7 +272,9 @@ export default {
 		},
 		WebcamPanel: {
 			Webcam: "Webcam",
-			FPS: "FPS"
+			FPS: "FPS",
+			All: "All",
+			UnknownWebcamService: "Unknown Webcam Service",
 		},
 		ZOffsetPanel: {
 			ZBabyStepping: "Z Baby Stepping",
@@ -400,6 +404,11 @@ export default {
 			Commits: "Commits",
 			CommittedAt: "committed at",
 			UpToDate: "up-to-date",
+			Detached: "detached",
+			Update: "update",
+			Dirty: "dirty",
+			Invalid: "invalid",
+			Unknown: "unknown",
 			ERROR: "ERROR"
 		},
 		WebcamPanel: {
