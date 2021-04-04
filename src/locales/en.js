@@ -190,7 +190,9 @@ export default {
 			Extrude: "Extrude",
 			Macros: "Macros"
 		},
-		FarmPrinterPanel: {},
+		FarmPrinterPanel: {
+			WebcamOff: "Off",
+		},
 		KlippyStatePanel: {
 			KlippyState: "Klippy-State: ",
 			KlippyInfo: "Moonraker can't connect to Klippy!\nPlease check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.",

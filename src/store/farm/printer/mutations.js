@@ -64,19 +64,6 @@ export default {
 		}
 	},
 
-	notifyFilelistChanged( state, payload) {
-		if (
-			payload.action === "upload_file" &&
-			payload.item.root === "config" &&
-			payload.item.path === ".mainsail.json"
-		) {
-			fetch('//'+state.socket.hostname+':'+state.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
-				.then(res => res.json()).then(file => {
-				this.commit("farm/"+state._namespace+"/setMainsailJson", file)
-			})
-		}
-	},
-
 	setDatabases(state, payload) {
 		Vue.set(state, 'databases', payload.namespaces)
 	},
