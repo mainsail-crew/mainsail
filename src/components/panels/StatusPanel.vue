@@ -188,7 +188,7 @@
                                             <template v-slot:activator="{ on, attrs }">
                                                 <span v-bind="attrs" v-on="on">{{ current_layer }} of {{ max_layers }}</span>
                                             </template>
-                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }} {{ current_file.object_height }}mm</span>
+                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }}: {{ current_file.object_height }}mm</span>
                                         </v-tooltip>
                                     </v-col>
                                 </v-row>
