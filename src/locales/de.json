@@ -277,7 +277,7 @@
 			"UnknownWebcamService": "Unbekannter Webcam-Dienst"
 		},
 		"ZOffsetPanel": {
-			"ZBabyStepping": "Z-Mikroschritte",
+			"ZBabyStepping": "Z Offset",
 			"CurrentOffset": "Aktueller Offset: "
 		}
 	},
@@ -353,7 +353,7 @@
 			"ShowCANCEL_PRINT": "Zeigt die Schaltfläche CANCEL_PRINT dauerhaft an - keine zweite Bestätigung erforderlich.",
 			"ShowZOffset": "Zeige das Z-Offset-Panel permanent an.",
 			"FactoryReset": "Werkseinstellung",
-			"FactoryInfo": "Wollen Sie Mainsail wirklich auf Werkseinstellungen zurücksetzen",
+			"FactoryInfo": "Wollen Sie Mainsail wirklich auf Werkseinstellungen zurücksetzen?",
 			"ResetMainsail": "mainsail zurücksetzen"
 		},
 		"LimitsPanel": {
