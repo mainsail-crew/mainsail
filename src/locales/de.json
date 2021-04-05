@@ -43,7 +43,7 @@
 		"Dashboard": "Dashboard",
 		"Printers": "Drucker",
 		"Settings": "Einstellungen",
-		"Webcam": "Webkamera",
+		"Webcam": "Webcam",
 		"Console": "Konsole",
 		"Heightmap": "Höhenprofil",
 		"G-Code Files": "G-Code-Dateien",
@@ -61,7 +61,7 @@
 		"RefreshCurrentDirectory": "Aktuelles Verzeichnis aktualisieren",
 		"SetupCurrentList": "Aktuelle Liste erstellen",
 		"HiddenFiles": "Versteckte Dateien",
-		"FreeDisk": "Freier Speicherplatz",
+		"FreeDisk": "Freier Speicherplatz: ",
 		"Used": "Verwendet",
 		"Free": "Frei",
 		"Total": "Gesamt",
@@ -132,12 +132,12 @@
 		"Statistics": "Statistik",
 		"TotalPrinttime": "Druckzeit gesamt",
 		"LongestPrinttime": "Längste Druckdauer",
-		"AvgPrinttime": "Avg. Druckzeit",
+		"AvgPrinttime": "Durchschnittliche Druckzeit",
 		"TotalFilamentUsed": "Gesamtes verwendetes Filament",
-		"TotalJobs": "Total Jobs",
+		"TotalJobs": "Drucke gesamt",
 		"FilamentUsage": "Filament verbrauch",
 		"PrinttimeAvg": "Druckdauer AVG",
-		"PrintHistory": "Druck Historie",
+		"PrintHistory": "Druckhistorie",
 		"Search": "Suche",
 		"Jobs": "Aufträge",
 		"Empty": "leer",
@@ -186,8 +186,8 @@
 			"Home": "Home",
 			"FeedAmountIn": "Vorschub Menge in",
 			"FeedrateIn": "Vorschubgeschwindigkeit in",
-			"Retract": "Retract",
-			"Extrude": "Extrude",
+			"Retract": "Einziehen",
+			"Extrude": "Extrudieren",
 			"Macros": "Makros"
 		},
 		"FarmPrinterPanel": {
@@ -243,7 +243,7 @@
 			"Print": "Drucken",
 			"Total": "Insgesamt",
 			"Speed": "Geschwindigkeit",
-			"Layer": "Layer",
+			"Layer": "Schicht",
 			"ObjectHeight": "Objekt Höhe",
 			"ETA": "ETA",
 			"File": "Datei",
@@ -252,15 +252,15 @@
 		"ToolsPanel": {
 			"Temperatures": "Temperaturen",
 			"Presets": "Voreinstellungen",
-			"Cooldown": "Cooldown",
+			"Cooldown": "Abkühlen",
 			"SetupTemperatures": "Einstellung Temperaturen",
 			"ShowChart": "Diagramm anzeigen",
 			"AutoscaleChart": "Autoskala-Diagramm",
 			"Name": "Name",
 			"Color": "Farbe",
 			"State": "Status",
-			"Current": "Aktuell",
-			"Target": "Ziel",
+			"Current": "Ist",
+			"Target": "Soll",
 			"Min": "min",
 			"Max": "max",
 			"UNKNOWN": "UNBEKANNT",
@@ -271,13 +271,13 @@
 			"InList": "in der Liste"
 		},
 		"WebcamPanel": {
-			"Webcam": "Webkamera",
+			"Webcam": "Webcam",
 			"FPS": "FPS",
 			"All": "All",
 			"UnknownWebcamService": "Unbekannter Webcam-Dienst"
 		},
 		"ZOffsetPanel": {
-			"ZBabyStepping": "Z Baby Stepping",
+			"ZBabyStepping": "Z-Mikroschritte",
 			"CurrentOffset": "Aktueller Offset"
 		}
 	},
@@ -331,8 +331,8 @@
 		},
 		"DashboardPanel": {
 			"Dashboard": "Dashboard",
-			"Webcam": "Webkamera",
-			"Tempchart": "Tempchart",
+			"Webcam": "Webcam",
+			"Tempchart": "Temperaturdiagramm",
 			"Console": "Konsole",
 			"ChartUpdateInterval": "Chart-Aktualisierungsintervall",
 			"DatapointInterval": "Intervall der Datenpunkte"
@@ -341,7 +341,7 @@
 			"Endstops": "Endanschläge",
 			"Endstop": "Endanschlag",
 			"TRIGGERED": "AUSGELÖST",
-			"open": "FREI",
+			"open": "OFFEN",
 			"EndstopInfo": "Drücken Sie die Sync-Taste rechts unten, um den aktuellen Endschalterstatus zu laden."
 		},
 		"GeneralPanel": {
@@ -361,7 +361,7 @@
 			"Velocity": "Geschwindigkeit",
 			"Acceleration": "Beschleunigung",
 			"Deceleration": "Verzögerung",
-			"SquareCornerVelocity": "Square corner velocity"
+			"SquareCornerVelocity": "Geschwindigkeit rechtwinklige Ecken"
 		},
 		"LogfilesPanel": {
 			"Logfiles": "Logdateien"
@@ -371,7 +371,7 @@
 			"NOMacros": "Keine Makros gefunden..."
 		},
 		"PresetsPanel": {
-			"PreheatPresets": "Preheat Presets",
+			"PreheatPresets": "Voreinstellungen",
 			"Cooldown": "Abkühlen",
 			"AddPreset": "Voreinstellung hinzufügen",
 			"Preset": "Voreinstellung",
@@ -379,11 +379,11 @@
 			"Edit": "Bearbeiten",
 			"Name": "Name",
 			"CustomGCode": "Benutzerdefinierter G-Code",
-			"PresetInfo": "You have to set minimum a target temperature or a custom gcode.",
+			"PresetInfo": "Sie müssen mindestens eine Zieltemperatur oder einen benutzerdefinierten gcode einstellen.",
 			"Store": "Speichern",
 			"Update": "Aktualisieren",
-			"EditCooldown": "Edit Cooldown",
-			"UpdateCooldown": "Update Cooldown"
+			"EditCooldown": "Abkühlung Bearbeiten",
+			"UpdateCooldown": "Abkühlung Aktualisieren"
 		},
 		"RemotePrintersPanel": {
 			"RemotePrinters": "Remote-Drucker",
@@ -405,14 +405,15 @@
 			"CommittedAt": "committed am",
 			"UpToDate": "aktuell",
 			"Detached": "detached",
-			"Update": "Aktualisierung",
+			"Update": "Aktualisieren",
+            "Upgrade": "Aktualisieren",
 			"Dirty": "Fehlerhaft",
 			"Invalid": "Ungültig",
 			"Unknown": "Unbekannt",
 			"ERROR": "FEHLER"
 		},
 		"WebcamPanel": {
-			"Webcams": "Webkameras",
+			"Webcams": "Webcams",
 			"ShowInNavigation": "In der Navigation anzeigen",
 			"AddWebcam": "Webcam hinzufügen",
 			"CreateWebcam": "Webcam erstellen",
