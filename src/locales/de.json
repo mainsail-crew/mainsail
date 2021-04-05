@@ -136,7 +136,7 @@
 		"TotalFilamentUsed": "Gesamtes verwendetes Filament",
 		"TotalJobs": "Drucke gesamt",
 		"FilamentUsage": "Filament verbrauch",
-		"PrinttimeAvg": "Druckdauer AVG",
+		"PrinttimeAvg": "Druckdauer",
 		"PrintHistory": "Druckhistorie",
 		"Search": "Suche",
 		"Jobs": "Aufträge",
@@ -157,8 +157,8 @@
 		"TotalDuration": "Gesamtzeit",
 		"TotalTime": "Gesamtzeit",
 		"EstimatedFilament": "Schätzung Filament",
-		"FilamentCalc": "Filament Berechnet",
-		"FilamentUsed": "Filament Verbraucht",
+		"FilamentCalc": "Filament berechnet",
+		"FilamentUsed": "Filament verbraucht",
 		"FirstLayerExtTemp": "Erste Schicht Ext. Temp.",
 		"FirstLayerBedTemp": "Erste Schicht Bett Temp.",
 		"FirstLayerHeight": "Erste Schichthöhe",
@@ -278,7 +278,7 @@
 		},
 		"ZOffsetPanel": {
 			"ZBabyStepping": "Z-Mikroschritte",
-			"CurrentOffset": "Aktueller Offset"
+			"CurrentOffset": "Aktueller Offset: "
 		}
 	},
 	"Settings": {
@@ -382,8 +382,8 @@
 			"PresetInfo": "Sie müssen mindestens eine Zieltemperatur oder einen benutzerdefinierten gcode einstellen.",
 			"Store": "Speichern",
 			"Update": "Aktualisieren",
-			"EditCooldown": "Abkühlung Bearbeiten",
-			"UpdateCooldown": "Abkühlung Aktualisieren"
+			"EditCooldown": "Abkühlen Bearbeiten",
+			"UpdateCooldown": "Abkühlen Aktualisieren"
 		},
 		"RemotePrintersPanel": {
 			"RemotePrinters": "Remote-Drucker",
