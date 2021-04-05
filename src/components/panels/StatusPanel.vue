@@ -64,6 +64,16 @@
                 </v-btn>
             </v-item-group>
         </v-toolbar>
+        <template v-if="current_filename === '' && display_message !== null">
+            <v-container>
+                <v-row>
+                    <v-col class="pr-0 py-2">
+                        <h3 class="font-weight-regular">{{ display_message }}</h3>
+                    </v-col>
+                </v-row>
+            </v-container>
+            <v-divider class="mt-0 mb-0" ></v-divider>
+        </template>
         <v-container v-if="current_filename ">
             <v-row>
                 <v-col class="col-auto pr-0 py-2">
