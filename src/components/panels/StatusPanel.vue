@@ -102,7 +102,7 @@
                 <v-divider class="mt-0 mb-0" ></v-divider>
             </template>
             <v-container class="py-0">
-                <v-row class="text-center py-5" align="center">
+                <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
                     <v-col class="col-3 pa-0">
                         <strong>{{ $t("Panels.StatusPanel.Position") }}</strong><br />
                         {{ absolute_coordinates ? $t("Panels.StatusPanel.Absolute") : $t("Panels.StatusPanel.Relative") }}
