@@ -336,7 +336,7 @@
             },
             reverseY: {
                 get() {
-                    return this.$store.state.gui.dashboard.control.reverseZ;
+                    return this.$store.state.gui.dashboard.control.reverseY;
                 },
                 set(reverseY) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseY } } })
