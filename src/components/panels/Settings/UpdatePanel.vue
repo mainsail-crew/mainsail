@@ -105,7 +105,7 @@
                                     :disabled="!(version_info.system.package_count) || printer_state === 'printing'"
                                     @click="updateSystem"
                                     class="minwidth-0 px-2 text-uppercase"
-                                ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? 'upgrade' : 'up-to-date' }}</v-chip>
+                                ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? $t('Settings.UpdatePanel.Upgrade') : $t('Settings.UpdatePanel.UpToDate') }}</v-chip>
                             </v-col>
                         </v-row>
                     </div>
