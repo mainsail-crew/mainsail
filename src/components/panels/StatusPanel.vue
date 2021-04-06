@@ -17,259 +17,267 @@
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading align-baseline">
-                    <v-icon left>mdi-information</v-icon>{{ printerStateOutput }}
+                    <v-progress-circular
+                        :rotate="-90"
+                        :size="30"
+                        :width="5"
+                        :value="Math.round(printPercent * 100)"
+                        v-if="['paused', 'printing'].includes(printer_state)"
+                        color="primary"
+                        class="mr-1"
+                    >
+                    </v-progress-circular>
+                    <v-icon
+                        v-if="!['paused', 'printing'].includes(printer_state)"
+                        left
+                    >
+                        mdi-information
+                    </v-icon>
+                    {{ printerStateOutput }}
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-item-group class="v-btn-toggle" name="controllers">
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="printer_state === 'printing'" @click="btnPauseJob" :loading="loadings.includes('statusPrintPause')">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-pause</v-icon>
-                        </template>
-                        <span>{{ $t("Panels.StatusPanel.PausePrint") }}</span>
-                    </v-tooltip>
-                </v-btn>
-                <v-btn small class="px-2 minwidth-0" color="orange" v-if="(printer_state === 'paused')" :loading="loadings.includes('statusPrintResume')" @click="btnResumeJob">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-play</v-icon>
-                        </template>
-                        <span>{{ $t("Panels.StatusPanel.ResumePrint") }}</span>
-                    </v-tooltip>
-                </v-btn>
-                <v-btn small class="px-2 minwidth-0" color="red" v-if="(printer_state === 'paused' || (displayCancelPrint && printer_state === 'printing'))" :loading="loadings.includes('statusPrintCancel')" @click="btnCancelJob">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-stop</v-icon>
-                        </template>
-                        <span>{{ $t("Panels.StatusPanel.CancelPrint") }}</span>
-                    </v-tooltip>
-                </v-btn>
-                <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintClear')" @click="btnClearJob">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-broom</v-icon>
-                        </template>
-                        <span>{{ $t("Panels.StatusPanel.ClearPrintStats") }}</span>
-                    </v-tooltip>
-                </v-btn>
-                <v-btn small class="px-2 minwidth-0" color="primary" v-if="['error', 'complete'].includes(printer_state)" :loading="loadings.includes('statusPrintReprint')" @click="btnReprintJob">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>mdi-printer</v-icon>
-                        </template>
-                        <span>{{ $t("Panels.StatusPanel.ReprintJob") }}</span>
-                    </v-tooltip>
-                </v-btn>
+                <template >
+                    <v-btn
+                        v-for="button in filteredToolbarButtons"
+                        v-bind:key="button.loadingName"
+                        class="px-2 minwidth-0"
+                        :color="button.color"
+                        @click="button.click"
+                        :loading="loadings.includes(button.loadingName)"
+                        small
+                    >
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
+                            </template>
+                            <span>{{ button.text }}</span>
+                        </v-tooltip>
+                    </v-btn>
+                </template>
             </v-item-group>
         </v-toolbar>
-        <template v-if="current_filename === '' && display_message !== null">
-            <v-container>
-                <v-row>
-                    <v-col class="pr-0 py-2">
-                        <h3 class="font-weight-regular">{{ display_message }}</h3>
-                    </v-col>
-                </v-row>
-            </v-container>
-            <v-divider class="mt-0 mb-0" ></v-divider>
-        </template>
-        <v-container v-if="current_filename ">
-            <v-row>
-                <v-col class="col-auto pr-0 py-2">
-                    <v-progress-circular
-                        :rotate="-90"
-                        :size="50"
-                        :width="7"
-                        :value="Math.round(printPercent * 100)"
-                        color="red"
-                    >
-                    </v-progress-circular>
-                </v-col>
-                <v-col class="col py-2" style="width: 100px;">
-                    <h3 class="font-weight-regular">{{ Math.round(printPercent * 100)+"%" }}{{ printer_state !== "error" ? (display_message ? " - "+display_message : "") : print_stats_message }}</h3>
-                    <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
-                </v-col>
-            </v-row>
-        </v-container>
-        <v-divider v-if="current_filename " class="mt-0 mb-0" ></v-divider>
         <v-card-text class="px-0 py-0 content">
-            <v-container>
-                <v-row>
-                    <v-col
-                        class="col-12 col-sm-4 pl-sm-0 pt-0 pr-sm-0 pb-0"
-                        v-if="
-                            ['printing', 'paused', 'complete'].includes(printer_state) &&
-                            current_file &&
-                            current_file.thumbnails &&
-                            current_file.thumbnails.length &&
-                            current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400)
-                        ">
-                        <img
-                            class="statusPanel-image-preview"
-                            :src="'data:image/gif;base64,'+(current_file.thumbnails ? current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400).data : '')"
-                        />
+            <template v-if="current_filename ">
+                <v-container>
+                    <v-row>
+                        <v-col class="pa-2 pr-0 col-auto" v-if="thumbnailSmall">
+                            <template v-if="thumbnailSmall && thumbnailBig">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <vue-load-image class="d-flex">
+                                            <img slot="image" :src="thumbnailSmall" width="32" height="32" v-bind="attrs" v-on="on" />
+                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                            <v-icon slot="error">mdi-file</v-icon>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="thumbnailBig" width="250" /></span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else-if="thumbnailSmall">
+                                <vue-load-image>
+                                    <img slot="image" :src="thumbnailSmall" width="32" height="32" />
+                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                    <v-icon slot="error">mdi-file</v-icon>
+                                </vue-load-image>
+                            </template>
+                        </v-col>
+
+                        <v-col :class="thumbnailSmall ? 'py-3' : 'py-2'">
+                            <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-divider class="mt-0 mb-0" ></v-divider>
+            </template>
+            <template v-if="display_message || print_stats_message">
+                <v-container>
+                    <v-row>
+                        <v-col class="pr-0 py-2">
+                            <h3 class="font-weight-regular">{{ print_stats_message ? print_stats_message : display_message }}</h3>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-divider class="mt-0 mb-0" ></v-divider>
+            </template>
+            <v-container class="py-0">
+                <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
+                    <v-col class="col-3 pa-0">
+                        <strong>{{ $t("Panels.StatusPanel.Position") }}</strong><br />
+                        {{ absolute_coordinates ? $t("Panels.StatusPanel.Absolute") : $t("Panels.StatusPanel.Relative") }}
                     </v-col>
-                    <v-col
-                        :class="
-                            (['printing', 'paused', 'complete'].includes(printer_state) &&
-                            current_file &&
-                            current_file.thumbnails &&
-                            current_file.thumbnails.length &&
-                            current_file.thumbnails.find(element => element.width >= 300 && element.width <= 400))  ? 'col-12 col-sm-8' : 'col-12'
-                        ">
-                        <v-row class="text-center py-4" align="center">
-                            <v-col class="flex-grow-0 py-0">
-                                <v-icon>mdi-axis-arrow</v-icon>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.X") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ position.length ? position[0].toFixed(2) : "--" }}</v-col></v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Y") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ position.length ? position[1].toFixed(2) : "--" }}</v-col></v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Z") }}</strong></v-col></v-row>
-                                <v-row>
-                                    <v-col class="pa-0">
-
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <span v-bind="attrs" v-on="on">{{ position.length ? position[2].toFixed(2) : "--" }}</span>
-                                            </template>
-                                            <span v-if="gcode_position !== undefined && gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
-                                        </v-tooltip>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
-                            <v-col class="pa-0">
-                                <v-divider></v-divider>
-                            </v-col>
-                        </v-row>
-                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'complete', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 py-0">
-                                <v-icon>mdi-poll</v-icon>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Filament") }}</strong></v-col></v-row>
-                                <v-row>
-                                    <v-col class="pa-0">
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <span v-bind="attrs" v-on="on" v-if="filament_used >= 1000" class=" text-no-wrap">{{ (filament_used / 1000).toFixed(2) }} m</span>
-                                                <span v-bind="attrs" v-on="on" v-if="filament_used < 1000" class=" text-no-wrap">{{ filament_used.toFixed(2) }} mm</span>
-                                            </template>
-                                            <span v-if="'filament_total' in current_file">{{ (filament_used / 1000).toFixed(2) }} / {{ (current_file.filament_total / 1000).toFixed(2) }}m = {{ ( 100 / current_file.filament_total * filament_used).toFixed(0) }}% </span>
-                                        </v-tooltip>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Print") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ formatTime(print_time) }}</v-col></v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Total") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ formatTime(print_time_total) }}</v-col></v-row>
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="pa-0">
-                                <v-divider></v-divider>
-                            </v-col>
-                        </v-row>
-                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state)">
-                            <v-col class="flex-grow-0 py-0">
-                                <v-icon>mdi-printer-3d</v-icon>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Speed") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0 text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</v-col></v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Layer") }}</strong></v-col></v-row>
-                                <v-row>
-                                    <v-col class="pa-0 text-no-wrap">
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <span v-bind="attrs" v-on="on">{{ current_layer }} of {{ max_layers }}</span>
-                                            </template>
-                                            <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }}: {{ current_file.object_height }}mm</span>
-                                        </v-tooltip>
-                                    </v-col>
-                                </v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.ETA") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ eta ? formatDateTime(eta) : '--' }}</v-col></v-row>
-                            </v-col>
-                        </v-row>
-                        <v-row v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="pa-0">
-                                <v-divider></v-divider>
-                            </v-col>
-                        </v-row>
-                        <v-row class="text-center py-4" align="center" v-if="['printing', 'paused', 'error'].includes(printer_state) ">
-                            <v-col class="flex-grow-0 py-0">
-                                <v-icon>mdi-clock-outline</v-icon>
-                            </v-col>
-                            <v-col class="equal-width py-0 ">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.File") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}</v-col></v-row>
-
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Filament") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}</v-col></v-row>
-                            </v-col>
-                            <v-col class="equal-width py-0">
-                                <v-row><v-col class="pa-0"><strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong></v-col></v-row>
-                                <v-row><v-col class="pa-0">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</v-col></v-row>
-                            </v-col>
-                        </v-row>
+                    <v-col class="col-3 pa-0">
+                        <strong>{{ $t("Panels.StatusPanel.X") }}</strong><br />
+                        {{ position.length ? position[0].toFixed(2) : "--" }}
+                    </v-col>
+                    <v-col class="col-3 pa-0">
+                        <strong>{{ $t("Panels.StatusPanel.Y") }}</strong><br />
+                        {{ position.length ? position[1].toFixed(2) : "--" }}
+                    </v-col>
+                    <v-col class="col-3 pa-0">
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <div v-bind="attrs" v-on="on" class="text-center">
+                                    <strong>{{ $t("Panels.StatusPanel.Z") }}</strong><br />
+                                    {{ position.length ? position[2].toFixed(2) : "--" }}
+                                </div>
+                            </template>
+                            <span v-if="gcode_position !== undefined && gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
+                        </v-tooltip>
                     </v-col>
                 </v-row>
             </v-container>
+            <template v-if="['printing', 'paused', 'error'].includes(printer_state)">
+                <v-divider class="my-0"></v-divider>
+                <v-container class="py-0">
+                    <v-row class="text-center py-5" align="center">
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                            <span class="text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</span>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on">
+                                        <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
+                                        <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                    </div>
+                                </template>
+                                <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow.maxValue ? maxFlow.maxValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on">
+                                        <strong>{{ $t("Panels.StatusPanel.Filament") }}</strong><br />
+                                        <span class="d-block text-center text-no-wrap">{{ filament_used >= 1000 ? (filament_used / 1000).toFixed(2)+" m" : filament_used.toFixed(2)+" mm" }}</span>
+                                    </div>
+                                </template>
+                                <span v-if="'filament_total' in current_file">{{ (filament_used / 1000).toFixed(2) }} / {{ (current_file.filament_total / 1000).toFixed(2) }} m = {{ ( 100 / current_file.filament_total * filament_used).toFixed(0) }} % </span>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col class="col-3 pa-0 text-center">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on" class="text-center">
+                                        <strong>{{ $t("Panels.StatusPanel.Layer") }}</strong><br />
+                                        <span class="text-no-wrap">{{ current_layer }} of {{ max_layers }}</span>
+                                    </div>
+                                </template>
+                                <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }}: {{ current_file.object_height }} mm</span>
+                            </v-tooltip>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-divider class="my-0"></v-divider>
+                <v-container class="py-0">
+                    <v-row class="text-center pt-5 pb-2 mb-0" align="center">
+                        <v-col class="col-3 pa-0">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on" class="text-center">
+                                        <strong>{{ $t("Panels.StatusPanel.Estimate") }}</strong><br />
+                                        <span class="text-no-wrap">{{ estimated_time_avg ? formatTime(estimated_time_avg) : '--' }}</span>
+                                    </div>
+                                </template>
+                                <div class="text-right">
+                                    {{ $t("Panels.StatusPanel.File") }}: {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}<br />
+                                    {{ $t("Panels.StatusPanel.Filament") }}: {{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}
+                                </div>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong><br />
+                            <span class="text-no-wrap">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</span>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <div v-bind="attrs" v-on="on" class="text-center">
+                                        <strong>{{ $t("Panels.StatusPanel.Total") }}</strong><br />
+                                        <span class="text-no-wrap">{{ print_time_total ? formatTime(print_time_total) : '--' }}</span>
+                                    </div>
+                                </template>
+                                <div class="text-right">
+                                    {{ $t("Panels.StatusPanel.Print") }}: {{ print_time ? formatTime(print_time) : '--' }}<br />
+                                    {{ $t("Panels.StatusPanel.Difference") }}: {{ print_time && print_time_total ? formatTime(print_time_total - print_time) : '--' }}
+                                </div>
+                            </v-tooltip>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.ETA") }}</strong><br />
+                            <span class="text-no-wrap">{{ eta ? formatDateTime(eta) : '--' }}</span>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </template>
+            <template v-if="['complete'].includes(printer_state)">
+                <v-divider class="my-0"></v-divider>
+                <v-container class="py-0">
+                    <v-row class="text-center pt-5 pb-2 mb-0" align="center">
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Filament") }}</strong><br />
+                            <span class="text-no-wrap">{{ filament_used >= 1000 ? (filament_used / 1000).toFixed(2)+" m" : filament_used.toFixed(2)+" mm" }}</span>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong><br />
+                            <span class="text-no-wrap">{{ 'estimated_time' in current_file ? formatTime(current_file.estimated_time) : '--' }}</span>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Print") }}</strong><br />
+                            <span class="text-no-wrap">{{ print_time ? formatTime(print_time) : '--' }}</span>
+                        </v-col>
+                        <v-col class="col-3 pa-0">
+                            <strong>{{ $t("Panels.StatusPanel.Total") }}</strong><br />
+                            <span class="text-no-wrap">{{ print_time_total ? formatTime(print_time_total) : '--' }}</span>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </template>
         </v-card-text>
     </v-card>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState } from 'vuex'
+    import VueLoadImage from "vue-load-image"
 
     export default {
+        components: {
+            'vue-load-image': VueLoadImage
+        },
         data: function() {
             return {
-
+                maxFlow: {
+                    intervalTimer: null,
+                    lastExtruderPos: 0,
+                    lastTime: 0,
+                    lastValue: 0,
+                    maxValue: 0,
+                }
             }
         },
         computed: {
             ...mapState({
-                toolhead: state => state.printer.toolhead,
-                position: state => state.printer.toolhead.position,
-                gcode_position: state => state.printer.gcode_move.gcode_position,
-                requested_speed: state => state.printer.gcode_move.speed,
-                speed_factor: state => state.printer.gcode_move.speed_factor,
-
-                printProgress: state => state.printer.virtual_sdcard.progress,
-                file_position: state => state.printer.virtual_sdcard.file_position,
-                current_file: state => state.printer.current_file,
-
-                print_time: state => state.printer.print_stats.print_duration,
-                print_time_total: state => state.printer.print_stats.total_duration,
-                filament_used: state => state.printer.print_stats.filament_used,
-                current_filename: state => state.printer.print_stats.filename,
                 printer_state: state => state.printer.print_stats.state,
-                print_stats_message: state => state.printer.print_stats.message,
-
-                display_message: state => state.printer.display_status.message,
                 loadings: state => state.socket.loadings,
 
-                displayCancelPrint: state => state.gui.general.displayCancelPrint,
+                current_filename: state => state.printer.print_stats.filename,
+                display_message: state => state.printer.display_status.message,
+                print_stats_message: state => state.printer.print_stats.message,
+
+                absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
+                position: state => state.printer.gcode_move.position,
+                gcode_position: state => state.printer.gcode_move.gcode_position,
+
+                requested_speed: state => state.printer.gcode_move.speed,
+                speed_factor: state => state.printer.gcode_move.speed_factor,
+                filament_used: state => state.printer.print_stats.filament_used,
+                current_file: state => state.printer.current_file,
+                print_time: state => state.printer.print_stats.print_duration,
+                print_time_total: state => state.printer.print_stats.total_duration,
             }),
             printerStateOutput: {
                 get() {
@@ -281,10 +289,63 @@
                             this.$store.state.printer.idle_timeout.state === "Printing"
                         ) return "Busy"
 
+                        if (['paused', 'printing'].includes(printer_state)) {
+                            return (this.printPercent * 100).toFixed(0)+"% "+printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
+                        }
+
                         return printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
                     }
 
                     return this.$t("Panels.StatusPanel.Unknown")
+                }
+            },
+            toolbarButtons: {
+                get() {
+                    return [
+                        {
+                            text: this.$t("Panels.StatusPanel.PausePrint"),
+                            color: "orange",
+                            icon: "mdi-pause",
+                            loadingName: "statusPrintPause",
+                            status: ['printing'],
+                            click: this.btnPauseJob
+                        }, {
+                            text: this.$t("Panels.StatusPanel.ResumePrint"),
+                            color: "orange",
+                            icon: "mdi-play",
+                            loadingName: "statusPrintResume",
+                            status: ['paused'],
+                            click: this.btnResumeJob
+                        }, {
+                            text: this.$t("Panels.StatusPanel.CancelPrint"),
+                            color: "red",
+                            icon: "mdi-stop",
+                            loadingName: "statusPrintCancel",
+                            status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
+                            click: this.btnCancelJob
+                        }, {
+                            text: this.$t("Panels.StatusPanel.ClearPrintStats"),
+                            color: "primary",
+                            icon: "mdi-broom",
+                            loadingName: "statusPrintClear",
+                            status: ['error', 'complete'],
+                            click: this.btnClearJob
+                        }, {
+                            text: this.$t("Panels.StatusPanel.ReprintJob"),
+                            color: "primary",
+                            icon: "mdi-printer",
+                            loadingName: "statusPrintReprint",
+                            status: ['error', 'complete'],
+                            click: this.btnClearJob
+                        }
+                    ]
+                }
+            },
+            filteredToolbarButtons: {
+                get() {
+                    return this.toolbarButtons.filter((button) => {
+                        return button.status.includes(this.printer_state)
+                    })
                 }
             },
             printPercent: {
@@ -339,9 +400,69 @@
                     return this.$store.getters["printer/getEstimatedTimeSlicer"]
                 }
             },
+            estimated_time_avg: {
+                get() {
+                    return this.$store.getters["printer/getEstimatedTimeAvg"]
+                }
+            },
             eta: {
                 get() {
                     return this.$store.getters["printer/getEstimatedTimeETA"]
+                }
+            },
+            filament_diameter: {
+                get() {
+                    return this.$store.state.printer.configfile.settings.extruder?.filament_diameter || 1.75
+                }
+            },
+            basicUrl: {
+                get() {
+                    return this.$store.getters["socket/getUrl"]
+                }
+            },
+            thumbnailSmall: {
+                get() {
+                    if (
+                        "thumbnails" in this.current_file &&
+                        this.current_file.thumbnails.length
+                    ) {
+                        const thumbnail = this.current_file.thumbnails.find(thumb =>
+                            thumb.width >= 32 && thumb.width <= 64 &&
+                            thumb.height >= 32 && thumb.height <= 64
+                        )
+
+                        if (thumbnail && 'relative_path' in thumbnail) {
+                            let relative_url = ""
+                            if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                                relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                            }
+
+                            if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+                        }
+                    }
+
+                    return ""
+                }
+            },
+            thumbnailBig: {
+                get() {
+                    if (
+                        "thumbnails" in this.current_file &&
+                        this.current_file.thumbnails.length
+                    ) {
+                        const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+                        if (thumbnail && 'relative_path' in thumbnail) {
+                            let relative_url = ""
+                            if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                                relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                            }
+
+                            if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+                        }
+                    }
+
+                    return ""
                 }
             }
         },
@@ -382,6 +503,45 @@
                 const diff = msec - new Date().getTime()
                 return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
             },
+            calcMaxFlow() {
+                const newExtruderPos = parseFloat(this.filament_used)
+
+                if (
+                    this.maxFlow.lastExtruderPos &&
+                    this.maxFlow.lastExtruderPos < newExtruderPos &&
+                    this.maxFlow.lastTime
+                ) {
+                    const timeDiff = (new Date().getTime() - this.maxFlow.lastTime) / 1000
+                    const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
+                    const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+
+                    this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
+
+                    if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
+                }
+
+                this.maxFlow.lastExtruderPos = newExtruderPos
+                this.maxFlow.lastTime = new Date().getTime()
+            }
+        },
+        created() {
+            this.maxFlow.intervalTimer = setInterval(() => {
+                this.calcMaxFlow()
+            }, 3000)
+        },
+        beforeDestroy() {
+            if (this.maxFlow.intervalTimer) clearInterval(this.maxFlow.intervalTimer)
+        },
+        watch: {
+            printer_state: {
+                handler(newVal) {
+                    if (['complete', 'cancel', 'error', 'standby'].includes(newVal)) {
+                        this.maxFlow.lastValue = 0
+                        this.maxFlow.maxValue = 0
+                        this.maxFlow.lastTime = 0
+                    }
+                }
+            }
         }
     }
 </script>
