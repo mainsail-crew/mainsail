@@ -219,15 +219,22 @@
 			"PowerControl": "电源管理"
 		},
 		"StatusPanel": {
+			"Absolute": "",
 			"CancelPrint": "取消打印",
 			"ClearPrintStats": "清除打印标志",
+			"Difference": "",
 			"ETA": "ETA",
+			"Estimate": "",
 			"Filament": "耗材",
 			"File": "文件",
+			"Flow": "",
 			"Layer": "层",
+			"Max": "",
 			"ObjectHeight": "物体高度:",
 			"PausePrint": "暂停打印",
+			"Position": "",
 			"Print": "打印",
+			"Relative": "",
 			"ReprintJob": "继续打印",
 			"ResumePrint": "继续打印",
 			"Slicer": "切片",
@@ -412,7 +419,8 @@
 			"Unknown": "",
 			"UpToDate": "最新",
 			"Update": "",
-			"UpdateManager": "更新 管理"
+			"UpdateManager": "更新 管理",
+			"Upgrade": ""
 		},
 		"WebcamPanel": {
 			"AddWebcam": "添加摄像头",

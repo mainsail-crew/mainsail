@@ -219,15 +219,22 @@
 			"PowerControl": "Tápellátás"
 		},
 		"StatusPanel": {
+			"Absolute": "",
 			"CancelPrint": "Nyomtatás megszakítása",
 			"ClearPrintStats": "Nyomtatási statisztika törlése",
+			"Difference": "",
 			"ETA": "BecsIdő",
+			"Estimate": "",
 			"Filament": "Filament",
 			"File": "Fájl",
+			"Flow": "",
 			"Layer": "Réteg",
+			"Max": "",
 			"ObjectHeight": "Tárgymagasság",
 			"PausePrint": "Nyomtatás szüneteltetése",
+			"Position": "",
 			"Print": "Nyomtatás",
+			"Relative": "",
 			"ReprintJob": "Munka újranyomtatása",
 			"ResumePrint": "Nyomtatás folytatása",
 			"Slicer": "Slicer",
@@ -412,7 +419,8 @@
 			"Unknown": "",
 			"UpToDate": "legfrissebb",
 			"Update": "",
-			"UpdateManager": "Frissítés menedzsment"
+			"UpdateManager": "Frissítés menedzsment",
+			"Upgrade": ""
 		},
 		"WebcamPanel": {
 			"AddWebcam": "Webkamera hozzáadása",

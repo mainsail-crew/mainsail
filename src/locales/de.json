@@ -22,7 +22,7 @@
 		"PowerDevices": "Stromversorgung",
 		"Printers": "Drucker",
 		"Reboot": "Neustart",
-		"Recovering": "",
+		"Recovering": "Wiederherstellen",
 		"Remotemode": "docs.mainsail.xyz/remotemode",
 		"Restart": "Neustart",
 		"RestartServices": "Services neustarten",
@@ -116,7 +116,7 @@
 		"Scale": "Maßstab"
 	},
 	"History": {
-		"AvgPrinttime": "Ø Druckzeit",
+		"AvgPrinttime": "Druckzeit - Ø",
 		"Delete": "löschen",
 		"Details": "Details",
 		"Empty": "leer",
@@ -137,14 +137,14 @@
 		"LastModified": "Zuletzt geändert",
 		"LayerHeight": "Schichthöhe",
 		"LoadAllHistoryData": "",
-		"LongestPrinttime": "Längster Druck",
+		"LongestPrinttime": "Druckzeit - längste",
 		"ObjectHeight": "Objekthöhe",
 		"PrintDuration": "Druckzeit",
-		"PrintHistory": "Druck Historie",
+		"PrintHistory": "Historie",
 		"PrintTime": "Druckzeit",
-		"PrinttimeAvg": "Ø Druckzeit",
+		"PrinttimeAvg": "Druckzeit - Ø",
 		"Reprint": "erneut drucken",
-		"Search": "suchen",
+		"Search": "Suchen",
 		"Slicer": "Slicer",
 		"SlicerVersion": "Slicer Version",
 		"StartTime": "Startzeit",
@@ -152,7 +152,7 @@
 		"Status": "Status",
 		"TotalDuration": "Gesamtzeit",
 		"TotalFilamentUsed": "Filament verwendet - gesamt",
-		"TotalJobs": "Drucke - gesamt",
+		"TotalJobs": "Druckvorgänge - gesamt",
 		"TotalPrinttime": "Druckzeit - gesamt",
 		"TotalTime": "Gesamtzeit"
 	},
@@ -216,18 +216,25 @@
 			"Error": "Fehler",
 			"Off": "Aus",
 			"On": "An",
-			"PowerControl": ""
+			"PowerControl": "Stromversorgung"
 		},
 		"StatusPanel": {
+			"Absolute": "Absolut",
 			"CancelPrint": "Druck abbrechen",
 			"ClearPrintStats": "Druckstatistiken verwerfen",
+			"Difference": "Unterschied",
 			"ETA": "ETA",
+			"Estimate": "geschätzt",
 			"Filament": "Filament",
 			"File": "Datei",
+			"Flow": "Flussrate",
 			"Layer": "Schicht",
+			"Max": "max",
 			"ObjectHeight": "Objekthöhe",
 			"PausePrint": "Druck pausieren",
+			"Position": "Position",
 			"Print": "Drucken",
+			"Relative": "relativ",
 			"ReprintJob": "Erneut drucken",
 			"ResumePrint": "Druck fortsetzen",
 			"Slicer": "Slicer",
@@ -243,11 +250,11 @@
 			"Color": "Farbe",
 			"Cooldown": "Abkühlen",
 			"Current": "Aktuell",
-			"InList": "",
+			"InList": "in Liste",
 			"Max": "max",
 			"Min": "min",
 			"Name": "Name",
-			"Presets": "Voreinstellungen",
+			"Presets": "Aufheizen",
 			"SetupTemperatures": "Einstellungen",
 			"Show": "Anzeigen",
 			"ShowChart": "Temperaturverlauf anzeigen",
@@ -278,7 +285,7 @@
 		"Heightmap": "Höhenprofil",
 		"History": "Historie",
 		"Interface": "Bedienoberfläche",
-		"Machine": "Gerät",
+		"Machine": "Maschine",
 		"Printers": "Drucker",
 		"Settings": "Einstellungen",
 		"Webcam": "Webcam"
@@ -325,6 +332,7 @@
 			"MoveDistancesInMm": "Verfahrwege in mm",
 			"MoveDistancesXYInMm": "Verfahrwege XY in mm",
 			"MoveDistancesZInMm": "Verfahrwege Z in mm",
+			"EnableCross": "Alternatives Steuerkreuz anzeigen",
 			"ReverseXMovement": "X invertieren",
 			"ReverseYMovement": "Y invertieren",
 			"ReverseZMovement": "Z invertieren",
@@ -333,7 +341,7 @@
 			"SpeedZ": "Geschwindigkeit Z"
 		},
 		"DashboardPanel": {
-			"ChartUpdateInterval": "Graph-Aktualisierungsintervall",
+			"ChartUpdateInterval": "Graph Aktualisierungsintervall",
 			"Console": "Konsole",
 			"Dashboard": "Dashboard",
 			"DatapointInterval": "Datenpunkt Abgleichsintervall",
@@ -342,7 +350,7 @@
 		},
 		"EndstopPanel": {
 			"Endstop": "Endschalter",
-			"EndstopInfo": "Drücke die Sync-Schlatfläche in der rechten Ecke, um den aktuellen Zustand abzufragen.",
+			"EndstopInfo": "Drücke die Sync-Schaltfläche in der rechten Ecke, um den aktuellen Zustand abzufragen.",
 			"Endstops": "Endschalter",
 			"TRIGGERED": "AUSGELÖST",
 			"open": "OFFEN"
@@ -356,7 +364,7 @@
 			"Language": "Sprache",
 			"PrinterName": "Druckername",
 			"ResetMainsail": "Mainsail zurücksetzen",
-			"ShowCANCEL_PRINT": "Zeigt die Schaltfläche CANCEL_PRINT dauerhaft an - keine weitere Bestätigung erforderlich.",
+			"ShowCANCEL_PRINT": "Zeigt die Schaltfläche CANCEL_PRINT dauerhaft an - Keine weitere Bestätigung erforderlich.",
 			"ShowZOffset": "Zeigt das Z-Offset Panel dauerhaft an."
 		},
 		"LimitsPanel": {
@@ -409,10 +417,11 @@
 			"OSPackages": "OS-Packages",
 			"PackagesCanBeUpgraded": "Packageupgrades sind verfügbar",
 			"System": "System",
-			"Unknown": "unbekannt",
+			"Unknown": "unknown",
 			"UpToDate": "up-to-date",
-			"Update": "aktualisieren",
-			"UpdateManager": "Update Manager"
+			"Update": "update",
+			"UpdateManager": "Update Manager",
+			"Upgrade": "upgrade"
 		},
 		"WebcamPanel": {
 			"AddWebcam": "Webcam hinzufügen",
@@ -444,5 +453,5 @@
 			"Webcams": "Webcams"
 		}
 	},
-	"title": "deutsch"
+	"title": "Deutsch"
 }
