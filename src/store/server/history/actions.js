@@ -26,7 +26,7 @@ export default {
 			'limit' in payload.requestParams &&
 			payload.requestParams.limit > 0 &&
 			payload.jobs.length === payload.requestParams.limit
-		) Vue.prototype.$socket.sendObj('server.history.list', { start: payload.requestParams.start + payload.requestParams.limit + 1, limit: payload.requestParams.limit }, 'server/history/getHistory')
+		) Vue.prototype.$socket.sendObj('server.history.list', { start: payload.requestParams.start + payload.requestParams.limit, limit: payload.requestParams.limit }, 'server/history/getHistory')
 	},
 
 	getChanged({ commit }, payload) {

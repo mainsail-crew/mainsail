@@ -129,12 +129,12 @@
             },
             availableLanguages: {
                 get() {
-                    const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.js$/i)
+                    const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
                     const languages = []
 
                     locales.keys().map(key=>{
                         languages.push({
-                            text: locales(key).default.title,
+                            text: locales(key).title,
                             value: key.match(/([A-Za-z0-9-_]+)\./i)[1]
                         })
                     })

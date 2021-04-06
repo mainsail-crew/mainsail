@@ -578,6 +578,25 @@ export default {
 		return 0
 	},
 
+	getEstimatedTimeAvg: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (time && timeCount) return (time / timeCount)
+
+		return 0
+	},
+
 	getEstimatedTimeETA: (state, getters) => {
 		let time = 0
 		let timeCount = 0
