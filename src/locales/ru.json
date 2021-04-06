@@ -277,7 +277,8 @@
 			"ShowTargetTemperatureInChart": "Индикация заданной температуры на диаграмме",
 			"ShowPWMPowerInChart": "Отображение мощности ШИМ на диаграмме",
 			"Show": "показать",
-			"InList": "в списке"
+			"InList": "в списке",
+			"TemperaturesInChart": "Температуры [°C]"			
 		},
 		"WebcamPanel": {
 			"Webcam": "Веб-камера",

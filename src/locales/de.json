@@ -277,7 +277,8 @@
 			"ShowTargetTemperatureInChart": "Solltemperatur im Diagramm anzeigen",
 			"ShowPWMPowerInChart": "PWM-Leistung im Diagramm anzeigen",
 			"Show": "anzeigen",
-			"InList": "in der Liste"
+			"InList": "in der Liste",
+			"TemperaturesInChart": "Temperaturen [°C]"
 		},
 		"WebcamPanel": {
 			"Webcam": "Webcam",
