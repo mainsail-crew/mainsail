@@ -215,7 +215,9 @@
 		},
 		"MiscellaneousPanel": {
 			"PrintSettings": "Druckeinstellungen",
-			"Miscellaneous": "Sonstiges"
+			"Miscellaneous": "Sonstiges",
+			"SpeedFactor": "Geschwindigkeitsfaktor",
+			"ExtrusionFactor": "Extrusionsfaktor"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"MoonrakerFailedComponents": "Moonraker Ausgefallene Komponenten",
