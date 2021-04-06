@@ -215,7 +215,9 @@
 		},
 		"MiscellaneousPanel": {
 			"PrintSettings": "Настройки печати",
-			"Miscellaneous": "Другое"
+			"Miscellaneous": "Другое",
+			"SpeedFactor": "Коэффициент скорости",
+			"ExtrusionFactor": "коэффициент экструзии"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"MoonrakerFailedComponents": "Фантастические компоненты для лунохода",
