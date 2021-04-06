@@ -277,7 +277,8 @@
 			"ShowTargetTemperatureInChart": "Show target temperature in chart",
 			"ShowPWMPowerInChart": "Show PWM-power in chart",
 			"Show": "Show",
-			"InList": "in list"
+			"InList": "in list",
+			"TemperaturesInChart": "Temperature [°C]"
 		},
 		"WebcamPanel": {
 			"Webcam": "Webcam",
