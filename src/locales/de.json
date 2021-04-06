@@ -326,6 +326,7 @@
 			"Control": "Steuerung",
 			"SpeedXY": "Geschwindigkeit XY",
 			"SpeedZ": "Geschwindigkeit Z",
+			"EnableCross": "Alternative Steuerung anzeigen",
 			"MoveDistancesInMm": "Verfahrwege in mm",
 			"ReverseXMovement": "X-Bewegung umkehren",
 			"ReverseYMovement": "Y-Bewegung umkehren",
