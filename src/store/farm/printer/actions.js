@@ -46,10 +46,6 @@ export default {
 						commit("setData", data.params[0])
 						break
 
-					case "notify_filelist_changed":
-						commit("notifyFilelistChanged", data.params[0])
-						break
-
 					case "notify_klippy_disconnected":
 						dispatch("disconnectKlippy")
 						break

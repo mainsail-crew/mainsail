@@ -304,14 +304,18 @@ export default {
             if(isVisible && this.chart !== null) this.chart.resize()
             if(this.chart !== null) this.updateChart()
         },
+        resize() {
+            this.chart?.resize();
+        }
     },
     created() {
-        window.addEventListener('resize', () => {
-            if (this.chart) this.chart.resize()
-        })
+        window.addEventListener('resize', this.resize)
     },
     mounted: function() {
         this.createChart()
     },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.resize);
+    }
 }
 </script>

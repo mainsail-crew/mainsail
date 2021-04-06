@@ -173,7 +173,7 @@ export default {
 						if (datasetType in rootState.printer[objectName]) {
 							commit('addValue', {
 								name: datasetType === "temperature" ? name : name+"_"+datasetType,
-								value: rootState.printer[objectName][datasetType],
+								value: Math.round(rootState.printer[objectName][datasetType] * 100) / 100,
 								type: objectNameSplits[0],
 								time: now,
 								maxHistory: maxHistory

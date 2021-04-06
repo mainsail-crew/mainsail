@@ -57,6 +57,7 @@ export default class WebSocketClient {
         }
 
         this.instance.onclose = (e) => {
+			if (this.instance) this.instance.close()
             this.passToStore('socket/onClose', e)
 
             if (!e.wasClean && this.reconnects < this.maxReconnects) {
@@ -73,15 +74,15 @@ export default class WebSocketClient {
         }
 
         this.instance.onerror = () => {
-            this.instance.close()
+			if (this.instance) this.instance.close()
         }
 
         this.instance.onmessage = (msg) => {
             let data = JSON.parse(msg.data)
             if (this.store) {
-                if (this.wsData.filter(item => item.id === data.id).length > 0 &&
-                    this.wsData.filter(item => item.id === data.id)[0].action !== "") {
-                    let tmpWsData = this.wsData.filter(item => item.id === data.id)[0]
+				const wsDataIndex = this.wsData.findIndex(item => item.id === data.id)
+                if (wsDataIndex !== -1 && this.wsData[wsDataIndex].action !== ""){
+                    let tmpWsData = this.wsData[wsDataIndex]
 
                     if (data.error && data.error.message) {
                         if (
@@ -103,13 +104,14 @@ export default class WebSocketClient {
                         if (typeof(result) === "string") result = { result: result }
 
                         let preload = {}
-                        let wsData = this.wsData.filter(item => item.id === data.id)[0]
-                        if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
-                        Object.assign(preload, { requestParams: wsData.params })
+                        if (tmpWsData.actionPreload) Object.assign(preload, tmpWsData.actionPreload)
+                        Object.assign(preload, { requestParams: tmpWsData.params })
                         Object.assign(preload, result)
-                        this.store.dispatch(wsData.action, preload)
+                        this.store.dispatch(tmpWsData.action, preload)
                     }
                 } else this.passToStore('socket/onMessage', data)
+
+				if (wsDataIndex !== -1) this.wsData.splice(wsDataIndex, 1)
             }
         }
     }

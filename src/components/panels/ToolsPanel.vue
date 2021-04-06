@@ -129,7 +129,7 @@
                         <v-divider class="my-2"></v-divider>
                         <v-row align="center">
                             <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
-                                <v-icon color="grey darken-2" :title="$t('Panels.ToolsPanel.Min')+sensor.min_temp+'° / ' + $t('Panels.ToolsPanel.Max')+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
+                                <v-icon color="grey darken-2" :title="$t('Panels.ToolsPanel.Min')+': '+sensor.min_temp+'° / ' + $t('Panels.ToolsPanel.Max')+': '+sensor.max_temp+'°'">{{ sensor.icon }}</v-icon>
                             </v-col>
                             <v-col class="py-2 font-weight-bold">
                               <span style="cursor: pointer;" @click="openHeater(sensor)">{{ convertName(sensor.name) }}</span>
@@ -148,7 +148,7 @@
                                       v-on="on"
                                   >{{ sensor.temperature ? sensor.temperature.toFixed(1) : 0 }}°C</span>
                                 </template>
-                                <span>{{ $t('Panels.ToolsPanel.Min') }}{{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />{{ $t('Panels.ToolsPanel.Max')}}{{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
+                                <span>{{ $t('Panels.ToolsPanel.Min') }}: {{ sensor.measured_min_temp ? sensor.measured_min_temp.toFixed(1) : 0}}°<br />{{ $t('Panels.ToolsPanel.Max')}}: {{ sensor.measured_max_temp ? sensor.measured_max_temp.toFixed(1) : 0 }}°</span>
                               </v-tooltip>
                               <span v-for="(values, key) of sensor.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
                             </v-col>
