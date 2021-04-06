@@ -135,7 +135,7 @@
 		"AvgPrinttime": "Durchschnittliche Druckzeit",
 		"TotalFilamentUsed": "Gesamtes verwendetes Filament",
 		"TotalJobs": "Drucke gesamt",
-		"FilamentUsage": "Filament verbrauch",
+		"FilamentUsage": "Filamentverbrauch",
 		"PrinttimeAvg": "Druckdauer",
 		"PrintHistory": "Druckhistorie",
 		"Search": "Suche",
@@ -243,7 +243,7 @@
 			"CancelPrint": "Druck abbrechen",
 			"ClearPrintStats": "Löschen der Druckstatistik",
             "ReprintJob": "Druck wiederholen",
-            "Speed": "Geschwindigkeit",
+            "Speed": "Geschw.",
             "Flow": "Fluss",
             "Max": "max",
             "Filament": "Filament",
@@ -406,7 +406,7 @@
 			"Empty": "Leer"
 		},
 		"UpdatePanel": {
-			"UpdateManager": "Update Manager",
+			"UpdateManager": "Updatemanager",
 			"CheckForUpdates": "Nach Updates suchen",
 			"System": "System",
 			"PackagesCanBeUpgraded": "Pakete können aktualisiert werden",
