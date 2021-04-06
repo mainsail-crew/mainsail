@@ -135,8 +135,8 @@
 		"AvgPrinttime": "Среднее время печати",
 		"TotalFilamentUsed": "Общая используемая нить",
 		"TotalJobs": "Всего отпечатков",
-		"FilamentUsage": "Потребление нитей накала",
-		"PrinttimeAvg": "Продолжительность печати",
+		"FilamentUsage": "потребление нитей",
+		"PrinttimeAvg": "время печати",
 		"PrintHistory": "История печати",
 		"Search": "Поиск",
 		"Jobs": "Заказы",
@@ -165,7 +165,9 @@
 		"LayerHeight": "Высота слоя",
 		"ObjectHeight": "Высота объекта",
 		"Slicer": "Slicer",
-		"SlicerVersion": "Slicer Версия"
+		"SlicerVersion": "Slicer Версия",
+		"HistoryFilamentUsage": "Филамент",
+		"HistoryPrinttimeAVG": "Печатает"
 	},
 	"Panels": {
 		"ControlPanel": {

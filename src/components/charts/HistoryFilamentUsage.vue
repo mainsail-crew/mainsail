@@ -11,6 +11,7 @@ export default {
 
     },
     data: function() {
+        let _this = this;
         return {
             chart : null,
             chartOptions: {
@@ -59,7 +60,7 @@ export default {
                     },
                 },
                 yAxis: {
-                    name: 'Filament [m]',
+                    name: _this.$t('History.HistoryFilamentUsage'),
                     type: 'value',
                     minInterval: 10,
                     maxInterval: 100,
