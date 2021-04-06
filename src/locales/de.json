@@ -15,7 +15,7 @@
 		"UpdatePrinter": "Drucker aktualisieren",
 		"ChangePrinter": "Drucker wechseln",
 		"Hello": "Hallo und Herzlich willkommen im Remote-Modus von Mainsail!",
-		"PleaseRememberToAdd": "Please remember to add",
+		"PleaseRememberToAdd": "Bitte vergessen Sie nicht",
 		"InMoonrakerConf": "in moonraker.conf innerhalb von 'cors_domains'.",
 		"YouCanFindMore": "Weitere Details finden Sie unter",
 		"Remotemode": "https://docs.mainsail.xyz/remotemode",
