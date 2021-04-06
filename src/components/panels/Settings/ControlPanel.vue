@@ -45,7 +45,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="py-0">
-                            <v-switch v-model="useCross" label="Enable movement cross" hide-details="auto" class="mt-0"></v-switch>
+                            <v-switch v-model="useCross" :label="$t('Settings.ControlPanel.EnableCross')" hide-details="auto" class="mt-0"></v-switch>
                         </v-col>
                     </v-row>
                     <template v-if="useCross">
