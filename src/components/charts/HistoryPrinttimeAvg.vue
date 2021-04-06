@@ -11,6 +11,7 @@ export default {
 
     },
     data: function() {
+        let _this = this;
         return {
             chart : null,
             chartOptions: {
@@ -41,7 +42,7 @@ export default {
                     },
                 },
                 yAxis: {
-                    name: 'Prints',
+                    name: _this.$t('History.HistoryPrinttimeAVG'),
                     type: 'value',
                     minInterval: 10,
                     maxInterval: 100,

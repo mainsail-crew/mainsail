@@ -165,7 +165,9 @@
 		"LayerHeight": "Schichthöhe",
 		"ObjectHeight": "Objekt Höhe",
 		"Slicer": "Slicer",
-		"SlicerVersion": "Slicer Version"
+		"SlicerVersion": "Slicer Version",
+		"HistoryFilamentUsage": "Filament",
+		"HistoryPrinttimeAVG": "Drucke"
 	},
 	"Panels": {
 		"ControlPanel": {
