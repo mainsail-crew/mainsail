@@ -14,7 +14,7 @@
             <v-container>
                 <v-row class="py-0">
                     <v-col class="pb-0 text-center">
-                        <p class="mb-0">{{ $t("Panels.ZOffsetPanel.CurrentOffset") }}{{ homing_origin.length > 1 ? homing_origin[2].toFixed(2) : 0.00 }}mm</p>
+                        <p class="mb-0">{{ $t("Panels.ZOffsetPanel.CurrentOffset") }}: {{ homing_origin.length > 1 ? homing_origin[2].toFixed(2) : 0.00 }}mm</p>
                     </v-col>
                 </v-row>
                 <v-row>
