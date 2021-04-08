@@ -131,6 +131,8 @@
 		"FirstLayerBedTemp": "第一层床温度.",
 		"FirstLayerExtTemp": "第一层外部温度.",
 		"FirstLayerHeight": "第一层高度",
+		"HistoryFilamentUsage": "",
+		"HistoryPrinttimeAVG": "",
 		"JobDetails": "使用详情",
 		"Jobs": "工作",
 		"Last14Days": "过去14天",
@@ -203,8 +205,10 @@
 			"SetupConsole": "设置控制台"
 		},
 		"MiscellaneousPanel": {
+			"ExtrusionFactor": "",
 			"Miscellaneous": "杂项",
-			"PrintSettings": "设置打印机"
+			"PrintSettings": "设置打印机",
+			"SpeedFactor": ""
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "下载日志",
@@ -264,6 +268,7 @@
 			"State": "状态",
 			"Target": "目标",
 			"Temperatures": "温度",
+			"TemperaturesInChart": "",
 			"UNKNOWN": "未知"
 		},
 		"WebcamPanel": {
@@ -327,6 +332,7 @@
 		},
 		"ControlPanel": {
 			"Control": "控制",
+			"EnableCross": "",
 			"Extruder": "挤出",
 			"MoveDistancesEInMm": "移动距离 E in mm",
 			"MoveDistancesInMm": "移动距离 mm",

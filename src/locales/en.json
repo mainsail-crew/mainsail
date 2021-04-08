@@ -55,22 +55,7 @@
 		"Cancel": "Cancel",
 		"Create": "Create",
 		"CreateNewDirectory": "Create new Directory",
-		"RefreshCurrentDirectory": "Refresh current Directory",
-		"SetupCurrentList": "Setup current list",
-		"HiddenFiles": "Hidden files",
-		"FreeDisk": "Free disk",
-		"Used": "Used: ",
-		"Free": "Free: ",
-		"Total": "Total: ",
-		"Files": "Files",
-		"Search": "Search",
-		"Empty": "Empty",
-		"blabla": "bla bla",
-		"DropFilesToAddGcode": "Drop files to add gcode.",
-		"PrintStart": "Print start",
-		"Preheat": "Preheat",
-		"Download": "Download",
-		"Rename": "Rename",
+		"CurrentPath": "",
 		"Delete": "Delete",
 		"DoYouWantToStart": "Do you want to start",
 		"Download": "Download",
@@ -146,6 +131,8 @@
 		"FirstLayerBedTemp": "First Layer Bed Temp.",
 		"FirstLayerExtTemp": "First Layer Ext. Temp.",
 		"FirstLayerHeight": "First Layer Height",
+		"HistoryFilamentUsage": "Filament",
+		"HistoryPrinttimeAVG": "Prints",
 		"JobDetails": "Job Details",
 		"Jobs": "Jobs",
 		"Last14Days": "",
@@ -162,8 +149,14 @@
 		"Search": "search",
 		"Slicer": "Slicer",
 		"SlicerVersion": "Slicer Version",
-		"HistoryFilamentUsage": "Filament",
-		"HistoryPrinttimeAVG": "Prints"
+		"StartTime": "",
+		"Statistics": "",
+		"Status": "",
+		"TotalDuration": "",
+		"TotalFilamentUsed": "",
+		"TotalJobs": "",
+		"TotalPrinttime": "",
+		"TotalTime": ""
 	},
 	"Panels": {
 		"ControlPanel": {
@@ -212,10 +205,10 @@
 			"SetupConsole": "Setup Console"
 		},
 		"MiscellaneousPanel": {
-			"PrintSettings": "Print Settings",
+			"ExtrusionFactor": "Extrusion factor",
 			"Miscellaneous": "Miscellaneous",
-			"SpeedFactor": "Speed factor",
-			"ExtrusionFactor": "Extrusion factor"
+			"PrintSettings": "Print Settings",
+			"SpeedFactor": "Speed factor"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "Download Log",
@@ -271,9 +264,12 @@
 			"ShowChart": "Show Chart",
 			"ShowCurrentTemperatureInChart": "Show current temperature in chart",
 			"ShowPWMPowerInChart": "Show PWM-power in chart",
-			"Show": "Show",
-			"InList": "in list",
-			"TemperaturesInChart": "Temperature [°C]"
+			"ShowTargetTemperatureInChart": "",
+			"State": "",
+			"Target": "",
+			"Temperatures": "",
+			"TemperaturesInChart": "Temperature [°C]",
+			"UNKNOWN": ""
 		},
 		"WebcamPanel": {
 			"All": "All",
@@ -336,6 +332,7 @@
 		},
 		"ControlPanel": {
 			"Control": "Control",
+			"EnableCross": "",
 			"Extruder": "Extruder",
 			"MoveDistancesEInMm": "Move distances E in mm",
 			"MoveDistancesInMm": "Move distances in mm",

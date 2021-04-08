@@ -131,6 +131,8 @@
 		"FirstLayerBedTemp": "Első réteg Ágy Hőm.",
 		"FirstLayerExtTemp": "Első réteg Extruder Hőm.",
 		"FirstLayerHeight": "Első réteg Magasság",
+		"HistoryFilamentUsage": "",
+		"HistoryPrinttimeAVG": "",
 		"JobDetails": "Munka részletei",
 		"Jobs": "Munkák",
 		"Last14Days": "",
@@ -203,8 +205,10 @@
 			"SetupConsole": "Beállítókonzol"
 		},
 		"MiscellaneousPanel": {
+			"ExtrusionFactor": "",
 			"Miscellaneous": "Kiegészítők",
-			"PrintSettings": "Nyomtatási beállítások"
+			"PrintSettings": "Nyomtatási beállítások",
+			"SpeedFactor": ""
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "Log letöltése",
@@ -264,6 +268,7 @@
 			"State": "Státusz",
 			"Target": "Cél",
 			"Temperatures": "Hőmérsékletek",
+			"TemperaturesInChart": "",
 			"UNKNOWN": "ISMERETLEN"
 		},
 		"WebcamPanel": {
@@ -327,6 +332,7 @@
 		},
 		"ControlPanel": {
 			"Control": "Vezérlés",
+			"EnableCross": "",
 			"Extruder": "Extruder",
 			"MoveDistancesEInMm": "E mozgásai mm-ben",
 			"MoveDistancesInMm": "Mozgások mm-ben",
