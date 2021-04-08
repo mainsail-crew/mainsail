@@ -28,7 +28,7 @@ const routes = [
         path: '/cam',
         icon: 'webcam',
         component: Webcam,
-        alwaysShow: false,
+        alwaysShow: true,
     },
     {
         title: "Console",
@@ -43,6 +43,7 @@ const routes = [
         icon: 'grid',
         component: Heightmap,
         alwaysShow: false,
+		klipperComponent: 'bed_mesh'
     },
     /*{
         title: "Current Job",
@@ -56,6 +57,7 @@ const routes = [
         icon: 'file-document-multiple-outline',
         component: Files,
         alwaysShow: false,
+		klipperComponent: 'virtual_sdcard'
     },
     {
         title: "History",
@@ -63,6 +65,7 @@ const routes = [
         icon: 'history',
         component: History,
         alwaysShow: false,
+		moonrakerComponent: 'history'
     },
     {
         title: "Settings",

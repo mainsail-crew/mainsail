@@ -110,6 +110,7 @@
     import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
 
     export default {
+        name: "console",
         data () {
             return {
                 gcode: "",

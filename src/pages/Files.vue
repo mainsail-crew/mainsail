@@ -403,6 +403,7 @@
     import * as monaco from "monaco-editor";
 
     export default {
+        name: "files",
         components: {
             'vue-load-image': VueLoadImage
         },
