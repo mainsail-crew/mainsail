@@ -208,7 +208,7 @@
 			"ExtrusionFactor": "Extrusionsfaktor",
 			"Miscellaneous": "Sonstige",
 			"PrintSettings": "Druckeinstellungen",
-			"SpeedFactor": ""
+			"SpeedFactor": "Geschwindigkeitsfaktor"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "Log herunterladen",
