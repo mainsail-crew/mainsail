@@ -13,6 +13,7 @@
 </template>
 <script>
     export default {
+        name: "webcam",
         data () {
             return {
 

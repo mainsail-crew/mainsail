@@ -164,6 +164,7 @@
     import { Plotly } from 'vue-plotly'
 
     export default {
+        name: "heightmap",
         components: {
             Plotly
         },

@@ -76,6 +76,7 @@
     import HistoryListPanel from "@/components/panels/HistoryListPanel"
 
     export default {
+        name: "history",
         components: {
             HistoryAllPrintStatus,
             HistoryFilamentUsage,

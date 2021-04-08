@@ -40,14 +40,7 @@
                     <router-link
                         style="position: relative;"
                         slot="activator" class="nav-link" exact :to="category.path" @click.prevent
-                        v-if="
-                            (category.title === 'Webcam' && boolNaviWebcam) ||
-                            (category.title === 'Heightmap' && boolNaviHeightmap) || (
-                                category.title !== 'Webcam' &&
-                                category.title !== 'Heightmap' &&
-                                (klippy_state !== 'error' || category.alwaysShow)
-                            )
-                        ">
+                        v-if="getBoolShowInNavi(category)">
                         <v-icon>mdi-{{ category.icon }}</v-icon>
                         <v-icon
                             small
@@ -162,7 +155,6 @@ export default {
         drawer: null,
         activeClass: 'active',
         routes: routes.filter((element) => element.title !== "Printers"),
-        boolNaviHeightmap: false,
         uploadSnackbar: {
             status: false,
             filename: "",
@@ -182,7 +174,6 @@ export default {
     }),
     created () {
         this.$vuetify.theme.dark = true
-        this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined")
 
         if(this.debugMode) this.getMemoryUsage()
     },
@@ -200,16 +191,15 @@ export default {
             printer_state: state => state.printer.print_stats.state,
             loadings: state => state.socket.loadings,
 
-            toolhead: state => state.printer.toolhead,
             printername: state => state.gui.general.printername,
-            virtual_sdcard: state => state.printer.virtual_sdcard,
             current_file: state => state.printer.print_stats.filename,
             boolNaviWebcam: state => state.gui.webcam.bool,
-            config: state => state.printer.configfile.config,
             save_config_pending: state => state.printer.configfile.save_config_pending,
 
             klipperVersion: state => state.printer.software_version,
             remoteMode: state => state.socket.remoteMode,
+            klipperConfigfileSettings: state => state.printer.configfile.settings,
+            moonrakerComponents: state => state.server.components,
 
             debugMode: state => state.debugMode,
         }),
@@ -343,6 +333,16 @@ export default {
 
             return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
         },
+        getBoolShowInNavi(route) {
+            if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
+
+            if (route.component?.name === 'webcam') return this.boolNaviWebcam
+
+            if ('moonrakerComponent' in route) return this.moonrakerComponents.includes(route.moonrakerComponent)
+            if ('klipperComponent' in route) return (route.klipperComponent in this.klipperConfigfileSettings)
+
+            return true
+        },
         drawFavicon(val) {
             let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
             let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']")
@@ -419,9 +419,6 @@ export default {
             handler: function(newVal) {
                 this.$socket.sendObj("server.files.metadata", { filename: newVal }, "files/getMetadataCurrentFile");
             }
-        },
-        config() {
-            this.boolNaviHeightmap = (typeof(this.config.bed_mesh) !== "undefined");
         },
         customStylesheet(newVal) {
             if (newVal !== null) {
