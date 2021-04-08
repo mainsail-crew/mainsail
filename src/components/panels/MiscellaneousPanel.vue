@@ -23,10 +23,10 @@
                     <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>{{ $t("Panels.MiscellaneousPanel.PrintSettings") }}</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <tool-slider :v-model="speedfactor" :label="$t('Panels.MiscellaneousPanel.SpeedFactor')" :target="speed_factor" :max="200" :multi="100" :step="5" :dynamic-range="true" command="M220" attribute-name="S" ></tool-slider>
+            <tool-slider :label="$t('Panels.MiscellaneousPanel.SpeedFactor')" :target="speed_factor" :max="200" :multi="100" :step="5" :dynamic-range="true" command="M220" attribute-name="S" ></tool-slider>
             <template v-if="existsExtruder">
                 <v-divider></v-divider>
-                <tool-slider :v-model="extrusionfactor" :label="$t('Panels.MiscellaneousPanel.ExtrusionFactor')" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
+                <tool-slider :label="$t('Panels.MiscellaneousPanel.ExtrusionFactor')" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
             </template>
         </v-card>
         <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
