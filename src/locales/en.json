@@ -331,6 +331,7 @@
 			"Control": "Control",
 			"SpeedXY": "Speed XY",
 			"SpeedZ": "Speed Z",
+			"EnableCross": "Enable movement cross",
 			"MoveDistancesInMm": "Move distances in mm",
 			"ReverseXMovement": "Reverse X movement",
 			"ReverseYMovement": "Reverse Y movement",
