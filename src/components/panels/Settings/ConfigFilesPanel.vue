@@ -22,10 +22,10 @@
 
 <template>
     <v-row>
-        <v-dialog fullscreen :transition="null" v-model="editor.show">
+        <v-dialog fullscreen :transition="null" v-model="editor.show" @keydown.esc="closeEditor()">
             <v-card d-flex class="fill-height">
                 <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="editor.show = false; editor.init = false;">
+                    <v-btn icon dark @click="closeEditor()">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                     <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
@@ -154,7 +154,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300" >
+            <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300">
                 <v-card color="primary" dark >
                     <v-card-text>
                         {{ $t('Settings.ConfigFilesPanel.PleaseStandBy') }}
@@ -162,15 +162,16 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
-            <v-dialog v-model="image.show" hide-overlay fullscreen class="fill-height">
+            <v-dialog v-model="image.show" hide-overlay fullscreen @keydown.esc="image.show = false; image.url = null; image.svg = null;" class="fill-height">
               <v-card style="position: relative;">
                 <v-toolbar dark color="primary">
-                  <v-btn icon dark @click="image.show = false;">
+                  <v-btn icon dark @click="image.show = false; image.url = null; image.svg = null;">
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
                 </v-toolbar>
                 <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
-                  <img :src="image.url" style="max-height: 100%; width: auto;" alt="image" />
+                  <img v-if="image.url" :src="image.url" style="max-height: 100%; width: auto;" alt="image" />
+                  <svg v-else-if="image.svg" v-html="image.svg"></svg>
                 </div>
               </v-card>
             </v-dialog>
@@ -273,7 +274,8 @@ export default {
                 currentPath: '/config',
                 image: {
                   show: false,
-                  url: null
+                  url: null,
+                  svg: null
                 },
                 editor: {
                     /*show: false,
@@ -298,6 +300,7 @@ export default {
                     options: {
                         contextmenu: false,
                         automaticLayout: true,
+                        readOnly: false,
                         language: 'klipper-config',
                         theme: 'dark-converted'
                     },
@@ -389,6 +392,14 @@ export default {
             this.loadPath();
         },
         methods: {
+            closeEditor() {
+                console.log("close");
+                this.editor.show = false;
+                this.editor.init = false;
+                this.editor.monaco = null;
+                this.editor.sourcecode = "";
+                this.editor.file = null;
+            },
             async editorWillMount(monaco) {
                 if (!monaco.languages?.getLanguages().find(l => l.id === 'klipper-config')) {
                     await liftOff(monaco);
@@ -473,7 +484,15 @@ export default {
                     }
                     if (!item.isDirectory) {
                         const ext = item.filename.split('.')?.pop()?.toLowerCase();
-                        if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif', 'svg'].includes(ext)) {
+                        if(['svg'].includes(ext)) {
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            fetch(url)
+                                .then(res => res.text())
+                                .then(svg => {
+                                    this.image.show = true;
+                                    this.image.svg = svg;
+                                });
+                        } else if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif'].includes(ext)) {
                             let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
                             this.image.show = true;
                             this.image.url = url;
@@ -498,8 +517,8 @@ export default {
                               this.editor.init = true;
                               this.$nextTick(() => {
                                 this.editor.showLoader = false;
-                                this.editor.readonly = false;
-                                if (this.currentPath === '/config_examples') this.editor.readonly = true;
+                                this.editor.options.readOnly = false;
+                                if (this.currentPath === '/config_examples') this.editor.options.readOnly = true;
                               });
                             });
                         }
@@ -527,11 +546,7 @@ export default {
                 ).then(() => {
                     this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
 
-                    this.editor.show = false;
-                    this.editor.init = false;
-                    this.editor.monaco = null;
-                    this.editor.sourcecode = "";
-                    this.editor.file = null;
+                    this.closeEditor();
 
                     if (boolRestart) {
                         if (this.editor.item.filename === "moonraker.conf") {
