@@ -326,7 +326,7 @@
             </v-btn>
           </template>
         </v-snackbar>
-        <v-dialog v-model="editor.show" fullscreen :transition="null">
+        <v-dialog v-model="editor.show" fullscreen :transition="null" @close="closeEditor()">
             <v-card class="fill-height">
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="closeEditor()">
@@ -434,7 +434,6 @@
                 editor: {
                     show: false,
                     showLoader: false,
-                    readonly: false,
                     token: null,
                     init: false,
                     progress: {
@@ -445,6 +444,7 @@
                     },
                     options: {
                         language: 'gcode',
+                        readOnly: false,
                         theme: 'dark-converted',
                         contextmenu: false,
                         automaticLayout: true,
@@ -612,6 +612,13 @@
                 await liftOff(monaco);
               }
             },*/
+            closeEditor() {
+                this.editor.show = false;
+                this.editor.init = false;
+                this.editor.monaco = null;
+                this.editor.sourcecode = "";
+                this.editor.file = null;
+            },
             async uploadFile() {
                 if (this.$refs.fileUpload.files.length) {
                     this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
@@ -831,7 +838,7 @@
                         this.editor.show = true;
                         this.editor.init = true;
                         this.editor.showLoader = false;
-                        this.editor.readonly = false;
+                        this.editor.options.readOnly = false;
                     })
                     .finally(() => {
                         setTimeout(() => {
@@ -842,14 +849,6 @@
                             this.editor.progress.speed = "";
                         }, 100);
                     });
-            },
-            closeEditor() {
-                this.editor.show = false;
-                this.editor.init = false;
-                this.$nextTick(() => {
-                  this.editor.sourcecode = "";
-                  this.editor.file = null;
-                })
             },
             async saveFile() {
                 let file = new File([this.editor.sourcecode], encodeURI(this.editor.item.filename));

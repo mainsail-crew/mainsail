@@ -55,7 +55,22 @@
 		"Cancel": "Cancel",
 		"Create": "Create",
 		"CreateNewDirectory": "Create new Directory",
-		"CurrentPath": "Current path",
+		"RefreshCurrentDirectory": "Refresh current Directory",
+		"SetupCurrentList": "Setup current list",
+		"HiddenFiles": "Hidden files",
+		"FreeDisk": "Free disk",
+		"Used": "Used: ",
+		"Free": "Free: ",
+		"Total": "Total: ",
+		"Files": "Files",
+		"Search": "Search",
+		"Empty": "Empty",
+		"blabla": "bla bla",
+		"DropFilesToAddGcode": "Drop files to add gcode.",
+		"PrintStart": "Print start",
+		"Preheat": "Preheat",
+		"Download": "Download",
+		"Rename": "Rename",
 		"Delete": "Delete",
 		"DoYouWantToStart": "Do you want to start",
 		"Download": "Download",
@@ -147,14 +162,8 @@
 		"Search": "search",
 		"Slicer": "Slicer",
 		"SlicerVersion": "Slicer Version",
-		"StartTime": "Start Time",
-		"Statistics": "Statistics",
-		"Status": "Status",
-		"TotalDuration": "Total Time",
-		"TotalFilamentUsed": "Total Filament Used",
-		"TotalJobs": "Total Jobs",
-		"TotalPrinttime": "Total Printtime",
-		"TotalTime": "Total Time"
+		"HistoryFilamentUsage": "Filament",
+		"HistoryPrinttimeAVG": "Prints"
 	},
 	"Panels": {
 		"ControlPanel": {
@@ -203,8 +212,10 @@
 			"SetupConsole": "Setup Console"
 		},
 		"MiscellaneousPanel": {
+			"PrintSettings": "Print Settings",
 			"Miscellaneous": "Miscellaneous",
-			"PrintSettings": "Print Settings"
+			"SpeedFactor": "Speed factor",
+			"ExtrusionFactor": "Extrusion factor"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "Download Log",
@@ -260,11 +271,9 @@
 			"ShowChart": "Show Chart",
 			"ShowCurrentTemperatureInChart": "Show current temperature in chart",
 			"ShowPWMPowerInChart": "Show PWM-power in chart",
-			"ShowTargetTemperatureInChart": "Show target temperature in chart",
-			"State": "State",
-			"Target": "Target",
-			"Temperatures": "Temperatures",
-			"UNKNOWN": "UNKNOWN"
+			"Show": "Show",
+			"InList": "in list",
+			"TemperaturesInChart": "Temperature [°C]"
 		},
 		"WebcamPanel": {
 			"All": "All",

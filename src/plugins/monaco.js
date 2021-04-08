@@ -53,6 +53,13 @@ export async function liftOff(monaco) {
     monaco.languages.register({ id: 'klipper-config' });
     monaco.languages.register({ id: 'gcode' });
 
+    monaco.languages.registerCompletionItemProvider('klipper-config', {
+        provideCompletionItems: () => ({suggestions: []})
+    });
+    monaco.languages.registerCompletionItemProvider('gcode', {
+        provideCompletionItems: () => ({suggestions: []})
+    });
+
     // monaco's built-in themes aren't powereful enough to handle TM tokens
     // https://github.com/Nishkalkashyap/monaco-vscode-textmate-theme-converter#monaco-vscode-textmate-theme-converter
     const theme = await (await fetch('/editor.theme.json')).json();

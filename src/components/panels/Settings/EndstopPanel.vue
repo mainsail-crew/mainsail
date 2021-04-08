@@ -11,13 +11,27 @@
                     <v-row v-for="(status, index) of sortEndstops" v-bind:key="index">
                         <v-col class="py-1">
                             <label class="mt-1 d-inline-block">{{ $t('Settings.EndstopPanel.Endstop')}} <b>{{ index.toUpperCase() }}</b></label>
-                            <v-chip class="float-right" small :color="status === 'open' ? 'green' : 'red' " text-color="white">{{ status }}</v-chip>
+                            <v-chip class="float-right" small :color="status === 'open' ? 'green' : 'red' " text-color="white">
+                                <template v-if="status === 'open'">
+                                    {{ $t('Settings.EndstopPanel.open')}}
+                                </template>
+                                <template v-else>
+                                    {{ $t('Settings.EndstopPanel.TRIGGERED')}}
+                                </template>
+                            </v-chip>
                         </v-col>
                     </v-row>
                     <v-row v-if="probe !== false">
                         <v-col class="py-1">
                             <label class="mt-1 d-inline-block">Probe</label>
-                            <v-chip class="float-right" small :color="probe ? 'red' : 'green' " text-color="white">{{ probe ? 'TRIGGERED' : 'open' }}</v-chip>
+                            <v-chip class="float-right" small :color="probe ? 'red' : 'green' " text-color="white">
+                            <template v-if="probe">
+                                {{ $t('Settings.EndstopPanel.TRIGGERED')}}
+                            </template>
+                            <template v-else>
+                                {{ $t('Settings.EndstopPanel.open')}}
+                            </template>
+                            </v-chip>
                         </v-col>
                     </v-row>
                 </div>

@@ -12,6 +12,7 @@ export default {
 
     },
     data: function() {
+        let _this = this;
         return {
             chart : null,
             timerChart: '',
@@ -117,7 +118,7 @@ export default {
                 },
                 yAxis: [
                     {
-                        name: 'Temperature [°C]',
+                        name: _this.$t('Panels.ToolsPanel.TemperaturesInChart'),
                         type: 'value',
                         min: 0,
                         max: 300,
