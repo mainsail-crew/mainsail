@@ -105,9 +105,8 @@
     </div>
 </template>
 <script>
-    import { mapState, mapGetters } from 'vuex';
-    import Vue from "vue";
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
+    import { mapState, mapGetters } from 'vuex'
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
 
     export default {
         name: "console",
@@ -171,9 +170,8 @@
         },
         methods: {
             doSend() {
-                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
-                this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
+                this.$store.dispatch('printer/sendGcode', this.gcode)
+
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;

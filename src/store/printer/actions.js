@@ -67,5 +67,16 @@ export default {
 	removeBedMeshProfile({ commit }, payload) {
 		commit('socket/removeLoading', { name: 'bedMeshRemove_'+payload.name }, { root: true })
 		commit('removeBedMeshProfile', payload)
+	},
+
+	sendGcode({ commit }, payload) {
+		commit('socket/addLoading', { name: 'sendGcode' }, { root: true })
+		commit('server/addEvent', { message: payload, type: 'command' }, { root: true })
+
+		if (payload.toLowerCase().trim() === "m112") {
+			Vue.prototype.$socket.sendObj('printer.emergency_stop', {}, "socket/removeLoading", { name: 'sendGcode' })
+		} else {
+			Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' })
+		}
 	}
 }
