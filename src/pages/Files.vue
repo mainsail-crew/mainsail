@@ -67,7 +67,7 @@
                                 <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Files.HiddenFiles')"></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" label="Printed files"></v-checkbox>
+                                <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" :label="$t('Files.PrintedFiles')"></v-checkbox>
                             </v-list-item>
                             <v-divider></v-divider>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
@@ -78,16 +78,16 @@
                 </v-item-group>
             </v-card-title>
             <v-card-subtitle>
-                {{ $t("Files.CurrentPath") }} {{  this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
+                {{ $t("Files.CurrentPath") }}: {{  this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}<br />
                 <div v-if="this.disk_usage !== null">
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
-                            <span v-bind="attrs" v-on="on">{{ $t('Files.FreeDisk') + formatFilesize(disk_usage.free) }}</span>
+                            <span v-bind="attrs" v-on="on">{{ $t('Files.FreeDisk') }}: {{ formatFilesize(disk_usage.free) }}</span>
                         </template>
                         <span>
-                            {{ $t('Files.Used') + formatFilesize(this.disk_usage.used) }}<br />
-                            {{ $t('Files.Free') + formatFilesize(this.disk_usage.free) }}<br />
-                            {{ $t('Files.Total') + formatFilesize(this.disk_usage.total) }}
+                            {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}<br />
+                            {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}<br />
+                            {{ $t('Files.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
                         </span>
                     </v-tooltip>
                 </div>
@@ -111,7 +111,9 @@
                 :sort-desc.sync="sortDesc"
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
-                    itemsPerPageText: $t('Files.Files')
+                    itemsPerPageText: $t('Files.Files'),
+                    itemsPerPageAllText: $t('Files.AllFiles'),
+                    itemsPerPageOptions: [10,25,50,100,-1]
                 }"
                 item-key="name"
                 :search="search"
@@ -199,7 +201,6 @@
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'slicer').visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
                 </template>
-                <v-data-footer>{{ $t('Files.blabla')}}</v-data-footer>
             </v-data-table>
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
                 <div class="textnode">{{ $t('Files.DropFilesToAddGcode')}}</div>
@@ -208,7 +209,7 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="is_printing" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-play</v-icon> Print start
+                    <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
                 <v-list-item
                     @click="preheat"
