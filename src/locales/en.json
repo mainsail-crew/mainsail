@@ -62,9 +62,9 @@
 		"SetupCurrentList": "Setup current list",
 		"HiddenFiles": "Hidden files",
 		"FreeDisk": "Free disk",
-		"Used": "Used",
-		"Free": "Free",
-		"Total": "Total",
+		"Used": "Used: ",
+		"Free": "Free: ",
+		"Total": "Total: ",
 		"Files": "Files",
 		"Search": "Search",
 		"Empty": "Empty",
@@ -165,7 +165,9 @@
 		"LayerHeight": "Layer Height",
 		"ObjectHeight": "Object Height",
 		"Slicer": "Slicer",
-		"SlicerVersion": "Slicer Version"
+		"SlicerVersion": "Slicer Version",
+		"HistoryFilamentUsage": "Filament",
+		"HistoryPrinttimeAVG": "Prints"
 	},
 	"Panels": {
 		"ControlPanel": {
@@ -215,7 +217,9 @@
 		},
 		"MiscellaneousPanel": {
 			"PrintSettings": "Print Settings",
-			"Miscellaneous": "Miscellaneous"
+			"Miscellaneous": "Miscellaneous",
+			"SpeedFactor": "Speed factor",
+			"ExtrusionFactor": "Extrusion factor"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"MoonrakerFailedComponents": "Moonraker Failed Components",
@@ -275,7 +279,8 @@
 			"ShowTargetTemperatureInChart": "Show target temperature in chart",
 			"ShowPWMPowerInChart": "Show PWM-power in chart",
 			"Show": "Show",
-			"InList": "in list"
+			"InList": "in list",
+			"TemperaturesInChart": "Temperature [°C]"
 		},
 		"WebcamPanel": {
 			"Webcam": "Webcam",
