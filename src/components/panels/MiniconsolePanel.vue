@@ -101,8 +101,7 @@
 
 <script>
 import {mapState} from 'vuex'
-    import Vue from "vue";
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
 
     export default {
         components: {
@@ -164,12 +163,10 @@ import {mapState} from 'vuex'
         },
         methods: {
             doSend() {
-                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
-                this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
-                this.lastCommands.push(this.gcode);
-                this.gcode = "";
-                this.lastCommandNumber = null;
+                this.$store.dispatch('printer/sendGcode', this.gcode)
+                this.lastCommands.push(this.gcode)
+                this.gcode = ""
+                this.lastCommandNumber = null
             },
             onKeyUp() {
                 if (this.lastCommandNumber === null && this.lastCommands.length) {
