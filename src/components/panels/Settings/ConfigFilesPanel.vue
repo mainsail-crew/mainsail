@@ -99,7 +99,9 @@
                     :sort-desc.sync="sortDesc"
                     :items-per-page.sync="countPerPage"
                     :footer-props="{
-                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files')
+                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files'),
+                        itemsPerPageAllText: $t('Settings.ConfigFilesPanel.AllFiles'),
+                        itemsPerPageOptions: [10,25,50,100,-1]
                     }"
                     mobile-breakpoint="0"
                     item-key="name">
