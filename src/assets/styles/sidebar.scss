@@ -1,0 +1,112 @@
+#nav-header {
+  text-align: center;
+  border-bottom: 1px solid #ffffff40;
+  margin-bottom: 1em;
+  padding: .75em 0 .75em 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#nav-header img {
+  height: 40px;
+  margin-right: 1em;
+}
+
+#nav-header .v-toolbar__title {
+  font-size: 24px;
+  vertical-align: middle;
+}
+
+.v-navigation-drawer__content {
+  z-index: 10;
+  padding-bottom: 1em;
+}
+
+nav ul.navi {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul.navi li.nav-item {
+  padding: 0;
+  margin: 0;
+}
+
+nav ul.navi .nav-link {
+  display: block;
+  color: white;
+  border-radius: .5em;
+  line-height: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 15px;
+  opacity: .85;
+  transition: all .15s ease-in;
+  text-decoration: none;
+  margin: 0.5em 1em;
+}
+
+nav ul.navi .nav-link:hover,
+nav ul.navi li.active>.nav-link,
+nav ul.navi .nav-link.router-link-active {
+  background: rgba(255,255,255,.3);
+  opacity: 1;
+}
+
+nav ul.navi li.active>.nav-link i.nav-arrow ,
+nav ul.navi .nav-link.router-link-active i.nav-arrow {
+  transform: rotate(0);
+}
+
+nav ul.navi .nav-link>i.v-icon {
+  color: white;
+  font-size: 1.7em;
+  margin-right: .5em;
+}
+
+nav ul.navi .nav-link>span.nav-title {
+  line-height: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+
+nav ul.navi .nav-link>.nav-arrow {
+  float: right;
+  margin-top: 5px;
+  margin-right: 0;
+  transform: rotate(90deg);
+}
+nav ul.navi .nav-link>.nav-arrow.right {
+  transform: rotate(-90deg);
+}
+
+nav ul.navi>li>ul.child {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul.navi>li>a.router-link-active+ul.child,
+nav ul.navi>li.active>ul.child {
+  display: block;
+}
+
+nav ul.navi>li>ul.child .nav-link {
+  padding: 5px 15px 5px 15px;
+}
+
+nav ul.navi>li>ul.child .nav-link:hover,
+nav ul.navi>li>ul.child .nav-link.router-link-active {
+  background: rgba(255,255,255,.2);
+}
+
+nav ul.navi>li>ul.child .nav-link>span.nav-title {
+  text-transform: capitalize;
+  font-weight: 400;
+  font-size: 14px;
+}

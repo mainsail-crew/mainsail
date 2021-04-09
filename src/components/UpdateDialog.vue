@@ -25,7 +25,7 @@
             </template>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ application.substr(0, 8) === 'recover_' ? $t("App.Recovering") : $t("App.Updating")}} {{ application.substr(0, 8) === 'recover_' ? application.substr(8) : application }}{{ complete ? $t("App.done") : " ..." }}</span>
+                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ application !== null && application.substr(0, 8) === 'recover_' ? $t("App.Recovering") : $t("App.Updating")}} {{ application !== null && application.substr(0, 8) === 'recover_' ? application.substr(8) : application }}{{ complete ? $t("App.done") : " ..." }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="py-6">

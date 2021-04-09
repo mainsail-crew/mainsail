@@ -16,6 +16,7 @@ const routes = [
         icon: 'monitor-dashboard',
         component: Dashboard,
         alwaysShow: true,
+		showInNavi: true,
     },
     {
         title: "Printers",
@@ -29,6 +30,7 @@ const routes = [
         icon: 'webcam',
         component: Webcam,
         alwaysShow: true,
+		showInNavi: true,
     },
     {
         title: "Console",
@@ -36,6 +38,7 @@ const routes = [
         icon: 'console-line',
         component: Console,
         alwaysShow: true,
+		showInNavi: true,
     },
     {
         title: "Heightmap",
@@ -43,21 +46,17 @@ const routes = [
         icon: 'grid',
         component: Heightmap,
         alwaysShow: false,
-		klipperComponent: 'bed_mesh'
+		showInNavi: true,
+		klipperComponent: 'bed_mesh',
     },
-    /*{
-        title: "Current Job",
-        path: '/status',
-        icon: 'printer-3d-nozzle',
-        component: Status
-    },*/
     {
         title: "G-Code Files",
         path: '/files',
         icon: 'file-document-multiple-outline',
         component: Files,
         alwaysShow: false,
-		klipperComponent: 'virtual_sdcard'
+		showInNavi: true,
+		klipperComponent: 'virtual_sdcard',
     },
     {
         title: "History",
@@ -65,6 +64,7 @@ const routes = [
         icon: 'history',
         component: History,
         alwaysShow: false,
+		showInNavi: true,
 		moonrakerComponent: 'history'
     },
     {
@@ -74,18 +74,21 @@ const routes = [
         icon: 'wrench',
         component: Settings,
         alwaysShow: true,
+		showInNavi: true,
         children: [
             {
                 title: 'Machine',
                 path: '/settings/machine',
                 component: SettingsMachine,
                 alwaysShow: true,
+				showInNavi: true,
             },
             {
                 title: 'Interface',
                 path: '/settings/interface',
                 component: SettingsInterface,
                 alwaysShow: true,
+				showInNavi: true,
             },
         ]
     },

@@ -72,7 +72,12 @@ export default {
 			if (currentPosition > 0 && maxPosition > 0) return 1 / maxPosition * currentPosition
 		}
 
-		return state.data.virtual_sdcard.progress
+		if (
+			'virtual_sdcard' in state.data &&
+			'progress' in state.data.virtual_sdcard
+		) return state.data.virtual_sdcard.progress
+
+		return 0
 	},
 
 	getImage: state => {
