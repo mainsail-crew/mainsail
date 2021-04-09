@@ -24,5 +24,9 @@ export default {
             port: printerSocket.port,
             remoteMode: remoteMode,
         })
-    }
+    },
+
+	setNaviDrawer({ commit }, payload) {
+		commit("setNaviDrawer", payload)
+	}
 }
