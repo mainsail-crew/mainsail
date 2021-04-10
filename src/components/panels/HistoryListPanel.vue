@@ -38,6 +38,7 @@
                 :items-per-page.sync="countPerPage"
                 :footer-props="{
                     itemsPerPageText: $t('History.Jobs'),
+                    itemsPerPageAllText: $t('History.AllJobs'),
                     itemsPerPageOptions: [10,25,50,100,-1]
                 }"
                 item-key="name"
