@@ -52,6 +52,7 @@
 		"Minimap": "Mutasd a kistérképet"
 	},
 	"Files": {
+		"AllFiles": "",
 		"Cancel": "Mégse",
 		"Create": "Létrehoz",
 		"CreateNewDirectory": "Új mappa létrehozása",
@@ -79,6 +80,7 @@
 		"Preheat": "Előhevítés",
 		"PrintStart": "Nyomtatás indítása",
 		"PrintTime": "Nyomtatási idő",
+		"PrintedFiles": "",
 		"RefreshCurrentDirectory": "Aktuális mappa frissítése",
 		"Rename": "Átnevezés",
 		"RenameDirectory": "Mappa átnevezése",
@@ -113,9 +115,13 @@
 		"Remove": "eltávolítás",
 		"Rename": "átnevez",
 		"RenameBedMeshProfile": "Meshágy profil átnevezése",
-		"Scale": "Méretarány"
+		"Scale": "Méretarány",
+		"TitleCalibrate": "",
+		"TitleClear": "",
+		"TitleHomeAll": ""
 	},
 	"History": {
+		"AllJobs": "",
 		"AvgPrinttime": "Átlag nyomtatási idő",
 		"Delete": "DTörlés",
 		"Details": "részletek",
@@ -251,6 +257,7 @@
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "Grafikon automata skálázása",
+			"Avg": "",
 			"Color": "Szín",
 			"Cooldown": "Lehűtés",
 			"Current": "Jelenlegi",
@@ -297,6 +304,7 @@
 	},
 	"Settings": {
 		"ConfigFilesPanel": {
+			"AllFiles": "",
 			"Cancel": "Cancel",
 			"ConfigFiles": "Konfigurációs Fájlok",
 			"ConfigReference": "Konfigurációs refencia",

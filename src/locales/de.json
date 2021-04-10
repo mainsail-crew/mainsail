@@ -52,6 +52,7 @@
 		"Minimap": "Minimap anzeigen"
 	},
 	"Files": {
+		"AllFiles": "Alle",
 		"Cancel": "Abbrechen",
 		"Create": "Erstellen",
 		"CreateNewDirectory": "Ordner erstellen",
@@ -79,6 +80,7 @@
 		"Preheat": "Vorheizen",
 		"PrintStart": "Druck starten",
 		"PrintTime": "Druckzeit",
+		"PrintedFiles": "bereits gedruckt",
 		"RefreshCurrentDirectory": "Ordner aktualisieren",
 		"Rename": "Umbenennen",
 		"RenameDirectory": "Ordner umbenennen",
@@ -99,7 +101,7 @@
 		"Abort": "Abbrechen",
 		"BedMeshCalibrate": "Bed Mesh kalibrieren",
 		"Calibrate": "kalibrieren",
-		"Clear": "leeren",
+		"Clear": "verwerfen",
 		"DeleteBedMeshProfile": "Bed Mesh Profil löschen",
 		"Deleted": "gelöscht",
 		"DoYouReallyWantToCalibrate": "Möchtest du mit der Bettkalibrierung beginnen?",
@@ -113,9 +115,13 @@
 		"Remove": "löschen",
 		"Rename": "umbenennen",
 		"RenameBedMeshProfile": "Bed Mesh umbenennen",
-		"Scale": "Maßstab"
+		"Scale": "Maßstab",
+		"TitleCalibrate": "Neues bed_mesh erstellen",
+		"TitleClear": "Bed_mesh verwerfen",
+		"TitleHomeAll": "Home - alle Achsen"
 	},
 	"History": {
+		"AllJobs": "Alle",
 		"AvgPrinttime": "Druckzeit - Ø",
 		"Delete": "löschen",
 		"Details": "Details",
@@ -251,6 +257,7 @@
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "Autoskalierung",
+			"Avg": "Ø",
 			"Color": "Farbe",
 			"Cooldown": "Abkühlen",
 			"Current": "Aktuell",
@@ -297,6 +304,7 @@
 	},
 	"Settings": {
 		"ConfigFilesPanel": {
+			"AllFiles": "Alle",
 			"Cancel": "Abbrechen",
 			"ConfigFiles": "Konfigurationsdateien",
 			"ConfigReference": "Konfigurations Referenz",

@@ -52,6 +52,7 @@
 		"Minimap": "显示小地图"
 	},
 	"Files": {
+		"AllFiles": "",
 		"Cancel": "取消",
 		"Create": "创建",
 		"CreateNewDirectory": "创建目录",
@@ -79,6 +80,7 @@
 		"Preheat": "预热",
 		"PrintStart": "开始打印",
 		"PrintTime": "打印时间",
+		"PrintedFiles": "",
 		"RefreshCurrentDirectory": "刷新当前目录",
 		"Rename": "重命名",
 		"RenameDirectory": "重命名目录",
@@ -113,9 +115,13 @@
 		"Remove": "删除",
 		"Rename": "重命名",
 		"RenameBedMeshProfile": "重命名网床配置文件",
-		"Scale": "缩放"
+		"Scale": "缩放",
+		"TitleCalibrate": "",
+		"TitleClear": "",
+		"TitleHomeAll": ""
 	},
 	"History": {
+		"AllJobs": "",
 		"AvgPrinttime": "平均打印时间",
 		"Delete": "删除",
 		"Details": "细节",
@@ -251,6 +257,7 @@
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "自动缩放图表",
+			"Avg": "",
 			"Color": "颜色",
 			"Cooldown": "冷却",
 			"Current": "当前",
@@ -297,6 +304,7 @@
 	},
 	"Settings": {
 		"ConfigFilesPanel": {
+			"AllFiles": "",
 			"Cancel": "取消",
 			"ConfigFiles": "配置文件",
 			"ConfigReference": "配置参考",
