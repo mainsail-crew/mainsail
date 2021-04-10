@@ -94,8 +94,7 @@
 		"UploadNewGcode": "Загрузить новый Gcode",
 		"Uploading": "Загрузить",
 		"Used": "Использует: ",
-		"Yes": "Да",
-		"blabla": "bla bla"
+		"Yes": "Да"
 	},
 	"Heightmap": {
 		"Abort": "Отменить",
@@ -141,10 +140,8 @@
 		"HistoryPrinttimeAVG": "Печатает",
 		"JobDetails": "Информация о вакансиях",
 		"Jobs": "Заказы",
-		"Last14Days": "",
 		"LastModified": "Последнее изменение",
 		"LayerHeight": "Высота слоя",
-		"LoadAllHistoryData": "",
 		"LongestPrinttime": "Самое длительное время печати",
 		"ObjectHeight": "Высота объекта",
 		"PrintDuration": "Продолжительность печати",
@@ -293,7 +290,6 @@
 		"Console": "Консоль",
 		"Dashboard": "Обзор",
 		"G-Code Files": "файлы G-кода",
-		"G-Code 文件": "",
 		"Heightmap": "Профиль высоты",
 		"History": "Курс",
 		"Interface": "Интерфейс",
@@ -314,7 +310,6 @@
 			"CurrentPath": "Текущий путь",
 			"Delete": "Удалить",
 			"Download": "Скачать",
-			"Edit": "Редактирование",
 			"EditFile": "Редактировать файл",
 			"Empty": "пустой",
 			"Files": "Файлы",
@@ -325,7 +320,6 @@
 			"PleaseStandBy": "Пожалуйста, подождите",
 			"Rename": "Переименовать",
 			"RenameFile": "Переименовать файл",
-			"Save": "Сохранить",
 			"SaveClose": "Сохранить и закрыть",
 			"SaveRestart": "Спасти и перезапустить",
 			"SetupCurrentList": "Создать текущий список",
@@ -333,7 +327,6 @@
 		},
 		"ConsolePanel": {
 			"Console": "Консоль",
-			"CustomFilter": "",
 			"CustomFilters": "Пользовательский фильтр",
 			"HideTemperatures": "Скрытые температуры",
 			"Rules": "Правила"

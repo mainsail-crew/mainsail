@@ -94,8 +94,7 @@
 		"UploadNewGcode": "上传新 Gcode",
 		"Uploading": "上传中",
 		"Used": "使用",
-		"Yes": "是的",
-		"blabla": "等等"
+		"Yes": "是的"
 	},
 	"Heightmap": {
 		"Abort": "中止",
@@ -141,10 +140,8 @@
 		"HistoryPrinttimeAVG": "",
 		"JobDetails": "使用详情",
 		"Jobs": "工作",
-		"Last14Days": "过去14天",
 		"LastModified": "上次修改",
 		"LayerHeight": "层高",
-		"LoadAllHistoryData": "点击加载所有历史数据",
 		"LongestPrinttime": "最长打印时间",
 		"ObjectHeight": "物体高度",
 		"PrintDuration": "打印时间",
@@ -292,8 +289,7 @@
 	"Router": {
 		"Console": "控制台",
 		"Dashboard": "主屏",
-		"G-Code Files": "",
-		"G-Code 文件": "G-Code 文件",
+		"G-Code Files": "G-Code 文件",
 		"Heightmap": "高度图",
 		"History": "历史",
 		"Interface": "操作界面",
@@ -314,7 +310,6 @@
 			"CurrentPath": "当前路径: ",
 			"Delete": "删除",
 			"Download": "下载",
-			"Edit": "编辑",
 			"EditFile": "编辑文件",
 			"Empty": "空的",
 			"Files": "文件",
@@ -325,7 +320,6 @@
 			"PleaseStandBy": "请等待",
 			"Rename": "重命名",
 			"RenameFile": "重命名文件",
-			"Save": "保存",
 			"SaveClose": "保存 & 关闭",
 			"SaveRestart": "保存 & 重新启动",
 			"SetupCurrentList": "设置当前清单",
@@ -333,8 +327,7 @@
 		},
 		"ConsolePanel": {
 			"Console": "控制台",
-			"CustomFilter": "自定义筛选器",
-			"CustomFilters": "",
+			"CustomFilters": "自定义筛选器",
 			"HideTemperatures": "隐藏温度",
 			"Rules": "规则"
 		},
