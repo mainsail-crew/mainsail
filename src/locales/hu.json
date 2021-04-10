@@ -52,7 +52,7 @@
 		"Minimap": "Mutasd a kistérképet"
 	},
 	"Files": {
-		"AllFiles": "",
+		"AllFiles": "Minden fájl",
 		"Cancel": "Mégse",
 		"Create": "Létrehoz",
 		"CreateNewDirectory": "Új mappa létrehozása",
@@ -80,7 +80,7 @@
 		"Preheat": "Előhevítés",
 		"PrintStart": "Nyomtatás indítása",
 		"PrintTime": "Nyomtatási idő",
-		"PrintedFiles": "",
+		"PrintedFiles": "Nyomtatott fájlok",
 		"RefreshCurrentDirectory": "Aktuális mappa frissítése",
 		"Rename": "Átnevezés",
 		"RenameDirectory": "Mappa átnevezése",
@@ -108,21 +108,21 @@
 		"Heightmap": "Felszíntérkép",
 		"Mesh": "Mesh",
 		"Name": "Név",
-		"NoBedMeshHasBeenLoadedYet": "No bed_mesh has been loaded yet. Még nem került betültésre Meshágy.",
+		"NoBedMeshHasBeenLoadedYet": "Még nem került betöltésre Meshágy.",
 		"Probed": "Bemért",
 		"Profiles": "Profilok",
 		"Remove": "eltávolítás",
 		"Rename": "átnevez",
 		"RenameBedMeshProfile": "Meshágy profil átnevezése",
 		"Scale": "Méretarány",
-		"TitleCalibrate": "",
-		"TitleClear": "",
-		"TitleHomeAll": ""
+		"TitleCalibrate": "Kalibrálás",
+		"TitleClear": "Takarítás",
+		"TitleHomeAll": "Mind haza"
 	},
 	"History": {
-		"AllJobs": "",
+		"AllJobs": "Minden munka",
 		"AvgPrinttime": "Átlag nyomtatási idő",
-		"Delete": "DTörlés",
+		"Delete": "Törlés",
 		"Details": "részletek",
 		"Empty": "üres",
 		"EndTime": "Befelyezés",
@@ -136,8 +136,8 @@
 		"FirstLayerBedTemp": "Első réteg Ágy Hőm.",
 		"FirstLayerExtTemp": "Első réteg Extruder Hőm.",
 		"FirstLayerHeight": "Első réteg Magasság",
-		"HistoryFilamentUsage": "",
-		"HistoryPrinttimeAVG": "",
+		"HistoryFilamentUsage": "Filament használati előzmény",
+		"HistoryPrinttimeAVG": "Nyomtatási idő eddig",
 		"JobDetails": "Munka részletei",
 		"Jobs": "Munkák",
 		"LastModified": "Utóljára módosítva",
@@ -185,7 +185,7 @@
 			"ZTilt": "Z döntése"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": ""
+			"WebcamOff": "Webkamera ki"
 		},
 		"KlippyStatePanel": {
 			"FirmwareRestart": "Firmware Újraindítása",
@@ -208,10 +208,10 @@
 			"SetupConsole": "Beállítókonzol"
 		},
 		"MiscellaneousPanel": {
-			"ExtrusionFactor": "",
+			"ExtrusionFactor": "Extrudálási faktor",
 			"Miscellaneous": "Kiegészítők",
 			"PrintSettings": "Nyomtatási beállítások",
-			"SpeedFactor": ""
+			"SpeedFactor": "Sebességállítás"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "Log letöltése",
@@ -226,22 +226,22 @@
 			"PowerControl": "Tápellátás"
 		},
 		"StatusPanel": {
-			"Absolute": "",
+			"Absolute": "Abszolút",
 			"CancelPrint": "Nyomtatás megszakítása",
 			"ClearPrintStats": "Nyomtatási statisztika törlése",
-			"Difference": "",
+			"Difference": "Különbség",
 			"ETA": "BecsIdő",
-			"Estimate": "",
+			"Estimate": "Becslés",
 			"Filament": "Filament",
 			"File": "Fájl",
-			"Flow": "",
+			"Flow": "Átfolyás",
 			"Layer": "Réteg",
-			"Max": "",
+			"Max": "Max",
 			"ObjectHeight": "Tárgymagasság",
 			"PausePrint": "Nyomtatás szüneteltetése",
-			"Position": "",
+			"Position": "Pozíció",
 			"Print": "Nyomtatás",
-			"Relative": "",
+			"Relative": "Relatív",
 			"ReprintJob": "Munka újranyomtatása",
 			"ResumePrint": "Nyomtatás folytatása",
 			"Slicer": "Slicer",
@@ -254,7 +254,7 @@
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "Grafikon automata skálázása",
-			"Avg": "",
+			"Avg": "Átl.",
 			"Color": "Szín",
 			"Cooldown": "Lehűtés",
 			"Current": "Jelenlegi",
@@ -272,13 +272,13 @@
 			"State": "Státusz",
 			"Target": "Cél",
 			"Temperatures": "Hőmérsékletek",
-			"TemperaturesInChart": "",
+			"TemperaturesInChart": "Hőmérsékletek a grafikonon",
 			"UNKNOWN": "ISMERETLEN"
 		},
 		"WebcamPanel": {
-			"All": "",
+			"All": "Mind",
 			"FPS": "FPS",
-			"UnknownWebcamService": "",
+			"UnknownWebcamService": "Ismeretlen Webkamera szolgáltatás",
 			"Webcam": "Webkamera"
 		},
 		"ZOffsetPanel": {
@@ -300,7 +300,7 @@
 	},
 	"Settings": {
 		"ConfigFilesPanel": {
-			"AllFiles": "",
+			"AllFiles": "Minden Fájl",
 			"Cancel": "Cancel",
 			"ConfigFiles": "Konfigurációs Fájlok",
 			"ConfigReference": "Konfigurációs refencia",
@@ -333,7 +333,7 @@
 		},
 		"ControlPanel": {
 			"Control": "Vezérlés",
-			"EnableCross": "",
+			"EnableCross": "Kereszt engedélyezése",
 			"Extruder": "Extruder",
 			"MoveDistancesEInMm": "E mozgásai mm-ben",
 			"MoveDistancesInMm": "Mozgások mm-ben",
@@ -416,18 +416,18 @@
 			"CheckForUpdates": "Frissítések keresése",
 			"Commits": "Végrehajt",
 			"CommittedAt": "Végrehajtva ekkor",
-			"Detached": "",
-			"Dirty": "",
+			"Detached": "Leválasztva",
+			"Dirty": "Szennyezett",
 			"ERROR": "HIBA",
-			"Invalid": "",
+			"Invalid": "Érvénytelen",
 			"OSPackages": "Oprendszer csomagok",
 			"PackagesCanBeUpgraded": "a csomagok frissíthetőek",
 			"System": "Rendszer",
-			"Unknown": "",
+			"Unknown": "Ismeretlen",
 			"UpToDate": "legfrissebb",
-			"Update": "",
+			"Update": "Frissít",
 			"UpdateManager": "Frissítés menedzsment",
-			"Upgrade": ""
+			"Upgrade": "Frissítés"
 		},
 		"WebcamPanel": {
 			"AddWebcam": "Webkamera hozzáadása",
