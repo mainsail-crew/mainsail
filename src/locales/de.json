@@ -94,8 +94,7 @@
 		"UploadNewGcode": "G-Code hochladen",
 		"Uploading": "Hochladen",
 		"Used": "Belegt",
-		"Yes": "Ja",
-		"blabla": "bla bla"
+		"Yes": "Ja"
 	},
 	"Heightmap": {
 		"Abort": "Abbrechen",
@@ -141,10 +140,8 @@
 		"HistoryPrinttimeAVG": "Drucke",
 		"JobDetails": "Druck Details",
 		"Jobs": "Drucke",
-		"Last14Days": "",
 		"LastModified": "Zuletzt geändert",
 		"LayerHeight": "Schichthöhe",
-		"LoadAllHistoryData": "",
 		"LongestPrinttime": "Druckzeit - längste",
 		"ObjectHeight": "Objekthöhe",
 		"PrintDuration": "Druckzeit",
@@ -293,7 +290,6 @@
 		"Console": "Konsole",
 		"Dashboard": "Dashboard",
 		"G-Code Files": "G-Code Dateien",
-		"G-Code 文件": "",
 		"Heightmap": "Höhenprofil",
 		"History": "Historie",
 		"Interface": "Bedienoberfläche",
@@ -314,7 +310,6 @@
 			"CurrentPath": "Aktueller Pfad",
 			"Delete": "Löschen",
 			"Download": "Herunterladen",
-			"Edit": "Bearbeiten",
 			"EditFile": "Datei bearbeiten",
 			"Empty": "Leer",
 			"Files": "Dateien",
@@ -325,7 +320,6 @@
 			"PleaseStandBy": "Bitte warten",
 			"Rename": "Umbenennen",
 			"RenameFile": "Datei umbenennen",
-			"Save": "Speichern",
 			"SaveClose": "Speichern & Schließen",
 			"SaveRestart": "Speichern & Neustart",
 			"SetupCurrentList": "Einstellungen",
@@ -333,7 +327,6 @@
 		},
 		"ConsolePanel": {
 			"Console": "Konsole",
-			"CustomFilter": "",
 			"CustomFilters": "Benutzerdefinierte Filter",
 			"HideTemperatures": "Temperaturmeldungen ausblenden",
 			"Rules": "Regeln"
