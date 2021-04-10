@@ -130,11 +130,12 @@
                 if (totalSeconds) {
                     let output = ""
 
-                    let days = Math.floor(totalSeconds / (3600 * 24))
+                    // hide days on total print time
+                    /*let days = Math.floor(totalSeconds / (3600 * 24))
                     if (days) {
                         totalSeconds %= (3600 * 24)
                         output += days+"d"
-                    }
+                    }*/
 
                     let hours = Math.floor(totalSeconds / 3600)
                     totalSeconds %= 3600
