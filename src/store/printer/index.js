@@ -15,6 +15,7 @@ export function getDefaultState() {
 			homed_axes: "",
 			extruder: "",
 			status: "",
+			stalls: 0,
 			print_time: 0,
 			printing_time: 0,
 			estimated_print_time: 0,
