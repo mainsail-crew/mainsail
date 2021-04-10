@@ -330,7 +330,7 @@ import VueLoadImage from 'vue-load-image'
         },
         methods: {
             refreshHistory: function() {
-                this.$socket.sendObj('server.history.list', {}, 'server/history/getHistory')
+                this.$socket.sendObj('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
             },
             formatDate(date) {
                 let tmp2 = new Date(date*1000)
