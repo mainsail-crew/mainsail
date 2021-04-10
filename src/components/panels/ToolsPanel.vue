@@ -92,7 +92,14 @@
                             <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" v-if="boolTempchart" style="min-width: 70px;">
                                 <div :style="'background-color: '+heater.chartColor+'cc;'" class="datasetColorSymbol d-inline-block" @click="openHeater(heater)"></div>
                             </v-col>
-                            <v-col class="py-2 text-center d-none d-sm-block"><small>{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small></v-col>
+                            <v-col class="py-2 text-center d-none d-sm-block">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <small v-bind="attrs" v-on="on">{{ heater.target > 0 ? (heater.power !== null ? (heater.power > 0 ? (heater.power * 100).toFixed(0)+'%' : "0%") : "active") : "off" }}</small>
+                                    </template>
+                                    <span>{{ $t("Panels.ToolsPanel.Avg") }}: {{ (heater.avgPower).toFixed(0)+'%' }}</span>
+                                </v-tooltip>
+                            </v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ heater.temperature ? heater.temperature.toFixed(1) : 0 }}°C</span>
                                 <span v-for="(values, key) of heater.tempListAdditionValues" v-bind:key="key" class="d-block"><small>{{ values.value.toFixed(1) }} {{ values.unit }}</small></span>
@@ -113,7 +120,12 @@
                                 <div :style="'background-color: '+fan.chartColor+'cc;'" class="datasetColorSymbol d-inline-block" @click="openHeater(fan)"></div>
                             </v-col>
                             <v-col class="py-2 text-center d-none d-sm-block">
-                                <small class="d-block">{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <small class="d-block" v-bind="attrs" v-on="on">{{ fan.target > 0 && fan.speed > 0 ? (fan.speed * 100).toFixed(0)+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
+                                    </template>
+                                    <span>{{ $t("Panels.ToolsPanel.Avg") }}: {{ (fan.avgSpeed).toFixed(0)+'%' }}</span>
+                                </v-tooltip>
                             </v-col>
                             <v-col class="py-2 text-center">
                                 <span class="d-block">{{ fan.temperature ? fan.temperature.toFixed(1) : 0}}°C</span>

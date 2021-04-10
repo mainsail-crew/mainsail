@@ -278,6 +278,7 @@
 			"Target": "Target",
 			"Min": "min",
 			"Max": "max",
+			"Avg": "Avg",
 			"UNKNOWN": "UNKNOWN",
 			"ShowCurrentTemperatureInChart": "Show current temperature in chart",
 			"ShowTargetTemperatureInChart": "Show target temperature in chart",
