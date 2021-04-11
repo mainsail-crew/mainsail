@@ -456,18 +456,24 @@ export default {
 
 	getExtrudePossible: state => {
 		if ("toolhead" in state) {
-			let extruderName = state.toolhead.extruder;
+			const extruderName = state.toolhead.extruder
 
-			if (extruderName in state && extruderName in state.configfile.config) {
-				let extruder = state[extruderName];
-				let extruderConfig = state.configfile.config[extruderName];
-				let min_extrude_temp = "min_extrude_temp" in extruderConfig ? extruderConfig["min_extrude_temp"] : 170
+			if (extruderName in state && extruderName in state.configfile.settings) {
+				const extruder = state[extruderName]
+				const extruderSettings = state.configfile.settings[extruderName]
+				let min_extrude_temp = "min_extrude_temp" in extruderSettings ? extruderSettings["min_extrude_temp"] : 170
+
+				if (
+					"shared_heater" in extruderSettings &&
+					extruderSettings["shared_heater"] in state.configfile.settings &&
+					"min_extrude_temp" in state.configfile.settings[extruderSettings["shared_heater"]]
+				) min_extrude_temp = state.configfile.settings[extruderSettings["shared_heater"]]["min_extrude_temp"]
 
 				return  (min_extrude_temp <= extruder["temperature"])
 			}
 		}
 
-		return true;
+		return true
 	},
 
 	getBedMeshProfileName: state => {
