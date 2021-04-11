@@ -94,8 +94,7 @@
 		"UploadNewGcode": "Új Gcode feltöltése",
 		"Uploading": "Feltöltés",
 		"Used": "Felhasznált",
-		"Yes": "Igen",
-		"blabla": "bla bla"
+		"Yes": "Igen"
 	},
 	"Heightmap": {
 		"Abort": "leállít",
@@ -141,10 +140,8 @@
 		"HistoryPrinttimeAVG": "",
 		"JobDetails": "Munka részletei",
 		"Jobs": "Munkák",
-		"Last14Days": "",
 		"LastModified": "Utóljára módosítva",
 		"LayerHeight": "Rétegmagasság",
-		"LoadAllHistoryData": "",
 		"LongestPrinttime": "Leghosszabb nyomtatási idő",
 		"ObjectHeight": "Tárgymagasság",
 		"PrintDuration": "Nyomtatás időtartama",
@@ -293,7 +290,6 @@
 		"Console": "Konzol",
 		"Dashboard": "Irányítópult",
 		"G-Code Files": "G-Code Fájlok",
-		"G-Code 文件": "",
 		"Heightmap": "Felszíntérkép",
 		"History": "Előzmények",
 		"Interface": "Interfész",
@@ -314,7 +310,6 @@
 			"CurrentPath": "Jelenlegi elérés",
 			"Delete": "Törlés",
 			"Download": "Letölt",
-			"Edit": "Szerkeszt",
 			"EditFile": "Fájl szerkesztése",
 			"Empty": "Üres",
 			"Files": "Fájlok",
@@ -325,7 +320,6 @@
 			"PleaseStandBy": "Kérlek várj egy kicsit",
 			"Rename": "Átnevez",
 			"RenameFile": "Fájl átnevezése",
-			"Save": "Mentés",
 			"SaveClose": "Ment és bezár",
 			"SaveRestart": "Ment és újraindít",
 			"SetupCurrentList": "Jelenlegi lista beállítása",
@@ -333,7 +327,6 @@
 		},
 		"ConsolePanel": {
 			"Console": "Konzol",
-			"CustomFilter": "",
 			"CustomFilters": "Egyedi szűrők",
 			"HideTemperatures": "Hőmérsékletek rejtése",
 			"Rules": "Szabályok"

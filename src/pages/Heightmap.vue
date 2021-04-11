@@ -83,7 +83,7 @@
                                     <td class="text-right">
                                         <v-btn-toggle dense no-gutters>
                                             <v-btn class="btnMinWidthAuto" @click="loadProfile(profile.name)" :loading="loadings.includes('bedMeshLoad_'+profile.name)" :disabled="('profile_name' in bed_mesh && bed_mesh.profile_name === profile.name) || 'deleted' in profile.data" ><v-icon small>mdi-view-grid-plus</v-icon></v-btn>
-                                            <v-btn class="btnMinWidthAuto" @click="openRemoveProfile(profile.name)" :loading="loadings.includes('bedMeshRemove_'+profile.name)" :disabled="'deleted' in profile.data" ><v-icon small>mdi-delete</v-icon></v-btn>
+                                            <v-btn class="btnMinWidthAuto" @click="openRemoveProfile(profile.name)" :loading="loadings.includes('bedMeshRemove_'+profile.name)" :disabled="'deleted' in profile.data" :title="$t('Heightmap.DeleteBedMeshProfile')" ><v-icon small>mdi-delete</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </td>
                                 </tr>

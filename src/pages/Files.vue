@@ -121,8 +121,8 @@
                 mobile-breakpoint="0"
                 @pagination="refreshMetadata">
 
-                <template slot="items" slot-scope="props">
-                  <td v-for="header in filteredHeaders" v-bind:key="header.text">{{ props.item[header.value] }}</td>
+                <template slot="items">
+                    <td v-for="header in filteredHeaders" v-bind:key="header.value">{{ header.text }}</td>
                 </template>
 
                 <template #no-data>
