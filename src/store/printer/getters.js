@@ -81,6 +81,7 @@ export default {
 						additionValues: getters.getAdditionSensors(nameSplit[1]),
 						tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 						power: 'power' in value ? value.power : null,
+						avgPower: getters["tempHistory/getAvgPower"](name),
 						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
 						chartTemperature: getters["tempHistory/getSeries"](name),
@@ -111,6 +112,8 @@ export default {
 					additionValues: getters.getAdditionSensors(nameSplit[1]),
 					tempListAdditionValues: getters.getTempListAdditionSensors(nameSplit[1]),
 					speed: value.speed,
+					avgSpeed: getters["tempHistory/getAvgSpeed"](name),
+					rpm: 'rpm' in value ? value.rpm : false,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
@@ -231,46 +234,45 @@ export default {
 				if (!name.startsWith("_")) {
 					let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
 					let power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+					let rpm = 'rpm' in value ? value.rpm : false
 					let pwm = controllable
 					let scale = 1
-					let off_below = 0.0
-					let max_power = 1.0
 
 					if (nameSplit[0].toLowerCase() === "fan") scale = 255
 
 					if (nameSplit[0].toLowerCase() === "output_pin") {
 						controllable = true
 						pwm = false
-						if (
-							'config' in state.configfile &&
-							key in state.configfile.config
-						) {
-							if (
-								'pwm' in state.configfile.config[key] &&
-								state.configfile.config[key].pwm.toLowerCase() === "true"
-							) pwm = true
+						if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+							if ('pwm' in state.configfile.settings[key.toLowerCase()])
+								pwm = state.configfile.settings[key.toLowerCase()].pwm
 
-							if (
-								'scale' in state.configfile.config[key]
-							) scale = state.configfile.config[key].scale
+							if ('scale' in state.configfile.settings[key.toLowerCase()])
+								scale = state.configfile.settings[key.toLowerCase()].scale
 						}
 					}
-					if (state.configfile.config[key].off_below) off_below = parseFloat(state.configfile.config[key].off_below)
 
-					if (state.configfile.config[key].max_power) max_power = parseFloat(state.configfile.config[key].max_power)
-
-					output.push({
+					const tmp = {
 						name: name,
 						type: nameSplit[0],
 						power: power,
 						controllable: controllable,
 						pwm: pwm,
+						rpm: rpm,
 						scale: scale,
 						object: value,
-						off_below: off_below,
-						max_power: max_power,
-						config: state.configfile.config[key]
-					})
+						config: state.configfile.settings[key]
+					}
+
+					if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
+						if ('off_below' in state.configfile.settings[key.toLowerCase()])
+							tmp['off_below'] = state.configfile.settings[key.toLowerCase()].off_below
+
+						if ('max_power' in state.configfile.settings[key.toLowerCase()])
+							tmp['max_power'] = state.configfile.settings[key.toLowerCase()].max_power
+					}
+
+					output.push(tmp)
 				}
 			}
 		}
@@ -425,9 +427,25 @@ export default {
 			let nameSplit = key.split(" ");
 
 			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
+				let points = []
+				value.points.split("\n").forEach(function(row) {
+					if (row !== "") {
+						row.split(', ').forEach(function(col) {
+							points.push(parseFloat(col))
+						})
+					}
+				})
+
+				const min = Math.min(...points)
+				const max = Math.max(...points)
+
 				profiles.push({
 					name: nameSplit[1],
 					data: value,
+					points: points,
+					min: min,
+					max: max,
+					variance: Math.abs(min - max),
 					is_active: (currentProfile === nameSplit[1]),
 				});
 			}
@@ -515,4 +533,93 @@ export default {
 	checkConfigMacroCancel: state => {
 		return Object.keys(state.configfile.config).findIndex(key => key.toLowerCase() === 'gcode_macro cancel_print') !== -1;
 	},
+
+	getEstimatedTimeFile: (state, getters) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			state.print_stats.print_duration > 0 &&
+			getters.getPrintPercent > 0
+		) {
+			return (state.print_stats.print_duration / getters.getPrintPercent - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeFilament: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'filament_used' in state.print_stats &&
+			'current_file' in state &&
+			'filament_total' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.filament_total > 0 &&
+			state.current_file.filament_total > state.print_stats.filament_used
+		) {
+			return (state.print_stats.print_duration / (state.print_stats.filament_used / state.current_file.filament_total) - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeSlicer: (state) => {
+		if (
+			'print_stats' in state &&
+			'print_duration' in state.print_stats &&
+			'current_file' in state &&
+			'estimated_time' in state.current_file &&
+			state.print_stats.print_duration > 0 &&
+			state.current_file.estimated_time > 0 &&
+			state.current_file.estimated_time > state.print_stats.print_duration
+		) {
+			return (state.current_file.estimated_time - state.print_stats.print_duration).toFixed(0)
+		}
+
+		return 0
+	},
+
+	getEstimatedTimeAvg: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (time && timeCount) return (time / timeCount)
+
+		return 0
+	},
+
+	getEstimatedTimeETA: (state, getters) => {
+		let time = 0
+		let timeCount = 0
+
+		if (getters.getEstimatedTimeFile > 0) {
+			time += parseInt(getters.getEstimatedTimeFile)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeFilament > 0) {
+			time += parseInt(getters.getEstimatedTimeFilament)
+			timeCount++
+		}
+
+		if (getters.getEstimatedTimeSlicer > 0) {
+			time += parseInt(getters.getEstimatedTimeSlicer)
+			timeCount++
+		}
+
+		if (time && timeCount) return Date.now() + (time / timeCount) * 1000
+
+		return 0
+	}
 }

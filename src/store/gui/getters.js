@@ -12,6 +12,16 @@ export default {
 		return output.sort(caseInsensitiveNameSort)
 	},
 
+	getWebcams:(state) => {
+		const output = []
+
+		for (const [key, webcam] of Object.entries(state.webcam.configs)) {
+			output.push({ ...webcam, index: key })
+		}
+
+		return output.sort(caseInsensitiveNameSort)
+	},
+
 	getDatasetValue: (state) => (payload) => {
 		if (
 			payload.name in state.tempchart.datasetSettings &&
@@ -22,7 +32,6 @@ export default {
 
 		return false
 	},
-
 	getDatasetAdditionalSensorValue: (state) => (payload) => {
 		if (
 			payload.name in state.tempchart.datasetSettings &&
@@ -34,7 +43,6 @@ export default {
 			'boolList': true
 		}
 	},
-
 	getPresetsFromHeater: state => (payload) => {
 		const output = []
 

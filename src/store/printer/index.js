@@ -15,6 +15,7 @@ export function getDefaultState() {
 			homed_axes: "",
 			extruder: "",
 			status: "",
+			stalls: 0,
 			print_time: 0,
 			printing_time: 0,
 			estimated_print_time: 0,
@@ -51,6 +52,7 @@ export function getDefaultState() {
 
 		},
 		gcode_move: {
+			position: [],
 			extrude_factor: 1,
 			speed_factor: 1,
 			homing_origin: [0,0,0,0],
@@ -61,6 +63,11 @@ export function getDefaultState() {
 		endstops: {},
 		configfile: {
 			config: {
+				printer: {
+
+				}
+			},
+			settings: {
 				printer: {
 
 				}

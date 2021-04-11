@@ -17,6 +17,7 @@
     import FarmPrinterPanel from "@/components/panels/FarmPrinterPanel";
 
     export default {
+        name: "farm",
         components: { FarmPrinterPanel },
         data () {
             return {

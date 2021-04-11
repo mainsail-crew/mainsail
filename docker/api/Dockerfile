@@ -9,6 +9,8 @@ RUN mkdir /src
 WORKDIR /src
 RUN wget http://download.savannah.nongnu.org/releases/simulavr/libsim_1.1.0_amd64.deb
 RUN apt install /src/libsim_1.1.0_amd64.deb
+
+#prebuild files for simulavr, not needed currently, because we just build the python lib later
 #RUN wget http://download.savannah.nongnu.org/releases/simulavr/simulavr_1.1.0_amd64.deb
 #RUN apt install /src/simulavr_1.1.0_amd64.deb
 #RUN wget http://download.savannah.nongnu.org/releases/simulavr/python3-simulavr_1.1.0_amd64.deb
@@ -18,6 +20,7 @@ RUN cat /etc/passwd
 
 RUN echo 'node ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/node && \
     chown node:node -R ./
+#if systemd is installed, we need to backup the current systemctl command
 #RUN mv /bin/systemctl /bin/systemctl.bak
 RUN ln -s /bin/true /bin/systemctl
 
@@ -44,6 +47,7 @@ RUN chmod +x /home/node/moonraker/scripts/install-moonraker2.sh
 RUN /home/node/moonraker/scripts/install-moonraker2.sh
 
 RUN sudo rm -f /bin/systemctl
+#restore backed up systemctl command
 #RUN sudo mv /bin/systemctl.bak /bin/systemctl
 
 WORKDIR /home/node/

@@ -19,6 +19,8 @@ Vue.use(VueToast);
 export default new Vuex.Store({
     state: {
         packageVersion: process.env.PACKAGE_VERSION || '0.0.0',
+		debugMode: process.env.VUE_APP_DEBUG_MODE || false,
+		naviDrawer: null,
     },
     modules: {
         socket,

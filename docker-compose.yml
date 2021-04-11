@@ -9,6 +9,7 @@ services:
       - ./docker/config:/home/node/printer_config
       - ./docker/logs:/tmp/logs
       - ./docker/gcode:/home/node/gcode
+      - ./docker/config/moonraker:/home/node/.moonraker_database
     container_name: ${APP_NAME}-stack-api
     ports:
       - 7125:7125

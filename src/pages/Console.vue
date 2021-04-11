@@ -34,7 +34,7 @@
                 <v-text-field
                     v-model="gcode"
                     :items="items"
-                    label="Send code..."
+                    :label="$t('Console.SendCode')"
                     solo
                     class="gcode-command-field"
                     ref="gcodeCommandField"
@@ -48,21 +48,21 @@
 
             <v-col class="col-auto align-content-center">
                 <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
-                    <v-icon class="mr-2">mdi-send</v-icon> send
+                    <v-icon class="mr-2">mdi-send</v-icon> {{ $t('Console.send')}}
                 </v-btn>
             </v-col>
 
             <v-col class="col-auto align-content-center">
-                <v-menu :offset-y="true" :close-on-content-click="false" title="Setup Console">
+                <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details label="Hide temperatures"></v-checkbox>
+                            <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Console.HideTemperatures')"></v-checkbox>
                         </v-list-item>
                         <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details label="Custom filters"></v-checkbox>
+                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details :label="$t('Console.CustomFilters')"></v-checkbox>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -83,7 +83,7 @@
                     mobile-breakpoint="0"
                 >
                     <template #no-data>
-                        <div class="text-center">empty</div>
+                        <div class="text-center">{{ $t("Console.Empty")}}</div>
                     </template>
 
                     <template #item="{ item }">
@@ -105,24 +105,24 @@
     </div>
 </template>
 <script>
-    import { mapState, mapGetters } from 'vuex';
-    import Vue from "vue";
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers";
+    import { mapState, mapGetters } from 'vuex'
+    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
 
     export default {
+        name: "console",
         data () {
             return {
                 gcode: "",
                 sortBy: 'date',
                 headers: [
                     {
-                        text: 'Date',
+                        text: this.$t('Console.Date'),
                         value: 'date',
                         width: '15%',
                         dateType: 'Date',
                     },
                     {
-                        text: 'Event',
+                        text: this.$t('Console.Event'),
                         sortable: false,
                         value: 'message',
                         width: '85%'
@@ -170,9 +170,8 @@
         },
         methods: {
             doSend() {
-                this.$store.commit('socket/addLoading', { name: 'sendGcode' });
-                this.$store.commit('server/addEvent', { message: this.gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' });
+                this.$store.dispatch('printer/sendGcode', this.gcode)
+
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;

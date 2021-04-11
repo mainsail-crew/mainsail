@@ -5,7 +5,7 @@ export default {
 		commit('reset')
 	},
 
-	getHistory({ commit, state, rootGetters }, payload) {
+	getHistory({ commit, state, rootGetters, rootState, dispatch }, payload) {
 		const now = new Date()
 		const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
 
@@ -43,9 +43,16 @@ export default {
 							lineStyle: {
 								color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
 								width: 2,
-								opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 1 : 0
+								opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 0.9 : 0
 							},
 							symbol: 'none',
+							emphasis: {
+								lineStyle: {
+									color: rootGetters["gui/getDatasetValue"]({ name: name, type: 'color' }) || color,
+									width: 2,
+									opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'temperature' })) ? 0.9 : 0
+								}
+							},
 							data: [],
 						}
 
@@ -73,6 +80,16 @@ export default {
 								areaStyle: {
 									color: datasetTemperature.lineStyle.color,
 									opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'target' })) ? 0.1 : 0
+								},
+								emphasis: {
+									lineStyle: {
+										color: datasetTemperature.lineStyle.color,
+										width: 0,
+									},
+									areaStyle: {
+										color: datasetTemperature.lineStyle.color,
+										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: 'target' })) ? 0.1 : 0
+									},
 								},
 								symbol: 'none',
 								data: [],
@@ -102,7 +119,15 @@ export default {
 										color: datasetTemperature.lineStyle.color,
 										width: 1,
 										type: 'dotted',
-										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 1 : 0
+										opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 0.9 : 0
+									},
+									emphasis: {
+										lineStyle: {
+											color: datasetTemperature.lineStyle.color,
+											width: 1,
+											type: 'dotted',
+											opacity: (rootGetters["gui/getDatasetValue"]({ name: name, type: additionalType })) ? 0.9 : 0
+										},
 									},
 									symbol: 'none',
 									data: [],
@@ -122,10 +147,14 @@ export default {
 					})
 				}
 			})
+
+			setTimeout(() => {
+				dispatch("updateDatasets")
+			}, rootState.gui.tempchart.intervalDatasetUpdate)
 		}
 	},
 
-	updateDatasets({ commit, rootState, rootGetters }) {
+	updateDatasets({ commit, dispatch, rootState, rootGetters }) {
 		if (
 			'heaters' in rootState.printer &&
 			'available_sensors' in rootState.printer.heaters &&
@@ -144,7 +173,7 @@ export default {
 						if (datasetType in rootState.printer[objectName]) {
 							commit('addValue', {
 								name: datasetType === "temperature" ? name : name+"_"+datasetType,
-								value: rootState.printer[objectName][datasetType],
+								value: Math.round(rootState.printer[objectName][datasetType] * 100) / 100,
 								type: objectNameSplits[0],
 								time: now,
 								maxHistory: maxHistory
@@ -154,5 +183,9 @@ export default {
 				}
 			})
 		}
+
+		setTimeout(() => {
+			dispatch("updateDatasets")
+		}, rootState.gui.tempchart.intervalDatasetUpdate)
 	}
 }

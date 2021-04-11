@@ -14,8 +14,9 @@ package-lock.json
 *.local
 docker/gcode
 docker/logs
+docker/moonraker
+docker/config/**/*
 docker/config/*.cfg
 docker/config/*.conf
-docker/*.json
-
 docker/config/.mainsail.json
+docker/config/.theme

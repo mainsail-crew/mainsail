@@ -7,23 +7,26 @@
 <template>
     <v-container class="px-0 py-2">
         <v-row>
-            <v-col>
+            <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value >= min ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-icon small :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
                     <span>{{ convertName(this.name) }}</span>
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(value*100) }} %</span>
+                    <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">{{ Math.round(rpm) }} RPM</small>
+                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(parseFloat(value)*100) }} %</span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
                 </v-subheader>
                 <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
-                        :min="0"
-                        :max="max"
+                        :min="0.0"
+                        :max="1.0"
                         :step="0.01"
-                        @change="sendCmd"
-                        hide-details>
-
+                        :color="value < off_below && value > 0 ? 'red' : undefined"
+                        @start="sliding = true"
+                        @end="sendCmd()"
+                        hide-details
+                    >
                         <template v-slot:prepend>
                             <v-icon @click="decrement">mdi-minus</v-icon>
                         </template>
@@ -43,15 +46,15 @@
     import {convertName} from "@/plugins/helpers";
 
     export default {
-        data: function() {
-            return {
-                value: this.target,
-            }
-        },
         props: {
             target: {
                 type: Number,
                 required: true,
+            },
+            max: {
+                type: Number,
+                required: false,
+                default: 1,
             },
             name: {
                 type: String,
@@ -73,34 +76,57 @@
                 required: false,
                 default: false
             },
+            rpm: {
+                type: [Number, Boolean],
+                required: false,
+                default: false
+            },
             multi: {
                 type: Number,
                 required: false,
                 default: 1
             },
-            max: {
-              type: Number,
-              required: false,
-              default: 1.0
-            },
-            min: {
-              type: Number,
-              required: false,
-              default: 0.0
+            off_below: {
+                type: Number,
+                required: false,
+                default: 0
+            }
+        },
+        data() {
+            return {
+                min: 0,
+                value: this.target,
+                sliding: false,
             }
         },
         methods: {
             convertName: convertName,
             sendCmd() {
-                let gcode = "";
+                if (this.sliding) {
+                    let gcode = "";
 
-                if (this.type === "fan") gcode = "M106 S"+(this.value * this.multi).toFixed(0)
-                if (this.type === "fan_generic") gcode = "SET_FAN_SPEED FAN="+this.name+" SPEED="+(this.value*this.multi)
-                if (this.type === "output_pin") gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
+                    if (this.value < this.min) {
+                        this.value = 0;
+                    }
 
-                if (gcode !== "") {
-                    this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-                    this.$socket.sendObj('printer.gcode.script', { script: gcode })
+                    if (this.target === this.value) {
+                        return;
+                    }
+
+                    const l_value = this.value * this.multi;
+
+                    if (this.type === "fan") gcode = "M106 S" + (l_value).toFixed(0)
+                    if (this.type === "fan_generic") {
+                        gcode = "SET_FAN_SPEED FAN=" + this.name + " SPEED=" + (l_value)
+                    }
+                    if (this.type === "output_pin") gcode = "SET_PIN PIN=" + this.name + " VALUE=" + (l_value).toFixed(2)
+
+                    if (gcode !== "") {
+                        this.$store.commit('server/addEvent', {message: gcode, type: 'command'})
+                        this.$socket.sendObj('printer.gcode.script', {script: gcode})
+                    }
+
+                    this.sliding = false;
                 }
             },
             switchOutputPin() {
@@ -110,21 +136,23 @@
                 this.$socket.sendObj('printer.gcode.script', { script: gcode })
             },
             decrement() {
-                this.value = this.value > 0 ? (this.value - 0.01).toFixed(2) : 0;
-                this.sendCmd();
+                this.value = this.value > 0 ? (this.value - 0.01).toFixed(2) : 0
+                this.sliding = true
+                this.sendCmd()
             },
             increment() {
-                this.value = this.value < 1 ? (this.value + 0.01).toFixed(2) : 100;
-                this.sendCmd();
+                this.value = this.value < 1.0 ? (this.value + 0.01).toFixed(2) : 1.0;
+                if (this.value < this.off_below) {
+                    this.value = this.off_below
+                }
+                this.sliding = true
+                this.sendCmd()
             }
         },
         watch: {
-            target: function(newVal) {
-                this.value = newVal;
-            },
-        },
-        created: function() {
-
-        },
+            target(newVal) {
+                this.value = newVal / this.max
+            }
+        }
     }
 </script>

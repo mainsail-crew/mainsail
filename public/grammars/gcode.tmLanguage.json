@@ -1,0 +1,79 @@
+
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "NC-Gcode",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    }
+  ],
+  "repository": {
+    "single_line_comment": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign",
+          "match": "#(.*)$"
+        },
+        {
+          "name": "comment.line.gcode",
+          "match": ";(.*)$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "include": "#single_line_comment"
+        },
+        {
+          "name": "constant.gcode",
+          "match": "[nN][ \\t]*[0-9\\.]+"
+        },
+        {
+          "name": "keyword.control.gcode.gcode",
+          "match": "[gG][ \\t]*[0-9][0-9\\.]*"
+        },
+        {
+          "name": "keyword.string.gcode",
+          "match": "(?i)[rRzZ][ \\t]*[\\-\\+]?[0-9\\.]+"
+        },
+        {
+          "name": "string.xcode.gcode",
+          "match": "(?i)[XAUIYBVJ][ \\t]*[\\-\\+]?[0-9\\.]+"
+        },
+        {
+          "name": "support.function.mcode.gcode",
+          "match": "[mM][ \\t]*[0-9][0-9\\.]*"
+        },
+        {
+          "name": "support.type.dDfFhHsStTcode.gcode",
+          "match": "[dDfFhHsStT][ \\t]*[0-9][0-9\\.]*"
+        },
+        {
+          "name": "variable.parameter.pqecode.gcode",
+          "match": "[pPqQeE][ \\t]*\\-?\\.?[0-9][0-9\\.]*"
+        },
+        {
+          "name": "string.control.mcode.gcode",
+          "match": "[cCwWkKlL][ \\t]*[\\-\\+]?[0-9\\.]+"
+        }
+      ]
+    },
+    "strings": {
+      "name": "keyword.operator.gcode",
+      "comment": "This pattern is actually for comments",
+      "begin": "(\\()|(\\;)",
+      "end": "(\\))|(\n)",
+      "patterns": [
+        {
+          "name": "constant.character.escape.gcode",
+          "match": "\\\\."
+        }
+      ]
+    }
+  },
+  "scopeName": "source.gcode"
+}

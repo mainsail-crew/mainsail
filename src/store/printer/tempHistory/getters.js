@@ -38,5 +38,43 @@ export default {
 		})
 
 		return Math.ceil((maxTemp + 1) / 10) * 10
-	}
+	},
+
+	getBoolDisplayPwmAxis: state => {
+		return state.series.findIndex(serie =>
+			serie.name.lastIndexOf("_") &&
+			['power', 'speed'].includes(serie.name.substr(serie.name.lastIndexOf("_")+1)) &&
+			'lineStyle' in serie &&
+			'opacity' in serie.lineStyle &&
+			serie.lineStyle.opacity > 0
+		) !== -1
+	},
+
+	getAvg: state => (name, serieName) => {
+		const serie = state.series.find((serie) => serie.name === name+"_"+serieName)
+		if (serie && 'data' in serie && serie.data.length) {
+			const maxTime = new Date().getTime() - (1000 * 60)
+			const data = serie.data.filter((item) => item[0] > maxTime)
+
+			if (data.length) {
+				let value = 0
+
+				data.forEach((item) => {
+					value += item[1]
+				})
+
+				return value / data.length
+			}
+		}
+
+		return 0
+	},
+
+	getAvgPower: (state, getters) => (name) => {
+		return getters['getAvg'](name, 'power')
+	},
+
+	getAvgSpeed: (state, getters) => (name) => {
+		return getters['getAvg'](name, 'speed')
+	},
 }

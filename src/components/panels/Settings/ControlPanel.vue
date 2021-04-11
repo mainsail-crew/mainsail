@@ -1,5 +1,7 @@
 <style>
-
+    .webcamImage {
+        width: 100%;
+    }
 </style>
 
 <template>
@@ -7,7 +9,7 @@
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Control</span>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Control')}}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pa-0">
@@ -15,7 +17,7 @@
                     <v-row>
                         <v-col col-6>
                             <v-text-field
-                                label="Speed XY"
+                                :label="$t('Settings.ControlPanel.SpeedXY')"
                                 v-model="feedrateXY"
                                 @blur="blurFeedrateXY"
                                 type="number"
@@ -28,7 +30,7 @@
                         </v-col>
                         <v-col col-6>
                             <v-text-field
-                                label="Speed Z"
+                                :label="$t('Settings.ControlPanel.SpeedZ')"
                                 v-model="feedrateZ"
                                 @blur="blurFeedrateZ"
                                 type="number"
@@ -42,50 +44,85 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances XY in mm"
-                                v-model="stepsXY"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
+                        <v-col class="py-0">
+                            <v-switch v-model="useCross" :label="$t('Settings.ControlPanel.EnableCross')" hide-details="auto" class="mt-0"></v-switch>
                         </v-col>
                     </v-row>
-                    <v-row>
-                        <v-col>
-                            <v-combobox
-                                label="Move distances Z in mm"
-                                v-model="stepsZ"
-                                hide-selected
-                                hide-details="auto"
-                                multiple
-                                small-chips
-                                :deletable-chips="true"
-                                append-icon=""
-                                type="number"
-                                :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
-                                ]"
-                            ></v-combobox>
-                        </v-col>
-                    </v-row>
+                    <template v-if="useCross">
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesInMm')"
+                                    v-model="stepsAll"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col class="pt-0">
+                                <v-switch v-model="reverseX" :label="$t('Settings.ControlPanel.ReverseXMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseY" :label="$t('Settings.ControlPanel.ReverseYMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseZ" :label="$t('Settings.ControlPanel.ReverseZMovement')" hide-details="auto" class="mt-0"></v-switch>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <template v-else>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesXYInMm')"
+                                    v-model="stepsXY"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-combobox
+                                    :label="$t('Settings.ControlPanel.MoveDistancesZInMm')"
+                                    v-model="stepsZ"
+                                    hide-selected
+                                    hide-details="auto"
+                                    multiple
+                                    small-chips
+                                    :deletable-chips="true"
+                                    append-icon=""
+                                    type="number"
+                                    :rules="[
+                                        v => v.length > 0 || 'Minimum 1 value',
+                                        v => v.length < 4 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    ]"
+                                ></v-combobox>
+                            </v-col>
+                        </v-row>
+                    </template>
                 </v-container>
             </v-card-text>
         </v-card>
         <v-card class="mt-6">
             <v-toolbar flat dense >
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-tune</v-icon>Extruder</span>
+                    <span class="subheading"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlPanel.Extruder') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-card-text class="pa-0">
@@ -93,7 +130,7 @@
                     <v-row>
                         <v-col>
                             <v-combobox
-                                label="Move distances E in mm"
+                                :label="$t('Settings.ControlPanel.MoveDistancesEInMm')"
                                 v-model="feedamountsE"
                                 hide-selected
                                 hide-details="auto"
@@ -112,7 +149,7 @@
                     <v-row>
                         <v-col>
                             <v-combobox
-                                label="Speed E in mm/s"
+                                :label="$t('Settings.ControlPanel.SpeedEInMms')"
                                 v-model="feedratesE"
                                 hide-selected
                                 hide-details="auto"
@@ -145,12 +182,55 @@
             }
         },
         computed: {
+            reverseX: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseX) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseX } } })
+                }
+            },
+            reverseY: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseY) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseY } } })
+                }
+            },
+            reverseZ: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.reverseZ;
+                },
+                set(reverseZ) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseZ } } })
+                }
+            },
+            useCross: {
+                get() {
+                    return this.$store.state.gui.dashboard.control.useCross;
+                },
+                set(useCross) {
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { useCross } } })
+                }
+            },
             feedrateXY: {
                 get() {
                     return this.$store.state.gui.dashboard.control.feedrateXY
                 },
                 set(feedrate) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { feedrateXY: feedrate } } })
+                }
+            },
+            stepsAll: {
+                get() {
+                    const steps = this.$store.state.gui.dashboard.control.stepsAll
+                    return (steps ?? []).sort(function (a,b) { return b-a })
+                },
+                set(steps) {
+                    const absSteps = []
+                    for(const value of steps) absSteps.push(Math.abs(value))
+                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { stepsAll: absSteps } } })
                 }
             },
             stepsXY: {

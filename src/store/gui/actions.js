@@ -1,90 +1,220 @@
-import axios from "axios";
+import Vue from "vue";
+import objectAssignDeep from "object-assign-deep"
 
 export default {
 	reset({ commit }) {
 		commit('reset')
 	},
 
-	getData({ commit, dispatch }, payload) {
-		commit('setData', payload)
+	getData({ commit, dispatch, rootState }, payload) {
 
-		if (
-			'state' in payload &&
-			'tempchart' in payload.state &&
-			'datasetSettings' in payload.state.tempchart
+		// upgrade webcam config to multi webcam support
+		if ('webcam' in payload.value &&
+			(
+				'service' in payload.value.webcam ||
+				'targetFps' in payload.value.webcam ||
+				'url' in payload.value.webcam ||
+				'flipX' in payload.value.webcam ||
+				'flipY' in payload.value.webcam
+			)
 		) {
-			for (const key of Object.keys(payload.state.tempchart.datasetSettings)) {
-				if (
-					'color' in payload.state.tempchart.datasetSettings[key] &&
-					typeof payload.state.tempchart.datasetSettings[key].color === "object"
-				) {
-					dispatch('setTempchartDatasetSetting', { name: key, type: 'color', value: payload.state.tempchart.datasetSettings[key].color.hex })
-				}
-			}
+			window.console.log("convert to multi webcam")
+			dispatch('upgradeWebcamConfig', payload.value.webcam)
+			delete payload.value.webcam
 		}
+
+		commit('setData', payload.value)
+
+		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
+			commit('setTempchartDatasetSettings', payload.value.tempchart.datasetSettings)
+		}
+
+		if (!rootState.socket.remoteMode) {
+			dispatch('farm/readStoredPrinters', {}, { root: true })
+		}
+
+		dispatch('printer/init', null, { root: true })
 	},
 
-	setSettings({ commit, dispatch }, payload) {
+	setSettings({ commit }, payload) {
 		commit('setSettings', payload)
 
-		if ('tempchart' in payload && 'boolPowerDatasets' in payload.tempchart) {
-			if (payload.tempchart.boolPowerDatasets) commit('printer/tempHistory/showPowerDatasets', {}, { root: true })
-			else commit('printer/tempHistory/hidePowerDatasets', {}, { root: true })
+		Object.keys(payload).forEach(key => {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/updateSettings', { newVal: payload[key], keyName: key })
+		})
+	},
+
+	updateSettings({ commit }, payload) {
+		const keyName = payload.keyName
+		let newState = payload.newVal
+		if (
+			'value' in payload &&
+			keyName in payload.value &&
+			typeof payload.value[keyName] !== "string" &&
+			!Array.isArray(payload.value[keyName])
+		) {
+			newState = objectAssignDeep(payload.value[keyName], newState)
 		}
 
-		dispatch('upload')
+		Vue.prototype.$socket.sendObj('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
+
+		commit('void', {}, { root: true })
 	},
 
-	upload({ state, rootState }) {
-		let file = new File([JSON.stringify({ state })], '.mainsail.json')
-
-		let formData = new FormData();
-		formData.append('file', file);
-		formData.append('root', 'config');
-
-		axios.post('//' + rootState.socket.hostname + ':' + rootState.socket.port + '/server/files/upload',
-			formData, {
-				headers: { 'Content-Type': 'multipart/form-data' }
-			}
-		).then(() => {
-
-		}).catch(() => {
-			window.console.error("Error save .mainsail.json!")
-		});
-	},
-
-	setGcodefilesMetadata({ commit, dispatch }, data) {
+	setGcodefilesMetadata({ commit, dispatch, state }, data) {
 		commit('setGcodefilesMetadata', data)
-		dispatch('upload')
+		dispatch('updateSettings', {
+			keyName: 'gcodefiles',
+			newVal: state.gcodefiles
+		})
 	},
 
-	setGcodefilesShowHiddenFiles({ commit, dispatch }, data) {
+	setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
 		commit('setGcodefilesShowHiddenFiles', data)
-		dispatch('upload')
+		dispatch('updateSettings', {
+			keyName: 'gcodefiles',
+			newVal: state.gcodefiles
+		})
 	},
 
-	addPreset({ commit, dispatch }, payload) {
+	addPreset({ commit, dispatch, state }, payload) {
 		commit("addPreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	updatePreset({ commit, dispatch }, payload) {
+	updatePreset({ commit, dispatch, state }, payload) {
 		commit("updatePreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	deletePreset({ commit, dispatch }, payload) {
+	deletePreset({ commit, dispatch, state }, payload) {
 		commit("deletePreset", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'presets',
+			newVal: state.presets
+		})
 	},
 
-	setTempchartDatasetSetting({ commit, dispatch }, payload) {
+	addWebcam({ commit, dispatch, state }, payload) {
+		commit("addWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	updateWebcam({ commit, dispatch, state }, payload) {
+		commit("updateWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	deleteWebcam({ commit, dispatch, state }, payload) {
+		commit("deleteWebcam", payload)
+		dispatch('updateSettings', {
+			keyName: 'webcam.configs',
+			newVal: state.webcam.configs
+		})
+	},
+
+	upgradeWebcamConfig({ state, dispatch }, payload) {
+		const webcam = {...state.webcam}
+		webcam.bool = payload.bool
+		webcam.configs[0] = {
+			name: 'Default',
+			icon: 'mdi-webcam',
+			service: 'service' in payload ? payload.service : "mjpegstreamer-adaptive",
+			targetFps: 'targetFps' in payload ? payload.targetFps : 15,
+			url: 'url' in payload ? payload.url : "/webcam/?action=stream",
+			flipX: 'flipX' in payload ? payload.flipX : false,
+			flipY: 'flipY' in payload ? payload.flipY : false,
+		}
+
+		dispatch('updateSettings', {
+			keyName: 'webcam',
+			newVal: webcam
+		})
+	},
+
+	setTempchartDatasetSetting({ commit, dispatch, state }, payload) {
 		commit("setTempchartDatasetSetting", payload)
-		dispatch("upload")
+		dispatch('updateSettings', {
+			keyName: 'tempchart',
+			newVal: state.tempchart
+		})
 	},
 
-	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch }, payload) {
+	setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
 		commit("setTempchartDatasetAdditionalSensorSetting", payload)
-		dispatch("upload")
-	}
+		dispatch('updateSettings', {
+			keyName: 'tempchart',
+			newVal: state.tempchart
+		})
+	},
+
+	resetMoonrakerDB() {
+		Vue.prototype.$socket.sendObj('server.database.list', { }, 'gui/resetMoonrakerDB2')
+	},
+
+	resetMoonrakerDB2({ commit }, payload) {
+		if ('namespaces' in payload && payload.namespaces.includes('mainsail')) {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/resetMoonrakerDB3')
+		}
+
+		commit('void', {}, { root: true })
+	},
+
+	resetMoonrakerDB3({ commit }, payload) {
+		if ('value' in payload && Object.keys(payload.value).length) {
+			Object.keys(payload.value).forEach(key => {
+				Vue.prototype.$socket.sendObj('server.database.delete_item', { namespace: 'mainsail', key: key })
+			})
+
+			window.location.reload()
+		}
+
+		commit('void', {}, { root: true })
+	},
+
+	//TODO: remove it after a short time of migration. maybe april release
+	migrateMainsailJson({ state, dispatch, rootState }, payload) {
+		const settings = {}
+
+		Object.keys(payload.state).forEach(key => {
+			if (key in state) {
+				if (Array.isArray(payload.state[key])) settings[key] = payload.state[key]
+				else settings[key] = {...payload.state[key]}
+			}
+
+			if (key === "cooldownGcode") settings["cooldown_gcode"] = payload.state[key]
+			if (key === "remotePrinters") settings["remote_printers"] = payload.state[key]
+		})
+
+		if (Object.keys(settings).length) {
+			dispatch('setSettings', settings)
+		}
+
+		Vue.prototype.$socket.sendObj('server.files.delete_file', { path: 'config/.mainsail.json' })
+
+		if (!rootState.socket.remoteMode) {
+			dispatch('farm/readStoredPrinters', {}, { root: true })
+		}
+		dispatch('printer/init', null, { root: true })
+	},
+
+	setHistoryColumns({ commit, dispatch, state }, data) {
+		commit('setHistoryColumns', data)
+		dispatch('updateSettings', {
+			keyName: 'history',
+			newVal: state.history
+		})
+	},
 }

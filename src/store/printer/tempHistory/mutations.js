@@ -27,10 +27,15 @@ export default {
 					])
 				}
 			} else {
-				dataset.data.push([
-					payload.time,
-					Math.round(payload.value * multi * 100)/100
-				])
+				if (
+					dataset.data.length &&
+					dataset.data[dataset.data.length-1][0] < payload.time
+				) {
+					dataset.data.push([
+						payload.time,
+						Math.round(payload.value * multi * 100)/100
+					])
+				}
 
 				let i
 				const timeOld = new Date().getTime() - (1000 * payload.maxHistory)
@@ -58,8 +63,10 @@ export default {
 		if (datasetIndex !== -1) {
 			if (payload.type === "target" && 'areaStyle' in state.series[datasetIndex]) {
 				Vue.set(state.series[datasetIndex].areaStyle, 'opacity', payload.value ? 0.1 : 0)
+				Vue.set(state.series[datasetIndex].emphasis.areaStyle, 'opacity', payload.value ? 0.1 : 0)
 			} else if ('lineStyle' in state.series[datasetIndex]) {
-				Vue.set(state.series[datasetIndex].lineStyle, 'opacity', payload.value)
+				Vue.set(state.series[datasetIndex].lineStyle, 'opacity', payload.value ? 0.9 : 0)
+				Vue.set(state.series[datasetIndex].emphasis.lineStyle, 'opacity', payload.value ? 0.9 : 0)
 			}
 		}
 	},
@@ -72,10 +79,18 @@ export default {
 					element.name === payload.name+'_target' ||
 					element.name === payload.name+'_power'
 				)
-			) element.lineStyle.color = payload.value
+			) {
+				element.lineStyle.color = payload.value
+
+				if ('emphasis' in element && 'lineStyle' in element.emphasis)
+					element.emphasis.lineStyle.color = payload.value
+			}
 
 			if (element.name === payload.name+'_target' && 'areaStyle' in element) {
 				element.areaStyle.color = payload.value
+
+				if ('emphasis' in element && 'areaStyle' in element.emphasis)
+					element.emphasis.areaStyle.color = payload.value
 			}
 		})
 	},

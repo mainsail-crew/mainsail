@@ -25,6 +25,7 @@
     import {mapState} from "vuex";
 
     export default {
+        name: "settingsMachine",
         data: () => ({
 
         }),
@@ -34,7 +35,11 @@
             }),
             updateManager:{
                 get() {
-                    return this.$store.state.server.plugins.includes('update_manager')
+                    //reverse compatibility
+                    if ('plugins' in this.$store.state.server)
+                        return this.$store.state.server.plugins.includes('update_manager')
+
+                    return this.$store.state.server.components.includes('update_manager')
                 }
             }
         },

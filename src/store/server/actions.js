@@ -10,7 +10,23 @@ export default {
 	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
 		Vue.prototype.$socket.sendObj('server.config', {}, 'server/getConfig')
-		Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+		Vue.prototype.$socket.sendObj('server.database.list', { root: 'config' }, 'server/checkDatabases')
+	},
+
+	checkDatabases({ commit }, payload) {
+		if (
+			'namespaces' in payload &&
+			payload.namespaces.includes('mainsail')
+		) {
+			Vue.prototype.$socket.sendObj('server.database.get_item', { namespace: 'mainsail' }, 'gui/getData')
+		} else {
+			//fallback for a short time...
+			Vue.prototype.$socket.sendObj('server.files.list', { root: 'config' }, 'server/checkMainsailJson')
+
+			//after this short migration time...
+			//dispatch('printer/init', null, { root: true })
+			commit('void', { }, { root: true })
+		}
 	},
 
 	checkMainsailJson({ dispatch, rootState }, payload) {
@@ -22,9 +38,7 @@ export default {
 
 				fetch('//'+rootState.socket.hostname+':'+rootState.socket.port+'/server/files/config/.mainsail.json?time='+Date.now())
 					.then(res => res.json()).then(file => {
-					dispatch('gui/getData', file, { root: true })
-					if (!rootState.socket.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
-					dispatch('printer/init', null, { root: true })
+					dispatch('gui/migrateMainsailJson', file, { root: true })
 				})
 			}
 		})
@@ -33,12 +47,21 @@ export default {
 	},
 
 	getInfo({ commit, state, rootState }, payload) {
-		if (state.plugins.length === 0) {
-			if (payload.plugins.includes("power") !== false)
+		if (state.components.length === 0) {
+			//reverse compatibility
+			let components = ('components' in payload) ? payload.components : []
+			if (components.length === 0 && 'plugins' in payload)  components = payload.plugins
+
+			if (components.includes("power") !== false)
 				Vue.prototype.$socket.sendObj('machine.device_power.devices', {}, 'server/power/getDevices')
 
-			if (payload.plugins.includes("update_manager") !== false)
+			if (components.includes("update_manager") !== false)
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
+
+			if (payload.plugins.includes("history") !== false) {
+				Vue.prototype.$socket.sendObj('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
+				Vue.prototype.$socket.sendObj('server.history.totals', {}, 'server/history/getTotals')
+			}
 		}
 
 		if (state.registered_directories.length === 0 && 'registered_directories' in payload) {

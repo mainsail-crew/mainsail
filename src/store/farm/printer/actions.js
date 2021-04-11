@@ -46,10 +46,6 @@ export default {
 						commit("setData", data.params[0])
 						break
 
-					case "notify_filelist_changed":
-						commit("notifyFilelistChanged", data.params[0])
-						break
-
 					case "notify_klippy_disconnected":
 						dispatch("disconnectKlippy")
 						break
@@ -122,6 +118,11 @@ export default {
 			action: "getConfigDir",
 			params: { root: "config"}
 		})
+
+		dispatch("sendObj", {
+			method: "server.database.list",
+			action: "getDatabases"
+		})
 	},
 
 	getObjectsList({ dispatch }, payload) {
@@ -172,4 +173,20 @@ export default {
 	getConfigDir({ commit }, payload) {
 		commit("setConfigDir", payload)
 	},
+
+	getDatabases({ commit, dispatch }, payload) {
+		commit("setDatabases", payload.namespaces)
+
+		if (payload.namespaces.includes("mainsail")) {
+			dispatch("sendObj", {
+				method: 'server.database.get_item',
+				params: { namespace: "mainsail" },
+				action: "getMainsailData"
+			})
+		}
+	},
+
+	getMainsailData({ commit }, payload) {
+		commit("setMainsailData", payload.value)
+	}
 }

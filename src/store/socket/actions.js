@@ -31,7 +31,7 @@ export default {
 		if (event.wasClean) window.console.log('Socket closed clear')
 	},
 
-	onMessage ({ commit, state }, payload) {
+	onMessage ({ commit, state, dispatch }, payload) {
 		if (!state.isConnected) commit('setConnected')
 
 		switch(payload.method) {
@@ -99,6 +99,10 @@ export default {
 				commit('server/updateManager/setStatus', payload.params[0], { root: true })
 				break
 
+			case 'notify_history_changed':
+				dispatch('server/history/getChanged', payload.params[0], { root: true })
+				break
+
 			default:
 				if (payload.result !== "ok") {
 					if (
@@ -106,7 +110,6 @@ export default {
 						payload.error.message !== "Klippy Request Timed Out" &&
 						payload.error.message !== "Klippy Disconnected"
 					) window.console.error("JSON-RPC: " + payload.error.message)
-					else if (!payload.error) window.console.log(payload)
 				}
 		}
 	},
