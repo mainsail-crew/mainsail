@@ -336,7 +336,7 @@
                             icon: "mdi-printer",
                             loadingName: "statusPrintReprint",
                             status: ['error', 'complete'],
-                            click: this.btnClearJob
+                            click: this.btnReprintJob
                         }
                     ]
                 }
