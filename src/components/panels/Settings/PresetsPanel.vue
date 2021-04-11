@@ -48,7 +48,7 @@
                     <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-fire" left></v-icon>
-                        {{ dialog.index === null ? $t('Settings.PresetsPanel.Create') : $t('Settings.PresetsPanel.Edit') }} {{ $t('Settings.PresetsPanel.Preset') }}
+                        {{ dialog.index === null ? $t('Settings.PresetsPanel.CreateHeadline') : $t('Settings.PresetsPanel.EditHeadline') }}
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -135,7 +135,7 @@
                                             :class="dialog.index !== null ? 'float-right' : '' "
                                             type="submit"
                                         >
-                                            {{ dialog.index === null ? $t('Settings.PresetsPanel.Store') : $t('Settings.PresetsPanel.Update') }} {{ $t('Settings.PresetsPanel.Preset') }}
+                                            {{ dialog.index === null ? $t('Settings.PresetsPanel.StoreButton') : $t('Settings.PresetsPanel.UpdateButton') }}
                                         </v-btn>
                                     </v-col>
                                 </v-row>
