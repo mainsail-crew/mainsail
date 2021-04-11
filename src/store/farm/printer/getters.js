@@ -1,5 +1,5 @@
-import {themeDir} from "@/store/variables";
-
+import { themeDir } from "@/store/variables"
+import { convertName } from "@/plugins/helpers"
 
 export default {
 
@@ -72,7 +72,12 @@ export default {
 			if (currentPosition > 0 && maxPosition > 0) return 1 / maxPosition * currentPosition
 		}
 
-		return state.data.virtual_sdcard.progress
+		if (
+			'virtual_sdcard' in state.data &&
+			'progress' in state.data.virtual_sdcard
+		) return state.data.virtual_sdcard.progress
+
+		return 0
 	},
 
 	getImage: state => {
@@ -122,7 +127,7 @@ export default {
 				'target' in state.data[key]
 			) {
 				output.push({
-					name: key,
+					name: convertName(key),
 					value: state.data[key].temperature.toFixed(0)+"° / "+state.data[key].target.toFixed(0)+"°",
 				})
 			}
@@ -134,7 +139,7 @@ export default {
 			'target' in state.data.heater_bed
 		) {
 			output.push({
-				name: 'heater_bed',
+				name: convertName('heater_bed'),
 				value: state.data.heater_bed.temperature.toFixed(0)+"° / "+state.data.heater_bed.target.toFixed(0)+"°"
 			})
 		}
@@ -145,14 +150,14 @@ export default {
 			'target' in state.data['temperature_fan chamber']
 		) {
 			output.push({
-				name: 'chamber',
+				name: convertName('chamber'),
 				value: state.data['temperature_fan chamber'].temperature.toFixed(0)+"° / "+state.data['temperature_fan chamber'].target.toFixed(0)+"°"
 			})
 		}
 
 		if ('temperature_sensor chamber' in state.data) {
 			output.push({
-				name: 'chamber',
+				name: convertName('chamber'),
 				value: state.data['temperature_sensor chamber'].temperature.toFixed(0)+"°"
 			})
 		}

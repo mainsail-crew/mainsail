@@ -22,6 +22,7 @@
     import ZOffsetPanel from "../components/panels/ZOffsetPanel";
 
     export default {
+        name: "dashboard",
         components: { ZOffsetPanel },
         data: () => ({
 

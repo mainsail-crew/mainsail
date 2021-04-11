@@ -54,7 +54,7 @@
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>Config Reference</v-btn>
+                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Settings.ConfigFilesPanel.ConfigReference') }}</v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
                         <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Settings.ConfigFilesPanel.SaveClose') }}</span></v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
@@ -99,7 +99,9 @@
                     :sort-desc.sync="sortDesc"
                     :items-per-page.sync="countPerPage"
                     :footer-props="{
-                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files')
+                        itemsPerPageText:  $t('Settings.ConfigFilesPanel.Files'),
+                        itemsPerPageAllText: $t('Settings.ConfigFilesPanel.AllFiles'),
+                        itemsPerPageOptions: [10,25,50,100,-1]
                     }"
                     mobile-breakpoint="0"
                     item-key="name">

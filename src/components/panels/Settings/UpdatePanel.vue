@@ -307,6 +307,8 @@
 
                 if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
                     output += local_version+" > "+remote_version
+                else if ('full_version_string' in object && object.full_version_string !== '?')
+                    output += object.full_version_string
                 else
                     output += local_version
 

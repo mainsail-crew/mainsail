@@ -59,7 +59,7 @@ export default {
 				Vue.prototype.$socket.sendObj('machine.update.status', {}, 'server/updateManager/getStatus')
 
 			if (payload.plugins.includes("history") !== false) {
-				Vue.prototype.$socket.sendObj('server.history.list', { start: 1, limit: 50 }, 'server/history/getHistory')
+				Vue.prototype.$socket.sendObj('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
 				Vue.prototype.$socket.sendObj('server.history.totals', {}, 'server/history/getTotals')
 			}
 		}
