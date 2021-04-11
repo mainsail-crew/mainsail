@@ -390,15 +390,16 @@
 		"PresetsPanel": {
 			"AddPreset": "添加预设",
 			"Cooldown": "冷却",
-			"CreateHeadline": "",
+			"Create": "创建",
 			"CustomGCode": "自定义 G-Code",
+			"Edit": "编辑",
 			"EditCooldown": "编辑 冷却",
-			"EditHeadline": "",
 			"Name": "名称",
 			"PreheatPresets": "预热预设",
+			"Preset": "预设",
 			"PresetInfo": "你需要设置最低目标温度或者自定义 G-Code.",
-			"StoreButton": "",
-			"UpdateButton": "",
+			"Store": "储存",
+			"Update": "更新",
 			"UpdateCooldown": "更新 冷却"
 		},
 		"RemotePrintersPanel": {
