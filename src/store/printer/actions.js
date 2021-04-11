@@ -76,7 +76,7 @@ export default {
 		if (payload.toLowerCase().trim() === "m112") {
 			Vue.prototype.$socket.sendObj('printer.emergency_stop', {}, "socket/removeLoading", { name: 'sendGcode' })
 		} else {
-			Vue.prototype.$socket.sendObj('printer.gcode.script', { script: this.gcode }, "socket/removeLoading", { name: 'sendGcode' })
+			Vue.prototype.$socket.sendObj('printer.gcode.script', { script: payload }, "socket/removeLoading", { name: 'sendGcode' })
 		}
 	}
 }
