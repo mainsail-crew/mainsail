@@ -62,8 +62,8 @@
             <template v-if="display_message || print_stats_message">
                 <v-container>
                     <v-row>
-                        <v-col class="pr-0 py-2">
-                            <v-icon class="mr-2 mt-1 float-left" small>mdi-message-processing-outline</v-icon><h3 class="font-weight-regular">{{ print_stats_message ? print_stats_message : display_message }}</h3>
+                        <v-col class="py-2">
+                            <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>{{ print_stats_message ? print_stats_message : display_message }}</span>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -72,7 +72,10 @@
             <template v-if="current_filename ">
                 <v-container>
                     <v-row>
-                        <v-col class="pa-2 pr-0 col-auto" v-if="thumbnailSmall">
+                        <v-col :class="thumbnailSmall ? 'py-3' : 'py-2'" :style="(thumbnailSmall ? 'width: calc(100% - 40px);' : '')">
+                            <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span>
+                        </v-col>
+                        <v-col class="pa-2 pl-0 col-auto" v-if="thumbnailSmall">
                             <template v-if="thumbnailSmall && thumbnailBig">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
@@ -92,10 +95,6 @@
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
                             </template>
-                        </v-col>
-
-                        <v-col :class="thumbnailSmall ? 'py-3' : 'py-2'" :style="(thumbnailSmall ? 'width: calc(100% - 40px);' : '')">
-                            <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-1">mdi-file-outline</v-icon>{{ current_filename }}</span>
                         </v-col>
                     </v-row>
                 </v-container>
