@@ -119,8 +119,9 @@
                         </tr>
                     </template>
 
-                    <template #item="{ item }">
+                    <template #item="{ index, item }">
                         <tr
+                            :key="`${index} ${item.filename}`"
                             v-longpress:600="(e) => showContextMenu(e, item)"
                             @contextmenu="showContextMenu($event, item)"
                             @click="clickRow(item)"
