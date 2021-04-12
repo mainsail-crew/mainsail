@@ -458,18 +458,6 @@
                     sourcecode: "",
                     monaco: null
                 },
-                headers: [
-                    { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t('Files.Name'),          value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: '',                             value: 'status',          align: 'left',  configable: false,  visible: true },
-                    { text: this.$t('Files.Filesize'),      value: 'size',            align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.LastModified'),  value: 'modified',        align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.ObjectHeight'),  value: 'object_height',   align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.LayerHeight'),   value: 'layer_height',    align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
-                ],
                 options: {
 
                 },
@@ -526,6 +514,20 @@
                 getStatusIcon: "server/history/getPrintStatusChipIcon",
                 getStatusColor: "server/history/getPrintStatusChipColor",
             }),
+            headers() {
+                return [
+                    { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t('Files.Name'),          value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: '',                             value: 'status',          align: 'left',  configable: false,  visible: true },
+                    { text: this.$t('Files.Filesize'),      value: 'size',            align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LastModified'),  value: 'modified',        align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.ObjectHeight'),  value: 'object_height',   align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LayerHeight'),   value: 'layer_height',    align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
+                ]
+            },
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
