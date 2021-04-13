@@ -515,7 +515,7 @@
                 getStatusColor: "server/history/getPrintStatusChipColor",
             }),
             headers() {
-                return [
+                const headers = [
                     { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: this.$t('Files.Name'),          value: 'filename',        align: 'left',  configable: false,  visible: true },
                     { text: '',                             value: 'status',          align: 'left',  configable: false,  visible: true },
@@ -527,6 +527,16 @@
                     { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
                     { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
                 ]
+
+                headers.forEach((header) => {
+                    if (header.visible && this.hideMetadataColums.includes(header.value)) {
+                        header.visible = false
+                    } else if (!header.visible && !this.hideMetadataColums.includes(header.value)) {
+                        header.visible = true
+                    }
+                })
+
+                return headers
             },
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
@@ -595,12 +605,6 @@
         },
         created() {
             this.loadPath()
-        },
-        mounted() {
-            this.hideMetadataColums.forEach((key) => {
-                let headerElement = this.headers.find(element => element.value === key)
-                if (headerElement) headerElement.visible = false
-            });
         },
         methods: {
             /**
