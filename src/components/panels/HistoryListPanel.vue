@@ -274,7 +274,7 @@ import VueLoadImage from 'vue-load-image'
                 getStatusColor: "server/history/getPrintStatusChipColor",
             }),
             headers() {
-                return [
+                const headers = [
                     { text: '',                                     value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
                     { text: this.$t("History.Filename"),            value: 'filename',        align: 'left',  configable: false,  visible: true },
                     { text: '',                                     value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
@@ -294,6 +294,16 @@ import VueLoadImage from 'vue-load-image'
                     { text: this.$t("History.ObjectHeight"),        value: 'object_height',   align: 'left', configable: true,  visible: true },
                     { text: this.$t("History.Slicer"),              value: 'slicer',          align: 'left', configable: true,  visible: true },
                 ]
+
+                headers.forEach((header) => {
+                    if (header.visible && this.hideColums.includes(header.value)) {
+                        header.visible = false
+                    } else if (!header.visible && !this.hideColums.includes(header.value)) {
+                        header.visible = true
+                    }
+                })
+
+                return headers
             },
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
@@ -322,15 +332,6 @@ import VueLoadImage from 'vue-load-image'
                     return this.$store.dispatch("gui/setSettings", { history: { hideColums: newVal } })
                 }
             },
-        },
-        mounted() {
-            this.headers.forEach((header) => {
-                if (header.visible && this.hideColums.includes(header.value)) {
-                    header.visible = false
-                } else if (!header.visible && !this.hideColums.includes(header.value)) {
-                    header.visible = true
-                }
-            })
         },
         methods: {
             refreshHistory: function() {
