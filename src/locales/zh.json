@@ -22,7 +22,7 @@
 		"PowerDevices": "上电",
 		"Printers": "打印机组",
 		"Reboot": "重启",
-		"Recovering": "",
+		"Recovering": "恢复",
 		"Remotemode": "https://docs.mainsail.xyz/remotemode",
 		"Restart": "重启",
 		"RestartServices": "重启服务",
@@ -52,7 +52,7 @@
 		"Minimap": "显示小地图"
 	},
 	"Files": {
-		"AllFiles": "",
+		"AllFiles": "所有文件",
 		"Cancel": "取消",
 		"Create": "创建",
 		"CreateNewDirectory": "创建目录",
@@ -80,7 +80,7 @@
 		"Preheat": "预热",
 		"PrintStart": "开始打印",
 		"PrintTime": "打印时间",
-		"PrintedFiles": "",
+		"PrintedFiles": "打印的文件",
 		"RefreshCurrentDirectory": "刷新当前目录",
 		"Rename": "重命名",
 		"RenameDirectory": "重命名目录",
@@ -115,12 +115,12 @@
 		"Rename": "重命名",
 		"RenameBedMeshProfile": "重命名网床配置文件",
 		"Scale": "缩放",
-		"TitleCalibrate": "",
-		"TitleClear": "",
-		"TitleHomeAll": ""
+		"TitleCalibrate": "校准新床网",
+		"TitleClear": "清除网床",
+		"TitleHomeAll": "全部归零"
 	},
 	"History": {
-		"AllJobs": "",
+		"AllJobs": "全部",
 		"AvgPrinttime": "平均打印时间",
 		"Delete": "删除",
 		"Details": "细节",
@@ -136,8 +136,8 @@
 		"FirstLayerBedTemp": "第一层床温度.",
 		"FirstLayerExtTemp": "第一层外部温度.",
 		"FirstLayerHeight": "第一层高度",
-		"HistoryFilamentUsage": "",
-		"HistoryPrinttimeAVG": "",
+		"HistoryFilamentUsage": "耗材",
+		"HistoryPrinttimeAVG": "打印",
 		"JobDetails": "使用详情",
 		"Jobs": "工作",
 		"LastModified": "上次修改",
@@ -185,7 +185,7 @@
 			"ZTilt": "Z 倾斜"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": ""
+			"WebcamOff": "关闭"
 		},
 		"KlippyStatePanel": {
 			"FirmwareRestart": "Firmware 重启",
@@ -208,10 +208,10 @@
 			"SetupConsole": "设置控制台"
 		},
 		"MiscellaneousPanel": {
-			"ExtrusionFactor": "",
+			"ExtrusionFactor": "挤出系数",
 			"Miscellaneous": "杂项",
 			"PrintSettings": "设置打印机",
-			"SpeedFactor": ""
+			"SpeedFactor": "速度因素"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "下载日志",
@@ -226,22 +226,22 @@
 			"PowerControl": "电源管理"
 		},
 		"StatusPanel": {
-			"Absolute": "",
+			"Absolute": "绝对",
 			"CancelPrint": "取消打印",
 			"ClearPrintStats": "清除打印标志",
-			"Difference": "",
+			"Difference": "区别",
 			"ETA": "ETA",
-			"Estimate": "",
+			"Estimate": "估计",
 			"Filament": "耗材",
 			"File": "文件",
-			"Flow": "",
+			"Flow": "流动",
 			"Layer": "层",
-			"Max": "",
+			"Max": "最大",
 			"ObjectHeight": "物体高度:",
 			"PausePrint": "暂停打印",
-			"Position": "",
+			"Position": "位置",
 			"Print": "打印",
-			"Relative": "",
+			"Relative": "相对的",
 			"ReprintJob": "继续打印",
 			"ResumePrint": "继续打印",
 			"Slicer": "切片",
@@ -254,7 +254,7 @@
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "自动缩放图表",
-			"Avg": "",
+			"Avg": "平均",
 			"Color": "颜色",
 			"Cooldown": "冷却",
 			"Current": "当前",
@@ -272,13 +272,13 @@
 			"State": "状态",
 			"Target": "目标",
 			"Temperatures": "温度",
-			"TemperaturesInChart": "",
+			"TemperaturesInChart": "温度 [°C]",
 			"UNKNOWN": "未知"
 		},
 		"WebcamPanel": {
-			"All": "",
+			"All": "全部",
 			"FPS": "FPS",
-			"UnknownWebcamService": "",
+			"UnknownWebcamService": "未知网络摄像头服务",
 			"Webcam": "网络摄像头"
 		},
 		"ZOffsetPanel": {
@@ -300,7 +300,7 @@
 	},
 	"Settings": {
 		"ConfigFilesPanel": {
-			"AllFiles": "",
+			"AllFiles": "所有文件",
 			"Cancel": "取消",
 			"ConfigFiles": "配置文件",
 			"ConfigReference": "配置参考",
@@ -333,7 +333,7 @@
 		},
 		"ControlPanel": {
 			"Control": "控制",
-			"EnableCross": "",
+			"EnableCross": "启用交叉运动",
 			"Extruder": "挤出",
 			"MoveDistancesEInMm": "移动距离 E in mm",
 			"MoveDistancesInMm": "移动距离 mm",
@@ -390,17 +390,16 @@
 		"PresetsPanel": {
 			"AddPreset": "添加预设",
 			"Cooldown": "冷却",
-			"Create": "创建",
 			"CustomGCode": "自定义 G-Code",
-			"Edit": "编辑",
+			"CreateHeadline": "创建预设",
 			"EditCooldown": "编辑 冷却",
+			"EditHeadline": "编辑预设",
 			"Name": "名称",
 			"PreheatPresets": "预热预设",
-			"Preset": "预设",
 			"PresetInfo": "你需要设置最低目标温度或者自定义 G-Code.",
-			"Store": "储存",
-			"Update": "更新",
-			"UpdateCooldown": "更新 冷却"
+			"StoreButton": "储存预设",
+			"UpdateCooldown": "更新 冷却",
+			"UpdateButton": "更新预设"
 		},
 		"RemotePrintersPanel": {
 			"AddPrinter": "添加打印机",
@@ -416,18 +415,18 @@
 			"CheckForUpdates": "检查更新",
 			"Commits": "提交",
 			"CommittedAt": "致力于",
-			"Detached": "",
-			"Dirty": "",
+			"Detached": "独立的",
+			"Dirty": "错误的",
 			"ERROR": "错误",
-			"Invalid": "",
+			"Invalid": "无效的",
 			"OSPackages": "系统组件",
 			"PackagesCanBeUpgraded": "组件可升级",
 			"System": "系统",
-			"Unknown": "",
+			"Unknown": "未知",
 			"UpToDate": "最新",
-			"Update": "",
+			"Update": "更新",
 			"UpdateManager": "更新 管理",
-			"Upgrade": ""
+			"Upgrade": "升级"
 		},
 		"WebcamPanel": {
 			"AddWebcam": "添加摄像头",
@@ -443,7 +442,7 @@
 			"IconMcu": "主控",
 			"IconNozzle": "喷嘴",
 			"IconPrinter": "打印机",
-			"Ipstream": "",
+			"Ipstream": "IP 摄像机",
 			"Mjpegstreamer": "MJPEG-Streamer",
 			"MjpegstreamerAdaptive": "自适应 MJPEG-Streamer (实现)",
 			"Name": "名称",
