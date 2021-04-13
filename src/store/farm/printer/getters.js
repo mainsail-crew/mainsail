@@ -252,7 +252,11 @@ export default {
 		if (
 			'gui' in state.data &&
 			'webcam' in state.data.gui &&
-			'configs' in state.data.gui.webcam
+			'bool' in state.data.gui.webcam &&
+			'configs' in state.data.gui.webcam &&
+			'dashboard' in state.data.gui &&
+			'boolWebcam' in state.data.gui.dashboard &&
+			(state.data.gui.dashboard.boolWebcam || state.data.gui.webcam.bool)
 		) return state.data.gui.webcam.configs
 
 		return []

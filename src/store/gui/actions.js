@@ -18,7 +18,6 @@ export default {
 				'flipY' in payload.value.webcam
 			)
 		) {
-			window.console.log("convert to multi webcam")
 			dispatch('upgradeWebcamConfig', payload.value.webcam)
 			delete payload.value.webcam
 		}

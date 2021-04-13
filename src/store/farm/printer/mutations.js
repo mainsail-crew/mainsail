@@ -69,6 +69,16 @@ export default {
 	},
 
 	setMainsailData(state, payload) {
-		Vue.set(state.data, 'gui', payload)
+		const setDataDeep = function(currentState, payload) {
+			Object.entries(payload).forEach(([key, value]) => {
+				if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
+					setDataDeep(currentState[key], value)
+				} else if (key in currentState) {
+					Vue.set(currentState, key, value)
+				}
+			})
+		}
+
+		setDataDeep(state.data.gui, payload)
 	},
 }

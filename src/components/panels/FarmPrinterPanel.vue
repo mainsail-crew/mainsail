@@ -71,7 +71,7 @@
                     <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
                 </template>
                 <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer-adaptive'">
-                    <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam"></webcam-mjpegstreamer-adaptive>
+                    <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam" :printer-url="printerUrl"></webcam-mjpegstreamer-adaptive>
                 </template>
             </div>
             <v-card-title class="white--text py-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
@@ -124,6 +124,15 @@
             ...mapState({
                 remoteMode: state => state.socket.remoteMode
             }),
+            printerUrl() {
+                const thisUrl = window.location.href.split("/")
+                const protocol = thisUrl[0]
+
+                let url = protocol+"//"+this.printer.socket.hostname
+                if (80 !== parseInt(this.printer.socket.webPort)) url += ":"+this.printer.socket.webPort
+
+                return url
+            },
             isCurrentPrinter: {
                 get() {
                     return this.$store.getters["farm/"+this.printer._namespace+"/isCurrentPrinter"]
@@ -185,7 +194,7 @@
             },
             changePrinter() {
                 if (this.remoteMode) this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
-                else window.location.href = "//"+this.printer.socket.hostname+(parseInt(this.printer.socket.webPort) !== 80 ? ':'+this.printer.socket.webPort : '')
+                else window.location.href = this.printerUrl
             },
             reconnectPrinter() {
                 this.$store.dispatch("farm/"+this.printer._namespace+"/reconnect")
