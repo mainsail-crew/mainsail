@@ -305,8 +305,8 @@ export default {
         },
         saveWebcam() {
             if (this.dialog.valid) {
-                if (this.dialog.index) this.$store.dispatch("gui/updateWebcam", this.dialog)
-                else this.$store.dispatch("gui/addWebcam", this.dialog)
+                if (this.dialog.index) this.$store.dispatch("gui/updateWebcam", {...this.dialog})
+                else this.$store.dispatch("gui/addWebcam", {...this.dialog})
 
                 this.clearDialog()
             }

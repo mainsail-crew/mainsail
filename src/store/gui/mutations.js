@@ -84,8 +84,8 @@ export default {
 
 	updateWebcam(state, payload) {
 		if (state.webcam.configs[payload.index]) {
-			const configs = {...state.webcam.configs}
-			configs[payload.index] = {
+			const webcam = {...state.webcam}
+			webcam.configs[payload.index] = {
 				name: payload.name,
 				icon: payload.icon,
 				service: payload.service,
@@ -95,7 +95,7 @@ export default {
 				flipY: payload.flipY,
 			}
 
-			Vue.set(state.webcam, 'configs', configs)
+			Vue.set(state, 'webcam', webcam)
 		}
 	},
 
