@@ -51,6 +51,10 @@
         },
         props: {
             camSettings: Object,
+            printerUrl: {
+                type: String,
+                default: null
+            }
         },
         created: function () {
 
@@ -101,7 +105,8 @@
             },
             setUrl() {
                 const baseUrl = this.camSettings.url
-                const hostUrl = new URL(document.URL)
+                const hostUrl = new URL(this.printerUrl === null ? document.URL : this.printerUrl)
+
                 const url = new URL(baseUrl, hostUrl.origin)
 
                 url.searchParams.append('bypassCache', this.refresh.toString())

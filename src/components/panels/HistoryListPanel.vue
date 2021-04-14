@@ -54,8 +54,9 @@
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
-                <template #item="{ item }">
+                <template #item="{ index, item }">
                     <tr
+                        :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
@@ -247,26 +248,6 @@ import VueLoadImage from 'vue-load-image'
                 sortDesc: true,
                 selected: [],
                 hideHeaderColums: [],
-                headers: [
-                    { text: '',                                     value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t("History.Filename"),            value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: '',                                     value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t("History.Filesize"),            value: 'size',            align: 'left',  configable: true,   visible: true },
-                    { text: this.$t("History.LastModified"),        value: 'modified',        align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.StartTime"),           value: 'start_time',      align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.EndTime"),             value: 'end_time',        align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.EstimatedTime"),       value: 'estimated_time',  align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.PrintTime"),           value: 'print_duration',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.TotalTime"),           value: 'total_duration',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FilamentCalc"),        value: 'filament_total',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FilamentUsed"),        value: 'filament_used',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerExtTemp"),   value: 'first_layer_extr_temp',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerBedTemp"),   value: 'first_layer_bed_temp',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerHeight"),    value: 'first_layer_height',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.LayerHeight"),         value: 'layer_height',    align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.ObjectHeight"),        value: 'object_height',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.Slicer"),              value: 'slicer',          align: 'left', configable: true,  visible: true },
-                ],
                 options: {
 
                 },
@@ -292,6 +273,38 @@ import VueLoadImage from 'vue-load-image'
                 getStatusIcon: "server/history/getPrintStatusChipIcon",
                 getStatusColor: "server/history/getPrintStatusChipColor",
             }),
+            headers() {
+                const headers = [
+                    { text: '',                                     value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t("History.Filename"),            value: 'filename',        align: 'left',  configable: false,  visible: true },
+                    { text: '',                                     value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t("History.Filesize"),            value: 'size',            align: 'left',  configable: true,   visible: true },
+                    { text: this.$t("History.LastModified"),        value: 'modified',        align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.StartTime"),           value: 'start_time',      align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.EndTime"),             value: 'end_time',        align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.EstimatedTime"),       value: 'estimated_time',  align: 'left',  configable: true,  visible: true },
+                    { text: this.$t("History.PrintTime"),           value: 'print_duration',  align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.TotalTime"),           value: 'total_duration',  align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FilamentCalc"),        value: 'filament_total',  align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FilamentUsed"),        value: 'filament_used',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FirstLayerExtTemp"),   value: 'first_layer_extr_temp',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FirstLayerBedTemp"),   value: 'first_layer_bed_temp',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.FirstLayerHeight"),    value: 'first_layer_height',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.LayerHeight"),         value: 'layer_height',    align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.ObjectHeight"),        value: 'object_height',   align: 'left', configable: true,  visible: true },
+                    { text: this.$t("History.Slicer"),              value: 'slicer',          align: 'left', configable: true,  visible: true },
+                ]
+
+                headers.forEach((header) => {
+                    if (header.visible && this.hideColums.includes(header.value)) {
+                        header.visible = false
+                    } else if (!header.visible && !this.hideColums.includes(header.value)) {
+                        header.visible = true
+                    }
+                })
+
+                return headers
+            },
             configHeaders() {
                 return this.headers.filter(header => header.configable === true)
             },
@@ -319,15 +332,6 @@ import VueLoadImage from 'vue-load-image'
                     return this.$store.dispatch("gui/setSettings", { history: { hideColums: newVal } })
                 }
             },
-        },
-        mounted() {
-            this.headers.forEach((header) => {
-                if (header.visible && this.hideColums.includes(header.value)) {
-                    header.visible = false
-                } else if (!header.visible && !this.hideColums.includes(header.value)) {
-                    header.visible = true
-                }
-            })
         },
         methods: {
             refreshHistory: function() {

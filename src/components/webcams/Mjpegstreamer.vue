@@ -27,20 +27,28 @@
         data: function() {
             return {
                 isVisible: true,
+                refresh: Math.ceil(Math.random() * Math.pow(10, 12))
             }
         },
         props: {
             camSettings: Object,
+            printerUrl: {
+                type: String,
+                default: null
+            }
         },
         created: function () {
 
         },
         computed: {
             url() {
-                let basicUrl = this.camSettings.url
-                const params = new URLSearchParams(basicUrl)
-                params.set('bypassCache', ""+this.refresh)
-                return decodeURIComponent(params.toString())
+                const baseUrl = this.camSettings.url
+                const hostUrl = new URL(this.printerUrl === null ? document.URL : this.printerUrl)
+
+                const url = new URL(baseUrl, hostUrl.origin)
+                url.searchParams.append('bypassCache', this.refresh.toString())
+
+                return decodeURIComponent(url.toString())
             },
             webcamStyle() {
                 let transforms = ""

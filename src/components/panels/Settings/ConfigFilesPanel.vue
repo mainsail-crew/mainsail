@@ -119,8 +119,9 @@
                         </tr>
                     </template>
 
-                    <template #item="{ item }">
+                    <template #item="{ index, item }">
                         <tr
+                            :key="`${index} ${item.filename}`"
                             v-longpress:600="(e) => showContextMenu(e, item)"
                             @contextmenu="showContextMenu($event, item)"
                             @click="clickRow(item)"
@@ -263,12 +264,6 @@ export default {
                 sortBy: 'filename',
                 sortDesc: false,
                 selected: [],
-                headers: [
-                    { text: '', value: '', },
-                    { text: this.$t('Settings.ConfigFilesPanel.Name'), value: 'filename', },
-                    { text: this.$t('Settings.ConfigFilesPanel.Filesize'), value: 'size', align: 'right', },
-                    { text: this.$t('Settings.ConfigFilesPanel.LastModified'), value: 'modified', align: 'right', },
-                ],
                 options: {
                 },
                 currentPage: 1,
@@ -357,6 +352,14 @@ export default {
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
             }),
+            headers() {
+                return [
+                    { text: '', value: '', },
+                    { text: this.$t('Settings.ConfigFilesPanel.Name'), value: 'filename', },
+                    { text: this.$t('Settings.ConfigFilesPanel.Filesize'), value: 'size', align: 'right', },
+                    { text: this.$t('Settings.ConfigFilesPanel.LastModified'), value: 'modified', align: 'right', },
+                ]
+            },
             editorOptions() {
                 return {
                     ...this.editor.options,

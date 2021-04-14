@@ -1,6 +1,7 @@
 import actions from './actions'
 import mutations from './mutations'
 import getters from './getters'
+import { getDefaultState as getGuiDefaultState } from '../../gui/index'
 
 export function getDefaultState() {
 	return {
@@ -19,7 +20,7 @@ export function getDefaultState() {
 			wsData: [],
 		},
 		data: {
-
+			gui: getGuiDefaultState()
 		},
 		databases: [],
 		current_file: {},
