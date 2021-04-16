@@ -927,7 +927,6 @@
             },
             deleteDirectory(item) {
                 this.dialogDeleteDirectory.item = item
-                this.dialogDeleteDirectory.newName = item.filename
                 this.dialogDeleteDirectory.show = true
             },
             deleteDirectoryAction: function() {

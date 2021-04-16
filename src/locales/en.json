@@ -323,7 +323,9 @@
 			"Cancel": "Cancel",
 			"Create": "Create",
 			"CreateFile": "Create File",
-			"CreateFolder": "Create Folder",
+			"CreateDirectory": "Create Directory",
+            "DeleteDirectory": "Delete Directory",
+            "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
 			"Uploading": "Uploading",
 			"Filesize": "Filesize",
 			"LastModified": "Last modified"
