@@ -239,7 +239,7 @@
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
-                <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory">
+                <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
             </v-list>
@@ -297,6 +297,19 @@
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Files.Rename') }}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">{{ $t('Files.DeleteDirectory') }}</v-card-title>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Files.Delete') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -430,6 +443,11 @@
                     item: {}
                 },
                 dialogRenameDirectory: {
+                    show: false,
+                    newName: "",
+                    item: {}
+                },
+                dialogDeleteDirectory: {
                     show: false,
                     newName: "",
                     item: {}
@@ -907,8 +925,14 @@
                     this.$socket.sendObj('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'files/getCreateDir');
                 }
             },
+            deleteDirectory(item) {
+                this.dialogDeleteDirectory.item = item
+                this.dialogDeleteDirectory.newName = item.filename
+                this.dialogDeleteDirectory.show = true
+            },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
+                this.dialogDeleteDirectory.show = false
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename, force: true }, 'files/getDeleteDir')
             },
             clickRow(item, force = false) {
                 if (!this.contextMenu.shown || force) {

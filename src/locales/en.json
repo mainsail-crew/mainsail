@@ -89,6 +89,8 @@
 		"Cancel": "Cancel",
 		"Create": "Create",
 		"RenameDirectory": "Rename Directory",
+        "DeleteDirectory": "Delete Directory",
+        "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
 		"Uploading": "Uploading",
 		"CurrentPath": "Current path",
 		"Filesize": "Filesize",
