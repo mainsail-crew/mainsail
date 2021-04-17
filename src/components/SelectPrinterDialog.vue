@@ -17,7 +17,7 @@
                     </span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool && this['farm/countPrinters'] > 0" small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn>
+                <v-btn v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool && countPrinters > 0" small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn>
                 <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogEditPrinter.bool" @click="dialogEditPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
             </v-toolbar>
@@ -119,7 +119,7 @@
             </v-card-text>
             <v-card-text class="pt-3" v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool">
                 <v-container class="px-0 pb-0">
-                    <v-row v-for="(printer, index) in this['farm/getPrinters']" v-bind:key="index">
+                    <v-row v-for="(printer, index) in printers" v-bind:key="index">
                         <v-col class="rounded transition-swing secondary py-2 px-2 mb-2" style="cursor: pointer;" @click="connect(printer)">
                             <v-row align="center">
                                 <v-col class="col-auto pr-0">
@@ -133,14 +133,14 @@
                                         v-if="!printer.socket.isConnecting"
                                     >mdi-{{ printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel' }}</v-icon>
                                 </v-col>
-                                <v-col>{{ printer.socket.hostname }}{{ parseInt(printer.socket.port) !== 80 ? ":"+printer.socket.port : "" }}</v-col>
+                                <v-col>{{ getPrinterName(printer._namespace) }}</v-col>
                                 <v-col class="col-auto"><v-btn small class="minwidth-0" v-on:click.stop.prevent="editPrinter(index)"><v-icon small>mdi-pencil</v-icon></v-btn></v-col>
                             </v-row>
                         </v-col>
                     </v-row>
                     <v-row v-if="showCorsInfo">
                         <v-col>
-                            <p class="text-center" v-if="this['farm/countPrinters'] === 0">{{ $t("App.Hello") }}</p>
+                            <p class="text-center" v-if="countPrinters === 0">{{ $t("App.Hello") }}</p>
                             <p class="text-center">{{ $t("App.PleaseRememberToAdd") }}<code>{{ currentUrl }}</code> {{ $t("App.InMoonrakerConf") }}</p>
                             <p class="text-center mb-0">{{ $t("App.YouCanFindMore") }} <a :href="$t('App.Remotemode')" target="_blank">{{ $t("App.Remotemode") }}</a>.</p>
                         </v-col>
@@ -187,30 +187,27 @@ export default {
             hostname: state => state.socket.hostname,
             port: state => state.socket.port,
         }),
-        ...mapGetters([
-            "farm/countPrinters",
-            "farm/getPrinters"
-        ]),
+        ...mapGetters({
+            countPrinters: "farm/countPrinters",
+            printers: "farm/getPrinters",
+            getPrinterName: "farm/getPrinterName",
+        }),
         ...mapActions({
             readPrinters: "farm/readStoredPrinters"
         }),
-        currentUrl: {
-            get() {
-                return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
-            }
+        currentUrl() {
+            return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
         },
-        showCorsInfo: {
-            get() {
-                if (this["farm/countPrinters"]) {
-                    for (const [ ,printer] of Object.entries(this["farm/getPrinters"])) {
-                        if (!printer.socket.isConnected) return true
-                    }
-
-                    return false
+        showCorsInfo() {
+            if (this.countPrinters) {
+                for (const [ ,printer] of Object.entries(this.printers)) {
+                    if (!printer.socket.isConnected) return true
                 }
 
-                return true
+                return false
             }
+
+            return true
         }
     },
     methods: {
@@ -227,8 +224,8 @@ export default {
             this.$store.dispatch("farm/savePrinters")
         },
         editPrinter(index) {
-            this.dialogEditPrinter.hostname = this["farm/getPrinters"][index].socket.hostname
-            this.dialogEditPrinter.port = this["farm/getPrinters"][index].socket.port
+            this.dialogEditPrinter.hostname = this.printers[index].socket.hostname
+            this.dialogEditPrinter.port = this.printers[index].socket.port
             this.dialogEditPrinter.index = index
             this.dialogEditPrinter.bool = true
         },
@@ -264,7 +261,7 @@ export default {
             this.$store.dispatch('socket/setData', { connectingFailed: false })
         },
         checkPrinters() {
-            Object.entries(this['farm/getPrinters']).forEach(([key, printer]) => {
+            Object.entries(this.printers).forEach(([key, printer]) => {
                 if (!printer.socket.isConnected && !printer.socket.isConnecting) {
                     this.$store.dispatch('farm/'+key+'/connect')
                 }

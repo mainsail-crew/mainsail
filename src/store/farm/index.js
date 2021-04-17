@@ -12,7 +12,7 @@ export default {
 		getPrinters: state => {
 			return state
 		},
-		getPrinterName: (getters) => (namespace) => {
+		getPrinterName: (state, getters) => (namespace) => {
 			return getters[namespace+"/getPrinterName"]
 		}
 	},
