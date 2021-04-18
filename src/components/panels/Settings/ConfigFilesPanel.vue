@@ -115,7 +115,7 @@
                             class="file-list-cursor"
                             @click="clickRowGoBack">
                             <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
-                            <td class=" " colspan="8">..</td>
+                            <td class=" " colspan="4">..</td>
                         </tr>
                     </template>
 
