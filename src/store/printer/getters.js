@@ -134,13 +134,13 @@ export default {
 			let nameSplit = key.split(" ")
 
 			if (nameSplit[0] === "temperature_sensor") {
-				let icon = "mdi-thermometer"
+				let icon = "thermometer"
 				let min_temp = (state.configfile.config[key] && state.configfile.config[key].min_temp) ? parseInt(state.configfile.config[key].min_temp) : 0
 				let max_temp = (state.configfile.config[key] && state.configfile.config[key].max_temp) ? parseInt(state.configfile.config[key].max_temp) : 210
 				let split = (max_temp - min_temp) / 3
 
-				if (value.temperature <= min_temp + split) icon = "mdi-thermometer-low"
-				if (value.temperature >= max_temp - split) icon = "mdi-thermometer-high"
+				if (value.temperature <= min_temp + split) icon = "thermometer-low"
+				if (value.temperature >= max_temp - split) icon = "thermometer-high"
 
 
 
