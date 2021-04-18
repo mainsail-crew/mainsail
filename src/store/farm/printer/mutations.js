@@ -45,6 +45,13 @@ export default {
 		})
 	},
 
+	setSettings(state, payload) {
+		Vue.set(state, 'settings', {
+			...state.settings,
+			...payload
+		})
+	},
+
 	addWsData(state, payload) {
 		state.socket.wsData.push(payload)
 	},

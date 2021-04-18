@@ -22,6 +22,9 @@ export function getDefaultState() {
 		data: {
 			gui: getGuiDefaultState()
 		},
+		settings: {
+
+		},
 		databases: [],
 		current_file: {},
 		theme_files: []

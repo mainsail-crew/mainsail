@@ -111,7 +111,7 @@
         },
         data: function() {
             return {
-                currentCamName: "off",
+
             }
         },
         props: {
@@ -136,6 +136,14 @@
             isCurrentPrinter: {
                 get() {
                     return this.$store.getters["farm/"+this.printer._namespace+"/isCurrentPrinter"]
+                }
+            },
+            currentCamName: {
+                get() {
+                    return this.$store.getters["farm/"+this.printer._namespace+"/getSetting"]('currentCamName', 'off')
+                },
+                set(newVal) {
+                    return this.$store.dispatch("farm/"+this.printer._namespace+"/setSettings", { currentCamName: newVal })
                 }
             },
             printer_name: {

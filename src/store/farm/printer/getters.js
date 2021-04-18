@@ -18,6 +18,10 @@ export default {
 		)
 	},
 
+	getSetting: (state) => (name, fallback) => {
+		return state.settings[name] ?? fallback
+	},
+
 	getPrinterName: (state) => {
 		if (
 			'gui' in state.data &&
