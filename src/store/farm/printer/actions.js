@@ -166,6 +166,11 @@ export default {
 		commit("setData", payload)
 	},
 
+	setSettings({ commit, dispatch }, payload) {
+		commit("setSettings", payload)
+		dispatch("farm/savePrinters", {}, { root: true })
+	},
+
 	getMetadataCurrentFile({ commit }, payload) {
 		commit("setCurrentFile", payload)
 	},
