@@ -194,7 +194,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTemperature"
-                                    :label="$t('Panels.ToolsPanel.ShowCurrentTemperatureInChart')"
+                                    :label="$t('Panels.ToolsPanel.ShowNameInChart', {name: $t('Panels.ToolsPanel.CurrentTemperature')})"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('temperature')"
@@ -205,7 +205,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolTarget"
-                                    :label="$t('Panels.ToolsPanel.ShowTargetTemperatureInChart')"
+                                    :label="$t('Panels.ToolsPanel.ShowNameInChart', {name: $t('Panels.ToolsPanel.TargetTemperature')})"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('target')"
@@ -216,7 +216,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolPower"
-                                    :label="$t('Panels.ToolsPanel.ShowPWMPowerInChart')"
+                                    :label="$t('Panels.ToolsPanel.ShowNameInChart', {name: $t('Panels.ToolsPanel.PwmPower')})"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('power')"
@@ -227,7 +227,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.boolSpeed"
-                                    :label="$t('Panels.ToolsPanel.ShowPWMPowerInChart')"
+                                    :label="$t('Panels.ToolsPanel.ShowNameInChart', {name: $t('Panels.ToolsPanel.PwmPower')})"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisible('speed')"
@@ -238,7 +238,7 @@
                             <v-col class="col-12 py-1">
                                 <v-checkbox
                                     v-model="editHeater.additionSensors[key]"
-                                    :label="$t('Panels.ToolsPanel.Show')+key+$t('Panels.ToolsPanel.InList')"
+                                    :label="$t('Panels.ToolsPanel.ShowNameInList', {name: key})"
                                     hide-details
                                     class="mt-0"
                                     @change="setVisibleAdditionalSensor(key)"
