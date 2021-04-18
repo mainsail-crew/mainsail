@@ -283,11 +283,11 @@
 			"Max": "max",
 			"Avg": "Avg",
 			"UNKNOWN": "UNKNOWN",
-			"ShowCurrentTemperatureInChart": "Show current temperature in chart",
-			"ShowTargetTemperatureInChart": "Show target temperature in chart",
-			"ShowPWMPowerInChart": "Show PWM-power in chart",
-			"Show": "Show",
-			"InList": "in list",
+            "CurrentTemperature": "current temperature",
+            "TargetTemperature": "target temperature",
+            "PwmPower": "PWM-power",
+			"ShowNameInChart": "Show {name} in chart",
+			"ShowNameInList": "Show {name} in list",
 			"TemperaturesInChart": "Temperature [°C]"
 		},
 		"WebcamPanel": {
