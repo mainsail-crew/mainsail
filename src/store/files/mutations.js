@@ -87,6 +87,7 @@ export default {
 			let newData = {
 				estimated_time: safeDefault(payload.estimated_time),
 				filament_total: safeDefault(payload.filament_total),
+				filament_weight_total: safeDefault(payload.filament_weight_total),
 				first_layer_height: safeDefault(payload.first_layer_height),
 				first_layer_bed_temp: safeDefault(payload.first_layer_bed_temp),
 				first_layer_extr_temp: safeDefault(payload.first_layer_extr_temp),

@@ -98,6 +98,7 @@
 		"ObjectHeight": "Object Height",
 		"LayerHeight": "Layer Height",
 		"FilamentUsage": "Filament Usage",
+		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer"
 	},
