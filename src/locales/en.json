@@ -144,6 +144,8 @@
 		"FilamentUsage": "Filament usage",
 		"PrinttimeAvg": "Printtime AVG",
 		"PrintHistory": "Print History",
+        "TitleRefreshHistory": "Refresh History",
+        "TitleSettings": "Settings",
 		"Search": "search",
 		"Jobs": "Jobs",
 		"AllJobs": "All",

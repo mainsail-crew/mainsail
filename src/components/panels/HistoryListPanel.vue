@@ -5,10 +5,10 @@
                 {{ $t('History.PrintHistory') }}
                 <v-spacer class="d-none d-sm-block"></v-spacer>
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
-                    <v-btn title="Refresh History" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <v-btn :title="$t('History.TitleRefreshHistory')" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
                     <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
+                            <v-btn class="flex-grow-1" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
