@@ -174,7 +174,7 @@
                             </tr>
                             <tr>
                                 <td>{{ $t('History.EndTime') }}</td>
-                                <td class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</td>
+                                <td class="text-right">{{ 'end_time' in detailsDialog.item && detailsDialog.item.end_time > 0 ? formatDate(detailsDialog.item.end_time) : "--" }}</td>
                             </tr>
                             <tr v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
                                 <td>{{ $t('History.EstimatedTime') }}</td>
