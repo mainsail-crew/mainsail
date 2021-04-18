@@ -392,7 +392,7 @@
             dark
             v-model="uploadSnackbar.status"
         >
-            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t("Files.Uploading") + uploadSnackbar.filename }}</strong><br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t("Files.Uploading") + " " + uploadSnackbar.filename }}</strong><br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
