@@ -136,7 +136,7 @@
                         @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
                         >
                         <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
-                        <td class=" " colspan="8">..</td>
+                        <td class=" " :colspan="filteredHeaders.length">..</td>
                     </tr>
                 </template>
 
@@ -198,7 +198,7 @@
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
-                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_weight_total').visible">{{ item.filament_weight_total ? item.filament_weight_total.toFixed()+' g' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_weight_total').visible">{{ item.filament_weight_total ? item.filament_weight_total.toFixed(2)+' g' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'slicer').visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
