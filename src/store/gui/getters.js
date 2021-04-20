@@ -12,6 +12,34 @@ export default {
 		return output.sort(caseInsensitiveNameSort)
 	},
 
+	getConsoleFilters:(state) => {
+		const output = []
+
+		for (const [key, filter] of Object.entries(state.console.customFilters)) {
+			output.push({ ...filter, index: key })
+		}
+
+		return output.sort(caseInsensitiveNameSort)
+	},
+
+	getConsoleFilterRules:(state) => {
+		const output = []
+
+		if (state.console.hideWaitTemperatures)
+			output.push('^(?:ok\\s+)?(B|C|T\\d*):')
+
+		state.console.customFilters.filter((filter) => filter.bool === true).forEach((filter) => {
+			const splits = filter.regex.split("\n")
+			splits.forEach((rule) => {
+				if (rule !== "") {
+					output.push(rule)
+				}
+			})
+		})
+
+		return output
+	},
+
 	getWebcams:(state) => {
 		const output = []
 

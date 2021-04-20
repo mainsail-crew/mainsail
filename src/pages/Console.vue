@@ -61,8 +61,8 @@
                         <v-list-item class="minHeight36">
                             <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Console.HideTemperatures')"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details :label="$t('Console.CustomFilters')"></v-checkbox>
+                        <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                            <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -159,14 +159,9 @@
                     return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
                 }
             },
-            boolCustomFilters: {
-                get() {
-                    return this.$store.state.gui.console.boolCustomFilters
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
-                }
-            }
+            customFilters() {
+                return this.$store.state.gui.console.customFilters
+            },
         },
         methods: {
             doSend() {
@@ -237,7 +232,10 @@
                 });
 
                 return items;
-            }
+            },
+            toggleFilter(filter) {
+                this.$store.dispatch('gui/updateConsoleFilter',  filter)
+            },
         },
     }
 </script>

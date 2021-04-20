@@ -337,6 +337,13 @@
 			"Console": "Console",
 			"HideTemperatures": "Hide temperatures",
 			"CustomFilters": "Custom filter",
+            "CreateHeadline": "Create filter",
+            "Name": "Name",
+            "Regex": "Regex",
+            "StoreButton": "Store filter",
+            "UpdateButton": "Update filter",
+            "EditHeadline": "Edit filter",
+			"AddFilter": "add filter",
 			"Rules": "Rules"
 		},
 		"ControlPanel": {
