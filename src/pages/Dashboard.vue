@@ -9,6 +9,7 @@
             <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <miscellaneous-panel v-if="klippy_state === 'ready'"></miscellaneous-panel>
+            <power-control-panel class="mt-6" v-if="powerDevicesCount > 0"></power-control-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
             <tools-panel v-if="displayToolsPanel"></tools-panel>
@@ -36,6 +37,7 @@
 
                 showDashboardWebcam: state => state.gui.dashboard.boolWebcam,
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
+                powerDevicesCount: state => state.server.power.devices.length,
                 config: state => state.printer.configfile.config,
             }),
             existsPrinterConfig: {

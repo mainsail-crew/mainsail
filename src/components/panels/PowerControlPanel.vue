@@ -14,10 +14,11 @@
 
             <div v-for="(device, index) in devices" v-bind:key="index">
                 <v-divider class="mt-0" v-if="index > 0"></v-divider>
-                <v-card-text class="py-2">
+                <v-card-text class="px-2 py-1">
+                  <v-container>
                     <v-row>
-                        <v-col class="py-0 pt-1">{{ device.device }}</v-col>
-                        <v-col class="py-0 text-right">
+                        <v-col class="py-2 align-self-center">{{ device.device }}</v-col>
+                        <v-col class="py-2 align-self-center text-right">
                             <v-btn-toggle v-model="device.status">
                                 <v-btn small v-if="device.status === 'error'" disabled>{{ $t('Panels.PowerControlPanel.Error') }}</v-btn>
                                 <v-btn small v-if="device.status !== 'error'" :disabled="device.status === 'on'" @click="setPower(device,1)">{{ $t('Panels.PowerControlPanel.On') }}</v-btn>
@@ -25,6 +26,7 @@
                             </v-btn-toggle>
                         </v-col>
                     </v-row>
+                  </v-container>
                 </v-card-text>
             </div>
         </v-card>
