@@ -68,6 +68,28 @@ export default {
 		}
 	},
 
+	addConsoleFilter(state, payload) {
+		state.console.customFilters.push({
+			name: payload.name,
+			regex: payload.regex,
+			bool: payload.bool
+		})
+	},
+
+	updateConsoleFilter(state, payload) {
+		if (state.console.customFilters[payload.index]) {
+			Vue.set(state.console.customFilters[payload.index], 'name', payload.name)
+			Vue.set(state.console.customFilters[payload.index], 'regex', payload.regex)
+			Vue.set(state.console.customFilters[payload.index], 'bool', payload.bool)
+		}
+	},
+
+	deleteConsoleFilter(state, payload) {
+		if (state.console.customFilters[payload.index]) {
+			state.console.customFilters.splice(payload.index, 1)
+		}
+	},
+
 	addWebcam(state, payload) {
 		const newWebcam = {
 			name: payload.name,
