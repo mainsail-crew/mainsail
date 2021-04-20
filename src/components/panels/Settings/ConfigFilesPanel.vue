@@ -149,6 +149,9 @@
                     <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
+                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                        <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
+                    </v-list-item>
                     <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
@@ -214,6 +217,19 @@
                         <v-spacer></v-spacer>
                         <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
                         <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Settings.ConfigFilesPanel.Create') }}</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">{{ $t('Settings.ConfigFilesPanel.RenameDirectory') }}</v-card-title>
+                    <v-card-text>
+                        <v-text-field  :label="$t('Settings.ConfigFilesPanel.Name')" required v-model="dialogRenameDirectory.newName"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Settings.ConfigFilesPanel.Rename') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -340,6 +356,11 @@ export default {
                 dialogCreateDirectory: {
                     show: false,
                     name: "",
+                },
+                dialogRenameDirectory: {
+                    show: false,
+                    newName: "",
+                    item: {}
                 },
                 dialogDeleteDirectory: {
                     show: false,
@@ -613,6 +634,18 @@ export default {
                 this.$socket.sendObj('server.files.post_directory', {
                     path: this.currentPath.substring(1)+"/"+this.dialogCreateDirectory.name
                 }, 'files/getCreateDir');
+            },
+            renameDirectory(item) {
+                this.dialogRenameDirectory.item = item;
+                this.dialogRenameDirectory.newName = item.filename;
+                this.dialogRenameDirectory.show = true;
+            },
+            renameDirectoryAction() {
+                this.dialogRenameDirectory.show = false;
+                this.$socket.sendObj('server.files.move', {
+                    source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
+                    dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
+                }, 'files/getMove');
             },
             deleteDirectory(item) {
                 this.dialogDeleteDirectory.item = item;

@@ -328,6 +328,7 @@
 			"Create": "Create",
 			"CreateFile": "Create File",
 			"CreateDirectory": "Create Directory",
+			"RenameDirectory": "Rename Directory",
             "DeleteDirectory": "Delete Directory",
             "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
 			"Uploading": "Uploading",
