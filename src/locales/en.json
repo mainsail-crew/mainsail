@@ -166,6 +166,7 @@
 		"PrintTime": "Print Time",
 		"TotalDuration": "Total Time",
 		"TotalTime": "Total Time",
+		"EstimatedFilamentWeight": "Estimated Filament Weight",
 		"EstimatedFilament": "Estimated Filament",
 		"FilamentCalc": "Filament Calc",
 		"FilamentUsed": "Filament Used",
