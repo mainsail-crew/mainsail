@@ -616,13 +616,9 @@ export default {
                 }
             },
             downloadFile() {
-                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
-                let link = document.createElement("a");
-                link.download = name;
-                link.href = '//' + this.hostname + ':' + this.port + '/server/files' + filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
+                const href = '//' + this.hostname + ':' + this.port + '/server/files' + filename
+                window.open(href)
             },
             createDirecotry() {
                 this.dialogCreateDirectory.name = "";
