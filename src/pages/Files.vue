@@ -860,7 +860,7 @@
                     });
             },
             async saveFile() {
-                let file = new File([this.editor.sourcecode], encodeURI(this.editor.item.filename));
+                let file = new File([this.editor.sourcecode], this.editor.item.filename);
 
                 await this.doUploadFile(file);
 
