@@ -15,11 +15,13 @@ Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.
 ## Features 
 - Optimized for desktops, tablets and mobile devices
 - Supports multiple 3D printers (Printer Farm)
+- Localization (i18n)
 - File Manager (gcode and config files)
-- Config Editor
+- File Editor (gcode and config files)
+- Print History / Stats
 - Temperature Presets (with custom gcode)
 - Bed Mesh Leveling
-- Webcam support
+- Multi-Webcam support
 - Control power devices (relays, TPLink, Tasmota, ..)
 - Customizable UI (logos, backgrounds & even custom css)
 
@@ -41,3 +43,5 @@ The project is primarily developed and maintained by meteyou. To keep the projec
 * [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
 
 Massive thanks to the whole [Voron Design](http://vorondesign.com/) community. Without them such a project would not be possible.
+
+[Full Credits & Licenseinformation](https://docs.mainsail.xyz/credits)
