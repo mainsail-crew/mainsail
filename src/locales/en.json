@@ -77,7 +77,7 @@
 		"Rename": "Rename",
 		"Delete": "Delete",
 		"StartJob": "Start Job",
-		"DoYouWantToStart": "Do you want to start",
+		"DoYouWantToStartFilename": "Do you want to start {filename}?",
 		"No": "No",
 		"Yes": "Yes",
 		"NewDirectory": "New Directory",
@@ -100,7 +100,8 @@
 		"FilamentUsage": "Filament Usage",
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
-		"Slicer": "Slicer"
+		"Slicer": "Slicer",
+        "Downloading": "Downloading"
 	},
 	"Console": {
 		"send": "send",
