@@ -253,7 +253,7 @@
                     :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text>{{ $t('Files.DoYouWantToStart') + dialogPrintFile.item.filename }}?</v-card-text>
+                <v-card-text>{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">{{ $t('Files.No')}}</v-btn>
@@ -324,7 +324,7 @@
             v-model="editor.showLoader"
         >
           <div>
-            Downloading<br />
+            {{ $t('Files.Downloading') }}<br />
             <strong>{{ editor.item.filename }}</strong>
           </div>
           <span v-if="editor.progress.total > 1" class="mr-1">({{ formatFilesize(editor.progress.loaded) }}/{{ formatFilesize(editor.progress.total) }})</span>
