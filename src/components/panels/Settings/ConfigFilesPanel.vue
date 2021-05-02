@@ -73,7 +73,7 @@
                     <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0">
                         <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
                         <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
-                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFolder"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createDirecotry"><v-icon>mdi-folder-plus</v-icon></v-btn>
                         <v-btn class="flex-grow-1" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
                         <v-menu :offset-y="true" :title="$t('Settings.ConfigFilesPanel.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
@@ -115,7 +115,7 @@
                             class="file-list-cursor"
                             @click="clickRowGoBack">
                             <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
-                            <td class=" " colspan="8">..</td>
+                            <td class=" " colspan="4">..</td>
                         </tr>
                     </template>
 
@@ -149,10 +149,13 @@
                     <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
+                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                        <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
+                    </v-list-item>
                     <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
-                    <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
+                    <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
                 </v-list>
@@ -204,16 +207,42 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <v-dialog v-model="dialogCreateFolder.show" max-width="400">
+            <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
                 <v-card>
-                    <v-card-title class="headline">{{ $t('Settings.ConfigFilesPanel.CreateFolder') }}</v-card-title>
+                    <v-card-title class="headline">{{ $t('Settings.ConfigFilesPanel.CreateDirectory') }}</v-card-title>
                     <v-card-text>
-                        <v-text-field :label="$t('Settings.ConfigFilesPanel.Name')" required v-model="dialogCreateFolder.name"></v-text-field>
+                        <v-text-field :label="$t('Settings.ConfigFilesPanel.Name')" required v-model="dialogCreateDirectory.name"></v-text-field>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="" text @click="dialogCreateFolder.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
-                        <v-btn color="primary" text @click="createFolderAction">{{ $t('Settings.ConfigFilesPanel.Create') }}</v-btn>
+                        <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Settings.ConfigFilesPanel.Create') }}</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">{{ $t('Settings.ConfigFilesPanel.RenameDirectory') }}</v-card-title>
+                    <v-card-text>
+                        <v-text-field  :label="$t('Settings.ConfigFilesPanel.Name')" required v-model="dialogRenameDirectory.newName"></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
+                        <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Settings.ConfigFilesPanel.Rename') }}</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
+                <v-card>
+                    <v-card-title class="headline">{{ $t('Settings.ConfigFilesPanel.DeleteDirectory') }}</v-card-title>
+                    <v-card-text>
+                        <p class="mb-0">{{ $t('Settings.ConfigFilesPanel.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Settings.ConfigFilesPanel.Cancel') }}</v-btn>
+                        <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Settings.ConfigFilesPanel.Delete') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -324,9 +353,18 @@ export default {
                     show: false,
                     name: "",
                 },
-                dialogCreateFolder: {
+                dialogCreateDirectory: {
                     show: false,
                     name: "",
+                },
+                dialogRenameDirectory: {
+                    show: false,
+                    newName: "",
+                    item: {}
+                },
+                dialogDeleteDirectory: {
+                    show: false,
+                    item: {}
                 },
                 uploadSnackbar: {
                     status: false,
@@ -578,24 +616,40 @@ export default {
                 }
             },
             downloadFile() {
-                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
-                let link = document.createElement("a");
-                link.download = name;
-                link.href = '//' + this.hostname + ':' + this.port + '/server/files' + filename;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
+                const href = '//' + this.hostname + ':' + this.port + '/server/files' + filename
+                window.open(href)
             },
-            createFolder() {
-                this.dialogCreateFolder.name = "";
-                this.dialogCreateFolder.show = true;
+            createDirecotry() {
+                this.dialogCreateDirectory.name = "";
+                this.dialogCreateDirectory.show = true;
             },
-            createFolderAction() {
-                this.dialogCreateFolder.show = false;
+            createDirectoryAction() {
+                this.dialogCreateDirectory.show = false;
 
                 this.$socket.sendObj('server.files.post_directory', {
-                    path: this.currentPath.substring(1)+"/"+this.dialogCreateFolder.name
+                    path: this.currentPath.substring(1)+"/"+this.dialogCreateDirectory.name
                 }, 'files/getCreateDir');
+            },
+            renameDirectory(item) {
+                this.dialogRenameDirectory.item = item;
+                this.dialogRenameDirectory.newName = item.filename;
+                this.dialogRenameDirectory.show = true;
+            },
+            renameDirectoryAction() {
+                this.dialogRenameDirectory.show = false;
+                this.$socket.sendObj('server.files.move', {
+                    source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
+                    dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
+                }, 'files/getMove');
+            },
+            deleteDirectory(item) {
+                this.dialogDeleteDirectory.item = item;
+                this.dialogDeleteDirectory.show = true;
+            },
+            deleteDirectoryAction() {
+                this.dialogDeleteDirectory.show = false;
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.dialogDeleteDirectory.item.filename, force: true }, 'files/getDeleteDir')
             },
             createFile() {
                 this.dialogCreateFile.name = "";
@@ -634,9 +688,6 @@ export default {
             },
             removeFile() {
                 this.$socket.sendObj('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
-            },
-            deleteDirectoryAction() {
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
             },
             uploadFileButton() {
                 this.$refs.fileUpload.click()

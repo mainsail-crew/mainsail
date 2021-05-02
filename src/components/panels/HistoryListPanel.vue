@@ -5,10 +5,10 @@
                 {{ $t('History.PrintHistory') }}
                 <v-spacer class="d-none d-sm-block"></v-spacer>
                 <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
-                    <v-btn title="Refresh History" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
+                    <v-btn :title="$t('History.TitleRefreshHistory')" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
                     <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="flex-grow-1" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
+                            <v-btn class="flex-grow-1" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
@@ -135,7 +135,7 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="detailsDialog.boolShow" :max-width="600" :max-height="500">
+        <v-dialog v-model="detailsDialog.boolShow" :max-width="600" :max-height="500" scrollable>
             <v-card dark>
                 <v-toolbar flat dense >
                     <v-toolbar-title>
@@ -144,88 +144,133 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0" color="grey darken-3" @click="detailsDialog.boolShow = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
-                <v-card-text class="pt-5">
-                    <v-simple-table
-                        style="
-                            height: 350px;
-                            max-height: 350px;
-                            overflow-y: auto;
-                        ">
-                        <tbody>
-                            <tr>
-                                <td>{{ $t('History.Filename') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.filename }}</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'size' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.Filesize') }}</td>
-                                <td class="text-right">{{ formatFilesize(detailsDialog.item.metadata.size) }}</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'modified' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.LastModified') }}</td>
-                                <td class="text-right">{{ formatDate(detailsDialog.item.metadata.modified) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.Status') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.status }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.StartTime') }}</td>
-                                <td class="text-right">{{ formatDate(detailsDialog.item.start_time) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.EndTime') }}</td>
-                                <td class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.EstimatedTime') }}</td>
-                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}</td>
-                            </tr>
-                            <tr v-if="detailsDialog.item.print_duration > 0">
-                                <td>{{ $t('History.PrintDuration') }}</td>
-                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.print_duration) }}</td>
-                            </tr>
-                            <tr v-if="detailsDialog.item.total_duration > 0">
-                                <td>{{ $t('History.TotalDuration') }}</td>
-                                <td class="text-right">{{ formatPrintTime(detailsDialog.item.total_duration) }}</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.EstimatedFilament') }}</td>
-                                <td class="text-right">{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</td>
-                            </tr>
-                            <tr v-if="detailsDialog.item.filament_used > 0">
-                                <td>{{ $t('History.FilamentUsed') }}</td>
-                                <td class="text-right">{{ Math.round(detailsDialog.item.filament_used) }} mm</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_extr_temp' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.FirstLayerExtTemp') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_bed_temp' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.FirstLayerBedTemp') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'first_layer_height' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.FirstLayerHeight') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.first_layer_height }} mm</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.LayerHeight') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.layer_height }} mm</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.ObjectHeight') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.object_height }} mm</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'slicer' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.Slicer') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.slicer }}</td>
-                            </tr>
-                            <tr v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata">
-                                <td>{{ $t('History.SlicerVersion') }}</td>
-                                <td class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</td>
-                            </tr>
-                        </tbody>
-                    </v-simple-table>
+                <v-card-text class="pt-5" style="height: 350px;">
+                    <v-row>
+                        <v-col>{{ $t('History.Filename') }}</v-col>
+                        <v-col class="text-right">{{ detailsDialog.item.filename }}</v-col>
+                    </v-row>
+                    <template v-if="'metadata' in detailsDialog.item && 'size' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.Filesize') }}</v-col>
+                            <v-col class="text-right">{{ formatFilesize(detailsDialog.item.metadata.size) }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'modified' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.LastModified') }}</v-col>
+                            <v-col class="text-right">{{ formatDate(detailsDialog.item.metadata.modified) }}</v-col>
+                        </v-row>
+                    </template>
+                    <v-divider class="my-3"></v-divider>
+                    <v-row>
+                        <v-col>{{ $t('History.Status') }}</v-col>
+                        <v-col class="text-right">{{ detailsDialog.item.status }}</v-col>
+                    </v-row>
+                    <v-divider class="my-3"></v-divider>
+                    <v-row>
+                        <v-col>{{ $t('History.StartTime') }}</v-col>
+                        <v-col class="text-right">{{ formatDate(detailsDialog.item.start_time) }}</v-col>
+                    </v-row>
+                    <template v-if="'end_time' in detailsDialog.item && detailsDialog.item.end_time > 0">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.EndTime') }}</v-col>
+                            <v-col class="text-right">{{ formatDate(detailsDialog.item.end_time) }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.EstimatedTime') }}</v-col>
+                            <v-col class="text-right">{{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="detailsDialog.item.print_duration > 0">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.PrintDuration') }}</v-col>
+                            <v-col class="text-right">{{ formatPrintTime(detailsDialog.item.print_duration) }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="detailsDialog.item.total_duration > 0">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.TotalDuration') }}</v-col>
+                            <v-col class="text-right">{{ formatPrintTime(detailsDialog.item.total_duration) }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.EstimatedFilamentWeight') }}</v-col>
+                            <v-col class="text-right">{{ Math.round(detailsDialog.item.metadata.filament_weight_total*100)/100 }} g</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.EstimatedFilament') }}</v-col>
+                            <v-col class="text-right">{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="detailsDialog.item.filament_used > 0">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.FilamentUsed') }}</v-col>
+                            <v-col class="text-right">{{ Math.round(detailsDialog.item.filament_used) }} mm</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'first_layer_extr_temp' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.FirstLayerExtTemp') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'first_layer_bed_temp' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.FirstLayerBedTemp') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'first_layer_height' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.FirstLayerHeight') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.first_layer_height }} mm</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.LayerHeight') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.layer_height }} mm</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.ObjectHeight') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.object_height }} mm</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'slicer' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.Slicer') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.slicer }}</v-col>
+                        </v-row>
+                    </template>
+                    <template v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata">
+                        <v-divider class="my-3"></v-divider>
+                        <v-row>
+                            <v-col>{{ $t('History.SlicerVersion') }}</v-col>
+                            <v-col class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</v-col>
+                        </v-row>
+                    </template>
                 </v-card-text>
             </v-card>
         </v-dialog>

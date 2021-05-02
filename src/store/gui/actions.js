@@ -22,6 +22,19 @@ export default {
 			delete payload.value.webcam
 		}
 
+		// upgrade custom console filters
+		if ('console' in payload.value) {
+			if (
+				'customFilters' in payload.value.console &&
+				typeof payload.value.console.customFilters === "string"
+			) {
+				dispatch('upgradeConsoleFilters', payload.value.console.customFilters)
+				delete payload.value.console.customFilters
+			}
+
+			if ("boolCustomFilters" in payload.value.console) delete payload.value.console.boolCustomFilters
+		}
+
 		commit('setData', payload.value)
 
 		if ('tempchart' in payload.value && 'datasetSettings' in payload.value.tempchart) {
@@ -100,6 +113,30 @@ export default {
 		})
 	},
 
+	addConsoleFilter({ commit, dispatch, state }, payload) {
+		commit("addConsoleFilter", payload)
+		dispatch('updateSettings', {
+			keyName: 'console.customFilters',
+			newVal: state.console.customFilters
+		})
+	},
+
+	updateConsoleFilter({ commit, dispatch, state }, payload) {
+		commit("updateConsoleFilter", payload)
+		dispatch('updateSettings', {
+			keyName: 'console.customFilters',
+			newVal: state.console.customFilters
+		})
+	},
+
+	deleteConsoleFilter({ commit, dispatch, state }, payload) {
+		commit("deleteConsoleFilter", payload)
+		dispatch('updateSettings', {
+			keyName: 'console.customFilters',
+			newVal: state.console.customFilters
+		})
+	},
+
 	addWebcam({ commit, dispatch, state }, payload) {
 		commit("addWebcam", payload)
 		dispatch('updateSettings', {
@@ -141,6 +178,21 @@ export default {
 			keyName: 'webcam',
 			newVal: webcam
 		})
+	},
+
+	upgradeConsoleFilters({ state, dispatch }, payload) {
+		const rules = payload.split("\n")
+		if (rules.length) {
+			rules.forEach((rule) => {
+				if (rule !== "") {
+					dispatch("addConsoleFilter", {
+						name: "Custom "+(state.console.customFilters.length + 1),
+						regex: rule,
+						bool: true
+					})
+				}
+			})
+		}
 	},
 
 	setTempchartDatasetSetting({ commit, dispatch, state }, payload) {

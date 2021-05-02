@@ -136,7 +136,7 @@
                         @dragover="dragOverFilelist($event, {isDirectory: true, filename: '..'})" @dragleave="dragLeaveFilelist" @drop.prevent.stop="dragDropFilelist($event, {isDirectory: true, filename: '..'})"
                         >
                         <td class="pr-0 text-center" style="width: 32px;"><v-icon>mdi-folder-upload</v-icon></td>
-                        <td class=" " colspan="8">..</td>
+                        <td class=" " :colspan="filteredHeaders.length">..</td>
                     </tr>
                 </template>
 
@@ -198,6 +198,7 @@
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_weight_total').visible">{{ item.filament_weight_total ? item.filament_weight_total.toFixed(2)+' g' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'slicer').visible">{{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{ item.slicer_version}}</small></td>
                     </tr>
@@ -239,7 +240,7 @@
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
-                <v-list-item @click="deleteDirectoryAction" v-if="contextMenu.item.isDirectory">
+                <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
             </v-list>
@@ -252,7 +253,7 @@
                     :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text>{{ $t('Files.DoYouWantToStart') + dialogPrintFile.item.filename }}?</v-card-text>
+                <v-card-text>{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">{{ $t('Files.No')}}</v-btn>
@@ -300,6 +301,19 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
+            <v-card>
+                <v-card-title class="headline">{{ $t('Files.DeleteDirectory') }}</v-card-title>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Files.Delete') }}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-snackbar
             :timeout="-1"
             :value="true"
@@ -310,7 +324,7 @@
             v-model="editor.showLoader"
         >
           <div>
-            Downloading<br />
+            {{ $t('Files.Downloading') }}<br />
             <strong>{{ editor.item.filename }}</strong>
           </div>
           <span v-if="editor.progress.total > 1" class="mr-1">({{ formatFilesize(editor.progress.loaded) }}/{{ formatFilesize(editor.progress.total) }})</span>
@@ -378,7 +392,7 @@
             dark
             v-model="uploadSnackbar.status"
         >
-            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t("Files.Uploading") + uploadSnackbar.filename }}</strong><br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t("Files.Uploading") + " " + uploadSnackbar.filename }}</strong><br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
@@ -430,6 +444,11 @@
                     item: {}
                 },
                 dialogRenameDirectory: {
+                    show: false,
+                    newName: "",
+                    item: {}
+                },
+                dialogDeleteDirectory: {
                     show: false,
                     newName: "",
                     item: {}
@@ -516,16 +535,17 @@
             }),
             headers() {
                 const headers = [
-                    { text: '',                             value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t('Files.Name'),          value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: '',                             value: 'status',          align: 'left',  configable: false,  visible: true },
-                    { text: this.$t('Files.Filesize'),      value: 'size',            align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.LastModified'),  value: 'modified',        align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.ObjectHeight'),  value: 'object_height',   align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.LayerHeight'),   value: 'layer_height',    align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.FilamentUsage'), value: 'filament_total',  align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.PrintTime'),     value: 'estimated_time',  align: 'right', configable: true,   visible: true },
-                    { text: this.$t('Files.Slicer'),        value: 'slicer',          align: 'right', configable: true,   visible: true },
+                    { text: '',                                     value: '',                          align: 'left',  configable: false,  visible: true, filterable: false },
+                    { text: this.$t('Files.Name'),                  value: 'filename',                  align: 'left',  configable: false,  visible: true },
+                    { text: '',                                     value: 'status',                    align: 'left',  configable: false,  visible: true },
+                    { text: this.$t('Files.Filesize'),              value: 'size',                      align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LastModified'),          value: 'modified',                  align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.ObjectHeight'),          value: 'object_height',             align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.LayerHeight'),           value: 'layer_height',              align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.FilamentUsage'),         value: 'filament_total',            align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.FilamentWeight'),        value: 'filament_weight_total',     align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.PrintTime'),             value: 'estimated_time',            align: 'right', configable: true,   visible: true },
+                    { text: this.$t('Files.Slicer'),                value: 'slicer',                    align: 'right', configable: true,   visible: true },
                 ]
 
                 headers.forEach((header) => {
@@ -775,13 +795,10 @@
                 }
             },
             downloadFile() {
-                let filename = (this.currentPath+"/"+this.contextMenu.item.filename);
-                let link = document.createElement("a");
-                link.download = name;
-                link.href = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
+                const href = '//' + this.hostname + ':' + this.port + '/server/files/' + encodeURI(filename)
+
+                window.open(href)
             },
             cancelDownload() {
               if (this.editor.token) {
@@ -907,8 +924,13 @@
                     this.$socket.sendObj('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'files/getCreateDir');
                 }
             },
+            deleteDirectory(item) {
+                this.dialogDeleteDirectory.item = item
+                this.dialogDeleteDirectory.show = true
+            },
             deleteDirectoryAction: function() {
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteDir');
+                this.dialogDeleteDirectory.show = false
+                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename, force: true }, 'files/getDeleteDir')
             },
             clickRow(item, force = false) {
                 if (!this.contextMenu.shown || force) {

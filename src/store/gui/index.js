@@ -58,8 +58,7 @@ export function getDefaultState() {
 		},
 		console: {
 			hideWaitTemperatures: true,
-			boolCustomFilters: false,
-			customFilters: "",
+			customFilters: [],
 		},
 		gcodefiles: {
 			countPerPage: 10,

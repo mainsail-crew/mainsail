@@ -12,7 +12,7 @@ export default {
 		getPrinters: state => {
 			return state
 		},
-		getPrinterName: (getters) => (namespace) => {
+		getPrinterName: (state, getters) => (namespace) => {
 			return getters[namespace+"/getPrinterName"]
 		}
 	},
@@ -26,7 +26,8 @@ export default {
 							commit('addPrinter',{
 								hostname: printer.hostname,
 								port: printer.port,
-								protocol: rootState.socket.protocol
+								protocol: rootState.socket.protocol,
+								settings: printer.settings ?? {}
 							})
 						})
 					} catch(e) {
@@ -39,7 +40,8 @@ export default {
 						hostname: printer.hostname,
 						port: printer.port,
 						webPort: printer.webPort,
-						protocol: rootState.socket.protocol
+						protocol: rootState.socket.protocol,
+						settings: printer.settings ?? {}
 					})
 				})
 			}
@@ -52,6 +54,7 @@ export default {
 					printers.push({
 						hostname: state[key].socket.hostname,
 						port: state[key].socket.port,
+						settings: state[key].settings,
 					})
 				}
 
@@ -62,6 +65,7 @@ export default {
 						hostname: state[key].socket.hostname,
 						port: state[key].socket.port,
 						webPort: state[key].socket.webPort,
+						settings: state[key].settings,
 					})
 				}
 
@@ -72,7 +76,7 @@ export default {
 	mutations: {
 		addPrinter(state, payload) {
 			if ('hostname' in payload && payload.hostname !== "") {
-				const pritnerExist = Object.entries(state).findIndex((printer) =>
+				const printerExist = Object.entries(state).findIndex((printer) =>
 					printer.length > 0 &&
 					'socket' in printer[1] &&
 					'hostname' in printer[1].socket && printer[1].socket.hostname === payload.hostname &&
@@ -80,9 +84,10 @@ export default {
 				)
 
 				const nextPrinterName = 'printer'+Object.entries(state).length
-				if (pritnerExist === -1 && !this.hasModule(['farm', nextPrinterName])) {
+				if (printerExist === -1 && !this.hasModule(['farm', nextPrinterName])) {
 					this.registerModule(['farm', nextPrinterName], printer)
 					this.commit('farm/'+nextPrinterName+'/setSocketData', {...payload, _namespace: nextPrinterName })
+					if ('settings' in payload) this.commit('farm/'+nextPrinterName+'/setSettings', payload.settings)
 					this.dispatch('farm/'+nextPrinterName+'/connect', {}, { root: true })
 				}
 			}

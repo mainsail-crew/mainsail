@@ -133,7 +133,7 @@
                     <v-row class="text-center py-5" align="center">
                         <v-col class="col-3 pa-0">
                             <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
-                            <span class="text-no-wrap">{{ (requested_speed / 60 * speed_factor).toFixed(0) }} mm/s</span>
+                            <span class="text-no-wrap">{{ requested_speed.toFixed(0) }} mm/s</span>
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
@@ -271,198 +271,176 @@
                 position: state => state.printer.gcode_move.position,
                 gcode_position: state => state.printer.gcode_move.gcode_position,
 
-                requested_speed: state => state.printer.gcode_move.speed,
-                speed_factor: state => state.printer.gcode_move.speed_factor,
                 filament_used: state => state.printer.print_stats.filament_used,
                 current_file: state => state.printer.current_file,
                 print_time: state => state.printer.print_stats.print_duration,
                 print_time_total: state => state.printer.print_stats.total_duration,
             }),
-            printerStateOutput: {
-                get() {
-                    if (this.$store.state.printer.print_stats.state !== "") {
-                        const printer_state = this.$store.state.printer.print_stats.state
+            printerStateOutput() {
+                if (this.$store.state.printer.print_stats.state !== "") {
+                    const printer_state = this.$store.state.printer.print_stats.state
 
-                        if (
-                            printer_state === "standby" &&
-                            this.$store.state.printer.idle_timeout.state === "Printing"
-                        ) return "Busy"
+                    if (
+                        printer_state === "standby" &&
+                        this.$store.state.printer.idle_timeout.state === "Printing"
+                    ) return "Busy"
 
-                        if (['paused', 'printing'].includes(printer_state)) {
-                            return (this.printPercent * 100).toFixed(0)+"% "+printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
+                    if (['paused', 'printing'].includes(printer_state)) {
+                        return (this.printPercent * 100).toFixed(0)+"% "+printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
+                    }
+
+                    return printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
+                }
+
+                return this.$t("Panels.StatusPanel.Unknown")
+            },
+            toolbarButtons() {
+                return [
+                    {
+                        text: this.$t("Panels.StatusPanel.PausePrint"),
+                        color: "orange",
+                        icon: "mdi-pause",
+                        loadingName: "statusPrintPause",
+                        status: ['printing'],
+                        click: this.btnPauseJob
+                    }, {
+                        text: this.$t("Panels.StatusPanel.ResumePrint"),
+                        color: "orange",
+                        icon: "mdi-play",
+                        loadingName: "statusPrintResume",
+                        status: ['paused'],
+                        click: this.btnResumeJob
+                    }, {
+                        text: this.$t("Panels.StatusPanel.CancelPrint"),
+                        color: "red",
+                        icon: "mdi-stop",
+                        loadingName: "statusPrintCancel",
+                        status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
+                        click: this.btnCancelJob
+                    }, {
+                        text: this.$t("Panels.StatusPanel.ClearPrintStats"),
+                        color: "primary",
+                        icon: "mdi-broom",
+                        loadingName: "statusPrintClear",
+                        status: ['error', 'complete'],
+                        click: this.btnClearJob
+                    }, {
+                        text: this.$t("Panels.StatusPanel.ReprintJob"),
+                        color: "primary",
+                        icon: "mdi-printer",
+                        loadingName: "statusPrintReprint",
+                        status: ['error', 'complete'],
+                        click: this.btnReprintJob
+                    }
+                ]
+            },
+            filteredToolbarButtons() {
+                return this.toolbarButtons.filter((button) => {
+                    return button.status.includes(this.printer_state)
+                })
+            },
+            printPercent() {
+                return this.$store.getters["printer/getPrintPercent"]
+            },
+            requested_speed() {
+                const requested_speed = this.$store.state.printer.gcode_move.speed
+                const speed_factor = this.$store.state.printer.gcode_move.speed_factor
+                const max_velocity = this.$store.state.printer.toolhead.max_velocity
+
+                const speed = requested_speed / 60 * speed_factor
+                if (speed > max_velocity) return max_velocity
+
+                return speed
+            },
+            max_layers() {
+                if (
+                    'first_layer_height' in this.current_file &&
+                    'layer_height' in this.current_file &&
+                    'object_height' in this.current_file
+                ) {
+                    const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                    return max > 0 ? max : 0
+                }
+
+                return 0
+            },
+            current_layer() {
+                if (
+                    this.print_time > 0 &&
+                    'first_layer_height' in this.current_file &&
+                    'layer_height' in this.current_file &&
+                    this.gcode_position !== undefined &&
+                    this.gcode_position.length >= 3
+                ) {
+                    let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+                    current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+
+                    return current_layer > 0 ? current_layer : 0
+                }
+
+                return 0
+            },
+            estimated_time_file() {
+                return this.$store.getters["printer/getEstimatedTimeFile"]
+            },
+            estimated_time_filament() {
+                return this.$store.getters["printer/getEstimatedTimeFilament"]
+            },
+            estimated_time_slicer() {
+                return this.$store.getters["printer/getEstimatedTimeSlicer"]
+            },
+            estimated_time_avg() {
+                return this.$store.getters["printer/getEstimatedTimeAvg"]
+            },
+            eta() {
+                return this.$store.getters["printer/getEstimatedTimeETA"]
+            },
+            filament_diameter() {
+                return this.$store.state.printer.configfile.settings.extruder?.filament_diameter || 1.75
+            },
+            basicUrl() {
+                return this.$store.getters["socket/getUrl"]
+            },
+            thumbnailSmall() {
+                if (
+                    "thumbnails" in this.current_file &&
+                    this.current_file.thumbnails.length
+                ) {
+                    const thumbnail = this.current_file.thumbnails.find(thumb =>
+                        thumb.width >= 32 && thumb.width <= 64 &&
+                        thumb.height >= 32 && thumb.height <= 64
+                    )
+
+                    if (thumbnail && 'relative_path' in thumbnail) {
+                        let relative_url = ""
+                        if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                            relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
                         }
 
-                        return printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
+                        if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
                     }
-
-                    return this.$t("Panels.StatusPanel.Unknown")
                 }
+
+                return ""
             },
-            toolbarButtons: {
-                get() {
-                    return [
-                        {
-                            text: this.$t("Panels.StatusPanel.PausePrint"),
-                            color: "orange",
-                            icon: "mdi-pause",
-                            loadingName: "statusPrintPause",
-                            status: ['printing'],
-                            click: this.btnPauseJob
-                        }, {
-                            text: this.$t("Panels.StatusPanel.ResumePrint"),
-                            color: "orange",
-                            icon: "mdi-play",
-                            loadingName: "statusPrintResume",
-                            status: ['paused'],
-                            click: this.btnResumeJob
-                        }, {
-                            text: this.$t("Panels.StatusPanel.CancelPrint"),
-                            color: "red",
-                            icon: "mdi-stop",
-                            loadingName: "statusPrintCancel",
-                            status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
-                            click: this.btnCancelJob
-                        }, {
-                            text: this.$t("Panels.StatusPanel.ClearPrintStats"),
-                            color: "primary",
-                            icon: "mdi-broom",
-                            loadingName: "statusPrintClear",
-                            status: ['error', 'complete'],
-                            click: this.btnClearJob
-                        }, {
-                            text: this.$t("Panels.StatusPanel.ReprintJob"),
-                            color: "primary",
-                            icon: "mdi-printer",
-                            loadingName: "statusPrintReprint",
-                            status: ['error', 'complete'],
-                            click: this.btnReprintJob
+            thumbnailBig() {
+                if (
+                    "thumbnails" in this.current_file &&
+                    this.current_file.thumbnails.length
+                ) {
+                    const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+                    if (thumbnail && 'relative_path' in thumbnail) {
+                        let relative_url = ""
+                        if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                            relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
                         }
-                    ]
-                }
-            },
-            filteredToolbarButtons: {
-                get() {
-                    return this.toolbarButtons.filter((button) => {
-                        return button.status.includes(this.printer_state)
-                    })
-                }
-            },
-            printPercent: {
-                get() {
-                    return this.$store.getters["printer/getPrintPercent"];
-                }
-            },
-            max_layers: {
-                get() {
-                    if (
-                        'first_layer_height' in this.current_file &&
-                        'layer_height' in this.current_file &&
-                        'object_height' in this.current_file
-                    ) {
-                        const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-                        return max > 0 ? max : 0
+
+                        if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
                     }
+                }
 
-                    return 0
-                }
-            },
-            current_layer: {
-                get() {
-                    if (
-                        this.print_time > 0 &&
-                        'first_layer_height' in this.current_file &&
-                        'layer_height' in this.current_file &&
-                        this.gcode_position !== undefined &&
-                        this.gcode_position.length >= 3
-                    ) {
-                        let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-                        current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
-
-                        return current_layer > 0 ? current_layer : 0
-                    }
-
-                    return 0
-                }
-            },
-            estimated_time_file: {
-                get() {
-                    return this.$store.getters["printer/getEstimatedTimeFile"]
-                }
-            },
-            estimated_time_filament: {
-                get() {
-                    return this.$store.getters["printer/getEstimatedTimeFilament"]
-                }
-            },
-            estimated_time_slicer: {
-                get() {
-                    return this.$store.getters["printer/getEstimatedTimeSlicer"]
-                }
-            },
-            estimated_time_avg: {
-                get() {
-                    return this.$store.getters["printer/getEstimatedTimeAvg"]
-                }
-            },
-            eta: {
-                get() {
-                    return this.$store.getters["printer/getEstimatedTimeETA"]
-                }
-            },
-            filament_diameter: {
-                get() {
-                    return this.$store.state.printer.configfile.settings.extruder?.filament_diameter || 1.75
-                }
-            },
-            basicUrl: {
-                get() {
-                    return this.$store.getters["socket/getUrl"]
-                }
-            },
-            thumbnailSmall: {
-                get() {
-                    if (
-                        "thumbnails" in this.current_file &&
-                        this.current_file.thumbnails.length
-                    ) {
-                        const thumbnail = this.current_file.thumbnails.find(thumb =>
-                            thumb.width >= 32 && thumb.width <= 64 &&
-                            thumb.height >= 32 && thumb.height <= 64
-                        )
-
-                        if (thumbnail && 'relative_path' in thumbnail) {
-                            let relative_url = ""
-                            if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                                relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
-                            }
-
-                            if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                        }
-                    }
-
-                    return ""
-                }
-            },
-            thumbnailBig: {
-                get() {
-                    if (
-                        "thumbnails" in this.current_file &&
-                        this.current_file.thumbnails.length
-                    ) {
-                        const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
-
-                        if (thumbnail && 'relative_path' in thumbnail) {
-                            let relative_url = ""
-                            if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                                relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
-                            }
-
-                            if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                        }
-                    }
-
-                    return ""
-                }
+                return ""
             }
         },
         methods: {
