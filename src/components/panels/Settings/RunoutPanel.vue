@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(runout, index) of this['printer/getFilamentSwitchSensors']" v-bind:key="index">
+        <div v-for="(runout, index) of filamentSensors" v-bind:key="index">
             <v-card class="mt-6">
                 <v-toolbar flat dense >
                     <v-toolbar-title>
@@ -18,8 +18,6 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
-
     export default {
         components: {
 
@@ -30,9 +28,9 @@
             }
         },
         computed: {
-            ...mapGetters([
-                'printer/getFilamentSwitchSensors'
-            ])
+            filamentSensors() {
+                return this.$store.getters["printer/getFilamentSensors"]
+            }
         },
         methods: {
             changeSensor(runout) {
