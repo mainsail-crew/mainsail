@@ -68,12 +68,10 @@ What you <b>could do</b>:
 
 ## Set up VPN
 
-Several routers allow you to set up a VPN tunnel without much effort.
-
+Several routers allow you to set up a VPN tunnel without much effort.  
 After you have entered the login data into e.g. your smartphone, you will have secure access to your entire network, including Mainsail.
 
-If your router does not support this, you can also set up your own VPN, e.g. on your Pi.
-
+If your router does not support this, you can also set up your own VPN, e.g. on your Pi.  
 Therefore you could use: [OpenVPN](https://openvpn.net/), [WireGuard](https://www.wireguard.com/) or [PiVPN](https://www.pivpn.io/)
 
 To be able to reach your home network even with a non-static IP address, you should use a dynamic DNS service. This will forward a domain directly to your IP address. Often, these DynDNS services can also be set up directly in the router, so that the IP address gets automatically updated on a change.
