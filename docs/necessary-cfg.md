@@ -33,7 +33,7 @@ This enables pause / resume in mainsail.
 ## for pause /resume / cancel functionality
 These should be modified to your own needs.
 ```yaml
-[[gcode_macro PAUSE]
+[gcode_macro PAUSE]
 rename_existing: BASE_PAUSE
 gcode:
     ##### set defaults #####
