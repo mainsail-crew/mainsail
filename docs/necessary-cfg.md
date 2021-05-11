@@ -30,8 +30,9 @@ This enables pause / resume in mainsail.
 ```
 
 # Macros
-## for pause /resume / cancel functionality
+## for pause / resume / cancel functionality
 These should be modified to your own needs.
+{% raw %}
 ```yaml
 [gcode_macro PAUSE]
 rename_existing: BASE_PAUSE
@@ -73,6 +74,7 @@ gcode:
     BASE_RESUME
 ```
 
+
 ```yaml
 [gcode_macro CANCEL_PRINT]
 rename_existing: BASE_CANCEL_PRINT
@@ -82,11 +84,13 @@ gcode:
     SDCARD_RESET_FILE
     BASE_CANCEL_PRINT
 ```
+{% endraw %}
 
 # Optional
 
 ## customize klipper default commands
 for example, if you want to adjust the `BED_MESH_CALIBRATE` command, which you can run from "heightmap > calibrate".
+{% raw %}
 ```yaml
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BASE_BED_MESH_CALIBRATE
@@ -99,3 +103,4 @@ gcode:
     BASE_BED_MESH_CALIBRATE
     #after the original gcode
 ```
+{% endraw %}
