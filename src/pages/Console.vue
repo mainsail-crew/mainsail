@@ -69,37 +69,15 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col xs12>
-                <v-data-table
-                    :headers="headers"
-                    :options="options"
-                    :sort-by.sync="sortBy"
-                    :items="events"
-                    item-key="date"
-                    hide-default-footer
-                    disable-pagination
-                    class="event-table"
-                    :custom-sort="customSort"
-                    mobile-breakpoint="0"
-                >
-                    <template #no-data>
-                        <div class="text-center">{{ $t("Console.Empty")}}</div>
-                    </template>
-
-                    <template #item="{ item }">
-                        <tr>
-                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-none d-sm-table-cell">
-                                {{ item.date.toLocaleString() }}
-                            </td>
-                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-sm-none">
-                                {{ formatTimeMobile(item.date)}}
-                            </td>
-                            <td class="log-cell content-cell py-2" colspan="2">
-                                <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
+            <v-col ref="console" xs12 style="max-height: calc(100vh - 160px); overflow: auto;">
+                <console-table :headers="headers"
+                               :options="options"
+                               :sort-by="sortBy"
+                               :events="events"
+                               :custom-sort="customSort"
+                               :format-time-mobile="formatTimeMobile"
+                               @command-click="commandClick"
+                ></console-table>
             </v-col>
         </v-row>
     </div>
@@ -107,9 +85,11 @@
 <script>
     import { mapState, mapGetters } from 'vuex'
     import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+    import ConsoleTable from "@/components/ConsoleTable";
 
     export default {
         name: "console",
+        components: {ConsoleTable},
         data () {
             return {
                 gcode: "",
@@ -164,12 +144,19 @@
             },
         },
         methods: {
+            commandClick(msg) {
+                if (msg) {
+                    this.gcode = msg.command;
+                }
+            },
             doSend() {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
 
                 this.lastCommands.push(this.gcode);
                 this.gcode = "";
                 this.lastCommandNumber = null;
+
+                this.$refs.console.scrollTop = 0;
             },
             formatTimeMobile(date) {
                 let hours = date.getHours();

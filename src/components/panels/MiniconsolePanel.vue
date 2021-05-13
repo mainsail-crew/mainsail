@@ -68,44 +68,28 @@
         </v-card-text>
         <v-card-text class="px-0 py-0 content">
             <v-divider></v-divider>
-            <v-data-table
-                :headers="headers"
-                :options="options"
-                :items="events"
-                item-key="date"
-                hide-default-footer
-                hide-default-header
-                disable-pagination
-                class="minievent-table miniConsole"
-                :custom-sort="customSort"
-                sort-by="date"
-            >
-                <template #no-data>
-                    <div class="py-2">{{ $t("Panels.MiniconsolePanel.Empty") }}</div>
-                </template>
-
-                <template #item="{ item }">
-                    <tr>
-                        <td class="log-cell title-cell py-2">
-                            {{ formatTime(item.date)}}
-                        </td>
-                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                            <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
-                        </td>
-                    </tr>
-                </template>
-            </v-data-table>
+            <console-table ref="console"
+                           :headers="headers"
+                           :options="options"
+                           sort-by="date"
+                           :events="events"
+                           :custom-sort="customSort"
+                           :helplist="helplist"
+                           class="minievent-table miniConsole"
+                           @command-click="commandClick"
+            />
         </v-card-text>
     </v-card>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+    import { colorConsoleMessage, formatConsoleMessage, strLongestAnd } from "@/plugins/helpers"
+    import ConsoleTable from "@/components/ConsoleTable";
 
     export default {
         components: {
-
+            ConsoleTable
         },
         data: function() {
             return {
@@ -157,11 +141,17 @@ import {mapState} from 'vuex'
             },
         },
         methods: {
+            commandClick(msg) {
+              if (msg) {
+                  this.gcode = msg.command;
+              }
+            },
             doSend() {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
                 this.lastCommands.push(this.gcode)
                 this.gcode = ""
                 this.lastCommandNumber = null
+                this.$refs.console.scrollTop = 0;
             },
             onKeyUp() {
                 if (this.lastCommandNumber === null && this.lastCommands.length) {
@@ -184,10 +174,13 @@ import {mapState} from 'vuex'
             getAutocomplete(e) {
                 e.preventDefault();
                 if (this.gcode.length) {
-                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
-                    if (commands && commands.length === 1) this.gcode = commands[0].command;
-                    else {
-                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
+                    let commands = this.helplist.filter((element) => element.commandLow.startsWith(this.gcode.toLowerCase()));
+                    if (commands?.length === 1) this.gcode = commands[0].command;
+                    else if(commands?.length > 1) {
+                        let commands = this.helplist.filter((element) => element.commandLow.startsWith(this.gcode.toLowerCase()));
+                        this.gcode = commands.reduce((acc, val) => {
+                            return strLongestAnd(acc, val.command);
+                        }, commands[0].command);
                         if (commands && commands.length) {
                             let output = "";
                             commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");

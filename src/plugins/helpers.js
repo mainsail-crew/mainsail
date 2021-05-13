@@ -34,8 +34,9 @@ export function formatConsoleMessage(message) {
     message = message.replaceAll('// ', '')
     message = message.replace('\n// ', '<br>')
     message = message.replace(/(?:\r\n|\r|\n)/g, '<br>')
+    message = message.replaceAll('<br />', '<br>')
 
-    return message;
+    return message.split('<br>');
 }
 
 export function convertName(name) {
@@ -47,4 +48,13 @@ export function convertName(name) {
     output = output.slice(1)
 
     return output;
+}
+
+export function strLongestAnd(a, b) {
+    const l = Math.min(a?.length ?? Number.MAX_VALUE, b?.length ?? Number.MAX_VALUE);
+    let i = 0;
+    while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
+        i += 1;
+    }
+    return a.substr(0, i);
 }
