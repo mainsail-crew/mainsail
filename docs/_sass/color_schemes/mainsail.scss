@@ -1,52 +1,52 @@
 $link-color: $red-300;
 $btn-primary-color: $red-300;
 
+.success, .info, .warning, .alert {
+	margin: 16px 0px;
+	padding: 20px;
+	position: relative;
+	border-radius: 3px;
+	width: 100%;
+	display: block;
+	background: #f5f6fa;
+	border: 1px solid hsl(0, 0%, 85%);
+	border-left: 4px solid;
+	padding-left: 3.5em;
+	
+}
 .success {
-	margin: 16px 0px;
-	padding: 20px;
-	position: relative;
-	border-radius: 3px;
-	width: 100%;
-	display: block;
-	background-color: #f5f6fa;
-	border-left: 4px solid;
-	border-color: rgb(38, 203, 124);
+	border-left-color: rgb(38, 203, 124);
 }
-
 .info {
-	margin: 16px 0px;
-	padding: 20px;
-	position: relative;
-	border-radius: 3px;
-	width: 100%;
-	display: block;
-	background-color: #f5f6fa;
-	border-left: 4px solid;
-	border-color: rgb(56, 132, 255);
+	border-left-color: rgb(56, 132, 255);
 }
-
 .warning {
-	margin: 16px 0px;
-	padding: 20px;
-	position: relative;
-	border-radius: 3px;
-	width: 100%;
-	display: block;
-	background-color: #f5f6fa;
-	border-left: 4px solid;
-	border-color: rgb(247, 125, 5);
+	border-left-color: rgb(247, 125, 5);
+}
+.alert {
+	border-left-color: rgb(255, 70, 66);
 }
 
-.alert {
-	margin: 16px 0px;
-	padding: 20px;
-	position: relative;
-	border-radius: 3px;
-	width: 100%;
-	display: block;
-	background-color: #f5f6fa;
-	border-left: 4px solid;
-	border-color: rgb(255, 70, 66);
+.success::before, .info::before, .warning::before, .alert::before {
+	display: inline-block;
+	position: absolute;
+	left: 1.0em;
+	width: 1.5em;
+	height: 1.5em;
+	vertical-align: middle;
+	margin: 0px 10px 0px 0px;
+}
+.success::before {
+	content: url("/assets/img/success.svg");
+}
+.info::before {
+	content: url("/assets/img/info.svg");
+}
+.warning::before {
+	content: url("/assets/img/warning.svg");
+}
+.alert::before {
+	content: url("/assets/img/alert.svg");
 }
 
 .key {
