@@ -98,13 +98,35 @@ export default {
 				slicer: safeDefault(payload.slicer),
 				slicer_version: safeDefault(payload.slicer_version),
 				thumbnails: safeDefault(payload.thumbnails),
-				metapayloadPulled: true,
+				metadataPulled: true,
 				modified: new Date(payload.modified * 1000),
 				size: parseInt(payload.size),
 			};
 
 			let newObject = Object.assign(path[index], newData);
 			Vue.set(path, index, newObject);
+		}
+	},
+
+	clearMetadata(state, payload) {
+		window.console.log(payload)
+
+		const dirArray = payload.split("/")
+		window.console.log(dirArray)
+		const filename = dirArray[dirArray.length-1]
+		const path = findDirectory(state.filetree, dirArray)
+		window.console.log(filename)
+
+		const file = path.find((element) => {
+			window.console.log(element.filename)
+
+			return element.filename === filename
+		})
+		window.console.log(file)
+		if (file) {
+			window.console.log(file)
+
+			//Vue.set(path, index, newObject);
 		}
 	},
 
@@ -130,20 +152,31 @@ export default {
 	},
 
 	setMoveItem(state, payload) {
-		let filenameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1);
-		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1);
+		let filenameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1)
+		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1)
 
-		let filenameNew = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1);
-		let newPath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1);
+		let filenameNew = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
+		let newPath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
 
-		oldPath = findDirectory(state.filetree, (payload.source_item.root+"/"+oldPath).split("/"));
-		let indexFile = oldPath.findIndex(element => element.filename === filenameOld);
+		oldPath = findDirectory(state.filetree, (payload.source_item.root+"/"+oldPath).split("/"))
+		let indexFile = oldPath.findIndex(element => element.filename === filenameOld)
 
 		if (indexFile >= 0 && oldPath[indexFile]) {
-			let file = oldPath.splice(indexFile, 1)[0];
-			file.filename = filenameNew;
-			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"));
-			newPath.push(file);
+			let file = oldPath.splice(indexFile, 1)[0]
+			file.filename = filenameNew
+
+			//cleanup thumbnails and force reload
+			if (
+				'metadataPulled' in file &&
+				file.metadataPulled &&
+				'thumbnails' in file
+			) {
+				file.metadataPulled = false
+				delete file.thumbnails
+			}
+
+			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"))
+			newPath.push(file)
 		}
 	},
 
