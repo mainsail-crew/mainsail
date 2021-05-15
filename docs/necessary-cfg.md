@@ -30,36 +30,50 @@ This enables pause / resume in mainsail.
 ```
 
 # Macros
-## for pause /resume / cancel functionality
+## for pause / resume / cancel functionality
 These should be modified to your own needs.
+{% raw %}
 ```yaml
 [gcode_macro PAUSE]
 rename_existing: BASE_PAUSE
-default_parameter_X: 230    #edit to your park position
-default_parameter_Y: 230    #edit to your park position
-default_parameter_Z: 10     #edit to your park position
-default_parameter_E: 1      #edit to your retract length
 gcode:
+    ##### set defaults #####
+    {% set x = params.X|default(230) %}      #edit to your park position
+    {% set y = params.Y|default(230) %}      #edit to your park position
+    {% set z = params.Z|default(10)|float %} #edit to your park position
+    {% set e = params.E|default(1) %}        #edit to your retract length
+    ##### calculate save lift position #####
+    {% set max_z = printer.toolhead.axis_maximum.z|float %}
+    {% set act_z = printer.toolhead.position.z|float %}
+    {% set lift_z = z|abs %}
+    {% if act_z < (max_z - lift_z) %}
+        {% set z_safe = lift_z %}
+    {% else %}
+        {% set z_safe = max_z - act_z %}
+    {% endif %}
+    ##### end of definitions #####
     SAVE_GCODE_STATE NAME=PAUSE_state
     BASE_PAUSE
     G91
-    G1 E-{E} F2100
-    G1 Z{Z}
+    G1 E-{e} F2100
+    G1 Z{z_safe}
     G90
-    G1 X{X} Y{Y} F6000
+    G1 X{x} Y{y} F6000
 ```
 
 ```yaml
 [gcode_macro RESUME]
 rename_existing: BASE_RESUME
-default_parameter_E: 1      #edit to your retract length
 gcode:
+    ##### set defaults #####
+    {% set e = params.E|default(1) %} #edit to your retract length
     G91
-    G1 E{E} F2100
+    G1 E{e} F2100
     G90
     RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
     BASE_RESUME
 ```
+
 
 ```yaml
 [gcode_macro CANCEL_PRINT]
@@ -70,11 +84,13 @@ gcode:
     SDCARD_RESET_FILE
     BASE_CANCEL_PRINT
 ```
+{% endraw %}
 
 # Optional
 
 ## customize klipper default commands
 for example, if you want to adjust the `BED_MESH_CALIBRATE` command, which you can run from "heightmap > calibrate".
+{% raw %}
 ```yaml
 [gcode_macro BED_MESH_CALIBRATE]
 rename_existing: BASE_BED_MESH_CALIBRATE
@@ -87,3 +103,4 @@ gcode:
     BASE_BED_MESH_CALIBRATE
     #after the original gcode
 ```
+{% endraw %}
