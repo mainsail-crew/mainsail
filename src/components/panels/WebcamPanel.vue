@@ -55,6 +55,9 @@
                     <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive'">
                         <webcam-mjpegstreamer-adaptive :cam-settings="this.currentCam"></webcam-mjpegstreamer-adaptive>
                     </template>
+                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'uv4l-mjpeg'">
+                        <webcam-uv4l-mjpeg :cam-settings="this.currentCam"></webcam-uv4l-mjpeg>
+                    </template>
                     <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'ipstream'">
                         <webcam-ipstreamer :cam-settings="this.currentCam"></webcam-ipstreamer>
                     </template>
@@ -71,6 +74,7 @@
     import Mjpegstreamer from "@/components/webcams/Mjpegstreamer"
     import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive"
     import Ipstreamer from "@/components/webcams/Ipstreamer"
+    import Uv4lMjpeg from "@/components/webcams/Uv4lMjpeg"
     import WebcamGrid from "@/components/webcams/WebcamGrid"
 
     export default {
@@ -78,6 +82,7 @@
             'webcam-mjpegstreamer': Mjpegstreamer,
             'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
             'webcam-ipstreamer': Ipstreamer,
+            'webcam-uv4l-mjpeg': Uv4lMjpeg,
             'webcam-grid': WebcamGrid,
         },
         data: function() {
@@ -109,8 +114,8 @@
                         icon: "mdi-view-grid",
                     }
                 } else {
-                    const currentCam = this.webcams.find(webcam => webcam.name === this.currentCamName)
-                    if (currentCam) return currentCam
+                    const currentCam = this.webcams.findIndex(webcam => webcam.name === this.currentCamName)
+                    if (currentCam !== -1) return this.webcams[currentCam]
                 }
 
                 return {}
