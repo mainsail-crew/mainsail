@@ -7,8 +7,8 @@
 <template>
     <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn dark icon v-bind="attrs" v-on="on">
-                <v-icon>mdi-dots-vertical</v-icon>
+            <v-btn color="grey darken-3" v-bind="attrs" v-on="on" class="ml-5 minwidth-0 px-2">
+                <v-icon>mdi-power-standby</v-icon>
             </v-btn>
         </template>
 
