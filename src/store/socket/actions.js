@@ -57,24 +57,47 @@ export default {
 
 			case 'notify_filelist_changed':
 				switch(payload.params[0].action) {
-					case 'upload_file':
-						commit('files/setUploadFile', payload.params[0], { root: true })
+					case 'create_file':
+						commit('files/setCreateFile', payload.params[0], { root: true })
+						break
+
+					case 'move_file':
+						commit('files/setMoveFile', payload.params[0], { root: true })
 						break
 
 					case 'delete_file':
 						commit('files/setDeleteFile', payload.params[0], { root: true })
 						break
 
-					case 'move_item':
-						commit('files/setMoveItem', payload.params[0], { root: true })
+					case 'modify_file':
+						commit('files/setModifyFile', payload.params[0], { root: true })
 						break
 
 					case 'create_dir':
 						commit('files/setCreateDir', payload.params[0], { root: true })
 						break
 
+					case 'move_dir':
+						commit('files/setMoveDir', payload.params[0], { root: true })
+						break
+
 					case 'delete_dir':
 						commit('files/setDeleteDir', payload.params[0], { root: true })
+						break
+
+					case 'root_update':
+						dispatch('server/addRootDirectory', payload.params[0], { root: true })
+						commit('files/setRootUpdate', payload.params[0], { root: true })
+						break
+
+					//old notify... can delete in july
+					case 'upload_file':
+						commit('files/setCreateFile', payload.params[0], { root: true })
+						break
+
+					//old notify... can delete in july
+					case 'move_item':
+						commit('files/setMoveFile', payload.params[0], { root: true })
 						break
 
 					default:
