@@ -6,7 +6,7 @@
 		"Failed": "failed",
 		"TryAgain": "try again",
 		"Printers": "Printers",
-		"CannotNotConnectTo": "Cannot not connect to",
+		"CannotNotConnectTo": "Cannot connect to",
 		"ConnectionTo": "Connection to",
 		"ConnectionFailed": "Connecting Failed",
 		"SelectPrinter": "Select Printer",
