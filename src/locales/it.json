@@ -339,9 +339,9 @@
 			"MoveDistancesInMm": "Spostamento in mm",
 			"MoveDistancesXYInMm": "Spostamento di XY in mm",
 			"MoveDistancesZInMm": "Spostamento di Z in mm",
-			"ReverseXMovement": "Inverti il movimento di X",
-			"ReverseYMovement": "Inverti il movimento di Y",
-			"ReverseZMovement": "Inverti il movimento di Z",
+			"InvertXMovement": "Inverti il movimento di X",
+			"InvertYMovement": "Inverti il movimento di Y",
+			"InvertZMovement": "Inverti il movimento di Z",
 			"SpeedEInMms": "Velocità di E in mm/s",
 			"SpeedXY": "Velocità di XY",
 			"SpeedZ": "Velocità di Z"

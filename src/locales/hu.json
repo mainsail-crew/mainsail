@@ -340,9 +340,9 @@
       "MoveDistancesInMm": "Mozgások mm-ben",
       "MoveDistancesXYInMm": "XY mozgásai mm-ben",
       "MoveDistancesZInMm": "Z mozgásai mm-ben",
-      "ReverseXMovement": "X mozgása fordítva",
-      "ReverseYMovement": "Y mozgása fordítva",
-      "ReverseZMovement": "Z mozgása fordítva",
+      "InvertXMovement": "X mozgása fordítva",
+      "InvertYMovement": "Y mozgása fordítva",
+      "InvertZMovement": "Z mozgása fordítva",
       "SpeedEInMms": "E sebessége mm/s-ban",
       "SpeedXY": "XY sebessége",
       "SpeedZ": "Z sebessége"

@@ -339,9 +339,9 @@
       "MoveDistancesInMm": "Путешествия в мм",
       "MoveDistancesXYInMm": "Путешествия XY в мм",
       "MoveDistancesZInMm": "Путешествия Z в мм",
-      "ReverseXMovement": "Обратное движение Х",
-      "ReverseYMovement": "Обратное движение Y",
-      "ReverseZMovement": "Обратное движение Z",
+      "InvertXMovement": "Обратное движение Х",
+      "InvertYMovement": "Обратное движение Y",
+      "InvertZMovement": "Обратное движение Z",
       "SpeedEInMms": "Скорость E в мм/s",
       "SpeedXY": "Скорость XY",
       "SpeedZ": "Скорость Z"
