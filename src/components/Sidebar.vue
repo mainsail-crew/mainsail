@@ -76,7 +76,6 @@ export default {
         ...mapState({
             klippy_state: state => state.server.klippy_state,
             klipperConfigfileSettings: state => state.printer.configfile.settings,
-            moonrakerComponents: state => state.server.components,
             boolNaviWebcam: state => state.gui.webcam.bool,
 
             mainsailVersion: state => state.packageVersion,
@@ -90,35 +89,29 @@ export default {
                 return this.$store.dispatch("setNaviDrawer", newVal)
             }
         },
-        currentPage: {
-            get() {
-                return this.$route.fullPath
-            }
+        currentPage() {
+            return this.$route.fullPath
         },
-        naviPoints: {
-            get() {
-                return routes.filter((element) => element.showInNavi)
-            }
+        naviPoints() {
+            return routes.filter((element) => element.showInNavi)
         },
-        printerName: {
-            get() {
-                return this.$store.state.gui.general.printername || this.$store.state.printer.hostname
-            }
+        printerName() {
+            return this.$store.state.gui.general.printername || this.$store.state.printer.hostname
         },
-        sidebarLogo: {
-            get() {
-                return this.$store.getters["files/getSidebarLogo"]
-            }
+        sidebarLogo() {
+            return this.$store.getters["files/getSidebarLogo"]
         },
-        sidebarBackground: {
-            get() {
-                return this.$store.getters["files/getSidebarBackground"]
-            }
+        sidebarBackground() {
+            return this.$store.getters["files/getSidebarBackground"]
         },
-        isUpdateAvailable: {
-            get() {
-                return this.$store.getters["server/updateManager/isUpdateAvailable"]
-            }
+        isUpdateAvailable() {
+            return this.$store.getters["server/updateManager/isUpdateAvailable"]
+        },
+        moonrakerComponents() {
+            return this.$store.state.server.components
+        },
+        registeredDirectories() {
+            return this.$store.state.server.registered_directories
         }
     },
     methods: {
@@ -128,6 +121,7 @@ export default {
             if (route.component?.name === 'webcam') return this.boolNaviWebcam
 
             if ('moonrakerComponent' in route) return this.moonrakerComponents.includes(route.moonrakerComponent)
+            if ('registeredDirectory' in route) return this.registeredDirectories.includes(route.registeredDirectory)
             if ('klipperComponent' in route) return (route.klipperComponent in this.klipperConfigfileSettings)
 
             return true

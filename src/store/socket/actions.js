@@ -86,6 +86,7 @@ export default {
 						break
 
 					case 'root_update':
+						dispatch('server/addRootDirectory', payload.params[0], { root: true })
 						commit('files/setRootUpdate', payload.params[0], { root: true })
 						break
 
