@@ -108,37 +108,17 @@ export default {
 		}
 	},
 
-	clearMetadata(state, payload) {
-		window.console.log(payload)
-
-		const dirArray = payload.split("/")
-		window.console.log(dirArray)
-		const filename = dirArray[dirArray.length-1]
-		const path = findDirectory(state.filetree, dirArray)
-		window.console.log(filename)
-
-		const file = path.find((element) => {
-			window.console.log(element.filename)
-
-			return element.filename === filename
-		})
-		window.console.log(file)
-		if (file) {
-			window.console.log(file)
-
-			//Vue.set(path, index, newObject);
-		}
-	},
-
-	setUploadFile(state, payload) {
+	setCreateFile(state, payload) {
 		let filename = payload.item.path;
 		if (payload.item.path.lastIndexOf("/") >= 0) filename = payload.item.path.substr(payload.item.path.lastIndexOf("/")).replace("/", "");
 		let path = payload.item.path.substr(0, payload.item.path.lastIndexOf("/"));
 		let parent = findDirectory(state.filetree, (payload.item.root+"/"+path).split("/"));
 
 		if (parent) {
-			if (parent.findIndex(element => (!element.isDirectory && element.filename === filename)) === -1) {
-				let modified = new Date(payload.item.modified * 1000);
+			const indexFile = parent.findIndex(element => (!element.isDirectory && element.filename === filename))
+
+			if (indexFile === -1) {
+				let modified = new Date(payload.item.modified * 1000)
 
 				parent.push({
 					isDirectory: false,
@@ -146,12 +126,18 @@ export default {
 					modified: modified,
 					size: payload.item.size,
 					metadataPulled: false,
-				});
-			} else Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.item.path }, "files/getMetadata")
+				})
+			} else {
+				parent[indexFile].modified = new Date(payload.item.modified * 1000)
+				parent[indexFile].size = payload.item.size
+				parent[indexFile].metadataPulled = false
+
+				Vue.prototype.$socket.sendObj("server.files.metadata", { filename: payload.item.path }, "files/getMetadata")
+			}
 		}
 	},
 
-	setMoveItem(state, payload) {
+	setMoveFile(state, payload) {
 		let filenameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1)
 		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1)
 
@@ -177,6 +163,51 @@ export default {
 
 			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"))
 			newPath.push(file)
+		}
+	},
+
+	setModifyFile(state, payload) {
+		window.console.log(payload)
+		window.console.log(state)
+
+		const filename = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
+		const filepath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
+
+		const path = findDirectory(state.filetree, (payload.item.root+"/"+filepath).split("/"))
+		const indexFile = path.findIndex(element => element.filename === filename)
+
+		if (indexFile >= 0 && path[indexFile]) {
+			if (
+				'metadataPulled' in path[indexFile] &&
+				path[indexFile].metadataPulled
+			) {
+				path[indexFile].metadataPulled = false
+
+				if ('thumbnails' in path[indexFile])
+					delete path[indexFile].thumbnails
+			}
+
+			path[indexFile].modified = new Date(payload.item.modified*1000)
+			path[indexFile].size = payload.item.size
+		}
+	},
+
+	setMoveDir(state, payload) {
+		const dirnameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1)
+		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1)
+
+		const dirnameNew = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
+		let newPath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
+
+		oldPath = findDirectory(state.filetree, (payload.source_item.root+"/"+oldPath).split("/"))
+		let indexDir = oldPath.findIndex(element => element.filename === dirnameOld)
+
+		if (indexDir >= 0 && oldPath[indexDir]) {
+			let dir = oldPath.splice(indexDir, 1)[0]
+			dir.filename = dirnameNew
+
+			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"))
+			newPath.push(dir)
 		}
 	},
 
@@ -211,6 +242,13 @@ export default {
 		let index = currentPath.findIndex(element => element.filename === delPath);
 
 		if (index >= 0 && currentPath[index]) currentPath.splice(index, 1);
+	},
+
+	setRootUpdate(state, payload) {
+		const index = state.filetree.findIndex(root => root.filename === payload.item.root)
+		if (index !== -1 && state.filetree[index].childrens.length) {
+			state.filetree[index].childrens.splice(0, state.filetree[index].childrens.length)
+		}
 	},
 
 	setDiskUsage(state, payload) {

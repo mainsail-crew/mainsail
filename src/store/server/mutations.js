@@ -76,4 +76,8 @@ export default {
 			type: type,
 		})
 	},
+
+	addRootDirectory(state, payload) {
+		state.registered_directories.push(payload.name)
+	}
 }

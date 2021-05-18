@@ -56,7 +56,7 @@ const routes = [
         component: Files,
         alwaysShow: false,
 		showInNavi: true,
-		klipperComponent: 'virtual_sdcard',
+		registeredDirectory: 'gcodes',
     },
     {
         title: "History",
