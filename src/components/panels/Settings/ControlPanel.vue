@@ -70,9 +70,9 @@
                         </v-row>
                         <v-row>
                             <v-col class="pt-0">
-                                <v-switch v-model="reverseX" :label="$t('Settings.ControlPanel.ReverseXMovement')" hide-details="auto" class="mt-0"></v-switch>
-                                <v-switch v-model="reverseY" :label="$t('Settings.ControlPanel.ReverseYMovement')" hide-details="auto" class="mt-0"></v-switch>
-                                <v-switch v-model="reverseZ" :label="$t('Settings.ControlPanel.ReverseZMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseX" :label="$t('Settings.ControlPanel.InvertXMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseY" :label="$t('Settings.ControlPanel.InvertYMovement')" hide-details="auto" class="mt-0"></v-switch>
+                                <v-switch v-model="reverseZ" :label="$t('Settings.ControlPanel.InvertZMovement')" hide-details="auto" class="mt-0"></v-switch>
                             </v-col>
                         </v-row>
                     </template>
