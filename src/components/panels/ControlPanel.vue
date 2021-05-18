@@ -122,7 +122,7 @@
                                         >
                                             <div class="d-flex align-center">
                                                 <v-icon>mdi-home</v-icon>
-                                                <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
+                                                <span class="ml-1"><span class="d-none d-sm-inline">{{ $t('Panels.ControlPanel.Home') }} </span>{{ $t('Panels.ControlPanel.ALL') }}</span>
                                             </div>
                                         </v-btn>
                                     </v-col>
