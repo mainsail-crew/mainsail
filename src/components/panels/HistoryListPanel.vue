@@ -130,7 +130,7 @@
                 <v-list-item @click="startPrint(contextMenu.item)" v-if="contextMenu.item.exists" :disabled="is_printing">
                     <v-icon class="mr-1">mdi-printer</v-icon> {{ $t('History.Reprint') }}
                 </v-list-item>
-                <v-list-item @click="deleteJob(contextMenu.item)" :disabled="contextMenu.item.status === 'in_progress'">
+                <v-list-item @click="deleteJob(contextMenu.item)">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
