@@ -22,7 +22,7 @@ export default {
 	getSidebarBackground: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
 		const acceptName = "sidebar-background"
-		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif']
+		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
@@ -38,7 +38,7 @@ export default {
 	getMainBackground: (state, getters, rootState, rootGetters) => {
 		let configDir = findDirectory(state.filetree, ['config', themeDir])
 		const acceptName = "main-background"
-		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif']
+		const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 
 		let file = configDir.find(element =>
 			element.filename !== undefined && (
