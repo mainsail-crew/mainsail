@@ -146,16 +146,16 @@
                     <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                         <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Settings.ConfigFilesPanel.Download') }}
                     </v-list-item>
-                    <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples' && currentPath !== '/logs'">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
-                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '/config_examples' && currentPath !== '/logs'">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
-                    <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples' && currentPath !== '/logs'">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
-                    <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
+                    <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples' && currentPath !== '/logs'">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
                 </v-list>
@@ -436,7 +436,6 @@ export default {
         },
         methods: {
             closeEditor() {
-                console.log("close");
                 this.editor.show = false;
                 this.editor.init = false;
                 this.editor.monaco = null;
@@ -594,6 +593,8 @@ export default {
                     if (boolRestart) {
                         if (this.editor.item.filename === "moonraker.conf") {
                             this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
+                        } else if (this.editor.item.filename.startsWith("webcam") && this.editor.item.filename.endsWith(".txt")) {
+                            this.$socket.sendObj('machine.services.restart', { service: "webcamd" })
                         } else {
                             this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
                             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
