@@ -32,7 +32,7 @@ export default {
 		)
 		if (file) return rootGetters["socket/getUrl"]+'/server/files/config/'+themeDir+'/'+file.filename
 
-		return '/img/sidebar-background.png'
+		return '/img/sidebar-background.svg'
 	},
 
 	getMainBackground: (state, getters, rootState, rootGetters) => {
