@@ -51,14 +51,24 @@ gcode:
     {% else %}
         {% set z_safe = max_z - act_z %}
     {% endif %}
+    {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
+    {%set act_extrude_temp = printer.extruder.temperature|int %}
     ##### end of definitions #####
     SAVE_GCODE_STATE NAME=PAUSE_state
     BASE_PAUSE
     G91
-    G1 E-{e} F2100
-    G1 Z{z_safe}
-    G90
-    G1 X{x} Y{y} F6000
+    {% if act_extrude_temp > min_extrude_temp %}
+      G1 E-{e} F2100
+    {% else %}
+      {action_respond_info("Extruder not hot enough")}
+    {% endif %}
+    {% if "xyz" in printer.toolhead.homed_axes %}    
+      G1 Z{z_safe}
+      G90
+      G1 X{x} Y{y} F6000
+    {% else %}
+      {action_respond_info("Printer not homed")}
+    {% endif %}
 ```
 
 ```yaml
@@ -68,8 +78,11 @@ gcode:
     ##### set defaults #####
     {% set e = params.E|default(1) %} #edit to your retract length
     G91
-    G1 E{e} F2100
-    G90
+    {% if act_extrude_temp > min_extrude_temp %}
+      G1 E{e} F2100
+    {% else %}
+      {action_respond_info("Extruder not hot enough")}
+    {% endif %}  
     RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
     BASE_RESUME
 ```
