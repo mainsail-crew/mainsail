@@ -159,7 +159,7 @@
                             </template>
                             <template v-else>
                                 <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
+                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top content-class="tooltip__content-opacity1">
                                         <template v-slot:activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
