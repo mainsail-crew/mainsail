@@ -77,6 +77,9 @@ rename_existing: BASE_RESUME
 gcode:
     ##### set defaults #####
     {% set e = params.E|default(1) %} #edit to your retract length
+    {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
+    {%set act_extrude_temp = printer.extruder.temperature|int %}
+    ##### end of definitions #####
     G91
     {% if act_extrude_temp > min_extrude_temp %}
       G1 E{e} F2100
