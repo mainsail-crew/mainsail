@@ -81,6 +81,12 @@ gcode:
     {% set e = params.E|default(1) %} #edit to your retract length
     {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
     {%set act_extrude_temp = printer.extruder.temperature|int %}
+    #### get VELOCITY parameter if specified ####
+    {% if 'VELOCITY' in params|upper %}
+      {% set get_params = ('VELOCITY=' + params.VELOCITY)  %}
+    {%else %}
+      {% set get_params = "" %}
+    {% endif %}
     ##### end of definitions #####
     G91
     {% if act_extrude_temp > min_extrude_temp %}
@@ -89,7 +95,7 @@ gcode:
       {action_respond_info("Extruder not hot enough")}
     {% endif %}  
     RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
-    RESUME_BASE
+    RESUME_BASE {get_params}
 ```
 
 
