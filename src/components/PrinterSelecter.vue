@@ -31,7 +31,6 @@
             </div>
             <v-item-group class="v-btn-toggle mx-4 d-block row" name="printers" v-if="false">
                 <v-btn class="col" color="primary" @click="switchToPrinters">{{ $t("App.Printers")}}</v-btn>
-
             </v-item-group>
         </li>
         <v-divider class="my-4"></v-divider>
