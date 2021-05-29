@@ -235,8 +235,6 @@ export default {
             }, 1000)
         },
         updateChart() {
-            window.console.log("update chart")
-
             if (
                 this.chart &&
                 this.boolTempchart &&
