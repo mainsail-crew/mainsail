@@ -24,13 +24,14 @@
 	},
     "ConnectionDialog": {
         "Connecting": "Connecting to {host}",
-        "Failed": "Connecting Failed to {host}",
+        "Failed": "Connecting failed",
         "CannotConnectTo": "Cannot connect to {host}.",
-        "TryAgain": "try again"
+        "TryAgain": "try again",
+        "CheckMoonrakerLog": "If this message appears repeatedly, please have a look in the log file located at:"
     },
     "SelectPrinterDialog": {
         "Connecting": "Connecting to {host}",
-        "Failed": "Connecting Failed to {host}",
+        "Failed": "Connecting failed",
         "CannotConnectTo": "Cannot connect to {host}.",
         "TryAgain": "try again",
         "SelectPrinter": "Select Printer",

@@ -23,6 +23,12 @@
                 <div class="text-center">
                     <v-btn @click="reconnect" color="primary">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
                 </div>
+                <v-divider class="mt-5 mb-3"></v-divider>
+                <p>{{ $t("ConnectionDialog.CheckMoonrakerLog") }}</p>
+                <ul>
+                    <li>~/klipper_logs/moonraker.log</li>
+                    <li>/tmp/moonraker.log</li>
+                </ul>
             </v-card-text>
         </v-card>
     </v-dialog>
