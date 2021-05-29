@@ -15,7 +15,7 @@ export default {
         let _this = this;
         return {
             chart : null,
-            timerChart: '',
+            timerChart: null,
             isVisible: true,
             chartOptions: {
                 darkMode: true,
@@ -229,12 +229,14 @@ export default {
             if (document.getElementById("tempchart") && this.chart === null) {
                 this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'canvas'})
                 this.chart.setOption(this.chartOptions)
-                this.updateChart()
+                this.timerChart = setInterval(this.updateChart, this.intervalChartUpdate)
             } else setTimeout(() => {
                 this.createChart()
             }, 1000)
         },
         updateChart() {
+            window.console.log("update chart")
+
             if (
                 this.chart &&
                 this.boolTempchart &&
@@ -294,16 +296,18 @@ export default {
                         }
                     }],
                 })
-
-                setTimeout(() => {
-                    this.updateChart()
-                }, this.intervalChartUpdate)
             }
         },
         visibilityChanged (isVisible) {
             this.isVisible = isVisible
             if(isVisible && this.chart !== null) this.chart.resize()
-            if(this.chart !== null) this.updateChart()
+
+            if (!isVisible && this.timerChart !== null) {
+                clearTimeout(this.timerChart)
+                this.timerChart = null
+            } else if(isVisible && this.chart !== null && this.timerChart === null) {
+                this.timerChart = setInterval(this.updateChart, this.intervalChartUpdate)
+            }
         },
         resize() {
             this.chart?.resize();
