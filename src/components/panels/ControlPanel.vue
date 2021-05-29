@@ -122,7 +122,7 @@
                                         >
                                             <div class="d-flex align-center">
                                                 <v-icon>mdi-home</v-icon>
-                                                <span class="ml-1"><span class="d-none d-sm-inline">{{ $t('Panels.ControlPanel.Home') }} </span>{{ $t('Panels.ControlPanel.ALL') }}</span>
+                                                <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
                                             </div>
                                         </v-btn>
                                     </v-col>
@@ -202,7 +202,7 @@
                 <template v-else>
                     <v-row no-gutters>
                         <v-col class="col-12  pb-0 text-center">
-                            <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon><span class="d-none d-sm-inline">{{ $t('Panels.ControlPanel.Home') }} </span>{{ $t('Panels.ControlPanel.ALL') }}</v-btn>
+                            <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon>{{ $t('Panels.ControlPanel.ALL') }}</v-btn>
                             <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
                             <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
                         </v-col>
