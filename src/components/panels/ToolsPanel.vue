@@ -300,20 +300,14 @@
             ...mapGetters([
                 'gui/getPreheatPresets'
             ]),
-            heaters: {
-                get () {
-                    return this.$store.getters["printer/getHeaters"]
-                }
+            heaters() {
+                return this.$store.getters["printer/getHeaters"]
             },
-            temperatureFans: {
-                get () {
-                    return this.$store.getters["printer/getTemperatureFans"]
-                }
+            temperatureFans() {
+                return this.$store.getters["printer/getTemperatureFans"]
             },
-            temperatureSensors: {
-                get () {
-                    return this.$store.getters["printer/getTemperatureSensors"]
-                }
+            temperatureSensors() {
+                return this.$store.getters["printer/getTemperatureSensors"]
             },
             boolTempchart: {
                 get() {
