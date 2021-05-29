@@ -9,26 +9,28 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        <span v-if="isConnecting">{{ $t("App.ConnectionTo") }}{{ parseInt(port) !== 80 ? hostname+':'+port : hostname }}</span>
-                        <span v-if="connectingFailed">{{ $t("App.ConnectionFailed") }}</span>
-                        <span v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool">{{ $t("App.SelectPrinter") }}</span>
-                        <span v-if="dialogAddPrinter.bool">{{ $t("App.AddPrinter") }}</span>
-                        <span v-if="dialogEditPrinter.bool">{{ $t("App.EditPrinter") }}</span>
+                        <template v-if="dialogAddPrinter.bool">{{ $t("SelectPrinterDialog.AddPrinter") }}</template>
+                        <template v-else-if="dialogEditPrinter.bool">{{ $t("SelectPrinterDialog.EditPrinter") }}</template>
+                        <template v-else-if="isConnecting">{{ $t("SelectPrinterDialog.Connecting", {'host': formatHostname}) }}</template>
+                        <template v-else-if="connectingFailed">{{ $t("SelectPrinterDialog.ConnectionFailed", {'host': formatHostname}) }}</template>
+                        <template v-else>{{ $t("SelectPrinterDialog.SelectPrinter") }}</template>
                     </span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn v-if="!isConnecting && !connectingFailed && !dialogAddPrinter.bool && !dialogEditPrinter.bool && countPrinters > 0" small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn>
-                <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                <v-btn small class="minwidth-0" v-if="!isConnecting && !connectingFailed && dialogEditPrinter.bool" @click="dialogEditPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                <template v-if="!isConnecting && !connectingFailed">
+                    <template v-if="dialogEditPrinter.bool"><v-btn small class="minwidth-0" @click="dialogEditPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn></template>
+                    <template v-else-if="dialogAddPrinter.bool"><v-btn small class="minwidth-0" v-if="dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn></template>
+                    <template v-else-if="countPrinters > 0"><v-btn small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn></template>
+                </template>
             </v-toolbar>
             <v-card-text class="pt-5" v-if="isConnecting">
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>{{ $t("App.CannotNotConnectTo") }} {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
+                <p>{{ $t("SelectPrinterDialog.CannotConnectTo") }} {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
                 <div class="text-center">
-                    <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">{{ $t("App.ChangePrinter") }}</v-btn>
-                    <v-btn @click="reconnect" color="primary">{{ $t("App.TryAgain") }}</v-btn>
+                    <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">{{ $t("SelectPrinterDialog.ChangePrinter") }}</v-btn>
+                    <v-btn @click="reconnect" color="primary">{{ $t("SelectPrinterDialog.TryAgain") }}</v-btn>
                 </div>
             </v-card-text>
             <v-card-text class="pt-3" v-if="!isConnecting && dialogAddPrinter.bool">
@@ -38,9 +40,9 @@
                             <v-text-field
                                 v-model="dialogAddPrinter.hostname"
                                 :rules="[
-                                    v => !!v || 'Hostname is required',
-                                    v => !v.startsWith('http:') || 'invalid hostname/IP',
-                                    v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    v => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                    v => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    v => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
                                 ]"
                                 label="Hostname/IP"
                                 required
@@ -49,7 +51,7 @@
                         <v-col class="col-4">
                             <v-text-field
                                 v-model="dialogAddPrinter.port"
-                                :rules="[v => !!v || 'Port is required']"
+                                :rules="[v => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                 label="Port"
                                 required
                             ></v-text-field>
@@ -63,7 +65,7 @@
                                 class="middle"
                                 @click="addPrinter"
                             >
-                                {{ $t("App.AddPrinter") }}
+                                {{ $t("SelectPrinterDialog.AddPrinter") }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -76,9 +78,9 @@
                             <v-text-field
                                 v-model="dialogEditPrinter.hostname"
                                 :rules="[
-                                    v => !!v || 'Hostname is required',
-                                    v => !v.startsWith('http:') || 'invalid hostname/IP',
-                                    v => !v.startsWith('https:') || 'invalid hostname/IP',
+                                    v => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                    v => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    v => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
                                 ]"
                                 label="Hostname/IP"
                                 required
@@ -87,7 +89,7 @@
                         <v-col class="col-4">
                             <v-text-field
                                 v-model="dialogEditPrinter.port"
-                                :rules="[v => !!v || 'Port is required']"
+                                :rules="[v => !!v || $t('SelectPrinterDialog.PortRequired')]"
                                 label="Port"
                                 required
                             ></v-text-field>
@@ -111,7 +113,7 @@
                                 class="middle"
                                 @click="updatePrinter"
                             >
-                                {{ $t("App.UpdatePrinter") }}
+                                {{ $t("SelectPrinterDialog.UpdatePrinter") }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -140,14 +142,14 @@
                     </v-row>
                     <v-row v-if="showCorsInfo">
                         <v-col>
-                            <p class="text-center" v-if="countPrinters === 0">{{ $t("App.Hello") }}</p>
-                            <p class="text-center">{{ $t("App.PleaseRememberToAdd") }}<code>{{ currentUrl }}</code> {{ $t("App.InMoonrakerConf") }}</p>
-                            <p class="text-center mb-0">{{ $t("App.YouCanFindMore") }} <a :href="$t('App.Remotemode')" target="_blank">{{ $t("App.Remotemode") }}</a>.</p>
+                            <p class="text-center" v-if="countPrinters === 0">{{ $t("SelectPrinterDialog.Hello") }}</p>
+                            <p class="text-center">{{ $t("SelectPrinterDialog.RememberToAdd", {cors: currentUrl}) }}</p>
+                            <p class="text-center mb-0">{{ $t("SelectPrinterDialog.YouCanFindMore") }} <a href="https://docs.mainsail.xyz/remotemode" target="_blank">https://docs.mainsail.xyz/remotemode</a>.</p>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn @click="dialogAddPrinter.bool = true">{{ $t("App.AddPrinter") }}</v-btn>
+                            <v-btn @click="dialogAddPrinter.bool = true">{{ $t("SelectPrinterDialog.AddPrinter") }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -157,13 +159,12 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Vue from "vue";
 
 export default {
     data: function() {
         return {
-            showDialog: true,
             dialogAddPrinter: {
                 bool: false,
                 hostname: "",
@@ -178,15 +179,6 @@ export default {
         }
     },
     computed: {
-        ...mapState({
-            isConnected: state => state.socket.isConnected,
-            isConnecting: state => state.socket.isConnecting,
-            connectingFailed: state => state.socket.connectingFailed,
-            remoteMode: state => state.socket.remoteMode,
-            protocol: state => state.socket.protocol,
-            hostname: state => state.socket.hostname,
-            port: state => state.socket.port,
-        }),
         ...mapGetters({
             countPrinters: "farm/countPrinters",
             printers: "farm/getPrinters",
@@ -195,6 +187,33 @@ export default {
         ...mapActions({
             readPrinters: "farm/readStoredPrinters"
         }),
+        remoteMode() {
+            return this.$store.state.socket.remoteMode
+        },
+        protocol() {
+            return this.$store.state.socket.protocol
+        },
+        hostname() {
+            return this.$store.state.socket.hostname
+        },
+        port() {
+            return this.$store.state.socket.port
+        },
+        formatHostname() {
+            return parseInt(this.port) !== 80 && this.port !== "" ? this.hostname+":"+this.port : this.hostname
+        },
+        isConnected() {
+            return this.$store.state.socket.isConnected
+        },
+        isConnecting() {
+            return this.$store.state.socket.isConnecting
+        },
+        connectingFailed() {
+            return this.$store.state.socket.connectingFailed
+        },
+        showDialog() {
+            return !this.isConnected
+        },
         currentUrl() {
             return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
         },
