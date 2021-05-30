@@ -20,17 +20,13 @@
             <v-list-item class="minheight30" link @click="doFirmwareRestart()">
                 <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.FirmwareRestart") }}</v-list-item-title>
             </v-list-item>
-            <v-divider class="mt-0"></v-divider>
-            <v-subheader class="pt-2" style="height: auto;">{{ $t("App.RestartServices") }}</v-subheader>
-            <v-list-item class="minheight30"  link @click="doServiceRestartKlipper()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.Klipper") }}</v-list-item-title>
-            </v-list-item>
-            <v-list-item class="minheight30"  link @click="doServiceRestartMoonraker()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ $t("App.Moonraker") }}</v-list-item-title>
-            </v-list-item>
-            <v-list-item class="minheight30" v-if="boolWebcam" link @click="doServiceRestartWebcam()">
-                <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>Webcam</v-list-item-title>
-            </v-list-item>
+            <template v-if="services.length">
+                <v-divider class="mt-0"></v-divider>
+                <v-subheader class="pt-2" style="height: auto;">{{ $t("App.RestartServices") }}</v-subheader>
+                <v-list-item class="minheight30"  link @click="doServiceRestart(service)" v-for="service in services" v-bind:key="service">
+                    <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ service.charAt(0).toUpperCase() + service.slice(1) }}</v-list-item-title>
+                </v-list-item>
+            </template>
             <div v-if="countPowerDevices">
                 <v-divider class="mt-0"></v-divider>
                 <v-subheader class="pt-2" style="height: auto;">{{ $t("App.PowerDevices") }}</v-subheader>
@@ -68,15 +64,16 @@ export default {
             printer_state: state => state.printer.print_stats.state,
             devices: (state) => state.server.power.devices,
         }),
-        countPowerDevices: {
-            get() {
-                return this.$store.getters["server/power/count"]
-            }
+        countPowerDevices() {
+            return this.$store.getters["server/power/count"]
         },
-        boolWebcam: {
-            get() {
-                return this.$store.state.gui.dashboard.boolWebcam || this.$store.state.gui.webcam.bool
-            }
+        boolWebcam() {
+            return this.$store.state.gui.dashboard.boolWebcam || this.$store.state.gui.webcam.bool
+        },
+        services() {
+            let services = this.$store.state.server.system_info.available_services
+            services.sort()
+            return services
         }
     },
     methods: {
@@ -87,33 +84,25 @@ export default {
             let rpc = value === 1 ? "machine.device_power.on" : "machine.device_power.off"
             Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle")
         },
-        doRestart: function() {
+        doRestart() {
             this.showMenu = false
             this.$store.commit('server/addEvent', { message: "RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "RESTART" })
         },
-        doFirmwareRestart: function() {
+        doFirmwareRestart() {
             this.showMenu = false
             this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
             this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
         },
-        doServiceRestartKlipper: function() {
+        doServiceRestart(service) {
             this.showMenu = false
-            this.$socket.sendObj('machine.services.restart', { service: "klipper" })
+            this.$socket.sendObj('machine.services.restart', { service: service })
         },
-        doServiceRestartMoonraker: function() {
-            this.showMenu = false
-            this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
-        },
-        doServiceRestartWebcam: function() {
-            this.showMenu = false
-            this.$socket.sendObj('machine.services.restart', { service: "webcamd" })
-        },
-        doHostReboot: function() {
+        doHostReboot() {
             this.showMenu = false
             this.$socket.sendObj('machine.reboot', { })
         },
-        doHostShutdown: function() {
+        doHostShutdown() {
             this.showMenu = false
             this.$socket.sendObj('machine.shutdown', { })
         },

@@ -19,6 +19,9 @@ export function getDefaultState() {
 		registered_directories: [],
 		events: [],
 		config: {},
+		system_info: {
+			available_services: []
+		},
 	}
 }
 
