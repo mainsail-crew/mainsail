@@ -247,6 +247,10 @@
 			"FollowingPluginHasAnError": "Following plugin has an error:",
 			"DownloadLog": "Download Log"
 		},
+        "MoonrakerWarningsPanel": {
+            "MoonrakerWarnings": "Moonraker Warnings",
+            "DownloadLog": "Download Log"
+        },
 		"PowerControlPanel": {
 			"PowerControl": "Power Control",
 			"Error": "Error",

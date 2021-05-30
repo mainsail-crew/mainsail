@@ -4,6 +4,7 @@ import StatusPanel from './StatusPanel.vue'
 import KlippyStatePanel from './KlippyStatePanel.vue'
 import MinSettingsPanel from './MinSettingsPanel.vue'
 import MoonrakerFailedComponentsPanel from './MoonrakerFailedComponentsPanel.vue'
+import MoonrakerWarningsPanel from './MoonrakerWarningsPanel.vue'
 import ToolsPanel from './ToolsPanel.vue'
 import ControlPanel from "./ControlPanel";
 import ZOffsetPanel from "./ZOffsetPanel";
@@ -18,6 +19,7 @@ Vue.component('status-panel', StatusPanel);
 Vue.component('klippy-state-panel', KlippyStatePanel);
 Vue.component('min-settings-panel', MinSettingsPanel);
 Vue.component('moonraker-failed-components-panel', MoonrakerFailedComponentsPanel);
+Vue.component('moonraker-warnings-panel', MoonrakerWarningsPanel);
 Vue.component('tools-panel', ToolsPanel);
 Vue.component('control-panel', ControlPanel);
 Vue.component('zoffset-panel', ZOffsetPanel);
