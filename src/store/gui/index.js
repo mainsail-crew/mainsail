@@ -62,6 +62,8 @@ export function getDefaultState() {
 		},
 		gcodefiles: {
 			countPerPage: 10,
+			sortBy: 'modified',
+			sortDesc: true,
 			showHiddenFiles: false,
 			showPrintedFiles: true,
 			hideMetadataColums: []
@@ -85,6 +87,8 @@ export function getDefaultState() {
 		settings: {
 			configfiles: {
 				countPerPage: 10,
+				sortBy: 'filename',
+				sortDesc: false,
 				showHiddenFiles: false,
 			}
 		},
