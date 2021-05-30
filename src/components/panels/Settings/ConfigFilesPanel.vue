@@ -290,8 +290,6 @@ export default {
         },
         data: function() {
             return {
-                sortBy: 'filename',
-                sortDesc: false,
                 selected: [],
                 options: {
                 },
@@ -428,6 +426,22 @@ export default {
                 },
                 set: function(newVal) {
                     return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { showHiddenFiles: newVal } } })
+                }
+            },
+            sortBy: {
+                get: function() {
+                    return this.$store.state.gui.settings.configfiles.sortBy
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { sortBy: newVal } } })
+                }
+            },
+            sortDesc: {
+                get: function() {
+                    return this.$store.state.gui.settings.configfiles.sortDesc
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { sortDesc: newVal } } })
                 }
             },
         },
