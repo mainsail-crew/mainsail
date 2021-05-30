@@ -12,7 +12,6 @@ export function getDefaultState() {
 		isConnected: false,
 		isConnecting: false,
 		connectingFailed: false,
-
 		loadings: []
 	}
 }

@@ -19,16 +19,20 @@
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>{{ $t("ConnectionDialog.CannotConnectTo", {'host': formatHostname}) }}</p>
+                <connection-status :moonraker="false"></connection-status>
+                <p class="text-center mt-3">{{ $t("ConnectionDialog.CannotConnectTo", {'host': formatHostname}) }}</p>
+                <template v-if="counter > 2">
+                    <v-divider class="my-3"></v-divider>
+                    <p>{{ $t("ConnectionDialog.CheckMoonrakerLog") }}</p>
+                    <ul>
+                        <li>~/klipper_logs/moonraker.log</li>
+                        <li>/tmp/moonraker.log</li>
+                    </ul>
+                    <v-divider class="mt-4 mb-5"></v-divider>
+                </template>
                 <div class="text-center">
                     <v-btn @click="reconnect" color="primary">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
                 </div>
-                <v-divider class="mt-5 mb-3"></v-divider>
-                <p>{{ $t("ConnectionDialog.CheckMoonrakerLog") }}</p>
-                <ul>
-                    <li>~/klipper_logs/moonraker.log</li>
-                    <li>/tmp/moonraker.log</li>
-                </ul>
             </v-card-text>
         </v-card>
     </v-dialog>
@@ -36,11 +40,15 @@
 
 <script>
 import Vue from "vue";
+import ConnectionStatus from "./ui/ConnectionStatus"
 
 export default {
+    components: {
+        ConnectionStatus
+    },
     data: function() {
         return {
-
+            counter: 0,
         }
     },
     computed: {
@@ -75,6 +83,7 @@ export default {
             Vue.prototype.$socket.connect()
         },
         reconnect() {
+            this.counter++
             this.$store.dispatch('socket/setData', { connectingFailed: false })
             Vue.prototype.$socket.connect()
         }
