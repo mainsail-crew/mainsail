@@ -35,7 +35,8 @@ These should be modified to your own needs.
 {% raw %}
 ```yaml
 [gcode_macro PAUSE]
-rename_existing: BASE_PAUSE
+description: Pause the actual running print
+rename_existing: PAUSE_BASE
 gcode:
     ##### set defaults #####
     {% set x = params.X|default(230) %}      #edit to your park position
@@ -51,38 +52,60 @@ gcode:
     {% else %}
         {% set z_safe = max_z - act_z %}
     {% endif %}
+    {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
+    {%set act_extrude_temp = printer.extruder.temperature|int %}
     ##### end of definitions #####
-    SAVE_GCODE_STATE NAME=PAUSE_state
-    BASE_PAUSE
+    PAUSE_BASE
     G91
-    G1 E-{e} F2100
-    G1 Z{z_safe}
-    G90
-    G1 X{x} Y{y} F6000
+    {% if act_extrude_temp > min_extrude_temp %}
+      G1 E-{e} F2100
+    {% else %}
+      {action_respond_info("Extruder not hot enough")}
+    {% endif %}
+    {% if "xyz" in printer.toolhead.homed_axes %}    
+      G1 Z{z_safe}
+      G90
+      G1 X{x} Y{y} F6000
+    {% else %}
+      {action_respond_info("Printer not homed")}
+    {% endif %}
 ```
 
 ```yaml
 [gcode_macro RESUME]
-rename_existing: BASE_RESUME
+description: Resume the actual running print
+rename_existing: RESUME_BASE
 gcode:
     ##### set defaults #####
     {% set e = params.E|default(1) %} #edit to your retract length
+    {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
+    {%set act_extrude_temp = printer.extruder.temperature|int %}
+    #### get VELOCITY parameter if specified ####
+    {% if 'VELOCITY' in params|upper %}
+      {% set get_params = ('VELOCITY=' + params.VELOCITY)  %}
+    {%else %}
+      {% set get_params = "" %}
+    {% endif %}
+    ##### end of definitions #####
     G91
-    G1 E{e} F2100
-    G90
-    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
-    BASE_RESUME
+    {% if act_extrude_temp > min_extrude_temp %}
+      G1 E{e} F2100
+    {% else %}
+      {action_respond_info("Extruder not hot enough")}
+    {% endif %}  
+    RESUME_BASE {get_params}
 ```
 
 
 ```yaml
 [gcode_macro CANCEL_PRINT]
-rename_existing: BASE_CANCEL_PRINT
+description: Cancel the actual running print
+rename_existing: CANCEL_PRINT_BASE
 gcode:
     TURN_OFF_HEATERS
     CLEAR_PAUSE
     SDCARD_RESET_FILE
-    BASE_CANCEL_PRINT
+    CANCEL_PRINT_BASE
 ```
 {% endraw %}
 
