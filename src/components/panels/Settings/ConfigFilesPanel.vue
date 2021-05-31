@@ -58,7 +58,7 @@
                         <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
                         <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Settings.ConfigFilesPanel.SaveClose') }}</span></v-btn>
                         <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Settings.ConfigFilesPanel.SaveRestart') }}</v-btn>
+                        <v-btn dark text @click="saveFile(true)" v-if="restartServiceName !== null" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Settings.ConfigFilesPanel.SaveRestart') }}</v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
                 <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
@@ -277,11 +277,8 @@
 <script>
 import {mapState} from 'vuex'
 import {findDirectory} from "@/plugins/helpers";
-
 import axios from "axios";
-
 import * as monaco from 'monaco-editor';
-
 import {LANGUAGE_MAP, liftOff} from "@/plugins/monaco";
 
 export default {
@@ -444,6 +441,24 @@ export default {
                     return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { sortDesc: newVal } } })
                 }
             },
+            availableServices() {
+                return this.$store.state.server.system_info.available_services
+            },
+            restartServiceName() {
+                if (this.currentPath === '/config_examples') return null
+                if (['printing', 'paused'].includes(this.printer_state)) return null
+
+                if (this.editor.item.filename === "moonraker.conf")
+                    return "moonraker"
+                else if (this.editor.item.filename.startsWith("webcam") && this.editor.item.filename.endsWith(".txt"))
+                    return "webcamd"
+                else if (this.editor.item.filename.startsWith("mooncord") && this.editor.item.filename.endsWith(".json"))
+                    return "mooncord"
+                else if (this.editor.item.filename.endsWith(".cfg"))
+                    return "klipper"
+
+                return null
+            }
         },
         created() {
             this.loadPath();
@@ -604,15 +619,11 @@ export default {
 
                     this.closeEditor();
 
-                    if (boolRestart) {
-                        if (this.editor.item.filename === "moonraker.conf") {
-                            this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
-                        } else if (this.editor.item.filename.startsWith("webcam") && this.editor.item.filename.endsWith(".txt")) {
-                            this.$socket.sendObj('machine.services.restart', { service: "webcamd" })
-                        } else {
-                            this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
-                            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
-                        }
+                    if (boolRestart && this.restartServiceName !== "klipper") {
+                        this.$socket.sendObj('machine.services.restart', { service: this.restartServiceName })
+                    } else if (boolRestart) {
+                        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                     }
                 }).catch(() => {
                     this.$toast.error("Error save "+this.editor.item.filename);
