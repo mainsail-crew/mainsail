@@ -489,7 +489,7 @@ export default {
             },
             absolutePath() {
                 let path = "/"+this.root
-                if (this.currentPath) path += "/"+this.currentPath
+                if (this.currentPath) path += this.currentPath
 
                 return path
             },
@@ -575,8 +575,7 @@ export default {
                 this.loadPath()
             },
             loadPath() {
-                let dirArray = this.absolutePath.substring(1).split("/");
-
+                let dirArray = this.absolutePath.substring(1).split("/")
                 this.files = findDirectory(this.filetree, dirArray)
 
                 if (!this.showHiddenFiles) {
@@ -722,7 +721,7 @@ export default {
                 let formData = new FormData();
                 formData.append('file', file);
                 formData.append('root', this.root);
-                if(this.currentPath.length) formData.append('path', this.absolutePath);
+                if(this.currentPath.length) formData.append('path', this.currentPath);
 
                 axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
@@ -786,7 +785,7 @@ export default {
                 this.uploadSnackbar.lastProgress.time = 0
 
                 formData.append('root', this.root);
-                formData.append('file', file, this.absolutePath+"/"+filename);
+                formData.append('file', file, this.currentPath+"/"+filename);
                 this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
 
                 return new Promise(resolve => {
