@@ -55,7 +55,6 @@ gcode:
     {%set min_extrude_temp = printer.configfile.settings["extruder"]["min_extrude_temp"]|int %}
     {%set act_extrude_temp = printer.extruder.temperature|int %}
     ##### end of definitions #####
-    SAVE_GCODE_STATE NAME=PAUSE_state
     PAUSE_BASE
     G91
     {% if act_extrude_temp > min_extrude_temp %}
@@ -94,7 +93,6 @@ gcode:
     {% else %}
       {action_respond_info("Extruder not hot enough")}
     {% endif %}  
-    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
     RESUME_BASE {get_params}
 ```
 
