@@ -35,3 +35,9 @@ export const validGcodeExtensions = [
 	'.ufp',
 	'.nc',
 ]
+
+export const readOnlyRoots = [
+	'config_examples',
+	'docs',
+	'logs',
+]
