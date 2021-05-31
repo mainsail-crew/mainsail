@@ -268,7 +268,7 @@
                 print_stats_message: state => state.printer.print_stats.message,
 
                 absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
-                position: state => state.printer.gcode_move.position,
+                position: state => state.printer.toolhead.position,
                 gcode_position: state => state.printer.gcode_move.gcode_position,
 
                 filament_used: state => state.printer.print_stats.filament_used,
