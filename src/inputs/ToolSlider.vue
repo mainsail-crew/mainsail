@@ -31,6 +31,7 @@
                         :max="processedMax"
                         @start="sliding = true"
                         @end="sendCmd()"
+                        :color="colorBar"
                         hide-details>
 
                         <template v-slot:prepend>
@@ -139,7 +140,9 @@
             }
         },
         computed: {
-
+            colorBar() {
+                return this.max < this.value ? "warning" : "primary"
+            }
         },
         watch: {
             target: {
@@ -154,18 +157,18 @@
                         this.processingTimer = null;
                     }
                     if (this.value >= this.processedMax) {
-                        this.processingTimer = setTimeout(() => {
-                            const [min, max] = this.dynamicClamp;
-                            this.processedMin = Math.max(min, this.value - this.dynamicStep);
-                            this.processedMax = Math.min(max, this.value + this.dynamicStep);
-                        }, this.dynamicDebounceTime);
+                        //this.processingTimer = setTimeout(() => {
+                            //const [min, max] = this.dynamicClamp;
+                            this.processedMin = Math.min(this.min, this.value - this.dynamicStep);
+                            this.processedMax = Math.max(this.max, this.value + this.dynamicStep, newVal);
+                        //}, this.dynamicDebounceTime);
                     }
                 }
             },
             max: {
                 immediate: true,
                 handler(newVal) {
-                    this.processedMax = newVal
+                    this.processedMax = newVal > this.value ? newVal : Math.ceil(this.value / this.step) * this.step
                 }
             }
         },
@@ -183,7 +186,7 @@
                 this.sendCmd(true);
             },
             increment() {
-                this.value = this.value < this.processedMax ? Math.round(this.value + this.step) : this.processedMax
+                this.value = this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
                 this.sendCmd(true);
             }
         }
