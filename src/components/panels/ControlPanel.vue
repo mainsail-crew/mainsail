@@ -131,7 +131,7 @@
                                                class="btnMinWidthAuto flex-grow-1 px-0"
                                                tile
                                                dense
-                                               color="primary"
+                                               :color="colorQuadGantryLevel"
                                                height="30"
                                                :loading="loadings.includes('qgl')"
                                                @click="doQGL"
@@ -140,7 +140,7 @@
                                                class="btnMinWidthAuto flex-grow-1 px-0"
                                                tile
                                                dense
-                                               color="primary"
+                                               :color="colorZTilt"
                                                height="30"
                                                :loading="loadings.includes('zTilt')"
                                                @click="doZtilt"
@@ -203,8 +203,8 @@
                     <v-row no-gutters>
                         <v-col class="col-12  pb-0 text-center">
                             <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon>{{ $t('Panels.ControlPanel.ALL') }}</v-btn>
-                            <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" color="primary" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
-                            <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" color="primary" class="ml-2" v-if="'z_tilt' in config">{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
+                            <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" :color="colorQuadGantryLevel" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
+                            <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" :color="colorZTilt" class="ml-2" v-if="'z_tilt' in config">{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
                         </v-col>
                     </v-row>
                     <v-row no-gutters class="mt-2">
@@ -366,54 +366,36 @@
                     return this.$store.dispatch('gui/setSettings', { dashboard: { control: { selectedCrossStep } } })
                 }
             },
-            stepsXYsorted: {
-                get() {
-                    return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return b-a })
-                }
+            stepsXYsorted() {
+                return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return b-a })
             },
-            stepsXYsortedReverse: {
-                get() {
-                    return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return a-b })
-                }
+            stepsXYsortedReverse() {
+                return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return a-b })
             },
-            stepsZsorted: {
-                get() {
-                    return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return b-a })
-                }
+            stepsZsorted() {
+                return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return b-a })
             },
-            stepsZsortedReverse: {
-                get() {
-                    return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return a-b })
-                }
+            stepsZsortedReverse() {
+                return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return a-b })
             },
-            steps: {
-                get() {
-                    return Array.from(new Set([
-                        ...(this.stepsAll ?? [])
-                    ])).entries().sort((a, b) => b-a)
-                }
+            steps() {
+                return Array.from(new Set([
+                    ...(this.stepsAll ?? [])
+                ])).entries().sort((a, b) => b-a)
             },
-            stepsReversed: {
-                get() {
-                    return Array.from(new Set([
-                        ...(this.stepsAll ?? []),
-                    ])).sort((a, b) => a-b)
-                }
+            stepsReversed() {
+                return Array.from(new Set([
+                    ...(this.stepsAll ?? []),
+                ])).sort((a, b) => a-b)
             },
-            existsExtruder: {
-                get() {
-                    return 'extruder' in this.$store.state.printer
-                }
+            existsExtruder() {
+                return 'extruder' in this.$store.state.printer
             },
-            feedamountsSorted: {
-                get() {
-                    return [...this.feedamounts].sort((a,b) => { return b-a })
-                }
+            feedamountsSorted() {
+                return [...this.feedamounts].sort((a,b) => { return b-a })
             },
-            feedratesSorted: {
-                get() {
-                    return [...this.feedrates].sort((a,b) => { return b-a })
-                }
+            feedratesSorted () {
+                return [...this.feedrates].sort((a,b) => { return b-a })
             },
             currentFeedAmount: {
                 get() {
@@ -430,7 +412,18 @@
                 set(newVal) {
                     return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrate: newVal } } })
                 }
+            },
+            colorQuadGantryLevel() {
+                const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
+
+                return status ? "primary" : "warning"
+            },
+            colorZTilt() {
+                const status = this.$store.state.printer.z_tilt?.applied ?? true
+
+                return status ? "primary" : "warning"
             }
+
         },
         created() {
             window.addEventListener('resize', this.onResize);
