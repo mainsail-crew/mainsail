@@ -15,9 +15,13 @@ export function getDefaultState() {
 		klippy_message: "",
 		components: [],
 		failed_components: [],
+		warnings: [],
 		registered_directories: [],
 		events: [],
 		config: {},
+		system_info: {
+			available_services: []
+		},
 	}
 }
 

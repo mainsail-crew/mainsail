@@ -159,7 +159,7 @@
                             </template>
                             <template v-else>
                                 <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top>
+                                    <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top content-class="tooltip__content-opacity1">
                                         <template v-slot:activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
@@ -426,8 +426,6 @@
         data () {
             return {
                 search: '',
-                sortBy: 'modified',
-                sortDesc: true,
                 selected: [],
                 hideHeaderColums: [],
                 dialogPrintFile: {
@@ -525,8 +523,6 @@
                 port: state => state.socket.port,
                 loadings: state => state.socket.loadings,
                 printer_state: state => state.printer.print_stats.state,
-
-                displayMetadata: state => state.gui.gcodefiles.showMetadata,
             }),
             ...mapGetters( {
                 is_printing: "is_printing",
@@ -579,6 +575,22 @@
                       enabled: this.editorMinimap
                   }
               };
+            },
+            sortBy: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.sortBy
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { sortBy: newVal } })
+                }
+            },
+            sortDesc: {
+                get: function() {
+                    return this.$store.state.gui.gcodefiles.sortDesc
+                },
+                set: function(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { gcodefiles: { sortDesc: newVal } })
+                }
             },
             showHiddenFiles: {
                 get: function() {

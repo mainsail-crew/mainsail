@@ -79,9 +79,6 @@
                 if (this.isVisible) {
                     this.refresh = new Date().getTime()
                     this.setUrl()
-                } else {
-                    this.imageSrc = ""
-                    this.isLoaded = false
                 }
             },
             onLoad() {

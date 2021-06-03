@@ -82,4 +82,12 @@ export default {
 			type: type,
 		})
 	},
+
+	setSystemInfo(state, payload) {
+		Vue.set(state, 'system_info', payload)
+	},
+
+	addRootDirectory(state, payload) {
+		state.registered_directories.push(payload.name)
+	}
 }

@@ -339,9 +339,9 @@
 			"MoveDistancesInMm": "Verfahrwege in mm",
 			"MoveDistancesXYInMm": "Verfahrwege XY in mm",
 			"MoveDistancesZInMm": "Verfahrwege Z in mm",
-			"ReverseXMovement": "X invertieren",
-			"ReverseYMovement": "Y invertieren",
-			"ReverseZMovement": "Z invertieren",
+			"InvertXMovement": "X invertieren",
+			"InvertYMovement": "Y invertieren",
+			"InvertZMovement": "Z invertieren",
 			"SpeedEInMms": "Geschwindigkeit E in mm/s",
 			"SpeedXY": "Geschwindigkeit XY",
 			"SpeedZ": "Geschwindigkeit Z"

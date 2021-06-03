@@ -4,7 +4,7 @@ export default class WebSocketClient {
         this.instance = null
         this.url = url
         this.reconnects = 0
-        this.maxReconnects = options.maxReconnects || 10
+        this.maxReconnects = options.maxReconnects || 5
         this.reconnectInterval = options.reconnectInterval || 1000
         this.store = options.store
         this.wsData = []

@@ -151,7 +151,7 @@
                                         </v-row>
                                     </v-col>
                                     <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                                        <vue-load-image v-if="['mjpegstreamer', 'mjpegstreamer-adaptive'].includes(dialog.service)">
+                                        <vue-load-image v-if="['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(dialog.service)">
                                             <img slot="image" :src="dialog.url" alt="Preview" :style="webcamStyle" class="webcamImage" />
                                             <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
                                             <template slot="error">
@@ -231,6 +231,7 @@ export default {
             serviceItems: [
                 { value: "mjpegstreamer",           text: this.$t("Settings.WebcamPanel.Mjpegstreamer")},
                 { value: "mjpegstreamer-adaptive",  text: this.$t("Settings.WebcamPanel.MjpegstreamerAdaptive") },
+                { value: "uv4l-mjpeg",              text: this.$t("Settings.WebcamPanel.Uv4lMjpeg") },
                 { value: "ipstream",                text: this.$t("Settings.WebcamPanel.Ipstream") },
             ],
         };
