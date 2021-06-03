@@ -21,7 +21,7 @@
                     {{ formatTime(item.date)}}
                 </td>
                 <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                    <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
+                    <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message, item.type)"></span>
                 </td>
             </tr>
             <tr v-else>
@@ -34,7 +34,11 @@
                 <td class="log-cell content-cell py-2" colspan="2">
                     <div v-if="item.message" :class="'message '+colorConsoleMessage(item)">
                         <div v-for="(msg, i) of formatConsoleMessage(item.message)" :key="i">
-                            <span v-if="!!isCommand(msg)" v-html="msg" class="cursor-pointer" @click="$emit('command-click', isCommand(msg))" />
+                            <span v-if="!!isCommand(msg).command || item.type === 'command'"
+                                  v-html="msg"
+                                  class="cursor-pointer"
+                                  @click="$emit('command-click', isCommand(msg))"
+                            />
                             <span v-else v-html="msg" />
                         </div>
                     </div>
@@ -71,7 +75,7 @@ export default {
         formatTimeMobile: {
             type: Function,
             default() {
-                return () => {}
+                return ''
             }
         },
         options: {
@@ -92,17 +96,34 @@ export default {
         }
     },
     methods: {
+        log(any) {
+            console.log(any);
+            return any;
+        },
         colorConsoleMessage: colorConsoleMessage,
         formatConsoleMessage: formatConsoleMessage,
         isCommand(message) {
             if (!this.helplist) {
-                return false;
+                return null;
             }
+
+            const ret = {
+                command: null,
+                original: message
+            };
             const msg = message.replace(/<.*?>/g, '');
-            if (msg.includes(':')) {
-                return this.helplist.find(c => c.commandLow === msg.split(':')[0].trim().toLowerCase());
+            if (/^[mg][0-9]+.*$/gi.test(msg) || msg.toLowerCase().startsWith('help')) {
+                ret.command = {
+                    command: msg.split(' ')[0],
+                    commandLow: msg.split(' ')[0].toLowerCase()
+                }
+            } else if ([':', ' '].some(c => msg.includes(c))) {
+                ret.command = this.helplist.find(c => c.commandLow === msg.split(/[:\s]/)[0].trim().toLowerCase());
+            } else {
+                ret.command = this.helplist.find(c => c.commandLow === msg.trim().toLowerCase());
             }
-            return this.helplist.find(c => c.commandLow === msg.trim().toLowerCase());
+
+            return ret;
         }
     }
 }

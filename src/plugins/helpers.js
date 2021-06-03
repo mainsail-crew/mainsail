@@ -24,7 +24,7 @@ export function caseInsensitiveNameSort(a, b) {
 
 export function colorConsoleMessage(item) {
     if (item.message.startsWith('!! ')) return "red--text"
-    if ('type' in item && item.type === 'command') return "blue--text"
+    if ('type' in item && ['command', 'autocomplete'].includes(item.type)) return "blue--text"
 
     return '';
 }
@@ -35,7 +35,6 @@ export function formatConsoleMessage(message) {
     message = message.replace('\n// ', '<br>')
     message = message.replace(/(?:\r\n|\r|\n)/g, '<br>')
     message = message.replaceAll('<br />', '<br>')
-
     return message.split('<br>');
 }
 
@@ -57,4 +56,8 @@ export function strLongestAnd(a, b) {
         i += 1;
     }
     return a.substr(0, i);
+}
+
+export function reverseString(str) {
+    return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0);
 }

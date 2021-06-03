@@ -10,9 +10,9 @@
             <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
             <miscellaneous-panel v-if="klippy_state === 'ready'"></miscellaneous-panel>
         </v-col>
-        <v-col class="col-sm-12 col-md-7" v-if="klippy_connected">
+        <v-col class="col-sm-12 col-md-7">
             <tools-panel v-if="displayToolsPanel"></tools-panel>
-            <miniconsole-panel :class="displayToolsPanel ? 'mt-6' : ''" v-if="klippy_state === 'ready' && showDashboardConsole"></miniconsole-panel>
+            <miniconsole-panel :class="displayToolsPanel ? 'mt-6' : ''" v-if="showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>
 </template>

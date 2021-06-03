@@ -59,6 +59,8 @@ export default {
 		let message = payload
 		let type = 'response'
 
+		console.log(payload);
+
 		if (typeof payload === 'object' && 'type' in payload) type = payload.type
 
 		if ('message' in payload) message = payload.message
@@ -68,6 +70,10 @@ export default {
 		const eventLimit = ('gcode_store_size' in state.config) ? state.config.gcode_store_size : 1000
 		while (state.events.length >= eventLimit) {
 			state.events.shift()
+		}
+
+		if (['command', 'autocomplete'].includes(type) && state.events[state.events.length - 1]?.type === 'autocomplete') {
+			state.events.pop();
 		}
 
 		state.events.push({
