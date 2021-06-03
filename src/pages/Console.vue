@@ -55,7 +55,7 @@
             </v-col>
 
             <v-col class="col-auto align-content-center">
-                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="50%" max-width="98%" fixed top right>
+                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="mr-2 gcode-command-btn px-2 minwidth-0" v-bind="attrs" v-on="on">
                             <v-icon>mdi-help</v-icon>
