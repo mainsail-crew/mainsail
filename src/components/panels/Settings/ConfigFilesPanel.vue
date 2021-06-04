@@ -54,11 +54,15 @@
                                 </v-list-item>
                             </v-list>
                         </v-menu>
-                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Settings.ConfigFilesPanel.ConfigReference') }}</v-btn>
-                        <v-divider white vertical v-if="currentPath !== '/config_examples'" class="d-none d-md-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(false)" v-if="currentPath !== '/config_examples'"><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Settings.ConfigFilesPanel.SaveClose') }}</span></v-btn>
-                        <v-divider white vertical v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"></v-divider>
-                        <v-btn dark text @click="saveFile(true)" v-if="currentPath !== '/config_examples' && !['printing', 'paused'].includes(printer_state)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Settings.ConfigFilesPanel.SaveRestart') }}</v-btn>
+                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Settings.ConfigFilesPanel.ConfigReference') }}</v-btn>
+                        <template v-if="isDirWriteable">
+                            <v-divider white vertical class="d-none d-md-flex"></v-divider>
+                            <v-btn dark text @click="saveFile(false)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Settings.ConfigFilesPanel.SaveClose') }}</span></v-btn>
+                        </template>
+                        <template v-if="restartServiceName != null">
+                            <v-divider white vertical class="d-none d-sm-flex"></v-divider>
+                            <v-btn dark text @click="saveFile(true)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Settings.ConfigFilesPanel.SaveRestart') }}</v-btn>
+                        </template>
                     </v-toolbar-items>
                 </v-toolbar>
                 <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
@@ -71,9 +75,11 @@
                     <v-spacer class="d-none d-sm-block"></v-spacer>
                     <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
                     <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0">
-                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
-                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
-                        <v-btn v-if="currentPath !== '' && currentPath !== '/config_examples'" class="flex-grow-1" @click="createDirecotry"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <template v-if="isDirWriteable">
+                            <v-btn class="flex-grow-1" @click="uploadFileButton" :loading="loadings.includes['configFileUpload']"><v-icon>mdi-file-upload</v-icon></v-btn>
+                            <v-btn class="flex-grow-1" @click="createFile"><v-icon>mdi-file-plus</v-icon></v-btn>
+                            <v-btn class="flex-grow-1" @click="createDirecotry"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        </template>
                         <v-btn class="flex-grow-1" @click="refreshFileList"><v-icon>mdi-refresh</v-icon></v-btn>
                         <v-menu :offset-y="true" :title="$t('Settings.ConfigFilesPanel.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
@@ -87,7 +93,24 @@
                         </v-menu>
                     </v-item-group>
                 </v-card-title>
-                <v-card-subtitle>{{ $t('Settings.ConfigFilesPanel.CurrentPath') }}: {{ this.currentPath === "" ? "/" : this.currentPath }}</v-card-subtitle>
+                <v-card-text>
+                    <v-row>
+                        <v-col class="col-7 align-center d-flex">
+                            <span>{{ $t('Settings.ConfigFilesPanel.CurrentPath') }}: {{ this.currentPath === "" ? "/" : this.currentPath }}</span>
+                        </v-col>
+                        <v-col class="col-5">
+                            <v-select
+                                v-model="root"
+                                :items="registeredDirectories"
+                                label="Root"
+                                outlined
+                                hide-details
+                                dense
+                                @change="changeRoot"
+                            ></v-select>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
                 <v-data-table
                     :items="files"
                     class="files-table"
@@ -141,21 +164,21 @@
             <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
                 <v-list>
                     <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
-                        <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> {{ $t('Settings.ConfigFilesPanel.EditFile')  }}
+                        <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> {{ isDirWriteable ? $t('Settings.ConfigFilesPanel.EditFile') : $t('Settings.ConfigFilesPanel.ShowFile')  }}
                     </v-list-item>
                     <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                         <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Settings.ConfigFilesPanel.Download') }}
                     </v-list-item>
-                    <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && isDirWriteable">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
-                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && isDirWriteable">
                         <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Settings.ConfigFilesPanel.Rename') }}
                     </v-list-item>
-                    <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && currentPath !== '/config_examples'">
+                    <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && isDirWriteable">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
-                    <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && currentPath !== '' && currentPath !== '/config_examples'">
+                    <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && isDirWriteable">
                         <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Settings.ConfigFilesPanel.Delete') }}
                     </v-list-item>
                 </v-list>
@@ -276,13 +299,11 @@
 
 <script>
 import {mapState} from 'vuex'
-import {findDirectory} from "@/plugins/helpers";
-
-import axios from "axios";
-
-import * as monaco from 'monaco-editor';
-
-import {LANGUAGE_MAP, liftOff} from "@/plugins/monaco";
+import {findDirectory} from "@/plugins/helpers"
+import {readOnlyRoots} from "@/store/variables"
+import axios from "axios"
+import * as monaco from 'monaco-editor'
+import {LANGUAGE_MAP, liftOff} from "@/plugins/monaco"
 
 export default {
         components: {
@@ -290,14 +311,13 @@ export default {
         },
         data: function() {
             return {
-                sortBy: 'filename',
-                sortDesc: false,
                 selected: [],
                 options: {
                 },
                 currentPage: 1,
                 files: [],
-                currentPath: '/config',
+                currentPath: '',
+                root: 'config',
                 image: {
                   show: false,
                   url: null,
@@ -415,28 +435,73 @@ export default {
                 }
             },
             countPerPage: {
-                get: function() {
+                get() {
                     return this.$store.state.gui.settings.configfiles.countPerPage
                 },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { countPerPage: newVal } } });
+                set(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { countPerPage: newVal } } })
                 }
             },
             showHiddenFiles: {
-                get: function() {
+                get() {
                     return this.$store.state.gui.settings.configfiles.showHiddenFiles
                 },
-                set: function(newVal) {
+                set(newVal) {
                     return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { showHiddenFiles: newVal } } })
                 }
             },
+            sortBy: {
+                get() {
+                    return this.$store.state.gui.settings.configfiles.sortBy
+                },
+                set(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { sortBy: newVal } } })
+                }
+            },
+            sortDesc: {
+                get() {
+                    return this.$store.state.gui.settings.configfiles.sortDesc
+                },
+                set(newVal) {
+                    return this.$store.dispatch("gui/setSettings", { settings: { configfiles: { sortDesc: newVal } } })
+                }
+            },
+            registeredDirectories() {
+                return this.$store.state.server.registered_directories.filter(dir => dir !== 'gcodes').sort()
+            },
+            availableServices() {
+                return this.$store.state.server.system_info.available_services
+            },
+            restartServiceName() {
+                if (!this.isDirWriteable) return null
+                if (['printing', 'paused'].includes(this.printer_state)) return null
+
+                if (this.editor.item.filename === "moonraker.conf")
+                    return "moonraker"
+                else if (this.editor.item.filename.startsWith("webcam") && this.editor.item.filename.endsWith(".txt"))
+                    return "webcamd"
+                else if (this.editor.item.filename.startsWith("mooncord") && this.editor.item.filename.endsWith(".json"))
+                    return "mooncord"
+                else if (this.editor.item.filename.endsWith(".cfg"))
+                    return "klipper"
+
+                return null
+            },
+            absolutePath() {
+                let path = "/"+this.root
+                if (this.currentPath) path += this.currentPath
+
+                return path
+            },
+            isDirWriteable() {
+                return !readOnlyRoots.includes(this.root)
+            }
         },
         created() {
             this.loadPath();
         },
         methods: {
             closeEditor() {
-                console.log("close");
                 this.editor.show = false;
                 this.editor.init = false;
                 this.editor.monaco = null;
@@ -453,10 +518,7 @@ export default {
                 return code;
             },
             refreshFileList() {
-                if (this.currentPath === "") {
-                    this.$socket.sendObj('server.files.get_directory', { path: 'config' }, 'files/getDirectory');
-                    this.$socket.sendObj('server.files.get_directory', { path: 'config_examples' }, 'files/getDirectory');
-                } else this.$socket.sendObj('server.files.get_directory', { path: this.currentPath.substring(1) }, 'files/getDirectory');
+                this.$socket.sendObj('server.files.get_directory', { path: this.absolutePath.substring(1) }, 'files/getDirectory');
             },
             formatDate(date) {
                 let tmp2 = new Date(date);
@@ -465,7 +527,7 @@ export default {
             },
             formatFilesize(fileSizeInBytes) {
                 let i = -1;
-                let byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+                let byteUnits = [' kB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB'];
                 do {
                     fileSizeInBytes = fileSizeInBytes / 1024;
                     i++;
@@ -508,13 +570,13 @@ export default {
                 }
                 return items;
             },
+            changeRoot() {
+                this.currentPath = ""
+                this.loadPath()
+            },
             loadPath() {
-                let dirArray = this.currentPath.substring(1).split("/");
-
-                this.files = findDirectory(this.filetree, dirArray);
-                if (dirArray.length === 1 && this.currentPath === "") {
-                    this.files = this.files.filter(element => !["gcodes", "docs"].includes(element.filename))
-                }
+                let dirArray = this.absolutePath.substring(1).split("/")
+                this.files = findDirectory(this.filetree, dirArray)
 
                 if (!this.showHiddenFiles) {
                     this.files = this.files.filter(file => file.filename.substr(0, 1) !== ".");
@@ -528,7 +590,7 @@ export default {
                     if (!item.isDirectory) {
                         const ext = item.filename.split('.')?.pop()?.toLowerCase();
                         if(['svg'].includes(ext)) {
-                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now();
                             fetch(url)
                                 .then(res => res.text())
                                 .then(svg => {
@@ -536,7 +598,7 @@ export default {
                                     this.image.svg = svg;
                                 });
                         } else if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif'].includes(ext)) {
-                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now();
                             this.image.show = true;
                             this.image.url = url;
                         } else {
@@ -550,7 +612,7 @@ export default {
                             this.editor.sourcecode = "";
                             this.editor.item = item;
 
-                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.currentPath + '/' + item.filename + '?time=' + Date.now();
+                            let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now()
 
                             fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
                               this.editor.sourcecode = file;
@@ -561,7 +623,7 @@ export default {
                               this.$nextTick(() => {
                                 this.editor.showLoader = false;
                                 this.editor.options.readOnly = false;
-                                if (this.currentPath === '/config_examples') this.editor.options.readOnly = true;
+                                if (!this.isDirWriteable) this.editor.options.readOnly = true;
                               });
                             });
                         }
@@ -579,8 +641,8 @@ export default {
 
                 let formData = new FormData();
                 formData.append('file', file);
-                formData.append('root', 'config');
-                if(this.currentPath.length > 7) formData.append('path', this.currentPath.substring(8));
+                formData.append('root', this.root);
+                if(this.currentPath.length) formData.append('path', this.currentPath);
 
                 axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
@@ -591,13 +653,11 @@ export default {
 
                     this.closeEditor();
 
-                    if (boolRestart) {
-                        if (this.editor.item.filename === "moonraker.conf") {
-                            this.$socket.sendObj('machine.services.restart', { service: "moonraker" })
-                        } else {
-                            this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
-                            this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
-                        }
+                    if (boolRestart && this.restartServiceName !== "klipper") {
+                        this.$socket.sendObj('machine.services.restart', { service: this.restartServiceName })
+                    } else if (boolRestart) {
+                        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+                        this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                     }
                 }).catch(() => {
                     this.$toast.error("Error save "+this.editor.item.filename);
@@ -616,7 +676,7 @@ export default {
                 }
             },
             downloadFile() {
-                const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
+                const filename = (this.absolutePath+"/"+this.contextMenu.item.filename)
                 const href = '//' + this.hostname + ':' + this.port + '/server/files' + filename
                 window.open(href)
             },
@@ -628,7 +688,7 @@ export default {
                 this.dialogCreateDirectory.show = false;
 
                 this.$socket.sendObj('server.files.post_directory', {
-                    path: this.currentPath.substring(1)+"/"+this.dialogCreateDirectory.name
+                    path: this.absolutePath.substring(1)+"/"+this.dialogCreateDirectory.name
                 }, 'files/getCreateDir');
             },
             renameDirectory(item) {
@@ -639,8 +699,8 @@ export default {
             renameDirectoryAction() {
                 this.dialogRenameDirectory.show = false;
                 this.$socket.sendObj('server.files.move', {
-                    source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
-                    dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
+                    source: this.absolutePath+"/"+this.dialogRenameDirectory.item.filename,
+                    dest: this.absolutePath+"/"+this.dialogRenameDirectory.newName
                 }, 'files/getMove');
             },
             deleteDirectory(item) {
@@ -649,7 +709,7 @@ export default {
             },
             deleteDirectoryAction() {
                 this.dialogDeleteDirectory.show = false;
-                this.$socket.sendObj('server.files.delete_directory', { path: this.currentPath+"/"+this.dialogDeleteDirectory.item.filename, force: true }, 'files/getDeleteDir')
+                this.$socket.sendObj('server.files.delete_directory', { path: this.absolutePath+"/"+this.dialogDeleteDirectory.item.filename, force: true }, 'files/getDeleteDir')
             },
             createFile() {
                 this.dialogCreateFile.name = "";
@@ -660,8 +720,8 @@ export default {
 
                 let formData = new FormData();
                 formData.append('file', file);
-                formData.append('root', 'config');
-                if(this.currentPath.length > 7) formData.append('path', this.currentPath.substring(8));
+                formData.append('root', this.root);
+                if(this.currentPath.length) formData.append('path', this.currentPath);
 
                 axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
                     formData, {
@@ -682,12 +742,12 @@ export default {
             renameFileAction() {
                 this.dialogRenameFile.show = false;
                 this.$socket.sendObj('server.files.move', {
-                    source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
-                    dest: this.currentPath+"/"+this.dialogRenameFile.newName
+                    source: this.absolutePath+"/"+this.dialogRenameFile.item.filename,
+                    dest: this.absolutePath+"/"+this.dialogRenameFile.newName
                 }, 'files/getMove');
             },
             removeFile() {
-                this.$socket.sendObj('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
+                this.$socket.sendObj('server.files.delete_file', { path: this.absolutePath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
             },
             uploadFileButton() {
                 this.$refs.fileUpload.click()
@@ -724,8 +784,8 @@ export default {
                 this.uploadSnackbar.lastProgress.loaded = 0
                 this.uploadSnackbar.lastProgress.time = 0
 
-                formData.append('root', 'config');
-                formData.append('file', file, (this.currentPath+"/"+filename).substring(7));
+                formData.append('root', this.root);
+                formData.append('file', file, this.currentPath+"/"+filename);
                 this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
 
                 return new Promise(resolve => {
@@ -782,18 +842,6 @@ export default {
               handler(val) {
                 this.editor.monaco?.updateOptions(val);
               }
-            },
-            config: {
-                deep: true,
-                handler() {
-                    this.loadPath();
-                }
-            },
-            config_examples: {
-                deep: true,
-                handler() {
-                    this.loadPath();
-                }
             },
             filetree: {
                 deep: true,

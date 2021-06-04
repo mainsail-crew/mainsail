@@ -339,9 +339,9 @@
 			"MoveDistancesInMm": "移动距离 mm",
 			"MoveDistancesXYInMm": "移动距离 XY in mm",
 			"MoveDistancesZInMm": "移动距离 Z in mm",
-			"ReverseXMovement": "反转 X 移动",
-			"ReverseYMovement": "反转 Y 移动",
-			"ReverseZMovement": "反转 Z 移动",
+			"InvertXMovement": "反转 X 移动",
+			"InvertYMovement": "反转 Y 移动",
+			"InvertZMovement": "反转 Z 移动",
 			"SpeedEInMms": "速度 E in mm/s",
 			"SpeedXY": "XY 速度",
 			"SpeedZ": "Z 速度"

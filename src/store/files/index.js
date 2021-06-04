@@ -32,6 +32,13 @@ export function getDefaultState() {
 				modified: new Date(),
 				childrens: [],
 				disk_usage: {}
+			},
+			{
+				isDirectory: true,
+				filename: 'logs',
+				modified: new Date(),
+				childrens: [],
+				disk_usage: {}
 			}
 		],
 	}

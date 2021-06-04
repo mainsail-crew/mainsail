@@ -10,6 +10,7 @@ export default {
 	init() {
 		Vue.prototype.$socket.sendObj('server.info', {}, 'server/getInfo')
 		Vue.prototype.$socket.sendObj('server.config', {}, 'server/getConfig')
+		Vue.prototype.$socket.sendObj('machine.system_info', {}, 'server/getSystemInfo')
 		Vue.prototype.$socket.sendObj('server.database.list', { root: 'config' }, 'server/checkDatabases')
 	},
 
@@ -100,4 +101,16 @@ export default {
 	getGcodeRespond({commit}, data) {
 		commit('addEvent', data);
 	},
+
+	getSystemInfo({ commit }, payload) {
+		if ('system_info' in payload) {
+			commit('setSystemInfo', payload.system_info)
+		}
+	},
+
+	addRootDirectory({ commit, state }, data) {
+		if (!state.registered_directories.includes(data.item.root)) {
+			commit('addRootDirectory', { name: data.item.root })
+		}
+	}
 }

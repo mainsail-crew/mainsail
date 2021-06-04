@@ -398,13 +398,14 @@ export default {
 		})
 	},
 
-	getFilamentSwitchSensors: state => {
+	getFilamentSensors: state => {
+		const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
 		let sensors = []
 
 		for (let [key, value] of Object.entries(state)) {
 			let nameSplit = key.split(" ")
 
-			if (nameSplit[0] === "filament_switch_sensor") {
+			if (sensorObjectNames.includes(nameSplit[0])) {
 				sensors.push({
 					name: nameSplit[1],
 					enabled: value.enabled,

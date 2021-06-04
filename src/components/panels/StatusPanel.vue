@@ -77,7 +77,7 @@
                         </v-col>
                         <v-col class="pa-2 pl-0 col-auto" v-if="thumbnailSmall">
                             <template v-if="thumbnailSmall && thumbnailBig">
-                                <v-tooltip top>
+                                <v-tooltip top content-class="tooltip__content-opacity1">
                                     <template v-slot:activator="{ on, attrs }">
                                         <vue-load-image class="d-flex">
                                             <img slot="image" :src="thumbnailSmall" width="32" height="32" v-bind="attrs" v-on="on" />
@@ -268,7 +268,7 @@
                 print_stats_message: state => state.printer.print_stats.message,
 
                 absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
-                position: state => state.printer.gcode_move.position,
+                position: state => state.printer.toolhead.position,
                 gcode_position: state => state.printer.gcode_move.gcode_position,
 
                 filament_used: state => state.printer.print_stats.filament_used,
