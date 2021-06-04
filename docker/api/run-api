@@ -1,6 +1,42 @@
 #!/usr/bin/env bash
+sudo chown node:node /home/node/simulavr
+sudo chown node:node /home/node/gcode
+sudo chown node:node /home/node/printer_config
+if [ ! -d /home/node/simulavr ]
+then
+ cd /home/node/
+ git clone https://git.savannah.nongnu.org/git/simulavr.git
+ cd /home/node/simulavr
+ make python
+ make build
+fi
+
+if [ ! -d /home/node/klipper ]
+then
+  cd /home/node/
+  git clone https://github.com/KevinOConnor/klipper
+  cd klipper
+  cp /usr/share/klipper/simulavr.config /home/node/klipper/.config
+  make
+  cp /home/node/klipper/out/klipper.elf /home/node/klipper/simulavr.elf
+  rm /home/node/klipper/.config
+  cp /usr/share/klipper/linux.config /home/node/klipper/.config
+  make clean
+  make
+  chmod +x /home/node/klipper/scripts/install-debian.sh
+  /home/node/klipper/scripts/install-debian.sh
+fi
 PYTHONPATH="/home/node/simulavr/build/pysimulavr/" /home/node/klipper/scripts/avrsim.py -m atmega644 -s 20000000 -b 250000 /home/node/klipper/simulavr.elf &
 /home/node/klippy-env/bin/python /home/node/klipper/klippy/klippy.py /home/node/printer_config/printer.cfg -l /tmp/logs/klippy.log -a /tmp/klippy_uds &
+if [ ! -d /home/node/moonraker ]
+then
+  cd /home/node
+  git clone https://github.com/Arksine/moonraker
+  cd moonraker
+  sed -E 's/check_klipper\(\)/check_klipper() { return 0; }\nold()/' /home/node/moonraker/scripts/install-moonraker.sh > /home/node/moonraker/scripts/install-moonraker2.sh
+  chmod +x /home/node/moonraker/scripts/install-moonraker2.sh
+  /home/node/moonraker/scripts/install-moonraker2.sh
+fi
 /home/node/moonraker-env/bin/python /home/node/moonraker/moonraker/moonraker.py -l /tmp/logs/moonraker.log -c /home/node/printer_config/moonraker.conf &
 echo "Starting ..." >> /tmp/logs/klippy.log
-tail -f /tmp/logs/klippy.log
+tail -f /tmp/logs/moonraker.log
