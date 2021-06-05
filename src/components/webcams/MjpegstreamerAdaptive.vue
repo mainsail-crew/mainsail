@@ -23,7 +23,7 @@
         <div class="text-center py-5" v-if="!isLoaded">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
-        <img :src="imageSrc" alt="Preview" :style="webcamStyle" :class="'webcamImage '+(isLoaded ? '' : 'hiddenWebcam')" @load="onLoad" />
+        <canvas ref="mjpegstreamerAdaptive" width="600" height="400" :style="webcamStyle" :class="'webcamImage '+(isLoaded ? '' : 'hiddenWebcam')"></canvas>
         <span class="webcamFpsOutput" v-if="isLoaded">{{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }}</span>
     </div>
 </template>
@@ -38,6 +38,7 @@
             return {
                 isVisible: true,
                 isLoaded: false,
+                timer: null,
 
                 request_start_time: performance.now(),
                 start_time: performance.now(),
@@ -74,11 +75,15 @@
                 this.isVisible = isVisible
 
                 if (isVisible) this.refreshFrame()
+                else {
+                    clearTimeout(this.timer)
+                    this.timer = null
+                }
             },
             refreshFrame() {
                 if (this.isVisible) {
                     this.refresh = new Date().getTime()
-                    this.setUrl()
+                    this.setFrame()
                 }
             },
             onLoad() {
@@ -97,10 +102,10 @@
                 const timeout = Math.max(0, target_time - this.request_time)
 
                 this.$nextTick(() => {
-                    setTimeout(this.refreshFrame, timeout)
+                    this.timer = setTimeout(this.refreshFrame, timeout)
                 })
             },
-            setUrl() {
+            async setFrame() {
                 const baseUrl = this.camSettings.url
                 const hostUrl = new URL(this.printerUrl === null ? document.URL : this.printerUrl)
 
@@ -112,9 +117,26 @@
                 this.request_start_time = performance.now()
                 this.currentFPS = Math.round(1000 / this.time)
 
+                let canvas = this.$refs.mjpegstreamerAdaptive
+                if (canvas !== undefined && canvas.getContext) {
+                    const ctx = canvas.getContext('2d')
+                    const frame = await this.loadImage(url.toString())
+
+                    canvas.width = canvas.clientWidth
+                    canvas.height = canvas.clientWidth * (frame.height / frame.width)
+
+                    ctx.drawImage(frame,
+                        0, 0, frame.width, frame.height,
+                        0, 0, canvas.width, canvas.height)
+                    this.isLoaded = true
+                }
+
                 this.$nextTick(() => {
-                    this.imageSrc = url.toString()
+                    this.onLoad()
                 })
+            },
+            loadImage(url) {
+                return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
             },
         }
     }
