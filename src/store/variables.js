@@ -11,6 +11,7 @@ export const colorArray = [
 export const colorHeaterBed = '#2196F3'
 export const colorChamber = '#4CAF50'
 export const themeDir = '.theme'
+export const datasetInterval = 1000
 export const datasetTypes = [
 	"temperature",
 	"target",

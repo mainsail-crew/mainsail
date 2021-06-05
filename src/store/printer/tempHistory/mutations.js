@@ -7,6 +7,20 @@ export default {
 		Object.assign(state, getDefaultState())
 	},
 
+	setInitSource(state, payload) {
+		Vue.set(state, 'source', payload)
+	},
+
+	setInitSeries(state, payload) {
+		Vue.set(state, 'series', payload)
+	},
+
+	addToSource(state, payload) {
+		state.source.push(payload.data)
+		while (state.source.length > payload.maxHistory) state.source.splice(0, 1)
+	},
+
+	//old shit...
 	addSeries(state, payload) {
 		state.series.push(payload)
 	},
@@ -56,41 +70,17 @@ export default {
 		}
 	},
 
-	setVisible(state, payload) {
-		const datasetName = payload.type !== 'temperature' ? payload.name+'_'+payload.type : payload.name
-
-		const datasetIndex = state.series.findIndex(element => element.name === datasetName)
-		if (datasetIndex !== -1) {
-			if (payload.type === "target" && 'areaStyle' in state.series[datasetIndex]) {
-				Vue.set(state.series[datasetIndex].areaStyle, 'opacity', payload.value ? 0.1 : 0)
-				Vue.set(state.series[datasetIndex].emphasis.areaStyle, 'opacity', payload.value ? 0.1 : 0)
-			} else if ('lineStyle' in state.series[datasetIndex]) {
-				Vue.set(state.series[datasetIndex].lineStyle, 'opacity', payload.value ? 0.9 : 0)
-				Vue.set(state.series[datasetIndex].emphasis.lineStyle, 'opacity', payload.value ? 0.9 : 0)
-			}
-		}
-	},
-
 	setColor(state, payload) {
-		state.series.forEach(element => {
-			if (
-				'lineStyle' in element && (
-					element.name === payload.name ||
-					element.name === payload.name+'_target' ||
-					element.name === payload.name+'_power'
-				)
-			) {
-				element.lineStyle.color = payload.value
+		state.series.filter(serie => {
+			return payload.name === serie.name || serie.name.startsWith(payload.name+'-')
+		}).forEach(serie => {
+			serie.color = payload.value
+			serie.lineStyle.color = payload.value
+			serie.emphasis.lineStyle.color = payload.value
 
-				if ('emphasis' in element && 'lineStyle' in element.emphasis)
-					element.emphasis.lineStyle.color = payload.value
-			}
-
-			if (element.name === payload.name+'_target' && 'areaStyle' in element) {
-				element.areaStyle.color = payload.value
-
-				if ('emphasis' in element && 'areaStyle' in element.emphasis)
-					element.emphasis.areaStyle.color = payload.value
+			if (serie.name.endsWith('-target')) {
+				serie.areaStyle.color = payload.value
+				serie.emphasis.areaStyle.color = payload.value
 			}
 		})
 	},

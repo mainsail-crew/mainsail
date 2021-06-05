@@ -366,10 +366,10 @@
                 this.editHeater.object = object
 
                 this.editHeater.color = object.chartColor
-                this.editHeater.boolTemperature = 'chartTemperature' in object && object.chartTemperature !== undefined && 'lineStyle' in object.chartTemperature && 'opacity' in object.chartTemperature.lineStyle ? object.chartTemperature.lineStyle.opacity : false
-                this.editHeater.boolTarget = 'chartTarget' in object && object.chartTarget !== undefined && 'areaStyle' in object.chartTarget && 'opacity' in object.chartTarget.areaStyle ? (object.chartTarget.areaStyle.opacity > 0) : false
-                this.editHeater.boolPower = 'chartPower' in object && object.chartPower !== undefined && 'lineStyle' in object.chartPower && 'opacity' in object.chartPower.lineStyle ? object.chartPower.lineStyle.opacity : false
-                this.editHeater.boolSpeed = 'chartSpeed' in object && object.chartSpeed !== undefined && 'lineStyle' in object.chartSpeed && 'opacity' in object.chartSpeed.lineStyle ? object.chartSpeed.lineStyle.opacity : false
+                this.editHeater.boolTemperature = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'temperature' })
+                this.editHeater.boolTarget = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'target' })
+                this.editHeater.boolPower = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'power' })
+                this.editHeater.boolSpeed = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'speed' })
 
                 let additionalSensors = {}
                 Object.keys(object.additionValues).forEach(sensor => {
@@ -381,7 +381,6 @@
             },
             setVisible(type) {
               if ("name" in this.editHeater.object) {
-                this.$store.commit('printer/tempHistory/setVisible', { name: this.editHeater.object.name, type: type, value: this.editHeater['bool'+type.charAt(0).toUpperCase() + type.slice(1)] })
                 this.$store.dispatch('gui/setTempchartDatasetSetting', { name: this.editHeater.object.name, type: type, value: this.editHeater['bool'+type.charAt(0).toUpperCase() + type.slice(1)] })
               }
             },

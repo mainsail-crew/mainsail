@@ -4,6 +4,7 @@ import getters from './getters'
 
 export function getDefaultState() {
 	return {
+		source: [],
 		series: [],
 	}
 }

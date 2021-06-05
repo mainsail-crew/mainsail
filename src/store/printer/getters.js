@@ -85,9 +85,9 @@ export default {
 						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 						chartColor: getters["tempHistory/getDatasetColor"](name),
 						chartTemperature: getters["tempHistory/getSeries"](name),
-						chartTarget: getters["tempHistory/getSeries"](name+"_target"),
-						chartPower: getters["tempHistory/getSeries"](name+'_power'),
-						chartSpeed: getters["tempHistory/getSeries"](name+'_speed'),
+						chartTarget: getters["tempHistory/getSeries"](name+"-target"),
+						chartPower: getters["tempHistory/getSeries"](name+'-power'),
+						chartSpeed: getters["tempHistory/getSeries"](name+'-speed'),
 						min_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].min_temp) : undefined,
 						max_temp: state.configfile.config[key] !== undefined ? parseFloat(state.configfile.config[key].max_temp) : undefined,
 					});
@@ -117,9 +117,9 @@ export default {
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartTemperature: getters["tempHistory/getSeries"](nameSplit[1]),
-					chartTarget: getters["tempHistory/getSeries"](nameSplit[1]+"_target"),
-					chartPower: getters["tempHistory/getSeries"](nameSplit[1]+'_power'),
-					chartSpeed: getters["tempHistory/getSeries"](nameSplit[1]+'_speed'),
+					chartTarget: getters["tempHistory/getSeries"](nameSplit[1]+"-target"),
+					chartPower: getters["tempHistory/getSeries"](nameSplit[1]+'-power'),
+					chartSpeed: getters["tempHistory/getSeries"](nameSplit[1]+'-speed'),
 				})
 			}
 		}
@@ -141,8 +141,6 @@ export default {
 
 				if (value.temperature <= min_temp + split) icon = "thermometer-low"
 				if (value.temperature >= max_temp - split) icon = "thermometer-high"
-
-
 
 				sensors.push({
 					name: nameSplit[1],

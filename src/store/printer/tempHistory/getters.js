@@ -1,3 +1,5 @@
+import {datasetTypes, datasetTypesInPercents} from '@/store/variables'
+
 export default {
 
 	getDatasetColor: state => (name) => {
@@ -10,62 +12,34 @@ export default {
 		return state.series.find(element => element.name === name)
 	},
 
-	getCurrentMaxTemp: state => {
-		let maxTemp = 0
+	getBoolDisplayPwmAxis: (state, getter) => {
+		const legends = getter["getSelectedLegends"]
 
-		state.series.forEach(serie => {
-			if (
-				serie.name.lastIndexOf("_") === -1 ||
-				!['power', 'speed'].includes(serie.name.substr(serie.name.lastIndexOf("_")+1))
-			) {
-				if (
-					serie.data.length && (
-						(
-							'lineStyle' in serie &&
-							'opacity' in serie.lineStyle &&
-							serie.lineStyle.opacity
-						) || (
-							'areaStyle' in serie &&
-							'opacity' in serie.areaStyle &&
-							serie.areaStyle.opacity
-						)
-					)
-				) {
-					const max = Math.max(...serie.data.map(data => data[1]))
-					if (maxTemp < max) maxTemp = max
-				}
-			}
-		})
-
-		return Math.ceil((maxTemp + 1) / 10) * 10
-	},
-
-	getBoolDisplayPwmAxis: state => {
-		return state.series.findIndex(serie =>
-			serie.name.lastIndexOf("_") &&
-			['power', 'speed'].includes(serie.name.substr(serie.name.lastIndexOf("_")+1)) &&
-			'lineStyle' in serie &&
-			'opacity' in serie.lineStyle &&
-			serie.lineStyle.opacity > 0
-		) !== -1
+		return Object.keys(legends).filter(key => {
+			return (
+				legends[key] === true && (
+					key.endsWith('-power') ||
+					key.endsWith('-speed')
+				)
+			)
+		}).length > 0
 	},
 
 	getAvg: state => (name, serieName) => {
-		const serie = state.series.find((serie) => serie.name === name+"_"+serieName)
-		if (serie && 'data' in serie && serie.data.length) {
-			const maxTime = new Date().getTime() - (1000 * 60)
-			const data = serie.data.filter((item) => item[0] > maxTime)
+		const key = serieName && serieName !== 'temperature' ? name+'-'+serieName : name
+		const maxTime = new Date().getTime() - (1000 * 60)
+		let value = 0
+		let counter = 0
 
-			if (data.length) {
-				let value = 0
-
-				data.forEach((item) => {
-					value += item[1]
-				})
-
-				return value / data.length
+		state.source.filter(data => data.date > maxTime).forEach(item => {
+			if (key in item) {
+				value += item[key]
+				counter++
 			}
-		}
+		})
+
+		if (counter && datasetTypesInPercents.includes(serieName)) return (value / counter) * 100
+		else if (counter) return (value / counter)
 
 		return 0
 	},
@@ -76,5 +50,27 @@ export default {
 
 	getAvgSpeed: (state, getters) => (name) => {
 		return getters['getAvg'](name, 'speed')
+	},
+
+	getSelectedLegends: (state, getters, rootState, rootGetters) => {
+		const selected = {}
+
+		if (rootState.printer.heaters?.available_sensors?.length) {
+			rootState.printer.heaters?.available_sensors.forEach((key) => {
+				if (key in rootState.printer) {
+					let name = key
+					if (key.includes(' ')) name = key.split(' ')[1]
+
+					datasetTypes.forEach(datasetType => {
+						if (datasetType in rootState.printer[key]) {
+							const tmpName = datasetType === 'temperature' ? name : name+'-'+datasetType
+							selected[tmpName] = rootGetters['gui/getDatasetValue']({name: name, type: datasetType})
+						}
+					})
+				}
+			})
+		}
+
+		return selected
 	},
 }
