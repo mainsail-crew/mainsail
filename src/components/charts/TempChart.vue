@@ -3,7 +3,7 @@
         id="tempchart"
         ref="tempchart"
         :option="chartOptions"
-        :initOps="{ renderer: 'canvas' }"
+        :init-options="{ renderer: 'svg' }"
         :autoresize="true"
         style="height: 250px; width: 100%;"
         v-observe-visibility="visibilityChanged"
@@ -212,9 +212,16 @@ export default {
         }
     },
     methods: {
+        initChart() {
+            window.console.log("initChart")
+            this.chart = this.$refs.tempchart.chart
+            this.chart.setOption({ series: this.series })
+            this.chart.setOption({ legend: { selected: this.selectedLegends } })
+            this.updateChartPwmAxis()
+        },
         updateChart() {
             if (this.chart && this.boolTempchart && this.isVisible) {
-                //let t0 = performance.now()
+                let t0 = performance.now()
 
                 this.chart.setOption({
                     dataset: {
@@ -222,8 +229,8 @@ export default {
                     },
                 })
 
-                //let t1 = performance.now()
-                //window.console.log(parseInt(t1-t0))
+                let t1 = performance.now()
+                window.console.log(parseInt(t1-t0))
             }
         },
         updateChartPwmAxis() {
@@ -240,8 +247,8 @@ export default {
         visibilityChanged (isVisible) {
             this.isVisible = isVisible
 
-            if (!isVisible && this.chart) {
-                this.chart.dispose()
+            if (isVisible) {
+                this.initChart()
             }
         },
         tooltipFormater(datasets) {
@@ -286,21 +293,17 @@ export default {
         },
     },
     mounted() {
-        window.console.log("mounted")
-        this.chart = this.$refs.tempchart.chart
-        this.chart.setOption({ series: this.series })
-        this.chart.setOption({ legend: { selected: this.selectedLegends } })
-        this.updateChartPwmAxis()
+        this.initChart()
     },
     beforeDestroy() {
-        window.console.log("beforeDestroy")
-        if (this.chart) this.chart.dispose()
+        if (this.chart && this.chart.isDisposed() !== true)
+            this.chart.dispose()
     },
     watch: {
         series: {
             deep: true,
             handler() {
-                if (this.chart !== null) {
+                if (this.chart !== null && this.chart.isDisposed() !== true) {
                     this.chart.setOption({
                         series: this.series
                     })
@@ -308,12 +311,12 @@ export default {
             }
         },
         source() {
-            if (this.chart !== null) {
+            if (this.chart !== null && this.chart.isDisposed() !== true) {
                 this.updateChart()
             }
         },
         selectedLegends(newVal, oldVal) {
-            if (this.chart !== null) {
+            if (this.chart !== null && this.chart.isDisposed() !== true) {
                 Object.keys(newVal).forEach((key) => {
                     if (newVal[key] !== oldVal[key]) {
                         const actionType = newVal[key] ? 'legendSelect' : 'legendUnSelect'
@@ -323,7 +326,6 @@ export default {
             }
         },
         boolDisplayPwmAxis() {
-            window.console.log("change PWM axis")
             this.updateChartPwmAxis()
         }
     }
