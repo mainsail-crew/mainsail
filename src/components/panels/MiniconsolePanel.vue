@@ -153,7 +153,9 @@ import {colorConsoleMessage, reverseString, strLongestAnd} from "@/plugins/helpe
                 loadings: state => state.socket.loadings,
             }),
             helplistFiltered() {
-                return this.helplist.filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())));
+                return this.helplist
+                    .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
+                    .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
             },
             events: {
                 get() {

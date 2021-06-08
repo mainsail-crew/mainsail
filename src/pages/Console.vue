@@ -142,7 +142,9 @@
 
             ]),
             helplistFiltered() {
-              return this.helplist.filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())));
+              return this.helplist
+                  .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
+                  .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
             },
             rows() {
                 return this.gcode?.split('\n').length ?? 1;
