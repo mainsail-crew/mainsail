@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Setup multi webcam
+title: Multicam
 parent: Quicktips
 has_children: false
 permalink: /quicktips/multicam
 description: >-
-    How to setup multi webcam with mainsailOS.
+    How to setup multi Webcams with mainsailOS.
 ---
 
 # {{ page.title }}
@@ -14,7 +14,7 @@ description: >-
 __Disclaimer__  
 Thank you [Charlie_Powell](https://community.octoprint.org/u/Charlie_Powell) for letting us adapt your guide for mainsailOS!  
 The original guide can be found [here](https://community.octoprint.org/t/setting-up-multiple-webcams-in-octopi-the-right-way/32669).
-{: .success}
+{: .info}
 
 ## Prerequisites
 You need:
@@ -23,35 +23,32 @@ You need:
 - ssh access
 - at least two cameras
 
-__If you are working on a existing installation, make a backup!__
+__WARNING__  
+**If you are working on a existing installation, make a backup!**
+{: .warning}
 
-## 1. Creating the configuration files
+## Creating the configuration files
 mainsailOS supports an infinite number of webcam*.txt-style configuration files. They can be placed in
 `/home/pi/klipper_config`.
 
-### Create the second one from the ui or terminal:
 In the UI, got to 'Settings > Interface' click on (1) and save as `webcam2.txt`.
 
-If you prefere terminal:
+:image:
 
-```bash
-$ cd /home/pi/klipper_config
-$ cp webcam.txt webcam2.txt
-```
 Now you should have two identical files:
 1. `/home/pi/klipper_config/webcam.txt`
 2. `/home/pi/klipper_config/webcam2.txt`
 
-## 2. Editing the original configuration file for a specific camera
+## Editing the original configuration file for a specific camera
 Find out the path to the camera by ID. This makes it much easier to stop /dev/video0 and /dev/video1 from switching on you.
 
-Run `ls /dev/v4l/by-id`, then save somewhere the long name of your camera. For example:
+Run `ls /dev/v4l/by-id`, copy your camera id and paste it into the editor in mainsail. For example:
 
 ```bash
 $ ls  /dev/v4l/by-id/
 usb-046d_0825_88C56B60-video-index0  usb-046d_0825_88C56B60-video-index1
 ```
-I'll use the first one, __usb-046d_0825_88C56B60-video-index0__
+I'll use the first one `usb-046d_0825_88C56B60-video-index0`
 
 
 __Note__  
@@ -60,12 +57,7 @@ Not sure which device is which? You can run lsusb to match a name to an ID.
 
 Then edit `/home/pi/klipper_config/webcam.txt` in by clicking on it in mainsail.
 
-Or via terminal:
-```bash
-$ nano /home/pi/klipper_config/webcam.txt
-```
-
-Set camera="usb" at the top, and the camera_usb_options line to indicate the device:
+Set `camera="usb"` at the top, and the `camera_usb_options` line to indicate the device:
 
 `camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"`
 
@@ -100,20 +92,21 @@ webcam2.txt => -p 8082
 webcam3.txt => -p 8083
 ```
 
-__WARNING__  
-mainsailOS already setup 4 nginx reverse proxies for port 8080 to 8083, so you can configure 4 webcams easy with this guide,
-for more webcams you need to configure the nginx config, which we dont recommend!
+__INFO__  
+mainsailOS comes already setup with four nginx reverse proxies for port 8080 to 8083, so you can configure 4 webcams easy with this guide,
+for more webcams you need to configure the nginx config, which we dont recommend!  
+It includes editing nginx configuration, which is easy to mess up and having mainsail stop working as well.  
+If you need more than four webcams, hop onto our [Discord](https://discord.gg/skWTwTD){:target="_blank"} and we will help you.
 {: .warning}
 
 ## 4. Test it works
-Restart webcamd using `sudo service webcamd restart`, 
-and try and find your second camera under `http://<your-ip>/webcam2/`. If it doesn't work, check in the webcam log, `/var/webcamd.log` for details.
+Restart webcamd click the button, 
+and try and find your second camera under `http://<your-ip>/webcam2/`.
+If it doesn't work, check in the webcam log under the filemanager log section for details.
 
-If it works, you can use the stream & snapshot URLs in OctoPrint:
+If it works, you can use the URLs in mainsail:
 
-Stream: `http://<your-ip>/webcam2/?action=stream`
-
-Snapshot: `http://<your-ip>/webcam2/?action=snapshot`
+Stream: `http://<your-ip>/webcam2/`
 
 __DONE__  
 Congratulations, you set up multi webcam with mainsailOS!  
