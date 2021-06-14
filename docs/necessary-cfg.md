@@ -55,7 +55,7 @@ gcode:
     ##### end of definitions #####
     PAUSE_BASE
     G91
-    {% if printer.extruder.can_extrude|lower == 'false' %}
+    {% if printer.extruder.can_extrude|lower == 'true' %}
       G1 E-{e} F2100
     {% else %}
       {action_respond_info("Extruder not hot enough")}
