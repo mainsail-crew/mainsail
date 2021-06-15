@@ -108,6 +108,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     colorConsoleMessage = colorConsoleMessage
     formatConsoleMessage = formatConsoleMessage
 
+    $refs!: {
+        gcodeCommandField: HTMLInputElement
+    }
+
     private headers = [
         {
             text: 'Date',
@@ -211,8 +215,11 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     customSort(items: any, index: string, isDesc: boolean[]) {
         items.sort((a: any, b: any) => {
             if (index[0] === 'date') {
-                if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
-                else return new Date(a[index]) - new Date(b[index]);
+                const aTime = new Date(b[index]).getTime()
+                const bTime = new Date(b[index]).getTime()
+
+                if (!isDesc[0]) return aTime - bTime;
+                else return aTime - bTime;
             } else {
                 if(typeof a[index] !== 'undefined'){
                     if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
