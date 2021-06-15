@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card v-if="(['printing', 'paused'].includes(printer_state)) || (displayZOffsetStandby && ['standby', 'complete'].includes(printer_state))">
+    <v-card v-if="displayPanel" class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>{{ $t("Panels.ZOffsetPanel.ZBabyStepping") }}</span>
@@ -14,7 +14,7 @@
             <v-container>
                 <v-row class="py-0">
                     <v-col class="pb-0 text-center">
-                        <p class="mb-0">{{ $t("Panels.ZOffsetPanel.CurrentOffset") }}: {{ homing_origin.length > 1 ? homing_origin[2].toFixed(2) : 0.00 }}mm</p>
+                        <p class="mb-0">{{ $t("Panels.ZOffsetPanel.CurrentOffset") }}: {{ homing_origin.length > 1 ? homing_origin[2].toFixed(3) : 0.000 }}mm</p>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -34,53 +34,56 @@
     </v-card>
 </template>
 
-<script>
-    import { mapState } from 'vuex'
-    import Vue from "vue";
+<script lang="ts">
 
-    export default {
-        components: {
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "../mixins/base";
 
-        },
-        data: function() {
-            return {
+@Component
+export default class ZOffsetPanel extends Mixins(BaseMixin) {
 
-            }
-        },
-        computed: {
-            ...mapState({
-                loadings: state => state.socket.loadings,
-                homing_origin: state => state.printer.gcode_move.homing_origin,
-                printer_state: state => state.printer.print_stats.state,
-                homed_axis: state => state.printer.toolhead.homed_axes,
-                displayZOffsetStandby: state => state.gui.general.displayZOffsetStandby,
-            }),
-        },
-        methods: {
-            sendBabySteppingDownFine() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-                this.$store.commit('socket/addLoading', { name: 'babySteppingDownFine' });
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDownFine' });
-            },
-            sendBabySteppingDown() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-                this.$store.commit('socket/addLoading', { name: 'babySteppingDown' });
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDown' });
-            },
-            sendBabySteppingUpFine() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-                this.$store.commit('socket/addLoading', { name: 'babySteppingUpFine' });
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUpFine' });
-            },
-            sendBabySteppingUp() {
-                let gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-                this.$store.commit('socket/addLoading', { name: 'babySteppingUp' });
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUp' });
-            },
-        }
+    get displayPanel() {
+        return (['printing', 'paused'].includes(this.printer_state)) || (this.displayZOffsetStandby && ['standby', 'complete', 'cancelled'].includes(this.printer_state))
     }
+
+    get displayZOffsetStandby() {
+        return this.$store.state.gui.general.displayZOffsetStandby ?? false
+    }
+
+    get homing_origin() {
+        return this.$store.state.printer?.gcode_move?.homing_origin ?? []
+    }
+
+    get homed_axis() {
+        return this.$store.state.printer.toolhead.homed_axes ?? ""
+    }
+
+    sendBabySteppingDownFine() {
+        const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
+        this.$store.commit('socket/addLoading', { name: 'babySteppingDownFine' });
+        this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
+        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDownFine' });
+    }
+
+    sendBabySteppingDown() {
+        const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        this.$store.commit('socket/addLoading', { name: 'babySteppingDown' })
+        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDown' })
+    }
+
+    sendBabySteppingUpFine() {
+        const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        this.$store.commit('socket/addLoading', { name: 'babySteppingUpFine' })
+        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUpFine' })
+    }
+
+    sendBabySteppingUp() {
+        const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        this.$store.commit('socket/addLoading', { name: 'babySteppingUp' })
+        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUp' })
+    }
+}
 </script>

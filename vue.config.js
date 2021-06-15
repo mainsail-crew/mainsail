@@ -1,3 +1,4 @@
+const path = require('path')
 const webpack = require('webpack')
 const generate = require('generate-file-webpack-plugin')
 const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
@@ -39,6 +40,12 @@ module.exports = {
 				content: 'v' + version
 			}),
 		],
+		resolve: {
+			alias: {
+				vue$: 'vue/dist/vue.esm.js',
+				'@': path.resolve('src')
+			}
+		}
 	},
 	css: {
 		loaderOptions: {

@@ -1,4 +1,4 @@
-<style>
+<style scoped>
     .vertical_align_center {
         margin: auto 0;
     }
@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <v-card>
+    <v-card v-if="klipperState === 'ready'" class="mb-6">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading align-baseline">
@@ -101,7 +101,7 @@
                 <v-divider class="mt-0 mb-0" ></v-divider>
             </template>
             <v-container class="py-0">
-                <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
+                <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
                     <v-col class="col-3 pa-0">
                         <strong>{{ $t("Panels.StatusPanel.Position") }}</strong><br />
                         {{ absolute_coordinates ? $t("Panels.StatusPanel.Absolute") : $t("Panels.StatusPanel.Relative") }}
@@ -240,267 +240,312 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
-    import VueLoadImage from "vue-load-image"
+import Component from 'vue-class-component'
+import { Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import VueLoadImage from "vue-load-image"
+
+@Component({
+    VueLoadImage
+})
+export default class StatusPanel extends Mixins(BaseMixin) {
+    maxFlow = {
+        intervalTimer: null,
+        lastExtruderPos: 0,
+        lastTime: 0,
+        lastValue: 0,
+        maxValue: 0,
+    }
+
+    get current_filename() {
+        return this.$store.state.printer.print_stats?.filename ?? ""
+    }
+
+    get display_message() {
+        return this.$store.state.printer.display_status?.message ?? ""
+    }
+
+    get print_stats_message() {
+        return this.$store.state.printer.print_stats?.message ?? ""
+    }
+
+    get absolute_coordinates() {
+        return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
+    }
+
+    get position() {
+        return this.$store.state.printer.toolhead?.position ?? []
+    }
+
+    get gcode_position() {
+        return this.$store.state.printer.gcode_move?.gcode_position ?? []
+    }
+
+    get filament_used() {
+        return this.$store.state.printer.print_stats?.filament_used ?? 0
+    }
+
+    get current_file() {
+        return this.$store.state.printer.current_file ?? {}
+    }
+
+    get print_time() {
+        return this.$store.state.printer.print_stats?.print_duration ?? 0
+    }
+
+    get print_time_total() {
+        return this.$store.state.printer.print_stats?.total_duration ?? 0
+    }
+
+    get printPercent() {
+        return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
+    }
+
+    get printerStateOutput() {
+        if (this.printer_state !== "") {
+            const idle_timeout_state = this.$store.state.printer.idle_timeout?.state
+
+            if (
+                this.printer_state === "standby" &&
+                idle_timeout_state === "Printing"
+            ) return "Busy"
+
+            if (this.printer_state !== "" && ['paused', 'printing'].includes(this.printer_state)) {
+                return this.printPercent+"% "+this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
+            }
+
+            return this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
+        }
+
+        return this.$t("Panels.StatusPanel.Unknown")
+    }
+
+    get toolbarButtons() {
+        return [
+            {
+                text: this.$t("Panels.StatusPanel.PausePrint"),
+                color: "orange",
+                icon: "mdi-pause",
+                loadingName: "statusPrintPause",
+                status: ['printing'],
+                click: this.btnPauseJob
+            }, {
+                text: this.$t("Panels.StatusPanel.ResumePrint"),
+                color: "orange",
+                icon: "mdi-play",
+                loadingName: "statusPrintResume",
+                status: ['paused'],
+                click: this.btnResumeJob
+            }, {
+                text: this.$t("Panels.StatusPanel.CancelPrint"),
+                color: "red",
+                icon: "mdi-stop",
+                loadingName: "statusPrintCancel",
+                status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
+                click: this.btnCancelJob
+            }, {
+                text: this.$t("Panels.StatusPanel.ClearPrintStats"),
+                color: "primary",
+                icon: "mdi-broom",
+                loadingName: "statusPrintClear",
+                status: ['error', 'complete', 'cancelled'],
+                click: this.btnClearJob
+            }, {
+                text: this.$t("Panels.StatusPanel.ReprintJob"),
+                color: "primary",
+                icon: "mdi-printer",
+                loadingName: "statusPrintReprint",
+                status: ['error', 'complete', 'cancelled'],
+                click: this.btnReprintJob
+            }
+        ]
+    }
+
+    get filteredToolbarButtons() {
+        return this.toolbarButtons.filter((button) => {
+            return button.status.includes(this.printer_state)
+        })
+    }
+
+    get requested_speed() {
+        const requested_speed = this.$store.state.printer.gcode_move?.speed ?? 0
+        const speed_factor = this.$store.state.printer.gcode_move?.speed_factor ?? 0
+        const max_velocity = this.$store.state.printer.toolhead?.max_velocity ?? 0
+
+        const speed = requested_speed / 60 * speed_factor
+        if (speed > max_velocity) return max_velocity
+
+        return speed
+    }
+
+    get max_layers() {
+        if (
+            'first_layer_height' in this.current_file &&
+            'layer_height' in this.current_file &&
+            'object_height' in this.current_file
+        ) {
+            const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+            return max > 0 ? max : 0
+        }
+
+        return 0
+    }
+
+    get current_layer() {
+        if (
+            this.print_time > 0 &&
+            'first_layer_height' in this.current_file &&
+            'layer_height' in this.current_file &&
+            this.gcode_position !== undefined &&
+            this.gcode_position.length >= 3
+        ) {
+            let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+            current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+
+            return current_layer > 0 ? current_layer : 0
+        }
+
+        return 0
+    }
+
+    get estimated_time_file() {
+        return this.$store.getters["printer/getEstimatedTimeFile"]
+    }
+
+    get estimated_time_filament() {
+        return this.$store.getters["printer/getEstimatedTimeFilament"]
+    }
+
+    get estimated_time_slicer() {
+        return this.$store.getters["printer/getEstimatedTimeSlicer"]
+    }
+
+    get estimated_time_avg() {
+        return this.$store.getters["printer/getEstimatedTimeAvg"]
+    }
+
+    get eta() {
+        return this.$store.getters["printer/getEstimatedTimeETA"]
+    }
+
+    get filament_diameter() {
+        return this.$store.state.printer.configfile?.settings?.extruder?.filament_diameter ?? 1.75
+    }
+
+    get thumbnailSmall() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb =>
+                thumb.width >= 32 && thumb.width <= 64 &&
+                thumb.height >= 32 && thumb.height <= 64
+            )
+
+            if (thumbnail && 'relative_path' in thumbnail) {
+                let relative_url = ""
+                if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                }
+
+                if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+            }
+        }
+
+        return ""
+    }
+
+    get thumbnailBig() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail && 'relative_path' in thumbnail) {
+                let relative_url = ""
+                if (this.current_file.filename.lastIndexOf("/") !== -1) {
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                }
+
+                if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+            }
+        }
+
+        return ""
+    }
+
+    btnPauseJob() {
+        this.$store.commit('socket/addLoading', { name: 'statusPrintPause' });
+        this.$socket.emit('printer.print.pause', { }, 'socket/removeLoading', { name: 'statusPrintPause' });
+    }
+
+    btnResumeJob() {
+        this.$store.commit('socket/addLoading', { name: 'statusPrintResume' });
+        this.$socket.emit('printer.print.resume', { }, 'socket/removeLoading', { name: 'statusPrintResume' });
+    }
+
+    btnCancelJob() {
+        this.$store.commit('socket/addLoading', { name: 'statusPrintCancel' });
+        this.$socket.emit('printer.print.cancel', { }, 'socket/removeLoading', { name: 'statusPrintCancel' });
+    }
+
+    btnClearJob() {
+        this.$store.commit('socket/addLoading', {name: 'statusPrintClear'});
+        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'socket/removeLoading', { name: 'statusPrintClear' });
+    }
+
+    btnReprintJob() {
+        this.$store.commit('socket/addLoading', {name: 'statusPrintReprint'});
+        this.$socket.emit('printer.print.start', { filename: this.current_filename }, 'socket/removeLoading', { name: 'statusPrintReprint' });
+    }
+
+    formatTime(seconds) {
+        let h = Math.floor(seconds / 3600);
+        seconds %= 3600;
+        let m = ("0" + Math.floor(seconds / 60)).slice(-2);
+        let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
+
+        return h+':'+m+':'+s;
+    }
+
+    formatDateTime(msec) {
+        const date = new Date(msec)
+        const h = date.getHours() >= 10 ? date.getHours() : "0"+date.getHours()
+        const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
+
+        const diff = msec - new Date().getTime()
+        return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
+    }
+
+    calcMaxFlow() {
+        const newExtruderPos = parseFloat(this.filament_used)
+
+        if (
+            this.maxFlow.lastExtruderPos &&
+            this.maxFlow.lastExtruderPos < newExtruderPos &&
+            this.maxFlow.lastTime
+        ) {
+            const timeDiff = (new Date().getTime() - this.maxFlow.lastTime) / 1000
+            const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
+            const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+
+            this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
+
+            if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
+        }
+
+        this.maxFlow.lastExtruderPos = newExtruderPos
+        this.maxFlow.lastTime = new Date().getTime()
+    }
+
+
+
+}
+
+    /*
 
     export default {
-        components: {
-            'vue-load-image': VueLoadImage
-        },
-        data: function() {
-            return {
-                maxFlow: {
-                    intervalTimer: null,
-                    lastExtruderPos: 0,
-                    lastTime: 0,
-                    lastValue: 0,
-                    maxValue: 0,
-                }
-            }
-        },
-        computed: {
-            ...mapState({
-                printer_state: state => state.printer.print_stats.state,
-                loadings: state => state.socket.loadings,
-
-                current_filename: state => state.printer.print_stats.filename,
-                display_message: state => state.printer.display_status.message,
-                print_stats_message: state => state.printer.print_stats.message,
-
-                absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
-                position: state => state.printer.toolhead.position,
-                gcode_position: state => state.printer.gcode_move.gcode_position,
-
-                filament_used: state => state.printer.print_stats.filament_used,
-                current_file: state => state.printer.current_file,
-                print_time: state => state.printer.print_stats.print_duration,
-                print_time_total: state => state.printer.print_stats.total_duration,
-            }),
-            printerStateOutput() {
-                if (this.$store.state.printer.print_stats.state !== "") {
-                    const printer_state = this.$store.state.printer.print_stats.state
-
-                    if (
-                        printer_state === "standby" &&
-                        this.$store.state.printer.idle_timeout.state === "Printing"
-                    ) return "Busy"
-
-                    if (['paused', 'printing'].includes(printer_state)) {
-                        return (this.printPercent * 100).toFixed(0)+"% "+printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
-                    }
-
-                    return printer_state.charAt(0).toUpperCase() + printer_state.slice(1)
-                }
-
-                return this.$t("Panels.StatusPanel.Unknown")
-            },
-            toolbarButtons() {
-                return [
-                    {
-                        text: this.$t("Panels.StatusPanel.PausePrint"),
-                        color: "orange",
-                        icon: "mdi-pause",
-                        loadingName: "statusPrintPause",
-                        status: ['printing'],
-                        click: this.btnPauseJob
-                    }, {
-                        text: this.$t("Panels.StatusPanel.ResumePrint"),
-                        color: "orange",
-                        icon: "mdi-play",
-                        loadingName: "statusPrintResume",
-                        status: ['paused'],
-                        click: this.btnResumeJob
-                    }, {
-                        text: this.$t("Panels.StatusPanel.CancelPrint"),
-                        color: "red",
-                        icon: "mdi-stop",
-                        loadingName: "statusPrintCancel",
-                        status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
-                        click: this.btnCancelJob
-                    }, {
-                        text: this.$t("Panels.StatusPanel.ClearPrintStats"),
-                        color: "primary",
-                        icon: "mdi-broom",
-                        loadingName: "statusPrintClear",
-                        status: ['error', 'complete'],
-                        click: this.btnClearJob
-                    }, {
-                        text: this.$t("Panels.StatusPanel.ReprintJob"),
-                        color: "primary",
-                        icon: "mdi-printer",
-                        loadingName: "statusPrintReprint",
-                        status: ['error', 'complete'],
-                        click: this.btnReprintJob
-                    }
-                ]
-            },
-            filteredToolbarButtons() {
-                return this.toolbarButtons.filter((button) => {
-                    return button.status.includes(this.printer_state)
-                })
-            },
-            printPercent() {
-                return this.$store.getters["printer/getPrintPercent"]
-            },
-            requested_speed() {
-                const requested_speed = this.$store.state.printer.gcode_move.speed
-                const speed_factor = this.$store.state.printer.gcode_move.speed_factor
-                const max_velocity = this.$store.state.printer.toolhead.max_velocity
-
-                const speed = requested_speed / 60 * speed_factor
-                if (speed > max_velocity) return max_velocity
-
-                return speed
-            },
-            max_layers() {
-                if (
-                    'first_layer_height' in this.current_file &&
-                    'layer_height' in this.current_file &&
-                    'object_height' in this.current_file
-                ) {
-                    const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-                    return max > 0 ? max : 0
-                }
-
-                return 0
-            },
-            current_layer() {
-                if (
-                    this.print_time > 0 &&
-                    'first_layer_height' in this.current_file &&
-                    'layer_height' in this.current_file &&
-                    this.gcode_position !== undefined &&
-                    this.gcode_position.length >= 3
-                ) {
-                    let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-                    current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
-
-                    return current_layer > 0 ? current_layer : 0
-                }
-
-                return 0
-            },
-            estimated_time_file() {
-                return this.$store.getters["printer/getEstimatedTimeFile"]
-            },
-            estimated_time_filament() {
-                return this.$store.getters["printer/getEstimatedTimeFilament"]
-            },
-            estimated_time_slicer() {
-                return this.$store.getters["printer/getEstimatedTimeSlicer"]
-            },
-            estimated_time_avg() {
-                return this.$store.getters["printer/getEstimatedTimeAvg"]
-            },
-            eta() {
-                return this.$store.getters["printer/getEstimatedTimeETA"]
-            },
-            filament_diameter() {
-                return this.$store.state.printer.configfile.settings.extruder?.filament_diameter || 1.75
-            },
-            basicUrl() {
-                return this.$store.getters["socket/getUrl"]
-            },
-            thumbnailSmall() {
-                if (
-                    "thumbnails" in this.current_file &&
-                    this.current_file.thumbnails.length
-                ) {
-                    const thumbnail = this.current_file.thumbnails.find(thumb =>
-                        thumb.width >= 32 && thumb.width <= 64 &&
-                        thumb.height >= 32 && thumb.height <= 64
-                    )
-
-                    if (thumbnail && 'relative_path' in thumbnail) {
-                        let relative_url = ""
-                        if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                            relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
-                        }
-
-                        if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                    }
-                }
-
-                return ""
-            },
-            thumbnailBig() {
-                if (
-                    "thumbnails" in this.current_file &&
-                    this.current_file.thumbnails.length
-                ) {
-                    const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
-
-                    if (thumbnail && 'relative_path' in thumbnail) {
-                        let relative_url = ""
-                        if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                            relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
-                        }
-
-                        if (thumbnail && 'relative_path' in thumbnail) return this.basicUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                    }
-                }
-
-                return ""
-            }
-        },
-        methods: {
-            btnPauseJob() {
-                this.$store.commit('socket/addLoading', { name: 'statusPrintPause' });
-                this.$socket.sendObj('printer.print.pause', { }, 'socket/removeLoading', { name: 'statusPrintPause' });
-            },
-            btnResumeJob() {
-                this.$store.commit('socket/addLoading', { name: 'statusPrintResume' });
-                this.$socket.sendObj('printer.print.resume', { }, 'socket/removeLoading', { name: 'statusPrintResume' });
-            },
-            btnCancelJob() {
-                this.$store.commit('socket/addLoading', { name: 'statusPrintCancel' });
-                this.$socket.sendObj('printer.print.cancel', { }, 'socket/removeLoading', { name: 'statusPrintCancel' });
-            },
-            btnClearJob() {
-                this.$store.commit('socket/addLoading', {name: 'statusPrintClear'});
-                this.$socket.sendObj('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'socket/removeLoading', { name: 'statusPrintClear' });
-            },
-            btnReprintJob() {
-                this.$store.commit('socket/addLoading', {name: 'statusPrintReprint'});
-                this.$socket.sendObj('printer.print.start', { filename: this.current_filename }, 'socket/removeLoading', { name: 'statusPrintReprint' });
-            },
-            formatTime(seconds) {
-                let h = Math.floor(seconds / 3600);
-                seconds %= 3600;
-                let m = ("0" + Math.floor(seconds / 60)).slice(-2);
-                let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
-
-                return h+':'+m+':'+s;
-            },
-            formatDateTime(msec) {
-                const date = new Date(msec)
-                const h = date.getHours() >= 10 ? date.getHours() : "0"+date.getHours()
-                const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
-
-                const diff = msec - new Date().getTime()
-                return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
-            },
-            calcMaxFlow() {
-                const newExtruderPos = parseFloat(this.filament_used)
-
-                if (
-                    this.maxFlow.lastExtruderPos &&
-                    this.maxFlow.lastExtruderPos < newExtruderPos &&
-                    this.maxFlow.lastTime
-                ) {
-                    const timeDiff = (new Date().getTime() - this.maxFlow.lastTime) / 1000
-                    const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
-                    const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
-
-                    this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
-
-                    if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
-                }
-
-                this.maxFlow.lastExtruderPos = newExtruderPos
-                this.maxFlow.lastTime = new Date().getTime()
-            }
-        },
         created() {
             this.maxFlow.intervalTimer = setInterval(() => {
                 this.calcMaxFlow()
@@ -520,32 +565,5 @@
                 }
             }
         }
-    }
+    }*/
 </script>
-
-<style scoped>
-    .equal-width {
-        flex-basis: 0;
-    }
-
-    .category-header {
-        flex: 0 0 100px;
-    }
-    a:not(:hover) {
-        color: inherit;
-    }
-
-    .content span,
-    .content strong {
-        padding-left: 8px;
-        padding-right: 8px;
-        white-space: pre-wrap;
-    }
-
-    .probe-span {
-        border-radius: 5px;
-    }
-    .probe-span:not(:last-child) {
-        margin-right: 8px;
-    }
-</style>

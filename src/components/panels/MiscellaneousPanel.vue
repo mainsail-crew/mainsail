@@ -1,4 +1,4 @@
-<style>
+<style scoped>
     .icon-rotate {
         animation-name: spin;
         animation-duration: 1000ms;
@@ -16,8 +16,8 @@
 </style>
 
 <template>
-    <div>
-        <v-card class="mt-6" v-if="['printing', 'paused'].includes(printer_state)">
+    <div v-if="klipperState === 'ready'">
+        <v-card class="mb-6" v-if="['printing', 'paused'].includes(printer_state) || true">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>{{ $t("Panels.MiscellaneousPanel.PrintSettings") }}</span>
@@ -29,13 +29,13 @@
                 <tool-slider :label="$t('Panels.MiscellaneousPanel.ExtrusionFactor')" :target="extrude_factor" :max="200" :multi="100" :step="1" command="M221" attribute-name="S" ></tool-slider>
             </template>
         </v-card>
-        <v-card class="mt-6" v-if="this['printer/getMiscellaneous'].length">
+        <v-card class="mb-6" v-if="miscellaneous.length || filamentSensors.length">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>{{ $t("Panels.MiscellaneousPanel.Miscellaneous") }}</span>
                 </v-toolbar-title>
             </v-toolbar>
-            <div v-for="(object, index) of this['printer/getMiscellaneous']" v-bind:key="index">
+            <div v-for="(object, index) of miscellaneous" v-bind:key="index">
                 <v-divider v-if="index"></v-divider>
                 <miscellaneous-slider
                     :name="object.name"
@@ -49,39 +49,48 @@
                     :multi="parseInt(object.scale)"
                 ></miscellaneous-slider>
             </div>
+            <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_'+index">
+                <v-divider v-if="index || miscellaneous.length"></v-divider>
+                <FilamentSensor
+                    :name="sensor.name"
+                    :enabled="sensor.enabled"
+                    :filament_detected="sensor.filament_detected"
+                ></FilamentSensor>
+            </div>
         </v-card>
     </div>
 </template>
 
-<script>
-    import { mapState, mapGetters } from 'vuex'
-    import ToolSlider from '../../inputs/ToolSlider'
-    import MiscellaneousSlider from "@/inputs/MiscellaneousSlider";
+<script lang="ts">
 
-    export default {
-        components: {
-            MiscellaneousSlider,
-            ToolSlider
-        },
-        data () {
-            return {
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import MiscellaneousSlider from "@/components/inputs/MiscellaneousSlider.vue";
+import ToolSlider from "@/components/inputs/ToolSlider.vue";
+import FilamentSensor from "@/components/inputs/FilamentSensor.vue";
+@Component({
+    components: {FilamentSensor, ToolSlider, MiscellaneousSlider}
+})
+export default class MiscellaneousPanel extends Mixins(BaseMixin) {
 
-            }
-        },
-        computed: {
-            ...mapState({
-                extrude_factor: state => state.printer.gcode_move.extrude_factor,
-                speed_factor: state => state.printer.gcode_move.speed_factor,
-                printer_state: state => state.printer.print_stats.state,
-            }),
-            ...mapGetters([
-                'printer/getMiscellaneous',
-            ]),
-            existsExtruder: {
-                get() {
-                    return 'extruder' in this.$store.state.printer
-                }
-            },
-        }
+    get extrude_factor() {
+        return this.$store.state.printer?.gcode_move?.extrude_factor ?? 1
     }
+
+    get speed_factor() {
+        return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
+    }
+
+    get miscellaneous() {
+        return this.$store.getters['printer/getMiscellaneous'] ?? []
+    }
+
+    get filamentSensors() {
+        return this.$store.getters['printer/getFilamentSensors'] ?? []
+    }
+
+    get existsExtruder() {
+        return 'extruder' in this.$store.state.printer
+    }
+}
 </script>

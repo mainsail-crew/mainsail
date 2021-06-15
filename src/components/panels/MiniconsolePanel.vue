@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 
     .minievent-table {
         max-height: 350px;
@@ -70,7 +70,6 @@
             <v-divider></v-divider>
             <v-data-table
                 :headers="headers"
-                :options="options"
                 :items="events"
                 item-key="date"
                 hide-default-footer
@@ -99,136 +98,130 @@
     </v-card>
 </template>
 
-<script>
-import {mapState} from 'vuex'
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+<script lang="ts">
+import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+import { Component, Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
-    export default {
-        components: {
+@Component
+export default class MiniconsolePanel extends Mixins(BaseMixin) {
+    colorConsoleMessage = colorConsoleMessage
+    formatConsoleMessage = formatConsoleMessage
 
+    private headers = [
+        {
+            text: 'Date',
+            value: 'date',
+            width: '15%',
+            dateType: 'Date',
         },
-        data: function() {
-            return {
-                headers: [
-                    {
-                        text: 'Date',
-                        value: 'date',
-                        width: '15%',
-                        dateType: 'Date',
-                    },
-                    {
-                        text: 'Event',
-                        sortable: false,
-                        value: 'message',
-                        width: '85%'
-                    },
-                ],
-                options: {
-
-                },
-                gcode: "",
-                lastCommands: [
-
-                ],
-                lastCommandNumber: null,
-                items: [],
-            }
+        {
+            text: 'Event',
+            sortable: false,
+            value: 'message',
+            width: '85%'
         },
-        computed: {
-            ...mapState({
-                helplist: state => state.printer.helplist,
-                loadings: state => state.socket.loadings,
-            }),
-            events: {
-                get() {
-                    return this.$store.getters["server/getFilterdEvents"]
-                }
-            },
-            hideWaitTemperatures: {
-                get() {
-                    return this.$store.state.gui.console.hideWaitTemperatures
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
-                }
-            },
-            customFilters() {
-                return this.$store.state.gui.console.customFilters
-            },
-        },
-        methods: {
-            doSend() {
-                this.$store.dispatch('printer/sendGcode', this.gcode)
-                this.lastCommands.push(this.gcode)
-                this.gcode = ""
-                this.lastCommandNumber = null
-            },
-            onKeyUp() {
-                if (this.lastCommandNumber === null && this.lastCommands.length) {
-                    this.lastCommandNumber = this.lastCommands.length - 1;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber > 0) {
-                    this.lastCommandNumber--;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                }
-            },
-            onKeyDown() {
-                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber++;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber = null;
-                    this.gcode = "";
-                }
-            },
-            getAutocomplete(e) {
-                e.preventDefault();
-                if (this.gcode.length) {
-                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
-                    if (commands && commands.length === 1) this.gcode = commands[0].command;
-                    else {
-                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
-                        if (commands && commands.length) {
-                            let output = "";
-                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+    ]
+    private gcode = ""
+    private lastCommands: string[] = []
+    private lastCommandNumber: number | null = null
+    private items = []
 
-                            this.$store.commit('server/addEvent', { message: output, type: 'command' });
-                        }
-                    }
-                }
-                this.$refs.gcodeCommandField.focus();
-            },
-            formatTime(date) {
-                let hours = date.getHours();
-                if (hours < 10) hours = "0"+hours.toString();
-                let minutes = date.getMinutes();
-                if (minutes < 10) minutes = "0"+minutes.toString();
-                let seconds = date.getSeconds();
-                if (seconds < 10) seconds = "0"+seconds.toString();
+    get helplist() {
+        return this.$store.state.printer.helplist
+    }
 
+    get events() {
+        return this.$store.getters['server/getFilteredEvents']
+    }
 
-                return hours+":"+minutes+":"+seconds;
-            },
-            colorConsoleMessage: colorConsoleMessage,
-            formatConsoleMessage: formatConsoleMessage,
-            customSort: function(items, index, isDesc) {
-                items.sort((a, b) => {
-                    if (index[0] === 'date') {
-                        if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
-                        else return new Date(a[index]) - new Date(b[index]);
-                    } else {
-                        if(typeof a[index] !== 'undefined'){
-                            if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                            else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                        }
-                    }
-                });
+    get hideWaitTemperatures() {
+        return this.$store.state.gui.console.hideWaitTemperatures
+    }
 
-                return items;
-            },
-            toggleFilter(filter) {
-                this.$store.dispatch('gui/updateConsoleFilter',  filter)
-            },
+    set hideWaitTemperatures(newVal) {
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, 'gui/updateDataFromDB')
+    }
+
+    get customFilters() {
+        return this.$store.state.gui.console.customFilters
+    }
+
+    doSend() {
+        this.$store.dispatch('printer/sendGcode', this.gcode)
+        this.lastCommands.push(this.gcode)
+        this.gcode = ""
+        this.lastCommandNumber = null
+    }
+
+    onKeyUp() {
+        if (this.lastCommandNumber === null && this.lastCommands.length) {
+            this.lastCommandNumber = this.lastCommands.length - 1;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber && this.lastCommandNumber > 0) {
+            this.lastCommandNumber--;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
         }
     }
+
+    onKeyDown() {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+            this.lastCommandNumber++;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+            this.lastCommandNumber = null;
+            this.gcode = "";
+        }
+    }
+
+    getAutocomplete(e: Event) {
+        e.preventDefault();
+        if (this.gcode.length) {
+            let commands = this.helplist.filter((element: any) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
+            if (commands && commands.length === 1) this.gcode = commands[0].command;
+            else {
+                let commands = this.helplist.filter((element: any) => element.commandLow.includes(this.gcode.toLowerCase()));
+                if (commands && commands.length) {
+                    let output = "";
+                    commands.forEach((command: any) => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+
+                    this.$store.commit('server/addEvent', { message: output, type: 'command' });
+                }
+            }
+        }
+        this.$refs.gcodeCommandField?.focus();
+    }
+
+    formatTime(date: Date) {
+        let hours: string | number = date.getHours();
+        if (hours < 10) hours = "0"+hours.toString();
+        let minutes: string | number = date.getMinutes();
+        if (minutes < 10) minutes = "0"+minutes.toString();
+        let seconds: string | number = date.getSeconds();
+        if (seconds < 10) seconds = "0"+seconds.toString();
+
+
+        return hours+":"+minutes+":"+seconds;
+    }
+
+    toggleFilter(filter: string) {
+        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+
+    customSort(items: any, index: string, isDesc: boolean[]) {
+        items.sort((a: any, b: any) => {
+            if (index[0] === 'date') {
+                if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
+                else return new Date(a[index]) - new Date(b[index]);
+            } else {
+                if(typeof a[index] !== 'undefined'){
+                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                }
+            }
+        });
+
+        return items;
+    }
+}
 </script>

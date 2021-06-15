@@ -2,25 +2,32 @@
 	"title": "English",
 	"App": {
 		"Printers": "Printers",
-		"KlipperControl": "Klipper Control",
-		"Restart": "Restart",
-		"FirmwareRestart": "FIRMWARE Restart",
-		"RestartServices": "Restart Services",
-		"Klipper": "Klipper",
-		"Moonraker": "Moonraker",
-		"PowerDevices": "Power Devices",
-		"HostControl": "Host Control",
-		"Reboot": "Reboot",
-		"Shutdown": "Shutdown",
-		"Updating": "Updating",
-		"Recovering": "Recovering",
-		"done": " done!",
-		"Empty": "Empty",
-		"Close": "Close",
-		"SAVECONFIG": "SAVE CONFIG",
-		"UploadPrint": "Upload & Print",
-		"EmergencyStop": "Emergency Stop",
-		"Uploading": "Uploading"
+		"TopBar": {
+			"SAVE_CONFIG": "SAVE CONFIG",
+			"UploadPrint": "Upload & Print",
+			"EmergencyStop": "Emergency Stop",
+			"Uploading": "Uploading",
+			"UploadOfFileSuccessful": "Upload of {file} successful!",
+			"CannotUploadTheFile": "Cannot upload the file!"
+		},
+		"TopCornerMenu": {
+			"KlipperControl": "Klipper Control",
+			"KlipperRestart": "Restart",
+			"KlipperFirmwareRestart": "FIRMWARE Restart",
+			"RestartServices": "Restart Services",
+			"PowerDevices": "Power Devices",
+			"HostControl": "Host Control",
+			"Reboot": "Reboot",
+			"Shutdown": "Shutdown"
+		},
+		"UpdateDialog": {
+			"Updating": "Updating {software}...",
+			"UpdatingDone": "Updating {software} done!",
+			"Recovering": "Recovering {software}...",
+			"RecoveringDone": "Recovering {software} done!",
+			"Empty": "Empty",
+			"Close": "Close"
+		}
 	},
     "ConnectionDialog": {
         "Connecting": "Connecting to {host}",
@@ -239,18 +246,18 @@
 			"PrintSettings": "Print Settings",
 			"Miscellaneous": "Miscellaneous",
 			"SpeedFactor": "Speed factor",
-			"ExtrusionFactor": "Extrusion factor"
+			"ExtrusionFactor": "Extrusion factor",
+			"RunoutSensor": {
+				"Detected": "detected",
+				"Empty": "Empty"
+			}
 		},
-		"MoonrakerFailedComponentsPanel": {
-			"MoonrakerFailedComponents": "Moonraker Failed Components",
+		"MoonrakerStatePanel": {
+			"MoonrakerWarnings": "Moonraker Warnings",
 			"MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
 			"FollowingPluginHasAnError": "Following plugin has an error:",
 			"DownloadLog": "Download Log"
 		},
-        "MoonrakerWarningsPanel": {
-            "MoonrakerWarnings": "Moonraker Warnings",
-            "DownloadLog": "Download Log"
-        },
 		"PowerControlPanel": {
 			"PowerControl": "Power Control",
 			"Error": "Error",
@@ -299,13 +306,15 @@
 			"Min": "min",
 			"Max": "max",
 			"Avg": "Avg",
-			"UNKNOWN": "UNKNOWN",
-            "CurrentTemperature": "current temperature",
-            "TargetTemperature": "target temperature",
-            "PwmPower": "PWM-power",
 			"ShowNameInChart": "Show {name} in chart",
 			"ShowNameInList": "Show {name} in list",
-			"TemperaturesInChart": "Temperature [°C]"
+			"TemperaturesInChart": "Temperature [°C]",
+			"Dataset": {
+				"Temperature": "current temperature",
+				"Target": "target temperature",
+				"Power": "PWM-power",
+				"Speed": "PWM-speed"
+			}
 		},
 		"WebcamPanel": {
 			"Webcam": "Webcam",
@@ -437,10 +446,6 @@
 			"AddPrinter": "Add Printer",
 			"EditPrinter": "Edit Printer",
 			"UpdatePrinter": "Update Printer"
-		},
-		"RunoutPanel": {
-			"Detected": "detected",
-			"Empty": "Empty"
 		},
 		"UpdatePanel": {
 			"UpdateManager": "Update Manager",
