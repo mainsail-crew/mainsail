@@ -248,6 +248,7 @@
 			"SpeedFactor": "Speed factor",
 			"ExtrusionFactor": "Extrusion factor",
 			"RunoutSensor": {
+				"Disabled": "disabled",
 				"Detected": "detected",
 				"Empty": "Empty"
 			}

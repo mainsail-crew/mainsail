@@ -51,11 +51,11 @@
             </div>
             <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_'+index">
                 <v-divider v-if="index || miscellaneous.length"></v-divider>
-                <FilamentSensor
+                <filament-sensor
                     :name="sensor.name"
                     :enabled="sensor.enabled"
                     :filament_detected="sensor.filament_detected"
-                ></FilamentSensor>
+                ></filament-sensor>
             </div>
         </v-card>
     </div>
