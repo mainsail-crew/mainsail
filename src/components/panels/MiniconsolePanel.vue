@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 
     .minievent-table {
         max-height: 350px;
@@ -265,6 +265,9 @@ import {colorConsoleMessage, reverseString, strLongestAnd} from "@/plugins/helpe
                 let seconds = date.getSeconds();
                 if (seconds < 10) seconds = "0"+seconds.toString();
 
+    get events() {
+        return this.$store.getters['server/getFilteredEvents']
+    }
 
                 return hours+":"+minutes+":"+seconds;
             },
@@ -282,11 +285,92 @@ import {colorConsoleMessage, reverseString, strLongestAnd} from "@/plugins/helpe
                     }
                 });
 
-                return items;
-            },
-            toggleFilter(filter) {
-                this.$store.dispatch('gui/updateConsoleFilter',  filter)
-            },
+    set hideWaitTemperatures(newVal) {
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, 'gui/updateDataFromDB')
+    }
+
+    get customFilters() {
+        return this.$store.state.gui.console.customFilters
+    }
+
+    doSend() {
+        this.$store.dispatch('printer/sendGcode', this.gcode)
+        this.lastCommands.push(this.gcode)
+        this.gcode = ""
+        this.lastCommandNumber = null
+    }
+
+    onKeyUp() {
+        if (this.lastCommandNumber === null && this.lastCommands.length) {
+            this.lastCommandNumber = this.lastCommands.length - 1;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber && this.lastCommandNumber > 0) {
+            this.lastCommandNumber--;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
         }
     }
+
+    onKeyDown() {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+            this.lastCommandNumber++;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+            this.lastCommandNumber = null;
+            this.gcode = "";
+        }
+    }
+
+    getAutocomplete(e: Event) {
+        e.preventDefault();
+        if (this.gcode.length) {
+            let commands = this.helplist.filter((element: any) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
+            if (commands && commands.length === 1) this.gcode = commands[0].command;
+            else {
+                let commands = this.helplist.filter((element: any) => element.commandLow.includes(this.gcode.toLowerCase()));
+                if (commands && commands.length) {
+                    let output = "";
+                    commands.forEach((command: any) => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+
+                    this.$store.commit('server/addEvent', { message: output, type: 'command' });
+                }
+            }
+        }
+        this.$refs.gcodeCommandField?.focus();
+    }
+
+    formatTime(date: Date) {
+        let hours: string | number = date.getHours();
+        if (hours < 10) hours = "0"+hours.toString();
+        let minutes: string | number = date.getMinutes();
+        if (minutes < 10) minutes = "0"+minutes.toString();
+        let seconds: string | number = date.getSeconds();
+        if (seconds < 10) seconds = "0"+seconds.toString();
+
+
+        return hours+":"+minutes+":"+seconds;
+    }
+
+    toggleFilter(filter: string) {
+        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+
+    customSort(items: any, index: string, isDesc: boolean[]) {
+        items.sort((a: any, b: any) => {
+            if (index[0] === 'date') {
+                const aTime = new Date(b[index]).getTime()
+                const bTime = new Date(b[index]).getTime()
+
+                if (!isDesc[0]) return aTime - bTime;
+                else return aTime - bTime;
+            } else {
+                if(typeof a[index] !== 'undefined'){
+                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                }
+            }
+        });
+
+        return items;
+    }
+}
 </script>

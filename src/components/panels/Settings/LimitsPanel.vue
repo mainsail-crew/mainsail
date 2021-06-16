@@ -17,7 +17,7 @@
 
 <script>
     import { mapState } from 'vuex'
-    import ToolSlider from '../../../inputs/ToolSlider'
+    import ToolSlider from '../../inputs/ToolSlider'
 
     export default {
         components: {

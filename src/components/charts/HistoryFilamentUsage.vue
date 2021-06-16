@@ -1,9 +1,10 @@
 <template>
-    <div id="historyFilamentUsage" style="height: 175px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
+    <p>Platzhalter</p>
+<!--    <div id="historyFilamentUsage" style="height: 175px; width: 100%;" v-observe-visibility="visibilityChanged"></div>-->
 </template>
 
 <script>
-import { mapState } from 'vuex'
+/*import { mapState } from 'vuex'
 import * as echarts from 'echarts'
 
 export default {
@@ -154,5 +155,5 @@ export default {
             }
         },
     }
-}
+}*/
 </script>

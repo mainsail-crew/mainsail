@@ -1,324 +1,339 @@
 <template>
-    <div id="tempchart" style="height: 250px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
+    <ECharts
+        ref="tempchart"
+        :option="chartOptions"
+        :init-options="{ renderer: 'svg' }"
+        style="height: 250px; width: 100%;"
+        v-observe-visibility="visibilityChanged"
+    ></ECharts>
 </template>
 
-<script>
-import { mapState } from 'vuex'
-import * as echarts from 'echarts'
-import { convertName } from "@/plugins/helpers";
+<script lang="ts">
 
-export default {
+import { convertName } from "@/plugins/helpers"
+import Component from "vue-class-component";
+import {Mixins, Watch} from "vue-property-decorator";
+import BaseMixin from "../mixins/base";
+import {PrinterTempHistoryStateSerie} from "@/store/printer/tempHistory/types";
+
+import { createComponent } from 'echarts-for-vue';
+import * as echarts from 'echarts';
+import {ECharts} from "echarts/core";
+import { EChartsOption } from "echarts";
+
+@Component({
     components: {
+        ECharts: createComponent({ echarts }),
+    }
+})
+export default class TempChart extends Mixins(BaseMixin) {
+    convertName = convertName
 
-    },
-    data: function() {
-        let _this = this;
-        return {
-            chart : null,
-            timerChart: null,
-            isVisible: true,
-            chartOptions: {
-                darkMode: true,
-                animation: false,
-                tooltip: {
-                    trigger: 'axis',
-                    backgroundColor: 'rgba(0,0,0,0.9)',
-                    borderWidth: 0,
-                    textStyle: {
-                        color: '#fff',
-                        fontSize: '14px'
-                    },
-                    padding: 15,
-                    formatter: (datasets) => {
-                        let output = ""
+    $refs!: {
+        tempchart: any
+    }
 
-                        if (datasets.length) {
-                            let outputTime = datasets[0]['axisValueLabel']
-                            outputTime = outputTime.substr(outputTime.indexOf(" "))
-
-                            output += "<div class=\"row\">" +
-                                    "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
-                                        "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
-                                        "<span class='font-weight-bold'>"+outputTime+"</span>" +
-                                    "</div>" +
-                                "</div>"
-                        }
-
-                        datasets.forEach(dataset => {
-                            if (
-                                !dataset.seriesName.endsWith('_target') &&
-                                !dataset.seriesName.endsWith('_power') &&
-                                !dataset.seriesName.endsWith('_speed')
-                            ) {
-                                output += "<div class=\"row\">"
-                                output += "<div class=\"col-auto py-0\">"
-
-                                const mainDataset = this.series.find(tmpDataset => tmpDataset.name === dataset.seriesName)
-                                if (mainDataset)
-                                    output += "<span style=\"" +
-                                        "display:inline-block;" +
-                                        "margin-right:10px;" +
-                                        "width:8px;" +
-                                        "height:8px;" +
-                                        "border-radius: 50%;" +
-                                        "background-color:"+mainDataset.lineStyle.color+"CC;" +
-                                        "\"></span>"
-
-                                output += convertName(dataset.seriesName)+":"
-
-                                output += "</div>"
-                                output += "<div class=\"col text-right py-0 font-weight-bold\">"
-
-                                if (dataset.value[1]) output += dataset.value[1].toFixed(1)
-
-                                const target = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_target")
-                                if (target) output += " / "+target.value[1].toFixed(1)
-
-                                output += "°C"
-
-                                const power = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_power")
-                                if (power) output += " [ "+power.value[1].toFixed(0)+"% ]"
-
-                                const speed = datasets.find(tmpDataset => tmpDataset.seriesName === dataset.seriesName+"_speed")
-                                if (speed) output += " [ "+speed.value[1].toFixed(0)+"% ]"
-
-                                output += "</div>"
-                                output += "</div>"
-                            }
-                        })
-
-                        return output
-                    }
+    private isVisible = true
+    public chartOptions = {
+        darkMode: true,
+        animation: false,
+        tooltip: {
+            animation: false,
+            trigger: 'axis',
+            backgroundColor: 'rgba(0,0,0,0.9)',
+            borderWidth: 0,
+            textStyle: {
+                color: '#fff',
+                fontSize: '14px'
+            },
+            padding: 15,
+            formatter: this.tooltipFormater
+        },
+        grid: {
+            top: 35,
+            right: 15,
+            bottom: 30,
+            left: 25,
+        },
+        legend: {
+            animation: false,
+            show: false,
+            selected: {}
+        },
+        /*dataZoom: [{
+            type: 'inside',
+        }],*/
+        xAxis: {
+            type: 'time',
+            splitNumber: 5,
+            minInterval: 60*1000,
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(255, 255, 255, 0.06)',
                 },
+            },
+            axisLabel: {
+                color: 'rgba(255, 255, 255, 0.24)',
+                margin: 10,
+            },
+        },
+        yAxis: [
+            {
+                name: this.$t('Panels.ToolsPanel.TemperaturesInChart'),
+                type: 'value',
+                min: 0,
+                max: (value: any) => {
+                    if (!this.autoscale) return this.maxTemp
+
+                    return Math.ceil((value.max + 5) / 20) * 20
+                },
+                minInterval: 20,
+                maxInterval: 100,
+                nameLocation: 'end',
+                nameGap: 5,
+                nameTextStyle: {
+                    color: 'rgba(255, 255, 255, 0.24)',
+                    align: 'left',
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.12)',
+                    },
+                },
+                axisLabel: {
+                    color: 'rgba(255, 255, 255, 0.24)',
+                    formatter: '{value}',
+                    rotate: 90,
+                    //showMaxLabel: false,
+                    showMinLabel: true,
+                    margin: 5,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.12)',
+                    },
+                },
+            }, {
+                show: this.boolDisplayPwmAxis,
+                name: 'PWM [%]',
+                min: 0,
+                max: 1,
+                minInterval: 0.25,
+                type: 'value',
+                nameLocation: 'end',
+                nameGap: 5,
+                nameTextStyle: {
+                    color: 'rgba(255, 255, 255, 0.24)',
+                    align: 'right',
+                },
+                splitLine: {
+                    show: false,
+                },
+                axisLabel: {
+                    color: 'rgba(255, 255, 255, 0.24)',
+                    formatter: (value: number) => { return value * 100 },
+                    showMinLabel: true,
+                    rotate: 90,
+                    margin: 5,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255, 255, 255, 0.12)',
+                    },
+                }
+            }
+        ],
+        media: [{
+            query: {
+                minWidth: 500,
+            },
+            option: {
                 grid: {
-                    top: 35,
-                    right: 25,
-                    bottom: 30,
-                    left: 25,
-                },
-                dataZoom: [{
-                    type: 'inside',
-                }],
-                xAxis: {
-                    type: 'time',
-                    min: new Date() - 60*10,
-                    max: new Date(),
-                    splitNumber: 5,
-                    minInterval: 60*1000,
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.06)',
-                        },
-                    },
-                    axisLabel: {
-                        color: 'rgba(255, 255, 255, 0.24)',
-                        margin: 10,
-                    },
+                    right: 15,
+                    left: 40,
                 },
                 yAxis: [
                     {
-                        name: _this.$t('Panels.ToolsPanel.TemperaturesInChart'),
-                        type: 'value',
-                        min: 0,
-                        max: 300,
-                        minInterval: 10,
-                        maxInterval: 100,
-                        nameLocation: 'end',
-                        nameGap: 5,
-                        nameTextStyle: {
-                            color: 'rgba(255, 255, 255, 0.24)',
-                            align: 'left',
-                        },
-                        splitLine: {
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.12)',
-                            },
-                        },
+                        maxInterval: 50,
                         axisLabel: {
-                            color: 'rgba(255, 255, 255, 0.24)',
-                            formatter: '{value}',
-                            rotate: 90,
-                            //showMaxLabel: false,
-                            showMinLabel: true,
-                            margin: 5,
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.12)',
-                            },
+                            showMinLabel: false,
+                            showMaxLabel: true,
+                            rotate: 0
                         }
-                    }, {
-                        name: 'PWM [%]',
-                        min: 0,
-                        max: 100,
-                        minInterval: 100,
-                        type: 'value',
-                        nameLocation: 'end',
-                        nameGap: 5,
-                        nameTextStyle: {
-                            color: 'rgba(255, 255, 255, 0.24)',
-                            align: 'right',
-                        },
-                        splitLine: {
-                            show: false,
-                        },
+                    },
+                    {
+                        maxInterval: 25,
                         axisLabel: {
-                            color: 'rgba(255, 255, 255, 0.24)',
-                            formatter: '{value}',
-                            showMinLabel: true,
-                            rotate: 90,
-                            margin: 5,
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: 'rgba(255, 255, 255, 0.12)',
-                            },
+                            showMinLabel: false,
+                            rotate: 0
                         }
                     },
                 ],
-                series: [],
-            },
-        }
-    },
-    computed: {
-        ...mapState({
-            intervalChartUpdate: state => state.gui.tempchart.intervalChartUpdate,
-            boolTempchart: state => state.gui.dashboard.boolTempchart,
-        }),
-        maxHistory: {
-            get() {
-                return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') || 1200
             }
+        }],
+        dataset: {
+            source: []
         },
-        series: {
-            get () {
-                return this.$store.state.printer.tempHistory.series
-            }
-        },
-        datasets: {
-            get () {
-                return this.$store.state.printer.tempHistory.datasets
-            }
-        },
-        autoscale: {
-            get() {
-                return this.$store.state.gui.tempchart.autoscale
-            }
-        },
-        maxTemp: {
-            get() {
-                return this.$store.getters["printer/getMaxTemp"]
-            }
-        },
-        currentMaxTemp: {
-            get() {
-                return this.$store.getters["printer/tempHistory/getCurrentMaxTemp"]
-            }
-        },
-        boolDisplayPwmAxis: {
-            get() {
-                return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
-            }
-        }
-    },
-    methods: {
-        createChart() {
-            if (document.getElementById("tempchart") && this.chart === null) {
-                this.chart = echarts.init(document.getElementById("tempchart"), null, {renderer: 'canvas'})
-                this.chart.setOption(this.chartOptions)
-                this.timerChart = setInterval(this.updateChart, this.intervalChartUpdate)
-            } else setTimeout(() => {
-                this.createChart()
-            }, 1000)
-        },
-        updateChart() {
-            if (
-                this.chart &&
-                this.boolTempchart &&
-                this.isVisible
-            ) {
-                this.chart.setOption({
-                    series: this.series,
-                    grid: {
-                        left: 25,
-                        right: this.boolDisplayPwmAxis ? 25 : 15,
-                    },
-                    xAxis: {
-                        min: new Date() - this.maxHistory * 1000,
-                        max: new Date(),
-                    },
-                    yAxis: [{
-                        axisLabel: {
-                            rotate: 90,
-                            showMinLabel: true,
-                            margin: 5,
-                        },
-                        max: this.autoscale ? this.currentMaxTemp : this.maxTemp,
-                    }, {
-                        show: this.boolDisplayPwmAxis,
-                        axisLabel: {
-                            showMinLabel: true,
-                            rotate: 90,
-                            margin: 5,
-                        }
-                    }],
-                    media: [{
-                        query: {
-                            minWidth: 500,
-                        },
-                        option: {
-                            grid: {
-                                right: this.boolDisplayPwmAxis ? 40 : 15,
-                                left: 40,
-                            },
-                            yAxis: [
-                                {
-                                    maxInterval: 50,
-                                    axisLabel: {
-                                        showMinLabel: false,
-                                        showMaxLabel: true,
-                                        rotate: 0
-                                    }
-                                },
-                                {
-                                    maxInterval: 25,
-                                    axisLabel: {
-                                        showMinLabel: false,
-                                        rotate: 0
-                                    }
-                                },
-                            ],
-                        }
-                    }],
-                })
-            }
-        },
-        visibilityChanged (isVisible) {
-            this.isVisible = isVisible
-            if(isVisible && this.chart !== null) this.chart.resize()
+        series: []
+    }
 
-            if (!isVisible && this.timerChart !== null) {
-                clearTimeout(this.timerChart)
-                this.timerChart = null
-            } else if(isVisible && this.chart !== null && this.timerChart === null) {
-                this.timerChart = setInterval(this.updateChart, this.intervalChartUpdate)
-            }
-        },
-        resize() {
-            this.chart?.resize();
-        }
-    },
-    created() {
-        window.addEventListener('resize', this.resize)
-    },
-    mounted: function() {
-        this.createChart()
-    },
+    get chart (): ECharts | null {
+        const tempchart = this.$refs.tempchart
+        return tempchart?.inst ?? null
+    }
+
+    get maxHistory() {
+        return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') ?? 1200
+    }
+
+    get series() {
+        return this.$store.state.printer.tempHistory.series ?? {}
+    }
+
+    get source() {
+        return this.$store.state.printer.tempHistory.source ?? []
+    }
+
+    get autoscale() {
+        return this.$store.state.gui.tempchart.autoscale ?? true
+    }
+
+    get maxTemp() {
+        return this.$store.getters["printer/getMaxTemp"] ?? 300
+    }
+
+    get boolDisplayPwmAxis() {
+        return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
+    }
+
+    get selectedLegends() {
+        return this.$store.getters["printer/tempHistory/getSelectedLegends"]
+    }
+
+    mounted() {
+        this.initChart()
+    }
+
     beforeDestroy() {
-        window.removeEventListener('resize', this.resize);
+        if (this.chart?.isDisposed() !== true) this.chart?.dispose()
+    }
+
+    initChart() {
+        this.chartOptions.series = this.series
+        this.chartOptions.legend.selected = this.selectedLegends
+        this.updateChartPwmAxis()
+    }
+
+    updateChart() {
+        if (this.chart && this.isVisible) {
+            //const t0 = performance.now()
+
+            this.chart?.setOption({
+                dataset: {
+                    source: this.source
+                },
+            })
+
+            //const t1 = performance.now()
+            //window.console.debug(t1-t0)
+        }
+    }
+
+    updateChartPwmAxis() {
+        if (this.boolDisplayPwmAxis) {
+            this.chartOptions.yAxis[1].show = true
+            this.chartOptions.grid.right = 25
+            this.chartOptions.media[0].option.grid.right = 35
+        } else {
+            this.chartOptions.yAxis[1].show = false
+            this.chartOptions.grid.right = 15
+            this.chartOptions.media[0].option.grid.right = 15
+        }
+    }
+
+    visibilityChanged (isVisible: boolean) {
+        this.isVisible = isVisible
+
+        if (isVisible) {
+            this.initChart()
+        }
+    }
+
+    tooltipFormater(datasets: any) {
+        let output = ""
+
+        const mainDatasets = datasets.filter((dataset: any) => !dataset.seriesName.includes('-') && dataset.seriesName !== 'date')
+        if (datasets.length) {
+            let outputTime = datasets[0]['axisValueLabel']
+            outputTime = outputTime.substr(outputTime.indexOf(" "))
+
+            output +=
+                "<div class=\"row\">" +
+                "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
+                "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
+                "<span class='font-weight-bold'>"+outputTime+"</span>" +
+                "</div>" +
+                "</div>"
+        }
+
+        mainDatasets.forEach((dataset: any) => {
+            output += "<div class=\"row\">"
+
+            output += "<div class=\"col-auto py-0\">"
+            output += dataset.marker
+            output += "<span class='ml-2'>"+convertName(dataset.seriesName)+":</span>"
+            output += "</div>"
+
+            output += "<div class=\"col text-right py-0 font-weight-bold\">"
+
+            if (dataset.seriesName in dataset.value) output += dataset.value[dataset.seriesName].toFixed(1)
+            if (dataset.seriesName+"-target" in dataset.value) output += " / "+dataset.value[dataset.seriesName+"-target"].toFixed(1)
+            output += "°C"
+
+            if (dataset.seriesName+"-power" in dataset.value) output += " [ "+(dataset.value[dataset.seriesName+"-power"]*100).toFixed(0)+"% ]"
+            if (dataset.seriesName+"-speed" in dataset.value) output += " [ "+(dataset.value[dataset.seriesName+"-speed"]*100).toFixed(0)+"% ]"
+
+            output += "</div>"
+            output += "</div>"
+        })
+
+        return output
+    }
+
+    @Watch('series', { deep: true })
+    seriesChanged(newVal: PrinterTempHistoryStateSerie[]) {
+        if (this.chart && this.chart?.isDisposed() !== true) {
+            this.chart.setOption({
+                series: newVal
+            })
+        }
+    }
+
+    @Watch('source')
+    sourceChanged() {
+        if (this.chart?.isDisposed() !== true) {
+            this.updateChart()
+        }
+    }
+
+    @Watch('selectedLegends')
+    selectedLegendsChanged(newVal: any, oldVal:any) {
+        if (this.chart?.isDisposed() !== true) {
+            Object.keys(newVal).forEach((key) => {
+                if (newVal[key] !== oldVal[key]) {
+                    const actionType = newVal[key] ? 'legendSelect' : 'legendUnSelect'
+                    this.chart?.dispatchAction({ type: actionType, name: key })
+                }
+            })
+        }
+    }
+
+    @Watch('boolDisplayPwmAxis')
+    boolDisplayPwmAxisChanged() {
+        this.updateChartPwmAxis()
     }
 }
 </script>

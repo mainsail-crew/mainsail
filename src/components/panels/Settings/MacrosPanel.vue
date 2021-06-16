@@ -25,7 +25,7 @@
 
 <script>
     import { mapState, mapGetters } from 'vuex';
-    import SettingsMacroSwitch from "../../../inputs/SettingsMacroSwitch";
+    import SettingsMacroSwitch from "../../inputs/SettingsMacroSwitch";
 
     export default {
         components: {

@@ -16,8 +16,10 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.12.1",
-    "echarts": "^5.1.1",
+    "echarts": "^5.1.2",
+    "echarts-for-vue": "^1.4.1",
     "echarts-gl": "^2.0.4",
+    "joi": "^17.4.0",
     "monaco-editor": "^0.24.0",
     "monaco-editor-textmate": "^2.2.2",
     "monaco-textmate": "^3.0.1",
@@ -26,7 +28,9 @@
     "onigasm": "^2.2.5",
     "plotly.js": "^1.58.4",
     "semver": "^7.3.5",
+    "serialize-javascript": "^1.9.1",
     "vue": "^2.6.12",
+    "vue-class-component": "^7.2.6",
     "vue-context": "^6.0.0",
     "vue-github-api": "^0.1.7",
     "vue-headful": "^2.1.0",
@@ -34,6 +38,7 @@
     "vue-load-image": "^0.1.12",
     "vue-observe-visibility": "^1.0.0",
     "vue-plotly": "^1.1.0",
+    "vue-property-decorator": "^9.1.2",
     "vue-resource": "^1.5.2",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.1",
@@ -42,14 +47,20 @@
   },
   "devDependencies": {
     "@mdi/font": "^5.9.55",
+    "@types/semver": "^7.3.6",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-pwa": "^4.5.13",
+    "@vue/cli-plugin-typescript": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
+    "@vue/composition-api": "*",
+    "@vue/eslint-config-typescript": "^7.0.0",
     "babel-eslint": "^10.1.0",
     "css-loader": "^5.2.4",
-    "eslint": "^7.26.0",
-    "eslint-plugin-vue": "^7.9.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
     "generate-file-webpack-plugin": "^1.0.1",
     "is-svg": "^4.3.1",
     "monaco-editor-webpack-plugin": "^3.1.0",
@@ -59,8 +70,10 @@
     "sass-loader": "^10.2.0",
     "style-loader": "^2.0.0",
     "sw-precache-webpack-plugin": "^1.0.0",
+    "typescript": "^4.3.2",
     "vue-cli-plugin-route": "0.0.7",
     "vue-cli-plugin-vuetify": "^2.4.0",
+    "vue-debounce-decorator": "^1.0.1",
     "vue-i18n-extract": "^1.2.3",
     "vue-loader": "^16.2.0",
     "vue-router": "^3.5.1",
@@ -74,11 +87,12 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "eslint:recommended",
+      "@vue/typescript/recommended"
     ],
     "rules": {},
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@typescript-eslint/parser"
     }
   },
   "postcss": {

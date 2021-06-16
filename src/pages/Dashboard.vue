@@ -1,33 +1,63 @@
 <template>
     <v-row>
         <v-col class="col-sm-12 col-md-5">
-            <min-settings-panel v-if="klippy_state === 'ready' && existsPrinterConfig"></min-settings-panel>
-            <moonraker-failed-components-panel v-if="moonrakerFailedComponents.length"></moonraker-failed-components-panel>
-            <moonraker-warnings-panel v-if="moonrakerWarnings.length"></moonraker-warnings-panel>
-            <klippy-state-panel v-if="socket_connected && klippy_state !== 'ready'"></klippy-state-panel>
-            <status-panel v-if="klippy_state === 'ready'"></status-panel>
-            <webcam-panel class="mt-6" v-if="showDashboardWebcam"></webcam-panel>
-            <z-offset-panel class="mt-6" v-if="klippy_state === 'ready'"></z-offset-panel>
-            <control-panel class="mt-6" v-if="klippy_state === 'ready'"></control-panel>
-            <miscellaneous-panel v-if="klippy_state === 'ready'"></miscellaneous-panel>
+            <min-settings-panel></min-settings-panel>
+            <moonraker-state-panel></moonraker-state-panel>
+            <klippy-state-panel></klippy-state-panel>
+            <status-panel></status-panel>
+            <webcam-panel v-if="showDashboardWebcam"></webcam-panel>
+            <z-offset-panel></z-offset-panel>
+            <control-panel></control-panel>
+            <miscellaneous-panel></miscellaneous-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7">
-            <tools-panel v-if="displayToolsPanel"></tools-panel>
-            <miniconsole-panel :class="displayToolsPanel ? 'mt-6' : ''" v-if="showDashboardConsole"></miniconsole-panel>
+            <tools-panel></tools-panel>
+            <miniconsole-panel></miniconsole-panel>
         </v-col>
     </v-row>
 </template>
 
-<script>
-    import { mapState } from 'vuex'
-    import ZOffsetPanel from "../components/panels/ZOffsetPanel";
+<script lang="ts">
+
+import Component from "vue-class-component";
+import {Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import MinSettingsPanel from "@/components/panels/MinSettingsPanel.vue";
+import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
+import MoonrakerStatePanel from "@/components/panels/MoonrakerStatePanel.vue";
+import StatusPanel from "@/components/panels/StatusPanel.vue";
+import ToolsPanel from "@/components/panels/ToolsPanel.vue";
+import WebcamPanel from "@/components/panels/WebcamPanel.vue";
+import ZOffsetPanel from "@/components/panels/ZOffsetPanel.vue";
+import ControlPanel from "@/components/panels/ControlPanel.vue";
+import MiscellaneousPanel from "@/components/panels/MiscellaneousPanel.vue";
+import MiniconsolePanel from "@/components/panels/MiniconsolePanel.vue";
+
+@Component({
+    components: {
+        MiniconsolePanel,
+        MiscellaneousPanel,
+        ControlPanel,
+        ZOffsetPanel,
+        WebcamPanel,
+        ToolsPanel,
+        StatusPanel,
+        MoonrakerStatePanel,
+        KlippyStatePanel,
+        MinSettingsPanel
+    }
+})
+export default class PageDashboard extends Mixins(BaseMixin) {
+
+    get showDashboardWebcam() {
+        return this.$store.state.gui.dashboard.boolWebcam
+    }
+
+}
+
+/*
 
     export default {
-        name: "dashboard",
-        components: { ZOffsetPanel },
-        data: () => ({
-
-        }),
         computed: {
             ...mapState({
                 socket_connected: state => state.socket.isConnected,
@@ -40,11 +70,6 @@
                 showDashboardConsole: state => state.gui.dashboard.boolConsole,
                 config: state => state.printer.configfile.config,
             }),
-            existsPrinterConfig: {
-                get() {
-                    return this.$store.getters["printer/existPrinterConfig"]
-                }
-            },
             displayToolsPanel: {
                 get() {
                     return (
@@ -57,5 +82,5 @@
                 }
             }
         },
-    }
+    }*/
 </script>
