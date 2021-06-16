@@ -48,83 +48,53 @@
     </v-data-table>
 </template>
 
-<script>
+<script lang="ts">
 import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+import Component from "vue-class-component";
+import Vue from "vue";
+import {Prop} from "vue-property-decorator";
 
-export default {
-    name: "ConsoleTable",
-    props: {
-        headers: {
-            type: Array,
-            required: true
-        },
-        sortBy: {
-            type: String,
-            required: true
-        },
-        events: {
-            type: Array,
-            required: true
-        },
-        customSort: {
-            type: Function,
-            default() {
-                return () => {}
-            }
-        },
-        formatTimeMobile: {
-            type: Function,
-            default() {
-                return ''
-            }
-        },
-        options: {
-            type: Object,
-            default() {
-                return ({});
-            }
-        },
-        isMini: {
-            type: Boolean,
-            default: false
-        },
-        helplist: {
-            type: Array,
-            default() {
-                return [];
-            }
+@Component
+export default class ConsoleTable extends Vue {
+    @Prop() readonly headers: any[];
+    @Prop() readonly sortBy: string;
+    @Prop() readonly events: any[];
+    @Prop() readonly customSort: () => any;
+    @Prop() readonly formatTimeMobile: (d: Date) => any;
+    @Prop() readonly options: Record<string, unknown>;
+    @Prop() readonly isMini: boolean;
+    @Prop() readonly helplist: any[];
+
+    colorConsoleMessage = colorConsoleMessage
+    formatConsoleMessage = formatConsoleMessage
+
+    log(any: any): any {
+        console.log(any);
+        return any;
+    }
+
+    isCommand(message: string): Record<string, unknown> {
+        if (!this.helplist) {
+            return null;
         }
-    },
-    methods: {
-        log(any) {
-            console.log(any);
-            return any;
-        },
-        colorConsoleMessage: colorConsoleMessage,
-        formatConsoleMessage: formatConsoleMessage,
-        isCommand(message) {
-            if (!this.helplist) {
-                return null;
-            }
 
-            const ret = {
-                command: null,
-                original: message
-            };
-            const msg = message.replace(/<.*?>/g, '');
-            if (/^[mg][0-9]+.*$/gi.test(msg) || msg.toLowerCase().startsWith('help')) {
-                ret.command = {
-                    command: msg.split(' ')[0],
-                    commandLow: msg.split(' ')[0].toLowerCase()
-                }
-            } else if ([':', ' '].some(c => msg.includes(c))) {
-                ret.command = this.helplist.find(c => c.commandLow === msg.split(/[:\s]/)[0].trim().toLowerCase());
-            } else {
-                ret.command = this.helplist.find(c => c.commandLow === msg.trim().toLowerCase());
+        const ret = {
+            command: null,
+            original: message
+        };
+        const msg = message.replace(/<.*?>/g, '');
+        if (/^[mg][0-9]+.*$/gi.test(msg) || msg.toLowerCase().startsWith('help')) {
+            ret.command = {
+                command: msg.split(' ')[0],
+                commandLow: msg.split(' ')[0].toLowerCase()
             }
-
-            return ret;
+        } else if ([':', ' '].some(c => msg.includes(c))) {
+            ret.command = this.helplist.find(c => c.commandLow === msg.split(/[:\s]/)[0].trim().toLowerCase());
+        } else {
+            ret.command = this.helplist.find(c => c.commandLow === msg.trim().toLowerCase());
         }
+
+        return ret;
     }
 }
 </script>
