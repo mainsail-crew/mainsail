@@ -4,7 +4,7 @@ RUN groupadd --force -g 1000 node && \
     useradd -ms /bin/bash --no-user-group -g 1000 -u 1000 node
 
 RUN apt-get update && \
-    apt-get install -y sudo wget cmake swig git virtualenv python-dev libffi-dev \
+    apt-get install -y --no-install-recommends sudo wget cmake swig git virtualenv python-dev libffi-dev \
         build-essential libncurses-dev libusb-dev avrdude gcc-avr binutils-avr \
         avr-libc dfu-util libnewlib-arm-none-eabi gcc-arm-none-eabi \
         binutils-arm-none-eabi libusb-1.0 && \
