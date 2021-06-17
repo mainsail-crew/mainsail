@@ -44,7 +44,7 @@ export const mutations: MutationTree<PrinterState> = {
 	},
 
 	clearCurrentFile(state) {
-		Object.assign(state.current_file, {})
+		Vue.set(state, 'current_file', {})
 	},
 
 	setEndstopStatus(state, payload) {

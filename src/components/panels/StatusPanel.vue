@@ -21,7 +21,7 @@
                         :rotate="-90"
                         :size="30"
                         :width="5"
-                        :value="Math.round(printPercent * 100)"
+                        :value="printPercent"
                         v-if="['paused', 'printing'].includes(printer_state)"
                         color="primary"
                         class="mr-1"

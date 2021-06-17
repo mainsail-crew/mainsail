@@ -14,9 +14,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
 	getPrintPercent: state => {
 		if (
-			'filename' in state.current_file &&
-			'gcode_start_byte' in state.current_file &&
-			'gcode_end_byte' in state.current_file &&
+			state.current_file?.filename &&
+			state.current_file?.gcode_start_byte &&
+			state.current_file?.gcode_end_byte &&
 			state.current_file.filename === state.print_stats.filename
 		) {
 			if (state.virtual_sdcard.file_position <= state.current_file.gcode_start_byte) return 0
