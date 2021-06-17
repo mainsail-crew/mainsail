@@ -16,9 +16,6 @@ export const mutations: MutationTree<PrinterState> = {
 		for (const [key, value] of Object.entries(defaultState)) {
 			Vue.set(state, key, value)
 		}
-
-		if (state.server.components.includes("update_manager"))
-			Vue.$socket.emit('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
 	},
 
 	setData(state, payload) {

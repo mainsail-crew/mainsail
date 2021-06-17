@@ -137,7 +137,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     showInNavi(route: AppRoute): boolean {
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
 
-        if (route.component?.name === 'webcam') return this.boolNaviWebcam
+        if (route.title === 'Webcam') return this.boolNaviWebcam
 
         if (route.moonrakerComponent) return this.moonrakerComponents.includes(route.moonrakerComponent)
         if (route.registeredDirectory) return this.registeredDirectories.includes(route.registeredDirectory)

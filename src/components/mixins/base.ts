@@ -16,6 +16,10 @@ export default class BaseMixin extends Vue {
         return this.$store.state.server.klippy_state ?? ""
     }
 
+    get klipperReadyForGui(): boolean {
+        return (this.klippyIsConnected && this.klipperState === 'ready')
+    }
+
     get loadings(): string[] {
         return this.$store.state.gui.loadings ?? []
     }

@@ -14,6 +14,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
 		window.console.debug("init printer")
 
 		Vue.$socket.emit('printer.info', {}, 'printer/getInfo')
+		Vue.$socket.emit('printer.objects.list', {}, 'printer/initSubscripts')
+		Vue.$socket.emit('printer.gcode.help', {}, 'printer/initHelpList')
 	},
 
 	getInfo({ commit }, payload) {
@@ -27,15 +29,6 @@ export const actions: ActionTree<PrinterState, RootState> = {
 			software_version: payload.software_version,
 			cpu_info: payload.cpu_info,
 		})
-
-		Vue.$socket.emit('printer.objects.list', {}, 'printer/initSubscripts')
-		Vue.$socket.emit('printer.gcode.help', {}, 'printer/initHelpList')
-	},
-
-	getStateMessage({ commit }, payload) {
-		commit('server/setData', {
-			klippy_message: payload.state_message,
-		}, { root: true })
 	},
 
 	initSubscripts(_, payload) {

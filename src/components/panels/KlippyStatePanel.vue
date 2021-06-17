@@ -1,12 +1,12 @@
 <template>
-    <v-card v-if="klippy_state !== 'ready'" class="mb-6">
+    <v-card v-if="klipperState !== 'ready'" class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klippy_state }}</span>
+                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klipperState }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <template v-if="klippyIsConnected">
-            <v-card-text class="pt-3 pb-1">
+            <v-card-text class="py-1">
                 <pre style="white-space: pre-wrap;">{{ klippy_message }}</pre>
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import Component from "vue-class-component";
-import {Mixins} from "vue-property-decorator";
+import {Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "../mixins/base";
 import ConnectionStatus from "../ui/ConnectionStatus.vue";
 
@@ -36,9 +36,8 @@ import ConnectionStatus from "../ui/ConnectionStatus.vue";
     components: {ConnectionStatus}
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
-    get klippy_state() {
-        return this.$store.state.server.klippy_state ?? ""
-    }
+    private timer: number | null = null
+
 
     get klippy_message() {
         return this.$store.state.server.klippy_message ?? ""
@@ -52,6 +51,24 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     firmwareRestart() {
         this.$store.commit('socket/addLoading', { name: 'firmwareRestart' });
         this.$socket.emit('printer.firmware_restart', { }, 'socket/removeLoading', { name: 'firmwareRestart' });
+    }
+
+    requestKlippyState() {
+        this.$socket.emit('printer.info', {}, 'printer/getInfo')
+    }
+
+    @Watch('klipperState')
+    klipperStateChanged(newVal: string) {
+        if (newVal === "ready") {
+            if (this.timer) {
+                clearInterval(this.timer)
+                this.timer = null
+            }
+        } else if (this.timer === null) {
+            this.timer = setInterval(() => {
+                this.requestKlippyState()
+            }, 2000)
+        }
     }
 }
 </script>

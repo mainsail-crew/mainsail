@@ -22,7 +22,7 @@
 
 <template>
     <div>
-        <v-card class="mb-6" v-if="['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
+        <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Controls') }}</span>
@@ -264,7 +264,7 @@
                 </template>
             </v-container>
         </v-card>
-        <v-card class="mb-6" v-if="macros.length > 0">
+        <v-card class="mb-6" v-if="klipperReadyForGui && macros.length > 0">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Panels.ControlPanel.Macros') }}</span>
