@@ -1,4 +1,4 @@
-FROM node:buster AS base
+FROM node:buster-slim AS base
 
 EXPOSE 8080
 
