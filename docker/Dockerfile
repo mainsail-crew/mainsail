@@ -2,11 +2,11 @@ FROM node:buster AS base
 
 EXPOSE 8080
 
-RUN apt-get update
-RUN apt-get install -y zip
+RUN apt-get update && \
+    apt-get install -y zip && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY start-npm /usr/local/bin/start-npm
-RUN chmod +x /usr/local/bin/start-npm
 
 USER node
 
