@@ -29,11 +29,11 @@ USER node
 WORKDIR /home/node
 RUN git clone https://github.com/KevinOConnor/klipper
 WORKDIR /home/node/klipper
-COPY api/simulavr.config /home/node/klipper/.config
+COPY simulavr.config /home/node/klipper/.config
 RUN make
 RUN cp /home/node/klipper/out/klipper.elf /home/node/klipper/simulavr.elf
 RUN rm /home/node/klipper/.config
-COPY api/linux.config /home/node/klipper/.config
+COPY linux.config /home/node/klipper/.config
 RUN make clean
 RUN make
 RUN chmod +x /home/node/klipper/scripts/install-debian.sh
@@ -58,7 +58,7 @@ RUN make build
 
 USER root
 
-COPY api/run-api /usr/local/bin/run-api
+COPY run-api /usr/local/bin/run-api
 RUN chmod +x /usr/local/bin/run-api
 
 USER node
