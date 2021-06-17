@@ -59,7 +59,6 @@ RUN make build
 USER root
 
 COPY run-api /usr/local/bin/run-api
-RUN chmod +x /usr/local/bin/run-api
 
 USER node
 
