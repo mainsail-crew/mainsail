@@ -70,44 +70,7 @@ export const actions: ActionTree<SocketState, RootState> = {
 				break
 
 			case 'notify_filelist_changed':
-				switch(payload.params[0].action) {
-					case 'create_file':
-						commit('files/setCreateFile', payload.params[0], { root: true })
-						break
-
-					case 'move_file':
-						commit('files/setMoveFile', payload.params[0], { root: true })
-						break
-
-					case 'delete_file':
-						commit('files/setDeleteFile', payload.params[0], { root: true })
-						break
-
-					case 'modify_file':
-						commit('files/setModifyFile', payload.params[0], { root: true })
-						break
-
-					case 'create_dir':
-						commit('files/setCreateDir', payload.params[0], { root: true })
-						break
-
-					case 'move_dir':
-						commit('files/setMoveDir', payload.params[0], { root: true })
-						break
-
-					case 'delete_dir':
-						commit('files/setDeleteDir', payload.params[0], { root: true })
-						break
-
-					case 'root_update':
-						dispatch('server/addRootDirectory', payload.params[0], { root: true })
-						commit('files/setRootUpdate', payload.params[0], { root: true })
-						break
-
-					default:
-						window.console.error("Unknown filelist_changed action: "+payload.params[0].action)
-						break
-				}
+				dispatch('files/filelist_changed', payload.params[0], { root: true })
 				break;
 
 			case 'notify_metadata_update':

@@ -2,9 +2,9 @@ import { ServerStateEvent } from "@/store/server/types"
 import {FileStateFile} from "@/store/files/types";
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
-    if (folder !== undefined && dirArray.length) {
+    if (folder !== undefined && folder !== null && dirArray.length) {
 
-        const parent = folder.find((element: FileStateFile) => (element.isDirectory && element.filename === dirArray[0]));
+        const parent = folder?.find((element: FileStateFile) => (element.isDirectory && element.filename === dirArray[0]));
         if (parent) {
             dirArray.shift();
 

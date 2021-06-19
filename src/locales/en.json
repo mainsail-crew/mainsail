@@ -115,7 +115,11 @@
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer",
-        "Downloading": "Downloading"
+        "Downloading": "Downloading",
+		"SuccessfullyRenamed": "Successfully renamed {filename}.",
+		"SuccessfullyMoved": "Successfully moved {filename}.",
+		"SuccessfullyCreated": "Successfully created {filename}.",
+		"SuccessfullyDeleted": "Successfully deleted {filename}."
 	},
 	"Console": {
 		"send": "send",

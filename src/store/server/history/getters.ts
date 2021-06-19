@@ -156,23 +156,11 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 		return output
 	},
 
-	getPrintStatus: (state) => (file: any) => {
+	getPrintStatus: (state) => (jobId: string) => {
 		if (state.jobs.length) {
-			const jobs = state.jobs.filter(job =>
-				job.filename === file.filename &&
-				'modified' in job.metadata &&
-				(job.metadata.modified * 1000).toFixed() === file.modified
-			)
+			const job = state.jobs.find(job => job.job_id === jobId)
 
-			if (jobs.length > 1) {
-				jobs.sort((a,b) => {
-					return b.start_time - a.start_time
-				})
-
-				return jobs[0].status
-			} else if (jobs.length === 1) {
-				return jobs[0].status
-			}
+			return job?.status ?? ""
 		}
 
 		return ""

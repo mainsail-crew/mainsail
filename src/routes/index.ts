@@ -26,7 +26,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: false,
     },*/
-    /*{
+    {
         title: "Webcam",
         path: '/cam',
         icon: 'webcam',
@@ -34,7 +34,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
 		showInNavi: true,
     },
-    {
+    /*{
         title: "Console",
         path: '/console',
         icon: 'console-line',
@@ -51,7 +51,7 @@ const routes: AppRoute[] = [
 		showInNavi: true,
 		klipperComponent: 'bed_mesh',
     },*/
-    /*{
+    {
         title: "G-Code Files",
         path: '/files',
         icon: 'file-document-multiple-outline',
@@ -59,7 +59,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
 		showInNavi: true,
 		registeredDirectory: 'gcodes',
-    },*/
+    },
     /*{
         title: "History",
         path: '/history',

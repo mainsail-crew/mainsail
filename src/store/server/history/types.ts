@@ -18,7 +18,7 @@ export interface ServerHistoryStateJob {
     filename:string
     metadata: any
     print_duration: number
-    status:string
+    status: string
     start_time: number
     total_duration: number
 }
