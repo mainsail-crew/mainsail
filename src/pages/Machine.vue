@@ -9,11 +9,11 @@
                 <limits-panel></limits-panel>
                 <update-panel></update-panel>
                 <v-row class="mt-6">
-                    <v-col class="col-md-6" v-if="klippy_state === 'ready'">
-<!--                        <settings-endstop-panel></settings-endstop-panel>-->
+                    <v-col class="col-md-6" v-if="klipperState === 'ready'">
+                        <endstop-panel></endstop-panel>
                     </v-col>
-                    <v-col :class="(klippy_state !== 'ready' ? 'col-md-12' : 'col-md-6')">
-<!--                        <settings-logfiles-panel></settings-logfiles-panel>-->
+                    <v-col :class="(klipperState !== 'ready' ? 'col-md-12' : 'col-md-6')">
+                        <logfiles-panel></logfiles-panel>
                     </v-col>
                 </v-row>
             </v-col>
@@ -25,41 +25,14 @@
 import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
-import LimitsPanel from "@/components/panels/Maschine/LimitsPanel.vue";
-import UpdatePanel from "@/components/panels/Maschine/UpdatePanel.vue";
+import LimitsPanel from "@/components/panels/Machine/LimitsPanel.vue";
+import UpdatePanel from "@/components/panels/Machine/UpdatePanel.vue";
+import LogfilesPanel from "@/components/panels/Machine/LogfilesPanel.vue";
+import EndstopPanel from "@/components/panels/Machine/EndstopPanel.vue";
 @Component({
-    components: {UpdatePanel, LimitsPanel, KlippyStatePanel}
+    components: {EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
 })
 export default class PageMachine extends Mixins(BaseMixin) {
 
 }
-
-/*    import {mapState} from "vuex";
-
-    export default {
-        name: "settingsMachine",
-        data: () => ({
-
-        }),
-        computed: {
-            ...mapState({
-                klippy_state: state => state.server.klippy_state,
-            }),
-            updateManager:{
-                get() {
-                    //reverse compatibility
-                    if ('plugins' in this.$store.state.server)
-                        return this.$store.state.server.plugins.includes('update_manager')
-
-                    return this.$store.state.server.components.includes('update_manager')
-                }
-            }
-        },
-        created() {
-
-        },
-        watch: {
-
-        }
-    }*/
 </script>

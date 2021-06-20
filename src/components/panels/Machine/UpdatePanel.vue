@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div>
+    <div v-if="enableUpdateManager">
         <v-card>
             <v-toolbar flat dense >
                 <v-toolbar-title>
@@ -162,6 +162,10 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         commits: [],
     }
 
+    get enableUpdateManager() {
+        return this.$store.state.server.components.includes('update_manager')
+    }
+
     get version_info() {
         return this.$store.state.server.updateManager.version_info
     }
@@ -171,7 +175,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     btnSync() {
-        this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' });
+        window.console.log("send sync update")
+        this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' })
         this.$socket.emit('machine.update.status', { refresh: true }, 'server/updateManager/getStatus')
     }
 
@@ -322,7 +327,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     getRecoveryOptions(object: any) {
         if ('is_valid' in object && !object.is_valid) return true
-        if ('is_dirty' in object && object.is_dirty) return true
+        else if ('is_dirty' in object && object.is_dirty) return true
 
         return false
     }

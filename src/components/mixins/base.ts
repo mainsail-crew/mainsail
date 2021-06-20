@@ -21,7 +21,7 @@ export default class BaseMixin extends Vue {
     }
 
     get loadings(): string[] {
-        return this.$store.state.gui.loadings ?? []
+        return this.$store.state.socket.loadings ?? []
     }
 
     get printer_state(): string {
