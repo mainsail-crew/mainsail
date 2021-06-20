@@ -60,7 +60,7 @@ const routes: AppRoute[] = [
 		showInNavi: true,
 		registeredDirectory: 'gcodes',
     },
-    /*{
+    {
         title: "History",
         path: '/history',
         icon: 'history',
@@ -69,7 +69,7 @@ const routes: AppRoute[] = [
 		showInNavi: true,
 		moonrakerComponent: 'history'
     },
-    {
+    /*{
         title: "Settings",
         path: '/settings',
         redirect: '/settings/machine',

@@ -19,7 +19,6 @@ import {PrinterTempHistoryStateSerie} from "@/store/printer/tempHistory/types";
 import { createComponent } from 'echarts-for-vue';
 import * as echarts from 'echarts';
 import {ECharts} from "echarts/core";
-import { EChartsOption } from "echarts";
 
 @Component({
     components: {
