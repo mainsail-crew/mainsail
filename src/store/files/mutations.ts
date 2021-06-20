@@ -36,9 +36,9 @@ export const mutations: MutationTree<FileState> = {
 		filename = dirArray[dirArray.length-1]
 		const path = findDirectory(state.filetree, dirArray)
 
-		const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
+		const fileIndex = path?.findIndex((element: any) => element.filename === filename)
 		if (path && fileIndex && fileIndex !== -1) {
-			const currentFile = path[fileIndex]
+			const currentFile = path[fileIndex] as any
 			allowedMetadata.forEach((key: string) => {
 				if (key in payload) currentFile[key] = payload[key]
 			})

@@ -27,7 +27,7 @@ import BaseMixin from "../../mixins/base";
 
 @Component
 export default class LogfilesPanel extends Mixins(BaseMixin) {
-    downloadLog(event) {
+    downloadLog(event: any) {
         event.preventDefault()
         let href = ""
         if ('href' in event.target.attributes) href = event.target.attributes.href.value;

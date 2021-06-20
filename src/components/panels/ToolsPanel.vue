@@ -100,7 +100,7 @@
                             </v-tooltip>
                         </v-col>
                         <v-col class="py-2 text-center">
-                            <span class="d-block">{{ heater.temperature }}°C</span>
+                            <span class="d-block">{{ heater.temperature.toFixed(1) }}°C</span>
                             <div v-for="(values, key) of heater.additionSensors" v-bind:key="key">
                                 <span v-if="values.bool" class="d-block"><small>{{ values.value }} {{ values.unit }}</small></span>
                             </div>
@@ -137,7 +137,7 @@
                             </v-tooltip>
                         </v-col>
                         <v-col class="py-2 text-center">
-                            <span class="d-block">{{ fan.temperature }}°C</span>
+                            <span class="d-block">{{ fan.temperature.toFixed(1) }}°C</span>
                             <div v-for="(values, key) of fan.additionSensors" v-bind:key="key">
                                 <span v-if="values.bool" class="d-block"><small>{{ values.value }} {{ values.unit }}</small></span>
                             </div>
@@ -177,7 +177,7 @@
                                       class="d-block px-0"
                                       v-bind="attrs"
                                       v-on="on"
-                                  >{{ sensor.temperature }}°C</span>
+                                  >{{ sensor.temperature.toFixed(1) }}°C</span>
                                 </template>
                                 <span>{{ $t('Panels.ToolsPanel.Max')}}: {{ sensor.measured_max_temp }}°C<br />{{ $t('Panels.ToolsPanel.Min') }}: {{ sensor.measured_min_temp }}°C</span>
                             </v-tooltip>
