@@ -2,11 +2,13 @@
     <v-container fluid py-0 px-0>
         <v-row>
             <v-col class="col-12 col-sm-6">
-                <settings-config-files-panel></settings-config-files-panel>
+<!--                <settings-config-files-panel></settings-config-files-panel>-->
             </v-col>
             <v-col class="col-12 col-sm-6">
-                <settings-limits-panel v-if="klippy_state === 'ready'"></settings-limits-panel>
-                <klippy-state-panel v-if="klippy_state !== 'ready'"></klippy-state-panel>
+                <klippy-state-panel></klippy-state-panel>
+                <limits-panel></limits-panel>
+<!--                <settings-limits-panel v-if="klippy_state === 'ready'"></settings-limits-panel>
+
                 <settings-update-panel v-if="updateManager" class="mt-6"></settings-update-panel>
                 <v-row class="mt-6">
                     <v-col class="col-md-6" v-if="klippy_state === 'ready'">
@@ -16,13 +18,25 @@
                     <v-col :class="(klippy_state !== 'ready' ? 'col-md-12' : 'col-md-6')">
                         <settings-logfiles-panel></settings-logfiles-panel>
                     </v-col>
-                </v-row>
+                </v-row>-->
             </v-col>
         </v-row>
     </v-container>
 </template>
-<script>
-    import {mapState} from "vuex";
+<script lang="ts">
+
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
+import LimitsPanel from "@/components/panels/Maschine/LimitsPanel.vue";
+@Component({
+    components: {LimitsPanel, KlippyStatePanel}
+})
+export default class PageMachine extends Mixins(BaseMixin) {
+
+}
+
+/*    import {mapState} from "vuex";
 
     export default {
         name: "settingsMachine",
@@ -49,5 +63,5 @@
         watch: {
 
         }
-    }
+    }*/
 </script>

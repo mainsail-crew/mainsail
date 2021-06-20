@@ -5,9 +5,7 @@ import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
-import Settings from '../pages/Settings.vue'
-import SettingsInterface from '../pages/settings/interface.vue'
-import SettingsMachine from '../pages/settings/machine.vue'
+import Machine from '../pages/Machine.vue'
 import {Component} from "vue";
 
 const routes: AppRoute[] = [
@@ -68,6 +66,14 @@ const routes: AppRoute[] = [
         alwaysShow: false,
 		showInNavi: true,
 		moonrakerComponent: 'history'
+    },
+    {
+        title: "Machine",
+        path: '/machine',
+        icon: 'wrench',
+        component: Machine,
+        alwaysShow: true,
+		showInNavi: true,
     },
     /*{
         title: "Settings",
