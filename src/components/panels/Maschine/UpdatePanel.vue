@@ -145,229 +145,234 @@
     </div>
 </template>
 
-<script>
-    import { mapState } from 'vuex'
-    import semver from 'semver'
+<script lang="ts">
 
-    export default {
-        components: {
 
-        },
-        data: function() {
-            return {
-                commitsOverlay: {
-                    bool: false,
-                    owner: "",
-                    modul: "",
-                    commits: [],
-                }
-            }
-        },
-        computed: {
-            ...mapState({
-                loadings: state => state.socket.loadings,
-                remoteMode: state => state.socket.remoteMode,
-                printer_state: state => state.printer.print_stats.state,
-                version_info: state => state.server.updateManager.version_info
-            }),
-            updateableSoftwares: {
-                get() {
-                    return this.$store.getters["server/updateManager/getUpdateableSoftwares"]
-                }
-            }
-        },
-        methods: {
-            btnSync() {
-                this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' });
-                this.$socket.sendObj('machine.update.status', { refresh: true }, 'server/updateManager/getStatus')
-            },
-            getBtnColor(object) {
-                if (typeof object === 'object' && object !== false) {
-                    if (
-                        'debug_enabled' in object &&
-                        !object.debug_enabled &&
-                        'detached' in object &&
-                        object.detached
-                    ) return 'orange'
-                    if ('is_dirty' in object && object.is_dirty) return 'orange'
-                    if ('is_valid' in object && !object.is_valid) return 'red'
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "../../mixins/base";
+import semver from 'semver'
 
-                    if (
-                        'version' in object &&
-                        'remote_version' in object &&
-                        semver.valid(object.remote_version) &&
-                        semver.valid(object.version) &&
-                        semver.gt(object.remote_version, object.version)
-                    ) return 'primary'
+@Component
+export default class UpdatePanel extends Mixins(BaseMixin) {
 
-                    if (
-                        'version' in object &&
-                        'remote_version' in object && (
-                            object.version === "?" || object.remote_version === "?"
-                        )
-                    ) return 'orange'
+    private commitsOverlay = {
+        bool: false,
+        owner: "",
+        modul: "",
+        commits: [],
+    }
 
-                    return 'green'
-                }
+    get version_info() {
+        return this.$store.state.server.updateManager.version_info
+    }
 
-                return 'red'
-            },
-            getBtnText(object) {
-                if (typeof object === 'object' && object !== false) {
-                    if (
-                        'debug_enabled' in object &&
-                        !object.debug_enabled &&
-                        'detached' in object &&
-                        object.detached
-                    ) return this.$t('Settings.UpdatePanel.Detached')
-                    if ('is_valid' in object && !object.is_valid) return this.$t('Settings.UpdatePanel.Invalid')
-                    if ('is_dirty' in object && object.is_dirty) return this.$t('Settings.UpdatePanel.Dirty')
+    get updateableSoftwares() {
+        return this.$store.getters["server/updateManager/getUpdateableSoftwares"]
+    }
 
-                    if (
-                        'version' in object &&
-                        'remote_version' in object &&
-                        semver.valid(object.remote_version) &&
-                        semver.valid(object.version) &&
-                        semver.gt(object.remote_version, object.version)
-                    ) return this.$t('Settings.UpdatePanel.Update')
+    btnSync() {
+        this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' });
+        this.$socket.emit('machine.update.status', { refresh: true }, 'server/updateManager/getStatus')
+    }
 
-                    if (
-                        'version' in object &&
-                        'remote_version' in object && (
-                            object.version === "?" || object.remote_version === "?"
-                        )
-                    ) return this.$t('Settings.UpdatePanel.Unknown')
+    getBtnColor(object: any) {
+        if (typeof object === 'object' && object !== false) {
+            if (
+                'debug_enabled' in object &&
+                !object.debug_enabled &&
+                'detached' in object &&
+                object.detached
+            ) return 'orange'
+            if ('is_dirty' in object && object.is_dirty) return 'orange'
+            if ('is_valid' in object && !object.is_valid) return 'red'
 
-                    return this.$t('Settings.UpdatePanel.UpToDate')
-                }
+            if (
+                'version' in object &&
+                'remote_version' in object &&
+                semver.valid(object.remote_version) &&
+                semver.valid(object.version) &&
+                semver.gt(object.remote_version, object.version)
+            ) return 'primary'
 
-                return this.$t('Settings.UpdatePanel.ERROR')
-            },
-            getBtnIcon(object) {
-                if (typeof object === 'object' && object !== false) {
-                    if (
-                        'debug_enabled' in object &&
-                        !object.debug_enabled &&
-                        'detached' in object &&
-                        object.detached
-                    ) return 'alert-circle'
-                    if ('is_valid' in object && !object.is_valid) return 'alert-circle'
-                    if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
-
-                    if (
-                        'version' in object &&
-                        'remote_version' in object &&
-                        semver.valid(object.remote_version) &&
-                        semver.valid(object.version) &&
-                        semver.gt(object.remote_version, object.version)
-                    ) return 'progress-upload'
-
-                    if (
-                        'version' in object &&
-                        'remote_version' in object && (
-                            object.version === "?" || object.remote_version === "?"
-                        )
-                    ) return 'help-circle-outline'
-
-                    return 'check'
-                }
-
-                return 'ERROR'
-            },
-            getBtnDisabled(object) {
-                if (['printing', 'paused'].includes(this.printer_state)) return true
-
-                if ('is_valid' in object && !object.is_valid) return false
-                if ('is_dirty' in object && object.is_dirty) return false
-
-                if (typeof object === 'object' && object !== false) {
-                    if (
-                        'version' in object &&
-                        'remote_version' in object &&
-                        semver.valid(object.remote_version) &&
-                        semver.valid(object.version) &&
-                        semver.gt(object.remote_version, object.version)
-                    ) return false
-                }
-
-                return true
-            },
-            getVersionOutput(object) {
-                const local_version = 'version' in object ? object.version : '?'
-                const remote_version = 'remote_version' in object ? object.remote_version : '?'
-
-                let output = ""
-                if ('remote_alias' in object && object.remote_alias !== "origin") output += object.remote_alias
-                if ('branch' in object && object.branch !== "master") {
-                    if (output !== "") output += "/"
-
-                    output += object.branch
-                }
-                if (output !== "") output += ": "
-
-                if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
-                    output += local_version+" > "+remote_version
-                else if ('full_version_string' in object && object.full_version_string !== '?')
-                    output += object.full_version_string
-                else
-                    output += local_version
-
-                return output
-            },
-            getVersionClickable(object) {
-                return (
-                    'commits_behind' in object &&
-                    object.commits_behind.length
+            if (
+                'version' in object &&
+                'remote_version' in object && (
+                    object.version === "?" || object.remote_version === "?"
                 )
-            },
-            getRecoveryOptions(object) {
-                if ('is_valid' in object && !object.is_valid) return true
-                if ('is_dirty' in object && object.is_dirty) return true
+            ) return 'gray'
 
-                return false
-            },
-            updateModule(key) {
-                if (["klipper", "moonraker"].includes(key)) this.$socket.sendObj('machine.update.'+key, { })
-                else this.$socket.sendObj('machine.update.client', { name: key })
-            },
-            recovery(name, hard) {
-                this.$socket.sendObj('machine.update.recover', { name: name, hard: hard })
-            },
-            updateSystem() {
-                this.$socket.sendObj('machine.update.system', { })
-            },
-            openCommitsOverlay(key, object) {
-                if (
-                    'commits_behind' in object &&
-                    'owner' in object &&
-                    object.commits_behind.length
-                ) {
-                    this.commitsOverlay.owner = object.owner
-                    this.commitsOverlay.modul = key
-                    this.commitsOverlay.commits = object.commits_behind
+            return 'green'
+        }
 
-                    this.commitsOverlay.bool = true
-                }
-            },
-            convertCommitMessage(message) {
-                const lastIndex = message.lastIndexOf('Signed-off-by:')
-                if (lastIndex !== -1) {
-                    message = message.substr(0, lastIndex)
-                }
+        return 'red'
+    }
 
-                message = this.trimEndLineBreak(message)
-                message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    getBtnText(object: any) {
+        if (typeof object === 'object' && object !== false) {
+            if (
+                'debug_enabled' in object &&
+                !object.debug_enabled &&
+                'detached' in object &&
+                object.detached
+            ) return this.$t('Settings.UpdatePanel.Detached')
+            if ('is_valid' in object && !object.is_valid) return this.$t('Settings.UpdatePanel.Invalid')
+            if ('is_dirty' in object && object.is_dirty) return this.$t('Settings.UpdatePanel.Dirty')
 
-                return message
-            },
-            trimEndLineBreak(message) {
-                if (['\n', '\r'].includes(message.substr(-1))) {
-                    message = message.substr(0, message.length - 2)
-                    this.trimEndLineBreak(message)
-                }
+            if (
+                'version' in object &&
+                'remote_version' in object &&
+                semver.valid(object.remote_version) &&
+                semver.valid(object.version) &&
+                semver.gt(object.remote_version, object.version)
+            ) return this.$t('Settings.UpdatePanel.Update')
 
-                return message
-            }
+            if (
+                'version' in object &&
+                'remote_version' in object && (
+                    object.version === "?" || object.remote_version === "?"
+                )
+            ) return this.$t('Settings.UpdatePanel.Unknown')
+
+            return this.$t('Settings.UpdatePanel.UpToDate')
+        }
+
+        return this.$t('Settings.UpdatePanel.ERROR')
+    }
+
+    getBtnIcon(object: any) {
+        if (typeof object === 'object' && object !== false) {
+            if (
+                'debug_enabled' in object &&
+                !object.debug_enabled &&
+                'detached' in object &&
+                object.detached
+            ) return 'alert-circle'
+            if ('is_valid' in object && !object.is_valid) return 'alert-circle'
+            if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
+
+            if (
+                'version' in object &&
+                'remote_version' in object &&
+                semver.valid(object.remote_version) &&
+                semver.valid(object.version) &&
+                semver.gt(object.remote_version, object.version)
+            ) return 'progress-upload'
+
+            if (
+                'version' in object &&
+                'remote_version' in object && (
+                    object.version === "?" || object.remote_version === "?"
+                )
+            ) return 'help-circle-outline'
+
+            return 'check'
+        }
+
+        return 'ERROR'
+    }
+
+    getBtnDisabled(object: any) {
+        if (['printing', 'paused'].includes(this.printer_state)) return true
+
+        if ('is_valid' in object && !object.is_valid) return false
+        if ('is_dirty' in object && object.is_dirty) return false
+
+        if (typeof object === 'object' && object !== false) {
+            if (
+                'version' in object &&
+                'remote_version' in object &&
+                semver.valid(object.remote_version) &&
+                semver.valid(object.version) &&
+                semver.gt(object.remote_version, object.version)
+            ) return false
+        }
+
+        return true
+    }
+
+    getVersionOutput(object: any) {
+        const local_version = 'version' in object ? object.version : '?'
+        const remote_version = 'remote_version' in object ? object.remote_version : '?'
+
+        let output = ""
+        if ('remote_alias' in object && object.remote_alias !== "origin") output += object.remote_alias
+        if ('branch' in object && object.branch !== "master") {
+            if (output !== "") output += "/"
+
+            output += object.branch
+        }
+        if (output !== "") output += ": "
+
+        if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
+            output += local_version+" > "+remote_version
+        else if ('full_version_string' in object && object.full_version_string !== '?')
+            output += object.full_version_string
+        else
+            output += local_version
+
+        return output
+    }
+
+    getVersionClickable(object: any) {
+        return (
+            'commits_behind' in object &&
+            object.commits_behind.length
+        )
+    }
+
+    getRecoveryOptions(object: any) {
+        if ('is_valid' in object && !object.is_valid) return true
+        if ('is_dirty' in object && object.is_dirty) return true
+
+        return false
+    }
+
+    updateModule(key: string) {
+        if (["klipper", "moonraker"].includes(key)) this.$socket.emit('machine.update.'+key, { })
+        else this.$socket.emit('machine.update.client', { name: key })
+    }
+
+    recovery(name: string, hard: boolean) {
+        this.$socket.emit('machine.update.recover', { name: name, hard: hard })
+    }
+
+    updateSystem() {
+        this.$socket.emit('machine.update.system', { })
+    }
+
+    openCommitsOverlay(key: string, object: any) {
+        if (
+            'commits_behind' in object &&
+            'owner' in object &&
+            object.commits_behind.length
+        ) {
+            this.commitsOverlay.owner = object.owner
+            this.commitsOverlay.modul = key
+            this.commitsOverlay.commits = object.commits_behind
+
+            this.commitsOverlay.bool = true
         }
     }
+
+    convertCommitMessage(message: string) {
+        const lastIndex = message.lastIndexOf('Signed-off-by:')
+        if (lastIndex !== -1) {
+            message = message.substr(0, lastIndex)
+        }
+
+        message = this.trimEndLineBreak(message)
+        message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+
+        return message
+    }
+
+    trimEndLineBreak(message: string) {
+        if (['\n', '\r'].includes(message.substr(-1))) {
+            message = message.substr(0, message.length - 2)
+            this.trimEndLineBreak(message)
+        }
+
+        return message
+    }
+}
 </script>

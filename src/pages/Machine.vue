@@ -7,18 +7,15 @@
             <v-col class="col-12 col-sm-6">
                 <klippy-state-panel></klippy-state-panel>
                 <limits-panel></limits-panel>
-<!--                <settings-limits-panel v-if="klippy_state === 'ready'"></settings-limits-panel>
-
-                <settings-update-panel v-if="updateManager" class="mt-6"></settings-update-panel>
+                <update-panel></update-panel>
                 <v-row class="mt-6">
                     <v-col class="col-md-6" v-if="klippy_state === 'ready'">
-                        <settings-endstop-panel></settings-endstop-panel>
-                        <settings-runout-panel></settings-runout-panel>
+<!--                        <settings-endstop-panel></settings-endstop-panel>-->
                     </v-col>
                     <v-col :class="(klippy_state !== 'ready' ? 'col-md-12' : 'col-md-6')">
-                        <settings-logfiles-panel></settings-logfiles-panel>
+<!--                        <settings-logfiles-panel></settings-logfiles-panel>-->
                     </v-col>
-                </v-row>-->
+                </v-row>
             </v-col>
         </v-row>
     </v-container>
@@ -29,8 +26,9 @@ import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
 import LimitsPanel from "@/components/panels/Maschine/LimitsPanel.vue";
+import UpdatePanel from "@/components/panels/Maschine/UpdatePanel.vue";
 @Component({
-    components: {LimitsPanel, KlippyStatePanel}
+    components: {UpdatePanel, LimitsPanel, KlippyStatePanel}
 })
 export default class PageMachine extends Mixins(BaseMixin) {
 

@@ -46,7 +46,7 @@ export const readOnlyRoots = [
 export const initableServerComponents = [
 	'history',
 	'power',
-	'update_manager',
+	'updateManager',
 ]
 
 export const checkKlipperConfigModules = [
