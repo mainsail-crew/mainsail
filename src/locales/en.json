@@ -38,7 +38,7 @@
     },
     "SelectPrinterDialog": {
         "Connecting": "Connecting to {host}",
-        "Failed": "Connection failed",
+        "ConnectionFailed": "Connection failed",
         "CannotConnectTo": "Cannot connect to {host}.",
         "TryAgain": "try again",
         "SelectPrinter": "Select Printer",
@@ -223,7 +223,8 @@
 			"Macros": "Macros"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": "Off"
+			"WebcamOff": "Off",
+			"SwitchToPrinter": "Switch to Printer"
 		},
 		"KlippyStatePanel": {
 			"KlippyState": "Klippy-State",

@@ -27,7 +27,7 @@
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
-                <p>{{ $t("SelectPrinterDialog.CannotConnectTo") }} {{ parseInt(port) !== 80 ? hostname+":"+port : hostname }}.</p>
+                <p>{{ $t("SelectPrinterDialog.CannotConnectTo", {'host': parseInt(port) !== 80 ? hostname+":"+port : hostname}) }}</p>
                 <div class="text-center">
                     <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">{{ $t("SelectPrinterDialog.ChangePrinter") }}</v-btn>
                     <v-btn @click="reconnect" color="primary">{{ $t("SelectPrinterDialog.TryAgain") }}</v-btn>
