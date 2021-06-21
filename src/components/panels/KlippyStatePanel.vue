@@ -1,5 +1,5 @@
 <template>
-    <v-card v-if="klipperState !== 'ready'" class="mb-6">
+    <v-card v-if="klipperState !== 'ready' && socketIsConnected" class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klipperState }}</span>

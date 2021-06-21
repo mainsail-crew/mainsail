@@ -8,7 +8,15 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getUrl']
     }
 
+    get socketIsConnected(): boolean {
+        return this.$store.state.socket.isConnected ?? false
+    }
+
     get klippyIsConnected(): boolean {
+        return this.$store.state.server.klippy_connected ?? false
+    }
+
+    get isConnected(): boolean {
         return this.$store.state.socket.isConnected ?? false
     }
 
@@ -17,7 +25,7 @@ export default class BaseMixin extends Vue {
     }
 
     get klipperReadyForGui(): boolean {
-        return (this.klippyIsConnected && this.klipperState === 'ready')
+        return (this.isConnected && this.klipperState === 'ready')
     }
 
     get loadings(): string[] {

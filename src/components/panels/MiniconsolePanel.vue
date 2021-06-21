@@ -20,7 +20,7 @@
 </style>
 
 <template>
-    <v-card>
+    <v-card v-if="socketIsConnected">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>

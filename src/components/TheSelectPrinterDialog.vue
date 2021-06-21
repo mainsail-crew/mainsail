@@ -20,7 +20,7 @@
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool"><v-btn small class="minwidth-0" @click="dialogEditPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn></template>
                     <template v-else-if="dialogAddPrinter.bool"><v-btn small class="minwidth-0" v-if="dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn></template>
-                    <template v-else-if="countPrinters > 0"><v-btn small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn></template>
+                    <template v-else-if="Object.keys(this.printers).length > 0"><v-btn small class="minwidth-0" @click="checkPrinters"><v-icon small>mdi-sync</v-icon></v-btn></template>
                 </template>
             </v-toolbar>
             <v-card-text class="pt-5" v-if="isConnecting">
@@ -142,7 +142,7 @@
                     </v-row>
                     <v-row v-if="showCorsInfo">
                         <v-col>
-                            <p class="text-center" v-if="countPrinters === 0">{{ $t("SelectPrinterDialog.Hello") }}</p>
+                            <p class="text-center" v-if="Object.keys(this.printers).length === 0">{{ $t("SelectPrinterDialog.Hello") }}</p>
                             <p class="text-center">{{ $t("SelectPrinterDialog.RememberToAdd", {cors: currentUrl}) }}</p>
                             <p class="text-center mb-0">{{ $t("SelectPrinterDialog.YouCanFindMore") }} <a href="https://docs.mainsail.xyz/remotemode" target="_blank">https://docs.mainsail.xyz/remotemode</a>.</p>
                         </v-col>
@@ -158,142 +158,153 @@
     </v-dialog>
 </template>
 
-<script>
-import { mapGetters, mapActions } from "vuex";
-import Vue from "vue";
+<script lang="ts">
 
-export default {
-    data: function() {
-        return {
-            dialogAddPrinter: {
-                bool: false,
-                hostname: "",
-                port: 7125
-            },
-            dialogEditPrinter: {
-                bool: false,
-                index: 0,
-                hostname: "",
-                port: 0
+
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "./mixins/base";
+import {FarmPrinterState} from "@/store/farm/printer/types";
+
+@Component
+export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
+
+    private dialogAddPrinter = {
+        bool: false,
+        hostname: "",
+        port: 7125
+    }
+    private dialogEditPrinter = {
+        bool: false,
+        index: 0,
+        hostname: "",
+        port: 0
+    }
+
+    get printers() {
+        return this.$store.getters["farm/getPrinters"] ?? []
+    }
+
+    get remoteMode() {
+        return this.$store.state.socket.remoteMode
+    }
+
+    get protocol() {
+        return this.$store.state.socket.protocol
+    }
+
+    get hostname() {
+        return this.$store.state.socket.hostname
+    }
+
+    get port() {
+        return this.$store.state.socket.port
+    }
+
+    get formatHostname() {
+        return parseInt(this.port) !== 80 && this.port !== "" ? this.hostname+":"+this.port : this.hostname
+    }
+
+    get isConnected() {
+        return this.$store.state.socket.isConnected
+    }
+
+    get isConnecting() {
+        return this.$store.state.socket.isConnecting
+    }
+
+    get connectingFailed() {
+        return this.$store.state.socket.connectingFailed
+    }
+
+    get showDialog() {
+        return !this.isConnected
+    }
+
+    get currentUrl() {
+        let output =  "http://"+window.location.hostname
+        if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':'+window.location.port
+
+        return output
+    }
+
+    get showCorsInfo() {
+        if (Object.keys(this.printers).length) {
+            Object.keys(this.printers).forEach((key) => {
+                const printer = this.printers[key]
+                if (!printer.socket.isConnected) return true
+            })
+
+            return false
+        }
+
+        return true
+    }
+
+    getPrinterName(namespace: string) {
+        return this.$store.getters["farm/getPrinterName"](namespace)
+    }
+
+    addPrinter() {
+        this.$store.dispatch('farm/addPrinter',{
+            hostname: this.dialogAddPrinter.hostname,
+            port: this.dialogAddPrinter.port,
+            protocol: this.protocol
+        })
+
+        this.dialogAddPrinter.hostname = ""
+        this.dialogAddPrinter.bool = false
+    }
+
+    editPrinter(index: number) {
+        this.dialogEditPrinter.hostname = this.printers[index].socket.hostname
+        this.dialogEditPrinter.port = this.printers[index].socket.port
+        this.dialogEditPrinter.index = index
+        this.dialogEditPrinter.bool = true
+    }
+
+    updatePrinter() {
+        this.$store.dispatch("farm/updatePrinter", {
+            namespace: this.dialogEditPrinter.index,
+            hostname: this.dialogEditPrinter.hostname,
+            port: this.dialogEditPrinter.port,
+        })
+        this.dialogEditPrinter.bool = false
+    }
+
+    delPrinter() {
+        this.$store.dispatch("farm/removePrinter", { name: this.dialogEditPrinter.index })
+        this.dialogEditPrinter.bool = false
+    }
+
+    connect(printer: FarmPrinterState) {
+        this.$store.dispatch('socket/setData', {
+            hostname: printer.socket.hostname,
+            port: printer.socket.port
+        })
+        this.$socket.setUrl(this.protocol+"://"+printer.socket.hostname+":"+printer.socket.port+"/websocket")
+        this.$socket.connect()
+    }
+
+    reconnect() {
+        this.$store.dispatch('socket/setData', { connectingFailed: false })
+        this.$socket.connect()
+    }
+
+    switchToChangePrinter() {
+        this.$store.dispatch('socket/setData', { connectingFailed: false })
+    }
+
+    checkPrinters() {
+        Object.keys(this.printers).forEach((key) => {
+            const printer = this.printers[key]
+            if (!printer.socket.isConnected && !printer.socket.isConnecting) {
+                this.$store.dispatch('farm/'+key+'/connect')
             }
-        }
-    },
-    computed: {
-        ...mapGetters({
-            countPrinters: "farm/countPrinters",
-            printers: "farm/getPrinters",
-            getPrinterName: "farm/getPrinterName",
-        }),
-        ...mapActions({
-            readPrinters: "farm/readStoredPrinters"
-        }),
-        remoteMode() {
-            return this.$store.state.socket.remoteMode
-        },
-        protocol() {
-            return this.$store.state.socket.protocol
-        },
-        hostname() {
-            return this.$store.state.socket.hostname
-        },
-        port() {
-            return this.$store.state.socket.port
-        },
-        formatHostname() {
-            return parseInt(this.port) !== 80 && this.port !== "" ? this.hostname+":"+this.port : this.hostname
-        },
-        isConnected() {
-            return this.$store.state.socket.isConnected
-        },
-        isConnecting() {
-            return this.$store.state.socket.isConnecting
-        },
-        connectingFailed() {
-            return this.$store.state.socket.connectingFailed
-        },
-        showDialog() {
-            return !this.isConnected
-        },
-        currentUrl() {
-            return "http://"+window.location.hostname+(window.location.port !== 80 && window.location.port !== '' ? ':'+window.location.port : '')
-        },
-        showCorsInfo() {
-            if (this.countPrinters) {
-                for (const [ ,printer] of Object.entries(this.printers)) {
-                    if (!printer.socket.isConnected) return true
-                }
+        })
+    }
 
-                return false
-            }
-
-            return true
-        }
-    },
-    methods: {
-        addPrinter() {
-            this.$store.commit('farm/addPrinter',{
-                hostname: this.dialogAddPrinter.hostname,
-                port: this.dialogAddPrinter.port,
-                protocol: this.protocol
-            })
-
-            this.dialogAddPrinter.hostname = ""
-            this.dialogAddPrinter.bool = false
-
-            this.$store.dispatch("farm/savePrinters")
-        },
-        editPrinter(index) {
-            this.dialogEditPrinter.hostname = this.printers[index].socket.hostname
-            this.dialogEditPrinter.port = this.printers[index].socket.port
-            this.dialogEditPrinter.index = index
-            this.dialogEditPrinter.bool = true
-        },
-        updatePrinter() {
-            this.$store.commit("farm/"+this.dialogEditPrinter.index+"/setSocketData", {
-                hostname: this.dialogEditPrinter.hostname,
-                port: this.dialogEditPrinter.port,
-                isConnecting: true,
-            })
-            this.$store.dispatch("farm/"+this.dialogEditPrinter.index+"/reconnect")
-            this.dialogEditPrinter.bool = false
-
-            this.checkPrinters()
-        },
-        delPrinter() {
-            this.$store.commit("farm/removePrinter", { name: this.dialogEditPrinter.index })
-            this.$store.dispatch("farm/savePrinters")
-            this.dialogEditPrinter.bool = false
-        },
-        connect(printer) {
-            this.$store.dispatch('socket/setData', {
-                hostname: printer.socket.hostname,
-                port: printer.socket.port
-            })
-            Vue.prototype.$socket.setUrl(this.protocol+"://"+printer.socket.hostname+":"+printer.socket.port+"/websocket")
-            Vue.prototype.$socket.connect()
-        },
-        reconnect() {
-            this.$store.dispatch('socket/setData', { connectingFailed: false })
-            Vue.prototype.$socket.connect()
-        },
-        switchToChangePrinter() {
-            this.$store.dispatch('socket/setData', { connectingFailed: false })
-        },
-        checkPrinters() {
-            Object.entries(this.printers).forEach(([key, printer]) => {
-                if (!printer.socket.isConnected && !printer.socket.isConnecting) {
-                    this.$store.dispatch('farm/'+key+'/connect')
-                }
-            })
-        }
-    },
     mounted() {
         this.$store.dispatch("farm/readStoredPrinters")
-    },
-    watch: {
-        isConnected(newVal) {
-            this.showDialog = !newVal
-        },
     }
 }
 </script>
