@@ -19,7 +19,7 @@
             <v-toolbar-title>{{ printerName }}</v-toolbar-title>
         </div>
         <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
-            <!--<printer-selecter></printer-selecter>-->
+            <the-sidebar-printer-menu></the-sidebar-printer-menu>
             <li v-for="(category, index) in naviPoints" :key="index" :prepend-icon="category.icon"
                 :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
                 :value="true"
@@ -66,9 +66,13 @@ import routes, {AppRoute} from '@/routes'
 import {Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import {PrinterStateKlipperConfig} from "@/store/printer/types";
+import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
+import TheSidebarPrinterMenu from "@/components/TheSidebarPrinterMenu.vue";
 
 @Component({
     components: {
+        TheSidebarPrinterMenu,
+        TheSelectPrinterDialog
 
     }
 })

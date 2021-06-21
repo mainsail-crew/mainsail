@@ -184,10 +184,6 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         return this.$store.getters["farm/getPrinters"] ?? []
     }
 
-    get remoteMode() {
-        return this.$store.state.socket.remoteMode
-    }
-
     get protocol() {
         return this.$store.state.socket.protocol
     }

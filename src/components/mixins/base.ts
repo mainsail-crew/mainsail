@@ -8,6 +8,10 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getUrl']
     }
 
+    get remoteMode() {
+        return this.$store.state.socket.remoteMode
+    }
+
     get socketIsConnected(): boolean {
         return this.$store.state.socket.isConnected ?? false
     }

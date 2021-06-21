@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <div v-if="(remoteMode && countPrinters > 1) || (!remoteMode && countPrinters)">
+    <div v-if="displayMenuPoint">
         <li :class="currentPage === '/allPrinters' ? 'nav-item active' : 'nav-item '">
             <div
                 class="nav-link "
@@ -37,47 +37,48 @@
     </div>
 </template>
 
-<script>
-import { mapState } from 'vuex'
+<script lang="ts">
+
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "./mixins/base";
 import router from "@/plugins/router";
+import {FarmPrinterState} from "@/store/farm/printer/types";
 
-export default {
-    name: "PrinterSelecter.vue",
-    computed: {
-        ...mapState({
-            remoteMode: state => state.socket.remoteMode
-        }),
-        countPrinters: {
-            get() {
-                return this.$store.getters["farm/countPrinters"]
-            }
-        },
-        printers: {
-            get() {
-                return this.$store.getters["farm/getPrinters"]
-            }
-        },
-        currentPage: function() {
-            return this.$route.fullPath;
-        },
-    },
-    methods: {
-        switchToPrinters() {
-            router.push("/allPrinters");
-        },
-        getPrinterName(namespace) {
-            return this.$store.getters["farm/"+namespace+"/getPrinterName"]
-        },
-        getPrinterDescription(printer) {
-            return this.$store.getters["farm/"+printer._namespace+"/getStatus"]
-        },
-        changePrinter(printer) {
-            if (printer.socket.isConnected) {
-                if (this.remoteMode) this.$store.dispatch('changePrinter', { printer: printer._namespace })
-                else window.location.href = "//"+printer.socket.hostname+(parseInt(printer.socket.webPort) !== 80 ? ':'+printer.socket.webPort : '')
-            }
-        },
+@Component
+export default class TheSidebarPrinterMenu extends Mixins(BaseMixin) {
 
+    get displayMenuPoint() {
+        return (this.remoteMode && this.countPrinters > 1) || (!this.remoteMode && this.countPrinters)
+    }
+
+    get printers() {
+        return this.$store.getters["farm/getPrinters"]
+    }
+
+    get countPrinters() {
+        return this.$store.getters["farm/countPrinters"]
+    }
+
+    get currentPage() {
+        return this.$route.fullPath;
+    }
+
+    switchToPrinters() {
+        router.push("/allPrinters");
+    }
+
+    getPrinterName(namespace: string) {
+        return this.$store.getters["farm/"+namespace+"/getPrinterName"]
+    }
+
+    getPrinterDescription(printer: FarmPrinterState) {
+        return this.$store.getters["farm/"+printer._namespace+"/getStatus"]
+    }
+
+    changePrinter(printer: FarmPrinterState) {
+        if (printer.socket.isConnected) {
+            this.$store.dispatch('changePrinter', { printer: printer._namespace })
+        }
     }
 }
 </script>
