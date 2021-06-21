@@ -73,3 +73,43 @@ export const formatFilesize = (fileSizeInBytes: number): string => {
 
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
 }
+
+export const formatDate = (date: number): string => {
+    const tmp2 = new Date(date)
+
+    return tmp2.toLocaleString().replace(',', '')
+}
+
+export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
+    const sortBySingle = sortBy.length ? sortBy[0] : 'filename';
+    const sortDescSingle = sortDesc[0];
+
+    if (items !== null) {
+        // Sort by index
+        items.sort(function(a: any, b: any) {
+            if (a[sortBySingle] === b[sortBySingle]) return 0
+            if (a[sortBySingle] === null || a[sortBySingle] === undefined) return -1
+            if (b[sortBySingle] === null || b[sortBySingle] === undefined) return 1
+
+            if (a[sortBySingle].constructor === String && b[sortBySingle].constructor === String) {
+                return a[sortBySingle].localeCompare(b[sortBySingle], undefined, { sensivity: 'base' })
+            }
+
+            if (a[sortBySingle] instanceof Array && b[sortBySingle] instanceof Array) {
+                const reducedA = a[sortBySingle].length ? a.filament.reduce((a: any, b: any) => a + b) : 0
+                const reducedB = b[sortBySingle].length ? b.filament.reduce((a: any, b: any) => a + b) : 0
+                return reducedA - reducedB
+            }
+
+            return a[sortBySingle] - b[sortBySingle]
+        })
+
+        // Deal with descending order
+        if (sortDescSingle) items.reverse()
+
+        // Then make sure directories come first
+        items.sort((a: any, b: any) => (a.isDirectory === b.isDirectory) ? 0 : (a.isDirectory ? -1 : 1))
+    }
+
+    return items ?? []
+}

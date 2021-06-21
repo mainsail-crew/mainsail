@@ -2,7 +2,7 @@
     <v-container fluid py-0 px-0>
         <v-row>
             <v-col class="col-12 col-sm-6">
-<!--                <settings-config-files-panel></settings-config-files-panel>-->
+                <config-files-panel></config-files-panel>
             </v-col>
             <v-col class="col-12 col-sm-6">
                 <klippy-state-panel></klippy-state-panel>
@@ -29,8 +29,9 @@ import LimitsPanel from "@/components/panels/Machine/LimitsPanel.vue";
 import UpdatePanel from "@/components/panels/Machine/UpdatePanel.vue";
 import LogfilesPanel from "@/components/panels/Machine/LogfilesPanel.vue";
 import EndstopPanel from "@/components/panels/Machine/EndstopPanel.vue";
+import ConfigFilesPanel from "@/components/panels/Machine/ConfigFilesPanel.vue";
 @Component({
-    components: {EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
+    components: {ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
 })
 export default class PageMachine extends Mixins(BaseMixin) {
 

@@ -2,11 +2,11 @@
     <v-card class="mb-6" v-if="klipperReadyForGui">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>{{ $t('Settings.LimitsPanel.MachineLimits')}}</span>
+                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>{{ $t('Machine.LimitsPanel.MachineLimits')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <tool-slider
-            :label="$t('Settings.LimitsPanel.Velocity')"
+            :label="$t('Machine.LimitsPanel.Velocity')"
             unit="mm/s"
             :target="current_velocity"
             :max="max_velocity"
@@ -18,7 +18,7 @@
         ></tool-slider>
         <v-divider></v-divider>
         <tool-slider
-            :label="$t('Settings.LimitsPanel.Acceleration')"
+            :label="$t('Machine.LimitsPanel.Acceleration')"
             unit="mm/s²"
             :target="current_accel"
             :max="max_accel"
@@ -30,7 +30,7 @@
         ></tool-slider>
         <v-divider></v-divider>
         <tool-slider
-            :label="$t('Settings.LimitsPanel.Deceleration')"
+            :label="$t('Machine.LimitsPanel.Deceleration')"
             unit="mm/s²" :target="current_accel_to_decel"
             :max="max_accel_to_decel"
             :default-value="max_accel_to_decel"
@@ -41,7 +41,7 @@
         ></tool-slider>
         <v-divider></v-divider>
         <tool-slider
-            :label="$t('Settings.LimitsPanel.SquareCornerVelocity')"
+            :label="$t('Machine.LimitsPanel.SquareCornerVelocity')"
             unit="mm/s"
             :target="current_square_corner_velocity"
             :max="max_square_corner_velocity"

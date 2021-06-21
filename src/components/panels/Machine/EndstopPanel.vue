@@ -2,7 +2,7 @@
     <v-card>
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>{{ $t('Settings.EndstopPanel.Endstops')}}</span>
+                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>{{ $t('Machine.EndstopPanel.Endstops')}}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text class="pb-0">
@@ -10,13 +10,13 @@
                 <template v-if="Object.keys(endstops).length">
                     <v-row v-for="key of Object.keys(endstops)" v-bind:key="key">
                         <v-col class="py-1">
-                            <label class="mt-1 d-inline-block">{{ $t('Settings.EndstopPanel.Endstop')}} <b>{{ key.toUpperCase() }}</b></label>
+                            <label class="mt-1 d-inline-block">{{ $t('Machine.EndstopPanel.Endstop')}} <b>{{ key.toUpperCase() }}</b></label>
                             <v-chip class="float-right" small :color="endstops[key] === 'open' ? 'green' : 'red' " text-color="white">
                                 <template v-if="endstops[key] === 'open'">
-                                    {{ $t('Settings.EndstopPanel.open')}}
+                                    {{ $t('Machine.EndstopPanel.open')}}
                                 </template>
                                 <template v-else>
-                                    {{ $t('Settings.EndstopPanel.TRIGGERED')}}
+                                    {{ $t('Machine.EndstopPanel.TRIGGERED')}}
                                 </template>
                             </v-chip>
                         </v-col>
@@ -26,10 +26,10 @@
                             <label class="mt-1 d-inline-block">Probe</label>
                             <v-chip class="float-right" small :color="probe ? 'red' : 'green' " text-color="white">
                             <template v-if="probe">
-                                {{ $t('Settings.EndstopPanel.TRIGGERED')}}
+                                {{ $t('Machine.EndstopPanel.TRIGGERED')}}
                             </template>
                             <template v-else>
-                                {{ $t('Settings.EndstopPanel.open')}}
+                                {{ $t('Machine.EndstopPanel.open')}}
                             </template>
                             </v-chip>
                         </v-col>
@@ -38,7 +38,7 @@
                 <template v-else>
                     <v-row>
                         <v-col>
-                            <p>{{ $t('Settings.EndstopPanel.EndstopInfo')}}</p>
+                            <p>{{ $t('Machine.EndstopPanel.EndstopInfo')}}</p>
                         </v-col>
                     </v-row>
                 </template>

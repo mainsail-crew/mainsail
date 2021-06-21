@@ -418,7 +418,7 @@ import {Component, Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import axios from "axios";
 import { validGcodeExtensions } from "@/store/variables"
-import {findDirectory, formatFilesize} from "@/plugins/helpers";
+import {findDirectory, formatFilesize, formatDate, sortFiles} from "@/plugins/helpers";
 import {FileStateFile} from "@/store/files/types";
 
 interface draggingFile {
@@ -464,7 +464,9 @@ interface dialogRenameObject {
 @Component
 export default class PageFiles extends Mixins(BaseMixin) {
     validGcodeExtensions = validGcodeExtensions
+    formatDate = formatDate
     formatFilesize = formatFilesize
+    sortFiles = sortFiles
 
     $refs!: {
         fileUpload: HTMLInputElement,
@@ -826,39 +828,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.$socket.emit('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory')
     }
 
-    sortFiles(items:any, sortBy: any, sortDesc: boolean | boolean[]) {
-        if (sortBy instanceof Array) sortBy = sortBy[0]
-        if (sortDesc instanceof Array) sortDesc = sortDesc[0]
-
-        if (items !== undefined && typeof sortBy === "string") {
-            // Sort by index
-            items.sort((a: any, b: any) => {
-                if (a[sortBy] === b[sortBy]) return 0
-                if (a[sortBy] === null || a[sortBy] === undefined) return -1
-                if (b[sortBy] === null || b[sortBy] === undefined) return 1
-
-                if (a[sortBy].constructor === String && b[sortBy].constructor === String) {
-                    return a[sortBy].localeCompare(b[sortBy], undefined, { sensivity: 'base' })
-                }
-
-                if (a[sortBy] instanceof Array && b[sortBy] instanceof Array) {
-                    const reducedA = a[sortBy].length ? a.filament.reduce((a: any, b: any) => a + b) : 0;
-                    const reducedB = b[sortBy].length ? b.filament.reduce((a: any, b: any) => a + b) : 0;
-                    return reducedA - reducedB;
-                }
-
-                return a[sortBy] - b[sortBy];
-            })
-
-            // Deal with descending order
-            if (sortDesc) items.reverse()
-
-            // Then make sure directories come first
-            items.sort((a: any, b: any) => (a.isDirectory === b.isDirectory) ? 0 : (a.isDirectory ? -1 : 1))
-        }
-        return items
-    }
-
     advancedSearch(value: string | number, search: string) {
         return value != null &&
             search != null &&
@@ -867,7 +836,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     refreshMetadata(data: any) {
-        const items = this.sortFiles(this.files, this.sortBy, this.sortDesc)
+        const items = sortFiles(this.files, this.sortBy, this.sortDesc)
         for (let i = data.pageStart; i < data.pageStop; i++) {
             if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                 let filename = (this.currentPath+"/"+items[i].filename).substring(7)
@@ -929,12 +898,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 modified: new Date(file.modified).getTime()
             }) !== 'completed')
         }
-    }
-
-    formatDate(date: number) {
-        const tmp2 = new Date(date)
-
-        return tmp2.toLocaleString().replace(',', '')
     }
 
     formatPrintTime(totalSeconds: number) {
