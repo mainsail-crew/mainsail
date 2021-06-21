@@ -13,26 +13,19 @@
         </v-col>
     </v-row>
 </template>
-<script>
-    import FarmPrinterPanel from "@/components/panels/FarmPrinterPanel";
+<script lang="ts">
 
-    export default {
-        name: "farm",
-        components: { FarmPrinterPanel },
-        data () {
-            return {
 
-            }
-        },
-        computed: {
-            printers: {
-                get() {
-                    return this.$store.getters["farm/getPrinters"]
-                }
-            }
-        },
-        methods: {
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import FarmPrinterPanel from "@/components/panels/FarmPrinterPanel.vue";
+@Component({
+    components: {FarmPrinterPanel}
+})
+export default class PageFarm extends Mixins(BaseMixin) {
 
-        }
+    get printers() {
+        return this.$store.getters["farm/getPrinters"]
     }
+}
 </script>

@@ -83,7 +83,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 			if (thumbnail && 'relative_path' in thumbnail) return "//"+state.socket.hostname+":"+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
 		}
 
-		return "/img/sidebar-background.png"
+		return "/img/sidebar-background.svg"
 	},
 
 	getThemeFileUrl: (state) => (acceptName: string, acceptExtensions: string[]) => {
@@ -98,8 +98,9 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 	getLogo: (state, getters) => {
 		const acceptName = "sidebar-logo"
 		const acceptExtensions = ['gif', 'jpg', 'png', 'gif']
+		const logo = getters["getThemeFileUrl"](acceptName, acceptExtensions)
 
-		return getters["getThemeFileUrl"](acceptName, acceptExtensions) ?? '/img/logo.svg'
+		return logo ? logo : '/img/logo.svg'
 	},
 
 	getPosition: state => {
@@ -115,15 +116,15 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 		const output = []
 
 		Object.keys(state.data).filter((key) => key.startsWith("extruder")).forEach((key) => {
-			if (state.data[key].temperature && state.data[key]?.target) {
+			if (state.data[key]?.temperature !== undefined && state.data[key]?.target !== undefined) {
 				output.push({
 					name: convertName(key),
-					value: state.data[key].temperature.toFixed(0)+"° / "+state.data[key].target.toFixed(0)+"°",
+					value: state.data[key].temperature?.toFixed(0)+"° / "+state.data[key].target?.toFixed(0)+"°",
 				})
 			}
 		})
 
-		if (state.data.heater_bed?.temperature && state.data.heater_bed?.target) {
+		if (state.data.heater_bed?.temperature && state.data.heater_bed?.target !== undefined) {
 			output.push({
 				name: convertName('heater_bed'),
 				value: state.data.heater_bed.temperature.toFixed(0)+"° / "+state.data.heater_bed.target.toFixed(0)+"°"

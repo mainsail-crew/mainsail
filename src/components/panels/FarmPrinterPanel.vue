@@ -1,4 +1,4 @@
-<style>
+<style scoped>
     .v-card.disabledPrinter {
         opacity: 0.6;
         filter: grayscale(70%);
@@ -71,7 +71,7 @@
                     <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
                 </template>
                 <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer-adaptive'">
-                    <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam" :printer-url="printerUrl"></webcam-mjpegstreamer-adaptive>
+                    <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam" :printer-url="printerUrl" :show-fps="false"></webcam-mjpegstreamer-adaptive>
                 </template>
             </div>
             <v-card-title class="white--text py-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
@@ -99,114 +99,94 @@
     </v-card>
 </template>
 
-<script>
-    import { mapState } from 'vuex'
-    import Mjpegstreamer from "@/components/webcams/Mjpegstreamer"
-    import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive"
+<script lang="ts">
 
-    export default {
-        components: {
-            "webcam-mjpegstreamer": Mjpegstreamer,
-            "webcam-mjpegstreamer-adaptive": MjpegstreamerAdaptive,
-        },
-        data: function() {
-            return {
 
-            }
-        },
-        props: {
-            printer: {
-                type: Object,
-                required: true,
-            },
-        },
-        computed: {
-            ...mapState({
-                remoteMode: state => state.socket.remoteMode
-            }),
-            printerUrl() {
-                const thisUrl = window.location.href.split("/")
-                const protocol = thisUrl[0]
+import { Component, Mixins, Prop } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import { FarmPrinterState } from '@/store/farm/printer/types'
+import Mjpegstreamer from "@/components/webcams/Mjpegstreamer"
+import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive"
 
-                let url = protocol+"//"+this.printer.socket.hostname
-                if (80 !== parseInt(this.printer.socket.webPort)) url += ":"+this.printer.socket.webPort
-
-                return url
-            },
-            isCurrentPrinter: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/isCurrentPrinter"]
-                }
-            },
-            currentCamName: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getSetting"]('currentCamName', 'off')
-                },
-                set(newVal) {
-                    return this.$store.dispatch("farm/"+this.printer._namespace+"/setSettings", { currentCamName: newVal })
-                }
-            },
-            printer_name: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterName"]
-                }
-            },
-            printer_status: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getStatus"]
-                }
-            },
-            printer_current_filename: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getCurrentFilename"]
-                }
-            },
-            printer_image: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getImage"]
-                }
-            },
-            printer_logo: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getLogo"]
-                }
-            },
-            printer_position: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getPosition"]
-                }
-            },
-            printer_preview: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterPreview"]
-                }
-            },
-            printer_webcams: {
-                get() {
-                    return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterWebcams"]
-                }
-            },
-            currentWebcam: {
-                get() {
-                    const currentCam = this.printer_webcams.find(webcam => webcam.name === this.currentCamName)
-                    if (currentCam) return currentCam
-
-                    return false
-                }
-            }
-        },
-        methods: {
-            clickPrinter() {
-                if (this.printer.socket.isConnected) this.changePrinter()
-                else this.reconnectPrinter()
-            },
-            changePrinter() {
-                if (this.remoteMode) this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
-                else window.location.href = this.printerUrl
-            },
-            reconnectPrinter() {
-                this.$store.dispatch("farm/"+this.printer._namespace+"/reconnect")
-            }
-        }
+@Component({
+    components: {
+        "webcam-mjpegstreamer": Mjpegstreamer,
+        "webcam-mjpegstreamer-adaptive": MjpegstreamerAdaptive,
     }
+})
+export default class FarmPrinterPanel extends Mixins(BaseMixin) {
+
+    @Prop({ type: Object, required: true }) printer!: FarmPrinterState
+
+    get printerUrl() {
+        const thisUrl = window.location.href.split("/")
+        const protocol = thisUrl[0]
+
+        let url = protocol+"//"+this.printer.socket.hostname
+        if (80 !== this.printer.socket.webPort) url += ":"+this.printer.socket.webPort
+
+        return url
+    }
+
+    get isCurrentPrinter() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/isCurrentPrinter"]
+    }
+
+    get currentCamName() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getSetting"]('currentCamName', 'off')
+    }
+
+    set currentCamName(newVal) {
+        this.$store.dispatch("farm/"+this.printer._namespace+"/setSettings", { currentCamName: newVal })
+    }
+
+    get printer_name() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterName"]
+    }
+
+    get printer_status() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getStatus"]
+    }
+
+    get printer_current_filename() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getCurrentFilename"]
+    }
+
+    get printer_image() {
+        const image = this.$store.getters["farm/"+this.printer._namespace+"/getImage"]
+
+        return image ? image : " bla"
+    }
+
+    get printer_logo() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getLogo"]
+    }
+
+    get printer_position() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getPosition"]
+    }
+
+    get printer_preview() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterPreview"]
+    }
+
+    get printer_webcams() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterWebcams"]
+    }
+
+    get currentWebcam() {
+        const currentCam = this.printer_webcams.find((webcam: any) => webcam.name === this.currentCamName)
+        if (currentCam) return currentCam
+
+        return false
+    }
+
+    clickPrinter() {
+        if (this.printer.socket.isConnected)
+            this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
+        else
+            this.$store.dispatch("farm/"+this.printer._namespace+"/reconnect")
+    }
+
+}
 </script>

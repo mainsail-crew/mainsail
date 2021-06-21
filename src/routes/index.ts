@@ -17,13 +17,13 @@ const routes: AppRoute[] = [
         alwaysShow: true,
 		showInNavi: true,
     },
-    /*{
+    {
         title: "Printers",
         path: '/allPrinters',
         component: Farm,
         alwaysShow: false,
         showInNavi: false,
-    },*/
+    },
     {
         title: "Webcam",
         path: '/cam',
