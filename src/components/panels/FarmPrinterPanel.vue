@@ -105,8 +105,8 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
-import Mjpegstreamer from "@/components/webcams/Mjpegstreamer"
-import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive"
+import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
+import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue"
 
 @Component({
     components: {
