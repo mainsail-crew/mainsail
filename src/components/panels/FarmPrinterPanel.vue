@@ -153,9 +153,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     get printer_image() {
-        const image = this.$store.getters["farm/"+this.printer._namespace+"/getImage"]
-
-        return image ? image : " bla"
+        return this.$store.getters["farm/"+this.printer._namespace+"/getImage"]
     }
 
     get printer_logo() {

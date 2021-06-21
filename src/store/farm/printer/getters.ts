@@ -92,15 +92,14 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 			acceptExtensions.includes(element.substr(element.lastIndexOf('.')+1))
 		)
 
-		return (file) ? "//"+state.socket.hostname+":"+state.socket.port+'/server/files/config/'+file : false
+		return (file) ? "//"+state.socket.hostname+":"+state.socket.port+'/server/files/config/'+file : null
 	},
 
 	getLogo: (state, getters) => {
 		const acceptName = "sidebar-logo"
 		const acceptExtensions = ['gif', 'jpg', 'png', 'gif']
-		const logo = getters["getThemeFileUrl"](acceptName, acceptExtensions)
 
-		return logo ? logo : '/img/logo.svg'
+		return getters["getThemeFileUrl"](acceptName, acceptExtensions) ?? '/img/logo.svg'
 	},
 
 	getPosition: state => {
