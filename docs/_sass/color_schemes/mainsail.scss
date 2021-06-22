@@ -58,3 +58,23 @@ $btn-primary-color: $red-300;
 	font-style: normal;
 	font-size: 14px; 	
 }
+
+.screenshot {
+	animation: fadein 1.0s;
+}
+
+@keyframes fadein {
+    0% 		{
+			opacity: 0;
+			border-radius: 100%;
+			transform: scale(.3);
+	}
+	50%		{
+			border-radius: 0%;
+			transform: scale(1);
+	}		
+    100%   {
+			opacity: 1;
+	}
+			
+}
