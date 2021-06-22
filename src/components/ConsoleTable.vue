@@ -73,12 +73,15 @@ export default class ConsoleTable extends Vue {
         return any;
     }
 
-    isCommand(message: string): Record<string, unknown> {
+    isCommand(message: string): Record<string, unknown> | null {
         if (!this.helplist) {
             return null;
         }
 
-        const ret = {
+        const ret: {
+            command: { command: string, commandLow: string } | null,
+            original: string
+        } = {
             command: null,
             original: message
         };
