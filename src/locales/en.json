@@ -38,7 +38,7 @@
     },
     "SelectPrinterDialog": {
         "Connecting": "Connecting to {host}",
-        "Failed": "Connection failed",
+        "ConnectionFailed": "Connection failed",
         "CannotConnectTo": "Cannot connect to {host}.",
         "TryAgain": "try again",
         "SelectPrinter": "Select Printer",
@@ -115,7 +115,11 @@
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer",
-        "Downloading": "Downloading"
+        "Downloading": "Downloading",
+		"SuccessfullyRenamed": "Successfully renamed {filename}.",
+		"SuccessfullyMoved": "Successfully moved {filename}.",
+		"SuccessfullyCreated": "Successfully created {filename}.",
+		"SuccessfullyDeleted": "Successfully deleted {filename}."
 	},
 	"Console": {
 		"send": "send",
@@ -219,7 +223,8 @@
 			"Macros": "Macros"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": "Off"
+			"WebcamOff": "Off",
+			"SwitchToPrinter": "Switch to Printer"
 		},
 		"KlippyStatePanel": {
 			"KlippyState": "Klippy-State",
@@ -248,6 +253,7 @@
 			"SpeedFactor": "Speed factor",
 			"ExtrusionFactor": "Extrusion factor",
 			"RunoutSensor": {
+				"Disabled": "disabled",
 				"Detected": "detected",
 				"Empty": "Empty"
 			}
@@ -327,7 +333,7 @@
 			"CurrentOffset": "Current Offset"
 		}
 	},
-	"Settings": {
+	"Machine": {
 		"ConfigFilesPanel": {
 			"ConfigFiles": "Config Files",
 			"SetupCurrentList": "Setup current list",
@@ -342,22 +348,57 @@
 			"Rename": "Rename",
 			"Delete": "Delete",
 			"PleaseStandBy": "Please stand by",
-			"ConfigReference": "Config Reference",
-			"SaveClose": "Save & close",
-			"SaveRestart": "Save & restart",
 			"RenameFile": "Rename File",
 			"Name": "Name",
+			"UploadFile": "Upload File",
 			"Cancel": "Cancel",
 			"Create": "Create",
 			"CreateFile": "Create File",
+			"RefreshDirectory": "Refresh Directory",
 			"CreateDirectory": "Create Directory",
 			"RenameDirectory": "Rename Directory",
-            "DeleteDirectory": "Delete Directory",
-            "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+			"DeleteDirectory": "Delete Directory",
+			"DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
 			"Uploading": "Uploading",
 			"Filesize": "Filesize",
 			"LastModified": "Last modified"
 		},
+		"EndstopPanel": {
+			"Endstops": "Endstops",
+			"Endstop": "Endstop",
+			"TRIGGERED": "TRIGGERED",
+			"open": "OPEN",
+			"EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status."
+		},
+		"LimitsPanel": {
+			"MachineLimits": "Machine Limits",
+			"Velocity": "Velocity",
+			"Acceleration": "Acceleration",
+			"Deceleration": "Deceleration",
+			"SquareCornerVelocity": "Square corner velocity"
+		},
+		"LogfilesPanel": {
+			"Logfiles": "Logfiles"
+		},
+		"UpdatePanel": {
+			"UpdateManager": "Update Manager",
+			"CheckForUpdates": "Check for updates",
+			"System": "System",
+			"PackagesCanBeUpgraded": "packages can be upgraded",
+			"OSPackages": "OS-Packages",
+			"Commits": "Commits",
+			"CommittedAt": "committed at",
+			"UpToDate": "up-to-date",
+			"Detached": "detached",
+			"Update": "update",
+			"Upgrade": "upgrade",
+			"Dirty": "dirty",
+			"Invalid": "invalid",
+			"Unknown": "unknown",
+			"ERROR": "ERROR"
+		}
+	},
+	"Settings": {
 		"ConsolePanel": {
 			"Console": "Console",
 			"HideTemperatures": "Hide temperatures",
@@ -394,13 +435,6 @@
 			"ChartUpdateInterval": "Chart update interval",
 			"DatapointInterval": "Datapoint interval"
 		},
-		"EndstopPanel": {
-			"Endstops": "Endstops",
-			"Endstop": "Endstop",
-			"TRIGGERED": "TRIGGERED",
-			"open": "OPEN",
-			"EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status."
-		},
 		"GeneralPanel": {
 			"General": "General",
 			"PrinterName": "Printer Name",
@@ -412,16 +446,6 @@
 			"FactoryReset": "Factory reset",
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
-		},
-		"LimitsPanel": {
-			"MachineLimits": "Machine Limits",
-			"Velocity": "Velocity",
-			"Acceleration": "Acceleration",
-			"Deceleration": "Deceleration",
-			"SquareCornerVelocity": "Square corner velocity"
-		},
-		"LogfilesPanel": {
-			"Logfiles": "Logfiles"
 		},
 		"MacrosPanel": {
 			"Macros": "Macros",
@@ -446,23 +470,6 @@
 			"AddPrinter": "Add Printer",
 			"EditPrinter": "Edit Printer",
 			"UpdatePrinter": "Update Printer"
-		},
-		"UpdatePanel": {
-			"UpdateManager": "Update Manager",
-			"CheckForUpdates": "Check for updates",
-			"System": "System",
-			"PackagesCanBeUpgraded": "packages can be upgraded",
-			"OSPackages": "OS-Packages",
-			"Commits": "Commits",
-			"CommittedAt": "committed at",
-			"UpToDate": "up-to-date",
-			"Detached": "detached",
-			"Update": "update",
-			"Upgrade": "upgrade",
-			"Dirty": "dirty",
-			"Invalid": "invalid",
-			"Unknown": "unknown",
-			"ERROR": "ERROR"
 		},
 		"WebcamPanel": {
 			"Webcams": "Webcams",

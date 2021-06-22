@@ -43,6 +43,8 @@ import BaseMixin from "../mixins/base";
 export default class ZOffsetPanel extends Mixins(BaseMixin) {
 
     get displayPanel() {
+        if (!this.klippyIsConnected) return false
+
         return (['printing', 'paused'].includes(this.printer_state)) || (this.displayZOffsetStandby && ['standby', 'complete', 'cancelled'].includes(this.printer_state))
     }
 

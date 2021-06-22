@@ -8,7 +8,19 @@ export default class BaseMixin extends Vue {
         return this.$store.getters['socket/getUrl']
     }
 
+    get remoteMode() {
+        return this.$store.state.socket.remoteMode
+    }
+
+    get socketIsConnected(): boolean {
+        return this.$store.state.socket.isConnected ?? false
+    }
+
     get klippyIsConnected(): boolean {
+        return this.$store.state.server.klippy_connected ?? false
+    }
+
+    get isConnected(): boolean {
         return this.$store.state.socket.isConnected ?? false
     }
 
@@ -16,8 +28,12 @@ export default class BaseMixin extends Vue {
         return this.$store.state.server.klippy_state ?? ""
     }
 
+    get klipperReadyForGui(): boolean {
+        return (this.isConnected && this.klipperState === 'ready')
+    }
+
     get loadings(): string[] {
-        return this.$store.state.gui.loadings ?? []
+        return this.$store.state.socket.loadings ?? []
     }
 
     get printer_state(): string {

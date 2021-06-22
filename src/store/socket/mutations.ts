@@ -28,7 +28,9 @@ export const mutations: MutationTree<SocketState> = {
 	},
 
 	addLoading(state, payload) {
-		state.loadings.push(payload.name)
+		const loadings = state.loadings
+		loadings.push(payload.name)
+		Vue.set(state, 'loadings', loadings)
 	},
 
 	removeLoading(state, payload) {

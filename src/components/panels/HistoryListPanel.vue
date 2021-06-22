@@ -100,20 +100,24 @@
                                 <span>{{ item.status.replaceAll("_", " ") }}</span>
                             </v-tooltip>
                         </td>
-                        <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'start_time').visible">{{ item.start_time > 0 ? formatDate(item.start_time) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'end_time').visible">{{ item.end_time > 0 ? formatDate(item.end_time) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'estimated_time').visible">{{ 'estimated_time' in item.metadata && item.metadata.estimated_time ? formatPrintTime(item.metadata.estimated_time) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'print_duration').visible">{{ item.print_duration > 0 ? formatPrintTime(item.print_duration) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'total_duration').visible">{{ item.total_duration > 0 ? formatPrintTime(item.total_duration) : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'filament_total').visible">{{ 'filament_total' in item.metadata && item.metadata.filament_total ? item.metadata.filament_total+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'filament_used').visible">{{ item.filament_used ? item.filament_used.toFixed()+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_extr_temp').visible">{{ 'first_layer_extr_temp' in item.metadata && item.metadata.first_layer_extr_temp ? item.metadata.first_layer_extr_temp+' °C' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_bed_temp').visible">{{ 'first_layer_bed_temp' in item.metadata && item.metadata.first_layer_bed_temp ? item.metadata.first_layer_bed_temp+' °C' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_height').visible">{{ 'first_layer_height' in item.metadata && item.metadata.first_layer_height ? item.metadata.first_layer_height+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'layer_height').visible">{{ 'layer_height' in item.metadata && item.metadata.layer_height ? item.metadata.layer_height+' mm' : '--' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'object_height').visible">{{ 'object_height' in item.metadata && item.metadata.object_height ? item.metadata.object_height+' mm' : '--' }}</td>
+                        <td v-for="col in tableFields" v-bind:key="col.value" :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
+                            {{ outputValue(col, item) }}
+                        </td>
+
+<!--                        <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'start_time').visible">{{ item.start_time > 0 ? formatDate(item.start_time) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'end_time').visible">{{ item.end_time > 0 ? formatDate(item.end_time) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'estimated_time').visible">{{ 'estimated_time' in item.metadata && item.metadata.estimated_time ? formatPrintTime(item.metadata.estimated_time) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'print_duration').visible">{{ item.print_duration > 0 ? formatPrintTime(item.print_duration) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'total_duration').visible">{{ item.total_duration > 0 ? formatPrintTime(item.total_duration) : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'filament_total').visible">{{ 'filament_total' in item.metadata && item.metadata.filament_total ? item.metadata.filament_total+' mm' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'filament_used').visible">{{ item.filament_used ? item.filament_used.toFixed()+' mm' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_extr_temp').visible">{{ 'first_layer_extr_temp' in item.metadata && item.metadata.first_layer_extr_temp ? item.metadata.first_layer_extr_temp+' °C' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_bed_temp').visible">{{ 'first_layer_bed_temp' in item.metadata && item.metadata.first_layer_bed_temp ? item.metadata.first_layer_bed_temp+' °C' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_height').visible">{{ 'first_layer_height' in item.metadata && item.metadata.first_layer_height ? item.metadata.first_layer_height+' mm' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'layer_height').visible">{{ 'layer_height' in item.metadata && item.metadata.layer_height ? item.metadata.layer_height+' mm' : '&#45;&#45;' }}</td>
+                        <td class=" " v-if="headers.find(header => header.value === 'object_height').visible">{{ 'object_height' in item.metadata && item.metadata.object_height ? item.metadata.object_height+' mm' : '&#45;&#45;' }}</td>-->
                         <td class=" " v-if="headers.find(header => header.value === 'slicer').visible">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
                             <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version"><br />{{ item.metadata.slicer_version }}</small>
@@ -277,277 +281,401 @@
     </div>
 </template>
 
-<script>
-import {mapGetters, mapState} from 'vuex'
-import VueLoadImage from 'vue-load-image'
+<script lang="ts">
 
-    export default {
-        components: {
-            'vue-load-image': VueLoadImage
-        },
-        data() {
-            return {
-                boolAllData: false,
-                search: '',
-                sortBy: 'start_time',
-                sortDesc: true,
-                selected: [],
-                hideHeaderColums: [],
-                options: {
 
-                },
-                contextMenu: {
-                    shown: false,
-                    touchTimer: undefined,
-                    x: 0,
-                    y: 0,
-                    item: {}
-                },
-                detailsDialog: {
-                    item: {},
-                    boolShow: false,
-                }
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import {ServerHistoryStateJob} from "@/store/server/history/types";
+import { formatFilesize } from '@/plugins/helpers'
+
+@Component
+export default class HistoryListPanel extends Mixins(BaseMixin) {
+    formatFilesize = formatFilesize
+
+    private boolAllData = false
+    private search = ''
+    private sortBy = 'start_time'
+    private sortDesc = true
+    private selected = []
+    private hideHeaderColums = []
+    private options = { }
+    private contextMenu = {
+        shown: false,
+        touchTimer: undefined,
+        x: 0,
+        y: 0,
+        item: {}
+    }
+    private detailsDialog = {
+        item: {},
+        boolShow: false,
+    }
+
+    get jobs() {
+        return this.$store.state.server?.history?.jobs ?? []
+    }
+
+    get headers() {
+        const headers = [ {
+                text: '',
+                value: '',
+                align: 'left',
+                configable: false,
+                visible: true,
+                filterable: false
+            }, {
+                text: this.$t("History.Filename"),
+                value: 'filename',
+                align: 'left',
+                configable: false,
+                visible: true
+            }, {
+                text: '',
+                value: 'status',
+                align: 'left',
+                configable: false,
+                visible: true,
+                filterable: false
+            }, {
+                text: this.$t("History.Filesize"),
+                value: 'size',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'filesize'
+            }, {
+                text: this.$t("History.LastModified"),
+                value: 'modified',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'date'
+            }, {
+                text: this.$t("History.StartTime"),
+                value: 'start_time',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'date'
+            }, {
+                text: this.$t("History.EndTime"),
+                value: 'end_time',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'date'
+            }, {
+                text: this.$t("History.EstimatedTime"),
+                value: 'estimated_time',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'time'
+            }, {
+                text: this.$t("History.PrintTime"),
+                value: 'print_duration',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'time'
+            }, {
+                text: this.$t("History.TotalTime"),
+                value: 'total_duration',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'time'
+            }, {
+                text: this.$t("History.FilamentCalc"),
+                value: 'filament_total',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'length'
+            }, {
+                text: this.$t("History.FilamentUsed"),
+                value: 'filament_used',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'length'
+            }, {
+                text: this.$t("History.FirstLayerExtTemp"),
+                value: 'first_layer_extr_temp',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'temp'
+            }, {
+                text: this.$t("History.FirstLayerBedTemp"),
+                value: 'first_layer_bed_temp',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'temp'
+            }, {
+                text: this.$t("History.FirstLayerHeight"),
+                value: 'first_layer_height',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'length'
+            }, {
+                text: this.$t("History.LayerHeight"),
+                value: 'layer_height',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'length'
+            }, {
+                text: this.$t("History.ObjectHeight"),
+                value: 'object_height',
+                align: 'left',
+                configable: true,
+                visible: true,
+                outputType: 'length'
+            }, {
+                text: this.$t("History.Slicer"),
+                value: 'slicer',
+                align: 'left',
+                configable: true,
+                visible: true
+            },
+        ]
+
+        headers.forEach((header) => {
+            if (header.visible && this.hideColums.includes(header.value)) {
+                header.visible = false
+            } else if (!header.visible && !this.hideColums.includes(header.value)) {
+                header.visible = true
             }
-        },
-        computed: {
-            ...mapState({
-                jobs: state => state.server.history.jobs,
-            }),
-            ...mapGetters( {
-                is_printing: "is_printing",
-                getStatusIcon: "server/history/getPrintStatusChipIcon",
-                getStatusColor: "server/history/getPrintStatusChipColor",
-            }),
-            headers() {
-                const headers = [
-                    { text: '',                                     value: '',                align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t("History.Filename"),            value: 'filename',        align: 'left',  configable: false,  visible: true },
-                    { text: '',                                     value: 'status',          align: 'left',  configable: false,  visible: true, filterable: false },
-                    { text: this.$t("History.Filesize"),            value: 'size',            align: 'left',  configable: true,   visible: true },
-                    { text: this.$t("History.LastModified"),        value: 'modified',        align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.StartTime"),           value: 'start_time',      align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.EndTime"),             value: 'end_time',        align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.EstimatedTime"),       value: 'estimated_time',  align: 'left',  configable: true,  visible: true },
-                    { text: this.$t("History.PrintTime"),           value: 'print_duration',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.TotalTime"),           value: 'total_duration',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FilamentCalc"),        value: 'filament_total',  align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FilamentUsed"),        value: 'filament_used',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerExtTemp"),   value: 'first_layer_extr_temp',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerBedTemp"),   value: 'first_layer_bed_temp',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.FirstLayerHeight"),    value: 'first_layer_height',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.LayerHeight"),         value: 'layer_height',    align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.ObjectHeight"),        value: 'object_height',   align: 'left', configable: true,  visible: true },
-                    { text: this.$t("History.Slicer"),              value: 'slicer',          align: 'left', configable: true,  visible: true },
-                ]
+        })
 
-                headers.forEach((header) => {
-                    if (header.visible && this.hideColums.includes(header.value)) {
-                        header.visible = false
-                    } else if (!header.visible && !this.hideColums.includes(header.value)) {
-                        header.visible = true
-                    }
-                })
+        return headers
+    }
 
-                return headers
-            },
-            configHeaders() {
-                return this.headers.filter(header => header.configable === true)
-            },
-            filteredHeaders() {
-                return this.headers.filter(header => header.visible === true)
-            },
-            baseUrl: {
-                get: function() {
-                    return this.$store.getters["socket/getUrl"]
-                }
-            },
-            countPerPage: {
-                get: function() {
-                    return this.$store.state.gui.history.countPerPage
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { history: { countPerPage: newVal } })
-                }
-            },
-            hideColums: {
-                get: function() {
-                    return this.$store.state.gui.history.hideColums
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { history: { hideColums: newVal } })
-                }
-            },
-        },
-        methods: {
-            refreshHistory: function() {
-                this.$socket.sendObj('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
-            },
-            formatDate(date) {
-                let tmp2 = new Date(date*1000)
+    get tableFields() {
+        return this.filteredHeaders.filter((col: any) => !['filename', 'status', 'slicer'].includes(col.value) && col.value !== '')
+    }
 
-                return tmp2.toLocaleString().replace(',', '')
-            },
-            formatFilesize(fileSizeInBytes) {
-                let i = -1
-                let byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
-                do {
-                    fileSizeInBytes = fileSizeInBytes / 1024
-                    i++
-                } while (fileSizeInBytes > 1024)
+    get configHeaders() {
+        return this.headers.filter((header: any) => header.configable === true)
+    }
 
-                return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i]
-            },
-            formatPrintTime(totalSeconds) {
-                if (totalSeconds) {
-                    let output = ""
+    get filteredHeaders() {
+        return this.headers.filter((header: any) => header.visible === true)
+    }
 
-                    let days = Math.floor(totalSeconds / (3600 * 24))
-                    if (days) {
-                        totalSeconds %= (3600 * 24)
-                        output += days+"d"
-                    }
+    get countPerPage() {
+        return this.$store.state.gui.history.countPerPage
+    }
 
-                    let hours = Math.floor(totalSeconds / 3600)
-                    totalSeconds %= 3600
-                    if (hours) output += " "+hours+"h"
+    set countPerPage(newVal) {
+        this.$store.dispatch("gui/saveSetting", { name: 'history.countPerPage', value: newVal })
+    }
 
-                    let minutes = Math.floor(totalSeconds / 60)
-                    if (minutes) output += " "+minutes+"m"
+    get hideColums() {
+        return this.$store.state.gui.history.hideColums
+    }
 
-                    let seconds = totalSeconds % 60
-                    if (seconds) output += " "+seconds.toFixed(0)+"s"
+    set hideColums(newVal) {
+        this.$store.dispatch("gui/saveSetting", { name: 'history.hideColums', value: newVal })
+    }
 
-                    return output
-                }
+    refreshHistory() {
+        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
+    }
 
-                return '--'
-            },
-            clickRow(item) {
-                this.detailsDialog.item = item
-                this.detailsDialog.boolShow = true
-            },
-            showContextMenu (e, item) {
-                if (!this.contextMenu.shown) {
-                    e?.preventDefault();
-                    this.contextMenu.shown = true
-                    this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
-                    this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
-                    this.contextMenu.item = item
-                    this.$nextTick(() => {
-                        this.contextMenu.shown = true
-                    })
-                }
-            },
-            sortFiles(items, sortBy, sortDesc) {
-                sortBy = sortBy.length ? sortBy[0] : 'filename';
-                sortDesc = sortDesc[0];
+    formatDate(date: number) {
+        const tmp2 = new Date(date*1000)
 
-                if (items !== undefined) {
-                    // Sort by index
-                    items.sort(function(a, b) {
-                        if (a[sortBy] === b[sortBy]) {
-                            return 0;
-                        }
-                        if (a[sortBy] === null || a[sortBy] === undefined) {
-                            return -1;
-                        }
-                        if (b[sortBy] === null || b[sortBy] === undefined) {
-                            return 1;
-                        }
-                        if (a[sortBy].constructor === String && b[sortBy].constructor === String) {
-                            return a[sortBy].localeCompare(b[sortBy], undefined, { sensivity: 'base' });
-                        }
-                        if (a[sortBy] instanceof Array && b[sortBy] instanceof Array) {
-                            const reducedA = a[sortBy].length ? a.filament.reduce((a, b) => a + b) : 0;
-                            const reducedB = b[sortBy].length ? b.filament.reduce((a, b) => a + b) : 0;
-                            return reducedA - reducedB;
-                        }
-                        return a[sortBy] - b[sortBy];
-                    });
+        return tmp2.toLocaleString().replace(',', '')
+    }
 
-                    // Deal with descending order
-                    if (sortDesc) items.reverse()
-                }
-                return items;
-            },
-            advancedSearch: function(value, search) {
-                return value != null &&
-                    search != null &&
-                    typeof value === 'string' &&
-                    value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
-            },
-            changeColumnVisible: function(name) {
-                if (this.headers.filter(header => header.value === name).length) {
-                    let value = this.headers.filter(header => header.value === name)[0].visible;
+    formatPrintTime(totalSeconds: number) {
+        if (totalSeconds) {
+            let output = ""
 
-                    this.$store.dispatch("gui/setHistoryColumns", {name: name, value: value});
-                }
-            },
-            startPrint(item) {
-                if (item.exists) this.$socket.sendObj('printer.print.start', { filename: item.filename }, 'switchToDashboard')
-            },
-            deleteJob(item) {
-                this.$socket.sendObj('server.history.delete_job', { uid: item.job_id }, 'server/history/getDeletedJobs')
-            },
-            getSmallThumbnail(item) {
-                if (
-                    'metadata' in item &&
-                    'thumbnails' in item.metadata &&
-                    item.metadata.thumbnails.length
-                ) {
-                    const thumbnail = item.metadata.thumbnails.find(thumb =>
-                        thumb.width >= 32 && thumb.width <= 64 &&
-                        thumb.height >= 32 && thumb.height <= 64
-                    )
-
-                    let relative_url = ""
-                    if (item.filename.lastIndexOf("/") !== -1) {
-                        relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
-                    }
-
-                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                }
-
-                return false
-            },
-            getBigThumbnail(item) {
-                if (
-                    'metadata' in item &&
-                    'thumbnails' in item.metadata &&
-                    item.metadata.thumbnails.length
-                ) {
-                    const thumbnail = item.metadata.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
-
-                    let relative_url = ""
-                    if (item.filename.lastIndexOf("/") !== -1) {
-                        relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
-                    }
-
-                    if (thumbnail && 'relative_path' in thumbnail) return this.baseUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
-                }
-
-                return false
-            },
-            getThumbnailWidth(item) {
-                if (this.getBigThumbnail(item)) {
-                    const thumbnail = item.metadata.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
-
-                    if (thumbnail) return thumbnail.width
-                }
-
-                return 400
-            },
-        },
-        watch: {
-            hideColums: function(newVal) {
-                this.headers.forEach((header) => {
-                    if (header.visible && newVal.includes(header.value)) {
-                        header.visible = false
-                    } else if (!header.visible && !newVal.includes(header.value)) {
-                        header.visible = true
-                    }
-                })
+            const days = Math.floor(totalSeconds / (3600 * 24))
+            if (days) {
+                totalSeconds %= (3600 * 24)
+                output += days+"d"
             }
+
+            const hours = Math.floor(totalSeconds / 3600)
+            totalSeconds %= 3600
+            if (hours) output += " "+hours+"h"
+
+            const minutes = Math.floor(totalSeconds / 60)
+            if (minutes) output += " "+minutes+"m"
+
+            const seconds = totalSeconds % 60
+            if (seconds) output += " "+seconds.toFixed(0)+"s"
+
+            return output
+        }
+
+        return '--'
+    }
+    
+    clickRow(item: ServerHistoryStateJob) {
+        this.detailsDialog.item = item
+        this.detailsDialog.boolShow = true
+    }
+    
+    showContextMenu (e: any, item: ServerHistoryStateJob) {
+        if (!this.contextMenu.shown) {
+            e?.preventDefault();
+            this.contextMenu.shown = true
+            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
+            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+            this.contextMenu.item = item
+            this.$nextTick(() => {
+                this.contextMenu.shown = true
+            })
         }
     }
+
+    sortFiles(items: any[], sortBy: string[], sortDesc: boolean[]) {
+        const sortByClean = sortBy.length ? sortBy[0] : 'filename';
+        const sortDescClean = sortDesc[0];
+
+        if (items !== undefined) {
+            // Sort by index
+            items.sort(function(a, b) {
+                if (a[sortByClean] === b[sortByClean]) return 0
+                if (a[sortByClean] === null || a[sortByClean] === undefined) return -1
+                if (b[sortByClean] === null || b[sortByClean] === undefined) return 1
+
+                if (a[sortByClean].constructor === String && b[sortByClean].constructor === String) {
+                    return a[sortByClean].localeCompare(b[sortByClean], undefined, { sensivity: 'base' });
+                }
+
+                if (a[sortByClean] instanceof Array && b[sortByClean] instanceof Array) {
+                    const reducedA = a[sortByClean].length ? a.filament.reduce((a: any, b: any) => a + b) : 0;
+                    const reducedB = b[sortByClean].length ? b.filament.reduce((a: any, b: any) => a + b) : 0;
+                    return reducedA - reducedB;
+                }
+
+                return a[sortByClean] - b[sortByClean]
+            })
+
+            // Deal with descending order
+            if (sortDescClean) items.reverse()
+        }
+
+        return items
+    }
+
+    advancedSearch(value: string, search: string) {
+        return value != null &&
+            search != null &&
+            value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
+    }
+
+    getSmallThumbnail(item: ServerHistoryStateJob) {
+        if (
+            'metadata' in item &&
+            'thumbnails' in item.metadata &&
+            item.metadata.thumbnails.length
+        ) {
+            const thumbnail = item.metadata.thumbnails.find((thumb: any) =>
+                thumb.width >= 32 && thumb.width <= 64 &&
+                thumb.height >= 32 && thumb.height <= 64
+            )
+
+            let relative_url = ""
+            if (item.filename.lastIndexOf("/") !== -1) {
+                relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+            }
+
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+        }
+
+        return false
+    }
+
+    getBigThumbnail(item: ServerHistoryStateJob) {
+        if (
+            'metadata' in item &&
+            'thumbnails' in item.metadata &&
+            item.metadata.thumbnails.length
+        ) {
+            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+
+            let relative_url = ""
+            if (item.filename.lastIndexOf("/") !== -1) {
+                relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+            }
+
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+        }
+
+        return false
+    }
+
+    getThumbnailWidth(item: ServerHistoryStateJob) {
+        if (this.getBigThumbnail(item)) {
+            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail) return thumbnail.width
+        }
+
+        return 400
+    }
+
+    changeColumnVisible(name: string) {
+        if (this.headers.filter(header => header.value === name).length) {
+            let value = this.headers.filter(header => header.value === name)[0].visible;
+
+            this.$store.dispatch("gui/setHistoryColumns", {name: name, value: value});
+        }
+    }
+
+    startPrint(item: ServerHistoryStateJob) {
+        if (item.exists) this.$socket.emit('printer.print.start', { filename: item.filename }, 'switchToDashboard')
+    }
+
+    deleteJob(item: ServerHistoryStateJob) {
+        this.$socket.emit('server.history.delete_job', { uid: item.job_id }, 'server/history/getDeletedJobs')
+    }
+
+    getStatusIcon(status: string) {
+        return this.$store.getters["server/history/getPrintStatusChipIcon"](status)
+    }
+
+    getStatusColor(status: string) {
+        return this.$store.getters["server/history/getPrintStatusChipColor"](status)
+    }
+
+    outputValue(col: any, item: any) {
+        let value = col.value in item ? item[col.value] : null
+        if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
+
+        if (value > 0) {
+            switch(col.outputType) {
+                case 'filesize':
+                    return formatFilesize(value)
+
+                case 'date':
+                    return this.formatDate(value)
+
+                case 'time':
+                    return this.formatPrintTime(value)
+
+                case 'temp':
+                    return value.toFixed()+" °C"
+
+                case 'length':
+                    if (value > 1000) return (value / 1000).toFixed(2)+" m"
+
+                    return value.toFixed(2)+" mm"
+
+                default:
+                    return value
+            }
+        } else return '--'
+    }
+}
 </script>

@@ -9,6 +9,7 @@ import {
 	FileState,
 	FileStateFile
 } from "@/store/files/types";
+import {allowedMetadata} from "@/store/variables";
 
 export const mutations: MutationTree<FileState> = {
 	reset(state) {
@@ -30,37 +31,21 @@ export const mutations: MutationTree<FileState> = {
 	},
 
 	setMetadata(state, payload) {
-		let filename = "gcodes/"+payload.filename;
-		const dirArray = filename.split("/");
-		filename = dirArray[dirArray.length-1];
-		const path = findDirectory(state.filetree, dirArray);
+		let filename = "gcodes/"+payload.filename
+		const dirArray = filename.split("/")
+		filename = dirArray[dirArray.length-1]
+		const path = findDirectory(state.filetree, dirArray)
 
-		const index = path?.findIndex((element: FileStateFile) => element.filename === filename);
-		if (index !== undefined && index >= 0 && path && path[index]) {
+		const fileIndex = path?.findIndex((element: any) => element.filename === filename)
+		if (path && fileIndex && fileIndex !== -1) {
+			const currentFile = path[fileIndex] as any
+			allowedMetadata.forEach((key: string) => {
+				if (key in payload) currentFile[key] = payload[key]
+			})
+			currentFile.metadataPulled = true
 
-			const safeDefault = (value: string | number, def = undefined) => value ? value : def;
-			const newData = {
-				estimated_time: safeDefault(payload.estimated_time),
-				filament_total: safeDefault(payload.filament_total),
-				filament_weight_total: safeDefault(payload.filament_weight_total),
-				first_layer_height: safeDefault(payload.first_layer_height),
-				first_layer_bed_temp: safeDefault(payload.first_layer_bed_temp),
-				first_layer_extr_temp: safeDefault(payload.first_layer_extr_temp),
-				gcode_start_byte: safeDefault(payload.gcode_start_byte),
-				gcode_end_byte: safeDefault(payload.gcode_end_byte),
-				layer_height: safeDefault(payload.layer_height),
-				object_height: safeDefault(payload.object_height),
-				slicer: safeDefault(payload.slicer),
-				slicer_version: safeDefault(payload.slicer_version),
-				thumbnails: safeDefault(payload.thumbnails),
-				metadataPulled: true,
-				modified: new Date(payload.modified * 1000),
-				size: parseInt(payload.size),
-			}
-
-			const newObject = Object.assign(path[index], newData)
-			path[index] = newObject
-		}
+			Vue.set(path, fileIndex, currentFile)
+		} else window.console.error("file not found in filetree: "+payload.filename)
 	},
 
 	setCreateFile(state, payload) {
@@ -93,21 +78,34 @@ export const mutations: MutationTree<FileState> = {
 	},
 
 	setMoveFile(state, payload) {
-		const filenameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1)
-		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1)
+		let filenameOld = payload.source_item.path
+		let pathnameOld = payload.source_item.root
 
-		const filenameNew = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
-		let newPath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
+		const lastSlashOld = payload.source_item.path.lastIndexOf("/")
+		if (lastSlashOld !== -1) {
+			filenameOld = payload.source_item.path.substr(lastSlashOld + 1)
+			pathnameOld = payload.source_item.root+"/"+payload.source_item.path.substr(0, lastSlashOld + 1)
+		}
 
-		oldPath = findDirectory(state.filetree, (payload.source_item.root+"/"+oldPath).split("/"))
-		const indexFile = oldPath.findIndex((element: FileStateFile) => element.filename === filenameOld)
+		let filenameNew = payload.item.path
+		let pathnameNew = payload.item.root
 
-		if (indexFile >= 0 && oldPath[indexFile]) {
-			const file = oldPath.splice(indexFile, 1)[0]
+		const lastSlashNew = payload.item.path.lastIndexOf("/")
+		if (lastSlashNew !== -1) {
+			filenameNew = payload.item.path.substr(lastSlashNew + 1)
+			pathnameNew = payload.item.root+"/"+payload.item.path.substr(0, lastSlashNew + 1)
+		}
+
+		const pathOld = findDirectory(state.filetree, pathnameOld.split("/"))
+		const indexFile = pathOld?.findIndex((element: FileStateFile) => element.filename === filenameOld)
+
+		if (indexFile && pathOld && pathOld[indexFile]) {
+			const file = pathOld.splice(indexFile, 1)[0]
 			file.filename = filenameNew
 
 			//cleanup thumbnails and force reload
 			if (
+				pathnameOld !== pathnameNew &&
 				'metadataPulled' in file &&
 				file.metadataPulled &&
 				'thumbnails' in file
@@ -116,16 +114,22 @@ export const mutations: MutationTree<FileState> = {
 				delete file.thumbnails
 			}
 
-			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"))
-			newPath.push(file)
+			const newPath = findDirectory(state.filetree, pathnameNew.split("/"))
+			newPath?.push(file)
 		}
 	},
 
 	setModifyFile(state, payload) {
-		const filename = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
-		const filepath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
+		let filename = payload.item.path
+		let filepath = payload.item.root
 
-		const path = findDirectory(state.filetree, (payload.item.root+"/"+filepath).split("/"))
+		const lastSlash = payload.item.path.lastIndexOf("/")
+		if (lastSlash !== -1) {
+			filename = payload.item.path.substr(lastSlash + 1)
+			filepath = payload.item.root+"/"+payload.item.path.substr(0, lastSlash + 1)
+		}
+
+		const path = findDirectory(state.filetree, filepath.split("/"))
 		const indexFile = path?.findIndex((element: FileStateFile) => element.filename === filename)
 
 		if (indexFile !== undefined && indexFile > -1 && path && path[indexFile]) {
@@ -145,21 +149,33 @@ export const mutations: MutationTree<FileState> = {
 	},
 
 	setMoveDir(state, payload) {
-		const dirnameOld = payload.source_item.path.substr(payload.source_item.path.lastIndexOf("/")+1)
-		let oldPath = payload.source_item.path.substr(0, payload.source_item.path.lastIndexOf("/") + 1)
+		let dirnameOld = payload.source_item.path
+		let pathnameOld = payload.source_item.root
 
-		const dirnameNew = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1)
-		let newPath = payload.item.path.substr(0, payload.item.path.lastIndexOf("/") + 1)
+		const lastSlashOld = payload.source_item.path.lastIndexOf("/")
+		if (lastSlashOld !== -1) {
+			dirnameOld = payload.source_item.path.substr(lastSlashOld + 1)
+			pathnameOld = payload.source_item.root+"/"+payload.source_item.path.substr(0, lastSlashOld + 1)
+		}
 
-		oldPath = findDirectory(state.filetree, (payload.source_item.root+"/"+oldPath).split("/"))
-		const indexDir = oldPath?.findIndex((element: FileStateFile) => element.filename === dirnameOld)
+		let dirnameNew = payload.item.path
+		let pathnameNew = payload.item.root
 
-		if (indexDir >= 0 && oldPath[indexDir]) {
-			const dir = oldPath.splice(indexDir, 1)[0]
+		const lastSlashNew = payload.item.path.lastIndexOf("/")
+		if (lastSlashNew !== -1) {
+			dirnameNew = payload.item.path.substr(lastSlashNew + 1)
+			pathnameNew = payload.item.root+"/"+payload.item.path.substr(0, lastSlashNew + 1)
+		}
+
+		const pathOld = findDirectory(state.filetree, pathnameOld.split("/"))
+		const indexDir = pathOld?.findIndex((element: FileStateFile) => element.filename === dirnameOld)
+
+		if (indexDir !== undefined && pathOld && pathOld[indexDir]) {
+			const dir = pathOld.splice(indexDir, 1)[0]
 			dir.filename = dirnameNew
 
-			newPath = findDirectory(state.filetree, (payload.item.root+"/"+newPath).split("/"))
-			newPath.push(dir)
+			const pathNew = findDirectory(state.filetree, pathnameNew.split("/"))
+			pathNew?.push(dir)
 		}
 	},
 

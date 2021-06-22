@@ -46,7 +46,7 @@ export const readOnlyRoots = [
 export const initableServerComponents = [
 	'history',
 	'power',
-	'update_manager',
+	'updateManager',
 ]
 
 export const checkKlipperConfigModules = [
@@ -56,4 +56,23 @@ export const checkKlipperConfigModules = [
 	'gcode_macro pause',
 	'gcode_macro resume',
 	'gcode_macro cancel_print',
+]
+
+export const allowedMetadata = [
+	'estimated_time',
+	'filament_total',
+	'filament_weight_total',
+	'first_layer_bed_temp',
+	'first_layer_extr_temp',
+	'first_layer_height',
+	'gcode_end_byte',
+	'gcode_start_byte',
+	'job_id',
+	'layer_height',
+	'object_height',
+	'print_start_time',
+	'size',
+	'slicer',
+	'slicer_version',
+	'thumbnails',
 ]

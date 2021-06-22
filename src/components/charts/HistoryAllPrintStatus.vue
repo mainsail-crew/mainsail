@@ -1,97 +1,96 @@
 <template>
-    <div id="historyAllPrintStatus" style="height: 250px; width: 100%;" v-observe-visibility="visibilityChanged"></div>
+    <ECharts
+        ref="historyAllPrintStatus"
+        :option="chartOptions"
+        :init-options="{ renderer: 'svg' }"
+        style="height: 250px; width: 100%;"
+        v-observe-visibility="visibilityChanged"
+    ></ECharts>
 </template>
 
-<script>
-import { mapState } from 'vuex'
-import * as echarts from 'echarts'
+<script lang="ts">
 
-export default {
+import Component from "vue-class-component";
+import {createComponent} from "echarts-for-vue";
+import * as echarts from "echarts";
+import {Mixins, Watch} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import {ECharts} from "echarts/core";
+
+@Component({
     components: {
+        ECharts: createComponent({ echarts }),
+    }
+})
+export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
 
-    },
-    data: function() {
-        return {
-            chart : null,
-            chartOptions: {
-                darkMode: true,
-                animation: false,
-                grid: {
-                    top: 10,
-                    right: 0,
-                    bottom: 0,
-                    left: 10,
-                },
-                tooltip: {
-                    trigger: 'item',
-                    borderWidth: 0,
-                },
-                series: [{
-                    type: 'pie',
-                    data: [],
-                    //radius: '50%',
-                    avoidLabelOverlap: false,
-                    radius: ['35%', '60%'],
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
-                }]
+    $refs!: {
+        historyAllPrintStatus: any
+    }
 
-            },
-        }
-    },
-    computed: {
-        ...mapState({
-
-        }),
-        getAllPrintStatusArray: {
-            get: function() {
-                return this.$store.getters["server/history/getAllPrintStatusArray"]
+    private chartOptions: any = {
+        darkMode: true,
+        animation: false,
+        grid: {
+            top: 10,
+            right: 0,
+            bottom: 0,
+            left: 10,
+        },
+        tooltip: {
+            trigger: 'item',
+            borderWidth: 0,
+        },
+        series: [{
+            type: 'pie',
+            data: [],
+            avoidLabelOverlap: false,
+            radius: ['35%', '60%'],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
             }
-        },
-    },
-    methods: {
-        visibilityChanged (isVisible) {
-            if(isVisible && this.chart !== null) this.chart.resize()
-        },
-        createChart() {
-            if (document.getElementById("historyAllPrintStatus") && this.chart === null) {
-                this.chart = echarts.init(document.getElementById("historyAllPrintStatus"), null, { renderer: 'svg' })
-                this.chart.setOption(this.chartOptions)
-                this.updateChart()
-            } else
-                setTimeout(() => {
-                    this.createChart()
-                }, 500)
-        },
-        updateChart() {
-            if (this.chart) {
-                const chartOptions = { series: this.chartOptions.series }
-                chartOptions.series[0].data = this.getAllPrintStatusArray
-                this.chart.setOption(chartOptions)
-                this.chart.resize()
+        }]
+    }
+
+    get allPrintStatusArray() {
+        return this.$store.getters["server/history/getAllPrintStatusArray"]
+    }
+
+    get chart (): ECharts | null {
+        const historyAllPrintStatus = this.$refs.historyAllPrintStatus
+        return historyAllPrintStatus?.inst ?? null
+    }
+
+    mounted() {
+        this.chartOptions.series[0].data = this.allPrintStatusArray
+        this.chart?.setOption(this.chartOptions)
+
+        window.addEventListener('resize', this.eventListenerResize)
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    @Watch('allPrintStatusArray')
+    allPrintStatusArrayChanged(newVal: any) {
+        this.chart?.setOption({
+            series: {
+                data: newVal
             }
-        },
-    },
-    created() {
-        window.addEventListener('resize', () => {
-            if (this.chart) this.chart.resize()
         })
-    },
-    mounted: function() {
-        this.createChart()
-    },
-    watch: {
-        getAllPrintStatusArray: {
-            deep: true,
-            handler() {
-                this.updateChart()
-            }
-        },
+    }
+
+    visibilityChanged (isVisible: boolean) {
+        if (isVisible) this.chart?.resize()
+    }
+
+    eventListenerResize(event: Event) {
+        this.chart?.resize()
     }
 }
 </script>

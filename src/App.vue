@@ -28,9 +28,8 @@
                 </v-container>
             </v-scroll-y-transition>
         </v-main>
-
-        <!--        <select-printer-dialog v-if="remoteMode"></select-printer-dialog>-->
-        <the-connecting-dialog v-if="!remoteMode"></the-connecting-dialog>
+        <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
+        <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
     </v-app>
 </template>
@@ -43,9 +42,11 @@ import TheTopbar from "@/components/TheTopbar.vue";
 import {Mixins,Watch} from "vue-property-decorator";
 import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
 import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
+import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
 
 @Component({
     components: {
+        TheSelectPrinterDialog,
         TheConnectingDialog,
         TheUpdateDialog,
         TheTopbar,

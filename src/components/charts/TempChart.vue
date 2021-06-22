@@ -3,7 +3,7 @@
         ref="tempchart"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%;"
+        style="height: 250px; width: 100%; overflow: auto;"
         v-observe-visibility="visibilityChanged"
     ></ECharts>
 </template>
@@ -19,7 +19,6 @@ import {PrinterTempHistoryStateSerie} from "@/store/printer/tempHistory/types";
 import { createComponent } from 'echarts-for-vue';
 import * as echarts from 'echarts';
 import {ECharts} from "echarts/core";
-import { EChartsOption } from "echarts";
 
 @Component({
     components: {

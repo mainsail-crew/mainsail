@@ -9,6 +9,7 @@ import {
 } from "@/store/files/types"
 import {findDirectory} from "@/plugins/helpers"
 import {RootState} from "@/store/types";
+import i18n from "@/plugins/i18n";
 
 export const actions: ActionTree<FileState, RootState> = {
 	reset({ commit }) {
@@ -122,50 +123,88 @@ export const actions: ActionTree<FileState, RootState> = {
 		commit('printer/setData', { current_file: payload }, { root: true });
 	},
 
-	getMove({ commit }, payload) {
-		if (payload.error) {
-			Vue.$toast.error(payload.error.message);
-		} else if (payload.result === "ok") {
-			const filename = payload.requestParams.dest.substr(payload.requestParams.dest.lastIndexOf("/")).replace("/", "");
-			const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf("/"));
-			const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf("/"));
+	filelist_changed({ commit, dispatch }, payload) {
+		switch(payload.action) {
+			case 'create_file':
+				commit('setCreateFile', payload)
+				break
 
-			if (sourceDir === destDir) Vue.$toast.success("Successfully renamed "+filename);
-			else Vue.$toast.success("Successfully moved "+filename);
-			commit('void', null, { root: true });
+			case 'move_file':
+				commit('setMoveFile', payload)
+				break
+
+			case 'delete_file':
+				commit('setDeleteFile', payload)
+				break
+
+			case 'modify_file':
+				commit('setModifyFile', payload)
+				break
+
+			case 'create_dir':
+				commit('setCreateDir', payload)
+				break
+
+			case 'move_dir':
+				commit('setMoveDir', payload)
+				break
+
+			case 'delete_dir':
+				commit('setDeleteDir', payload)
+				break
+
+			case 'root_update':
+				dispatch('server/addRootDirectory', payload, { root: true })
+				commit('setRootUpdate', payload)
+				break
+
+			default:
+				window.console.error("Unknown filelist_changed action: "+payload.action)
+				break
 		}
 	},
 
-	getCreateDir({ commit }, payload) {
+	getMove(_, payload) {
 		if (payload.error) {
-			Vue.$toast.error(payload.error.message);
-		} else if (payload.result === "ok") {
-			const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf("/")+1);
+			Vue.$toast.error(payload.error.message)
+		} else {
+			const filename = payload.requestParams.dest.substr(payload.requestParams.dest.lastIndexOf("/")).replace("/", "")
+			const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf("/"))
+			const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf("/"))
 
-			Vue.$toast.success("Successfully created "+newPath);
-			commit('void', null, { root: true });
+
+			if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t("Files.SuccessfullyRenamed", {filename}))
+			else Vue.$toast.success(<string>i18n.t("Files.SuccessfullyMoved", {filename}))
 		}
 	},
 
-	getDeleteDir({ commit }, payload) {
+	getCreateDir(_, payload) {
 		if (payload.error) {
 			Vue.$toast.error(payload.error.message);
-		} else if (payload.result === "ok") {
+		} else {
+			const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf("/")+1)
+
+			Vue.$toast.success(<string>i18n.t("Files.SuccessfullyCreated", {filename: newPath}))
+		}
+	},
+
+	getDeleteDir(_, payload) {
+		if (payload.error) {
+			Vue.$toast.error(payload.error.message);
+		} else {
 			const delPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf("/")+1);
 
-			Vue.$toast.success("Successfully deleted "+delPath);
-			commit('void', null, { root: true });
+			Vue.$toast.success(<string>i18n.t("Files.SuccessfullyDeleted", {filename: delPath}))
 		}
 	},
 
-	getDeleteFile({ commit }, payload) {
+	getDeleteFile(_, payload) {
 		if (payload.error) {
 			Vue.$toast.error(payload.error.message);
-		} else if ('result' in payload) {
-			const delPath = payload.result.substr(payload.result.lastIndexOf("/")+1);
+		} else {
+			const delPath = payload.item.path.substr(payload.item.path.lastIndexOf("/")+1);
 
-			Vue.$toast.success("Successfully deleted "+delPath);
-			commit('void', null, { root: true });
+			Vue.$toast.success(<string>i18n.t("Files.SuccessfullyDeleted", {filename: delPath}))
 		}
 	},
 }

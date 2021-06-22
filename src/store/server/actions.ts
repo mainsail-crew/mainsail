@@ -36,7 +36,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 		if ('plugins' in payload) delete payload.plugins
 		if ('failed_plugins' in payload) delete payload.failed_plugins
 
-		if (payload.components.length) {
+		if (payload.components?.length) {
 			payload.components.forEach((component: string) => {
 				component = camelize(component)
 				if (initableServerComponents.includes(component)) {

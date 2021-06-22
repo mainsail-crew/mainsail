@@ -52,35 +52,5 @@ export default class PageDashboard extends Mixins(BaseMixin) {
     get showDashboardWebcam() {
         return this.$store.state.gui.dashboard.boolWebcam
     }
-
 }
-
-/*
-
-    export default {
-        computed: {
-            ...mapState({
-                socket_connected: state => state.socket.isConnected,
-                klippy_connected: state => state.server.klippy_connected,
-                klippy_state: state => state.server.klippy_state,
-                moonrakerFailedComponents: state => state.server.failed_components,
-                moonrakerWarnings: state => state.server.warnings,
-
-                showDashboardWebcam: state => state.gui.dashboard.boolWebcam,
-                showDashboardConsole: state => state.gui.dashboard.boolConsole,
-                config: state => state.printer.configfile.config,
-            }),
-            displayToolsPanel: {
-                get() {
-                    return (
-                        this.$store.state.socket.isConnected &&
-                        this.$store.state.server.klippy_connected &&
-                        'heaters' in this.$store.state.printer &&
-                        'available_heaters' in this.$store.state.printer.heaters &&
-                        this.$store.state.printer.heaters.available_heaters.length
-                    )
-                }
-            }
-        },
-    }*/
 </script>

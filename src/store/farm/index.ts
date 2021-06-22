@@ -85,6 +85,10 @@ export const farm: Module<FarmState, RootState> = {
 				dispatch("gui/setSettings", { remote_printers: printers }, { root: true })
 			}
 		},
+		addPrinter({ dispatch }, payload) {
+			dispatch('registerPrinter', payload)
+			dispatch('savePrinters', payload)
+		},
 		registerPrinter({ state, commit, dispatch }, payload) {
 			if ('hostname' in payload && payload.hostname !== "") {
 				const printerExist = Object.entries(state).findIndex((printer) =>
@@ -103,6 +107,19 @@ export const farm: Module<FarmState, RootState> = {
 					dispatch('farm/'+nextPrinterName+'/connect', {}, { root: true })
 				}
 			}
+		},
+		updatePrinter({ dispatch, commit }, payload) {
+			commit(payload.namespace+"/setSocketData", {
+				hostname: payload.hostname,
+				port: payload.port,
+				isConnecting: true,
+			})
+			dispatch(payload.namespace+"/reconnect")
+			dispatch("savePrinters")
+		},
+		removePrinter({ dispatch }, payload) {
+			dispatch('unregisterPrinter', payload)
+			dispatch('savePrinters', payload)
 		},
 		unregisterPrinter({ state }, payload) {
 			if (payload.name in state) {
