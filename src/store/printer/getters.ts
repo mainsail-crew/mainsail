@@ -375,19 +375,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		return caseInsensitiveSort(sensors, 'name')
 	},
 
-	getBedMeshProfiles: state => {
-		const profiles: PrinterStateBedMesh[] = [];
-		let currentProfile = "";
-		if (state.bed_mesh) {
-			currentProfile = state.bed_mesh.profile_name;
-		}
+	getBedMeshProfiles: (state) => {
+		const profiles: PrinterStateBedMesh[] = []
+		let currentProfile = ""
+		if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
 
-		Object.keys(state.configfile.config).forEach((key: string) => {
-			// eslint-disable-next-line
-			const value: any = state.configfile.config[key]
-			const nameSplit = key.split(" ");
+		if (state.configfile?.settings) {
+			Object.keys(state.configfile.settings).filter((key) => key.startsWith('bed_mesh ')).forEach((key: string) => {
+				// eslint-disable-next-line
+				const value: any = state.configfile.settings[key]
+				const nameSplit = key.split(" ")
 
-			if (nameSplit.length > 1 && nameSplit[0] === "bed_mesh" && nameSplit[1] !== undefined) {
 				const points: number[] = []
 				value.points.split("\n").forEach((row: string) => {
 					if (row !== "") {
@@ -409,8 +407,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
 					variance: Math.abs(min - max),
 					is_active: (currentProfile === nameSplit[1]),
 				})
-			}
-		})
+			})
+		}
 
 		return caseInsensitiveSort(profiles, 'name')
 	},

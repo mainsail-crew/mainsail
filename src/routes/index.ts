@@ -40,7 +40,7 @@ const routes: AppRoute[] = [
         alwaysShow: true,
 		showInNavi: true,
     },*/
-    /*{
+    {
         title: "Heightmap",
         path: '/heightmap',
         icon: 'grid',
@@ -48,7 +48,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
 		showInNavi: true,
 		klipperComponent: 'bed_mesh',
-    },*/
+    },
     {
         title: "G-Code Files",
         path: '/files',

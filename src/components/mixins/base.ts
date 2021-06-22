@@ -20,16 +20,16 @@ export default class BaseMixin extends Vue {
         return this.$store.state.server.klippy_connected ?? false
     }
 
-    get isConnected(): boolean {
-        return this.$store.state.socket.isConnected ?? false
-    }
-
     get klipperState(): string {
         return this.$store.state.server.klippy_state ?? ""
     }
 
     get klipperReadyForGui(): boolean {
-        return (this.isConnected && this.klipperState === 'ready')
+        return (this.socketIsConnected && this.klipperState === 'ready')
+    }
+
+    get printerIsPrinting() {
+        return (this.klipperReadyForGui && ['printing', 'paused'].includes(this.printer_state))
     }
 
     get loadings(): string[] {

@@ -133,6 +133,7 @@
 	},
 	"Heightmap": {
 		"Heightmap": "Heightmap",
+		"NoProfile": "No profile available",
 		"TitleHomeAll": "Home all",
 		"Clear": "clear",
 		"TitleClear": "Clear bed mesh",
