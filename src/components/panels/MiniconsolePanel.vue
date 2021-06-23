@@ -1,22 +1,22 @@
 <style scoped>
 
-    .minievent-table {
-        max-height: 350px;
-        overflow-y: auto;
-    }
+.minievent-table {
+    max-height: 350px;
+    overflow-y: auto;
+}
 
-    .miniConsole .title-cell {
-        white-space: nowrap;
-        width: 1% !important;
-    }
+.miniConsole .title-cell {
+    white-space: nowrap;
+    width: 1% !important;
+}
 
-    .miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
-        height: auto;
-    }
+.miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+    height: auto;
+}
 
-    .miniConsole .content-cell {
-        width: 100%;
-    }
+.miniConsole .content-cell {
+    width: 100%;
+}
 </style>
 
 <template>
@@ -26,6 +26,31 @@
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn class="px-2 minwidth-0 mr-2" color="grey darken-3" small v-bind="attrs" v-on="on">
+                        <v-icon small>mdi-help</v-icon>
+                    </v-btn>
+                </template>
+                <v-card>
+                    <v-card-title>
+                        Command list
+                    </v-card-title>
+                    <div>
+                        <v-text-field v-model="cmdListSearch" class="mx-4" label="Search" autofocus></v-text-field>
+                        <v-list>
+                            <v-list-item
+                                v-for="cmd of helplistFiltered"
+                                :key="cmd.commandLow"
+                                class="minHeight36"
+                            >
+                                <span class="blue--text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
+                                <span>{{ cmd.description }}</span>
+                            </v-list-item>
+                        </v-list>
+                    </div>
+                </v-card>
+            </v-menu>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
@@ -44,22 +69,24 @@
             <v-container class="py-0 px-0">
                 <v-row>
                     <v-col>
-                        <v-text-field
-                            :label="$t('Panels.MiniconsolePanel.SendCode')"
-                            ref="gcodeCommandField"
-                            solo
-                            hide-details
-                            autocomplete="off"
+                        <v-textarea
                             v-model="gcode"
-                            v-on:keyup.enter="doSend"
-                            v-on:keyup.up="onKeyUp"
-                            v-on:keyup.down="onKeyDown"
                             :items="items"
-                            v-on:keydown.tab="getAutocomplete"
-                        ></v-text-field>
+                            :label="$t('Panels.MiniconsolePanel.SendCode')"
+                            solo
+                            class="gcode-command-field"
+                            ref="gcodeCommandField"
+                            autocomplete="off"
+                            no-resize
+                            :rows="rows"
+                            @keydown.enter.prevent.stop="doSend"
+                            @keyup.up="onKeyUp"
+                            @keyup.down="onKeyDown"
+                            @keydown.tab="getAutocomplete"
+                        ></v-textarea>
                     </v-col>
                     <v-col class="col-auto align-content-center">
-                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
+                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode') || !gcode" >
                             <v-icon class="mr-2">mdi-send</v-icon> {{ $t("Panels.MiniconsolePanel.Send") }}
                         </v-btn>
                     </v-col>
@@ -68,48 +95,40 @@
         </v-card-text>
         <v-card-text class="px-0 py-0 content">
             <v-divider></v-divider>
-            <v-data-table
-                :headers="headers"
-                :items="events"
-                item-key="date"
-                hide-default-footer
-                hide-default-header
-                disable-pagination
-                class="minievent-table miniConsole"
-                :custom-sort="customSort"
-                sort-by="date"
-            >
-                <template #no-data>
-                    <div class="py-2">{{ $t("Panels.MiniconsolePanel.Empty") }}</div>
-                </template>
-
-                <template #item="{ item }">
-                    <tr>
-                        <td class="log-cell title-cell py-2">
-                            {{ formatTime(item.date)}}
-                        </td>
-                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                            <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
-                        </td>
-                    </tr>
-                </template>
-            </v-data-table>
+            <console-table ref="console"
+                           :headers="headers"
+                           :options="options"
+                           sort-by="date"
+                           :events="events"
+                           :custom-sort="customSort"
+                           :helplist="helplist"
+                           :format-time-mobile="formatTime"
+                           class="minievent-table miniConsole"
+                           @command-click="commandClick"
+            />
         </v-card-text>
     </v-card>
 </template>
 
 <script lang="ts">
-import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+import {colorConsoleMessage, formatConsoleMessage, strLongestEqual, reverseString} from "@/plugins/helpers"
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
+import ConsoleTable from "@/components/ConsoleTable.vue";
 
-@Component
+@Component({
+    components: {
+        ConsoleTable
+    }
+})
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
     colorConsoleMessage = colorConsoleMessage
     formatConsoleMessage = formatConsoleMessage
 
     $refs!: {
-        gcodeCommandField: HTMLInputElement
+        gcodeCommandField: VTextareaType,
+        console: ConsoleTable
     }
 
     private headers = [
@@ -129,17 +148,24 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     private gcode = ""
     private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
-    private items = []
+    private items = [];
+    private cmdListSearch: string | null = null
 
-    get helplist() {
+    get helplist(): CommandHelp[] {
         return this.$store.state.printer.helplist
+    }
+
+    get helplistFiltered(): CommandHelp[] {
+        return this.helplist
+            .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
+            .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
     }
 
     get events() {
         return this.$store.getters['server/getFilteredEvents']
     }
 
-    get hideWaitTemperatures() {
+    get hideWaitTemperatures(): boolean {
         return this.$store.state.gui.console.hideWaitTemperatures
     }
 
@@ -147,18 +173,37 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, 'gui/updateDataFromDB')
     }
 
-    get customFilters() {
+    get customFilters(): any[] {
         return this.$store.state.gui.console.customFilters
     }
 
-    doSend() {
-        this.$store.dispatch('printer/sendGcode', this.gcode)
-        this.lastCommands.push(this.gcode)
-        this.gcode = ""
-        this.lastCommandNumber = null
+    get rows(): number {
+        return this.gcode?.split('\n').length ?? 1;
     }
 
-    onKeyUp() {
+    commandClick(msg: ConsoleCommandHelp): void {
+        this.gcode = msg.original.indexOf(":") > -1 && msg.command ? msg.command.command : msg.original;
+    }
+
+    doSend(cmd: KeyboardEvent) {
+        if (!cmd.shiftKey) {
+            this.$store.dispatch('printer/sendGcode', this.gcode)
+            this.lastCommands.push(this.gcode)
+            this.gcode = ""
+            this.lastCommandNumber = null
+            setTimeout(() => {
+                this.$refs.console.$el.scroll({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                })
+            }, 20);
+        } else {
+            this.gcode += '\n';
+        }
+    }
+
+    onKeyUp(): void {
         if (this.lastCommandNumber === null && this.lastCommands.length) {
             this.lastCommandNumber = this.lastCommands.length - 1;
             this.gcode = this.lastCommands[this.lastCommandNumber];
@@ -168,7 +213,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         }
     }
 
-    onKeyDown() {
+    onKeyDown(): void {
         if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
             this.lastCommandNumber++;
             this.gcode = this.lastCommands[this.lastCommandNumber];
@@ -178,22 +223,46 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         }
     }
 
-    getAutocomplete(e: Event) {
+    getAutocomplete(e: Event): void {
         e.preventDefault();
         if (this.gcode.length) {
-            let commands = this.helplist.filter((element: any) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
-            if (commands && commands.length === 1) this.gcode = commands[0].command;
-            else {
-                let commands = this.helplist.filter((element: any) => element.commandLow.includes(this.gcode.toLowerCase()));
+            let check = this.gcode.toLowerCase();
+            const textarea = this.$refs.gcodeCommandField.$refs.input;
+            const sentence = textarea.value;
+            const len = sentence.length;
+            const pos = textarea.selectionStart;
+            const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos);
+            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER;
+            if (this.rows > 1) {
+                check = sentence.substr(currentLinePos, currentEndPos - currentLinePos);
+            }
+            let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+            if (commands?.length === 1) {
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands[0].command);
+                } else {
+                    this.gcode = commands[0].command;
+                }
+            } else if(commands?.length > 1) {
+                let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command);
+                    }, commands[0].command));
+                } else {
+                    this.gcode = commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command);
+                    }, commands[0].command);
+                }
                 if (commands && commands.length) {
                     let output = "";
-                    commands.forEach((command: any) => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+                    commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
-                    this.$store.commit('server/addEvent', { message: output, type: 'command' });
+                    this.$store.commit('server/addEvent', { message: output, type: 'autocomplete' });
                 }
             }
         }
-        this.$refs.gcodeCommandField?.focus();
+        this.$refs.gcodeCommandField.focus();
     }
 
     formatTime(date: Date) {

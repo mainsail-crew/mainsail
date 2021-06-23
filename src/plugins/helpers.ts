@@ -36,20 +36,20 @@ export const camelize = (str: string): string => {
     }).replace(/\s+/g, '');
 }
 
-export const colorConsoleMessage = (item: ServerStateEvent): string => {
+export function colorConsoleMessage(item: ServerStateEvent): string {
     if (item.message.startsWith('!! ')) return "red--text"
-    if ('type' in item && item.type === 'command') return "blue--text"
+    if ('type' in item && ['command', 'autocomplete'].includes(item.type)) return "blue--text"
 
-    return ''
+    return '';
 }
 
-export const formatConsoleMessage = (message: string): string => {
+export function formatConsoleMessage(message: string): string[] {
     message = message.replaceAll('!! ', '')
     message = message.replaceAll('// ', '')
     message = message.replace('\n// ', '<br>')
-    message = message.replace(/(?:\r\n|\r|\n)/g, '<br>')
-
-    return message
+    message = message.replace(/\r\n|\r|\n/g, '<br>')
+    message = message.replaceAll('<br />', '<br>')
+    return message.split('<br>');
 }
 
 export const convertName = (name: string): string => {
@@ -112,4 +112,18 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
     }
 
     return items ?? []
+}
+
+
+export function strLongestEqual(a: string, b: string): string {
+    const l = Math.min(a?.length ?? Number.MAX_VALUE, b?.length ?? Number.MAX_VALUE);
+    let i = 0;
+    while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
+        i += 1;
+    }
+    return a.substr(0, i);
+}
+
+export function reverseString(str: string): string {
+    return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0);
 }
