@@ -1,8 +1,25 @@
 import {PrinterTempHistoryState} from "@/store/printer/tempHistory/types";
 
+export interface VTextareaType extends HTMLInputElement {
+    $refs: {
+        input: HTMLTextAreaElement
+    }
+}
+
+export interface CommandHelp {
+    command: string,
+    commandLow: string,
+    description?: string | Record<string, unknown>
+}
+
+export interface ConsoleCommandHelp {
+    command: CommandHelp | null,
+    original: string
+}
+
 export interface PrinterState {
     [key: string]: any
-
+    helplist?: CommandHelp[]
     tempHistory?: PrinterTempHistoryState
 }
 

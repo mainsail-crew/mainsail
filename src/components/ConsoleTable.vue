@@ -21,7 +21,7 @@
                     {{ formatTime(item.date)}}
                 </td>
                 <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                    <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message, item.type)"></span>
+                    <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
                 </td>
             </tr>
             <tr v-else>
@@ -53,6 +53,7 @@ import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
 import Component from "vue-class-component";
 import Vue from "vue";
 import {Prop} from "vue-property-decorator";
+import {CommandHelp, ConsoleCommandHelp} from "@/store/printer/types";
 
 @Component
 export default class ConsoleTable extends Vue {
@@ -63,7 +64,7 @@ export default class ConsoleTable extends Vue {
     @Prop({ required: false, default: () => null }) readonly formatTimeMobile!: (d: Date) => any;
     @Prop({ required: true }) readonly options!: Record<string, unknown>;
     @Prop({ required: false, default: false }) readonly isMini!: boolean;
-    @Prop({ required: true }) readonly helplist!: any[];
+    @Prop({ required: true }) readonly helplist!: CommandHelp[];
 
     colorConsoleMessage = colorConsoleMessage
     formatConsoleMessage = formatConsoleMessage
@@ -78,10 +79,7 @@ export default class ConsoleTable extends Vue {
             return null;
         }
 
-        const ret: {
-            command: { command: string, commandLow: string } | null,
-            original: string
-        } = {
+        const ret: ConsoleCommandHelp = {
             command: null,
             original: message
         };
@@ -92,9 +90,9 @@ export default class ConsoleTable extends Vue {
                 commandLow: msg.split(' ')[0].toLowerCase()
             }
         } else if ([':', ' '].some(c => msg.includes(c))) {
-            ret.command = this.helplist.find(c => c.commandLow === msg.split(/[:\s]/)[0].trim().toLowerCase());
+            ret.command = this.helplist.find(c => c.commandLow === msg.split(/[:\s]/)[0].trim().toLowerCase()) ?? null;
         } else {
-            ret.command = this.helplist.find(c => c.commandLow === msg.trim().toLowerCase());
+            ret.command = this.helplist.find(c => c.commandLow === msg.trim().toLowerCase()) ?? null;
         }
 
         return ret;
