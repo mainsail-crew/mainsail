@@ -64,7 +64,7 @@ export default class ConsoleTable extends Vue {
     @Prop({ required: true }) readonly events!: any[];
     @Prop({ required: false, default: () => null }) readonly customSort!: () => any;
     @Prop({ required: false, default: () => null }) readonly formatTimeMobile!: (d: Date) => any;
-    @Prop({ required: true }) readonly options!: Record<string, unknown>;
+    @Prop({ required: true }) readonly options!: any;
     @Prop({ required: false, default: false }) readonly isMini!: boolean;
     @Prop({ required: true }) readonly helplist!: CommandHelp[];
 
@@ -76,7 +76,7 @@ export default class ConsoleTable extends Vue {
         return any;
     }
 
-    isCommand(message: string): Record<string, unknown> | null {
+    isCommand(message: string): ConsoleCommandHelp | null {
         if (!this.helplist) {
             return null;
         }
