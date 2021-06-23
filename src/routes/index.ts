@@ -32,14 +32,14 @@ const routes: AppRoute[] = [
         alwaysShow: true,
 		showInNavi: true,
     },
-    /*{
+    {
         title: "Console",
         path: '/console',
         icon: 'console-line',
         component: Console,
         alwaysShow: true,
 		showInNavi: true,
-    },*/
+    },
     {
         title: "Heightmap",
         path: '/heightmap',

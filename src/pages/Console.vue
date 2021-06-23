@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .gcode-command-field {
 
 }
@@ -45,6 +45,7 @@
                     @keyup.up="onKeyUp"
                     @keyup.down="onKeyDown"
                     @keydown.tab="getAutocomplete"
+                    hide-details
                 ></v-textarea>
             </v-col>
 
@@ -100,6 +101,7 @@
                 <console-table :headers="headers"
                                :options="options"
                                :sort-by="sortBy"
+                               :sort-desc="sortDesc"
                                :events="events"
                                :helplist="helplist"
                                :custom-sort="customSort"
@@ -123,9 +125,10 @@ import {reverseString, strLongestEqual} from "@/plugins/helpers";
         ConsoleTable
     }
 })
-export default class Console extends Mixins(BaseMixin) {
+export default class PageConsole extends Mixins(BaseMixin) {
     private gcode = '';
     private sortBy = 'date';
+    private sortDesc = true;
     private options = {};
     private lastCommands: string[] = [];
     private lastCommandNumber: number | null = null;
@@ -138,7 +141,7 @@ export default class Console extends Mixins(BaseMixin) {
     }
 
     get helplist(): CommandHelp[] {
-        return this.$store.state.printer.helplist
+        return this.$store.state.printer.helplist ?? []
     }
 
     get helplistFiltered(): CommandHelp[] {
@@ -290,15 +293,15 @@ export default class Console extends Mixins(BaseMixin) {
                 const aTime = new Date(b[index]).getTime()
                 const bTime = new Date(b[index]).getTime()
 
-                if (!isDesc[0]) return aTime - bTime;
-                else return aTime - bTime;
+                return aTime - bTime;
             } else {
                 if(typeof a[index] !== 'undefined'){
-                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                    return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
                 }
             }
         });
+
+        if (isDesc[0]) items.reverse()
 
         return items;
     }

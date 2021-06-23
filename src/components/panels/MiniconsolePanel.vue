@@ -83,6 +83,7 @@
                             @keyup.up="onKeyUp"
                             @keyup.down="onKeyDown"
                             @keydown.tab="getAutocomplete"
+                            hide-details
                         ></v-textarea>
                     </v-col>
                     <v-col class="col-auto align-content-center">
@@ -97,8 +98,9 @@
             <v-divider></v-divider>
             <console-table ref="console"
                            :headers="headers"
-                           :options="options"
+                           :options="{}"
                            sort-by="date"
+                           :sort-desc="true"
                            :events="events"
                            :custom-sort="customSort"
                            :helplist="helplist"
@@ -152,7 +154,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     private cmdListSearch: string | null = null
 
     get helplist(): CommandHelp[] {
-        return this.$store.state.printer.helplist
+        return this.$store.state.printer.helplist ?? []
     }
 
     get helplistFiltered(): CommandHelp[] {

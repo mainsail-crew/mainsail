@@ -41,10 +41,6 @@
         vertical-align: middle;
         transition: font-size 175ms;
     }
-
-    .minHeight36 {
-        min-height: 36px;
-    }
 </style>
 
 <template>

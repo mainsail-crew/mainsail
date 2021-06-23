@@ -3,6 +3,7 @@
         :headers="headers"
         :options="options"
         :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
         :items="events"
         item-key="date"
         hide-default-footer
@@ -58,7 +59,8 @@ import {CommandHelp, ConsoleCommandHelp} from "@/store/printer/types";
 @Component
 export default class ConsoleTable extends Vue {
     @Prop({ required: true }) readonly headers!: any[];
-    @Prop({ required: false, default: '' }) readonly sortBy!: string;
+    @Prop({ required: false, default: 'date' }) readonly sortBy!: string;
+    @Prop({ required: false, default: true }) readonly sortDesc!: boolean;
     @Prop({ required: true }) readonly events!: any[];
     @Prop({ required: false, default: () => null }) readonly customSort!: () => any;
     @Prop({ required: false, default: () => null }) readonly formatTimeMobile!: (d: Date) => any;
