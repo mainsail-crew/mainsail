@@ -142,7 +142,14 @@
 		"NoBedMeshHasBeenLoadedYet": "No bed_mesh has been loaded yet.",
 		"Probed": "Probed",
 		"Mesh": "Mesh",
-		"Scale": "Scale",
+		"Flat": "Flat",
+		"ShowInHeightmap": "Show in Heightmap",
+		"Wireframe": "Wireframe",
+		"Opacity": "Opacity",
+		"General": "General",
+		"Range": "Range",
+
+
 		"Profiles": "Profiles",
 		"Deleted": "deleted",
 		"RenameBedMeshProfile": "Rename Bed Mesh Profile",

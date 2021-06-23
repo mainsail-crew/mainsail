@@ -45,23 +45,50 @@
                         </v-card-text>
                     </template>
                     <template v-else>
-                        <v-card-text class="px-0 py-0 content">
-                            <v-container class="px-0 py-0">
-                                <v-row>
-                                    <v-col class="pb-0 pt-5">
-                                        <ECharts
-                                            ref="heightmap"
-                                            :option="chartOptions"
-                                            :init-options="{ renderer: 'svg' }"
-                                            style="height: 500px; width: 100%; overflow: auto;"
-                                        ></ECharts>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                        <v-card-text class="py-0">
+                            <v-row>
+                                <v-col class="">
+                                    <ECharts
+                                        ref="heightmap"
+                                        :option="chartOptions"
+                                        :init-options="{ renderer: 'svg' }"
+                                        style="height: 500px; width: 100%; overflow: auto;"
+                                    ></ECharts>
+                                </v-col>
+                            </v-row>
                         </v-card-text>
-                        <v-card-actions class="py-0">
-
-                        </v-card-actions>
+                        <v-divider></v-divider>
+                        <v-card-text class="pt-5 pb-0">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <h3>{{ $t('Heightmap.Probed') }}</h3>
+                                    <v-checkbox v-model="showProbed" :label="$t('Heightmap.ShowInHeightmap')" hide-details ></v-checkbox>
+                                    <v-checkbox v-model="probedWireframe" :label="$t('Heightmap.Wireframe')" hide-details ></v-checkbox>
+                                    <v-slider :label="$t('Heightmap.Opacity')" max="1" min="0" v-model="probedOpacity" class="mt-5" :step="0.1"></v-slider>
+                                </v-col>
+                                <v-col class="col-6">
+                                    <h3>{{ $t('Heightmap.Mesh') }}</h3>
+                                    <v-checkbox v-model="showMesh" :label="$t('Heightmap.ShowInHeightmap')" hide-details ></v-checkbox>
+                                    <v-checkbox v-model="meshWireframe" :label="$t('Heightmap.Wireframe')" hide-details ></v-checkbox>
+                                    <v-slider :label="$t('Heightmap.Opacity')" max="1" min="0" v-model="meshOpacity" class="mt-5" :step="0.1"></v-slider>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-text class="pt-5 pb-0">
+                            <v-row>
+                                <v-col class="col-6">
+                                    <h3>{{ $t('Heightmap.Flat') }}</h3>
+                                    <v-checkbox v-model="showFlat" :label="$t('Heightmap.ShowInHeightmap')" hide-details ></v-checkbox>
+                                    <v-checkbox v-model="flatWireframe" :label="$t('Heightmap.Wireframe')" hide-details ></v-checkbox>
+                                    <v-slider :label="$t('Heightmap.Opacity')" max="1" min="0" v-model="flatOpacity" class="mt-5" :step="0.1"></v-slider>
+                                </v-col>
+                                <v-col class="col-6">
+                                    <h3>{{ $t('Heightmap.General') }}</h3>
+                                    <v-range-slider :label="$t('Heightmap.Range')" :min="heightmapRangeLimit[0]" :max="heightmapRangeLimit[1]" v-model="heightmapRange" :step="0.01" ticks="always" ></v-range-slider>
+                                </v-col>
+                            </v-row>
+                        </v-card-text>
                     </template>
                 </v-card>
             </v-col>
@@ -200,6 +227,20 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     private calibrateDialog = false
     private newName = ''
 
+    private heightmapRange = [-0.2, 0.2]
+
+    private showProbed = true
+    private probedWireframe = true
+    private probedOpacity = 1
+
+    private showMesh = true
+    private meshWireframe = true
+    private meshOpacity = 1
+
+    private showFlat = true
+    private flatWireframe = true
+    private flatOpacity = 0.5
+
     private colorAxisName = 'rgba(255,255,255,0.5)'
     private colorAxisLabel = 'rgba(255,255,255,0.5)'
     private colorAxisLine = 'rgba(255,255,255,0.2)'
@@ -208,22 +249,38 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     private colorAxisPointer = 'rgba(255,255,255,0.8)'
 
+    private colorVisualMap = 'rgba(255,255,255,0.8)'
+    private fontSizeVisualMap = 14
+
     get chartOptions() {
         return {
             tooltip: {},
             darkMode: true,
             animation: false,
             legend: {
-                show: true
+                show: false,
+                selected: this.selected
             },
             visualMap: {
-                show: false,
+                show: true,
+                min: this.heightmapRange[0],
+                max: this.heightmapRange[1],
+                calculable: true,
                 dimension: 2,
-                min: -1,
-                max: 1,
                 inRange: {
                     color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-                }
+                },
+                seriesIndex: 0,
+                left: 20,
+                top: 20,
+                bottom: 20,
+                itemWidth: 30,
+                itemHeight: 430,
+                precision: 3,
+                textStyle: {
+                    color: this.colorVisualMap,
+                    fontSize: this.fontSizeVisualMap
+                },
             },
             xAxis3D: {
                 type: 'value',
@@ -243,6 +300,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             },
             zAxis3D: {
                 type: 'value',
+                min: this.heightmapRange[0],
+                max: this.heightmapRange[1],
                 nameTextStyle: {
                     color: this.colorAxisName
                 },
@@ -328,6 +387,34 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return [0,0]
     }
 
+    get heightmapRangeLimit() {
+        let min = -0.2
+        let max = 0.2
+
+        if (this.bed_mesh) {
+            const points = []
+            if (this.showProbed) {
+                for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
+            }
+            if (this.showMesh) {
+                for (const row of this.bed_mesh.mesh_matrix) for (const col of row) points.push(col)
+            }
+
+            min = Math.min(min, ...points)
+            max = Math.max(max, ...points)
+        }
+
+        return [min, max]
+    }
+
+    get selected() {
+        return {
+            'probed': this.showProbed,
+            'mesh': this.showMesh,
+            'flat': this.showFlat,
+        }
+    }
+
     get series() {
         const series = []
 
@@ -349,8 +436,11 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             type: 'surface',
             name: 'probed',
             data: [],
+            itemStyle: {
+                opacity: this.probedOpacity
+            },
             wireframe: {
-                show: true
+                show: this.probedWireframe
             }
         }
 
@@ -391,8 +481,11 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             type: 'surface',
             name: 'mesh',
             data: [],
+            itemStyle: {
+                opacity: this.meshOpacity
+            },
             wireframe: {
-                show: true
+                show: this.meshWireframe,
             }
         }
 
@@ -434,10 +527,11 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             name: 'flat',
             data: [],
             itemStyle: {
-                color: [1, 1, 1, 1]
+                color: [1, 1, 1, 1],
+                opacity: this.flatOpacity
             },
             wireframe: {
-                show: true
+                show: this.flatWireframe
             }
         }
 
