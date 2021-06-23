@@ -113,3 +113,17 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
 
     return items ?? []
 }
+
+
+export function strLongestEqual(a: string, b: string): string {
+    const l = Math.min(a?.length ?? Number.MAX_VALUE, b?.length ?? Number.MAX_VALUE);
+    let i = 0;
+    while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
+        i += 1;
+    }
+    return a.substr(0, i);
+}
+
+export function reverseString(str: string): string {
+    return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0);
+}
