@@ -68,6 +68,10 @@ export const mutations: MutationTree<ServerState> = {
 			state.events.shift()
 		}
 
+		if (['command', 'autocomplete'].includes(type) && state.events[state.events.length - 1]?.type === 'autocomplete') {
+			state.events.pop();
+		}
+
 		state.events.push({
 			date: new Date(),
 			message: message,
