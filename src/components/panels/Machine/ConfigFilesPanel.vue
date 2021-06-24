@@ -60,7 +60,7 @@
                     </v-menu>
                 </v-item-group>
             </v-toolbar>
-            <v-card-text class="border-bottom-1">
+            <v-card-text>
                 <v-row>
                     <v-col class="col-7 align-center d-flex">
                         <span><b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b><br />{{ this.absolutePath }}</span>
