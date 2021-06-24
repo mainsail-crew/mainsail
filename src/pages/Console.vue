@@ -56,7 +56,10 @@
             </v-col>
 
             <v-col class="col-auto align-content-center">
-                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
+                <command-help-modal
+                    @onCommand="gcode = $event"
+                ></command-help-modal>
+<!--                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="mr-2 gcode-command-btn px-2 minwidth-0" v-bind="attrs" v-on="on">
                             <v-icon>mdi-help</v-icon>
@@ -74,13 +77,13 @@
                                     :key="cmd.commandLow"
                                     class="minHeight36"
                                 >
-                                    <span class="blue--text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
+                                    <span class="blue&#45;&#45;text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
                                     <span>{{ cmd.description }}</span>
                                 </v-list-item>
                             </v-list>
                         </div>
                     </v-card>
-                </v-menu>
+                </v-menu>-->
                 <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
@@ -119,9 +122,11 @@ import BaseMixin from "@/components/mixins/base";
 import ConsoleTable from "@/components/ConsoleTable.vue";
 import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
 import {reverseString, strLongestEqual} from "@/plugins/helpers";
+import CommandHelpModal from "@/components/CommandHelpModal.vue";
 
 @Component({
     components: {
+        CommandHelpModal,
         ConsoleTable
     }
 })
