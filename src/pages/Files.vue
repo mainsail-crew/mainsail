@@ -736,8 +736,9 @@ export default class PageFiles extends Mixins(BaseMixin) {
                     }
                 }
             ).then((result: any) => {
+                const filename = result.data.item.path.substr(result.data.item.path.indexOf("/")+1)
                 this.uploadSnackbar.status = false
-                resolve(result.data.result)
+                resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
                 this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
