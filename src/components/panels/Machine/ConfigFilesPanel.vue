@@ -715,6 +715,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }
         ).then(() => {
+            this.$toast.success(this.$t('Files.SuccessfullyCreated', { filename: this.dialogCreateFile.name }).toString())
             this.dialogCreateFile.show = false
             this.dialogCreateFile.name = ""
         }).catch(() => {
