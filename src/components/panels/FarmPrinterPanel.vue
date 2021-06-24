@@ -26,7 +26,7 @@
         :class="(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
         :loading="printer.socket.isConnecting"
     >
-        <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 999;">
+        <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 6;">
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ printer_name }}</span>
             </v-toolbar-title>
