@@ -2,8 +2,8 @@
     <v-data-table
         :headers="headers"
         :options="options"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
+        :sort-by.sync="sortByData"
+        :sort-desc.sync="sortDescData"
         :items="events"
         item-key="date"
         hide-default-footer
@@ -58,22 +58,51 @@ import {CommandHelp, ConsoleCommandHelp} from "@/store/printer/types";
 
 @Component
 export default class ConsoleTable extends Vue {
-    @Prop({ required: true }) readonly headers!: any[];
-    @Prop({ required: false, default: 'date' }) readonly sortBy!: string;
-    @Prop({ required: false, default: true }) readonly sortDesc!: boolean;
-    @Prop({ required: true }) readonly events!: any[];
-    @Prop({ required: false, default: () => null }) readonly customSort!: () => any;
-    @Prop({ required: false, default: () => null }) readonly formatTimeMobile!: (d: Date) => any;
-    @Prop({ required: true }) readonly options!: any;
-    @Prop({ required: false, default: false }) readonly isMini!: boolean;
-    @Prop({ required: true }) readonly helplist!: CommandHelp[];
+    @Prop({ required: true })
+    readonly headers!: any[];
+
+    @Prop({ required: false, default: 'date' })
+    readonly sortBy!: string;
+
+    @Prop({ required: false, default: true })
+    readonly sortDesc!: boolean;
+
+    @Prop({ required: true })
+    readonly events!: any[];
+
+    @Prop({ required: false, default: () => null })
+    readonly formatTimeMobile!: (d: Date) => any;
+
+    @Prop({ required: true })
+    readonly options!: any;
+
+    @Prop({ required: false, default: false })
+    readonly isMini!: boolean;
+
+    @Prop({ required: true })
+    readonly helplist!: CommandHelp[];
 
     colorConsoleMessage = colorConsoleMessage
     formatConsoleMessage = formatConsoleMessage
 
-    log(any: any): any {
-        console.log(any);
-        return any;
+    private _sortBy?: string;
+
+    get sortByData(): string {
+        return this._sortBy ?? this.sortBy;
+    }
+
+    set sortByData(val: string) {
+        this._sortBy = val;
+    }
+
+    private _sortDesc?: boolean;
+
+    get sortDescData(): boolean {
+        return this._sortDesc ?? this.sortDesc;
+    }
+
+    set sortDescData(val: boolean) {
+        this._sortDesc = val;
     }
 
     isCommand(message: string): ConsoleCommandHelp | null {
@@ -98,6 +127,25 @@ export default class ConsoleTable extends Vue {
         }
 
         return ret;
+    }
+
+    customSort(items: any, index: string, isDesc: boolean[]): any {
+        items.sort((a: any, b: any) => {
+            if (index[0] === 'date') {
+                const aTime = new Date(b[index]).getTime()
+                const bTime = new Date(b[index]).getTime()
+
+                return aTime - bTime;
+            } else {
+                if(typeof a[index] !== 'undefined'){
+                    return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+                }
+            }
+        });
+
+        if (isDesc[0]) items.reverse()
+
+        return items;
     }
 }
 </script>

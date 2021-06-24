@@ -27,6 +27,7 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <command-help-modal
+                is-mini
                 @onCommand="gcode = $event"
             ></command-help-modal>
 <!--            <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
@@ -105,7 +106,6 @@
                            sort-by="date"
                            :sort-desc="true"
                            :events="events"
-                           :custom-sort="customSort"
                            :helplist="helplist"
                            :format-time-mobile="formatTime"
                            class="minievent-table miniConsole"
@@ -286,25 +286,6 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     toggleFilter(filter: string) {
         this.$store.dispatch('gui/updateConsoleFilter',  filter)
-    }
-
-    customSort(items: any, index: string, isDesc: boolean[]) {
-        items.sort((a: any, b: any) => {
-            if (index[0] === 'date') {
-                const aTime = new Date(b[index]).getTime()
-                const bTime = new Date(b[index]).getTime()
-
-                if (!isDesc[0]) return aTime - bTime;
-                else return aTime - bTime;
-            } else {
-                if(typeof a[index] !== 'undefined'){
-                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                }
-            }
-        });
-
-        return items;
     }
 }
 </script>
