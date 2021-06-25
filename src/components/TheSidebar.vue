@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" enable-resize-watcher fixed app :src="sidebarBackground" style="z-index: 9;">
+    <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" enable-resize-watcher fixed app :src="sidebarBackground">
         <div id="nav-header">
             <img :src="sidebarLogo" alt="Logo" />
             <v-toolbar-title>{{ printerName }}</v-toolbar-title>

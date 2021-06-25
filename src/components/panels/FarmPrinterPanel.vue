@@ -26,7 +26,7 @@
         :class="(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
         :loading="printer.socket.isConnecting"
     >
-        <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 6;">
+        <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 5;">
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ printer_name }}</span>
             </v-toolbar-title>
@@ -99,7 +99,7 @@
                         </v-container>
                     </v-card-text>
                     <v-fade-transition>
-                        <v-overlay v-if="hover" absolute >
+                        <v-overlay v-if="hover" absolute :z-index="4" >
                             <v-btn color="primary" @click="clickPrinter">{{ $t("Panels.FarmPrinterPanel.SwitchToPrinter") }}</v-btn>
                         </v-overlay>
                     </v-fade-transition>
