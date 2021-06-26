@@ -50,57 +50,10 @@
                 <v-toolbar-title>
                     <span class="subheading align-baseline"><v-icon left>mdi-file-document-multiple-outline</v-icon>{{ $t("Files.GCodeFiles")}}</span>
                 </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
-                <v-item-group class="v-btn-toggle" name="controllers">
-                    <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" color="primary" class="px-2 minwidth-0" :loading="loadings.includes('gcodeUpload')" small><v-icon small>mdi-upload</v-icon></v-btn>
-                    <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0" small><v-icon small>mdi-folder-plus</v-icon></v-btn>
-                    <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0" small><v-icon small>mdi-refresh</v-icon></v-btn>
-                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0" v-bind="attrs" v-on="on" small><v-icon small>mdi-cog</v-icon></v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Files.HiddenFiles')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" :label="$t('Files.PrintedFiles')"></v-checkbox>
-                            </v-list-item>
-                            <v-divider></v-divider>
-                            <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
-                                <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-item-group>
             </v-toolbar>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-auto align-center d-flex">
-                        <div v-if="this.disk_usage !== null">
-                            <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">
-                                        <b>{{ $t('Files.FreeDisk') }}:</b><br />
-                                        {{ formatFilesize(disk_usage.free) }}
-                                    </span>
-                                </template>
-                                <span>
-                            {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}<br />
-                            {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}<br />
-                            {{ $t('Files.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
-                        </span>
-                            </v-tooltip>
-                        </div>
-                    </v-col>
-                    <v-col class="auto align-center d-flex pl-5">
-                        <span>
-                            <b>{{ $t('Files.CurrentPath') }}:</b><br />
-                            {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}
-                        </span>
-                    </v-col>
-                    <v-col class="col-3">
+                    <v-col class="col-12 d-flex align-center">
                         <v-text-field
                             v-model="search"
                             append-icon="mdi-magnify"
@@ -109,9 +62,53 @@
                             outlined
                             clearable
                             hide-details
-                            small
                             dense
+                            style="max-width: 300px;"
                         ></v-text-field>
+                        <v-spacer></v-spacer>
+                        <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                        <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" color="primary" class="px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
+                        <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Files.HiddenFiles')"></v-checkbox>
+                                </v-list-item>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" hide-details v-model="showPrintedFiles" :label="$t('Files.PrintedFiles')"></v-checkbox>
+                                </v-list-item>
+                                <v-divider></v-divider>
+                                <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
+                                    <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeMetadataVisible(header.value)" :label="header.text"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-text>
+                <v-row>
+                    <v-col class="col-12 py-2 d-flex align-center">
+                        <span><b>{{ $t('Files.CurrentPath') }}:</b> {{ this.currentPath !== 'gcodes' ? "/"+this.currentPath.substring(7) : "/" }}</span>
+                        <v-spacer></v-spacer>
+                        <template v-if="this.disk_usage !== null">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        <b>{{ $t('Files.FreeDisk') }}:</b> {{ formatFilesize(disk_usage.free) }}
+                                    </span>
+                                </template>
+                                <span>
+                                    {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}<br />
+                                    {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}<br />
+                                    {{ $t('Files.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
+                                </span>
+                            </v-tooltip>
+                        </template>
                     </v-col>
                 </v-row>
             </v-card-text>

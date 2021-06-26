@@ -1,32 +1,42 @@
 <template>
     <div>
         <v-card>
-            <v-card-title>
-                {{ $t('History.PrintHistory') }}
-                <v-spacer class="d-none d-sm-block"></v-spacer>
-                <v-item-group class="v-btn-toggle my-5 my-sm-0 col-12 col-sm-auto px-0 py-0" name="controllers">
-                    <v-btn :title="$t('History.TitleRefreshHistory')" class="flex-grow-1" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
-                    <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="flex-grow-1" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon class="">mdi-cog</v-icon></v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
-                                <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeColumnVisible(header.value)" :label="header.text"></v-checkbox>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-item-group>
-            </v-card-title>
+            <v-toolbar flat dense>
+                <v-toolbar-title>
+                    <span class="subheading align-baseline"><v-icon left>mdi-file-document-multiple-outline</v-icon>{{ $t('History.PrintHistory') }}</span>
+                </v-toolbar-title>
+            </v-toolbar>
             <v-card-text>
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    :label="$t('History.Search')"
-                    single-line
-                    hide-details
-                ></v-text-field>
+                <v-row>
+                    <v-col class="col-4 d-flex align-center">
+
+                        <v-text-field
+                            v-model="search"
+                            append-icon="mdi-magnify"
+                            :label="$t('History.Search')"
+                            single-line
+                            outlined
+                            clearable
+                            hide-details
+                            dense
+                        ></v-text-field>
+                    </v-col>
+                    <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                        <v-btn :title="$t('History.TitleRefreshHistory')" color="grey darken-3" class="px-2 minwidth-0 ml-3" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
+                                    <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeColumnVisible(header.value)" :label="header.text"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-col>
+                </v-row>
             </v-card-text>
+            <v-divider class="mb-3"></v-divider>
             <v-data-table
                 :items="jobs"
                 class="files-table"
