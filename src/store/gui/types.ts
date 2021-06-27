@@ -1,7 +1,8 @@
 export interface GuiState {
     webcam: {
         selectedCam: string
-        bool: boolean,
+        boolDashboard: boolean,
+        boolNavi: boolean,
         configs: GuiStateWebcam[]
     }
     presets: GuiStatePreset[]

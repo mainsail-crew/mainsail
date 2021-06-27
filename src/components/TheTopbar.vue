@@ -35,6 +35,7 @@
                 @click="emergencyStop">
                 <v-icon class="mr-sm-2">mdi-alert-circle-outline</v-icon><span class="d-none d-sm-flex">{{ $t("App.TopBar.EmergencyStop") }}</span>
             </v-btn>
+            <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
         <v-snackbar
@@ -72,6 +73,7 @@ import Component from "vue-class-component";
 import axios from "axios"
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from "@/components/TheTopCornerMenu.vue";
+import TheSettingsMenu from "@/components/TheSettingsMenu.vue";
 
 type uploadSnackbar = {
     status: boolean
@@ -88,6 +90,7 @@ type uploadSnackbar = {
 
 @Component({
     components: {
+        TheSettingsMenu,
         TheTopCornerMenu
     }
 })

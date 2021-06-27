@@ -13,9 +13,7 @@ export const getDefaultState = (): GuiState => {
 			displayZOffsetStandby: false,
 		},
 		dashboard: {
-			boolWebcam: false,
 			boolTempchart: true,
-			boolConsole: true,
 			hiddenMacros: [],
 			hiddenTempChart: [],
 			control: {
@@ -39,7 +37,8 @@ export const getDefaultState = (): GuiState => {
 		},
 		webcam: {
 			selectedCam: "",
-			bool: false,
+			boolDashboard: false,
+			boolNavi: false,
 			configs: [{
 				name: 'Default',
 				icon: 'mdi-webcam',
@@ -58,6 +57,7 @@ export const getDefaultState = (): GuiState => {
 		},
 		console: {
 			hideWaitTemperatures: true,
+			boolDashboard: true,
 			customFilters: [],
 		},
 		gcodefiles: {
@@ -96,10 +96,9 @@ export const getDefaultState = (): GuiState => {
 			minimap: false
 		},
 		//moonraker DB api dont accept camel case key names
-		remote_printers: [],
+		remotePrinters: [],
 		presets: [],
-		//moonraker DB api dont accept camel case key names
-		cooldown_gcode: "TURN_OFF_HEATERS"
+		cooldownGcode: "TURN_OFF_HEATERS"
 	}
 }
 

@@ -12,7 +12,7 @@
         </v-col>
         <v-col class="col-sm-12 col-md-7">
             <tools-panel></tools-panel>
-            <miniconsole-panel></miniconsole-panel>
+            <miniconsole-panel v-if="showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>
 </template>
@@ -50,7 +50,11 @@ import MiniconsolePanel from "@/components/panels/MiniconsolePanel.vue";
 export default class PageDashboard extends Mixins(BaseMixin) {
 
     get showDashboardWebcam() {
-        return this.$store.state.gui.dashboard.boolWebcam
+        return this.$store.state.gui.webcam.boolDashboard
+    }
+
+    get showDashboardConsole() {
+        return this.$store.state.gui.console.boolDashboard
     }
 }
 </script>

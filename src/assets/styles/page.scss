@@ -45,3 +45,11 @@ body {
 .p-rel {
   position: relative!important;
 }
+
+.settings-tabs {
+  height: 500px;
+}
+
+.settings-tabs .v-window {
+  overflow-y: auto !important;
+}
