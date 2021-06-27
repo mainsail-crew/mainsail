@@ -230,7 +230,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 	getPrinterWebcams: (state) => {
 		if (
 			state.data.gui.webcam?.configs?.length &&
-			(state.data.gui.dashboard.boolWebcam || state.data.gui.webcam.bool)
+			(state.data.gui.webcam.boolDashboard || state.data.gui.webcam.boolNavi)
 		) return state.data.gui.webcam.configs
 
 		return []
