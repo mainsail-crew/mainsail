@@ -121,7 +121,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 					additionSensors: getters.getAdditionSensors(nameSplit[1]),
 					speed: Math.round((value.speed ?? 0) * 100),
 					avgSpeed: Math.round(getters["tempHistory/getAvgSpeed"](name) ?? 0),
-					rpm: 'rpm' in value ? Math.round(value.rpm) : false,
+					rpm: value.rpm !== null ? Math.round(value.rpm) : null,
 					presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
 					chartColor: getters["tempHistory/getDatasetColor"](nameSplit[1]),
 					chartSeries: getters["tempHistory/getSerieNames"](nameSplit[1]),
