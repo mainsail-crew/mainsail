@@ -123,14 +123,14 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 			}
 		})
 
-		if (state.data.heater_bed?.temperature && state.data.heater_bed?.target !== undefined) {
+		if (state.data.heater_bed?.temperature !== undefined && state.data.heater_bed?.target !== undefined) {
 			output.push({
 				name: convertName('heater_bed'),
 				value: state.data.heater_bed.temperature.toFixed(0)+"° / "+state.data.heater_bed.target.toFixed(0)+"°"
 			})
 		}
 
-		if (state.data['temperature_fan chamber']?.temperature && state.data['temperature_fan chamber']?.target) {
+		if (state.data['temperature_fan chamber']?.temperature !== undefined && state.data['temperature_fan chamber']?.target !== undefined) {
 			output.push({
 				name: convertName('chamber'),
 				value: state.data['temperature_fan chamber'].temperature.toFixed(0)+"° / "+state.data['temperature_fan chamber'].target.toFixed(0)+"°"
