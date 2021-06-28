@@ -69,6 +69,7 @@
 import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "../mixins/base";
 import SettingsRow from "@/components/settings/SettingsRow.vue";
+import {FarmPrinterState} from "@/store/farm/printer/types";
 
 interface printerForm {
     bool: boolean
@@ -96,8 +97,8 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         return this.$store.state.socket.protocol ?? 'ws'
     }
 
-    formatPrinterName(printer) {
-        return printer.socket.hostname+(parseInt(printer.socket.port) !== 80 ? ":"+printer.socket.port : "")
+    formatPrinterName(printer: FarmPrinterState) {
+        return printer.socket.hostname+(printer.socket.port !== 80 ? ":"+printer.socket.port : "")
     }
 
     createPrinter() {
@@ -120,7 +121,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.bool = false
     }
 
-    editPrinter(printer, namespace) {
+    editPrinter(printer: FarmPrinterState, namespace: string) {
         this.form.hostname = printer.socket.hostname
         this.form.port = printer.socket.port
         this.form.namespace = namespace
@@ -140,7 +141,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
         this.form.bool = false
     }
 
-    delPrinter(namespace) {
+    delPrinter(namespace: string) {
         this.$store.dispatch("farm/removePrinter", { name: namespace })
     }
 }
