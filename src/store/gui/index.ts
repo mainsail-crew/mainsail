@@ -68,6 +68,13 @@ export const getDefaultState = (): GuiState => {
 			showPrintedFiles: true,
 			hideMetadataColums: []
 		},
+		heightmap: {
+			probed: true,
+			mesh: false,
+			flat: false,
+			wireframe: true,
+			scale: 0.5,
+		},
 		history: {
 			countPerPage: 10,
 			toggleChartCol3: 'filament_usage',

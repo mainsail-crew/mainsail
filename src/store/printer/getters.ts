@@ -380,10 +380,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		let currentProfile = ""
 		if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
 
-		if (state.configfile?.settings) {
-			Object.keys(state.configfile.settings).filter((key) => key.startsWith('bed_mesh ')).forEach((key: string) => {
+		if (state.configfile?.config) {
+			Object.keys(state.configfile.config).filter((key) => key.startsWith('bed_mesh ')).forEach((key: string) => {
 				// eslint-disable-next-line
-				const value: any = state.configfile.settings[key]
+				const value: any = state.configfile.settings[key.toLowerCase()]
 				const nameSplit = key.split(" ")
 
 				const points: number[] = []

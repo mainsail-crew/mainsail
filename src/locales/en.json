@@ -143,11 +143,8 @@
 		"Probed": "Probed",
 		"Mesh": "Mesh",
 		"Flat": "Flat",
-		"ShowInHeightmap": "Show in Heightmap",
 		"Wireframe": "Wireframe",
-		"Opacity": "Opacity",
-		"General": "General",
-		"Range": "Range",
+		"Scale": "Scale",
 
 
 		"Profiles": "Profiles",
