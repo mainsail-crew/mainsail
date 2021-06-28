@@ -48,7 +48,7 @@ export const farm: Module<FarmState, RootState> = {
 					}
 				}
 			} else {
-				rootState.gui?.remote_printers.forEach((printer: any) => {
+				rootState.gui?.remote_printers?.forEach((printer: any) => {
 					dispatch('registerPrinter',{
 						hostname: printer.hostname,
 						port: printer.port,
