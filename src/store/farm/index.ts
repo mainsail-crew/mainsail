@@ -82,7 +82,7 @@ export const farm: Module<FarmState, RootState> = {
 					})
 				})
 
-				dispatch("gui/setSettings", { remote_printers: printers }, { root: true })
+				dispatch("gui/saveSetting", { name: 'remote_printers', value: printers }, { root: true })
 			}
 		},
 		addPrinter({ dispatch }, payload) {

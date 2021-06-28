@@ -23,6 +23,7 @@
                     <v-tab class="justify-start"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlTab.Control') }}</v-tab>
                     <v-tab class="justify-start"><v-icon left>mdi-console-line</v-icon>{{ $t('Settings.ConsoleTab.Console') }}</v-tab>
                     <v-tab class="justify-start"><v-icon left>mdi-fire</v-icon>{{ $t('Settings.PresetsTab.PreheatPresets') }}</v-tab>
+                    <v-tab class="justify-start"><v-icon left>mdi-printer-3d</v-icon>{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</v-tab>
 
                     <v-tab-item><settings-general-tab></settings-general-tab></v-tab-item>
                     <v-tab-item><settings-webcam-tab></settings-webcam-tab></v-tab-item>
@@ -30,6 +31,7 @@
                     <v-tab-item><settings-control-tab></settings-control-tab></v-tab-item>
                     <v-tab-item><settings-console-tab></settings-console-tab></v-tab-item>
                     <v-tab-item><settings-presets-tab></settings-presets-tab></v-tab-item>
+                    <v-tab-item><settings-remote-printers-tab></settings-remote-printers-tab></v-tab-item>
                 </v-tabs>
             </v-card>
         </v-dialog>
@@ -47,8 +49,10 @@ import SettingsMacrosTab from "@/components/settings/SettingsMacrosTab.vue";
 import SettingsControlTab from "@/components/settings/SettingsControlTab.vue";
 import SettingsConsoleTab from "@/components/settings/SettingsConsoleTab.vue";
 import SettingsPresetsTab from "@/components/settings/SettingsPresetsTab.vue";
+import SettingsRemotePrintersTab from "@/components/settings/SettingsRemotePrintersTab.vue";
 @Component({
     components: {
+        SettingsRemotePrintersTab,
         SettingsPresetsTab,
         SettingsConsoleTab, SettingsControlTab, SettingsMacrosTab, SettingsWebcamTab, SettingsGeneralTab}
 })

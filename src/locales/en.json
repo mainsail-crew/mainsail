@@ -499,21 +499,13 @@
 			"EditCooldown": "Edit Cooldown",
 			"UpdateCooldown": "Update Cooldown"
 		},
-
-		"DashboardPanel": {
-			"Dashboard": "Dashboard",
-			"Webcam": "Webcam",
-			"Tempchart": "Tempchart",
-			"Console": "Console",
-			"ChartUpdateInterval": "Chart update interval",
-			"DatapointInterval": "Datapoint interval"
-		},
-
-		"RemotePrintersPanel": {
+		"RemotePrintersTab": {
 			"RemotePrinters": "Remote Printers",
 			"AddPrinter": "Add Printer",
 			"EditPrinter": "Edit Printer",
-			"UpdatePrinter": "Update Printer"
+			"UpdatePrinter": "Update Printer",
+			"Hostname": "Hostname",
+			"Port": "Port"
 		}
 	}
 }

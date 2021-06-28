@@ -2,7 +2,14 @@
     <v-row>
         <v-col class="col-6 d-flex justify-center">
             <v-row>
-                <v-col class="col-auto d-flex justify-center pr-0" v-if="icon">
+                <v-col class="col-auto d-flex justify-center align-center pr-0" v-if="loading">
+                    <v-progress-circular
+                        indeterminate
+                        color="primary"
+                        :size="24"
+                    ></v-progress-circular>
+                </v-col>
+                <v-col class="col-auto d-flex justify-center align-center pr-0" v-if="icon && !loading">
                     <v-icon>{{ icon }}</v-icon>
                 </v-col>
                 <v-col class="col d-flex justify-center flex-column">
@@ -24,6 +31,9 @@ import BaseMixin from "../mixins/base";
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
+    @Prop({ required: false, default: false })
+    readonly loading!: boolean
+
     @Prop({ required: false, default: '' })
     readonly icon!: string
 
