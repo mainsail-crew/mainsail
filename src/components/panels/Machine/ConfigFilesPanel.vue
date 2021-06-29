@@ -60,7 +60,7 @@
                     </v-menu>
                 </v-item-group>
             </v-toolbar>
-            <v-card-text class="border-bottom-1">
+            <v-card-text>
                 <v-row>
                     <v-col class="col-7 align-center d-flex">
                         <span><b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b><br />{{ this.absolutePath }}</span>
@@ -715,6 +715,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }
         ).then(() => {
+            this.$toast.success(this.$t('Files.SuccessfullyCreated', { filename: this.dialogCreateFile.name }).toString())
             this.dialogCreateFile.show = false
             this.dialogCreateFile.name = ""
         }).catch(() => {
@@ -777,12 +778,12 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.uploadSnackbar.lastProgress.loaded = 0
         this.uploadSnackbar.lastProgress.time = 0
 
-        formData.append('root', this.root);
-        formData.append('file', file, this.currentPath+"/"+filename);
-        this.$store.commit('socket/addLoading', { name: 'configFileUpload' });
+        formData.append('root', this.root)
+        formData.append('file', file, this.currentPath+"/"+filename)
+        this.$store.commit('socket/addLoading', { name: 'configFileUpload' })
 
         return new Promise(resolve => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
             axios.post(this.apiUrl + '/server/files/upload',
                 formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
@@ -802,8 +803,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                     }
                 }
             ).then((result) => {
+                const filename = result.data.item.path.substr(result.data.item.path.indexOf("/")+1)
                 this.uploadSnackbar.status = false
-                resolve(result.data.result)
+                resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
                 this.$store.commit('socket/removeLoading', { name: 'configFileUpload' })

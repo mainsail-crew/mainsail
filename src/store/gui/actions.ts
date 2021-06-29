@@ -124,6 +124,8 @@ export const actions: ActionTree<GuiState, RootState> = {
 	},
 
 	deleteWebcam({ commit, dispatch, state }, payload) {
+		window.console.log(payload)
+
 		commit("deleteWebcam", payload)
 		dispatch('updateSettings', {
 			keyName: 'webcam.configs',

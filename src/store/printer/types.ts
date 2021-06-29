@@ -48,7 +48,7 @@ export interface PrinterStateTemperatureFan {
     additionSensors: PrinterStateAdditionSensor[]
     speed: number
     avgSpeed: number
-    rpm: number | boolean
+    rpm: number | null
     presets: number[]
     chartColor: string
     chartSeries: string[]

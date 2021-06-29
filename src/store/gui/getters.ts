@@ -67,7 +67,13 @@ export const getters: GetterTree<GuiState, any> = {
 	},
 
 	getDatasetAdditionalSensorValue: (state) => (payload: any) => {
-		return state.tempchart.datasetSettings[payload.name]['additionalSensors'][payload.sensor] ?? true
+		if (
+			payload.name in state.tempchart.datasetSettings &&
+			'additionalSensors' in state.tempchart.datasetSettings[payload.name] &&
+			payload.sensor in state.tempchart.datasetSettings[payload.name].additionalSensors
+		) return state.tempchart.datasetSettings[payload.name].additionalSensors[payload.sensor]
+
+		return true
 	},
 
 	getPresetsFromHeater: state => (payload: any) => {

@@ -143,11 +143,8 @@
 		"Probed": "Probed",
 		"Mesh": "Mesh",
 		"Flat": "Flat",
-		"ShowInHeightmap": "Show in Heightmap",
 		"Wireframe": "Wireframe",
-		"Opacity": "Opacity",
-		"General": "General",
-		"Range": "Range",
+		"Scale": "Scale",
 
 
 		"Profiles": "Profiles",
@@ -407,43 +404,9 @@
 		}
 	},
 	"Settings": {
-		"ConsolePanel": {
-			"Console": "Console",
-			"HideTemperatures": "Hide temperatures",
-			"CustomFilters": "Custom filter",
-            "CreateHeadline": "Create filter",
-            "Name": "Name",
-            "Regex": "Regex",
-            "StoreButton": "Store filter",
-            "UpdateButton": "Update filter",
-            "EditHeadline": "Edit filter",
-			"AddFilter": "add filter",
-			"Rules": "Rules"
-		},
-		"ControlPanel": {
-			"Control": "Control",
-			"SpeedXY": "Speed XY",
-			"SpeedZ": "Speed Z",
-			"EnableCross": "Enable movement cross",
-			"MoveDistancesInMm": "Move distances in mm",
-			"InvertXMovement": "Invert X movement",
-			"InvertYMovement": "Invert Y movement",
-			"InvertZMovement": "Invert Z movement",
-			"MoveDistancesXYInMm": "Move distances XY in mm",
-			"MoveDistancesZInMm": "Move distances Z in mm",
-			"MoveDistancesEInMm": "Move distances E in mm",
-			"Extruder": "Extruder",
-			"SpeedEInMms": "Speed E in mm/s"
-		},
-		"DashboardPanel": {
-			"Dashboard": "Dashboard",
-			"Webcam": "Webcam",
-			"Tempchart": "Tempchart",
-			"Console": "Console",
-			"ChartUpdateInterval": "Chart update interval",
-			"DatapointInterval": "Datapoint interval"
-		},
-		"GeneralPanel": {
+		"Cancel": "Cancel",
+		"Edit": "Edit",
+		"GeneralTab": {
 			"General": "General",
 			"PrinterName": "Printer Name",
 			"Language": "Language",
@@ -455,32 +418,9 @@
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
 		},
-		"MacrosPanel": {
-			"Macros": "Macros",
-			"NOMacros": "No macros found..."
-		},
-		"PresetsPanel": {
-			"PreheatPresets": "Preheat Presets",
-			"Cooldown": "Cooldown",
-			"AddPreset": "add preset",
-			"CreateHeadline": "Create Preset",
-            "EditHeadline": "Edit Preset",
-			"Name": "Name",
-			"CustomGCode": "Custom G-Code",
-			"PresetInfo": "You have to set minimum a target temperature or a custom gcode.",
-			"StoreButton": "Store preset",
-			"UpdateButton": "Update preset",
-			"EditCooldown": "Edit Cooldown",
-			"UpdateCooldown": "Update Cooldown"
-		},
-		"RemotePrintersPanel": {
-			"RemotePrinters": "Remote Printers",
-			"AddPrinter": "Add Printer",
-			"EditPrinter": "Edit Printer",
-			"UpdatePrinter": "Update Printer"
-		},
-		"WebcamPanel": {
+		"WebcamTab": {
 			"Webcams": "Webcams",
+			"ShowOnDashboard": "Show on dashboard",
 			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
@@ -512,6 +452,60 @@
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
 			"FlipVertically": "Flip webcam vertically"
+		},
+		"MacrosTab": {
+			"Macros": "Macros",
+			"NOMacros": "No macros found..."
+		},
+		"ControlTab": {
+			"Control": "Control",
+			"SpeedXY": "Speed XY",
+			"SpeedZ": "Speed Z",
+			"EnableCross": "Enable movement cross",
+			"MoveDistancesInMm": "Move distances in mm",
+			"InvertXMovement": "Invert X movement",
+			"InvertYMovement": "Invert Y movement",
+			"InvertZMovement": "Invert Z movement",
+			"MoveDistancesXYInMm": "Move distances XY in mm",
+			"MoveDistancesZInMm": "Move distances Z in mm",
+			"MoveDistancesEInMm": "Move distances E in mm",
+			"SpeedEInMms": "Speed E in mm/s"
+		},
+		"ConsoleTab": {
+			"Console": "Console",
+			"ShowOnDashboard": "Show on dashboard",
+			"HideTemperatures": "Hide temperatures",
+			"CustomFilters": "Custom filter",
+			"CreateHeadline": "Create filter",
+			"Name": "Name",
+			"Regex": "Regex",
+			"StoreButton": "Store filter",
+			"UpdateButton": "Update filter",
+			"EditHeadline": "Edit filter",
+			"AddFilter": "add filter",
+			"Rules": "Rules"
+		},
+		"PresetsTab": {
+			"PreheatPresets": "Preheat Presets",
+			"Cooldown": "Cooldown",
+			"AddPreset": "add preset",
+			"CreateHeadline": "Create Preset",
+			"EditHeadline": "Edit Preset",
+			"Name": "Name",
+			"CustomGCode": "Custom G-Code",
+			"PresetInfo": "You have to set minimum a target temperature or a custom gcode.",
+			"StoreButton": "Store preset",
+			"UpdateButton": "Update preset",
+			"EditCooldown": "Edit Cooldown",
+			"UpdateCooldown": "Update Cooldown"
+		},
+		"RemotePrintersTab": {
+			"RemotePrinters": "Remote Printers",
+			"AddPrinter": "Add Printer",
+			"EditPrinter": "Edit Printer",
+			"UpdatePrinter": "Update Printer",
+			"Hostname": "Hostname",
+			"Port": "Port"
 		}
 	}
 }
