@@ -21,7 +21,7 @@ export const getters: GetterTree<FileState, any> = {
 		const acceptName = "sidebar-logo"
 		const acceptExtensions = ['svg', 'jpg', 'jpeg', 'png', 'gif']
 
-		return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? '/img/logo.svg'
+		return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? ''
 	},
 
 	getSidebarBackground: (state, getters) => {

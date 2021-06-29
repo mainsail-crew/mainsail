@@ -79,6 +79,10 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.filename ?? ""
     }
 
+    get primaryColor () {
+        return this.$store.state.gui.theme.primary
+    }
+
     @Watch('language')
     languageChanged(newVal: string) {
         this.$i18n.locale = newVal;
@@ -102,6 +106,13 @@ export default class App extends Mixins(BaseMixin) {
     @Watch('current_file')
     current_fileChanged(newVal: string) {
         this.$socket.emit("server.files.metadata", { filename: newVal }, "files/getMetadataCurrentFile");
+    }
+
+    @Watch('primaryColor')
+    primaryColorChanged(newVal: string) {
+        this.$nextTick(() => {
+            this.$vuetify.theme.currentTheme.primary = newVal
+        })
     }
 }
 

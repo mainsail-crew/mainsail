@@ -15,7 +15,12 @@
 <template>
     <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" enable-resize-watcher fixed app :src="sidebarBackground">
         <div id="nav-header">
-            <img :src="sidebarLogo" alt="Logo" />
+            <template v-if="sidebarLogo">
+                <img :src="sidebarLogo" style="height: 40px;" class="mr-3" alt="Logo" />
+            </template>
+            <template v-else>
+                <mainsail-logo :color="logoColor" style="height: 40px;" class="mr-3"></mainsail-logo>
+            </template>
             <v-toolbar-title>{{ printerName }}</v-toolbar-title>
         </div>
         <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
@@ -68,9 +73,11 @@ import BaseMixin from "@/components/mixins/base";
 import {PrinterStateKlipperConfig} from "@/store/printer/types";
 import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
 import TheSidebarPrinterMenu from "@/components/TheSidebarPrinterMenu.vue";
+import MainsailLogo from "@/components/ui/MainsailLogo.vue";
 
 @Component({
     components: {
+        MainsailLogo,
         TheSidebarPrinterMenu,
         TheSelectPrinterDialog
 
@@ -84,6 +91,10 @@ export default class TheSidebar extends Mixins(BaseMixin) {
 
     set naviDrawer(newVal: boolean) {
         this.$store.dispatch("setNaviDrawer", newVal)
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.theme.logo
     }
 
     get sidebarLogo(): string {

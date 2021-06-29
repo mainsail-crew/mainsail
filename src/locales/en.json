@@ -506,6 +506,12 @@
 			"UpdatePrinter": "Update Printer",
 			"Hostname": "Hostname",
 			"Port": "Port"
+		},
+		"ThemeTab": {
+			"Theme": "Theme",
+			"Logo": "Logo",
+			"Primary": "Primary",
+			"ResetTheme": "reset Theme"
 		}
 	}
 }

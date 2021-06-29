@@ -1,3 +1,6 @@
+export const defaultLogoColor = '#D41216'
+export const defaultPrimaryColor = '#2196f3'
+
 export const colorArray = [
     '#F44336',
     '#8e379d',

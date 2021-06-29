@@ -75,31 +75,6 @@ const routes: AppRoute[] = [
         alwaysShow: true,
 		showInNavi: true,
     },
-    /*{
-        title: "Settings",
-        path: '/settings',
-        redirect: '/settings/machine',
-        icon: 'wrench',
-        component: Settings,
-        alwaysShow: true,
-		showInNavi: true,
-        children: [
-            {
-                title: 'Machine',
-                path: '/settings/machine',
-                component: SettingsMachine,
-                alwaysShow: true,
-				showInNavi: true,
-            },
-            {
-                title: 'Interface',
-                path: '/settings/interface',
-                component: SettingsInterface,
-                alwaysShow: true,
-				showInNavi: true,
-            },
-        ]
-    },*/
 ]
 
 export default routes

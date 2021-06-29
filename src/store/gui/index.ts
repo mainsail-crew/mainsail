@@ -3,6 +3,7 @@ import { Module } from "vuex"
 import { actions } from '@/store/gui/actions'
 import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
+import {defaultLogoColor, defaultPrimaryColor} from "@/store/variables";
 
 export const getDefaultState = (): GuiState => {
 	return {
@@ -11,6 +12,10 @@ export const getDefaultState = (): GuiState => {
 			language: "en",
 			displayCancelPrint: false,
 			displayZOffsetStandby: false,
+		},
+		theme: {
+			logo: defaultLogoColor,
+			primary: defaultPrimaryColor,
 		},
 		dashboard: {
 			boolTempchart: true,
