@@ -217,7 +217,8 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     beforeDestroy() {
-        if (this.chart?.isDisposed() !== true) this.chart?.dispose()
+        if (typeof window === 'undefined') return
+        if (this.chart) this.chart.dispose()
     }
 
     initChart() {

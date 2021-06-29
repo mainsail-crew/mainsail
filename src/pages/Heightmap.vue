@@ -340,6 +340,11 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return heightmap?.inst ?? null
     }
 
+    beforeDestroy() {
+        if (typeof window === 'undefined') return
+        if (this.chart) this.chart.dispose()
+    }
+
     get profiles () {
         return this.$store.getters["printer/getBedMeshProfiles"]
     }

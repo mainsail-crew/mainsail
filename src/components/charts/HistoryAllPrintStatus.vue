@@ -76,6 +76,11 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         window.removeEventListener('resize', this.eventListenerResize)
     }
 
+    beforeDestroy() {
+        if (typeof window === 'undefined') return
+        if (this.chart) this.chart.dispose()
+    }
+
     @Watch('allPrintStatusArray')
     allPrintStatusArrayChanged(newVal: any) {
         this.chart?.setOption({

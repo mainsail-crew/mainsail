@@ -113,6 +113,11 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
         window.removeEventListener('resize', this.eventListenerResize)
     }
 
+    beforeDestroy() {
+        if (typeof window === 'undefined') return
+        if (this.chart) this.chart.dispose()
+    }
+
     @Watch('printtimeAvgArray')
     printtimeAvgArrayChanged(newVal: any) {
         this.chart?.setOption({
