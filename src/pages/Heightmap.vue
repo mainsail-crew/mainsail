@@ -57,7 +57,10 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="d-flex justify-center pt-0 pb-6">
+                                <v-col class=" pt-0 pb-3 col-auto">
+                                    <v-switch v-model="scaleVisualMap" :label="$t('Heightmap.Scale')" class="mt-0 ml-5"></v-switch>
+                                </v-col>
+                                <v-col class="d-flex justify-center pt-0 pb-3 pr-16">
                                     <v-checkbox v-model="showProbed" :label="$t('Heightmap.Probed')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                     <v-checkbox v-model="showMesh" :label="$t('Heightmap.Mesh')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                     <v-checkbox v-model="showFlat" :label="$t('Heightmap.Flat')" hide-details class="mx-3 mt-0" ></v-checkbox>
@@ -231,7 +234,9 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     get chartOptions() {
         return {
-            tooltip: {},
+            tooltip: {
+                formatter: this.tooltipFormatter
+            },
             darkMode: true,
             animation: false,
             legend: {
@@ -240,8 +245,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             },
             visualMap: {
                 show: true,
-                min: -0.2,
-                max: 0.2,
+                min: this.visualMapRange[0],
+                max: this.visualMapRange[1],
                 calculable: true,
                 dimension: 2,
                 inRange: {
@@ -250,9 +255,9 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
                 seriesIndex: this.visualMapSeriesIndex,
                 left: 20,
                 top: 20,
-                bottom: 20,
+                bottom: 0,
                 itemWidth: 30,
-                itemHeight: 330,
+                itemHeight: 350,
                 precision: 3,
                 textStyle: {
                     color: this.colorVisualMap,
@@ -294,12 +299,6 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
             },
             grid3D: {
-                viewControl: {
-                    //projection: 'orthographic'
-                    alpha: 15,
-                    beta: -45,
-                    distance: 200
-                },
                 axisLabel: {
                     textStyle: {
                         color: this.colorAxisLabel
@@ -338,11 +337,6 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get chart (): ECharts | null {
         const heightmap = this.$refs.heightmap
         return heightmap?.inst ?? null
-    }
-
-    beforeDestroy() {
-        if (typeof window === 'undefined') return
-        if (this.chart) this.chart.dispose()
     }
 
     get profiles () {
@@ -398,6 +392,14 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         this.$store.dispatch("gui/saveSetting", { name: 'heightmap.scale', value: newVal })
     }
 
+    get scaleVisualMap() {
+        return this.$store.state.gui.heightmap.scaleVisualMap ?? false
+    }
+
+    set scaleVisualMap(newVal) {
+        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.scaleVisualMap', value: newVal })
+    }
+
     get rangeX() {
         const stepper_x = this.$store.state.printer.configfile?.settings?.stepper_x
         if (stepper_x) return [stepper_x.position_min, stepper_x.position_max]
@@ -412,7 +414,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return [0,0]
     }
 
-    get heightmapRangeLimit() {
+    get heightmapLimit() {
         let min = 0
         let max = 0
 
@@ -428,6 +430,12 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             min = Math.min(min, ...points)
             max = Math.max(max, ...points)
         }
+
+        return [min, max]
+    }
+
+    get heightmapRangeLimit() {
+        const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
         const maxRange = Math.max(minRange, 0.5)
@@ -453,10 +461,6 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         }
 
         return series
-    }
-    @Watch('series', { deep: true })
-    seriesChanged() {
-        this.chart?.setOption(this.chartOptions)
     }
 
     get seriesProbed() {
@@ -592,6 +596,12 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return serie
     }
 
+    get visualMapRange() {
+        if (!this.scaleVisualMap) return [-0.1, 0.1]
+
+        return this.heightmapLimit
+    }
+
     get visualMapSeriesIndex() {
         const output = []
 
@@ -599,6 +609,13 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         else if (this.showMesh) output.push(1)
 
         return output
+    }
+
+    tooltipFormatter(data: any) {
+        return "<b>"+data.seriesName+"</b><br />" +
+            "<b>" + data.dimensionNames[0]+"</b>: "+data.data[0].toFixed(1) + " mm <br />" +
+            "<b>" + data.dimensionNames[1]+"</b>: "+data.data[1].toFixed(1) + " mm <br />" +
+            "<b>" + data.dimensionNames[2]+"</b>: "+data.data[2].toFixed(3) + " mm "
     }
 
     loadProfile(name: string) {
@@ -649,6 +666,11 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         this.$store.commit('socket/addLoading', { name: 'bedMeshCalibrate' })
         this.$store.commit('server/addEvent', { message: "BED_MESH_CALIBRATE", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' })
+    }
+
+    beforeDestroy() {
+        if (typeof window === 'undefined') return
+        if (this.chart) this.chart.dispose()
     }
 }
 </script>
