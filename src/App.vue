@@ -22,9 +22,7 @@
         <v-main id="content" v-bind:style="{ background: mainBackground }">
             <v-scroll-y-transition>
                 <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <keep-alive>
-                        <router-view></router-view>
-                    </keep-alive>
+                    <router-view></router-view>
                 </v-container>
             </v-scroll-y-transition>
         </v-main>
