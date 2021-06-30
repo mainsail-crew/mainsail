@@ -37,26 +37,24 @@
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-item-group class="v-btn-toggle" name="controllers">
-                <template >
-                    <v-btn
-                        v-for="button in filteredToolbarButtons"
-                        v-bind:key="button.loadingName"
-                        class="px-2 minwidth-0"
-                        :color="button.color"
-                        @click="button.click"
-                        :loading="loadings.includes(button.loadingName)"
-                        small
-                    >
-                        <v-tooltip top>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
-                            </template>
-                            <span>{{ button.text }}</span>
-                        </v-tooltip>
-                    </v-btn>
-                </template>
-            </v-item-group>
+            <template >
+                <v-btn
+                    v-for="button in filteredToolbarButtons"
+                    v-bind:key="button.loadingName"
+                    class="px-2 minwidth-0 ml-3"
+                    :color="button.color"
+                    @click="button.click"
+                    :loading="loadings.includes(button.loadingName)"
+                    small
+                >
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
+                        </template>
+                        <span>{{ button.text }}</span>
+                    </v-tooltip>
+                </v-btn>
+            </template>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
             <template v-if="display_message || print_stats_message">
