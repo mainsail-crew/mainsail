@@ -22,6 +22,7 @@ _PLEASE OBEY THAT THIS WILL DESTROY ALL DATA ON YOUR CARD_
 3.  Install and Open rpi-imager. Now you should see a Window like this.
 
 ![](../assets/img/setup/rpi-imager-launched.png)
+
 _Window Look depends on OS, in this case Linux with XFCE was used._
 
 4. Now click on "CHOOSE OS", this will open a popup as shown below.
@@ -80,7 +81,14 @@ _**After you're able to get to the Mainsail Webinterface you should consider to 
 
 If you decide to update, you should update in following order:
 
-1. System Update (Bring latest RaspberryOS Updates to the System)
-2. Klipper Update ( To get latest Firmware, often flashing the MCU can wear out his memory )
-3. Moonraker ( Having latest Version, could lead to more Features in Frontend )
-4. Update Mainsail ( The most important! :P )
+1.  System Update (Bring latest RaspberryOS Updates to the System)
+2.  Klipper Update ( To get latest Firmware, often flashing the MCU can wear out his memory )
+3.  Moonraker ( Having latest Version, could lead to more Features in Frontend )
+4.  Update Mainsail ( The most important! :P )
+
+5.  **Important:** Include the mainsail.cfg into your printer.cfg
+    This could be done by:
+
+            [include mainsail.cfg]
+
+6.  Enjoy Mainsail!
