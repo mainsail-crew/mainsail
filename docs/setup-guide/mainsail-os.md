@@ -71,13 +71,13 @@ _Note: Please give the PI some time, during the first boot MainsailOS (like ever
 
 _**Make sure that your MCU(s) is connected to your pi, If you will be using wired networking, also make sure your ethernet cable is connected.**_
 
-10. Find your pi on the network, and ssh into it, (Using PuTTY on Windows or the terminal on MacOS)
+10. Find your pi on the network, open up your preferred Browser and type either your IP or Hostname (Depends on your Network configuration)
 
 -   If your network supports bonjour, the pi should show up as `mainsailos.local` or the given Hostname in the Setup Section.
 -   If your network automatically assigns DNS hostnames, it may simply show up as `mainsailos` or accordingly given Hostname.
 -   Failing these two options, you may need to check your router's DHCP server, and find out what IP address as been assigned to the device.
 
-_**After you're able to get to the Mainsail Webinterface you should consider to Update the System to get latest features. Mainsail, Klipper and Moonraker got an relative fast Development Cycle. We cant provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_
+_**After you're able to get to the Mainsail Webinterface you should consider to Update the System to get latest features. Mainsail, Klipper and Moonraker got an relative fast Development Cycle. We can't provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_
 
 If you decide to update, you should update in following order:
 
