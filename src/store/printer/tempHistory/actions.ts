@@ -95,7 +95,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 						width: 2,
 						opacity: 0.9,
 					},
-					symbol: 'none',
+					showSymbol: false,
 					emphasis: {
 						lineStyle: {
 							color: color,
@@ -124,7 +124,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 								width: 2,
 								opacity: 0.1,
 							},
-							symbol: 'none',
+							showSymbol: false,
 							emphasis: {
 								lineStyle: {
 									color: color,
