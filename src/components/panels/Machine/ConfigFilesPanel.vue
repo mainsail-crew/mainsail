@@ -747,7 +747,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     async uploadFile() {
         if (this.$refs.fileUpload.files?.length) {
-            this.$store.commit('socket/addLoading', { name: 'configFileUpload' })
+            this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
             let successFiles = []
             this.uploadSnackbar.number = 0
             this.uploadSnackbar.max = this.$refs.fileUpload.files.length
@@ -757,7 +757,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 successFiles.push(result)
             }
 
-            this.$store.commit('socket/removeLoading', { name: 'configFileUpload' })
+            this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
             for(const file of successFiles) {
                 this.$toast.success("Upload of "+file+" successful!")
             }
@@ -780,7 +780,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
         formData.append('root', this.root)
         formData.append('file', file, this.currentPath+"/"+filename)
-        this.$store.commit('socket/addLoading', { name: 'configFileUpload' })
+        this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
 
         return new Promise(resolve => {
             this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
@@ -808,7 +808,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                 resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
-                this.$store.commit('socket/removeLoading', { name: 'configFileUpload' })
+                this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
                 toast.error("Cannot upload the file!")
             })
         })

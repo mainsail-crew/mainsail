@@ -135,14 +135,12 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     emergencyStop() {
-        this.$store.commit('socket/addLoading', { name: 'topbarEmergencyStop' });
-        this.$socket.emit('printer.emergency_stop', {}, 'socket/removeLoading',{ name: 'topbarEmergencyStop' });
+        this.$socket.emit('printer.emergency_stop', {}, { loading: 'topbarEmergencyStop' })
     }
 
     saveConfig() {
         this.$store.commit('server/addEvent', { message: "SAVE_CONFIG", type: "command" });
-        this.$store.commit('socket/addLoading', { name: 'topbarSaveConfig' });
-        this.$socket.emit('printer.gcode.script', { script: "SAVE_CONFIG" }, 'socket/removeLoading', { name: 'topbarSaveConfig' });
+        this.$socket.emit('printer.gcode.script', { script: "SAVE_CONFIG" }, { loading: 'topbarSaveConfig' });
     }
 
     btnUploadAndStart() {
@@ -151,14 +149,14 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     async uploadAndStart() {
         if (this.$refs.fileUploadAndStart?.files.length) {
-            this.$store.commit('socket/addLoading', { name: 'btnUploadAndStart' })
+            this.$store.dispatch('socket/addLoading', { name: 'btnUploadAndStart' })
             let successFiles = []
             for (const file of this.$refs.fileUploadAndStart?.files) {
                 const result = await this.doUploadAndStart(file)
                 successFiles.push(result)
             }
 
-            this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+            this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
             for(const file of successFiles) {
                 const text = this.$t("App.TopBar.UploadOfFileSuccessful", {file:file}).toString()
                 this.$toast.success(text)
@@ -208,7 +206,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
                 resolve(result.data.result)
             }).catch(() => {
                 this.uploadSnackbar.status = false
-                this.$store.commit('socket/removeLoading', { name: 'btnUploadAndStart' })
+                this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
                 const text = this.$t("App.TopBar.CannotUploadTheFile").toString()
                 this.$toast.error(text)
             })

@@ -44,17 +44,15 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     }
 
     restart() {
-        this.$store.commit('socket/addLoading', { name: 'restart' });
-        this.$socket.emit('printer.restart', { }, 'socket/removeLoading', { name: 'restart' });
+        this.$socket.emit('printer.restart', { }, { loading: 'restart' })
     }
 
     firmwareRestart() {
-        this.$store.commit('socket/addLoading', { name: 'firmwareRestart' });
-        this.$socket.emit('printer.firmware_restart', { }, 'socket/removeLoading', { name: 'firmwareRestart' });
+        this.$socket.emit('printer.firmware_restart', { }, { loading: 'firmwareRestart' })
     }
 
     requestKlippyState() {
-        this.$socket.emit('printer.info', {}, 'printer/getInfo')
+        this.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
     }
 
     @Watch('klipperState')

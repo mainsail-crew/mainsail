@@ -61,19 +61,19 @@ export class WebSocketClient {
                         window.console.error("Response Error: "+wait.action+" > "+data.error.message)
                         if (wait.params) window.console.log(wait.params)
 
-                        this.store?.dispatch(wait.action,
+                        /*this.store?.dispatch(wait.action,
                             Object.assign(wait.actionPreload || {}, {
                                 error: data.error,
                                 requestParams: wait.params
                             })
-                        )
-                    } else {
+                        )*/
+                    } else if (wait.action) {
                         let result = data.result
                         if (result === "ok") result = { result: result }
                         if (typeof(result) === "string") result = { result: result }
 
                         const preload = {}
-                        if (wait.actionPreload) Object.assign(preload, wait.actionPreload)
+                        if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
                         Object.assign(preload, { requestParams: wait.params })
                         Object.assign(preload, result)
                         this.store?.dispatch(wait.action, preload)
@@ -95,18 +95,29 @@ export class WebSocketClient {
 
     removeWaitById(id: number): void {
         const index = this.waits.findIndex((wait: Wait) => wait.id === id)
-        if (index) this.waits.splice(index, 1)
+        if (index) {
+            const wait = this.waits[index]
+            if (wait.loading && this.store) {
+                this.store.dispatch("socket/removeLoading", { name: wait.loading })
+            }
+            this.waits.splice(index, 1)
+        }
     }
 
-    emit(method: string, params: Params, action = '', actionPreload: Params | null = null):void {
+    emit(method: string, params: Params, options: emitOptions = {}):void {
         if (this.instance?.readyState === WebSocket.OPEN) {
             const id = Math.floor(Math.random() * 10000) + 1
             this.waits.push({
                 id: id,
-                action: action,
                 params: params,
-                actionPreload: actionPreload,
+                action: options.action ?? null,
+                actionPayload: options.actionPayload ?? {},
+                loading: options.loading ?? null,
             })
+
+            if (options.loading && this.store) {
+                this.store.dispatch("socket/addLoading", { name: options.loading })
+            }
 
             const msg = JSON.stringify({
                 jsonrpc: '2.0',
@@ -136,17 +147,24 @@ export interface WebSocketPluginOptions {
 export interface WebSocketClient {
     connect(): void
     close(): void
-    emit(method: string, params: Params, action: string, actionPreload: Params | null):void
+    emit(method: string, params: Params, emitOptions: emitOptions):void
 }
 
 export interface Wait {
     id: number
-    action: string
     params: any
-    actionPreload?: any
+    action?: string | null
+    actionPayload?: any
+    loading?: string | null
 }
 
 interface Params {
     data?: any
     [key: string]: any
+}
+
+interface emitOptions {
+    action?: string | null
+    actionPayload?: Params
+    loading?: string | null
 }

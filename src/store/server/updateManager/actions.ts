@@ -9,13 +9,12 @@ export const actions: ActionTree<ServerUpdateMangerState, RootState> = {
 	},
 
 	init() {
-		Vue.$socket.emit('machine.update.status', {}, 'server/updateManager/getStatus')
+		Vue.$socket.emit('machine.update.status', {}, { action: 'server/updateManager/getStatus'})
 	},
 
 	getStatus({ commit }, payload) {
 		window.console.log("response sync update")
 
 		commit('setStatus', payload)
-		commit('socket/removeLoading', { name: "loadingBtnSyncUpdateManager" }, { root: true })
 	},
 }

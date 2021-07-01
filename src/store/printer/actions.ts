@@ -13,9 +13,9 @@ export const actions: ActionTree<PrinterState, RootState> = {
 	init() {
 		window.console.debug("init printer")
 
-		Vue.$socket.emit('printer.info', {}, 'printer/getInfo')
-		Vue.$socket.emit('printer.objects.list', {}, 'printer/initSubscripts')
-		Vue.$socket.emit('printer.gcode.help', {}, 'printer/initHelpList')
+		Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
+		Vue.$socket.emit('printer.objects.list', {}, { action: 'printer/initSubscripts' })
+		Vue.$socket.emit('printer.gcode.help', {}, { action: 'printer/initHelpList' })
 	},
 
 	getInfo({ commit }, payload) {
@@ -44,8 +44,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
 			if (!blocklist.includes(nameSplit[0])) subscripts = {...subscripts, [key]: null }
 		})
 
-		if (subscripts !== {}) Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, "printer/getData")
-		Vue.$socket.emit("server.temperature_store", {}, "printer/tempHistory/init")
+		if (subscripts !== {}) Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: "printer/getData" })
+		Vue.$socket.emit("server.temperature_store", {}, { action: "printer/tempHistory/init" })
 	},
 
 	getData({ commit }, payload) {
@@ -66,23 +66,20 @@ export const actions: ActionTree<PrinterState, RootState> = {
 	},
 
 	getEndstopStatus({ commit }, payload) {
-		commit('socket/removeLoading', { name: 'queryEndstops' }, { root: true });
 		commit('setEndstopStatus', payload);
 	},
 
 	removeBedMeshProfile({ commit }, payload) {
-		commit('socket/removeLoading', { name: 'bedMeshRemove_'+payload.name }, { root: true })
 		commit('removeBedMeshProfile', payload)
 	},
 
 	sendGcode({ commit }, payload) {
-		commit('socket/addLoading', { name: 'sendGcode' }, { root: true })
 		commit('server/addEvent', { message: payload, type: 'command' }, { root: true })
 
 		if (payload.toLowerCase().trim() === "m112") {
-			Vue.$socket.emit('printer.emergency_stop', {}, "socket/removeLoading", { name: 'sendGcode' })
+			Vue.$socket.emit('printer.emergency_stop', {}, { loading: "sendGcode" })
 		} else {
-			Vue.$socket.emit('printer.gcode.script', { script: payload }, "socket/removeLoading", { name: 'sendGcode' })
+			Vue.$socket.emit('printer.gcode.script', { script: payload }, { loading: "sendGcode" })
 		}
 	}
 }

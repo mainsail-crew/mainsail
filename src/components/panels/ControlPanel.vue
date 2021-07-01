@@ -454,38 +454,32 @@ export default class ControlPanel extends Mixins(BaseMixin) {
 
     doHome() {
         this.$store.commit('server/addEvent', { message: "G28", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'homeAll' })
-        this.$socket.emit('printer.gcode.script', { script: "G28" }, "socket/removeLoading", { name: 'homeAll' })
+        this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
     }
     
     doHomeX() {
         this.$store.commit('server/addEvent', { message: "G28 X", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'homeX' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 X" }, "socket/removeLoading", { name: 'homeX' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 X" }, { loading: 'homeX' })
     }
     
     doHomeY() {
         this.$store.commit('server/addEvent', { message: "G28 Y", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'homeY' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 Y" }, "socket/removeLoading", { name: 'homeY' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 Y" }, { loading: 'homeY' })
     }
 
     doHomeZ() {
         this.$store.commit('server/addEvent', { message: "G28 Z", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'homeZ' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 Z" }, "socket/removeLoading", { name: 'homeZ' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 Z" }, { loading: 'homeZ' })
     }
 
     doQGL() {
         this.$store.commit('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'qgl' })
-        this.$socket.emit('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, "socket/removeLoading", { name: 'qgl' })
+        this.$socket.emit('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, { loading: 'qgl' })
     }
 
     doZtilt() {
         this.$store.commit('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'zTilt' })
-        this.$socket.emit('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "socket/removeLoading", { name: 'zTilt' })
+        this.$socket.emit('printer.gcode.script', { script: "Z_TILT_ADJUST" }, { loading: 'zTilt' })
     }
 
     doSendMove(gcode: string, feedrate: number) {
@@ -500,13 +494,12 @@ export default class ControlPanel extends Mixins(BaseMixin) {
 
     doSend(gcode: string) {
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "server/getGcodeRespond")
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { action: "server/getGcodeRespond" })
     }
 
     doSendMacro(gcode: string) {
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'macro_'+gcode })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'macro_'+gcode })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_'+gcode })
     }
 
     setFeedAmount(value: number) {
@@ -520,15 +513,13 @@ export default class ControlPanel extends Mixins(BaseMixin) {
     sendRetract() {
         const gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'btnRetract' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnRetract' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendDetract() {
         const gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$store.commit('socket/addLoading', { name: 'btnDetract' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnDetract' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
 
     onResize() {

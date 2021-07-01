@@ -474,28 +474,23 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     btnPauseJob() {
-        this.$store.commit('socket/addLoading', { name: 'statusPrintPause' });
-        this.$socket.emit('printer.print.pause', { }, 'socket/removeLoading', { name: 'statusPrintPause' });
+        this.$socket.emit('printer.print.pause', { }, { loading: 'statusPrintPause' })
     }
 
     btnResumeJob() {
-        this.$store.commit('socket/addLoading', { name: 'statusPrintResume' });
-        this.$socket.emit('printer.print.resume', { }, 'socket/removeLoading', { name: 'statusPrintResume' });
+        this.$socket.emit('printer.print.resume', { }, { loading: 'statusPrintResume' })
     }
 
     btnCancelJob() {
-        this.$store.commit('socket/addLoading', { name: 'statusPrintCancel' });
-        this.$socket.emit('printer.print.cancel', { }, 'socket/removeLoading', { name: 'statusPrintCancel' });
+        this.$socket.emit('printer.print.cancel', { }, { loading: 'statusPrintCancel' })
     }
 
     btnClearJob() {
-        this.$store.commit('socket/addLoading', {name: 'statusPrintClear'});
-        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, 'socket/removeLoading', { name: 'statusPrintClear' });
+        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, { loading: 'statusPrintClear' });
     }
 
     btnReprintJob() {
-        this.$store.commit('socket/addLoading', {name: 'statusPrintReprint'});
-        this.$socket.emit('printer.print.start', { filename: this.current_filename }, 'socket/removeLoading', { name: 'statusPrintReprint' });
+        this.$socket.emit('printer.print.start', { filename: this.current_filename }, { loading: 'statusPrintReprint' });
     }
 
     formatTime(seconds) {

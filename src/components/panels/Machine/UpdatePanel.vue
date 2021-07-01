@@ -175,9 +175,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     btnSync() {
-        window.console.log("send sync update")
-        this.$store.commit('socket/addLoading', { name: 'loadingBtnSyncUpdateManager' })
-        this.$socket.emit('machine.update.status', { refresh: true }, 'server/updateManager/getStatus')
+        this.$socket.emit('machine.update.status', { refresh: true }, { action: 'server/updateManager/getStatus', loading: "loadingBtnSyncUpdateManager" })
     }
 
     getBtnColor(object: any) {

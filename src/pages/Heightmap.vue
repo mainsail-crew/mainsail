@@ -619,9 +619,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     loadProfile(name: string) {
-        this.$store.commit('socket/addLoading', { name: 'bedMeshLoad_'+name })
         this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE LOAD="+name, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+name }, "socket/removeLoading", { name: 'bedMeshLoad_'+name })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+name }, { loading: 'bedMeshLoad_'+name })
     }
 
     openRenameProfile() {
@@ -631,9 +630,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     renameProfile() {
         this.renameDialog = false
-        this.$store.commit('socket/addLoading', { name: 'bedMeshRename' })
         this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase(), type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, "socket/removeLoading", { name: 'bedMeshRename' })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
     }
 
     openRemoveProfile(name: string) {
@@ -643,29 +641,29 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     removeProfile() {
         this.removeDialog = false;
-        this.$store.commit('socket/addLoading', { name: 'bedMeshRemove_'+this.newName })
         this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, "printer/removeBedMeshProfile", { name: this.newName })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, {
+            action: "printer/removeBedMeshProfile",
+            actionPayload: {name: this.newName},
+            loading: "bedMeshRename_"+this.newName
+        })
         this.removeDialogProfile = ""
     }
 
     homePrinter() {
-        this.$store.commit('socket/addLoading', { name: 'homeAll' })
         this.$store.commit('server/addEvent', { message: "G28", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28" }, "socket/removeLoading", { name: 'homeAll' })
+        this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
     }
 
     clearBedMesh() {
-        this.$store.commit('socket/addLoading', { name: 'bedMeshClear' })
         this.$store.commit('server/addEvent', { message: "BED_MESH_CLEAR", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CLEAR" }, "socket/removeLoading", { name: 'bedMeshClear' })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CLEAR" }, { loading: 'bedMeshClear' })
     }
 
     calibrateMesh() {
         this.calibrateDialog = false;
-        this.$store.commit('socket/addLoading', { name: 'bedMeshCalibrate' })
         this.$store.commit('server/addEvent', { message: "BED_MESH_CALIBRATE", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, "socket/removeLoading", { name: 'bedMeshCalibrate' })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, { loading: 'bedMeshCalibrate' })
     }
 
     beforeDestroy() {

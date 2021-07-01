@@ -27,7 +27,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 	saveSetting({ commit }, payload) {
 		commit('saveSetting', payload)
 
-		Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value }, 'gui/updateDataFromDB')
+		Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value }, { action: 'gui/updateDataFromDB' })
 	},
 
 	updateSettings(_, payload) {
@@ -40,7 +40,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 			!Array.isArray(payload.value[keyName])
 		) newState = Object.assign(payload.value[keyName], {...newState})
 
-		Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState }, 'gui/updateDataFromDB')
+		Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState }, { action: 'gui/updateDataFromDB' })
 	},
 
 	setGcodefilesMetadata({ commit, dispatch, state }, data) {
@@ -142,12 +142,12 @@ export const actions: ActionTree<GuiState, RootState> = {
 	},
 
 	resetMoonrakerDB() {
-		Vue.$socket.emit('server.database.list', { }, 'gui/resetMoonrakerDB2')
+		Vue.$socket.emit('server.database.list', { }, { action: 'gui/resetMoonrakerDB2' })
 	},
 
 	resetMoonrakerDB2(_, payload) {
 		if ('namespaces' in payload && payload.namespaces.includes('mainsail')) {
-			Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, 'gui/resetMoonrakerDB3')
+			Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/resetMoonrakerDB3' })
 		}
 	},
 

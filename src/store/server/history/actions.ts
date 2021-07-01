@@ -9,8 +9,8 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
 	},
 
 	init() {
-		Vue.$socket.emit('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
-		Vue.$socket.emit('server.history.totals', {}, 'server/history/getTotals')
+		Vue.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
+		Vue.$socket.emit('server.history.totals', {}, { action: 'server/history/getTotals' })
 	},
 
 	getTotals({ commit }, payload) {
@@ -31,14 +31,14 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
 		if (
 			payload.requestParams?.limit > 0 &&
 			payload.jobs?.length === payload.requestParams.limit
-		) Vue.$socket.emit('server.history.list', { start: payload.requestParams.start + payload.requestParams.limit, limit: payload.requestParams.limit }, 'server/history/getHistory')
+		) Vue.$socket.emit('server.history.list', { start: payload.requestParams.start + payload.requestParams.limit, limit: payload.requestParams.limit }, { action: 'server/history/getHistory' })
 	},
 
 	getChanged({ commit }, payload) {
 		if (payload.action === 'added') commit('addJob', payload.job)
 		else if (payload.action === 'finished') commit('updateJob', payload.job)
 
-		Vue.$socket.emit('server.history.totals', {}, 'server/history/getTotals')
+		Vue.$socket.emit('server.history.totals', {}, { action: 'server/history/getTotals' })
 	},
 
 	getDeletedJobs({ commit }, payload) {

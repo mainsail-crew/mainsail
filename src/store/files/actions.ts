@@ -20,7 +20,7 @@ export const actions: ActionTree<FileState, RootState> = {
 		dirs.forEach((dirname: string) => {
 			if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
 				commit("createRootDir", dirname)
-				Vue.$socket.emit('server.files.get_directory', { path: dirname }, 'files/getDirectory')
+				Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
 			}
 		})
 	},
@@ -68,7 +68,7 @@ export const actions: ActionTree<FileState, RootState> = {
 						}
 					})
 
-					Vue.$socket.emit('server.files.get_directory', { path: payload.requestParams.path+'/'+dir.dirname }, 'files/getDirectory');
+					Vue.$socket.emit('server.files.get_directory', { path: payload.requestParams.path+'/'+dir.dirname }, { action: 'files/getDirectory' });
 				}
 			})
 		}

@@ -757,7 +757,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
-                this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+                this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
                 this.$toast.error("Cannot upload the file!")
             })
         })
@@ -802,7 +802,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     async uploadFile() {
         if (this.$refs.fileUpload.files?.length) {
-            this.$store.commit('socket/addLoading', { name: 'gcodeUpload' })
+            this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
             let successFiles = []
             this.uploadSnackbar.number = 0
             this.uploadSnackbar.max = this.$refs.fileUpload.files.length
@@ -812,7 +812,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 successFiles.push(result)
             }
 
-            this.$store.commit('socket/removeLoading', { name: 'gcodeUpload' })
+            this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
             for(const file of successFiles) {
                 this.$toast.success("Upload of "+file+" successful!")
             }

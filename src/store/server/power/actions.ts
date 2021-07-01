@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerPowerState, RootState> = {
 	},
 
 	init() {
-		Vue.$socket.emit('machine.device_power.devices', {}, 'server/power/getDevices')
+		Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices'})
 	},
 
 	getDevices({ commit }, payload) {

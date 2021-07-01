@@ -62,30 +62,26 @@ export default class ZOffsetPanel extends Mixins(BaseMixin) {
 
     sendBabySteppingDownFine() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-        this.$store.commit('socket/addLoading', { name: 'babySteppingDownFine' });
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDownFine' });
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDownFine' });
     }
 
     sendBabySteppingDown() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('socket/addLoading', { name: 'babySteppingDown' })
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingDown' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDown' })
     }
 
     sendBabySteppingUpFine() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('socket/addLoading', { name: 'babySteppingUpFine' })
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUpFine' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUpFine' })
     }
 
     sendBabySteppingUp() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('socket/addLoading', { name: 'babySteppingUp' })
         this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'babySteppingUp' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUp' })
     }
 }
 </script>

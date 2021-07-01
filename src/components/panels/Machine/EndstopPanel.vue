@@ -80,8 +80,7 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
     }
 
     syncEndstops() {
-        this.$store.commit('socket/addLoading', { name: 'queryEndstops' })
-        this.$socket.emit('printer.query_endstops.status', { }, "printer/getEndstopStatus")
+        this.$socket.emit('printer.query_endstops.status', { }, { action: "printer/getEndstopStatus", loading: "queryEndstops" })
         if (this.existProbe) {
             window.console.log("exist probe")
             this.$store.commit('server/addEvent', { message: "QUERY_PROBE", type: 'command' })

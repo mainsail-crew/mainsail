@@ -15,15 +15,15 @@ export const actions: ActionTree<ServerState, RootState> = {
 	init() {
 		window.console.debug("init Server")
 
-		Vue.$socket.emit('server.info', {}, 'server/initServerInfo')
-		Vue.$socket.emit('server.config', {}, 'server/initServerConfig')
-		Vue.$socket.emit('machine.system_info', {}, 'server/initSystemInfo')
-		Vue.$socket.emit('server.database.list', { root: 'config' }, 'server/checkDatabases')
+		Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo'})
+		Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig'})
+		Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo'})
+		Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
 	},
 
 	checkDatabases({ dispatch }, payload) {
 		if (payload.namespaces?.includes('mainsail'))
-			Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, 'gui/init')
+			Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/init'})
 		else {
 			Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'init', value: true })
 			dispatch('printer/init', null, { root: true })
@@ -57,7 +57,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 		window.console.debug("init ServerConfig")
 		commit('setConfig', payload)
 
-		Vue.$socket.emit('server.gcode_store', {}, 'server/getGcodeStore')
+		Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 	},
 
 	initSystemInfo({ commit }, payload) {

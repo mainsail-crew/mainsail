@@ -99,6 +99,10 @@ export const actions: ActionTree<SocketState, RootState> = {
 		}
 	},
 
+	addLoading({ commit }, payload: string) {
+		commit('addLoading', payload)
+	},
+
 	removeLoading({ commit }, payload: string) {
 		commit('removeLoading', payload)
 	},

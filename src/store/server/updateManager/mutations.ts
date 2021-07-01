@@ -26,7 +26,7 @@ export const mutations: MutationTree<ServerUpdateMangerState> = {
 			Vue.set(state.updateResponse, 'complete', payload.complete)
 
 		if ('complete' in payload && payload.complete)
-			Vue.$socket.emit('machine.update.status', { refresh: false }, 'server/updateManager/getStatus')
+			Vue.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/getStatus'})
 
 		state.updateResponse.messages.push({
 			date: new Date(),
