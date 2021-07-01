@@ -118,7 +118,10 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get printerName():string {
-        return this.$store.state.gui.general.printername ?? this.$store.state.printer.hostname ?? ""
+        if (this.$store.state.gui.general.printername.length)
+            return this.$store.state.gui.general.printername
+
+        return this.$store.state.printer.hostname
     }
 
     get klippy_state(): string {
