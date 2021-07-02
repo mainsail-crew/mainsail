@@ -77,7 +77,8 @@ _**Make sure that your MCU(s) is connected to your pi, If you will be using wire
 -   If your network automatically assigns DNS hostnames, it may simply show up as `mainsailos` or accordingly given Hostname.
 -   Failing these two options, you may need to check your router's DHCP server, and find out what IP address as been assigned to the device.
 
-_**After you're able to get to the Mainsail Webinterface you should consider to Update the System to get latest features. Mainsail, Klipper and Moonraker got an relative fast Development Cycle. We can't provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_
+_**After you're able to get to the Mainsail Webinterface you should consider to Update the System to get latest features. Mainsail, Klipper and Moonraker got an relative fast Development Cycle. We can't provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_  
+{: .info}
 
 If you decide to update, you should update in following order:
 
