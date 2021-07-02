@@ -48,7 +48,7 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
 
     changeSensor() {
         const gcode = 'SET_FILAMENT_SENSOR SENSOR='+this.name+' ENABLE='+(this.enabled ? 0 : 1)
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 }

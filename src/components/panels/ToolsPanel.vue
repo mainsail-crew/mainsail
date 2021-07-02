@@ -324,21 +324,21 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
                     gcode = "SET_TEMPERATURE_FAN_TARGET temperature_fan="+fanName+" TARGET="+attributes.value
                 }
 
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
             }
         }
 
         if (preset.gcode !== "") {
             setTimeout(() => {
-                this.$store.commit('server/addEvent', { message: preset.gcode, type: 'command' })
+                this.$store.dispatch('server/addEvent', { message: preset.gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: preset.gcode })
             }, 100)
         }
     }
 
     cooldown(): void {
-        this.$store.commit('server/addEvent', { message: this.cooldownGcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: this.cooldownGcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: this.cooldownGcode })
     }
 

@@ -57,7 +57,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
             this.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")")
         } else {
             const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
-            this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: gcode })
         }
     }

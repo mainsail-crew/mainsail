@@ -1029,13 +1029,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
             let gcode = ""
             if (file.first_layer_extr_temp > 0) {
                 gcode = "M104 S"+file.first_layer_extr_temp
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
             }
 
             if (file.first_layer_bed_temp > 0) {
                 gcode = "M140 S"+file.first_layer_bed_temp
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+                this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
             }
         }

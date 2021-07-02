@@ -81,7 +81,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.type === "output_pin")     gcode = "SET_PIN PIN=" + this.name + " VALUE=" + (l_value).toFixed(2)
 
         if (gcode !== "") {
-            this.$store.commit('server/addEvent', {message: gcode, type: 'command'})
+            this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
             this.$socket.emit('printer.gcode.script', {script: gcode})
         }
     }
@@ -89,7 +89,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     switchOutputPin() {
         this.value = this.value ? 0 : 1
         const gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 

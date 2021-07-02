@@ -992,7 +992,7 @@ export default {
                     if (boolRestart && this.restartServiceName !== "klipper") {
                         this.$socket.sendObj('machine.services.restart', { service: this.restartServiceName })
                     } else if (boolRestart) {
-                        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+                        this.$store.dispatch('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
                         this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
                     }
                 }).catch(() => {

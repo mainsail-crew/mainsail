@@ -619,7 +619,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     loadProfile(name: string) {
-        this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE LOAD="+name, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE LOAD="+name, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+name }, { loading: 'bedMeshLoad_'+name })
     }
 
@@ -630,7 +630,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     renameProfile() {
         this.renameDialog = false
-        this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase(), type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase(), type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
     }
 
@@ -641,7 +641,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     removeProfile() {
         this.removeDialog = false;
-        this.$store.commit('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, {
             action: "printer/removeBedMeshProfile",
             actionPayload: {name: this.newName},
@@ -651,18 +651,18 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     homePrinter() {
-        this.$store.commit('server/addEvent', { message: "G28", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "G28", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
     }
 
     clearBedMesh() {
-        this.$store.commit('server/addEvent', { message: "BED_MESH_CLEAR", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_CLEAR", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CLEAR" }, { loading: 'bedMeshClear' })
     }
 
     calibrateMesh() {
         this.calibrateDialog = false;
-        this.$store.commit('server/addEvent', { message: "BED_MESH_CALIBRATE", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_CALIBRATE", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, { loading: 'bedMeshCalibrate' })
     }
 

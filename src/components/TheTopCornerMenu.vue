@@ -70,13 +70,13 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
 
     klipperRestart() {
         this.showMenu = false
-        this.$store.commit('server/addEvent', { message: "RESTART", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "RESTART", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "RESTART" })
     }
 
     klipperFirmwareRestart() {
         this.showMenu = false
-        this.$store.commit('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "FIRMWARE_RESTART" })
     }
 

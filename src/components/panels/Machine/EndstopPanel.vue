@@ -83,7 +83,7 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.query_endstops.status', { }, { action: "printer/getEndstopStatus", loading: "queryEndstops" })
         if (this.existProbe) {
             window.console.log("exist probe")
-            this.$store.commit('server/addEvent', { message: "QUERY_PROBE", type: 'command' })
+            this.$store.dispatch('server/addEvent', { message: "QUERY_PROBE", type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: "QUERY_PROBE" })
         }
     }

@@ -453,32 +453,32 @@ export default class ControlPanel extends Mixins(BaseMixin) {
     }
 
     doHome() {
-        this.$store.commit('server/addEvent', { message: "G28", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "G28", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
     }
     
     doHomeX() {
-        this.$store.commit('server/addEvent', { message: "G28 X", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "G28 X", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "G28 X" }, { loading: 'homeX' })
     }
     
     doHomeY() {
-        this.$store.commit('server/addEvent', { message: "G28 Y", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "G28 Y", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "G28 Y" }, { loading: 'homeY' })
     }
 
     doHomeZ() {
-        this.$store.commit('server/addEvent', { message: "G28 Z", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "G28 Z", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "G28 Z" }, { loading: 'homeZ' })
     }
 
     doQGL() {
-        this.$store.commit('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, { loading: 'qgl' })
     }
 
     doZtilt() {
-        this.$store.commit('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: "Z_TILT_ADJUST" }, { loading: 'zTilt' })
     }
 
@@ -493,12 +493,12 @@ export default class ControlPanel extends Mixins(BaseMixin) {
     }
 
     doSend(gcode: string) {
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { action: "server/getGcodeRespond" })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
     doSendMacro(gcode: string) {
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_'+gcode })
     }
 
@@ -512,13 +512,13 @@ export default class ControlPanel extends Mixins(BaseMixin) {
 
     sendRetract() {
         const gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendDetract() {
         const gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }
 

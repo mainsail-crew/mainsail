@@ -30,17 +30,11 @@ export const getters: GetterTree<GuiState, any> = {
 		if (state.console.hideWaitTemperatures)
 			output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
-		console.log(state.console);
-		!!state.console.customFilters
-		&& state.console.customFilters.length > 0
-		&& state.console.customFilters.filter((filter: any) => filter.bool === true).forEach((filter: any) => {
-			const splits = filter.regex.split("\n")
-			splits.forEach((rule: string) => {
-				if (rule !== "") {
-					output.push(rule)
-				}
+		state.console.customFilters.filter((filter: any) => filter.bool === true).forEach((filter: any) => {
+			filter.regex.split("\n").forEach((rule: string) => {
+				if (rule !== "") output.push(rule)
 			})
-		});
+		})
 
 		return output
 	},

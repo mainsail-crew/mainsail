@@ -42,40 +42,29 @@ export const mutations: MutationTree<ServerState> = {
 	},
 
 	setGcodeStore(state, payload: any) {
-		if ("gcode_store" in payload && Array.isArray(payload.gcode_store)) {
-			payload.gcode_store.forEach((message: any) => {
-				state.events.push({
-					date: new Date(message.time * 1000),
-					message: message.message,
-					type: message.type
-				})
+		payload.forEach((message: any) => {
+			state.events.push({
+				date: new Date(message.time * 1000),
+				message: message.message,
+				type: message.type
 			})
-		}
+		})
 	},
 
 	addEvent(state, payload) {
-		let message = payload
-		let type = 'response'
-
-		if (typeof payload === 'object' && 'type' in payload) type = payload.type
-
-		if ('message' in payload) message = payload.message
-		else if ('result' in payload) message = payload.result
-		else if ('error' in payload) message = message.error.message
-
 		const eventLimit = ('gcode_store_size' in state.config) ? state.config.gcode_store_size : 1000
 		while (state.events.length >= eventLimit) {
 			state.events.shift()
 		}
 
-		if (['command', 'autocomplete'].includes(type) && state.events[state.events.length - 1]?.type === 'autocomplete') {
+		if (['command', 'autocomplete'].includes(payload.type) && state.events[state.events.length - 1]?.type === 'autocomplete') {
 			state.events.pop();
 		}
 
 		state.events.push({
-			date: new Date(),
-			message: message,
-			type: type,
+			date: payload.date,
+			message: payload.message,
+			type: payload.type,
 		})
 	},
 

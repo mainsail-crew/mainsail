@@ -16,6 +16,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
 		Vue.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
 		Vue.$socket.emit('printer.objects.list', {}, { action: 'printer/initSubscripts' })
 		Vue.$socket.emit('printer.gcode.help', {}, { action: 'printer/initHelpList' })
+		Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 	},
 
 	getInfo({ commit }, payload) {
@@ -73,8 +74,8 @@ export const actions: ActionTree<PrinterState, RootState> = {
 		commit('removeBedMeshProfile', payload)
 	},
 
-	sendGcode({ commit }, payload) {
-		commit('server/addEvent', { message: payload, type: 'command' }, { root: true })
+	sendGcode({ dispatch }, payload) {
+		dispatch('server/addEvent', { message: payload, type: 'command' }, { root: true })
 
 		if (payload.toLowerCase().trim() === "m112") {
 			Vue.$socket.emit('printer.emergency_stop', {}, { loading: "sendGcode" })

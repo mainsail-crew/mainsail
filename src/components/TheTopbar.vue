@@ -139,7 +139,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     saveConfig() {
-        this.$store.commit('server/addEvent', { message: "SAVE_CONFIG", type: "command" });
+        this.$store.dispatch('server/addEvent', { message: "SAVE_CONFIG", type: "command" });
         this.$socket.emit('printer.gcode.script', { script: "SAVE_CONFIG" }, { loading: 'topbarSaveConfig' });
     }
 

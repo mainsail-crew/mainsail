@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import {ActionTree} from "vuex"
-import {ServerState} from "@/store/server/types"
+import {ServerState, ServerStateEvent} from "@/store/server/types"
 import {camelize} from "@/plugins/helpers";
 import {RootState} from "@/store/types";
 import {initableServerComponents} from "@/store/variables";
@@ -56,8 +56,6 @@ export const actions: ActionTree<ServerState, RootState> = {
 	initServerConfig({ commit }, payload) {
 		window.console.debug("init ServerConfig")
 		commit('setConfig', payload)
-
-		Vue.$socket.emit('server.gcode_store', {}, { action: 'server/getGcodeStore' })
 	},
 
 	initSystemInfo({ commit }, payload) {
@@ -75,18 +73,56 @@ export const actions: ActionTree<ServerState, RootState> = {
 		commit('setData', payload)
 	},
 
-	getGcodeStore({ commit }, payload) {
+	getGcodeStore({ commit, rootGetters }, payload) {
 		commit('clearGcodeStore')
-		commit('setGcodeStore', payload)
-	},
 
-	getGcodeRespond({commit}, data) {
-		commit('addEvent', data);
+		let events: ServerStateEvent[] = payload.gcode_store
+		const filters = rootGetters["gui/getConsoleFilterRules"]
+		filters.forEach((filter: any) => {
+			try {
+				const regex = new RegExp(filter)
+				events = events.filter(event => !regex.test(event.message))
+			} catch { window.console.error("Custom console filter '"+filter+"' doesn't work")}
+		})
+
+		commit('setGcodeStore', events)
 	},
 
 	addRootDirectory({ commit, state }, data) {
 		if (!state.registered_directories.includes(data.item.root)) {
 			commit('addRootDirectory', { name: data.item.root })
+		}
+	},
+
+	addEvent({ commit, rootGetters }, payload) {
+		let message = payload
+		let type = 'response'
+
+		if (typeof payload === 'object' && 'type' in payload) type = payload.type
+
+		if ('message' in payload) message = payload.message
+		else if ('result' in payload) message = payload.result
+		else if ('error' in payload) message = message.error.message
+
+		const filters = rootGetters["gui/getConsoleFilterRules"]
+		let boolImport = true
+		filters.every((filter: any) => {
+			try {
+				const regex = new RegExp(filter)
+				if (regex.test(message)) boolImport = false
+			} catch {
+				window.console.error("Custom console filter '"+filter+"' doesn't work")
+			}
+
+			return boolImport
+		})
+
+		if (boolImport) {
+			commit('addEvent', {
+				date: new Date(),
+				message: message,
+				type: type
+			})
 		}
 	}
 }

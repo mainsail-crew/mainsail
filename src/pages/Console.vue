@@ -149,7 +149,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters['server/getFilteredEvents']
+        return this.$store.state.server.events?? []
     }
 
     get headers(): any[] {
@@ -262,7 +262,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
                     let output = "";
                     commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
-                    this.$store.commit('server/addEvent', { message: output, type: 'autocomplete' });
+                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
                 }
             }
         }

@@ -62,25 +62,25 @@ export default class ZOffsetPanel extends Mixins(BaseMixin) {
 
     sendBabySteppingDownFine() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' });
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDownFine' });
     }
 
     sendBabySteppingDown() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDown' })
     }
 
     sendBabySteppingUpFine() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUpFine' })
     }
 
     sendBabySteppingUp() {
         const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
-        this.$store.commit('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUp' })
     }
 }

@@ -169,7 +169,11 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters['server/getFilteredEvents']
+        if (this.$store.state.server.events.length > 10) {
+            return this.$store.state.server.events.slice(-50)
+        }
+
+        return this.$store.state.server.events?? []
     }
 
     get hideWaitTemperatures(): boolean {
@@ -265,7 +269,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                     let output = "";
                     commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
 
-                    this.$store.commit('server/addEvent', { message: output, type: 'autocomplete' });
+                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
                 }
             }
         }
