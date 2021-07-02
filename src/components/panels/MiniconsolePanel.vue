@@ -26,7 +26,11 @@
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
+            <command-help-modal
+                is-mini
+                @onCommand="gcode = $event"
+            ></command-help-modal>
+<!--            <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn class="px-2 minwidth-0 mr-2" color="grey darken-3" small v-bind="attrs" v-on="on">
                         <v-icon small>mdi-help</v-icon>
@@ -44,13 +48,13 @@
                                 :key="cmd.commandLow"
                                 class="minHeight36"
                             >
-                                <span class="blue--text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
+                                <span class="blue&#45;&#45;text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
                                 <span>{{ cmd.description }}</span>
                             </v-list-item>
                         </v-list>
                     </div>
                 </v-card>
-            </v-menu>
+            </v-menu>-->
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
@@ -102,7 +106,6 @@
                            sort-by="date"
                            :sort-desc="true"
                            :events="events"
-                           :custom-sort="customSort"
                            :helplist="helplist"
                            :format-time-mobile="formatTime"
                            class="minievent-table miniConsole"
@@ -118,10 +121,12 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
 import ConsoleTable from "@/components/ConsoleTable.vue";
+import CommandHelpModal from "@/components/CommandHelpModal.vue";
 
 @Component({
     components: {
-        ConsoleTable
+        ConsoleTable,
+        CommandHelpModal
     }
 })
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
@@ -281,25 +286,6 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     toggleFilter(filter: string) {
         this.$store.dispatch('gui/updateConsoleFilter',  filter)
-    }
-
-    customSort(items: any, index: string, isDesc: boolean[]) {
-        items.sort((a: any, b: any) => {
-            if (index[0] === 'date') {
-                const aTime = new Date(b[index]).getTime()
-                const bTime = new Date(b[index]).getTime()
-
-                if (!isDesc[0]) return aTime - bTime;
-                else return aTime - bTime;
-            } else {
-                if(typeof a[index] !== 'undefined'){
-                    if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                    else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                }
-            }
-        });
-
-        return items;
     }
 }
 </script>

@@ -55,8 +55,11 @@
                 </v-btn>
             </v-col>
 
-            <v-col class="col-auto align-content-center">
-                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
+            <v-col class="col-auto d-flex align-center">
+                <command-help-modal
+                    @onCommand="gcode = $event"
+                ></command-help-modal>
+<!--                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="mr-2 gcode-command-btn px-2 minwidth-0" v-bind="attrs" v-on="on">
                             <v-icon>mdi-help</v-icon>
@@ -74,16 +77,16 @@
                                     :key="cmd.commandLow"
                                     class="minHeight36"
                                 >
-                                    <span class="blue--text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
+                                    <span class="blue&#45;&#45;text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
                                     <span>{{ cmd.description }}</span>
                                 </v-list-item>
                             </v-list>
                         </div>
                     </v-card>
-                </v-menu>
+                </v-menu>-->
                 <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        <v-btn class="m-0 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
@@ -97,14 +100,14 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col ref="console" xs12 style="max-height: calc(100vh - 160px); overflow: auto;">
-                <console-table :headers="headers"
+            <v-col xs12 style="max-height: calc(100vh - 160px); overflow: auto;">
+                <console-table ref="console"
+                               :headers="headers"
                                :options="options"
                                :sort-by="sortBy"
                                :sort-desc="sortDesc"
                                :events="events"
                                :helplist="helplist"
-                               :custom-sort="customSort"
                                :format-time-mobile="formatTimeMobile"
                                @command-click="commandClick"
                 ></console-table>
@@ -119,9 +122,11 @@ import BaseMixin from "@/components/mixins/base";
 import ConsoleTable from "@/components/ConsoleTable.vue";
 import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
 import {reverseString, strLongestEqual} from "@/plugins/helpers";
+import CommandHelpModal from "@/components/CommandHelpModal.vue";
 
 @Component({
     components: {
+        CommandHelpModal,
         ConsoleTable
     }
 })
@@ -133,7 +138,6 @@ export default class PageConsole extends Mixins(BaseMixin) {
     private lastCommands: string[] = [];
     private lastCommandNumber: number | null = null;
     private items = [];
-    private cmdListSearch: string | null = null;
 
     $refs!: {
         gcodeCommandField: VTextareaType,
@@ -144,17 +148,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
         return this.$store.state.printer.helplist ?? []
     }
 
-    get helplistFiltered(): CommandHelp[] {
-        return this.helplist
-            .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
-            .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
-    }
-
     get events() {
         return this.$store.getters['server/getFilteredEvents']
     }
 
-    get headers() {
+    get headers(): any[] {
         return [
             {
                 text: this.$t('Console.Date'),
@@ -191,18 +189,18 @@ export default class PageConsole extends Mixins(BaseMixin) {
         this.gcode = msg.original.indexOf(":") > -1 && msg.command ? msg.command.command : msg.original;
     }
 
-    doSend(cmd: KeyboardEvent) {
+    doSend(cmd: KeyboardEvent): void {
         if (!cmd.shiftKey) {
-            this.$store.dispatch('printer/sendGcode', this.gcode)
-            this.lastCommands.push(this.gcode)
-            this.gcode = ""
-            this.lastCommandNumber = null
+            this.$store.dispatch('printer/sendGcode', this.gcode);
+            this.lastCommands.push(this.gcode);
+            this.gcode = "";
+            this.lastCommandNumber = null;
             setTimeout(() => {
                 this.$refs.console.$el.scroll({
                     top: 0,
                     left: 0,
                     behavior: 'smooth'
-                })
+                });
             }, 20);
         } else {
             this.gcode += '\n';
@@ -271,7 +269,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
         this.$refs.gcodeCommandField.focus();
     }
 
-    formatTimeMobile(date: Date) {
+    formatTimeMobile(date: Date): string {
         let hours: string | number = date.getHours();
         if (hours < 10) hours = "0"+hours.toString();
         let minutes: string | number = date.getMinutes();
@@ -283,27 +281,8 @@ export default class PageConsole extends Mixins(BaseMixin) {
         return hours+":"+minutes+":"+seconds;
     }
 
-    toggleFilter(filter: string) {
+    toggleFilter(filter: string): void {
         this.$store.dispatch('gui/updateConsoleFilter',  filter)
-    }
-
-    customSort(items: any, index: string, isDesc: boolean[]) {
-        items.sort((a: any, b: any) => {
-            if (index[0] === 'date') {
-                const aTime = new Date(b[index]).getTime()
-                const bTime = new Date(b[index]).getTime()
-
-                return aTime - bTime;
-            } else {
-                if(typeof a[index] !== 'undefined'){
-                    return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                }
-            }
-        });
-
-        if (isDesc[0]) items.reverse()
-
-        return items;
     }
 }
 </script>
