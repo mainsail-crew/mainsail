@@ -87,7 +87,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
 
     changeSwitch(device: ServerPowerStateDevice, value: string) {
         const rpc = (value === 'off' ? "machine.device_power.on" : "machine.device_power.off")
-        this.$socket.emit(rpc,{ [device.device]: null },"server/power/responseToggle")
+        this.$socket.emit(rpc,{ [device.device]: null },{ action: "server/power/responseToggle" })
     }
 
     hostReboot() {

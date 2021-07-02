@@ -796,7 +796,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
             this.$socket.emit('server.files.move', {
                 source: this.currentPath+"/"+this.draggingFile.item.filename,
                 dest: dest
-            }, 'files/getMove')
+            }, { action: 'files/getMove' })
         }
     }
 
@@ -833,12 +833,12 @@ export default class PageFiles extends Mixins(BaseMixin) {
     createDirectoryAction() {
         if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(" ") === -1) {
             this.dialogCreateDirectory.show = false
-            this.$socket.emit('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, 'files/getCreateDir')
+            this.$socket.emit('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, { action: 'files/getCreateDir' })
         }
     }
 
     refreshFileList() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory')
+        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
     }
 
     advancedSearch(value: string | number, search: string) {
@@ -853,7 +853,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         for (let i = data.pageStart; i < data.pageStop; i++) {
             if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                 let filename = (this.currentPath+"/"+items[i].filename).substring(7)
-                this.$socket.emit("server.files.metadata", { filename: filename }, "files/getMetadata")
+                this.$socket.emit("server.files.metadata", { filename: filename }, { action: "files/getMetadata" })
             }
         }
     }
@@ -863,7 +863,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     loadPath() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, 'files/getDirectory')
+        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
         let dirArray = this.currentPath.split("/")
         this.files = findDirectory(this.filetree, dirArray)
         if (this.files !== null) {
@@ -1063,7 +1063,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.$socket.emit('server.files.move', {
             source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
             dest: this.currentPath+"/"+this.dialogRenameFile.newName
-        }, 'files/getMove')
+        }, { action: 'files/getMove' })
     }
 
     renameDirectory(item: FileStateFile) {
@@ -1077,11 +1077,11 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.$socket.emit('server.files.move', {
             source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
             dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
-        }, 'files/getMove')
+        }, { action: 'files/getMove' })
     }
 
     removeFile() {
-        this.$socket.emit('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, 'files/getDeleteFile');
+        this.$socket.emit('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' });
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -1091,13 +1091,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     deleteDirectoryAction() {
         this.dialogDeleteDirectory.show = false
-        this.$socket.emit('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename, force: true }, 'files/getDeleteDir')
+        this.$socket.emit('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename, force: true }, { action: 'files/getDeleteDir' })
     }
 
     startPrint(filename = "") {
         filename = (this.currentPath+"/"+filename).substring(7)
         this.dialogPrintFile.show = false
-        this.$socket.emit('printer.print.start', { filename: filename }, 'switchToDashboard')
+        this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
     }
 
     dragFile(e: Event, item: FileStateFile) {

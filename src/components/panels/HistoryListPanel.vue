@@ -494,7 +494,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     refreshHistory() {
-        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, 'server/history/getHistory')
+        this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
 
     formatDate(date: number) {
@@ -644,11 +644,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     startPrint(item: ServerHistoryStateJob) {
-        if (item.exists) this.$socket.emit('printer.print.start', { filename: item.filename }, 'switchToDashboard')
+        if (item.exists) this.$socket.emit('printer.print.start', { filename: item.filename }, { action: 'switchToDashboard' })
     }
 
     deleteJob(item: ServerHistoryStateJob) {
-        this.$socket.emit('server.history.delete_job', { uid: item.job_id }, 'server/history/getDeletedJobs')
+        this.$socket.emit('server.history.delete_job', { uid: item.job_id }, { action: 'server/history/getDeletedJobs' })
     }
 
     getStatusIcon(status: string) {

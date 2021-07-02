@@ -176,7 +176,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     set hideWaitTemperatures(newVal) {
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, 'gui/updateDataFromDB')
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, { action: 'gui/updateDataFromDB' })
     }
 
     get customFilters(): any[] {

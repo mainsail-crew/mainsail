@@ -103,7 +103,7 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string) {
-        this.$socket.emit("server.files.metadata", { filename: newVal }, "files/getMetadataCurrentFile");
+        this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
     }
 
     @Watch('primaryColor')
