@@ -25,6 +25,10 @@
   -webkit-user-select: auto;
 }
 
+.echarts-tooltip {
+  z-index: 5 !important;
+}
+
 .tooltip__content-opacity1 {
   opacity: 1 !important;
 }

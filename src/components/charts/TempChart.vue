@@ -20,6 +20,10 @@ import { createComponent } from 'echarts-for-vue';
 import * as echarts from 'echarts';
 import {ECharts} from "echarts/core";
 
+interface echartsTooltipObj {
+    [key: string]: any
+}
+
 @Component({
     components: {
         ECharts: createComponent({ echarts }),
@@ -46,7 +50,16 @@ export default class TempChart extends Mixins(BaseMixin) {
                 fontSize: '14px'
             },
             padding: 15,
-            formatter: this.tooltipFormater
+            formatter: this.tooltipFormater,
+            confine: true,
+            className: 'echarts-tooltip',
+            position: function (pos: any, params: any, dom: any, rect: any, size: any) {
+                // tooltip will be fixed on the right if mouse hovering on the left,
+                // and on the left if hovering on the right.
+                const obj: echartsTooltipObj = {top: 60}
+                obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5
+                return obj
+            }
         },
         grid: {
             top: 35,
