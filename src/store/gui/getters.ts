@@ -75,13 +75,6 @@ export const getters: GetterTree<GuiState, any> = {
 	getPresetsFromHeater: state => (payload: any) => {
 		interface preset {
 			value: number
-			values?: {
-				[key: string]: {
-					bool: boolean
-					name: string
-					value: number
-				}
-			}
 		}
 
 		const output: preset[] = []

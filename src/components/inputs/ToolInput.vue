@@ -38,7 +38,7 @@ import BaseMixin from "@/components/mixins/base";
 
 @Component
 export default class ToolInput extends Mixins(BaseMixin) {
-    private value = 0
+    private value: any = 0
 
     @Prop({ type: String, required: true }) readonly name!: string
     @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
@@ -49,6 +49,9 @@ export default class ToolInput extends Mixins(BaseMixin) {
     @Prop({ type: Array, default: [] }) items!: number[]
 
     setTemps(): void {
+        if (typeof this.value === "object") this.value = this.value.value ?? 0
+        if (this.value === "") this.value = 0
+
         if (this.value > this.max_temp) {
             this.value = this.target;
             this.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")")
@@ -67,8 +70,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
     }
 
     @Watch('target')
-    targetChanged(newVal: number): void{
-        window.console.log("targetChanged")
+    targetChanged(newVal: number): void {
         this.value = newVal
     }
 
