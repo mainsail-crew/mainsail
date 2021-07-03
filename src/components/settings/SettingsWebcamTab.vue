@@ -245,7 +245,7 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
     }
 
     getSubtitle(webcam: GuiStateWebcam) {
-        return webcam.service+": "+webcam.url
+        return webcam.url
     }
 
     existsWebcamName(name: string) {
@@ -274,7 +274,7 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
 
     saveWebcam() {
         if (this.form.valid) {
-            if (this.form.index) this.$store.dispatch("gui/updateWebcam", {...this.form})
+            if (this.form.index !== null) this.$store.dispatch("gui/updateWebcam", {...this.form})
             else this.$store.dispatch("gui/addWebcam", {...this.form})
 
             this.clearDialog()
