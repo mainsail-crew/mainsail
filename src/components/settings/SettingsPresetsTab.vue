@@ -29,6 +29,11 @@
             <v-form v-model="form.valid" @submit.prevent="savePreset" >
                 <v-card-title>{{ form.index === null ? $t('Settings.PresetsTab.CreateHeadline') : $t('Settings.PresetsTab.EditHeadline') }}</v-card-title>
                 <v-card-text>
+                    <v-row class="mt-3" v-if="form.boolInvalidMin">
+                        <v-col class="py-0">
+                            <v-alert dense text type="error">{{ $t('Settings.PresetsTab.PresetInfo')}}</v-alert>
+                        </v-col>
+                    </v-row>
                     <settings-row :title="$t('Settings.PresetsTab.Name')">
                         <v-text-field
                             v-model="form.name"
@@ -106,7 +111,7 @@
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                    <v-btn text @click="form.bool = false" >
+                    <v-btn text @click="cooldownForm.bool = false" >
                         {{ $t('Settings.Cancel') }}
                     </v-btn>
                     <v-btn color="primary" text type="submit" >
@@ -186,7 +191,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (this.presets.findIndex((preset: GuiStatePreset, index: number) => preset.name === name && index !== this.form.index) >= 0)
+        return (this.presets.findIndex((preset: GuiStatePreset, index: number) => preset.name === name && index != this.form.index) >= 0)
     }
 
     getSubTitle(preset: GuiStatePreset) {
@@ -301,26 +306,4 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/deletePreset',  { index: index } )
     }
 }
-
-/*    import { mapState, mapGetters } from 'vuex';
-
-    export default {
-        data: function() {
-            return {
-                cooldownDialog: {
-                    bool: false,
-                    gcode: "",
-                    valid: false,
-                }
-            }
-        },
-        mounted() {
-            this.clearDialog()
-        },
-        methods: {
-            ,
-            ,
-
-        }
-    }*/
 </script>

@@ -8,7 +8,7 @@ export const getters: GetterTree<GuiState, any> = {
 		const output = []
 
 		for (const [key, preset] of Object.entries(state.presets)) {
-			output.push(Object.assign({}, preset, { index: key }))
+			output.push(Object.assign({}, preset, { index: parseInt(key) }))
 		}
 
 		return caseInsensitiveSort(output, 'name')
