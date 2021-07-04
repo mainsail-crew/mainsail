@@ -44,7 +44,7 @@ export const mutations: MutationTree<FileState> = {
 			})
 			currentFile.metadataPulled = true
 
-			Vue.set(path, fileIndex, currentFile)
+			//Vue.set(path, fileIndex, currentFile)
 		} else window.console.error("file not found in filetree: "+payload.filename)
 	},
 
