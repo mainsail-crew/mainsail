@@ -182,7 +182,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 				if (key.includes(' ')) name = key.split(' ')[1]
 
 				if (rootState.printer && rootState.printer[key]) {
-					if ('temperature' in rootState.printer[key]) data[name] = Math.round(rootState.printer[key].temperature * 10) / 10
+					if ('temperature' in rootState.printer[key]) data[name] = rootState.printer[key].temperature
 					if ('target' in rootState.printer[key]) data[name+"-target"] = Math.round(rootState.printer[key].target * 10) / 10
 					if ('power' in rootState.printer[key]) data[name+"-power"] = Math.round(rootState.printer[key].power * 1000) / 1000
 					if ('speed' in rootState.printer[key]) data[name+"-speed"] = Math.round(rootState.printer[key].speed * 1000) / 1000

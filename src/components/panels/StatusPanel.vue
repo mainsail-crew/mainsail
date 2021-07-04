@@ -102,25 +102,25 @@
                 <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
                     <v-col class="col-3 pa-0">
                         <strong>{{ $t("Panels.StatusPanel.Position") }}</strong><br />
-                        {{ absolute_coordinates ? $t("Panels.StatusPanel.Absolute") : $t("Panels.StatusPanel.Relative") }}
+                        {{ coordinates }}
                     </v-col>
                     <v-col class="col-3 pa-0">
                         <strong>{{ $t("Panels.StatusPanel.X") }}</strong><br />
-                        {{ position.length ? position[0].toFixed(2) : "--" }}
+                        {{ positions.x }}
                     </v-col>
                     <v-col class="col-3 pa-0">
                         <strong>{{ $t("Panels.StatusPanel.Y") }}</strong><br />
-                        {{ position.length ? position[1].toFixed(2) : "--" }}
+                        {{ positions.y }}
                     </v-col>
                     <v-col class="col-3 pa-0">
                         <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
                                 <div v-bind="attrs" v-on="on" class="text-center">
                                     <strong>{{ $t("Panels.StatusPanel.Z") }}</strong><br />
-                                    {{ position.length ? position[2].toFixed(2) : "--" }}
+                                    {{ positions.z }}
                                 </div>
                             </template>
-                            <span v-if="gcode_position !== undefined && gcode_position.length >= 3">G-Code: {{ gcode_position[2].toFixed(2) }}mm</span>
+                            <span>G-Code: {{ positions.gcode_z }}mm</span>
                         </v-tooltip>
                     </v-col>
                 </v-row>
@@ -131,7 +131,7 @@
                     <v-row class="text-center py-5" align="center">
                         <v-col class="col-3 pa-0">
                             <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
-                            <span class="text-no-wrap">{{ requested_speed.toFixed(0) }} mm/s</span>
+                            <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
@@ -267,16 +267,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.message ?? ""
     }
 
-    get absolute_coordinates() {
-        return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
+    get positions() {
+        return this.$store.getters['printer/getPositions']
     }
 
-    get position() {
-        return this.$store.state.printer.toolhead?.position ?? []
-    }
-
-    get gcode_position() {
-        return this.$store.state.printer.gcode_move?.gcode_position ?? []
+    get coordinates() {
+        return this.positions.coordinates ? this.$t("Panels.StatusPanel.Absolute") : this.$t("Panels.StatusPanel.Relative")
     }
 
     get filament_used() {
@@ -373,7 +369,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         const speed = requested_speed / 60 * speed_factor
         if (speed > max_velocity) return max_velocity
 
-        return speed
+        return speed.toFixed(0)
     }
 
     get max_layers() {
@@ -393,11 +389,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         if (
             this.print_time > 0 &&
             'first_layer_height' in this.current_file &&
-            'layer_height' in this.current_file &&
-            this.gcode_position !== undefined &&
-            this.gcode_position.length >= 3
+            'layer_height' in this.current_file
         ) {
-            let current_layer = Math.ceil((this.gcode_position[2] - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+            let current_layer = Math.ceil((this.positions.gcode_z - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
             current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
 
             return current_layer > 0 ? current_layer : 0
