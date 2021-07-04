@@ -59,6 +59,7 @@
                 <v-col class="pb-0">
                     <console-table ref="console"
                                    :events="events"
+                                   :is-mini="true"
                                    @command-click="commandClick"
                     />
                 </v-col>
@@ -98,7 +99,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters["server/getConsoleEvents"]
+        return this.$store.getters["server/getConsoleEvents"].slice(-250)
     }
 
     get hideWaitTemperatures(): boolean {

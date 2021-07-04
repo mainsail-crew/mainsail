@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-    .consoleTable {
+    .consoleTable.mini {
         max-height: 300px;
         overflow-y: auto;
         overflow-x: hidden;
@@ -7,7 +7,7 @@
 </style>
 
 <template>
-    <div class="consoleTable">
+    <div :class="'consoleTable '+(isMini ? 'mini' : '')">
         <template v-if="events.length === 0">
             <v-row class="pa-0 ma-0">
                 <v-col class="text-center py-3">{{ $t("Console.Empty")}}</v-col>

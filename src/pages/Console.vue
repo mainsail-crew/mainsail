@@ -46,47 +46,20 @@
                     @keyup.down="onKeyDown"
                     @keydown.tab="getAutocomplete"
                     hide-details
+                    outlined
+                    dense
+                    append-icon="mdi-send"
+                    @click:append="doSend"
                 ></v-textarea>
-            </v-col>
-
-            <v-col class="col-auto align-content-center">
-                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode') || !gcode" >
-                    <v-icon class="mr-2">mdi-send</v-icon> {{ $t('Console.send')}}
-                </v-btn>
             </v-col>
 
             <v-col class="col-auto d-flex align-center">
                 <command-help-modal
                     @onCommand="gcode = $event"
                 ></command-help-modal>
-<!--                <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="mr-2 gcode-command-btn px-2 minwidth-0" v-bind="attrs" v-on="on">
-                            <v-icon>mdi-help</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-card>
-                        <v-card-title>
-                            Command list
-                        </v-card-title>
-                        <div>
-                            <v-text-field v-model="cmdListSearch" class="mx-4" label="Search" autofocus></v-text-field>
-                            <v-list>
-                                <v-list-item
-                                    v-for="cmd of helplistFiltered"
-                                    :key="cmd.commandLow"
-                                    class="minHeight36"
-                                >
-                                    <span class="blue&#45;&#45;text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
-                                    <span>{{ cmd.description }}</span>
-                                </v-list-item>
-                            </v-list>
-                        </div>
-                    </v-card>
-                </v-menu>-->
                 <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="m-0 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
@@ -100,17 +73,16 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col xs12 style="max-height: calc(100vh - 160px); overflow: auto;">
-                <console-table ref="console"
-                               :headers="headers"
-                               :options="options"
-                               :sort-by="sortBy"
-                               :sort-desc="sortDesc"
-                               :events="events"
-                               :helplist="helplist"
-                               :format-time-mobile="formatTimeMobile"
-                               @command-click="commandClick"
-                ></console-table>
+            <v-col xs12>
+                <v-card>
+                    <v-card-text class="pa-0" style="max-height: calc(100vh - 180px); overflow: auto;">
+                        <console-table ref="console"
+                                       :is-mini="false"
+                                       :events="events"
+                                       @command-click="commandClick"
+                        />
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </div>
@@ -131,13 +103,10 @@ import CommandHelpModal from "@/components/CommandHelpModal.vue";
     }
 })
 export default class PageConsole extends Mixins(BaseMixin) {
-    private gcode = '';
-    private sortBy = 'date';
-    private sortDesc = true;
-    private options = {};
-    private lastCommands: string[] = [];
-    private lastCommandNumber: number | null = null;
-    private items = [];
+    private gcode = ''
+    private lastCommands: string[] = []
+    private lastCommandNumber: number | null = null
+    private items = []
 
     $refs!: {
         gcodeCommandField: VTextareaType,
@@ -149,24 +118,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.state.server.events?? []
-    }
-
-    get headers(): any[] {
-        return [
-            {
-                text: this.$t('Console.Date'),
-                value: 'date',
-                width: '15%',
-                dateType: 'Date',
-            },
-            {
-                text: this.$t('Console.Event'),
-                sortable: false,
-                value: 'message',
-                width: '85%'
-            },
-        ]
+        return this.$store.getters["server/getConsoleEvents"]
     }
 
     get hideWaitTemperatures(): boolean {
@@ -177,16 +129,16 @@ export default class PageConsole extends Mixins(BaseMixin) {
         this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, { action: 'gui/updateDataFromDB' })
     }
 
-    get customFilters(): any[] {
-        return this.$store.state.gui.console.customFilters
-    }
-
     get rows(): number {
         return this.gcode?.split('\n').length ?? 1;
     }
 
-    commandClick(msg: ConsoleCommandHelp): void {
-        this.gcode = msg.original.indexOf(":") > -1 && msg.command ? msg.command.command : msg.original;
+    get customFilters(): any[] {
+        return this.$store.state.gui.console.customFilters
+    }
+
+    commandClick(msg: string): void {
+        this.gcode = msg
     }
 
     doSend(cmd: KeyboardEvent): void {
@@ -260,25 +212,13 @@ export default class PageConsole extends Mixins(BaseMixin) {
                 }
                 if (commands && commands.length) {
                     let output = "";
-                    commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+                    commands.forEach(command => output += "<a class='command blue--text'>"+command.command+"</a>: "+command.description+"<br />");
 
                     this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
                 }
             }
         }
         this.$refs.gcodeCommandField.focus();
-    }
-
-    formatTimeMobile(date: Date): string {
-        let hours: string | number = date.getHours();
-        if (hours < 10) hours = "0"+hours.toString();
-        let minutes: string | number = date.getMinutes();
-        if (minutes < 10) minutes = "0"+minutes.toString();
-        let seconds: string | number = date.getSeconds();
-        if (seconds < 10) seconds = "0"+seconds.toString();
-
-
-        return hours+":"+minutes+":"+seconds;
     }
 
     toggleFilter(filter: string): void {

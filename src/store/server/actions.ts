@@ -104,13 +104,15 @@ export const actions: ActionTree<ServerState, RootState> = {
 		else if ('result' in payload) message = payload.result
 		else if ('error' in payload) message = message.error.message
 
+		let formatMessage = formatConsoleMessage(message)
+
 		const filters = rootGetters["gui/getConsoleFilterRules"]
 		let boolImport = true
-		if (payload.type === "response") {
+		if (type === "response") {
 			filters.every((filter: any) => {
 				try {
 					const regex = new RegExp(filter)
-					if (regex.test(message)) boolImport = false
+					if (regex.test(formatMessage)) boolImport = false
 				} catch {
 					window.console.error("Custom console filter '"+filter+"' doesn't work")
 				}
@@ -120,7 +122,6 @@ export const actions: ActionTree<ServerState, RootState> = {
 		}
 
 		if (boolImport) {
-			let formatMessage = formatConsoleMessage(message)
 			if (payload.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+"</a>"
 
 			commit('addEvent', {

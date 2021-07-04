@@ -36,8 +36,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		const gcode_position = state.gcode_move?.gcode_position ?? [0,0,0]
 		const absolute = state.gcode_move?.absolute_coordinates ?? true
 
-		window.console.log("getPositions")
-
 		return {
 			coordinates: absolute,
 			x: position[0]?.toFixed(2) ?? '--',
