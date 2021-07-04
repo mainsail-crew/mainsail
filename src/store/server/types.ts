@@ -23,6 +23,8 @@ export interface ServerState {
 
 export interface ServerStateEvent {
     date: Date
+    formatTime: string
     type: string
     message: string
+    formatMessage: string | string[]
 }

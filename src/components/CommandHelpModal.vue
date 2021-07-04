@@ -6,10 +6,12 @@
         v-model="isOpen"
     >
         <template #activator="{ on, attrs }">
-            <v-btn class="mr-2 gcode-command-btn px-2 minwidth-0"
-                   :small="isMini"
-                   v-bind="attrs"
-                   v-on="on">
+            <v-btn
+                class="gcode-command-btn px-2 minwidth-0"
+                color="grey darken-3"
+                :small="isMini"
+                v-bind="attrs"
+                v-on="on">
                 <v-icon>mdi-help</v-icon>
             </v-btn>
         </template>

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import {ActionTree} from "vuex"
 import {ServerState, ServerStateEvent} from "@/store/server/types"
-import {camelize} from "@/plugins/helpers";
+import {camelize, formatConsoleMessage} from "@/plugins/helpers";
 import {RootState} from "@/store/types";
 import {initableServerComponents} from "@/store/variables";
 
@@ -81,7 +81,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 		filters.forEach((filter: any) => {
 			try {
 				const regex = new RegExp(filter)
-				events = events.filter(event => !regex.test(event.message))
+				events = events.filter(event => event.type !== 'response' || !regex.test(event.message))
 			} catch { window.console.error("Custom console filter '"+filter+"' doesn't work")}
 		})
 
@@ -106,21 +106,27 @@ export const actions: ActionTree<ServerState, RootState> = {
 
 		const filters = rootGetters["gui/getConsoleFilterRules"]
 		let boolImport = true
-		filters.every((filter: any) => {
-			try {
-				const regex = new RegExp(filter)
-				if (regex.test(message)) boolImport = false
-			} catch {
-				window.console.error("Custom console filter '"+filter+"' doesn't work")
-			}
+		if (payload.type === "response") {
+			filters.every((filter: any) => {
+				try {
+					const regex = new RegExp(filter)
+					if (regex.test(message)) boolImport = false
+				} catch {
+					window.console.error("Custom console filter '"+filter+"' doesn't work")
+				}
 
-			return boolImport
-		})
+				return boolImport
+			})
+		}
 
 		if (boolImport) {
+			let formatMessage = formatConsoleMessage(message)
+			if (payload.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+"</a>"
+
 			commit('addEvent', {
 				date: new Date(),
 				message: message,
+				formatMessage: formatMessage,
 				type: type
 			})
 		}

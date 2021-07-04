@@ -1,17 +1,17 @@
 <template>
     <v-row>
         <v-col class="col-sm-12 col-md-5">
-            <min-settings-panel></min-settings-panel>
+<!--            <min-settings-panel></min-settings-panel>
             <moonraker-state-panel></moonraker-state-panel>
-            <klippy-state-panel></klippy-state-panel>
-            <status-panel></status-panel>
-            <webcam-panel v-if="showDashboardWebcam"></webcam-panel>
-            <z-offset-panel></z-offset-panel>
-            <control-panel></control-panel>
-            <miscellaneous-panel></miscellaneous-panel>
+            <klippy-state-panel></klippy-state-panel>-->
+<!--            <status-panel></status-panel>-->
+<!--            <webcam-panel v-if="showDashboardWebcam"></webcam-panel>
+            <z-offset-panel></z-offset-panel>-->
+<!--            <control-panel></control-panel>-->
+<!--            <miscellaneous-panel></miscellaneous-panel>-->
         </v-col>
         <v-col class="col-sm-12 col-md-7">
-            <tools-panel></tools-panel>
+<!--            <tools-panel></tools-panel>-->
             <miniconsole-panel v-if="showDashboardConsole"></miniconsole-panel>
         </v-col>
     </v-row>

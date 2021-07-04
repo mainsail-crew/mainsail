@@ -17,6 +17,10 @@ export const getters: GetterTree<ServerState, any> = {
 		return events
 	},
 
+	getConsoleEvents: (state) => {
+		return [...state.events].slice(-500).reverse() ?? []
+	},
+
 	getConfig: (state) => (section: string, attribute: string) => {
 		if (
 			section in state.config &&

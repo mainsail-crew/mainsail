@@ -2,6 +2,8 @@ import Vue from 'vue'
 import { getDefaultState } from './index'
 import {MutationTree} from "vuex";
 import {ServerState} from "@/store/server/types";
+import {formatConsoleMessage, formatTime} from "@/plugins/helpers";
+import {maxEventHistory} from "@/store/variables";
 
 export const mutations: MutationTree<ServerState> = {
 	reset(state) {
@@ -42,20 +44,32 @@ export const mutations: MutationTree<ServerState> = {
 	},
 
 	setGcodeStore(state, payload: any) {
+		const t0 = performance.now()
+
+		if (payload.length >= maxEventHistory) {
+			payload = payload.slice(payload.length - maxEventHistory);
+		}
+
 		payload.forEach((message: any) => {
+			const date = new Date(message.time * 1000)
+			let formatMessage = formatConsoleMessage(message.message)
+
+			if (message.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+"</a>"
+
 			state.events.push({
-				date: new Date(message.time * 1000),
+				date: date,
+				formatTime: formatTime(date),
 				message: message.message,
+				formatMessage: formatMessage,
 				type: message.type
 			})
 		})
+
+		const t1 = performance.now()
+		window.console.debug("import events", t1-t0)
 	},
 
 	addEvent(state, payload) {
-		const eventLimit = ('gcode_store_size' in state.config) ? state.config.gcode_store_size : 1000
-		while (state.events.length >= eventLimit) {
-			state.events.shift()
-		}
 
 		if (['command', 'autocomplete'].includes(payload.type) && state.events[state.events.length - 1]?.type === 'autocomplete') {
 			state.events.pop();
@@ -63,9 +77,15 @@ export const mutations: MutationTree<ServerState> = {
 
 		state.events.push({
 			date: payload.date,
+			formatTime: formatTime(payload.date),
 			message: payload.message,
+			formatMessage: payload.formatMessage,
 			type: payload.type,
 		})
+
+		if (state.events.length >= maxEventHistory) {
+			state.events = state.events.slice(state.events.length - maxEventHistory);
+		}
 	},
 
 	setSystemInfo(state, payload) {

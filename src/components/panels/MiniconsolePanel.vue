@@ -1,125 +1,77 @@
-<style scoped>
+<style scoped lang="scss">
 
-.minievent-table {
-    max-height: 350px;
-    overflow-y: auto;
-}
-
-.miniConsole .title-cell {
-    white-space: nowrap;
-    width: 1% !important;
-}
-
-.miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
-    height: auto;
-}
-
-.miniConsole .content-cell {
-    width: 100%;
-}
+    .consoleTable {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
 </style>
 
 <template>
-    <v-card v-if="socketIsConnected">
+    <v-card v-if="socketIsConnected" class="pb-0">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
             </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <command-help-modal
-                is-mini
-                @onCommand="gcode = $event"
-            ></command-help-modal>
-<!--            <v-menu :offset-y="true" :close-on-content-click="true" max-height="98%" min-width="65%" max-width="98%" fixed top right>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn class="px-2 minwidth-0 mr-2" color="grey darken-3" small v-bind="attrs" v-on="on">
-                        <v-icon small>mdi-help</v-icon>
-                    </v-btn>
-                </template>
-                <v-card>
-                    <v-card-title>
-                        Command list
-                    </v-card-title>
-                    <div>
-                        <v-text-field v-model="cmdListSearch" class="mx-4" label="Search" autofocus></v-text-field>
-                        <v-list>
-                            <v-list-item
-                                v-for="cmd of helplistFiltered"
-                                :key="cmd.commandLow"
-                                class="minHeight36"
-                            >
-                                <span class="blue&#45;&#45;text font-weight-bold mr-2 cursor-pointer" @click="gcode = cmd.command">{{ cmd.command }}:</span>
-                                <span>{{ cmd.description }}</span>
-                            </v-list-item>
-                        </v-list>
-                    </div>
-                </v-card>
-            </v-menu>-->
-            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
-                </template>
-                <v-list>
-                    <v-list-item class="minHeight36">
-                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
-                    </v-list-item>
-                    <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                        <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
         </v-toolbar>
         <v-card-text>
-            <v-container class="py-0 px-0">
-                <v-row>
-                    <v-col>
-                        <v-textarea
-                            v-model="gcode"
-                            :items="items"
-                            :label="$t('Panels.MiniconsolePanel.SendCode')"
-                            solo
-                            class="gcode-command-field"
-                            ref="gcodeCommandField"
-                            autocomplete="off"
-                            no-resize
-                            :rows="rows"
-                            @keydown.enter.prevent.stop="doSend"
-                            @keyup.up="onKeyUp"
-                            @keyup.down="onKeyDown"
-                            @keydown.tab="getAutocomplete"
-                            hide-details
-                        ></v-textarea>
-                    </v-col>
-                    <v-col class="col-auto align-content-center">
-                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode') || !gcode" >
-                            <v-icon class="mr-2">mdi-send</v-icon> {{ $t("Panels.MiniconsolePanel.Send") }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-container>
+            <v-row>
+                <v-col>
+                    <v-textarea
+                        v-model="gcode"
+                        :items="items"
+                        :label="$t('Panels.MiniconsolePanel.SendCode')"
+                        solo
+                        class="gcode-command-field"
+                        ref="gcodeCommandField"
+                        autocomplete="off"
+                        no-resize
+                        :rows="rows"
+                        @keydown.enter.prevent.stop="doSend"
+                        @keyup.up="onKeyUp"
+                        @keyup.down="onKeyDown"
+                        @keydown.tab="getAutocomplete"
+                        hide-details
+                        outlined
+                        dense
+                        append-icon="mdi-send"
+                        @click:append="doSend"
+                    ></v-textarea>
+                </v-col>
+                <v-col class="col-auto">
+                    <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
+                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                            </v-list-item>
+                            <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                                <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-col>
+            </v-row>
         </v-card-text>
-        <v-card-text class="px-0 py-0 content">
-            <v-divider></v-divider>
-            <console-table ref="console"
-                           :headers="headers"
-                           :options="{}"
-                           sort-by="date"
-                           :sort-desc="true"
-                           :events="events"
-                           :helplist="helplist"
-                           :format-time-mobile="formatTime"
-                           class="minievent-table miniConsole"
-                           @command-click="commandClick"
-            />
+        <v-card-text class="pa-0">
+            <v-row>
+                <v-col class="pb-0">
+                    <console-table ref="console"
+                                   :events="events"
+                                   @command-click="commandClick"
+                    />
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
 
 <script lang="ts">
-import {colorConsoleMessage, formatConsoleMessage, strLongestEqual, reverseString} from "@/plugins/helpers"
+import { strLongestEqual, reverseString} from "@/plugins/helpers"
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
+import {CommandHelp, VTextareaType} from "@/store/printer/types";
 import ConsoleTable from "@/components/ConsoleTable.vue";
 import CommandHelpModal from "@/components/CommandHelpModal.vue";
 
@@ -130,28 +82,11 @@ import CommandHelpModal from "@/components/CommandHelpModal.vue";
     }
 })
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
-    colorConsoleMessage = colorConsoleMessage
-    formatConsoleMessage = formatConsoleMessage
-
     $refs!: {
         gcodeCommandField: VTextareaType,
         console: ConsoleTable
     }
 
-    private headers = [
-        {
-            text: 'Date',
-            value: 'date',
-            width: '15%',
-            dateType: 'Date',
-        },
-        {
-            text: 'Event',
-            sortable: false,
-            value: 'message',
-            width: '85%'
-        },
-    ]
     private gcode = ""
     private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
@@ -162,18 +97,8 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.helplist ?? []
     }
 
-    get helplistFiltered(): CommandHelp[] {
-        return this.helplist
-            .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
-            .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
-    }
-
     get events() {
-        if (this.$store.state.server.events.length > 10) {
-            return this.$store.state.server.events.slice(-50)
-        }
-
-        return this.$store.state.server.events?? []
+        return this.$store.getters["server/getConsoleEvents"]
     }
 
     get hideWaitTemperatures(): boolean {
@@ -192,8 +117,8 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.gcode?.split('\n').length ?? 1;
     }
 
-    commandClick(msg: ConsoleCommandHelp): void {
-        this.gcode = msg.original.indexOf(":") > -1 && msg.command ? msg.command.command : msg.original;
+    commandClick(msg: string): void {
+        this.gcode = msg;
     }
 
     doSend(cmd: KeyboardEvent) {
@@ -267,25 +192,13 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                 }
                 if (commands && commands.length) {
                     let output = "";
-                    commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
+                    commands.forEach(command => output += '<a class="command blue--text font-weight-bold">'+command.command+'</a>: '+command.description+'<br />');
 
                     this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
                 }
             }
         }
         this.$refs.gcodeCommandField.focus();
-    }
-
-    formatTime(date: Date) {
-        let hours: string | number = date.getHours();
-        if (hours < 10) hours = "0"+hours.toString();
-        let minutes: string | number = date.getMinutes();
-        if (minutes < 10) minutes = "0"+minutes.toString();
-        let seconds: string | number = date.getSeconds();
-        if (seconds < 10) seconds = "0"+seconds.toString();
-
-
-        return hours+":"+minutes+":"+seconds;
     }
 
     toggleFilter(filter: string) {

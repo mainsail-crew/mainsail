@@ -79,3 +79,5 @@ export const allowedMetadata = [
 	'slicer_version',
 	'thumbnails',
 ]
+
+export const maxEventHistory = 500
