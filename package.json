@@ -14,6 +14,10 @@
     "i18n-extract": "vue-i18n-extract use-config"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.18.2",
+    "@codemirror/legacy-modes": "^0.18.1",
+    "@codemirror/stream-parser": "^0.18.2",
+    "@codemirror/theme-one-dark": "^0.18.1",
     "axios": "^0.21.1",
     "core-js": "^3.12.1",
     "echarts": "^5.1.2",
@@ -41,6 +45,7 @@
     "vue-resource": "^1.5.2",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.1",
+    "vue2-perfect-scrollbar": "^1.5.0",
     "vuetify": "^2.5.0",
     "vuex": "^3.6.2"
   },

@@ -589,6 +589,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             if (force) this.contextMenu.shown = false
 
             if (!item.isDirectory) {
+
+                this.$store.dispatch('editor/openFile', {
+                    root: this.root,
+                    path: this.currentPath,
+                    filename: item.filename
+                })
+
                 // todo editor open
                 /*const ext = item.filename.split('.')?.pop()?.toLowerCase();
                 if(['svg'].includes(ext)) {

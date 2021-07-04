@@ -20,7 +20,7 @@ export const mutations: MutationTree<PrinterState> = {
 
 	setData(state, payload) {
 		const setDataDeep = (currentState: any, payload: any) => {
-			if (typeof payload === 'object') {
+			if (payload !== null && typeof payload === 'object') {
 				Object.keys(payload).forEach((key: string) => {
 					const value = payload[key]
 

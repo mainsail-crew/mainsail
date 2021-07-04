@@ -1041,6 +1041,14 @@ export default class PageFiles extends Mixins(BaseMixin) {
         }
     }
 
+    editFile(item: FileStateFile) {
+        this.$store.dispatch('editor/openFile', {
+            root: '',
+            path: this.currentPath,
+            filename: item.filename
+        })
+    }
+
     downloadFile() {
         const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
         const href = this.apiUrl + '/server/files/' + encodeURI(filename)

@@ -66,7 +66,9 @@
 		"Interface": "Interface"
 	},
 	"Editor": {
-		"Minimap": "Show minimap"
+		"Minimap": "Show minimap",
+		"Downloading": "Downloading",
+		"SaveClose": "Save & close"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -98,7 +100,6 @@
 		"PleaseEnterANewDirectoryName": "Please enter a new directory name: ",
 		"RenameFile": "Rename File",
 		"EditFile": "Edit File",
-		"SaveClose": "Save & close",
 		"Name": "Name",
 		"Cancel": "Cancel",
 		"Create": "Create",
@@ -115,7 +116,6 @@
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer",
-        "Downloading": "Downloading",
 		"SuccessfullyRenamed": "Successfully renamed {filename}.",
 		"SuccessfullyMoved": "Successfully moved {filename}.",
 		"SuccessfullyCreated": "Successfully created {filename}.",
