@@ -10,7 +10,7 @@
             <v-col class="pb-3">
                 <v-subheader class="_filamentRunout-subheader">
                     <v-icon small class="mr-2">mdi-printer-3d-nozzle-alert</v-icon>
-                    <span>{{ name }}</span>
+                    <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small :class="'mr-3 ' + statusColor+'--text'">{{ statusText }}</small>
                     <v-icon @click="changeSensor">{{ enabled ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
