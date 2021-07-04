@@ -24,6 +24,7 @@
                         ref="gcodeCommandField"
                         autocomplete="off"
                         no-resize
+                        auto-grow
                         :rows="rows"
                         @keydown.enter.prevent.stop="doSend"
                         @keyup.up="onKeyUp"
