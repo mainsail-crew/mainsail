@@ -849,7 +849,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     refreshMetadata(data: any) {
-        const items = sortFiles(this.files, this.sortBy, this.sortDesc)
+        const items = sortFiles(this.files, [this.sortBy], [this.sortDesc])
         for (let i = data.pageStart; i < data.pageStop; i++) {
             if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
                 let filename = (this.currentPath+"/"+items[i].filename).substring(7)
