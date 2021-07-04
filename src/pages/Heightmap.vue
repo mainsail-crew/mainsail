@@ -133,8 +133,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn color="blue darken-1" text @click="renameProfile">{{ $t('Heightmap.Rename') }}</v-btn>
+                    <v-btn text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="primary" text @click="renameProfile">{{ $t('Heightmap.Rename') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -152,8 +152,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="warning darken-1" text @click="calibrateDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn color="blue darken-1" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                    <v-btn text @click="calibrateDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="primary" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -173,8 +173,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="waring darken-1" text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
-                    <v-btn color="blue darken-1" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
+                    <v-btn text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn color="error" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
