@@ -25,8 +25,9 @@ _PLEASE OBEY THAT THIS WILL DESTROY ALL DATA ON YOUR CARD_
 
 _Window Look depends on OS, in this case Linux with XFCE was used._
 
+{:start="4"}
 4. Now click on "CHOOSE OS", this will open a popup as shown below.
-   Click on "Use Custom"
+Click on "Use Custom"
 
 ![](../assets/img/setup/rpi-os-popup.png)
 
@@ -38,14 +39,16 @@ After you've done that, it should look like this
 
 ![](../assets/img/setup/rpi-choosen-os.png)
 
+{:start="5"}
 5. Click on "Storage" and select your desired SDCard.
 
 ![](../assets/img/setup/rpi-sdcard.png)
 _As an Example..._
 
-6.  Now its time to setup things like Hostname, Wifi, Language and more.
-    It depends on your needs what you setup, but it has to be WIFI and SSH at least!
-    Grab your Keybord and hit:
+{:start="6"}
+6. Now its time to setup things like Hostname, Wifi, Language and more.
+It depends on your needs what you setup, but it has to be WIFI and SSH at least!
+Grab your Keybord and hit:
 
         CTRL+SHIFT+X
 
@@ -55,22 +58,26 @@ This opens up a Setup Page
 
 ![](../assets/img/setup/rpi-setup-2.png)
 
+{:start="7"}
 7. As last Step click on "Write", rpi-imager will give you a Warning. Click "YES" to continue...
 
 ![](../assets/img/setup/rpi-warning.png)
 
+{:start="8"}
 8. Watch the Progressbar and wait until you see:
 
 ![](../assets/img/setup/rpi-finished.png)
 
 Hit the "Continue" Button and remove safely your SDCard. ( eg. unmount on Linux )
 
-9.  Insert the SDcard into your Pi, and power on the Pi.
+{:start="9"}
+9. Insert the SDcard into your Pi, and power on the Pi.
 
 _Note: Please give the PI some time, during the first boot MainsailOS (like every PI Image) will expand your "root" filesystem accordingly to your SDCard Size! The greater your SDCard is, it will take longer time! Watch out for the little green LED if it turn off or blink from time to time it has finished the resizing._
 
 _**Make sure that your MCU(s) is connected to your pi, If you will be using wired networking, also make sure your ethernet cable is connected.**_
 
+{:start="10"}
 10. Find your pi on the network, open up your preferred Browser and type either your IP or Hostname (Depends on your Network configuration)
 
 -   If your network supports bonjour, the pi should show up as `mainsailos.local` or the given Hostname in the Setup Section.
