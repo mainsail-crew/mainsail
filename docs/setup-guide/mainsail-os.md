@@ -58,7 +58,8 @@ This opens up a Setup Page
 
 ![](../assets/img/setup/rpi-setup-2.png)
 
-{:start="7"} 7. As last Step click on "Write", rpi-imager will give you a Warning. Click "YES" to continue...
+{:start="7"}
+7. As last Step click on "Write", rpi-imager will give you a Warning. Click "YES" to continue...
 
 ![](../assets/img/setup/rpi-warning.png)
 
