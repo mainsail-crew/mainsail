@@ -25,7 +25,8 @@ _PLEASE OBEY THAT THIS WILL DESTROY ALL DATA ON YOUR CARD_
 
 _Window Look depends on OS, in this case Linux with XFCE was used._
 
-{:start="4"} 4. Now click on "CHOOSE OS", this will open a popup as shown below.
+{:start="4"}
+4. Now click on "CHOOSE OS", this will open a popup as shown below.
 Click on "Use Custom"
 
 ![](../assets/img/setup/rpi-os-popup.png)
@@ -38,12 +39,14 @@ After you've done that, it should look like this
 
 ![](../assets/img/setup/rpi-choosen-os.png)
 
-{:start="5"} 5. Click on "Storage" and select your desired SDCard.
+{:start="5"}
+5. Click on "Storage" and select your desired SDCard.
 
 ![](../assets/img/setup/rpi-sdcard.png)
 _As an Example..._
 
-{:start="6"} 6. Now its time to setup things like Hostname, Wifi, Language and more.
+{:start="6"}
+6. Now its time to setup things like Hostname, Wifi, Language and more.
 It depends on your needs what you setup, but it has to be WIFI and SSH at least!
 Grab your Keybord and hit:
 
@@ -59,13 +62,15 @@ This opens up a Setup Page
 
 ![](../assets/img/setup/rpi-warning.png)
 
-{:start="8"} 8. Watch the Progressbar and wait until you see:
+{:start="8"}
+8. Watch the Progressbar and wait until you see:
 
 ![](../assets/img/setup/rpi-finished.png)
 
 Hit the "Continue" Button and remove safely your SDCard. ( eg. unmount on Linux )
 
-{:start="9"} 9. Insert the SDcard into your Pi, and power on the Pi.
+{:start="9"}
+9. Insert the SDcard into your Pi, and power on the Pi.
 
 _Note: Please give the PI some time, during the first boot MainsailOS (like every PI Image) will expand your "root" filesystem accordingly to your SDCard Size! The greater your SDCard is, it will take longer time! Watch out for the little green LED if it turn off or blink from time to time it has finished the resizing._
 
