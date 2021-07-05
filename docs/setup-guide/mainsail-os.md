@@ -71,7 +71,8 @@ _Note: Please give the PI some time, during the first boot MainsailOS (like ever
 
 _**Make sure that your MCU(s) is connected to your pi, If you will be using wired networking, also make sure your ethernet cable is connected.**_
 
-{:start="10"} 10. Find your pi on the network, open up your preferred Browser and type either your IP or Hostname (Depends on your Network configuration)
+{:start="10"}
+10. Find your pi on the network, open up your preferred Browser and type either your IP or Hostname (Depends on your Network configuration)
 
 -   If your network supports bonjour, the pi should show up as `mainsailos.local` or the given Hostname in the Setup Section.
 -   If your network automatically assigns DNS hostnames, it may simply show up as `mainsailos` or accordingly given Hostname.
