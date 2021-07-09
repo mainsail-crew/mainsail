@@ -712,13 +712,25 @@ export default class PageFiles extends Mixins(BaseMixin) {
             this.dropzone.opacity = 0
 
             if (e.dataTransfer.files.length) {
-                await this.doUploadFile(e.dataTransfer.files[0])
+                this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
+                let successFiles = []
+                this.uploadSnackbar.number = 0
+                this.uploadSnackbar.max = e.dataTransfer.files.length
+                for (const file of e.dataTransfer.files) {
+                    this.uploadSnackbar.number++
+                    const result = await this.doUploadFile(file)
+                    successFiles.push(result)
+                }
+
+                this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+                for(const file of successFiles) {
+                    this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
+                }
             }
         }
     }
 
     doUploadFile(file: File) {
-        let toast = this.$toast
         let formData = new FormData()
         let filename = file.name.replace(" ", "_")
 
@@ -814,7 +826,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
             this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
             for(const file of successFiles) {
-                this.$toast.success("Upload of "+file+" successful!")
+                this.$toast.success(this.$t('Files.SuccessfullyUploaded', { filename: file }).toString())
             }
 
             this.$refs.fileUpload.value = ''
