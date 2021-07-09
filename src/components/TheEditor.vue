@@ -71,7 +71,7 @@ import {formatFilesize} from "@/plugins/helpers";
 
 import {StreamLanguage} from "@codemirror/stream-parser"
 import {yaml} from "@codemirror/legacy-modes/mode/yaml"
-import {oneDarkTheme} from "@codemirror/theme-one-dark"
+import {moxer} from "@/plugins/codemirrorTheme"
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 
 @Component
@@ -124,7 +124,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
                     doc: newVal,
                     extensions: [
                         basicSetup,
-                        oneDarkTheme,
+                        moxer,
                         StreamLanguage.define(yaml)
                     ],
                 })
