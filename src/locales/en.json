@@ -116,6 +116,8 @@
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer",
+        "Downloading": "Downloading",
+		"SuccessfullyUploaded": "Upload of {filename} successful!",
 		"SuccessfullyRenamed": "Successfully renamed {filename}.",
 		"SuccessfullyMoved": "Successfully moved {filename}.",
 		"SuccessfullyCreated": "Successfully created {filename}.",
