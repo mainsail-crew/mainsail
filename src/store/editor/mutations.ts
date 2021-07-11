@@ -21,7 +21,10 @@ export const mutations: MutationTree<EditorState> = {
 	},
 
 	openFile(state, payload) {
-		Vue.set(state, 'sourcecode', payload)
+		Vue.set(state, 'filename', payload.filename)
+		Vue.set(state, 'fileroot', payload.fileroot)
+		Vue.set(state, 'filepath', payload.filepath)
+		Vue.set(state, 'sourcecode', payload.file)
 		Vue.set(state, 'bool', true)
 	},
 
@@ -29,7 +32,15 @@ export const mutations: MutationTree<EditorState> = {
 		Vue.set(state, 'bool', true)
 	},
 
+	setFilename(state, filename) {
+		Vue.set(state, 'filename', filename)
+	},
+
 	hideEditor(state) {
 		Vue.set(state, 'bool', false)
+	},
+
+	updateSourcecode(state, payload) {
+		Vue.set(state, 'sourcecode', payload)
 	}
 }

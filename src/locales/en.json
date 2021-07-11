@@ -68,7 +68,12 @@
 	"Editor": {
 		"Minimap": "Show minimap",
 		"Downloading": "Downloading",
-		"SaveClose": "Save & close"
+		"Uploading": "Uploading",
+		"ConfigReference": "Config Reference",
+		"SaveRestart": "Save & Restart",
+		"SaveClose": "Save & close",
+		"SuccessfullySaved": "{filename} successfully saved.",
+		"FailedSave": "{filename} could not be uploaded!"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -347,6 +352,10 @@
 			"HiddenFiles": "Hidden files",
 			"CurrentPath": "Current path",
 			"Files": "Files",
+			"FreeDisk": "Free disk",
+			"Used": "Used",
+			"Free": "Free",
+			"Total": "Total",
 			"AllFiles": "All",
 			"Empty": "Empty",
 			"ShowFile": "Show file",

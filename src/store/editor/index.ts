@@ -8,9 +8,12 @@ export const getDefaultState = (): EditorState => {
 	return {
 		bool: false,
 		filename: "",
+		fileroot: "",
+		filepath: "",
 		sourcecode: "",
 		loaderBool: false,
 		loaderProgress: {
+			direction: 'downloading',
 			lastTimestamp: 0,
 			lastLoaded: 0,
 			loaded: 0,

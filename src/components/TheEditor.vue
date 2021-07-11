@@ -7,10 +7,12 @@
 <template>
     <div>
         <v-dialog v-model="show"
-                  fullscreen
-                  hide-overlay
-                  transition="dialog-bottom-transition"
-                  @close="close">
+            fullscreen
+            hide-overlay
+            transition="dialog-bottom-transition"
+            @close="close"
+            @keydown.esc="close"
+        >
             <v-card>
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="close">
@@ -19,31 +21,25 @@
                     <v-toolbar-title>{{ filename }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <v-btn dark text @click="save">
-                            <v-icon small class="mr-1">mdi-content-save</v-icon>
-                            <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
-                        </v-btn>
+                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn>
+                        <template v-if="isWriteable">
+                            <v-divider white vertical class="d-none d-md-flex" v-if="restartServiceName === 'klipper'"></v-divider>
+                            <v-btn dark text @click="save(null)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span></v-btn>
+                        </template>
+                        <template v-if="restartServiceName != null">
+                            <v-divider white vertical class="d-none d-sm-flex"></v-divider>
+                            <v-btn dark text @click="save(restartServiceName)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Editor.SaveRestart') }}</v-btn>
+                        </template>
                     </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text class="pa-0">
-                    <perfect-scrollbar class="editor-content-container">
-                        <div ref="editor" id="editor"></div>
-                    </perfect-scrollbar>
+                    <codemirror ref="editor" v-model="sourcecode" v-bind:file-extension="fileExtension"></codemirror>
                 </v-card-text>
-<!--                class="mainsail-editor"-->
             </v-card>
         </v-dialog>
-        <v-snackbar
-            :timeout="-1"
-            :value="true"
-            fixed
-            right
-            bottom
-            dark
-            v-model="loaderBool"
-        >
+        <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom dark>
             <div>
-                {{ $t('Editor.Downloading') }}<br />
+                {{ snackbarHeadline }}<br />
                 <strong>{{ filename }}</strong>
             </div>
             <span v-if="loaderProgress.total > 1" class="mr-1">({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})</span>
@@ -65,33 +61,48 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Watch} from "vue-property-decorator";
+import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base"
 import {formatFilesize} from "@/plugins/helpers";
-
-import {StreamLanguage} from "@codemirror/stream-parser"
-import {yaml} from "@codemirror/legacy-modes/mode/yaml"
-import {moxer} from "@/plugins/codemirrorTheme"
-import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
-
-@Component
+import Codemirror from "@/components/inputs/Codemirror.vue";
+@Component({
+    components: {Codemirror}
+})
 export default class TheEditor extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
 
-    $refs!: {
-        editor: HTMLElement
+    refs!: {
+        editor: any
     }
 
     get show() {
         return this.$store.state.editor.bool ?? false
     }
 
-    get filename() {
+    get filename(): string {
         return this.$store.state.editor.filename ?? ""
+    }
+
+    get fileExtension() {
+        if (this.filename.lastIndexOf('.')) return this.filename.slice(this.filename.lastIndexOf('.') + 1)
+
+        return ''
+    }
+
+    get fileroot() {
+        return this.$store.state.editor.fileroot ?? "gcodes"
+    }
+
+    get isWriteable() {
+        return ['config', 'gcodes'].includes(this.fileroot)
     }
 
     get sourcecode() {
         return this.$store.state.editor.sourcecode ?? ""
+    }
+
+    set sourcecode(newVal) {
+        this.$store.dispatch('editor/updateSourcecode', newVal)
     }
 
     get loaderBool() {
@@ -99,7 +110,32 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get loaderProgress() {
-        return this.$store.state.editor.loaderProgress
+        return this.$store.state.editor.loaderProgress ?? {}
+    }
+
+    get snackbarHeadline() {
+        let directionUppercase = "Downloading"
+        if (this.loaderProgress.direction) {
+            directionUppercase = this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
+        }
+
+        return this.$t('Editor.'+directionUppercase)
+    }
+
+    get restartServiceName() {
+        if (!this.isWriteable) return null
+        if (['printing', 'paused'].includes(this.printer_state)) return null
+
+        if (this.filename === "moonraker.conf")
+            return "moonraker"
+        else if (this.filename.startsWith("webcam") && this.filename.endsWith(".txt"))
+            return "webcamd"
+        else if (this.filename.startsWith("mooncord") && this.filename.endsWith(".json"))
+            return "mooncord"
+        else if (this.filename.endsWith(".cfg"))
+            return "klipper"
+
+        return null
     }
 
     cancelDownload() {
@@ -110,31 +146,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch("editor/close")
     }
 
-    save() {
-        window.console.log("closeEditor")
-    }
-
-    @Watch('sourcecode')
-    sourcecodeChanged(newVal: string) {
-        window.console.log("watch sourcecode")
-        if (newVal !== "") {
-            setTimeout(() => {
-
-                const initialState = EditorState.create({
-                    doc: newVal,
-                    extensions: [
-                        basicSetup,
-                        moxer,
-                        StreamLanguage.define(yaml)
-                    ],
-                })
-
-                const view = new EditorView({
-                    parent: this.$refs.editor,
-                    state: initialState,
-                })
-            }, 200)
-        }
+    save(restartServiceName: string | null = null) {
+        this.$store.dispatch('editor/saveFile', {
+            content: this.sourcecode,
+            restartServiceName: restartServiceName
+        })
     }
 }
 </script>
