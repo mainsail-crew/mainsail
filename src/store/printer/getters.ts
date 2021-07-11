@@ -389,6 +389,61 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		return caseInsensitiveSort(sensors, 'name')
 	},
 
+	getMcus: (state) => {
+		const mcus: any = {}
+
+		Object.keys(state).forEach((element) => {
+			if (element.startsWith("mcu")) {
+				mcus[element] = {...state[element]}
+			}
+		})
+
+		return Object.keys(mcus).sort().reduce(
+			(obj: any, key) => {
+				obj[key] = mcus[key];
+				return obj
+			},
+			{}
+		)
+	},
+
+	getHostTempSensor: (state, getters) => {
+		const sensorTypes = ['rpi_temperature', 'temperature_host']
+		const checkObjects = ['temperature_sensor', 'temperature_fan']
+		let output: null | { key: string, settings: any } = null
+
+		const objects = getters.getPrinterConfigObjects(checkObjects)
+		Object.keys(objects).forEach((key) => {
+			const value = objects[key]
+			if ('sensor_type' in value && sensorTypes.includes(value.sensor_type)) {
+				output = {
+					key: key,
+					settings: value
+				}
+			}
+		})
+
+		return output
+	},
+
+	getMcuTempSensors: (state, getters) => {
+		const checkObjects = ['temperature_sensor', 'temperature_fan']
+		const output: any = {}
+
+		const objects = getters.getPrinterConfigObjects(checkObjects)
+		Object.keys(objects).forEach((key) => {
+			const value = objects[key]
+			if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
+				output[key] = {
+					settings: value,
+					object: key in state ? state[key] : {}
+				}
+			}
+		})
+
+		return output
+	},
+
 	getBedMeshProfiles: (state) => {
 		const profiles: PrinterStateBedMesh[] = []
 		let currentProfile = ""

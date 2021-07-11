@@ -18,6 +18,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 		Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo'})
 		Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig'})
 		Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo'})
+		Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
 		Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
 	},
 
@@ -54,14 +55,15 @@ export const actions: ActionTree<ServerState, RootState> = {
 	},
 
 	initServerConfig({ commit }, payload) {
-		window.console.debug("init ServerConfig")
 		commit('setConfig', payload)
 	},
 
 	initSystemInfo({ commit }, payload) {
-		window.console.debug("init SystemInfo")
-
 		commit('setSystemInfo', payload.system_info)
+	},
+
+	initProcStats({ commit }, payload) {
+		commit('setThrottledState', payload.throttled_state)
 	},
 
 	setKlippyReady({ dispatch }) {
