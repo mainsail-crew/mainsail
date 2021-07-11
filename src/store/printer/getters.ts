@@ -407,6 +407,20 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		)
 	},
 
+	getPrinterConfigObjects: (state) => (objectNames: string[]) => {
+		let output: any = {}
+
+		Object.keys(state.configfile.settings).forEach((key) => {
+			const keySplits = key.split(" ")
+
+			if (objectNames.includes(keySplits[0])) {
+				output[key] = state.configfile.settings[key]
+			}
+		})
+
+		return output
+	},
+
 	getHostTempSensor: (state, getters) => {
 		const sensorTypes = ['rpi_temperature', 'temperature_host']
 		const checkObjects = ['temperature_sensor', 'temperature_fan']
