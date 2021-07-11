@@ -9,6 +9,7 @@
         <v-app-bar app elevate-on-scroll>
             <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
+            <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
             <v-btn
                 color="primary"
@@ -74,6 +75,7 @@ import axios from "axios"
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from "@/components/TheTopCornerMenu.vue";
 import TheSettingsMenu from "@/components/TheSettingsMenu.vue";
+import TheThrottledStates from "@/components/TheThrottledStates.vue";
 
 type uploadSnackbar = {
     status: boolean
@@ -90,6 +92,7 @@ type uploadSnackbar = {
 
 @Component({
     components: {
+        TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu
     }
