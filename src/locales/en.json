@@ -402,6 +402,18 @@
 			"Invalid": "invalid",
 			"Unknown": "unknown",
 			"ERROR": "ERROR"
+		},
+		"SystemPanel": {
+			"SystemLoad": "System Loads",
+			"Version": "Version",
+			"Os": "OS",
+			"Load": "Load",
+			"Awake": "Awake",
+			"Frequency": "Freq",
+			"Memory": "Mem",
+			"Constants": "Constants",
+			"LastStats": "Last stats",
+			"HostDetails": "Host details"
 		}
 	},
 	"Settings": {

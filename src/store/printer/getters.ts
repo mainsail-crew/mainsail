@@ -7,7 +7,7 @@ import {
 	PrinterStateMiscellaneous,
 	PrinterStateSensor, PrinterStateMacro
 } from "@/store/printer/types"
-import {caseInsensitiveSort} from "@/plugins/helpers";
+import {caseInsensitiveSort, formatFrequency} from "@/plugins/helpers";
 import {RootState} from "@/store/types";
 
 export const getters: GetterTree<PrinterState, RootState> = {
@@ -389,34 +389,67 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		return caseInsensitiveSort(sensors, 'name')
 	},
 
-	getMcus: (state) => {
-		const mcus: any = {}
+	getMcus: (state, getters) => {
+		const mcus: any[] = []
 
-		Object.keys(state).forEach((element) => {
-			if (element.startsWith("mcu")) {
-				mcus[element] = {...state[element]}
+		Object.keys(state).forEach((key) => {
+			if (key === "mcu" || key.startsWith("mcu ")) {
+				const mcu = state[key]
+
+				const versionSplits = (mcu.mcu_version ?? "unknown").split("-")
+				let versionOutput = "unknown"
+				if (versionSplits.length > 3 && versionSplits[3] === 'dirty')
+					versionOutput = versionSplits.slice(0, 3).join("-")
+				else if (versionSplits.length > 2)
+					versionOutput = versionSplits.slice(0,2).join("-")
+
+				let load = 0
+				if (mcu.last_stats?.mcu_task_avg && mcu.last_stats?.mcu_task_stddev) {
+					load = mcu.last_stats.mcu_task_avg + 3 * mcu.last_stats?.mcu_task_stddev / 0.0025
+				}
+
+				let loadProgressColor = 'primary'
+				if (load > 0.95) loadProgressColor = 'error'
+				else if (load > 0.8) loadProgressColor = 'warning'
+
+				mcus.push({
+					name: key,
+					mcu_constants: mcu.mcu_constants,
+					last_stats: mcu.last_stats,
+					version: versionOutput,
+					chip: mcu.mcu_constants?.MCU ?? null,
+					freq: mcu.last_stats?.freq ?? null,
+					freqFormat: formatFrequency(mcu.last_stats?.freq ?? 0),
+					awake: ((mcu.last_stats?.mcu_awake ?? 0) / 5).toFixed(2),
+					load: load.toFixed(2),
+					loadPercent: load < 1 ? Math.round(load * 100) : 100,
+					loadProgressColor: loadProgressColor,
+					tempSensor: getters.getMcuTempSensor(key)
+				})
 			}
 		})
 
-		return Object.keys(mcus).sort().reduce(
-			(obj: any, key) => {
-				obj[key] = mcus[key];
-				return obj
-			},
-			{}
-		)
+		return mcus
+	},
+
+	getPrinterObject: (state) => (objectName: string) => {
+		if (objectName in state) return state[objectName]
+
+		return null
 	},
 
 	getPrinterConfigObjects: (state) => (objectNames: string[]) => {
-		let output: any = {}
+		const output: any = {}
 
-		Object.keys(state.configfile.settings).forEach((key) => {
-			const keySplits = key.split(" ")
+		if (state.configfile?.settings) {
+			Object.keys(state.configfile.settings).forEach((key) => {
+				const keySplits = key.split(" ")
 
-			if (objectNames.includes(keySplits[0])) {
-				output[key] = state.configfile.settings[key]
-			}
-		})
+				if (objectNames.includes(keySplits[0])) {
+					output[key] = state.configfile.settings[key]
+				}
+			})
+		}
 
 		return output
 	},
@@ -424,15 +457,22 @@ export const getters: GetterTree<PrinterState, RootState> = {
 	getHostTempSensor: (state, getters) => {
 		const sensorTypes = ['rpi_temperature', 'temperature_host']
 		const checkObjects = ['temperature_sensor', 'temperature_fan']
-		let output: null | { key: string, settings: any } = null
+		let output: null | { temperature: number, measured_min_temp: number, measured_max_temp: number } = null
 
 		const objects = getters.getPrinterConfigObjects(checkObjects)
 		Object.keys(objects).forEach((key) => {
-			const value = objects[key]
-			if ('sensor_type' in value && sensorTypes.includes(value.sensor_type)) {
+			const settings = objects[key]
+			if (
+				'sensor_type' in settings &&
+				sensorTypes.includes(settings.sensor_type) &&
+				key in state
+			) {
+				const value = state[key]
+
 				output = {
-					key: key,
-					settings: value
+					temperature: value.temperature?.toFixed(0),
+					measured_min_temp: value.measured_min_temp?.toFixed(1),
+					measured_max_temp: value.measured_max_temp?.toFixed(1)
 				}
 			}
 		})
@@ -442,15 +482,33 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
 	getMcuTempSensors: (state, getters) => {
 		const checkObjects = ['temperature_sensor', 'temperature_fan']
-		const output: any = {}
+		const output: any = []
 
 		const objects = getters.getPrinterConfigObjects(checkObjects)
 		Object.keys(objects).forEach((key) => {
 			const value = objects[key]
 			if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
-				output[key] = {
+				output.push({
+					key: key,
 					settings: value,
 					object: key in state ? state[key] : {}
+				})
+			}
+		})
+
+		return output
+	},
+
+	getMcuTempSensor: (state, getters) => (mcuName: string) => {
+		let output: any = null
+
+		const sensors = getters.getMcuTempSensors
+		sensors.forEach((sensor: any) => {
+			if (sensor.settings?.sensor_mcu === mcuName) {
+				output = {
+					temperature: sensor.object.temperature.toFixed(0),
+					measured_min_temp: sensor.object.measured_min_temp.toFixed(1),
+					measured_max_temp: sensor.object.measured_max_temp.toFixed(1)
 				}
 			}
 		})

@@ -75,6 +75,17 @@ export const formatDate = (date: number): string => {
     return tmp2.toLocaleString().replace(',', '')
 }
 
+export const formatFrequency = (frequency: number): string => {
+    let i = -1
+    const units = [' kHz', ' MHz', ' GHz']
+    do {
+        frequency = frequency / 1000
+        i++
+    } while (frequency > 1000)
+
+    return Math.max(frequency, 0.1).toFixed() + units[i]
+}
+
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename';
     const sortDescSingle = sortDesc[0];
