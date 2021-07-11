@@ -27,6 +27,26 @@
 			"RecoveringDone": "Recovering {software} done!",
 			"Empty": "Empty",
 			"Close": "Close"
+		},
+		"ThrottledStates": {
+			"HeadlineCurrentFlags": "Current Flags",
+			"HeadlinePreviouslyFlags": "Previously Flags",
+			"TitleUnderVoltageDetected": "Under-Voltage Detected",
+			"TitleFrequencyCapped": "Frequency Capped",
+			"TitleCurrentlyThrottled": "Currently Throttled",
+			"TitleTemperatureLimitActive": "Temperature Limit Active",
+			"TitlePreviouslyUnderVolted": "Previously Under-Volted",
+			"TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
+			"TitlePreviouslyThrottled": "Previously Throttled",
+			"TitlePreviouslyTemperatureLimited": "Previously Temperature Limited",
+			"TooltipUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
+			"TooltipFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
+			"TooltipCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
+			"TooltipTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
+			"TooltipPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
+			"TooltipPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
+			"TooltipPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
+			"TooltipPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
 		}
 	},
     "ConnectionDialog": {
@@ -412,6 +432,18 @@
 			"Invalid": "invalid",
 			"Unknown": "unknown",
 			"ERROR": "ERROR"
+		},
+		"SystemPanel": {
+			"SystemLoad": "System Loads",
+			"Version": "Version",
+			"Os": "OS",
+			"Load": "Load",
+			"Awake": "Awake",
+			"Frequency": "Freq",
+			"Memory": "Mem",
+			"Constants": "Constants",
+			"LastStats": "Last stats",
+			"HostDetails": "Host details"
 		}
 	},
 	"Settings": {

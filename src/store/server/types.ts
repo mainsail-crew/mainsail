@@ -14,7 +14,11 @@ export interface ServerState {
     config: any,
     system_info: any,
     moonraker_stats: any
-    cpu_temp: number
+    cpu_temp: number,
+    throttled_state: {
+        bits: number
+        flags: string[]
+    },
 
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState

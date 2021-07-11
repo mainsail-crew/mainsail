@@ -7,6 +7,7 @@
             <v-col class="col-12 col-sm-6">
                 <klippy-state-panel></klippy-state-panel>
                 <limits-panel></limits-panel>
+                <system-panel></system-panel>
                 <update-panel></update-panel>
                 <v-row class="mt-6">
                     <v-col class="col-md-6" v-if="klipperState === 'ready'">
@@ -30,8 +31,9 @@ import UpdatePanel from "@/components/panels/Machine/UpdatePanel.vue";
 import LogfilesPanel from "@/components/panels/Machine/LogfilesPanel.vue";
 import EndstopPanel from "@/components/panels/Machine/EndstopPanel.vue";
 import ConfigFilesPanel from "@/components/panels/Machine/ConfigFilesPanel.vue";
+import SystemPanel from "@/components/panels/Machine/SystemPanel.vue";
 @Component({
-    components: {ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
+    components: {SystemPanel, ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
 })
 export default class PageMachine extends Mixins(BaseMixin) {
 

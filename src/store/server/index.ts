@@ -23,7 +23,11 @@ export const getDefaultState = (): ServerState => {
 		config: { },
 		system_info: { },
 		cpu_temp: 0,
-		moonraker_stats: { }
+		moonraker_stats: { },
+        throttled_state: {
+            bits: 0,
+            flags: [],
+        },
 	}
 }
 
