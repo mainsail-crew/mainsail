@@ -18,9 +18,10 @@ import BaseMixin from "../mixins/base";
 import {basicSetup, EditorState} from "@codemirror/basic-setup";
 import {mainsailTheme} from "@/plugins/codemirrorTheme";
 import {StreamLanguage} from "@codemirror/stream-parser";
-import { yaml } from "@/plugins/StreamParserYaml";
+import { klipper_config } from "@/plugins/StreamParserKlipperConfig";
 import { gcode } from "@/plugins/StreamParserGcode";
 import {EditorView} from "@codemirror/view";
+import {yaml} from "@/plugins/StreamParserYaml";
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -95,7 +96,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
         ]
 
         if (['cfg', 'conf'].includes(this.fileExtension))
-            extensions.push(StreamLanguage.define(yaml))
+            extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension))
             extensions.push(StreamLanguage.define(gcode))
 

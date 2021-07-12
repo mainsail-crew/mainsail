@@ -33,7 +33,7 @@
                     </v-toolbar-items>
                 </v-toolbar>
                 <v-card-text class="pa-0">
-                    <codemirror ref="editor" v-model="sourcecode" v-bind:file-extension="fileExtension"></codemirror>
+                    <codemirror ref="editor" v-model="sourcecode" :name="filename" v-bind:file-extension="fileExtension"></codemirror>
                 </v-card-text>
             </v-card>
         </v-dialog>
