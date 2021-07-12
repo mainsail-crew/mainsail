@@ -92,6 +92,14 @@ export const mutations: MutationTree<ServerState> = {
 		Vue.set(state, 'system_info', payload)
 	},
 
+	setThrottledState(state, payload) {
+		if ('bits' in payload)
+			Vue.set(state.throttled_state, 'bits', payload.bits)
+
+		if ('flags' in payload)
+			Vue.set(state.throttled_state, 'flags', payload.flags)
+	},
+
 	addRootDirectory(state, payload) {
 		state.registered_directories.push(payload.name)
 	}
