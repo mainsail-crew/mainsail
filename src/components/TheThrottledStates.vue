@@ -45,7 +45,7 @@ export default class TheThrottledStates extends Mixins(BaseMixin) {
     private showMenu = false
 
     get throttledStateFlags() {
-        return this.$store.state.server.throttled_state.flags.filter((flag) => {
+        return this.$store.state.server.throttled_state.flags.filter((flag: string) => {
             return  flag !== "?"
         })
 
