@@ -532,47 +532,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                     path: this.currentPath,
                     filename: item.filename
                 })
-
-                // todo editor open
-                /*const ext = item.filename.split('.')?.pop()?.toLowerCase();
-                if(['svg'].includes(ext)) {
-                    let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now();
-                    fetch(url)
-                        .then(res => res.text())
-                        .then(svg => {
-                            this.image.show = true;
-                            this.image.svg = svg;
-                        });
-                } else if(['jpg', 'jpeg', 'png', 'bmp', 'tiff', 'gif'].includes(ext)) {
-                    let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now();
-                    this.image.show = true;
-                    this.image.url = url;
-                } else {
-                    /!*const query = '/server/files' + this.currentPath + '/' + item.filename;
-                    this.$router.push({
-                        name: 'edit-file', query: {
-                            path: query
-                        }
-                    });*!/
-                    this.editor.showLoader = true;
-                    this.editor.sourcecode = "";
-                    this.editor.item = item;
-
-                    let url = '//' + this.hostname + ':' + this.port + '/server/files' + this.absolutePath + '/' + item.filename + '?time=' + Date.now()
-
-                    fetch(url, {cache: "no-cache"}).then(res => res.text()).then(file => {
-                        this.editor.sourcecode = file;
-                        this.editor.options.language = LANGUAGE_MAP[ext] ?? ext.toString();
-
-                        this.editor.show = true;
-                        this.editor.init = true;
-                        this.$nextTick(() => {
-                            this.editor.showLoader = false;
-                            this.editor.options.readOnly = false;
-                            if (!this.isDirWriteable) this.editor.options.readOnly = true;
-                        });
-                    });
-                }*/
             } else {
                 this.currentPath += "/" + item.filename;
                 this.currentPage = 1;
