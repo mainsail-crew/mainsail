@@ -63,15 +63,12 @@ export const getters: GetterTree<FileState, any> = {
 	},
 
 	getDiskUsage: (state) => (path: string) => {
+		if (path.indexOf('/') === 0) path = path.substr(1)
 		if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
 
 		const dir = state.filetree.find(dir => dir.filename === path)
 		if (dir && 'disk_usage' in dir) return dir.disk_usage
 
-		return {
-			free: 0,
-			total: 0,
-			used: 0,
-		}
+		return null
 	}
 }

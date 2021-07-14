@@ -73,8 +73,9 @@ export const mutations: MutationTree<FileState> = {
 				parent[indexFile].metadataPulled = false
 
 				const extension = filename.substr(filename.lastIndexOf('.') + 1)
-				if (payload.item.root === "gcodes" && extension === "gcode")
+				if (payload.item.root === "gcodes" && extension === "gcode") {
 					Vue.$socket.emit("server.files.metadata", { filename: payload.item.path }, { action: "files/getMetadata" })
+				}
 			}
 		}
 	},

@@ -86,7 +86,14 @@
 		"Interface": "Interface"
 	},
 	"Editor": {
-		"Minimap": "Show minimap"
+		"Minimap": "Show minimap",
+		"Downloading": "Downloading",
+		"Uploading": "Uploading",
+		"ConfigReference": "Config Reference",
+		"SaveRestart": "Save & Restart",
+		"SaveClose": "Save & close",
+		"SuccessfullySaved": "{filename} successfully saved.",
+		"FailedSave": "{filename} could not be uploaded!"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -118,7 +125,6 @@
 		"PleaseEnterANewDirectoryName": "Please enter a new directory name: ",
 		"RenameFile": "Rename File",
 		"EditFile": "Edit File",
-		"SaveClose": "Save & close",
 		"Name": "Name",
 		"Cancel": "Cancel",
 		"Create": "Create",
@@ -366,6 +372,10 @@
 			"HiddenFiles": "Hidden files",
 			"CurrentPath": "Current path",
 			"Files": "Files",
+			"FreeDisk": "Free disk",
+			"Used": "Used",
+			"Free": "Free",
+			"Total": "Total",
 			"AllFiles": "All",
 			"Empty": "Empty",
 			"ShowFile": "Show file",

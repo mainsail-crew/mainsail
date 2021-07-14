@@ -25,6 +25,12 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-sugar.css';
 import {WebSocketPlugin} from "@/plugins/webSocketClient";
 
+//vue2-perfect-scrollbar
+import PerfectScrollbar from 'vue2-perfect-scrollbar'
+import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
+
+Vue.use(PerfectScrollbar)
+
 Vue.use(VueToast, {
     duration: 3000,
 })

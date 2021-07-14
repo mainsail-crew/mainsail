@@ -1,23 +1,5 @@
 <style scoped>
-    /*.my-editor {
-        background: #2d2d2d;
-        color: #ccc;
-        font-family: Fira code, Fira Mono, Consolas, Menlo, Courier, monospace;
-        font-size: 14px;
-        line-height: 1.5;
-        padding: 5px;
-    }
 
-    .config-editor-overlay div.v-card {
-        position: relative;
-    }
-
-    .config-editor-overlay div.v-card header {
-        position: sticky;
-        top: 0;
-        width: 100%;
-        z-index: 1;
-    }*/
 </style>
 
 <template>
@@ -27,45 +9,10 @@
                 <v-toolbar-title>
                     <span class="subheading align-baseline"><v-icon left>mdi-information</v-icon>{{ $t('Machine.ConfigFilesPanel.ConfigFiles') }}</span>
                 </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
-                <v-item-group class="v-btn-toggle" name="controllers">
-                    <template >
-                        <v-btn
-                            v-for="button in filteredToolbarButtons"
-                            v-bind:key="button.loadingName"
-                            class="px-2 minwidth-0"
-                            :color="button.color"
-                            @click="button.click"
-                            :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
-                            small
-                        >
-                            <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
-                                </template>
-                                <span>{{ button.text }}</span>
-                            </v-tooltip>
-                        </v-btn>
-                    </template>
-                    <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on" small><v-icon small>mdi-cog</v-icon></v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Machine.ConfigFilesPanel.HiddenFiles')"></v-checkbox>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-item-group>
             </v-toolbar>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-7 align-center d-flex">
-                        <span><b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b><br />{{ this.absolutePath }}</span>
-                    </v-col>
-                    <v-col class="col-5">
+                    <v-col class="col-12 d-flex align-center">
                         <v-select
                             v-model="root"
                             :items="registeredDirectories"
@@ -75,6 +22,55 @@
                             dense
                             @change="changeRoot"
                         ></v-select>
+                        <v-spacer></v-spacer>
+                        <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                        <v-btn
+                            v-for="button in filteredToolbarButtons"
+                            v-bind:key="button.loadingName"
+                            class="px-2 minwidth-0 ml-3"
+                            :color="button.color"
+                            @click="button.click"
+                            :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
+                        >
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
+                                </template>
+                                <span>{{ button.text }}</span>
+                            </v-tooltip>
+                        </v-btn>
+                        <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Machine.ConfigFilesPanel.HiddenFiles')"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-text>
+                <v-row>
+                    <v-col class="col-12 py-2 d-flex align-center">
+                        <span><b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b> {{ this.absolutePath }}</span>
+                        <v-spacer></v-spacer>
+                        <template v-if="disk_usage !== null">
+                            <v-tooltip top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        <b>{{ $t('Machine.ConfigFilesPanel.FreeDisk') }}:</b> {{ formatFilesize(disk_usage.free) }}
+                                    </span>
+                                </template>
+                                <span>
+                                    {{ $t('Machine.ConfigFilesPanel.Used') }}: {{ formatFilesize(disk_usage.used) }}<br />
+                                    {{ $t('Machine.ConfigFilesPanel.Free') }}: {{ formatFilesize(disk_usage.free) }}<br />
+                                    {{ $t('Machine.ConfigFilesPanel.Total') }}: {{ formatFilesize(disk_usage.total) }}
+                                </span>
+                            </v-tooltip>
+                        </template>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -262,52 +258,6 @@
                 </v-btn>
             </template>
         </v-snackbar>
-<!--        <v-dialog fullscreen :transition="null" v-model="editor.show" @keydown.esc="closeEditor()">
-            <v-card d-flex class="fill-height">
-                <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="closeEditor()">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-menu
-                            transition="slide-y-transition"
-                            :close-on-content-click="false"
-                            offset-y
-                            bottom
-                            left
-                        >
-                            <template #activator="{ on, attrs }">
-                                <v-btn
-                                    dark
-                                    icon
-                                    v-bind="attrs"
-                                    v-on="on"
-                                >
-                                    <v-icon>mdi-cog</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list dense>
-                                <v-list-item class="minheight30">
-                                    <v-checkbox v-model="editorMinimap" :label="$t('Editor.Minimap')"></v-checkbox>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                        <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Machine.ConfigFilesPanel.ConfigReference') }}</v-btn>
-                        <template v-if="isDirWriteable">
-                            <v-divider white vertical class="d-none d-md-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(false)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Machine.ConfigFilesPanel.SaveClose') }}</span></v-btn>
-                        </template>
-                        <template v-if="restartServiceName != null">
-                            <v-divider white vertical class="d-none d-sm-flex"></v-divider>
-                            <v-btn dark text @click="saveFile(true)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Machine.ConfigFilesPanel.SaveRestart') }}</v-btn>
-                        </template>
-                    </v-toolbar-items>
-                </v-toolbar>
-                <div v-if="editor.init" id="editor" class="mainsail-editor" style="height: 92%; width: 100%; overflow: hidden;"></div>
-            </v-card>
-        </v-dialog>-->
     </div>
 </template>
 
@@ -538,28 +488,15 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.system_info.available_services
     }
 
-    get restartServiceName() {
-        if (!this.isDirWriteable) return null
-        if (['printing', 'paused'].includes(this.printer_state)) return null
-
-        //todo for editor
-        /*if (this.editor.item.filename === "moonraker.conf")
-            return "moonraker"
-        else if (this.editor.item.filename.startsWith("webcam") && this.editor.item.filename.endsWith(".txt"))
-            return "webcamd"
-        else if (this.editor.item.filename.startsWith("mooncord") && this.editor.item.filename.endsWith(".json"))
-            return "mooncord"
-        else if (this.editor.item.filename.endsWith(".cfg"))
-            return "klipper"*/
-
-        return null
-    }
-
     get absolutePath() {
         let path = "/"+this.root
         if (this.currentPath) path += this.currentPath
 
         return path
+    }
+
+    get disk_usage() {
+        return this.$store.getters["files/getDiskUsage"](this.absolutePath)
     }
 
     get isDirWriteable() {
@@ -589,6 +526,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             if (force) this.contextMenu.shown = false
 
             if (!item.isDirectory) {
+
+                this.$store.dispatch('editor/openFile', {
+                    root: this.root,
+                    path: this.currentPath,
+                    filename: item.filename
+                })
+
                 // todo editor open
                 /*const ext = item.filename.split('.')?.pop()?.toLowerCase();
                 if(['svg'].includes(ext)) {
@@ -881,148 +825,4 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     @Watch('showHiddenFiles')
     showHiddenFilesChanged() { this.loadPath() }
 }
-
-
-/*import {mapState} from 'vuex'
-import {findDirectory} from "@/plugins/helpers.ts"
-import {readOnlyRoots} from "@/store/variables.ts"
-import axios from "axios"
-import * as monaco from 'monaco-editor'
-import {LANGUAGE_MAP, liftOff} from "@/plugins/monaco"
-
-export default {
-        data: function() {
-            return {
-                image: {
-                  show: false,
-                  url: null,
-                  svg: null
-                },
-                editor: {
-                    /!*show: false,
-                    showLoader: false,
-                    readonly: false,
-                    init: false,
-                    item: {
-                        filename: "",
-                    },
-                    sourcecode: ''*!/
-                    show: false,
-                    showLoader: false,
-                    readonly: false,
-                    token: null,
-                    init: false,
-                    progress: {
-                        total: 0,
-                        loaded: 0,
-                        speed: "",
-                        lastTimestamp: 0
-                    },
-                    options: {
-                        contextmenu: false,
-                        automaticLayout: true,
-                        readOnly: false,
-                        language: 'klipper-config',
-                        theme: 'dark-converted'
-                    },
-                    item: {
-                        filename: "",
-                    },
-                    sourcecode: "",
-                    monaco: null
-                },
-
-            }
-        },
-        computed: {
-            editorOptions() {
-                return {
-                    ...this.editor.options,
-                    minimap: {
-                        enabled: this.editorMinimap
-                    }
-                };
-            },
-            editorMinimap: {
-                get() {
-                    return this.$store.state.gui.editor.minimap;
-                },
-                set(val) {
-                    return this.$store.dispatch("gui/setSettings", { editor: { minimap: val } })
-                }
-            },
-
-        },
-        methods: {
-            closeEditor() {
-                this.editor.show = false;
-                this.editor.init = false;
-                this.editor.monaco = null;
-                this.editor.sourcecode = "";
-                this.editor.file = null;
-            },
-            async editorWillMount(monaco) {
-                if (!monaco.languages?.getLanguages().find(l => l.id === 'klipper-config')) {
-                    await liftOff(monaco);
-                }
-            },
-            highlighter(code) {
-                //return highlight(code, languages.ini); //returns html
-                return code;
-            },
-
-
-            saveFile(boolRestart = false) {
-                let file = new File([this.editor.sourcecode], this.editor.item.filename);
-
-                let formData = new FormData();
-                formData.append('file', file);
-                formData.append('root', this.root);
-                if(this.currentPath.length) formData.append('path', this.currentPath);
-
-                axios.post('//' + this.hostname + ':' + this.port + '/server/files/upload',
-                    formData, {
-                        headers: { 'Content-Type': 'multipart/form-data' }
-                    }
-                ).then(() => {
-                    this.$toast.success("File '"+this.editor.item.filename+"' successfully saved.");
-
-                    this.closeEditor();
-
-                    if (boolRestart && this.restartServiceName !== "klipper") {
-                        this.$socket.sendObj('machine.services.restart', { service: this.restartServiceName })
-                    } else if (boolRestart) {
-                        this.$store.dispatch('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
-                        this.$socket.sendObj('printer.gcode.script', { script: "FIRMWARE_RESTART" })
-                    }
-                }).catch(() => {
-                    this.$toast.error("Error save "+this.editor.item.filename);
-                });
-            },
-
-
-        },
-        watch: {
-            'editor.init'(val) {
-              if (val) {
-                  setTimeout(() => {
-                      this.editor.monaco = monaco.editor.create(document.getElementById('editor'), {
-                          ...(this.editorOptions || this.editor.options),
-                          value: this.editor.sourcecode
-                      });
-                      this.editor.monaco.onDidChangeModelContent(() => {
-                          this.editor.sourcecode = this.editor.monaco.getModel().getValue();
-                      });
-                  }, 10);
-              }
-            },
-            editorOptions: {
-              deep: true,
-              handler(val) {
-                this.editor.monaco?.updateOptions(val);
-              }
-            },
-
-        }
-    }*/
 </script>
