@@ -63,6 +63,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 				) {
 					array.push({
 						"name": prop.replace("gcode_macro ", ""),
+						"description": state.configfile.config[prop].description ?? null,
 						"prop": state.configfile.config[prop]
 					})
 				}

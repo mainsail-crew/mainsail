@@ -6,7 +6,7 @@
     <v-card v-if="displayPanel" class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>{{ $t("Panels.ZOffsetPanel.ZBabyStepping") }}</span>
+                <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>{{ $t("Panels.ZOffsetPanel.ZOffset") }}</span>
             </v-toolbar-title>
         </v-toolbar>
 
