@@ -362,6 +362,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 				!Object.hasOwnProperty.call(state.configfile.config[prop], "rename_existing")) {
 				array.push({
 					"name": prop.replace("gcode_macro ", ""),
+					"description": state.configfile.config[prop].description ?? null,
 					"prop": state.configfile.config[prop]
 				})
 			}

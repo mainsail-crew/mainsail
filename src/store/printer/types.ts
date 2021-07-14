@@ -115,6 +115,7 @@ export interface PrinterStateBedMesh {
 
 export interface PrinterStateMacro {
     name: string
+    description: string | null
     prop: {
         [key: string]: any
     }
