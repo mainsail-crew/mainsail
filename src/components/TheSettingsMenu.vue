@@ -5,13 +5,13 @@
 <template>
     <div>
         <v-btn color="grey darken-3" class="ml-5 minwidth-0 px-2" @click="showSettings = true">
-            <v-icon>mdi-cog</v-icon>
+            <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent>
             <v-card>
                 <v-toolbar flat dense>
                     <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-cog</v-icon>Interface Settings</span>
+                        <span class="subheading"><v-icon left>mdi-cogs</v-icon>Interface Settings</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
