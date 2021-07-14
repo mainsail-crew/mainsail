@@ -47,13 +47,6 @@ module.exports = {
 			}
 		}
 	},
-	/*chainWebpack: config => {
-		config.module
-			.rule('scss')
-			.use('sass-loader')
-			.loader('sass-loader')
-			.end();
-	},*/
 	pwa: {
 		serviceWorker: false,
 		iconPaths: {

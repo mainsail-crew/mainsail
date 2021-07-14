@@ -12,6 +12,7 @@ import { printer } from '@/store/printer'
 import { files } from '@/store/files'
 import { gui } from '@/store/gui'
 import { farm } from '@/store/farm'
+import { editor } from '@/store/editor'
 
 Vue.use(Vuex)
 
@@ -34,6 +35,7 @@ export default new Vuex.Store({
         files,
         gui,
         farm,
+        editor,
     },
     getters: getters,
     mutations: mutations,

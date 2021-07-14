@@ -29,6 +29,7 @@
         <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
+        <the-editor></the-editor>
     </v-app>
 </template>
 
@@ -41,9 +42,11 @@ import {Mixins,Watch} from "vue-property-decorator";
 import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
 import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
 import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
+import TheEditor from "@/components/TheEditor.vue";
 
 @Component({
     components: {
+        TheEditor,
         TheSelectPrinterDialog,
         TheConnectingDialog,
         TheUpdateDialog,
