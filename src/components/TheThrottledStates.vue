@@ -62,13 +62,13 @@ export default class TheThrottledStates extends Mixins(BaseMixin) {
     }
 
     get currentFlags() {
-        return this.throttledStateFlags.filter((flag) => {
+        return this.throttledStateFlags.filter((flag: string) => {
             return !flag.startsWith("Previously ")
         })
     }
 
     get previouslyFlags() {
-        return this.throttledStateFlags.filter((flag) => {
+        return this.throttledStateFlags.filter((flag: string) => {
             return flag.startsWith("Previously ")
         })
     }
