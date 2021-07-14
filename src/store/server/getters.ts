@@ -24,7 +24,7 @@ export const getters: GetterTree<ServerState, any> = {
 		if ('system_info' in state) {
 			let version: null | string = null
 			if (rootState.printer?.software_version) {
-				version = rootState.printer?.software_version.split('-').slice(0, 2).join('-')
+				version = rootState.printer?.software_version.split('-').slice(0, 4).join('-')
 			}
 
 			const cpuCors = state.system_info.cpu_info?.cpu_count ?? 1

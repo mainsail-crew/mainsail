@@ -395,13 +395,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		Object.keys(state).forEach((key) => {
 			if (key === "mcu" || key.startsWith("mcu ")) {
 				const mcu = state[key]
-
-				const versionSplits = (mcu.mcu_version ?? "unknown").split("-")
-				let versionOutput = "unknown"
-				if (versionSplits.length > 3 && versionSplits[3] === 'dirty')
-					versionOutput = versionSplits.slice(0, 3).join("-")
-				else if (versionSplits.length > 2)
-					versionOutput = versionSplits.slice(0,2).join("-")
+				const versionOutput = (mcu.mcu_version ?? "unknown").split("-").slice(0, 4).join("-")
 
 				let load = 0
 				if (mcu.last_stats?.mcu_task_avg && mcu.last_stats?.mcu_task_stddev) {
