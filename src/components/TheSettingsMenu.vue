@@ -7,7 +7,7 @@
         <v-btn color="grey darken-3" class="ml-5 minwidth-0 px-2" @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
-        <v-dialog v-model="showSettings" width="900" persistent>
+        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
             <v-card>
                 <v-toolbar flat dense>
                     <v-toolbar-title>
@@ -16,7 +16,7 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
-                <v-tabs vertical class="settings-tabs">
+                <v-tabs :vertical="!isMobile" :center-active="isMobile" :show-arrows="isMobile" class="settings-tabs">
                     <v-tab class="justify-start"><v-icon left>mdi-cog</v-icon>{{ $t('Settings.GeneralTab.General') }}</v-tab>
                     <v-tab class="justify-start"><v-icon left>mdi-palette</v-icon>{{ $t('Settings.ThemeTab.Theme') }}</v-tab>
                     <v-tab class="justify-start"><v-icon left>mdi-webcam</v-icon>{{ $t('Settings.WebcamTab.Webcams') }}</v-tab>

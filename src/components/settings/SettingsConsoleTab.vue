@@ -6,11 +6,11 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <settings-row :title="$t('Settings.ConsoleTab.ShowOnDashboard')">
+                <settings-row :title="$t('Settings.ConsoleTab.ShowOnDashboard')" :dynamic-slot-width="true">
                     <v-switch v-model="boolShowOnDashboard" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')">
+                <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
                     <v-switch v-model="hideWaitTemperatures" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
