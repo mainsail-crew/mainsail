@@ -165,19 +165,21 @@
                 </v-card-text>
             </v-card>
         </v-dialog>-->
-<!--            <v-dialog v-model="image.show" hide-overlay fullscreen @keydown.esc="image.show = false; image.url = null; image.svg = null;" class="fill-height">
+        <v-dialog v-model="dialogImage.show" hide-overlay fullscreen @keydown.esc="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;" class="fill-height">
           <v-card style="position: relative;">
             <v-toolbar dark color="primary">
-              <v-btn icon dark @click="image.show = false; image.url = null; image.svg = null;">
+              <v-btn icon dark @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
             </v-toolbar>
             <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
-              <img v-if="image.url" :src="image.url" style="max-height: 100%; width: auto;" alt="image" />
-              <svg v-else-if="image.svg" v-html="image.svg"></svg>
+              <img v-if="dialogImage.item.url" :src="dialogImage.item.url" style="max-height: 100%; width: auto;" alt="image" />
+              <div v-else-if="dialogImage.item.svg"
+                   class="fill-width"
+                   v-html="dialogImage.item.svg"></div>
             </div>
           </v-card>
-        </v-dialog>-->
+        </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <v-card>
                 <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.RenameFile') }}</v-card-title>
@@ -280,6 +282,15 @@ interface contextMenu {
     item: FileStateFile
 }
 
+
+interface dialogImageObject {
+    show: boolean
+    item: {
+        url: string | null,
+        svg: string | null
+    }
+}
+
 interface dialogRenameObject {
     show: boolean
     newName: string
@@ -337,6 +348,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             isDirectory: false,
             filename: '',
             modified: new Date()
+        }
+    }
+    private dialogImage: dialogImageObject = {
+        show: false,
+        item: {
+            url: null,
+            svg: null
         }
     }
     private dialogRenameFile: dialogRenameObject = {
@@ -527,12 +545,26 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             if (force) this.contextMenu.shown = false
 
             if (!item.isDirectory) {
-
-                this.$store.dispatch('editor/openFile', {
-                    root: this.root,
-                    path: this.currentPath,
-                    filename: item.filename
-                })
+                if (['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif', 'svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
+                    const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`;
+                    if (['svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
+                        fetch(url)
+                            .then(res => res.text())
+                            .then(svg => {
+                                this.dialogImage.show = true;
+                                this.dialogImage.item.svg = svg;
+                            });
+                    } else {
+                        this.dialogImage.show = true;
+                        this.dialogImage.item.url = url;
+                    }
+                } else {
+                    this.$store.dispatch('editor/openFile', {
+                        root: this.root,
+                        path: this.currentPath,
+                        filename: item.filename
+                    });
+                }
             } else {
                 this.currentPath += "/" + item.filename;
                 this.currentPage = 1;
