@@ -1,5 +1,5 @@
 import {GetterTree} from "vuex";
-import {ServerHistoryState} from "@/store/server/history/types";
+import {ServerHistoryState, ServerHistoryStateJob} from "@/store/server/history/types";
 
 export const getters: GetterTree<ServerHistoryState, any> = {
 
@@ -58,10 +58,11 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 		return totalCompletedPrintTime > 0 && totalCompletedJobsCount > 0 ? Math.round(totalCompletedPrintTime / totalCompletedJobsCount) : 0
 	},
 
-	getAllPrintStatusArray(state) {
+	getAllPrintStatusArray(state, getters, rootState) {
 		interface allPrintStatusEntry {
 			name: string
 			value: number
+			showInTable: boolean
 			itemStyle: any
 			label: any
 		}
@@ -98,6 +99,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 					name: current.status,
 					value: 1,
 					itemStyle: itemStyle,
+					showInTable: !rootState.gui?.history.hidePrintStatus.includes(current.status),
 					label: {
 						color: '#fff'
 					}
@@ -184,5 +186,13 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 
 			default: return 'mdi-alert-outline'
 		}
+	},
+
+	getFilterdJobList: (state, getters, rootState) => {
+		const hideStatus = rootState.gui.history.hidePrintStatus
+
+		return state.jobs.filter((job: ServerHistoryStateJob) => {
+			return !hideStatus.includes(job.status)
+		})
 	}
 }

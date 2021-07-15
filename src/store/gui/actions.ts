@@ -168,4 +168,33 @@ export const actions: ActionTree<GuiState, RootState> = {
 			newVal: state.history
 		})
 	},
+
+	hideStatusInHistoryList({ commit, dispatch, state }, name) {
+		const array: string[] = [...state.history.hidePrintStatus]
+
+		if (!array.includes(name)) {
+			array.push(name)
+			commit('setHistoryHidePrintStatus', array)
+
+			dispatch('updateSettings', {
+				keyName: 'history.hidePrintStatus',
+				newVal: array
+			})
+		}
+	},
+
+	showStatusInHistoryList({ commit, dispatch, state }, name) {
+		const array: string[] = [...state.history.hidePrintStatus]
+
+		const index = array.indexOf(name)
+		if (index !== -1) {
+			array.splice(index, 1)
+			commit('setHistoryHidePrintStatus', array)
+
+			dispatch('updateSettings', {
+				keyName: 'history.hidePrintStatus',
+				newVal: array
+			})
+		}
+	}
 }

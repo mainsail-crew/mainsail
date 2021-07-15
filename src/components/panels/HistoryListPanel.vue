@@ -28,6 +28,12 @@
                                 <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
                             <v-list>
+                                <template v-if="allPrintStatusArray.length">
+                                    <v-list-item class="minHeight36" v-for="status of allPrintStatusArray" v-bind:key="status.key">
+                                        <v-checkbox class="mt-0" hide-details :input-value="status.showInTable" @change="changeStatusVisible(status)" :label="$t('History.ShowStatusName', { name: status.name, count: status.value })"></v-checkbox>
+                                    </v-list-item>
+                                    <v-divider></v-divider>
+                                </template>
                                 <v-list-item class="minHeight36" v-for="header of configHeaders" v-bind:key="header.key">
                                     <v-checkbox class="mt-0" hide-details v-model="header.visible" @change="changeColumnVisible(header.value)" :label="header.text"></v-checkbox>
                                 </v-list-item>
@@ -113,21 +119,6 @@
                         <td v-for="col in tableFields" v-bind:key="col.value" :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
                         </td>
-
-<!--                        <td class=" " v-if="headers.find(header => header.value === 'size').visible">{{ 'size' in item.metadata && item.metadata.size ? formatFilesize(item.metadata.size) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'modified').visible">{{ 'modified' in item.metadata && item.metadata.modified ? formatDate(item.metadata.modified) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'start_time').visible">{{ item.start_time > 0 ? formatDate(item.start_time) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'end_time').visible">{{ item.end_time > 0 ? formatDate(item.end_time) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'estimated_time').visible">{{ 'estimated_time' in item.metadata && item.metadata.estimated_time ? formatPrintTime(item.metadata.estimated_time) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'print_duration').visible">{{ item.print_duration > 0 ? formatPrintTime(item.print_duration) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'total_duration').visible">{{ item.total_duration > 0 ? formatPrintTime(item.total_duration) : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'filament_total').visible">{{ 'filament_total' in item.metadata && item.metadata.filament_total ? item.metadata.filament_total+' mm' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'filament_used').visible">{{ item.filament_used ? item.filament_used.toFixed()+' mm' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_extr_temp').visible">{{ 'first_layer_extr_temp' in item.metadata && item.metadata.first_layer_extr_temp ? item.metadata.first_layer_extr_temp+' °C' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_bed_temp').visible">{{ 'first_layer_bed_temp' in item.metadata && item.metadata.first_layer_bed_temp ? item.metadata.first_layer_bed_temp+' °C' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'first_layer_height').visible">{{ 'first_layer_height' in item.metadata && item.metadata.first_layer_height ? item.metadata.first_layer_height+' mm' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'layer_height').visible">{{ 'layer_height' in item.metadata && item.metadata.layer_height ? item.metadata.layer_height+' mm' : '&#45;&#45;' }}</td>
-                        <td class=" " v-if="headers.find(header => header.value === 'object_height').visible">{{ 'object_height' in item.metadata && item.metadata.object_height ? item.metadata.object_height+' mm' : '&#45;&#45;' }}</td>-->
                         <td class=" " v-if="headers.find(header => header.value === 'slicer').visible">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
                             <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version"><br />{{ item.metadata.slicer_version }}</small>
@@ -297,7 +288,7 @@
 import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import {ServerHistoryStateJob} from "@/store/server/history/types";
-import { formatFilesize } from '@/plugins/helpers'
+import {caseInsensitiveSort, formatFilesize} from '@/plugins/helpers'
 
 @Component
 export default class HistoryListPanel extends Mixins(BaseMixin) {
@@ -323,7 +314,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get jobs() {
-        return this.$store.state.server?.history?.jobs ?? []
+        return this.$store.getters['server/history/getFilterdJobList'] ?? []
     }
 
     get headers() {
@@ -475,6 +466,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     get filteredHeaders() {
         return this.headers.filter((header: any) => header.visible === true)
+    }
+
+    get allPrintStatusArray() {
+        return caseInsensitiveSort(this.$store.getters["server/history/getAllPrintStatusArray"] ?? [], 'name')
     }
 
     get countPerPage() {
@@ -641,6 +636,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
             this.$store.dispatch("gui/setHistoryColumns", {name: name, value: value});
         }
+    }
+
+    changeStatusVisible(status: any) {
+        if (status.showInTable) this.$store.dispatch('gui/hideStatusInHistoryList', status.name)
+        else this.$store.dispatch('gui/showStatusInHistoryList', status.name)
     }
 
     startPrint(item: ServerHistoryStateJob) {

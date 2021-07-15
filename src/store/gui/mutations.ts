@@ -148,4 +148,8 @@ export const mutations: MutationTree<GuiState> = {
 			state.history.hideColums.push(data.name)
 		}
 	},
+
+	setHistoryHidePrintStatus(state, payload) {
+		Vue.set(state.history, 'hidePrintStatus', payload)
+	}
 }

@@ -11,7 +11,7 @@
             <v-card>
                 <v-toolbar flat dense>
                     <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-cogs</v-icon>Interface Settings</span>
+                        <span class="subheading"><v-icon left>mdi-cogs</v-icon>{{ $t('Settings.InterfaceSettings') }}</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>

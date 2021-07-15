@@ -84,6 +84,7 @@ export const getDefaultState = (): GuiState => {
 		history: {
 			countPerPage: 10,
 			toggleChartCol3: 'filament_usage',
+			hidePrintStatus: [],
 			hideColums: [
 				'size',
 				'modified',
