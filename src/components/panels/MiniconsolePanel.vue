@@ -125,17 +125,19 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     doSend(cmd: KeyboardEvent) {
         if (!cmd.shiftKey) {
-            this.$store.dispatch('printer/sendGcode', this.gcode)
-            this.lastCommands.push(this.gcode)
-            this.gcode = ""
-            this.lastCommandNumber = null
-            setTimeout(() => {
-                this.$refs.console.$el.scroll({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth'
-                })
-            }, 20);
+            if (this.gcode !== "") {
+                this.$store.dispatch('printer/sendGcode', this.gcode)
+                this.lastCommands.push(this.gcode)
+                this.gcode = ""
+                this.lastCommandNumber = null
+                setTimeout(() => {
+                    this.$refs.console.$el.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    })
+                }, 20);
+            }
         } else {
             this.gcode += '\n';
         }
