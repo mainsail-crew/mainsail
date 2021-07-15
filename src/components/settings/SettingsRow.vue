@@ -1,8 +1,8 @@
 <template>
     <v-row>
-        <v-col class="col-6 d-flex justify-center">
-            <v-row>
-                <v-col class="col-auto d-flex justify-center align-center pr-0" v-if="loading">
+        <v-col :class="firstColClasses">
+            <v-row class="d-flex flex-row">
+                <v-col class="col d-flex justify-center align-center pr-0" v-if="loading">
                     <v-progress-circular
                         indeterminate
                         color="primary"
@@ -18,7 +18,7 @@
                 </v-col>
             </v-row>
         </v-col>
-        <v-col class="col-6 d-flex justify-end align-center settings-row-slot">
+        <v-col :class="secondColClasses">
             <slot></slot>
         </v-col>
     </v-row>
@@ -42,6 +42,30 @@ export default class SettingsRow extends Mixins(BaseMixin) {
 
     @Prop({ required: false })
     readonly subTitle!: string
+
+    @Prop({ required: false, default: false })
+    readonly dynamicSlotWidth!: boolean
+
+    @Prop({ required: false, default: false })
+    readonly mobileSecondRow!: boolean
+
+    get firstColClasses() {
+        const defaultClasses = ' d-flex justify-center'
+
+        if (this.dynamicSlotWidth) return 'col'+defaultClasses
+        else if (this.mobileSecondRow) return 'col-12 col-md-6'+defaultClasses
+
+        return 'col-6'+defaultClasses
+    }
+
+    get secondColClasses() {
+        const defaultClasses = ' d-flex justify-end align-center settings-row-slot'
+
+        if (this.dynamicSlotWidth) return 'col-auto'+defaultClasses
+        else if (this.mobileSecondRow) return 'col-12 col-md-6 pt-0 pt-md-3'+defaultClasses
+
+        return 'col-6'+defaultClasses
+    }
 
 }
 </script>

@@ -12,7 +12,7 @@
             </v-toolbar>
             <v-card-text>
                 <v-row>
-                    <v-col class="col-12 d-flex align-center">
+                    <v-col class="col-12 col-lg pr-lg-0">
                         <v-select
                             v-model="root"
                             :items="registeredDirectories"
@@ -22,7 +22,8 @@
                             dense
                             @change="changeRoot"
                         ></v-select>
-                        <v-spacer></v-spacer>
+                    </v-col>
+                    <v-col class="col col-lg-auto pl-lg-0 text-right">
                         <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
                         <v-btn
                             v-for="button in filteredToolbarButtons"

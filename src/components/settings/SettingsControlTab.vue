@@ -6,20 +6,20 @@
     <v-form ref="formControlExtruder">
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.ControlTab.EnableCross')">
+                <settings-row :title="$t('Settings.ControlTab.EnableCross')" :dynamicSlotWidth="true">
                     <v-switch v-model="useCross" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <template v-if="useCross">
-                    <settings-row :title="$t('Settings.ControlTab.InvertXMovement')">
+                    <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
                         <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.InvertYMovement')">
+                    <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamicSlotWidth="true">
                         <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.InvertZMovement')">
+                    <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamicSlotWidth="true">
                         <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
@@ -51,7 +51,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <template v-if="useCross">
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
                         <v-combobox
                             v-model="stepsAll"
                             hide-selected
@@ -72,7 +72,7 @@
                     <v-divider class="my-2"></v-divider>
                 </template>
                 <template v-else>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
                         <v-combobox
                             v-model="stepsXY"
                             hide-selected
@@ -91,7 +91,7 @@
                         ></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
                         <v-combobox
                             v-model="stepsZ"
                             hide-selected
@@ -111,7 +111,7 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                 </template>
-                <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')">
+                <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
                     <v-combobox
                         v-model="feedamountsE"
                         hide-selected
@@ -130,7 +130,7 @@
                     ></v-combobox>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')">
+                <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
                     <v-combobox
                         v-model="feedratesE"
                         hide-selected

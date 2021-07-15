@@ -100,7 +100,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters["server/getConsoleEvents"].slice(-250)
+        return this.$store.getters["server/getConsoleEvents"].slice(0, 250)
     }
 
     get hideWaitTemperatures(): boolean {

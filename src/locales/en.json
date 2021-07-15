@@ -361,7 +361,7 @@
 			"UnknownWebcamService": "Unknown Webcam Service"
 		},
 		"ZOffsetPanel": {
-			"ZBabyStepping": "Z Baby Stepping",
+			"ZOffset": "Z-Offset",
 			"CurrentOffset": "Current Offset"
 		}
 	},
@@ -454,9 +454,9 @@
 			"PrinterName": "Printer Name",
 			"Language": "Language",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
-			"DisplayZOffset": "Display Z-Offset-Panel",
-			"ShowCANCEL_PRINT": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-			"ShowZOffset": "Shows the Z-Offset panel permanently.",
+			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
+			"DisplayZOffset": "Show Z-Offset-Panel",
+			"DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
 			"FactoryReset": "Factory reset",
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"

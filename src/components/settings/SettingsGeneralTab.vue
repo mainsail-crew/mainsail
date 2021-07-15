@@ -10,15 +10,15 @@
                     <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.ShowCANCEL_PRINT')">
+                <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.ShowZOffset')">
+                <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')">
+                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
                     <v-btn @click="dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
                 </settings-row>
             </v-card-text>

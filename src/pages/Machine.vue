@@ -1,10 +1,10 @@
 <template>
     <v-container fluid py-0 px-0>
         <v-row>
-            <v-col class="col-12 col-sm-6">
+            <v-col class="col-12 col-md-6">
                 <config-files-panel></config-files-panel>
             </v-col>
-            <v-col class="col-12 col-sm-6">
+            <v-col class="col-12 col-md-6">
                 <klippy-state-panel></klippy-state-panel>
                 <limits-panel></limits-panel>
                 <system-panel></system-panel>

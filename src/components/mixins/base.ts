@@ -39,4 +39,8 @@ export default class BaseMixin extends Vue {
     get printer_state(): string {
         return this.$store.state.printer.print_stats?.state ?? ""
     }
+
+    get isMobile() {
+        return window.innerWidth < 768
+    }
 }

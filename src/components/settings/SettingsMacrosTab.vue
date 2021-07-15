@@ -5,7 +5,7 @@
             <template v-if="macros.length">
                 <div v-for="(macro, index) in macros" v-bind:key="index">
                     <v-divider class="my-2" v-if="index"></v-divider>
-                    <settings-row :title="macro.name">
+                    <settings-row :title="macro.name" :sub-title="macro.description" :dynamicSlotWidth="true">
                         <v-switch :input-value="getMacroStatus(macro.name)" @change="changeMacroStatus(macro.name)" hide-details class="mt-0"></v-switch>
                     </settings-row>
                 </div>

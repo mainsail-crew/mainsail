@@ -20,9 +20,7 @@ export const yaml = {
 
         if (state.literal && stream.indentation() > state.keyCol) {
             stream.skipToEnd(); return "string";
-        } else if (state.literal) {
-            state.literal = false;
-        }
+        } else if (state.literal) { state.literal = false; }
         if (stream.sol()) {
             state.keyCol = 0;
             state.pair = false;
@@ -41,7 +39,7 @@ export const yaml = {
         }
 
         /* inline pairs/lists */
-        if (stream.match(/^([{}[\]])/)) {
+        if (stream.match(/^(\{|\}|\[|\])/)) {
             if (ch == '{')
                 state.inlinePairs++;
             else if (ch == '}')
