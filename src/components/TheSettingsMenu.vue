@@ -4,7 +4,7 @@
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
-            <v-card style="overflow: hidden;">
+            <v-card style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <v-toolbar flat dense>
                     <v-toolbar-title>
                         <span class="subheading"><v-icon left>mdi-cogs</v-icon>{{ $t('Settings.InterfaceSettings') }}</span>
@@ -13,28 +13,26 @@
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                     <template v-if="isMobile" v-slot:extension>
                         <v-tabs v-model="tabs" :center-active="true" :show-arrows="true">
-                            <v-tab href="#settings-tabs-general" class="justify-start"><v-icon left>mdi-cog</v-icon>{{ $t('Settings.GeneralTab.General') }}</v-tab>
-                            <v-tab href="#settings-tabs-theme" class="justify-start"><v-icon left>mdi-palette</v-icon>{{ $t('Settings.ThemeTab.Theme') }}</v-tab>
-                            <v-tab href="#settings-tabs-webcam" class="justify-start"><v-icon left>mdi-webcam</v-icon>{{ $t('Settings.WebcamTab.Webcams') }}</v-tab>
-                            <v-tab href="#settings-tabs-macros" class="justify-start"><v-icon left>mdi-code-tags</v-icon>{{ $t('Settings.MacrosTab.Macros') }}</v-tab>
-                            <v-tab href="#settings-tabs-control" class="justify-start"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlTab.Control') }}</v-tab>
-                            <v-tab href="#settings-tabs-console" class="justify-start"><v-icon left>mdi-console-line</v-icon>{{ $t('Settings.ConsoleTab.Console') }}</v-tab>
-                            <v-tab href="#settings-tabs-presets" class="justify-start"><v-icon left>mdi-fire</v-icon>{{ $t('Settings.PresetsTab.PreheatPresets') }}</v-tab>
-                            <v-tab href="#settings-tabs-remote-printers" class="justify-start"><v-icon left>mdi-printer-3d</v-icon>{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</v-tab>
+                            <v-tab
+                                v-for="(tab, index) of tabTitles" v-bind:key="index"
+                                :href="'#settings-tabs-'+tab.name"
+                                class="justify-start">
+                                <v-icon left v-html="tab.icon"></v-icon>
+                                {{ tab.title }}
+                            </v-tab>
                         </v-tabs>
                     </template>
                 </v-toolbar>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
                         <v-tabs v-model="tabs" :vertical="true">
-                            <v-tab href="#settings-tabs-general" class="justify-start"><v-icon left>mdi-cog</v-icon>{{ $t('Settings.GeneralTab.General') }}</v-tab>
-                            <v-tab href="#settings-tabs-theme" class="justify-start"><v-icon left>mdi-palette</v-icon>{{ $t('Settings.ThemeTab.Theme') }}</v-tab>
-                            <v-tab href="#settings-tabs-webcam" class="justify-start"><v-icon left>mdi-webcam</v-icon>{{ $t('Settings.WebcamTab.Webcams') }}</v-tab>
-                            <v-tab href="#settings-tabs-macros" class="justify-start"><v-icon left>mdi-code-tags</v-icon>{{ $t('Settings.MacrosTab.Macros') }}</v-tab>
-                            <v-tab href="#settings-tabs-control" class="justify-start"><v-icon left>mdi-tune</v-icon>{{ $t('Settings.ControlTab.Control') }}</v-tab>
-                            <v-tab href="#settings-tabs-console" class="justify-start"><v-icon left>mdi-console-line</v-icon>{{ $t('Settings.ConsoleTab.Console') }}</v-tab>
-                            <v-tab href="#settings-tabs-presets" class="justify-start"><v-icon left>mdi-fire</v-icon>{{ $t('Settings.PresetsTab.PreheatPresets') }}</v-tab>
-                            <v-tab href="#settings-tabs-remote-printers" class="justify-start"><v-icon left>mdi-printer-3d</v-icon>{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</v-tab>
+                            <v-tab
+                                v-for="(tab, index) of tabTitles" v-bind:key="index"
+                                :href="'#settings-tabs-'+tab.name"
+                                class="justify-start">
+                                <v-icon left v-html="tab.icon"></v-icon>
+                                {{ tab.title }}
+                            </v-tab>
                         </v-tabs>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
@@ -80,6 +78,51 @@ import SettingsThemeTab from "@/components/settings/SettingsThemeTab.vue";
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
     private tabs: any = null
+
+    get tabTitles() {
+        return [
+            {
+                icon: 'mdi-cog',
+                name: 'general',
+                title: this.$t('Settings.GeneralTab.General')
+            },
+            {
+                icon: 'mdi-palette',
+                name: 'theme',
+                title: this.$t('Settings.ThemeTab.Theme')
+            },
+            {
+                icon: 'mdi-webcam',
+                name: 'webcam',
+                title: this.$t('Settings.WebcamTab.Webcams')
+            },
+            {
+                icon: 'mdi-code-tags',
+                name: 'macros',
+                title: this.$t('Settings.MacrosTab.Macros')
+            },
+            {
+                icon: 'mdi-tune',
+                name: 'control',
+                title: this.$t('Settings.ControlTab.Control')
+            },
+            {
+                icon: 'mdi-console-line',
+                name: 'console',
+                title: this.$t('Settings.ThemeTab.Theme')
+            },
+            {
+                icon: 'mdi-presets',
+                name: 'fire',
+                title: this.$t('Settings.PresetsTab.PreheatPresets')
+            },
+            {
+                icon: 'mdi-printer-3d',
+                name: 'remote-printers',
+                title: this.$t('Settings.RemotePrintersTab.RemotePrinters')
+            },
+        ]
+    }
 }
 </script>
 
