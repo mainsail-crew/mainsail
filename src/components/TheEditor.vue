@@ -9,7 +9,7 @@
         <v-dialog v-model="show"
             fullscreen
             hide-overlay
-            transition="dialog-bottom-transition"
+            :transition="false"
             @close="close"
             @keydown.esc="close"
         >

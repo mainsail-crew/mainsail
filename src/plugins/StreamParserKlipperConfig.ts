@@ -1,69 +1,93 @@
 import {StringStream} from "@codemirror/stream-parser";
-
-const cons = ['include'];
-const keywordRegex = new RegExp("\\b(("+cons.join(")|(")+"))$", 'i');
+import {gcode} from "@/plugins/StreamParserGcode";
 
 export const klipper_config = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         const ch = stream.peek();
 
+
         /* comments */
-        if (ch === "#" && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))) {
+        if (stream.match(/^\s+#/) || (
+            ch === "#" && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))
+        )) {
             stream.skipToEnd();
             state.pair = false;
             return "comment";
         }
 
-        if (state.gcode && (ch === '[' || stream.indentation() === 0)) {
+        if (state.gcode &&
+            !state.klipperMacroJinja &&
+            (ch === '[')
+        ) {
             state.gcode = false;
+            state.gcodeZeroPos = null;
         }
 
         if (state.gcode) {
-            stream.skipToEnd();
-            return null;
+            stream.eatSpace();
+            if (state.gcodeZeroPos === null) {
+                state.gcodeZeroPos = stream.pos;
+            }
+            if (state.klipperMacroJinja) {
+                if (stream.match(/^%?}/)) {
+                    state.klipperMacroJinja = false;
+                    return null;
+                }
+                if (stream.eat(/.(?!%})/)) {
+                    return "string";
+                }
+                if (stream.eat(/.(?!})/)) {
+                    return "string";
+                }
+                stream.match(/^.*$/);
+                return "string";
+            }
+
+            if (stream.match(/^{%?/)) {
+                state.klipperMacroJinja = true;
+                return null;
+            }
+
+            return gcode.token(stream, state, state.gcodeZeroPos);
         }
 
         if (stream.match(/^gcode:\s*/)) {
             stream.skipToEnd();
             state.gcode = true;
-            return "macroName";
+            return "atom";
         }
 
         if (state.pair) {
-            if (stream.match(/^[a-zA-Z_]+?:/)) {
+            if (stream.match(/^[\^!]*[a-z_]+[0-9]*?:/i)) {
                 stream.backUp(1);
-                return "className";
-            }
-            if (stream.match(/^[\^!]*[A-Z]+[0-9.]+(:?_[0-9]+)?/)) {
+                return "macroName";
+            } else if (
+                stream.match(/^[\^!]*(?:(?:P[A-Z]?|A[A-Z]?|EXP|GPIOCHIP|GPIO)+[0-9.]+|z_virtual_endstop)(_[0-9]+)?/i) ||
+                stream.match(/^\/gpio[0-9]+/i)) {
                 if (stream.eol()) {
                     state.pair = false;
                 }
                 return "macroName";
-            }
-            if (stream.match(/^(-?[0-9.]+)/)) {
+            } else if (stream.match(/^\s*\[?(-?[0-9,.:]+)]?/)) {
                 if (stream.eol()) {
                     state.pair = false;
                 }
                 return "number";
-            }
-            if (stream.match(/^([a-zA-Z0-9~,:_/\-\s]+)/)) {
+            } else if (stream.match(/^([a-zA-Z0-9~"'.,:_/\-\s]+)/)) {
                 if (stream.eol()) {
                     state.pair = false;
                 }
                 return "string";
-            }
-            if (stream.match(/^\s*#.*$/)) {
+            } else if (stream.match(/^\s*#.*$/)) {
                 stream.skipToEnd();
                 state.pair = false;
                 return "comment";
             }
-            console.log("skipped", stream.string);
-            stream.skipToEnd();
-            state.pair = false;
+            stream.next();
             return null;
         }
 
-        if (stream.match(/^[a-zA-Z0-9_]+:\s?/)) {
+        if (stream.match(/^[a-zA-Z0-9_]+\s?[:=]\s?/)) {
             state.pair = true;
             return "atom";
         }
@@ -74,10 +98,10 @@ export const klipper_config = {
         }*/
 
         if (state.block) {
-            if (stream.match(/^[a-zA-Z0-9-_]+/)) {
+            if (stream.match(/^[a-z0-9-_]+/i)) {
                 return "namespace"
             }
-            if (stream.match(/^\s[a-zA-Z0-9-_.]+/)) {
+            if (stream.match(/^\s[a-z0-9-_./*\s]+/i)) {
                 return "className";
             }
             stream.skipToEnd();
@@ -100,7 +124,10 @@ export const klipper_config = {
         return {
             block: false,
             pair: false,
-            gcode: false
+            gcode: false,
+            klipperMacro: false,
+            gcodeZeroPos: null,
+            klipperMacroJinja: false,
         };
     },
     languageData: {
@@ -112,5 +139,8 @@ export const klipper_config = {
 interface StreamParserKlipperConfigState {
     block: boolean,
     pair: boolean,
-    gcode: boolean
+    gcode: boolean,
+    gcodeZeroPos: number | null,
+    klipperMacro: boolean,
+    klipperMacroJinja: boolean
 }

@@ -1,50 +1,54 @@
 import {StringStream} from "@codemirror/stream-parser";
 
 export const gcode = {
-    token: function(stream: StringStream, state: StreamParserGcodeState) {
+    token: function(stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
         const ch = stream.peek();
 
-        if (stream.pos === 0) state.klipperMacro = false
+        if (stream.pos === zeroPos && state.klipperMacro) state.klipperMacro = false
+
+        /* Klipper macro attributes */
+        if (stream.pos > zeroPos && state.klipperMacro) {
+            if (stream.match(/^\s*[A-Z_]+/))
+                return 'propertyName'
+            else if (stream.match(/^\s*[A-Za-z0-9_]+/))
+                return 'number'
+            else if (stream.match(/^{.*}/))
+                return 'variable'
+        }
 
         /* comments */
-        if (ch == ";" && (stream.pos == 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))) {
+        if ([';', '#'].includes(ch ?? '')) {
             stream.skipToEnd();
             return "comment";
         }
 
         /* Mxxx Gxxx commands */
-        if (stream.pos == 0 && stream.match(/[GMgm][\d]+/)) {
+        if (stream.pos == zeroPos && stream.match(/[GMgm][\d]+/)) {
             return 'namespace'
         }
 
         /* G0/1 movements */
-        if (stream.pos > 0 && stream.match(/[XYZIJxyzij]-?([\d]*\.[\d]+|[\d]+)/)) {
+        if (stream.pos > zeroPos && stream.match(/[XYZIJxyzij]-?([\d]*\.[\d]+|[\d]+)?/)) {
             return 'className'
         }
 
         /* G0/1 speeds */
-        if (stream.pos > 0 && stream.match(/[Ff]-?([\d]*\.[\d]+|[\d]+)/)) {
+        if (stream.pos > zeroPos && stream.match(/[Ff]-?([\d]*\.[\d]+|[\d]+)/)) {
             return 'string'
         }
 
         /* G0/1 extrusions */
-        if (stream.pos > 0 && stream.match(/[Ee]-?([\d]*\.[\d]+|[\d]+)/)) {
+        if (stream.pos > zeroPos && stream.match(/[TtSsEe]-?([\d]*\.[\d]+|[\d]+)/)) {
             return 'atom'
         }
 
+        if (stream.pos > zeroPos && stream.match(/^{.*}/))
+            return 'propertyName'
+
         /* Klipper macro names */
-        if (stream.pos == 0 && stream.match(/^[A-Z_]+/)) {
+        if (stream.pos == zeroPos && stream.match(/^[A-Z_]+/)) {
             state.klipperMacro = true
             return 'name'
-        }
-
-        /* Klipper macro attributes */
-        if (stream.pos > 0 && state.klipperMacro) {
-
-            if (stream.match(/(\s[A-Z_]+)/))
-                return 'propertyName'
-            else if (stream.match(/([A-Za-z0-9_]+)/))
-                return 'number'
         }
 
         stream.next();
