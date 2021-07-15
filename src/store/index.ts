@@ -20,7 +20,7 @@ export const getDefaultState = (): RootState => {
     return {
         packageVersion: process.env.PACKAGE_VERSION || '0.0.0',
         debugMode: process.env.VUE_APP_DEBUG_MODE || false,
-        naviDrawer: true,
+        naviDrawer: null,
     }
 }
 

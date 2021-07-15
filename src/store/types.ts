@@ -5,9 +5,9 @@ import { GuiState } from '@/store/gui/types'
 import {EditorState} from "@/store/editor/types";
 
 export interface RootState {
-    packageVersion: String
-    debugMode: Boolean
-    naviDrawer: Boolean
+    packageVersion: string
+    debugMode: boolean
+    naviDrawer: boolean | null
 
     socket?: SocketState
     gui?: GuiState

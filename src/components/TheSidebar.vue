@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" enable-resize-watcher fixed app :src="sidebarBackground">
+    <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" mobile-breakpoint="1280" enable-resize-watcher fixed app :src="sidebarBackground">
         <div id="nav-header">
             <template v-if="sidebarLogo">
                 <img :src="sidebarLogo" style="height: 40px;" class="mr-3" alt="Logo" />
@@ -68,7 +68,7 @@
 <script lang="ts">
 import Component from "vue-class-component"
 import routes, {AppRoute} from '@/routes'
-import {Mixins} from "vue-property-decorator";
+import {Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import {PrinterStateKlipperConfig} from "@/store/printer/types";
 import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
@@ -163,71 +163,16 @@ export default class TheSidebar extends Mixins(BaseMixin) {
 
         return true
     }
+
+    mounted() {
+        window.console.log("lg", this.$vuetify.breakpoint.lgAndUp)
+
+        this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
+    }
+
+    @Watch('naviDrawer')
+    naviDrawerChanged(newVal: any) {
+        window.console.log("naviDrawerChanged", newVal)
+    }
 }
-
-
-
-/*export default {
-    components: {
-        PrinterSelecter,
-    },
-    data: () => ({
-
-    }),
-    computed: {
-        ...mapState({
-            klippy_state: state => state.server.klippy_state,
-            klipperConfigfileSettings: state => state.printer.configfile.settings,
-            boolNaviWebcam: state => state.gui.webcam.bool,
-
-            mainsailVersion: state => state.packageVersion,
-            klipperVersion: state => state.printer?.software_version
-        }),
-        naviDrawer: {
-            get() {
-                return this.$store.state.naviDrawer
-            },
-            set(newVal) {
-                return this.$store.dispatch("setNaviDrawer", newVal)
-            }
-        },
-        currentPage() {
-            return this.$route.fullPath
-        },
-        naviPoints() {
-            return routes.filter((element) => element.showInNavi)
-        },
-        printerName() {
-            return this.$store.state.gui.general.printername || this.$store.state.printer.hostname
-        },
-        sidebarLogo() {
-            return this.$store.getters["files/getSidebarLogo"]
-        },
-        sidebarBackground() {
-            return this.$store.getters["files/getSidebarBackground"]
-        },
-        isUpdateAvailable() {
-            return this.$store.getters["server/updateManager/isUpdateAvailable"]
-        },
-        moonrakerComponents() {
-            return this.$store.state.server.components
-        },
-        registeredDirectories() {
-            return this.$store.state.server.registered_directories
-        }
-    },
-    methods: {
-        getBoolShowInNavi(route) {
-            if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
-
-            if (route.component?.name === 'webcam') return this.boolNaviWebcam
-
-            if ('moonrakerComponent' in route) return this.moonrakerComponents.includes(route.moonrakerComponent)
-            if ('registeredDirectory' in route) return this.registeredDirectories.includes(route.registeredDirectory)
-            if ('klipperComponent' in route) return (route.klipperComponent in this.klipperConfigfileSettings)
-
-            return true
-        },
-    },
-}*/
 </script>
