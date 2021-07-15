@@ -41,6 +41,6 @@ export default class BaseMixin extends Vue {
     }
 
     get isMobile() {
-        return window.innerWidth < 768
+        return this.$vuetify.breakpoint.mobile
     }
 }

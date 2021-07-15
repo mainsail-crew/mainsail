@@ -449,6 +449,7 @@
 		}
 	},
 	"Settings": {
+		"InterfaceSettings": "Interface Settings",
 		"Cancel": "Cancel",
 		"Edit": "Edit",
 		"GeneralTab": {

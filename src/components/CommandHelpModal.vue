@@ -1,9 +1,10 @@
 <template>
     <v-dialog
         transition="dialog-bottom-transition"
-        max-width="1600"
+        max-width="600"
         scrollable
         v-model="isOpen"
+        :fullscreen="isMobile"
     >
         <template #activator="{ on, attrs }">
             <v-btn
@@ -17,44 +18,47 @@
         </template>
         <template #default>
             <v-card>
-                <v-card-title class="d-flex align-center">
-                    <span>Command list</span>
-                    <v-text-field
-                        v-model="cmdListSearch"
-                        class="mx-4"
-                        label="Search"
-                    ></v-text-field>
-                    <v-btn
-                        class="gcode-command-btn px-2 minwidth-0"
-                        @click="isOpen = false"
-                    >
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
+                <v-toolbar flat dense>
+                    <v-toolbar-title>
+                        <span class="subheading"><v-icon left>mdi-help</v-icon>{{ $t('Console.CommandList') }}</span>
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="isOpen = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                </v-toolbar>
+                <v-card-title>
+                    <v-row>
+                        <v-col>
+                            <v-text-field
+                                v-model="cmdListSearch"
+                                label="Search"
+                                outlined
+                                hide-details
+                                clearable
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
                 </v-card-title>
-                <v-card-text style="height: 90vh">
-                    <v-list>
-                        <v-list-item
-                            v-for="cmd of helplistFiltered"
-                            :key="cmd.commandLow"
-                            class="minHeight36"
-                        >
-                            <span
-                                class="blue--text font-weight-bold mr-2 cursor-pointer"
-                                @click="$emit('onCommand', cmd.command); isOpen = false">
-                                {{ cmd.command }}:
-                            </span>
-                            <span>{{ cmd.description }}</span>
-                        </v-list-item>
-                    </v-list>
-                </v-card-text>
-<!--                <v-card-actions class="justify-end">
-                    <v-btn
-                        text
-                        @click="dialog.value = false"
-                    >
-                        Schließen
-                    </v-btn>
-                </v-card-actions>-->
+                <v-divider></v-divider>
+                <perfect-scrollbar :class="'command-help-content '+(isMobile ? '' : 'height300')">
+                    <v-card-text class="pt-0">
+                        <v-row>
+                            <v-col>
+                                <v-list>
+                                    <v-list-item
+                                        v-for="cmd of helplistFiltered"
+                                        :key="cmd.commandLow"
+                                        class="px-0"
+                                        two-line>
+                                        <v-list-item-content class="px-0">
+                                            <v-list-item-title class="blue--text font-weight-bold cursor-pointer" @click="$emit('onCommand', cmd.command); isOpen = false">{{ cmd.command }}</v-list-item-title>
+                                            <v-list-item-subtitle class="text-wrap">{{ cmd.description }}</v-list-item-subtitle>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                </v-list>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </perfect-scrollbar>
             </v-card>
         </template>
     </v-dialog>
@@ -91,6 +95,12 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .command-help-content {
+        overflow-x: hidden;
 
+        &.height300 {
+            height: 300px;
+        }
+    }
 </style>
