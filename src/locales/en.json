@@ -2,25 +2,52 @@
 	"title": "English",
 	"App": {
 		"Printers": "Printers",
-		"KlipperControl": "Klipper Control",
-		"Restart": "Restart",
-		"FirmwareRestart": "FIRMWARE Restart",
-		"RestartServices": "Restart Services",
-		"Klipper": "Klipper",
-		"Moonraker": "Moonraker",
-		"PowerDevices": "Power Devices",
-		"HostControl": "Host Control",
-		"Reboot": "Reboot",
-		"Shutdown": "Shutdown",
-		"Updating": "Updating",
-		"Recovering": "Recovering",
-		"done": " done!",
-		"Empty": "Empty",
-		"Close": "Close",
-		"SAVECONFIG": "SAVE CONFIG",
-		"UploadPrint": "Upload & Print",
-		"EmergencyStop": "Emergency Stop",
-		"Uploading": "Uploading"
+		"TopBar": {
+			"SAVE_CONFIG": "SAVE CONFIG",
+			"UploadPrint": "Upload & Print",
+			"EmergencyStop": "Emergency Stop",
+			"Uploading": "Uploading",
+			"UploadOfFileSuccessful": "Upload of {file} successful!",
+			"CannotUploadTheFile": "Cannot upload the file!"
+		},
+		"TopCornerMenu": {
+			"KlipperControl": "Klipper Control",
+			"KlipperRestart": "Restart",
+			"KlipperFirmwareRestart": "FIRMWARE Restart",
+			"RestartServices": "Restart Services",
+			"PowerDevices": "Power Devices",
+			"HostControl": "Host Control",
+			"Reboot": "Reboot",
+			"Shutdown": "Shutdown"
+		},
+		"UpdateDialog": {
+			"Updating": "Updating {software}...",
+			"UpdatingDone": "Updating {software} done!",
+			"Recovering": "Recovering {software}...",
+			"RecoveringDone": "Recovering {software} done!",
+			"Empty": "Empty",
+			"Close": "Close"
+		},
+		"ThrottledStates": {
+			"HeadlineCurrentFlags": "Current Flags",
+			"HeadlinePreviouslyFlags": "Previously Flags",
+			"TitleUnderVoltageDetected": "Under-Voltage Detected",
+			"TitleFrequencyCapped": "Frequency Capped",
+			"TitleCurrentlyThrottled": "Currently Throttled",
+			"TitleTemperatureLimitActive": "Temperature Limit Active",
+			"TitlePreviouslyUnderVolted": "Previously Under-Volted",
+			"TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
+			"TitlePreviouslyThrottled": "Previously Throttled",
+			"TitlePreviouslyTemperatureLimited": "Previously Temperature Limited",
+			"TooltipUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
+			"TooltipFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
+			"TooltipCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
+			"TooltipTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
+			"TooltipPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
+			"TooltipPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
+			"TooltipPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
+			"TooltipPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
+		}
 	},
     "ConnectionDialog": {
         "Connecting": "Connecting to {host}",
@@ -31,7 +58,7 @@
     },
     "SelectPrinterDialog": {
         "Connecting": "Connecting to {host}",
-        "Failed": "Connection failed",
+        "ConnectionFailed": "Connection failed",
         "CannotConnectTo": "Cannot connect to {host}.",
         "TryAgain": "try again",
         "SelectPrinter": "Select Printer",
@@ -59,7 +86,14 @@
 		"Interface": "Interface"
 	},
 	"Editor": {
-		"Minimap": "Show minimap"
+		"Minimap": "Show minimap",
+		"Downloading": "Downloading",
+		"Uploading": "Uploading",
+		"ConfigReference": "Config Reference",
+		"SaveRestart": "Save & Restart",
+		"SaveClose": "Save & close",
+		"SuccessfullySaved": "{filename} successfully saved.",
+		"FailedSave": "{filename} could not be uploaded!"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -91,7 +125,6 @@
 		"PleaseEnterANewDirectoryName": "Please enter a new directory name: ",
 		"RenameFile": "Rename File",
 		"EditFile": "Edit File",
-		"SaveClose": "Save & close",
 		"Name": "Name",
 		"Cancel": "Cancel",
 		"Create": "Create",
@@ -108,7 +141,12 @@
 		"FilamentWeight": "Filament Weight",
 		"PrintTime": "Print Time",
 		"Slicer": "Slicer",
-        "Downloading": "Downloading"
+        "Downloading": "Downloading",
+		"SuccessfullyUploaded": "Upload of {filename} successful!",
+		"SuccessfullyRenamed": "Successfully renamed {filename}.",
+		"SuccessfullyMoved": "Successfully moved {filename}.",
+		"SuccessfullyCreated": "Successfully created {filename}.",
+		"SuccessfullyDeleted": "Successfully deleted {filename}."
 	},
 	"Console": {
 		"send": "send",
@@ -118,10 +156,12 @@
 		"HideTemperatures": "Hide temperatures",
 		"CustomFilters": "Custom filters",
 		"Date": "Date",
-		"Event": "Event"
+		"Event": "Event",
+		"CommandList": "Command list"
 	},
 	"Heightmap": {
 		"Heightmap": "Heightmap",
+		"NoProfile": "No profile available",
 		"TitleHomeAll": "Home all",
 		"Clear": "clear",
 		"TitleClear": "Clear bed mesh",
@@ -130,7 +170,11 @@
 		"NoBedMeshHasBeenLoadedYet": "No bed_mesh has been loaded yet.",
 		"Probed": "Probed",
 		"Mesh": "Mesh",
+		"Flat": "Flat",
+		"Wireframe": "Wireframe",
 		"Scale": "Scale",
+
+
 		"Profiles": "Profiles",
 		"Deleted": "deleted",
 		"RenameBedMeshProfile": "Rename Bed Mesh Profile",
@@ -186,7 +230,8 @@
 		"Slicer": "Slicer",
 		"SlicerVersion": "Slicer Version",
 		"HistoryFilamentUsage": "Filament",
-		"HistoryPrinttimeAVG": "Prints"
+		"HistoryPrinttimeAVG": "Prints",
+		"ShowStatusName": "Show \"{name}\" ({count})"
 	},
 	"Panels": {
 		"ControlPanel": {
@@ -212,7 +257,8 @@
 			"Macros": "Macros"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": "Off"
+			"WebcamOff": "Off",
+			"SwitchToPrinter": "Switch to Printer"
 		},
 		"KlippyStatePanel": {
 			"KlippyState": "Klippy-State",
@@ -239,18 +285,19 @@
 			"PrintSettings": "Print Settings",
 			"Miscellaneous": "Miscellaneous",
 			"SpeedFactor": "Speed factor",
-			"ExtrusionFactor": "Extrusion factor"
+			"ExtrusionFactor": "Extrusion factor",
+			"RunoutSensor": {
+				"Disabled": "disabled",
+				"Detected": "detected",
+				"Empty": "Empty"
+			}
 		},
-		"MoonrakerFailedComponentsPanel": {
-			"MoonrakerFailedComponents": "Moonraker Failed Components",
+		"MoonrakerStatePanel": {
+			"MoonrakerWarnings": "Moonraker Warnings",
 			"MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
 			"FollowingPluginHasAnError": "Following plugin has an error:",
 			"DownloadLog": "Download Log"
 		},
-        "MoonrakerWarningsPanel": {
-            "MoonrakerWarnings": "Moonraker Warnings",
-            "DownloadLog": "Download Log"
-        },
 		"PowerControlPanel": {
 			"PowerControl": "Power Control",
 			"Error": "Error",
@@ -299,13 +346,15 @@
 			"Min": "min",
 			"Max": "max",
 			"Avg": "Avg",
-			"UNKNOWN": "UNKNOWN",
-            "CurrentTemperature": "current temperature",
-            "TargetTemperature": "target temperature",
-            "PwmPower": "PWM-power",
 			"ShowNameInChart": "Show {name} in chart",
 			"ShowNameInList": "Show {name} in list",
-			"TemperaturesInChart": "Temperature [°C]"
+			"TemperaturesInChart": "Temperature [°C]",
+			"Dataset": {
+				"Temperature": "current temperature",
+				"Target": "target temperature",
+				"Power": "PWM-power",
+				"Speed": "PWM-speed"
+			}
 		},
 		"WebcamPanel": {
 			"Webcam": "Webcam",
@@ -314,17 +363,21 @@
 			"UnknownWebcamService": "Unknown Webcam Service"
 		},
 		"ZOffsetPanel": {
-			"ZBabyStepping": "Z Baby Stepping",
+			"ZOffset": "Z-Offset",
 			"CurrentOffset": "Current Offset"
 		}
 	},
-	"Settings": {
+	"Machine": {
 		"ConfigFilesPanel": {
 			"ConfigFiles": "Config Files",
 			"SetupCurrentList": "Setup current list",
 			"HiddenFiles": "Hidden files",
 			"CurrentPath": "Current path",
 			"Files": "Files",
+			"FreeDisk": "Free disk",
+			"Used": "Used",
+			"Free": "Free",
+			"Total": "Total",
 			"AllFiles": "All",
 			"Empty": "Empty",
 			"ShowFile": "Show file",
@@ -333,57 +386,20 @@
 			"Rename": "Rename",
 			"Delete": "Delete",
 			"PleaseStandBy": "Please stand by",
-			"ConfigReference": "Config Reference",
-			"SaveClose": "Save & close",
-			"SaveRestart": "Save & restart",
 			"RenameFile": "Rename File",
 			"Name": "Name",
+			"UploadFile": "Upload File",
 			"Cancel": "Cancel",
 			"Create": "Create",
 			"CreateFile": "Create File",
+			"RefreshDirectory": "Refresh Directory",
 			"CreateDirectory": "Create Directory",
 			"RenameDirectory": "Rename Directory",
-            "DeleteDirectory": "Delete Directory",
-            "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
+			"DeleteDirectory": "Delete Directory",
+			"DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
 			"Uploading": "Uploading",
 			"Filesize": "Filesize",
 			"LastModified": "Last modified"
-		},
-		"ConsolePanel": {
-			"Console": "Console",
-			"HideTemperatures": "Hide temperatures",
-			"CustomFilters": "Custom filter",
-            "CreateHeadline": "Create filter",
-            "Name": "Name",
-            "Regex": "Regex",
-            "StoreButton": "Store filter",
-            "UpdateButton": "Update filter",
-            "EditHeadline": "Edit filter",
-			"AddFilter": "add filter",
-			"Rules": "Rules"
-		},
-		"ControlPanel": {
-			"Control": "Control",
-			"SpeedXY": "Speed XY",
-			"SpeedZ": "Speed Z",
-			"EnableCross": "Enable movement cross",
-			"MoveDistancesInMm": "Move distances in mm",
-			"InvertXMovement": "Invert X movement",
-			"InvertYMovement": "Invert Y movement",
-			"InvertZMovement": "Invert Z movement",
-			"MoveDistancesXYInMm": "Move distances XY in mm",
-			"MoveDistancesZInMm": "Move distances Z in mm",
-			"MoveDistancesEInMm": "Move distances E in mm",
-			"Extruder": "Extruder",
-			"SpeedEInMms": "Speed E in mm/s"
-		},
-		"DashboardPanel": {
-			"Dashboard": "Dashboard",
-			"Webcam": "Webcam",
-			"Tempchart": "Tempchart",
-			"Console": "Console",
-			"ChartUpdateInterval": "Chart update interval",
-			"DatapointInterval": "Datapoint interval"
 		},
 		"EndstopPanel": {
 			"Endstops": "Endstops",
@@ -391,18 +407,6 @@
 			"TRIGGERED": "TRIGGERED",
 			"open": "OPEN",
 			"EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status."
-		},
-		"GeneralPanel": {
-			"General": "General",
-			"PrinterName": "Printer Name",
-			"Language": "Language",
-			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
-			"DisplayZOffset": "Display Z-Offset-Panel",
-			"ShowCANCEL_PRINT": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-			"ShowZOffset": "Shows the Z-Offset panel permanently.",
-			"FactoryReset": "Factory reset",
-			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
-			"ResetMainsail": "reset mainsail"
 		},
 		"LimitsPanel": {
 			"MachineLimits": "Machine Limits",
@@ -413,34 +417,6 @@
 		},
 		"LogfilesPanel": {
 			"Logfiles": "Logfiles"
-		},
-		"MacrosPanel": {
-			"Macros": "Macros",
-			"NOMacros": "No macros found..."
-		},
-		"PresetsPanel": {
-			"PreheatPresets": "Preheat Presets",
-			"Cooldown": "Cooldown",
-			"AddPreset": "add preset",
-			"CreateHeadline": "Create Preset",
-            "EditHeadline": "Edit Preset",
-			"Name": "Name",
-			"CustomGCode": "Custom G-Code",
-			"PresetInfo": "You have to set minimum a target temperature or a custom gcode.",
-			"StoreButton": "Store preset",
-			"UpdateButton": "Update preset",
-			"EditCooldown": "Edit Cooldown",
-			"UpdateCooldown": "Update Cooldown"
-		},
-		"RemotePrintersPanel": {
-			"RemotePrinters": "Remote Printers",
-			"AddPrinter": "Add Printer",
-			"EditPrinter": "Edit Printer",
-			"UpdatePrinter": "Update Printer"
-		},
-		"RunoutPanel": {
-			"Detected": "detected",
-			"Empty": "Empty"
 		},
 		"UpdatePanel": {
 			"UpdateManager": "Update Manager",
@@ -459,8 +435,40 @@
 			"Unknown": "unknown",
 			"ERROR": "ERROR"
 		},
-		"WebcamPanel": {
+		"SystemPanel": {
+			"SystemLoad": "System Loads",
+			"Version": "Version",
+			"Os": "OS",
+			"Load": "Load",
+			"Awake": "Awake",
+			"Frequency": "Freq",
+			"Memory": "Mem",
+			"Constants": "Constants",
+			"LastStats": "Last stats",
+			"HostDetails": "Host details"
+		}
+	},
+	"Settings": {
+		"InterfaceSettings": "Interface Settings",
+		"Cancel": "Cancel",
+		"Edit": "Edit",
+		"GeneralTab": {
+			"General": "General",
+			"PrinterName": "Printer Name",
+			"Language": "Language",
+			"BoolBigThumbnail": "Large thumbnail",
+			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
+			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
+			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
+			"DisplayZOffset": "Show Z-Offset-Panel",
+			"DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
+			"FactoryReset": "Factory reset",
+			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
+			"ResetMainsail": "reset mainsail"
+		},
+		"WebcamTab": {
 			"Webcams": "Webcams",
+			"ShowOnDashboard": "Show on dashboard",
 			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
@@ -492,6 +500,66 @@
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
 			"FlipVertically": "Flip webcam vertically"
+		},
+		"MacrosTab": {
+			"Macros": "Macros",
+			"NOMacros": "No macros found..."
+		},
+		"ControlTab": {
+			"Control": "Control",
+			"SpeedXY": "Speed XY",
+			"SpeedZ": "Speed Z",
+			"EnableCross": "Enable movement cross",
+			"MoveDistancesInMm": "Move distances in mm",
+			"InvertXMovement": "Invert X movement",
+			"InvertYMovement": "Invert Y movement",
+			"InvertZMovement": "Invert Z movement",
+			"MoveDistancesXYInMm": "Move distances XY in mm",
+			"MoveDistancesZInMm": "Move distances Z in mm",
+			"MoveDistancesEInMm": "Move distances E in mm",
+			"SpeedEInMms": "Speed E in mm/s"
+		},
+		"ConsoleTab": {
+			"Console": "Console",
+			"ShowOnDashboard": "Show on dashboard",
+			"HideTemperatures": "Hide temperatures",
+			"CustomFilters": "Custom filter",
+			"CreateHeadline": "Create filter",
+			"Name": "Name",
+			"Regex": "Regex",
+			"StoreButton": "Store filter",
+			"UpdateButton": "Update filter",
+			"EditHeadline": "Edit filter",
+			"AddFilter": "add filter",
+			"Rules": "Rules"
+		},
+		"PresetsTab": {
+			"PreheatPresets": "Preheat Presets",
+			"Cooldown": "Cooldown",
+			"AddPreset": "add preset",
+			"CreateHeadline": "Create Preset",
+			"EditHeadline": "Edit Preset",
+			"Name": "Name",
+			"CustomGCode": "Custom G-Code",
+			"PresetInfo": "You have to set minimum a target temperature or a custom gcode.",
+			"StoreButton": "Store preset",
+			"UpdateButton": "Update preset",
+			"EditCooldown": "Edit Cooldown",
+			"UpdateCooldown": "Update Cooldown"
+		},
+		"RemotePrintersTab": {
+			"RemotePrinters": "Remote Printers",
+			"AddPrinter": "Add Printer",
+			"EditPrinter": "Edit Printer",
+			"UpdatePrinter": "Update Printer",
+			"Hostname": "Hostname",
+			"Port": "Port"
+		},
+		"ThemeTab": {
+			"Theme": "Theme",
+			"Logo": "Logo",
+			"Primary": "Primary",
+			"ResetTheme": "reset Theme"
 		}
 	}
 }
