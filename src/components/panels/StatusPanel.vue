@@ -239,7 +239,7 @@
 
 <script>
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import VueLoadImage from "vue-load-image"
 
@@ -517,40 +517,37 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
             const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
 
-            this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
+            if (timeDiff < 5000) {
+                this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
 
-            if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
+                if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
+            }
         }
 
         this.maxFlow.lastExtruderPos = newExtruderPos
         this.maxFlow.lastTime = new Date().getTime()
     }
 
+    created() {
+        this.maxFlow.intervalTimer = setInterval(() => {
+            this.calcMaxFlow()
+        }, 3000)
+    }
 
-
-}
-
-    /*
-
-    export default {
-        created() {
-            this.maxFlow.intervalTimer = setInterval(() => {
-                this.calcMaxFlow()
-            }, 3000)
-        },
-        beforeDestroy() {
-            if (this.maxFlow.intervalTimer) clearInterval(this.maxFlow.intervalTimer)
-        },
-        watch: {
-            printer_state: {
-                handler(newVal) {
-                    if (['complete', 'cancel', 'error', 'standby'].includes(newVal)) {
-                        this.maxFlow.lastValue = 0
-                        this.maxFlow.maxValue = 0
-                        this.maxFlow.lastTime = 0
-                    }
-                }
-            }
+    beforeDestroy() {
+        if (this.maxFlow.intervalTimer) {
+            clearInterval(this.maxFlow.intervalTimer)
+            this.maxFlow.intervalTimer = null
         }
-    }*/
+    }
+
+    @Watch('printerState')
+    printerStateChange(newVal) {
+        if (['complete', 'cancel', 'error', 'standby'].includes(newVal)) {
+            this.maxFlow.lastValue = 0
+            this.maxFlow.maxValue = 0
+            this.maxFlow.lastTime = 0
+        }
+    }
+}
 </script>
