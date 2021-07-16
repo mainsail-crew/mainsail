@@ -1,4 +1,4 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .btnHomeAxis {
     width: 36px;
     min-width: 36px !important;
@@ -22,7 +22,7 @@
 
 <template>
     <div>
-        <v-card class="mb-4" v-if="['standby', 'paused', 'complete', 'error'].includes(printer_state)">
+        <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Controls') }}</span>
@@ -257,23 +257,23 @@
                     </v-row>
                     <v-row class="">
                         <v-col class="col text-center pt-0">
-                            <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
-                            <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!this['printer/getExtrudePossible']"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
+                            <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
+                            <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
                         </v-col>
                     </v-row>
                 </template>
             </v-container>
         </v-card>
-        <v-card class="mt-6" v-if="this['printer/getMacros'].length > 0">
+        <v-card class="mb-6" v-if="klipperReadyForGui && macros.length > 0">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Panels.ControlPanel.Macros') }}</span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-container>
-                <v-row no-gutters v-if="this['printer/getMacros'].length > 0">
+                <v-row no-gutters v-if="macros.length">
                     <v-col class="text-center mr-fix-2 mb-fix-2">
-                        <v-btn v-for="(macro, index) in this['printer/getMacros']"
+                        <v-btn v-for="(macro, index) in macros"
                                :key="index+99"
                                small
                                color="primary"
@@ -287,225 +287,257 @@
     </div>
 </template>
 
-<script>
-    import { mapState, mapGetters } from 'vuex'
-    import Vue from "vue";
+<script lang="ts">
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "../mixins/base";
 
-    export default {
-        components: {
+@Component
+export default class ControlPanel extends Mixins(BaseMixin) {
+    private crossWidth = 40
+    private crossHeight = 40
+    private homeCols = 6
 
-        },
-        data() {
-            return {
-                crossWidth: 40,
-                crossHeight: 40,
-                homeCols: 6
-            }
-        },
-        computed: {
-            ...mapState({
-                homedAxes: state => state.printer.toolhead.homed_axes,
-                config: state => state.printer.configfile.config,
-                loadings: state => state.socket.loadings,
-                printer_state: state => state.printer.print_stats.state,
-                extruder: state => state.printer.extruder,
-                absolute_coordinates: state => state.printer.gcode_move.absolute_coordinates,
-
-                feedamounts: state => state.gui.dashboard.extruder.feedamounts,
-                feedrates: state => state.gui.dashboard.extruder.feedrates,
-
-                feedrateXY: state => state.gui.dashboard.control.feedrateXY,
-                stepsXY: state => state.gui.dashboard.control.stepsXY,
-                feedrateZ: state => state.gui.dashboard.control.feedrateZ,
-                stepsZ: state => state.gui.dashboard.control.stepsZ,
-                stepsAll: state => state.gui.dashboard.control.stepsAll,
-                useCross: state => state.gui.dashboard.control.useCross,
-                reverseZ: state => state.gui.dashboard.control.reverseZ,
-            }),
-            ...mapGetters([
-                'printer/getMacros',
-                'printer/getExtrudePossible',
-            ]),
-            reverseX: {
-                get() {
-                    return this.$store.state.gui.dashboard.control.reverseX;
-                },
-                set(reverseX) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseX } } })
-                }
-            },
-            reverseY: {
-                get() {
-                    return this.$store.state.gui.dashboard.control.reverseY;
-                },
-                set(reverseY) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseY } } })
-                }
-            },
-            reverseZ: {
-                get() {
-                    return this.$store.state.gui.dashboard.control.reverseZ;
-                },
-                set(reverseZ) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { reverseZ } } })
-                }
-            },
-            useCross: {
-                get() {
-                    return this.$store.state.gui.dashboard.control.useCross;
-                },
-                set(useCross) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { useCross } } })
-                }
-            },
-            selectedCrossStep: {
-                get() {
-                    return this.$store.state.gui.dashboard.control.selectedCrossStep;
-                },
-                set(selectedCrossStep) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { control: { selectedCrossStep } } })
-                }
-            },
-            stepsXYsorted() {
-                return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return b-a })
-            },
-            stepsXYsortedReverse() {
-                return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return a-b })
-            },
-            stepsZsorted() {
-                return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return b-a })
-            },
-            stepsZsortedReverse() {
-                return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return a-b })
-            },
-            steps() {
-                return Array.from(new Set([
-                    ...(this.stepsAll ?? [])
-                ])).entries().sort((a, b) => b-a)
-            },
-            stepsReversed() {
-                return Array.from(new Set([
-                    ...(this.stepsAll ?? []),
-                ])).sort((a, b) => a-b)
-            },
-            existsExtruder() {
-                return 'extruder' in this.$store.state.printer
-            },
-            feedamountsSorted() {
-                return [...this.feedamounts].sort((a,b) => { return b-a })
-            },
-            feedratesSorted () {
-                return [...this.feedrates].sort((a,b) => { return b-a })
-            },
-            currentFeedAmount: {
-                get() {
-                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedamount)
-                },
-                set(newVal) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedamount: newVal } } })
-                }
-            },
-            currentFeedRate: {
-                get() {
-                    return parseFloat(this.$store.state.gui.dashboard.extruder.feedrate)
-                },
-                set(newVal) {
-                    return this.$store.dispatch('gui/setSettings', { dashboard: { extruder: { feedrate: newVal } } })
-                }
-            },
-            colorQuadGantryLevel() {
-                const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
-
-                return status ? "primary" : "warning"
-            },
-            colorZTilt() {
-                const status = this.$store.state.printer.z_tilt?.applied ?? true
-
-                return status ? "primary" : "warning"
-            }
-
-        },
-        created() {
-            window.addEventListener('resize', this.onResize);
-        },
-        mounted() {
-            if (window.screen.width < 330) {
-                this.homeCols = 12;
-            }
-        },
-        destroyed() {
-            window.removeEventListener('resize', this.onResize);
-        },
-        methods: {
-            onResize() {
-                this.homeCols = window.screen.width < 360 ? 12 : 6;
-            },
-            doHome() {
-                this.$store.commit('server/addEvent', { message: "G28", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'homeAll' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28" }, "socket/removeLoading", { name: 'homeAll' });
-            },
-            doHomeX() {
-                this.$store.commit('server/addEvent', { message: "G28 X", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'homeX' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 X" }, "socket/removeLoading", { name: 'homeX' });
-            },
-            doHomeY() {
-                this.$store.commit('server/addEvent', { message: "G28 Y", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'homeY' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 Y" }, "socket/removeLoading", { name: 'homeY' });
-            },
-            doHomeZ() {
-                this.$store.commit('server/addEvent', { message: "G28 Z", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'homeZ' });
-                this.$socket.sendObj('printer.gcode.script', { script: "G28 Z" }, "socket/removeLoading", { name: 'homeZ' });
-            },
-            doQGL() {
-                this.$store.commit('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'qgl' });
-                this.$socket.sendObj('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, "socket/removeLoading", { name: 'qgl' });
-            },
-            doZtilt() {
-                this.$store.commit('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'zTilt' });
-                this.$socket.sendObj('printer.gcode.script', { script: "Z_TILT_ADJUST" }, "socket/removeLoading", { name: 'zTilt' });
-            },
-            doSendMove(gcode, feedrate) {
-                if (this.absolute_coordinates) {
-                    gcode = "G91" + "\n" +
-                        "G1 " + gcode + " F"+feedrate*60 + "\n" +
-                        "G90"
-                } else gcode = "G1 " + gcode + " F"+feedrate*60
-
-                this.doSend(gcode);
-            },
-            doSend(gcode) {
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "server/getGcodeRespond");
-            },
-            doSendMacro(gcode) {
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'macro_'+gcode });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'macro_'+gcode });
-            },
-            setFeedAmount(value) {
-                this.currentFeedAmount = value;
-            },
-            setFeedrate(value) {
-                this.currentFeedRate = value;
-            },
-            sendRetract() {
-                let gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'btnRetract' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnRetract' });
-            },
-            sendDetract() {
-                let gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60);
-                this.$store.commit('server/addEvent', { message: gcode, type: 'command' });
-                this.$store.commit('socket/addLoading', { name: 'btnDetract' });
-                Vue.prototype.$socket.sendObj('printer.gcode.script', { script: gcode }, "socket/removeLoading", { name: 'btnDetract' });
-            },
-        },
+    get homedAxes(): string {
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ""
     }
+
+    get config() {
+        return this.$store.state.printer?.configfile?.settings ?? {}
+    }
+
+    get absolute_coordinates() {
+        return this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
+    }
+
+    get feedamounts() {
+        return this.$store.state.gui.dashboard?.extruder?.feedamounts ?? []
+    }
+
+    get feedrates() {
+        return this.$store.state.gui.dashboard?.extruder?.feedrates ?? []
+    }
+
+    get feedrateXY() {
+        return this.$store.state.gui.dashboard?.control?.feedrateXY ?? 100
+    }
+
+    get stepsXY() {
+        return this.$store.state.gui.dashboard?.control?.stepsXY ?? []
+    }
+
+    get stepsXYsorted() {
+        return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return b-a })
+    }
+
+    get stepsXYsortedReverse() {
+        return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return a-b })
+    }
+
+    get feedrateZ() {
+        return this.$store.state.gui.dashboard?.control?.feedrateZ ?? 10
+    }
+
+    get stepsZ() {
+        return this.$store.state.gui.dashboard?.control?.stepsZ ?? []
+    }
+
+    get stepsZsorted() {
+        return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return b-a })
+    }
+
+    get stepsZsortedReverse() {
+        return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return a-b })
+    }
+
+    get stepsAll() {
+        return this.$store.state.gui.dashboard?.control?.stepsAll ?? []
+    }
+
+    get steps() {
+        return Array.from(new Set([
+            ...(this.stepsAll ?? [])
+        ])).sort((a, b) => b-a)
+    }
+
+    get stepsReversed() {
+        return Array.from(new Set([
+            ...(this.stepsAll ?? []),
+        ])).sort((a, b) => a-b)
+    }
+
+    get reverseX() {
+        return this.$store.state.gui.dashboard.control.reverseX
+    }
+
+    set reverseX(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.reverseX", value: newVal })
+    }
+
+    get reverseY() {
+        return this.$store.state.gui.dashboard.control.reverseY
+    }
+
+    set reverseY(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.reverseY", value: newVal })
+    }
+
+    get reverseZ() {
+        return this.$store.state.gui.dashboard.control.reverseZ
+    }
+
+    set reverseZ(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.reverseZ", value: newVal })
+    }
+
+    get useCross() {
+        return this.$store.state.gui.dashboard.control.useCross
+    }
+
+    set useCross(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.useCross", value: newVal })
+    }
+
+    get selectedCrossStep() {
+        return this.$store.state.gui.dashboard.control.selectedCrossStep
+    }
+
+    set selectedCrossStep(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.selectedCrossStep", value: newVal })
+    }
+
+    get existsExtruder() {
+        return 'extruder' in this.$store.state.printer
+    }
+
+    get feedamountsSorted() {
+        return [...this.feedamounts].sort((a,b) => { return b-a })
+    }
+
+    get feedratesSorted () {
+        return [...this.feedrates].sort((a,b) => { return b-a })
+    }
+    get currentFeedAmount() {
+        return parseFloat(this.$store.state.gui.dashboard.extruder.feedamount)
+    }
+
+    set currentFeedAmount(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.extruder.feedamount", value: newVal })
+    }
+
+    get currentFeedRate() {
+        return parseFloat(this.$store.state.gui.dashboard.extruder.feedrate)
+    }
+
+    set currentFeedRate(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: "dashboard.extruder.feedrate", value: newVal })
+    }
+
+    get colorQuadGantryLevel() {
+        const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
+
+        return status ? "primary" : "warning"
+    }
+
+    get colorZTilt() {
+        const status = this.$store.state.printer.z_tilt?.applied ?? true
+
+        return status ? "primary" : "warning"
+    }
+
+    get macros() {
+        return this.$store.getters['printer/getMacros']
+    }
+
+    get boolExtrudePossible() {
+        return this.$store.getters['printer/getExtrudePossible']
+    }
+
+    doHome() {
+        this.$store.dispatch('server/addEvent', { message: "G28", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
+    }
+    
+    doHomeX() {
+        this.$store.dispatch('server/addEvent', { message: "G28 X", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 X" }, { loading: 'homeX' })
+    }
+    
+    doHomeY() {
+        this.$store.dispatch('server/addEvent', { message: "G28 Y", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 Y" }, { loading: 'homeY' })
+    }
+
+    doHomeZ() {
+        this.$store.dispatch('server/addEvent', { message: "G28 Z", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "G28 Z" }, { loading: 'homeZ' })
+    }
+
+    doQGL() {
+        this.$store.dispatch('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, { loading: 'qgl' })
+    }
+
+    doZtilt() {
+        this.$store.dispatch('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "Z_TILT_ADJUST" }, { loading: 'zTilt' })
+    }
+
+    doSendMove(gcode: string, feedrate: number) {
+        if (this.absolute_coordinates) {
+            gcode = "G91" + "\n" +
+                "G1 " + gcode + " F"+feedrate*60 + "\n" +
+                "G90"
+        } else gcode = "G1 " + gcode + " F"+feedrate*60
+
+        this.doSend(gcode)
+    }
+
+    doSend(gcode: string) {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
+    }
+
+    doSendMacro(gcode: string) {
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_'+gcode })
+    }
+
+    setFeedAmount(value: number) {
+        this.currentFeedAmount = value
+    }
+
+    setFeedrate(value: number) {
+        this.currentFeedRate = value
+    }
+
+    sendRetract() {
+        const gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
+    }
+
+    sendDetract() {
+        const gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
+    }
+
+    onResize() {
+        this.homeCols = window.screen.width < 360 ? 12 : 6;
+    }
+
+    created() {
+        window.addEventListener('resize', this.onResize);
+    }
+
+    mounted() {
+        if (window.screen.width < 330) {
+            this.homeCols = 12;
+        }
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.onResize);
+    }
+}
 </script>

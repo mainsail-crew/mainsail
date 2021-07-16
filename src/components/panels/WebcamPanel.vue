@@ -1,11 +1,9 @@
-<style>
-    .webcamImage {
-        width: 100%;
-    }
+<style scoped>
+
 </style>
 
 <template>
-    <v-card>
+    <v-card class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">
@@ -31,7 +29,7 @@
                                 <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
+                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.name" link @click="currentCamName = webcam.name">
                             <v-list-item-icon class="mr-0">
                                 <v-icon small>{{ webcam.icon }}</v-icon>
                             </v-list-item-icon>
@@ -70,61 +68,60 @@
     </v-card>
 </template>
 
-<script>
-    import Mjpegstreamer from "@/components/webcams/Mjpegstreamer"
-    import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive"
-    import Ipstreamer from "@/components/webcams/Ipstreamer"
-    import Uv4lMjpeg from "@/components/webcams/Uv4lMjpeg"
-    import WebcamGrid from "@/components/webcams/WebcamGrid"
+<script lang="ts">
+import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
+import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue"
+import Ipstreamer from "@/components/webcams/Ipstreamer.vue"
+import Uv4lMjpeg from "@/components/webcams/Uv4lMjpeg.vue"
+import WebcamGrid from "@/components/webcams/WebcamGrid.vue"
+import Component from "vue-class-component";
+import {Mixins} from "vue-property-decorator";
+import BaseMixin from "../mixins/base";
+import {GuiStateWebcam} from "@/store/gui/types";
 
-    export default {
-        components: {
-            'webcam-mjpegstreamer': Mjpegstreamer,
-            'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-            'webcam-ipstreamer': Ipstreamer,
-            'webcam-uv4l-mjpeg': Uv4lMjpeg,
-            'webcam-grid': WebcamGrid,
-        },
-        data: function() {
-            return {
-
-            };
-        },
-        computed: {
-            currentCamName: {
-                get() {
-                    let currentCamName = this.$store.state.gui.webcam.selectedCam
-                    if (currentCamName !== undefined && this.webcams.findIndex(webcam => webcam.name === currentCamName) !== -1)
-                        return currentCamName
-
-                    if (currentCamName !== undefined && Array.isArray(this.webcams) && this.webcams.length === 1)
-                        return this.webcams[0].name
-
-                    return "all"
-                },
-                set(newVal) {
-                    return this.$store.dispatch('gui/setSettings', { webcam: { selectedCam: newVal } })
-                }
-            },
-            currentCam() {
-                if (this.currentCamName === 'all') {
-                    return {
-                        name: this.$t('Panels.WebcamPanel.All'),
-                        service: "grid",
-                        icon: "mdi-view-grid",
-                    }
-                } else {
-                    const currentCam = this.webcams.findIndex(webcam => webcam.name === this.currentCamName)
-                    if (currentCam !== -1) return this.webcams[currentCam]
-                }
-
-                return {}
-            },
-            webcams: {
-                get() {
-                    return this.$store.getters["gui/getWebcams"]
-                }
-            },
-        }
+@Component({
+    components: {
+        'webcam-mjpegstreamer': Mjpegstreamer,
+        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
+        'webcam-ipstreamer': Ipstreamer,
+        'webcam-uv4l-mjpeg': Uv4lMjpeg,
+        'webcam-grid': WebcamGrid,
     }
+})
+export default class WebcamPanel extends Mixins(BaseMixin) {
+
+    get webcams(): GuiStateWebcam[] {
+        return this.$store.getters["gui/getWebcams"]
+    }
+
+    get currentCamName(): string {
+        let currentCamName = this.$store.state.gui.webcam.selectedCam
+        if (currentCamName !== undefined && this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === currentCamName) !== -1)
+            return currentCamName
+
+        if (currentCamName !== undefined && Array.isArray(this.webcams) && this.webcams.length === 1)
+            return this.webcams[0].name
+
+        return "all"
+    }
+
+    set currentCamName(newVal: string) {
+        this.$store.dispatch('gui/saveSetting', { name: "webcam.selectedCam", value: newVal })
+    }
+
+    get currentCam(): any {
+        if (this.currentCamName === 'all') {
+            return {
+                name: this.$t('Panels.WebcamPanel.All'),
+                service: "grid",
+                icon: "mdi-view-grid",
+            }
+        } else {
+            const currentCam = this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === this.currentCamName)
+            if (currentCam !== -1) return this.webcams[currentCam]
+        }
+
+        return {}
+    }
+}
 </script>

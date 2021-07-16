@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 
 </style>
 
@@ -69,92 +69,68 @@
         </v-row>
     </div>
 </template>
-<script>
-    import HistoryAllPrintStatus from "@/components/charts/HistoryAllPrintStatus"
-    import HistoryFilamentUsage from "@/components/charts/HistoryFilamentUsage"
-    import HistoryPrinttimeAvg from "@/components/charts/HistoryPrinttimeAvg"
-    import HistoryListPanel from "@/components/panels/HistoryListPanel"
+<script lang="ts">
 
-    export default {
-        name: "history",
-        components: {
-            HistoryAllPrintStatus,
-            HistoryFilamentUsage,
-            HistoryPrinttimeAvg,
-            HistoryListPanel
-        },
-        data () {
-            return {
 
-            }
-        },
-        computed: {
-            totalPrintTime: {
-                get() {
-                    return 'total_print_time' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_print_time : 0
-                }
-            },
-            longestPrintTime: {
-                get() {
-                    return 'longest_print' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.longest_print : 0
-                }
-            },
-            avgPrintTime: {
-                get() {
-                    if (this.totalJobsCount > 0 && this.totalPrintTime > 0) return Math.round(this.totalPrintTime / this.totalJobsCount)
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import HistoryAllPrintStatus from "@/components/charts/HistoryAllPrintStatus.vue";
+import HistoryPrinttimeAvg from "@/components/charts/HistoryPrinttimeAvg.vue";
+import HistoryFilamentUsage from "@/components/charts/HistoryFilamentUsage.vue";
+import HistoryListPanel from "@/components/panels/HistoryListPanel.vue";
+@Component({
+    components: {HistoryListPanel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus}
+})
+export default class PageHistory extends Mixins(BaseMixin) {
 
-                    return 0
-                }
-            },
-            totalFilamentUsed: {
-                get() {
-                    return 'total_filament_used' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_filament_used : 0
-                }
-            },
-            totalJobsCount: {
-                get() {
-                    return 'total_jobs' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_jobs : 0
-                }
-            },
-            toggleChart: {
-                get() {
-                    return this.$store.state.gui.history.toggleChartCol3
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { history: { toggleChartCol3: newVal } })
-                }
-            }
-        },
-        methods: {
-            formatPrintTime(totalSeconds) {
-                if (totalSeconds) {
-                    let output = ""
-
-                    // hide days on total print time
-                    /*let days = Math.floor(totalSeconds / (3600 * 24))
-                    if (days) {
-                        totalSeconds %= (3600 * 24)
-                        output += days+"d"
-                    }*/
-
-                    let hours = Math.floor(totalSeconds / 3600)
-                    totalSeconds %= 3600
-                    if (hours) output += " "+hours+"h"
-
-                    let minutes = Math.floor(totalSeconds / 60)
-                    if (minutes) output += " "+minutes+"m"
-
-                    let seconds = totalSeconds % 60
-                    if (seconds) output += " "+seconds.toFixed(0)+"s"
-
-                    return output
-                }
-
-                return '--'
-            },
-        },
-        watch: {
-
-        }
+    get totalPrintTime() {
+        return 'total_print_time' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_print_time : 0
     }
+
+    get longestPrintTime() {
+        return 'longest_print' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.longest_print : 0
+    }
+
+    get avgPrintTime() {
+        if (this.totalJobsCount > 0 && this.totalPrintTime > 0) return Math.round(this.totalPrintTime / this.totalJobsCount)
+
+        return 0
+    }
+
+    get totalFilamentUsed() {
+        return 'total_filament_used' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_filament_used : 0
+    }
+
+    get totalJobsCount() {
+        return 'total_jobs' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_jobs : 0
+    }
+
+    get toggleChart () {
+        return this.$store.state.gui.history.toggleChartCol3
+    }
+
+    set toggleChart(newVal) {
+        this.$store.dispatch("gui/saveSetting", { name: 'history.toggleChartCol3', value: newVal })
+    }
+
+    formatPrintTime(totalSeconds: number) {
+        if (totalSeconds) {
+            let output = ""
+
+            const hours = Math.floor(totalSeconds / 3600)
+            totalSeconds %= 3600
+            if (hours) output += " "+hours+"h"
+
+            const minutes = Math.floor(totalSeconds / 60)
+            if (minutes) output += " "+minutes+"m"
+
+            const seconds = totalSeconds % 60
+            if (seconds) output += " "+seconds.toFixed(0)+"s"
+
+            return output
+        }
+
+        return '--'
+    }
+}
 </script>

@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 
 </style>
 
@@ -11,19 +11,15 @@
         </v-row>
     </div>
 </template>
-<script>
-    export default {
-        name: "webcam",
-        data () {
-            return {
+<script lang="ts">
 
-            }
-        },
-        computed: {
+import {Component, Mixins} from "vue-property-decorator";
+import BaseMixin from "@/components/mixins/base";
+import WebcamPanel from "@/components/panels/WebcamPanel.vue";
+@Component({
+    components: {WebcamPanel}
+})
+export default class PageWebcam extends Mixins(BaseMixin) {
 
-        },
-        methods: {
-
-        }
-    }
+}
 </script>

@@ -1,234 +1,212 @@
-<style>
+<style scoped lang="scss">
 
-    .minievent-table {
-        max-height: 350px;
-        overflow-y: auto;
-    }
-
-    .miniConsole .title-cell {
-        white-space: nowrap;
-        width: 1% !important;
-    }
-
-    .miniConsole.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
-        height: auto;
-    }
-
-    .miniConsole .content-cell {
-        width: 100%;
+    .consoleTable {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 </style>
 
 <template>
-    <v-card>
+    <v-card v-if="socketIsConnected" class="pb-0">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
             </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
-                </template>
-                <v-list>
-                    <v-list-item class="minHeight36">
-                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
-                    </v-list-item>
-                    <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                        <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
         </v-toolbar>
         <v-card-text>
-            <v-container class="py-0 px-0">
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            :label="$t('Panels.MiniconsolePanel.SendCode')"
-                            ref="gcodeCommandField"
-                            solo
-                            hide-details
-                            autocomplete="off"
-                            v-model="gcode"
-                            v-on:keyup.enter="doSend"
-                            v-on:keyup.up="onKeyUp"
-                            v-on:keyup.down="onKeyDown"
-                            :items="items"
-                            v-on:keydown.tab="getAutocomplete"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col class="col-auto align-content-center">
-                        <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
-                            <v-icon class="mr-2">mdi-send</v-icon> {{ $t("Panels.MiniconsolePanel.Send") }}
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-container>
+            <v-row>
+                <v-col>
+                    <v-textarea
+                        v-model="gcode"
+                        :items="items"
+                        :label="$t('Panels.MiniconsolePanel.SendCode')"
+                        solo
+                        class="gcode-command-field"
+                        ref="gcodeCommandField"
+                        autocomplete="off"
+                        no-resize
+                        auto-grow
+                        :rows="rows"
+                        @keydown.enter.prevent.stop="doSend"
+                        @keyup.up="onKeyUp"
+                        @keyup.down="onKeyDown"
+                        @keydown.tab="getAutocomplete"
+                        hide-details
+                        outlined
+                        dense
+                        append-icon="mdi-send"
+                        @click:append="doSend"
+                    ></v-textarea>
+                </v-col>
+                <v-col class="col-auto">
+                    <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
+                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        </template>
+                        <v-list>
+                            <v-list-item class="minHeight36">
+                                <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                            </v-list-item>
+                            <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                                <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+                </v-col>
+            </v-row>
         </v-card-text>
-        <v-card-text class="px-0 py-0 content">
-            <v-divider></v-divider>
-            <v-data-table
-                :headers="headers"
-                :options="options"
-                :items="events"
-                item-key="date"
-                hide-default-footer
-                hide-default-header
-                disable-pagination
-                class="minievent-table miniConsole"
-                :custom-sort="customSort"
-                sort-by="date"
-            >
-                <template #no-data>
-                    <div class="py-2">{{ $t("Panels.MiniconsolePanel.Empty") }}</div>
-                </template>
-
-                <template #item="{ item }">
-                    <tr>
-                        <td class="log-cell title-cell py-2">
-                            {{ formatTime(item.date)}}
-                        </td>
-                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                            <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
-                        </td>
-                    </tr>
-                </template>
-            </v-data-table>
+        <v-card-text class="pa-0">
+            <v-row>
+                <v-col class="pb-0">
+                    <console-table ref="console"
+                                   :events="events"
+                                   :is-mini="true"
+                                   @command-click="commandClick"
+                    />
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
 
-<script>
-import {mapState} from 'vuex'
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
+<script lang="ts">
+import { strLongestEqual, reverseString} from "@/plugins/helpers"
+import { Component, Mixins } from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {CommandHelp, VTextareaType} from "@/store/printer/types";
+import ConsoleTable from "@/components/ConsoleTable.vue";
+import CommandHelpModal from "@/components/CommandHelpModal.vue";
 
-    export default {
-        components: {
+@Component({
+    components: {
+        ConsoleTable,
+        CommandHelpModal
+    }
+})
+export default class MiniconsolePanel extends Mixins(BaseMixin) {
+    $refs!: {
+        gcodeCommandField: VTextareaType,
+        console: ConsoleTable
+    }
 
-        },
-        data: function() {
-            return {
-                headers: [
-                    {
-                        text: 'Date',
-                        value: 'date',
-                        width: '15%',
-                        dateType: 'Date',
-                    },
-                    {
-                        text: 'Event',
-                        sortable: false,
-                        value: 'message',
-                        width: '85%'
-                    },
-                ],
-                options: {
+    private gcode = ""
+    private lastCommands: string[] = []
+    private lastCommandNumber: number | null = null
+    private items = [];
+    private cmdListSearch: string | null = null
 
-                },
-                gcode: "",
-                lastCommands: [
+    get helplist(): CommandHelp[] {
+        return this.$store.state.printer.helplist ?? []
+    }
 
-                ],
-                lastCommandNumber: null,
-                items: [],
-            }
-        },
-        computed: {
-            ...mapState({
-                helplist: state => state.printer.helplist,
-                loadings: state => state.socket.loadings,
-            }),
-            events: {
-                get() {
-                    return this.$store.getters["server/getFilterdEvents"]
-                }
-            },
-            hideWaitTemperatures: {
-                get() {
-                    return this.$store.state.gui.console.hideWaitTemperatures
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
-                }
-            },
-            customFilters() {
-                return this.$store.state.gui.console.customFilters
-            },
-        },
-        methods: {
-            doSend() {
+    get events() {
+        return this.$store.getters["server/getConsoleEvents"].slice(0, 250)
+    }
+
+    get hideWaitTemperatures(): boolean {
+        return this.$store.state.gui.console.hideWaitTemperatures
+    }
+
+    set hideWaitTemperatures(newVal) {
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, { action: 'gui/updateDataFromDB' })
+    }
+
+    get customFilters(): any[] {
+        return this.$store.state.gui.console.customFilters
+    }
+
+    get rows(): number {
+        return this.gcode?.split('\n').length ?? 1;
+    }
+
+    commandClick(msg: string): void {
+        this.gcode = msg;
+    }
+
+    doSend(cmd: KeyboardEvent) {
+        if (!cmd.shiftKey) {
+            if (this.gcode !== "") {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
                 this.lastCommands.push(this.gcode)
                 this.gcode = ""
                 this.lastCommandNumber = null
-            },
-            onKeyUp() {
-                if (this.lastCommandNumber === null && this.lastCommands.length) {
-                    this.lastCommandNumber = this.lastCommands.length - 1;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber > 0) {
-                    this.lastCommandNumber--;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                }
-            },
-            onKeyDown() {
-                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber++;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber = null;
-                    this.gcode = "";
-                }
-            },
-            getAutocomplete(e) {
-                e.preventDefault();
-                if (this.gcode.length) {
-                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
-                    if (commands && commands.length === 1) this.gcode = commands[0].command;
-                    else {
-                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
-                        if (commands && commands.length) {
-                            let output = "";
-                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
-
-                            this.$store.commit('server/addEvent', { message: output, type: 'command' });
-                        }
-                    }
-                }
-                this.$refs.gcodeCommandField.focus();
-            },
-            formatTime(date) {
-                let hours = date.getHours();
-                if (hours < 10) hours = "0"+hours.toString();
-                let minutes = date.getMinutes();
-                if (minutes < 10) minutes = "0"+minutes.toString();
-                let seconds = date.getSeconds();
-                if (seconds < 10) seconds = "0"+seconds.toString();
-
-
-                return hours+":"+minutes+":"+seconds;
-            },
-            colorConsoleMessage: colorConsoleMessage,
-            formatConsoleMessage: formatConsoleMessage,
-            customSort: function(items, index, isDesc) {
-                items.sort((a, b) => {
-                    if (index[0] === 'date') {
-                        if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
-                        else return new Date(a[index]) - new Date(b[index]);
-                    } else {
-                        if(typeof a[index] !== 'undefined'){
-                            if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                            else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                        }
-                    }
-                });
-
-                return items;
-            },
-            toggleFilter(filter) {
-                this.$store.dispatch('gui/updateConsoleFilter',  filter)
-            },
+                setTimeout(() => {
+                    this.$refs.console.$el.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    })
+                }, 20);
+            }
+        } else {
+            this.gcode += '\n';
         }
     }
+
+    onKeyUp(): void {
+        if (this.lastCommandNumber === null && this.lastCommands.length) {
+            this.lastCommandNumber = this.lastCommands.length - 1;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber && this.lastCommandNumber > 0) {
+            this.lastCommandNumber--;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        }
+    }
+
+    onKeyDown(): void {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+            this.lastCommandNumber++;
+            this.gcode = this.lastCommands[this.lastCommandNumber];
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+            this.lastCommandNumber = null;
+            this.gcode = "";
+        }
+    }
+
+    getAutocomplete(e: Event): void {
+        e.preventDefault();
+        if (this.gcode.length) {
+            let check = this.gcode.toLowerCase();
+            const textarea = this.$refs.gcodeCommandField.$refs.input;
+            const sentence = textarea.value;
+            const len = sentence.length;
+            const pos = textarea.selectionStart;
+            const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos);
+            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER;
+            if (this.rows > 1) {
+                check = sentence.substr(currentLinePos, currentEndPos - currentLinePos);
+            }
+            let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+            if (commands?.length === 1) {
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands[0].command);
+                } else {
+                    this.gcode = commands[0].command;
+                }
+            } else if(commands?.length > 1) {
+                let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command);
+                    }, commands[0].command));
+                } else {
+                    this.gcode = commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command);
+                    }, commands[0].command);
+                }
+                if (commands && commands.length) {
+                    let output = "";
+                    commands.forEach(command => output += '<a class="command blue--text font-weight-bold">'+command.command+'</a>: '+command.description+'<br />');
+
+                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
+                }
+            }
+        }
+        this.$refs.gcodeCommandField.focus();
+    }
+
+    toggleFilter(filter: string) {
+        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+}
 </script>
