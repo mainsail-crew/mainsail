@@ -19,6 +19,7 @@ export const getDefaultState = (): GuiState => {
 		},
 		dashboard: {
 			boolTempchart: true,
+			boolBigThumbnail: true,
 			hiddenMacros: [],
 			hiddenTempChart: [],
 			control: {

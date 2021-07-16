@@ -57,17 +57,35 @@
             </template>
         </v-toolbar>
         <v-card-text class="px-0 py-0 content">
+            <template v-if="boolBigThumbnail">
+                <v-img
+                    height="250px"
+                    :src="thumbnailBig"
+                    class="d-flex align-end"
+                >
+                    <v-card-title class="white--text py-2 px-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
+                        <v-row>
+                            <v-col style="width: 100px">
+                                <span class="subtitle-2 text-truncate px-0 text--disabled d-block"><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                </v-img>
+            </template>
             <template v-if="display_message || print_stats_message">
                 <v-container>
                     <v-row>
                         <v-col class="py-2">
                             <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>{{ print_stats_message ? print_stats_message : display_message }}</span>
                         </v-col>
+                        <v-col class="col-auto py-2">
+                            <v-icon class="text--disabled cursor-pointer" @click="clearDisplayMessage" small>mdi-close-circle</v-icon>
+                        </v-col>
                     </v-row>
                 </v-container>
                 <v-divider class="mt-0 mb-0" ></v-divider>
             </template>
-            <template v-if="current_filename ">
+            <template v-if="current_filename && !boolBigThumbnail">
                 <v-container>
                     <v-row>
                         <v-col :class="thumbnailSmall ? 'py-3' : 'py-2'" :style="(thumbnailSmall ? 'width: calc(100% - 40px);' : '')">
@@ -467,6 +485,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return ""
     }
 
+    get boolBigThumbnail() {
+        const setting = this.$store.state.gui.dashboard.boolBigThumbnail ?? true
+
+        return this.current_filename && setting && this.thumbnailBig
+    }
+
     btnPauseJob() {
         this.$socket.emit('printer.print.pause', { }, { loading: 'statusPrintPause' })
     }
@@ -485,6 +509,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     btnReprintJob() {
         this.$socket.emit('printer.print.start', { filename: this.current_filename }, { loading: 'statusPrintReprint' });
+    }
+
+    clearDisplayMessage() {
+        this.$socket.emit('printer.gcode.script', {script: 'M117'})
     }
 
     formatTime(seconds) {

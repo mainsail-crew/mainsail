@@ -10,6 +10,10 @@
                     <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -102,6 +106,14 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         })
 
         return languages
+    }
+
+    get boolBigThumbnail() {
+        return this.$store.state.gui.dashboard.boolBigThumbnail
+    }
+
+    set boolBigThumbnail(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
     }
 
     get displayCancelPrint() {

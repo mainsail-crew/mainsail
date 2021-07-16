@@ -24,14 +24,12 @@ export const mutations: MutationTree<PrinterState> = {
 				Object.keys(payload).forEach((key: string) => {
 					const value = payload[key]
 
-					if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
+					if (typeof value === 'object' && !Array.isArray(value) && key in currentState && value !== null) {
 						setDataDeep(currentState[key], value)
-					} else {
-						if (key === "temperature") {
-							const newValue = Math.round(value * 10) / 10
-							if (currentState[key] !== newValue) Vue.set(currentState, key, newValue)
-						} else Vue.set(currentState, key, value)
-					}
+					} else if (key === "temperature") {
+						const newValue = Math.round(value * 10) / 10
+						if (currentState[key] !== newValue) Vue.set(currentState, key, newValue)
+					} else Vue.set(currentState, key, value)
 				})
 			}
 		}
