@@ -109,11 +109,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
             {
                 icon: 'mdi-console-line',
                 name: 'console',
-                title: this.$t('Settings.ThemeTab.Theme')
+                title: this.$t('Settings.ConsoleTab.Console')
             },
             {
-                icon: 'mdi-presets',
-                name: 'fire',
+                icon: 'mdi-fire',
+                name: 'presets',
                 title: this.$t('Settings.PresetsTab.PreheatPresets')
             },
             {

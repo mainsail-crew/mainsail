@@ -456,7 +456,7 @@
 			"General": "General",
 			"PrinterName": "Printer Name",
 			"Language": "Language",
-			"BoolBigThumbnail": "Big Thumbnail",
+			"BoolBigThumbnail": "Large thumbnail",
 			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
 			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
