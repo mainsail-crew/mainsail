@@ -73,18 +73,26 @@ const routes: AppRoute[] = [
         icon: 'wrench',
         component: Machine,
         alwaysShow: true,
-		showInNavi: true,
+        showInNavi: true,
     },
+    {
+        title: null,
+        component: null,
+        alwaysShow: false,
+        showInNavi: false,
+        path: '/settings/machine',
+        redirect: '/machine'
+    }
 ]
 
 export default routes
 
 export interface AppRoute {
-    title: string,
+    title: string | null,
     path: string,
     redirect?: string,
     icon?: string
-    component: Component,
+    component: Component | null,
     alwaysShow: boolean,
     showInNavi: boolean,
     registeredDirectory?: string,
