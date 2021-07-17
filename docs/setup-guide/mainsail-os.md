@@ -13,6 +13,9 @@ Our recommended way to install Mainsail on a Raspberry Pi is to use [MainsailOS]
 as pre-packaged disk image. If you are building a custom configuration, you may need to skip
 these instructions and install Mainsail [manually](manual-setup/index.md).
 
+**Note: To avoid confusion, the described way is avialable for Windows, Linux and MacOS because RPI Imager is a Multiplatform Tool!**
+{: .info}
+
 _Note: It is a good idea to use a premium SDcard from a reputable manufacturer such as Sandisk, Kingston or Samsung. Perfomancewise you should consider using a "A1" or better, marked SDCard. Low end cards will often fail quickly when used in this application  
 **PLEASE OBEY THAT THIS WILL DESTROY ALL DATA ON YOUR CARD**_  
 {: .alert}
