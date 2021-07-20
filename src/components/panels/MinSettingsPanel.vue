@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mb-6" v-if="klipperState === 'ready' && existsPrinterConfig && missingConfigs.length">
+    <v-card class="mb-6 theme-panel theme-min-settings-panel" v-if="klipperState === 'ready' && existsPrinterConfig && missingConfigs.length">
         <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">

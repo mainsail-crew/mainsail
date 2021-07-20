@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card>
+        <v-card class="theme-panel theme-history-list-panel">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading align-baseline"><v-icon left>mdi-file-document-multiple-outline</v-icon>{{ $t('History.PrintHistory') }}</span>

@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <div class="theme-settings theme-presets-tab-settings">
         <v-card flat v-if="!form.bool && !cooldownForm.bool">
             <v-card-text>
                 <div v-for="(preset, index) in presets" v-bind:key="index">

@@ -3,7 +3,7 @@
 
 <template>
     <div>
-        <v-card>
+        <v-card class="theme-panel theme-power-control-panel">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">

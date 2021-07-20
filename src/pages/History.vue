@@ -6,7 +6,7 @@
     <div>
         <v-row>
             <v-col>
-                <v-card>
+                <v-card class="theme-pages theme-history">
                     <v-toolbar flat dense >
                         <v-toolbar-title>
                             <span class="subheading"><v-icon left>mdi-chart-areaspline</v-icon>{{ $t('History.Statistics') }}</span>

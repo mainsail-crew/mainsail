@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mb-6" v-if="failedComponents.length || warnings.length">
+    <v-card class="mb-6 theme-panel theme-moonraker-state-panel" v-if="failedComponents.length || warnings.length">
         <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card flat>
+        <v-card flat class="theme-settings theme-general-tab-settings">
             <v-card-text>
                 <settings-row :title="$t('Settings.GeneralTab.PrinterName')">
                     <v-text-field v-model="printerName" hide-details outlined dense ></v-text-field>

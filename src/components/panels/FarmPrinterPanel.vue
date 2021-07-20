@@ -25,6 +25,7 @@
     <v-card
         :class="(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
         :loading="printer.socket.isConnecting"
+        class="theme-panel theme-farm-printer-panel"
     >
         <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 5;">
             <v-toolbar-title>

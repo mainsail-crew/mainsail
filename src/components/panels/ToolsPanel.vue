@@ -23,7 +23,7 @@
 </style>
 
 <template>
-    <v-card v-if="klipperReadyForGui" class="mb-6">
+    <v-card v-if="klipperReadyForGui" class="mb-6 theme-panel theme-tools-panel">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Temperatures") }}</span>

@@ -4,7 +4,7 @@
 
 <template>
     <div v-if="klipperReadyForGui">
-        <v-card class="mb-6" v-if="['printing', 'paused'].includes(printer_state)">
+        <v-card class="mb-6 theme-panel theme-miscellaneous-panel" v-if="['printing', 'paused'].includes(printer_state)">
             <v-toolbar flat dense >
                 <v-toolbar-title>
                     <span class="subheading"><v-icon class="mdi mdi-printer-3d" left></v-icon>{{ $t("Panels.MiscellaneousPanel.PrintSettings") }}</span>

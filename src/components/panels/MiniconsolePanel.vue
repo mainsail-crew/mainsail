@@ -6,7 +6,7 @@
 </style>
 
 <template>
-    <v-card v-if="socketIsConnected" class="pb-0">
+    <v-card v-if="socketIsConnected" class="pb-0 theme-panel theme-miniconsole-panel">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>

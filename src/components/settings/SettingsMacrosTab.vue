@@ -1,6 +1,6 @@
 
 <template>
-    <v-card flat>
+    <v-card flat class="theme-settings theme-macros-tab-settings">
         <v-card-text>
             <template v-if="macros.length">
                 <div v-for="(macro, index) in macros" v-bind:key="index">

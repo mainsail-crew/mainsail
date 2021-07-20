@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <v-card v-if="klipperState === 'ready'" class="mb-6">
+    <v-card v-if="klipperState === 'ready'" class="mb-6 theme-panel theme-status-panel">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading align-baseline">

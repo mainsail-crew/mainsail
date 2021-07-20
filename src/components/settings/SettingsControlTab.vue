@@ -4,7 +4,7 @@
 
 <template>
     <v-form ref="formControlExtruder">
-        <v-card flat>
+        <v-card flat class="theme-settings theme-control-tab-settings">
             <v-card-text>
                 <settings-row :title="$t('Settings.ControlTab.EnableCross')" :dynamicSlotWidth="true">
                     <v-switch v-model="useCross" hide-details class="mt-0"></v-switch>

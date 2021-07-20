@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <div class="theme-settings theme-remote-printers-tab-settings">
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <div v-for="(printer, name, index) in printers" v-bind:key="name">

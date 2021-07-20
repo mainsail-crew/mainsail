@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="theme-settings theme-theme-tab-settings">
         <v-card flat>
             <v-card-text>
                 <settings-row :title="$t('Settings.ThemeTab.Logo')">

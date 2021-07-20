@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="theme-settings theme-webcam-tab-settings">
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <settings-row :title="$t('Settings.WebcamTab.ShowOnDashboard')">
