@@ -24,15 +24,20 @@
                             <span v-if="mcu.freq !== null">, {{ $t('Machine.SystemPanel.Frequency') }}: {{ mcu.freqFormat }}</span>
                             <template v-if="mcu.tempSensor">
                                 <span>, </span>
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on">Temp: {{ mcu.tempSensor.temperature+"°C" }}</span>
-                                    </template>
-                                    <span>
-                                        max: {{ mcu.tempSensor.measured_max_temp }}°C<br />
-                                        min: {{ mcu.tempSensor.measured_min_temp }}°C
-                                    </span>
-                                </v-tooltip>
+                                <template v-if="mcu.tempSensor.measured_min_temp !== null && mcu.tempSensor.measured_max_temp !== null">
+                                    <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <span v-bind="attrs" v-on="on">Temp: {{ mcu.tempSensor.temperature+"°C" }}</span>
+                                        </template>
+                                        <span>
+                                            max: {{ mcu.tempSensor.measured_max_temp }}°C<br />
+                                            min: {{ mcu.tempSensor.measured_min_temp }}°C
+                                        </span>
+                                    </v-tooltip>
+                                </template>
+                                <template v-else>
+                                    Temp: {{ mcu.tempSensor.temperature+"°C" }}
+                                </template>
                             </template>
                         </v-col>
                         <v-col class="px-6 col-auto d-flex justify-end align-center">
@@ -66,15 +71,20 @@
                             <span v-if="hostStats.memoryFormat">, {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }}</span>
                             <template v-if="hostStats.tempSensor">
                                 <span>, </span>
-                                <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on">Temp: {{ hostStats.tempSensor.temperature+"°C" }}</span>
-                                    </template>
-                                    <span v-if="hostStats.tempSensor.measured_min_temp && hostStats.tempSensor.measured_max_temp">
-                                        max: {{ hostStats.tempSensor.measured_max_temp }}°C<br />
-                                        min: {{ hostStats.tempSensor.measured_min_temp }}°C
-                                    </span>
-                                </v-tooltip>
+                                <template v-if="hostStats.tempSensor.measured_min_temp !== null && hostStats.tempSensor.measured_max_temp !== null">
+                                    <v-tooltip top>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <span v-bind="attrs" v-on="on">Temp: {{ hostStats.tempSensor.temperature+"°C" }}</span>
+                                        </template>
+                                        <span>
+                                            max: {{ hostStats.tempSensor.measured_max_temp }}°C<br />
+                                            min: {{ hostStats.tempSensor.measured_min_temp }}°C
+                                        </span>
+                                    </v-tooltip>
+                                </template>
+                                <template v-else>
+                                    Temp: {{ hostStats.tempSensor.temperature+"°C" }}
+                                </template>
                             </template>
                         </v-col>
                         <v-col class="px-6 col-auto d-flex justify-end align-center">

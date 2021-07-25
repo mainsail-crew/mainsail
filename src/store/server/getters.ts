@@ -40,9 +40,9 @@ export const getters: GetterTree<ServerState, any> = {
 			const memTotal = (state.system_info.cpu_info?.total_memory ?? 0) * 1024
 
 			if (memAvail > 0 && memTotal > 0) {
-				memoryFormat = Math.round((memTotal - memAvail) / 1024 / 1024 / 1024 * 10) / 10 + " / " + Math.round(memTotal / 1024 / 1024 / 1024) + " GB"
+				memoryFormat = formatFilesize(memTotal - memAvail) + " / " + formatFilesize(memTotal)
 			} else if (memTotal) {
-				memoryFormat = Math.round(memTotal / 1024 / 1024 / 1024) + " GB"
+				memoryFormat = formatFilesize(memTotal)
 			}
 
 			let tempSensor = rootGetters['printer/getHostTempSensor']
