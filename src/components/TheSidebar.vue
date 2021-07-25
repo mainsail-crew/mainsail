@@ -165,14 +165,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.console.log("lg", this.$vuetify.breakpoint.lgAndUp)
-
         this.naviDrawer = this.$vuetify.breakpoint.lgAndUp
-    }
-
-    @Watch('naviDrawer')
-    naviDrawerChanged(newVal: any) {
-        window.console.log("naviDrawerChanged", newVal)
     }
 }
 </script>

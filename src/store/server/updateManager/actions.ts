@@ -13,8 +13,6 @@ export const actions: ActionTree<ServerUpdateMangerState, RootState> = {
 	},
 
 	getStatus({ commit }, payload) {
-		window.console.log("response sync update")
-
 		commit('setStatus', payload)
 	},
 }

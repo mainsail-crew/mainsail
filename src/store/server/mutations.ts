@@ -44,7 +44,7 @@ export const mutations: MutationTree<ServerState> = {
 	},
 
 	setGcodeStore(state, payload: any) {
-		const t0 = performance.now()
+		//const t0 = performance.now()
 
 		if (payload.length >= maxEventHistory) {
 			payload = payload.slice(payload.length - maxEventHistory);
@@ -65,8 +65,8 @@ export const mutations: MutationTree<ServerState> = {
 			})
 		})
 
-		const t1 = performance.now()
-		window.console.debug("import events", t1-t0)
+		//const t1 = performance.now()
+		//window.console.debug("import events", t1-t0)
 	},
 
 	addEvent(state, payload) {

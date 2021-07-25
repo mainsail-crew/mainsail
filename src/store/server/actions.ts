@@ -32,7 +32,6 @@ export const actions: ActionTree<ServerState, RootState> = {
 	},
 
 	initServerInfo: function ({ dispatch, commit }, payload) {
-		window.console.debug("init ServerInfo")
 		// delete old plugin entries
 		if ('plugins' in payload) delete payload.plugins
 		if ('failed_plugins' in payload) delete payload.failed_plugins

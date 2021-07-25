@@ -9,7 +9,6 @@ export const actions: ActionTree<SocketState, RootState> = {
 	},
 
 	setData({ commit }, payload) {
-		window.console.log(payload)
 		commit('setData', payload)
 	},
 
