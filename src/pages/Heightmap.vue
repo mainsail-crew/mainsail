@@ -401,17 +401,17 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get rangeX() {
-        const stepper_x = this.$store.state.printer.configfile?.settings?.stepper_x
-        if (stepper_x) return [stepper_x.position_min, stepper_x.position_max]
+        const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
+        const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
 
-        return [0,0]
+        return [axis_minimum[0] ?? 0, axis_maximum[0] ?? 0]
     }
 
     get rangeY() {
-        const stepper_y = this.$store.state.printer.configfile?.settings?.stepper_y
-        if (stepper_y) return [stepper_y.position_min, stepper_y.position_max]
+        const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
+        const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
 
-        return [0,0]
+        return [axis_minimum[1] ?? 0, axis_maximum[1] ?? 0]
     }
 
     get heightmapLimit() {
