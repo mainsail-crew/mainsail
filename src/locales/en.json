@@ -279,6 +279,7 @@
 		"MinSettingsPanel": {
 			"MissingConfiguration": "Missing configuration",
 			"IsNotDefinedInConfig": "is not defined in config.",
+			"IncludeMainsailCfg": "Make sure you include the mainsail.cfg in your printer.cfg file.",
 			"MoreInformation": "more information"
 		},
 		"MiscellaneousPanel": {
