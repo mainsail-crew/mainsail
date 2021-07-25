@@ -68,6 +68,10 @@ export const actions: ActionTree<SocketState, RootState> = {
 				commit('server/setProcStats', payload.params[0], { root: true })
 				break
 
+			case 'notify_cpu_throttled':
+				commit('server/setThrottledState', payload.params[0], { root: true })
+				break
+
 			case 'notify_filelist_changed':
 				dispatch('files/filelist_changed', payload.params[0], { root: true })
 				break;
