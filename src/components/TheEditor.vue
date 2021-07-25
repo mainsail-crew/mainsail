@@ -18,7 +18,7 @@
                     <v-btn icon dark @click="close">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
-                    <v-toolbar-title>{{ filename }}</v-toolbar-title>
+                    <v-toolbar-title>{{ filepath ? filepath.slice(1)+"/" : "" }}{{ filename }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn>
@@ -77,6 +77,10 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     get show() {
         return this.$store.state.editor.bool ?? false
+    }
+
+    get filepath(): string {
+        return this.$store.state.editor.filepath ?? ""
     }
 
     get filename(): string {
