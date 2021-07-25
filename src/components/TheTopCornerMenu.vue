@@ -59,7 +59,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
     showMenu = false
 
     get services() {
-        const services = this.$store.state.server.system_info.available_services ?? []
+        const services = this.$store.state.server.system_info.available_services.filter((name: string) => name !== 'klipper_mcu') ?? []
         services.sort()
         return services
     }
