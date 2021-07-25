@@ -349,83 +349,9 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-<!--
-
-        <v-snackbar
-            :timeout="-1"
-            :value="true"
-            fixed
-            centered
-            bottom
-            dark
-            v-model="editor.showLoader"
-        >
-          <div>
-            {{ $t('Files.Downloading') }}<br />
-            <strong>{{ editor.item.filename }}</strong>
-          </div>
-          <span v-if="editor.progress.total > 1" class="mr-1">({{ formatFilesize(editor.progress.loaded) }}/{{ formatFilesize(editor.progress.total) }})</span>
-          {{ Math.round(100 * editor.progress.loaded / editor.progress.total) }} % @ {{ editor.progress.speed }}/s<br />
-          <v-progress-linear class="mt-2" :value="100 * editor.progress.loaded / editor.progress.total"></v-progress-linear>
-          <template v-slot:action="{ attrs }">
-            <v-btn
-                color="red"
-                text
-                v-bind="attrs"
-                @click="cancelDownload(); editor.showLoader = false"
-                style="min-width: auto;"
-            >
-              <v-icon class="0">mdi-close</v-icon>
-            </v-btn>
-          </template>
-        </v-snackbar>
-        <v-dialog v-model="editor.show" fullscreen :transition="null" @close="closeEditor()">
-            <v-card class="fill-height">
-                <v-toolbar dark color="primary">
-                    <v-btn icon dark @click="closeEditor()">
-                        <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                    <v-toolbar-title>{{ editor.item.filename }}</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-menu
-                            transition="slide-y-transition"
-                            :close-on-content-click="false"
-                            offset-y
-                            bottom
-                            left
-                        >
-                            <template #activator="{ on, attrs }">
-                                <v-btn
-                                    dark
-                                    icon
-                                    v-bind="attrs"
-                                    v-on="on"
-                                >
-                                    <v-icon>mdi-cog</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list dense>
-                                <v-list-item class="minheight30">
-                                    <v-checkbox v-model="editorMinimap" :label="$t('Editor.Minimap')"></v-checkbox>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
-                        <v-btn dark text @click="saveFile">
-                            <v-icon small class="mr-1">mdi-content-save</v-icon>
-                            <span class="d-none d-sm-inline">{{ $t('Files.SaveClose') }}</span>
-                        </v-btn>
-                    </v-toolbar-items>
-                </v-toolbar>
-                <div v-if="editor.init" id="editor" class="mainsail-editor"></div>
-            </v-card>
-        </v-dialog>
-        -->
     </div>
 </template>
 <script lang="ts">
-
-
 import {Component, Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import axios from "axios";
@@ -1058,7 +984,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
         this.$store.dispatch('editor/openFile', {
             root: 'gcodes',
-            path: path,
+            path: path !== "" ? "/"+path : "",
             filename: item.filename
         })
     }
