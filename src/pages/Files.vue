@@ -193,7 +193,7 @@
                                 </template>
                             </template>
                         </td>
-                        <td class=" ">{{ item.filename }} {{ getJobStatus(item) }}</td>
+                        <td class=" ">{{ item.filename }}</td>
                         <td class="text-center">
                             <v-tooltip top  v-if="getJobStatus(item)">
                                 <template v-slot:activator="{ on, attrs }">
