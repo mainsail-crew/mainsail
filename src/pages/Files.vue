@@ -201,7 +201,7 @@
                                         <v-icon small :color="getStatusColor(getJobStatus(item))">{{ getStatusIcon(getJobStatus(item)) }}</v-icon>
                                     </span>
                                 </template>
-                                <span>{{ getJobStatus(item).replaceAll("_", " ") }}</span>
+                                <span>{{ getJobStatus(item).replace(/_/g, " ") }}</span>
                             </v-tooltip>
                         </td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'size').visible">{{ item.isDirectory ? '--' : formatFilesize(item.size) }}</td>

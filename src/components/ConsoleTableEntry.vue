@@ -34,7 +34,7 @@ export default class ConsoleTableEntry extends Vue {
     commandClick(event: Event) {
         const eventTarget = event.target as Element
         if (eventTarget.localName === "a" && eventTarget.className.indexOf('command') !== -1) {
-            const command = eventTarget.innerHTML.replaceAll('<br>', '\n')
+            const command = eventTarget.innerHTML.replace(/<br>/g, '\n')
 
             this.$emit('command-click', command)
         }

@@ -113,7 +113,7 @@
                                         <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">{{ getStatusIcon(item.status) }}</v-icon>
                                     </span>
                                 </template>
-                                <span>{{ item.status.replaceAll("_", " ") }}</span>
+                                <span>{{ item.status.replace(/_/g, " ") }}</span>
                             </v-tooltip>
                         </td>
                         <td v-for="col in tableFields" v-bind:key="col.value" :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">

@@ -74,7 +74,7 @@ export default class TheThrottledStates extends Mixins(BaseMixin) {
     }
 
     convertName(flag: string): string {
-        flag = flag.replaceAll(" ", "").replaceAll("-", "")
+        flag = flag.replace(/ /g, "").replace(/-/g, "")
         flag = flag.charAt(0).toUpperCase() + flag.slice(1)
 
         return flag

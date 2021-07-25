@@ -31,14 +31,14 @@ export const caseInsensitiveSort = (values: any[], orderType: string): any[] => 
 }
 
 export const camelize = (str: string): string => {
-    return str.replaceAll('_', ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
+    return str.replace(/_/g, ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
         return index === 0 ? word.toLowerCase() : word.toUpperCase();
     }).replace(/\s+/g, '');
 }
 
 export function formatConsoleMessage(message: string): string {
-    message = message.replaceAll('!! ', '')
-    message = message.replaceAll('// ', '')
+    message = message.replace(/!! /g, '')
+    message = message.replace(/\/\/ /g, '')
     message = message.replace('\n// ', '<br>')
     message = message.replace(/\r\n|\r|\n/g, '<br>')
     //message = message.replaceAll('<br />', '<br>')
@@ -49,7 +49,7 @@ export function formatConsoleMessage(message: string): string {
 
 export const convertName = (name: string): string => {
     let output = ""
-    name = name.replaceAll("_", " ")
+    name = name.replace(/_/g, ' ')
     name.split(" ").forEach(split => {
         output += " "+split.charAt(0).toUpperCase() + split.slice(1)
     })
