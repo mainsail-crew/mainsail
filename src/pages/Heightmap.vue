@@ -45,7 +45,7 @@
                         </v-card-text>
                     </template>
                     <template v-else>
-                        <v-card-text class="py-0">
+                        <v-card-text class="py-0 px-0">
                             <v-row>
                                 <v-col class="">
                                     <ECharts
@@ -57,10 +57,10 @@
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class=" pt-0 pb-3 col-auto">
+                                <v-col class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start">
                                     <v-switch v-model="scaleVisualMap" :label="$t('Heightmap.Scale')" class="mt-0 ml-5"></v-switch>
                                 </v-col>
-                                <v-col class="d-flex justify-center pt-0 pb-3 pr-16">
+                                <v-col class="d-flex justify-center pt-0 pb-6 pb-sm-3 pr-sm-16">
                                     <v-checkbox v-model="showProbed" :label="$t('Heightmap.Probed')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                     <v-checkbox v-model="showMesh" :label="$t('Heightmap.Mesh')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                     <v-checkbox v-model="showFlat" :label="$t('Heightmap.Flat')" hide-details class="mx-3 mt-0" ></v-checkbox>
@@ -253,10 +253,10 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
                     color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
                 },
                 seriesIndex: this.visualMapSeriesIndex,
-                left: 20,
+                left: this.isMobile ? 10 : 30,
                 top: 20,
                 bottom: 0,
-                itemWidth: 30,
+                itemWidth: this.isMobile ? 10 : 30,
                 itemHeight: 350,
                 precision: 3,
                 textStyle: {
