@@ -500,11 +500,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
 		const sensors = getters.getMcuTempSensors
 		sensors.forEach((sensor: any) => {
-			if (sensor.settings?.sensor_mcu === mcuName) {
+			if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
 				output = {
 					temperature: sensor.object.temperature.toFixed(0),
-					measured_min_temp: sensor.object.measured_min_temp.toFixed(1),
-					measured_max_temp: sensor.object.measured_max_temp.toFixed(1)
+					measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,
+					measured_max_temp: sensor.object.measured_max_temp?.toFixed(1) ?? null
 				}
 			}
 		})
