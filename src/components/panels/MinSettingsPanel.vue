@@ -7,20 +7,31 @@
                 </span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text class="px-0 pt-0 pb-2 content">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-left">
-                    <ul class="mb-5">
+        <v-card-text>
+            <v-row>
+                <v-col>
+                    <ul class="">
                         <li v-for="module in missingConfigs" v-bind:key="module" class="orange--text">
                             <code>{{ module }}</code> {{ $t("Panels.MinSettingsPanel.IsNotDefinedInConfig") }}
                         </li>
                     </ul>
-                    <div class="text-center">
-                        <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>{{ $t("Panels.MinSettingsPanel.MoreInformation") }}</v-btn>
-                    </div>
-                </v-flex>
-            </v-layout>
+                </v-col>
+            </v-row>
         </v-card-text>
+        <template v-if="mainsailCfgExists">
+            <v-divider></v-divider>
+            <v-card-text>
+                <v-row>
+                    <v-col>
+                        <p class="orange--text mb-0">{{ $t("Panels.MinSettingsPanel.IncludeMainsailCfg") }}</p>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-divider class="mb-2"></v-divider>
+        </template>
+        <v-card-actions class="justify-center pb-3">
+            <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>{{ $t("Panels.MinSettingsPanel.MoreInformation") }}</v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -39,6 +50,10 @@ export default class MinSettingsPanel extends Mixins(BaseMixin) {
 
     get missingConfigs() {
         return this.$store.getters["printer/checkNecessaryConfig"] ?? []
+    }
+
+    get mainsailCfgExists() {
+        return this.$store.getters["files/checkConfigFile"]('mainsail.cfg') ?? false
     }
 }
 </script>

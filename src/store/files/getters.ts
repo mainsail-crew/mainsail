@@ -70,5 +70,13 @@ export const getters: GetterTree<FileState, any> = {
 		if (dir && 'disk_usage' in dir) return dir.disk_usage
 
 		return null
-	}
+	},
+
+	checkConfigFile: (state) => (acceptName: string) => {
+		const directory = findDirectory(state.filetree, ['config'])
+
+		return directory?.findIndex((element: FileStateFile) =>
+			element.filename !== undefined && element.filename === acceptName
+		) !== -1
+	},
 }
