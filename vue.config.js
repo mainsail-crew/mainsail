@@ -8,9 +8,7 @@ const version = JSON.parse(packageJson).version || 0
 
 module.exports = {
 	productionSourceMap: false,
-	"transpileDependencies": [
-		"vuetify"
-	],
+	transpileDependencies: [ 'vuetify' ],
 	pluginOptions: {
 		i18n: {
 			locale: 'en',
