@@ -282,7 +282,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
         if (setValues === 0) this.form.boolInvalidMin = true
         else if (this.form.valid) {
-            if (this.form.index) {
+            if (this.form.index !== null) {
                 this.$store.dispatch('gui/updatePreset',  this.form )
             } else this.$store.dispatch('gui/addPreset',  this.form )
 
