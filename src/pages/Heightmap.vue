@@ -52,7 +52,7 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'svg' }"
-                                        style="height: 400px; width: 100%; overflow: auto;"
+                                        style="height: 400px; width: 100%; overflow: hidden;"
                                     ></ECharts>
                                 </v-col>
                             </v-row>
