@@ -32,7 +32,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 	},
 
 	getPositions: (state) => {
-		const position = state.toolhead?.position ?? [0,0,0]
+		const position = state.motion_report?.position ?? state.toolhead?.position ?? [0,0,0]
 		const gcode_position = state.gcode_move?.gcode_position ?? [0,0,0]
 		const absolute = state.gcode_move?.absolute_coordinates ?? true
 
