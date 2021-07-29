@@ -159,7 +159,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
                 successFiles.push(result)
             }
 
-            this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
+            this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
             for(const file of successFiles) {
                 const text = this.$t("App.TopBar.UploadOfFileSuccessful", {file:file}).toString()
                 this.$toast.success(text)
