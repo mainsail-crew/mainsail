@@ -19,10 +19,19 @@ export const mutations: MutationTree<PrinterState> = {
 	},
 
 	setData(state, payload) {
+
+		if ('motion_report' in payload) {
+			window.console.log(payload)
+		}
+
 		const setDataDeep = (currentState: any, payload: any) => {
 			if (payload !== null && typeof payload === 'object') {
 				Object.keys(payload).forEach((key: string) => {
 					const value = payload[key]
+
+					if (key === "motion_report") {
+						window.console.log(value)
+					}
 
 					if (typeof value === 'object' && !Array.isArray(value) && key in currentState && value !== null) {
 						setDataDeep(currentState[key], value)

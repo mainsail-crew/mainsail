@@ -143,20 +143,38 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <template v-if="['printing', 'paused', 'error'].includes(printer_state)">
+            <template v-if="['printing', 'paused', 'error', 'standby'].includes(printer_state)">
                 <v-divider class="my-0"></v-divider>
                 <v-container class="py-0">
                     <v-row class="text-center py-5" align="center">
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
-                            <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            <template v-if="live_velocity !== null">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div v-bind="attrs" v-on="on">
+                                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                            <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
+                                        </div>
+                                    </template>
+                                    <span>{{ $t("Panels.StatusPanel.Requested") }}: {{ requested_speed+" mm/s" }}</span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else>
+                                <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            </template>
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <div v-bind="attrs" v-on="on">
                                         <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
-                                        <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                        <template v-if="live_extruder_velocity !== null">
+                                            <span class="d-block text-center text-no-wrap">{{ live_flow.toFixed(1)+" mm&sup3;/s" }}</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                        </template>
                                     </div>
                                 </template>
                                 <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow.maxValue ? maxFlow.maxValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
@@ -377,6 +395,21 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.toolbarButtons.filter((button) => {
             return button.status.includes(this.printer_state)
         })
+    }
+
+    get live_velocity() {
+        return this.$store.state.printer.motion_report?.live_velocity ?? null
+    }
+
+    get live_extruder_velocity() {
+        return this.$store.state.printer.motion_report?.live_extruder_velocity ?? null
+    }
+
+    get live_flow() {
+        if (this.live_extruder_velocity === null) return null
+
+        const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+        return filamentCrossSection * this.live_extruder_velocity
     }
 
     get requested_speed() {
