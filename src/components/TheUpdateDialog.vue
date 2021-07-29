@@ -1,12 +1,13 @@
 <style scoped>
-    .updaterLog {
+    .updaterLogScroll {
         height: 350px;
         max-height: 350px;
-        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .updaterLog .title-cell {
         white-space: nowrap;
+        vertical-align: top;
     }
 
     .updaterLog.v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
@@ -42,36 +43,42 @@
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text class="py-6">
-                <v-data-table
-                    :headers="headers"
-                    :items="messages"
-                    item-key="date"
-                    hide-default-footer
-                    hide-default-header
-                    disable-pagination
-                    class="updaterLog"
-                    ref="updaterLog"
-                    :custom-sort="customSort"
-                    sort-by="date"
-                    :sort-desc="true"
-                    color="primary"
-                >
-                    <template #no-data>
-                        <div class="py-2">{{ $t("App.UpdateDialog.Empty")}}</div>
-                    </template>
+            <v-card-text class="px-3">
+                <v-row>
+                    <v-col class="py-6 px-0">
+                        <perfect-scrollbar class="updaterLogScroll" :options="{ suppressScrollX: true }" ref="updaterLogScroll">
+                            <v-data-table
+                                :headers="headers"
+                                :items="messages"
+                                item-key="date"
+                                hide-default-footer
+                                hide-default-header
+                                disable-pagination
+                                class="updaterLog"
+                                ref="updaterLog"
+                                :custom-sort="customSort"
+                                sort-by="date"
+                                :sort-desc="true"
+                                color="primary"
+                            >
+                                <template #no-data>
+                                    <div class="py-2">{{ $t("App.UpdateDialog.Empty")}}</div>
+                                </template>
 
-                    <template #item="{ item }">
-                        <tr>
-                            <td class="log-cell title-cell py-2">
-                                {{ formatTime(item.date)}}
-                            </td>
-                            <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
-                                <span v-if="item.message" class="message" v-html="item.message"></span>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
+                                <template #item="{ item }">
+                                    <tr>
+                                        <td class="log-cell title-cell py-2">
+                                            {{ formatTime(item.date)}}
+                                        </td>
+                                        <td class="log-cell content-cell pl-0 py-2" colspan="2" style="width:100%;">
+                                            <span v-if="item.message" class="message" v-html="item.message"></span>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </v-data-table>
+                        </perfect-scrollbar>
+                    </v-col>
+                </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
                         <v-btn @click="close" :disabled="!complete" color="primary">{{ $t("App.UpdateDialog.Close")}}</v-btn>
@@ -84,7 +91,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component({
@@ -93,6 +100,7 @@ import BaseMixin from '@/components/mixins/base'
 })
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
     $refs!: {
+        updaterLogScroll: any
         updaterLog: HTMLDivElement
     }
 
@@ -154,8 +162,11 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         }
     }
 
-    updated() {
-        if (this.$refs.updaterLog) this.$refs.updaterLog.scrollTop = this.$refs.updaterLog.scrollHeight
+    @Watch('messages')
+    messagesChanged() {
+        this.$nextTick(() => {
+            if (this.$refs.updaterLogScroll) this.$refs.updaterLogScroll.$el.scrollTop = this.$refs.updaterLogScroll.$el.scrollHeight
+        })
     }
 }
 </script>
