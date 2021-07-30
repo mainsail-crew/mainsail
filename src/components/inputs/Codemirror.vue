@@ -20,7 +20,8 @@ import {mainsailTheme} from "@/plugins/codemirrorTheme";
 import {StreamLanguage} from "@codemirror/stream-parser";
 import { klipper_config } from "@/plugins/StreamParserKlipperConfig";
 import { gcode } from "@/plugins/StreamParserGcode";
-import {EditorView} from "@codemirror/view";
+import {EditorView, keymap} from "@codemirror/view";
+import {defaultTabBinding} from "@codemirror/commands";
 import {yaml} from "@/plugins/StreamParserYaml";
 
 @Component
@@ -86,6 +87,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
     get cmExtensions() {
         const extensions = [
             basicSetup,
+            keymap.of([defaultTabBinding]),
             mainsailTheme,
             EditorView.updateListener.of(update => {
                 this.content = update.state?.doc.toString()
