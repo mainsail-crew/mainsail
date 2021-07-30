@@ -170,7 +170,7 @@
                                     <div v-bind="attrs" v-on="on">
                                         <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
                                         <template v-if="live_extruder_velocity !== null">
-                                            <span class="d-block text-center text-no-wrap">{{ live_flow.toFixed(1)+" mm&sup3;/s" }}</span>
+                                            <span class="d-block text-center text-no-wrap">{{ live_flow+" mm&sup3;/s" }}</span>
                                         </template>
                                         <template v-else>
                                             <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
@@ -398,18 +398,23 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get live_velocity() {
-        return this.$store.state.printer.motion_report?.live_velocity ?? null
+        return Math.abs(this.$store.state.printer.motion_report?.live_velocity?.toFixed(0)) ?? null
     }
 
     get live_extruder_velocity() {
-        return this.$store.state.printer.motion_report?.live_extruder_velocity ?? null
+        const live_extruder_velocity = this.$store.state.printer.motion_report?.live_extruder_velocity ?? null
+        if (live_extruder_velocity === null) return null
+
+        return live_extruder_velocity > 0 ? live_extruder_velocity : 0
     }
 
     get live_flow() {
         if (this.live_extruder_velocity === null) return null
 
         const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
-        return filamentCrossSection * this.live_extruder_velocity
+        const currentFlow = filamentCrossSection * this.live_extruder_velocity
+
+        return currentFlow?.toFixed(1)
     }
 
     get requested_speed() {
