@@ -8,6 +8,7 @@
             <webcam-panel v-if="showDashboardWebcam"></webcam-panel>
             <z-offset-panel></z-offset-panel>
             <control-panel></control-panel>
+            <printsettings-panel></printsettings-panel>
             <miscellaneous-panel></miscellaneous-panel>
         </v-col>
         <v-col class="col-sm-12 col-md-7">
@@ -32,9 +33,11 @@ import ZOffsetPanel from "@/components/panels/ZOffsetPanel.vue";
 import ControlPanel from "@/components/panels/ControlPanel.vue";
 import MiscellaneousPanel from "@/components/panels/MiscellaneousPanel.vue";
 import MiniconsolePanel from "@/components/panels/MiniconsolePanel.vue";
+import PrintsettingsPanel from "@/components/panels/PrintsettingsPanel.vue";
 
 @Component({
     components: {
+        PrintsettingsPanel,
         MiniconsolePanel,
         MiscellaneousPanel,
         ControlPanel,
