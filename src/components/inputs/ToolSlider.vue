@@ -15,7 +15,7 @@
                         class="ml-2"
                         x-small
                         icon
-                        @click="processedMin = min; processedMax = max; value = defaultValue; sliding = true; sendCmd()"
+                        @click="resetSlider"
                     >
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
@@ -49,8 +49,6 @@
 
 
 <script lang="ts">
-
-
 import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
 import {Debounce} from "vue-debounce-decorator";
@@ -80,9 +78,11 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         this.startValue = this.target * this.multi
         this.dynamicStep = Math.floor((this.max - this.min) / 2)
 
-        if (this.value > this.max) {
-            this.processedMax = Math.ceil(this.value / this.defaultValue) * this.defaultValue
+        if (this.value >= this.processedMax) {
+            this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
+
+        window.console.log(this.label, this.value, this.processedMax, this.max)
     }
 
     get colorBar() {
@@ -91,6 +91,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
 
     @Debounce(250)
     changeSlider() {
+        this.sendCmd()
+
         if (!this.dynamicRange) return
         if (this.value >= this.processedMax) {
             this.processedMax = this.value + this.dynamicStep
@@ -110,6 +112,16 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     @Watch('max', { immediate: true })
     maxChanged(newVal: number) {
         this.processedMax = newVal > this.value ? newVal : Math.ceil(this.value / this.dynamicStep) * this.dynamicStep
+    }
+
+    resetSlider() {
+        this.value = this.defaultValue
+        this.processedMax = this.max
+        if (this.value >= this.processedMax) {
+            this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
+        }
+
+        this.sendCmd()
     }
 
     sendCmd() {
