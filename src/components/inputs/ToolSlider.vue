@@ -81,8 +81,6 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
-
-        window.console.log(this.label, this.value, this.processedMax, this.max)
     }
 
     get colorBar() {
