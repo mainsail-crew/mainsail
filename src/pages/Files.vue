@@ -884,7 +884,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 thumb.height >= 32 && thumb.height <= 64
             )
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path+"?timestamp="+item.modified.getTime()
         }
 
         return ""
@@ -894,7 +894,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         if (item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path+"?timestamp="+item.modified.getTime()
         }
 
         return ""
