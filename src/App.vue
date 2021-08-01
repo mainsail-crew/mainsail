@@ -1,4 +1,4 @@
-<style scoped>
+<style>
     @import './assets/styles/fonts.css';
     @import './assets/styles/toastr.css';
     @import './assets/styles/page.scss';
@@ -11,20 +11,22 @@
         background-size: cover;
         background-repeat: no-repeat;
     }
+
+    .v-btn:not(.v-btn--outlined).primary {
+        color: var(--v-btn-text-primary)
+    }
 </style>
 
 <template>
-    <v-app dark>
+    <v-app dark :style="cssVars">
         <vue-headful :title="title" />
         <the-sidebar></the-sidebar>
         <the-topbar></the-topbar>
 
-        <v-main id="content" v-bind:style="{ background: mainBackground }">
-            <v-scroll-y-transition>
-                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <router-view></router-view>
-                </v-container>
-            </v-scroll-y-transition>
+        <v-main id="content" :style="{ background: mainBackground }">
+            <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <router-view></router-view>
+            </v-container>
         </v-main>
         <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
@@ -82,6 +84,26 @@ export default class App extends Mixins(BaseMixin) {
 
     get primaryColor () {
         return this.$store.state.gui.theme.primary
+    }
+
+    get primaryTextColor() {
+        let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
+        if (splits) {
+            const r = parseInt(splits[1], 16) * 0.2126
+            const g = parseInt(splits[2], 16) * 0.7152
+            const b = parseInt(splits[3], 16) * 0.0722
+            const perceivedLightness = (r + g + b) / 255
+
+            return perceivedLightness > 0.7 ? '#222' : '#fff'
+        }
+
+        return '#ffffff'
+    }
+
+    get cssVars() {
+        return {
+            '--v-btn-text-primary': this.primaryTextColor
+        }
     }
 
     @Watch('language')
