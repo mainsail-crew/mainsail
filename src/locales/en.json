@@ -83,7 +83,8 @@
 		"G-Code Files": "G-Code Files",
 		"History": "History",
 		"Machine": "Machine",
-		"Interface": "Interface"
+		"Interface": "Interface",
+		"G-Code Viewer": "G-Code Viewer"
 	},
 	"Editor": {
 		"Minimap": "Show minimap",
@@ -146,7 +147,8 @@
 		"SuccessfullyRenamed": "Successfully renamed {filename}.",
 		"SuccessfullyMoved": "Successfully moved {filename}.",
 		"SuccessfullyCreated": "Successfully created {filename}.",
-		"SuccessfullyDeleted": "Successfully deleted {filename}."
+		"SuccessfullyDeleted": "Successfully deleted {filename}.",
+		"View3D" : "View 3D"
 	},
 	"Console": {
 		"send": "send",
@@ -562,5 +564,10 @@
 			"Primary": "Primary",
 			"ResetTheme": "reset Theme"
 		}
+	},
+	"GCodeViewer":{
+		"Title" : "G-Code Viewer",
+		"LoadLocal": "Load Local File",
+		"ResetCamera": "Reset Camera"
 	}
 }
