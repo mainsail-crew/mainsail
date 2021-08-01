@@ -148,18 +148,31 @@
                 <v-container class="py-0">
                     <v-row class="text-center py-5" align="center">
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
-                            <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            <template v-if="live_velocity !== null">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div v-bind="attrs" v-on="on">
+                                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                            <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
+                                        </div>
+                                    </template>
+                                    <span>{{ $t("Panels.StatusPanel.Requested") }}: {{ requested_speed+" mm/s" }}</span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else>
+                                <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            </template>
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <div v-bind="attrs" v-on="on">
                                         <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
-                                        <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                        <span class="d-block text-center text-no-wrap">{{ live_flow+" mm&sup3;/s" }}</span>
                                     </div>
                                 </template>
-                                <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow.maxValue ? maxFlow.maxValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow ? maxFlow+" mm&sup3;/s" : "--" }}</span>
                             </v-tooltip>
                         </v-col>
                         <v-col class="col-3 pa-0">
@@ -265,13 +278,7 @@ import VueLoadImage from "vue-load-image"
     VueLoadImage
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
-    maxFlow = {
-        intervalTimer: null,
-        lastExtruderPos: 0,
-        lastTime: 0,
-        lastValue: 0,
-        maxValue: 0,
-    }
+    maxFlow = 0
 
     get current_filename() {
         return this.$store.state.printer.print_stats?.filename ?? ""
@@ -377,6 +384,26 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.toolbarButtons.filter((button) => {
             return button.status.includes(this.printer_state)
         })
+    }
+
+    get live_velocity() {
+        return Math.abs(this.$store.state.printer.motion_report?.live_velocity?.toFixed(0)) ?? null
+    }
+
+    get live_extruder_velocity() {
+        const live_extruder_velocity = this.$store.state.printer.motion_report?.live_extruder_velocity ?? null
+        if (live_extruder_velocity === null) return null
+
+        return live_extruder_velocity > 0 ? live_extruder_velocity : 0
+    }
+
+    get live_flow() {
+        if (this.live_extruder_velocity === null) return null
+
+        const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+        const currentFlow = filamentCrossSection * this.live_extruder_velocity
+
+        return currentFlow?.toFixed(1)
     }
 
     get requested_speed() {
@@ -533,49 +560,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
     }
 
-    calcMaxFlow() {
-        const newExtruderPos = parseFloat(this.filament_used)
+    @Watch('live_flow')
+    live_flowChanged(newVal) {
+        newVal = parseFloat(newVal)
 
-        if (
-            this.maxFlow.lastExtruderPos &&
-            this.maxFlow.lastExtruderPos < newExtruderPos &&
-            this.maxFlow.lastTime
-        ) {
-            const timeDiff = (new Date().getTime() - this.maxFlow.lastTime) / 1000
-            const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
-            const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
-
-            if (timeDiff < 5000) {
-                this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
-
-                if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
-            }
-        }
-
-        this.maxFlow.lastExtruderPos = newExtruderPos
-        this.maxFlow.lastTime = new Date().getTime()
-    }
-
-    created() {
-        this.maxFlow.intervalTimer = setInterval(() => {
-            this.calcMaxFlow()
-        }, 3000)
-    }
-
-    beforeDestroy() {
-        if (this.maxFlow.intervalTimer) {
-            clearInterval(this.maxFlow.intervalTimer)
-            this.maxFlow.intervalTimer = null
-        }
-    }
-
-    @Watch('printerState')
-    printerStateChange(newVal) {
-        if (['complete', 'cancel', 'error', 'standby'].includes(newVal)) {
-            this.maxFlow.lastValue = 0
-            this.maxFlow.maxValue = 0
-            this.maxFlow.lastTime = 0
-        }
+        if (newVal && this.maxFlow < newVal) this.maxFlow = newVal
     }
 }
 </script>
