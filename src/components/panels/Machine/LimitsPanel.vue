@@ -5,52 +5,52 @@
                 <span class="subheading"><v-icon left>mdi-speedometer</v-icon>{{ $t('Machine.LimitsPanel.MachineLimits')}}</span>
             </v-toolbar-title>
         </v-toolbar>
-        <tool-slider
-            :label="$t('Machine.LimitsPanel.Velocity')"
-            unit="mm/s"
-            :target="current_velocity"
-            :max="max_velocity"
-            :default-value="max_velocity"
-            :step="50"
-            :dynamic-range="true"
-            command="SET_VELOCITY_LIMIT"
-            attribute-name="VELOCITY="
-        ></tool-slider>
-        <v-divider></v-divider>
-        <tool-slider
-            :label="$t('Machine.LimitsPanel.Acceleration')"
-            unit="mm/s²"
-            :target="current_accel"
-            :max="max_accel"
-            :default-value="max_accel"
-            :step="100"
-            :dynamic-range="true"
-            command="SET_VELOCITY_LIMIT"
-            attribute-name="ACCEL="
-        ></tool-slider>
-        <v-divider></v-divider>
-        <tool-slider
-            :label="$t('Machine.LimitsPanel.Deceleration')"
-            unit="mm/s²" :target="current_accel_to_decel"
-            :max="max_accel_to_decel"
-            :default-value="max_accel_to_decel"
-            :step="100"
-            :dynamic-range="true"
-            command="SET_VELOCITY_LIMIT"
-            attribute-name="ACCEL_TO_DECEL="
-        ></tool-slider>
-        <v-divider></v-divider>
-        <tool-slider
-            :label="$t('Machine.LimitsPanel.SquareCornerVelocity')"
-            unit="mm/s"
-            :target="current_square_corner_velocity"
-            :max="max_square_corner_velocity"
-            :default-value="max_square_corner_velocity"
-            :step="1"
-            :dynamic-range="true"
-            command="SET_VELOCITY_LIMIT"
-            attribute-name="SQUARE_CORNER_VELOCITY="
-        ></tool-slider>
+        <v-card-text>
+            <v-row>
+                <v-col class="col-6">
+                    <machine-limits-input
+                        :label="$t('Machine.LimitsPanel.Velocity')"
+                        :target="current_velocity"
+                        :max="max_velocity"
+                        :default-value="max_velocity"
+                        unit="mm/s"
+                        attribute-name="VELOCITY"
+                    ></machine-limits-input>
+                </v-col>
+                <v-col class="col-6">
+                    <machine-limits-input
+                        :label="$t('Machine.LimitsPanel.SquareCornerVelocity')"
+                        :target="current_square_corner_velocity"
+                        :max="max_square_corner_velocity"
+                        :default-value="max_square_corner_velocity"
+                        unit="mm/s"
+                        attribute-name="SQUARE_CORNER_VELOCITY"
+                    ></machine-limits-input>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="col-6">
+                    <machine-limits-input
+                        :label="$t('Machine.LimitsPanel.Acceleration')"
+                        :target="current_accel"
+                        :max="max_accel"
+                        :default-value="max_accel"
+                        unit="mm/s²"
+                        attribute-name="ACCEL"
+                    ></machine-limits-input>
+                </v-col>
+                <v-col class="col-6">
+                    <machine-limits-input
+                        :label="$t('Machine.LimitsPanel.Deceleration')"
+                        :target="current_accel_to_decel"
+                        :max="max_accel_to_decel"
+                        :default-value="max_accel_to_decel"
+                        unit="mm/s²"
+                        attribute-name="ACCEL_TO_DECEL"
+                    ></machine-limits-input>
+                </v-col>
+            </v-row>
+        </v-card-text>
     </v-card>
 </template>
 
@@ -60,8 +60,9 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base.ts'
 import ToolSlider from '@/components/inputs/ToolSlider'
+import MachineLimitsInput from '@/components/inputs/MachineLimitsInput'
 @Component({
-    components: {ToolSlider}
+    components: {MachineLimitsInput, ToolSlider}
 })
 export default class LimitsPanel extends Mixins(BaseMixin) {
     
