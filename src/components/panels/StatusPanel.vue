@@ -1,14 +1,6 @@
-<style scoped>
-    .vertical_align_center {
-        margin: auto 0;
-    }
-
-    .statusPanel-image-preview {
-        width: 100%;
-    }
-
-    .v-btn.minwidth-0 {
-        min-width: auto !important;
+<style lang="scss" scoped>
+    .statusPanel-big-thumbnail {
+        transition: height 0.25s ease-out;
     }
 </style>
 
@@ -59,9 +51,13 @@
         <v-card-text class="px-0 py-0 content">
             <template v-if="boolBigThumbnail">
                 <v-img
-                    height="250px"
                     :src="thumbnailBig"
-                    class="d-flex align-end"
+                    tabindex="-1"
+                    class="d-flex align-end statusPanel-big-thumbnail"
+                    ref="bigThumbnail"
+                    height="200"
+                    @focus="focusBigThumbnail"
+                    @blur="blurBigThumbnail"
                 >
                     <v-card-title class="white--text py-2 px-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
                         <v-row>
@@ -279,6 +275,10 @@ import VueLoadImage from "vue-load-image"
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
+
+    refs = {
+        bigThumbnail: HTMLDivElement
+    }
 
     get current_filename() {
         return this.$store.state.printer.print_stats?.filename ?? ""
@@ -512,6 +512,36 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return ""
     }
 
+    get thumbnailBigHeight() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail && 'height' in thumbnail) {
+                return thumbnail.height
+            }
+        }
+
+        return 200
+    }
+
+    get thumbnailBigWidth() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail && 'width' in thumbnail) {
+                return thumbnail.width
+            }
+        }
+
+        return 300
+    }
+
     get boolBigThumbnail() {
         const setting = this.$store.state.gui.dashboard.boolBigThumbnail ?? true
 
@@ -565,6 +595,35 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         newVal = parseFloat(newVal)
 
         if (newVal && this.maxFlow < newVal) this.maxFlow = newVal
+    }
+
+    focusBigThumbnail() {
+        if (this.$refs.bigThumbnail) {
+            const clientWidth = this.$refs.bigThumbnail.$el.clientWidth
+            const thumbnailWidth = this.thumbnailBigWidth
+            const factor = clientWidth / thumbnailWidth
+
+            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed()+"px"
+        }
+    }
+
+    blurBigThumbnail() {
+        if (this.$refs.bigThumbnail) {
+            this.$refs.bigThumbnail.$el.style.height = "200px"
+        }
+    }
+
+    onResize() {
+        const isFocused = (document.activeElement === this.$refs.bigThumbnail?.$el)
+        if (isFocused) this.focusBigThumbnail()
+    }
+
+    created() {
+        window.addEventListener('resize', this.onResize);
+    }
+
+    destroyed() {
+        window.removeEventListener('resize', this.onResize);
     }
 }
 </script>
