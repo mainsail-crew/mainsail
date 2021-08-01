@@ -34,16 +34,6 @@
                     slot="activator" class="nav-link" exact :to="category.path" @click.prevent
                     v-if="showInNavi(category)">
                     <v-icon>mdi-{{ category.icon }}</v-icon>
-                    <v-icon
-                        small
-                        color="warning"
-                        style="
-                                        top: 11px;
-                                        left: 32px;
-                                        position: absolute;
-                                    "
-                        v-if="category.title === 'Settings' && isUpdateAvailable"
-                    >mdi-progress-upload</v-icon>
                     <span class="nav-title">{{ $t(`Router.${category.title}`) }}</span>
                     <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
                 </router-link>
