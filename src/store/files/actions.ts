@@ -64,7 +64,8 @@ export const actions: ActionTree<FileState, RootState> = {
 					commit('setCreateDir', {
 						item: {
 							path: path.length ? path+"/"+dir.dirname : dir.dirname,
-							root: root
+							root: root,
+							modified: dir.modified * 1000
 						}
 					})
 
