@@ -13,7 +13,7 @@ description: >-
 
 ## Setup
 Make a copy of the `.env.development.local.example` and omit the .example.
-In the new file edit it to refect your desired printer:
+In the new file edit it to reflect your desired printer:
 ```dotenv
 #for your printer with moonraker running on 192.168.0.15
 VUE_APP_HOSTNAME=192.168.0.15
