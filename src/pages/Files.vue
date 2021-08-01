@@ -294,6 +294,10 @@
                 <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
+				<v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+					<v-icon class="mr-1">mdi-video-3d</v-icon>
+					{{ $t('Files.View3D') }}
+				</v-list-item>
             </v-list>
         </v-menu>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
@@ -358,6 +362,7 @@ import axios from "axios";
 import { validGcodeExtensions } from "@/store/variables"
 import {findDirectory, formatFilesize, formatDate, sortFiles} from "@/plugins/helpers";
 import {FileStateFile} from "@/store/files/types";
+import router from '@/plugins/router';
 
 interface draggingFile {
     status: boolean
@@ -1081,5 +1086,9 @@ export default class PageFiles extends Mixins(BaseMixin) {
             if (headerElement) headerElement.visible = false
         })
     }
+
+	view3D(item: FileStateFile) {
+		router.push({path: '/viewer', query: {filename: this.currentPath + '/' + item.filename}});
+	}
 }
 </script>
