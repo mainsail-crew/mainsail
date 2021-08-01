@@ -568,6 +568,13 @@
 	"GCodeViewer":{
 		"Title" : "G-Code Viewer",
 		"LoadLocal": "Load Local File",
-		"ResetCamera": "Reset Camera"
+		"ResetCamera": "Reset Camera",
+		"RenderQuality" : "Render Quality",
+		"Low" : "Low",
+		"Medium" : "Medium",
+		"High" : "High",
+		"Ultra" : "Ultra",
+		"Max" : "Max",
+		"ForceLineRendering":"Force Line Rendering"
 	}
 }
