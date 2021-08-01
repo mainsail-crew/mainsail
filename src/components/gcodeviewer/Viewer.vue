@@ -4,12 +4,10 @@
 			<v-col cols="2">
 				<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
 				<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
-				<v-select class="mt-1" :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach item-text="label" v-model="renderQuality"></v-select>
-				<v-checkbox v-model="forceLineRendering" :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
+				<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
+				<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
 			</v-col>
-			<v-col cols="10">
-				<canvas class="viewer" ref="viewerCanvas"></canvas>
-			</v-col>
+			<v-col cols="10" ref="viewerCanvasContainer"></v-col>
 		</v-row>
 		<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
 	</div>
@@ -20,12 +18,14 @@ import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator';
 import BaseMixin from '../mixins/base';
 import GCodeViewer from '@sindarius/gcodeviewer';
 let viewer;
+let canvasBackup = null;
 
 @Component
 export default class Viewer extends Mixins(BaseMixin) {
 	isBusy = false;
 	loading = false;
 	forceLineRendering = false;
+	loadedFile = '';
 
 	renderQualities = [
 		{label: this.$t('GCodeViewer.Low'), value: 2},
@@ -38,31 +38,41 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Prop({type: String, default: '', required: false}) filename;
 
-	@Ref('viewerCanvas') viewerCanvas;
-
 	@Ref('fileInput') fileInput;
 
+	@Ref('viewerCanvasContainer') viewerCanvasContainer;
+
 	mounted() {
-		viewer = new GCodeViewer(this.viewerCanvas);
-		viewer.init();
-		viewer.setBackgroundColor('#121212');
-		viewer.setCursorVisiblity(false);
-		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
+		if (canvasBackup === null) {
+			let canvasElement = document.createElement('canvas');
+			canvasElement.className = 'viewer';
+			this.viewerCanvasContainer.appendChild(canvasElement);
 
-		window.addEventListener('resize', () => {
-			this.$nextTick(() => {
-				this.resize();
+			canvasBackup = canvasElement;
+
+			viewer = new GCodeViewer(canvasElement);
+			viewer.init();
+			viewer.setBackgroundColor('#121212');
+			viewer.setCursorVisiblity(false);
+			viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
+
+			window.addEventListener('resize', () => {
+				this.$nextTick(() => {
+					this.resize();
+				});
 			});
-		});
 
-		if (this.$route.query.filename) {
-			this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
+			if (this.$route.query.filename) {
+				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
+			}
+		} else {
+			if (![this.loadedFile, '', null, undefined].includes(this.$route.query.filename)) {
+				this.loadedFile = this.$route.query.filename;
+				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
+			}
+
+			this.viewerCanvasContainer.appendChild(canvasBackup);
 		}
-	}
-	beforeDestroy() {
-		//Add a dispose call since the context is not maintianed.
-		viewer.dispose();
-		viewer = null;
 	}
 
 	chooseFile() {
@@ -80,6 +90,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 			await viewer.processFile(blob);
 		});
 		this.loading = true;
+		this.loadedFile = e.target.files[0].name;
 		reader.readAsText(e.target.files[0]);
 		e.target.value = '';
 	}
@@ -114,7 +125,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	@Watch('forceLineRendering')
-	forceLineRenderingChanged(newVal){
+	forceLineRenderingChanged(newVal) {
 		viewer.gcodeProcessor.updateForceWireMode(newVal);
 		this.reloadViewer();
 	}
