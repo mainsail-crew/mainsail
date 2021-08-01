@@ -69,7 +69,7 @@ const routes: AppRoute[] = [
     },
     {
         title: "Machine",
-        path: '/machine',
+        path: '/config',
         icon: 'wrench',
         component: Machine,
         alwaysShow: true,
@@ -81,7 +81,7 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: false,
         path: '/settings/machine',
-        redirect: '/machine'
+        redirect: '/config'
     }
 ]
 
