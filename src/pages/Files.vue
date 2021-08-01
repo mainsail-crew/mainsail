@@ -362,7 +362,6 @@ import axios from "axios";
 import { validGcodeExtensions } from "@/store/variables"
 import {findDirectory, formatFilesize, formatDate, sortFiles} from "@/plugins/helpers";
 import {FileStateFile} from "@/store/files/types";
-import router from '@/plugins/router';
 
 interface draggingFile {
     status: boolean
@@ -1088,7 +1087,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
 	view3D(item: FileStateFile) {
-		router.push({path: '/viewer', query: {filename: this.currentPath + '/' + item.filename}});
+		this.$router.push({path: '/viewer', query: {filename: this.currentPath + '/' + item.filename}});
 	}
 }
 </script>
