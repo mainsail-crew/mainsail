@@ -39,14 +39,14 @@
 			"TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
 			"TitlePreviouslyThrottled": "Previously Throttled",
 			"TitlePreviouslyTemperatureLimited": "Previously Temperature Limited",
-			"TooltipUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
-			"TooltipFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
-			"TooltipCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
-			"TooltipTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
-			"TooltipPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
-			"TooltipPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
-			"TooltipPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
-			"TooltipPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
+			"DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
+			"DescriptionFrequencyCapped": "rPi ARM max frequency is currently limited to 1.2 GHz.",
+			"DescriptionCurrentlyThrottled": "rPi ARM core(s) are currently throttled down.",
+			"DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
+			"DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
+			"DescriptionPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
+			"DescriptionPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
+			"DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
 		}
 	},
     "ConnectionDialog": {
@@ -76,14 +76,12 @@
 	"Router": {
 		"Dashboard": "Dashboard",
 		"Printers": "Printers",
-		"Settings": "Settings",
 		"Webcam": "Webcam",
 		"Console": "Console",
 		"Heightmap": "Heightmap",
 		"G-Code Files": "G-Code Files",
 		"History": "History",
-		"Machine": "Machine",
-		"Interface": "Interface"
+		"Machine": "Machine"
 	},
 	"Editor": {
 		"Minimap": "Show minimap",
@@ -149,14 +147,10 @@
 		"SuccessfullyDeleted": "Successfully deleted {filename}."
 	},
 	"Console": {
-		"send": "send",
 		"SetupConsole": "Setup Console",
 		"SendCode": "Send code...",
 		"Empty": "Empty",
 		"HideTemperatures": "Hide temperatures",
-		"CustomFilters": "Custom filters",
-		"Date": "Date",
-		"Event": "Event",
 		"CommandList": "Command list"
 	},
 	"Heightmap": {
@@ -249,7 +243,6 @@
 			"Z": "Z",
 			"PleaseConfigureSteps": "Please configure steps",
 			"SettingsInterfaceControl": "Settings > Interface > Control",
-			"Home": "Home",
 			"FeedAmountIn": "Feed amount in",
 			"FeedrateIn": "Feedrate in",
 			"Retract": "Retract",
@@ -271,10 +264,7 @@
 			"Console": "Console",
 			"SetupConsole": "Setup Console",
 			"HideTemperatures": "Hide temperatures",
-			"CustomFilters": "Custom filters",
-			"SendCode": "Send code...",
-			"Send": "Send",
-			"Empty": "Empty"
+			"SendCode": "Send code..."
 		},
 		"MinSettingsPanel": {
 			"MissingConfiguration": "Missing configuration",
@@ -362,7 +352,8 @@
 			"Webcam": "Webcam",
 			"FPS": "FPS",
 			"All": "All",
-			"UnknownWebcamService": "Unknown Webcam Service"
+			"UnknownWebcamService": "Unknown Webcam Service",
+			"UrlNotAvailable": "URL not available"
 		},
 		"ZOffsetPanel": {
 			"ZOffset": "Z-Offset",
@@ -525,15 +516,13 @@
 			"Console": "Console",
 			"ShowOnDashboard": "Show on dashboard",
 			"HideTemperatures": "Hide temperatures",
-			"CustomFilters": "Custom filter",
 			"CreateHeadline": "Create filter",
 			"Name": "Name",
 			"Regex": "Regex",
 			"StoreButton": "Store filter",
 			"UpdateButton": "Update filter",
 			"EditHeadline": "Edit filter",
-			"AddFilter": "add filter",
-			"Rules": "Rules"
+			"AddFilter": "add filter"
 		},
 		"PresetsTab": {
 			"PreheatPresets": "Preheat Presets",
@@ -560,8 +549,7 @@
 		"ThemeTab": {
 			"Theme": "Theme",
 			"Logo": "Logo",
-			"Primary": "Primary",
-			"ResetTheme": "reset Theme"
+			"Primary": "Primary"
 		}
 	}
 }

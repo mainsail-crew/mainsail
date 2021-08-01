@@ -12,7 +12,7 @@
         </div>
         <div slot="error" class="text-center py-5">
             <v-icon x-large>mdi-webcam-off</v-icon>
-            <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamPanel.UrlNotAvailable') }}</div>
+            <div class="subtitle-1 mt-2">{{ $t('Panels.WebcamPanel.UrlNotAvailable') }}</div>
         </div>
     </vue-load-image>
 </template>
