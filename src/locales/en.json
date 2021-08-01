@@ -317,6 +317,7 @@
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "ReprintJob": "Reprint job",
+            "Requested": "Requested",
             "Speed": "Speed",
             "Flow": "Flow",
             "Max": "max",
