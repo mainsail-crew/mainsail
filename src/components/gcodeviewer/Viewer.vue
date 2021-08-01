@@ -4,6 +4,8 @@
 			<v-col cols="2">
 				<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
 				<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
+				<v-select class="mt-1" :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach item-text="label" v-model="renderQuality"></v-select>
+				<v-checkbox v-model="forceLineRendering" :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
 			</v-col>
 			<v-col cols="10">
 				<canvas class="viewer" ref="viewerCanvas"></canvas>
@@ -14,7 +16,7 @@
 </template>
 
 <script>
-import {Component, Mixins, Prop, Ref} from 'vue-property-decorator';
+import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator';
 import BaseMixin from '../mixins/base';
 import GCodeViewer from '@sindarius/gcodeviewer';
 let viewer;
@@ -23,6 +25,16 @@ let viewer;
 export default class Viewer extends Mixins(BaseMixin) {
 	isBusy = false;
 	loading = false;
+	forceLineRendering = false;
+
+	renderQualities = [
+		{label: this.$t('GCodeViewer.Low'), value: 2},
+		{label: this.$t('GCodeViewer.Medium'), value: 3},
+		{label: this.$t('GCodeViewer.High'), value: 4},
+		{label: this.$t('GCodeViewer.Ultra'), value: 5},
+		{label: this.$t('GCodeViewer.Max'), value: 6},
+	];
+	renderQuality = this.renderQualities[2];
 
 	@Prop({type: String, default: '', required: false}) filename;
 
@@ -35,6 +47,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.init();
 		viewer.setBackgroundColor('#121212');
 		viewer.setCursorVisiblity(false);
+		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
 
 		window.addEventListener('resize', () => {
 			this.$nextTick(() => {
@@ -80,12 +93,30 @@ export default class Viewer extends Mixins(BaseMixin) {
 		});
 	}
 
+	async reloadViewer() {
+		await viewer.reload();
+	}
+
 	resize() {
 		//viewer.resize();
 	}
 
 	resetCamera() {
 		viewer.resetCamera();
+	}
+
+	@Watch('renderQuality')
+	renderQualityChanged(newVal) {
+		if (viewer.renderQuality !== newVal) {
+			viewer.updateRenderQuality(newVal);
+			this.reloadViewer();
+		}
+	}
+
+	@Watch('forceLineRendering')
+	forceLineRenderingChanged(newVal){
+		viewer.gcodeProcessor.updateForceWireMode(newVal);
+		this.reloadViewer();
 	}
 }
 </script>
@@ -94,6 +125,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 .viewer {
 	width: 100%;
 	height: 100%;
-	border: 1px solid #3F3F3F
+	border: 1px solid #3f3f3f;
 }
 </style>
