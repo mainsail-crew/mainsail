@@ -65,7 +65,6 @@ import {Component, Mixins} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base"
 import {formatFilesize} from "@/plugins/helpers";
 import Codemirror from "@/components/inputs/Codemirror.vue";
-import VueI18n from "vue-i18n";
 @Component({
     components: {Codemirror}
 })
@@ -119,7 +118,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get snackbarHeadline() {
-        let directionUppercase = VueI18n.t("Files.Downloading")
+        let directionUppercase = this.$t("Files.Downloading")
         if (this.loaderProgress.direction) {
             directionUppercase = this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
         }
