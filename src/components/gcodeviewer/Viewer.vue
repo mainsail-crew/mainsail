@@ -7,7 +7,11 @@
 				<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
 				<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
 			</v-col>
-			<v-col cols="10" ref="viewerCanvasContainer"></v-col>
+			<v-col  cols="10" ref="viewerCanvasContainer">
+				<v-progress-linear :value="loadingPercent" height="15" rounded v-show="loading" color="#d41216">
+					<span class="progress-text">{{loadingPercent}}%</span>
+				</v-progress-linear>
+			</v-col>
 		</v-row>
 		<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
 	</div>
@@ -26,6 +30,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	loading = false;
 	forceLineRendering = false;
 	loadedFile = '';
+	loadingPercent = 0;
 
 	renderQualities = [
 		{label: this.$t('GCodeViewer.Low'), value: 2},
@@ -47,25 +52,15 @@ export default class Viewer extends Mixins(BaseMixin) {
 			let canvasElement = document.createElement('canvas');
 			canvasElement.className = 'viewer';
 			this.viewerCanvasContainer.appendChild(canvasElement);
-
 			canvasBackup = canvasElement;
-
-			viewer = new GCodeViewer(canvasElement);
-			viewer.init();
-			viewer.setBackgroundColor('#121212');
-			viewer.setCursorVisiblity(false);
-			viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
-
-			window.addEventListener('resize', () => {
-				this.$nextTick(() => {
-					this.resize();
-				});
-			});
+			this.viewerInit(canvasElement);
 
 			if (this.$route.query.filename) {
 				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
 			}
 		} else {
+			console.log(this.loadedFile);
+			console.log(this.$route.query.filename);
 			if (![this.loadedFile, '', null, undefined].includes(this.$route.query.filename)) {
 				this.loadedFile = this.$route.query.filename;
 				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
@@ -73,6 +68,39 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 			this.viewerCanvasContainer.appendChild(canvasBackup);
 		}
+		this.registerProgressCallback();
+	}
+
+	viewerInit(element) {
+		viewer = new GCodeViewer(element);
+		viewer.init();
+		viewer.setBackgroundColor('#121212');
+		viewer.setCursorVisiblity(false);
+		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
+
+
+		window.addEventListener('resize', () => {
+			this.$nextTick(() => {
+				this.resize();
+			});
+		});
+	}
+
+	registerProgressCallback(){
+		viewer.gcodeProcessor.loadingProgressCallback = (progress) => {
+			console.log(progress);
+			this.loadingPercent = Math.ceil(progress * 100);
+			if (this.loadingPercent > 99) {
+				this.loading = false;
+			} else {
+				this.loading = true;
+			}
+		};
+
+	}
+
+	beforeDestroy(){
+		viewer.gcodeProcessor.loadingProgressCallback = null;
 	}
 
 	chooseFile() {
@@ -88,18 +116,18 @@ export default class Viewer extends Mixins(BaseMixin) {
 			const blob = event.target.result;
 			// Do something with result
 			await viewer.processFile(blob);
+			this.loading = false;
 		});
-		this.loading = true;
 		this.loadedFile = e.target.files[0].name;
 		reader.readAsText(e.target.files[0]);
 		e.target.value = '';
 	}
 
 	async loadFile(filename) {
-		this.loading = true;
-		fetch(filename).then(function (response) {
-			response.text().then(async function (text) {
+		fetch(filename).then((response) => {
+			response.text().then(async (text)  => {
 				await viewer.processFile(text);
+				this.loading = false;
 			});
 		});
 	}
@@ -138,4 +166,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 	height: 100%;
 	border: 1px solid #3f3f3f;
 }
+
+.progress-text {
+	font-size:small
+}
+
+
+
+
 </style>
