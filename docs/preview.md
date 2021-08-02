@@ -28,7 +28,7 @@ Due to the major changes we will probably jump directly to **Mainsail 2000** ins
 ![logo](/assets/img/preview/menu2k.gif)
 
 # Easy to customize
-Throw your own wallaper in the folder and you are ready to go.
+Throw your own wallpaper in the folder and you are ready to go.
 
 ![logo](/assets/img/preview/Wallpaper2k.png)
 
@@ -40,3 +40,5 @@ Mainsails new smart assistant *Clippy* is always there to help and advise.
 He may be receiving support from *Wizard* in the near future, who could help you with your printing problems.
 
 ![logo](/assets/img/preview/Merlin2k.png)
+
+

@@ -13,7 +13,7 @@ Our recommended way to install Mainsail on a Raspberry Pi is to use [MainsailOS]
 as pre-packaged disk image. If you are building a custom configuration, you may need to skip
 these instructions and install Mainsail [manually](manual-setup/index.md).
 
-**Note: To avoid confusion, the described way is avialable for Windows, Linux and MacOS because RPI Imager is a Multiplatform Tool!**
+**Note: To avoid confusion, the described way is available for Windows, Linux and MacOS because RPI Imager is a Multiplatform Tool!**
 {: .info}
 
 _Note: It is a good idea to use a premium SDcard from a reputable manufacturer such as Sandisk, Kingston or Samsung. Perfomancewise you should consider using a "A1" or better, marked SDCard. Low end cards will often fail quickly when used in this application  
@@ -48,9 +48,9 @@ Click on "Use Custom"
     ![](../assets/img/setup/rpi-sdcard.png)
     _As an Example..._
 
-6. Now its time to setup things like Hostname, Wifi, Language and more.
+6. Now it's time to setup things like Hostname, Wifi, Language and more.
 It depends on your needs what you setup, but it has to be WIFI and SSH at least!
-Grab your Keybord and hit:
+Grab your keyboard and hit:
 
 
      <kbd>CTRL</kbd><span>+</span><kbd>SHIFT</kbd><span>+</span><kbd>X</kbd>
@@ -61,14 +61,14 @@ Grab your Keybord and hit:
 
     ![](../assets/img/setup/rpi-setup-2.png)
 
-7. As last Step click on "Write", rpi-imager will give you a Warning. Click "YES" to continue...
+7. As the last Step click on "Write", rpi-imager will give you a Warning. Click "YES" to continue...
 
     ![](../assets/img/setup/rpi-warning.png)
 
 8. Watch the Progressbar and wait until you see:
 
     ![](../assets/img/setup/rpi-finished.png)
-    Hit the "Continue" Button and remove safely your SDCard. ( eg. unmount on Linux )
+    Hit the "Continue" Button and safely remove your SDCard. ( eg. unmount on Linux )
 
 9. Insert the SDcard into your Pi, and power on the Pi.
 
@@ -82,9 +82,9 @@ Grab your Keybord and hit:
 
 -   If your network supports bonjour, the pi should show up as `mainsailos.local` or the given Hostname in the Setup Section.
 -   If your network automatically assigns DNS hostnames, it may simply show up as `mainsailos` or accordingly given Hostname.
--   Failing these two options, you may need to check your router's DHCP server, and find out what IP address as been assigned to the device.
+-   Failing these two options, you may need to check your router's DHCP server, and find out what IP address has been assigned to the device.
 
-_**After you're able to get to the Mainsail Webinterface you should consider to Update the System to get latest features. Mainsail, Klipper and Moonraker got an relative fast Development Cycle. We can't provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_  
+_**After you're able to get to the Mainsail Webinterface you should consider updating the System to get the latest features. Mainsail, Klipper and Moonraker got a relatively fast Development Cycle. We can't provide MainsailOS Image with all the latest and greatest. So we encourage you to Update on first Login**_  
 {: .info}
 
 _If you decide to update, you should update in following order:_

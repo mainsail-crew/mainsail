@@ -118,7 +118,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get snackbarHeadline() {
-        let directionUppercase = "Downloading"
+        let directionUppercase = this.$t("Files.Downloading")
         if (this.loaderProgress.direction) {
             directionUppercase = this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
         }
