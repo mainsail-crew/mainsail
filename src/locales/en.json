@@ -357,7 +357,16 @@
 		},
 		"ZOffsetPanel": {
 			"ZOffset": "Z-Offset",
-			"CurrentOffset": "Current Offset"
+			"CurrentOffset": "Current Offset",
+			"Save": "Save",
+			"ToEndstop": "to Endstop",
+			"ToProbe": "to Probe",
+			"SaveInfoHeadline": "Information",
+			"SaveInfoDescription": "The new z-offset has been calculated and registered. Click on SAVE_CONFIG to store the new z-offset in your printer.cfg and restart Klipper.",
+			"SaveInfoDescriptionPrint": "The new Z offset has been calculated and registered. After printing, click on SAVE_CONFIG in the top bar to store it in printer.cfg and restart Klipper.",
+			"SAVE_CONFIG": "SAVE_CONFIG",
+			"Later": "Later",
+			"Ok": "OK"
 		}
 	},
 	"Machine": {
