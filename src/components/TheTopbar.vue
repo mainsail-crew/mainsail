@@ -15,7 +15,7 @@
                 color="primary"
                 class="mr-5 d-none d-sm-flex"
                 v-if="klippyIsConnected && saveConfigPending"
-                :disabled="['printing', 'paused'].includes(printer_state)"
+                :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
                 {{ $t("App.TopBar.SAVE_CONFIG") }}
@@ -134,7 +134,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     get saveConfigPending() {
-        return this.$store.state.printer.configfile?.pending ?? false
+        return this.$store.state.printer.configfile?.save_config_pending ?? false
     }
 
     emergencyStop() {
