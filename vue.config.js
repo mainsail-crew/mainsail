@@ -36,15 +36,6 @@ module.exports = {
 			}
 		}
 	},
-	css: {
-		loaderOptions: {
-			sass: {
-				sassOptions: {
-
-				}
-			}
-		}
-	},
 	pwa: {
 		serviceWorker: false,
 		iconPaths: {

@@ -1,14 +1,6 @@
-<style scoped>
-    .vertical_align_center {
-        margin: auto 0;
-    }
-
-    .statusPanel-image-preview {
-        width: 100%;
-    }
-
-    .v-btn.minwidth-0 {
-        min-width: auto !important;
+<style lang="scss" scoped>
+    .statusPanel-big-thumbnail {
+        transition: height 0.25s ease-out;
     }
 </style>
 
@@ -59,9 +51,13 @@
         <v-card-text class="px-0 py-0 content">
             <template v-if="boolBigThumbnail">
                 <v-img
-                    height="250px"
                     :src="thumbnailBig"
-                    class="d-flex align-end"
+                    tabindex="-1"
+                    class="d-flex align-end statusPanel-big-thumbnail"
+                    ref="bigThumbnail"
+                    height="200"
+                    @focus="focusBigThumbnail"
+                    @blur="blurBigThumbnail"
                 >
                     <v-card-title class="white--text py-2 px-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
                         <v-row>
@@ -148,18 +144,31 @@
                 <v-container class="py-0">
                     <v-row class="text-center py-5" align="center">
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
-                            <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            <template v-if="live_velocity !== null">
+                                <v-tooltip top>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <div v-bind="attrs" v-on="on">
+                                            <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                            <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
+                                        </div>
+                                    </template>
+                                    <span>{{ $t("Panels.StatusPanel.Requested") }}: {{ requested_speed+" mm/s" }}</span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else>
+                                <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
+                            </template>
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <div v-bind="attrs" v-on="on">
                                         <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
-                                        <span class="d-block text-center text-no-wrap">{{ maxFlow.lastValue ? maxFlow.lastValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                        <span class="d-block text-center text-no-wrap">{{ live_flow+" mm&sup3;/s" }}</span>
                                     </div>
                                 </template>
-                                <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow.maxValue ? maxFlow.maxValue.toFixed(1)+" mm&sup3;/s" : "--" }}</span>
+                                <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow ? maxFlow+" mm&sup3;/s" : "--" }}</span>
                             </v-tooltip>
                         </v-col>
                         <v-col class="col-3 pa-0">
@@ -265,12 +274,10 @@ import VueLoadImage from "vue-load-image"
     VueLoadImage
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
-    maxFlow = {
-        intervalTimer: null,
-        lastExtruderPos: 0,
-        lastTime: 0,
-        lastValue: 0,
-        maxValue: 0,
+    maxFlow = 0
+
+    refs = {
+        bigThumbnail: HTMLDivElement
     }
 
     get current_filename() {
@@ -379,6 +386,26 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         })
     }
 
+    get live_velocity() {
+        return Math.abs(this.$store.state.printer.motion_report?.live_velocity?.toFixed(0)) ?? null
+    }
+
+    get live_extruder_velocity() {
+        const live_extruder_velocity = this.$store.state.printer.motion_report?.live_extruder_velocity ?? null
+        if (live_extruder_velocity === null) return null
+
+        return live_extruder_velocity > 0 ? live_extruder_velocity : 0
+    }
+
+    get live_flow() {
+        if (this.live_extruder_velocity === null) return null
+
+        const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+        const currentFlow = filamentCrossSection * this.live_extruder_velocity
+
+        return currentFlow?.toFixed(1)
+    }
+
     get requested_speed() {
         const requested_speed = this.$store.state.printer.gcode_move?.speed ?? 0
         const speed_factor = this.$store.state.printer.gcode_move?.speed_factor ?? 0
@@ -458,7 +485,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                     relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
                 }
 
-                if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+                if (thumbnail && 'relative_path' in thumbnail)
+                    return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+this.current_file.modified
             }
         }
 
@@ -478,11 +506,42 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                     relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
                 }
 
-                if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path
+                if (thumbnail && 'relative_path' in thumbnail)
+                    return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+this.current_file.modified
             }
         }
 
         return ""
+    }
+
+    get thumbnailBigHeight() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail && 'height' in thumbnail) {
+                return thumbnail.height
+            }
+        }
+
+        return 200
+    }
+
+    get thumbnailBigWidth() {
+        if (
+            "thumbnails" in this.current_file &&
+            this.current_file.thumbnails.length
+        ) {
+            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+
+            if (thumbnail && 'width' in thumbnail) {
+                return thumbnail.width
+            }
+        }
+
+        return 300
     }
 
     get boolBigThumbnail() {
@@ -533,49 +592,40 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
     }
 
-    calcMaxFlow() {
-        const newExtruderPos = parseFloat(this.filament_used)
+    @Watch('live_flow')
+    live_flowChanged(newVal) {
+        newVal = parseFloat(newVal)
 
-        if (
-            this.maxFlow.lastExtruderPos &&
-            this.maxFlow.lastExtruderPos < newExtruderPos &&
-            this.maxFlow.lastTime
-        ) {
-            const timeDiff = (new Date().getTime() - this.maxFlow.lastTime) / 1000
-            const filamentDiff = newExtruderPos - this.maxFlow.lastExtruderPos
-            const filamentCrossSection = Math.pow(this.filament_diameter / 2, 2) * Math.PI
+        if (newVal && this.maxFlow < newVal) this.maxFlow = newVal
+    }
 
-            if (timeDiff < 5000) {
-                this.maxFlow.lastValue = filamentCrossSection * filamentDiff / timeDiff
+    focusBigThumbnail() {
+        if (this.$refs.bigThumbnail) {
+            const clientWidth = this.$refs.bigThumbnail.$el.clientWidth
+            const thumbnailWidth = this.thumbnailBigWidth
+            const factor = clientWidth / thumbnailWidth
 
-                if (this.maxFlow.maxValue < this.maxFlow.lastValue) this.maxFlow.maxValue = this.maxFlow.lastValue
-            }
+            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed()+"px"
         }
+    }
 
-        this.maxFlow.lastExtruderPos = newExtruderPos
-        this.maxFlow.lastTime = new Date().getTime()
+    blurBigThumbnail() {
+        if (this.$refs.bigThumbnail) {
+            this.$refs.bigThumbnail.$el.style.height = "200px"
+        }
+    }
+
+    onResize() {
+        const isFocused = (document.activeElement === this.$refs.bigThumbnail?.$el)
+        if (isFocused) this.focusBigThumbnail()
     }
 
     created() {
-        this.maxFlow.intervalTimer = setInterval(() => {
-            this.calcMaxFlow()
-        }, 3000)
+        window.addEventListener('resize', this.onResize);
     }
 
-    beforeDestroy() {
-        if (this.maxFlow.intervalTimer) {
-            clearInterval(this.maxFlow.intervalTimer)
-            this.maxFlow.intervalTimer = null
-        }
-    }
-
-    @Watch('printerState')
-    printerStateChange(newVal) {
-        if (['complete', 'cancel', 'error', 'standby'].includes(newVal)) {
-            this.maxFlow.lastValue = 0
-            this.maxFlow.maxValue = 0
-            this.maxFlow.lastTime = 0
-        }
+    destroyed() {
+        window.removeEventListener('resize', this.onResize);
     }
 }
 </script>

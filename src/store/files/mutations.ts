@@ -200,9 +200,9 @@ export const mutations: MutationTree<FileState> = {
 			parent.push({
 				isDirectory: true,
 				filename: dirname,
-				modified: new Date(),
+				modified: payload.item.modified ?? new Date(),
 				childrens: [],
-			});
+			})
 		}
 	},
 
