@@ -7,8 +7,8 @@
 				<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
 				<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
 			</v-col>
-			<v-col  cols="10" ref="viewerCanvasContainer">
-				<v-progress-linear :value="loadingPercent" height="15" rounded v-show="loading" color="#d41216">
+			<v-col cols="10" ref="viewerCanvasContainer">
+				<v-progress-linear :value="loadingPercent" color="#d41216" height="15" rounded v-show="loading">
 					<span class="progress-text">{{loadingPercent}}%</span>
 				</v-progress-linear>
 			</v-col>
@@ -59,8 +59,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
 			}
 		} else {
-			console.log(this.loadedFile);
-			console.log(this.$route.query.filename);
 			if (![this.loadedFile, '', null, undefined].includes(this.$route.query.filename)) {
 				this.loadedFile = this.$route.query.filename;
 				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
@@ -78,7 +76,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.setCursorVisiblity(false);
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
 
-
 		window.addEventListener('resize', () => {
 			this.$nextTick(() => {
 				this.resize();
@@ -86,9 +83,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 		});
 	}
 
-	registerProgressCallback(){
+	registerProgressCallback() {
 		viewer.gcodeProcessor.loadingProgressCallback = (progress) => {
-			console.log(progress);
 			this.loadingPercent = Math.ceil(progress * 100);
 			if (this.loadingPercent > 99) {
 				this.loading = false;
@@ -96,10 +92,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 				this.loading = true;
 			}
 		};
-
 	}
 
-	beforeDestroy(){
+	beforeDestroy() {
 		viewer.gcodeProcessor.loadingProgressCallback = null;
 	}
 
@@ -125,7 +120,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	async loadFile(filename) {
 		fetch(filename).then((response) => {
-			response.text().then(async (text)  => {
+			response.text().then(async (text) => {
 				await viewer.processFile(text);
 				this.loading = false;
 			});
@@ -134,6 +129,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	async reloadViewer() {
 		await viewer.reload();
+		this.loading = false;
 	}
 
 	resize() {
@@ -168,10 +164,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 }
 
 .progress-text {
-	font-size:small
+	font-size: small;
 }
-
-
-
-
 </style>
