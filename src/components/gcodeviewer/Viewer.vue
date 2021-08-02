@@ -92,6 +92,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 				this.loading = true;
 			}
 		};
+
+		if (viewer.lastLoadFailed()) {
+			this.renderQuality = 2;
+			viewer.updateRenderQuality(2);
+			viewer.clearLoadFlag();
+		}
 	}
 
 	beforeDestroy() {
@@ -128,6 +134,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	async reloadViewer() {
+		this.loadingPercent = 0;
 		await viewer.reload();
 		this.loading = false;
 	}
