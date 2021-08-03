@@ -475,7 +475,6 @@
 		},
 		"WebcamTab": {
 			"Webcams": "Webcams",
-			"ShowOnDashboard": "Show on dashboard",
 			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
