@@ -138,7 +138,7 @@
     "TitleCalibrate": "Calibrer nouveau Maillage",
     "NoBedMeshHasBeenLoadedYet": "Aucun profil chargé",
     "Probed": "Mesuré",
-    "Mesh": "Maillage calculé",
+    "Mesh": "Calculé",
     "Scale": "Echelle",
     "Profiles": "Profils",
     "Deleted": "effacé",
@@ -203,7 +203,7 @@
   },
   "Panels": {
     "ControlPanel": {
-      "Controls": "Contrôles",
+      "Headline": "Contrôles",
       "SetupControls": "Réglages",
       "AlternateControls": "Commandes en croix",
       "InvertX": "Inversion X",
@@ -220,8 +220,10 @@
       "FeedAmountIn": "Longueur à extraire",
       "FeedrateIn": "Vitesse d'extrusion",
       "Retract": "Rétractation",
-      "Extrude": "Extrusion",
-      "Macros": "Macros"
+      "Extrude": "Extrusion"
+    },
+    "MacrosPanel": {
+      "Headline": "Macros"
     },
     "FarmPrinterPanel": {
       "WebcamOff": "Arrêt",
@@ -235,7 +237,7 @@
       "MoonrakerCannotConnect": "Moonraker n'arrive pas à se connecter à Klipper"
     },
     "MiniconsolePanel": {
-      "Console": "Console",
+      "Headline": "Console",
       "SetupConsole": "Réglage Console",
       "HideTemperatures": "Cacher températures",
       "SendCode": "Envoyer la commande..."
@@ -243,18 +245,21 @@
     "MinSettingsPanel": {
       "MissingConfiguration": "Configuration absente",
       "IsNotDefinedInConfig": "n'est pas défini dans le fichier de configuration.",
-      "MoreInformation": "plus d'information"
+      "MoreInformation": "plus d'information",
+      "IncludeMainsailCfg": "Soyez sur d'avoir inclus \"mainsail.cfg\" dans votre fichier \"printer.cfg\""
     },
     "MiscellaneousPanel": {
-      "PrintSettings": "Réglages d'impression",
-      "Miscellaneous": "Divers",
-      "SpeedFactor": "Facteur de vitesse",
-      "ExtrusionFactor": "Facteur d'extrusion",
+      "Headline": "Divers",
       "RunoutSensor": {
         "Detected": "détecté",
         "Disabled": "inactif",
         "Empty": "vide"
       }
+    },
+    "PrintsettingsPanel": {
+      "Headline": "Réglages d'impression",
+      "SpeedFactor": "Facteur de vitesse",
+      "ExtrusionFactor": "Facteur d'extrusion"
     },
     "PowerControlPanel": {
       "PowerControl": "Alimentation",
@@ -263,6 +268,7 @@
       "Off": "Arrêt"
     },
     "StatusPanel": {
+      "Headline": "Status",
       "Position": "Position",
       "Absolute": "absolu",
       "Relative": "relatif",
@@ -287,10 +293,11 @@
       "Total": "Total",
       "Slicer": "Trancheur",
       "ETA": "TEA",
-      "Unknown": "Inconnu"
+      "Unknown": "Inconnu",
+      "Requested": "Requis"
     },
     "ToolsPanel": {
-      "Temperatures": "Températures",
+      "Headline": "Températures",
       "Presets": "Préréglages",
       "Cooldown": "Refroidissement",
       "SetupTemperatures": "Réglages Températures",
@@ -315,17 +322,24 @@
       }
     },
     "WebcamPanel": {
-      "Webcam": "Caméra",
+      "Headline": "Caméra",
       "FPS": "Ips",
       "All": "Tous",
       "UnknownWebcamService": "Service Caméra inconnu",
       "UrlNotAvailable": "URL non disponible"
     },
-    "ZOffsetPanel": {
+    "ZoffsetPanel": {
+      "Headline": "Offset Z",
       "CurrentOffset": "Offset actuel",
-      "ZOffset": "Offset Z",
       "Save": "Sauvegarder",
-      "SAVE_CONFIG": "SAVE_CONFIG"
+      "SAVE_CONFIG": "SAVE_CONFIG",
+      "ToEndstop": "jusqu'au fin de course",
+      "ToProbe": "jusqu'à la sonde",
+      "SaveInfoHeadline": "Information",
+      "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur SAVE_CONFIG dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+      "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur SAVE_CONFIG afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+      "Ok": "Ok",
+      "Later": "Plus tard"
     },
     "MoonrakerStatePanel": {
       "DownloadLog": "Téléchargement log",
@@ -381,6 +395,14 @@
     "MacrosTab": {
       "Macros": "Macros",
       "NOMacros": "Pas de macros trouvées"
+    },
+    "DashboardTab": {
+      "Dashboard": "Tableau de bord",
+      "Mobile": "Mobile",
+      "Tablet": "Tablet",
+      "Desktop": "Desktop",
+      "Widescreen": "Widescreen",
+      "ResetLayout": "réinitialisation de la mise en page"
     },
     "PresetsTab": {
       "AddPreset": "ajouter préréglage",
@@ -478,7 +500,7 @@
       "SetupCurrentList": "Ajuster la liste",
       "ShowFile": "Afficher le fichier",
       "Total": "Total",
-      "UploadFile": "Mise à jour du fichier",
+      "UploadFile": "Chargement d'un fichier",
       "Uploading": "Téléchargement",
       "Used": "Utilisé"
     },
@@ -505,7 +527,7 @@
       "Frequency": "Fréquence",
       "HostDetails": "Détails hôte",
       "LastStats": "Dern. Stats.",
-      "Load": "Chargement",
+      "Load": "Charge",
       "Memory": "Mémoire",
       "Os": "OS",
       "SystemLoad": "Charge Système",
