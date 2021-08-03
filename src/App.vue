@@ -233,6 +233,11 @@ export default class App extends Mixins(BaseMixin) {
         this.drawFavicon(newVal)
     }
 
+    @Watch('printerIsPrinting')
+    printerIsPrintingChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
     mounted() {
         this.drawFavicon(this.print_percent)
     }
