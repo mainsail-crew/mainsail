@@ -1,13 +1,5 @@
 <template>
-	<v-card>
-		<v-card-title>
-			<v-icon>mdi-video-3d</v-icon>
-			{{ $t('GCodeViewer.Title') }}
-		</v-card-title>
-		<v-card-text>
-			<viewer></viewer>
-		</v-card-text>
-	</v-card>
+	<viewer></viewer>
 </template>
 
 <script lang="ts">

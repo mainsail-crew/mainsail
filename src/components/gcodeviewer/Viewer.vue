@@ -1,21 +1,49 @@
 <template>
-	<div>
-		<v-row>
-			<v-col cols="2">
-				<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
-				<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
-				<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
-				<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
-			</v-col>
-			<v-col cols="10" ref="viewerCanvasContainer">
-				<v-progress-linear :value="loadingPercent" color="#d41216" height="15" rounded v-show="loading">
-					<span class="progress-text">{{loadingPercent}}%</span>
-				</v-progress-linear>
-			</v-col>
-		</v-row>
-		<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
-	</div>
+	<v-card>
+		<v-card-title>
+			<v-icon>mdi-video-3d</v-icon>
+			{{ $t('GCodeViewer.Title') }}
+			<v-spacer></v-spacer>
+			<v-btn @click="tracking=true" v-show="showTrackingButton">Track Print</v-btn>
+		</v-card-title>
+		<v-card-text>
+			<v-row>
+				<v-col cols="2">
+					<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
+					<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
+
+					<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
+					<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
+				</v-col>
+				<v-col cols="10" ref="viewerCanvasContainer">
+					<v-progress-linear :value="loadingPercent" class="disable-transition" color="#d41216" height="15" rounded v-show="loading">
+						<span class="progress-text">{{loadingPercent}}%</span>
+					</v-progress-linear>
+				</v-col>
+			</v-row>
+			<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
+		</v-card-text>
+	</v-card>
 </template>
+
+<!-- Because the viewer lives outside of the components DOM it can't be scoped -->
+<style>
+.viewer {
+	width: 100%;
+	height: 100%;
+	border: 1px solid #3f3f3f;
+}
+</style>
+
+<style scoped>
+.progress-text {
+	font-size: small;
+}
+
+.disable-transition {
+	transition: none !important;
+}
+</style>
 
 <script>
 import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator';
@@ -23,14 +51,17 @@ import BaseMixin from '../mixins/base';
 import GCodeViewer from '@sindarius/gcodeviewer';
 let viewer;
 let canvasBackup = null;
+let loadedFileBackup = '';
+let trackingBackup = false;
 
 @Component
 export default class Viewer extends Mixins(BaseMixin) {
-	isBusy = false;
+	sBusy = false;
 	loading = false;
 	forceLineRendering = false;
-	loadedFile = '';
 	loadingPercent = 0;
+	tracking = trackingBackup;
+	loadedFile = loadedFileBackup //This needs to be set in order for vue tracking and computed values to work properly.
 
 	renderQualities = [
 		{label: this.$t('GCodeViewer.Low'), value: 2},
@@ -46,6 +77,22 @@ export default class Viewer extends Mixins(BaseMixin) {
 	@Ref('fileInput') fileInput;
 
 	@Ref('viewerCanvasContainer') viewerCanvasContainer;
+
+	get filePosition() {
+		return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_position : 0;
+	}
+
+	get sdCardFilePath() {
+		return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_path : '';
+	}
+
+	get currentPosition() {
+		return this.$store.state.printer.motion_report.live_position;
+	}
+
+	get showTrackingButton() {
+		return this.printerIsPrinting && this.sdCardFilePath !== this.loadedFile;
+	}
 
 	mounted() {
 		if (canvasBackup === null) {
@@ -75,6 +122,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.setBackgroundColor('#121212');
 		viewer.setCursorVisiblity(false);
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
+		viewer.setCursorVisiblity(true);
 
 		window.addEventListener('resize', () => {
 			this.$nextTick(() => {
@@ -119,6 +167,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 			await viewer.processFile(blob);
 			this.loading = false;
 		});
+		this.tracking = false;
 		this.loadedFile = e.target.files[0].name;
 		reader.readAsText(e.target.files[0]);
 		e.target.value = '';
@@ -148,29 +197,54 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	@Watch('renderQuality')
-	renderQualityChanged(newVal) {
+	async renderQualityChanged(newVal) {
 		if (viewer.renderQuality !== newVal) {
 			viewer.updateRenderQuality(newVal);
-			this.reloadViewer();
+			await this.reloadViewer();
 		}
 	}
 
 	@Watch('forceLineRendering')
-	forceLineRenderingChanged(newVal) {
+	async forceLineRenderingChanged(newVal) {
 		viewer.gcodeProcessor.updateForceWireMode(newVal);
-		this.reloadViewer();
+		await this.reloadViewer();
+	}
+
+	@Watch('currentPosition')
+	currentPositionChanged(newVal) {
+		let position = [
+			{axes: 'X', position: newVal[0]},
+			{axes: 'Y', position: newVal[1]},
+			{axes: 'Z', position: newVal[2]},
+		];
+		viewer.updateToolPosition(position);
+	}
+
+	@Watch('filePosition')
+	filePositionChanged(newVal) {
+		if (newVal > 0 && this.printerIsPrinting && this.tracking) {
+			viewer.gcodeProcessor.setLiveTracking(true);
+			viewer.gcodeProcessor.updateFilePosition(newVal);
+		} else {
+			viewer.gcodeProcessor.updateFilePosition(0);
+			viewer.gcodeProcessor.setLiveTracking(false);
+		}
+	}
+
+	@Watch('loadedFile')
+	loadedFileChanged(newVal){
+		loadedFileBackup =newVal;  //We need to keep the backup in sync for when component comes out of scope.
+	}
+
+	@Watch('tracking')
+	async trackingChanged(newVal) {
+		trackingBackup = newVal;
+		if (newVal) {
+			this.loadedFile = this.sdCardFilePath;
+			let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '');
+			await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad));
+		}
 	}
 }
 </script>
 
-<style>
-.viewer {
-	width: 100%;
-	height: 100%;
-	border: 1px solid #3f3f3f;
-}
-
-.progress-text {
-	font-size: small;
-}
-</style>
