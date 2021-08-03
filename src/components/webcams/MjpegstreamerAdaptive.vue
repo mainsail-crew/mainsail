@@ -59,7 +59,6 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
 
     visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
-
         if (isVisible) this.refreshFrame()
         else {
             clearTimeout(this.timer)
@@ -126,7 +125,12 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     loadImage(url: string) {
-        return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
+        return new Promise(r => {
+            let image = new Image()
+            image.onload = (() => r(image))
+            image.onerror = (() => setTimeout(this.refreshFrame, 1000))
+            image.src = url
+        });
     }
 }
 </script>

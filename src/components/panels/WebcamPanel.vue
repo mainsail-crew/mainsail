@@ -7,7 +7,7 @@
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">
-                    <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Webcam')}}
+                    <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Headline')}}
                 </span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
