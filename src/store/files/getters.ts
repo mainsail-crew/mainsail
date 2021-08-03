@@ -45,21 +45,19 @@ export const getters: GetterTree<FileState, any> = {
 		return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? null
 	},
 
-	getFavicons: (state, getters, rootState, rootGetters) => {
+	getCustomFavicons: (state, getters) => {
 		const acceptName16 = "favicon-32x32"
 		const acceptName32 = "favicon-32x32"
 		const acceptExtensions = ['png', 'svg']
 
 		const favicon16 = getters['getThemeFileUrl'](acceptName16, acceptExtensions)
-		const favicon16Default = '/img/icons/favicon-16x16.png'
 		const favicon32 = getters['getThemeFileUrl'](acceptName32, acceptExtensions)
-		const favicon32Default = '/img/icons/favicon-32x32.png'
 
 		if (favicon16 && favicon32) return [favicon16, favicon32]
 		else if (favicon16) return [favicon16, favicon16]
 		else if (favicon32) return [favicon32, favicon32]
 
-		return [favicon16Default, favicon32Default]
+		return null
 	},
 
 	getDiskUsage: (state) => (path: string) => {
