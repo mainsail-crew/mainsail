@@ -26,7 +26,7 @@
     <v-card v-if="klipperReadyForGui" class="mb-6">
         <v-toolbar flat dense>
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Temperatures") }}</span>
+                <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Headline") }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">

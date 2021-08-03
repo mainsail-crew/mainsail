@@ -43,4 +43,16 @@ export default class BaseMixin extends Vue {
     get isMobile() {
         return this.$vuetify.breakpoint.mobile
     }
+
+    get isTablet() {
+        return this.$vuetify.breakpoint.smAndUp && !this.isDesktop && !this.isWidescreen
+    }
+
+    get isDesktop() {
+        return this.$vuetify.breakpoint.lgAndUp && !this.isWidescreen
+    }
+
+    get isWidescreen() {
+        return this.$vuetify.breakpoint.xl
+    }
 }

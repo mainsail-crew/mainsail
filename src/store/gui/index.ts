@@ -39,7 +39,51 @@ export const getDefaultState = (): GuiState => {
 				feedamounts: [ 50, 25, 10, 5, 1 ],
 				feedrate: 5,
 				feedrates: [ 60, 30, 15, 5, 1 ],
-			}
+			},
+			mobileLayout: [
+				{ 'name': 'webcam' },
+				{ 'name': 'zoffset' },
+				{ 'name': 'control' },
+				{ 'name': 'printsettings' },
+				{ 'name': 'miscellaneous' },
+				{ 'name': 'tools' },
+				{ 'name': 'miniconsole' },
+			],
+			tabletLayout1: [
+				{ 'name': 'webcam' },
+				{ 'name': 'zoffset' },
+				{ 'name': 'control' },
+				{ 'name': 'printsettings' },
+				{ 'name': 'miscellaneous' },
+			],
+			tabletLayout2: [
+				{ 'name': 'tools' },
+				{ 'name': 'miniconsole' },
+			],
+			desktopLayout1: [
+				{ 'name': 'webcam' },
+				{ 'name': 'zoffset' },
+				{ 'name': 'control' },
+				{ 'name': 'printsettings' },
+				{ 'name': 'miscellaneous' },
+			],
+			desktopLayout2: [
+				{ 'name': 'tools' },
+				{ 'name': 'miniconsole' },
+			],
+			widescreenLayout1: [
+				{ 'name': 'zoffset' },
+				{ 'name': 'control' },
+				{ 'name': 'miscellaneous' },
+			],
+			widescreenLayout2: [
+				{ 'name': 'tools' },
+				{ 'name': 'printsettings' },
+			],
+			widescreenLayout3: [
+				{ 'name': 'webcam' },
+				{ 'name': 'miniconsole' },
+			]
 		},
 		webcam: {
 			selectedCam: "",

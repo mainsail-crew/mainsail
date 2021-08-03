@@ -38,14 +38,9 @@
                     <v-col :class="isMobile ? '' : 'pl-0'">
                         <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')">
                             <v-tabs-items v-model="tabs">
-                                <v-tab-item value="settings-tabs-general"><settings-general-tab></settings-general-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-theme"><settings-theme-tab></settings-theme-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-webcam"><settings-webcam-tab></settings-webcam-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-macros"><settings-macros-tab></settings-macros-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-control"><settings-control-tab></settings-control-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-console"><settings-console-tab></settings-console-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-presets"><settings-presets-tab></settings-presets-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-remote-printers"><settings-remote-printers-tab></settings-remote-printers-tab></v-tab-item>
+                                <v-tab-item v-for="tab in tabTitles" :key="'tab-'+tab.name" :value="'settings-tabs-'+tab.name">
+                                    <component :is="'settings-'+tab.name+'-tab'"></component>
+                                </v-tab-item>
                             </v-tabs-items>
                         </perfect-scrollbar>
                     </v-col>
@@ -68,12 +63,19 @@ import SettingsConsoleTab from "@/components/settings/SettingsConsoleTab.vue";
 import SettingsPresetsTab from "@/components/settings/SettingsPresetsTab.vue";
 import SettingsRemotePrintersTab from "@/components/settings/SettingsRemotePrintersTab.vue";
 import SettingsThemeTab from "@/components/settings/SettingsThemeTab.vue";
+import SettingsDashboardTab from "@/components/settings/SettingsDashboardTab.vue";
 @Component({
     components: {
         SettingsThemeTab,
         SettingsRemotePrintersTab,
         SettingsPresetsTab,
-        SettingsConsoleTab, SettingsControlTab, SettingsMacrosTab, SettingsWebcamTab, SettingsGeneralTab}
+        SettingsConsoleTab,
+        SettingsControlTab,
+        SettingsMacrosTab,
+        SettingsWebcamTab,
+        SettingsGeneralTab,
+        SettingsDashboardTab
+    }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
@@ -90,6 +92,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: 'mdi-palette',
                 name: 'theme',
                 title: this.$t('Settings.ThemeTab.Theme')
+            },
+            {
+                icon: 'mdi-monitor-dashboard',
+                name: 'dashboard',
+                title: this.$t('Settings.DashboardTab.Dashboard')
             },
             {
                 icon: 'mdi-webcam',

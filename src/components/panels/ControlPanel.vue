@@ -25,7 +25,7 @@
         <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
             <v-toolbar flat dense>
                 <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Controls') }}</span>
+                    <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Headline') }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ControlPanel.SetupControls')" left>

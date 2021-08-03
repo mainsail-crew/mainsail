@@ -229,7 +229,7 @@
 	},
 	"Panels": {
 		"ControlPanel": {
-			"Controls": "Controls",
+			"Headline": "Controls",
 			"SetupControls": "Setup Controls",
 			"AlternateControls": "Alternate controls",
 			"InvertX": "Invert X",
@@ -261,7 +261,7 @@
 			"FirmwareRestart": "Firmware Restart"
 		},
 		"MiniconsolePanel": {
-			"Console": "Console",
+			"Headline": "Console",
 			"SetupConsole": "Setup Console",
 			"HideTemperatures": "Hide temperatures",
 			"SendCode": "Send code..."
@@ -272,11 +272,13 @@
 			"IncludeMainsailCfg": "Make sure you include the mainsail.cfg in your printer.cfg file.",
 			"MoreInformation": "more information"
 		},
-		"MiscellaneousPanel": {
-			"PrintSettings": "Print Settings",
-			"Miscellaneous": "Miscellaneous",
+		"PrintsettingsPanel": {
+			"Headline": "Print Settings",
 			"SpeedFactor": "Speed factor",
-			"ExtrusionFactor": "Extrusion factor",
+			"ExtrusionFactor": "Extrusion factor"
+		},
+		"MiscellaneousPanel": {
+			"Headline": "Miscellaneous",
 			"RunoutSensor": {
 				"Disabled": "disabled",
 				"Detected": "detected",
@@ -296,6 +298,7 @@
 			"Off": "Off"
 		},
 		"StatusPanel": {
+			"Headline": "Status",
             "Position": "Position",
             "Absolute": "absolute",
             "Relative": "relative",
@@ -324,7 +327,7 @@
             "Unknown": "Unknown"
 		},
 		"ToolsPanel": {
-			"Temperatures": "Temperatures",
+			"Headline": "Temperatures",
 			"Presets": "Presets",
 			"Cooldown": "Cooldown",
 			"SetupTemperatures": "Setup Temperatures",
@@ -349,14 +352,14 @@
 			}
 		},
 		"WebcamPanel": {
-			"Webcam": "Webcam",
+			"Headline": "Webcam",
 			"FPS": "FPS",
 			"All": "All",
 			"UnknownWebcamService": "Unknown Webcam Service",
 			"UrlNotAvailable": "URL not available"
 		},
-		"ZOffsetPanel": {
-			"ZOffset": "Z-Offset",
+		"ZoffsetPanel": {
+			"Headline": "Z-Offset",
 			"CurrentOffset": "Current Offset",
 			"Save": "Save",
 			"ToEndstop": "to Endstop",
@@ -502,6 +505,9 @@
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
 			"FlipVertically": "Flip webcam vertically"
+		},
+		"DashboardTab": {
+			"Dashboard": "Dashboard"
 		},
 		"MacrosTab": {
 			"Macros": "Macros",
