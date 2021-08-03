@@ -21,270 +21,248 @@
 </style>
 
 <template>
-    <div>
-        <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Controls') }}</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ControlPanel.SetupControls')" left>
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
-                    </template>
-                    <v-list>
+    <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
+        <v-toolbar flat dense>
+            <v-toolbar-title>
+                <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Headline') }}</span>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ControlPanel.SetupControls')" left>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item class="minHeight36">
+                      <v-checkbox v-model="useCross" class="mt-0" hide-details :label="$t('Panels.ControlPanel.AlternateControls')"></v-checkbox>
+                    </v-list-item>
+                    <template v-if="useCross">
                         <v-list-item class="minHeight36">
-                          <v-checkbox v-model="useCross" class="mt-0" hide-details :label="$t('Panels.ControlPanel.AlternateControls')"></v-checkbox>
+                          <v-checkbox v-model="reverseX" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertX')"></v-checkbox>
                         </v-list-item>
-                        <template v-if="useCross">
-                            <v-list-item class="minHeight36">
-                              <v-checkbox v-model="reverseX" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertX')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                              <v-checkbox v-model="reverseY" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertY')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36">
-                              <v-checkbox v-model="reverseZ" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertZ')"></v-checkbox>
-                            </v-list-item>
-                        </template>
-                    </v-list>
-                </v-menu>
-            </v-toolbar>
-            <v-container>
-                <template v-if="useCross">
-                    <v-row>
-                        <v-col :cols="homeCols">
-                            <v-row dense class="mb-1">
-                                <v-col cols="3"></v-col>
-                                <v-col cols="3">
-                                    <v-btn class="btnMinWidthAuto fill-width"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Y'+(reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
-                                    >
-                                        <v-icon>mdi-chevron-up</v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3"></v-col>
-                                <v-col cols="3">
-                                    <v-btn class="btnMinWidthAuto fill-width"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Z'+(reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
-                                    >
-                                        <v-icon>mdi-chevron-up</v-icon>
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                            <v-row dense>
-                                <v-col cols="3" class="p-rel">
-                                    <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('X'+(!reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
-                                    >
-                                        <v-icon>mdi-chevron-left</v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-btn class="btnMinWidthAuto fill-width"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Y'+(!reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
-                                    >
-                                        <v-icon>mdi-chevron-down</v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3" class="p-rel">
-                                    <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('X'+(reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
-                                    >
-                                        <v-icon>mdi-chevron-right</v-icon>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="3">
-                                    <v-btn class="btnMinWidthAuto fill-width"
-                                           :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                                           @click="doSendMove('Z'+(!reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
-                                    >
-                                        <v-icon>mdi-chevron-down</v-icon>
-                                    </v-btn>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                        <v-col :cols="homeCols" class="d-flex align-center">
-                            <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden;">
-                                <v-row dense class="" style="margin-bottom: -2px!important;">
-                                    <v-col :cols="'quad_gantry_level' in config || 'z_tilt' in config ? 6 : 12">
-                                        <v-btn class="w-100"
-                                               tile
-                                               @click="doHome"
-                                               height="30"
-                                               :loading="loadings.includes('homeAll')"
-                                               :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
-                                        >
-                                            <div class="d-flex align-center">
-                                                <v-icon>mdi-home</v-icon>
-                                                <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
-                                            </div>
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col v-if="'quad_gantry_level' in config || 'z_tilt' in config" cols="6" class="d-flex">
-                                        <v-btn v-if="'quad_gantry_level' in config"
-                                               class="btnMinWidthAuto flex-grow-1 px-0"
-                                               tile
-                                               dense
-                                               :color="colorQuadGantryLevel"
-                                               height="30"
-                                               :loading="loadings.includes('qgl')"
-                                               @click="doQGL"
-                                        >{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
-                                        <v-btn v-if="'z_tilt' in config"
-                                               class="btnMinWidthAuto flex-grow-1 px-0"
-                                               tile
-                                               dense
-                                               :color="colorZTilt"
-                                               height="30"
-                                               :loading="loadings.includes('zTilt')"
-                                               @click="doZtilt"
-                                        >{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
-                                    </v-col>
-                                </v-row>
-                                <v-row dense class="">
-                                    <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100"
-                                               tile
-                                               height="30"
-                                               :loading="loadings.includes('homeX')"
-                                               :color="homedAxes.includes('x') ? 'primary' : 'warning'"
-                                               @click="doHomeX"
-                                        >
-                                            {{ $t('Panels.ControlPanel.X') }}
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100"
-                                               tile
-                                               height="30"
-                                               :loading="loadings.includes('homeY')"
-                                               :color="homedAxes.includes('y') ? 'primary' : 'warning'"
-                                               @click="doHomeY"
-                                        >
-                                            {{ $t('Panels.ControlPanel.Y') }}
-                                        </v-btn>
-                                    </v-col>
-                                    <v-col cols="4" class="flex-grow-1">
-                                        <v-btn class="btnMinWidthAuto w-100"
-                                               tile
-                                               height="30"
-                                               :loading="loadings.includes('homeZ')"
-                                               :color="homedAxes.includes('z') ? 'primary' : 'warning'"
-                                               @click="doHomeZ"
-                                        >
-                                            {{ $t('Panels.ControlPanel.Z') }}
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
-                            </div>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters class="mt-3">
-                        <v-col class="col-12">
-                            <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
-                                <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'all-'+steps">
-                                    <span class="body-2">{{ steps }}</span>
+                        <v-list-item class="minHeight36">
+                          <v-checkbox v-model="reverseY" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertY')"></v-checkbox>
+                        </v-list-item>
+                        <v-list-item class="minHeight36">
+                          <v-checkbox v-model="reverseZ" class="mt-0" hide-details :label="$t('Panels.ControlPanel.InvertZ')"></v-checkbox>
+                        </v-list-item>
+                    </template>
+                </v-list>
+            </v-menu>
+        </v-toolbar>
+        <v-container>
+            <template v-if="useCross">
+                <v-row>
+                    <v-col :cols="homeCols">
+                        <v-row dense class="mb-1">
+                            <v-col cols="3"></v-col>
+                            <v-col cols="3">
+                                <v-btn class="btnMinWidthAuto fill-width"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('Y'+(reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
+                                >
+                                    <v-icon>mdi-chevron-up</v-icon>
                                 </v-btn>
-                            </v-btn-toggle>
-                            <div class="font-weight-bold warning rounded pa-2" v-else>
-                                 {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}<br>
-                                <router-link style="color: white;" to="/settings/interface">{{ $t('Panels.ControlPanel.SettingsInterfaceControl') }}</router-link>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </template>
-                <template v-else>
-                    <v-row no-gutters>
-                        <v-col class="col-12  pb-0 text-center">
-                            <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon>{{ $t('Panels.ControlPanel.ALL') }}</v-btn>
-                            <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" :color="colorQuadGantryLevel" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
-                            <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" :color="colorZTilt" class="ml-2" v-if="'z_tilt' in config">{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters class="mt-2">
-                        <v-col class="text-center">
-                            <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
-                                <v-btn @click="doSendMove('X-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'x-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.X') }}</v-btn>
-                                <v-btn @click="doSendMove('X+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'x+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                            </v-btn-toggle>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters class="mt-3">
-                        <v-col class="text-center">
-                            <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
-                                <v-btn @click="doSendMove('Y-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'y-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.Y') }}</v-btn>
-                                <v-btn @click="doSendMove('Y+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'y+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                            </v-btn-toggle>
-                        </v-col>
-                    </v-row>
-                    <v-row no-gutters class="mt-3">
-                        <v-col class="text-center">
-                            <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
-                                <v-btn @click="doSendMove('Z-'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsorted" v-bind:key="'z-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
-                                <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.Z') }}</v-btn>
-                                <v-btn @click="doSendMove('Z+'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsortedReverse" v-bind:key="'z+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
-                            </v-btn-toggle>
-                        </v-col>
-                    </v-row>
-                </template>
-                <template v-if="existsExtruder">
-                    <v-row>
-                        <v-col class="pa-0">
-                            <v-divider></v-divider>
-                        </v-col>
-                    </v-row>
-                    <v-row class="">
-                        <v-col class="col col-md-6 pt-2">
-                            <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedAmountIn") }} [mm]</span>
-                            <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                                <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === currentFeedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
-                            </v-btn-toggle>
-                        </v-col>
-                        <v-col class="col col-md-6 pt-2">
-                            <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedrateIn") }} [mm/s]</span>
-                            <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                                <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
-                            </v-btn-toggle>
-                        </v-col>
-                    </v-row>
-                    <v-row class="">
-                        <v-col class="col text-center pt-0">
-                            <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
-                            <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
-                        </v-col>
-                    </v-row>
-                </template>
-            </v-container>
-        </v-card>
-        <v-card class="mb-6" v-if="klipperReadyForGui && macros.length > 0">
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Panels.ControlPanel.Macros') }}</span>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-container>
-                <v-row no-gutters v-if="macros.length">
-                    <v-col class="text-center mr-fix-2 mb-fix-2">
-                        <v-btn v-for="(macro, index) in macros"
-                               :key="index+99"
-                               small
-                               color="primary"
-                               class="mr-2 mb-2"
-                               :loading="loadings.includes('macro_'+macro.name)"
-                               @click="doSendMacro(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
+                            </v-col>
+                            <v-col cols="3"></v-col>
+                            <v-col cols="3">
+                                <v-btn class="btnMinWidthAuto fill-width"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('Z'+(reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
+                                >
+                                    <v-icon>mdi-chevron-up</v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-row dense>
+                            <v-col cols="3" class="p-rel">
+                                <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('X'+(!reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
+                                >
+                                    <v-icon>mdi-chevron-left</v-icon>
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="btnMinWidthAuto fill-width"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('Y'+(!reverseY ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
+                                >
+                                    <v-icon>mdi-chevron-down</v-icon>
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3" class="p-rel">
+                                <v-btn class="btnMinWidthAuto fill-width p-abs" style="top: -50%; width: calc(100% - 8px);"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('X'+(reverseX ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateXY)"
+                                >
+                                    <v-icon>mdi-chevron-right</v-icon>
+                                </v-btn>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn class="btnMinWidthAuto fill-width"
+                                       :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
+                                       @click="doSendMove('Z'+(!reverseZ ? '-' : '+')+stepsReversed[selectedCrossStep], feedrateZ)"
+                                >
+                                    <v-icon>mdi-chevron-down</v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-col>
+                    <v-col :cols="homeCols" class="d-flex align-center">
+                        <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden;">
+                            <v-row dense class="" style="margin-bottom: -2px!important;">
+                                <v-col :cols="'quad_gantry_level' in config || 'z_tilt' in config ? 6 : 12">
+                                    <v-btn class="w-100"
+                                           tile
+                                           @click="doHome"
+                                           height="30"
+                                           :loading="loadings.includes('homeAll')"
+                                           :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                    >
+                                        <div class="d-flex align-center">
+                                            <v-icon>mdi-home</v-icon>
+                                            <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
+                                        </div>
+                                    </v-btn>
+                                </v-col>
+                                <v-col v-if="'quad_gantry_level' in config || 'z_tilt' in config" cols="6" class="d-flex">
+                                    <v-btn v-if="'quad_gantry_level' in config"
+                                           class="btnMinWidthAuto flex-grow-1 px-0"
+                                           tile
+                                           dense
+                                           :color="colorQuadGantryLevel"
+                                           height="30"
+                                           :loading="loadings.includes('qgl')"
+                                           @click="doQGL"
+                                    >{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
+                                    <v-btn v-if="'z_tilt' in config"
+                                           class="btnMinWidthAuto flex-grow-1 px-0"
+                                           tile
+                                           dense
+                                           :color="colorZTilt"
+                                           height="30"
+                                           :loading="loadings.includes('zTilt')"
+                                           @click="doZtilt"
+                                    >{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row dense class="">
+                                <v-col cols="4" class="flex-grow-1">
+                                    <v-btn class="btnMinWidthAuto w-100"
+                                           tile
+                                           height="30"
+                                           :loading="loadings.includes('homeX')"
+                                           :color="homedAxes.includes('x') ? 'primary' : 'warning'"
+                                           @click="doHomeX"
+                                    >
+                                        {{ $t('Panels.ControlPanel.X') }}
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="4" class="flex-grow-1">
+                                    <v-btn class="btnMinWidthAuto w-100"
+                                           tile
+                                           height="30"
+                                           :loading="loadings.includes('homeY')"
+                                           :color="homedAxes.includes('y') ? 'primary' : 'warning'"
+                                           @click="doHomeY"
+                                    >
+                                        {{ $t('Panels.ControlPanel.Y') }}
+                                    </v-btn>
+                                </v-col>
+                                <v-col cols="4" class="flex-grow-1">
+                                    <v-btn class="btnMinWidthAuto w-100"
+                                           tile
+                                           height="30"
+                                           :loading="loadings.includes('homeZ')"
+                                           :color="homedAxes.includes('z') ? 'primary' : 'warning'"
+                                           @click="doHomeZ"
+                                    >
+                                        {{ $t('Panels.ControlPanel.Z') }}
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </div>
                     </v-col>
                 </v-row>
-            </v-container>
-        </v-card>
-    </div>
+                <v-row no-gutters class="mt-3">
+                    <v-col class="col-12">
+                        <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
+                            <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'all-'+steps">
+                                <span class="body-2">{{ steps }}</span>
+                            </v-btn>
+                        </v-btn-toggle>
+                        <div class="font-weight-bold warning rounded pa-2" v-else>
+                             {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}<br>
+                            <router-link style="color: white;" to="/settings/interface">{{ $t('Panels.ControlPanel.SettingsInterfaceControl') }}</router-link>
+                        </div>
+                    </v-col>
+                </v-row>
+            </template>
+            <template v-else>
+                <v-row no-gutters>
+                    <v-col class="col-12  pb-0 text-center">
+                        <v-btn small @click="doHome" :loading="loadings.includes('homeAll')" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"><v-icon class="mr-1">mdi-home</v-icon>{{ $t('Panels.ControlPanel.ALL') }}</v-btn>
+                        <v-btn small @click="doQGL" :loading="loadings.includes('qgl')" :color="colorQuadGantryLevel" class="ml-2" v-if="'quad_gantry_level' in config">{{ $t('Panels.ControlPanel.QGL') }}</v-btn>
+                        <v-btn small @click="doZtilt" :loading="loadings.includes('zTilt')" :color="colorZTilt" class="ml-2" v-if="'z_tilt' in config">{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn>
+                    </v-col>
+                </v-row>
+                <v-row no-gutters class="mt-2">
+                    <v-col class="text-center">
+                        <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn @click="doSendMove('X-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'x-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                            <v-btn @click="doHomeX" :color="homedAxes.includes('x') ? 'primary' : 'warning'" :loading="loadings.includes('homeX')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.X') }}</v-btn>
+                            <v-btn @click="doSendMove('X+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'x+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+                <v-row no-gutters class="mt-3">
+                    <v-col class="text-center">
+                        <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn @click="doSendMove('Y-'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsorted" v-bind:key="'y-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                            <v-btn @click="doHomeY" :color="homedAxes.includes('y') ? 'primary' : 'warning'" :loading="loadings.includes('homeY')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.Y') }}</v-btn>
+                            <v-btn @click="doSendMove('Y+'+steps, feedrateXY)" class="btnMinWidthAuto col" v-for="steps of stepsXYsortedReverse" v-bind:key="'y+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+                <v-row no-gutters class="mt-3">
+                    <v-col class="text-center">
+                        <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn @click="doSendMove('Z-'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsorted" v-bind:key="'z-'+steps"><span class="body-2">-{{ steps }}</span></v-btn>
+                            <v-btn @click="doHomeZ" :color="homedAxes.includes('z') ? 'primary' : 'warning'" :loading="loadings.includes('homeZ')" class="font-weight-bold btnHomeAxis">{{ $t('Panels.ControlPanel.Z') }}</v-btn>
+                            <v-btn @click="doSendMove('Z+'+steps, feedrateZ)" class="btnMinWidthAuto col" v-for="steps of stepsZsortedReverse" v-bind:key="'z+'+steps"><span class="body-2">+{{ steps }}</span></v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+            </template>
+            <template v-if="existsExtruder">
+                <v-row>
+                    <v-col class="pa-0">
+                        <v-divider></v-divider>
+                    </v-col>
+                </v-row>
+                <v-row class="">
+                    <v-col class="col col-md-6 pt-2">
+                        <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedAmountIn") }} [mm]</span>
+                        <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === currentFeedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                    <v-col class="col col-md-6 pt-2">
+                        <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedrateIn") }} [mm/s]</span>
+                        <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
+                            <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                        </v-btn-toggle>
+                    </v-col>
+                </v-row>
+                <v-row class="">
+                    <v-col class="col text-center pt-0">
+                        <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
+                        <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
+                    </v-col>
+                </v-row>
+            </template>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -444,10 +422,6 @@ export default class ControlPanel extends Mixins(BaseMixin) {
         return status ? "primary" : "warning"
     }
 
-    get macros() {
-        return this.$store.getters['printer/getMacros']
-    }
-
     get boolExtrudePossible() {
         return this.$store.getters['printer/getExtrudePossible']
     }
@@ -495,11 +469,6 @@ export default class ControlPanel extends Mixins(BaseMixin) {
     doSend(gcode: string) {
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
-    }
-
-    doSendMacro(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_'+gcode })
     }
 
     setFeedAmount(value: number) {

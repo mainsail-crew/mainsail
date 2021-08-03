@@ -6,7 +6,7 @@
     <v-card class="mb-6" v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>{{ $t("Panels.MiscellaneousPanel.Miscellaneous") }}</span>
+                <span class="subheading"><v-icon left>mdi-dip-switch</v-icon>{{ $t("Panels.MiscellaneousPanel.Headline") }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <div v-for="(object, index) of miscellaneous" v-bind:key="index">
