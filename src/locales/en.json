@@ -509,7 +509,12 @@
 			"FlipVertically": "Flip webcam vertically"
 		},
 		"DashboardTab": {
-			"Dashboard": "Dashboard"
+			"Dashboard": "Dashboard",
+			"Mobile": "Mobile",
+			"Tablet": "Tablet",
+			"Desktop": "Desktop",
+			"Widescreen": "Widescreen",
+			"ResetLayout": "Reset Layout"
 		},
 		"MacrosTab": {
 			"Macros": "Macros",

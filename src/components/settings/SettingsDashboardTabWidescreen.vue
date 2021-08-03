@@ -89,7 +89,7 @@
             </v-row>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn color="error" @click="resetLayout">reset layout</v-btn>
+                    <v-btn color="error" @click="resetLayout">{{ $t('Settings.DashboardTab.ResetLayout') }}</v-btn>
                 </v-col>
             </v-row>
         </v-card-text>
