@@ -19,16 +19,23 @@
                                 <v-list-item-content>
                                     <v-list-item-title>{{ $t('Panels.StatusPanel.Headline') }}</v-list-item-title>
                                 </v-list-item-content>
+                                <v-list-item-action>
+                                    <v-icon color="grey lighten-1">mdi-lock</v-icon>
+                                </v-list-item-action>
                             </v-list-item>
                             <draggable v-model="widescreenLayout1" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout1">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertToIcon(element.name)"></v-icon>
+                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
                                         </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                            <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
+                                        </v-list-item-action>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -42,11 +49,15 @@
                                 <template v-for="(element) in widescreenLayout2">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertToIcon(element.name)"></v-icon>
+                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
                                         </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                            <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
+                                        </v-list-item-action>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -60,16 +71,25 @@
                                 <template v-for="(element) in widescreenLayout3">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertToIcon(element.name)"></v-icon>
+                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
                                         </v-list-item-content>
+                                        <v-list-item-action>
+                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState3(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                            <v-icon v-else color="primary" @click.stop="changeState3(element.name,false)">mdi-checkbox-marked</v-icon>
+                                        </v-list-item-action>
                                     </v-list-item>
                                 </template>
                             </draggable>
                         </v-list>
                     </v-card>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="text-center">
+                    <v-btn color="error" @click="resetLayout">reset layout</v-btn>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -81,7 +101,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import draggable from 'vuedraggable'
-import {capitalize} from "@/plugins/helpers";
+import {capitalize, convertPanelnameToIcon} from "@/plugins/helpers";
 @Component( {
     components: {
         draggable
@@ -90,6 +110,7 @@ import {capitalize} from "@/plugins/helpers";
 )
 export default class SettingsDashboardTabWidescreen extends Mixins(BaseMixin) {
     capitalize = capitalize
+    convertPanelnameToIcon = convertPanelnameToIcon
 
     get widescreenLayout1() {
         return this.$store.state.gui?.dashboard?.widescreenLayout1?.filter((element: any) => element !== null) ?? []
@@ -121,18 +142,34 @@ export default class SettingsDashboardTabWidescreen extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout3', value: newVal })
     }
 
-    convertToIcon(name: string) {
-        switch (name) {
-            case 'webcam': return 'mdi-webcam'
-            case 'zoffset': return 'mdi-arrow-collapse-vertical'
-            case 'control': return 'mdi-gamepad'
-            case 'printsettings': return 'mdi-printer-3d'
-            case 'miscellaneous': return 'mdi-dip-switch'
-            case 'tools': return 'mdi-thermometer-lines'
-            case 'miniconsole': return 'mdi-console-line'
-
-            default: return 'mdi-information'
+    changeState1(name: string, newVal: boolean) {
+        const index = this.widescreenLayout1.findIndex((element: any) => element.name === name)
+        if (index !== -1) {
+            this.widescreenLayout1[index].visable = newVal
+            this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout1', value: this.widescreenLayout1 })
         }
+    }
+
+    changeState2(name: string, newVal: boolean) {
+        const index = this.widescreenLayout2.findIndex((element: any) => element.name === name)
+        if (index !== -1) {
+            this.widescreenLayout2[index].visable = newVal
+            this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout2', value: this.widescreenLayout2 })
+        }
+    }
+
+    changeState3(name: string, newVal: boolean) {
+        const index = this.widescreenLayout3.findIndex((element: any) => element.name === name)
+        if (index !== -1) {
+            this.widescreenLayout3[index].visable = newVal
+            this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout3', value: this.widescreenLayout3 })
+        }
+    }
+
+    resetLayout() {
+        this.$store.dispatch('gui/resetLayout', 'widescreenLayout1')
+        this.$store.dispatch('gui/resetLayout', 'widescreenLayout2')
+        this.$store.dispatch('gui/resetLayout', 'widescreenLayout3')
     }
 }
 </script>

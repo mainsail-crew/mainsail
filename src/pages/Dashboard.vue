@@ -68,6 +68,7 @@ import ToolsPanel from "@/components/panels/ToolsPanel.vue";
 import WebcamPanel from "@/components/panels/WebcamPanel.vue";
 import ZoffsetPanel from "@/components/panels/ZoffsetPanel.vue";
 import ControlPanel from "@/components/panels/ControlPanel.vue";
+import MacrosPanel from "@/components/panels/MacrosPanel.vue";
 import MiscellaneousPanel from "@/components/panels/MiscellaneousPanel.vue";
 import MiniconsolePanel from "@/components/panels/MiniconsolePanel.vue";
 import PrintsettingsPanel from "@/components/panels/PrintsettingsPanel.vue";
@@ -78,6 +79,7 @@ import PrintsettingsPanel from "@/components/panels/PrintsettingsPanel.vue";
         MiniconsolePanel,
         MiscellaneousPanel,
         ControlPanel,
+        MacrosPanel,
         ZoffsetPanel,
         WebcamPanel,
         ToolsPanel,
@@ -89,35 +91,35 @@ import PrintsettingsPanel from "@/components/panels/PrintsettingsPanel.vue";
 })
 export default class PageDashboard extends Mixins(BaseMixin) {
     get mobileLayout() {
-        return this.$store.state.gui.dashboard.mobileLayout ?? []
+        return this.$store.state.gui.dashboard.mobileLayout.filter((element: any) => element.visable) ?? []
     }
 
     get tabletLayout1() {
-        return this.$store.state.gui.dashboard.tabletLayout1 ?? []
+        return this.$store.state.gui.dashboard.tabletLayout1.filter((element: any) => element.visable) ?? []
     }
 
     get tabletLayout2() {
-        return this.$store.state.gui.dashboard.tabletLayout2 ?? []
+        return this.$store.state.gui.dashboard.tabletLayout2.filter((element: any) => element.visable) ?? []
     }
 
     get desktopLayout1() {
-        return this.$store.state.gui.dashboard.desktopLayout1 ?? []
+        return this.$store.state.gui.dashboard.desktopLayout1.filter((element: any) => element.visable) ?? []
     }
 
     get desktopLayout2() {
-        return this.$store.state.gui.dashboard.desktopLayout2 ?? []
+        return this.$store.state.gui.dashboard.desktopLayout2.filter((element: any) => element.visable) ?? []
     }
 
     get widescreenLayout1() {
-        return this.$store.state.gui.dashboard.widescreenLayout1 ?? []
+        return this.$store.state.gui.dashboard.widescreenLayout1.filter((element: any) => element.visable) ?? []
     }
 
     get widescreenLayout2() {
-        return this.$store.state.gui.dashboard.widescreenLayout2 ?? []
+        return this.$store.state.gui.dashboard.widescreenLayout2.filter((element: any) => element.visable) ?? []
     }
 
     get widescreenLayout3() {
-        return this.$store.state.gui.dashboard.widescreenLayout3 ?? []
+        return this.$store.state.gui.dashboard.widescreenLayout3.filter((element: any) => element.visable) ?? []
     }
 }
 </script>

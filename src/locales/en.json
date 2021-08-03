@@ -246,8 +246,10 @@
 			"FeedAmountIn": "Feed amount in",
 			"FeedrateIn": "Feedrate in",
 			"Retract": "Retract",
-			"Extrude": "Extrude",
-			"Macros": "Macros"
+			"Extrude": "Extrude"
+		},
+		"MacrosPanel": {
+			"Headline": "Macros"
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
