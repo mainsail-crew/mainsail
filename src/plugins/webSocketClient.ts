@@ -59,14 +59,6 @@ export class WebSocketClient {
                 if (wait && wait.action !== ""){
                     if (data.error && data.error.message) {
                         window.console.error("Response Error: "+wait.action+" > "+data.error.message)
-                        if (wait.params) window.console.log(wait.params)
-
-                        /*this.store?.dispatch(wait.action,
-                            Object.assign(wait.actionPreload || {}, {
-                                error: data.error,
-                                requestParams: wait.params
-                            })
-                        )*/
                     } else if (wait.action) {
                         let result = data.result
                         if (result === "ok") result = { result: result }
