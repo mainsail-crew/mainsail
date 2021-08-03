@@ -12,10 +12,10 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                     <template v-if="isMobile" v-slot:extension>
-                        <v-tabs v-model="tabs" :center-active="true" :show-arrows="true">
+                        <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
                             <v-tab
                                 v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#settings-tabs-'+tab.name"
+                                :href="'#'+tab.name"
                                 class="justify-start">
                                 <v-icon left v-html="tab.icon"></v-icon>
                                 {{ tab.title }}
@@ -25,10 +25,10 @@
                 </v-toolbar>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
-                        <v-tabs v-model="tabs" :vertical="true">
+                        <v-tabs v-model="activeTab" :vertical="true">
                             <v-tab
                                 v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#settings-tabs-'+tab.name"
+                                :href="'#'+tab.name"
                                 class="justify-start">
                                 <v-icon left v-html="tab.icon"></v-icon>
                                 {{ tab.title }}
@@ -36,12 +36,8 @@
                         </v-tabs>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
-                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')">
-                            <v-tabs-items v-model="tabs">
-                                <v-tab-item v-for="tab in tabTitles" :key="'tab-'+tab.name" :value="'settings-tabs-'+tab.name">
-                                    <component :is="'settings-'+tab.name+'-tab'"></component>
-                                </v-tab-item>
-                            </v-tabs-items>
+                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
+                            <component :is="'settings-'+activeTab+'-tab'"></component>
                         </perfect-scrollbar>
                     </v-col>
                 </v-row>
@@ -53,7 +49,7 @@
 <script lang="ts">
 
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from "@/components/settings/SettingsGeneralTab.vue";
 import SettingsWebcamTab from "@/components/settings/SettingsWebcamTab.vue";
@@ -79,7 +75,11 @@ import SettingsDashboardTab from "@/components/settings/SettingsDashboardTab.vue
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
-    private tabs: any = null
+    private activeTab = 'general'
+
+    $refs!: {
+        settingsScroll: any
+    }
 
     get tabTitles() {
         return [
@@ -129,6 +129,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.RemotePrintersTab.RemotePrinters')
             },
         ]
+    }
+
+    @Watch('activeTab')
+    activeTabWatch() {
+        if (this.$refs.settingsScroll) this.$refs.settingsScroll.$el.scrollTop = 0
     }
 }
 </script>
