@@ -65,5 +65,13 @@ import SettingsDashboardTabWidescreen from "@/components/settings/SettingsDashbo
 )
 export default class SettingsDashboardTab extends Mixins(BaseMixin) {
     private viewport = 'desktop'
+
+    mounted() {
+        if (this.isMobile) this.viewport = 'mobile'
+        else if (this.isTablet) this.viewport = 'tablet'
+        else if (this.isDesktop) this.viewport = 'desktop'
+        else if (this.isWidescreen) this.viewport = 'widescreen'
+        else this.viewport = 'desktop'
+    }
 }
 </script>
