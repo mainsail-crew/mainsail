@@ -143,7 +143,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <template v-if="['printing', 'paused', 'error'].includes(printer_state)">
+                <template v-if="['printing', 'paused', 'error', 'cancelled'].includes(printer_state)">
                     <v-divider class="my-0"></v-divider>
                     <v-container class="py-0">
                         <v-row class="text-center py-5" align="center">
