@@ -246,7 +246,7 @@ import {capitalize} from "@/plugins/helpers";
 )
 export default class SettingsDashboardTab extends Mixins(BaseMixin) {
     capitalize = capitalize
-    private viewport: {'mobile', 'tablet', 'desktop', 'widescreen'} = 'desktop'
+    private viewport = 'desktop'
 
     get mobileLayout() {
         return this.$store.state.gui?.dashboard?.mobileLayout?.filter((element: any) => element !== null) ?? []
