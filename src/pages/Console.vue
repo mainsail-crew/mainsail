@@ -28,8 +28,8 @@
 </style>
 
 <template>
-    <div>
-        <v-row>
+    <div class="d-flex flex-column">
+        <v-row :class="this.consoleStyle === 'table' ? 'order-0' : 'order-1 mt-3'">
             <v-col class="col">
                 <v-textarea
                     v-model="gcode"
@@ -58,9 +58,9 @@
                 <command-help-modal
                     @onCommand="gcode = $event"
                 ></command-help-modal>
-                <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
+                <v-menu offset-y :top="consoleStyle === 'shell'" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
@@ -73,15 +73,17 @@
                 </v-menu>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row :class="this.consoleStyle === 'table' ? 'order-1' : 'order-0 mt-0'">
             <v-col xs12>
                 <v-card>
-                    <v-card-text class="pa-0" style="max-height: calc(100vh - 180px); overflow: auto;">
-                        <console-table ref="console"
-                                       :is-mini="false"
-                                       :events="events"
-                                       @command-click="commandClick"
-                        />
+                    <v-card-text class="pa-0">
+                        <perfect-scrollbar ref="consoleScroll" style="max-height: calc(100vh - 180px);">
+                            <console-table ref="console"
+                                           :is-mini="false"
+                                           :events="events"
+                                           @command-click="commandClick"
+                            />
+                        </perfect-scrollbar>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -90,17 +92,18 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
+import {Component, Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "@/components/mixins/base";
-import ConsoleTable from "@/components/ConsoleTable.vue";
+import ConsoleTable from "@/components/console/ConsoleTable.vue";
 import {CommandHelp, ConsoleCommandHelp, VTextareaType} from "@/store/printer/types";
 import {reverseString, strLongestEqual} from "@/plugins/helpers";
 import CommandHelpModal from "@/components/CommandHelpModal.vue";
+import Vue from "vue";
 
 @Component({
     components: {
         CommandHelpModal,
-        ConsoleTable
+        ConsoleTable,
     }
 })
 export default class PageConsole extends Mixins(BaseMixin) {
@@ -111,15 +114,25 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     $refs!: {
         gcodeCommandField: VTextareaType,
-        console: ConsoleTable
+        console: ConsoleTable,
+        consoleScroll: any
     }
 
     get helplist(): CommandHelp[] {
         return this.$store.state.printer.helplist ?? []
     }
 
+    get consoleStyle() {
+        return this.$store.state.gui.console.style ?? 'table'
+    }
+
     get events() {
-        return this.$store.getters["server/getConsoleEvents"]
+        return this.$store.getters["server/getConsoleEvents"](this.consoleStyle === 'table')
+    }
+
+    @Watch('events')
+    eventsChanged() {
+        if (this.consoleStyle === 'shell') this.scrollToBottom()
     }
 
     get hideWaitTemperatures(): boolean {
@@ -224,6 +237,19 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     toggleFilter(filter: string): void {
         this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+
+    mounted() {
+        if (this.consoleStyle === 'shell') this.scrollToBottom()
+    }
+
+    scrollToBottom() {
+        this.$nextTick(() => {
+            if (this.$refs.consoleScroll) {
+                const perfectScroll = ((this.$refs.consoleScroll as Vue).$el as HTMLDivElement)
+                perfectScroll.scrollTop = perfectScroll.scrollHeight
+            }
+        })
     }
 }
 </script>

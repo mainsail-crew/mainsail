@@ -6,8 +6,8 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <settings-row :title="$t('Settings.ConsoleTab.ShowOnDashboard')" :dynamic-slot-width="true">
-                    <v-switch v-model="boolShowOnDashboard" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.ConsoleTab.Style')">
+                    <v-select v-model="consoleStyle" :items="availableStyles" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
@@ -100,16 +100,26 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         unique: (value: string) => !this.existsPresetName(value) || 'Name already exists',
     }
 
+    private availableStyles = [
+        {
+            text: 'Table',
+            value: 'table'
+        }, {
+            text: 'Shell',
+            value: 'shell'
+        }
+    ]
+
     get consoleFilters() {
         return this.$store.getters["gui/getConsoleFilters"] ?? []
     }
 
-    get boolShowOnDashboard() {
-        return this.$store.state.gui.console.boolDashboard
+    get consoleStyle() {
+        return this.$store.state.gui.console.style ?? 'table'
     }
 
-    set boolShowOnDashboard(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.boolDashboard', value: newVal })
+    set consoleStyle(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.style', value: newVal })
     }
 
     get hideWaitTemperatures() {

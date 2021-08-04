@@ -535,7 +535,7 @@
 		},
 		"ConsoleTab": {
 			"Console": "Console",
-			"ShowOnDashboard": "Show on dashboard",
+			"Style": "Style",
 			"HideTemperatures": "Hide temperatures",
 			"CreateHeadline": "Create filter",
 			"Name": "Name",
