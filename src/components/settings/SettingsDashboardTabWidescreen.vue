@@ -23,11 +23,12 @@
                                     <v-icon color="grey lighten-1">mdi-lock</v-icon>
                                 </v-list-item-action>
                             </v-list-item>
-                            <draggable v-model="widescreenLayout1" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
+                            <draggable v-model="widescreenLayout1" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout1">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
@@ -45,11 +46,12 @@
                 <v-col class="col-12 col-md-4">
                     <v-card class="mx-auto" max-width="300" tile >
                         <v-list dense>
-                            <draggable v-model="widescreenLayout2" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
+                            <draggable v-model="widescreenLayout2" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout2">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
@@ -67,11 +69,12 @@
                 <v-col class="col-12 col-md-4">
                     <v-card class="mx-auto" max-width="300" tile >
                         <v-list dense>
-                            <draggable v-model="widescreenLayout3" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
+                            <draggable v-model="widescreenLayout3" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout3">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
