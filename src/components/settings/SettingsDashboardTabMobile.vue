@@ -23,18 +23,21 @@
                                     <v-icon color="grey lighten-1">mdi-lock</v-icon>
                                 </v-list-item-action>
                             </v-list-item>
-                            <draggable v-model="mobileLayout" class="v-list-item-group" ghost-class="ghost" group="mobileViewport">
+                            <draggable v-model="mobileLayout" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="mobileViewport">
                                 <template v-for="(element) in mobileLayout">
                                     <v-list-item :key="'item-mobile-'+element.name" link>
                                         <v-list-item-icon>
-                                            <v-icon v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
+                                            <v-list-item-title>
+                                                {{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}
+                                            </v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click="changeState(element.name, true)">mdi-checkbox-blank-outline</v-icon>
+                                            <v-icon v-else color="primary" @click="changeState(element.name, false)">mdi-checkbox-marked</v-icon>
                                         </v-list-item-action>
                                     </v-list-item>
                                 </template>
