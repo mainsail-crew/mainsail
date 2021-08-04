@@ -193,6 +193,7 @@ interface heightmapSerie {
     type: string
     name: string
     data: any[]
+    dataShape?: number[]
     itemStyle?: any
     wireframe: {
         show: boolean
