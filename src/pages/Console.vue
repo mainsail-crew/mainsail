@@ -1,30 +1,9 @@
 <style scoped>
-.gcode-command-field {
 
+.consoleScrollContainer {
+    max-height: calc(100vh - 180px);
 }
 
-.gcode-command-field .v-input__slot {
-    margin-bottom: 0;
-}
-
-.gcode-command-field .v-text-field__details {
-    display: none;
-}
-
-.gcode-command-btn {
-    margin-top: 5px;
-}
-
-.log-cell.title-cell {
-    vertical-align: top;
-    height: auto !important;
-}
-
-.log-cell.content-cell {
-    vertical-align: top;
-    min-height: auto;
-    height: auto !important;
-}
 </style>
 
 <template>
@@ -77,7 +56,7 @@
             <v-col xs12>
                 <v-card>
                     <v-card-text class="pa-0">
-                        <perfect-scrollbar ref="consoleScroll" style="max-height: calc(100vh - 180px);">
+                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column justify-end">
                             <console-table ref="console"
                                            :is-mini="false"
                                            :events="events"

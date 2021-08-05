@@ -58,13 +58,13 @@
         <v-card-text :class="(consoleStyle === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
             <v-row>
                 <v-col>
-                    <perfect-scrollbar ref="miniConsoleScroll" style="height: 300px;">
+                    <perfect-scrollbar ref="miniConsoleScroll" :class="'d-flex flex-column '+(consoleStyle === 'shell' ? 'justify-end' : '')" style="height: 300px;">
                         <console-table ref="console"
                                        :events="events"
                                        :is-mini="true"
                                        @command-click="commandClick"
                         />
-                        <v-divider v-if="consoleStyle === 'shell'"></v-divider>
+                        <v-divider></v-divider>
                     </perfect-scrollbar>
                 </v-col>
             </v-row>
