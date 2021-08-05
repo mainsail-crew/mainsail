@@ -2,6 +2,7 @@ import Vue from "vue";
 import {ActionTree} from "vuex";
 import {GuiState} from "@/store/gui/types";
 import {RootState} from "@/store/types";
+import { getDefaultState } from './index'
 
 export const actions: ActionTree<GuiState, RootState> = {
 	reset({ commit }) {
@@ -196,5 +197,15 @@ export const actions: ActionTree<GuiState, RootState> = {
 				newVal: array
 			})
 		}
+	},
+
+	resetLayout({ dispatch }, name) {
+		const defaultState = getDefaultState()
+		const newVal: any = defaultState.dashboard[name] ?? []
+
+		dispatch('saveSetting', {
+			name: 'dashboard.'+name,
+			value: newVal
+		})
 	}
 }

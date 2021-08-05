@@ -12,10 +12,10 @@
                     <v-spacer></v-spacer>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                     <template v-if="isMobile" v-slot:extension>
-                        <v-tabs v-model="tabs" :center-active="true" :show-arrows="true">
+                        <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
                             <v-tab
                                 v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#settings-tabs-'+tab.name"
+                                :href="'#'+tab.name"
                                 class="justify-start">
                                 <v-icon left v-html="tab.icon"></v-icon>
                                 {{ tab.title }}
@@ -25,10 +25,10 @@
                 </v-toolbar>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
-                        <v-tabs v-model="tabs" :vertical="true">
+                        <v-tabs v-model="activeTab" :vertical="true">
                             <v-tab
                                 v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#settings-tabs-'+tab.name"
+                                :href="'#'+tab.name"
                                 class="justify-start">
                                 <v-icon left v-html="tab.icon"></v-icon>
                                 {{ tab.title }}
@@ -36,18 +36,8 @@
                         </v-tabs>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
-                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')">
-                            <v-tabs-items v-model="tabs">
-                                <v-tab-item value="settings-tabs-general"><settings-general-tab></settings-general-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-theme"><settings-theme-tab></settings-theme-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-webcam"><settings-webcam-tab></settings-webcam-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-macros"><settings-macros-tab></settings-macros-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-control"><settings-control-tab></settings-control-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-console"><settings-console-tab></settings-console-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-presets"><settings-presets-tab></settings-presets-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-remote-printers"><settings-remote-printers-tab></settings-remote-printers-tab></v-tab-item>
-                                <v-tab-item value="settings-tabs-g-code-viewer"><settings-g-code-viewer-tab></settings-g-code-viewer-tab></v-tab-item>
-                            </v-tabs-items>
+                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
+                            <component :is="'settings-'+activeTab+'-tab'"></component>
                         </perfect-scrollbar>
                     </v-col>
                 </v-row>
@@ -59,7 +49,7 @@
 <script lang="ts">
 
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from "@/components/settings/SettingsGeneralTab.vue";
 import SettingsWebcamTab from "@/components/settings/SettingsWebcamTab.vue";
@@ -69,18 +59,29 @@ import SettingsConsoleTab from "@/components/settings/SettingsConsoleTab.vue";
 import SettingsPresetsTab from "@/components/settings/SettingsPresetsTab.vue";
 import SettingsRemotePrintersTab from "@/components/settings/SettingsRemotePrintersTab.vue";
 import SettingsThemeTab from "@/components/settings/SettingsThemeTab.vue";
+import SettingsDashboardTab from "@/components/settings/SettingsDashboardTab.vue";
 import SettingsGCodeViewerTab from "@/components/settings/SettingsGCodeViewerTab.vue"
-
 @Component({
     components: {
         SettingsThemeTab,
         SettingsRemotePrintersTab,
         SettingsPresetsTab,
-        SettingsConsoleTab, SettingsControlTab, SettingsMacrosTab, SettingsWebcamTab, SettingsGeneralTab,  SettingsGCodeViewerTab}
+        SettingsConsoleTab,
+        SettingsControlTab,
+        SettingsMacrosTab,
+        SettingsWebcamTab,
+        SettingsGeneralTab,
+        SettingsDashboardTab
+        SettingsGCodeViewerTab
+    }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
-    private tabs: any = null
+    private activeTab = 'general'
+
+    $refs!: {
+        settingsScroll: any
+    }
 
     get tabTitles() {
         return [
@@ -93,6 +94,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: 'mdi-palette',
                 name: 'theme',
                 title: this.$t('Settings.ThemeTab.Theme')
+            },
+            {
+                icon: 'mdi-monitor-dashboard',
+                name: 'dashboard',
+                title: this.$t('Settings.DashboardTab.Dashboard')
             },
             {
                 icon: 'mdi-webcam',
@@ -130,6 +136,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.GCodeViewerTab.GCodeViewer')
             }
         ]
+    }
+
+    @Watch('activeTab')
+    activeTabWatch() {
+        if (this.$refs.settingsScroll) this.$refs.settingsScroll.$el.scrollTop = 0
     }
 }
 </script>

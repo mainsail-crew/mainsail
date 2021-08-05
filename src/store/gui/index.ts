@@ -39,7 +39,55 @@ export const getDefaultState = (): GuiState => {
 				feedamounts: [ 50, 25, 10, 5, 1 ],
 				feedrate: 5,
 				feedrates: [ 60, 30, 15, 5, 1 ],
-			}
+			},
+			mobileLayout: [
+				{ 'name': 'webcam', visable: false },
+				{ 'name': 'zoffset', visable: true },
+				{ 'name': 'control', visable: true },
+				{ 'name': 'macros', visable: true },
+				{ 'name': 'printsettings', visable: true },
+				{ 'name': 'miscellaneous', visable: true },
+				{ 'name': 'tools', visable: true },
+				{ 'name': 'miniconsole', visable: false },
+			],
+			tabletLayout1: [
+				{ 'name': 'webcam', visable: true  },
+				{ 'name': 'zoffset', visable: true  },
+				{ 'name': 'control', visable: true  },
+				{ 'name': 'macros', visable: true },
+				{ 'name': 'printsettings', visable: true  },
+				{ 'name': 'miscellaneous', visable: true  },
+			],
+			tabletLayout2: [
+				{ 'name': 'tools', visable: true },
+				{ 'name': 'miniconsole', visable: true },
+			],
+			desktopLayout1: [
+				{ 'name': 'webcam', visable: true },
+				{ 'name': 'zoffset', visable: true },
+				{ 'name': 'control', visable: true },
+				{ 'name': 'macros', visable: true },
+				{ 'name': 'printsettings', visable: true },
+				{ 'name': 'miscellaneous', visable: true },
+			],
+			desktopLayout2: [
+				{ 'name': 'tools', visable: true },
+				{ 'name': 'miniconsole', visable: true },
+			],
+			widescreenLayout1: [
+				{ 'name': 'zoffset', visable: true },
+				{ 'name': 'control', visable: true },
+				{ 'name': 'macros', visable: true },
+				{ 'name': 'miscellaneous', visable: true },
+			],
+			widescreenLayout2: [
+				{ 'name': 'tools', visable: true },
+				{ 'name': 'printsettings', visable: true },
+			],
+			widescreenLayout3: [
+				{ 'name': 'webcam', visable: true },
+				{ 'name': 'miniconsole', visable: true },
+			]
 		},
 		webcam: {
 			selectedCam: "",

@@ -2,10 +2,6 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <settings-row :title="$t('Settings.WebcamTab.ShowOnDashboard')">
-                    <v-switch v-model="boolDashboard" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.WebcamTab.ShowInNavigation')">
                     <v-switch v-model="boolNavi" hide-details class="mt-0"></v-switch>
                 </settings-row>

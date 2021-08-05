@@ -28,7 +28,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 			if (currentPosition > 0 && maxPosition > 0) return 1 / maxPosition * currentPosition;
 		}
 
-		return state.virtual_sdcard.progress
+		return state.virtual_sdcard?.progress ?? 0
 	},
 
 	getPositions: (state) => {

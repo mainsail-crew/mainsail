@@ -30,6 +30,25 @@ export const caseInsensitiveSort = (values: any[], orderType: string): any[] => 
     })
 }
 
+export const capitalize = (str: string): string => {
+    return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+export const convertPanelnameToIcon = (name: string): string => {
+    switch (name) {
+        case 'webcam': return 'mdi-webcam'
+        case 'zoffset': return 'mdi-arrow-collapse-vertical'
+        case 'control': return 'mdi-gamepad'
+        case 'macros': return 'mdi-code-tags'
+        case 'printsettings': return 'mdi-printer-3d'
+        case 'miscellaneous': return 'mdi-dip-switch'
+        case 'tools': return 'mdi-thermometer-lines'
+        case 'miniconsole': return 'mdi-console-line'
+
+        default: return 'mdi-information'
+    }
+}
+
 export const camelize = (str: string): string => {
     return str.replace(/_/g, ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
         return index === 0 ? word.toLowerCase() : word.toUpperCase();

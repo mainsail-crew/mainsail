@@ -231,7 +231,7 @@
 	},
 	"Panels": {
 		"ControlPanel": {
-			"Controls": "Controls",
+			"Headline": "Controls",
 			"SetupControls": "Setup Controls",
 			"AlternateControls": "Alternate controls",
 			"InvertX": "Invert X",
@@ -248,8 +248,10 @@
 			"FeedAmountIn": "Feed amount in",
 			"FeedrateIn": "Feedrate in",
 			"Retract": "Retract",
-			"Extrude": "Extrude",
-			"Macros": "Macros"
+			"Extrude": "Extrude"
+		},
+		"MacrosPanel": {
+			"Headline": "Macros"
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
@@ -263,7 +265,7 @@
 			"FirmwareRestart": "Firmware Restart"
 		},
 		"MiniconsolePanel": {
-			"Console": "Console",
+			"Headline": "Console",
 			"SetupConsole": "Setup Console",
 			"HideTemperatures": "Hide temperatures",
 			"SendCode": "Send code..."
@@ -274,11 +276,13 @@
 			"IncludeMainsailCfg": "Make sure you include the mainsail.cfg in your printer.cfg file.",
 			"MoreInformation": "more information"
 		},
-		"MiscellaneousPanel": {
-			"PrintSettings": "Print Settings",
-			"Miscellaneous": "Miscellaneous",
+		"PrintsettingsPanel": {
+			"Headline": "Print Settings",
 			"SpeedFactor": "Speed factor",
-			"ExtrusionFactor": "Extrusion factor",
+			"ExtrusionFactor": "Extrusion factor"
+		},
+		"MiscellaneousPanel": {
+			"Headline": "Miscellaneous",
 			"RunoutSensor": {
 				"Disabled": "disabled",
 				"Detected": "detected",
@@ -298,6 +302,7 @@
 			"Off": "Off"
 		},
 		"StatusPanel": {
+			"Headline": "Status",
             "Position": "Position",
             "Absolute": "absolute",
             "Relative": "relative",
@@ -326,7 +331,7 @@
             "Unknown": "Unknown"
 		},
 		"ToolsPanel": {
-			"Temperatures": "Temperatures",
+			"Headline": "Temperatures",
 			"Presets": "Presets",
 			"Cooldown": "Cooldown",
 			"SetupTemperatures": "Setup Temperatures",
@@ -351,15 +356,24 @@
 			}
 		},
 		"WebcamPanel": {
-			"Webcam": "Webcam",
+			"Headline": "Webcam",
 			"FPS": "FPS",
 			"All": "All",
 			"UnknownWebcamService": "Unknown Webcam Service",
 			"UrlNotAvailable": "URL not available"
 		},
-		"ZOffsetPanel": {
-			"ZOffset": "Z-Offset",
-			"CurrentOffset": "Current Offset"
+		"ZoffsetPanel": {
+			"Headline": "Z-Offset",
+			"CurrentOffset": "Current Offset",
+			"Save": "Save",
+			"ToEndstop": "to Endstop",
+			"ToProbe": "to Probe",
+			"SaveInfoHeadline": "Information",
+			"SaveInfoDescription": "The new z-offset has been calculated and registered. Click on SAVE_CONFIG to store the new z-offset in your printer.cfg and restart Klipper.",
+			"SaveInfoDescriptionPrint": "The new Z offset has been calculated and registered. After printing, click on SAVE_CONFIG in the top bar to store it in printer.cfg and restart Klipper.",
+			"SAVE_CONFIG": "SAVE_CONFIG",
+			"Later": "Later",
+			"Ok": "OK"
 		}
 	},
 	"Machine": {
@@ -463,7 +477,6 @@
 		},
 		"WebcamTab": {
 			"Webcams": "Webcams",
-			"ShowOnDashboard": "Show on dashboard",
 			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
@@ -495,6 +508,14 @@
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
 			"FlipVertically": "Flip webcam vertically"
+		},
+		"DashboardTab": {
+			"Dashboard": "Dashboard",
+			"Mobile": "Mobile",
+			"Tablet": "Tablet",
+			"Desktop": "Desktop",
+			"Widescreen": "Widescreen",
+			"ResetLayout": "Reset Layout"
 		},
 		"MacrosTab": {
 			"Macros": "Macros",

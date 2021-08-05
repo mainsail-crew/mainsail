@@ -193,6 +193,7 @@ interface heightmapSerie {
     type: string
     name: string
     data: any[]
+    dataShape?: number[]
     itemStyle?: any
     wireframe: {
         show: boolean
@@ -503,6 +504,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
+            serie.dataShape = [xCount, yCount]
         }
 
         return serie
@@ -548,6 +550,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
+            serie.dataShape = [xCount, yCount]
         }
 
         return serie
@@ -569,12 +572,12 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
         const config = this.$store.state.printer.configfile?.settings?.bed_mesh
         if (config) {
-            const xCount = parseFloat(config.probe_count.split(',')[0])
-            const yCount = parseFloat(config.probe_count.split(',')[1])
-            const xMin = parseFloat(config.mesh_min.split(',')[0])
-            const xMax = parseFloat(config.mesh_max.split(',')[0])
-            const yMin = parseFloat(config.mesh_min.split(',')[1])
-            const yMax = parseFloat(config.mesh_max.split(',')[1])
+            const xCount = parseFloat(config.probe_count?.split(',')[0] ?? config.round_probe_count)
+            const yCount = parseFloat(config.probe_count?.split(',')[1] ?? config.round_probe_count)
+            const xMin = parseFloat(config.mesh_min?.split(',')[0] ?? config.mesh_radius * -1)
+            const xMax = parseFloat(config.mesh_max?.split(',')[0] ?? config.mesh_radius)
+            const yMin = parseFloat(config.mesh_min?.split(',')[1] ?? config.mesh_radius * -1)
+            const yMax = parseFloat(config.mesh_max?.split(',')[1] ?? config.mesh_radius)
             const xStep = (xMax - xMin) / (xCount - 1)
             const yStep = (yMax - yMin) / (yCount - 1)
 
@@ -591,6 +594,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             }
 
             serie.data = data
+            serie.dataShape = [xCount, yCount]
         }
 
         return serie

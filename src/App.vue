@@ -40,11 +40,12 @@ import Component from 'vue-class-component'
 import TheSidebar from "@/components/TheSidebar.vue";
 import BaseMixin from "@/components/mixins/base";
 import TheTopbar from "@/components/TheTopbar.vue";
-import {Mixins,Watch} from "vue-property-decorator";
+import {Mixins, Vue, Watch} from "vue-property-decorator";
 import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
 import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
 import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
 import TheEditor from "@/components/TheEditor.vue";
+import MainsailLogo from "@/components/ui/MainsailLogo.vue";
 
 @Component({
     components: {
@@ -74,12 +75,20 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters["files/getCustomStylesheet"]
     }
 
+    get customFavicons () {
+        return this.$store.getters["files/getCustomFavicons"] ?? null
+    }
+
     get language () {
         return this.$store.state.gui.general.language
     }
 
     get current_file () {
         return this.$store.state.printer.print_stats?.filename ?? ""
+    }
+
+    get logoColor () {
+        return this.$store.state.gui.theme.logo
     }
 
     get primaryColor () {
@@ -106,6 +115,10 @@ export default class App extends Mixins(BaseMixin) {
         }
     }
 
+    get print_percent () {
+        return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
+    }
+
     @Watch('language')
     languageChanged(newVal: string) {
         this.$i18n.locale = newVal;
@@ -128,7 +141,7 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string) {
-        this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
+        if (newVal !== "") this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
     }
 
     @Watch('primaryColor')
@@ -137,78 +150,96 @@ export default class App extends Mixins(BaseMixin) {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
     }
-}
 
-/*export default Vue.extend({
-    computed: {
-        print_percent () {
-            return this.$store.getters["printer/getPrintPercent"]
-        },
-        defaultFavicons () {
-            return this.$store.getters["files/getFavicons"]
-        },
-    },
-    methods: {
-        /!*drawFavicon(val: number) {
-            const favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
-            const favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']")
+    drawFavicon(val: number) {
+        const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
+        const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
-            if (val > 0 && val < 100 && favicon16 && favicon32) {
+        if (favicon16 && favicon32) {
+            if (this.printerIsPrinting) {
                 let faviconSize = 64;
 
-                let canvas = document.createElement('canvas');
-                canvas.width = faviconSize;
-                canvas.height = faviconSize;
-                const context = canvas.getContext('2d');
-                let centerX = canvas.width / 2;
-                let centerY = canvas.height / 2;
-                let radius = 32;
-                let percent = (val * 100).toFixed(0);
+                let canvas = document.createElement('canvas')
+                canvas.width = faviconSize
+                canvas.height = faviconSize
+                const context = canvas.getContext('2d')
+                const centerX = canvas.width / 2
+                const centerY = canvas.height / 2
+                const radius = 32
 
-                /!* draw the grey circle *!/
+                // draw the grey circle
                 if (context) {
-                    context.beginPath();
-                    context.moveTo(centerX, centerY);
-                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                    context.closePath();
-                    context.fillStyle = "#ddd";
-                    context.fill();
-                    context.strokeStyle = "rgba(200, 208, 218, 0.66)";
-                    context.stroke();
+                    context.beginPath()
+                    context.moveTo(centerX, centerY)
+                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+                    context.closePath()
+                    context.fillStyle = "#ddd"
+                    context.fill()
+                    context.strokeStyle = "rgba(200, 208, 218, 0.66)"
+                    context.stroke()
 
-                    /!* draw the green circle based on percentage *!/
-                    let startAngle = 1.5 * Math.PI;
-                    let endAngle = 0;
-                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
-                    if (percent >= 0 && percent <= 25) endAngle = startAngle + (percent * unitValue);
-                    else if (percent > 25 && percent <= 50) endAngle = startAngle + (percent * unitValue);
-                    else if (percent > 50 && percent <= 75) endAngle = startAngle + (percent * unitValue);
-                    else if (percent > 75 && percent <= 100) endAngle = startAngle + (percent * unitValue);
+                    // draw the green circle based on percentage
+                    let startAngle = 1.5 * Math.PI
+                    let endAngle = 0
+                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25
+                    if (val >= 0 && val <= 25) endAngle = startAngle + (val * unitValue)
+                    else if (val > 25 && val <= 50) endAngle = startAngle + (val * unitValue)
+                    else if (val > 50 && val <= 75) endAngle = startAngle + (val * unitValue)
+                    else if (val > 75 && val <= 100) endAngle = startAngle + (val * unitValue)
 
-                    context.beginPath();
-                    context.moveTo(centerX, centerY);
-                    context.arc(centerX, centerY, radius, startAngle, endAngle, false);
-                    context.closePath();
-                    context.fillStyle = "#e41313";
-                    context.fill();
+                    context.beginPath()
+                    context.moveTo(centerX, centerY)
+                    context.arc(centerX, centerY, radius, startAngle, endAngle, false)
+                    context.closePath()
+                    context.fillStyle = this.logoColor
+                    context.fill()
 
                     favicon16.href = canvas.toDataURL('image/png')
                     favicon32.href = canvas.toDataURL('image/png')
                 }
-            } else if (favicon16 && favicon32) {
-                const [favicon16Default, favicon32Default] = this.defaultFavicons
-                favicon16.href = favicon16Default
-                favicon32.href = favicon32Default
+            } else if (this.customFavicons) {
+                const [favicon16Path, favicon32Path] = this.customFavicons
+                favicon16.href = favicon16Path
+                favicon32.href = favicon32Path
+            } else {
+                const favicon = 'data:image/svg+xml;base64,' + btoa(
+                    '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
+                        '<g>' +
+                            '<path style="fill:'+this.logoColor+';" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>' +
+                            '<path style="fill:'+this.logoColor+';" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>' +
+                            '<path style="fill:'+this.logoColor+';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
+                        '</g>' +
+                    '</svg>'
+                )
+
+                favicon16.href = favicon
+                favicon32.href = favicon
             }
-        },*!/
-    },
-    watch: {
-        /!*print_percent() {
-            this.drawFavicon(this.print_percent);
-        },
-        defaultFavicons() {
-            this.drawFavicon(this.print_percent);
-        }*!/
-    },
-})*/
+        }
+    }
+
+    @Watch('customFavicons')
+    customFaviconsChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('logoColor')
+    logoColorChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('print_percent')
+    print_percentChanged(newVal: number) {
+        this.drawFavicon(newVal)
+    }
+
+    @Watch('printerIsPrinting')
+    printerIsPrintingChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    mounted() {
+        this.drawFavicon(this.print_percent)
+    }
+}
 </script>
