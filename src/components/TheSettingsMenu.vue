@@ -71,7 +71,7 @@ import SettingsGCodeViewerTab from "@/components/settings/SettingsGCodeViewerTab
         SettingsMacrosTab,
         SettingsWebcamTab,
         SettingsGeneralTab,
-        SettingsDashboardTab
+        SettingsDashboardTab,
         SettingsGCodeViewerTab
     }
 })

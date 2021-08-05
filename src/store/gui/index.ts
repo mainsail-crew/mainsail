@@ -165,7 +165,10 @@ export const getDefaultState = (): GuiState => {
 		gcodeViewer: {
 			showCursor : true,
 			extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
-			gridColor : '#00FF00'
+			gridColor : '#0000FF',
+			backgroundColor : '#000000',
+			colorMode : 'extruder',
+			showAxes : 'true'
 		}
 	}
 }
