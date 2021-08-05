@@ -55,10 +55,10 @@
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-card-text :class="(consoleStyle === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
+        <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
             <v-row>
                 <v-col>
-                    <perfect-scrollbar ref="miniConsoleScroll" :class="'d-flex flex-column '+(consoleStyle === 'shell' ? 'justify-end' : '')" style="height: 300px;">
+                    <perfect-scrollbar ref="miniConsoleScroll" :class="'d-flex flex-column '+(consoleDirection === 'shell' ? 'justify-end' : '')" :style="'height: '+consoleHeight+'px;'">
                         <console-table ref="console"
                                        :events="events"
                                        :is-mini="true"
@@ -104,17 +104,21 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.helplist ?? []
     }
 
-    get consoleStyle() {
-        return this.$store.state.gui.console.style ?? 'table'
+    get consoleDirection() {
+        return this.$store.state.gui.console.direction ?? 'table'
+    }
+
+    get consoleHeight() {
+        return this.$store.state.gui.console.height ?? 300
     }
 
     get events() {
-        return this.$store.getters["server/getConsoleEvents"](this.consoleStyle === 'table').slice(0, 250)
+        return this.$store.getters["server/getConsoleEvents"](this.consoleDirection === 'table').slice(0, 250)
     }
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleStyle === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
     }
 
     get hideWaitTemperatures(): boolean {
@@ -224,7 +228,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        if (this.consoleStyle === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
     }
 
     scrollToBottom() {

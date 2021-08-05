@@ -8,7 +8,7 @@
 
 <template>
     <div class="d-flex flex-column">
-        <v-row :class="this.consoleStyle === 'table' ? 'order-0' : 'order-1 mt-3'">
+        <v-row :class="this.consoleDirection === 'table' ? 'order-0' : 'order-1 mt-3'">
             <v-col class="col">
                 <v-textarea
                     v-model="gcode"
@@ -37,7 +37,7 @@
                 <command-help-modal
                     @onCommand="gcode = $event"
                 ></command-help-modal>
-                <v-menu offset-y :top="consoleStyle === 'shell'" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
+                <v-menu offset-y :top="consoleDirection === 'shell'" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
                     </template>
@@ -52,7 +52,7 @@
                 </v-menu>
             </v-col>
         </v-row>
-        <v-row :class="this.consoleStyle === 'table' ? 'order-1' : 'order-0 mt-0'">
+        <v-row :class="this.consoleDirection === 'table' ? 'order-1' : 'order-0 mt-0'">
             <v-col xs12>
                 <v-card>
                     <v-card-text class="pa-0">
@@ -101,17 +101,17 @@ export default class PageConsole extends Mixins(BaseMixin) {
         return this.$store.state.printer.helplist ?? []
     }
 
-    get consoleStyle() {
-        return this.$store.state.gui.console.style ?? 'table'
+    get consoleDirection() {
+        return this.$store.state.gui.console.direction ?? 'table'
     }
 
     get events() {
-        return this.$store.getters["server/getConsoleEvents"](this.consoleStyle === 'table')
+        return this.$store.getters["server/getConsoleEvents"](this.consoleDirection === 'table')
     }
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleStyle === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
     }
 
     get hideWaitTemperatures(): boolean {
@@ -219,7 +219,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        if (this.consoleStyle === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
     }
 
     scrollToBottom() {

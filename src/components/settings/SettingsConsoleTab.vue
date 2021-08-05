@@ -6,8 +6,12 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <settings-row :title="$t('Settings.ConsoleTab.Style')">
-                    <v-select v-model="consoleStyle" :items="availableStyles" hide-details outlined dense></v-select>
+                <settings-row :title="$t('Settings.ConsoleTab.Direction')">
+                    <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.ConsoleTab.Height')">
+                    <v-slider v-model="consoleHeightTmp" @change="updateConsoleHeight" hide-details :min="200" :max="900" :step="10" :label="consoleHeightTmp+'px'" ></v-slider>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
@@ -71,9 +75,10 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
+import {Component, Mixins, Watch} from "vue-property-decorator";
 import BaseMixin from "../mixins/base";
 import SettingsRow from "@/components/settings/SettingsRow.vue";
+import {Debounce} from "vue-debounce-decorator";
 
 interface consoleForm {
     bool: boolean
@@ -100,26 +105,53 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         unique: (value: string) => !this.existsPresetName(value) || 'Name already exists',
     }
 
-    private availableStyles = [
-        {
-            text: 'Table',
-            value: 'table'
-        }, {
-            text: 'Shell',
-            value: 'shell'
-        }
-    ]
+    private consoleHeightTmp = 300
+
+    mounted() {
+        this.consoleHeightTmp = this.consoleHeight
+    }
 
     get consoleFilters() {
         return this.$store.getters["gui/getConsoleFilters"] ?? []
     }
 
-    get consoleStyle() {
-        return this.$store.state.gui.console.style ?? 'table'
+    get availableDirections() {
+        return [
+            {
+                text: this.$t('Settings.ConsoleTab.DirectionTable'),
+                value: 'table'
+            }, {
+                text: this.$t('Settings.ConsoleTab.DirectionShell'),
+                value: 'shell'
+            }
+        ]
     }
 
-    set consoleStyle(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.style', value: newVal })
+    get consoleDirection() {
+        return this.$store.state.gui.console.direction ?? 'table'
+    }
+
+    set consoleDirection(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.direction', value: newVal })
+    }
+
+    get consoleHeight() {
+        return this.$store.state.gui.console.height ?? 300
+    }
+
+    set consoleHeight(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.height', value: newVal })
+    }
+
+    @Watch('consoleHeight')
+    consoleHeightChanged(newVal: number) {
+        this.consoleHeightTmp = newVal
+    }
+
+    @Debounce(500)
+    updateConsoleHeight(newVal: number) {
+        window.console.log("updateConsoleHeight", newVal)
+        this.consoleHeight = newVal
     }
 
     get hideWaitTemperatures() {
