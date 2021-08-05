@@ -129,6 +129,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.init();
 		viewer.setBackgroundColor('#121212');
 		viewer.setCursorVisiblity(false);
+		viewer.axes.show(this.showAxes);
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
 		viewer.gcodeProcessor.setLiveTracking(false);
 		window.addEventListener('resize', () => {
@@ -138,8 +139,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 		});
 
 		if (viewer.lastLoadFailed()) {
-			this.renderQuality = 2;
-			viewer.updateRenderQuality(2);
+			this.renderQuality = this.renderQualities[0];
+			viewer.updateRenderQuality(1);
 			viewer.clearLoadFlag();
 		}
 	}
@@ -183,6 +184,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	async loadFile(filename) {
 		fetch(filename).then((response) => {
 			response.text().then(async (text) => {
+				viewer.updateRenderQuality(this.renderQuality.value);
 				await viewer.processFile(text);
 				this.loadingPercent = 100;
 				this.loading = false;
@@ -190,7 +192,19 @@ export default class Viewer extends Mixins(BaseMixin) {
 		});
 	}
 
+	async sleep() {
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+	}
+
 	async reloadViewer() {
+		if (this.loading) {
+			//if we are actively loading signal a cancel and wait a second
+			//This prevents a timing issue that can happen if a user changes settings and then
+			//hits the reload viewer button. Will eventually move this to api
+			viewer.gcodeProcessor.cancelLoad = true;
+			await this.sleep();
+		}
+
 		this.reloadRequired = false;
 		this.loading = true;
 		this.loadingPercent = 0;
@@ -207,10 +221,18 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.resetCamera();
 	}
 
+	setReloadRequiredFlag() {
+		console.log(this.loadedFile);
+		if (this.loadedFile && this.loadedFile != '') {
+			console.log('Flag it');
+			this.reloadRequired = true;
+		}
+	}
+
 	@Watch('renderQuality')
 	async renderQualityChanged(newVal) {
 		if (viewer.renderQuality !== newVal) {
-			viewer.updateRenderQuality(newVal);
+			viewer.updateRenderQuality(newVal.value);
 			await this.reloadViewer();
 		}
 	}
@@ -286,7 +308,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('extruderColors')
 	extruderColorsChanged(newVal) {
-		if (newVal != null) {
+		if (newVal) {
 			let match = true;
 			let extruderColors = viewer.getExtruderColors();
 			if (newVal.length === extruderColors.length) {
@@ -298,10 +320,70 @@ export default class Viewer extends Mixins(BaseMixin) {
 			}
 			if (!match) {
 				viewer.saveExtruderColors(newVal);
-				this.reloadRequired = true;
+				this.setReloadRequiredFlag();
 			}
 		}
 	}
+
+	get colorMode() {
+		try {
+			return this.$store.state.gui.gcodeViewer.colorMode;
+		} catch {
+			return 'extruder';
+		}
+	}
+
+	@Watch('colorMode')
+	colorModeChanged(newVal) {
+		console.log(newVal);
+		if (newVal) {
+			let mode = newVal === 'extruder' ? 0 : 1; //Magic number until I export the enum 0 = Color 1 = Feed Rate
+			if (viewer.gcodeProcessor.colorMode !== mode) {
+				this.setReloadRequiredFlag();
+				viewer.gcodeProcessor.setColorMode(mode);
+			}
+		}
+	}
+
+	get backgroundColor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.backgroundColor;
+		} catch {
+			return '#000000';
+		}
+	}
+
+	@Watch('backgroundColor')
+	backgroundColorChanged(newVal) {
+		viewer.setBackgroundColor(newVal);
+	}
+
+	get gridColor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.gridColor;
+		} catch {
+			return '#000000';
+		}
+	}
+
+	@Watch('gridColor')
+	gridColorChanged(newVal) {
+		viewer.bed.setBedColor(newVal);
+	}
+
+	get showAxes() {
+		try {
+			return this.$store.state.gui.gcodeViewer.showAxes;
+		} catch {
+			return true;
+		}
+	}
+
+	@Watch('showAxes')
+	showAxesChanged(newVal){
+		viewer.axes.show(newVal);
+	}
+
 }
 </script>
 

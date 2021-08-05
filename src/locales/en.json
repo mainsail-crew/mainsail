@@ -580,7 +580,10 @@
 			"ExtruderColor" : "Extruder Colors",
 			"ColorMode" : "Color Mode",
 			"FeedRate": "Feed Rate",
-			"Extruder" : "Extruder"
+			"Extruder" : "Extruder",
+			"BackgroundColor" : "Background Color",
+			"GridColor": "Grid Color",
+			"ShowAxes": "Show Axes"
 		}
 	},
 	"GCodeViewer":{
