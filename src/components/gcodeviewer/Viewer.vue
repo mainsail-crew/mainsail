@@ -4,10 +4,8 @@
 			<v-icon>mdi-video-3d</v-icon>
 			{{ $t('GCodeViewer.Title') }}
 			<v-spacer></v-spacer>
-			{{filePosition}} {{tracking}} {{loadedFile}}
-			<v-spacer></v-spacer>
 			<v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-			<v-btn @click="reloadViewer()" v-show="reloadRequired" color="info"> {{$t("GCodeViewer.ReloadRequired")}}</v-btn> 
+			<v-btn @click="reloadViewer()" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
 		</v-card-title>
 		<v-card-text>
 			<v-row>
@@ -193,12 +191,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	async reloadViewer() {
+		this.reloadRequired = false;
 		this.loading = true;
 		this.loadingPercent = 0;
 		await viewer.reload();
 		this.loadingPercent = 100;
 		this.loading = false;
-		this.reloadRequired = false;
 	}
 
 	resize() {
