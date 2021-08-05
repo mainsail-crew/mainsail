@@ -618,8 +618,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     renameDirectoryAction() {
         this.dialogRenameDirectory.show = false;
         this.$socket.emit('server.files.move', {
-            source: this.absolutePath+"/"+this.dialogRenameDirectory.item.filename,
-            dest: this.absolutePath+"/"+this.dialogRenameDirectory.newName
+            source: (this.absolutePath+"/"+this.dialogRenameDirectory.item.filename).slice(1),
+            dest: (this.absolutePath+"/"+this.dialogRenameDirectory.newName).slice(1)
         }, { action: 'files/getMove' });
     }
 
@@ -668,8 +668,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     renameFileAction() {
         this.dialogRenameFile.show = false
         this.$socket.emit('server.files.move', {
-            source: this.absolutePath+"/"+this.dialogRenameFile.item.filename,
-            dest: this.absolutePath+"/"+this.dialogRenameFile.newName
+            source: (this.absolutePath+"/"+this.dialogRenameFile.item.filename).slice(1),
+            dest: (this.absolutePath+"/"+this.dialogRenameFile.newName).slice(1),
         }, { action: 'files/getMove' })
     }
 

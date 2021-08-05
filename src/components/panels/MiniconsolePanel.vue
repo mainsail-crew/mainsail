@@ -6,10 +6,10 @@
 </style>
 
 <template>
-    <v-card v-if="socketIsConnected" class="pb-0">
+    <v-card v-if="socketIsConnected" class="mb-9">
         <v-toolbar flat dense>
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Console") }}</span>
+                <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Headline") }}</span>
             </v-toolbar-title>
         </v-toolbar>
         <v-card-text>

@@ -131,7 +131,10 @@ export const actions: ActionTree<FileState, RootState> = {
 				break
 
 			case 'move_file':
-				commit('setMoveFile', payload)
+				if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
+					commit('setCreateFile', payload)
+				else
+					commit('setMoveFile', payload)
 				break
 
 			case 'delete_file':

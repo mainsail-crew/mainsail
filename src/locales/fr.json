@@ -1,58 +1,73 @@
 {
   "title": "Français",
   "App": {
-    "Connecting": "Connection",
-    "To": "avec",
-    "Failed": "impossible",
-    "TryAgain": "re-essayer",
     "Printers": "Imprimantes",
-    "CannotNotConnectTo": "Connection impossible",
-    "ConnectionTo": "Connection avec",
-    "ConnectionFailed": "Connection impossible",
-    "SelectPrinter": "Choix de l'imprimante",
-    "AddPrinter": "Ajouter imprimante",
-    "EditPrinter": "Edition imprimante",
-    "UpdatePrinter": "Enregistrer",
-    "ChangePrinter": "Selection d'imprimante",
-    "Hello": "Bonjour et bienvenue dans le mode distance de Mainsail!",
-    "PleaseRememberToAdd": "N'oubliez pas d'ajouter",
-    "InMoonrakerConf": "dans moonraker.conf section 'cors_domains'.",
-    "YouCanFindMore": "Plus de détails sur",
-    "Remotemode": "https://docs.mainsail.xyz/remotemode",
-    "KlipperControl": "Contrôle de Klipper",
-    "Restart": "Redémarrage",
-    "FirmwareRestart": "Redémarrage FIRMWARE",
-    "RestartServices": "Redémarrage des services",
-    "Klipper": "Klipper ",
-    "Moonraker": "Moonraker ",
-    "PowerDevices": "Module d'alimentation",
-    "HostControl": "Contrôle de l'hôte",
-    "Reboot": "Redémarrage",
-    "Shutdown": "Arrêt",
-    "Updating": "Mise à jour",
-    "Recovering": "Réinitialisation",
-    "done": "Terminé!",
-    "Empty": "vide",
-    "Close": "Fermeture",
-    "SAVECONFIG": "SAVE CONFIG",
-    "UploadPrint": "Chargement et impression",
-    "EmergencyStop": "Arrêt d'urgence",
-    "Uploading": "Chargement"
+    "TopBar": {
+      "CannotUploadTheFile": "Chargement du fichier impossible",
+      "EmergencyStop": "Arrêt d'urgence",
+      "SAVE_CONFIG": "Sauvegarde de la configuration",
+      "UploadOfFileSuccessful": "le fichier {file} a été chargé",
+      "UploadPrint": "Chargement & impression",
+      "Uploading": "Chargement"
+    },
+    "TopCornerMenu": {
+      "HostControl": "Contrôle de l'hôte",
+      "KlipperControl": "Contrôle de Klipper",
+      "KlipperFirmwareRestart": "Rdémarrage du Firmware",
+      "KlipperRestart": "Redémarrage de Klipper",
+      "PowerDevices": "Modules d'alimentation",
+      "Reboot": "Redémarrage",
+      "RestartServices": "Redémarrage des services",
+      "Shutdown": "Arrêt"
+    },
+    "ThrottledStates": {
+      "DescriptionUnderVoltageDetected": "rPI alimentation inférieure à 4.65V",
+      "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+) température au dessus de la limite software (défaut 60°C).",
+      "DescriptionPreviouslyUnderVolted": "rPI l'alimentation a chuté au moins une fois sous 4.65V depuis la dernière mise sous tension",
+      "DescriptionPreviouslyThrottled": "rPI ARM core(s) a été réduit au moins une fois depuis la dernière mise sous tension",
+      "DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) température au dessus de la limite software (défaut 60°C) au moins une fois depuis la dernière mise sous tension",
+      "DescriptionPreviouslyFrequencyCapped": "rPi ARM la fréquence max a été limitée à 1.2 GHz au moins une fois depuis la dernière mise sous tension",
+      "DescriptionFrequencyCapped": "rPi ARM la fréquence max est limitée à 1.2 GHz",
+      "DescriptionCurrentlyThrottled": "rPi ARM core(s) sont actuellement réduits",
+      "TitleUnderVoltageDetected": "Alimentation faible détectée",
+      "TitleTemperatureLimitActive": "Limite de température active",
+      "TitlePreviouslyUnderVolted": "précédemment alimentation faible",
+      "TitlePreviouslyThrottled": "Précédemment fréquence réduite",
+      "TitlePreviouslyTemperatureLimited": "a été limité par la température",
+      "TitlePreviouslyFrequencyCapped": "a été limité en fréquence",
+      "TitleFrequencyCapped": "fréquence réduite",
+      "TitleCurrentlyThrottled": "actuellement en mode réduit",
+      "HeadlinePreviouslyFlags": "Etat précédent",
+      "HeadlineCurrentFlags": "Etat actuel"
+    },
+    "UpdateDialog": {
+      "Close": "Fermer",
+      "Empty": "Vide",
+      "Recovering": "Restaurer {software}...",
+      "Updating": "Mise à jour {software}...",
+      "UpdatingDone": "Mise à jour {software} effectuée!",
+      "RecoveringDone": "Restauration {software} effectuée!"
+    }
   },
   "Router": {
     "Dashboard": "Tableau de bord",
     "Printers": "Imprimantes",
-    "Settings": "Réglages",
     "Webcam": "Caméra",
     "Console": "Console",
     "Heightmap": "Maillage",
     "G-Code Files": "Fichiers G-Code",
     "History": "Historique",
-    "Machine": "Machine",
-    "Interface": "Interface"
+    "Machine": "Machine"
   },
   "Editor": {
-    "Minimap": "Afficher minimap"
+    "Minimap": "Afficher minimap",
+    "ConfigReference": "Référence de configuration",
+    "Downloading": "Téléchargement",
+    "FailedSave": "Le fichier {filename}  n'a pas pu être téléchargé",
+    "SaveClose": "Sauvegarde et fermeture",
+    "SaveRestart": "Sauvegarde et redémarrage",
+    "SuccessfullySaved": "Le fichier {filename} a été sauvegardé",
+    "Uploading": "Téléchargement"
   },
   "Files": {
     "GCodeFiles": "Fichiers G-Code",
@@ -77,14 +92,12 @@
     "Rename": "Renommer",
     "Delete": "Effacer",
     "StartJob": "Démarrer",
-    "DoYouWantToStart": "Voulez-vous imprimer",
     "No": "Non",
     "Yes": "Oui",
     "NewDirectory": "Nouveau dossier",
     "PleaseEnterANewDirectoryName": "Entrez le nom du nouveau dossier",
     "RenameFile": "Renommer le fichier",
     "EditFile": "Editer Fichier",
-    "SaveClose": "Sauvegarder et fermer",
     "Name": "Nom",
     "Cancel": "Annuler",
     "Create": "Créer",
@@ -97,28 +110,35 @@
     "LayerHeight": "Hauteur de couche",
     "FilamentUsage": "Utilisation de filament",
     "PrintTime": "Temps d'impression",
-    "Slicer": "Trancheur"
+    "Slicer": "Trancheur",
+    "DeleteDirectory": "Effacer le dossier",
+    "DeleteDirectoryQuestion": "Voulez vous vraiment effacer le dossier \"{name}\" et tout son contenu ?",
+    "DoYouWantToStartFilename": "Voulez vous démarrer {filename} ?",
+    "Downloading": "Téléchargement en cours",
+    "FilamentWeight": "Poids du filament",
+    "SuccessfullyCreated": "Fichier {filename} créé",
+    "SuccessfullyDeleted": "Fichier {filename} éffacé",
+    "SuccessfullyMoved": "Fichier {filename} déplacé",
+    "SuccessfullyRenamed": "Fichier {filename} renommé",
+    "SuccessfullyUploaded": "Fichier {filename} mis à jour"
   },
   "Console": {
-    "send": "envoi",
     "SetupConsole": "Configuration console",
     "SendCode": "Envoyer la commande",
     "Empty": "vide",
     "HideTemperatures": "Cacher les températures",
-    "CustomFilters": "Filtres utilisateur",
-    "Date": "Date",
-    "Event": "Evénement"
+    "CommandList": "Liste des commandes"
   },
   "Heightmap": {
     "Heightmap": "Profil de hauteur",
-    "TitleHomeAll": "Référence tous",
+    "TitleHomeAll": "Réf. tous",
     "Clear": "effacer",
     "TitleClear": "Effacer Maillage",
     "Calibrate": "calibration",
     "TitleCalibrate": "Calibrer nouveau Maillage",
-    "NoBedMeshHasBeenLoadedYet": "Aucun profil chargé.",
+    "NoBedMeshHasBeenLoadedYet": "Aucun profil chargé",
     "Probed": "Mesuré",
-    "Mesh": "Maillage calculé",
+    "Mesh": "Calculé",
     "Scale": "Echelle",
     "Profiles": "Profils",
     "Deleted": "effacé",
@@ -130,7 +150,10 @@
     "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du Maillage plateau ?",
     "DeleteBedMeshProfile": "Effacer profil Maillage",
     "DoYouReallyWantToDelete": "Voulez-vous effacer le profil ?",
-    "Remove": "supprimer"
+    "Remove": "supprimer",
+    "Flat": "Plat",
+    "NoProfile": "Aucun profil disponible",
+    "Wireframe": "Maillage"
   },
   "History": {
     "Statistics": "Statistiques",
@@ -142,7 +165,7 @@
     "FilamentUsage": "Filament consommé",
     "PrinttimeAvg": "Temps moyen d'impression",
     "PrintHistory": "Historique",
-    "TitleRefreshHistory": "Rafraîchir l’historique",
+    "TitleRefreshHistory": "Rafraîchir l'historique",
     "TitleSettings": "Réglages",
     "Search": "Recherche",
     "Jobs": "Travaux",
@@ -174,11 +197,13 @@
     "Slicer": "Trancheur",
     "SlicerVersion": "Version trancheur",
     "HistoryFilamentUsage": "Filament",
-    "HistoryPrinttimeAVG": "Impressions"
+    "HistoryPrinttimeAVG": "Impressions",
+    "EstimatedFilamentWeight": "Estimation poids de filament",
+    "ShowStatusName": "Afficher \"{name}\" ({count})"
   },
   "Panels": {
     "ControlPanel": {
-      "Controls": "Contrôles",
+      "Headline": "Contrôles",
       "SetupControls": "Réglages",
       "AlternateControls": "Commandes en croix",
       "InvertX": "Inversion X",
@@ -192,47 +217,49 @@
       "Z": "Z",
       "PleaseConfigureSteps": "Configurez Pas",
       "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
-      "Home": "Référence",
       "FeedAmountIn": "Longueur à extraire",
       "FeedrateIn": "Vitesse d'extrusion",
       "Retract": "Rétractation",
-      "Extrude": "Extrusion",
-      "Macros": "Macros"
+      "Extrude": "Extrusion"
+    },
+    "MacrosPanel": {
+      "Headline": "Macros"
     },
     "FarmPrinterPanel": {
-      "WebcamOff": "Arrêt"
+      "WebcamOff": "Arrêt",
+      "SwitchToPrinter": "Changer d'imprimante"
     },
     "KlippyStatePanel": {
       "KlippyState": "Etat-Klippy",
-      "KlippyInfo": "Moonraker ne peut pas se connecter àKlippy!\nContrôlez que le service Klipper est actif et qu'un UDS (Unix Domain Socket) est configuré.",
       "Restart": "Redémarrage",
-      "FirmwareRestart": "Redémarrage Firmware"
+      "FirmwareRestart": "Redémarrage Firmware",
+      "KlipperCheck": "Contrôlez que le sevice Klipper est actif et qu'un UDS (Unix Domain Socket) est configuré",
+      "MoonrakerCannotConnect": "Moonraker n'arrive pas à se connecter à Klipper"
     },
     "MiniconsolePanel": {
-      "Console": "Console",
+      "Headline": "Console",
       "SetupConsole": "Réglage Console",
       "HideTemperatures": "Cacher températures",
-      "CustomFilters": "Filtres utilisateur",
-      "SendCode": "Envoyer la commande...",
-      "Send": "Envoi",
-      "Empty": "vide"
+      "SendCode": "Envoyer la commande..."
     },
     "MinSettingsPanel": {
       "MissingConfiguration": "Configuration absente",
       "IsNotDefinedInConfig": "n'est pas défini dans le fichier de configuration.",
-      "MoreInformation": "plus d'information"
+      "MoreInformation": "plus d'information",
+      "IncludeMainsailCfg": "Soyez sur d'avoir inclus \"mainsail.cfg\" dans votre fichier \"printer.cfg\""
     },
     "MiscellaneousPanel": {
-      "PrintSettings": "Réglages d'impression",
-      "Miscellaneous": "Divers",
+      "Headline": "Divers",
+      "RunoutSensor": {
+        "Detected": "détecté",
+        "Disabled": "inactif",
+        "Empty": "vide"
+      }
+    },
+    "PrintsettingsPanel": {
+      "Headline": "Réglages d'impression",
       "SpeedFactor": "Facteur de vitesse",
       "ExtrusionFactor": "Facteur d'extrusion"
-    },
-    "MoonrakerFailedComponentsPanel": {
-      "MoonrakerFailedComponents": "Composants Moonraker en erreur",
-      "MoonrakerErrorInfo": "Une erreur a été détectée lors du chargement des composants de Moonraker. Contrôlez le fichier Log pour plus d'informations.",
-      "FollowingPluginHasAnError": "Le plugin suivant a une erreur:",
-      "DownloadLog": "Téléchargement fichier Log"
     },
     "PowerControlPanel": {
       "PowerControl": "Alimentation",
@@ -241,6 +268,7 @@
       "Off": "Arrêt"
     },
     "StatusPanel": {
+      "Headline": "Status",
       "Position": "Position",
       "Absolute": "absolu",
       "Relative": "relatif",
@@ -265,10 +293,11 @@
       "Total": "Total",
       "Slicer": "Trancheur",
       "ETA": "TEA",
-      "Unknown": "Inconnu"
+      "Unknown": "Inconnu",
+      "Requested": "Requis"
     },
     "ToolsPanel": {
-      "Temperatures": "Températures",
+      "Headline": "Températures",
       "Presets": "Préréglages",
       "Cooldown": "Refroidissement",
       "SetupTemperatures": "Réglages Températures",
@@ -282,183 +311,260 @@
       "Min": "min",
       "Max": "max",
       "Avg": "Moyenne",
-      "UNKNOWN": "INCONNU",
-      "CurrentTemperature": "température actuelle",
-      "TargetTemperature": "température cible",
-      "PwmPower": "puissance PWM",
       "ShowNameInChart": "Afficher {name} dans le graphique",
       "ShowNameInList": "Afficher {name} dans la liste",
-      "TemperaturesInChart": "Température [°C]"
+      "TemperaturesInChart": "Température [°C]",
+      "Dataset": {
+        "Power": "Puissance-PWM",
+        "Speed": "Vitesse-PWM",
+        "Target": "température cible",
+        "Temperature": "température actuelle"
+      }
     },
     "WebcamPanel": {
-      "Webcam": "Caméra",
+      "Headline": "Caméra",
       "FPS": "Ips",
       "All": "Tous",
-      "UnknownWebcamService": "Service Caméra inconnu"
+      "UnknownWebcamService": "Service Caméra inconnu",
+      "UrlNotAvailable": "URL non disponible"
     },
-    "ZOffsetPanel": {
-      "ZBabyStepping": "Z micro pas",
-      "CurrentOffset": "Offset actuel"
+    "ZoffsetPanel": {
+      "Headline": "Offset Z",
+      "CurrentOffset": "Offset actuel",
+      "Save": "Sauvegarder",
+      "SAVE_CONFIG": "SAVE_CONFIG",
+      "ToEndstop": "jusqu'au fin de course",
+      "ToProbe": "jusqu'à la sonde",
+      "SaveInfoHeadline": "Information",
+      "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur SAVE_CONFIG dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+      "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur SAVE_CONFIG afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+      "Ok": "Ok",
+      "Later": "Plus tard"
+    },
+    "MoonrakerStatePanel": {
+      "DownloadLog": "Téléchargement log",
+      "FollowingPluginHasAnError": "Le Plug-in suivant a une erreur",
+      "MoonrakerErrorInfo": "Une erreur a été détectée lors du chargement d'un composant de Moonraker. Contrôlez le fichier log et corrigez.",
+      "MoonrakerWarnings": "Avertissement Moonraker"
     }
   },
   "Settings": {
-    "ConfigFilesPanel": {
-      "ConfigFiles": "Fichiers de configuration",
-      "SetupCurrentList": "Réglage liste actuelle",
-      "HiddenFiles": "Fichiers cachés",
-      "CurrentPath": "Chemin actuel",
-      "Files": "Fichiers",
-      "AllFiles": "Tous",
-      "Empty": "vide",
-      "EditFile": "Editer fichier",
-      "Download": "Télécharger",
-      "Rename": "Renommer",
-      "Delete": "Effacer",
-      "PleaseStandBy": "Veuillez attendre...",
-      "ConfigReference": "Référence de configuration",
-      "SaveClose": "Sauvegarder et fermer",
-      "SaveRestart": "Sauvegarder et redémarrer",
-      "RenameFile": "Renommer fichier",
+    "Cancel": "Annuler",
+    "ConsoleTab": {
+      "AddFilter": "ajouter filter",
+      "Console": "Console",
+      "CreateHeadline": "Créer filtre",
+      "EditHeadline": "Editer filtre",
+      "HideTemperatures": "Cacher températures",
       "Name": "Nom",
-      "Cancel": "Annuler",
-      "Create": "Créer",
-      "CreateFile": "Créer un fichier",
-      "CreateFolder": "Créer un dossier",
-      "Uploading": "Téléchargement",
-      "Filesize": "Taille",
-      "LastModified": "Dernière modification"
+      "Regex": "Regex",
+      "ShowOnDashboard": "Afficher sur l'écran principal",
+      "StoreButton": "Sauvegarder filtre",
+      "UpdateButton": "Mettre à jour filtre"
     },
-    "ConsolePanel": {
-      "Console": "Console",
-      "HideTemperatures": "Cacher les messages de températures",
-      "CustomFilters": "Filtres utilisateur",
-      "Rules": "Règles"
-    },
-    "ControlPanel": {
+    "ControlTab": {
       "Control": "Contrôle",
+      "EnableCross": "Activer mouvements en croix",
+      "InvertXMovement": "Inversion X",
+      "InvertYMovement": "Inversion Y",
+      "InvertZMovement": "Inversion Z",
+      "MoveDistancesEInMm": "Déplacement E en mm",
+      "MoveDistancesInMm": "Déplacement en mm",
+      "MoveDistancesXYInMm": "Déplacement XY en mm",
+      "MoveDistancesZInMm": "Déplacement Z en mm",
+      "SpeedEInMms": "Vitesse E en mm/s",
       "SpeedXY": "Vitesse XY",
-      "SpeedZ": "Vitesse Z",
-      "EnableCross": "Activer les mouvements en croix",
-      "MoveDistancesInMm": "Distance de déplacement [mm]",
-      "InvertXMovement": "Mouvement X inverse",
-      "InvertYMovement": "Mouvement Y inverse",
-      "InvertZMovement": "Mouvement Z inverse",
-      "MoveDistancesXYInMm": "Distance de déplacement XY [mm]",
-      "MoveDistancesZInMm": "Distance de déplacement Z [mm]",
-      "MoveDistancesEInMm": "Longueur d'extrusion E [mm]",
-      "Extruder": "Extrudeur",
-      "SpeedEInMms": "Vitesse d'extrusion E [mm/s]"
+      "SpeedZ": "Vitesse Z"
     },
-    "DashboardPanel": {
-      "Dashboard": "Tableau de bord",
-      "Webcam": "Caméra",
-      "Tempchart": "Graphique de température",
-      "Console": "Console",
-      "ChartUpdateInterval": "Période mise à jour du graphique",
-      "DatapointInterval": "Intervale entre deux points"
-    },
-    "EndstopPanel": {
-      "Endstops": "Fins de course",
-      "Endstop": "Fin de course",
-      "TRIGGERED": "ACTIF",
-      "open": "OUVERT",
-      "EndstopInfo": "Pressez le bouton sync en bas à droite afin d'actualiser l'état des fins de course."
-    },
-    "GeneralPanel": {
+    "Edit": "Edition",
+    "GeneralTab": {
+      "BoolBigThumbnail": "Grande miniature",
+      "BoolBigThumbnailDescription": "Afficher une grande miniature à l'écran durant l'impression",
+      "DisplayCANCEL_PRINT": "Afficher \"Annuler impression\"",
+      "DisplayCANCEL_PRINTDescription": "Affiche le bouton \"Annuler impression\" de manière permanente. Pas de confirmation demandée",
+      "DisplayZOffset": "Afficher Offset-Z",
+      "DisplayZOffsetDescription": "Autrement le panneau n'apparait qu'une fois l'impression démarrée",
+      "FactoryInfo": "Voulez-vous vraiment restorer Mainsail aux réglage d'usine ?",
+      "FactoryReset": "Réglages d'usine",
       "General": "Général",
-      "PrinterName": "Nom de l'imprimante",
       "Language": "Langue",
-      "DisplayCANCEL_PRINT": "Afficher CANCEL_PRINT",
-      "DisplayZOffset": "Afficher le panneau Z-Offset",
-      "ShowCANCEL_PRINT": "Affiche le bouton CANCEL_PRINT de manière permanente. Pas de confirmation nécessaire.",
-      "ShowZOffset": "Affiche le panneau Z-Offset de manière permanente.",
-      "FactoryReset": "Configuration d'origine",
-      "FactoryInfo": "Voulez-vous vraiment remettre Mainsail à sa configuration d'origine ?",
-      "ResetMainsail": "MAZ mainsail"
+      "PrinterName": "Nom de l'imprimante",
+      "ResetMainsail": "Mise à zéro Mainsail"
     },
-    "LimitsPanel": {
-      "MachineLimits": "Limites de l'imprimante",
-      "Velocity": "Vitesse",
-      "Acceleration": "Accélération",
-      "Deceleration": "Décélération",
-      "SquareCornerVelocity": "Vitesse des angles droits"
-    },
-    "LogfilesPanel": {
-      "Logfiles": "Fichiers Log"
-    },
-    "MacrosPanel": {
+    "InterfaceSettings": "Réglages interface",
+    "MacrosTab": {
       "Macros": "Macros",
-      "NOMacros": "Pas de macros trouvées..."
+      "NOMacros": "Pas de macros trouvées"
     },
-    "PresetsPanel": {
-      "PreheatPresets": "Préréglage de préchauffage",
-      "Cooldown": "Refroidissement",
+    "DashboardTab": {
+      "Dashboard": "Tableau de bord",
+      "Mobile": "Mobile",
+      "Tablet": "Tablet",
+      "Desktop": "Desktop",
+      "Widescreen": "Widescreen",
+      "ResetLayout": "réinitialisation de la mise en page"
+    },
+    "PresetsTab": {
       "AddPreset": "ajouter préréglage",
+      "Cooldown": "Refroidissement",
       "CreateHeadline": "Créer préréglage",
+      "CustomGCode": "G-Code utilisateur",
+      "EditCooldown": "Editer refroidissement",
       "EditHeadline": "Editer préréglage",
       "Name": "Nom",
-      "CustomGCode": "G-Code utilisateur",
-      "PresetInfo": "Vous devez indiquer au minimum une température cible ou un gcode utilisateur.",
-      "StoreButton": "Enregistrer préréglage",
+      "PreheatPresets": "Préréglage chauffage",
+      "PresetInfo": "Vous devez définir une température cible ou un G-Code utilisateur",
+      "StoreButton": "Sauvegarder préréglage",
       "UpdateButton": "Mise à jour préréglage",
-      "EditCooldown": "Editer refroidissement",
       "UpdateCooldown": "Mise à jour refroidissement"
     },
-    "RemotePrintersPanel": {
-      "RemotePrinters": "Imprimantes distantes",
+    "RemotePrintersTab": {
       "AddPrinter": "Ajouter imprimante",
       "EditPrinter": "Editer imprimante",
+      "Hostname": "Nom d'hôte",
+      "Port": "Port",
+      "RemotePrinters": "Imprimante distante",
       "UpdatePrinter": "Mise à jour imprimante"
     },
-    "RunoutPanel": {
-      "Detected": "détecté",
-      "Empty": "vide"
+    "ThemeTab": {
+      "Logo": "Logo",
+      "Primary": "Primaire",
+      "Theme": "Thème"
     },
-    "UpdatePanel": {
-      "UpdateManager": "Contrôleur de mise à jour",
-      "CheckForUpdates": "Contrôle des mises à jour",
-      "System": "Système",
-      "PackagesCanBeUpgraded": "les paquets ne peuvent être mis à jour",
-      "OSPackages": "Paquets système",
-      "Commits": "Publications",
-      "CommittedAt": "publié le",
-      "UpToDate": "à jour",
-      "Detached": "non lié",
-      "Update": "mise à jour",
-      "Upgrade": "Mise à jour (version)",
-      "Dirty": "modifié",
-      "Invalid": "invalide",
-      "Unknown": "inconnu",
-      "ERROR": "ERREUR"
-    },
-    "WebcamPanel": {
-      "Webcams": "Caméras",
-      "ShowInNavigation": "Afficher dans la navigation",
+    "WebcamTab": {
       "AddWebcam": "Ajouter caméra",
       "CreateWebcam": "Créer caméra",
       "EditWebcam": "Editer caméra",
-      "SaveWebcam": "Sauvegarder Caméra",
-      "UpdateWebcam": "Mise à jour caméra",
-      "IconPrinter": "Imprimante",
-      "IconNozzle": "Buse",
+      "FlipHorizontally": "Miroir horizontal",
+      "FlipVertically": "Miroir vertical",
       "IconBed": "Plateau",
       "IconCam": "Caméra",
-      "IconFilament": "Filament",
       "IconDoor": "Porte",
-      "IconMcu": "MCU",
+      "IconFilament": "Filament",
       "IconHot": "Chaud",
-      "Mjpegstreamer": "Flux MJPEG",
-      "MjpegstreamerAdaptive": "Flux MJPEG Adaptif (experimental)",
-      "Ipstream": "Caméra IP ",
-      "Required": "requis",
-      "NameAlreadyExists": "Nom existe déjà",
-      "UrlNotAvailable": "URL non disponible",
+      "IconMcu": "MCU",
+      "IconNozzle": "Buze",
+      "IconPrinter": "Imprimante",
+      "Ipstream": "Caméra IP",
+      "Mjpegstreamer": "Flux-MJPEG",
+      "MjpegstreamerAdaptive": "Flux-MJPEG Adaptatif (expérimental)",
       "Name": "Nom",
-      "WebcamURL": "URL caméra",
+      "NameAlreadyExists": "Nom existe déjà",
+      "Required": "requis",
+      "SaveWebcam": "sauvegarde caméra",
       "Service": "Service",
-      "TargetFPS": "Ips cible",
-      "FlipHorizontally": "Miroir horizontal",
-      "FlipVertically": "Miroir vertical"
+      "ShowInNavigation": "Afficher dans la navigation",
+      "TargetFPS": "IPS destination",
+      "UpdateWebcam": "Mise à jour Caméra",
+      "UrlNotAvailable": "URL non disponible",
+      "Uv4lMjpeg": "UV4L-MJPEG",
+      "WebcamURL": "URL Caméra",
+      "Webcams": "Caméras"
     }
+  },
+  "ConnectionDialog": {
+    "CannotConnectTo": "Connection avec Moonraker ({host}) impossible",
+    "CheckMoonrakerLog": "Si ce message apparait régulièrement, contrôlez le fichier log à l'adresse suivante:",
+    "Connecting": "Connection avec {host}",
+    "Failed": "Connection échouée",
+    "TryAgain": " répétez"
+  },
+  "Machine": {
+    "ConfigFilesPanel": {
+      "AllFiles": "Tous",
+      "Cancel": "Annuler",
+      "ConfigFiles": "Fichiers de configuration",
+      "Create": "Créer",
+      "CreateDirectory": "Nouveau dossier",
+      "CreateFile": "Nouveau fichier",
+      "CurrentPath": "Chemin actuel",
+      "Delete": "Effacer",
+      "DeleteDirectory": "Effacer dossier",
+      "DeleteDirectoryQuestion": "Voulez-vous vraiment effacer le dossier \"{name}\" et son contenu ?",
+      "Download": "Téléchargement",
+      "EditFile": "Editer fichier",
+      "Empty": "vide",
+      "Files": "Fichiers",
+      "Filesize": "Taille",
+      "Free": "Libre",
+      "FreeDisk": "Disque libre",
+      "HiddenFiles": "Fichiers cachés",
+      "LastModified": "Dernière modification",
+      "Name": "Nom",
+      "PleaseStandBy": "Attendez",
+      "RefreshDirectory": "Rafraichir le dossier",
+      "Rename": "Renommer",
+      "RenameDirectory": "Renommer le dossier",
+      "RenameFile": "Renommer le fichier",
+      "SetupCurrentList": "Ajuster la liste",
+      "ShowFile": "Afficher le fichier",
+      "Total": "Total",
+      "UploadFile": "Chargement d'un fichier",
+      "Uploading": "Téléchargement",
+      "Used": "Utilisé"
+    },
+    "EndstopPanel": {
+      "Endstop": "Fin de course",
+      "EndstopInfo": "Pressez le bouton de synchronisation en bas à droite afin de recharger l'état des fin de course",
+      "Endstops": "Fin de course",
+      "open": "inactif",
+      "TRIGGERED": "actif"
+    },
+    "LimitsPanel": {
+      "Acceleration": "Accélération",
+      "Deceleration": "Decélération",
+      "MachineLimits": "Limites de l'imprimante",
+      "SquareCornerVelocity": "Vitesse des angles droits",
+      "Velocity": "Vitesse"
+    },
+    "LogfilesPanel": {
+      "Logfiles": "Fichiers log"
+    },
+    "SystemPanel": {
+      "Awake": "Actif",
+      "Constants": "Constantes",
+      "Frequency": "Fréquence",
+      "HostDetails": "Détails hôte",
+      "LastStats": "Dern. Stats.",
+      "Load": "Charge",
+      "Memory": "Mémoire",
+      "Os": "OS",
+      "SystemLoad": "Charge Système",
+      "Version": "Version"
+    },
+    "UpdatePanel": {
+      "CheckForUpdates": "Contrôle de mises à jour",
+      "Commits": "Publié",
+      "CommittedAt": "Publié à",
+      "Detached": "détaché",
+      "Dirty": "différent",
+      "ERROR": "Erreur",
+      "Invalid": "invalide",
+      "OSPackages": "Paquets système",
+      "PackagesCanBeUpgraded": "Les paquets peuvent être mis à jour",
+      "System": "Système",
+      "Unknown": "inconnu",
+      "UpToDate": "à jour",
+      "Update": "mise à jour",
+      "UpdateManager": "Gestionnaire de mises à jour",
+      "Upgrade": "mise à jour"
+    }
+  },
+  "SelectPrinterDialog": {
+    "AddPrinter": "Ajout d'imprimante",
+    "CannotConnectTo": "Connection vers {host} impossible",
+    "ChangePrinter": "Changement d'imprimante",
+    "Connecting": "Connection vers {host}",
+    "ConnectionFailed": "Connection impossible",
+    "EditPrinter": "Edition imprimante",
+    "Hello": "Bonjour et bienvenue dans le mode distance de Mainsail",
+    "HostnameInvalid": "Nom d'hôte/IP invalide",
+    "HostnameRequired": "Nom d'hôte/IP requis",
+    "PortRequired": "Port requis",
+    "RememberToAdd": "Merci d'ajouter {cors} dans moonraker.conf rubrique 'cors_domains'.",
+    "SelectPrinter": "Choisir imprimante",
+    "TryAgain": "re-essayer",
+    "UpdatePrinter": "Mise à jour imprimante",
+    "YouCanFindMore": "Vous pouvez trouver plus de détails ici:"
   }
 }
