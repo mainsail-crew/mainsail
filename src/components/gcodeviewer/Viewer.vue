@@ -4,14 +4,16 @@
 			<v-icon>mdi-video-3d</v-icon>
 			{{ $t('GCodeViewer.Title') }}
 			<v-spacer></v-spacer>
-			<v-btn @click="tracking=true" v-show="showTrackingButton">Track Print</v-btn>
+			{{filePosition}} {{tracking}} {{loadedFile}}
+			<v-spacer></v-spacer>
+			<v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
+			<v-btn @click="reloadViewer()" v-show="reloadRequired" color="info"> {{$t("GCodeViewer.ReloadRequired")}}</v-btn> 
 		</v-card-title>
 		<v-card-text>
 			<v-row>
 				<v-col cols="2">
 					<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
 					<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
-
 					<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
 					<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
 				</v-col>
@@ -46,6 +48,9 @@
 </style>
 
 <script>
+/* Can remove this when converted to typescript proper */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator';
 import BaseMixin from '../mixins/base';
 import GCodeViewer from '@sindarius/gcodeviewer';
@@ -56,12 +61,13 @@ let trackingBackup = false;
 
 @Component
 export default class Viewer extends Mixins(BaseMixin) {
-	sBusy = false;
+	isBusy = false;
 	loading = false;
 	forceLineRendering = false;
 	loadingPercent = 0;
 	tracking = trackingBackup;
-	loadedFile = loadedFileBackup //This needs to be set in order for vue tracking and computed values to work properly.
+	loadedFile = loadedFileBackup; //This needs to be set in order for vue tracking and computed values to work properly.
+	reloadRequired = false;
 
 	renderQualities = [
 		{label: this.$t('GCodeViewer.Low'), value: 2},
@@ -87,7 +93,11 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	get currentPosition() {
-		return this.$store.state.printer.motion_report.live_position;
+		try {
+			return this.$store.state.printer.motion_report.live_position;
+		} catch {
+			return [0, 0, 0, 0];
+		}
 	}
 
 	get showTrackingButton() {
@@ -122,13 +132,18 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.setBackgroundColor('#121212');
 		viewer.setCursorVisiblity(false);
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
-		viewer.setCursorVisiblity(true);
-
+		viewer.gcodeProcessor.setLiveTracking(false);
 		window.addEventListener('resize', () => {
 			this.$nextTick(() => {
 				this.resize();
 			});
 		});
+
+		if (viewer.lastLoadFailed()) {
+			this.renderQuality = 2;
+			viewer.updateRenderQuality(2);
+			viewer.clearLoadFlag();
+		}
 	}
 
 	registerProgressCallback() {
@@ -140,12 +155,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 				this.loading = true;
 			}
 		};
-
-		if (viewer.lastLoadFailed()) {
-			this.renderQuality = 2;
-			viewer.updateRenderQuality(2);
-			viewer.clearLoadFlag();
-		}
 	}
 
 	beforeDestroy() {
@@ -177,19 +186,23 @@ export default class Viewer extends Mixins(BaseMixin) {
 		fetch(filename).then((response) => {
 			response.text().then(async (text) => {
 				await viewer.processFile(text);
+				this.loadingPercent = 100;
 				this.loading = false;
 			});
 		});
 	}
 
 	async reloadViewer() {
+		this.loading = true;
 		this.loadingPercent = 0;
 		await viewer.reload();
+		this.loadingPercent = 100;
 		this.loading = false;
+		this.reloadRequired = false;
 	}
 
 	resize() {
-		//viewer.resize();
+		//Code to handle canvas resizing
 	}
 
 	resetCamera() {
@@ -223,26 +236,72 @@ export default class Viewer extends Mixins(BaseMixin) {
 	@Watch('filePosition')
 	filePositionChanged(newVal) {
 		if (newVal > 0 && this.printerIsPrinting && this.tracking) {
-			viewer.gcodeProcessor.setLiveTracking(true);
 			viewer.gcodeProcessor.updateFilePosition(newVal);
 		} else {
 			viewer.gcodeProcessor.updateFilePosition(0);
-			viewer.gcodeProcessor.setLiveTracking(false);
 		}
 	}
 
 	@Watch('loadedFile')
-	loadedFileChanged(newVal){
-		loadedFileBackup =newVal;  //We need to keep the backup in sync for when component comes out of scope.
+	loadedFileChanged(newVal) {
+		loadedFileBackup = newVal; //We need to keep the backup in sync for when component comes out of scope.
 	}
 
 	@Watch('tracking')
 	async trackingChanged(newVal) {
 		trackingBackup = newVal;
 		if (newVal) {
+			viewer.gcodeProcessor.setLiveTracking(true);
 			this.loadedFile = this.sdCardFilePath;
 			let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '');
 			await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad));
+		} else {
+			viewer.gcodeProcessor.setLiveTracking(false);
+		}
+	}
+
+	@Watch('printerIsPrinting')
+	printerIsPrintingChanged() {
+		this.tracking = false;
+	}
+
+	get showCursor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.showCursor ?? false;
+		} catch {
+			return false;
+		}
+	}
+
+	@Watch('showCursor')
+	showCursorChanged(newVal) {
+		viewer.setCursorVisiblity(newVal);
+	}
+
+	get extruderColors() {
+		try {
+			return this.$store.state.gui.gcodeViewer.extruderColors;
+		} catch {
+			return false;
+		}
+	}
+
+	@Watch('extruderColors')
+	extruderColorsChanged(newVal) {
+		if (newVal != null) {
+			let match = true;
+			let extruderColors = viewer.getExtruderColors();
+			if (newVal.length === extruderColors.length) {
+				for (let idx = 0; idx < extruderColors.length && match; idx++) {
+					if (newVal[idx] != extruderColors[idx]) {
+						match = false;
+					}
+				}
+			}
+			if (!match) {
+				viewer.saveExtruderColors(newVal);
+				this.reloadRequired = true;
+			}
 		}
 	}
 }

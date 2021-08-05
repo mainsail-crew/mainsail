@@ -552,6 +552,14 @@
 			"Theme": "Theme",
 			"Logo": "Logo",
 			"Primary": "Primary"
+		},
+		"GCodeViewerTab": {
+			"GCodeViewer": "G-Code Viewer",
+			"ShowCursor" : "Show Cursor",
+			"ExtruderColor" : "Extruder Colors",
+			"ColorMode" : "Color Mode",
+			"FeedRate": "Feed Rate",
+			"Extruder" : "Extruder"
 		}
 	},
 	"GCodeViewer":{
@@ -564,6 +572,8 @@
 		"High" : "High",
 		"Ultra" : "Ultra",
 		"Max" : "Max",
-		"ForceLineRendering":"Force Line Rendering"
+		"ForceLineRendering":"Force Line Rendering",
+		"ReloadRequired" : "Reload required",
+		"TrackPrint": "Track Print"
 	}
 }

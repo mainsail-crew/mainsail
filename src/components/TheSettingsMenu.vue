@@ -46,6 +46,7 @@
                                 <v-tab-item value="settings-tabs-console"><settings-console-tab></settings-console-tab></v-tab-item>
                                 <v-tab-item value="settings-tabs-presets"><settings-presets-tab></settings-presets-tab></v-tab-item>
                                 <v-tab-item value="settings-tabs-remote-printers"><settings-remote-printers-tab></settings-remote-printers-tab></v-tab-item>
+                                <v-tab-item value="settings-tabs-g-code-viewer"><settings-g-code-viewer-tab></settings-g-code-viewer-tab></v-tab-item>
                             </v-tabs-items>
                         </perfect-scrollbar>
                     </v-col>
@@ -68,12 +69,14 @@ import SettingsConsoleTab from "@/components/settings/SettingsConsoleTab.vue";
 import SettingsPresetsTab from "@/components/settings/SettingsPresetsTab.vue";
 import SettingsRemotePrintersTab from "@/components/settings/SettingsRemotePrintersTab.vue";
 import SettingsThemeTab from "@/components/settings/SettingsThemeTab.vue";
+import SettingsGCodeViewerTab from "@/components/settings/SettingsGCodeViewerTab.vue"
+
 @Component({
     components: {
         SettingsThemeTab,
         SettingsRemotePrintersTab,
         SettingsPresetsTab,
-        SettingsConsoleTab, SettingsControlTab, SettingsMacrosTab, SettingsWebcamTab, SettingsGeneralTab}
+        SettingsConsoleTab, SettingsControlTab, SettingsMacrosTab, SettingsWebcamTab, SettingsGeneralTab,  SettingsGCodeViewerTab}
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
@@ -121,6 +124,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 name: 'remote-printers',
                 title: this.$t('Settings.RemotePrintersTab.RemotePrinters')
             },
+            {
+                icon: 'mdi-video-3d',
+                name: 'g-code-viewer',
+                title: this.$t('Settings.GCodeViewerTab.GCodeViewer')
+            }
         ]
     }
 }
