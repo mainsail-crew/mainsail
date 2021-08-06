@@ -173,7 +173,8 @@ export const getDefaultState = (): GuiState => {
 			minFeed : 20, 
 			maxFeed : 100, 
 			minFeedColor : "#0000FF",
-			maxFeedColor : "#FF0000"
+			maxFeedColor : "#FF0000",
+			forceLineRendering : false
 		}
 	}
 }
