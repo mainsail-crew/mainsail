@@ -121,7 +121,7 @@
         </v-row>
         <v-row v-else>
             <v-alert
-                border="right"
+                border="left"
                 colored-border
                 type="warning"
                 elevation="2"
