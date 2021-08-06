@@ -127,9 +127,8 @@
                 elevation="2"
                 class="mx-auto mt-6"
                 max-width="500"
-            >
-                {{ $t("Heightmap.ErrorKlipperNotRunning") }}
-            </v-alert>
+                icon="mdi-lock-outline"
+            >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert>
         </v-row>
         <v-dialog v-model="renameDialog" persistent max-width="600px">
             <v-card>
