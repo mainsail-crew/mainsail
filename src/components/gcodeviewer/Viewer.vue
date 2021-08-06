@@ -61,7 +61,6 @@ let trackingBackup = false;
 export default class Viewer extends Mixins(BaseMixin) {
 	isBusy = false;
 	loading = false;
-	forceLineRendering = false;
 	loadingPercent = 0;
 	tracking = trackingBackup;
 	loadedFile = loadedFileBackup; //This needs to be set in order for vue tracking and computed values to work properly.
@@ -82,6 +81,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Ref('viewerCanvasContainer') viewerCanvasContainer;
 
+	async mounted() {
+		this.init();
+	}
 	get filePosition() {
 		return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_position : 0;
 	}
@@ -102,15 +104,15 @@ export default class Viewer extends Mixins(BaseMixin) {
 		return this.printerIsPrinting && this.sdCardFilePath !== this.loadedFile;
 	}
 
-	mounted() {
+	async init() {
 		if (canvasBackup === null) {
 			let canvasElement = document.createElement('canvas');
 			canvasElement.className = 'viewer';
 			this.viewerCanvasContainer.appendChild(canvasElement);
 			canvasBackup = canvasElement;
 			this.viewerInit(canvasElement);
-
 			if (this.$route.query.filename) {
+				await this.sleep(2000); //Give the store a chance to initializ before loading the file.
 				this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename));
 			}
 		} else {
@@ -207,8 +209,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 		});
 	}
 
-	async sleep() {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
+	async sleep(ms) {
+		await new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
 	async reloadViewer() {
@@ -217,7 +219,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 			//This prevents a timing issue that can happen if a user changes settings and then
 			//hits the reload viewer button. Will eventually move this to api
 			viewer.gcodeProcessor.cancelLoad = true;
-			await this.sleep();
+			await this.sleep(1000);
 		}
 
 		this.reloadRequired = false;
@@ -244,7 +246,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('renderQuality')
 	async renderQualityChanged(newVal) {
-		if (viewer.renderQuality !== newVal) {
+		if (viewer && viewer.renderQuality !== newVal) {
 			viewer.updateRenderQuality(newVal.value);
 			await this.reloadViewer();
 		}
@@ -252,8 +254,10 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('forceLineRendering')
 	async forceLineRenderingChanged(newVal) {
-		viewer.gcodeProcessor.updateForceWireMode(newVal);
-		await this.reloadViewer();
+		if (viewer) {
+			viewer.gcodeProcessor.updateForceWireMode(newVal);
+			await this.reloadViewer();
+		}
 	}
 
 	@Watch('currentPosition')
@@ -263,11 +267,14 @@ export default class Viewer extends Mixins(BaseMixin) {
 			{axes: 'Y', position: newVal[1]},
 			{axes: 'Z', position: newVal[2]},
 		];
-		viewer.updateToolPosition(position);
+		if (viewer) {
+			viewer.updateToolPosition(position);
+		}
 	}
 
 	@Watch('filePosition')
 	filePositionChanged(newVal) {
+		if (!viewer) return;
 		if (newVal > 0 && this.printerIsPrinting && this.tracking) {
 			viewer.gcodeProcessor.updateFilePosition(newVal);
 		} else {
@@ -283,6 +290,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	@Watch('tracking')
 	async trackingChanged(newVal) {
 		trackingBackup = newVal;
+		if (!viewer) return;
 		if (newVal) {
 			viewer.gcodeProcessor.setLiveTracking(true);
 			this.loadedFile = this.sdCardFilePath;
@@ -308,7 +316,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('showCursor')
 	showCursorChanged(newVal) {
-		viewer.setCursorVisiblity(newVal);
+		if (viewer) {
+			viewer.setCursorVisiblity(newVal);
+		}
 	}
 
 	get extruderColors() {
@@ -321,7 +331,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('extruderColors')
 	extruderColorsChanged(newVal) {
-		if (newVal) {
+		if (viewer && newVal) {
 			let match = true;
 			let extruderColors = viewer.getExtruderColors();
 			if (newVal.length === extruderColors.length) {
@@ -348,6 +358,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('colorMode')
 	colorModeChanged(newVal) {
+		if (!viewer) return;
 		if (newVal) {
 			let mode = newVal === 'extruder' ? 0 : 1; //Magic number until I export the enum 0 = Color 1 = Feed Rate
 			if (viewer.gcodeProcessor.colorMode !== mode) {
@@ -367,6 +378,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('backgroundColor')
 	backgroundColorChanged(newVal) {
+		if (!viewer) return;
 		viewer.setBackgroundColor(newVal);
 	}
 
@@ -380,6 +392,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('gridColor')
 	gridColorChanged(newVal) {
+		if (!viewer) return;
 		viewer.bed.setBedColor(newVal);
 	}
 
@@ -393,6 +406,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('showAxes')
 	showAxesChanged(newVal) {
+		if (!viewer) return;
 		viewer.axes.show(newVal);
 	}
 
@@ -406,6 +420,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('minFeed')
 	minFeedChanged(newVal) {
+		if (!viewer) return;
 		viewer.gcodeProcessor.updateColorRate(newVal * 60, this.maxFeed * 60);
 	}
 
@@ -419,6 +434,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('maxFeed')
 	maxFeedChanged(newVal) {
+		if (!viewer) return;
 		viewer.gcodeProcessor.updateColorRate(this.minFeed * 60, newVal * 60);
 	}
 
@@ -432,6 +448,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('minFeedColor')
 	minFeedColorUpdated(newVal) {
+		if (!viewer) return;
 		viewer.gcodeProcessor.updateMinFeedColor(newVal);
 		this.setReloadRequiredFlag();
 	}
@@ -446,6 +463,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('maxFeedColor')
 	maxFeedColorUpdated(newVal) {
+		if (!viewer) return;
 		viewer.gcodeProcessor.updateMaxFeedColor(newVal);
 		this.setReloadRequiredFlag();
 	}
@@ -460,7 +478,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('kinematics')
 	kinematicsChanged(newVal) {
-		viewer.bed.setDelta(newVal.includes('delta'));
+		if (viewer && newVal) {
+			viewer.bed.setDelta(newVal.includes('delta'));
+		}
 	}
 
 	get bedMinSize() {
@@ -471,9 +491,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 		}
 	}
 
-	@Watch('bedMinSize', {deep: true, immediate: true})
+	@Watch('bedMinSize', {deep: true})
 	bedMinSizeChanged(newVal) {
-		if (newVal) {
+		if (viewer && newVal) {
 			viewer.bed.buildVolume['x'].min = newVal[0];
 			viewer.bed.buildVolume['y'].min = newVal[1];
 			viewer.bed.buildVolume['z'].min = newVal[2];
@@ -488,13 +508,21 @@ export default class Viewer extends Mixins(BaseMixin) {
 		}
 	}
 
-	@Watch('bedMaxSize', {deep: true, immediate: true})
+	@Watch('bedMaxSize', {deep: true})
 	bedMaxSizeChanged(newVal) {
-		if (newVal) {
+		if (newVal && viewer) {
 			viewer.bed.buildVolume['x'].max = newVal[0];
 			viewer.bed.buildVolume['y'].max = newVal[1];
 			viewer.bed.buildVolume['z'].max = newVal[2];
 		}
+	}
+
+	get forceLineRendering() {
+		return this.$store.state.gui.gcodeViewer.forceLineRendering;
+	}
+
+	set forceLineRendering(newVal) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.forceLineRendering', value: newVal});
 	}
 }
 </script>
