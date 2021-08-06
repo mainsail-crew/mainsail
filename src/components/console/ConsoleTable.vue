@@ -1,9 +1,5 @@
 <style scoped lang="scss">
-    .consoleTable.mini {
-        max-height: 300px;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
+
 </style>
 
 <template>
@@ -29,7 +25,7 @@
 import Component from "vue-class-component";
 import Vue from "vue";
 import {Prop} from "vue-property-decorator";
-import ConsoleTableEntry from "@/components/ConsoleTableEntry.vue";
+import ConsoleTableEntry from "@/components/console/ConsoleTableEntry.vue";
 @Component({
     components: {ConsoleTableEntry}
 })
