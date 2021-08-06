@@ -95,6 +95,10 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.state.gui.theme.primary
     }
 
+    get warningColor () {
+        return this.$vuetify.theme.currentTheme.warning
+    }
+
     get primaryTextColor() {
         let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
         if (splits) {
@@ -111,7 +115,9 @@ export default class App extends Mixins(BaseMixin) {
 
     get cssVars() {
         return {
-            '--v-btn-text-primary': this.primaryTextColor
+            '--v-btn-text-primary': this.primaryTextColor,
+            '--color-primary': this.primaryColor,
+            '--color-warning': this.warningColor,
         }
     }
 

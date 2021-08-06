@@ -6,11 +6,11 @@
     <v-form ref="formControlExtruder">
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.ControlTab.EnableCross')" :dynamicSlotWidth="true">
-                    <v-switch v-model="useCross" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.ControlTab.Style')">
+                    <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <template v-if="useCross">
+                <template v-if="['circle', 'cross'].includes(controlStyle)">
                     <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
                         <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                     </settings-row>
@@ -50,7 +50,7 @@
                     ></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <template v-if="useCross">
+                <template v-if="controlStyle === 'cross'">
                     <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
                         <v-combobox
                             v-model="stepsAll"
@@ -64,6 +64,46 @@
                             :rules="[
                                 v => v.length > 0 || 'Minimum 1 value',
                                 v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                            ]"
+                            dense
+                            outlined
+                        ></v-combobox>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                </template>
+                <template v-else-if="controlStyle === 'circle'">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <v-combobox
+                            v-model="stepsCircleXY"
+                            hide-selected
+                            hide-details
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                                v => v.length > 0 || 'Minimum 1 value',
+                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
+                            ]"
+                            dense
+                            outlined
+                        ></v-combobox>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <v-combobox
+                            v-model="stepsCircleZ"
+                            hide-selected
+                            hide-details
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                                v => v.length > 0 || 'Minimum 1 value',
+                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
                             ]"
                             dense
                             outlined
@@ -167,12 +207,29 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         formControlExtruder: HTMLFormElement
     }
 
-    get useCross() {
-        return this.$store.state.gui.dashboard.control.useCross;
+    get controlStyles() {
+        return [
+            {
+                text: this.$t('Settings.ControlTab.Bars'),
+                value: 'bars',
+            },
+            {
+                text: this.$t('Settings.ControlTab.Circle'),
+                value: 'circle',
+            },
+            {
+                text: this.$t('Settings.ControlTab.Cross'),
+                value: 'cross',
+            },
+        ]
     }
 
-    set useCross(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.useCross', value: newVal })
+    get controlStyle() {
+        return this.$store.state.gui.dashboard.control.style ?? 'bar'
+    }
+
+    set controlStyle(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.style', value: newVal })
     }
 
     get reverseX() {
@@ -249,6 +306,30 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         for(const value of steps) absSteps.push(Math.abs(value))
 
         this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsZ', value: absSteps })
+    }
+
+    get stepsCircleXY() {
+        const steps = this.$store.state.gui.dashboard.control.stepsCircleXY
+        return steps.sort(function (a: number,b: number) { return b-a })
+    }
+
+    set stepsCircleXY(steps) {
+        const absSteps = []
+        for(const value of steps) absSteps.push(Math.abs(value))
+
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsCircleXY', value: absSteps })
+    }
+
+    get stepsCircleZ() {
+        const steps = this.$store.state.gui.dashboard.control.stepsCircleZ
+        return steps.sort(function (a: number,b: number) { return b-a })
+    }
+
+    set stepsCircleZ(steps) {
+        const absSteps = []
+        for(const value of steps) absSteps.push(Math.abs(value))
+
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsCircleZ', value: absSteps })
     }
 
     get feedamountsE() {
