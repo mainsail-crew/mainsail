@@ -4,6 +4,11 @@
 			<v-icon>mdi-video-3d</v-icon>
 			{{ $t('GCodeViewer.Title') }}
 			<v-spacer></v-spacer>
+			<div class="progress-container">
+			<v-progress-linear :value="loadingPercent" class="disable-transition" color="#d41216" height="15" rounded v-show="loading">
+				<span class="progress-text">{{loadingPercent}}%</span>
+			</v-progress-linear>
+			</div>
 			<v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
 			<v-btn @click="reloadViewer()" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
 		</v-card-title>
@@ -15,11 +20,7 @@
 					<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
 					<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
 				</v-col>
-				<v-col cols="10" ref="viewerCanvasContainer">
-					<v-progress-linear :value="loadingPercent" class="disable-transition" color="#d41216" height="15" rounded v-show="loading">
-						<span class="progress-text">{{loadingPercent}}%</span>
-					</v-progress-linear>
-				</v-col>
+				<v-col cols="10" ref="viewerCanvasContainer"></v-col>
 			</v-row>
 			<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
 		</v-card-text>
@@ -38,6 +39,10 @@
 <style scoped>
 .progress-text {
 	font-size: small;
+}
+
+.progress-container {
+	width:83%;
 }
 
 .disable-transition {
