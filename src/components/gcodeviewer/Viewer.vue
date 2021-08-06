@@ -131,6 +131,20 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.setCursorVisiblity(false);
 		viewer.setZClipPlane(1000000, -1000000);
 		viewer.axes.show(this.showAxes);
+		viewer.bed.setDelta(this.kinematics.includes('delta'));
+
+		if (this.bedMaxSize !== null) {
+			viewer.bed.buildVolume['x'].max = this.bedMaxSize[0];
+			viewer.bed.buildVolume['y'].max = this.bedMaxSize[1];
+			viewer.bed.buildVolume['z'].max = this.bedMaxSize[2];
+		}
+
+		if (this.bedMinSize !== null) {
+			viewer.bed.buildVolume['x'].min = this.bedMinSize[0];
+			viewer.bed.buildVolume['y'].min = this.bedMinSize[1];
+			viewer.bed.buildVolume['z'].min = this.bedMinSize[2];
+		}
+
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
 		viewer.gcodeProcessor.setLiveTracking(false);
 		window.addEventListener('resize', () => {
@@ -434,6 +448,53 @@ export default class Viewer extends Mixins(BaseMixin) {
 	maxFeedColorUpdated(newVal) {
 		viewer.gcodeProcessor.updateMaxFeedColor(newVal);
 		this.setReloadRequiredFlag();
+	}
+
+	get kinematics() {
+		try {
+			return this.$store.state.printer.configfile.settings.printer.kinematics;
+		} catch {
+			return '';
+		}
+	}
+
+	@Watch('kinematics')
+	kinematicsChanged(newVal) {
+		viewer.bed.setDelta(newVal.includes('delta'));
+	}
+
+	get bedMinSize() {
+		try {
+			return this.$store.state.printer.toolhead.axis_minimum;
+		} catch {
+			return null;
+		}
+	}
+
+	@Watch('bedMinSize', {deep: true, immediate: true})
+	bedMinSizeChanged(newVal) {
+		if (newVal) {
+			viewer.bed.buildVolume['x'].min = newVal[0];
+			viewer.bed.buildVolume['y'].min = newVal[1];
+			viewer.bed.buildVolume['z'].min = newVal[2];
+		}
+	}
+
+	get bedMaxSize() {
+		try {
+			return this.$store.state.printer.toolhead.axis_maximum;
+		} catch {
+			return null;
+		}
+	}
+
+	@Watch('bedMaxSize', {deep: true, immediate: true})
+	bedMaxSizeChanged(newVal) {
+		if (newVal) {
+			viewer.bed.buildVolume['x'].max = newVal[0];
+			viewer.bed.buildVolume['y'].max = newVal[1];
+			viewer.bed.buildVolume['z'].max = newVal[2];
+		}
 	}
 }
 </script>
