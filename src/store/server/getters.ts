@@ -4,8 +4,10 @@ import {formatFilesize} from "@/plugins/helpers";
 
 export const getters: GetterTree<ServerState, any> = {
 
-	getConsoleEvents: (state) => {
-		return [...state.events].slice(-500).reverse() ?? []
+	getConsoleEvents: (state) => (reverse = true, limit = 500) => {
+		const events = [...state.events].slice(limit * -1) ?? []
+
+		return (reverse) ? events.reverse() : events
 	},
 
 	getConfig: (state) => (section: string, attribute: string) => {
