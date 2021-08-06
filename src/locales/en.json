@@ -155,6 +155,7 @@
 	},
 	"Heightmap": {
 		"Heightmap": "Heightmap",
+		"ErrorKlipperNotRunning": "Heightmap is only available when Klipper is running. Please check the state of Klipper.",
 		"NoProfile": "No profile available",
 		"TitleHomeAll": "Home all",
 		"Clear": "clear",
