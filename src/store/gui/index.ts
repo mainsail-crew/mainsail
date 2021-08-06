@@ -168,7 +168,11 @@ export const getDefaultState = (): GuiState => {
 			gridColor : '#0000FF',
 			backgroundColor : '#000000',
 			colorMode : 'extruder',
-			showAxes : 'true'
+			showAxes : 'true',
+			minFeed : 20, 
+			maxFeed : 100, 
+			minFeedColor : "#0000FF",
+			maxFeedColor : "#FF0000"
 		}
 	}
 }

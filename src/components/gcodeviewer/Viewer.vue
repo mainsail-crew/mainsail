@@ -222,9 +222,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	setReloadRequiredFlag() {
-		console.log(this.loadedFile);
 		if (this.loadedFile && this.loadedFile != '') {
-			console.log('Flag it');
 			this.reloadRequired = true;
 		}
 	}
@@ -335,7 +333,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	@Watch('colorMode')
 	colorModeChanged(newVal) {
-		console.log(newVal);
 		if (newVal) {
 			let mode = newVal === 'extruder' ? 0 : 1; //Magic number until I export the enum 0 = Color 1 = Feed Rate
 			if (viewer.gcodeProcessor.colorMode !== mode) {
@@ -380,10 +377,63 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	@Watch('showAxes')
-	showAxesChanged(newVal){
+	showAxesChanged(newVal) {
 		viewer.axes.show(newVal);
 	}
 
+	get minFeed() {
+		try {
+			return this.$store.state.gui.gcodeViewer.minFeed;
+		} catch {
+			return 20;
+		}
+	}
+
+	@Watch('minFeed')
+	minFeedChanged(newVal) {
+		viewer.gcodeProcessor.updateColorRate(newVal * 60, this.maxFeed * 60);
+	}
+
+	get maxFeed() {
+		try {
+			return this.$store.state.gui.gcodeViewer.maxFeed;
+		} catch {
+			return 100;
+		}
+	}
+
+	@Watch('maxFeed')
+	maxFeedChanged(newVal) {
+		viewer.gcodeProcessor.updateColorRate(this.minFeed * 60, newVal * 60);
+	}
+
+	get minFeedColor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.minFeedColor;
+		} catch {
+			return '#0000FF';
+		}
+	}
+
+	@Watch('minFeedColor')
+	minFeedColorUpdated(newVal) {
+		viewer.gcodeProcessor.updateMinFeedColor(newVal);
+		this.setReloadRequiredFlag();
+	}
+
+	get maxFeedColor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.maxFeedColor;
+		} catch {
+			return '#FF0000';
+		}
+	}
+
+	@Watch('maxFeedColor')
+	maxFeedColorUpdated(newVal) {
+		viewer.gcodeProcessor.updateMaxFeedColor(newVal);
+		this.setReloadRequiredFlag();
+	}
 }
 </script>
 

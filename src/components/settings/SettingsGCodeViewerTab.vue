@@ -46,6 +46,31 @@
 					</v-row>
 				</settings-row>
 				<v-divider class="my-2"></v-divider>
+				<settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
+					<v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
+				</settings-row>
+				<v-divider class="my-2"></v-divider>
+				<settings-row :title="$t('Settings.GCodeViewerTab.MinColor')">
+					<v-menu :close-on-content-click="false" bottom left offset-y>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn :color="minFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+						</template>
+						<v-color-picker :value="minFeedColor" @update:color="updateColorValue('minFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
+					</v-menu>
+				</settings-row>
+				<v-divider class="my-2"></v-divider>
+				<settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
+					<v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
+				</settings-row>
+				<v-divider class="my-2"></v-divider>
+				<settings-row :title="$t('Settings.GCodeViewerTab.MaxColor')">
+					<v-menu :close-on-content-click="false" bottom left offset-y>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn :color="maxFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+						</template>
+						<v-color-picker :value="maxFeedColor" @update:color="updateColorValue('maxFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
+					</v-menu>
+				</settings-row>
 			</v-card-text>
 		</v-card>
 	</div>
@@ -103,7 +128,6 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 	}
 
 	get backgroundColor(): string {
-		console.log(this.$store.state.gui.gcodeViewer.backgroundColor);
 		return this.$store.state.gui.gcodeViewer.backgroundColor;
 	}
 
@@ -116,7 +140,6 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 	}
 
 	set gridColor(newVal: string) {
-		console.log(newVal);
 		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.gridColor', value: newVal});
 	}
 
@@ -129,6 +152,43 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 		if (typeof color === 'object' && 'hex' in color) color = color.hex;
 		if (color.length > 7) color = color.substr(0, 7);
 		return color;
+	}
+
+	get minFeed(): number {
+		return this.$store.state.gui.gcodeViewer.minFeed;
+	}
+
+	set minFeed(newVal: number) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.minFeed', value: newVal});
+	}
+
+	get maxFeed(): number {
+		return this.$store.state.gui.gcodeViewer.maxFeed;
+	}
+
+	set maxFeed(newVal: number) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.maxFeed', value: newVal});
+	}
+
+	get minFeedColor(): string {
+		return this.$store.state.gui.gcodeViewer.minFeedColor;
+	}
+
+	set minFeedColor(newVal: string) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.minFeedColor', value: newVal});
+	}
+
+	get maxFeedColor(): string {
+		return this.$store.state.gui.gcodeViewer.maxFeedColor;
+	}
+
+	set maxFeedColor(newVal: string) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.maxFeedColor', value: newVal});
+	}
+
+	feedBlur(): void {
+		if (this.minFeed < 1) this.minFeed = 1;
+		if (this.maxFeed < this.minFeed) this.maxFeed = this.minFeed + 1;
 	}
 }
 </script>
