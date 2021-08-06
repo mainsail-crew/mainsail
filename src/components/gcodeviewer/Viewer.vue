@@ -129,6 +129,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 		viewer.init();
 		viewer.setBackgroundColor('#121212');
 		viewer.setCursorVisiblity(false);
+		viewer.setZClipPlane(1000000, -1000000);
 		viewer.axes.show(this.showAxes);
 		viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering);
 		viewer.gcodeProcessor.setLiveTracking(false);
