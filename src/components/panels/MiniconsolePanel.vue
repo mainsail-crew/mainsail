@@ -6,13 +6,13 @@
 </style>
 
 <template>
-    <v-card v-if="socketIsConnected" class="mb-9">
-        <v-toolbar flat dense>
+    <v-card v-if="socketIsConnected" class="mb-6 d-flex flex-column">
+        <v-toolbar flat dense class="order-0">
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Headline") }}</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text>
+        <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
             <v-row>
                 <v-col>
                     <v-textarea
@@ -41,7 +41,7 @@
                     <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
                     <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                            <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
@@ -55,14 +55,17 @@
                 </v-col>
             </v-row>
         </v-card-text>
-        <v-card-text class="pa-0">
+        <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
             <v-row>
-                <v-col class="pb-0">
-                    <console-table ref="console"
-                                   :events="events"
-                                   :is-mini="true"
-                                   @command-click="commandClick"
-                    />
+                <v-col>
+                    <perfect-scrollbar ref="miniConsoleScroll" :class="'d-flex flex-column '+(consoleDirection === 'shell' ? 'justify-end' : '')" :style="'height: '+consoleHeight+'px;'">
+                        <console-table ref="console"
+                                       :events="events"
+                                       :is-mini="true"
+                                       @command-click="commandClick"
+                        />
+                        <v-divider></v-divider>
+                    </perfect-scrollbar>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -71,11 +74,12 @@
 
 <script lang="ts">
 import { strLongestEqual, reverseString} from "@/plugins/helpers"
-import { Component, Mixins } from 'vue-property-decorator'
+import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {CommandHelp, VTextareaType} from "@/store/printer/types";
-import ConsoleTable from "@/components/ConsoleTable.vue";
+import ConsoleTable from "@/components/console/ConsoleTable.vue";
 import CommandHelpModal from "@/components/CommandHelpModal.vue";
+import Vue from "vue";
 
 @Component({
     components: {
@@ -86,7 +90,8 @@ import CommandHelpModal from "@/components/CommandHelpModal.vue";
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
     $refs!: {
         gcodeCommandField: VTextareaType,
-        console: ConsoleTable
+        console: ConsoleTable,
+        miniConsoleScroll: any
     }
 
     private gcode = ""
@@ -99,8 +104,21 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.helplist ?? []
     }
 
+    get consoleDirection() {
+        return this.$store.state.gui.console.direction ?? 'table'
+    }
+
+    get consoleHeight() {
+        return this.$store.state.gui.console.height ?? 300
+    }
+
     get events() {
-        return this.$store.getters["server/getConsoleEvents"].slice(0, 250)
+        return this.$store.getters["server/getConsoleEvents"](this.consoleDirection === 'table', 250)
+    }
+
+    @Watch('events')
+    eventsChanged() {
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
     }
 
     get hideWaitTemperatures(): boolean {
@@ -207,6 +225,19 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     toggleFilter(filter: string) {
         this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+
+    mounted() {
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
+    }
+
+    scrollToBottom() {
+        this.$nextTick(() => {
+            if (this.$refs.miniConsoleScroll) {
+                const perfectScroll = ((this.$refs.miniConsoleScroll as Vue).$el as HTMLDivElement)
+                perfectScroll.scrollTop = perfectScroll.scrollHeight
+            }
+        })
     }
 }
 </script>
