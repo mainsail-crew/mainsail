@@ -538,7 +538,10 @@
 		},
 		"ConsoleTab": {
 			"Console": "Console",
-			"ShowOnDashboard": "Show on dashboard",
+			"Direction": "Direction",
+			"DirectionTable": "Last entry on the top",
+			"DirectionShell": "Last entry at the bottom",
+			"Height": "Height",
 			"HideTemperatures": "Hide temperatures",
 			"CreateHeadline": "Create filter",
 			"Name": "Name",
