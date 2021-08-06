@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <v-row>
+        <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8">
                 <v-card>
                     <v-toolbar flat dense>
@@ -118,6 +118,17 @@
                     </v-card-text>
                 </v-card>
             </v-col>
+        </v-row>
+        <v-row v-else>
+            <v-alert
+                border="left"
+                colored-border
+                type="warning"
+                elevation="2"
+                class="mx-auto mt-6"
+                max-width="500"
+                icon="mdi-lock-outline"
+            >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert>
         </v-row>
         <v-dialog v-model="renameDialog" persistent max-width="600px">
             <v-card>

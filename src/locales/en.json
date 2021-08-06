@@ -157,6 +157,7 @@
 	},
 	"Heightmap": {
 		"Heightmap": "Heightmap",
+		"ErrorKlipperNotReady": "Klipper not ready. Heightmap disabled.",
 		"NoProfile": "No profile available",
 		"TitleHomeAll": "Home all",
 		"Clear": "clear",
