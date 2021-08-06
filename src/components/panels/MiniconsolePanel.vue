@@ -12,7 +12,7 @@
                 <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Headline") }}</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text :class="consoleStyle === 'table' ? 'order-1' : 'order-2'">
+        <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
             <v-row>
                 <v-col>
                     <v-textarea
