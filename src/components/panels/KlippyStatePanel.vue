@@ -1,46 +1,72 @@
 <template>
-    <v-card>
+    <v-card v-if="klipperState !== 'ready' && socketIsConnected" class="mb-6">
         <v-toolbar flat dense >
             <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klippy_state}}</span>
+                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klipperState }}</span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text class="py-0">
-            <v-layout wrap class=" text-center">
-                <v-flex col class="text-left" v-if="klippy_connected"><pre style="white-space: pre-wrap;">{{ klippy_message }}</pre></v-flex>
-                <v-flex col class="text-left" v-if="!klippy_connected">
-                    <p style="white-space:pre-wrap">{{ $t('Panels.KlippyStatePanel.KlippyInfo') }}</p>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-        <v-divider class="my-2" v-if="klippy_connected" ></v-divider>
-        <v-card-text class="px-4 pt-2 pb-4 content text-center text-lg-left" v-if="klippy_connected">
-            <v-btn small @click="doRestart" color="error" class=""><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn>
-            <v-btn small @click="doRestartFirmware" class="ml-4" color="error"><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn>
-        </v-card-text>
+        <template v-if="klippyIsConnected">
+            <v-card-text class="py-1">
+                <pre style="white-space: pre-wrap;">{{ klippy_message }}</pre>
+            </v-card-text>
+            <v-divider class="mt-2"></v-divider>
+            <v-card-actions class="py-4 px-5">
+                <v-btn small @click="restart" color="error" class=""><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn>
+                <v-btn small @click="firmwareRestart" class="ml-4" color="error"><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn>
+            </v-card-actions>
+        </template>
+        <template v-else>
+            <v-card-text class="pt-5 pb-1">
+                <connection-status :moonraker="true" :klipper="false"></connection-status>
+                <p class="mt-2 mb-0 text-center">{{ $t('Panels.KlippyStatePanel.MoonrakerCannotConnect') }}</p>
+                <v-divider class="my-2"></v-divider>
+                <p class="mt-2">{{ $t('Panels.KlippyStatePanel.KlipperCheck') }}</p>
+            </v-card-text>
+        </template>
     </v-card>
 </template>
 
-<script>
-    import { mapState } from 'vuex';
+<script lang="ts">
+import Component from "vue-class-component";
+import {Mixins, Watch} from "vue-property-decorator";
+import BaseMixin from "../mixins/base";
+import ConnectionStatus from "../ui/ConnectionStatus.vue";
 
-    export default {
-        computed: {
-            ...mapState({
-                klippy_connected: state => state.server.klippy_connected,
-                klippy_state: state => state.server.klippy_state,
-                klippy_message: state => state.server.klippy_message,
-            }),
-        },
-        methods: {
-            doRestart() {
-                this.$store.commit('socket/addLoading', { name: 'restart' });
-                this.$socket.sendObj('printer.restart', { }, 'socket/removeLoading', { name: 'restart' });
-            },
-            doRestartFirmware() {
-                this.$store.commit('socket/addLoading', { name: 'firmwareRestart' });
-                this.$socket.sendObj('printer.firmware_restart', { }, 'socket/removeLoading', { name: 'firmwareRestart' });
-            },
-        },
+@Component({
+    components: {ConnectionStatus}
+})
+export default class KlippyStatePanel extends Mixins(BaseMixin) {
+    private timer: number | null = null
+
+
+    get klippy_message() {
+        return this.$store.state.server.klippy_message ?? ""
     }
+
+    restart() {
+        this.$socket.emit('printer.restart', { }, { loading: 'restart' })
+    }
+
+    firmwareRestart() {
+        this.$socket.emit('printer.firmware_restart', { }, { loading: 'firmwareRestart' })
+    }
+
+    requestKlippyState() {
+        this.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
+    }
+
+    @Watch('klipperState')
+    klipperStateChanged(newVal: string) {
+        if (newVal === "ready") {
+            if (this.timer) {
+                clearInterval(this.timer)
+                this.timer = null
+            }
+        } else if (this.timer === null) {
+            this.timer = setInterval(() => {
+                this.requestKlippyState()
+            }, 2000)
+        }
+    }
+}
 </script>

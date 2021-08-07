@@ -1,0 +1,8 @@
+$t('Router.Dashboard')
+$t('Router.Printers')
+$t('Router.Webcam')
+$t('Router.Console')
+$t('Router.Heightmap')
+$t('Router.G-Code Files')
+$t('Router.History')
+$t('Router.Machine')
