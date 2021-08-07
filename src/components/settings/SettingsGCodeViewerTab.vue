@@ -14,6 +14,15 @@
 					<v-select :items="colorModes" dense hide-details outlined selected v-model="colorMode"></v-select>
 				</settings-row>
 				<v-divider class="my-2"></v-divider>
+				<settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')" class="my-2">
+					<v-menu :close-on-content-click="false" bottom left offset-y>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn :color="progressColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+						</template>
+						<v-color-picker :value="progressColor" @update:color="updateColorValue('progressColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
+					</v-menu>
+				</settings-row>
+				<v-divider class="my-2"></v-divider>
 				<settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')" class="my-2">
 					<v-menu :close-on-content-click="false" bottom left offset-y>
 						<template v-slot:activator="{ on, attrs }">
@@ -189,6 +198,14 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
 	feedBlur(): void {
 		if (this.minFeed < 1) this.minFeed = 1;
 		if (this.maxFeed < this.minFeed) this.maxFeed = this.minFeed + 1;
+	}
+
+	get progressColor(): string {
+		return this.$store.state.gui.gcodeViewer.progressColor;
+	}
+
+	set progressColor(newVal: string) {
+		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.progressColor', value: newVal});
 	}
 }
 </script>

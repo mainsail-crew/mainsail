@@ -4,11 +4,6 @@
 			<v-icon>mdi-video-3d</v-icon>
 			{{ $t('GCodeViewer.Title') }}
 			<v-spacer></v-spacer>
-			<div class="progress-container">
-			<v-progress-linear :value="loadingPercent" class="disable-transition" color="#d41216" height="15" rounded v-show="loading">
-				<span class="progress-text">{{loadingPercent}}%</span>
-			</v-progress-linear>
-			</div>
 			<v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
 			<v-btn @click="reloadViewer()" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
 		</v-card-title>
@@ -17,10 +12,18 @@
 				<v-col cols="2">
 					<v-btn @click="chooseFile" block>{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
 					<v-btn @click="resetCamera" block class="mt-1">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
-					<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-1" item-text="label" v-model="renderQuality"></v-select>
-					<v-checkbox :label="$t('GCodeViewer.ForceLineRendering')" v-model="forceLineRendering"></v-checkbox>
+					<v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" attach class="mt-2" item-text="label" v-model="renderQuality"></v-select>
+					<v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="ma-0 pa-0" dense v-model="forceLineRendering"></v-switch>
+					<v-subheader class="ma-0">{{ $t("GCodeViewer.ZClip") }}</v-subheader>
+					<v-slider :disabled="tracking" :max="maxZSlider" min="-1" v-model="zSlider"></v-slider>
 				</v-col>
-				<v-col cols="10" ref="viewerCanvasContainer"></v-col>
+				<v-col cols="10" ref="viewerCanvasContainer">
+					<div class="progress-container">
+						<v-progress-linear :value="loadingPercent" class="disable-transition" color="#d41216" height="15" rounded v-show="loading">
+							<span class="progress-text">{{loadingPercent}}%</span>
+						</v-progress-linear>
+					</div>
+				</v-col>
 			</v-row>
 			<input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
 		</v-card-text>
@@ -42,7 +45,8 @@
 }
 
 .progress-container {
-	width:83%;
+	position: absolute;
+	width: 80.5%;
 }
 
 .disable-transition {
@@ -70,6 +74,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 	tracking = trackingBackup;
 	loadedFile = loadedFileBackup; //This needs to be set in order for vue tracking and computed values to work properly.
 	reloadRequired = false;
+	fileSize = 0;
+	maxZSlider = 100000;
+	zSlider = this.maxZSlider;
 
 	renderQualities = [
 		{label: this.$t('GCodeViewer.Low'), value: 2},
@@ -188,14 +195,22 @@ export default class Viewer extends Mixins(BaseMixin) {
 		}
 	}
 
+	finishLoad() {
+		this.maxZSlider = viewer.getMaxHeight();
+		this.zSlider = this.maxZSlider;
+		this.loading = false;
+		viewer.setCursorVisiblity(this.showCursor);
+	}
+
 	async fileSelected(e) {
 		const reader = new FileReader();
 		reader.addEventListener('load', async (event) => {
 			if (!event || !event.target) return;
 			const blob = event.target.result;
+			this.fileSize = blob.length;
 			// Do something with result
 			await viewer.processFile(blob);
-			this.loading = false;
+			this.finishLoad();
 		});
 		this.tracking = false;
 		this.loadedFile = e.target.files[0].name;
@@ -209,7 +224,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 				viewer.updateRenderQuality(this.renderQuality.value);
 				await viewer.processFile(text);
 				this.loadingPercent = 100;
-				this.loading = false;
+				this.finishLoad();
 			});
 		});
 	}
@@ -232,7 +247,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 		this.loadingPercent = 0;
 		await viewer.reload();
 		this.loadingPercent = 100;
-		this.loading = false;
+		this.finishLoad();
 	}
 
 	resize() {
@@ -528,6 +543,26 @@ export default class Viewer extends Mixins(BaseMixin) {
 
 	set forceLineRendering(newVal) {
 		this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.forceLineRendering', value: newVal});
+	}
+
+	@Watch('zSlider')
+	zSliderChanged(newVal) {
+		viewer.setZClipPlane(newVal, -1);
+	}
+
+	get progressColor() {
+		try {
+			return this.$store.state.gui.gcodeViewer.progressColor;
+		} catch {
+			return '#FFFFFF';
+		}
+	}
+
+	@Watch('progressColor')
+	progressColorChanged(newVal) {
+		if (viewer) {
+			viewer.setProgressColor(newVal);
+		}
 	}
 }
 </script>

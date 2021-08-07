@@ -591,7 +591,8 @@
 			"MinFeed" :"Min Feed Rate",
 			"MaxFeed" : "Max Feed Rate",
 			"MinColor" : "Min Feed Rate Color",
-			"MaxColor" : "Max Feed Rate Color"
+			"MaxColor" : "Max Feed Rate Color",
+			"ProgressColor" : "Progress Color"
 		}
 	},
 	"GCodeViewer":{
@@ -606,6 +607,7 @@
 		"Max" : "Max",
 		"ForceLineRendering":"Force Line Rendering",
 		"ReloadRequired" : "Reload required",
-		"TrackPrint": "Track Print"
+		"TrackPrint": "Track Print",
+		"ZClip" : "Z Clipping"
 	}
 }

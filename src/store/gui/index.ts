@@ -174,7 +174,8 @@ export const getDefaultState = (): GuiState => {
 			maxFeed : 100, 
 			minFeedColor : "#0000FF",
 			maxFeedColor : "#FF0000",
-			forceLineRendering : false
+			forceLineRendering : false,
+			progressColor : "#FFFFFF"
 		}
 	}
 }
