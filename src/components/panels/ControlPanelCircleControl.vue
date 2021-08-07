@@ -1,6 +1,4 @@
 <style lang="scss" scoped>
-@namespace svg "http://www.w3.org/2000/svg";
-
 svg {
     max-height: 300px;
     user-select: none;
@@ -8,38 +6,38 @@ svg {
     filter: drop-shadow( 0px 10px 10px rgba(0, 0, 0, .3));
 }
 
-svg|a {
+svg a {
     stroke: hsl(0, 0%, 10%);
     stroke-width: 0.3px;
 }
 
-svg|a.step {
+svg a.step {
     transition: fill 750ms ease-out;
 }
 
-svg|a.step:hover {
+svg a.step:hover {
     fill: #697180 !important;
     transition: fill 100ms ease-in;
 }
 
-svg|a.step:active {
+svg a.step:active {
     fill: #858c98 !important;
 }
 
-svg|a.step.inner {
+svg a.step.inner {
     fill: #535965;
 }
-svg|a.step.inner-mid {
+svg a.step.inner-mid {
     fill: #454a53;
 }
-svg|a.step.outer-mid {
+svg a.step.outer-mid {
     fill: #363a42;
 }
-svg|a.step.outer {
+svg a.step.outer {
     fill: #292c31;
 }
 
-svg|g#stepsZ, svg|g#stepsXY {
+svg g#stepsZ, svg g#stepsXY {
     pointer-events: none;
     user-select: none;
     user-drag: none;
@@ -48,22 +46,27 @@ svg|g#stepsZ, svg|g#stepsXY {
     fill: white;
 }
 
-svg|g#home_buttons text {
+svg g#home_buttons text {
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 5px;
     fill: black;
 }
 
-svg|g.home_button  {
-    fill: var(--color-warning)
+svg g.home_button  {
+    fill: var(--color-warning);
+    transition: opacity 250ms;
 }
 
-svg|g.home_button.homed {
+svg g.home_button.homed {
     fill: var(--color-primary)
 }
 
-svg|g#home_buttons text,
-svg|g#home_buttons .home-icon {
+svg g.home_button:hover {
+    opacity: 0.8;
+}
+
+svg g#home_buttons text,
+svg g#home_buttons .home-icon {
     pointer-events: none;
     user-select: none;
     user-drag: none;
