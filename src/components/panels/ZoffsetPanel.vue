@@ -50,12 +50,12 @@
                     <v-row>
                         <v-col class="col text-center d-flex flex-column align-center flex-sm-row justify-center">
                             <v-btn-toggle dense no-gutters class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-first" >
-                                <v-btn small @click="sendBabySteppingDownFine()" class="" :loading="loadings.includes('babySteppingDownFine')" ><v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon> -0.01mm</v-btn>
-                                <v-btn small @click="sendBabySteppingDown()" class="" :loading="loadings.includes('babySteppingDown')" >-0.05mm</v-btn>
+                                <v-btn small @click="sendBabySteppingDownFine()" class="" :loading="loadings.includes('babySteppingDownFine')" ><v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon> -0.01<span class="d-sm-none d-md-inline">mm</span></v-btn>
+                                <v-btn small @click="sendBabySteppingDown()" class="" :loading="loadings.includes('babySteppingDown')" >-0.05<span class="d-sm-none d-md-inline">mm</span></v-btn>
                             </v-btn-toggle>
                             <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-last" >
-                                <v-btn small @click="sendBabySteppingUpFine()" class="" :loading="loadings.includes('babySteppingUpFine')" ><v-icon small class="mr-2">mdi-arrow-expand-up</v-icon> +0.01mm</v-btn>
-                                <v-btn small @click="sendBabySteppingUp()" class="" :loading="loadings.includes('babySteppingUp')" >+0.05mm</v-btn>
+                                <v-btn small @click="sendBabySteppingUpFine()" class="" :loading="loadings.includes('babySteppingUpFine')" ><v-icon small class="mr-2">mdi-arrow-expand-up</v-icon> +0.01<span class="d-sm-none d-md-inline">mm</span></v-btn>
+                                <v-btn small @click="sendBabySteppingUp()" class="" :loading="loadings.includes('babySteppingUp')" >+0.05<span class="d-sm-none d-md-inline">mm</span></v-btn>
                             </v-btn-toggle>
                         </v-col>
                     </v-row>
