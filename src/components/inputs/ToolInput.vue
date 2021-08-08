@@ -22,7 +22,6 @@
     <v-combobox
         dense
         hide-details
-        onClick="this.select();"
         v-model="value"
         :items="items"
         item-text="value"
@@ -53,10 +52,10 @@ export default class ToolInput extends Mixins(BaseMixin) {
         if (this.value === "") this.value = 0
 
         if (this.value > this.max_temp) {
-            this.value = this.target;
+            this.value = { value: this.target, text: this.target }
             this.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")")
         } else if (this.value < this.min_temp && this.value != 0) {
-            this.value = this.target;
+            this.value = { value: this.target, text: this.target }
             this.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")")
         } else {
             const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
