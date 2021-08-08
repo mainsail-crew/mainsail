@@ -25,16 +25,16 @@ svg a.step:active {
 }
 
 svg a.step.inner {
-    fill: #535965;
+    fill: #666;
 }
 svg a.step.inner-mid {
-    fill: #454a53;
+    fill: #555;
 }
 svg a.step.outer-mid {
-    fill: #363a42;
+    fill: #444;
 }
 svg a.step.outer {
-    fill: #292c31;
+    fill: #333;
 }
 
 svg g#stepsZ, svg g#stepsXY {
@@ -46,30 +46,54 @@ svg g#stepsZ, svg g#stepsXY {
     fill: white;
 }
 
+svg a#tilt_adjust text {
+    font-family: 'Roboto-Regular', 'Roboto', sans-serif;
+    font-size: 3px;
+    display: none;
+}
+
 svg g#home_buttons text {
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 5px;
     fill: black;
 }
 
-svg g.home_button  {
+svg g.home_button {
     fill: var(--color-warning);
     transition: opacity 250ms;
+}
+
+svg a#tilt_adjust {
+    transition: opacity 250ms;
+}
+
+svg a#tilt_adjust.warning {
+    fill: var(--color-warning);
+}
+
+svg a#tilt_adjust.primary {
+    fill: var(--color-primary);
 }
 
 svg g.home_button.homed {
     fill: var(--color-primary)
 }
 
-svg g.home_button:hover {
+svg g.home_button:hover,
+svg a#tilt_adjust:hover {
     opacity: 0.8;
 }
 
-svg g#home_buttons text,
+svg a#tilt_adjust text,
+svg a#tilt_adjust #tilt_icon,
 svg g#home_buttons .home-icon {
     pointer-events: none;
     user-select: none;
     user-drag: none;
+}
+
+svg a#tilt_adjust #tilt_icon {
+    fill: #000;
 }
 </style>
 
@@ -298,6 +322,14 @@ svg g#home_buttons .home-icon {
                             </g>
                         </g>
                     </g>
+                    <a id="tilt_adjust" @click="clickSpecialButton" v-if="existsQGL || existsZtilt" :class="colorSpecialButton">
+                        <circle id="tilt_button" cx="70.92" cy="31" r="5"/>
+                        <text x="66.776px" y="32.066px">Z-TILT</text>
+                        <g id="tilt_icon">
+                            <path d="M74.189,31.503L67.751,30.009L67.638,30.496L74.076,31.99L74.189,31.503Z"/>
+                            <path d="M74.361,32.85L74.034,32.676L74.939,32.188L75.039,33.211L74.745,33.055C74.386,33.724 73.858,34.288 73.213,34.69L72.983,34.321C73.563,33.959 74.038,33.452 74.361,32.85ZM67.193,28.75C67.586,28.1 68.142,27.564 68.807,27.196L69.018,27.576C68.42,27.907 67.919,28.389 67.565,28.974L67.883,29.165L66.954,29.605L66.907,28.578L67.193,28.75Z"/>
+                        </g>
+                    </a>
                 </svg>
             </v-col>
         </v-row>
@@ -337,6 +369,17 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
         return Array.from(new Set([
             ...(steps ?? []),
         ])).sort((a, b) => a-b)
+    }
+
+    get colorSpecialButton() {
+        if (this.existsQGL) return this.colorQuadGantryLevel
+        else if (this.existsZtilt) return this.colorZTilt
+        else return 'warning'
+    }
+
+    clickSpecialButton() {
+        if (this.existsQGL) this.doQGL()
+        else if (this.existsZtilt) return this.doZtilt()
     }
 }
 </script>
