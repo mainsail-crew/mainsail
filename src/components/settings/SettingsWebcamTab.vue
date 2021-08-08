@@ -5,13 +5,13 @@
                 <settings-row :title="$t('Settings.WebcamTab.ShowInNavigation')">
                     <v-switch v-model="boolNavi" hide-details class="mt-0"></v-switch>
                 </settings-row>
-                <div v-for="(webcam, index) in this.webcams" v-bind:key="index">
+                <div v-for="(webcam) in this.webcams" v-bind:key="webcam.index">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
-                        <v-btn small outlined @click="editWebcam(webcam, index)">
+                        <v-btn small outlined @click="editWebcam(webcam)">
                             <v-icon small left>mdi-pencil</v-icon> {{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn small outlined @click="deleteWebcam(index)" class="ml-3 minwidth-0 px-2" color="error">
+                        <v-btn small outlined @click="deleteWebcam(webcam.index)" class="ml-3 minwidth-0 px-2" color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -245,7 +245,7 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
     }
 
     existsWebcamName(name: string) {
-        return (this.webcams.findIndex((webcam: GuiStateWebcam, index: number) => webcam.name === name && index !== this.form.index) !== -1)
+        return (this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === name && webcam.index !== this.form.index) !== -1)
     }
 
     createWebcam() {
@@ -254,8 +254,8 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
         this.form.bool = true
     }
 
-    editWebcam(webcam: GuiStateWebcam, index: number) {
-        this.form.index = index
+    editWebcam(webcam: GuiStateWebcam) {
+        this.form.index = webcam.index ?? null
         this.form.name = webcam.name
         this.form.icon = webcam.icon
         this.form.service = webcam.service

@@ -10,6 +10,7 @@ export interface GuiState {
 }
 
 export interface GuiStateWebcam {
+    index?: number | null
     name: string
     icon: string
     service: "mjpegstreamer" | "mjpegstreamer-adaptive" | "uv4l-mjpeg" | "ipstream"
@@ -20,6 +21,7 @@ export interface GuiStateWebcam {
 }
 
 export interface GuiStatePreset {
+    index?: number | null
     name: string
     gcode: string
     values: {
