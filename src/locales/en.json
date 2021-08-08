@@ -363,7 +363,7 @@
 		},
 		"ZoffsetPanel": {
 			"Headline": "Z-Offset",
-			"CurrentOffset": "Current Offset",
+			"CurrentOffset": "current offset",
 			"Save": "Save",
 			"ToEndstop": "to Endstop",
 			"ToProbe": "to Probe",
