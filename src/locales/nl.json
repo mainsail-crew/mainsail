@@ -1,34 +1,6 @@
 {
 	"App": {
-		"AddPrinter": "Printer toevoegen",
-		"CannotNotConnectTo": "Kan niet verbinden met",
-		"ChangePrinter": "Wijzig Printer",
-		"Close": "Sluit",
-		"Connecting": "Verbinden",
-		"ConnectionFailed": "Verbinding mislukt",
-		"ConnectionTo": "Verbinding met",
-		"EditPrinter": "Bewerk Printer",
-		"EmergencyStop": "Noodstop",
-		"Empty": "Leeg",
-		"Failed": "mislukt",
-		"FirmwareRestart": "FIRMWARE Herstart",
-		"Hello": "Hallo en welkom bij de remote versie van Mainsail!",
-		"HostControl": "Systeem",
-		"InMoonrakerConf": "in moonraker.conf onder 'cors_domains'.",
-		"Klipper": "Klipper",
-		"KlipperControl": "Klipper",
-		"Moonraker": "Moonraker",
-		"PleaseRememberToAdd": "Vergeet niet",
-		"PowerDevices": "Power apparaten",
 		"Printers": "Printers",
-		"Reboot": "Herstart",
-		"Recovering": "Herstellen",
-		"Remotemode": "https://docs.mainsail.xyz/remotemode",
-		"Restart": "Herstarten",
-		"RestartServices": "Herstart Services",
-		"SAVECONFIG": "CONFIGURATIE OPSLAAN",
-		"SelectPrinter": "Selecteer Printer",
-		"Shutdown": "Uitschakelen",
 		"ThrottledStates": {
 			"DescriptionCurrentlyThrottled": "rPi ARM core(s) worden momenteel gethrottled.",
 			"DescriptionFrequencyCapped": "rPi ARM max frequency is momenteel beperkt tot 1.2 GHz.",
@@ -49,7 +21,6 @@
 			"TitleTemperatureLimitActive": "Temperatuurlimiet actief",
 			"TitleUnderVoltageDetected": "Ondervoltage gedetecteerd"
 		},
-		"To": "met",
 		"TopBar": {
 			"CannotUploadTheFile": "Kan het bestand niet uploaden!",
 			"EmergencyStop": "Noodstop",
@@ -68,7 +39,6 @@
 			"RestartServices": "Herstart Services",
 			"Shutdown": "Afsluiten"
 		},
-		"TryAgain": "probeer nogmaals",
 		"UpdateDialog": {
 			"Close": "Sluiten",
 			"Empty": "Leeg",
@@ -76,13 +46,7 @@
 			"RecoveringDone": "Herstellen van {software} voltooid!",
 			"Updating": "Updating {software}..",
 			"UpdatingDone": "Updaten van {software} voltooid!"
-		},
-		"UpdatePrinter": "Update Printer",
-		"Updating": "Updaten",
-		"UploadPrint": "Upload & Print",
-		"Uploading": "Uploaden",
-		"YouCanFindMore": "Je kunt meer details vinden op",
-		"done": " klaar!"
+		}
 	},
 	"ConnectionDialog": {
 		"CannotConnectTo": "Kan niet verbinden met Moonraker ({host}).",
@@ -93,14 +57,10 @@
 	},
 	"Console": {
 		"CommandList": "Lijst met opdrachten",
-		"CustomFilters": "Eigen filters",
-		"Date": "Datum",
 		"Empty": "Leeg",
-		"Event": "Evenement",
 		"HideTemperatures": "Verberg temperaturen",
 		"SendCode": "Verzend code...",
-		"SetupConsole": "Instellingen",
-		"send": "verzend"
+		"SetupConsole": "Instellingen"
 	},
 	"Editor": {
 		"ConfigReference": "Config Referentie",
@@ -121,7 +81,6 @@
 		"Delete": "Verwijder",
 		"DeleteDirectory": "Verwijder map",
 		"DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
-		"DoYouWantToStart": "Wil je starten met ",
 		"DoYouWantToStartFilename": "Wil je {filename} starten?",
 		"Download": "Download",
 		"Downloading": "Downloaden",
@@ -151,7 +110,6 @@
 		"Rename": "Hernoem",
 		"RenameDirectory": "Hernoem map",
 		"RenameFile": "Hernoem bestand",
-		"SaveClose": "Bewaar & sluit",
 		"Search": "Zoeken",
 		"SetupCurrentList": "Instellingen",
 		"Slicer": "Slicer",
@@ -503,10 +461,8 @@
 		"G-Code Files": "G-Code Bestanden",
 		"Heightmap": "Hoogtekaart",
 		"History": "Geschiedenis",
-		"Interface": "Interface",
 		"Machine": "Machine",
 		"Printers": "Printers",
-		"Settings": "Instellingen",
 		"Webcam": "Webcam"
 	},
 	"SelectPrinterDialog": {
@@ -528,38 +484,6 @@
 	},
 	"Settings": {
 		"Cancel": "Annuleer",
-		"ConfigFilesPanel": {
-			"AllFiles": "Alle",
-			"Cancel": "Annuleer",
-			"ConfigFiles": "Configuratiebestanden",
-			"ConfigReference": "Configuratie Referentie",
-			"Create": "Creëer",
-			"CreateFile": "Creëer Bestand",
-			"CreateFolder": "Creëer Map",
-			"CurrentPath": "Huidige pad",
-			"Delete": "Verwijder",
-			"Download": "Download",
-			"EditFile": "Bewerk bestand",
-			"Empty": "Leeg",
-			"Files": "Bestanden",
-			"Filesize": "Bestandsgrootte",
-			"HiddenFiles": "Verborgen bestanden",
-			"LastModified": "Laatst aangepast",
-			"Name": "Naam",
-			"PleaseStandBy": "Moment geduld a.u.b.",
-			"Rename": "Hernoemen",
-			"RenameFile": "Hernoem Bestand",
-			"SaveClose": "Opslaan & sluiten",
-			"SaveRestart": "Opslaan & herstarten",
-			"SetupCurrentList": "Instellingen",
-			"Uploading": "Uploaden"
-		},
-		"ConsolePanel": {
-			"Console": "Console",
-			"CustomFilters": "Eigen filter",
-			"HideTemperatures": "Verberg temperaturen",
-			"Rules": "Regels"
-		},
 		"ConsoleTab": {
 			"AddFilter": "voeg filter toe",
 			"Console": "Console",
@@ -571,24 +495,6 @@
 			"ShowOnDashboard": "Toon op dashboard",
 			"StoreButton": "Sla filter op",
 			"UpdateButton": "Update filter"
-		},
-		"ControlPanel": {
-			"Control": "Control",
-			"EnableCross": "Bewegingskruis inschakelen",
-			"Extruder": "Extruder",
-			"InvertXMovement": "",
-			"InvertYMovement": "",
-			"InvertZMovement": "",
-			"MoveDistancesEInMm": "Afstanden E in mm",
-			"MoveDistancesInMm": "Afstanden in mm",
-			"MoveDistancesXYInMm": "Afstanden XY in mm",
-			"MoveDistancesZInMm": "Afstanden Z in mm",
-			"ReverseXMovement": "",
-			"ReverseYMovement": "",
-			"ReverseZMovement": "",
-			"SpeedEInMms": "Snelheid E in mm/s",
-			"SpeedXY": "Snelheid XY",
-			"SpeedZ": "Snelheid Z"
 		},
 		"ControlTab": {
 			"Control": "Bediening",
@@ -604,14 +510,6 @@
 			"SpeedXY": "Snelheid XY",
 			"SpeedZ": "Snelheid Z"
 		},
-		"DashboardPanel": {
-			"ChartUpdateInterval": "Grafiek update interval",
-			"Console": "Console",
-			"Dashboard": "Dashboard",
-			"DatapointInterval": "Datapunt interval",
-			"Tempchart": "Temperatuur grafiek",
-			"Webcam": "Webcam"
-		},
 		"DashboardTab": {
 			"Dashboard": "Dashboard",
 			"Desktop": "Desktop",
@@ -621,25 +519,6 @@
 			"Widescreen": "Breedbeeld"
 		},
 		"Edit": "Bewerk",
-		"EndstopPanel": {
-			"Endstop": "Endstop",
-			"EndstopInfo": "Klik op de sync-knop rechts onderin om de huidige endstop status te laden.",
-			"Endstops": "Endstops",
-			"TRIGGERED": "GESLOTEN",
-			"open": "OPEN"
-		},
-		"GeneralPanel": {
-			"DisplayCANCEL_PRINT": "Toon CANCEL_PRINT",
-			"DisplayZOffset": "Toon Z-Offset-Paneel",
-			"FactoryInfo": "Weet je zeker dat je Mainsail naar de fabrieksinstellingen wil terugzetten?",
-			"FactoryReset": "Fabrieksinstellingen",
-			"General": "Algemeen",
-			"Language": "Taal",
-			"PrinterName": "Printer Naam",
-			"ResetMainsail": "reset mainsail",
-			"ShowCANCEL_PRINT": "Toont de CANCEL_PRINT knop altijd - geen tweede bevestiging nodig.",
-			"ShowZOffset": "Toont het Z-Offset paneel altijd."
-		},
 		"GeneralTab": {
 			"BoolBigThumbnail": "Grote thumbnail",
 			"BoolBigThumbnailDescription": "Toon een grote thumbnail in het statuspaneel tijdens een print.",
@@ -655,37 +534,9 @@
 			"ResetMainsail": "reset mainsail"
 		},
 		"InterfaceSettings": "Interface Instellingen",
-		"LimitsPanel": {
-			"Acceleration": "Acceleratie",
-			"Deceleration": "Vertraging",
-			"MachineLimits": "Machine Limieten",
-			"SquareCornerVelocity": "Hoeksnelheid",
-			"Velocity": "Snelheid"
-		},
-		"LogfilesPanel": {
-			"Logfiles": "Logbestanden"
-		},
-		"MacrosPanel": {
-			"Macros": "Macro's",
-			"NOMacros": "Geen macro's gevonden..."
-		},
 		"MacrosTab": {
 			"Macros": "Macros",
 			"NOMacros": "geen macros gevonden..."
-		},
-		"PresetsPanel": {
-			"AddPreset": "voeg preset toe",
-			"Cooldown": "Afkoelen",
-			"CreateHeadline": "Creëer Preset",
-			"CustomGCode": "Eigen G-Code",
-			"EditCooldown": "Bewerk Afkoelen",
-			"EditHeadline": "Bewerk Preset",
-			"Name": "Naam",
-			"PreheatPresets": "Voorverwarm Presets",
-			"PresetInfo": "Een minimale temperatuur of eigen gcode moet ingesteld zijn.",
-			"StoreButton": "Sla preset op",
-			"UpdateButton": "Werk preset bij",
-			"UpdateCooldown": "Afkoelen bijwerken"
 		},
 		"PresetsTab": {
 			"AddPreset": "voeg preset toe",
@@ -701,12 +552,6 @@
 			"UpdateButton": "Update preset.",
 			"UpdateCooldown": "Update afkoelen"
 		},
-		"RemotePrintersPanel": {
-			"AddPrinter": "Voeg Printer toe",
-			"EditPrinter": "Bewerk Printer",
-			"RemotePrinters": "Remote Printers",
-			"UpdatePrinter": "Printer bijwerken"
-		},
 		"RemotePrintersTab": {
 			"AddPrinter": "Voeg Printer toe",
 			"EditPrinter": "Bewerk Printer",
@@ -715,60 +560,10 @@
 			"RemotePrinters": "Printers op afstand",
 			"UpdatePrinter": "Update Printer"
 		},
-		"RunoutPanel": {
-			"Detected": "gedetecteerd",
-			"Empty": "Leeg"
-		},
 		"ThemeTab": {
 			"Logo": "Logo",
 			"Primary": "Primair",
 			"Theme": "Thema"
-		},
-		"UpdatePanel": {
-			"CheckForUpdates": "Naar updates zoeken",
-			"Commits": "Commits",
-			"CommittedAt": "committed op",
-			"Detached": "detached",
-			"Dirty": "dirty",
-			"ERROR": "ERROR",
-			"Invalid": "ongeldig",
-			"OSPackages": "OS-Packages",
-			"PackagesCanBeUpgraded": "pakketten kunnen worden geüpgraded",
-			"System": "Systeem",
-			"Unknown": "onbekend",
-			"UpToDate": "up-to-date",
-			"Update": "update",
-			"UpdateManager": "Update Manager",
-			"Upgrade": "upgrade"
-		},
-		"WebcamPanel": {
-			"AddWebcam": "webcam toevoegen",
-			"CreateWebcam": "Creëer Webcam",
-			"EditWebcam": "Bewerk Webcam",
-			"FlipHorizontally": "Flip webcam horizontaal",
-			"FlipVertically": "Flip webcam verticaal",
-			"IconBed": "Bed",
-			"IconCam": "Cam",
-			"IconDoor": "Deur",
-			"IconFilament": "Filament",
-			"IconHot": "Heet",
-			"IconMcu": "MCU",
-			"IconNozzle": "Nozzle",
-			"IconPrinter": "Printer",
-			"Ipstream": "IP Camera",
-			"Mjpegstreamer": "MJPEG-Streamer",
-			"MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (experimenteel)",
-			"Name": "Naam",
-			"NameAlreadyExists": "Naam bestaat al",
-			"Required": "verplicht",
-			"SaveWebcam": "Sla Webcam op",
-			"Service": "Service",
-			"ShowInNavigation": "Toon in navigatie",
-			"TargetFPS": "Doel FPS",
-			"UpdateWebcam": "Update Webcam",
-			"UrlNotAvailable": "URL niet bereikbaar",
-			"WebcamURL": "Webcam URL",
-			"Webcams": "Webcams"
 		},
 		"WebcamTab": {
 			"AddWebcam": "voeg webcam toe",
