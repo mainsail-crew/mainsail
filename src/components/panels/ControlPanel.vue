@@ -21,7 +21,7 @@
 </style>
 
 <template>
-    <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error', 'printing'].includes(printer_state)">
+    <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
         <v-toolbar flat dense>
             <v-toolbar-title>
                 <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Headline') }}</span>
