@@ -2,14 +2,14 @@
     <v-row>
         <v-col :class="firstColClasses">
             <v-row class="d-flex flex-row">
-                <v-col class="col d-flex justify-center align-center pr-0" v-if="loading">
+                <v-col class="col-auto d-flex justify-center align-center pr-0" v-if="loading">
                     <v-progress-circular
                         indeterminate
                         color="primary"
                         :size="24"
                     ></v-progress-circular>
                 </v-col>
-                <v-col class="col-auto d-flex justify-center align-center pr-0" v-if="icon && !loading">
+                <v-col class="col-auto d-flex justify-center align-center pr-0" v-else-if="icon">
                     <v-icon>{{ icon }}</v-icon>
                 </v-col>
                 <v-col class="col d-flex justify-center flex-column">
