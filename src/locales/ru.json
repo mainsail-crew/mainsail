@@ -680,6 +680,14 @@
       "Uv4lMjpeg": "UV4L-MJPEG",
       "WebcamURL": "URL веб-камеры",
       "Webcams": "Веб-камеры"
+    },
+    "DashboardTab": {
+      "Dashboard": "Приборная панель",
+      "Desktop": "Рабочий стол",
+      "Mobile": "Мобильный",
+      "ResetLayout": "Сброс макета",
+      "Tablet": "Планшет",
+      "Widescreen": "Широкоэкранный"
     }
   },
   "title": "Pусский",
