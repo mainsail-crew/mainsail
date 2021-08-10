@@ -14,7 +14,7 @@
             <v-btn
                 color="primary"
                 class="mr-5 button-min-width-auto px-3 d-none d-sm-flex"
-                v-if="klippyIsConnected && saveConfigPending || true"
+                v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
