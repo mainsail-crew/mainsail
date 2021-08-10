@@ -38,6 +38,14 @@
       "Reboot": "Перезагрузка",
       "RestartServices": "Перезапуск служб",
       "Shutdown": "Выключение"
+    },
+    "UpdateDialog": {
+      "Recovering": "Восстановление",
+      "RecoveringDone": "Восстановление проделанной работы",
+      "Updating": "Обновление",
+      "UpdatingDone": "Обновление выполнено",
+      "Empty": "пустой",
+      "Close": "закрыть"
     }
   },
   "Console": {
