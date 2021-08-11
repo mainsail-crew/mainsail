@@ -18,7 +18,7 @@
 			"PowerDevices": "Stromversorgung",
 			"HostControl": "Host-Steuerung",
 			"Reboot": "Neustart",
-			"Shutdown": "Herunterfahren",
+			"Shutdown": "Herunterfahren"
 		},
 		"UpdateDialog": {
 			"Updating": "Aktualisiere {software}...",
@@ -26,7 +26,7 @@
 			"Recovering": "Wiederherstellung {software}...",
 			"RecoveringDone": "Wiederherstellung {software} abgeschlossen!",
 			"Empty": "Leer",
-			"Close": "Schließen",
+			"Close": "Schließen"
 		},
 		"ThrottledStates": {
 			"HeadlineCurrentFlags": "Derzeitige flags",
