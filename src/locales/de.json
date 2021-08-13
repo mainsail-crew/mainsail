@@ -360,7 +360,7 @@
 			"UrlNotAvailable": "URL nicht verfügbar"
 		},
 		"ZoffsetPanel": {
-			"Headline": "Z-Tilt",
+			"Headline": "Z-Offset",
 			"CurrentOffset": "Aktueller Versatz",
 			"Save": "Speichern",
 			"ToEndstop": "bis Endstopp",
