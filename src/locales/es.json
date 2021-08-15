@@ -147,7 +147,7 @@
   },
   "Console": {
     "SetupConsole": "Confiurar Consola",
-    "SendCode": "Envias Codigo....",
+    "SendCode": "Enviar Codigo....",
     "Empty": "Vacio",
     "HideTemperatures": "Ocultar Temperaturas",
     "CommandList": "Lista de comandos"
@@ -186,7 +186,7 @@
     "AvgPrinttime": "Tiempo Promedio",
     "TotalFilamentUsed": "Filamento Total Usado",
     "TotalJobs": "Trabajos Totales",
-    "FilamentUsage": "Uso de Folamento",
+    "FilamentUsage": "Uso de Filamento",
     "PrinttimeAvg": "Tiempo Promedio",
     "PrintHistory": "Historial de impresiones",
     "TitleRefreshHistory": "Actualizar Historial",
@@ -218,7 +218,7 @@
     "FirstLayerBedTemp": "Temp. cama primer capa",
     "FirstLayerHeight": "Altura Primera Capa",
     "LayerHeight": "Altura de capa",
-    "ObjectHeight": "Añtura del objeto",
+    "ObjectHeight": "Altura del objeto",
     "Slicer": "Laminador",
     "SlicerVersion": "VErsion de Laminador",
     "HistoryFilamentUsage": "Filamento",
@@ -264,7 +264,7 @@
       "Headline": "Consola",
       "SetupConsole": "Configurar Consola",
       "HideTemperatures": "Ocultar temperaturas",
-      "SendCode": "Envias codigo..."
+      "SendCode": "Enviar codigo..."
     },
     "MinSettingsPanel": {
       "MissingConfiguration": "Configuracion no entrada",
