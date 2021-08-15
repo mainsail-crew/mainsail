@@ -58,7 +58,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 			commit('setInitSource', tempDataset)
 
 			const tempDatasetKeys = Object.keys(tempDataset[0]).filter((tmp) => tmp !== "date")
-			const masterDatasetKeys = tempDatasetKeys.filter((tmp) => !tmp.includes('-')).sort()
+			const masterDatasetKeys = tempDatasetKeys.filter((tmp) => !tmp.includes('-') && !tmp.startsWith('_')).sort()
 			const series: PrinterTempHistoryStateSerie[] = []
 			let colorNumber = 0
 
