@@ -98,22 +98,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
 						if (value.temperature > 50 || (value.target && value.temperature > value.target-5)) icon = "radiator"
 					} else if (nameSplit[0].startsWith("heater_generic")) icon = "fire"
 
-					heaters.push({
-						name: name,
-						type: nameSplit[0],
-						icon: icon,
-						iconColor: color,
-						target: Math.round(value.target * 10) / 10,
-						temperature: Math.round(value.temperature * 10) / 10,
-						additionSensors: getters.getAdditionSensors(nameSplit[1]),
-						power: Math.round((value.power ?? 0) * 100),
-						avgPower: Math.round(getters["tempHistory/getAvgPower"](name) ?? 0),
-						presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
-						chartColor: getters["tempHistory/getDatasetColor"](name),
-						chartSeries: getters["tempHistory/getSerieNames"](name),
-						min_temp: parseInt(state.configfile?.config[key]?.min_temp ?? 0),
-						max_temp: parseInt(state.configfile?.config[key]?.max_temp ?? 0),
-					})
+					if (!name.startsWith("_")) {
+						heaters.push({
+							name: name,
+							type: nameSplit[0],
+							icon: icon,
+							iconColor: color,
+							target: Math.round(value.target * 10) / 10,
+							temperature: Math.round(value.temperature * 10) / 10,
+							additionSensors: getters.getAdditionSensors(nameSplit[1]),
+							power: Math.round((value.power ?? 0) * 100),
+							avgPower: Math.round(getters["tempHistory/getAvgPower"](name) ?? 0),
+							presets: rootGetters["gui/getPresetsFromHeater"]({ name: key }),
+							chartColor: getters["tempHistory/getDatasetColor"](name),
+							chartSeries: getters["tempHistory/getSerieNames"](name),
+							min_temp: parseInt(state.configfile?.config[key]?.min_temp ?? 0),
+							max_temp: parseInt(state.configfile?.config[key]?.max_temp ?? 0),
+						})
+					}
 				}
 			}
 		}
@@ -127,7 +129,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		for (const [key, value] of Object.entries(state)) {
 			const nameSplit = key.split(" ")
 
-			if (nameSplit[0] === "temperature_fan") {
+			if (nameSplit[0] === "temperature_fan" && !nameSplit[1].startsWith("_")) {
 				fans.push({
 					name: nameSplit[1],
 					icon: "fan",
@@ -155,7 +157,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		for (const [key, value] of Object.entries(state)) {
 			const nameSplit = key.split(" ")
 
-			if (nameSplit[0] === "temperature_sensor") {
+			if (nameSplit[0] === "temperature_sensor" && !nameSplit[1].startsWith("_")) {
 				let icon = "thermometer"
 				const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
 				const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
