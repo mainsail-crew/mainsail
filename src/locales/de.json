@@ -428,8 +428,8 @@
 			"UpdateManager": "Update Manager",
 			"CheckForUpdates": "auf aktualisierungen prüfen",
 			"System": "System",
-			"PackagesCanBeUpgraded": "packete können aktualisiert werden",
-			"OSPackages": "OS-Packete",
+			"PackagesCanBeUpgraded": "Paketupdates sind verfügbar",
+			"OSPackages": "OS-Pakete",
 			"Commits": "Commits",
 			"CommittedAt": "committed am",
 			"UpToDate": "aktuell",
@@ -467,7 +467,7 @@
 			"DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT",
 			"DisplayCANCEL_PRINTDescription": "Zeigt die Schaltfläche CANCEL_PRINT permanent an - keine zweite Ebenenbestätigung erforderlich.",
 			"DisplayZOffset": "Zeige Z-Versatz Panel",
-			"DisplayZOffsetDescription": "Andernfalls wird das Bedienfeld erst angezeigt, wenn ein Druckvorgang begonnen hat.",
+			"DisplayZOffsetDescription": "Zeigt den Z-Versatz-Panel auch ohne aktiven Druck an",
 			"FactoryReset": "Werkseinstellungen",
 			"FactoryInfo": "Mainsail wirklich auf die Werkseinstellungen zurücksetzen?",
 			"ResetMainsail": "Mainsail zurücksetzen"
@@ -544,9 +544,9 @@
 			"AddFilter": "Filter hinzufügen"
 		},
 		"PresetsTab": {
-			"PreheatPresets": "Vorheizpresets",
+			"PreheatPresets": "presets",
 			"Cooldown": "Abkühlen",
-			"AddPreset": "Voreinstellung hinzufügen",
+			"AddPreset": "Preset hinzufügen",
 			"CreateHeadline": "Voreinstellung erstellen",
 			"EditHeadline": "Voreinstellung bearbeiten",
 			"Name": "Name",
