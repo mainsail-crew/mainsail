@@ -177,7 +177,7 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete') }} "{{ removeDialogProfile }}"?</p>
+                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -650,17 +650,17 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     openRemoveProfile(name: string) {
-        this.newName = name
+        this.removeDialogProfile = name
         this.removeDialog = true;
     }
 
     removeProfile() {
         this.removeDialog = false;
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, {
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile }, {
             action: "printer/removeBedMeshProfile",
-            actionPayload: {name: this.newName},
-            loading: "bedMeshRename_"+this.newName
+            actionPayload: {name: this.removeDialogProfile},
+            loading: "bedMeshRename_"+this.removeDialogProfile
         })
         this.removeDialogProfile = ""
     }

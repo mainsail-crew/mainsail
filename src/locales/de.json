@@ -177,7 +177,7 @@
 		"BedMeshCalibrate": "Bed Mesh Kalibrieren",
 		"DoYouReallyWantToCalibrate": "Möchtest du wirklich neu kalibrieren?",
 		"DeleteBedMeshProfile": "Lösche Bed Mesh",
-		"DoYouReallyWantToDelete": "Möchtest du das Profil wirklich löschen?",
+		"DoYouReallyWantToDelete": "Möchtest du das Profil \"{name}\" wirklich löschen?",
 		"Remove": "entfernen"
 	},
 	"History": {

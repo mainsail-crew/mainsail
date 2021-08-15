@@ -179,7 +179,7 @@
 		"BedMeshCalibrate": "Bed Mesh Calibrate",
 		"DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
 		"DeleteBedMeshProfile": "Delete Bed Mesh Profile",
-		"DoYouReallyWantToDelete": "Do you really want to delete the profile",
+		"DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",
 		"Remove": "remove"
 	},
 	"History": {

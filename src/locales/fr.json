@@ -149,7 +149,7 @@
     "BedMeshCalibrate": "Calibration Maillage",
     "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du Maillage plateau ?",
     "DeleteBedMeshProfile": "Effacer profil Maillage",
-    "DoYouReallyWantToDelete": "Voulez-vous effacer le profil ?",
+    "DoYouReallyWantToDelete": "Voulez-vous effacer le profil \"{name}\"?",
     "Remove": "supprimer",
     "Flat": "Plat",
     "NoProfile": "Aucun profil disponible",
