@@ -176,7 +176,7 @@
     "BedMeshCalibrate": "Calibrar malla de la cama",
     "DoYouReallyWantToCalibrate": "Realmente quiere inciar la calibracion de la cama?",
     "DeleteBedMeshProfile": "Borrar perfil de la malla de cama",
-    "DoYouReallyWantToDelete": "Realmente quiere borrar el perfil?",
+    "DoYouReallyWantToDelete": "Realmente quiere borrar el perfil \"{name}\"?",
     "Remove": "remover"
   },
   "History": {

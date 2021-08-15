@@ -126,7 +126,7 @@
     "DeleteBedMeshProfile": "Удалить профиль высоты кровати",
     "Deleted": "удалённый",
     "DoYouReallyWantToCalibrate": "Ты действительно хочешь начать калибровку постели?",
-    "DoYouReallyWantToDelete": "Вы действительно хотите удалить профиль",
+    "DoYouReallyWantToDelete": "Вы действительно хотите удалить профиль \"{name}\"?",
     "Heightmap": "Профиль высоты",
     "Mesh": "Веб-сайт",
     "Name": "Имя",

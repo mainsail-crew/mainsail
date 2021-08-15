@@ -133,7 +133,7 @@
 		"DeleteBedMeshProfile": "Verwijder Bed Mesh Profiel",
 		"Deleted": "verwijderd",
 		"DoYouReallyWantToCalibrate": "Weet je zeker dat je een bedkalibratie wil starten?",
-		"DoYouReallyWantToDelete": "Weet je zeker dat je het profiel wil verwijderen?",
+		"DoYouReallyWantToDelete": "Weet je zeker dat je het profiel \"{name}\" wil verwijderen?",
 		"Flat": "Vlak",
 		"Heightmap": "Hoogtekaart",
 		"Mesh": "Mesh",
