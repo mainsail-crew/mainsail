@@ -230,9 +230,8 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="col-12 text-center py-0">
+                        <v-col class="col-12 text-center pb-0">
                             <v-color-picker
-                                hide-canvas
                                 hide-mode-switch
                                 mode="hexa"
                                 :value="editHeater.color"
