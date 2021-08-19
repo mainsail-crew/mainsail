@@ -356,6 +356,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
 		return additionValues
 	},
 
+	getAvailableSensors: state => {
+		return state.heaters?.available_sensors ?? []
+	},
+
 	getAllMacros: state => {
 		const array: PrinterStateMacro[] = []
 
