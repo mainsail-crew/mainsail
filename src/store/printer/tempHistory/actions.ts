@@ -20,35 +20,67 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 	},
 
 	init({ commit, rootGetters, dispatch }, payload) {
+		commit('reset')
+
 		const now = new Date()
+		const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
 		const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
 
 		if ('requestParams' in payload) delete payload.requestParams
 
 		if (payload !== undefined) {
-			Object.values(payload).forEach((datasetValues: any) => {
-				datasetTypes.forEach((datasetKey) => {
-					if (datasetKey+'s' in datasetValues) {
-						const length = maxHistory - datasetValues[datasetKey+'s'].length
-						datasetValues[datasetKey+'s'] = [...Array.from({ length }, () => 0), ...datasetValues[datasetKey+'s']]
-					}
-				})
+			const objectKeys = Object.keys(payload)
+			const importData: any = {}
+
+			objectKeys.forEach((key: string) => {
+				if (allSensors.includes(key)) {
+					const datasetValues = payload[key]
+					datasetTypes.forEach((datasetKey) => {
+						if (datasetKey+'s' in datasetValues) {
+							const length = maxHistory - datasetValues[datasetKey+'s'].length
+							datasetValues[datasetKey+'s'] = [...Array.from({ length }, () => 0), ...datasetValues[datasetKey+'s']]
+						}
+					})
+
+					importData[key] = {...datasetValues}
+				} else delete payload[key]
 			})
 
-			const objectKeys = Object.keys(payload)
+			//add missing heaters/sensors
+			allSensors.forEach((key: string) => {
+				if (!(key in payload)) {
+					const keySplits = key.split(' ')
+					const sensorType = keySplits[0]
+
+					const addValues: { temperatures: number[], targets?: number[], power?: number[], speed?: number[] } = {
+						temperatures: Array(maxHistory).fill(0)
+					}
+
+					if (['heater_bed', 'heater_generic'].includes(sensorType) || sensorType.startsWith('extruder')) {
+						addValues.targets = Array(maxHistory).fill(0)
+						addValues.power = Array(maxHistory).fill(0)
+					} else if (['temperature_fan'].includes(sensorType)) {
+						addValues.targets = Array(maxHistory).fill(0)
+						addValues.speed = Array(maxHistory).fill(0)
+					}
+
+					importData[key] = {...addValues}
+				}
+			})
+
 			const tempDataset = []
 			for (let i = 0; i < maxHistory; i++) {
 				const tmpDataset: PrinterTempHistoryStateSourceEntry = {
 					date: new Date(now.getTime() - (1000 * (maxHistory - i)))
 				}
 
-				objectKeys.forEach((key) => {
+				Object.keys(importData).forEach((key) => {
 					let name = key
 					if (key.includes(' ')) name = key.split(' ')[1]
 
 					datasetTypes.forEach((attrKey) => {
-						if (attrKey === 'temperature') tmpDataset[name] = payload[key]['temperatures'][i]
-						else if (attrKey+'s' in payload[key]) tmpDataset[name+"-"+attrKey] = payload[key][attrKey+'s'][i]
+						if (attrKey === 'temperature') tmpDataset[name] = importData[key]['temperatures'][i]
+						else if (attrKey+'s' in importData[key]) tmpDataset[name+"-"+attrKey] = importData[key][attrKey+'s'][i]
 					})
 				})
 
