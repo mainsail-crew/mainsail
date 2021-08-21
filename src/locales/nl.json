@@ -492,7 +492,6 @@
 			"HideTemperatures": "Verberg temperaturen",
 			"Name": "Naam",
 			"Regex": "Regex",
-			"ShowOnDashboard": "Toon op dashboard",
 			"StoreButton": "Sla filter op",
 			"UpdateButton": "Update filter"
 		},
