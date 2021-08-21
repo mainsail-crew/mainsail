@@ -358,7 +358,6 @@
       "HideTemperatures": "Cacher températures",
       "Name": "Nom",
       "Regex": "Regex",
-      "ShowOnDashboard": "Afficher sur l'écran principal",
       "StoreButton": "Sauvegarder filtre",
       "UpdateButton": "Mettre à jour filtre"
     },
