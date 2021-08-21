@@ -529,14 +529,20 @@ export const getters: GetterTree<PrinterState, RootState> = {
 				const value: any = state.configfile.settings[key.toLowerCase()]
 				const nameSplit = key.split(" ")
 
-				const points: number[] = []
-				value.points.split("\n").forEach((row: string) => {
-					if (row !== "") {
-						row.split(', ').forEach((col: string) => {
-							points.push(parseFloat(col))
-						})
-					}
-				})
+				let points: number[] = []
+				if (typeof value.points === "string") {
+					value.points.split("\n").forEach((row: string) => {
+						if (row !== "") {
+							row.split(', ').forEach((col: string) => {
+								points.push(parseFloat(col))
+							})
+						}
+					})
+				} else {
+					value.points.forEach((row: number[]) => {
+						points = points.concat(row)
+					})
+				}
 
 				const min = Math.min(...points)
 				const max = Math.max(...points)
