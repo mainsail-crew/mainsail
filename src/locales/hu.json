@@ -1,4 +1,5 @@
 {
+	"title": "Magyar",
 	"App": {
 		"Printers": "Nyomtatók",
 		"ThrottledStates": {
@@ -569,6 +570,5 @@
 			"WebcamURL": "Webkamera URL",
 			"Webcams": "Webkamerák"
 		}
-	},
-	"title": "Magyar"
+	}
 }
