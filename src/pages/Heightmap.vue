@@ -515,7 +515,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
@@ -561,7 +561,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
@@ -626,7 +626,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             }
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
