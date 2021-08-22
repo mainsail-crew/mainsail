@@ -19,7 +19,7 @@
     "@codemirror/state": "^0.18.7",
     "@codemirror/stream-parser": "^0.18.2",
     "@codemirror/view": "^0.18.19",
-    "@sindarius/gcodeviewer": "^1.0.6",
+    "@sindarius/gcodeviewer": "^1.0.7",
     "axios": "^0.21.1",
     "core-js": "^3.16.0",
     "echarts": "^5.1.2",
