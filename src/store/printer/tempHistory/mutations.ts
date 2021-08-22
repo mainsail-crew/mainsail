@@ -1,5 +1,4 @@
 import { getDefaultState } from './index'
-import { datasetTypesInPercents } from '@/store/variables'
 import Vue from "vue";
 import {MutationTree} from "vuex";
 import {PrinterTempHistoryState, PrinterTempHistoryStateSerie} from "@/store/printer/tempHistory/types";

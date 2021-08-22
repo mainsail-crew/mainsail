@@ -16,6 +16,7 @@ export interface ServerHistoryStateJob {
     end_time: number
     filament_used: number
     filename:string
+    // eslint-disable-next-line
     metadata: any
     print_duration: number
     status: string

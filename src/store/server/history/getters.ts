@@ -1,6 +1,7 @@
 import {GetterTree} from "vuex";
 import {ServerHistoryState, ServerHistoryStateJob} from "@/store/server/history/types";
 
+// eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
 
 	getTotalPrintTime(state) {
@@ -59,12 +60,23 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 	},
 
 	getAllPrintStatusArray(state, getters, rootState) {
+		interface allPrintStatusEntryItemStyle {
+			opacity: number
+			color: string
+			borderColor: string
+			borderWidth: number
+			borderRadius: number
+		}
+		interface allPrintStatusEntryLabel {
+			color: string
+		}
+
 		interface allPrintStatusEntry {
 			name: string
 			value: number
 			showInTable: boolean
-			itemStyle: any
-			label: any
+			itemStyle: allPrintStatusEntryItemStyle
+			label: allPrintStatusEntryLabel
 		}
 
 		const output: allPrintStatusEntry[] = []
@@ -111,6 +123,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 	},
 
 	getFilamentUsageArray(state) {
+		// eslint-disable-next-line
 		const output: any = []
 		const startDate = new Date()
 		startDate.setTime(startDate.getTime() - 60*60*24*14*1000)
@@ -130,11 +143,13 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 		if (jobsFiltered.length) {
 			jobsFiltered.forEach(current => {
 				const currentStartDate = new Date(current.start_time * 1000).setHours(0,0,0,0)
+				// eslint-disable-next-line
 				const index = output.findIndex((element: any) => element[0] === currentStartDate)
 				if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
 			})
 		}
 
+		// eslint-disable-next-line
 		return output.sort((a: any, b: any) => {
 			return b[0] - a[0]
 		})

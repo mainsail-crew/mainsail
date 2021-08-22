@@ -44,6 +44,7 @@ export interface ApiGetDirectoryReturn {
     dirs: ApiGetDirectoryReturnDir[]
     files: ApiGetDirectoryReturnFile[]
     disk_usage: FileStateDiskUsage
+    // eslint-disable-next-line
     requestParams?: any
 }
 

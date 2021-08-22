@@ -18,6 +18,7 @@ export const getDefaultState = (): ServerUpdateMangerState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const updateManager: Module<ServerUpdateMangerState, any> = {
 	namespaced: true,
 	state,

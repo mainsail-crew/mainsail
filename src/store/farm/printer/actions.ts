@@ -146,7 +146,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
 		]
 
 		let subscripts = {}
-		payload.objects.forEach((object: any) => {
+		payload.objects.forEach((object: string) => {
 			const splits = object.split(" ")
 			const objectName = splits[0]
 

@@ -3,9 +3,6 @@ import { getDefaultState } from './index'
 import { findDirectory } from "@/plugins/helpers"
 import {MutationTree} from "vuex";
 import {
-	ApiGetDirectoryReturn,
-	ApiGetDirectoryReturnDir,
-	ApiGetDirectoryReturnFile,
 	FileState,
 	FileStateFile
 } from "@/store/files/types";
@@ -36,8 +33,9 @@ export const mutations: MutationTree<FileState> = {
 		filename = dirArray[dirArray.length-1]
 		const path = findDirectory(state.filetree, dirArray)
 
-		const fileIndex = path?.findIndex((element: any) => element.filename === filename)
+		const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
 		if (path && fileIndex && fileIndex !== -1) {
+			// eslint-disable-next-line
 			const currentFile = path[fileIndex] as any
 			allowedMetadata.forEach((key: string) => {
 				if (key in payload) currentFile[key] = payload[key]

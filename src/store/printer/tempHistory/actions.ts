@@ -30,6 +30,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
 		if (payload !== undefined) {
 			const objectKeys = Object.keys(payload)
+			// eslint-disable-next-line
 			const importData: any = {}
 
 			objectKeys.forEach((key: string) => {

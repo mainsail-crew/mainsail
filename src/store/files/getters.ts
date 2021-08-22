@@ -3,6 +3,7 @@ import { themeDir } from "@/store/variables"
 import {GetterTree} from "vuex";
 import {FileState, FileStateFile} from "@/store/files/types";
 
+// eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
 
 	getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {

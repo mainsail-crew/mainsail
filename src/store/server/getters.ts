@@ -2,6 +2,7 @@ import {GetterTree} from "vuex";
 import {ServerState} from "@/store/server/types";
 import {formatConsoleMessage, formatFilesize, formatTime} from "@/plugins/helpers";
 
+// eslint-disable-next-line
 export const getters: GetterTree<ServerState, any> = {
 
 	getConsoleEvents: (state) => (reverse = true, limit = 500) => {
@@ -39,7 +40,26 @@ export const getters: GetterTree<ServerState, any> = {
 	},
 
 	getHostStats: (state, getters, rootState, rootGetters) => {
-		let output: any = null
+		interface HostStats {
+			cpuName: string | null
+			cpuDesc: string | null
+			version: string | null
+			os: string | null
+			load: number
+			loadPercent: number
+			loadProgressColor: string
+			memoryFormat: string | null
+			memUsed: string
+			memAvail: string
+			memTotal: string
+			tempSensor: {
+				temperature: number
+				measured_min_temp: number | null,
+				measured_max_temp: number | null
+			}
+		}
+
+		let output: HostStats | null = null
 
 		//state.printer.system_stats
 		if ('system_info' in state) {
@@ -48,7 +68,7 @@ export const getters: GetterTree<ServerState, any> = {
 				version = rootState.printer?.software_version.split('-').slice(0, 4).join('-')
 			}
 
-			const cpuCors = state.system_info.cpu_info?.cpu_count ?? 1
+			const cpuCors = state.system_info?.cpu_info?.cpu_count ?? 1
 			const load = Math.round((rootState.printer.system_stats?.sysload ?? 0) * 100) / 100
 			const loadPercent = Math.round(load / cpuCors * 100)
 
@@ -58,7 +78,7 @@ export const getters: GetterTree<ServerState, any> = {
 
 			let memoryFormat: null | string = null
 			const memAvail = (rootState.printer.system_stats?.memavail ?? 0) * 1024
-			const memTotal = (state.system_info.cpu_info?.total_memory ?? 0) * 1024
+			const memTotal = (state.system_info?.cpu_info?.total_memory ?? 0) * 1024
 
 			if (memAvail > 0 && memTotal > 0) {
 				memoryFormat = formatFilesize(memTotal - memAvail) + " / " + formatFilesize(memTotal)
@@ -76,10 +96,10 @@ export const getters: GetterTree<ServerState, any> = {
 			}
 
 			output = {
-				cpuName: state.system_info.cpu_info?.processor ?? null,
-				cpuDesc: state.system_info.cpu_info?.cpu_desc ?? null,
+				cpuName: state.system_info?.cpu_info?.processor ?? null,
+				cpuDesc: state.system_info?.cpu_info?.cpu_desc ?? null,
 				version,
-				os: state.system_info.distribution?.name ?? null,
+				os: state.system_info?.distribution?.name ?? null,
 				load,
 				loadPercent: loadPercent < 100 ? loadPercent : 100,
 				loadProgressColor,

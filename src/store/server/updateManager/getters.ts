@@ -1,9 +1,13 @@
 import {GetterTree} from "vuex"
-import {ServerUpdateMangerState} from "@/store/server/updateManager/types"
+import {
+	ServerUpdateMangerState
+} from "@/store/server/updateManager/types"
 import semver from "semver"
 
+// eslint-disable-next-line
 export const getters: GetterTree<ServerUpdateMangerState, any> = {
 	getUpdateableSoftwares(state) {
+		// eslint-disable-next-line
 		const output: any = {}
 		const sortKeys = Object.keys(state.version_info).sort((a,b) => {
 			if (a === 'klipper') return -1
@@ -26,13 +30,17 @@ export const getters: GetterTree<ServerUpdateMangerState, any> = {
 	},
 
 	isUpdateAvailable(state) {
-		for (const key of Object.keys(state.version_info)) {
+		const keys = Object.keys(state.version_info).filter((key: string) => key !== 'system')
+
+		for (const key of keys) {
+			const versionInfo = state.version_info[key]
+
 			if (
-				'version' in state.version_info[key] &&
-				'remote_version' in state.version_info[key] &&
-				semver.valid(state.version_info[key].version) &&
-				semver.valid(state.version_info[key].remote_version) &&
-				semver.gt(state.version_info[key].remote_version, state.version_info[key].version)
+				'version' in versionInfo &&
+				'remote_version' in versionInfo &&
+				semver.valid(versionInfo.version) &&
+				semver.valid(versionInfo.remote_version) &&
+				semver.gt(versionInfo.remote_version, versionInfo.version)
 			) return true
 		}
 

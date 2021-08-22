@@ -1,7 +1,8 @@
 import {caseInsensitiveSort} from "@/plugins/helpers";
 import {GetterTree} from "vuex";
-import {GuiState} from "@/store/gui/types";
+import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from "@/store/gui/types";
 
+// eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
 
 	getPreheatPresets:(state) => {
@@ -31,7 +32,7 @@ export const getters: GetterTree<GuiState, any> = {
 			output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
 		if (Array.isArray(state.console.customFilters) && state.console.customFilters.length) {
-			state.console.customFilters.filter((filter: any) => filter.bool === true).forEach((filter: any) => {
+			state.console.customFilters.filter((filter: GuiStateConsoleFilter) => filter.bool === true).forEach((filter: GuiStateConsoleFilter) => {
 				filter.regex.split("\n").forEach((rule: string) => {
 					if (rule !== "") output.push(rule)
 				})
@@ -51,7 +52,7 @@ export const getters: GetterTree<GuiState, any> = {
 		return caseInsensitiveSort(output, 'name')
 	},
 
-	getDatasetValue: (state) => (payload: any) => {
+	getDatasetValue: (state) => (payload: { name: string, type: string }) => {
 		if (
 			payload.name in state.tempchart.datasetSettings &&
 			payload.type in state.tempchart.datasetSettings[payload.name]
@@ -62,7 +63,7 @@ export const getters: GetterTree<GuiState, any> = {
 		return false
 	},
 
-	getDatasetAdditionalSensorValue: (state) => (payload: any) => {
+	getDatasetAdditionalSensorValue: (state) => (payload: { name: string, sensor: string }) => {
 		if (
 			payload.name in state.tempchart.datasetSettings &&
 			'additionalSensors' in state.tempchart.datasetSettings[payload.name] &&
@@ -72,7 +73,7 @@ export const getters: GetterTree<GuiState, any> = {
 		return true
 	},
 
-	getPresetsFromHeater: state => (payload: any) => {
+	getPresetsFromHeater: state => (payload: { name: string }) => {
 		interface preset {
 			value: number
 		}
@@ -83,11 +84,11 @@ export const getters: GetterTree<GuiState, any> = {
 			value: 0
 		})
 
-		Object.values(state.presets).forEach((preset: any) => {
+		Object.values(state.presets).forEach((preset: GuiStatePreset) => {
 			if (
 				payload.name in preset.values &&
 				preset.values[payload.name].bool &&
-				output.findIndex((entry: any) => entry.value === preset.values[payload.name].value) === -1
+				output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
 			) {
 				output.push({
 					value: preset.values[payload.name].value,

@@ -21,9 +21,9 @@ export const getDefaultState = (): ServerState => {
 		registered_directories: [],
 		events: [],
 		config: { },
-		system_info: { },
+		system_info: null,
 		cpu_temp: 0,
-		moonraker_stats: { },
+		moonraker_stats: null,
         throttled_state: {
             bits: 0,
             flags: [],
@@ -34,6 +34,7 @@ export const getDefaultState = (): ServerState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const server: Module<ServerState, any> = {
 	namespaced: true,
 	state,

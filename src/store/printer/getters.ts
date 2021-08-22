@@ -326,6 +326,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 			if (sensorName+" "+name in state) {
 				Object.keys(state[sensorName+" "+name]).forEach(key => {
 					if (key !== "temperature") {
+						// eslint-disable-next-line
 						const tmp: any = {}
 						tmp[key] = {}
 						tmp[key]['value'] = state[sensorName+" "+name][key].toFixed(1)
@@ -398,7 +399,26 @@ export const getters: GetterTree<PrinterState, RootState> = {
 	},
 
 	getMcus: (state, getters) => {
-		const mcus: any[] = []
+		interface Mcu {
+			name: string
+			mcu_constants: { [key: string]: string | number }
+			last_stats: { [key: string]: number }
+			version: string
+			chip: string | null
+			freq: number | null
+			freqFormat: string
+			awake: string
+			load: string
+			loadPercent: number
+			loadProgressColor: string
+			tempSensor: {
+				temperature: number
+				measured_min_temp: number | null
+				measured_max_temp: number | null
+			}
+		}
+
+		const mcus: Mcu[] = []
 
 		Object.keys(state).forEach((key) => {
 			if (key === "mcu" || key.startsWith("mcu ")) {
@@ -441,6 +461,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 	},
 
 	getPrinterConfigObjects: (state) => (objectNames: string[]) => {
+		// eslint-disable-next-line
 		const output: any = {}
 
 		if (state.configfile?.settings) {
@@ -484,7 +505,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
 	getMcuTempSensors: (state, getters) => {
 		const checkObjects = ['temperature_sensor', 'temperature_fan']
-		const output: any = []
+		// eslint-disable-next-line
+		const output: { key: string, settings: any, object: any }[] = []
 
 		const objects = getters.getPrinterConfigObjects(checkObjects)
 		Object.keys(objects).forEach((key) => {
@@ -502,10 +524,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
 	},
 
 	getMcuTempSensor: (state, getters) => (mcuName: string) => {
-		let output: any = null
+		interface McuTempSensor {
+			temperature: number
+			measured_min_temp: number | null
+			measured_max_temp: number | null
+		}
+
+		let output: McuTempSensor | null = null
 
 		const sensors = getters.getMcuTempSensors
-		sensors.forEach((sensor: any) => {
+		// eslint-disable-next-line
+		sensors.forEach((sensor: { key: string, settings: any, object: any }) => {
 			if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
 				output = {
 					temperature: sensor.object.temperature.toFixed(0),

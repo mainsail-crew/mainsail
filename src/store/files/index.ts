@@ -13,6 +13,7 @@ export const getDefaultState = (): FileState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const files: Module<FileState, any> = {
 	namespaced: true,
 	state,

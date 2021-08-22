@@ -14,12 +14,15 @@ export interface FarmPrinterState {
         reconnects: number
         maxReconnects: number
         reconnectInterval: number
+        // eslint-disable-next-line
         wsData: any[]
     },
     data: {
         gui: GuiState
+        // eslint-disable-next-line
         [key: string]: any
     },
+    // eslint-disable-next-line
     settings: any,
     databases: string[],
     current_file: FileStateFile,
