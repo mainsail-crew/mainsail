@@ -56,6 +56,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
 	},
 
 	setConfigDir(state, payload) {
+		// eslint-disable-next-line
 		Object.values(payload).forEach((file: any) => {
 			if ("filename" in file) {
 				if (file.filename.startsWith(".theme/")) {
@@ -70,6 +71,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
 	},
 
 	setMainsailData(state, payload) {
+		// eslint-disable-next-line
 		const setDataDeep = (currentState: any, payload: any) => {
 			Object.entries(payload).forEach(([key, value]) => {
 				if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {

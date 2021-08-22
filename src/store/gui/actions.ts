@@ -24,7 +24,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 		dispatch('printer/init', null, { root: true })
 	},
 
-	updateDataFromDB({ state, commit }, payload) {
+	updateDataFromDB({ commit }, payload) {
 		commit('saveSetting', {
 			name: payload.key,
 			value: payload.value
@@ -205,6 +205,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
 	resetLayout({ dispatch }, name) {
 		const defaultState = getDefaultState()
+		// eslint-disable-next-line
 		const newVal: any = defaultState.dashboard[name] ?? []
 
 		dispatch('saveSetting', {

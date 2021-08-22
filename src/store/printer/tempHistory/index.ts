@@ -14,6 +14,7 @@ export const getDefaultState = (): PrinterTempHistoryState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const tempHistory: Module<PrinterTempHistoryState, any> = {
 	namespaced: true,
 	state,

@@ -42,6 +42,7 @@ const state = () => {
 	return getDefaultState()
 }
 
+// eslint-disable-next-line
 export const printer: Module<FarmPrinterState, any> = {
 	namespaced: true,
 	state,

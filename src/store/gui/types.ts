@@ -32,3 +32,10 @@ export interface GuiStatePreset {
         }
     }
 }
+
+export interface GuiStateConsoleFilter {
+    bool: boolean
+    index?: string
+    name: string
+    regex: string
+}

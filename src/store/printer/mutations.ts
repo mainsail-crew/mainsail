@@ -19,6 +19,7 @@ export const mutations: MutationTree<PrinterState> = {
 	},
 
 	setData(state, payload) {
+		// eslint-disable-next-line
 		const setDataDeep = (currentState: any, payload: any) => {
 			if (payload !== null && typeof payload === 'object') {
 				Object.keys(payload).forEach((key: string) => {

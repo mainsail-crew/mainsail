@@ -1,6 +1,10 @@
 import {datasetTypes, datasetTypesInPercents} from '@/store/variables'
 import {GetterTree} from "vuex";
-import {PrinterTempHistoryState, PrinterTempHistoryStateSourceEntry} from "@/store/printer/tempHistory/types";
+import {
+	PrinterTempHistoryState,
+	PrinterTempHistoryStateSerie,
+	PrinterTempHistoryStateSourceEntry
+} from "@/store/printer/tempHistory/types";
 import {RootState} from "@/store/types";
 
 export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
@@ -18,11 +22,11 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 	getSerieNames: (state) => (name: string) => {
 		const output: string[] = []
 
-		if (state.series.findIndex((serie: any) => serie.name === name) !== -1) {
+		if (state.series.findIndex((serie: PrinterTempHistoryStateSerie) => serie.name === name) !== -1) {
 			output.push("temperature")
 		}
 
-		state.series.filter((serie: any) => serie.name.startsWith(name+"-")).forEach((serie) => {
+		state.series.filter((serie: PrinterTempHistoryStateSerie) => serie.name.startsWith(name+"-")).forEach((serie) => {
 			output.push(serie.name.substr(name.length + 1))
 		})
 

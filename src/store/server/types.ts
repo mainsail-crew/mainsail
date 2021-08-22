@@ -11,9 +11,22 @@ export interface ServerState {
     warnings: string[],
     registered_directories: string[],
     events: ServerStateEvent[],
-    config: any,
-    system_info: any,
-    moonraker_stats: any
+    config: {
+        // eslint-disable-next-line
+        [key: string]: any
+    },
+    system_info: {
+        available_services: { [key: number]: string }[]
+        cpu_info: ServerStateCpuInfo
+        distribution: ServerStateDistribution
+        sd_info: ServerStateSdInfo
+    } | null
+    moonraker_stats: {
+        cpu_usage: number,
+        mem_units: string
+        memory: number
+        time: number
+    } | null
     cpu_temp: number,
     throttled_state: {
         bits: number
@@ -31,4 +44,40 @@ export interface ServerStateEvent {
     type: string
     message: string
     formatMessage: string | string[]
+}
+
+export interface ServerStateCpuInfo {
+    bits: string
+    cpu_count: number
+    cpu_desc: string
+    hardware_desc: string
+    memory_units: string
+    model: string
+    processor: string
+    total_memory: number
+}
+
+export interface ServerStateDistribution {
+    codename: string
+    id: string
+    like: string
+    name: string
+    version: string
+    version_parts: {
+        build_number: string
+        major: string
+        minor: string
+    }
+}
+
+export interface ServerStateSdInfo {
+    capacity: string
+    manufacturer: string
+    manufacturer_date: string
+    manufacturer_id: string
+    oem_id: string
+    product_name: string
+    product_revision: string
+    serial_number: string
+    total_bytes: number
 }

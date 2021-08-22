@@ -43,14 +43,14 @@ export const mutations: MutationTree<ServerState> = {
 		Vue.set(state, 'events', [])
 	},
 
-	setGcodeStore(state, payload: any) {
+	setGcodeStore(state, payload: { time: number, type: string, message: string }[]) {
 		//const t0 = performance.now()
 
 		if (payload.length >= maxEventHistory) {
 			payload = payload.slice(payload.length - maxEventHistory);
 		}
 
-		payload.forEach((message: any) => {
+		payload.forEach((message) => {
 			const date = new Date(message.time * 1000)
 			let formatMessage = formatConsoleMessage(message.message)
 

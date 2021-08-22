@@ -3,6 +3,7 @@ import {convertName} from "@/plugins/helpers"
 import {GetterTree} from "vuex";
 import {FarmPrinterState} from "@/store/farm/printer/types";
 
+// eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
 
 	getSocketUrl: (state) => {
@@ -20,6 +21,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 		)
 	},
 
+	// eslint-disable-next-line
 	getSetting: (state) => (name: string, fallback: any) => {
 		return state.settings[name] ?? fallback
 	},

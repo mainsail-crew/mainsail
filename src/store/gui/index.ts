@@ -171,6 +171,7 @@ export const getDefaultState = (): GuiState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const gui: Module<GuiState, any> = {
 	namespaced: true,
 	state,

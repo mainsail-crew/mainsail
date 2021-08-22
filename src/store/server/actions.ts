@@ -79,7 +79,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
 		let events: ServerStateEvent[] = payload.gcode_store
 		const filters = rootGetters["gui/getConsoleFilterRules"]
-		filters.forEach((filter: any) => {
+		filters.forEach((filter: string) => {
 			try {
 				const regex = new RegExp(filter)
 				events = events.filter(event => event.type !== 'response' || !regex.test(event.message))
@@ -110,7 +110,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 		const filters = rootGetters["gui/getConsoleFilterRules"]
 		let boolImport = true
 		if (type === "response") {
-			filters.every((filter: any) => {
+			filters.every((filter: string) => {
 				try {
 					const regex = new RegExp(filter)
 					if (regex.test(formatMessage)) boolImport = false

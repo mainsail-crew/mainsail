@@ -21,6 +21,7 @@ export const getDefaultState = (): ServerHistoryState => {
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const history: Module<ServerHistoryState, any> = {
 	namespaced: true,
 	state,
