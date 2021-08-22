@@ -62,43 +62,43 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters["getTitle"]
     }
 
-    get remoteMode() {
+    get remoteMode(): boolean {
         return this.$store.state.socket.remoteMode ?? false
     }
 
-    get mainBackground() {
+    get mainBackground(): string {
         return this.$store.getters["files/getMainBackground"]
     }
 
-    get customStylesheet () {
+    get customStylesheet(): string | null {
         return this.$store.getters["files/getCustomStylesheet"]
     }
 
-    get customFavicons () {
+    get customFavicons(): string | null {
         return this.$store.getters["files/getCustomFavicons"] ?? null
     }
 
-    get language () {
+    get language(): string {
         return this.$store.state.gui.general.language
     }
 
-    get current_file () {
+    get current_file(): string {
         return this.$store.state.printer.print_stats?.filename ?? ""
     }
 
-    get logoColor () {
+    get logoColor(): string {
         return this.$store.state.gui.theme.logo
     }
 
-    get primaryColor () {
+    get primaryColor(): string {
         return this.$store.state.gui.theme.primary
     }
 
-    get warningColor () {
-        return this.$vuetify.theme.currentTheme.warning
+    get warningColor(): string {
+        return this.$vuetify?.theme?.currentTheme?.warning?.toString() ?? "#ff8300"
     }
 
-    get primaryTextColor() {
+    get primaryTextColor(): string {
         let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
         if (splits) {
             const r = parseInt(splits[1], 16) * 0.2126
@@ -112,7 +112,7 @@ export default class App extends Mixins(BaseMixin) {
         return '#ffffff'
     }
 
-    get cssVars() {
+    get cssVars(): { [key: string]: string } {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
             '--color-primary': this.primaryColor,
@@ -120,17 +120,17 @@ export default class App extends Mixins(BaseMixin) {
         }
     }
 
-    get print_percent () {
+    get print_percent(): number {
         return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
     }
 
     @Watch('language')
-    languageChanged(newVal: string) {
+    languageChanged(newVal: string): void {
         this.$i18n.locale = newVal;
     }
 
     @Watch('customStylesheet')
-    customStylesheetChanged(newVal: string | null) {
+    customStylesheetChanged(newVal: string | null): void {
         const style = document.getElementById("customStylesheet")
         if (newVal !== null && style === null) {
             const newStyle = document.createElement('link')
@@ -145,18 +145,18 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     @Watch('current_file')
-    current_fileChanged(newVal: string) {
+    current_fileChanged(newVal: string): void {
         if (newVal !== "") this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
     }
 
     @Watch('primaryColor')
-    primaryColorChanged(newVal: string) {
+    primaryColorChanged(newVal: string): void {
         this.$nextTick(() => {
             this.$vuetify.theme.currentTheme.primary = newVal
         })
     }
 
-    drawFavicon(val: number) {
+    drawFavicon(val: number): void {
         const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
         const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
@@ -224,26 +224,26 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     @Watch('customFavicons')
-    customFaviconsChanged() {
+    customFaviconsChanged(): void {
         this.drawFavicon(this.print_percent)
     }
 
     @Watch('logoColor')
-    logoColorChanged() {
+    logoColorChanged(): void {
         this.drawFavicon(this.print_percent)
     }
 
     @Watch('print_percent')
-    print_percentChanged(newVal: number) {
+    print_percentChanged(newVal: number): void {
         this.drawFavicon(newVal)
     }
 
     @Watch('printerIsPrinting')
-    printerIsPrintingChanged() {
+    printerIsPrintingChanged(): void {
         this.drawFavicon(this.print_percent)
     }
 
-    mounted() {
+    mounted(): void {
         this.drawFavicon(this.print_percent)
     }
 }
