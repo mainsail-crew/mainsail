@@ -21,7 +21,7 @@ import {StreamLanguage} from "@codemirror/stream-parser";
 import { klipper_config } from "@/plugins/StreamParserKlipperConfig";
 import { gcode } from "@/plugins/StreamParserGcode";
 import {EditorView, keymap} from "@codemirror/view";
-import {insertTab, indentWithTab} from "@codemirror/commands";
+import {indentWithTab} from "@codemirror/commands";
 import {json} from "@codemirror/lang-json";
 
 @Component
@@ -87,8 +87,8 @@ export default class Codemirror extends Mixins(BaseMixin) {
     get cmExtensions() {
         const extensions = [
             basicSetup,
-            keymap.of([insertTab, indentWithTab]),
             mainsailTheme,
+            keymap.of([indentWithTab]),
             EditorView.updateListener.of(update => {
                 this.content = update.state?.doc.toString()
                 if (this.$emit) {
