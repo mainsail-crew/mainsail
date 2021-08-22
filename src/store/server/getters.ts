@@ -1,11 +1,30 @@
 import {GetterTree} from "vuex";
 import {ServerState} from "@/store/server/types";
-import {formatFilesize} from "@/plugins/helpers";
+import {formatConsoleMessage, formatFilesize, formatTime} from "@/plugins/helpers";
 
 export const getters: GetterTree<ServerState, any> = {
 
 	getConsoleEvents: (state) => (reverse = true, limit = 500) => {
 		const events = [...state.events].slice(limit * -1) ?? []
+
+		if (events.length < 20) {
+			const date = events.length ? events[0].date : new Date()
+			let message = ""
+
+			message += "- Type <a class=\"command text--blue\">HELP</a> to get a list of available commands.\n"
+			message += "- Click on the \"?\" button to get a searchable list.\n"
+			message += "- Commands in the console are clickable and will be placed into the input field.\n"
+			message += "- Use the tab key to complete your inputs. If there are several options, a list is displayed.\n"
+			message += "- Use the ⇵ arrow keys to navigate through the previous entries.\n"
+
+			events.unshift({
+				date: date,
+				formatTime: formatTime(date),
+				message: message,
+				formatMessage: formatConsoleMessage(message),
+				type: 'response',
+			})
+		}
 
 		return (reverse) ? events.reverse() : events
 	},

@@ -74,8 +74,8 @@
             <v-container class="px-0">
                 <v-row align="center">
                     <v-col class="py-2 font-weight-bold" style="padding-left: 68px;">{{ $t("Panels.ToolsPanel.Name") }}</v-col>
-                    <v-col class="py-2 text-center flex-grow-0 font-weight-bold d-none d-sm-block" v-if="boolTempchart" style="min-width: 75px;">{{ $t("Panels.ToolsPanel.Color") }}</v-col>
-                    <v-col class="py-2 text-center font-weight-bold d-none d-sm-block">{{ $t("Panels.ToolsPanel.State") }}</v-col>
+                    <v-col class="py-2 text-center flex-grow-0 font-weight-bold d-none d-md-block" v-if="boolTempchart" style="min-width: 75px;">{{ $t("Panels.ToolsPanel.Color") }}</v-col>
+                    <v-col class="py-2 text-center font-weight-bold d-none d-md-block">{{ $t("Panels.ToolsPanel.State") }}</v-col>
                     <v-col class="py-2 text-center font-weight-bold">{{ $t("Panels.ToolsPanel.Current") }}</v-col>
                     <v-col class="py-2 pr-8 text-center font-weight-bold">{{ $t("Panels.ToolsPanel.Target") }}</v-col>
                 </v-row>
@@ -86,10 +86,10 @@
                             <v-icon :color="heater.iconColor">mdi-{{ heater.icon }}</v-icon>
                         </v-col>
                         <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(heater)">{{ convertName(heater.name) }}</span></v-col>
-                        <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" v-if="boolTempchart" style="min-width: 75px;">
+                        <v-col class="py-2 flex-grow-0 text-center d-none d-md-block" v-if="boolTempchart" style="min-width: 75px;">
                             <div :style="'background-color: '+heater.chartColor+'cc;'" class="datasetColorSymbol d-inline-block" @click="openHeater(heater)"></div>
                         </v-col>
-                        <v-col class="py-2 text-center d-none d-sm-block">
+                        <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <small v-bind="attrs" v-on="on">{{ heater.target > 0 ? heater.power+'%' : "off" }}</small>
@@ -123,10 +123,10 @@
                             <v-icon :color="(fan.target ? 'grey lighten-5' : 'grey darken-2')" :class="(fan.speed ? ' icon-rotate' : '')">mdi-fan</v-icon>
                         </v-col>
                         <v-col class="py-2 font-weight-bold"><span style="cursor: pointer;" @click="openHeater(fan)">{{ convertName(fan.name) }}</span></v-col>
-                        <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" v-if="boolTempchart" style="min-width: 75px;">
+                        <v-col class="py-2 flex-grow-0 text-center d-none d-md-block" v-if="boolTempchart" style="min-width: 75px;">
                             <div :style="'background-color: '+fan.chartColor+'cc;'" class="datasetColorSymbol d-inline-block" @click="openHeater(fan)"></div>
                         </v-col>
-                        <v-col class="py-2 text-center d-none d-sm-block">
+                        <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <small class="d-block" v-bind="attrs" v-on="on">{{ fan.target > 0 && fan.speed > 0 ? fan.speed+"%" : (fan.target > 0 ? "standby" : "off") }}</small>
@@ -163,10 +163,10 @@
                         <v-col class="py-2 font-weight-bold">
                             <span style="cursor: pointer;" @click="openHeater(sensor)">{{ convertName(sensor.name) }}</span>
                         </v-col>
-                        <v-col class="py-2 flex-grow-0 text-center d-none d-sm-block" v-if="boolTempchart" style="min-width: 75px;">
+                        <v-col class="py-2 flex-grow-0 text-center d-none d-md-block" v-if="boolTempchart" style="min-width: 75px;">
                             <div :style="'background-color: '+sensor.chartColor+'CC;'" class="datasetColorSymbol d-inline-block" @click="openHeater(sensor)"></div>
                         </v-col>
-                        <v-col class="py-2 d-none d-sm-block"><span>&nbsp;</span></v-col>
+                        <v-col class="py-2 d-none d-md-block"><span>&nbsp;</span></v-col>
                         <v-col class="py-2 text-center">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
@@ -230,9 +230,8 @@
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col class="col-12 text-center py-0">
+                        <v-col class="col-12 text-center pb-0">
                             <v-color-picker
-                                hide-canvas
                                 hide-mode-switch
                                 mode="hexa"
                                 :value="editHeater.color"

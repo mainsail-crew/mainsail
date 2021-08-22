@@ -45,7 +45,13 @@ export const actions: ActionTree<PrinterState, RootState> = {
 			if (!blocklist.includes(nameSplit[0])) subscripts = {...subscripts, [key]: null }
 		})
 
-		if (subscripts !== {}) Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: "printer/getData" })
+		if (subscripts !== {}) Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: "printer/getInitData" })
+		else Vue.$socket.emit("server.temperature_store", {}, { action: "printer/tempHistory/init" })
+	},
+
+	getInitData({ dispatch }, payload) {
+		dispatch('getData', payload)
+
 		Vue.$socket.emit("server.temperature_store", {}, { action: "printer/tempHistory/init" })
 	},
 

@@ -1,55 +1,69 @@
 {
 	"App": {
-		"AddPrinter": "添加打印机",
-		"CannotNotConnectTo": "不能够连接",
-		"ChangePrinter": "更换打印机",
-		"Close": "关闭",
-		"Connecting": "连接",
-		"ConnectionFailed": "连接失败",
-		"ConnectionTo": "连接到",
-		"EditPrinter": "修改打印机",
-		"EmergencyStop": "紧急停止",
-		"Empty": "空",
-		"Failed": "失败",
-		"FirmwareRestart": "FIRMWARE 重启",
-		"Hello": "你好，现在更换为Mainsail的远程模式！",
-		"HostControl": "主机控制",
-		"InMoonrakerConf": "再 moonraker.conf 的 'cors_domains'.",
-		"Klipper": "Klipper",
-		"KlipperControl": "Klipper 控制",
-		"Moonraker": "Moonraker",
-		"PleaseRememberToAdd": "请记住添加",
-		"PowerDevices": "上电",
 		"Printers": "打印机组",
-		"Reboot": "重启",
-		"Recovering": "恢复",
-		"Remotemode": "https://docs.mainsail.xyz/remotemode",
-		"Restart": "重启",
-		"RestartServices": "重启服务",
-		"SAVECONFIG": "保存配置",
-		"SelectPrinter": "选择打印机",
-		"Shutdown": "关机",
-		"To": "到",
-		"TryAgain": "重试",
-		"UpdatePrinter": "更新打印机",
-		"Updating": "更新",
-		"UploadPrint": "上传 & 打印",
-		"Uploading": "正在上传",
-		"YouCanFindMore": "你可以找到更多信息在",
-		"done": " 完成!"
+		"TopBar": {
+			"SAVE_CONFIG": "保存配置",
+			"UploadPrint": "上传并打印",
+			"EmergencyStop": "紧急停止",
+			"Uploading": "上传",
+			"UploadOfFileSuccessful": "上传 {file} 成功!",
+			"CannotUploadTheFile": "无法上传该文件!"
+		},
+		"TopCornerMenu": {
+			"KlipperControl": "Klipper 控制",
+			"KlipperRestart": "Klipper 重启",
+			"KlipperFirmwareRestart": "固件重启",
+			"RestartServices": "服务重启",
+			"PowerDevices": "Power Devices",
+			"HostControl": "主机控制",
+			"Reboot": "重启",
+			"Shutdown": "关机"
+		},
+		"UpdateDialog": {
+			"Updating": "更新 {software}...",
+			"UpdatingDone": "更新 {software} 完成!",
+			"Recovering": "恢复 {software}...",
+			"RecoveringDone": "恢复 {software} 完成!",
+			"Empty": "空的",
+			"Close": "关闭"
+		},
+		"ThrottledStates": {
+			"HeadlineCurrentFlags": "当前标志",
+			"HeadlinePreviouslyFlags": "以前的标志",
+			"TitleUnderVoltageDetected": "检测到电压过低",
+			"TitleFrequencyCapped": "频率上限",
+			"TitleCurrentlyThrottled": "当前被限制",
+			"TitleTemperatureLimitActive": "温度限制",
+			"TitlePreviouslyUnderVolted": "先前的不足",
+			"TitlePreviouslyFrequencyCapped": "以前的频率上限",
+			"TitlePreviouslyThrottled": "以前节流",
+			"TitlePreviouslyTemperatureLimited": "以前的温度限制",
+			"DescriptionUnderVoltageDetected": "树莓派电源电压当前低于4.65V",
+			"DescriptionFrequencyCapped": "树莓派ARM最大频率目前限制为1.2 GHz.",
+			"DescriptionCurrentlyThrottled": "树莓派ARM核心当前已被限制.",
+			"DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
+			"DescriptionPreviouslyUnderVolted": "自上次通电后，树莓派电源电压至少有一次降至4.65V以下.",
+			"DescriptionPreviouslyFrequencyCapped": "自上次通电后，树莓派ARM的最大频率至少一度限制在1.2 GHz.",
+			"DescriptionPreviouslyThrottled": "自上次通电, 后树莓派ARM至少节流一次.",
+			"DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
+		}
 	},
 	"Console": {
-		"CustomFilters": "自定义筛选器",
-		"Date": "时间",
 		"Empty": "空的",
-		"Event": "事件",
 		"HideTemperatures": "隐藏温度",
 		"SendCode": "发送代码...",
 		"SetupConsole": "设置控制台",
-		"send": "发送"
+		"CommandList": "命令列表"
 	},
 	"Editor": {
-		"Minimap": "显示小地图"
+		"Minimap": "显示小地图",
+		"Downloading": "正在下载",
+		"Uploading": "上传中",
+		"ConfigReference": "配置参考",
+		"SaveRestart": "保存并重启",
+		"SaveClose": "保存并关闭",
+		"SuccessfullySaved": "{filename} 保存成功.",
+		"FailedSave": "{filename} 无法上传!"
 	},
 	"Files": {
 		"AllFiles": "所有文件",
@@ -58,7 +72,6 @@
 		"CreateNewDirectory": "创建目录",
 		"CurrentPath": "当前位置",
 		"Delete": "删除",
-		"DoYouWantToStart": "是否想要开始打印",
 		"Download": "下载",
 		"DropFilesToAddGcode": "拖拽并添加 Gcode",
 		"EditFile": "编辑文件",
@@ -85,7 +98,6 @@
 		"Rename": "重命名",
 		"RenameDirectory": "重命名目录",
 		"RenameFile": "修改文件名",
-		"SaveClose": "保存 & 关闭",
 		"Search": "搜索",
 		"SetupCurrentList": "设置当前表单",
 		"Slicer": "切片",
@@ -94,7 +106,17 @@
 		"UploadNewGcode": "上传新 Gcode",
 		"Uploading": "上传中",
 		"Used": "使用",
-		"Yes": "是的"
+		"Yes": "是的",
+		"SuccessfullyRenamed": "{filename} 重命名成功.",
+		"SuccessfullyMoved": "{filename} 移动成功.",
+		"SuccessfullyCreated": "{filename} 创建成功.",
+		"SuccessfullyDeleted": "{filename} 删除成功.",
+		"Downloading": "下载中",
+		"DeleteDirectory": "删除目录",
+        "DeleteDirectoryQuestion": "确认删除 \"{name}\" 文件夹和其中的所有内容?",
+			"FilamentWeight": "耗材重量",
+			"SuccessfullyUploaded": "{filename} 更新成功!",
+		"DoYouWantToStartFilename": "确认打开 {filename}?"
 	},
 	"Heightmap": {
 		"Abort": "中止",
@@ -117,7 +139,11 @@
 		"Scale": "缩放",
 		"TitleCalibrate": "校准新床网",
 		"TitleClear": "清除网床",
-		"TitleHomeAll": "全部归零"
+		"TitleHomeAll": "全部归零",
+		"Flat": "平的",
+		"Wireframe": "线框",
+		"NoProfile": "没有可用的配置文件",
+		"ErrorKlipperNotReady": "Klipper 没有准备好, 高度图已禁用 ."
 	},
 	"History": {
 		"AllJobs": "全部",
@@ -159,7 +185,11 @@
 		"TotalFilamentUsed": "耗材使用总量",
 		"TotalJobs": "使用次数",
 		"TotalPrinttime": "总打印时间",
-		"TotalTime": "总时间"
+		"TotalTime": "总时间",
+		"TitleRefreshHistory": "刷新历史记录",
+        "TitleSettings": "设置",
+		"EstimatedFilamentWeight": "预估耗材重量",
+		"ShowStatusName": "显示 \"{name}\" ({count})"
 	},
 	"Panels": {
 		"ControlPanel": {
@@ -182,21 +212,29 @@
 			"X": "X",
 			"Y": "Y",
 			"Z": "Z",
-			"ZTilt": "Z 倾斜"
+			"ZTilt": "Z 倾斜",
+			"Headline": "控制"
 		},
 		"FarmPrinterPanel": {
-			"WebcamOff": "关闭"
+			"WebcamOff": "关闭",
+			"SwitchToPrinter": "切换到打印机"
+		},
+		"MacrosPanel": {
+			"Headline": "宏"
 		},
 		"KlippyStatePanel": {
 			"FirmwareRestart": "Firmware 重启",
 			"KlippyInfo": "Moonraker 不能连接 Klippy!\n 请检查Klipper服务是否运行并且已经设置UDS（Unix Domain Socket）。",
 			"KlippyState": "Klippy状态: ",
-			"Restart": "重启"
+			"Restart": "重启",
+			"MoonrakerCannotConnect": "Moonraker 不能连接到 Klipper!",
+			"KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)."
 		},
 		"MinSettingsPanel": {
 			"IsNotDefinedInConfig": "没有再配置文件里面定义.",
 			"MissingConfiguration": "丢失设置",
-			"MoreInformation": "更多信息"
+			"MoreInformation": "更多信息",
+			"IncludeMainsailCfg": "确保在printer.cfg文件中包含mainsail.cfg."
 		},
 		"MiniconsolePanel": {
 			"Console": "控制台",
@@ -205,13 +243,31 @@
 			"HideTemperatures": "隐藏温度",
 			"Send": "发送",
 			"SendCode": "发送代码...",
-			"SetupConsole": "设置控制台"
+			"SetupConsole": "设置控制台",
+			"Headline": "控制台"
 		},
 		"MiscellaneousPanel": {
 			"ExtrusionFactor": "挤出系数",
 			"Miscellaneous": "杂项",
 			"PrintSettings": "设置打印机",
-			"SpeedFactor": "速度因素"
+			"SpeedFactor": "速度因素",
+			"Headline": "控制台",
+			"RunoutSensor": {
+				"Disabled": "关闭",
+				"Detected": "监测",
+				"Empty": "空的"
+			}
+		},
+		"MoonrakerStatePanel": {
+			"MoonrakerWarnings": "Moonraker 警告",
+			"MoonrakerErrorInfo": "加载moonraker时出现了一点问题. 请检查日志文件并解决问题.",
+			"FollowingPluginHasAnError": "下面的插件有一个错误:",
+			"DownloadLog": "下载日志"
+		},
+		"PrintsettingsPanel": {
+			"Headline": "打印设置",
+			"SpeedFactor": "速度系数",
+			"ExtrusionFactor": "挤出系数"
 		},
 		"MoonrakerFailedComponentsPanel": {
 			"DownloadLog": "下载日志",
@@ -250,7 +306,9 @@
 			"Unknown": "未知",
 			"X": "X",
 			"Y": "Y",
-			"Z": "Z"
+			"Z": "Z",
+			"Headline": "状态",
+			"Requested": "请求"
 		},
 		"ToolsPanel": {
 			"AutoscaleChart": "自动缩放图表",
@@ -273,17 +331,38 @@
 			"Target": "目标",
 			"Temperatures": "温度",
 			"TemperaturesInChart": "温度 [°C]",
-			"UNKNOWN": "未知"
+			"UNKNOWN": "未知",
+			"Headline": "温度",
+			"ShowNameInChart": "显示 {name} 在图表中",
+			"ShowNameInList": "显示 {name} 在列表中",
+			"Dataset": {
+				"Temperature": "当前温度",
+				"Target": "模板温度",
+				"Power": "PWM功率",
+				"Speed": "PWM速度"
+			}
 		},
 		"WebcamPanel": {
+			"Headline": "Webcam",
 			"All": "全部",
 			"FPS": "FPS",
 			"UnknownWebcamService": "未知网络摄像头服务",
-			"Webcam": "网络摄像头"
+			"Webcam": "网络摄像头",
+			"UrlNotAvailable": "地址无效"
 		},
-		"ZOffsetPanel": {
+		"ZoffsetPanel": {
+			"Headline": "Z-Offset",
 			"CurrentOffset": "当前偏移: ",
-			"ZBabyStepping": "Z Baby Stepping"
+			"ZBabyStepping": "Z Baby Stepping",
+			"Save": "保存",
+			"ToEndstop": "到限位",
+			"ToProbe": "到传感器",
+			"SaveInfoHeadline": "信息",
+			"SaveInfoDescription": "已经计算生成新的Z偏移. 点击 保存配置 保存到 printer.cfg 中并重启 Klipper.",
+			"SaveInfoDescriptionPrint": "已经计算生成新的Z偏移. 打印后点击 保存配置 保存到 printer.cfg 中并重启 Klipper.",
+			"SAVE_CONFIG": "保存配置",
+			"Later": "最后的",
+			"Ok": "好"
 		}
 	},
 	"Router": {
@@ -292,170 +371,234 @@
 		"G-Code Files": "G-Code 文件",
 		"Heightmap": "高度图",
 		"History": "历史",
-		"Interface": "操作界面",
 		"Machine": "机器",
 		"Printers": "打印机",
-		"Settings": "设置",
 		"Webcam": "网络摄像头"
 	},
-	"Settings": {
+	"ConnectionDialog": {
+        "Connecting": "连接到 {host}",
+        "Failed": "连接失败",
+        "CannotConnectTo": "不能连接到 Moonraker ({host}).",
+        "TryAgain": "重试",
+        "CheckMoonrakerLog": "如果此消息重复出现，请查看下面的日志文件:"
+    },
+	"SelectPrinterDialog": {
+        "Connecting": "连接到 {host}",
+        "ConnectionFailed": "连接失败",
+        "CannotConnectTo": "不能连接到 {host}.",
+        "TryAgain": "重试",
+        "SelectPrinter": "选择打印机",
+        "AddPrinter": "添加打印机",
+        "EditPrinter": "编辑打印机",
+        "UpdatePrinter": "更新打印机",
+        "ChangePrinter": "改变打印机",
+        "HostnameRequired": "主机名必填",
+        "HostnameInvalid": "无效的 主机名/IP",
+        "PortRequired": "端口必填",
+        "Hello": "欢迎来到Mainsail的远程模式!",
+        "RememberToAdd": "记住在moonraker.conf的'cors_domains'中添加 {cors}.",
+        "YouCanFindMore": "您可以在以下网址找到更多详细信息:"
+    },
+	"Machine": {
 		"ConfigFilesPanel": {
-			"AllFiles": "所有文件",
-			"Cancel": "取消",
 			"ConfigFiles": "配置文件",
-			"ConfigReference": "配置参考",
+			"SetupCurrentList": "设置当前列表",
+			"HiddenFiles": "隐藏文件",
+			"CurrentPath": "当前路径",
+			"Files": "文件",
+			"FreeDisk": "剩余空间",
+			"Used": "已使用",
+			"Free": "空闲",
+			"Total": "总计",
+			"AllFiles": "所有",
+			"Empty": "孔的",
+			"ShowFile": "显示文件",
+			"EditFile": "编辑文件",
+			"Download": "下载",
+			"Rename": "重命名",
+			"Delete": "删除",
+			"PleaseStandBy": "请等待",
+			"RenameFile": "重命名文件",
+			"Name": "名称",
+			"UploadFile": "上传文件",
+			"Cancel": "取消",
 			"Create": "创建",
 			"CreateFile": "创建文件",
-			"CreateFolder": "创建文件夹",
-			"CurrentPath": "当前路径: ",
-			"Delete": "删除",
-			"Download": "下载",
-			"EditFile": "编辑文件",
-			"Empty": "空的",
-			"Files": "文件",
+			"RefreshDirectory": "刷新目录",
+			"CreateDirectory": "创建目录",
+			"RenameDirectory": "目录改名",
+			"DeleteDirectory": "删除目录",
+			"DeleteDirectoryQuestion": "确认删除 \"{name}\" 目录及其所有内容?",
+			"Uploading": "上传",
 			"Filesize": "文件大小",
-			"HiddenFiles": "隐藏文件",
-			"LastModified": "上次修改",
-			"Name": "名称",
-			"PleaseStandBy": "请等待",
-			"Rename": "重命名",
-			"RenameFile": "重命名文件",
-			"SaveClose": "保存 & 关闭",
-			"SaveRestart": "保存 & 重新启动",
-			"SetupCurrentList": "设置当前清单",
-			"Uploading": "上传"
-		},
-		"ConsolePanel": {
-			"Console": "控制台",
-			"CustomFilters": "自定义筛选器",
-			"HideTemperatures": "隐藏温度",
-			"Rules": "规则"
-		},
-		"ControlPanel": {
-			"Control": "控制",
-			"EnableCross": "启用交叉运动",
-			"Extruder": "挤出",
-			"MoveDistancesEInMm": "移动距离 E in mm",
-			"MoveDistancesInMm": "移动距离 mm",
-			"MoveDistancesXYInMm": "移动距离 XY in mm",
-			"MoveDistancesZInMm": "移动距离 Z in mm",
-			"InvertXMovement": "反转 X 移动",
-			"InvertYMovement": "反转 Y 移动",
-			"InvertZMovement": "反转 Z 移动",
-			"SpeedEInMms": "速度 E in mm/s",
-			"SpeedXY": "XY 速度",
-			"SpeedZ": "Z 速度"
-		},
-		"DashboardPanel": {
-			"ChartUpdateInterval": "图表更新间隔",
-			"Console": "控制台",
-			"Dashboard": "主频",
-			"DatapointInterval": "数据点间隔",
-			"Tempchart": "温度图表",
-			"Webcam": "网络摄像头"
+			"LastModified": "最后修改"
 		},
 		"EndstopPanel": {
-			"Endstop": "限位开关",
-			"EndstopInfo": "在右边底部点击同步按钮获取当前限位开关状态.",
-			"Endstops": "限位开关",
-			"TRIGGERED": "触发状态",
-			"open": "未触发状态"
-		},
-		"GeneralPanel": {
-			"DisplayCANCEL_PRINT": "显示 取消打印",
-			"DisplayZOffset": "显示 Z-预设-控制台",
-			"FactoryInfo": "你确定想要恢复 mainsail 的出厂设置吗?",
-			"FactoryReset": "恢复出厂设置",
-			"General": "一般",
-			"Language": "语言",
-			"PrinterName": "打印机名称",
-			"ResetMainsail": "重启 mainsail",
-			"ShowCANCEL_PRINT": "永久的显示 取消打印 按钮 - 不需要反复确认.",
-			"ShowZOffset": "永久显示 Z-预设 面板."
+			"Endstops": "限位",
+			"Endstop": "限位",
+			"TRIGGERED": "触发",
+			"open": "打开",
+			"EndstopInfo": "按下右下角的同步按钮以加载当前的限位状态."
 		},
 		"LimitsPanel": {
-			"Acceleration": "加速度",
+			"MachineLimits": "机器极限",
+			"Velocity": "速度",
+			"Acceleration": "加速",
 			"Deceleration": "减速",
-			"MachineLimits": "机器设置",
-			"SquareCornerVelocity": "直角速度",
-			"Velocity": "速度"
+			"SquareCornerVelocity": "直角速度"
 		},
 		"LogfilesPanel": {
 			"Logfiles": "日志文件"
 		},
-		"MacrosPanel": {
-			"Macros": "宏",
-			"NOMacros": "没有宏定义..."
+		"UpdatePanel": {
+			"UpdateManager": "更新管理器",
+			"CheckForUpdates": "检查更新",
+			"System": "系统",
+			"PackagesCanBeUpgraded": "包可以升级",
+			"OSPackages": "操作系统包",
+			"Commits": "提交",
+			"CommittedAt": "提交人",
+			"UpToDate": "最新的",
+			"Detached": "独立的",
+			"Update": "更新",
+			"Upgrade": "升级",
+			"Dirty": "出错的",
+			"Invalid": "无效的",
+			"Unknown": "未知的",
+			"ERROR": "错误"
 		},
-		"PresetsPanel": {
-			"AddPreset": "添加预设",
+		"SystemPanel": {
+			"SystemLoad": "系统负载",
+			"Version": "版本",
+			"Os": "操作系统",
+			"Load": "加载",
+			"Awake": "唤醒",
+			"Frequency": "频率",
+			"Memory": "内存",
+			"Constants": "常量",
+			"LastStats": "最后统计数据",
+			"HostDetails": "主机详细信息"
+		}
+	},
+	"Settings": {
+		"InterfaceSettings": "接口设置",
+		"Cancel": "取消",
+		"Edit": "编辑",
+		"GeneralTab": {
+			"General": "通用",
+			"PrinterName": "打印机名称",
+			"Language": "语言",
+			"BoolBigThumbnail": "大缩略图",
+			"BoolBigThumbnailDescription": "打印期间在状态面板中显示一个大缩略图.",
+			"DisplayCANCEL_PRINT": "关闭取消打印按钮",
+			"DisplayCANCEL_PRINTDescription": "一直显示取消打印按钮, 无需再次确认.",
+			"DisplayZOffset": "显示Z偏移面板",
+			"DisplayZOffsetDescription": "否则，面板将仅在开始打印后显示.",
+			"FactoryReset": "恢复设置",
+			"FactoryInfo": "确认重置mainsail设置?",
+			"ResetMainsail": "重置mainsail"
+		},
+		"ConsoleTab": {
+			"Console": "控制台",
+			"Direction": "方向",
+			"DirectionTable": "Last entry on the top",
+			"DirectionShell": "Last entry at the bottom",
+			"Height": "高度",
+			"HideTemperatures": "隐藏温度",
+			"CreateHeadline": "创建过滤器",
+			"Name": "名称",
+			"Regex": "正则表达式",
+			"StoreButton": "保存过滤器",
+			"UpdateButton": "更新过滤器",
+			"EditHeadline": "编辑过滤器",
+			"AddFilter": "添加过滤器"
+		},
+		"ControlTab": {
+			"Control": "控制",
+			"SpeedXY": "XY 速度",
+			"SpeedZ": "Z 速度",
+			"EnableCross": "启用交叉移动",
+			"MoveDistancesInMm": "移动距离(mm)",
+			"InvertXMovement": "反转X",
+			"InvertYMovement": "反转Y",
+			"InvertZMovement": "反转Z",
+			"MoveDistancesXYInMm": "移动XY(mm)",
+			"MoveDistancesZInMm": "移动Z(mm)",
+			"MoveDistancesEInMm": "移动挤出机(mm)",
+			"SpeedEInMms": "挤出速度(mm/s)"
+		},
+		"DashboardTab": {
+			"Dashboard": "仪表板",
+			"Mobile": "手机",
+			"Tablet": "平板",
+			"Desktop": "桌面",
+			"Widescreen": "宽屏",
+			"ResetLayout": "重置布局"
+		},
+		"PresetsTab": {
+			"PreheatPresets": "预设",
 			"Cooldown": "冷却",
-			"CustomGCode": "自定义 G-Code",
+			"AddPreset": "添加预设",
 			"CreateHeadline": "创建预设",
-			"EditCooldown": "编辑 冷却",
 			"EditHeadline": "编辑预设",
 			"Name": "名称",
-			"PreheatPresets": "预热预设",
-			"PresetInfo": "你需要设置最低目标温度或者自定义 G-Code.",
+			"CustomGCode": "自定义G-Code",
+			"PresetInfo": "您必须设置最低目标温度或自定义gcode.",
 			"StoreButton": "储存预设",
-			"UpdateCooldown": "更新 冷却",
-			"UpdateButton": "更新预设"
+			"UpdateButton": "更新预设",
+			"EditCooldown": "编辑冷却",
+			"UpdateCooldown": "更新冷却"
 		},
-		"RemotePrintersPanel": {
+		"RemotePrintersTab": {
+			"RemotePrinters": "打印机",
 			"AddPrinter": "添加打印机",
 			"EditPrinter": "编辑打印机",
-			"RemotePrinters": "远程打印机",
-			"UpdatePrinter": "更新打印机"
+			"UpdatePrinter": "更新打印机",
+			"Hostname": "主机名",
+			"Port": "端口"
 		},
-		"RunoutPanel": {
-			"Detected": "删除",
-			"Empty": "空"
-		},
-		"UpdatePanel": {
-			"CheckForUpdates": "检查更新",
-			"Commits": "提交",
-			"CommittedAt": "致力于",
-			"Detached": "独立的",
-			"Dirty": "错误的",
-			"ERROR": "错误",
-			"Invalid": "无效的",
-			"OSPackages": "系统组件",
-			"PackagesCanBeUpgraded": "组件可升级",
-			"System": "系统",
-			"Unknown": "未知",
-			"UpToDate": "最新",
-			"Update": "更新",
-			"UpdateManager": "更新 管理",
-			"Upgrade": "升级"
-		},
-		"WebcamPanel": {
+		"WebcamTab": {
+			"Webcams": "网络摄像头",
+			"ShowInNavigation": "在导航中显示",
 			"AddWebcam": "添加摄像头",
 			"CreateWebcam": "创建摄像头",
 			"EditWebcam": "编辑摄像头",
-			"FlipHorizontally": "水平翻转网络摄像头",
-			"FlipVertically": "垂直翻转网络摄像头",
-			"IconBed": "床",
-			"IconCam": "凸轮",
-			"IconDoor": "门",
-			"IconFilament": "耗材",
-			"IconHot": "热",
-			"IconMcu": "主控",
-			"IconNozzle": "喷嘴",
-			"IconPrinter": "打印机",
-			"Ipstream": "IP 摄像机",
-			"Mjpegstreamer": "MJPEG-Streamer",
-			"MjpegstreamerAdaptive": "自适应 MJPEG-Streamer (实现)",
-			"Name": "名称",
-			"NameAlreadyExists": "名称已经存在",
-			"Required": "必须",
 			"SaveWebcam": "保存摄像头",
-			"Service": "服务",
-			"ShowInNavigation": "在导航中显示",
-			"TargetFPS": "目标 FPS",
 			"UpdateWebcam": "更新摄像头",
-			"UrlNotAvailable": "URL 不可用",
-			"WebcamURL": "网络摄像头 URL",
-			"Webcams": "网络摄像头"
+
+			"IconPrinter": "打印机",
+			"IconNozzle": "喷嘴",
+			"IconBed": "床",
+			"IconCam": "摄像头",
+			"IconFilament": "耗材",
+			"IconDoor": "门",
+			"IconMcu": "主控",
+			"IconHot": "热端",
+
+			"Mjpegstreamer": "MJPEG-Streamer",
+			"MjpegstreamerAdaptive": "适应 MJPEG-Streamer (实验)",
+			"Uv4lMjpeg": "UV4L-MJPEG",
+			"Ipstream": "IP Camera",
+
+			"Required": "必须的",
+			"NameAlreadyExists": "名称已存在",
+			"UrlNotAvailable": "地址无效",
+
+			"Name": "名称",
+			"WebcamURL": "摄像头地址",
+			"Service": "服务",
+			"TargetFPS": "目标FPS",
+			"FlipHorizontally": "水平翻转网络摄像头",
+			"FlipVertically": "垂直翻转网络摄像头"
+		},
+		"ThemeTab": {
+			"Theme": "主题",
+			"Logo": "Logo",
+			"Primary": "重要的"
+		},
+		"MacrosTab": {
+			"Macros": "宏",
+			"NOMacros": "没有找到宏..."
 		}
 	},
 	"title": "简体中文"

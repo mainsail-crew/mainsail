@@ -1,4 +1,8 @@
-<style scoped>
+<style>
+    .sidebar-wrapper .v-navigation-drawer__content {
+        padding-bottom: 3em;
+    }
+
     #sidebarVersions {
         position: absolute;
         left: 0;
@@ -6,6 +10,10 @@
     }
 
     @media screen and (max-width: 1024px) {
+        .sidebar-wrapper .v-navigation-drawer__content {
+            padding-bottom: 0;
+        }
+
         #sidebarVersions {
             display: none;
         }
