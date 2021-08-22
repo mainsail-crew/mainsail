@@ -40,12 +40,11 @@ import Component from 'vue-class-component'
 import TheSidebar from "@/components/TheSidebar.vue";
 import BaseMixin from "@/components/mixins/base";
 import TheTopbar from "@/components/TheTopbar.vue";
-import {Mixins, Vue, Watch} from "vue-property-decorator";
+import {Mixins, Watch} from "vue-property-decorator";
 import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
 import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
 import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
 import TheEditor from "@/components/TheEditor.vue";
-import MainsailLogo from "@/components/ui/MainsailLogo.vue";
 
 @Component({
     components: {
