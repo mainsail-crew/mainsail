@@ -23,16 +23,18 @@ export const getDefaultState = (): GuiState => {
 			hiddenMacros: [],
 			hiddenTempChart: [],
 			control: {
+				style: 'bars',
 				feedrateXY: 100,
 				stepsXY: [ 100, 10, 1 ],
 				feedrateZ: 25,
 				stepsZ: [ 25, 1, 0.1 ],
 				stepsAll: [0.1, 1, 10, 25, 50, 100],
+				stepsCircleXY: [1, 10, 50, 100],
+				stepsCircleZ: [0.1, 1, 10, 50],
 				selectedCrossStep: null,
 				reverseX: false,
 				reverseY: false,
-				reverseZ: false,
-				useCross: false
+				reverseZ: false
 			},
 			extruder: {
 				feedamount: 25,
