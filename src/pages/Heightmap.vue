@@ -583,7 +583,15 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
         const config = this.$store.state.printer.configfile?.settings?.bed_mesh
         if (config) {
-            const probe_count = (typeof config.probe_count === "string") ? config.probe_count.split(',') : config.probe_count
+            let probe_count = [1,1]
+            if (config.probe_count && typeof config.probe_count === "string") {
+                probe_count = config.probe_count.split(',')
+            } else if (config.probe_count) {
+                probe_count = config.probe_count
+            } else if (config.round_probe_count) {
+                probe_count = [config.round_probe_count, config.round_probe_count]
+            }
+
             let mesh_min = []
             let mesh_max = []
 
@@ -604,8 +612,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
                 ]
             }
 
-            const xCount = parseFloat(probe_count[0] ?? config.round_probe_count)
-            const yCount = parseFloat(probe_count[1] ?? config.round_probe_count)
+            const xCount = probe_count[0]
+            const yCount = probe_count[1]
             const xMin = parseFloat(mesh_min[0])
             const xMax = parseFloat(mesh_max[0])
             const yMin = parseFloat(mesh_min[1])
