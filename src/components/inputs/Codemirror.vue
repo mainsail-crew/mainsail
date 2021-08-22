@@ -21,8 +21,8 @@ import {StreamLanguage} from "@codemirror/stream-parser";
 import { klipper_config } from "@/plugins/StreamParserKlipperConfig";
 import { gcode } from "@/plugins/StreamParserGcode";
 import {EditorView, keymap} from "@codemirror/view";
-import {defaultTabBinding} from "@codemirror/commands";
-import {yaml} from "@/plugins/StreamParserYaml";
+import {insertTab, indentWithTab} from "@codemirror/commands";
+import {json} from "@codemirror/lang-json";
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -87,20 +87,22 @@ export default class Codemirror extends Mixins(BaseMixin) {
     get cmExtensions() {
         const extensions = [
             basicSetup,
-            keymap.of([defaultTabBinding]),
+            keymap.of([insertTab, indentWithTab]),
             mainsailTheme,
             EditorView.updateListener.of(update => {
                 this.content = update.state?.doc.toString()
                 if (this.$emit) {
                     this.$emit('input', this.content)
                 }
-            })
+            }),
         ]
 
         if (['cfg', 'conf'].includes(this.fileExtension))
             extensions.push(StreamLanguage.define(klipper_config))
         else if (['gcode'].includes(this.fileExtension))
             extensions.push(StreamLanguage.define(gcode))
+        else if (['json'].includes(this.fileExtension))
+            extensions.push(json())
 
         return extensions
     }
