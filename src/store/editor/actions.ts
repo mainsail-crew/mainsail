@@ -53,8 +53,9 @@ export const actions: ActionTree<EditorState, RootState> = {
 					lastLoaded: lastLoaded,
 					lastTimestamp: lastTimestamp
 				})
-			}
-		}).then(res => res.data)
+			},
+			responseType: 'blob'
+		}).then(res => res.data.text())
 		.then(file => {
 			commit('openFile', {
 				filename: payload.filename,

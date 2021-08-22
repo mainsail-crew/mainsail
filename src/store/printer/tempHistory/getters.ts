@@ -32,14 +32,14 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 	getBoolDisplayPwmAxis: (state, getter) => {
 		const legends = getter["getSelectedLegends"]
 
-		return Object.keys(legends).filter(key => {
+		return Object.keys(legends).find(key => {
 			return (
 				legends[key] === true && (
 					key.endsWith('-power') ||
 					key.endsWith('-speed')
 				)
 			)
-		}).length > 0
+		}) !== undefined
 	},
 
 	getAvg: state => (name: string, serieName: string) => {

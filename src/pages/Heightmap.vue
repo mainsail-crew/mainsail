@@ -177,7 +177,7 @@
                     <v-container>
                         <v-row>
                             <v-col cols="12">
-                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete') }} "{{ removeDialogProfile }}"?</p>
+                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -515,7 +515,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
@@ -561,7 +561,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             })
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
@@ -583,12 +583,41 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
         const config = this.$store.state.printer.configfile?.settings?.bed_mesh
         if (config) {
-            const xCount = parseFloat(config.probe_count?.split(',')[0] ?? config.round_probe_count)
-            const yCount = parseFloat(config.probe_count?.split(',')[1] ?? config.round_probe_count)
-            const xMin = parseFloat(config.mesh_min?.split(',')[0] ?? config.mesh_radius * -1)
-            const xMax = parseFloat(config.mesh_max?.split(',')[0] ?? config.mesh_radius)
-            const yMin = parseFloat(config.mesh_min?.split(',')[1] ?? config.mesh_radius * -1)
-            const yMax = parseFloat(config.mesh_max?.split(',')[1] ?? config.mesh_radius)
+            let probe_count = [1,1]
+            if (config.probe_count && typeof config.probe_count === "string") {
+                probe_count = config.probe_count.split(',')
+            } else if (config.probe_count) {
+                probe_count = config.probe_count
+            } else if (config.round_probe_count) {
+                probe_count = [config.round_probe_count, config.round_probe_count]
+            }
+
+            let mesh_min = []
+            let mesh_max = []
+
+            if (config.mesh_min && config.mesh_max) {
+                // is no delta
+                mesh_min = (typeof config.mesh_min === "string") ? config.mesh_min.split(',') : config.mesh_min
+                mesh_max = (typeof config.mesh_max === "string") ? config.mesh_max.split(',') : config.mesh_max
+            } else {
+                // delta min/max
+                mesh_min = [
+                    config.mesh_radius * -1,
+                    config.mesh_radius * -1
+                ]
+
+                mesh_max = [
+                    config.mesh_radius,
+                    config.mesh_radius
+                ]
+            }
+
+            const xCount = probe_count[0]
+            const yCount = probe_count[1]
+            const xMin = parseFloat(mesh_min[0])
+            const xMax = parseFloat(mesh_max[0])
+            const yMin = parseFloat(mesh_min[1])
+            const yMax = parseFloat(mesh_max[1])
             const xStep = (xMax - xMin) / (xCount - 1)
             const yStep = (yMax - yMin) / (yCount - 1)
 
@@ -605,7 +634,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             }
 
             serie.data = data
-            serie.dataShape = [xCount, yCount]
+            serie.dataShape = [yCount, xCount]
         }
 
         return serie
@@ -650,17 +679,17 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     openRemoveProfile(name: string) {
-        this.newName = name
+        this.removeDialogProfile = name
         this.removeDialog = true;
     }
 
     removeProfile() {
         this.removeDialog = false;
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.newName, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.newName }, {
+        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile }, {
             action: "printer/removeBedMeshProfile",
-            actionPayload: {name: this.newName},
-            loading: "bedMeshRename_"+this.newName
+            actionPayload: {name: this.removeDialogProfile},
+            loading: "bedMeshRename_"+this.removeDialogProfile
         })
         this.removeDialogProfile = ""
     }
