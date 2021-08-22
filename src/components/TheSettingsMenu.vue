@@ -29,9 +29,11 @@
                             <v-tab
                                 v-for="(tab, index) of tabTitles" v-bind:key="index"
                                 :href="'#'+tab.name"
-                                class="justify-start">
+                                class="justify-start"
+                                style="width: 200px;"
+                            >
                                 <v-icon left v-html="tab.icon"></v-icon>
-                                {{ tab.title }}
+                                <span class="text-truncate">{{ tab.title }}</span>
                             </v-tab>
                         </v-tabs>
                     </v-col>

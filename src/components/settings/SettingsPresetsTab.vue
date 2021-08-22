@@ -3,8 +3,8 @@
     <div>
         <v-card flat v-if="!form.bool && !cooldownForm.bool">
             <v-card-text>
-                <div v-for="(preset, index) in presets" v-bind:key="index">
-                    <v-divider class="my-2" v-if="index"></v-divider>
+                <div v-for="(preset, key) in presets" v-bind:key="preset.index">
+                    <v-divider class="my-2" v-if="key"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
                             <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
@@ -191,7 +191,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (this.presets.findIndex((preset: GuiStatePreset, index: number) => preset.name === name && index != this.form.index) >= 0)
+        return (this.presets.findIndex((preset: any) => preset.name === name && preset.index != this.form.index) >= 0)
     }
 
     getSubTitle(preset: GuiStatePreset) {

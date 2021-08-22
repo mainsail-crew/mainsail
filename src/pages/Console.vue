@@ -1,7 +1,8 @@
 <style scoped>
 
 .consoleScrollContainer {
-    max-height: calc(100vh - 180px);
+    min-height: 200px;
+    height: calc(100vh - 180px);
 }
 
 </style>
@@ -9,7 +10,7 @@
 <template>
     <div class="d-flex flex-column">
         <v-row :class="this.consoleDirection === 'table' ? 'order-0' : 'order-1 mt-3'">
-            <v-col class="col">
+            <v-col>
                 <v-textarea
                     v-model="gcode"
                     :items="items"
@@ -53,10 +54,10 @@
             </v-col>
         </v-row>
         <v-row :class="this.consoleDirection === 'table' ? 'order-1' : 'order-0 mt-0'">
-            <v-col xs12>
+            <v-col :class="this.consoleDirection === 'table' ? 'col' : 'col pt-0'">
                 <v-card>
                     <v-card-text class="pa-0">
-                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column justify-end">
+                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
                             <console-table ref="console"
                                            :is-mini="false"
                                            :events="events"

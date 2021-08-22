@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <v-card class="mb-6">
+    <v-card class="mb-6" v-if="socketIsConnected">
         <v-toolbar flat dense >
             <v-toolbar-title>
                 <span class="subheading">

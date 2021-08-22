@@ -58,7 +58,7 @@
         <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
             <v-row>
                 <v-col>
-                    <perfect-scrollbar ref="miniConsoleScroll" :class="'d-flex flex-column '+(consoleDirection === 'shell' ? 'justify-end' : '')" :style="'height: '+consoleHeight+'px;'">
+                    <perfect-scrollbar ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'">
                         <console-table ref="console"
                                        :events="events"
                                        :is-mini="true"
