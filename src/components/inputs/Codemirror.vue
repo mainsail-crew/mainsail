@@ -6,7 +6,7 @@
 
 <template>
     <div class="vue-codemirror">
-        <div ref="codemirror"></div>
+        <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
     </div>
 </template>
 
@@ -72,7 +72,6 @@ export default class Codemirror extends Mixins(BaseMixin) {
         })
         this.cminstance = this.codemirror
 
-
         this.$nextTick(() => {
             this.setCmValue(this.code || this.value || this.content)
 
@@ -105,6 +104,10 @@ export default class Codemirror extends Mixins(BaseMixin) {
             extensions.push(json())
 
         return extensions
+    }
+
+    visibilityChanged(isVisible: boolean) {
+        if (isVisible) this.cminstance?.focus()
     }
 }
 </script>
