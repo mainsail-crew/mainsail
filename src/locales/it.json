@@ -1,34 +1,6 @@
 {
 	"App": {
-		"AddPrinter": "Aggiungi Stampante",
-		"CannotNotConnectTo": "Impossibile connettersi a",
-		"ChangePrinter": "Cambia Stampante",
-		"Close": "Chiudi",
-		"Connecting": "Collegamento",
-		"ConnectionFailed": "Collegamento Fallito",
-		"ConnectionTo": "Collegamento a",
-		"EditPrinter": "Modifica Stampante",
-		"EmergencyStop": "Arresto di emergenza",
-		"Empty": "Vuoto",
-		"Failed": "fallito",
-		"FirmwareRestart": "Riavvio del FIRMWARE",
-		"Hello": "Ciao e benvenuto nella modalità remota di Mainsail!",
-		"HostControl": "Controllo Host",
-		"InMoonrakerConf": "in moonraker.conf all'interno di 'cors_domains'.",
-		"Klipper": "Klipper",
-		"KlipperControl": "Controllo Klipper",
-		"Moonraker": "Moonraker",
-		"PleaseRememberToAdd": "Ricorda di aggiungere",
-		"PowerDevices": "Dispositivi di Alimentazione",
 		"Printers": "Stampanti",
-		"Reboot": "Riavvio",
-		"Recovering": "Ripristino",
-		"Remotemode": "https://docs.mainsail.xyz/remotemode",
-		"Restart": "Riavvio",
-		"RestartServices": "Riavvio Servizi",
-		"SAVECONFIG": "SALVA CONFIGURAZIONE",
-		"SelectPrinter": "Seleziona Stampante",
-		"Shutdown": "Spegnimento",
 		"ThrottledStates": {
 			"DescriptionCurrentlyThrottled": "Uno o più core ARM dell'rPI sono attualmente rallentati.",
 			"DescriptionFrequencyCapped": "La frequenza massima del processore ARM dell'rPI è attualmente limitata a 1,2 GHz.",
@@ -49,7 +21,6 @@
 			"TitleTemperatureLimitActive": "Limite Di Temperatura Attivo",
 			"TitleUnderVoltageDetected": "Sottotensione Rilevata"
 		},
-		"To": "a",
 		"TopBar": {
 			"CannotUploadTheFile": "Impossibile caricare il file!",
 			"EmergencyStop": "Arresto di emergenza",
@@ -68,7 +39,6 @@
 			"RestartServices": "Riavvia i Servizi",
 			"Shutdown": "Arresta"
 		},
-		"TryAgain": "riprova",
 		"UpdateDialog": {
 			"Close": "Chiudi",
 			"Empty": "Vuoto",
@@ -76,13 +46,7 @@
 			"RecoveringDone": "Recupero {software} completato!",
 			"Updating": "Aggiornamento {software} in corso...",
 			"UpdatingDone": "Aggiornamento {software} completato!"
-		},
-		"UpdatePrinter": "Aggiorna Stampante",
-		"Updating": "Aggiornamento",
-		"UploadPrint": "Carica e Stampa",
-		"Uploading": "Caricamento",
-		"YouCanFindMore": "Puoi trovare maggiori dettagli su",
-		"done": "fatto!"
+		}
 	},
 	"ConnectionDialog": {
 		"CannotConnectTo": "Impossibile connettersi a Moonraker ({host}).",
@@ -93,14 +57,10 @@
 	},
 	"Console": {
 		"CommandList": "Elenco dei comandi",
-		"CustomFilters": "Filtri personalizzati",
-		"Date": "Data",
 		"Empty": "Vuoto",
-		"Event": "Evento",
 		"HideTemperatures": "Nascondi temperature",
 		"SendCode": "Invia codice...",
-		"SetupConsole": "Impostazione Console",
-		"send": "invia"
+		"SetupConsole": "Impostazione Console"
 	},
 	"Editor": {
 		"ConfigReference": "Configurazione di Riferimento",
@@ -121,7 +81,6 @@
 		"Delete": "Elimina",
 		"DeleteDirectory": "Elimina Directory ",
 		"DeleteDirectoryQuestion": "Vuoi davvero eliminare la directory \"{name}\" con tutto il suo contenuto?",
-		"DoYouWantToStart": "Vuoi iniziare",
 		"DoYouWantToStartFilename": "Vuoi avviare {filename}?",
 		"Download": "Scarica",
 		"Downloading": "Scaricando",
@@ -151,7 +110,6 @@
 		"Rename": "Rinomina",
 		"RenameDirectory": "Rinomina la Directory",
 		"RenameFile": "Rinomina il File",
-		"SaveClose": "Salva e chiudi",
 		"Search": "Cerca",
 		"SetupCurrentList": "Imposta l'elenco corrente",
 		"Slicer": "Slicer",
@@ -504,10 +462,8 @@
 		"G-Code Files": "File G-Code",
 		"Heightmap": "Mappa dell'altezza",
 		"History": "Cronologia",
-		"Interface": "Interfaccia",
 		"Machine": "Macchina",
 		"Printers": "Stampanti",
-		"Settings": "Impostazioni",
 		"Webcam": "Webcam"
 	},
 	"SelectPrinterDialog": {
@@ -529,38 +485,6 @@
 	},
 	"Settings": {
 		"Cancel": "Annulla",
-		"ConfigFilesPanel": {
-			"AllFiles": "Tutti",
-			"Cancel": "Annulla",
-			"ConfigFiles": "File di Configurazione",
-			"ConfigReference": "Configurazione di Riferimento",
-			"Create": "Crea",
-			"CreateFile": "Crea File",
-			"CreateFolder": "Crea Cartella",
-			"CurrentPath": "Percorso Corrente",
-			"Delete": "Elimina",
-			"Download": "Scarica",
-			"EditFile": "Modifica file",
-			"Empty": "Vuoto",
-			"Files": "File",
-			"Filesize": "Dimensioni File",
-			"HiddenFiles": "File Nascosti",
-			"LastModified": "Ultima modifica",
-			"Name": "Nome",
-			"PleaseStandBy": "Per favore attendi",
-			"Rename": "Rinomina",
-			"RenameFile": "Rinomina File",
-			"SaveClose": "Salva e chiudi",
-			"SaveRestart": "Salva e riavvia",
-			"SetupCurrentList": "Imposta l'elenco corrente",
-			"Uploading": "Caricamento"
-		},
-		"ConsolePanel": {
-			"Console": "Console",
-			"CustomFilters": "Filtro personalizzato",
-			"HideTemperatures": "Nascondi temperature",
-			"Rules": "Regole"
-		},
 		"ConsoleTab": {
 			"AddFilter": "aggiungi filtro",
 			"Console": "Console",
@@ -576,21 +500,6 @@
 			"StoreButton": "Memorizza filtro",
 			"UpdateButton": "Aggiorna filtro"
 		},
-		"ControlPanel": {
-			"Control": "Controllo",
-			"EnableCross": "Abilita movimento incrociato",
-			"Extruder": "Estrusore",
-			"InvertXMovement": "Inverti il movimento di X",
-			"InvertYMovement": "Inverti il movimento di Y",
-			"InvertZMovement": "Inverti il movimento di Z",
-			"MoveDistancesEInMm": "Spostamento di E in mm",
-			"MoveDistancesInMm": "Spostamento in mm",
-			"MoveDistancesXYInMm": "Spostamento di XY in mm",
-			"MoveDistancesZInMm": "Spostamento di Z in mm",
-			"SpeedEInMms": "Velocità di E in mm/s",
-			"SpeedXY": "Velocità di XY",
-			"SpeedZ": "Velocità di Z"
-		},
 		"ControlTab": {
 			"Control": "Controllo",
 			"EnableCross": "Abilita movement cross",
@@ -605,14 +514,6 @@
 			"SpeedXY": "Velocità XY",
 			"SpeedZ": "Velocità Z"
 		},
-		"DashboardPanel": {
-			"ChartUpdateInterval": "Intervallo di aggiornamento Grafico",
-			"Console": "Console",
-			"Dashboard": "Pannello di Controllo",
-			"DatapointInterval": "Intervallo Datapoint",
-			"Tempchart": "Grafico Temperatura",
-			"Webcam": "Webcam"
-		},
 		"DashboardTab": {
 			"Dashboard": "Dashboard",
 			"Desktop": "Desktop",
@@ -622,25 +523,6 @@
 			"Widescreen": "Schermo intero"
 		},
 		"Edit": "Modifica",
-		"EndstopPanel": {
-			"Endstop": "Endstop",
-			"EndstopInfo": "Premere il pulsante di sincronizzazione in basso a destra per caricare lo stato corrente degli endstop.",
-			"Endstops": "Endstop",
-			"TRIGGERED": "ATTIVATO",
-			"open": "APERTO"
-		},
-		"GeneralPanel": {
-			"DisplayCANCEL_PRINT": "Visualizza CANCEL_PRINT",
-			"DisplayZOffset": "Visualizza il Pannello Z-Offset",
-			"FactoryInfo": "Vuoi davvero ripristinare le impostazioni di fabbrica di mainsail?",
-			"FactoryReset": "Ripristino Impostazioni di Fabbrica",
-			"General": "Generale",
-			"Language": "Lingua",
-			"PrinterName": "Nome Stampante",
-			"ResetMainsail": "ripristina mainsail",
-			"ShowCANCEL_PRINT": "Mostra permanentemente il pulsante CANCEL_PRINT - non è necessaria la conferma al secondo layer.",
-			"ShowZOffset": "Mostra permanentemente il pannello Z-Offset."
-		},
 		"GeneralTab": {
 			"BoolBigThumbnail": "Miniatura grande",
 			"BoolBigThumbnailDescription": "Mostra una miniatura grande nel pannello di stato durante una stampa.",
@@ -656,37 +538,9 @@
 			"ResetMainsail": "reimposta mainsail"
 		},
 		"InterfaceSettings": "Impostazioni dell'Interfaccia",
-		"LimitsPanel": {
-			"Acceleration": "Accelerazione",
-			"Deceleration": "Decelerazione",
-			"MachineLimits": "Limiti Macchina",
-			"SquareCornerVelocity": "Velocità square corner",
-			"Velocity": "Velocità"
-		},
-		"LogfilesPanel": {
-			"Logfiles": "File di Log"
-		},
-		"MacrosPanel": {
-			"Macros": "Macro",
-			"NOMacros": "Nessuna macro trovata..."
-		},
 		"MacrosTab": {
 			"Macros": "Macro",
 			"NOMacros": "Nessuna macro trovata..."
-		},
-		"PresetsPanel": {
-			"AddPreset": "Aggiungi preimpostazione",
-			"Cooldown": "Raffreddamento",
-			"CreateHeadline": "Crea Preimpostazione",
-			"CustomGCode": "G-Code Personalizzato",
-			"EditCooldown": "Modifica Raffreddamento",
-			"EditHeadline": "Modifica Preimpostazioni",
-			"Name": "Nome",
-			"PreheatPresets": "Impostazioni Preriscaldamento",
-			"PresetInfo": "Devi impostare una temperatura minima obiettivo o un gcode personalizzato.",
-			"StoreButton": "Memorizza preimpostazioni",
-			"UpdateButton": "Aggiorna preimpostazioni",
-			"UpdateCooldown": "Aggiorna Raffreddamento"
 		},
 		"PresetsTab": {
 			"AddPreset": "aggiungi preset",
@@ -702,12 +556,6 @@
 			"UpdateButton": "Aggiorna preset",
 			"UpdateCooldown": "Aggiorna Raffreddamento "
 		},
-		"RemotePrintersPanel": {
-			"AddPrinter": "Aggiungi Stampante",
-			"EditPrinter": "Modifica Stampante",
-			"RemotePrinters": "Stampante Remota",
-			"UpdatePrinter": "Aggiorna Stampante"
-		},
 		"RemotePrintersTab": {
 			"AddPrinter": "Aggiungi Stampante",
 			"EditPrinter": "Modifica Stampante",
@@ -716,60 +564,10 @@
 			"RemotePrinters": "Stampanti Remote",
 			"UpdatePrinter": "Aggiorna Stampante"
 		},
-		"RunoutPanel": {
-			"Detected": "rilevato",
-			"Empty": "Vuoto"
-		},
 		"ThemeTab": {
 			"Logo": "Logo",
 			"Primary": "Primario",
 			"Theme": "Tema"
-		},
-		"UpdatePanel": {
-			"CheckForUpdates": "Verifica aggiornamenti",
-			"Commits": "Commit",
-			"CommittedAt": "commit a",
-			"Detached": "staccato",
-			"Dirty": "sporco",
-			"ERROR": "ERRORE",
-			"Invalid": "non valido",
-			"OSPackages": "Pacchetti Sistema Operativo",
-			"PackagesCanBeUpgraded": "i pacchetti possono essere aggiornati",
-			"System": "Sistema",
-			"Unknown": "sconosciuto",
-			"UpToDate": "aggiornato",
-			"Update": "aggiornamento",
-			"UpdateManager": "Gestore Aggiornamento",
-			"Upgrade": "aggiornamento"
-		},
-		"WebcamPanel": {
-			"AddWebcam": "aggiungi webcam",
-			"CreateWebcam": "Crea Webcam",
-			"EditWebcam": "Modifica Webcam",
-			"FlipHorizontally": "Capovolgi webcam orizzontalmente",
-			"FlipVertically": "Capovolgi webcam verticalmente",
-			"IconBed": "Piano",
-			"IconCam": "Cam",
-			"IconDoor": "Porta",
-			"IconFilament": "Filamento",
-			"IconHot": "Caldo",
-			"IconMcu": "MCU",
-			"IconNozzle": "Ugello",
-			"IconPrinter": "Stampante",
-			"Ipstream": "IP Camera",
-			"Mjpegstreamer": "MJPEG-Streamer",
-			"MjpegstreamerAdaptive": "Adaptive MJPEG-Streamer (sperimentale)",
-			"Name": "Nome",
-			"NameAlreadyExists": "Nome già esistente",
-			"Required": "richiesto",
-			"SaveWebcam": "Salva Webcam",
-			"Service": "Servizio",
-			"ShowInNavigation": "Mostra nella navigazione",
-			"TargetFPS": "Obiettivo FPS",
-			"UpdateWebcam": "Aggiorna Webcam",
-			"UrlNotAvailable": "URL non disponibile",
-			"WebcamURL": "URL Webcam",
-			"Webcams": "Webcam"
 		},
 		"WebcamTab": {
 			"AddWebcam": "aggiungi webcam",
