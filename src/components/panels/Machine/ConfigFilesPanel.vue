@@ -488,6 +488,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set sortBy(newVal) {
+        if (newVal === undefined) newVal = "filename"
+
         this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.sortBy', value: newVal })
     }
 
@@ -496,6 +498,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set sortDesc(newVal) {
+        if (newVal === undefined) newVal = false
+
         this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.sortDesc', value: newVal })
     }
 
