@@ -16,7 +16,7 @@ export interface ServerState {
         [key: string]: any
     },
     system_info: {
-        available_services: { [key: number]: string }[]
+        available_services: string[]
         cpu_info: ServerStateCpuInfo
         distribution: ServerStateDistribution
         sd_info: ServerStateSdInfo
