@@ -314,10 +314,13 @@ export default class Viewer extends Mixins(BaseMixin) {
 		trackingBackup = newVal;
 		if (!viewer) return;
 		if (newVal) {
-			viewer.gcodeProcessor.setLiveTracking(true);
+
 			this.loadedFile = this.sdCardFilePath;
 			let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '');
 			await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad));
+			viewer.gcodeProcessor.setLiveTracking(true);
+			viewer.gcodeProcessor.updateFilePosition(0);
+			
 		} else {
 			viewer.gcodeProcessor.setLiveTracking(false);
 		}
