@@ -221,14 +221,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 	}
 
 	async loadFile(filename) {
-		fetch(filename).then((response) => {
-			response.text().then(async (text) => {
-				viewer.updateRenderQuality(this.renderQuality.value);
-				await viewer.processFile(text);
-				this.loadingPercent = 100;
-				this.finishLoad();
-			});
-		});
+		let response = await fetch(filename);
+		let text = await response.text();
+		viewer.updateRenderQuality(this.renderQuality.value);
+		await viewer.processFile(text);
+		this.loadingPercent = 100;
+		this.finishLoad();
 	}
 
 	async sleep(ms) {
@@ -314,15 +312,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 		trackingBackup = newVal;
 		if (!viewer) return;
 		if (newVal) {
-
 			this.loadedFile = this.sdCardFilePath;
 			let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '');
 			await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad));
 			//Force renderers reload.
-			viewer.gcodeProcessor.updateFilePosition(50000)
-			await this.sleep(2000);
 			viewer.gcodeProcessor.updateFilePosition(0);
-			
+			viewer.gcodeProcessor.forceRedraw();
 		} else {
 			viewer.gcodeProcessor.setLiveTracking(false);
 		}
@@ -356,19 +351,18 @@ export default class Viewer extends Mixins(BaseMixin) {
 		}
 	}
 
-	loadToolColors(colors){
-			viewer.gcodeProcessor.resetTools();
-			for (var idx = 0; idx < colors.length; idx++) {
-				viewer.gcodeProcessor.addTool(colors[idx], 0.4); //Default the nozzle to 0.4 for now.
-			}
-			this.setReloadRequiredFlag();
+	loadToolColors(colors) {
+		viewer.gcodeProcessor.resetTools();
+		for (var idx = 0; idx < colors.length; idx++) {
+			viewer.gcodeProcessor.addTool(colors[idx], 0.4); //Default the nozzle to 0.4 for now.
+		}
+		this.setReloadRequiredFlag();
 	}
-
 
 	@Watch('extruderColors')
 	extruderColorsChanged(newVal) {
 		if (viewer && newVal) {
-			this.loadToolColors(newVal);		
+			this.loadToolColors(newVal);
 			this.setReloadRequiredFlag();
 		}
 	}
