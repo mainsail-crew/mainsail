@@ -167,6 +167,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 			});
 		});
 
+		this.loadToolColors(this.extruderColors);
+
 		if (viewer.lastLoadFailed()) {
 			this.renderQuality = this.renderQualities[0];
 			viewer.updateRenderQuality(1);
@@ -267,7 +269,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 	@Watch('renderQuality')
 	async renderQualityChanged(newVal) {
 		if (viewer && viewer.renderQuality !== newVal) {
-			viewer.updateRenderQuality(newVal.value);
+			viewer.updateRenderQuality(newVal);
 			await this.reloadViewer();
 		}
 	}
@@ -349,22 +351,20 @@ export default class Viewer extends Mixins(BaseMixin) {
 		}
 	}
 
+	loadToolColors(colors){
+			viewer.gcodeProcessor.resetTools();
+			for (var idx = 0; idx < colors.length; idx++) {
+				viewer.gcodeProcessor.addTool(colors[idx], 0.4); //Default the nozzle to 0.4 for now.
+			}
+			this.setReloadRequiredFlag();
+	}
+
+
 	@Watch('extruderColors')
 	extruderColorsChanged(newVal) {
 		if (viewer && newVal) {
-			let match = true;
-			let extruderColors = viewer.getExtruderColors();
-			if (newVal.length === extruderColors.length) {
-				for (let idx = 0; idx < extruderColors.length && match; idx++) {
-					if (newVal[idx] != extruderColors[idx]) {
-						match = false;
-					}
-				}
-			}
-			if (!match) {
-				viewer.saveExtruderColors(newVal);
-				this.setReloadRequiredFlag();
-			}
+			this.loadToolColors(newVal);		
+			this.setReloadRequiredFlag();
 		}
 	}
 
