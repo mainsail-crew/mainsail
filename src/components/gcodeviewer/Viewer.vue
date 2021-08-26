@@ -318,7 +318,9 @@ export default class Viewer extends Mixins(BaseMixin) {
 			this.loadedFile = this.sdCardFilePath;
 			let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '');
 			await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad));
-			viewer.gcodeProcessor.setLiveTracking(true);
+			//Force renderers reload.
+			viewer.gcodeProcessor.updateFilePosition(50000)
+			await this.sleep(2000);
 			viewer.gcodeProcessor.updateFilePosition(0);
 			
 		} else {
