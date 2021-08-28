@@ -81,7 +81,8 @@
 		"Heightmap": "Heightmap",
 		"G-Code Files": "G-Code Files",
 		"History": "History",
-		"Machine": "Machine"
+		"Machine": "Machine",
+		"G-Code Viewer": "G-Code Viewer"
 	},
 	"Editor": {
 		"Minimap": "Show minimap",
@@ -144,7 +145,8 @@
 		"SuccessfullyRenamed": "Successfully renamed {filename}.",
 		"SuccessfullyMoved": "Successfully moved {filename}.",
 		"SuccessfullyCreated": "Successfully created {filename}.",
-		"SuccessfullyDeleted": "Successfully deleted {filename}."
+		"SuccessfullyDeleted": "Successfully deleted {filename}.",
+		"View3D" : "View 3D"
 	},
 	"Console": {
 		"SetupConsole": "Setup Console",
@@ -575,6 +577,37 @@
 			"Theme": "Theme",
 			"Logo": "Logo",
 			"Primary": "Primary"
+		},
+		"GCodeViewerTab": {
+			"GCodeViewer": "G-Code Viewer",
+			"ShowCursor" : "Show Cursor",
+			"ExtruderColor" : "Extruder Colors",
+			"ColorMode" : "Color Mode",
+			"FeedRate": "Feed Rate",
+			"Extruder" : "Extruder",
+			"BackgroundColor" : "Background Color",
+			"GridColor": "Grid Color",
+			"ShowAxes": "Show Axes",
+			"MinFeed" :"Min Feed Rate",
+			"MaxFeed" : "Max Feed Rate",
+			"MinColor" : "Min Feed Rate Color",
+			"MaxColor" : "Max Feed Rate Color",
+			"ProgressColor" : "Progress Color"
 		}
+	},
+	"GCodeViewer":{
+		"Title" : "G-Code Viewer",
+		"LoadLocal": "Load Local File",
+		"ResetCamera": "Reset Camera",
+		"RenderQuality" : "Render Quality",
+		"Low" : "Low",
+		"Medium" : "Medium",
+		"High" : "High",
+		"Ultra" : "Ultra",
+		"Max" : "Max",
+		"ForceLineRendering":"Force Line Rendering",
+		"ReloadRequired" : "Reload required",
+		"TrackPrint": "Track Print",
+		"ZClip" : "Z Clipping"
 	}
 }
