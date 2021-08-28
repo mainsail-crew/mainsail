@@ -75,10 +75,10 @@
 <script lang="ts">
 
 
-import {Component, Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import SettingsRow from "@/components/settings/SettingsRow.vue";
-import {Debounce} from "vue-debounce-decorator";
+import {Component, Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {Debounce} from 'vue-debounce-decorator'
 
 interface consoleForm {
     bool: boolean
@@ -95,8 +95,8 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     private form: consoleForm = {
         bool: false,
         valid: false,
-        name: "",
-        regex: "",
+        name: '',
+        regex: '',
         index: null,
     }
 
@@ -112,7 +112,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     get consoleFilters() {
-        return this.$store.getters["gui/getConsoleFilters"] ?? []
+        return this.$store.getters['gui/getConsoleFilters'] ?? []
     }
 
     get availableDirections() {
@@ -150,7 +150,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     updateConsoleHeight(newVal: number) {
-        window.console.log("updateConsoleHeight", newVal)
+        window.console.log('updateConsoleHeight', newVal)
         this.consoleHeight = newVal
     }
 
@@ -169,8 +169,8 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     clearForm() {
         this.form.bool = false
         this.form.index = null
-        this.form.name = ""
-        this.form.regex = ""
+        this.form.name = ''
+        this.form.regex = ''
     }
 
     toggleFilter(filter: any) {

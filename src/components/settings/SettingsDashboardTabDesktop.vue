@@ -81,7 +81,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import draggable from 'vuedraggable'
-import {capitalize, convertPanelnameToIcon} from "@/plugins/helpers";
+import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
 @Component( {
     components: {
         draggable

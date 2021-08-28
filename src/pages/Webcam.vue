@@ -13,9 +13,9 @@
 </template>
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import WebcamPanel from "@/components/panels/WebcamPanel.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 @Component({
     components: {WebcamPanel}
 })

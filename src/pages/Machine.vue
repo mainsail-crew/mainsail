@@ -23,15 +23,15 @@
 </template>
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
-import LimitsPanel from "@/components/panels/Machine/LimitsPanel.vue";
-import UpdatePanel from "@/components/panels/Machine/UpdatePanel.vue";
-import LogfilesPanel from "@/components/panels/Machine/LogfilesPanel.vue";
-import EndstopPanel from "@/components/panels/Machine/EndstopPanel.vue";
-import ConfigFilesPanel from "@/components/panels/Machine/ConfigFilesPanel.vue";
-import SystemPanel from "@/components/panels/Machine/SystemPanel.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
+import LimitsPanel from '@/components/panels/Machine/LimitsPanel.vue'
+import UpdatePanel from '@/components/panels/Machine/UpdatePanel.vue'
+import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
+import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
+import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
+import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
 @Component({
     components: {SystemPanel, ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
 })

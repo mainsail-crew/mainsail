@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import {Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import Component from 'vue-class-component'
+import {Mixins, Prop} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
@@ -44,12 +44,12 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
-        let transforms = ""
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += " scaleX(-1)"
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += " scaleY(-1)"
+        let transforms = ''
+        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
 
-        return ""
+        return ''
     }
 
     visibilityChanged(isVisible: boolean) {

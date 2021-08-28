@@ -57,21 +57,21 @@
 
 <script lang="ts">
 
-import Component from "vue-class-component";
-import {Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import MinSettingsPanel from "@/components/panels/MinSettingsPanel.vue";
-import KlippyStatePanel from "@/components/panels/KlippyStatePanel.vue";
-import MoonrakerStatePanel from "@/components/panels/MoonrakerStatePanel.vue";
-import StatusPanel from "@/components/panels/StatusPanel.vue";
-import ToolsPanel from "@/components/panels/ToolsPanel.vue";
-import WebcamPanel from "@/components/panels/WebcamPanel.vue";
-import ZoffsetPanel from "@/components/panels/ZoffsetPanel.vue";
-import ControlPanel from "@/components/panels/ControlPanel.vue";
-import MacrosPanel from "@/components/panels/MacrosPanel.vue";
-import MiscellaneousPanel from "@/components/panels/MiscellaneousPanel.vue";
-import MiniconsolePanel from "@/components/panels/MiniconsolePanel.vue";
-import PrintsettingsPanel from "@/components/panels/PrintsettingsPanel.vue";
+import Component from 'vue-class-component'
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
+import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
+import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
+import StatusPanel from '@/components/panels/StatusPanel.vue'
+import ToolsPanel from '@/components/panels/ToolsPanel.vue'
+import WebcamPanel from '@/components/panels/WebcamPanel.vue'
+import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
+import ControlPanel from '@/components/panels/ControlPanel.vue'
+import MacrosPanel from '@/components/panels/MacrosPanel.vue'
+import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
+import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
+import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
 
 @Component({
     components: {

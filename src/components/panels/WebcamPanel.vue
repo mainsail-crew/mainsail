@@ -69,15 +69,15 @@
 </template>
 
 <script lang="ts">
-import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
-import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue"
-import Ipstreamer from "@/components/webcams/Ipstreamer.vue"
-import Uv4lMjpeg from "@/components/webcams/Uv4lMjpeg.vue"
-import WebcamGrid from "@/components/webcams/WebcamGrid.vue"
-import Component from "vue-class-component";
-import {Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {GuiStateWebcam} from "@/store/gui/types";
+import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
+import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
+import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
+import Component from 'vue-class-component'
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {GuiStateWebcam} from '@/store/gui/types'
 
 @Component({
     components: {
@@ -91,7 +91,7 @@ import {GuiStateWebcam} from "@/store/gui/types";
 export default class WebcamPanel extends Mixins(BaseMixin) {
 
     get webcams(): GuiStateWebcam[] {
-        return this.$store.getters["gui/getWebcams"]
+        return this.$store.getters['gui/getWebcams']
     }
 
     get currentCamName(): string {
@@ -102,19 +102,19 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
         if (currentCamName !== undefined && Array.isArray(this.webcams) && this.webcams.length === 1)
             return this.webcams[0].name
 
-        return "all"
+        return 'all'
     }
 
     set currentCamName(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: "webcam.selectedCam", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'webcam.selectedCam', value: newVal })
     }
 
     get currentCam(): any {
         if (this.currentCamName === 'all') {
             return {
                 name: this.$t('Panels.WebcamPanel.All'),
-                service: "grid",
-                icon: "mdi-view-grid",
+                service: 'grid',
+                icon: 'mdi-view-grid',
             }
         } else {
             const currentCam = this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === this.currentCamName)

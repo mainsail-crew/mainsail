@@ -53,15 +53,15 @@
 import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import SettingsGeneralTab from "@/components/settings/SettingsGeneralTab.vue";
-import SettingsWebcamTab from "@/components/settings/SettingsWebcamTab.vue";
-import SettingsMacrosTab from "@/components/settings/SettingsMacrosTab.vue";
-import SettingsControlTab from "@/components/settings/SettingsControlTab.vue";
-import SettingsConsoleTab from "@/components/settings/SettingsConsoleTab.vue";
-import SettingsPresetsTab from "@/components/settings/SettingsPresetsTab.vue";
-import SettingsRemotePrintersTab from "@/components/settings/SettingsRemotePrintersTab.vue";
-import SettingsThemeTab from "@/components/settings/SettingsThemeTab.vue";
-import SettingsDashboardTab from "@/components/settings/SettingsDashboardTab.vue";
+import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
+import SettingsWebcamTab from '@/components/settings/SettingsWebcamTab.vue'
+import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
+import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
+import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
+import SettingsPresetsTab from '@/components/settings/SettingsPresetsTab.vue'
+import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrintersTab.vue'
+import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
+import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from "@/components/settings/SettingsGCodeViewerTab.vue"
 @Component({
     components: {

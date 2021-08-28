@@ -247,16 +247,16 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import {Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {GuiStatePreset} from "@/store/gui/types";
+import Component from 'vue-class-component'
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {GuiStatePreset} from '@/store/gui/types'
 import { convertName } from '@/plugins/helpers'
-import ToolInput from "@/components/inputs/ToolInput.vue";
-import TempChart from "@/components/charts/TempChart.vue";
-import {datasetTypes} from "@/store/variables";
-import {PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan} from "@/store/printer/types";
-import {Debounce} from "vue-debounce-decorator";
+import ToolInput from '@/components/inputs/ToolInput.vue'
+import TempChart from '@/components/charts/TempChart.vue'
+import {datasetTypes} from '@/store/variables'
+import {PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan} from '@/store/printer/types'
+import {Debounce} from 'vue-debounce-decorator'
 
 @Component({
     components: {TempChart, ToolInput}
@@ -267,14 +267,14 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
 
     private editHeater: any = {
         bool: false,
-        name: "",
-        icon: "",
+        name: '',
+        icon: '',
         boolTemperature: false,
         boolTarget: false,
         boolPower: false,
         boolSpeed: false,
         additionSensors: {},
-        color: "",
+        color: '',
     }
 
     get presets(): GuiStatePreset[] {
@@ -282,7 +282,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get cooldownGcode(): string {
-        return this.$store.state.gui.cooldown_gcode ?? "TURN_OFF_HEATERS"
+        return this.$store.state.gui.cooldown_gcode ?? 'TURN_OFF_HEATERS'
     }
 
     get boolTempchart(): boolean {
@@ -290,7 +290,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     set boolTempchart(newVal: boolean) {
-        this.$store.dispatch("gui/saveSetting", { name: 'dashboard.boolTempchart', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.boolTempchart', value: newVal })
     }
 
     get autoscaleTempchart(): boolean {
@@ -298,7 +298,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     set autoscaleTempchart(newVal: boolean) {
-        this.$store.dispatch("gui/saveSetting", { name: 'tempchart.autoscale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'tempchart.autoscale', value: newVal })
     }
 
     get heaters(): PrinterStateHeater[] {
@@ -306,21 +306,21 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get temperatureFans(): PrinterStateTemperatureFan {
-        return this.$store.getters["printer/getTemperatureFans"]
+        return this.$store.getters['printer/getTemperatureFans']
     }
 
     get temperatureSensors(): PrinterStateSensor {
-        return this.$store.getters["printer/getTemperatureSensors"]
+        return this.$store.getters['printer/getTemperatureSensors']
     }
 
     preheat(preset: GuiStatePreset): void {
         for (const [name, attributes] of Object.entries(preset.values)) {
             if (attributes.bool) {
-                let gcode = "SET_HEATER_TEMPERATURE HEATER="+name+" TARGET="+attributes.value
+                let gcode = 'SET_HEATER_TEMPERATURE HEATER='+name+' TARGET='+attributes.value
 
-                if (attributes.type === "temperature_fan") {
-                    const fanName = name.replace("temperature_fan ", "")
-                    gcode = "SET_TEMPERATURE_FAN_TARGET temperature_fan="+fanName+" TARGET="+attributes.value
+                if (attributes.type === 'temperature_fan') {
+                    const fanName = name.replace('temperature_fan ', '')
+                    gcode = 'SET_TEMPERATURE_FAN_TARGET temperature_fan='+fanName+' TARGET='+attributes.value
                 }
 
                 this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -328,7 +328,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
             }
         }
 
-        if (preset.gcode !== "") {
+        if (preset.gcode !== '') {
             setTimeout(() => {
                 this.$store.dispatch('server/addEvent', { message: preset.gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: preset.gcode })
@@ -347,10 +347,10 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
 
         this.editHeater.color = object.chartColor
         this.editHeater.chartSeries = 'chartSeries' in object ? object.chartSeries : []
-        this.editHeater.boolTemperature = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'temperature' })
-        this.editHeater.boolTarget = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'target' })
-        this.editHeater.boolPower = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'power' })
-        this.editHeater.boolSpeed = this.$store.getters["gui/getDatasetValue"]({ name: object.name, type: 'speed' })
+        this.editHeater.boolTemperature = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'temperature' })
+        this.editHeater.boolTarget = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'target' })
+        this.editHeater.boolPower = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'power' })
+        this.editHeater.boolSpeed = this.$store.getters['gui/getDatasetValue']({ name: object.name, type: 'speed' })
         this.editHeater.additionSensors = object.additionSensors
 
         this.editHeater.bool = true
@@ -360,21 +360,21 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         const serieName = 'bool'+type.charAt(0).toUpperCase() + type.slice(1)
         const value = this.editHeater[serieName]
 
-        const path = "tempchart.datasetSettings."+this.editHeater.name+"."+type
+        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
         this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
     }
 
     setVisibleAdditionalSensor(sensor: string): void {
-        const path = "tempchart.datasetSettings."+this.editHeater.name+".additionalSensors."+sensor
+        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
         this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: this.editHeater.additionSensors[sensor].bool }, { action: 'gui/updateDataFromDB' })
     }
 
     @Debounce(500)
     setChartColor(value: string | any): void {
-        if (typeof value === "object" && 'hex' in value) value = value.hex
+        if (typeof value === 'object' && 'hex' in value) value = value.hex
         this.$store.commit('printer/tempHistory/setColor', { name: this.editHeater.name, value: value })
 
-        const path = "tempchart.datasetSettings."+this.editHeater.name+".color"
+        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
         this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
     }
 

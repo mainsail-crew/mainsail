@@ -72,12 +72,12 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import HistoryAllPrintStatus from "@/components/charts/HistoryAllPrintStatus.vue";
-import HistoryPrinttimeAvg from "@/components/charts/HistoryPrinttimeAvg.vue";
-import HistoryFilamentUsage from "@/components/charts/HistoryFilamentUsage.vue";
-import HistoryListPanel from "@/components/panels/HistoryListPanel.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import HistoryAllPrintStatus from '@/components/charts/HistoryAllPrintStatus.vue'
+import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
+import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
+import HistoryListPanel from '@/components/panels/HistoryListPanel.vue'
 @Component({
     components: {HistoryListPanel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus}
 })
@@ -110,22 +110,22 @@ export default class PageHistory extends Mixins(BaseMixin) {
     }
 
     set toggleChart(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'history.toggleChartCol3', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'history.toggleChartCol3', value: newVal })
     }
 
     formatPrintTime(totalSeconds: number) {
         if (totalSeconds) {
-            let output = ""
+            let output = ''
 
             const hours = Math.floor(totalSeconds / 3600)
             totalSeconds %= 3600
-            if (hours) output += " "+hours+"h"
+            if (hours) output += ' '+hours+'h'
 
             const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += " "+minutes+"m"
+            if (minutes) output += ' '+minutes+'m'
 
             const seconds = totalSeconds % 60
-            if (seconds) output += " "+seconds.toFixed(0)+"s"
+            if (seconds) output += ' '+seconds.toFixed(0)+'s'
 
             return output
         }

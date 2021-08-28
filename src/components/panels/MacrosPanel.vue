@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
 
 @Component
 export default class MacrosPanel extends Mixins(BaseMixin) {

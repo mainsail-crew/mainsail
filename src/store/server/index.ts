@@ -1,5 +1,5 @@
-import { Module } from "vuex"
-import { ServerState } from "@/store/server/types"
+import { Module } from 'vuex'
+import { ServerState } from '@/store/server/types'
 import { actions } from '@/store/server/actions'
 import { mutations } from '@/store/server/mutations'
 import { getters } from '@/store/server/getters'
@@ -11,38 +11,39 @@ import { history } from '@/store/server/history'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
-	return {
-		klippy_connected: false,
-		klippy_state: "",
-		klippy_message: "",
-		components: [],
-		failed_components: [],
-		warnings: [],
-		registered_directories: [],
-		events: [],
-		config: { },
-		system_info: { },
-		cpu_temp: 0,
-		moonraker_stats: { },
+    return {
+        klippy_connected: false,
+        klippy_state: '',
+        klippy_message: '',
+        components: [],
+        failed_components: [],
+        warnings: [],
+        registered_directories: [],
+        events: [],
+        config: { },
+        system_info: null,
+        cpu_temp: 0,
+        moonraker_stats: null,
         throttled_state: {
             bits: 0,
             flags: [],
         },
-	}
+    }
 }
 
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const server: Module<ServerState, any> = {
-	namespaced: true,
-	state,
-	getters,
-	actions,
-	mutations,
-	modules: {
-		power,
-		updateManager,
-		history,
-	}
+    namespaced: true,
+    state,
+    getters,
+    actions,
+    mutations,
+    modules: {
+        power,
+        updateManager,
+        history,
+    }
 }

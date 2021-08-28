@@ -5,18 +5,19 @@ import { mutations } from '@/store/server/power/mutations'
 import { getters } from '@/store/server/power/getters'
 
 export const getDefaultState = (): ServerPowerState => {
-	return {
-		devices: []
-	}
+    return {
+        devices: []
+    }
 }
 
 // initial state
 const state = getDefaultState()
 
+// eslint-disable-next-line
 export const power: Module<ServerPowerState, any> = {
-	namespaced: true,
-	state,
-	getters,
-	actions,
-	mutations
+    namespaced: true,
+    state,
+    getters,
+    actions,
+    mutations
 }

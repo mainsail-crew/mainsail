@@ -19,9 +19,9 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import ToolSlider from "@/components/inputs/ToolSlider.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import ToolSlider from '@/components/inputs/ToolSlider.vue'
 @Component({
     components: {ToolSlider}
 })

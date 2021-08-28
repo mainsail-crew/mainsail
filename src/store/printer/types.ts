@@ -1,4 +1,4 @@
-import {PrinterTempHistoryState} from "@/store/printer/tempHistory/types";
+import {PrinterTempHistoryState} from '@/store/printer/tempHistory/types'
 
 export interface VTextareaType extends HTMLInputElement {
     $refs: {
@@ -18,6 +18,7 @@ export interface ConsoleCommandHelp {
 }
 
 export interface PrinterState {
+    // eslint-disable-next-line
     [key: string]: any
     helplist?: CommandHelp[]
     tempHistory?: PrinterTempHistoryState
@@ -91,7 +92,9 @@ export interface PrinterStateMiscellaneous {
     pwm: boolean
     rpm: number
     scale: number
+    // eslint-disable-next-line
     object: any,
+    // eslint-disable-next-line
     config: any
     off_below?: number
     max_power?: number
@@ -105,7 +108,20 @@ export interface PrinterStateFilamentSensors {
 
 export interface PrinterStateBedMesh {
     name: string
-    data: any
+    data: {
+        algo: string
+        max_x: number
+        max_y: number
+        mesh_x_pps: number
+        mesh_y_pps: number
+        min_x: number
+        min_y: number
+        points: { [key: number]: number[] }
+        tension: number
+        version: number
+        x_count: number
+        y_count: number
+    }
     points: number[]
     min: number
     max: number
@@ -117,10 +133,12 @@ export interface PrinterStateMacro {
     name: string
     description: string | null
     prop: {
+        // eslint-disable-next-line
         [key: string]: any
     }
 }
 
 export interface PrinterStateKlipperConfig {
+    // eslint-disable-next-line
     [key: string]: any
 }

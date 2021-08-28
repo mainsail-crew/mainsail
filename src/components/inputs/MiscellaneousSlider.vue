@@ -42,10 +42,10 @@
 
 
 <script lang="ts">
-import {convertName} from "@/plugins/helpers";
-import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {Debounce} from "vue-debounce-decorator";
+import {convertName} from '@/plugins/helpers'
+import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
@@ -69,18 +69,18 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     sendCmd() {
-        let gcode = ""
+        let gcode = ''
 
         if (this.value < this.min) this.value = 0
         if (this.target === this.value) return
 
         const l_value = this.value * this.multi
 
-        if (this.type === "fan")            gcode = "M106 S" + (l_value).toFixed(0)
-        if (this.type === "fan_generic")    gcode = "SET_FAN_SPEED FAN=" + this.name + " SPEED=" + (l_value)
-        if (this.type === "output_pin")     gcode = "SET_PIN PIN=" + this.name + " VALUE=" + (l_value).toFixed(2)
+        if (this.type === 'fan')            gcode = 'M106 S' + (l_value).toFixed(0)
+        if (this.type === 'fan_generic')    gcode = 'SET_FAN_SPEED FAN=' + this.name + ' SPEED=' + (l_value)
+        if (this.type === 'output_pin')     gcode = 'SET_PIN PIN=' + this.name + ' VALUE=' + (l_value).toFixed(2)
 
-        if (gcode !== "") {
+        if (gcode !== '') {
             this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
             this.$socket.emit('printer.gcode.script', {script: gcode})
         }
@@ -88,7 +88,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     switchOutputPin() {
         this.value = this.value ? 0 : 1
-        const gcode = "SET_PIN PIN="+this.name+" VALUE="+(this.value*this.multi).toFixed(2)
+        const gcode = 'SET_PIN PIN='+this.name+' VALUE='+(this.value*this.multi).toFixed(2)
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
@@ -101,7 +101,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     increment() {
         window.console.log(this.value)
 
-        this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0;
+        this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
         if (this.value < this.off_below) this.value = this.off_below
         this.sendCmd()
     }

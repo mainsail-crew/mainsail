@@ -266,12 +266,12 @@
 
 <script lang="ts">
 
-import {Component, Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {readOnlyRoots} from "@/store/variables";
-import {findDirectory, formatDate, formatFilesize, sortFiles} from "@/plugins/helpers";
-import {FileStateFile} from "@/store/files/types";
-import axios from "axios";
+import {Component, Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {readOnlyRoots} from '@/store/variables'
+import {findDirectory, formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
+import {FileStateFile} from '@/store/files/types'
+import axios from 'axios'
 
 interface contextMenu {
     shown: boolean
@@ -359,7 +359,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
     private dialogRenameFile: dialogRenameObject = {
         show: false,
-        newName: "",
+        newName: '',
         item: {
             isDirectory: false,
             filename: '',
@@ -368,15 +368,15 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
     private dialogCreateFile = {
         show: false,
-        name: "",
+        name: '',
     }
     private dialogCreateDirectory = {
         show: false,
-        name: "",
+        name: '',
     }
     private dialogRenameDirectory: dialogRenameObject = {
         show: false,
-        newName: "",
+        newName: '',
         item: {
             isDirectory: false,
             filename: '',
@@ -393,7 +393,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
     private uploadSnackbar: uploadSnackbar = {
         status: false,
-        filename: "",
+        filename: '',
         percent: 0,
         speed: 0,
         total: 0,
@@ -409,7 +409,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         status: false,
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
@@ -417,30 +417,30 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     get toolbarButtons() {
         return [
             {
-                text: this.$t("Machine.ConfigFilesPanel.UploadFile"),
-                color: "grey darken-3",
-                icon: "mdi-file-upload",
+                text: this.$t('Machine.ConfigFilesPanel.UploadFile'),
+                color: 'grey darken-3',
+                icon: 'mdi-file-upload',
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.uploadFileButton
             }, {
-                text: this.$t("Machine.ConfigFilesPanel.CreateFile"),
-                color: "grey darken-3",
-                icon: "mdi-file-plus",
+                text: this.$t('Machine.ConfigFilesPanel.CreateFile'),
+                color: 'grey darken-3',
+                icon: 'mdi-file-plus',
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createFile
             }, {
-                text: this.$t("Machine.ConfigFilesPanel.CreateDirectory"),
-                color: "grey darken-3",
-                icon: "mdi-folder-plus",
+                text: this.$t('Machine.ConfigFilesPanel.CreateDirectory'),
+                color: 'grey darken-3',
+                icon: 'mdi-folder-plus',
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createDirecotry
             }, {
-                text: this.$t("Machine.ConfigFilesPanel.RefreshDirectory"),
-                color: "grey darken-3",
-                icon: "mdi-refresh",
+                text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
+                color: 'grey darken-3',
+                icon: 'mdi-refresh',
                 loadingName: null,
                 onlyWriteable: false,
                 click: this.refreshFileList
@@ -472,7 +472,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.countPerPage', value: newVal })
     }
 
     get showHiddenFiles() {
@@ -480,7 +480,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.showHiddenFiles', value: newVal })
     }
 
     get sortBy() {
@@ -488,9 +488,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set sortBy(newVal) {
-        if (newVal === undefined) newVal = "filename"
+        if (newVal === undefined) newVal = 'filename'
 
-        this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
@@ -500,7 +500,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch("gui/saveSetting", { name: 'settings.configfiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortDesc', value: newVal })
     }
 
     get registeredDirectories() {
@@ -512,14 +512,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     get absolutePath() {
-        let path = "/"+this.root
+        let path = '/'+this.root
         if (this.currentPath) path += this.currentPath
 
         return path
     }
 
     get disk_usage() {
-        return this.$store.getters["files/getDiskUsage"](this.absolutePath)
+        return this.$store.getters['files/getDiskUsage'](this.absolutePath)
     }
 
     get isDirWriteable() {
@@ -531,16 +531,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     changeRoot() {
-        this.currentPath = ""
+        this.currentPath = ''
         this.loadPath()
     }
 
     loadPath() {
-        let dirArray = this.absolutePath.substring(1).split("/")
+        let dirArray = this.absolutePath.substring(1).split('/')
         this.files = findDirectory(this.filetree, dirArray) ?? []
 
         if (!this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename.substr(0, 1) !== ".");
+            this.files = this.files.filter(file => file.filename.substr(0, 1) !== '.')
         }
     }
 
@@ -550,34 +550,34 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
             if (!item.isDirectory) {
                 if (['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif', 'svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
-                    const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`;
+                    const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`
                     if (['svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
                         fetch(url)
                             .then(res => res.text())
                             .then(svg => {
-                                this.dialogImage.show = true;
-                                this.dialogImage.item.svg = svg;
-                            });
+                                this.dialogImage.show = true
+                                this.dialogImage.item.svg = svg
+                            })
                     } else {
-                        this.dialogImage.show = true;
-                        this.dialogImage.item.url = url;
+                        this.dialogImage.show = true
+                        this.dialogImage.item.url = url
                     }
                 } else {
                     this.$store.dispatch('editor/openFile', {
                         root: this.root,
                         path: this.currentPath,
                         filename: item.filename
-                    });
+                    })
                 }
             } else {
-                this.currentPath += "/" + item.filename;
-                this.currentPage = 1;
+                this.currentPath += '/' + item.filename
+                this.currentPage = 1
             }
         }
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"))
+        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
     }
 
     showContextMenu (e: any, item: FileStateFile) {
@@ -595,36 +595,36 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     downloadFile() {
-        const filename = (this.absolutePath+"/"+this.contextMenu.item.filename)
+        const filename = (this.absolutePath+'/'+this.contextMenu.item.filename)
         const href = this.apiUrl + '/server/files' + filename
         window.open(href)
     }
 
     createDirecotry() {
-        this.dialogCreateDirectory.name = ""
+        this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
     }
 
     createDirectoryAction() {
-        this.dialogCreateDirectory.show = false;
+        this.dialogCreateDirectory.show = false
 
         this.$socket.emit('server.files.post_directory', {
-            path: this.absolutePath.substring(1)+"/"+this.dialogCreateDirectory.name
+            path: this.absolutePath.substring(1)+'/'+this.dialogCreateDirectory.name
         }, { action: 'files/getCreateDir' })
     }
 
     renameDirectory(item: FileStateFile) {
-        this.dialogRenameDirectory.item = item;
-        this.dialogRenameDirectory.newName = item.filename;
-        this.dialogRenameDirectory.show = true;
+        this.dialogRenameDirectory.item = item
+        this.dialogRenameDirectory.newName = item.filename
+        this.dialogRenameDirectory.show = true
     }
 
     renameDirectoryAction() {
-        this.dialogRenameDirectory.show = false;
+        this.dialogRenameDirectory.show = false
         this.$socket.emit('server.files.move', {
-            source: (this.absolutePath+"/"+this.dialogRenameDirectory.item.filename).slice(1),
-            dest: (this.absolutePath+"/"+this.dialogRenameDirectory.newName).slice(1)
-        }, { action: 'files/getMove' });
+            source: (this.absolutePath+'/'+this.dialogRenameDirectory.item.filename).slice(1),
+            dest: (this.absolutePath+'/'+this.dialogRenameDirectory.newName).slice(1)
+        }, { action: 'files/getMove' })
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -634,16 +634,16 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     deleteDirectoryAction() {
         this.dialogDeleteDirectory.show = false
-        this.$socket.emit('server.files.delete_directory', { path: this.absolutePath+"/"+this.dialogDeleteDirectory.item.filename, force: true }, { action: 'files/getDeleteDir' })
+        this.$socket.emit('server.files.delete_directory', { path: this.absolutePath+'/'+this.dialogDeleteDirectory.item.filename, force: true }, { action: 'files/getDeleteDir' })
     }
 
     createFile() {
-        this.dialogCreateFile.name = ""
+        this.dialogCreateFile.name = ''
         this.dialogCreateFile.show = true
     }
 
     createFileAction() {
-        const file = new File([""], this.dialogCreateFile.name)
+        const file = new File([''], this.dialogCreateFile.name)
 
         let formData = new FormData()
         formData.append('file', file)
@@ -657,9 +657,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         ).then(() => {
             this.$toast.success(this.$t('Files.SuccessfullyCreated', { filename: this.dialogCreateFile.name }).toString())
             this.dialogCreateFile.show = false
-            this.dialogCreateFile.name = ""
+            this.dialogCreateFile.name = ''
         }).catch(() => {
-            window.console.error("Error create file: "+this.dialogCreateFile.name)
+            window.console.error('Error create file: '+this.dialogCreateFile.name)
         })
     }
 
@@ -672,13 +672,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     renameFileAction() {
         this.dialogRenameFile.show = false
         this.$socket.emit('server.files.move', {
-            source: (this.absolutePath+"/"+this.dialogRenameFile.item.filename).slice(1),
-            dest: (this.absolutePath+"/"+this.dialogRenameFile.newName).slice(1),
+            source: (this.absolutePath+'/'+this.dialogRenameFile.item.filename).slice(1),
+            dest: (this.absolutePath+'/'+this.dialogRenameFile.newName).slice(1),
         }, { action: 'files/getMove' })
     }
 
     removeFile() {
-        this.$socket.emit('server.files.delete_file', { path: this.absolutePath+"/"+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' })
+        this.$socket.emit('server.files.delete_file', { path: this.absolutePath+'/'+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' })
     }
 
     uploadFileButton() {
@@ -699,7 +699,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
             this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
             for(const file of successFiles) {
-                this.$toast.success("Upload of "+file+" successful!")
+                this.$toast.success('Upload of '+file+' successful!')
             }
 
             this.$refs.fileUpload.value = ''
@@ -707,9 +707,9 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     doUploadFile(file: File) {
-        let toast = this.$toast;
-        let formData = new FormData();
-        let filename = file.name.replace(" ", "_");
+        let toast = this.$toast
+        let formData = new FormData()
+        let filename = file.name.replace(' ', '_')
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true
@@ -719,7 +719,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.uploadSnackbar.lastProgress.time = 0
 
         formData.append('root', this.root)
-        formData.append('file', file, this.currentPath+"/"+filename)
+        formData.append('file', file, this.currentPath+'/'+filename)
         this.$store.dispatch('socket/addLoading', { name: 'configFileUpload' })
 
         return new Promise(resolve => {
@@ -743,13 +743,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                     }
                 }
             ).then((result) => {
-                const filename = result.data.item.path.substr(result.data.item.path.indexOf("/")+1)
+                const filename = result.data.item.path.substr(result.data.item.path.indexOf('/')+1)
                 this.uploadSnackbar.status = false
                 resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
                 this.$store.dispatch('socket/removeLoading', { name: 'configFileUpload' })
-                toast.error("Cannot upload the file!")
+                toast.error('Cannot upload the file!')
             })
         })
     }
@@ -760,17 +760,17 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     dragFile(e: Event, item: FileStateFile) {
-        e.preventDefault();
-        this.draggingFile.status = true;
-        this.draggingFile.item = item;
+        e.preventDefault()
+        this.draggingFile.status = true
+        this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
-        e.preventDefault();
+        e.preventDefault()
         this.draggingFile.status = false
         this.draggingFile.item = {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
@@ -798,13 +798,13 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 
-            let dest = "";
+            let dest = ''
             if (row.filename === '..') {
-                dest = this.absolutePath.slice(1, this.absolutePath.lastIndexOf("/")+1)+this.draggingFile.item.filename
-            } else dest = this.absolutePath+"/"+row.filename+"/"+this.draggingFile.item.filename
+                dest = this.absolutePath.slice(1, this.absolutePath.lastIndexOf('/')+1)+this.draggingFile.item.filename
+            } else dest = this.absolutePath+'/'+row.filename+'/'+this.draggingFile.item.filename
 
             this.$socket.emit('server.files.move', {
-                source: this.absolutePath.slice(1)+"/"+this.draggingFile.item.filename,
+                source: this.absolutePath.slice(1)+'/'+this.draggingFile.item.filename,
                 dest: dest
             }, { action: 'files/getMove' })
         }

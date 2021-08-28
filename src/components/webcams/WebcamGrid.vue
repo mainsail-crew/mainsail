@@ -31,13 +31,13 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue";
-import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue";
-import Uv4lMjpeg from "@/components/webcams/Uv4lMjpeg.vue";
-import Ipstreamer from "@/components/webcams/Ipstreamer.vue";
-import {GuiStateWebcam} from "@/store/gui/types";
+import {Component, Mixins, Prop} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
+import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
+import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import {GuiStateWebcam} from '@/store/gui/types'
 
 @Component({
     components: {

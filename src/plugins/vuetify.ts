@@ -6,11 +6,11 @@ import Vuetify from 'vuetify/lib'
 Vue.use(Vuetify)
 
 export default new Vuetify({
-	theme: { dark: true },
-	icons: {
-		iconfont: 'mdi',
-	},
-	breakpoint: {
-		mobileBreakpoint: 768
-	}
+    theme: { dark: true },
+    icons: {
+        iconfont: 'mdi',
+    },
+    breakpoint: {
+        mobileBreakpoint: 768
+    }
 })

@@ -73,13 +73,13 @@
 </template>
 
 <script lang="ts">
-import { strLongestEqual, reverseString} from "@/plugins/helpers"
+import { strLongestEqual, reverseString} from '@/plugins/helpers'
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {CommandHelp, VTextareaType} from "@/store/printer/types";
-import ConsoleTable from "@/components/console/ConsoleTable.vue";
-import CommandHelpModal from "@/components/CommandHelpModal.vue";
-import Vue from "vue";
+import {CommandHelp, VTextareaType} from '@/store/printer/types'
+import ConsoleTable from '@/components/console/ConsoleTable.vue'
+import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import Vue from 'vue'
 
 @Component({
     components: {
@@ -94,7 +94,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         miniConsoleScroll: any
     }
 
-    private gcode = ""
+    private gcode = ''
     private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
     private items = [];
@@ -113,7 +113,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters["server/getConsoleEvents"](this.consoleDirection === 'table', 250)
+        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table', 250)
     }
 
     @Watch('events')
@@ -126,7 +126,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     set hideWaitTemperatures(newVal) {
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: "console.hideWaitTemperatures", value: newVal }, { action: 'gui/updateDataFromDB' })
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'console.hideWaitTemperatures', value: newVal }, { action: 'gui/updateDataFromDB' })
     }
 
     get customFilters(): any[] {
@@ -134,19 +134,19 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get rows(): number {
-        return this.gcode?.split('\n').length ?? 1;
+        return this.gcode?.split('\n').length ?? 1
     }
 
     commandClick(msg: string): void {
-        this.gcode = msg;
+        this.gcode = msg
     }
 
     doSend(cmd: KeyboardEvent) {
         if (!cmd.shiftKey) {
-            if (this.gcode !== "") {
+            if (this.gcode !== '') {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
                 this.lastCommands.push(this.gcode)
-                this.gcode = ""
+                this.gcode = ''
                 this.lastCommandNumber = null
                 setTimeout(() => {
                     this.$refs.console.$el.scroll({
@@ -154,73 +154,73 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                         left: 0,
                         behavior: 'smooth'
                     })
-                }, 20);
+                }, 20)
             }
         } else {
-            this.gcode += '\n';
+            this.gcode += '\n'
         }
     }
 
     onKeyUp(): void {
         if (this.lastCommandNumber === null && this.lastCommands.length) {
-            this.lastCommandNumber = this.lastCommands.length - 1;
-            this.gcode = this.lastCommands[this.lastCommandNumber];
+            this.lastCommandNumber = this.lastCommands.length - 1
+            this.gcode = this.lastCommands[this.lastCommandNumber]
         } else if (this.lastCommandNumber && this.lastCommandNumber > 0) {
-            this.lastCommandNumber--;
-            this.gcode = this.lastCommands[this.lastCommandNumber];
+            this.lastCommandNumber--
+            this.gcode = this.lastCommands[this.lastCommandNumber]
         }
     }
 
     onKeyDown(): void {
         if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
-            this.lastCommandNumber++;
-            this.gcode = this.lastCommands[this.lastCommandNumber];
+            this.lastCommandNumber++
+            this.gcode = this.lastCommands[this.lastCommandNumber]
         } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
-            this.lastCommandNumber = null;
-            this.gcode = "";
+            this.lastCommandNumber = null
+            this.gcode = ''
         }
     }
 
     getAutocomplete(e: Event): void {
-        e.preventDefault();
+        e.preventDefault()
         if (this.gcode.length) {
-            let check = this.gcode.toLowerCase();
-            const textarea = this.$refs.gcodeCommandField.$refs.input;
-            const sentence = textarea.value;
-            const len = sentence.length;
-            const pos = textarea.selectionStart;
-            const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos);
-            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER;
+            let check = this.gcode.toLowerCase()
+            const textarea = this.$refs.gcodeCommandField.$refs.input
+            const sentence = textarea.value
+            const len = sentence.length
+            const pos = textarea.selectionStart
+            const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos)
+            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER
             if (this.rows > 1) {
-                check = sentence.substr(currentLinePos, currentEndPos - currentLinePos);
+                check = sentence.substr(currentLinePos, currentEndPos - currentLinePos)
             }
-            let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+            let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
             if (commands?.length === 1) {
                 if (this.rows > 1) {
-                    this.gcode = this.gcode.replace(check, commands[0].command);
+                    this.gcode = this.gcode.replace(check, commands[0].command)
                 } else {
-                    this.gcode = commands[0].command;
+                    this.gcode = commands[0].command
                 }
             } else if(commands?.length > 1) {
-                let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()));
+                let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
                 if (this.rows > 1) {
                     this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
-                        return strLongestEqual(acc, val.command);
-                    }, commands[0].command));
+                        return strLongestEqual(acc, val.command)
+                    }, commands[0].command))
                 } else {
                     this.gcode = commands.reduce((acc, val) => {
-                        return strLongestEqual(acc, val.command);
-                    }, commands[0].command);
+                        return strLongestEqual(acc, val.command)
+                    }, commands[0].command)
                 }
                 if (commands && commands.length) {
-                    let output = "";
-                    commands.forEach(command => output += '<a class="command blue--text font-weight-bold">'+command.command+'</a>: '+command.description+'<br />');
+                    let output = ''
+                    commands.forEach(command => output += '<a class="command blue--text font-weight-bold">'+command.command+'</a>: '+command.description+'<br />')
 
-                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' });
+                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })
                 }
             }
         }
-        this.$refs.gcodeCommandField.focus();
+        this.$refs.gcodeCommandField.focus()
     }
 
     toggleFilter(filter: string) {
