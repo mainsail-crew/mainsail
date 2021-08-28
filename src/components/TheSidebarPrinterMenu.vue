@@ -39,10 +39,10 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "./mixins/base";
-import router from "@/plugins/router";
-import {FarmPrinterState} from "@/store/farm/printer/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from './mixins/base'
+import router from '@/plugins/router'
+import {FarmPrinterState} from '@/store/farm/printer/types'
 
 @Component
 export default class TheSidebarPrinterMenu extends Mixins(BaseMixin) {
@@ -52,27 +52,27 @@ export default class TheSidebarPrinterMenu extends Mixins(BaseMixin) {
     }
 
     get printers() {
-        return this.$store.getters["farm/getPrinters"]
+        return this.$store.getters['farm/getPrinters']
     }
 
     get countPrinters() {
-        return this.$store.getters["farm/countPrinters"]
+        return this.$store.getters['farm/countPrinters']
     }
 
     get currentPage() {
-        return this.$route.fullPath;
+        return this.$route.fullPath
     }
 
     switchToPrinters() {
-        router.push("/allPrinters");
+        router.push('/allPrinters')
     }
 
     getPrinterName(namespace: string) {
-        return this.$store.getters["farm/"+namespace+"/getPrinterName"]
+        return this.$store.getters['farm/'+namespace+'/getPrinterName']
     }
 
     getPrinterDescription(printer: FarmPrinterState) {
-        return this.$store.getters["farm/"+printer._namespace+"/getStatus"]
+        return this.$store.getters['farm/'+printer._namespace+'/getStatus']
     }
 
     changePrinter(printer: FarmPrinterState) {

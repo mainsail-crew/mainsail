@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
 
 @Component
 export default class ControlPanelExtruder extends Mixins(BaseMixin) {
@@ -78,7 +78,7 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     set currentFeedAmount(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "dashboard.extruder.feedamount", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedamount', value: newVal })
     }
 
     get currentFeedRate() {
@@ -86,7 +86,7 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     set currentFeedRate(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "dashboard.extruder.feedrate", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedrate', value: newVal })
     }
 
     get boolExtrudePossible() {
@@ -107,13 +107,13 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     sendRetract() {
-        const gcode = "M83\nG1 E-"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
+        const gcode = 'M83\nG1 E-'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendDetract() {
-        const gcode = "M83\nG1 E"+this.currentFeedAmount+" F"+(this.currentFeedRate * 60)
+        const gcode = 'M83\nG1 E'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }

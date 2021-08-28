@@ -178,16 +178,15 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../../mixins/base";
-import {formatFilesize} from "@/plugins/helpers";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../../mixins/base'
 
 @Component
 export default class SystemPanel extends Mixins(BaseMixin) {
 
     private mcuDetailsDialog: { bool: boolean, headline: string, mcu: any } = {
         bool: false,
-        headline: "",
+        headline: '',
         mcu: {
             mcu_constants: null,
             last_stats: null,
@@ -199,11 +198,11 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     }
 
     get mcus() {
-        return this.$store.getters["printer/getMcus"] ?? []
+        return this.$store.getters['printer/getMcus'] ?? []
     }
 
     get hostStats() {
-        return this.$store.getters["server/getHostStats"] ?? null
+        return this.$store.getters['server/getHostStats'] ?? null
     }
 
     get systemInfo() {

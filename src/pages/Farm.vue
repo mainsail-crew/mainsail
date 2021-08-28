@@ -16,16 +16,16 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import FarmPrinterPanel from "@/components/panels/FarmPrinterPanel.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import FarmPrinterPanel from '@/components/panels/FarmPrinterPanel.vue'
 @Component({
     components: {FarmPrinterPanel}
 })
 export default class PageFarm extends Mixins(BaseMixin) {
 
     get printers() {
-        return this.$store.getters["farm/getPrinters"]
+        return this.$store.getters['farm/getPrinters']
     }
 }
 </script>

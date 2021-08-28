@@ -13,16 +13,16 @@
 <script lang="ts">
 // Inspired by these repo: https://github.com/surmon-china/vue-codemirror
 
-import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {basicSetup, EditorState} from "@codemirror/basic-setup";
-import {mainsailTheme} from "@/plugins/codemirrorTheme";
-import {StreamLanguage} from "@codemirror/stream-parser";
-import { klipper_config } from "@/plugins/StreamParserKlipperConfig";
-import { gcode } from "@/plugins/StreamParserGcode";
-import {EditorView, keymap} from "@codemirror/view";
-import {indentWithTab} from "@codemirror/commands";
-import {json} from "@codemirror/lang-json";
+import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {basicSetup, EditorState} from '@codemirror/basic-setup'
+import {mainsailTheme} from '@/plugins/codemirrorTheme'
+import {StreamLanguage} from '@codemirror/stream-parser'
+import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
+import { gcode } from '@/plugins/StreamParserGcode'
+import {EditorView, keymap} from '@codemirror/view'
+import {indentWithTab} from '@codemirror/commands'
+import {json} from '@codemirror/lang-json'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {

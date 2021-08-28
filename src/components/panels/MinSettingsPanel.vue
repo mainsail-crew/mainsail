@@ -37,23 +37,23 @@
 
 <script lang="ts">
 
-import Component from "vue-class-component";
-import {Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import Component from 'vue-class-component'
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class MinSettingsPanel extends Mixins(BaseMixin) {
 
     get existsPrinterConfig() {
-        return this.$store.getters["printer/existPrinterConfig"] ?? false
+        return this.$store.getters['printer/existPrinterConfig'] ?? false
     }
 
     get missingConfigs() {
-        return this.$store.getters["printer/checkNecessaryConfig"] ?? []
+        return this.$store.getters['printer/checkNecessaryConfig'] ?? []
     }
 
     get mainsailCfgExists() {
-        return this.$store.getters["files/checkConfigFile"]('mainsail.cfg') ?? false
+        return this.$store.getters['files/checkConfigFile']('mainsail.cfg') ?? false
     }
 }
 </script>

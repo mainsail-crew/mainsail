@@ -87,9 +87,9 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {CommandHelp} from "@/store/printer/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {CommandHelp} from '@/store/printer/types'
 
 @Component
 export default class ZoffsetPanel extends Mixins(BaseMixin) {
@@ -118,7 +118,7 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
     }
 
     get homed_axis() {
-        return this.$store.state.printer.toolhead.homed_axes ?? ""
+        return this.$store.state.printer.toolhead.homed_axes ?? ''
     }
 
     get helplist() {
@@ -134,51 +134,51 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
     }
 
     sendBabySteppingDownFine() {
-        const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "");
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' });
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDownFine' });
+        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=-0.01'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDownFine' })
     }
 
     sendBabySteppingDown() {
-        const gcode = "SET_GCODE_OFFSET Z_ADJUST=-0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=-0.05'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDown' })
     }
 
     sendBabySteppingUpFine() {
-        const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.01"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=0.01'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUpFine' })
     }
 
     sendBabySteppingUp() {
-        const gcode = "SET_GCODE_OFFSET Z_ADJUST=0.05"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=0.05'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUp' })
     }
 
     clearZOffset() {
-        const gcode = "SET_GCODE_OFFSET Z=0"+(this.homed_axis === "xyz" ? " MOVE=1" : "")
+        const gcode = 'SET_GCODE_OFFSET Z=0'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingClear' })
     }
 
     saveZOffsetToEndstop() {
-        const gcode = "Z_OFFSET_APPLY_ENDSTOP"
+        const gcode = 'Z_OFFSET_APPLY_ENDSTOP'
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
         this.saveOffsetDialog = true
     }
 
     saveZOffsetToProbe() {
-        const gcode = "Z_OFFSET_APPLY_PROBE"
+        const gcode = 'Z_OFFSET_APPLY_PROBE'
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
         this.saveOffsetDialog = true
     }
 
     saveConfig() {
-        const gcode = "SAVE_CONFIG"
+        const gcode = 'SAVE_CONFIG'
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'topbarSaveConfig' })
         this.saveOffsetDialog = false

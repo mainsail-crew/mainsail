@@ -125,11 +125,11 @@
 
 <script lang="ts">
 
-import {convertName} from "@/plugins/helpers";
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import SettingsRow from "@/components/settings/SettingsRow.vue";
-import {GuiStatePreset} from "@/store/gui/types";
+import {convertName} from '@/plugins/helpers'
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {GuiStatePreset} from '@/store/gui/types'
 
 interface presetForm {
     bool: boolean
@@ -156,8 +156,8 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     private form: presetForm = {
         bool: false,
         valid: false,
-        name: "",
-        gcode: "",
+        name: '',
+        gcode: '',
         index: null,
         boolInvalidMin: false,
         values: {}
@@ -166,7 +166,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     private cooldownForm = {
         bool: false,
         valid: false,
-        gcode: ""
+        gcode: ''
     }
 
     private rules = {
@@ -187,7 +187,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     get cooldownGcode() {
-        return this.$store.state.gui.cooldownGcode ?? ""
+        return this.$store.state.gui.cooldownGcode ?? ''
     }
 
     existsPresetName(name: string) {
@@ -201,15 +201,15 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
             const values = preset.values[key]
 
             if (values.bool) {
-                const name = key.indexOf(" ") ? key.slice(key.indexOf(" ") + 1) : key
+                const name = key.indexOf(' ') ? key.slice(key.indexOf(' ') + 1) : key
 
-                output.push(this.convertName(name)+": "+values.value+"°C")
+                output.push(this.convertName(name)+': '+values.value+'°C')
             }
         })
 
         if (preset.gcode) output.push(this.$t('Settings.PresetsTab.CustomGCode').toString())
 
-        return output.join(", ")
+        return output.join(', ')
     }
 
     createPreset() {
@@ -220,8 +220,8 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     clearForm() {
         this.form.bool = false
         this.form.index = null
-        this.form.name = ""
-        this.form.gcode = ""
+        this.form.name = ''
+        this.form.gcode = ''
         this.form.boolInvalidMin = false
         this.form.values = {}
 
@@ -297,7 +297,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
     saveCooldown() {
         if (this.cooldownForm.valid) {
-            this.$store.dispatch("gui/saveSetting", { name: 'cooldownGcode', value: this.cooldownForm.gcode })
+            this.$store.dispatch('gui/saveSetting', { name: 'cooldownGcode', value: this.cooldownForm.gcode })
             this.cooldownForm.bool = false
         }
     }

@@ -52,7 +52,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ServerPowerStateDevice} from "@/store/server/power/types";
+import {ServerPowerStateDevice} from '@/store/server/power/types'
 
 @Component
 export default class TheTopCornerMenu extends Mixins(BaseMixin) {
@@ -65,19 +65,19 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
     }
 
     get powerDevices() {
-        return this.$store.getters["server/power/getDevices"]
+        return this.$store.getters['server/power/getDevices']
     }
 
     klipperRestart() {
         this.showMenu = false
-        this.$store.dispatch('server/addEvent', { message: "RESTART", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "RESTART" })
+        this.$store.dispatch('server/addEvent', { message: 'RESTART', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'RESTART' })
     }
 
     klipperFirmwareRestart() {
         this.showMenu = false
-        this.$store.dispatch('server/addEvent', { message: "FIRMWARE_RESTART", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "FIRMWARE_RESTART" })
+        this.$store.dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
     }
 
     serviceRestart(service: string) {
@@ -86,8 +86,8 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
     }
 
     changeSwitch(device: ServerPowerStateDevice, value: string) {
-        const rpc = (value === 'off' ? "machine.device_power.on" : "machine.device_power.off")
-        this.$socket.emit(rpc,{ [device.device]: null },{ action: "server/power/responseToggle" })
+        const rpc = (value === 'off' ? 'machine.device_power.on' : 'machine.device_power.off')
+        this.$socket.emit(rpc,{ [device.device]: null },{ action: 'server/power/responseToggle' })
     }
 
     hostReboot() {

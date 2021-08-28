@@ -64,14 +64,14 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component"
+import Component from 'vue-class-component'
 import routes, {AppRoute} from '@/routes'
-import {Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {PrinterStateKlipperConfig} from "@/store/printer/types";
-import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
-import TheSidebarPrinterMenu from "@/components/TheSidebarPrinterMenu.vue";
-import MainsailLogo from "@/components/ui/MainsailLogo.vue";
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {PrinterStateKlipperConfig} from '@/store/printer/types'
+import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
+import TheSidebarPrinterMenu from '@/components/TheSidebarPrinterMenu.vue'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 @Component({
     components: {
@@ -88,7 +88,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     set naviDrawer(newVal: boolean) {
-        this.$store.dispatch("setNaviDrawer", newVal)
+        this.$store.dispatch('setNaviDrawer', newVal)
     }
 
     get logoColor(): string {
@@ -96,11 +96,11 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get sidebarLogo(): string {
-        return this.$store.getters["files/getSidebarLogo"]
+        return this.$store.getters['files/getSidebarLogo']
     }
 
     get sidebarBackground(): string {
-        return this.$store.getters["files/getSidebarBackground"]
+        return this.$store.getters['files/getSidebarBackground']
     }
 
     get mainsailVersion(): string {
@@ -108,7 +108,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get klipperVersion():string {
-        return this.$store.state.printer?.software_version ?? ""
+        return this.$store.state.printer?.software_version ?? ''
     }
 
     get naviPoints(): AppRoute[] {
@@ -147,7 +147,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get isUpdateAvailable(): boolean {
-        return this.$store.getters["server/updateManager/isUpdateAvailable"]
+        return this.$store.getters['server/updateManager/isUpdateAvailable']
     }
 
     showInNavi(route: AppRoute): boolean {

@@ -67,15 +67,15 @@
 </template>
 
 <script lang="ts">
-import {Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base"
-import {validGcodeExtensions} from "@/store/variables"
-import Component from "vue-class-component";
-import axios from "axios"
+import {Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {validGcodeExtensions} from '@/store/variables'
+import Component from 'vue-class-component'
+import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
-import TheTopCornerMenu from "@/components/TheTopCornerMenu.vue";
-import TheSettingsMenu from "@/components/TheSettingsMenu.vue";
-import TheThrottledStates from "@/components/TheThrottledStates.vue";
+import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
+import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
+import TheThrottledStates from '@/components/TheThrottledStates.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -100,7 +100,7 @@ type uploadSnackbar = {
 export default class TheTopbar extends Mixins(BaseMixin) {
     uploadSnackbar: uploadSnackbar = {
         status: false,
-        filename: "",
+        filename: '',
         percent: 0,
         speed: 0,
         total: 0,
@@ -122,7 +122,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     set naviDrawer(newVal) {
-        this.$store.dispatch("setNaviDrawer", newVal)
+        this.$store.dispatch('setNaviDrawer', newVal)
     }
 
     get validGcodeExtensions() {
@@ -142,8 +142,8 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     saveConfig() {
-        this.$store.dispatch('server/addEvent', { message: "SAVE_CONFIG", type: "command" });
-        this.$socket.emit('printer.gcode.script', { script: "SAVE_CONFIG" }, { loading: 'topbarSaveConfig' });
+        this.$store.dispatch('server/addEvent', { message: 'SAVE_CONFIG', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'SAVE_CONFIG' }, { loading: 'topbarSaveConfig' })
     }
 
     btnUploadAndStart() {
@@ -161,18 +161,18 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
             this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
             for(const file of successFiles) {
-                const text = this.$t("App.TopBar.UploadOfFileSuccessful", {file:file}).toString()
+                const text = this.$t('App.TopBar.UploadOfFileSuccessful', {file:file}).toString()
                 this.$toast.success(text)
             }
 
             this.$refs.fileUploadAndStart.value = ''
-            if (this.currentPage !== "/") await this.$router.push("/");
+            if (this.currentPage !== '/') await this.$router.push('/')
         }
     }
 
     doUploadAndStart(file: File) {
         const formData = new FormData()
-        const filename = file.name.replace(" ", "_")
+        const filename = file.name.replace(' ', '_')
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true
@@ -182,7 +182,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         this.uploadSnackbar.lastProgress.time = 0
 
         formData.append('file', file, filename)
-        formData.append('print', "true")
+        formData.append('print', 'true')
 
         return new Promise(resolve => {
             this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
@@ -210,7 +210,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
             }).catch(() => {
                 this.uploadSnackbar.status = false
                 this.$store.dispatch('socket/removeLoading', { name: 'btnUploadAndStart' })
-                const text = this.$t("App.TopBar.CannotUploadTheFile").toString()
+                const text = this.$t('App.TopBar.CannotUploadTheFile').toString()
                 this.$toast.error(text)
             })
         })

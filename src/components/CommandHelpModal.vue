@@ -65,10 +65,10 @@
 </template>
 
 <script lang="ts">
-import BaseMixin from "./mixins/base";
-import {CommandHelp} from "@/store/printer/types";
-import {Mixins, Prop, Watch} from "vue-property-decorator";
-import Component from "vue-class-component";
+import BaseMixin from './mixins/base'
+import {CommandHelp} from '@/store/printer/types'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import Component from 'vue-class-component'
 
 @Component
 export default class CommandHelpModal extends Mixins(BaseMixin) {
@@ -82,14 +82,14 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
 
     get helplistFiltered(): CommandHelp[] {
         return this.helplist
-            .filter(cmd => typeof(cmd.description) === "string" && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
-            .sort((a, b) => a.commandLow.localeCompare(b.commandLow));
+            .filter(cmd => typeof(cmd.description) === 'string' && (!this.cmdListSearch || cmd.commandLow.includes(this.cmdListSearch.toLowerCase())))
+            .sort((a, b) => a.commandLow.localeCompare(b.commandLow))
     }
 
     @Watch('isOpen')
     onIsOpen(val: boolean): void {
         if (!val) {
-            this.cmdListSearch = '';
+            this.cmdListSearch = ''
         }
     }
 }

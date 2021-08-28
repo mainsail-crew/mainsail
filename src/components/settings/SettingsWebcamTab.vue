@@ -146,10 +146,10 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import SettingsRow from "@/components/settings/SettingsRow.vue";
-import {GuiStateWebcam} from "@/store/gui/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {GuiStateWebcam} from '@/store/gui/types'
 
 interface webcamForm {
     bool: boolean
@@ -173,22 +173,22 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
         bool: false,
         index: null,
         valid: false,
-        name: "",
-        icon: "",
-        service: "",
+        name: '',
+        icon: '',
+        service: '',
         targetFps: 15,
-        url: "",
+        url: '',
         flipX: false,
         flipY: false,
     }
 
     private rules = {
-        required: (value: string) => value !== "" || this.$t("Settings.WebcamTab.Required"),
-        unique: (value: string) => !this.existsWebcamName(value) || this.$t("Settings.WebcamTab.NameAlreadyExists"),
+        required: (value: string) => value !== '' || this.$t('Settings.WebcamTab.Required'),
+        unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamTab.NameAlreadyExists'),
     }
 
     get webcams() {
-        return this.$store.getters["gui/getWebcams"] ?? []
+        return this.$store.getters['gui/getWebcams'] ?? []
     }
 
     get boolDashboard() {
@@ -196,7 +196,7 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
     }
 
     set boolDashboard(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'webcam.boolDashboard', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'webcam.boolDashboard', value: newVal })
     }
 
     get boolNavi() {
@@ -204,40 +204,40 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
     }
 
     set boolNavi(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'webcam.boolNavi', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'webcam.boolNavi', value: newVal })
     }
 
     get iconItems() {
         return [
-            { value: "mdi-printer-3d",          text: this.$t("Settings.WebcamTab.IconPrinter") },
-            { value: "mdi-printer-3d-nozzle",   text: this.$t("Settings.WebcamTab.IconNozzle") },
-            { value: "mdi-radiator-disabled",   text: this.$t("Settings.WebcamTab.IconBed") },
-            { value: "mdi-webcam",              text: this.$t("Settings.WebcamTab.IconCam") },
-            { value: "mdi-album",               text: this.$t("Settings.WebcamTab.IconFilament") },
-            { value: "mdi-door",                text: this.$t("Settings.WebcamTab.IconDoor") },
-            { value: "mdi-raspberry-pi",        text: this.$t("Settings.WebcamTab.IconMcu") },
-            { value: "mdi-campfire",            text: this.$t("Settings.WebcamTab.IconHot") },
+            { value: 'mdi-printer-3d',          text: this.$t('Settings.WebcamTab.IconPrinter') },
+            { value: 'mdi-printer-3d-nozzle',   text: this.$t('Settings.WebcamTab.IconNozzle') },
+            { value: 'mdi-radiator-disabled',   text: this.$t('Settings.WebcamTab.IconBed') },
+            { value: 'mdi-webcam',              text: this.$t('Settings.WebcamTab.IconCam') },
+            { value: 'mdi-album',               text: this.$t('Settings.WebcamTab.IconFilament') },
+            { value: 'mdi-door',                text: this.$t('Settings.WebcamTab.IconDoor') },
+            { value: 'mdi-raspberry-pi',        text: this.$t('Settings.WebcamTab.IconMcu') },
+            { value: 'mdi-campfire',            text: this.$t('Settings.WebcamTab.IconHot') },
         ]
     }
 
     get serviceItems() {
         return [
-            { value: "mjpegstreamer",           text: this.$t("Settings.WebcamTab.Mjpegstreamer")},
-            { value: "mjpegstreamer-adaptive",  text: this.$t("Settings.WebcamTab.MjpegstreamerAdaptive") },
-            { value: "uv4l-mjpeg",              text: this.$t("Settings.WebcamTab.Uv4lMjpeg") },
-            { value: "ipstream",                text: this.$t("Settings.WebcamTab.Ipstream") },
+            { value: 'mjpegstreamer',           text: this.$t('Settings.WebcamTab.Mjpegstreamer')},
+            { value: 'mjpegstreamer-adaptive',  text: this.$t('Settings.WebcamTab.MjpegstreamerAdaptive') },
+            { value: 'uv4l-mjpeg',              text: this.$t('Settings.WebcamTab.Uv4lMjpeg') },
+            { value: 'ipstream',                text: this.$t('Settings.WebcamTab.Ipstream') },
         ]
     }
 
     get webcamStyle() {
-        let transforms = "";
-        if (this.form.flipX) transforms += " scaleX(-1)"
-        if (this.form.flipY) transforms += " scaleY(-1)"
+        let transforms = ''
+        if (this.form.flipX) transforms += ' scaleX(-1)'
+        if (this.form.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimLeft().length) {
             return { transform: transforms.trimLeft() }
         }
 
-        return ""
+        return ''
     }
 
     getSubtitle(webcam: GuiStateWebcam) {
@@ -270,25 +270,25 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
 
     saveWebcam() {
         if (this.form.valid) {
-            if (this.form.index !== null) this.$store.dispatch("gui/updateWebcam", {...this.form})
-            else this.$store.dispatch("gui/addWebcam", {...this.form})
+            if (this.form.index !== null) this.$store.dispatch('gui/updateWebcam', {...this.form})
+            else this.$store.dispatch('gui/addWebcam', {...this.form})
 
             this.clearDialog()
         }
     }
 
     deleteWebcam(index: number) {
-        this.$store.dispatch("gui/deleteWebcam", { index: index })
+        this.$store.dispatch('gui/deleteWebcam', { index: index })
     }
 
     clearDialog() {
         this.form.bool = false
         this.form.index = null
-        this.form.name = ""
-        this.form.icon = "mdi-webcam"
-        this.form.service = "mjpegstreamer-adaptive"
+        this.form.name = ''
+        this.form.icon = 'mdi-webcam'
+        this.form.service = 'mjpegstreamer-adaptive'
         this.form.targetFps = 15
-        this.form.url = "/webcam/?action=stream"
+        this.form.url = '/webcam/?action=stream'
         this.form.flipX = false
         this.form.flipY = false
     }

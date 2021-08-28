@@ -37,12 +37,12 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import ControlPanelExtruder from "@/components/panels/ControlPanelExtruder.vue";
-import ControlPanelCrossControl from "@/components/panels/ControlPanelCrossControl.vue";
-import ControlPanelBarsControl from "@/components/panels/ControlPanelBarsControl.vue";
-import ControlPanelCircleControl from "@/components/panels/ControlPanelCircleControl.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import ControlPanelExtruder from '@/components/panels/ControlPanelExtruder.vue'
+import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossControl.vue'
+import ControlPanelBarsControl from '@/components/panels/ControlPanelBarsControl.vue'
+import ControlPanelCircleControl from '@/components/panels/ControlPanelCircleControl.vue'
 @Component({
     components: {ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
 })

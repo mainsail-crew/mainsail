@@ -168,9 +168,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import ControlMixin from "@/components/mixins/control";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import ControlMixin from '@/components/mixins/control'
 
 @Component
 export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {
@@ -181,7 +181,7 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     set selectedCrossStep(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "dashboard.control.selectedCrossStep", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.selectedCrossStep', value: newVal })
     }
 
     get reverseX() {
@@ -207,21 +207,21 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     onResize() {
-        this.homeCols = window.screen.width < 360 ? 12 : 6;
+        this.homeCols = window.screen.width < 360 ? 12 : 6
     }
 
     created() {
-        window.addEventListener('resize', this.onResize);
+        window.addEventListener('resize', this.onResize)
     }
 
     mounted() {
         if (window.screen.width < 330) {
-            this.homeCols = 12;
+            this.homeCols = 12
         }
     }
 
     destroyed() {
-        window.removeEventListener('resize', this.onResize);
+        window.removeEventListener('resize', this.onResize)
     }
 }
 </script>

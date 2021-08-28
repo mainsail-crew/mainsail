@@ -115,13 +115,13 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
-import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
-import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue"
+import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
+import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 
 @Component({
     components: {
-        "webcam-mjpegstreamer": Mjpegstreamer,
-        "webcam-mjpegstreamer-adaptive": MjpegstreamerAdaptive,
+        'webcam-mjpegstreamer': Mjpegstreamer,
+        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
     }
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
@@ -129,57 +129,57 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     @Prop({ type: Object, required: true }) printer!: FarmPrinterState
 
     get printerUrl() {
-        const thisUrl = window.location.href.split("/")
+        const thisUrl = window.location.href.split('/')
         const protocol = thisUrl[0]
 
-        let url = protocol+"//"+this.printer.socket.hostname
-        if (80 !== this.printer.socket.webPort) url += ":"+this.printer.socket.webPort
+        let url = protocol+'//'+this.printer.socket.hostname
+        if (80 !== this.printer.socket.webPort) url += ':'+this.printer.socket.webPort
 
         return url
     }
 
     get isCurrentPrinter() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/isCurrentPrinter"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/isCurrentPrinter']
     }
 
     get currentCamName() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getSetting"]('currentCamName', 'off')
+        return this.$store.getters['farm/'+this.printer._namespace+'/getSetting']('currentCamName', 'off')
     }
 
     set currentCamName(newVal) {
-        this.$store.dispatch("farm/"+this.printer._namespace+"/setSettings", { currentCamName: newVal })
+        this.$store.dispatch('farm/'+this.printer._namespace+'/setSettings', { currentCamName: newVal })
     }
 
     get printer_name() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterName"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getPrinterName']
     }
 
     get printer_status() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getStatus"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getStatus']
     }
 
     get printer_current_filename() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getCurrentFilename"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getCurrentFilename']
     }
 
     get printer_image() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getImage"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getImage']
     }
 
     get printer_logo() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getLogo"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getLogo']
     }
 
     get printer_position() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getPosition"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getPosition']
     }
 
     get printer_preview() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterPreview"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getPrinterPreview']
     }
 
     get printer_webcams() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getPrinterWebcams"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getPrinterWebcams']
     }
 
     get currentWebcam() {
@@ -193,7 +193,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
         if (this.printer.socket.isConnected)
             this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
         else
-            this.$store.dispatch("farm/"+this.printer._namespace+"/reconnect")
+            this.$store.dispatch('farm/'+this.printer._namespace+'/reconnect')
     }
 
 }

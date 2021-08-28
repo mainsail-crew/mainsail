@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import BaseMixin from "../mixins/base";
-import {Mixins} from "vue-property-decorator";
+import Component from 'vue-class-component'
+import BaseMixin from '../mixins/base'
+import {Mixins} from 'vue-property-decorator'
 
 @Component
 export default class MoonrakerStatePanel extends Mixins(BaseMixin) {

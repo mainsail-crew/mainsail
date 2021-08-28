@@ -10,15 +10,15 @@
 
 <script lang="ts">
 
-import { convertName } from "@/plugins/helpers"
-import Component from "vue-class-component";
-import {Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {PrinterTempHistoryStateSerie} from "@/store/printer/tempHistory/types";
+import { convertName } from '@/plugins/helpers'
+import Component from 'vue-class-component'
+import {Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {PrinterTempHistoryStateSerie} from '@/store/printer/tempHistory/types'
 
-import { createComponent } from 'echarts-for-vue';
-import * as echarts from 'echarts';
-import {ECharts} from "echarts/core";
+import { createComponent } from 'echarts-for-vue'
+import * as echarts from 'echarts'
+import {ECharts} from 'echarts/core'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -198,7 +198,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get maxHistory() {
-        return this.$store.getters["server/getConfig"]('server', 'temperature_store_size') ?? 1200
+        return this.$store.getters['server/getConfig']('server', 'temperature_store_size') ?? 1200
     }
 
     get series() {
@@ -214,15 +214,15 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get maxTemp() {
-        return this.$store.getters["printer/getMaxTemp"] ?? 300
+        return this.$store.getters['printer/getMaxTemp'] ?? 300
     }
 
     get boolDisplayPwmAxis() {
-        return this.$store.getters["printer/tempHistory/getBoolDisplayPwmAxis"]
+        return this.$store.getters['printer/tempHistory/getBoolDisplayPwmAxis']
     }
 
     get selectedLegends() {
-        return this.$store.getters["printer/tempHistory/getSelectedLegends"]
+        return this.$store.getters['printer/tempHistory/getSelectedLegends']
     }
 
     mounted() {
@@ -276,41 +276,41 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     tooltipFormater(datasets: any) {
-        let output = ""
+        let output = ''
 
         const mainDatasets = datasets.filter((dataset: any) => !dataset.seriesName.includes('-') && dataset.seriesName !== 'date')
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
-            outputTime = outputTime.substr(outputTime.indexOf(" "))
+            outputTime = outputTime.substr(outputTime.indexOf(' '))
 
             output +=
-                "<div class=\"row\">" +
-                "<div class=\"col py-1\" style='border-bottom: 1px solid rgba(255, 255, 255, 0.24);'>" +
-                "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
-                "<span class='font-weight-bold'>"+outputTime+"</span>" +
-                "</div>" +
-                "</div>"
+                '<div class="row">' +
+                '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
+                '<span class=\'v-icon mdi mdi-clock theme-dark\' style=\'font-size: 14px; margin-right: 5px;\'></span>' +
+                '<span class=\'font-weight-bold\'>'+outputTime+'</span>' +
+                '</div>' +
+                '</div>'
         }
 
         mainDatasets.forEach((dataset: any) => {
-            output += "<div class=\"row\">"
+            output += '<div class="row">'
 
-            output += "<div class=\"col-auto py-0\">"
+            output += '<div class="col-auto py-0">'
             output += dataset.marker
-            output += "<span class='ml-2'>"+convertName(dataset.seriesName)+":</span>"
-            output += "</div>"
+            output += '<span class=\'ml-2\'>'+convertName(dataset.seriesName)+':</span>'
+            output += '</div>'
 
-            output += "<div class=\"col text-right py-0 font-weight-bold\">"
+            output += '<div class="col text-right py-0 font-weight-bold">'
 
             if (dataset.seriesName in dataset.value) output += dataset.value[dataset.seriesName].toFixed(1)
-            if (dataset.seriesName+"-target" in dataset.value) output += " / "+dataset.value[dataset.seriesName+"-target"].toFixed(1)
-            output += "°C"
+            if (dataset.seriesName+'-target' in dataset.value) output += ' / '+dataset.value[dataset.seriesName+'-target'].toFixed(1)
+            output += '°C'
 
-            if (dataset.seriesName+"-power" in dataset.value) output += " [ "+(dataset.value[dataset.seriesName+"-power"]*100).toFixed(0)+"% ]"
-            if (dataset.seriesName+"-speed" in dataset.value) output += " [ "+(dataset.value[dataset.seriesName+"-speed"]*100).toFixed(0)+"% ]"
+            if (dataset.seriesName+'-power' in dataset.value) output += ' [ '+(dataset.value[dataset.seriesName+'-power']*100).toFixed(0)+'% ]'
+            if (dataset.seriesName+'-speed' in dataset.value) output += ' [ '+(dataset.value[dataset.seriesName+'-speed']*100).toFixed(0)+'% ]'
 
-            output += "</div>"
-            output += "</div>"
+            output += '</div>'
+            output += '</div>'
         })
 
         return output

@@ -337,9 +337,9 @@ svg a#tilt_adjust #tilt_icon {
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import ControlMixin from "@/components/mixins/control";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import ControlMixin from '@/components/mixins/control'
 
 @Component
 export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {

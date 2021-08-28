@@ -10,12 +10,12 @@
 
 <script lang="ts">
 
-import Component from "vue-class-component";
-import {createComponent} from "echarts-for-vue";
-import * as echarts from "echarts";
-import {Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {ECharts} from "echarts/core";
+import Component from 'vue-class-component'
+import {createComponent} from 'echarts-for-vue'
+import * as echarts from 'echarts'
+import {Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {ECharts} from 'echarts/core'
 
 @Component({
     components: {
@@ -40,7 +40,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
             trigger: 'axis',
             borderWidth: 0,
             formatter: (datasets: any) => {
-                let output = ""
+                let output = ''
 
                 if (datasets.length) {
                     output = datasets[0]['marker']
@@ -49,7 +49,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
                     const outputTimeDate = new Date (a[0],a[1]-1, a[2])
                     const outputValue = Math.round(datasets[0]['data'][1] * 10) / 10
 
-                    output += outputTimeDate.toLocaleDateString()+": "+outputValue+"m"
+                    output += outputTimeDate.toLocaleDateString()+': '+outputValue+'m'
                 }
 
                 return output
@@ -111,7 +111,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     }
 
     get filamentUsageArray() {
-        return this.$store.getters["server/history/getFilamentUsageArray"]
+        return this.$store.getters['server/history/getFilamentUsageArray']
     }
 
     get chart (): ECharts | null {
@@ -148,7 +148,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
         if (isVisible) this.chart?.resize()
     }
 
-    eventListenerResize(event: Event) {
+    eventListenerResize() {
         this.chart?.resize()
     }
 }
