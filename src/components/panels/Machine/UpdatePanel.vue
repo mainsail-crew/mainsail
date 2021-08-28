@@ -148,8 +148,8 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../../mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../../mixins/base'
 import semver from 'semver'
 
 @Component
@@ -157,8 +157,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     private commitsOverlay = {
         bool: false,
-        owner: "",
-        modul: "",
+        owner: '',
+        modul: '',
         commits: [],
     }
 
@@ -171,11 +171,11 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     get updateableSoftwares() {
-        return this.$store.getters["server/updateManager/getUpdateableSoftwares"]
+        return this.$store.getters['server/updateManager/getUpdateableSoftwares']
     }
 
     btnSync() {
-        this.$socket.emit('machine.update.status', { refresh: true }, { action: 'server/updateManager/getStatus', loading: "loadingBtnSyncUpdateManager" })
+        this.$socket.emit('machine.update.status', { refresh: true }, { action: 'server/updateManager/getStatus', loading: 'loadingBtnSyncUpdateManager' })
     }
 
     getBtnColor(object: any) {
@@ -200,7 +200,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             if (
                 'version' in object &&
                 'remote_version' in object && (
-                    object.version === "?" || object.remote_version === "?"
+                    object.version === '?' || object.remote_version === '?'
                 )
             ) return 'gray'
 
@@ -232,7 +232,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             if (
                 'version' in object &&
                 'remote_version' in object && (
-                    object.version === "?" || object.remote_version === "?"
+                    object.version === '?' || object.remote_version === '?'
                 )
             ) return this.$t('Machine.UpdatePanel.Unknown')
 
@@ -264,7 +264,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             if (
                 'version' in object &&
                 'remote_version' in object && (
-                    object.version === "?" || object.remote_version === "?"
+                    object.version === '?' || object.remote_version === '?'
                 )
             ) return 'help-circle-outline'
 
@@ -297,17 +297,17 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         const local_version = 'version' in object ? object.version : '?'
         const remote_version = 'remote_version' in object ? object.remote_version : '?'
 
-        let output = ""
-        if ('remote_alias' in object && object.remote_alias !== "origin") output += object.remote_alias
-        if ('branch' in object && object.branch !== "master") {
-            if (output !== "") output += "/"
+        let output = ''
+        if ('remote_alias' in object && object.remote_alias !== 'origin') output += object.remote_alias
+        if ('branch' in object && object.branch !== 'master') {
+            if (output !== '') output += '/'
 
             output += object.branch
         }
-        if (output !== "") output += ": "
+        if (output !== '') output += ': '
 
         if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
-            output += local_version+" > "+remote_version
+            output += local_version+' > '+remote_version
         else if ('full_version_string' in object && object.full_version_string !== '?')
             output += object.full_version_string
         else
@@ -331,7 +331,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     updateModule(key: string) {
-        if (["klipper", "moonraker"].includes(key)) this.$socket.emit('machine.update.'+key, { })
+        if (['klipper', 'moonraker'].includes(key)) this.$socket.emit('machine.update.'+key, { })
         else this.$socket.emit('machine.update.client', { name: key })
     }
 

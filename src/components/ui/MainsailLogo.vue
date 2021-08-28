@@ -10,10 +10,10 @@
 
 <script lang="ts">
 
-import Component from "vue-class-component";
-import {Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import {defaultLogoColor} from "@/store/variables";
+import Component from 'vue-class-component'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import {defaultLogoColor} from '@/store/variables'
 
 @Component
 export default class MainsailLogo extends Mixins(BaseMixin) {

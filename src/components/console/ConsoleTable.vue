@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import Vue from "vue";
-import {Prop} from "vue-property-decorator";
-import ConsoleTableEntry from "@/components/console/ConsoleTableEntry.vue";
+import Component from 'vue-class-component'
+import Vue from 'vue'
+import {Prop} from 'vue-property-decorator'
+import ConsoleTableEntry from '@/components/console/ConsoleTableEntry.vue'
 @Component({
     components: {ConsoleTableEntry}
 })

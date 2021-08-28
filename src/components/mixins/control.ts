@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import Vue from 'vue'
+import Component from 'vue-class-component'
 
 @Component
 export default class ControlMixin extends Vue {
@@ -9,7 +9,7 @@ export default class ControlMixin extends Vue {
     }
 
     get homedAxes(): string {
-        return this.$store.state.printer?.toolhead?.homed_axes ?? ""
+        return this.$store.state.printer?.toolhead?.homed_axes ?? ''
     }
 
     get feedrateXY() {
@@ -31,51 +31,51 @@ export default class ControlMixin extends Vue {
     get colorQuadGantryLevel() {
         const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
 
-        return status ? "primary" : "warning"
+        return status ? 'primary' : 'warning'
     }
 
     get colorZTilt() {
         const status = this.$store.state.printer.z_tilt?.applied ?? true
 
-        return status ? "primary" : "warning"
+        return status ? 'primary' : 'warning'
     }
 
     doHome() {
-        this.$store.dispatch('server/addEvent', { message: "G28", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
+        this.$store.dispatch('server/addEvent', { message: 'G28', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28' }, { loading: 'homeAll' })
     }
 
     doHomeX() {
-        this.$store.dispatch('server/addEvent', { message: "G28 X", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 X" }, { loading: 'homeX' })
+        this.$store.dispatch('server/addEvent', { message: 'G28 X', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28 X' }, { loading: 'homeX' })
     }
 
     doHomeY() {
-        this.$store.dispatch('server/addEvent', { message: "G28 Y", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 Y" }, { loading: 'homeY' })
+        this.$store.dispatch('server/addEvent', { message: 'G28 Y', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28 Y' }, { loading: 'homeY' })
     }
 
     doHomeZ() {
-        this.$store.dispatch('server/addEvent', { message: "G28 Z", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28 Z" }, { loading: 'homeZ' })
+        this.$store.dispatch('server/addEvent', { message: 'G28 Z', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28 Z' }, { loading: 'homeZ' })
     }
 
     doQGL() {
-        this.$store.dispatch('server/addEvent', { message: "QUAD_GANTRY_LEVEL", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "QUAD_GANTRY_LEVEL" }, { loading: 'qgl' })
+        this.$store.dispatch('server/addEvent', { message: 'QUAD_GANTRY_LEVEL', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'QUAD_GANTRY_LEVEL' }, { loading: 'qgl' })
     }
 
     doZtilt() {
-        this.$store.dispatch('server/addEvent', { message: "Z_TILT_ADJUST", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "Z_TILT_ADJUST" }, { loading: 'zTilt' })
+        this.$store.dispatch('server/addEvent', { message: 'Z_TILT_ADJUST', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'Z_TILT_ADJUST' }, { loading: 'zTilt' })
     }
 
     doSendMove(gcode: string, feedrate: number) {
         if (this.absolute_coordinates) {
-            gcode = "G91" + "\n" +
-                "G1 " + gcode + " F"+feedrate*60 + "\n" +
-                "G90"
-        } else gcode = "G1 " + gcode + " F"+feedrate*60
+            gcode = 'G91' + '\n' +
+                'G1 ' + gcode + ' F'+feedrate*60 + '\n' +
+                'G90'
+        } else gcode = 'G1 ' + gcode + ' F'+feedrate*60
 
         this.doSend(gcode)
     }

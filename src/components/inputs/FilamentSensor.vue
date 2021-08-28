@@ -22,9 +22,9 @@
 
 
 <script lang="ts">
-import {convertName} from "@/plugins/helpers";
-import {Component, Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import {convertName} from '@/plugins/helpers'
+import {Component, Mixins, Prop} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class FilamentSensor extends Mixins(BaseMixin) {
@@ -35,9 +35,9 @@ export default class FilamentSensor extends Mixins(BaseMixin) {
     @Prop({ type: Boolean, required: true }) readonly filament_detected!: boolean
 
     get statusColor() {
-        if (!this.enabled) return "gray"
-        else if (this.filament_detected) return "success"
-        else return "danger"
+        if (!this.enabled) return 'gray'
+        else if (this.filament_detected) return 'success'
+        else return 'danger'
     }
 
     get statusText() {

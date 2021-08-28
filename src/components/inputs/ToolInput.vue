@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import {Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import Component from 'vue-class-component'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class ToolInput extends Mixins(BaseMixin) {
@@ -48,15 +48,15 @@ export default class ToolInput extends Mixins(BaseMixin) {
     @Prop({ type: Array, default: [] }) items!: number[]
 
     setTemps(): void {
-        if (typeof this.value === "object") this.value = this.value.value ?? 0
-        if (this.value === "") this.value = 0
+        if (typeof this.value === 'object') this.value = this.value.value ?? 0
+        if (this.value === '') this.value = 0
 
         if (this.value > this.max_temp) {
             this.value = { value: this.target, text: this.target }
-            this.$toast.error("Temperature too high for "+this.name+"! (max: "+this.max_temp+")")
+            this.$toast.error('Temperature too high for '+this.name+'! (max: '+this.max_temp+')')
         } else if (this.value < this.min_temp && this.value != 0) {
             this.value = { value: this.target, text: this.target }
-            this.$toast.error("Temperature too low for "+this.name+"! (min: "+this.min_temp+")")
+            this.$toast.error('Temperature too low for '+this.name+'! (min: '+this.min_temp+')')
         } else {
             const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })

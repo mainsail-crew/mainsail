@@ -27,10 +27,10 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import {Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import ConnectionStatus from "../ui/ConnectionStatus.vue";
+import Component from 'vue-class-component'
+import {Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import ConnectionStatus from '../ui/ConnectionStatus.vue'
 
 @Component({
     components: {ConnectionStatus}
@@ -40,7 +40,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
 
 
     get klippy_message() {
-        return this.$store.state.server.klippy_message ?? ""
+        return this.$store.state.server.klippy_message ?? ''
     }
 
     restart() {
@@ -57,7 +57,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
 
     @Watch('klipperState')
     klipperStateChanged(newVal: string) {
-        if (newVal === "ready") {
+        if (newVal === 'ready') {
             if (this.timer) {
                 clearInterval(this.timer)
                 this.timer = null

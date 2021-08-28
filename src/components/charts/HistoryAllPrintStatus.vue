@@ -10,12 +10,12 @@
 
 <script lang="ts">
 
-import Component from "vue-class-component";
-import {createComponent} from "echarts-for-vue";
-import * as echarts from "echarts";
-import {Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {ECharts} from "echarts/core";
+import Component from 'vue-class-component'
+import {createComponent} from 'echarts-for-vue'
+import * as echarts from 'echarts'
+import {Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {ECharts} from 'echarts/core'
 
 @Component({
     components: {
@@ -57,7 +57,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     get allPrintStatusArray() {
-        return this.$store.getters["server/history/getAllPrintStatusArray"]
+        return this.$store.getters['server/history/getAllPrintStatusArray']
     }
 
     get chart (): ECharts | null {
@@ -94,7 +94,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         if (isVisible) this.chart?.resize()
     }
 
-    eventListenerResize(event: Event) {
+    eventListenerResize() {
         this.chart?.resize()
     }
 }

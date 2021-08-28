@@ -273,7 +273,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import VueLoadImage from "vue-load-image"
+import VueLoadImage from 'vue-load-image'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel'
@@ -290,15 +290,15 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get current_filename() {
-        return this.$store.state.printer.print_stats?.filename ?? ""
+        return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
     get display_message() {
-        return this.$store.state.printer.display_status?.message ?? ""
+        return this.$store.state.printer.display_status?.message ?? ''
     }
 
     get print_stats_message() {
-        return this.$store.state.printer.print_stats?.message ?? ""
+        return this.$store.state.printer.print_stats?.message ?? ''
     }
 
     get positions() {
@@ -306,7 +306,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get coordinates() {
-        return this.positions.coordinates ? this.$t("Panels.StatusPanel.Absolute") : this.$t("Panels.StatusPanel.Relative")
+        return this.positions.coordinates ? this.$t('Panels.StatusPanel.Absolute') : this.$t('Panels.StatusPanel.Relative')
     }
 
     get filament_used() {
@@ -326,63 +326,63 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get printPercent() {
-        return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
+        return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
     }
 
     get printerStateOutput() {
-        if (this.printer_state !== "") {
+        if (this.printer_state !== '') {
             const idle_timeout_state = this.$store.state.printer.idle_timeout?.state
 
             if (
-                this.printer_state === "standby" &&
-                idle_timeout_state === "Printing"
-            ) return "Busy"
+                this.printer_state === 'standby' &&
+                idle_timeout_state === 'Printing'
+            ) return 'Busy'
 
-            if (this.printer_state !== "" && ['paused', 'printing'].includes(this.printer_state)) {
-                return this.printPercent+"% "+this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
+            if (this.printer_state !== '' && ['paused', 'printing'].includes(this.printer_state)) {
+                return this.printPercent+'% '+this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
             }
 
             return this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
         }
 
-        return this.$t("Panels.StatusPanel.Unknown")
+        return this.$t('Panels.StatusPanel.Unknown')
     }
 
     get toolbarButtons() {
         return [
             {
-                text: this.$t("Panels.StatusPanel.PausePrint"),
-                color: "orange",
-                icon: "mdi-pause",
-                loadingName: "statusPrintPause",
+                text: this.$t('Panels.StatusPanel.PausePrint'),
+                color: 'orange',
+                icon: 'mdi-pause',
+                loadingName: 'statusPrintPause',
                 status: ['printing'],
                 click: this.btnPauseJob
             }, {
-                text: this.$t("Panels.StatusPanel.ResumePrint"),
-                color: "orange",
-                icon: "mdi-play",
-                loadingName: "statusPrintResume",
+                text: this.$t('Panels.StatusPanel.ResumePrint'),
+                color: 'orange',
+                icon: 'mdi-play',
+                loadingName: 'statusPrintResume',
                 status: ['paused'],
                 click: this.btnResumeJob
             }, {
-                text: this.$t("Panels.StatusPanel.CancelPrint"),
-                color: "red",
-                icon: "mdi-stop",
-                loadingName: "statusPrintCancel",
+                text: this.$t('Panels.StatusPanel.CancelPrint'),
+                color: 'red',
+                icon: 'mdi-stop',
+                loadingName: 'statusPrintCancel',
                 status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
                 click: this.btnCancelJob
             }, {
-                text: this.$t("Panels.StatusPanel.ClearPrintStats"),
-                color: "primary",
-                icon: "mdi-broom",
-                loadingName: "statusPrintClear",
+                text: this.$t('Panels.StatusPanel.ClearPrintStats'),
+                color: 'primary',
+                icon: 'mdi-broom',
+                loadingName: 'statusPrintClear',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnClearJob
             }, {
-                text: this.$t("Panels.StatusPanel.ReprintJob"),
-                color: "primary",
-                icon: "mdi-printer",
-                loadingName: "statusPrintReprint",
+                text: this.$t('Panels.StatusPanel.ReprintJob'),
+                color: 'primary',
+                icon: 'mdi-printer',
+                loadingName: 'statusPrintReprint',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnReprintJob
             }
@@ -455,23 +455,23 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get estimated_time_file() {
-        return this.$store.getters["printer/getEstimatedTimeFile"]
+        return this.$store.getters['printer/getEstimatedTimeFile']
     }
 
     get estimated_time_filament() {
-        return this.$store.getters["printer/getEstimatedTimeFilament"]
+        return this.$store.getters['printer/getEstimatedTimeFilament']
     }
 
     get estimated_time_slicer() {
-        return this.$store.getters["printer/getEstimatedTimeSlicer"]
+        return this.$store.getters['printer/getEstimatedTimeSlicer']
     }
 
     get estimated_time_avg() {
-        return this.$store.getters["printer/getEstimatedTimeAvg"]
+        return this.$store.getters['printer/getEstimatedTimeAvg']
     }
 
     get eta() {
-        return this.$store.getters["printer/getEstimatedTimeETA"]
+        return this.$store.getters['printer/getEstimatedTimeETA']
     }
 
     get filament_diameter() {
@@ -480,7 +480,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get thumbnailSmall() {
         if (
-            "thumbnails" in this.current_file &&
+            'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
             const thumbnail = this.current_file.thumbnails.find(thumb =>
@@ -489,43 +489,43 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                let relative_url = ""
-                if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                let relative_url = ''
+                if (this.current_file.filename.lastIndexOf('/') !== -1) {
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail)
-                    return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+this.current_file.modified
+                    return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+this.current_file.modified
             }
         }
 
-        return ""
+        return ''
     }
 
     get thumbnailBig() {
         if (
-            "thumbnails" in this.current_file &&
+            'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
             const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                let relative_url = ""
-                if (this.current_file.filename.lastIndexOf("/") !== -1) {
-                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf("/")+1)
+                let relative_url = ''
+                if (this.current_file.filename.lastIndexOf('/') !== -1) {
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail)
-                    return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+this.current_file.modified
+                    return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+this.current_file.modified
             }
         }
 
-        return ""
+        return ''
     }
 
     get thumbnailBigHeight() {
         if (
-            "thumbnails" in this.current_file &&
+            'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
             const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
@@ -540,7 +540,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get thumbnailBigWidth() {
         if (
-            "thumbnails" in this.current_file &&
+            'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
             const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
@@ -572,11 +572,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     btnClearJob() {
-        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, { loading: 'statusPrintClear' });
+        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, { loading: 'statusPrintClear' })
     }
 
     btnReprintJob() {
-        this.$socket.emit('printer.print.start', { filename: this.current_filename }, { loading: 'statusPrintReprint' });
+        this.$socket.emit('printer.print.start', { filename: this.current_filename }, { loading: 'statusPrintReprint' })
     }
 
     clearDisplayMessage() {
@@ -584,21 +584,21 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     formatTime(seconds) {
-        let h = Math.floor(seconds / 3600);
-        seconds %= 3600;
-        let m = ("0" + Math.floor(seconds / 60)).slice(-2);
-        let s = ("0" + (seconds % 60).toFixed(0)).slice(-2);
+        let h = Math.floor(seconds / 3600)
+        seconds %= 3600
+        let m = ('0' + Math.floor(seconds / 60)).slice(-2)
+        let s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
 
-        return h+':'+m+':'+s;
+        return h+':'+m+':'+s
     }
 
     formatDateTime(msec) {
         const date = new Date(msec)
-        const h = date.getHours() >= 10 ? date.getHours() : "0"+date.getHours()
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : "0"+date.getMinutes()
+        const h = date.getHours() >= 10 ? date.getHours() : '0'+date.getHours()
+        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0'+date.getMinutes()
 
         const diff = msec - new Date().getTime()
-        return h+":"+m+((diff > 60*60*24*1000) ? "+"+parseInt(diff / (60*60*24*1000)) : "")
+        return h+':'+m+((diff > 60*60*24*1000) ? '+'+parseInt(diff / (60*60*24*1000)) : '')
     }
 
     @Watch('live_flow')
@@ -614,13 +614,13 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             const thumbnailWidth = this.thumbnailBigWidth
             const factor = clientWidth / thumbnailWidth
 
-            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed()+"px"
+            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed()+'px'
         }
     }
 
     blurBigThumbnail() {
         if (this.$refs.bigThumbnail) {
-            this.$refs.bigThumbnail.$el.style.height = "200px"
+            this.$refs.bigThumbnail.$el.style.height = '200px'
         }
     }
 
@@ -630,11 +630,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     created() {
-        window.addEventListener('resize', this.onResize);
+        window.addEventListener('resize', this.onResize)
     }
 
     destroyed() {
-        window.removeEventListener('resize', this.onResize);
+        window.removeEventListener('resize', this.onResize)
     }
 }
 </script>

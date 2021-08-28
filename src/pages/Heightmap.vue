@@ -192,20 +192,23 @@
     </div>
 </template>
 <script lang="ts">
-import {Component, Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import {Component, Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
-import { createComponent } from 'echarts-for-vue';
-import * as echarts from 'echarts';
-import {ECharts} from "echarts/core";
-import 'echarts-gl';
+import { createComponent } from 'echarts-for-vue'
+import * as echarts from 'echarts'
+import {ECharts} from 'echarts/core'
+import 'echarts-gl'
 
-interface heightmapSerie {
+interface HeightmapSerie {
     type: string
     name: string
-    data: any[]
+    data: number[][]
     dataShape?: number[]
-    itemStyle?: any
+    itemStyle?: {
+        opacity?: number
+        color?: number[]
+    }
     wireframe: {
         show: boolean
     }
@@ -219,6 +222,7 @@ interface heightmapSerie {
 export default class PageHeightmap extends Mixins(BaseMixin) {
 
     $refs!: {
+        // eslint-disable-next-line
         heightmap: any
     }
 
@@ -352,10 +356,10 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get profiles () {
-        return this.$store.getters["printer/getBedMeshProfiles"]
+        return this.$store.getters['printer/getBedMeshProfiles']
     }
 
-    get bed_mesh(): any {
+    get bed_mesh() {
         return this.$store.state.printer.bed_mesh ?? null
     }
 
@@ -364,69 +368,69 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         this.chart?.setOption(this.chartOptions)
     }
 
-    get showProbed() {
+    get showProbed(): boolean {
         return this.$store.state.gui.heightmap.probed ?? true
     }
 
     set showProbed(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.probed', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.probed', value: newVal })
     }
 
-    get showMesh() {
+    get showMesh(): boolean {
         return this.$store.state.gui.heightmap.mesh ?? true
     }
 
     set showMesh(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.mesh', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.mesh', value: newVal })
     }
 
-    get showFlat() {
+    get showFlat(): boolean {
         return this.$store.state.gui.heightmap.flat ?? true
     }
 
     set showFlat(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.flat', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.flat', value: newVal })
     }
 
-    get wireframe() {
+    get wireframe(): boolean {
         return this.$store.state.gui.heightmap.wireframe ?? true
     }
 
     set wireframe(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.wireframe', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.wireframe', value: newVal })
     }
 
-    get scale() {
+    get scale(): boolean {
         return this.$store.state.gui.heightmap.scale ?? true
     }
 
     set scale(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.scale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scale', value: newVal })
     }
 
-    get scaleVisualMap() {
+    get scaleVisualMap(): boolean {
         return this.$store.state.gui.heightmap.scaleVisualMap ?? false
     }
 
     set scaleVisualMap(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'heightmap.scaleVisualMap', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleVisualMap', value: newVal })
     }
 
-    get rangeX() {
+    get rangeX(): number[] {
         const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
         const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
 
         return [axis_minimum[0] ?? 0, axis_maximum[0] ?? 0]
     }
 
-    get rangeY() {
+    get rangeY(): number[] {
         const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
         const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
 
         return [axis_minimum[1] ?? 0, axis_maximum[1] ?? 0]
     }
 
-    get heightmapLimit() {
+    get heightmapLimit(): number[] {
         let min = 0
         let max = 0
 
@@ -446,7 +450,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return [min, max]
     }
 
-    get heightmapRangeLimit() {
+    get heightmapRangeLimit(): number[] {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
@@ -455,7 +459,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return [minRange, maxRange]
     }
 
-    get selected() {
+    get selected(): { [key: string]: boolean } {
         return {
             'probed': this.showProbed,
             'mesh': this.showMesh,
@@ -463,7 +467,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         }
     }
 
-    get series() {
+    get series(): HeightmapSerie[] {
         const series = []
 
         if (this.bed_mesh) {
@@ -475,8 +479,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return series
     }
 
-    get seriesProbed() {
-        const serie: heightmapSerie = {
+    get seriesProbed(): HeightmapSerie {
+        const serie: HeightmapSerie = {
             type: 'surface',
             name: 'probed',
             data: [],
@@ -521,8 +525,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return serie
     }
 
-    get seriesMesh() {
-        const serie: heightmapSerie = {
+    get seriesMesh(): HeightmapSerie {
+        const serie: HeightmapSerie = {
             type: 'surface',
             name: 'mesh',
             data: [],
@@ -567,8 +571,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return serie
     }
 
-    get seriesFlat() {
-        const serie: heightmapSerie = {
+    get seriesFlat(): HeightmapSerie {
+        const serie: HeightmapSerie = {
             type: 'surface',
             name: 'flat',
             data: [],
@@ -584,7 +588,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         const config = this.$store.state.printer.configfile?.settings?.bed_mesh
         if (config) {
             let probe_count = [1,1]
-            if (config.probe_count && typeof config.probe_count === "string") {
+            if (config.probe_count && typeof config.probe_count === 'string') {
                 probe_count = config.probe_count.split(',')
             } else if (config.probe_count) {
                 probe_count = config.probe_count
@@ -597,8 +601,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
             if (config.mesh_min && config.mesh_max) {
                 // is no delta
-                mesh_min = (typeof config.mesh_min === "string") ? config.mesh_min.split(',') : config.mesh_min
-                mesh_max = (typeof config.mesh_max === "string") ? config.mesh_max.split(',') : config.mesh_max
+                mesh_min = (typeof config.mesh_min === 'string') ? config.mesh_min.split(',') : config.mesh_min
+                mesh_max = (typeof config.mesh_max === 'string') ? config.mesh_max.split(',') : config.mesh_max
             } else {
                 // delta min/max
                 mesh_min = [
@@ -621,7 +625,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             const xStep = (xMax - xMin) / (xCount - 1)
             const yStep = (yMax - yMin) / (yCount - 1)
 
-            const data: any[] = []
+            const data: number[][] = []
 
             for (let y = 0; y < yCount; y++) {
                 for (let x = 0; x < xCount; x++) {
@@ -640,13 +644,13 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return serie
     }
 
-    get visualMapRange() {
+    get visualMapRange(): number[] {
         if (!this.scaleVisualMap) return [-0.1, 0.1]
 
         return this.heightmapLimit
     }
 
-    get visualMapSeriesIndex() {
+    get visualMapSeriesIndex(): number[] {
         const output = []
 
         if (this.showProbed) output.push(0)
@@ -655,62 +659,62 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return output
     }
 
-    tooltipFormatter(data: any) {
-        return "<b>"+data.seriesName+"</b><br />" +
-            "<b>" + data.dimensionNames[0]+"</b>: "+data.data[0].toFixed(1) + " mm <br />" +
-            "<b>" + data.dimensionNames[1]+"</b>: "+data.data[1].toFixed(1) + " mm <br />" +
-            "<b>" + data.dimensionNames[2]+"</b>: "+data.data[2].toFixed(3) + " mm "
+    tooltipFormatter(data: any): string {
+        return '<b>'+data.seriesName+'</b><br />' +
+            '<b>' + data.dimensionNames[0]+'</b>: '+data.data[0].toFixed(1) + ' mm <br />' +
+            '<b>' + data.dimensionNames[1]+'</b>: '+data.data[1].toFixed(1) + ' mm <br />' +
+            '<b>' + data.dimensionNames[2]+'</b>: '+data.data[2].toFixed(3) + ' mm '
     }
 
-    loadProfile(name: string) {
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE LOAD="+name, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE LOAD="+name }, { loading: 'bedMeshLoad_'+name })
+    loadProfile(name: string): void {
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE LOAD='+name, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE LOAD='+name }, { loading: 'bedMeshLoad_'+name })
     }
 
-    openRenameProfile() {
-        this.newName = this.bed_mesh?.profile_name ?? ""
+    openRenameProfile(): void {
+        this.newName = this.bed_mesh?.profile_name ?? ''
         this.renameDialog = true
     }
 
-    renameProfile() {
+    renameProfile(): void {
         this.renameDialog = false
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase(), type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE SAVE="+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase(), type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
     }
 
-    openRemoveProfile(name: string) {
+    openRemoveProfile(name: string): void {
         this.removeDialogProfile = name
-        this.removeDialog = true;
+        this.removeDialog = true
     }
 
-    removeProfile() {
-        this.removeDialog = false;
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_PROFILE REMOVE="+this.removeDialogProfile }, {
-            action: "printer/removeBedMeshProfile",
+    removeProfile(): void {
+        this.removeDialog = false
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE='+this.removeDialogProfile, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE REMOVE='+this.removeDialogProfile }, {
+            action: 'printer/removeBedMeshProfile',
             actionPayload: {name: this.removeDialogProfile},
-            loading: "bedMeshRename_"+this.removeDialogProfile
+            loading: 'bedMeshRename_'+this.removeDialogProfile
         })
-        this.removeDialogProfile = ""
+        this.removeDialogProfile = ''
     }
 
-    homePrinter() {
-        this.$store.dispatch('server/addEvent', { message: "G28", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "G28" }, { loading: 'homeAll' })
+    homePrinter(): void {
+        this.$store.dispatch('server/addEvent', { message: 'G28', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28' }, { loading: 'homeAll' })
     }
 
-    clearBedMesh() {
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_CLEAR", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CLEAR" }, { loading: 'bedMeshClear' })
+    clearBedMesh(): void {
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_CLEAR', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CLEAR' }, { loading: 'bedMeshClear' })
     }
 
-    calibrateMesh() {
-        this.calibrateDialog = false;
-        this.$store.dispatch('server/addEvent', { message: "BED_MESH_CALIBRATE", type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: "BED_MESH_CALIBRATE" }, { loading: 'bedMeshCalibrate' })
+    calibrateMesh(): void {
+        this.calibrateDialog = false
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_CALIBRATE', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CALIBRATE' }, { loading: 'bedMeshCalibrate' })
     }
 
-    beforeDestroy() {
+    beforeDestroy(): void {
         if (typeof window === 'undefined') return
         if (this.chart) this.chart.dispose()
     }

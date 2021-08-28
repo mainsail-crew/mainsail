@@ -1,6 +1,6 @@
-import { ServerPowerState } from "@/store/server/power/types"
-import { ServerUpdateMangerState } from "@/store/server/updateManager/types"
-import { ServerHistoryState } from "@/store/server/history/types";
+import { ServerPowerState } from '@/store/server/power/types'
+import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
+import { ServerHistoryState } from '@/store/server/history/types'
 
 export interface ServerState {
     klippy_connected: boolean

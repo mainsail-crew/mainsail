@@ -43,7 +43,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ConnectionStatus from "@/components/ui/ConnectionStatus.vue";
+import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
 
 @Component({
     components: {
@@ -66,7 +66,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
     }
 
     get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== "" ? this.hostname+":"+this.port : this.hostname
+        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname+':'+this.port : this.hostname
     }
 
     get isConnected() {

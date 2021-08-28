@@ -22,16 +22,16 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../../mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../../mixins/base'
 
 @Component
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     downloadLog(event: any) {
         event.preventDefault()
-        let href = ""
-        if ('href' in event.target.attributes) href = event.target.attributes.href.value;
-        if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value;
+        let href = ''
+        if ('href' in event.target.attributes) href = event.target.attributes.href.value
+        if ('href' in event.target.parentElement.attributes) href = event.target.parentElement.attributes.href.value
 
         window.open(href)
     }

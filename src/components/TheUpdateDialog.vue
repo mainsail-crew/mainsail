@@ -119,7 +119,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
     ]
 
     get application() {
-        return this.$store.state.server.updateManager.updateResponse.application ?? ""
+        return this.$store.state.server.updateManager.updateResponse.application ?? ''
     }
 
     get messages() {
@@ -147,15 +147,15 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
     }
 
     formatTime(date: Date) {
-        const hours = (date.getHours() < 10) ? "0"+date.getHours().toString() : date.getHours()
-        const minutes = (date.getMinutes() < 10) ? "0"+date.getMinutes().toString() : date.getMinutes()
-        const seconds = (date.getSeconds() < 10) ? "0"+date.getSeconds().toString() : date.getSeconds()
+        const hours = (date.getHours() < 10) ? '0'+date.getHours().toString() : date.getHours()
+        const minutes = (date.getMinutes() < 10) ? '0'+date.getMinutes().toString() : date.getMinutes()
+        const seconds = (date.getSeconds() < 10) ? '0'+date.getSeconds().toString() : date.getSeconds()
 
-        return hours+":"+minutes+":"+seconds;
+        return hours+':'+minutes+':'+seconds
     }
 
     close() {
-        if (this.application !== null && this.complete && ["client", "mainsail"].includes(this.application.toLowerCase())) window.location.reload(true)
+        if (this.application !== null && this.complete && ['client', 'mainsail'].includes(this.application.toLowerCase())) window.location.reload(true)
         else {
             this.$store.commit('server/updateManager/resetUpdateResponse')
             this.$socket.emit('machine.update.status', { refresh: false }, { action: 'server/updateManager/getStatus' })

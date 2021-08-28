@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {GuiStateWebcam} from "@/store/gui/types";
+import {Component, Mixins, Prop} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {GuiStateWebcam} from '@/store/gui/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
@@ -40,12 +40,12 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     }
 
     get webcamStyle() {
-        let transforms = ""
-        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += " scaleX(-1)"
-        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += " scaleY(-1)"
+        let transforms = ''
+        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
         if (transforms.trimLeft().length) return {transform: transforms.trimLeft()}
 
-        return ""
+        return ''
     }
 
     visibilityChanged(isVisible: boolean) {

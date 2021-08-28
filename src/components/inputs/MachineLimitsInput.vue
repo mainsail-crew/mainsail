@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
-import {Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
+import Component from 'vue-class-component'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class MachineLimitsInput extends Mixins(BaseMixin) {

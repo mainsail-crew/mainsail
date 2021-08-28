@@ -13,7 +13,7 @@ export interface GuiStateWebcam {
     index?: number | null
     name: string
     icon: string
-    service: "mjpegstreamer" | "mjpegstreamer-adaptive" | "uv4l-mjpeg" | "ipstream"
+    service: 'mjpegstreamer' | 'mjpegstreamer-adaptive' | 'uv4l-mjpeg' | 'ipstream'
     targetFps: number
     url: string
     flipX: boolean

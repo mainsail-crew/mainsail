@@ -197,7 +197,7 @@
 
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import SettingsRow from "@/components/settings/SettingsRow.vue";
+import SettingsRow from '@/components/settings/SettingsRow.vue'
 @Component({
     components: {SettingsRow}
 })

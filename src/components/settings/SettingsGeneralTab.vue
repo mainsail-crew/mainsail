@@ -69,7 +69,7 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import SettingsRow from "@/components/settings/SettingsRow.vue";
+import SettingsRow from '@/components/settings/SettingsRow.vue'
 @Component({
     components: {SettingsRow}
 })
@@ -93,6 +93,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     get availableLanguages() {
+        // eslint-disable-next-line no-undef
         const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
         const languages: any = []
 

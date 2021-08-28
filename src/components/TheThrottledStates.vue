@@ -37,8 +37,8 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "./mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from './mixins/base'
 
 @Component
 export default class TheThrottledStates extends Mixins(BaseMixin) {
@@ -46,7 +46,7 @@ export default class TheThrottledStates extends Mixins(BaseMixin) {
 
     get throttledStateFlags() {
         return this.$store.state.server.throttled_state.flags.filter((flag: string) => {
-            return  flag !== "?"
+            return  flag !== '?'
         })
 
         /*return [
@@ -63,18 +63,18 @@ export default class TheThrottledStates extends Mixins(BaseMixin) {
 
     get currentFlags() {
         return this.throttledStateFlags.filter((flag: string) => {
-            return !flag.startsWith("Previously ")
+            return !flag.startsWith('Previously ')
         })
     }
 
     get previouslyFlags() {
         return this.throttledStateFlags.filter((flag: string) => {
-            return flag.startsWith("Previously ")
+            return flag.startsWith('Previously ')
         })
     }
 
     convertName(flag: string): string {
-        flag = flag.replace(/ /g, "").replace(/-/g, "")
+        flag = flag.replace(/ /g, '').replace(/-/g, '')
         flag = flag.charAt(0).toUpperCase() + flag.slice(1)
 
         return flag

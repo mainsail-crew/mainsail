@@ -26,8 +26,8 @@
 
 <script lang="ts">
 
-import {Component, Mixins, Prop} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
+import {Component, Mixins, Prop} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
 
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {

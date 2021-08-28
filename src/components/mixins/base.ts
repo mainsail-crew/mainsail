@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Component from "vue-class-component";
+import Vue from 'vue'
+import Component from 'vue-class-component'
 
 @Component
 export default class BaseMixin extends Vue {
@@ -21,7 +21,7 @@ export default class BaseMixin extends Vue {
     }
 
     get klipperState(): string {
-        return this.$store.state.server.klippy_state ?? ""
+        return this.$store.state.server.klippy_state ?? ''
     }
 
     get klipperReadyForGui(): boolean {
@@ -37,7 +37,7 @@ export default class BaseMixin extends Vue {
     }
 
     get printer_state(): string {
-        return this.$store.state.printer.print_stats?.state ?? ""
+        return this.$store.state.printer.print_stats?.state ?? ''
     }
 
     get isMobile() {

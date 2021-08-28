@@ -36,11 +36,10 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import MiscellaneousSlider from "@/components/inputs/MiscellaneousSlider.vue";
-import ToolSlider from "@/components/inputs/ToolSlider.vue";
-import FilamentSensor from "@/components/inputs/FilamentSensor.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
+import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 @Component({
     components: {FilamentSensor, MiscellaneousSlider}
 })

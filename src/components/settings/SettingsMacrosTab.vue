@@ -23,9 +23,9 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import SettingsRow from "@/components/settings/SettingsRow.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
 @Component({
     components: {SettingsRow}
 })
@@ -51,7 +51,7 @@ export default class SettingsMacrosTab extends Mixins(BaseMixin) {
         else
             hiddenMacros.push(name.toUpperCase())
 
-        this.$store.dispatch("gui/saveSetting", { name: 'dashboard.hiddenMacros', value: hiddenMacros })
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.hiddenMacros', value: hiddenMacros })
     }
 }
 </script>
