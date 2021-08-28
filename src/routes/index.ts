@@ -6,7 +6,6 @@ import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Machine from '../pages/Machine.vue'
-import Viewer from '../pages/Viewer.vue'
 import {Component} from "vue";
 
 const routes: AppRoute[] = [
@@ -60,14 +59,6 @@ const routes: AppRoute[] = [
 		registeredDirectory: 'gcodes',
     },
     {
-        title: "G-Code Viewer",
-        path: '/viewer',
-        icon: 'video-3d',
-        component: Viewer,
-        alwaysShow: false,
-		showInNavi: true,
-    },
-    {
         title: "History",
         path: '/history',
         icon: 'history',
@@ -100,7 +91,7 @@ export interface AppRoute {
     title: string | null,
     path: string,
     redirect?: string,
-    icon?: string,
+    icon?: string
     component: Component | null,
     alwaysShow: boolean,
     showInNavi: boolean,
