@@ -1,4 +1,4 @@
-import {PrinterTempHistoryState} from "@/store/printer/tempHistory/types";
+import {PrinterTempHistoryState} from '@/store/printer/tempHistory/types'
 
 export interface VTextareaType extends HTMLInputElement {
     $refs: {

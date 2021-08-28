@@ -1,5 +1,5 @@
-import { GuiState } from "@/store/gui/types";
-import { FileStateFile } from "@/store/files/types";
+import { GuiState } from '@/store/gui/types'
+import { FileStateFile } from '@/store/files/types'
 
 export interface FarmPrinterState {
     _namespace: string

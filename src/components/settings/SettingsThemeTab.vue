@@ -41,9 +41,9 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import SettingsRow from "@/components/settings/SettingsRow.vue";
-import {defaultLogoColor, defaultPrimaryColor} from "@/store/variables";
-import {Debounce} from "vue-debounce-decorator";
+import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
+import {Debounce} from 'vue-debounce-decorator'
 @Component({
     components: {SettingsRow}
 })
@@ -68,7 +68,7 @@ export default class SettingsThemeTab extends Mixins(BaseMixin) {
     }
 
     clearColorObject(color: any): string {
-        if (typeof color === "object" && 'hex' in color)
+        if (typeof color === 'object' && 'hex' in color)
             color = color.hex
         if (color.length > 7)
             color = color.substr(0, 7)

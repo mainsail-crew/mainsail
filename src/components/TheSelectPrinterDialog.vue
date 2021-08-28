@@ -161,27 +161,27 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "./mixins/base";
-import {FarmPrinterState} from "@/store/farm/printer/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from './mixins/base'
+import {FarmPrinterState} from '@/store/farm/printer/types'
 
 @Component
 export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     private dialogAddPrinter = {
         bool: false,
-        hostname: "",
+        hostname: '',
         port: 7125
     }
     private dialogEditPrinter = {
         bool: false,
         index: 0,
-        hostname: "",
+        hostname: '',
         port: 0
     }
 
     get printers() {
-        return this.$store.getters["farm/getPrinters"] ?? []
+        return this.$store.getters['farm/getPrinters'] ?? []
     }
 
     get protocol() {
@@ -197,7 +197,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== "" ? this.hostname+":"+this.port : this.hostname
+        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname+':'+this.port : this.hostname
     }
 
     get isConnected() {
@@ -217,7 +217,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get currentUrl() {
-        let output =  "http://"+window.location.hostname
+        let output =  'http://'+window.location.hostname
         if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':'+window.location.port
 
         return output
@@ -237,7 +237,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     getPrinterName(namespace: string) {
-        return this.$store.getters["farm/getPrinterName"](namespace)
+        return this.$store.getters['farm/getPrinterName'](namespace)
     }
 
     addPrinter() {
@@ -247,7 +247,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             protocol: this.protocol
         })
 
-        this.dialogAddPrinter.hostname = ""
+        this.dialogAddPrinter.hostname = ''
         this.dialogAddPrinter.bool = false
     }
 
@@ -259,7 +259,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     updatePrinter() {
-        this.$store.dispatch("farm/updatePrinter", {
+        this.$store.dispatch('farm/updatePrinter', {
             namespace: this.dialogEditPrinter.index,
             hostname: this.dialogEditPrinter.hostname,
             port: this.dialogEditPrinter.port,
@@ -268,7 +268,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     delPrinter() {
-        this.$store.dispatch("farm/removePrinter", { name: this.dialogEditPrinter.index })
+        this.$store.dispatch('farm/removePrinter', { name: this.dialogEditPrinter.index })
         this.dialogEditPrinter.bool = false
     }
 
@@ -277,7 +277,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
             hostname: printer.socket.hostname,
             port: printer.socket.port
         })
-        this.$socket.setUrl(this.protocol+"://"+printer.socket.hostname+":"+printer.socket.port+"/websocket")
+        this.$socket.setUrl(this.protocol+'://'+printer.socket.hostname+':'+printer.socket.port+'/websocket')
         this.$socket.connect()
     }
 
@@ -300,7 +300,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.$store.dispatch("farm/readStoredPrinters")
+        this.$store.dispatch('farm/readStoredPrinters')
     }
 }
 </script>

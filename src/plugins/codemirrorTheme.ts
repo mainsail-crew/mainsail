@@ -1,6 +1,6 @@
-import {EditorView} from "@codemirror/view"
-import {Extension} from "@codemirror/state"
-import {HighlightStyle, tags as t} from "@codemirror/highlight"
+import {EditorView} from '@codemirror/view'
+import {Extension} from '@codemirror/state'
+import {HighlightStyle, tags as t} from '@codemirror/highlight'
 
 const ui = {
     background: '#1e1e1e',
@@ -8,31 +8,31 @@ const ui = {
 }
 
 export const mainsailEditor = EditorView.theme({
-    "&": {
+    '&': {
         color: '#d4d4d4',
         backgroundColor: ui.background
     },
 
-    ".cm-activeLine.cm-line": {
-        caretColor: "#d4d4d4 !important"
+    '.cm-activeLine.cm-line': {
+        caretColor: '#d4d4d4 !important'
     },
 
-    ".cm-gutters": {
+    '.cm-gutters': {
         backgroundColor: ui.background,
         color: '#858585',
-        border: "none"
+        border: 'none'
     },
 
-    ".cm-activeLine": {
+    '.cm-activeLine': {
         background: 'rgba(43,47,61,0.5)'
     },
 
-    ".cm-activeLineGutter": {
+    '.cm-activeLineGutter': {
         color: '#c6c6c6',
         backgroundColor: 'rgba(33, 36, 49, 0.5)'
     },
 
-    ".cm-selectionMatch": {
+    '.cm-selectionMatch': {
         backgroundColor: '#add6ff26',
     },
 

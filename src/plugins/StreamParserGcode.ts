@@ -1,8 +1,8 @@
-import {StringStream} from "@codemirror/stream-parser";
+import {StringStream} from '@codemirror/stream-parser'
 
 export const gcode = {
     token: function(stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
-        const ch = stream.peek();
+        const ch = stream.peek()
 
         if (stream.pos === zeroPos && state.klipperMacro) state.klipperMacro = false
 
@@ -18,8 +18,8 @@ export const gcode = {
 
         /* comments */
         if ([';', '#'].includes(ch ?? '')) {
-            stream.skipToEnd();
-            return "comment";
+            stream.skipToEnd()
+            return 'comment'
         }
 
         /* Mxxx Gxxx commands */
@@ -51,18 +51,18 @@ export const gcode = {
             return 'name'
         }
 
-        stream.next();
-        return null;
+        stream.next()
+        return null
     },
     startState: function(): StreamParserGcodeState {
         return {
             klipperMacro: false,
-        };
+        }
     },
     languageData: {
-        commentTokens: {line: ";"}
+        commentTokens: {line: ';'}
     }
-};
+}
 
 interface StreamParserGcodeState {
     klipperMacro: boolean

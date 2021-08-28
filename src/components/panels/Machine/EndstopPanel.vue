@@ -55,8 +55,8 @@
 
 <script lang="ts">
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../../mixins/base";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../../mixins/base'
 
 @Component
 export default class EndstopPanel extends Mixins(BaseMixin) {
@@ -80,11 +80,11 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
     }
 
     syncEndstops() {
-        this.$socket.emit('printer.query_endstops.status', { }, { action: "printer/getEndstopStatus", loading: "queryEndstops" })
+        this.$socket.emit('printer.query_endstops.status', { }, { action: 'printer/getEndstopStatus', loading: 'queryEndstops' })
         if (this.existProbe) {
-            window.console.log("exist probe")
-            this.$store.dispatch('server/addEvent', { message: "QUERY_PROBE", type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: "QUERY_PROBE" })
+            window.console.log('exist probe')
+            this.$store.dispatch('server/addEvent', { message: 'QUERY_PROBE', type: 'command' })
+            this.$socket.emit('printer.gcode.script', { script: 'QUERY_PROBE' })
         }
     }
 }

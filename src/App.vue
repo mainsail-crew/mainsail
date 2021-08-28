@@ -37,14 +37,14 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import TheSidebar from "@/components/TheSidebar.vue";
-import BaseMixin from "@/components/mixins/base";
-import TheTopbar from "@/components/TheTopbar.vue";
-import {Mixins, Watch} from "vue-property-decorator";
-import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
-import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
-import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
-import TheEditor from "@/components/TheEditor.vue";
+import TheSidebar from '@/components/TheSidebar.vue'
+import BaseMixin from '@/components/mixins/base'
+import TheTopbar from '@/components/TheTopbar.vue'
+import {Mixins, Watch} from 'vue-property-decorator'
+import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
+import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
+import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
+import TheEditor from '@/components/TheEditor.vue'
 
 @Component({
     components: {
@@ -59,7 +59,7 @@ import TheEditor from "@/components/TheEditor.vue";
 export default class App extends Mixins(BaseMixin) {
 
     get title(): string {
-        return this.$store.getters["getTitle"]
+        return this.$store.getters['getTitle']
     }
 
     get remoteMode(): boolean {
@@ -67,15 +67,15 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get mainBackground(): string {
-        return this.$store.getters["files/getMainBackground"]
+        return this.$store.getters['files/getMainBackground']
     }
 
     get customStylesheet(): string | null {
-        return this.$store.getters["files/getCustomStylesheet"]
+        return this.$store.getters['files/getCustomStylesheet']
     }
 
     get customFavicons(): string | null {
-        return this.$store.getters["files/getCustomFavicons"] ?? null
+        return this.$store.getters['files/getCustomFavicons'] ?? null
     }
 
     get language(): string {
@@ -83,7 +83,7 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get current_file(): string {
-        return this.$store.state.printer.print_stats?.filename ?? ""
+        return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
     get logoColor(): string {
@@ -95,7 +95,7 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get warningColor(): string {
-        return this.$vuetify?.theme?.currentTheme?.warning?.toString() ?? "#ff8300"
+        return this.$vuetify?.theme?.currentTheme?.warning?.toString() ?? '#ff8300'
     }
 
     get primaryTextColor(): string {
@@ -121,22 +121,22 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get print_percent(): number {
-        return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
+        return Math.round(this.$store.getters['printer/getPrintPercent'] * 100)
     }
 
     @Watch('language')
     languageChanged(newVal: string): void {
-        this.$i18n.locale = newVal;
+        this.$i18n.locale = newVal
     }
 
     @Watch('customStylesheet')
     customStylesheetChanged(newVal: string | null): void {
-        const style = document.getElementById("customStylesheet")
+        const style = document.getElementById('customStylesheet')
         if (newVal !== null && style === null) {
             const newStyle = document.createElement('link')
-            newStyle.id = "customStylesheet"
-            newStyle.type = "text/css"
-            newStyle.rel = "stylesheet"
+            newStyle.id = 'customStylesheet'
+            newStyle.type = 'text/css'
+            newStyle.rel = 'stylesheet'
             newStyle.href = newVal
             document.head.appendChild(newStyle)
         } else if (newVal !== null && style) {
@@ -146,7 +146,7 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string): void {
-        if (newVal !== "") this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
+        if (newVal !== '') this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
     }
 
     @Watch('primaryColor')
@@ -157,12 +157,12 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     drawFavicon(val: number): void {
-        const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
-        const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
+        const favicon16: HTMLLinkElement | null = document.querySelector('link[rel*=\'icon\'][sizes=\'16x16\']')
+        const favicon32: HTMLLinkElement | null = document.querySelector('link[rel*=\'icon\'][sizes=\'32x32\']')
 
         if (favicon16 && favicon32) {
             if (this.printerIsPrinting) {
-                let faviconSize = 64;
+                let faviconSize = 64
 
                 let canvas = document.createElement('canvas')
                 canvas.width = faviconSize
@@ -178,9 +178,9 @@ export default class App extends Mixins(BaseMixin) {
                     context.moveTo(centerX, centerY)
                     context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
                     context.closePath()
-                    context.fillStyle = "#ddd"
+                    context.fillStyle = '#ddd'
                     context.fill()
-                    context.strokeStyle = "rgba(200, 208, 218, 0.66)"
+                    context.strokeStyle = 'rgba(200, 208, 218, 0.66)'
                     context.stroke()
 
                     // draw the green circle based on percentage

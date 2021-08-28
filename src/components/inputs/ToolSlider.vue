@@ -49,9 +49,9 @@
 
 
 <script lang="ts">
-import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {Debounce} from "vue-debounce-decorator";
+import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
@@ -84,7 +84,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     get colorBar() {
-        return this.max < this.value ? "warning" : "primary"
+        return this.max < this.value ? 'warning' : 'primary'
     }
 
     @Debounce(250)
