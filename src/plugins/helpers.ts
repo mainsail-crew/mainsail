@@ -1,12 +1,12 @@
-import { ServerStateEvent } from "@/store/server/types"
-import {FileStateFile} from "@/store/files/types";
+import { ServerStateEvent } from '@/store/server/types'
+import {FileStateFile} from '@/store/files/types'
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
     if (folder !== undefined && folder !== null && dirArray.length) {
 
-        const parent = folder?.find((element: FileStateFile) => (element.isDirectory && element.filename === dirArray[0]));
+        const parent = folder?.find((element: FileStateFile) => (element.isDirectory && element.filename === dirArray[0]))
         if (parent) {
-            dirArray.shift();
+            dirArray.shift()
 
             if (parent.childrens && dirArray.length) return findDirectory(parent.childrens, dirArray)
             else if(parent.childrens) return parent.childrens
@@ -36,23 +36,23 @@ export const capitalize = (str: string): string => {
 
 export const convertPanelnameToIcon = (name: string): string => {
     switch (name) {
-        case 'webcam': return 'mdi-webcam'
-        case 'zoffset': return 'mdi-arrow-collapse-vertical'
-        case 'control': return 'mdi-gamepad'
-        case 'macros': return 'mdi-code-tags'
-        case 'printsettings': return 'mdi-printer-3d'
-        case 'miscellaneous': return 'mdi-dip-switch'
-        case 'tools': return 'mdi-thermometer-lines'
-        case 'miniconsole': return 'mdi-console-line'
+    case 'webcam': return 'mdi-webcam'
+    case 'zoffset': return 'mdi-arrow-collapse-vertical'
+    case 'control': return 'mdi-gamepad'
+    case 'macros': return 'mdi-code-tags'
+    case 'printsettings': return 'mdi-printer-3d'
+    case 'miscellaneous': return 'mdi-dip-switch'
+    case 'tools': return 'mdi-thermometer-lines'
+    case 'miniconsole': return 'mdi-console-line'
 
-        default: return 'mdi-information'
+    default: return 'mdi-information'
     }
 }
 
 export const camelize = (str: string): string => {
     return str.replace(/_/g, ' ').replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) => {
-        return index === 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
+        return index === 0 ? word.toLowerCase() : word.toUpperCase()
+    }).replace(/\s+/g, '')
 }
 
 export function formatConsoleMessage(message: string): string {
@@ -67,10 +67,10 @@ export function formatConsoleMessage(message: string): string {
 }
 
 export const convertName = (name: string): string => {
-    let output = ""
+    let output = ''
     name = name.replace(/_/g, ' ')
-    name.split(" ").forEach(split => {
-        output += " "+split.charAt(0).toUpperCase() + split.slice(1)
+    name.split(' ').forEach(split => {
+        output += ' '+split.charAt(0).toUpperCase() + split.slice(1)
     })
     output = output.slice(1)
 
@@ -106,8 +106,8 @@ export const formatFrequency = (frequency: number): string => {
 }
 
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
-    const sortBySingle = sortBy.length ? sortBy[0] : 'filename';
-    const sortDescSingle = sortDesc[0];
+    const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
+    const sortDescSingle = sortDesc[0]
 
     if (items !== null) {
         // Sort by index
@@ -141,26 +141,26 @@ export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortD
 
 
 export function strLongestEqual(a: string, b: string): string {
-    const l = Math.min(a?.length ?? Number.MAX_VALUE, b?.length ?? Number.MAX_VALUE);
-    let i = 0;
+    const l = Math.min(a?.length ?? Number.MAX_VALUE, b?.length ?? Number.MAX_VALUE)
+    let i = 0
     while (i < l && (a.charCodeAt(i) ^ b.charCodeAt(i)) === 0) {
-        i += 1;
+        i += 1
     }
-    return a.substr(0, i);
+    return a.substr(0, i)
 }
 
 export function reverseString(str: string): string {
-    return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0);
+    return (str === '') ? '' : reverseString(str.substr(1)) + str.charAt(0)
 }
 
 export function formatTime(date: Date): string {
     let hours: string | number = date.getHours()
-    if (hours < 10) hours = "0"+hours.toString()
+    if (hours < 10) hours = '0'+hours.toString()
     let minutes: string | number = date.getMinutes()
-    if (minutes < 10) minutes = "0"+minutes.toString()
+    if (minutes < 10) minutes = '0'+minutes.toString()
     let seconds: string | number = date.getSeconds()
-    if (seconds < 10) seconds = "0"+seconds.toString()
+    if (seconds < 10) seconds = '0'+seconds.toString()
 
 
-    return hours+":"+minutes+":"+seconds
+    return hours+':'+minutes+':'+seconds
 }

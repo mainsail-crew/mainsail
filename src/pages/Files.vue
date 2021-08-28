@@ -356,12 +356,12 @@
     </div>
 </template>
 <script lang="ts">
-import {Component, Mixins, Watch} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import axios from "axios";
-import { validGcodeExtensions } from "@/store/variables"
-import {findDirectory, formatFilesize, formatDate, sortFiles} from "@/plugins/helpers";
-import {FileStateFile} from "@/store/files/types";
+import {Component, Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import axios from 'axios'
+import { validGcodeExtensions } from '@/store/variables'
+import {findDirectory, formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
+import {FileStateFile} from '@/store/files/types'
 
 interface draggingFile {
     status: boolean
@@ -381,15 +381,6 @@ interface uploadSnackbar {
         time: number
         loaded: number
     }
-}
-
-interface contextMenu {
-    shown: boolean
-    isDirectory: boolean
-    touchTimer: number
-    x: number
-    y: number
-    item: FileStateFile
 }
 
 interface dialogPrintFile {
@@ -430,13 +421,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
         status: false,
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
     private uploadSnackbar: uploadSnackbar = {
         status: false,
-        filename: "",
+        filename: '',
         percent: 0,
         speed: 0,
         total: 0,
@@ -450,7 +441,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
     private dialogCreateDirectory = {
         show: false,
-        name: ""
+        name: ''
     }
     private contextMenu = {
         shown: false,
@@ -460,7 +451,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         y: 0,
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
@@ -469,43 +460,43 @@ export default class PageFiles extends Mixins(BaseMixin) {
         show: false,
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
 
     private dialogRenameFile: dialogRenameObject = {
         show: false,
-        newName: "",
+        newName: '',
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
 
     private dialogRenameDirectory: dialogRenameObject = {
         show: false,
-        newName: "",
+        newName: '',
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
 
     private dialogDeleteDirectory: dialogRenameObject = {
         show: false,
-        newName: "",
+        newName: '',
         item: {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
 
     private input_rules = [
-        (value: string) => value.indexOf(" ") === -1 || 'Name contain spaces!'
+        (value: string) => value.indexOf(' ') === -1 || 'Name contain spaces!'
     ]
 
     get headers() {
@@ -551,7 +542,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     set hideMetadataColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.hideMetadataColums", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.hideMetadataColums', value: newVal })
     }
 
     get showHiddenFiles() {
@@ -559,7 +550,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.showHiddenFiles", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showHiddenFiles', value: newVal })
     }
 
     get showPrintedFiles() {
@@ -567,11 +558,11 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     set showPrintedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.showPrintedFiles", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showPrintedFiles', value: newVal })
     }
 
     get disk_usage() {
-        return this.$store.getters["files/getDiskUsage"](this.currentPath)
+        return this.$store.getters['files/getDiskUsage'](this.currentPath)
     }
 
     get sortBy() {
@@ -579,9 +570,9 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     set sortBy(newVal) {
-        if (newVal === undefined) newVal = "modified"
+        if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.sortBy", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
@@ -591,7 +582,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.sortDesc", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortDesc', value: newVal })
     }
 
     get countPerPage() {
@@ -599,19 +590,19 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: "gcodefiles.countPerPage", value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
     }
 
     getJobStatus(item: FileStateFile) {
-        return this.$store.getters["server/history/getPrintStatus"](item.job_id)
+        return this.$store.getters['server/history/getPrintStatus'](item.job_id)
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters["server/history/getPrintStatusChipIcon"](status)
+        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters["server/history/getPrintStatusChipColor"](status)
+        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
     dragOverUpload(e: Event) {
@@ -662,7 +653,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     doUploadFile(file: File) {
         let formData = new FormData()
-        let filename = file.name.replace(" ", "_")
+        let filename = file.name.replace(' ', '_')
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true
@@ -671,10 +662,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.uploadSnackbar.lastProgress.loaded = 0
         this.uploadSnackbar.lastProgress.time = 0
 
-        formData.append('file', file, (this.currentPath+"/"+filename).substring(7))
+        formData.append('file', file, (this.currentPath+'/'+filename).substring(7))
 
         return new Promise(resolve => {
-            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source();
+            this.uploadSnackbar.cancelTokenSource = axios.CancelToken.source()
             axios.post(this.apiUrl + '/server/files/upload',
                 formData, {
                     cancelToken: this.uploadSnackbar.cancelTokenSource.token,
@@ -694,13 +685,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
                     }
                 }
             ).then((result: any) => {
-                const filename = result.data.item.path.substr(result.data.item.path.indexOf("/")+1)
+                const filename = result.data.item.path.substr(result.data.item.path.indexOf('/')+1)
                 this.uploadSnackbar.status = false
                 resolve(filename)
             }).catch(() => {
                 this.uploadSnackbar.status = false
                 this.$store.dispatch('socket/removeLoading', { name: 'gcodeUpload' })
-                this.$toast.error("Cannot upload the file!")
+                this.$toast.error('Cannot upload the file!')
             })
         })
     }
@@ -730,13 +721,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
             e.preventDefault()
             e.target.parentElement.style.backgroundColor = 'transparent'
 
-            let dest = "";
+            let dest = ''
             if (row.filename === '..') {
-                dest = this.currentPath.substring(0, this.currentPath.lastIndexOf("/") + 1)+this.draggingFile.item.filename
-            } else dest = this.currentPath+"/"+row.filename+"/"+this.draggingFile.item.filename
+                dest = this.currentPath.substring(0, this.currentPath.lastIndexOf('/') + 1)+this.draggingFile.item.filename
+            } else dest = this.currentPath+'/'+row.filename+'/'+this.draggingFile.item.filename
 
             this.$socket.emit('server.files.move', {
-                source: this.currentPath+"/"+this.draggingFile.item.filename,
+                source: this.currentPath+'/'+this.draggingFile.item.filename,
                 dest: dest
             }, { action: 'files/getMove' })
         }
@@ -768,14 +759,14 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     createDirectory() {
-        this.dialogCreateDirectory.name = ""
+        this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
     }
 
     createDirectoryAction() {
-        if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(" ") === -1) {
+        if (this.dialogCreateDirectory.name.length && this.dialogCreateDirectory.name.indexOf(' ') === -1) {
             this.dialogCreateDirectory.show = false
-            this.$socket.emit('server.files.post_directory', { path: this.currentPath+"/"+this.dialogCreateDirectory.name }, { action: 'files/getCreateDir' })
+            this.$socket.emit('server.files.post_directory', { path: this.currentPath+'/'+this.dialogCreateDirectory.name }, { action: 'files/getCreateDir' })
         }
     }
 
@@ -794,8 +785,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
         const items = sortFiles(this.files, [this.sortBy], [this.sortDesc])
         for (let i = data.pageStart; i < data.pageStop; i++) {
             if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
-                let filename = (this.currentPath+"/"+items[i].filename).substring(7)
-                this.$socket.emit("server.files.metadata", { filename: filename }, { action: "files/getMetadata" })
+                let filename = (this.currentPath+'/'+items[i].filename).substring(7)
+                this.$socket.emit('server.files.metadata', { filename: filename }, { action: 'files/getMetadata' })
             }
         }
     }
@@ -806,15 +797,15 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     loadPath() {
         this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
-        let dirArray = this.currentPath.split("/")
+        let dirArray = this.currentPath.split('/')
         this.files = findDirectory(this.filetree, dirArray)
         if (this.files !== null) {
             if (!this.showHiddenFiles) {
-                this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".")
+                this.files = this.files.filter(file => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
             }
             if (!this.showPrintedFiles) {
-                this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                    filename: (this.currentPath+"/"+file.filename).substr(7),
+                this.files = this.files.filter(file => this.$store.getters['server/history/getPrintStatus']({
+                    filename: (this.currentPath+'/'+file.filename).substr(7),
                     modified: file.modified.getTime()
                 }) !== 'completed')
             }
@@ -823,16 +814,16 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     @Watch('filetree', { deep: true })
     filetreeChanged(newVal: FileStateFile[]) {
-        let dirArray = this.currentPath.split("/");
-        this.files = findDirectory(newVal, dirArray);
+        let dirArray = this.currentPath.split('/')
+        this.files = findDirectory(newVal, dirArray)
 
         if (this.files?.length && !this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+            this.files = this.files.filter(file => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
         }
 
         if (this.files?.length && !this.showPrintedFiles) {
-            this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                filename: (this.currentPath+"/"+file.filename).substr(7),
+            this.files = this.files.filter(file => this.$store.getters['server/history/getPrintStatus']({
+                filename: (this.currentPath+'/'+file.filename).substr(7),
                 modified: new Date(file.modified).getTime()
             }) !== 'completed')
         }
@@ -840,16 +831,16 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     @Watch('currentPath')
     currentPathChanged(newVal: string) {
-        let dirArray = newVal.split("/");
-        this.files = findDirectory(this.filetree, dirArray);
+        let dirArray = newVal.split('/')
+        this.files = findDirectory(this.filetree, dirArray)
 
         if (this.files?.length && !this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
+            this.files = this.files.filter(file => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
         }
 
         if (this.files?.length && !this.showPrintedFiles) {
-            this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                filename: (this.currentPath+"/"+file.filename).substr(7),
+            this.files = this.files.filter(file => this.$store.getters['server/history/getPrintStatus']({
+                filename: (this.currentPath+'/'+file.filename).substr(7),
                 modified: new Date(file.modified).getTime()
             }) !== 'completed')
         }
@@ -857,23 +848,23 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     formatPrintTime(totalSeconds: number) {
         if (totalSeconds) {
-            let output = ""
+            let output = ''
 
             const days = Math.floor(totalSeconds / (3600 * 24))
             if (days) {
                 totalSeconds %= (3600 * 24)
-                output += days+"d"
+                output += days+'d'
             }
 
             const hours = Math.floor(totalSeconds / 3600)
             totalSeconds %= 3600
-            if (hours) output += " "+hours+"h"
+            if (hours) output += ' '+hours+'h'
 
             const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += " "+minutes+"m"
+            if (minutes) output += ' '+minutes+'m'
 
             const seconds = totalSeconds % 60
-            if (seconds) output += " "+seconds.toFixed(0)+"s"
+            if (seconds) output += ' '+seconds.toFixed(0)+'s'
 
             return output
         }
@@ -888,20 +879,20 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 thumb.height >= 32 && thumb.height <= 64
             )
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path+"?timestamp="+item.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
         }
 
-        return ""
+        return ''
     }
 
     getBigThumbnail(item: FileStateFile) {
         if (item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+"/server/files/"+this.currentPath+"/"+thumbnail.relative_path+"?timestamp="+item.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
         }
 
-        return ""
+        return ''
     }
 
     getThumbnailWidth(item: FileStateFile) {
@@ -917,27 +908,27 @@ export default class PageFiles extends Mixins(BaseMixin) {
     clickRow(item: FileStateFile, force = false) {
         if (!this.contextMenu.shown || force) {
             if (force) {
-                this.contextMenu.shown = false;
+                this.contextMenu.shown = false
             }
             if (!item.isDirectory) {
-                this.dialogPrintFile.show = true;
-                this.dialogPrintFile.item = item;
+                this.dialogPrintFile.show = true
+                this.dialogPrintFile.item = item
             } else {
-                this.currentPath += "/" + item.filename;
-                this.loadPath();
+                this.currentPath += '/' + item.filename
+                this.loadPath()
             }
         }
     }
 
     clickRowGoBack() {
-        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf("/"))
+        this.currentPath = this.currentPath.substr(0, this.currentPath.lastIndexOf('/'))
     }
 
     changeMetadataVisible(name: string) {
         if (this.headers.filter(header => header.value === name).length) {
-            const value = this.headers.filter(header => header.value === name)[0].visible;
+            const value = this.headers.filter(header => header.value === name)[0].visible
 
-            this.$store.dispatch("gui/setGcodefilesMetadata", {name: name, value: value});
+            this.$store.dispatch('gui/setGcodefilesMetadata', {name: name, value: value})
         }
     }
 
@@ -949,10 +940,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     showContextMenu (e: any, item: FileStateFile) {
         if (!this.contextMenu.shown) {
-            e?.preventDefault();
+            e?.preventDefault()
             this.contextMenu.shown = true
-            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
-            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
+            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
             this.contextMenu.item = item
             this.$nextTick(() => {
                 this.contextMenu.shown = true
@@ -968,15 +959,15 @@ export default class PageFiles extends Mixins(BaseMixin) {
             'first_layer_bed_temp' in file &&
             !['error', 'printing', 'paused'].includes(this.printer_state)
         ) {
-            let gcode = ""
+            let gcode = ''
             if (file.first_layer_extr_temp > 0) {
-                gcode = "M104 S"+file.first_layer_extr_temp
+                gcode = 'M104 S'+file.first_layer_extr_temp
                 this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
             }
 
             if (file.first_layer_bed_temp > 0) {
-                gcode = "M140 S"+file.first_layer_bed_temp
+                gcode = 'M140 S'+file.first_layer_bed_temp
                 this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
                 this.$socket.emit('printer.gcode.script', { script: gcode })
             }
@@ -988,13 +979,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
         this.$store.dispatch('editor/openFile', {
             root: 'gcodes',
-            path: path !== "" ? "/"+path : "",
+            path: path !== '' ? '/'+path : '',
             filename: item.filename
         })
     }
 
     downloadFile() {
-        const filename = (this.currentPath+"/"+this.contextMenu.item.filename)
+        const filename = (this.currentPath+'/'+this.contextMenu.item.filename)
         const href = this.apiUrl + '/server/files/' + encodeURI(filename)
 
         window.open(href)
@@ -1013,8 +1004,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
     renameFileAction() {
         this.dialogRenameFile.show = false
         this.$socket.emit('server.files.move', {
-            source: this.currentPath+"/"+this.dialogRenameFile.item.filename,
-            dest: this.currentPath+"/"+this.dialogRenameFile.newName
+            source: this.currentPath+'/'+this.dialogRenameFile.item.filename,
+            dest: this.currentPath+'/'+this.dialogRenameFile.newName
         }, { action: 'files/getMove' })
     }
 
@@ -1027,13 +1018,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
     renameDirectoryAction() {
         this.dialogRenameDirectory.show = false
         this.$socket.emit('server.files.move', {
-            source: this.currentPath+"/"+this.dialogRenameDirectory.item.filename,
-            dest: this.currentPath+"/"+this.dialogRenameDirectory.newName
+            source: this.currentPath+'/'+this.dialogRenameDirectory.item.filename,
+            dest: this.currentPath+'/'+this.dialogRenameDirectory.newName
         }, { action: 'files/getMove' })
     }
 
     removeFile() {
-        this.$socket.emit('server.files.delete_file', { path: this.currentPath+"/"+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' });
+        this.$socket.emit('server.files.delete_file', { path: this.currentPath+'/'+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' })
     }
 
     deleteDirectory(item: FileStateFile) {
@@ -1043,39 +1034,39 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     deleteDirectoryAction() {
         this.dialogDeleteDirectory.show = false
-        this.$socket.emit('server.files.delete_directory', { path: this.currentPath+"/"+this.contextMenu.item.filename, force: true }, { action: 'files/getDeleteDir' })
+        this.$socket.emit('server.files.delete_directory', { path: this.currentPath+'/'+this.contextMenu.item.filename, force: true }, { action: 'files/getDeleteDir' })
     }
 
-    startPrint(filename = "") {
-        filename = (this.currentPath+"/"+filename).substring(7)
+    startPrint(filename = '') {
+        filename = (this.currentPath+'/'+filename).substring(7)
         this.dialogPrintFile.show = false
         this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
     }
 
     dragFile(e: Event, item: FileStateFile) {
-        e.preventDefault();
-        this.draggingFile.status = true;
-        this.draggingFile.item = item;
+        e.preventDefault()
+        this.draggingFile.status = true
+        this.draggingFile.item = item
     }
 
     dragendFile(e: Event) {
-        e.preventDefault();
+        e.preventDefault()
         this.draggingFile.status = false
         this.draggingFile.item = {
             isDirectory: false,
-            filename: "",
+            filename: '',
             modified: new Date()
         }
     }
 
     @Watch('showHiddenFiles')
     showHiddenFilesChanged() {
-        this.loadPath();
+        this.loadPath()
     }
 
     @Watch('showPrintedFiles')
     showPrintedFilesChanged() {
-        this.loadPath();
+        this.loadPath()
     }
 
     @Watch('hideMetadataColums')

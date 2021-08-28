@@ -1,6 +1,6 @@
-import {Store} from "vuex"
-import _Vue from "vue";
-import {RootState} from "@/store/types";
+import {Store} from 'vuex'
+import _Vue from 'vue'
+import {RootState} from '@/store/types'
 
 export class WebSocketClient {
     url = ''
@@ -24,6 +24,7 @@ export class WebSocketClient {
         this.url = url
     }
 
+    // eslint-disable-next-line
     passToStore (eventName: string, event: any): void {
         if (!eventName.startsWith('socket/')) { return }
 
@@ -31,7 +32,7 @@ export class WebSocketClient {
     }
 
     connect(): void {
-        this.store?.dispatch("socket/setData", { isConnecting: true })
+        this.store?.dispatch('socket/setData', { isConnecting: true })
         this.instance = new WebSocket(this.url)
 
         this.instance.onopen = () => {
@@ -49,20 +50,20 @@ export class WebSocketClient {
         }
 
         this.instance.onerror = () => {
-			if (this.instance) this.instance.close()
+            if (this.instance) this.instance.close()
         }
 
         this.instance.onmessage = (msg) => {
             const data = JSON.parse(msg.data)
             if (this.store) {
                 const wait = this.getWaitById(data.id)
-                if (wait && wait.action !== ""){
+                if (wait && wait.action !== ''){
                     if (data.error && data.error.message) {
-                        window.console.error("Response Error: "+wait.action+" > "+data.error.message)
+                        window.console.error('Response Error: '+wait.action+' > '+data.error.message)
                     } else if (wait.action) {
                         let result = data.result
-                        if (result === "ok") result = { result: result }
-                        if (typeof(result) === "string") result = { result: result }
+                        if (result === 'ok') result = { result: result }
+                        if (typeof(result) === 'string') result = { result: result }
 
                         const preload = {}
                         if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
@@ -72,7 +73,7 @@ export class WebSocketClient {
                     }
                 } else this.store?.dispatch('socket/onMessage', data)
 
-				if (wait) this.removeWaitById(wait.id)
+                if (wait) this.removeWaitById(wait.id)
             }
         }
     }
@@ -90,7 +91,7 @@ export class WebSocketClient {
         if (index) {
             const wait = this.waits[index]
             if (wait.loading && this.store) {
-                this.store.dispatch("socket/removeLoading", { name: wait.loading })
+                this.store.dispatch('socket/removeLoading', { name: wait.loading })
             }
             this.waits.splice(index, 1)
         }
@@ -108,7 +109,7 @@ export class WebSocketClient {
             })
 
             if (options.loading && this.store) {
-                this.store.dispatch("socket/addLoading", { name: options.loading })
+                this.store.dispatch('socket/addLoading', { name: options.loading })
             }
 
             const msg = JSON.stringify({
@@ -123,7 +124,7 @@ export class WebSocketClient {
     }
 }
 
-export function WebSocketPlugin<WebSocketPlugin>(Vue: typeof _Vue, options: WebSocketPluginOptions): void {
+export function WebSocketPlugin(Vue: typeof _Vue, options: WebSocketPluginOptions): void {
     const socket = new WebSocketClient(options)
     Vue.prototype.$socket = socket
     Vue.$socket = socket

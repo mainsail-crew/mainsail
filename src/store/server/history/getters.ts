@@ -1,198 +1,213 @@
-import {GetterTree} from "vuex";
-import {ServerHistoryState, ServerHistoryStateJob} from "@/store/server/history/types";
+import {GetterTree} from 'vuex'
+import {ServerHistoryState, ServerHistoryStateJob} from '@/store/server/history/types'
 
+// eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
 
-	getTotalPrintTime(state) {
-		let output = 0
+    getTotalPrintTime(state) {
+        let output = 0
 
-		state.jobs.forEach(current => {
-			output += current.print_duration
-		})
+        state.jobs.forEach(current => {
+            output += current.print_duration
+        })
 
-		return output
-	},
+        return output
+    },
 
-	getTotalCompletedPrintTime(state) {
-		let output = 0
+    getTotalCompletedPrintTime(state) {
+        let output = 0
 
-		state.jobs.forEach(current => {
-			if (current.status === "completed") output += current.print_duration
-		})
+        state.jobs.forEach(current => {
+            if (current.status === 'completed') output += current.print_duration
+        })
 
-		return output
-	},
+        return output
+    },
 
-	getLongestPrintTime(state) {
-		let output = 0
+    getLongestPrintTime(state) {
+        let output = 0
 
-		state.jobs.forEach(current => {
-			if (current.print_duration > output) output = current.print_duration
-		})
+        state.jobs.forEach(current => {
+            if (current.print_duration > output) output = current.print_duration
+        })
 
-		return output
-	},
+        return output
+    },
 
-	getTotalFilamentUsed(state) {
-		let output = 0
+    getTotalFilamentUsed(state) {
+        let output = 0
 
-		state.jobs.forEach(current => {
-			output += current.filament_used
-		})
+        state.jobs.forEach(current => {
+            output += current.filament_used
+        })
 
-		return output
-	},
+        return output
+    },
 
-	getTotalJobsCount(state) {
-		return state.jobs.length
-	},
+    getTotalJobsCount(state) {
+        return state.jobs.length
+    },
 
-	getTotalCompletedJobsCount(state) {
-		return state.jobs.filter(job => job.status === "completed").length
-	},
+    getTotalCompletedJobsCount(state) {
+        return state.jobs.filter(job => job.status === 'completed').length
+    },
 
-	getAvgPrintTime(state, getters) {
-		const totalCompletedPrintTime = getters.getTotalCompletedPrintTime
-		const totalCompletedJobsCount = getters.getTotalCompletedJobsCount
+    getAvgPrintTime(state, getters) {
+        const totalCompletedPrintTime = getters.getTotalCompletedPrintTime
+        const totalCompletedJobsCount = getters.getTotalCompletedJobsCount
 
-		return totalCompletedPrintTime > 0 && totalCompletedJobsCount > 0 ? Math.round(totalCompletedPrintTime / totalCompletedJobsCount) : 0
-	},
+        return totalCompletedPrintTime > 0 && totalCompletedJobsCount > 0 ? Math.round(totalCompletedPrintTime / totalCompletedJobsCount) : 0
+    },
 
-	getAllPrintStatusArray(state, getters, rootState) {
-		interface allPrintStatusEntry {
-			name: string
-			value: number
-			showInTable: boolean
-			itemStyle: any
-			label: any
-		}
+    getAllPrintStatusArray(state, getters, rootState) {
+        interface allPrintStatusEntryItemStyle {
+            opacity: number
+            color: string
+            borderColor: string
+            borderWidth: number
+            borderRadius: number
+        }
+        interface allPrintStatusEntryLabel {
+            color: string
+        }
 
-		const output: allPrintStatusEntry[] = []
+        interface allPrintStatusEntry {
+            name: string
+            value: number
+            showInTable: boolean
+            itemStyle: allPrintStatusEntryItemStyle
+            label: allPrintStatusEntryLabel
+        }
 
-		state.jobs.forEach(current => {
-			const index = output.findIndex(element => element.name === current.status)
-			if (index !== -1) output[index].value +=1
-			else {
-				const itemStyle = {
-					opacity: 0.9,
-					color: '#424242',
-					borderColor: '#1E1E1E',
-					borderWidth: 2,
-					borderRadius: 3,
-				}
+        const output: allPrintStatusEntry[] = []
 
-				switch (current.status) {
-					case 'completed':
-						itemStyle['color'] = '#BDBDBD'
-						break
+        state.jobs.forEach((current) => {
+            const index = output.findIndex(element => element.name === current.status)
+            if (index !== -1) output[index].value +=1
+            else {
+                const itemStyle = {
+                    opacity: 0.9,
+                    color: '#424242',
+                    borderColor: '#1E1E1E',
+                    borderWidth: 2,
+                    borderRadius: 3,
+                }
 
-					case 'in_progress':
-						itemStyle['color'] = '#EEEEEE'
-						break
+                switch (current.status) {
+                case 'completed':
+                    itemStyle['color'] = '#BDBDBD'
+                    break
 
-					case 'cancelled':
-						itemStyle['color'] = '#616161'
-						break
-				}
+                case 'in_progress':
+                    itemStyle['color'] = '#EEEEEE'
+                    break
 
-				output.push({
-					name: current.status,
-					value: 1,
-					itemStyle: itemStyle,
-					showInTable: !rootState.gui?.history.hidePrintStatus.includes(current.status),
-					label: {
-						color: '#fff'
-					}
-				})
-			}
-		})
+                case 'cancelled':
+                    itemStyle['color'] = '#616161'
+                    break
+                }
 
-		return output
-	},
+                output.push({
+                    name: current.status,
+                    value: 1,
+                    itemStyle: itemStyle,
+                    showInTable: !rootState.gui?.history.hidePrintStatus.includes(current.status),
+                    label: {
+                        color: '#fff'
+                    }
+                })
+            }
+        })
 
-	getFilamentUsageArray(state) {
-		const output: any = []
-		const startDate = new Date()
-		startDate.setTime(startDate.getTime() - 60*60*24*14*1000)
-		startDate.setHours(0,0,0,0)
-		const jobsFiltered = state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0)
+        return output
+    },
 
-		for (let i = 0; i <= 14; i++) {
-			const tmpDate = new Date()
-			tmpDate.setTime(startDate.getTime() + 60*60*24*i*1000)
+    getFilamentUsageArray(state) {
+        // eslint-disable-next-line
+        const output: any = []
+        const startDate = new Date()
+        startDate.setTime(startDate.getTime() - 60*60*24*14*1000)
+        startDate.setHours(0,0,0,0)
+        const jobsFiltered = state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0)
 
-			output.push([
-				new Date(tmpDate).setHours(0,0,0,0),
-				0
-			])
-		}
+        for (let i = 0; i <= 14; i++) {
+            const tmpDate = new Date()
+            tmpDate.setTime(startDate.getTime() + 60*60*24*i*1000)
 
-		if (jobsFiltered.length) {
-			jobsFiltered.forEach(current => {
-				const currentStartDate = new Date(current.start_time * 1000).setHours(0,0,0,0)
-				const index = output.findIndex((element: any) => element[0] === currentStartDate)
-				if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
-			})
-		}
+            output.push([
+                new Date(tmpDate).setHours(0,0,0,0),
+                0
+            ])
+        }
 
-		return output.sort((a: any, b: any) => {
-			return b[0] - a[0]
-		})
-	},
+        if (jobsFiltered.length) {
+            jobsFiltered.forEach(current => {
+                const currentStartDate = new Date(current.start_time * 1000).setHours(0,0,0,0)
+                // eslint-disable-next-line
+                const index = output.findIndex((element: any) => element[0] === currentStartDate)
+                if (index !== -1) output[index][1] += Math.round(current.filament_used) / 1000
+            })
+        }
 
-	getPrinttimeAvgArray(state) {
-		const output = [0,0,0,0,0]
-		const startDate = new Date(new Date().getTime() - 60*60*24*14*1000)
-		const jobsFiltered = state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.status === 'completed')
+        // eslint-disable-next-line
+        return output.sort((a: any, b: any) => {
+            return b[0] - a[0]
+        })
+    },
 
-		if (jobsFiltered.length) {
-			jobsFiltered.forEach(current => {
-				if 		(current.print_duration > 0 		&& current.print_duration <= 60*60*2) 	output[0]++
-				else if (current.print_duration > 60*60*2 	&& current.print_duration <= 60*60*6) 	output[1]++
-				else if (current.print_duration > 60*60*6 	&& current.print_duration <= 60*60*12) 	output[2]++
-				else if (current.print_duration > 60*60*12 	&& current.print_duration <= 60*60*24) 	output[3]++
-				else if (current.print_duration > 60*60*24) 										output[4]++
-			})
-		}
+    getPrinttimeAvgArray(state) {
+        const output = [0,0,0,0,0]
+        const startDate = new Date(new Date().getTime() - 60*60*24*14*1000)
+        const jobsFiltered = state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.status === 'completed')
 
-		return output
-	},
+        if (jobsFiltered.length) {
+            jobsFiltered.forEach(current => {
+                if 		(current.print_duration > 0 		&& current.print_duration <= 60*60*2) 	output[0]++
+                else if (current.print_duration > 60*60*2 	&& current.print_duration <= 60*60*6) 	output[1]++
+                else if (current.print_duration > 60*60*6 	&& current.print_duration <= 60*60*12) 	output[2]++
+                else if (current.print_duration > 60*60*12 	&& current.print_duration <= 60*60*24) 	output[3]++
+                else if (current.print_duration > 60*60*24) 										output[4]++
+            })
+        }
 
-	getPrintStatus: (state) => (jobId: string) => {
-		if (state.jobs.length) {
-			const job = state.jobs.find(job => job.job_id === jobId)
+        return output
+    },
 
-			return job?.status ?? ""
-		}
+    getPrintStatus: (state) => (jobId: string) => {
+        if (state.jobs.length) {
+            const job = state.jobs.find(job => job.job_id === jobId)
 
-		return ""
-	},
+            return job?.status ?? ''
+        }
 
-	getPrintStatusChipColor: () => (status: string) => {
-		switch(status) {
-			case 'in_progress': return 'blue accent-3' //'blue-grey darken-1'
-			case 'completed': return 'green' //'green'
-			case 'cancelled': return 'red'
+        return ''
+    },
 
-			default: return 'orange'
-		}
-	},
+    getPrintStatusChipColor: () => (status: string) => {
+        switch(status) {
+        case 'in_progress': return 'blue accent-3' //'blue-grey darken-1'
+        case 'completed': return 'green' //'green'
+        case 'cancelled': return 'red'
 
-	getPrintStatusChipIcon: () => (status: string) => {
-		switch(status) {
-			case 'in_progress': return 'mdi-progress-clock'
-			case 'completed': return 'mdi-checkbox-marked-circle-outline'
-			case 'cancelled': return 'mdi-close-circle-outline'
+        default: return 'orange'
+        }
+    },
 
-			default: return 'mdi-alert-outline'
-		}
-	},
+    getPrintStatusChipIcon: () => (status: string) => {
+        switch(status) {
+        case 'in_progress': return 'mdi-progress-clock'
+        case 'completed': return 'mdi-checkbox-marked-circle-outline'
+        case 'cancelled': return 'mdi-close-circle-outline'
 
-	getFilterdJobList: (state, getters, rootState) => {
-		const hideStatus = rootState.gui.history.hidePrintStatus
+        default: return 'mdi-alert-outline'
+        }
+    },
 
-		return state.jobs.filter((job: ServerHistoryStateJob) => {
-			return !hideStatus.includes(job.status)
-		})
-	}
+    getFilterdJobList: (state, getters, rootState) => {
+        const hideStatus = rootState.gui.history.hidePrintStatus
+
+        return state.jobs.filter((job: ServerHistoryStateJob) => {
+            return !hideStatus.includes(job.status)
+        })
+    }
 }

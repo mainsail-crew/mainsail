@@ -61,10 +61,10 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base"
-import {formatFilesize} from "@/plugins/helpers";
-import Codemirror from "@/components/inputs/Codemirror.vue";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {formatFilesize} from '@/plugins/helpers'
+import Codemirror from '@/components/inputs/Codemirror.vue'
 @Component({
     components: {Codemirror}
 })
@@ -80,11 +80,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get filepath(): string {
-        return this.$store.state.editor.filepath ?? ""
+        return this.$store.state.editor.filepath ?? ''
     }
 
     get filename(): string {
-        return this.$store.state.editor.filename ?? ""
+        return this.$store.state.editor.filename ?? ''
     }
 
     get fileExtension() {
@@ -94,7 +94,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get fileroot() {
-        return this.$store.state.editor.fileroot ?? "gcodes"
+        return this.$store.state.editor.fileroot ?? 'gcodes'
     }
 
     get isWriteable() {
@@ -102,7 +102,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get sourcecode() {
-        return this.$store.state.editor.sourcecode ?? ""
+        return this.$store.state.editor.sourcecode ?? ''
     }
 
     set sourcecode(newVal) {
@@ -118,7 +118,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get snackbarHeadline() {
-        let directionUppercase = this.$t("Files.Downloading")
+        let directionUppercase = this.$t('Files.Downloading')
         if (this.loaderProgress.direction) {
             directionUppercase = this.loaderProgress.direction?.charAt(0).toUpperCase() + this.loaderProgress.direction?.slice(1)
         }
@@ -130,24 +130,24 @@ export default class TheEditor extends Mixins(BaseMixin) {
         if (!this.isWriteable) return null
         if (['printing', 'paused'].includes(this.printer_state)) return null
 
-        if (this.filename === "moonraker.conf")
-            return "moonraker"
-        else if (this.filename.startsWith("webcam") && this.filename.endsWith(".txt"))
-            return "webcamd"
-        else if (this.filename.startsWith("mooncord") && this.filename.endsWith(".json"))
-            return "mooncord"
-        else if (this.filename.endsWith(".cfg"))
-            return "klipper"
+        if (this.filename === 'moonraker.conf')
+            return 'moonraker'
+        else if (this.filename.startsWith('webcam') && this.filename.endsWith('.txt'))
+            return 'webcamd'
+        else if (this.filename.startsWith('mooncord') && this.filename.endsWith('.json'))
+            return 'mooncord'
+        else if (this.filename.endsWith('.cfg'))
+            return 'klipper'
 
         return null
     }
 
     cancelDownload() {
-        this.$store.dispatch("editor/cancelLoad")
+        this.$store.dispatch('editor/cancelLoad')
     }
 
     close() {
-        this.$store.dispatch("editor/close")
+        this.$store.dispatch('editor/close')
     }
 
     save(restartServiceName: string | null = null) {

@@ -1,4 +1,4 @@
-import { WebSocketClient } from "@/plugins/webSocketClient"
+import { WebSocketClient } from '@/plugins/webSocketClient'
 
 
 declare module 'vue/types/vue' {

@@ -4,6 +4,6 @@ import { RootState } from './types'
 
 export const mutations: MutationTree<RootState> = {
     setNaviDrawer(state, payload) {
-        Vue.set(state, "naviDrawer", payload)
+        Vue.set(state, 'naviDrawer', payload)
     },
 }

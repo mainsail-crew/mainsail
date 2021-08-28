@@ -6,58 +6,58 @@ import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Machine from '../pages/Machine.vue'
+import {Component} from 'vue'
 import Viewer from '../pages/Viewer.vue'
-import {Component} from "vue";
 
 const routes: AppRoute[] = [
     {
-        title: "Dashboard",
+        title: 'Dashboard',
         path: '/',
         icon: 'monitor-dashboard',
         component: Dashboard,
         alwaysShow: true,
-		showInNavi: true,
+        showInNavi: true,
     },
     {
-        title: "Printers",
+        title: 'Printers',
         path: '/allPrinters',
         component: Farm,
         alwaysShow: false,
         showInNavi: false,
     },
     {
-        title: "Webcam",
+        title: 'Webcam',
         path: '/cam',
         icon: 'webcam',
         component: Webcam,
         alwaysShow: true,
-		showInNavi: true,
+        showInNavi: true,
     },
     {
-        title: "Console",
+        title: 'Console',
         path: '/console',
         icon: 'console-line',
         component: Console,
         alwaysShow: true,
-		showInNavi: true,
+        showInNavi: true,
     },
     {
-        title: "Heightmap",
+        title: 'Heightmap',
         path: '/heightmap',
         icon: 'grid',
         component: Heightmap,
         alwaysShow: false,
-		showInNavi: true,
-		klipperComponent: 'bed_mesh',
+        showInNavi: true,
+        klipperComponent: 'bed_mesh',
     },
     {
-        title: "G-Code Files",
+        title: 'G-Code Files',
         path: '/files',
         icon: 'file-document-multiple-outline',
         component: Files,
         alwaysShow: false,
-		showInNavi: true,
-		registeredDirectory: 'gcodes',
+        showInNavi: true,
+        registeredDirectory: 'gcodes',
     },
     {
         title: "G-Code Viewer",
@@ -68,16 +68,16 @@ const routes: AppRoute[] = [
 		showInNavi: true,
     },
     {
-        title: "History",
+        title: 'History',
         path: '/history',
         icon: 'history',
         component: History,
         alwaysShow: false,
-		showInNavi: true,
-		moonrakerComponent: 'history'
+        showInNavi: true,
+        moonrakerComponent: 'history'
     },
     {
-        title: "Machine",
+        title: 'Machine',
         path: '/config',
         icon: 'wrench',
         component: Machine,

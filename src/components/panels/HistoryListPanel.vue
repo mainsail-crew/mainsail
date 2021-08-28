@@ -285,9 +285,9 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "@/components/mixins/base";
-import {ServerHistoryStateJob} from "@/store/server/history/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import {ServerHistoryStateJob} from '@/store/server/history/types'
 import {caseInsensitiveSort, formatFilesize} from '@/plugins/helpers'
 
 @Component
@@ -319,130 +319,130 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     get headers() {
         const headers = [ {
-                text: '',
-                value: '',
-                align: 'left',
-                configable: false,
-                visible: true,
-                filterable: false
-            }, {
-                text: this.$t("History.Filename"),
-                value: 'filename',
-                align: 'left',
-                configable: false,
-                visible: true
-            }, {
-                text: '',
-                value: 'status',
-                align: 'left',
-                configable: false,
-                visible: true,
-                filterable: false
-            }, {
-                text: this.$t("History.Filesize"),
-                value: 'size',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'filesize'
-            }, {
-                text: this.$t("History.LastModified"),
-                value: 'modified',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date'
-            }, {
-                text: this.$t("History.StartTime"),
-                value: 'start_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date'
-            }, {
-                text: this.$t("History.EndTime"),
-                value: 'end_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'date'
-            }, {
-                text: this.$t("History.EstimatedTime"),
-                value: 'estimated_time',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time'
-            }, {
-                text: this.$t("History.PrintTime"),
-                value: 'print_duration',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time'
-            }, {
-                text: this.$t("History.TotalTime"),
-                value: 'total_duration',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'time'
-            }, {
-                text: this.$t("History.FilamentCalc"),
-                value: 'filament_total',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length'
-            }, {
-                text: this.$t("History.FilamentUsed"),
-                value: 'filament_used',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length'
-            }, {
-                text: this.$t("History.FirstLayerExtTemp"),
-                value: 'first_layer_extr_temp',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'temp'
-            }, {
-                text: this.$t("History.FirstLayerBedTemp"),
-                value: 'first_layer_bed_temp',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'temp'
-            }, {
-                text: this.$t("History.FirstLayerHeight"),
-                value: 'first_layer_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length'
-            }, {
-                text: this.$t("History.LayerHeight"),
-                value: 'layer_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length'
-            }, {
-                text: this.$t("History.ObjectHeight"),
-                value: 'object_height',
-                align: 'left',
-                configable: true,
-                visible: true,
-                outputType: 'length'
-            }, {
-                text: this.$t("History.Slicer"),
-                value: 'slicer',
-                align: 'left',
-                configable: true,
-                visible: true
-            },
+            text: '',
+            value: '',
+            align: 'left',
+            configable: false,
+            visible: true,
+            filterable: false
+        }, {
+            text: this.$t('History.Filename'),
+            value: 'filename',
+            align: 'left',
+            configable: false,
+            visible: true
+        }, {
+            text: '',
+            value: 'status',
+            align: 'left',
+            configable: false,
+            visible: true,
+            filterable: false
+        }, {
+            text: this.$t('History.Filesize'),
+            value: 'size',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'filesize'
+        }, {
+            text: this.$t('History.LastModified'),
+            value: 'modified',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'date'
+        }, {
+            text: this.$t('History.StartTime'),
+            value: 'start_time',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'date'
+        }, {
+            text: this.$t('History.EndTime'),
+            value: 'end_time',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'date'
+        }, {
+            text: this.$t('History.EstimatedTime'),
+            value: 'estimated_time',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'time'
+        }, {
+            text: this.$t('History.PrintTime'),
+            value: 'print_duration',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'time'
+        }, {
+            text: this.$t('History.TotalTime'),
+            value: 'total_duration',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'time'
+        }, {
+            text: this.$t('History.FilamentCalc'),
+            value: 'filament_total',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'length'
+        }, {
+            text: this.$t('History.FilamentUsed'),
+            value: 'filament_used',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'length'
+        }, {
+            text: this.$t('History.FirstLayerExtTemp'),
+            value: 'first_layer_extr_temp',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'temp'
+        }, {
+            text: this.$t('History.FirstLayerBedTemp'),
+            value: 'first_layer_bed_temp',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'temp'
+        }, {
+            text: this.$t('History.FirstLayerHeight'),
+            value: 'first_layer_height',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'length'
+        }, {
+            text: this.$t('History.LayerHeight'),
+            value: 'layer_height',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'length'
+        }, {
+            text: this.$t('History.ObjectHeight'),
+            value: 'object_height',
+            align: 'left',
+            configable: true,
+            visible: true,
+            outputType: 'length'
+        }, {
+            text: this.$t('History.Slicer'),
+            value: 'slicer',
+            align: 'left',
+            configable: true,
+            visible: true
+        },
         ]
 
         headers.forEach((header) => {
@@ -469,7 +469,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get allPrintStatusArray() {
-        return caseInsensitiveSort(this.$store.getters["server/history/getAllPrintStatusArray"] ?? [], 'name')
+        return caseInsensitiveSort(this.$store.getters['server/history/getAllPrintStatusArray'] ?? [], 'name')
     }
 
     get countPerPage() {
@@ -477,7 +477,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'history.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'history.countPerPage', value: newVal })
     }
 
     get hideColums() {
@@ -485,7 +485,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     set hideColums(newVal) {
-        this.$store.dispatch("gui/saveSetting", { name: 'history.hideColums', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'history.hideColums', value: newVal })
     }
 
     refreshHistory() {
@@ -500,23 +500,23 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     formatPrintTime(totalSeconds: number) {
         if (totalSeconds) {
-            let output = ""
+            let output = ''
 
             const days = Math.floor(totalSeconds / (3600 * 24))
             if (days) {
                 totalSeconds %= (3600 * 24)
-                output += days+"d"
+                output += days+'d'
             }
 
             const hours = Math.floor(totalSeconds / 3600)
             totalSeconds %= 3600
-            if (hours) output += " "+hours+"h"
+            if (hours) output += ' '+hours+'h'
 
             const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += " "+minutes+"m"
+            if (minutes) output += ' '+minutes+'m'
 
             const seconds = totalSeconds % 60
-            if (seconds) output += " "+seconds.toFixed(0)+"s"
+            if (seconds) output += ' '+seconds.toFixed(0)+'s'
 
             return output
         }
@@ -531,10 +531,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     
     showContextMenu (e: any, item: ServerHistoryStateJob) {
         if (!this.contextMenu.shown) {
-            e?.preventDefault();
+            e?.preventDefault()
             this.contextMenu.shown = true
-            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2;
-            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2;
+            this.contextMenu.x = e?.clientX || e?.pageX || window.screenX / 2
+            this.contextMenu.y = e?.clientY || e?.pageY || window.screenY / 2
             this.contextMenu.item = item
             this.$nextTick(() => {
                 this.contextMenu.shown = true
@@ -543,8 +543,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     sortFiles(items: any[], sortBy: string[], sortDesc: boolean[]) {
-        const sortByClean = sortBy.length ? sortBy[0] : 'filename';
-        const sortDescClean = sortDesc[0];
+        const sortByClean = sortBy.length ? sortBy[0] : 'filename'
+        const sortDescClean = sortDesc[0]
 
         if (items !== undefined) {
             // Sort by index
@@ -554,13 +554,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 if (b[sortByClean] === null || b[sortByClean] === undefined) return 1
 
                 if (a[sortByClean].constructor === String && b[sortByClean].constructor === String) {
-                    return a[sortByClean].localeCompare(b[sortByClean], undefined, { sensivity: 'base' });
+                    return a[sortByClean].localeCompare(b[sortByClean], undefined, { sensivity: 'base' })
                 }
 
                 if (a[sortByClean] instanceof Array && b[sortByClean] instanceof Array) {
-                    const reducedA = a[sortByClean].length ? a.filament.reduce((a: any, b: any) => a + b) : 0;
-                    const reducedB = b[sortByClean].length ? b.filament.reduce((a: any, b: any) => a + b) : 0;
-                    return reducedA - reducedB;
+                    const reducedA = a[sortByClean].length ? a.filament.reduce((a: any, b: any) => a + b) : 0
+                    const reducedB = b[sortByClean].length ? b.filament.reduce((a: any, b: any) => a + b) : 0
+                    return reducedA - reducedB
                 }
 
                 return a[sortByClean] - b[sortByClean]
@@ -590,13 +590,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 thumb.height >= 32 && thumb.height <= 64
             )
 
-            let relative_url = ""
-            if (item.filename.lastIndexOf("/") !== -1) {
-                relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+            let relative_url = ''
+            if (item.filename.lastIndexOf('/') !== -1) {
+                relative_url = item.filename.substr(0, item.filename.lastIndexOf('/')+1)
             }
 
             if (thumbnail && 'relative_path' in thumbnail)
-                return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+item.metadata.modified
+                return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+item.metadata.modified
         }
 
         return false
@@ -610,13 +610,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         ) {
             const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
 
-            let relative_url = ""
-            if (item.filename.lastIndexOf("/") !== -1) {
-                relative_url = item.filename.substr(0, item.filename.lastIndexOf("/")+1)
+            let relative_url = ''
+            if (item.filename.lastIndexOf('/') !== -1) {
+                relative_url = item.filename.substr(0, item.filename.lastIndexOf('/')+1)
             }
 
             if (thumbnail && 'relative_path' in thumbnail)
-                return this.apiUrl+"/server/files/gcodes/"+relative_url+thumbnail.relative_path+"?timestamp="+item.metadata.modified
+                return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+item.metadata.modified
         }
 
         return false
@@ -634,9 +634,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     changeColumnVisible(name: string) {
         if (this.headers.filter(header => header.value === name).length) {
-            let value = this.headers.filter(header => header.value === name)[0].visible;
+            let value = this.headers.filter(header => header.value === name)[0].visible
 
-            this.$store.dispatch("gui/setHistoryColumns", {name: name, value: value});
+            this.$store.dispatch('gui/setHistoryColumns', {name: name, value: value})
         }
     }
 
@@ -654,11 +654,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     getStatusIcon(status: string) {
-        return this.$store.getters["server/history/getPrintStatusChipIcon"](status)
+        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
     }
 
     getStatusColor(status: string) {
-        return this.$store.getters["server/history/getPrintStatusChipColor"](status)
+        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
     outputValue(col: any, item: any) {
@@ -667,25 +667,25 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         if (value > 0) {
             switch(col.outputType) {
-                case 'filesize':
-                    return formatFilesize(value)
+            case 'filesize':
+                return formatFilesize(value)
 
-                case 'date':
-                    return this.formatDate(value)
+            case 'date':
+                return this.formatDate(value)
 
-                case 'time':
-                    return this.formatPrintTime(value)
+            case 'time':
+                return this.formatPrintTime(value)
 
-                case 'temp':
-                    return value.toFixed()+" °C"
+            case 'temp':
+                return value.toFixed()+' °C'
 
-                case 'length':
-                    if (value > 1000) return (value / 1000).toFixed(2)+" m"
+            case 'length':
+                if (value > 1000) return (value / 1000).toFixed(2)+' m'
 
-                    return value.toFixed(2)+" mm"
+                return value.toFixed(2)+' mm'
 
-                default:
-                    return value
+            default:
+                return value
             }
         } else return '--'
     }

@@ -524,6 +524,10 @@
 		},
 		"ControlTab": {
 			"Control": "Control",
+			"Style": "Style",
+			"Bars": "Bars",
+			"Circle": "Circle",
+			"Cross": "Cross",
 			"SpeedXY": "Speed XY",
 			"SpeedZ": "Speed Z",
 			"EnableCross": "Enable movement cross",

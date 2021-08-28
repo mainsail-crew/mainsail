@@ -16,68 +16,68 @@ export const colorChamber = '#4CAF50'
 export const themeDir = '.theme'
 export const datasetInterval = 1000
 export const datasetTypes = [
-	"temperature",
-	"target",
-    "power",
-	"speed",
+    'temperature',
+    'target',
+    'power',
+    'speed',
 ]
 
 export const datasetTypesInPercents = [
-	"power",
-	"speed",
+    'power',
+    'speed',
 ]
 
 export const additionalSensors = [
-	"bme280",
-	"htu21d",
+    'bme280',
+    'htu21d',
 ]
 
 export const validGcodeExtensions = [
-	'.gcode',
-	'.g',
-	'.gco',
-	'.ufp',
-	'.nc',
+    '.gcode',
+    '.g',
+    '.gco',
+    '.ufp',
+    '.nc',
 ]
 
 export const readOnlyRoots = [
-	'config_examples',
-	'docs',
-	'logs',
+    'config_examples',
+    'docs',
+    'logs',
 ]
 
 export const initableServerComponents = [
-	'history',
-	'power',
-	'updateManager',
+    'history',
+    'power',
+    'updateManager',
 ]
 
 export const checkKlipperConfigModules = [
-	'virtual_sdcard',
-	'pause_resume',
-	'display_status',
-	'gcode_macro pause',
-	'gcode_macro resume',
-	'gcode_macro cancel_print',
+    'virtual_sdcard',
+    'pause_resume',
+    'display_status',
+    'gcode_macro pause',
+    'gcode_macro resume',
+    'gcode_macro cancel_print',
 ]
 
 export const allowedMetadata = [
-	'estimated_time',
-	'filament_total',
-	'filament_weight_total',
-	'first_layer_bed_temp',
-	'first_layer_extr_temp',
-	'first_layer_height',
-	'gcode_end_byte',
-	'gcode_start_byte',
-	'job_id',
-	'layer_height',
-	'object_height',
-	'print_start_time',
-	'size',
-	'slicer',
-	'slicer_version',
-	'thumbnails',
+    'estimated_time',
+    'filament_total',
+    'filament_weight_total',
+    'first_layer_bed_temp',
+    'first_layer_extr_temp',
+    'first_layer_height',
+    'gcode_end_byte',
+    'gcode_start_byte',
+    'job_id',
+    'layer_height',
+    'object_height',
+    'print_start_time',
+    'size',
+    'slicer',
+    'slicer_version',
+    'thumbnails',
 ]
 
 export const maxEventHistory = 500

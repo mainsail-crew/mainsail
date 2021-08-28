@@ -66,10 +66,10 @@
 <script lang="ts">
 
 
-import {Component, Mixins} from "vue-property-decorator";
-import BaseMixin from "../mixins/base";
-import SettingsRow from "@/components/settings/SettingsRow.vue";
-import {FarmPrinterState} from "@/store/farm/printer/types";
+import {Component, Mixins} from 'vue-property-decorator'
+import BaseMixin from '../mixins/base'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {FarmPrinterState} from '@/store/farm/printer/types'
 
 interface printerForm {
     bool: boolean
@@ -84,7 +84,7 @@ interface printerForm {
 export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     private form: printerForm = {
         bool: false,
-        hostname: "",
+        hostname: '',
         port: 7125,
         namespace: null
     }
@@ -98,11 +98,11 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     formatPrinterName(printer: FarmPrinterState) {
-        return printer.socket.hostname+(printer.socket.port !== 80 ? ":"+printer.socket.port : "")
+        return printer.socket.hostname+(printer.socket.port !== 80 ? ':'+printer.socket.port : '')
     }
 
     createPrinter() {
-        this.form.hostname = ""
+        this.form.hostname = ''
         this.form.port = 7125
         this.form.namespace = null
         this.form.bool = true
@@ -115,7 +115,7 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
             protocol: this.protocol
         })
 
-        this.form.hostname = ""
+        this.form.hostname = ''
         this.form.port = 7125
         this.form.namespace = null
         this.form.bool = false
@@ -129,20 +129,20 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
     }
 
     updatePrinter() {
-        this.$store.dispatch("farm/updatePrinter", {
+        this.$store.dispatch('farm/updatePrinter', {
             namespace: this.form.namespace,
             hostname: this.form.hostname,
             port: this.form.port,
         })
 
-        this.form.hostname = ""
+        this.form.hostname = ''
         this.form.port = 7125
         this.form.namespace = null
         this.form.bool = false
     }
 
     delPrinter(namespace: string) {
-        this.$store.dispatch("farm/removePrinter", { name: namespace })
+        this.$store.dispatch('farm/removePrinter', { name: namespace })
     }
 }
 </script>
