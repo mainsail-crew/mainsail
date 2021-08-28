@@ -164,21 +164,21 @@ export const getDefaultState = (): GuiState => {
         //moonraker DB api dont accept camel case key names
         remotePrinters: [],
         presets: [],
-        cooldownGcode: 'TURN_OFF_HEATERS'
-		gcodeViewer: {
-			showCursor : true,
-			extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
-			gridColor : '#0000FF',
-			backgroundColor : '#000000',
-			colorMode : 'extruder',
-			showAxes : 'true',
-			minFeed : 20,
-			maxFeed : 100,
-			minFeedColor : "#0000FF",
-			maxFeedColor : "#FF0000",
-			forceLineRendering : false,
-			progressColor : "#FFFFFF"
-		}
+        cooldownGcode: 'TURN_OFF_HEATERS',
+        gcodeViewer: {
+            showCursor : true,
+            extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
+            gridColor : '#0000FF',
+            backgroundColor : '#000000',
+            colorMode : 'extruder',
+            showAxes : 'true',
+            minFeed : 20,
+            maxFeed : 100,
+            minFeedColor : '#0000FF',
+            maxFeedColor : '#FF0000',
+            forceLineRendering : false,
+            progressColor : '#FFFFFF'
+        }
     }
 }
 
