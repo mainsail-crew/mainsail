@@ -62,7 +62,7 @@ import SettingsPresetsTab from '@/components/settings/SettingsPresetsTab.vue'
 import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrintersTab.vue'
 import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
-import SettingsGCodeViewerTab from "@/components/settings/SettingsGCodeViewerTab.vue"
+import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 @Component({
     components: {
         SettingsThemeTab,

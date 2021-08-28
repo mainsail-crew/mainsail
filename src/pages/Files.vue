@@ -1077,8 +1077,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
         })
     }
 
-	view3D(item: FileStateFile) {
-		this.$router.push({path: '/viewer', query: {filename: this.currentPath + '/' + item.filename}});
-	}
+    view3D(item: FileStateFile) {
+        this.$router.push({path: '/viewer', query: {filename: this.currentPath + '/' + item.filename}})
+    }
 }
 </script>

@@ -60,12 +60,12 @@ const routes: AppRoute[] = [
         registeredDirectory: 'gcodes',
     },
     {
-        title: "G-Code Viewer",
+        title: 'G-Code Viewer',
         path: '/viewer',
         icon: 'video-3d',
         component: Viewer,
         alwaysShow: false,
-		showInNavi: true,
+        showInNavi: true,
     },
     {
         title: 'History',
