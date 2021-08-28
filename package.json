@@ -53,7 +53,7 @@
     "@mdi/font": "^5.9.55",
     "@types/semver": "^7.3.8",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.28.5",
+    "@typescript-eslint/parser": "^4.29.3",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-pwa": "^4.5.13",
