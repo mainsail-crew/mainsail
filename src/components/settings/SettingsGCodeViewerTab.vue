@@ -2,11 +2,11 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ShowCursor')" class="my-2">
+                <settings-row :title="$t('Settings.GCodeViewerTab.ShowCursor')">
                     <v-switch class="mt-0" hide-details v-model="showCursor"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ShowAxes')" class="my-2">
+                <settings-row :title="$t('Settings.GCodeViewerTab.ShowAxes')">
                     <v-switch class="mt-0" hide-details v-model="showAxes"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -14,16 +14,7 @@
                     <v-select :items="colorModes" dense hide-details outlined selected v-model="colorMode"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ProgressColor')" class="my-2">
-                    <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn :color="progressColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
-                        </template>
-                        <v-color-picker :value="progressColor" @update:color="updateColorValue('progressColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
-                    </v-menu>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')" class="my-2">
+                <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn :color="backgroundColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
@@ -32,7 +23,7 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')" class="my-2">
+                <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
@@ -41,7 +32,7 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')" class="my-2">
+                <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')">
                     <v-row no-gutters>
                         <v-menu :close-on-content-click="false" :key="index" bottom left offset-y v-for="(extruderColor, index) in extruderColors">
                             <template v-slot:activator="{ on, attrs }">
@@ -209,6 +200,3 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
     }
 }
 </script>
-
-<style scoped>
-</style>
