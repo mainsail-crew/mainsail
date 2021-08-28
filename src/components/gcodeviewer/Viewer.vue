@@ -336,13 +336,13 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     @Watch('loadedFile')
-    loadedFileChanged(newVal) {
-        this.loadedFileBackup = newVal //We need to keep the backup in sync for when component comes out of scope.
+    loadedFileChanged(newVal: string) {
+        loadedFileBackup = newVal //We need to keep the backup in sync for when component comes out of scope.
     }
 
     @Watch('tracking')
-    async trackingChanged(newVal) {
-        this.trackingBackup = newVal
+    async trackingChanged(newVal: boolean) {
+        trackingBackup = newVal
         if (!viewer) return
         if (newVal) {
             this.loadedFile = this.sdCardFilePath
@@ -351,9 +351,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer.gcodeProcessor.forceRedraw()
-        } else {
-            viewer.gcodeProcessor.setLiveTracking(false)
-        }
+        } else viewer.gcodeProcessor.setLiveTracking(false)
     }
 
     @Watch('printerIsPrinting')
