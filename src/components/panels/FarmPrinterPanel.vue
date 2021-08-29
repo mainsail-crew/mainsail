@@ -106,7 +106,7 @@
                     </v-card-text>
                     <v-fade-transition>
                         <v-overlay v-if="hover" absolute :z-index="4" >
-                            <v-btn color="primary" @click="clickPrinter">{{ $t("Panels.FarmPrinterPanel.SwitchToPrinter") }}</v-btn>
+                            <v-btn color="primary" @click="clickPrinter">{{ printer.socket.isConnected ? $t("Panels.FarmPrinterPanel.SwitchToPrinter") : $t("Panels.FarmPrinterPanel.ReconnectToPrinter") }}</v-btn>
                         </v-overlay>
                     </v-fade-transition>
                 </div>

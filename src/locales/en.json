@@ -254,7 +254,8 @@
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
-			"SwitchToPrinter": "Switch to Printer"
+			"SwitchToPrinter": "Switch to Printer",
+			"ReconnectToPrinter": "Reconnect"
 		},
 		"KlippyStatePanel": {
 			"KlippyState": "Klippy-State",
