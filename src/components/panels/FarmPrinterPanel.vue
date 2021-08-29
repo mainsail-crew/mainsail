@@ -31,7 +31,7 @@
                 <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ printer_name }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-item-group v-if="this.printer_webcams.length">
+            <v-item-group v-if="printer.socket.isConnected && this.printer_webcams.length">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on">
@@ -69,7 +69,7 @@
                         class="d-flex align-end"
                         ref="imageDiv"
                     >
-                        <div v-if="currentCamName !== 'off' && currentWebcam" class="webcamContainer">
+                        <div v-if="printer.socket.isConnected && currentCamName !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
                                 <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
                             </template>
