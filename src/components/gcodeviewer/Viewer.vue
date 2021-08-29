@@ -27,9 +27,9 @@
                         :max="maxZSlider"
                         min="-1"
                         :value="zSlider"
-                        :height="sliderHeight"
+                        :height="zSlicerHeight"
                         class="slider-autoheight"
-                        @change="updateZSlider"
+                        @input="updateZSlider"
                     ></v-slider>
                 </v-col>
             </v-row>
@@ -106,11 +106,12 @@ export default class Viewer extends Mixins(BaseMixin) {
     private fileSize = 0
     private maxZSlider = 100000
     private zSlider = this.maxZSlider
+    private zSlicerHeight = 100
     private renderQuality = this.renderQualities[2]
 
     @Prop({type: String, default: '', required: false}) filename!: string
     @Ref('fileInput') fileInput!: HTMLInputElement
-    @Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLCanvasElement
+    @Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLElement
 
     get renderQualities() {
         return [
@@ -124,6 +125,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     async mounted() {
         await this.init()
+        this.resize()
     }
 
     get filePosition() {
@@ -140,10 +142,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     get showTrackingButton() {
         return this.printerIsPrinting && this.sdCardFilePath !== this.loadedFile
-    }
-
-    get sliderHeight() {
-        return this.canvasBackup?.height ?? 100
     }
 
     async init() {
@@ -191,11 +189,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
         viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
         viewer.gcodeProcessor.setLiveTracking(false)
-        window.addEventListener('resize', () => {
-            this.$nextTick(() => {
-                this.resize()
-            })
-        })
+        window.addEventListener('resize', this.resize)
 
         this.loadToolColors(this.extruderColors)
 
@@ -217,6 +211,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.gcodeProcessor.loadingProgressCallback = null
         }
+        window.removeEventListener('resize', this.resize)
     }
 
     chooseFile() {
@@ -283,7 +278,11 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     resize() {
-        //Code to handle canvas resizing
+        this.$nextTick(() => {
+            if (this.viewerCanvasContainer) {
+                this.zSlicerHeight = this.viewerCanvasContainer.clientHeight - 5
+            }
+        })
     }
 
     resetCamera() {
@@ -542,7 +541,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer?.setProgressColor(newVal)
     }
 
-    @Debounce(250)
+    @Debounce(100)
     updateZSlider(newVal: any) {
         this.zSlider = newVal
     }
