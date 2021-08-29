@@ -64,9 +64,10 @@
             <template v-slot:default="{ hover }">
                 <div>
                     <v-img
-                        height="200px"
+                        :height="imageHeight"
                         :src="printer_image"
                         class="d-flex align-end"
+                        ref="imageDiv"
                     >
                         <div v-if="currentCamName !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
@@ -115,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import {Component, Mixins, Prop, Ref, Vue} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
@@ -130,8 +131,10 @@ import MainsailLogo from "@/components/ui/MainsailLogo.vue";
     }
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
+    private imageHeight = 200;
 
     @Prop({ type: Object, required: true }) printer!: FarmPrinterState
+    @Ref() readonly imageDiv!: Vue
 
     get printerUrl() {
         const thisUrl = window.location.href.split("/")
@@ -203,6 +206,21 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
             this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
         else
             this.$store.dispatch("farm/"+this.printer._namespace+"/reconnect")
+    }
+
+    mounted() {
+        window.addEventListener("resize", this.resize)
+        this.resize()
+    }
+
+    beforeDestroy() {
+        window.addEventListener("resize", this.resize)
+    }
+
+    resize() {
+        if (this.imageDiv?.$el?.clientWidth) {
+            this.imageHeight = Math.round(this.imageDiv.$el.clientWidth / 3 * 2)
+        } else this.imageHeight = 200
     }
 
 }
