@@ -79,7 +79,12 @@
                         <v-card-title class="white--text py-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
                             <v-row>
                                 <v-col class="col-auto pr-0 d-flex align-center" style="width: 58px">
-                                    <img class="my-auto" :src="printer_logo" style="width: 100%;" />
+                                    <template v-if="printer_logo">
+                                        <img :src="printer_logo" style="width: 100%;" class="my-auto" alt="Logo" />
+                                    </template>
+                                    <template v-else>
+                                        <mainsail-logo :color="printerLogoColor" style="width: 100%;" class="my-auto"></mainsail-logo>
+                                    </template>
                                 </v-col>
                                 <v-col class="col" style="width: 100px">
                                     <h3 class="font-weight-regular">{{ printer_status }}</h3>
@@ -110,18 +115,18 @@
 </template>
 
 <script lang="ts">
-
-
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from "@/components/webcams/Mjpegstreamer.vue"
 import MjpegstreamerAdaptive from "@/components/webcams/MjpegstreamerAdaptive.vue"
+import MainsailLogo from "@/components/ui/MainsailLogo.vue";
 
 @Component({
     components: {
         "webcam-mjpegstreamer": Mjpegstreamer,
         "webcam-mjpegstreamer-adaptive": MjpegstreamerAdaptive,
+        "mainsail-logo": MainsailLogo
     }
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
@@ -168,6 +173,10 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
 
     get printer_logo() {
         return this.$store.getters["farm/"+this.printer._namespace+"/getLogo"]
+    }
+
+    get printerLogoColor() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getLogoColor"]
     }
 
     get printer_position() {
