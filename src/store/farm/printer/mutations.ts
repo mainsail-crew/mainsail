@@ -57,10 +57,8 @@ export const mutations: MutationTree<FarmPrinterState> = {
 
 	setConfigDir(state, payload) {
 		Object.values(payload).forEach((file: any) => {
-			if ("filename" in file) {
-				if (file.filename.startsWith(".theme/")) {
-					state.theme_files.push(file.filename)
-				}
+			if (file.path?.startsWith(".theme/")) {
+				state.theme_files.push(file.path)
 			}
 		})
 	},
