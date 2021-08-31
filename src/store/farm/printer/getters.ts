@@ -1,4 +1,4 @@
-import { themeDir } from "@/store/variables"
+import {defaultLogoColor, themeDir} from '@/store/variables'
 import {convertName} from "@/plugins/helpers"
 import {GetterTree} from "vuex";
 import {FarmPrinterState} from "@/store/farm/printer/types";
@@ -33,6 +33,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 		) return state.data.gui.general.printername
 
 		return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
+	},
+
+	getLogoColor: (state) => {
+		return state.data.gui?.theme?.logo ?? defaultLogoColor
 	},
 
 	getStatus: (state, getters) => {
@@ -97,9 +101,9 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
 	getLogo: (state, getters) => {
 		const acceptName = "sidebar-logo"
-		const acceptExtensions = ['gif', 'jpg', 'png', 'gif']
+		const acceptExtensions = ['gif', 'jpg', 'png', 'gif', 'svg']
 
-		return getters["getThemeFileUrl"](acceptName, acceptExtensions) ?? '/img/logo.svg'
+		return getters["getThemeFileUrl"](acceptName, acceptExtensions)
 	},
 
 	getPosition: state => {
