@@ -3,7 +3,7 @@ body {
 }
 
 #page-container {
-  max-width: 1400px;
+  max-width: 1800px;
 }
 
 .overflowingContentWidgets {
@@ -44,4 +44,12 @@ body {
 
 .p-rel {
   position: relative!important;
+}
+
+.settings-tabs {
+  height: 500px;
+}
+
+.settings-tabs .v-window {
+  overflow-y: auto !important;
 }

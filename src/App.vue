@@ -5,169 +5,241 @@
     @import './assets/styles/sidebar.scss';
     @import './assets/styles/utils.scss';
     @import './assets/styles/updateManager.scss';
+
+    #content {
+        background-attachment: fixed;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .v-btn:not(.v-btn--outlined).primary {
+        color: var(--v-btn-text-primary)
+    }
 </style>
 
 <template>
-    <v-app>
-        <vue-headful :title="getTitle" />
-        <sidebar></sidebar>
-        <topbar></topbar>
+    <v-app dark :style="cssVars">
+        <vue-headful :title="title" />
+        <the-sidebar></the-sidebar>
+        <the-topbar></the-topbar>
 
-        <v-main id="content" v-bind:style="{background:mainBackground,backgroundAttachment:'fixed',backgroundSize: 'cover',backgroundRepeat: 'no-repeat'}">
-            <v-scroll-y-transition>
-                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                    <keep-alive>
-                        <router-view></router-view>
-                    </keep-alive>
-                </v-container>
-            </v-scroll-y-transition>
+        <v-main id="content" :style="{ background: mainBackground }">
+            <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <router-view></router-view>
+            </v-container>
         </v-main>
-
-        <select-printer-dialog v-if="remoteMode"></select-printer-dialog>
-        <connecting-dialog v-if="!remoteMode"></connecting-dialog>
-        <update-dialog></update-dialog>
+        <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
+        <the-connecting-dialog v-else></the-connecting-dialog>
+        <the-update-dialog></the-update-dialog>
+        <the-editor></the-editor>
     </v-app>
 </template>
 
-<script>
-    import { mapState, mapGetters } from 'vuex'
-    import UpdateDialog from "@/components/UpdateDialog"
-    import ConnectingDialog from "@/components/ConnectingDialog"
-    import SelectPrinterDialog from "@/components/SelectPrinterDialog"
-    import Sidebar from "@/components/Sidebar"
-    import Topbar from "@/components/Topbar"
+<script lang="ts">
+import Component from 'vue-class-component'
+import TheSidebar from "@/components/TheSidebar.vue";
+import BaseMixin from "@/components/mixins/base";
+import TheTopbar from "@/components/TheTopbar.vue";
+import {Mixins, Vue, Watch} from "vue-property-decorator";
+import TheUpdateDialog from "@/components/TheUpdateDialog.vue";
+import TheConnectingDialog from "@/components/TheConnectingDialog.vue";
+import TheSelectPrinterDialog from "@/components/TheSelectPrinterDialog.vue";
+import TheEditor from "@/components/TheEditor.vue";
+import MainsailLogo from "@/components/ui/MainsailLogo.vue";
 
-export default {
-    props: {
-        source: String,
-    },
+@Component({
     components: {
-        ConnectingDialog,
-        SelectPrinterDialog,
-        UpdateDialog,
-        Sidebar,
-        Topbar,
-    },
-    data: () => ({
+        TheEditor,
+        TheSelectPrinterDialog,
+        TheConnectingDialog,
+        TheUpdateDialog,
+        TheTopbar,
+        TheSidebar,
+    }
+})
+export default class App extends Mixins(BaseMixin) {
 
-    }),
-    created () {
-        this.$vuetify.theme.dark = true
-    },
-    computed: {
-        ...mapState({
-            language: state => state.gui.general.language,
-            current_file: state => state.printer.print_stats.filename,
-            remoteMode: state => state.socket.remoteMode,
-        }),
-        ...mapGetters([
-            'getTitle',
-        ]),
-        print_percent: {
-            get() {
-                return this.$store.getters["printer/getPrintPercent"]
-            }
-        },
-        defaultFavicons: {
-            get() {
-                return this.$store.getters["files/getFavicons"]
-            }
-        },
-        mainBackground: {
-            get() {
-                return this.$store.getters["files/getMainBackground"]
-            }
-        },
-        customStylesheet: {
-            get() {
-                return this.$store.getters["files/getCustomStylesheet"]
-            }
-        },
-    },
-    methods: {
-        drawFavicon(val) {
-            let favicon16 = document.querySelector("link[rel*='icon'][sizes='16x16']")
-            let favicon32 = document.querySelector("link[rel*='icon'][sizes='32x32']")
+    get title(): string {
+        return this.$store.getters["getTitle"]
+    }
 
-            if (val > 0 && val < 100) {
+    get remoteMode() {
+        return this.$store.state.socket.remoteMode ?? false
+    }
+
+    get mainBackground() {
+        return this.$store.getters["files/getMainBackground"]
+    }
+
+    get customStylesheet () {
+        return this.$store.getters["files/getCustomStylesheet"]
+    }
+
+    get customFavicons () {
+        return this.$store.getters["files/getCustomFavicons"] ?? null
+    }
+
+    get language () {
+        return this.$store.state.gui.general.language
+    }
+
+    get current_file () {
+        return this.$store.state.printer.print_stats?.filename ?? ""
+    }
+
+    get logoColor () {
+        return this.$store.state.gui.theme.logo
+    }
+
+    get primaryColor () {
+        return this.$store.state.gui.theme.primary
+    }
+
+    get primaryTextColor() {
+        let splits = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(this.primaryColor)
+        if (splits) {
+            const r = parseInt(splits[1], 16) * 0.2126
+            const g = parseInt(splits[2], 16) * 0.7152
+            const b = parseInt(splits[3], 16) * 0.0722
+            const perceivedLightness = (r + g + b) / 255
+
+            return perceivedLightness > 0.7 ? '#222' : '#fff'
+        }
+
+        return '#ffffff'
+    }
+
+    get cssVars() {
+        return {
+            '--v-btn-text-primary': this.primaryTextColor
+        }
+    }
+
+    get print_percent () {
+        return Math.round(this.$store.getters["printer/getPrintPercent"] * 100)
+    }
+
+    @Watch('language')
+    languageChanged(newVal: string) {
+        this.$i18n.locale = newVal;
+    }
+
+    @Watch('customStylesheet')
+    customStylesheetChanged(newVal: string | null) {
+        const style = document.getElementById("customStylesheet")
+        if (newVal !== null && style === null) {
+            const newStyle = document.createElement('link')
+            newStyle.id = "customStylesheet"
+            newStyle.type = "text/css"
+            newStyle.rel = "stylesheet"
+            newStyle.href = newVal
+            document.head.appendChild(newStyle)
+        } else if (newVal !== null && style) {
+            style.setAttribute('href', newVal)
+        } else if (style) style.remove()
+    }
+
+    @Watch('current_file')
+    current_fileChanged(newVal: string) {
+        if (newVal !== "") this.$socket.emit("server.files.metadata", { filename: newVal }, { action: "files/getMetadataCurrentFile" });
+    }
+
+    @Watch('primaryColor')
+    primaryColorChanged(newVal: string) {
+        this.$nextTick(() => {
+            this.$vuetify.theme.currentTheme.primary = newVal
+        })
+    }
+
+    drawFavicon(val: number) {
+        const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
+        const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
+
+        if (favicon16 && favicon32) {
+            if (this.printerIsPrinting) {
                 let faviconSize = 64;
 
-                let canvas = document.createElement('canvas');
-                canvas.width = faviconSize;
-                canvas.height = faviconSize;
-                let context = canvas.getContext('2d');
-                let centerX = canvas.width / 2;
-                let centerY = canvas.height / 2;
-                let radius = 32;
-                let percent = (val * 100).toFixed(0);
+                let canvas = document.createElement('canvas')
+                canvas.width = faviconSize
+                canvas.height = faviconSize
+                const context = canvas.getContext('2d')
+                const centerX = canvas.width / 2
+                const centerY = canvas.height / 2
+                const radius = 32
 
-                /* draw the grey circle */
-                context.beginPath();
-                context.moveTo(centerX, centerY);
-                context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-                context.closePath();
-                context.fillStyle = "#ddd";
-                context.fill();
-                context.strokeStyle = "rgba(200, 208, 218, 0.66)";
-                context.stroke();
+                // draw the grey circle
+                if (context) {
+                    context.beginPath()
+                    context.moveTo(centerX, centerY)
+                    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+                    context.closePath()
+                    context.fillStyle = "#ddd"
+                    context.fill()
+                    context.strokeStyle = "rgba(200, 208, 218, 0.66)"
+                    context.stroke()
 
-                /* draw the green circle based on percentage */
-                let startAngle = 1.5 * Math.PI;
-                let endAngle = 0;
-                let unitValue = (Math.PI - 0.5 * Math.PI) / 25;
-                if (percent >= 0 && percent <= 25) endAngle = startAngle + (percent * unitValue);
-                else if (percent > 25 && percent <= 50) endAngle = startAngle + (percent * unitValue);
-                else if (percent > 50 && percent <= 75) endAngle = startAngle + (percent * unitValue);
-                else if (percent > 75 && percent <= 100) endAngle = startAngle + (percent * unitValue);
+                    // draw the green circle based on percentage
+                    let startAngle = 1.5 * Math.PI
+                    let endAngle = 0
+                    let unitValue = (Math.PI - 0.5 * Math.PI) / 25
+                    if (val >= 0 && val <= 25) endAngle = startAngle + (val * unitValue)
+                    else if (val > 25 && val <= 50) endAngle = startAngle + (val * unitValue)
+                    else if (val > 50 && val <= 75) endAngle = startAngle + (val * unitValue)
+                    else if (val > 75 && val <= 100) endAngle = startAngle + (val * unitValue)
 
-                context.beginPath();
-                context.moveTo(centerX, centerY);
-                context.arc(centerX, centerY, radius, startAngle, endAngle, false);
-                context.closePath();
-                context.fillStyle = "#e41313";
-                context.fill();
+                    context.beginPath()
+                    context.moveTo(centerX, centerY)
+                    context.arc(centerX, centerY, radius, startAngle, endAngle, false)
+                    context.closePath()
+                    context.fillStyle = this.logoColor
+                    context.fill()
 
-                favicon16.href = canvas.toDataURL('image/png')
-                favicon32.href = canvas.toDataURL('image/png')
-            } else {
-                const [favicon16Default, favicon32Default] = this.defaultFavicons
-                favicon16.href = favicon16Default
-                favicon32.href = favicon32Default
-            }
-        },
-    },
-    watch: {
-        language(){
-            this.$i18n.locale = this.language;
-        },
-        print_percent() {
-            this.drawFavicon(this.print_percent);
-        },
-        current_file: {
-            handler: function(newVal) {
-                this.$socket.sendObj("server.files.metadata", { filename: newVal }, "files/getMetadataCurrentFile");
-            }
-        },
-        customStylesheet(newVal) {
-            if (newVal !== null) {
-                let style = document.getElementById("customStylesheet")
-                if (!style) {
-                    style = document.createElement('link')
-                    style.id = "customStylesheet"
-                    style.type = "text/css"
-                    style.rel = "stylesheet"
+                    favicon16.href = canvas.toDataURL('image/png')
+                    favicon32.href = canvas.toDataURL('image/png')
                 }
-
-                style.href = newVal
-                document.head.appendChild(style)
+            } else if (this.customFavicons) {
+                const [favicon16Path, favicon32Path] = this.customFavicons
+                favicon16.href = favicon16Path
+                favicon32.href = favicon32Path
             } else {
-                let style = document.getElementById("customStylesheet")
-                if (style) style.remove()
+                const favicon = 'data:image/svg+xml;base64,' + btoa(
+                    '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
+                        '<g>' +
+                            '<path style="fill:'+this.logoColor+';" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>' +
+                            '<path style="fill:'+this.logoColor+';" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>' +
+                            '<path style="fill:'+this.logoColor+';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
+                        '</g>' +
+                    '</svg>'
+                )
+
+                favicon16.href = favicon
+                favicon32.href = favicon
             }
-        },
-        defaultFavicons() {
-            this.drawFavicon(this.print_percent);
         }
-    },
+    }
+
+    @Watch('customFavicons')
+    customFaviconsChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('logoColor')
+    logoColorChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    @Watch('print_percent')
+    print_percentChanged(newVal: number) {
+        this.drawFavicon(newVal)
+    }
+
+    @Watch('printerIsPrinting')
+    printerIsPrintingChanged() {
+        this.drawFavicon(this.print_percent)
+    }
+
+    mounted() {
+        this.drawFavicon(this.print_percent)
+    }
 }
 </script>
