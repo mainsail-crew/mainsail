@@ -8,6 +8,10 @@ export const getters: GetterTree<SocketState, RootState> = {
 		return "//" + state.hostname + (state.port !== 80 ? ":"+state.port : "")
 	},
 
+	getHostUrl: (state) => {
+		return (state.protocol === 'wss' ? 'https' : 'http')+"://" + state.hostname + '/'
+	},
+
 	getWebsocketUrl: (state, getters) => {
 		return state.protocol + ":" + getters['getUrl'] + "/websocket"
 	},

@@ -32,9 +32,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
 
     get url() {
         const baseUrl = this.camSettings.url
-        const hostUrl = new URL(this.printerUrl === null ? document.URL : this.printerUrl)
-
-        const url = new URL(baseUrl, hostUrl.origin)
+        const url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
 
         return decodeURIComponent(url.toString())
     }
