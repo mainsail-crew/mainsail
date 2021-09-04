@@ -6,7 +6,8 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-            <v-btn @click="reloadViewer()" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+            <v-btn @click="reloadViewer" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+            <v-btn @click="resetCamera" class="px-2 minwidth-0" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
         </v-toolbar>
         <v-card-text>
             <v-row v-if="loading">
@@ -25,9 +26,8 @@
                         vertical
                         :disabled="tracking"
                         :max="maxZSlider"
-                        min="-1"
+                        :min="0"
                         :value="zSlider"
-                        :height="zSlicerHeight"
                         class="slider-autoheight"
                         @input="updateZSlider"
                     ></v-slider>
@@ -36,9 +36,6 @@
             <v-row>
                 <v-col>
                     <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
-                </v-col>
-                <v-col>
-                    <v-btn @click="resetCamera">{{ $t("GCodeViewer.ResetCamera")}}</v-btn>
                 </v-col>
                 <v-col>
                     <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-0" v-model="forceLineRendering" hide-details dense></v-switch>
@@ -56,11 +53,21 @@
 <style>
 .viewer {
 	width: 100%;
-	height: 100%;
+	height: calc(100vh - 260px);
 	border: 1px solid #3f3f3f;
 }
 
+.slider-autoheight,
 .slider-autoheight .v-slider {
+    height: calc(100vh - 260px);
+}
+
+.slider-autoheight .v-slider {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.slider-autoheight .v-input__slot {
     height: 100%;
 }
 </style>
@@ -111,7 +118,11 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Prop({type: String, default: '', required: false}) filename!: string
     @Ref('fileInput') fileInput!: HTMLInputElement
-    @Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLElement
+    //@Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLElement
+
+    $refs!: {
+        viewerCanvasContainer: HTMLElement
+    }
 
     get renderQualities() {
         return [
@@ -125,7 +136,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     async mounted() {
         await this.init()
-        this.resize()
     }
 
     get filePosition() {
@@ -148,7 +158,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (this.canvasBackup === null) {
             let canvasElement = document.createElement('canvas')
             canvasElement.className = 'viewer'
-            this.viewerCanvasContainer.appendChild(canvasElement)
+            this.$refs.viewerCanvasContainer.appendChild(canvasElement)
             this.canvasBackup = canvasElement
             this.viewerInit(canvasElement)
             if (this.$route.query.filename) {
@@ -161,7 +171,7 @@ export default class Viewer extends Mixins(BaseMixin) {
                 await this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename.toString()))
             }
 
-            this.viewerCanvasContainer.appendChild(this.canvasBackup)
+            this.$refs.viewerCanvasContainer.appendChild(this.canvasBackup)
         }
         this.registerProgressCallback()
     }
@@ -189,7 +199,6 @@ export default class Viewer extends Mixins(BaseMixin) {
 
         viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
         viewer.gcodeProcessor.setLiveTracking(false)
-        window.addEventListener('resize', this.resize)
 
         this.loadToolColors(this.extruderColors)
 
@@ -211,7 +220,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.gcodeProcessor.loadingProgressCallback = null
         }
-        window.removeEventListener('resize', this.resize)
     }
 
     chooseFile() {
@@ -275,14 +283,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         await viewer.reload()
         this.loadingPercent = 100
         this.finishLoad()
-    }
-
-    resize() {
-        this.$nextTick(() => {
-            if (this.viewerCanvasContainer) {
-                this.zSlicerHeight = this.viewerCanvasContainer.clientHeight - 5
-            }
-        })
     }
 
     resetCamera() {
