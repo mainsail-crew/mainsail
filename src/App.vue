@@ -23,7 +23,7 @@
         <the-sidebar></the-sidebar>
         <the-topbar></the-topbar>
 
-        <v-main id="content" :style="{ background: mainBackground }">
+        <v-main id="content" :style="mainStyle">
             <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
                 <router-view></router-view>
             </v-container>
@@ -69,6 +69,16 @@ export default class App extends Mixins(BaseMixin) {
 
     get mainBackground() {
         return this.$store.getters["files/getMainBackground"]
+    }
+
+    get mainStyle() {
+        let style = ''
+
+        if (this.mainBackground !== null) {
+            style = 'background-image: url('+this.mainBackground+');'
+        }
+
+        return style
     }
 
     get customStylesheet () {
