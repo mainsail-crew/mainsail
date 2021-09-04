@@ -133,6 +133,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     commandClick(msg: string): void {
         this.gcode = msg
+
+        this.$nextTick(() => {
+            this.$refs.gcodeCommandField.focus()
+        })
     }
 
     doSend(cmd: KeyboardEvent): void {
