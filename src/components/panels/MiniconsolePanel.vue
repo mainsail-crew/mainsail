@@ -139,6 +139,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     commandClick(msg: string): void {
         this.gcode = msg
+
+        this.$nextTick(() => {
+            this.$refs.gcodeCommandField.focus()
+        })
     }
 
     doSend(cmd: KeyboardEvent) {
