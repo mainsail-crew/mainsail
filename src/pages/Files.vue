@@ -501,7 +501,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     private input_rules = [
-        (value: string) => value.indexOf(" ") === -1 || 'Name contain spaces!'
+        (value: string) => value.indexOf(" ") === -1 || 'Name contains spaces!'
     ]
 
     get headers() {
