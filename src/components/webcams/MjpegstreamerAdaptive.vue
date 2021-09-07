@@ -16,7 +16,7 @@
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
         <canvas ref="mjpegstreamerAdaptive" width="600" height="400" :style="webcamStyle" :class="'webcamImage '+(isLoaded ? '' : 'hiddenWebcam')"></canvas>
-        <span class="webcamFpsOutput" v-if="isLoaded && showFps">{{ $t('Panels.WebcamPanel.FPS')}}: {{ currentFPS }}</span>
+        <span class="webcamFpsOutput" v-if="isLoaded && showFps">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
     </div>
 </template>
 
@@ -55,6 +55,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
 
         return ""
+    }
+
+    get fpsOutput() {
+        return (this.currentFPS < 10) ? '0'+this.currentFPS.toString() : this.currentFPS
     }
 
     visibilityChanged(isVisible: boolean) {
@@ -101,7 +105,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
         url.searchParams.set('action', 'snapshot')
 
         this.request_start_time = performance.now()
-        this.currentFPS = Math.round(1000 / this.time)
+        this.currentFPS = (this.time > 0) ? Math.round(1000 / this.time) : 0
 
         let canvas = this.$refs.mjpegstreamerAdaptive
         if (canvas) {
