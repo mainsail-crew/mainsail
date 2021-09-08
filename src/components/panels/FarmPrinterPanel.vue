@@ -179,7 +179,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     get printerLogoColor() {
-        return this.$store.getters["farm/"+this.printer._namespace+"/getLogoColor"]
+        return this.$store.getters['farm/'+this.printer._namespace+'/getLogoColor']
     }
 
     get printer_position() {
@@ -209,12 +209,12 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        window.addEventListener("resize", this.resize)
+        window.addEventListener('resize', this.resize)
         this.resize()
     }
 
     beforeDestroy() {
-        window.addEventListener("resize", this.resize)
+        window.addEventListener('resize', this.resize)
     }
 
     resize() {

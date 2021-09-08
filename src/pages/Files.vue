@@ -807,8 +807,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 this.files = this.files.filter(file => {
                     if (file.isDirectory) return true
                     else {
-                        return (this.$store.getters["server/history/getPrintStatusByFilename"](
-                            (this.currentPath+"/"+file.filename).substr(7),
+                        return (this.$store.getters['server/history/getPrintStatusByFilename'](
+                            (this.currentPath+'/'+file.filename).substr(7),
                             file.modified.getTime()
                         ) !== 'completed')
                     }

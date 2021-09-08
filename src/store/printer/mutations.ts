@@ -26,12 +26,12 @@ export const mutations: MutationTree<PrinterState> = {
                     const value = payload[key]
 
                     if (
-						typeof value === 'object' &&
+                        typeof value === 'object' &&
 						!Array.isArray(value) &&
 						key in currentState &&
 						value !== null &&
 						currentState[key] !== null
-					) {
+                    ) {
                         setDataDeep(currentState[key], value)
                     } else if (key === 'temperature') {
                         const newValue = Math.round(value * 10) / 10
