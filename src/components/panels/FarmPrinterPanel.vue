@@ -31,7 +31,7 @@
                 <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ printer_name }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-item-group v-if="this.printer_webcams.length">
+            <v-item-group v-if="printer.socket.isConnected && this.printer_webcams.length">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on">
@@ -64,11 +64,12 @@
             <template v-slot:default="{ hover }">
                 <div>
                     <v-img
-                        height="200px"
+                        :height="imageHeight"
                         :src="printer_image"
                         class="d-flex align-end"
+                        ref="imageDiv"
                     >
-                        <div v-if="currentCamName !== 'off' && currentWebcam" class="webcamContainer">
+                        <div v-if="printer.socket.isConnected && currentCamName !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
                                 <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
                             </template>
@@ -79,7 +80,12 @@
                         <v-card-title class="white--text py-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
                             <v-row>
                                 <v-col class="col-auto pr-0 d-flex align-center" style="width: 58px">
-                                    <img class="my-auto" :src="printer_logo" style="width: 100%;" />
+                                    <template v-if="printer_logo">
+                                        <img :src="printer_logo" style="width: 100%;" class="my-auto" alt="Logo" />
+                                    </template>
+                                    <template v-else>
+                                        <mainsail-logo :color="printerLogoColor" style="width: 100%;" class="my-auto"></mainsail-logo>
+                                    </template>
                                 </v-col>
                                 <v-col class="col" style="width: 100px">
                                     <h3 class="font-weight-regular">{{ printer_status }}</h3>
@@ -100,7 +106,7 @@
                     </v-card-text>
                     <v-fade-transition>
                         <v-overlay v-if="hover" absolute :z-index="4" >
-                            <v-btn color="primary" @click="clickPrinter">{{ $t("Panels.FarmPrinterPanel.SwitchToPrinter") }}</v-btn>
+                            <v-btn color="primary" @click="clickPrinter">{{ printer.socket.isConnected ? $t("Panels.FarmPrinterPanel.SwitchToPrinter") : $t("Panels.FarmPrinterPanel.ReconnectToPrinter") }}</v-btn>
                         </v-overlay>
                     </v-fade-transition>
                 </div>
@@ -110,23 +116,25 @@
 </template>
 
 <script lang="ts">
-
-
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import {Component, Mixins, Prop, Ref, Vue} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 @Component({
     components: {
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
+        'mainsail-logo': MainsailLogo
     }
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
+    private imageHeight = 200;
 
     @Prop({ type: Object, required: true }) printer!: FarmPrinterState
+    @Ref() readonly imageDiv!: Vue
 
     get printerUrl() {
         const thisUrl = window.location.href.split('/')
@@ -170,6 +178,10 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
         return this.$store.getters['farm/'+this.printer._namespace+'/getLogo']
     }
 
+    get printerLogoColor() {
+        return this.$store.getters["farm/"+this.printer._namespace+"/getLogoColor"]
+    }
+
     get printer_position() {
         return this.$store.getters['farm/'+this.printer._namespace+'/getPosition']
     }
@@ -194,6 +206,21 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
             this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
         else
             this.$store.dispatch('farm/'+this.printer._namespace+'/reconnect')
+    }
+
+    mounted() {
+        window.addEventListener("resize", this.resize)
+        this.resize()
+    }
+
+    beforeDestroy() {
+        window.addEventListener("resize", this.resize)
+    }
+
+    resize() {
+        if (this.imageDiv?.$el?.clientWidth) {
+            this.imageHeight = Math.round(this.imageDiv.$el.clientWidth / 3 * 2)
+        } else this.imageHeight = 200
     }
 
 }
