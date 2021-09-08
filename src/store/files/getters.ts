@@ -36,8 +36,8 @@ export const getters: GetterTree<FileState, any> = {
         const acceptName = 'main-background'
         const acceptExtensions = ['jpg', 'jpeg', 'png', 'gif', 'svg']
 
-        return getters['getThemeFileUrl'](acceptName, acceptExtensions) ?? 'transparent'
-    },
+		return getters['getThemeFileUrl'](acceptName, acceptExtensions)
+	},
 
     getCustomStylesheet: (state, getters) => {
         const acceptName = 'custom'
