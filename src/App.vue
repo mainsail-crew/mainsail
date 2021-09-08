@@ -81,7 +81,7 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get customStylesheet () {
-        return this.$store.getters["files/getCustomStylesheet"]
+        return this.$store.getters['files/getCustomStylesheet']
     }
 
     get customFavicons(): string | null {

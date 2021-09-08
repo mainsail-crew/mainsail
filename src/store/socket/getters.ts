@@ -9,10 +9,10 @@ export const getters: GetterTree<SocketState, RootState> = {
     },
 
     getHostUrl: (state) => {
-		return (state.protocol === 'wss' ? 'https' : 'http')+"://" + state.hostname + '/'
-	},
+        return (state.protocol === 'wss' ? 'https' : 'http')+'://' + state.hostname + '/'
+    },
 
-	getWebsocketUrl: (state, getters) => {
+    getWebsocketUrl: (state, getters) => {
         return state.protocol + ':' + getters['getUrl'] + '/websocket'
     },
 }

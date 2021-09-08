@@ -37,9 +37,9 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
     },
 
-	getLogoColor: (state) => {
-		return state.data.gui?.theme?.logo ?? defaultLogoColor
-	},
+    getLogoColor: (state) => {
+        return state.data.gui?.theme?.logo ?? defaultLogoColor
+    },
 
     getStatus: (state, getters) => {
         if (!state.socket.isConnected) {
