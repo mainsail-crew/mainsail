@@ -797,11 +797,11 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     created() {
+        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
         this.loadPath()
     }
 
     loadPath() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
         let dirArray = this.currentPath.split("/")
         this.files = findDirectory(this.filetree, dirArray)
         if (this.files !== null) {
@@ -809,46 +809,27 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".")
             }
             if (!this.showPrintedFiles) {
-                this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                    filename: (this.currentPath+"/"+file.filename).substr(7),
-                    modified: file.modified.getTime()
-                }) !== 'completed')
+                this.files = this.files.filter(file => {
+                    if (file.isDirectory) return true
+                    else {
+                        return (this.$store.getters["server/history/getPrintStatusByFilename"](
+                            (this.currentPath+"/"+file.filename).substr(7),
+                            file.modified.getTime()
+                        ) !== 'completed')
+                    }
+                })
             }
         }
     }
 
     @Watch('filetree', { deep: true })
-    filetreeChanged(newVal: FileStateFile[]) {
-        let dirArray = this.currentPath.split("/");
-        this.files = findDirectory(newVal, dirArray);
-
-        if (this.files?.length && !this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-        }
-
-        if (this.files?.length && !this.showPrintedFiles) {
-            this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                filename: (this.currentPath+"/"+file.filename).substr(7),
-                modified: new Date(file.modified).getTime()
-            }) !== 'completed')
-        }
+    filetreeChanged() {
+        this.loadPath()
     }
 
     @Watch('currentPath')
-    currentPathChanged(newVal: string) {
-        let dirArray = newVal.split("/");
-        this.files = findDirectory(this.filetree, dirArray);
-
-        if (this.files?.length && !this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename !== "thumbs" && file.filename.substr(0, 1) !== ".");
-        }
-
-        if (this.files?.length && !this.showPrintedFiles) {
-            this.files = this.files.filter(file => this.$store.getters["server/history/getPrintStatus"]({
-                filename: (this.currentPath+"/"+file.filename).substr(7),
-                modified: new Date(file.modified).getTime()
-            }) !== 'completed')
-        }
+    currentPathChanged() {
+        this.loadPath()
     }
 
     formatPrintTime(totalSeconds: number) {
