@@ -171,7 +171,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 	getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
 		if (state.jobs.length) {
 			const job = state.jobs.find((job) => {
-				return job.filename === filename && parseInt(job.metadata?.modified*1000) === modified
+				return job.filename === filename && Math.round(job.metadata?.modified*1000) === modified
 			})
 
 			return job?.status ?? ""
