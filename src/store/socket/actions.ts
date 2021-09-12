@@ -96,6 +96,10 @@ export const actions: ActionTree<SocketState, RootState> = {
             dispatch('server/history/getChanged', payload.params[0], { root: true })
             break
 
+        case 'notify_timelapse_event':
+            dispatch('server/timelapse/getEvent', payload.params[0], { root: true })
+            break
+
         default:
             if (payload.result !== 'ok' && payload.error?.message) window.console.error('JSON-RPC: ' + payload.error.message)
             else window.console.debug(payload)
