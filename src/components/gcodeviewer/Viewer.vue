@@ -5,9 +5,10 @@
                 <span class="subheading"><v-icon left>mdi-video-3d</v-icon>{{ $t('GCodeViewer.Title') }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn @click="tracking=true" v-show="showTrackingButton">{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-            <v-btn @click="reloadViewer" color="info" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-            <v-btn @click="resetCamera" class="px-2 minwidth-0" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
+            <v-btn @click="tracking=!tracking" v-if="showTrackingButton" small>{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
+            <v-btn @click="loadCurrentFile" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
+            <v-btn @click="reloadViewer" color="info" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+            <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
         </v-toolbar>
         <v-card-text>
             <v-row v-if="loading">
@@ -142,8 +143,12 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_position : 0
     }
 
+    get sdCardConfigPath() {
+        return this.$store.state.printer.configfile?.settings?.virtual_sdcard?.path ?? ''
+    }
+
     get sdCardFilePath() {
-        return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_path : ''
+        return this.$store.state.printer.virtual_sdcard?.file_path?.replace(this.sdCardConfigPath+'/', '') ?? ''
     }
 
     get currentPosition() {
@@ -151,7 +156,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get showTrackingButton() {
-        return this.printerIsPrinting && this.sdCardFilePath !== this.loadedFile
+        return this.printerIsPrinting && this.sdCardFilePath === this.loadedFile
     }
 
     async init() {
@@ -163,12 +168,12 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.viewerInit(canvasElement)
             if (this.$route.query.filename) {
                 await this.sleep(2000) //Give the store a chance to initializ before loading the file.
-                await this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename.toString()))
+                await this.loadFile(this.$route.query.filename.toString())
             }
         } else {
             if (![this.loadedFile, '', null, undefined].includes(this.$route.query.filename.toString())) {
                 this.loadedFile = this.$route.query.filename.toString()
-                await this.loadFile(this.apiUrl + '/server/files/' + encodeURI(this.$route.query.filename.toString()))
+                await this.loadFile(this.$route.query.filename.toString())
             }
 
             this.$refs.viewerCanvasContainer.appendChild(this.canvasBackup)
@@ -256,7 +261,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     async loadFile(filename: string) {
-        let response = await fetch(filename)
+        let response = await fetch(this.apiUrl + '/server/files/gcodes/' + encodeURI(filename))
         let text = await response.text()
         viewer.updateRenderQuality(this.renderQuality.value)
         await viewer.processFile(text)
@@ -266,6 +271,11 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     async sleep(ms: number) {
         await new Promise((resolve) => setTimeout(resolve, ms))
+    }
+
+    loadCurrentFile() {
+        this.loadFile(this.sdCardFilePath)
+        this.loadedFile = this.sdCardFilePath
     }
 
     async reloadViewer() {
@@ -344,9 +354,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         trackingBackup = newVal
         if (!viewer) return
         if (newVal) {
-            this.loadedFile = this.sdCardFilePath
-            let fileToLoad = this.sdCardFilePath.replace('/home/pi/gcode_files/', '')
-            await this.loadFile(this.apiUrl + '/server/files/gcodes/' + encodeURI(fileToLoad))
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer.gcodeProcessor.forceRedraw()
