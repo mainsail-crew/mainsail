@@ -24,10 +24,10 @@
             <v-card-text :class="framesCount ? 'pt-0' : ''">
                 <v-row>
                     <v-col>
-                        <settings-row title="Frames">
+                        <settings-row title="Frames" v-if="framesCount > 0">
                             {{ framesCount }}
                         </settings-row>
-                        <v-divider class="my-2"></v-divider>
+                        <v-divider class="my-2" v-if="framesCount > 0"></v-divider>
                         <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
                             <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                         </settings-row>
