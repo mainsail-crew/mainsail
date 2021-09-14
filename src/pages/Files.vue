@@ -252,10 +252,22 @@
                 ></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
                 <v-card-text>{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
+                <template v-if="moonrakerComponents.includes('timelapse')">
+                    <v-divider class="my-2"></v-divider>
+                    <v-card-text class="pb-0">
+                        <settings-row title="Timelapse">
+                            <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                        <settings-row title="Autorender">
+                            <v-switch v-model="timelapseAutorender" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                    </v-card-text>
+                    <v-divider class="my-2"></v-divider>
+                </template>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">{{ $t('Files.No')}}</v-btn>
-                    <v-btn color="green darken-1" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.Yes')}}</v-btn>
+                    <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel')}}</v-btn>
+                    <v-btn color="primary" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.StartPrint')}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -362,6 +374,7 @@ import axios from 'axios'
 import { validGcodeExtensions } from '@/store/variables'
 import {findDirectory, formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
 
 interface draggingFile {
     status: boolean
@@ -394,7 +407,9 @@ interface dialogRenameObject {
     item: FileStateFile
 }
 
-@Component
+@Component({
+    components: {SettingsRow}
+})
 export default class PageFiles extends Mixins(BaseMixin) {
     validGcodeExtensions = validGcodeExtensions
     formatDate = formatDate
@@ -591,6 +606,22 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     set countPerPage(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
+    }
+
+    get timelapseEnabled() {
+        return this.$store.state.server.timelapse?.settings?.enabled ?? false
+    }
+
+    set timelapseEnabled(newVal) {
+        this.$socket.emit('machine.timelapse.post_settings', { enabled: newVal }, { action: 'server/timelapse/initSettings' })
+    }
+
+    get timelapseAutorender() {
+        return this.$store.state.server.timelapse?.settings?.autorender ?? false
+    }
+
+    set timelapseAutorender(newVal) {
+        this.$socket.emit('machine.timelapse.post_settings', { autorender: newVal }, { action: 'server/timelapse/initSettings' })
     }
 
     getJobStatus(item: FileStateFile) {

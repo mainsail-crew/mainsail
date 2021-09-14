@@ -59,4 +59,8 @@ export default class BaseMixin extends Vue {
     get isWidescreen() {
         return this.$vuetify.breakpoint.xl
     }
+
+    get moonrakerComponents() {
+        return this.$store.state.server?.components ?? []
+    }
 }
