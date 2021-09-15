@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mb-6" v-if="klipperReadyForGui || warnings.length">
+    <v-card class="mb-6" v-if="klipperReadyForGui && warnings.length">
         <v-toolbar flat dense color="orange darken-2">
             <v-toolbar-title>
                 <span class="subheading">
