@@ -613,6 +613,7 @@
 		"ForceLineRendering":"Force Line Rendering",
 		"ReloadRequired" : "Reload required",
 		"TrackPrint": "Track Print",
-		"ZClip" : "Z Clipping"
+		"ZClip" : "Z Clipping",
+		"Rendering" : "Rendering"
 	}
 }

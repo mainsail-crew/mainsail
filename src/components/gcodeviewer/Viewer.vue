@@ -1,61 +1,9 @@
-<template>
-    <v-card>
-        <v-toolbar flat dense>
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-video-3d</v-icon>{{ $t('GCodeViewer.Title') }}</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn @click="tracking=!tracking" v-if="showTrackingButton" small>{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-            <v-btn @click="loadCurrentFile" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
-            <v-btn @click="reloadViewer" color="info" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-            <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
-        </v-toolbar>
-        <v-card-text>
-            <v-row v-if="loading">
-                <v-col>
-                    <v-progress-linear :value="loadingPercent" :height="25" rounded>
-                        <span class="progress-text">{{loadingPercent}}%</span>
-                    </v-progress-linear>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <div ref="viewerCanvasContainer"></div>
-                </v-col>
-                <v-col class="col-auto pr-6">
-                    <v-slider
-                        vertical
-                        :disabled="tracking"
-                        :max="maxZSlider"
-                        :min="0"
-                        :value="zSlider"
-                        class="slider-autoheight"
-                        @input="updateZSlider"
-                    ></v-slider>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
-                </v-col>
-                <v-col>
-                    <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-0" v-model="forceLineRendering" hide-details dense></v-switch>
-                </v-col>
-                <v-col>
-                    <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details></v-select>
-                </v-col>
-            </v-row>
-            <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
-        </v-card-text>
-    </v-card>
-</template>
-
 <!-- Because the viewer lives outside of the components DOM it can't be scoped -->
 <style>
 .viewer {
-	width: 100%;
-	height: calc(100vh - 260px);
-	border: 1px solid #3f3f3f;
+    width: 100%;
+    height: calc(100vh - 260px);
+    border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
@@ -75,19 +23,84 @@
 
 <style scoped>
 .progress-text {
-	font-size: small;
+    font-size: small;
 }
 
 .progress-container {
-	position: absolute;
-	width: 80.5%;
+    position: absolute;
+    width: 80.5%;
 }
 
 .disable-transition {
-	transition: none !important;
+    transition: none !important;
 }
 
 </style>
+
+<template>
+    <div>
+        <v-card>
+            <v-toolbar flat dense>
+                <v-toolbar-title>
+                    <span class="subheading"><v-icon left>mdi-video-3d</v-icon>{{ $t('GCodeViewer.Title') }}</span>
+                </v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn @click="tracking=!tracking" v-if="showTrackingButton" small>{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
+                <v-btn @click="loadCurrentFile" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
+                <v-btn @click="reloadViewer" color="info" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+                <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
+            </v-toolbar>
+            <v-card-text>
+                <v-row>
+                    <v-col>
+                        <div ref="viewerCanvasContainer"></div>
+                    </v-col>
+                    <v-col class="col-auto pr-6">
+                        <v-slider
+                            vertical
+                            :disabled="tracking"
+                            :max="maxZSlider"
+                            :min="0"
+                            :value="zSlider"
+                            class="slider-autoheight"
+                            @input="updateZSlider"
+                        ></v-slider>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
+                    </v-col>
+                    <v-col>
+                        <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-0" v-model="forceLineRendering" hide-details dense></v-switch>
+                    </v-col>
+                    <v-col>
+                        <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details></v-select>
+                    </v-col>
+                </v-row>
+                <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
+            </v-card-text>
+        </v-card>
+        <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
+            <div>
+                {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%<br />
+                <strong>{{ this.loadedFile }}</strong>
+            </div>
+            <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="red"
+                    text
+                    v-bind="attrs"
+                    style="min-width: auto;"
+                    @click="cancelRendering()"
+                >
+                    <v-icon class="0">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
+    </div>
+</template>
 
 <script lang="ts">
 import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator'
@@ -143,7 +156,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             this.viewer.gcodeProcessor.loadingProgressCallback = null
             this.$store.dispatch('gcodeviewer/setViewerBackup', this.viewer)
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
-            window.console.log('backup viewer')
         }
     }
 
@@ -227,6 +239,10 @@ export default class Viewer extends Mixins(BaseMixin) {
                 this.loading = this.loadingPercent <= 99
             }
         }
+    }
+
+    cancelRendering() {
+        if (this.viewer) this.viewer.gcodeProcessor.cancelLoad = true
     }
 
     chooseFile() {
