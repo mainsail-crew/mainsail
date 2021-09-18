@@ -13,7 +13,7 @@
     "TopCornerMenu": {
       "HostControl": "Contrôle de l'hôte",
       "KlipperControl": "Contrôle de Klipper",
-      "KlipperFirmwareRestart": "Rdémarrage du Firmware",
+      "KlipperFirmwareRestart": "Redémarrage du Firmware",
       "KlipperRestart": "Redémarrage de Klipper",
       "PowerDevices": "Modules d'alimentation",
       "Reboot": "Redémarrage",
@@ -516,7 +516,7 @@
     },
     "LimitsPanel": {
       "Acceleration": "Accélération",
-      "Deceleration": "Decélération",
+      "Deceleration": "Décélération",
       "MachineLimits": "Limites de l'imprimante",
       "SquareCornerVelocity": "Vitesse des angles droits",
       "Velocity": "Vitesse"
