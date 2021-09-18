@@ -227,13 +227,13 @@ export default class Viewer extends Mixins(BaseMixin) {
             await this.viewerInit(canvasElement)
         }
 
+        this.registerProgressCallback()
+
         if (this.$route.query?.filename && this.loadedFile !== this.$route.query?.filename?.toString()) {
             //TODO: test without sleep
             await this.sleep(1000) //Give the store a chance to initializ before loading the file.
             await this.loadFile(this.$route.query.filename.toString())
         }
-
-        this.registerProgressCallback()
     }
 
     viewerInit(element: HTMLCanvasElement) {
@@ -347,6 +347,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             window.console.error(e.message)
         })
         this.downloadSnackbar.status = false
+        this.loadedFile = this.downloadSnackbar.filename
 
         viewer.updateRenderQuality(this.renderQuality.value)
         await viewer.processFile(text)
@@ -620,6 +621,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('zSlider')
     zSliderChanged(newVal: number) {
         viewer?.setZClipPlane(newVal, -1)
+        viewer?.forceRender()
     }
 
     get progressColor() {
@@ -632,7 +634,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     @Debounce(100)
-    updateZSlider(newVal: any) {
+    async updateZSlider(newVal: any) {
         this.zSlider = newVal
     }
 }
