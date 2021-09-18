@@ -2,13 +2,13 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(100vh - 260px);
+    height: calc(100vh - 300px);
     border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
 .slider-autoheight .v-slider {
-    height: calc(100vh - 260px);
+    height: calc(100vh - 300px);
 }
 
 .slider-autoheight .v-slider {
@@ -69,13 +69,14 @@
                 </v-row>
                 <v-row>
                     <v-col>
+                        <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined></v-select>
+                    </v-col>
+                    <v-col class="text-center">
                         <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
                     </v-col>
                     <v-col>
-                        <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-0" v-model="forceLineRendering" hide-details dense></v-switch>
-                    </v-col>
-                    <v-col>
-                        <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details></v-select>
+                        <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
+                        <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-2" v-model="forceLineRendering" hide-details dense ></v-switch>
                     </v-col>
                 </v-row>
                 <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
@@ -113,7 +114,6 @@ import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 // @ts-ignore
 import GCodeViewer from '@sindarius/gcodeviewer'
-import {Debounce} from 'vue-debounce-decorator'
 import axios from 'axios'
 import {formatFilesize} from '@/plugins/helpers'
 
@@ -485,18 +485,29 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    get colorMode() {
-        return this.$store.state.gui.gcodeViewer?.colorMode ?? 'extruder'
+    private colorModes = [
+        {text: 'Extruder', value: 0},
+        {text: 'Feed Rate', value: 1},
+        {text: 'Feature', value: 2},
+    ]
+
+    get colorMode(): string {
+        return this.$store.state.gui.gcodeViewer.colorMode ?? 2
+    }
+
+    set colorMode(newVal: string) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
     }
 
     @Watch('colorMode')
-    colorModeChanged(newVal: string) {
+    colorModeChanged(newVal: number) {
+        window.console.log('colormode', newVal)
+
         if (!viewer) return
         if (newVal) {
-            const mode = newVal === 'extruder' ? 0 : 1 //Magic number until I export the enum 0 = Color 1 = Feed Rate
-            if (viewer.gcodeProcessor.colorMode !== mode) {
+            if (viewer.gcodeProcessor.colorMode !== newVal) {
                 this.setReloadRequiredFlag()
-                viewer.gcodeProcessor.setColorMode(mode)
+                viewer.gcodeProcessor.setColorMode(newVal)
             }
         }
     }
@@ -633,8 +644,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer?.setProgressColor(newVal)
     }
 
-    @Debounce(100)
-    async updateZSlider(newVal: any) {
+    updateZSlider(newVal: any) {
         this.zSlider = newVal
     }
 }

@@ -587,7 +587,6 @@
 			"GCodeViewer": "G-Code Viewer",
 			"ShowCursor" : "Show Cursor",
 			"ExtruderColor" : "Extruder Colors",
-			"ColorMode" : "Color Mode",
 			"FeedRate": "Feed Rate",
 			"Extruder" : "Extruder",
 			"BackgroundColor" : "Background Color",
@@ -615,6 +614,7 @@
 		"TrackPrint": "Track Print",
 		"ZClip" : "Z Clipping",
 		"Rendering" : "Rendering",
-		"Downloading" : "Downloading"
+		"Downloading" : "Downloading",
+		"ColorMode" : "Color Mode"
 	}
 }
