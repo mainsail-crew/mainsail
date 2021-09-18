@@ -497,17 +497,11 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     set colorMode(newVal: string) {
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
-    }
 
-    @Watch('colorMode')
-    colorModeChanged(newVal: number) {
-        window.console.log('colormode', newVal)
-
-        if (!viewer) return
-        if (newVal) {
+        if (viewer) {
             if (viewer.gcodeProcessor.colorMode !== newVal) {
-                this.setReloadRequiredFlag()
                 viewer.gcodeProcessor.setColorMode(newVal)
+                this.reloadViewer()
             }
         }
     }
