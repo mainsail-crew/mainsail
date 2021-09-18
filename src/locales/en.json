@@ -611,6 +611,7 @@
 		"Max" : "Max",
 		"ForceLineRendering":"Force Line Rendering",
 		"ReloadRequired" : "Reload required",
+		"LoadCurrentFile": "Load current file",
 		"TrackPrint": "Track Print",
 		"ZClip" : "Z Clipping",
 		"Rendering" : "Rendering",
