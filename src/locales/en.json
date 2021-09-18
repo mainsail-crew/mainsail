@@ -614,6 +614,7 @@
 		"ReloadRequired" : "Reload required",
 		"TrackPrint": "Track Print",
 		"ZClip" : "Z Clipping",
-		"Rendering" : "Rendering"
+		"Rendering" : "Rendering",
+		"Downloading" : "Downloading"
 	}
 }

@@ -88,13 +88,19 @@
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
-                <v-btn
-                    color="red"
-                    text
-                    v-bind="attrs"
-                    style="min-width: auto;"
-                    @click="cancelRendering()"
-                >
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto;" @click="cancelRendering()">
+                    <v-icon class="0">mdi-close</v-icon>
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
+            <div>
+                {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
+                <strong>{{ downloadSnackbar.filename }}</strong>
+            </div>
+            <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
+            <template v-slot:action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto;" >
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
             </template>
@@ -108,11 +114,27 @@ import BaseMixin from '../mixins/base'
 // @ts-ignore
 import GCodeViewer from '@sindarius/gcodeviewer'
 import {Debounce} from 'vue-debounce-decorator'
+import axios from 'axios'
+import {formatFilesize} from '@/plugins/helpers'
+
+interface downloadSnackbar {
+    status: boolean
+    filename: string
+    percent: number
+    speed: number
+    total: number
+    cancelTokenSource: any
+    lastProgress: {
+        time: number
+        loaded: number
+    }
+}
 
 let viewer: any = null
 
 @Component
 export default class Viewer extends Mixins(BaseMixin) {
+    formatFilesize = formatFilesize
     private isBusy = false
     private loading = false
     private loadingPercent = 0
@@ -126,6 +148,19 @@ export default class Viewer extends Mixins(BaseMixin) {
     private zSlider = this.maxZSlider
     private zSlicerHeight = 100
     private renderQuality = this.renderQualities[2]
+
+    private downloadSnackbar: downloadSnackbar = {
+        status: false,
+        filename: '',
+        percent: 0,
+        speed: 0,
+        total: 0,
+        cancelTokenSource: {},
+        lastProgress: {
+            time: 0,
+            loaded: 0
+        }
+    }
 
     @Prop({type: String, default: '', required: false}) filename!: string
     @Ref('fileInput') fileInput!: HTMLInputElement
@@ -194,7 +229,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
         if (this.$route.query?.filename && this.loadedFile !== this.$route.query?.filename?.toString()) {
             //TODO: test without sleep
-            await this.sleep(2000) //Give the store a chance to initializ before loading the file.
+            await this.sleep(1000) //Give the store a chance to initializ before loading the file.
             await this.loadFile(this.$route.query.filename.toString())
         }
 
@@ -284,12 +319,43 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     async loadFile(filename: string) {
-        let response = await fetch(this.apiUrl + '/server/files/' + encodeURI(filename))
-        let text = await response.text()
+        this.downloadSnackbar.status = true
+        this.downloadSnackbar.speed = 0
+        this.downloadSnackbar.lastProgress.time = 0
+        this.downloadSnackbar.filename = filename.startsWith('gcodes/') ? filename.slice(7) : filename
+        const CancelToken = axios.CancelToken
+        this.downloadSnackbar.cancelTokenSource = CancelToken.source()
+        const text = await axios.get(this.apiUrl + '/server/files/' + encodeURI(filename), {
+            cancelToken: this.downloadSnackbar.cancelTokenSource.token,
+            responseType: 'blob',
+            onDownloadProgress: (progressEvent) => {
+                this.downloadSnackbar.percent = (progressEvent.loaded * 100) / progressEvent.total
+                if (this.downloadSnackbar.lastProgress.time) {
+                    const time = progressEvent.timeStamp - this.downloadSnackbar.lastProgress.time
+                    const data = progressEvent.loaded - this.downloadSnackbar.lastProgress.loaded
+
+                    if (time > 1000 || this.downloadSnackbar.speed === 0) {
+                        this.downloadSnackbar.speed = data / (time / 1000)
+                        this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
+                        this.downloadSnackbar.lastProgress.loaded = progressEvent.loaded
+                    }
+                } else this.downloadSnackbar.lastProgress.time = progressEvent.timeStamp
+
+                this.downloadSnackbar.total = progressEvent.total
+            }
+        }).then(res => res.data.text()).catch((e) => {
+            window.console.error(e.message)
+        })
+        this.downloadSnackbar.status = false
+
         viewer.updateRenderQuality(this.renderQuality.value)
         await viewer.processFile(text)
         this.loadingPercent = 100
         this.finishLoad()
+    }
+
+    cancelDownload() {
+        this.downloadSnackbar.cancelTokenSource.cancel('User canceled download gcode file')
     }
 
     async sleep(ms: number) {
