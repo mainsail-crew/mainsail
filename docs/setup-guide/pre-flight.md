@@ -1,4 +1,4 @@
----
+--
 layout: default
 title: Pre-flight
 parent: Setup Guides
@@ -10,11 +10,11 @@ permalink: /setup/mainsailos/pre-flight
 
 # Preflight Checklist 
 
-A quick run-through to check no important steps have been missed during installation and configuration. 
+A quick run-through to check no important steps have been missed during installation and configuration.
 
 | Installed software components: | Configured: | Performed: |
 | :-- | :-- | :-- |
-| &#x2705; MainsailOS<br> **OR** <br> &#x2705; Klipper<br> &#x2705; Moonraker<br> &#x2705; Mainsail<br> | &#x2705; [Included mainsail.cfg](first-boot#mainsailcfg)<br> &#x2705; [Configured printer.cfg](klipper-setup)<br> &#x2705; Network<br> &#x2705; SSH<br> | &#x2705; Updates<br> &#x2705; Klipper verification(s)<br> |
+| &#x2705;  MainsailOS<br> **OR** <br> &#x2705;  Klipper<br> &#x2705;  Moonraker<br> &#x2705;  Mainsail<br> | &#x2705;  Network<br> &#x2705;  [Configured printer.cfg](k>
 
 # Time to print
 

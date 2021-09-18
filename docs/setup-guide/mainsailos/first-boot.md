@@ -25,14 +25,11 @@ Initially the green LED on the Pi will be extremely active. After some time it w
  **Important:** Include the mainsail.cfg into your printer.cfg
 {: .warning}
 
-Mainsail will not work unless Klipper is told to include its configuration. This can be achieved either by placing the contents of mainsail.cfg into your printer.cfg file, or (more elegantly) including the mainsail.cfg. 
+Mainsail will not work unless Klipper is told to include its configuration. This can be achieved either by placing the contents of mainsail.cfg into your printer.cfg fi>
 
-To do this open the default printer.cfg:
+To do this, open the default printer.cfg in the Mainsail web GUI:
 
-```bash
-cd ~/klipper_config
-sudo nano printer.cfg
-```
+*content and screenshots here*
 
 Add the following line:
 
