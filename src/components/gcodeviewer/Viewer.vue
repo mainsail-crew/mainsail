@@ -46,8 +46,8 @@
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn @click="tracking=!tracking" v-if="showTrackingButton" small>{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-                <v-btn @click="loadCurrentFile" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
-                <v-btn @click="reloadViewer" color="info" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+                <v-btn @click="loadCurrentFile" class="ml-3" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
+                <v-btn @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
                 <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
             </v-toolbar>
             <v-card-text>
@@ -364,7 +364,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     loadCurrentFile() {
-        this.loadFile(this.sdCardFilePath)
+        this.loadFile('gcodes/' + this.sdCardFilePath)
         this.loadedFile = this.sdCardFilePath
     }
 
@@ -440,8 +440,11 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (newVal) {
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
-            viewer.gcodeProcessor.forceRedraw()
-        } else viewer.gcodeProcessor.setLiveTracking(false)
+            viewer?.forceRender()
+        } else {
+            viewer.gcodeProcessor.setLiveTracking(false)
+            await this.reloadViewer()
+        }
     }
 
     @Watch('printerIsPrinting')
