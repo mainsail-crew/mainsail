@@ -10,10 +10,6 @@
                     <v-switch class="mt-0" hide-details v-model="showAxes"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ColorMode')">
-                    <v-select :items="colorModes" dense hide-details outlined selected v-model="colorMode"></v-select>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
@@ -112,19 +108,6 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
         let colors = this.extruderColors
         colors[index] = value.hex
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.extruderColors', value: colors})
-    }
-
-    colorModes = [
-        {text: 'Extruder', value: 'extruder'},
-        {text: 'Feed Rate', value: 'feedrate'},
-    ];
-
-    get colorMode(): string {
-        return this.$store.state.gui.gcodeViewer.colorMode
-    }
-
-    set colorMode(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
     }
 
     get backgroundColor(): string {
