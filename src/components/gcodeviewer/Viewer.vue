@@ -109,9 +109,10 @@ import BaseMixin from '../mixins/base'
 import GCodeViewer from '@sindarius/gcodeviewer'
 import {Debounce} from 'vue-debounce-decorator'
 
+let viewer: any = null
+
 @Component
 export default class Viewer extends Mixins(BaseMixin) {
-    private viewer: any = null
     private isBusy = false
     private loading = false
     private loadingPercent = 0
@@ -145,16 +146,14 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     async mounted() {
-        this.viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
         this.loadedFile = this.$store.state.gcodeviewer?.loadedFileBackup ?? null
 
         await this.init()
     }
 
     beforeDestroy() {
-        if (this.viewer) {
-            this.viewer.gcodeProcessor.loadingProgressCallback = null
-            this.$store.dispatch('gcodeviewer/setViewerBackup', this.viewer)
+        if (viewer) {
+            viewer.gcodeProcessor.loadingProgressCallback = null
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
         }
     }
@@ -180,15 +179,18 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     async init() {
-        const canvasBackup = this.$store.state.gcodeviewer?.canvasBackup ?? null
+        let canvasElement = this.$store.state.gcodeviewer?.canvasBackup ?? null
 
-        if (canvasBackup === null) {
-            let canvasElement = document.createElement('canvas')
+        if (canvasElement === null) {
+            canvasElement = document.createElement('canvas')
             canvasElement.className = 'viewer'
             this.$refs.viewerCanvasContainer.appendChild(canvasElement)
             await this.$store.dispatch('gcodeviewer/setCanvasBackup', canvasElement)
+        } else this.$refs.viewerCanvasContainer.appendChild(canvasElement)
+
+        if (viewer === null) {
             await this.viewerInit(canvasElement)
-        } else this.$refs.viewerCanvasContainer.appendChild(canvasBackup)
+        }
 
         if (this.$route.query?.filename && this.loadedFile !== this.$route.query?.filename?.toString()) {
             //TODO: test without sleep
@@ -200,49 +202,52 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     viewerInit(element: HTMLCanvasElement) {
-        this.viewer = new GCodeViewer(element)
-        this.viewer.init()
-        this.viewer.setBackgroundColor('#121212')
-        this.viewer.setCursorVisiblity(false)
-        this.viewer.setZClipPlane(1000000, -1000000)
-        this.viewer.axes.show(this.showAxes)
-        this.viewer.bed.setDelta(this.kinematics.includes('delta'))
+        viewer = new GCodeViewer(element)
+        viewer.init()
+        viewer.setBackgroundColor('#121212')
+        viewer.setCursorVisiblity(false)
+        viewer.setZClipPlane(1000000, -1000000)
+        viewer.axes.show(this.showAxes)
+        viewer.bed.setDelta(this.kinematics.includes('delta'))
 
         if (this.bedMaxSize !== null) {
-            this.viewer.bed.buildVolume['x'].max = this.bedMaxSize[0]
-            this.viewer.bed.buildVolume['y'].max = this.bedMaxSize[1]
-            this.viewer.bed.buildVolume['z'].max = this.bedMaxSize[2]
+            viewer.bed.buildVolume['x'].max = this.bedMaxSize[0]
+            viewer.bed.buildVolume['y'].max = this.bedMaxSize[1]
+            viewer.bed.buildVolume['z'].max = this.bedMaxSize[2]
         }
 
         if (this.bedMinSize !== null) {
-            this.viewer.bed.buildVolume['x'].min = this.bedMinSize[0]
-            this.viewer.bed.buildVolume['y'].min = this.bedMinSize[1]
-            this.viewer.bed.buildVolume['z'].min = this.bedMinSize[2]
+            viewer.bed.buildVolume['x'].min = this.bedMinSize[0]
+            viewer.bed.buildVolume['y'].min = this.bedMinSize[1]
+            viewer.bed.buildVolume['z'].min = this.bedMinSize[2]
         }
 
-        this.viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
-        this.viewer.gcodeProcessor.setLiveTracking(false)
+        viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
+        viewer.gcodeProcessor.setLiveTracking(false)
 
         this.loadToolColors(this.extruderColors)
 
-        if (this.viewer.lastLoadFailed()) {
+        if (viewer.lastLoadFailed()) {
             this.renderQuality = this.renderQualities[0]
-            this.viewer.updateRenderQuality(1)
-            this.viewer.clearLoadFlag()
+            viewer.updateRenderQuality(1)
+            viewer.clearLoadFlag()
         }
     }
 
     registerProgressCallback() {
-        if (this.viewer) {
-            this.viewer.gcodeProcessor.loadingProgressCallback = (progress: number) => {
+        if (viewer) {
+            viewer.gcodeProcessor.loadingProgressCallback = (progress: number) => {
                 this.loadingPercent = Math.ceil(progress * 100)
                 this.loading = this.loadingPercent <= 99
             }
         }
     }
-
-    cancelRendering() {
-        if (this.viewer) this.viewer.gcodeProcessor.cancelLoad = true
+    
+    async cancelRendering() {
+        if (viewer) {
+            viewer.gcodeProcessor.cancelLoad = true
+            await this.sleep(1000)
+        }
     }
 
     chooseFile() {
@@ -252,10 +257,10 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     finishLoad() {
-        this.maxZSlider = this.viewer.getMaxHeight()
+        this.maxZSlider = viewer.getMaxHeight()
         this.zSlider = this.maxZSlider
         this.loading = false
-        this.viewer.setCursorVisiblity(this.showCursor)
+        viewer.setCursorVisiblity(this.showCursor)
     }
 
     async fileSelected(e: any) {
@@ -266,7 +271,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             if (typeof blob === 'string') {
                 this.fileSize = blob.length
                 // Do something with result
-                await this.viewer.processFile(blob)
+                await viewer.processFile(blob)
             }
             this.finishLoad()
         })
@@ -281,8 +286,8 @@ export default class Viewer extends Mixins(BaseMixin) {
     async loadFile(filename: string) {
         let response = await fetch(this.apiUrl + '/server/files/' + encodeURI(filename))
         let text = await response.text()
-        this.viewer.updateRenderQuality(this.renderQuality.value)
-        await this.viewer.processFile(text)
+        viewer.updateRenderQuality(this.renderQuality.value)
+        await viewer.processFile(text)
         this.loadingPercent = 100
         this.finishLoad()
     }
@@ -301,20 +306,20 @@ export default class Viewer extends Mixins(BaseMixin) {
             //if we are actively loading signal a cancel and wait a second
             //This prevents a timing issue that can happen if a user changes settings and then
             //hits the reload viewer button. Will eventually move this to api
-            this.viewer.gcodeProcessor.cancelLoad = true
+            viewer.gcodeProcessor.cancelLoad = true
             await this.sleep(1000)
         }
 
         this.reloadRequired = false
         this.loading = true
         this.loadingPercent = 0
-        await this.viewer.reload()
+        await viewer.reload()
         this.loadingPercent = 100
         this.finishLoad()
     }
 
     resetCamera() {
-        this.viewer.resetCamera()
+        viewer.resetCamera()
     }
 
     setReloadRequiredFlag() {
@@ -325,51 +330,51 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('renderQuality')
     async renderQualityChanged(newVal: number) {
-        if (this.viewer && this.viewer.renderQuality !== newVal) {
-            this.viewer.updateRenderQuality(newVal)
+        if (viewer && viewer.renderQuality !== newVal) {
+            viewer.updateRenderQuality(newVal)
             await this.reloadViewer()
         }
     }
 
     @Watch('forceLineRendering')
     async forceLineRenderingChanged(newVal: boolean) {
-        if (this.viewer) {
-            this.viewer.gcodeProcessor.updateForceWireMode(newVal)
+        if (viewer) {
+            viewer.gcodeProcessor.updateForceWireMode(newVal)
             await this.reloadViewer()
         }
     }
 
     @Watch('currentPosition')
     currentPositionChanged(newVal: number[]) {
-        if (this.viewer) {
+        if (viewer) {
             const position = [
                 {axes: 'X', position: newVal[0]},
                 {axes: 'Y', position: newVal[1]},
                 {axes: 'Z', position: newVal[2]},
             ]
 
-            this.viewer.updateToolPosition(position)
+            viewer.updateToolPosition(position)
         }
     }
 
     @Watch('filePosition')
     filePositionChanged(newVal: number) {
-        if (!this.viewer) return
+        if (!viewer) return
         if (newVal > 0 && this.printerIsPrinting && this.tracking) {
-            this.viewer.gcodeProcessor.updateFilePosition(newVal)
+            viewer.gcodeProcessor.updateFilePosition(newVal)
         } else {
-            this.viewer.gcodeProcessor.updateFilePosition(0)
+            viewer.gcodeProcessor.updateFilePosition(0)
         }
     }
 
     @Watch('tracking')
     async trackingChanged(newVal: boolean) {
-        if (!this.viewer) return
+        if (!viewer) return
         if (newVal) {
             //Force renderers reload.
-            this.viewer.gcodeProcessor.updateFilePosition(0)
-            this.viewer.gcodeProcessor.forceRedraw()
-        } else this.viewer.gcodeProcessor.setLiveTracking(false)
+            viewer.gcodeProcessor.updateFilePosition(0)
+            viewer.gcodeProcessor.forceRedraw()
+        } else viewer.gcodeProcessor.setLiveTracking(false)
     }
 
     @Watch('printerIsPrinting')
@@ -387,7 +392,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('showCursor')
     showCursorChanged(newVal: boolean) {
-        this.viewer?.setCursorVisiblity(newVal)
+        viewer?.setCursorVisiblity(newVal)
     }
 
     get extruderColors() {
@@ -395,11 +400,11 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     loadToolColors(colors: string[]) {
-        if (this.viewer && colors.length) {
-            this.viewer.gcodeProcessor.resetTools()
+        if (viewer && colors.length) {
+            viewer.gcodeProcessor.resetTools()
             colors.forEach((color: string) => {
                 //Todo get nozzle size
-                this.viewer.gcodeProcessor.addTool(color, 0.4) //Default the nozzle to 0.4 for now.
+                viewer.gcodeProcessor.addTool(color, 0.4) //Default the nozzle to 0.4 for now.
             })
             this.setReloadRequiredFlag()
         }
@@ -407,7 +412,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('extruderColors')
     extruderColorsChanged(newVal: string[]) {
-        if (this.viewer && newVal && newVal.length) {
+        if (viewer && newVal && newVal.length) {
             this.loadToolColors(newVal)
             this.setReloadRequiredFlag()
         }
@@ -419,12 +424,12 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('colorMode')
     colorModeChanged(newVal: string) {
-        if (!this.viewer) return
+        if (!viewer) return
         if (newVal) {
             const mode = newVal === 'extruder' ? 0 : 1 //Magic number until I export the enum 0 = Color 1 = Feed Rate
-            if (this.viewer.gcodeProcessor.colorMode !== mode) {
+            if (viewer.gcodeProcessor.colorMode !== mode) {
                 this.setReloadRequiredFlag()
-                this.viewer.gcodeProcessor.setColorMode(mode)
+                viewer.gcodeProcessor.setColorMode(mode)
             }
         }
     }
@@ -435,8 +440,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('backgroundColor')
     backgroundColorChanged(newVal: string) {
-        if (!this.viewer) return
-        this.viewer.setBackgroundColor(newVal)
+        if (!viewer) return
+        viewer.setBackgroundColor(newVal)
     }
 
     get gridColor() {
@@ -445,8 +450,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('gridColor')
     gridColorChanged(newVal: string) {
-        if (!this.viewer) return
-        this.viewer.bed.setBedColor(newVal)
+        if (!viewer) return
+        viewer.bed.setBedColor(newVal)
     }
 
     get showAxes() {
@@ -455,8 +460,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('showAxes')
     showAxesChanged(newVal: boolean) {
-        if (!this.viewer) return
-        this.viewer.axes.show(newVal)
+        if (!viewer) return
+        viewer.axes.show(newVal)
     }
 
     get minFeed() {
@@ -465,8 +470,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('minFeed')
     minFeedChanged(newVal: number) {
-        if (!this.viewer) return
-        this.viewer.gcodeProcessor.updateColorRate(newVal * 60, this.maxFeed * 60)
+        if (!viewer) return
+        viewer.gcodeProcessor.updateColorRate(newVal * 60, this.maxFeed * 60)
     }
 
     get maxFeed() {
@@ -475,8 +480,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('maxFeed')
     maxFeedChanged(newVal: number) {
-        if (!this.viewer) return
-        this.viewer.gcodeProcessor.updateColorRate(this.minFeed * 60, newVal * 60)
+        if (!viewer) return
+        viewer.gcodeProcessor.updateColorRate(this.minFeed * 60, newVal * 60)
     }
 
     get minFeedColor() {
@@ -485,8 +490,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('minFeedColor')
     minFeedColorUpdated(newVal: string) {
-        if (!this.viewer) return
-        this.viewer.gcodeProcessor.updateMinFeedColor(newVal)
+        if (!viewer) return
+        viewer.gcodeProcessor.updateMinFeedColor(newVal)
         this.setReloadRequiredFlag()
     }
 
@@ -496,8 +501,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('maxFeedColor')
     maxFeedColorUpdated(newVal: string) {
-        if (!this.viewer) return
-        this.viewer.gcodeProcessor.updateMaxFeedColor(newVal)
+        if (!viewer) return
+        viewer.gcodeProcessor.updateMaxFeedColor(newVal)
         this.setReloadRequiredFlag()
     }
 
@@ -507,8 +512,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('kinematics')
     kinematicsChanged(newVal: string) {
-        if (this.viewer && newVal) {
-            this.viewer.bed.setDelta(newVal.includes('delta'))
+        if (viewer && newVal) {
+            viewer.bed.setDelta(newVal.includes('delta'))
         }
     }
 
@@ -518,10 +523,10 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('bedMinSize', {deep: true})
     bedMinSizeChanged(newVal: number[] | null) {
-        if (this.viewer && newVal) {
-            this.viewer.bed.buildVolume['x'].min = newVal[0]
-            this.viewer.bed.buildVolume['y'].min = newVal[1]
-            this.viewer.bed.buildVolume['z'].min = newVal[2]
+        if (viewer && newVal) {
+            viewer.bed.buildVolume['x'].min = newVal[0]
+            viewer.bed.buildVolume['y'].min = newVal[1]
+            viewer.bed.buildVolume['z'].min = newVal[2]
         }
     }
 
@@ -531,10 +536,10 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('bedMaxSize', {deep: true})
     bedMaxSizeChanged(newVal: number[] | null) {
-        if (newVal && this.viewer) {
-            this.viewer.bed.buildVolume['x'].max = newVal[0]
-            this.viewer.bed.buildVolume['y'].max = newVal[1]
-            this.viewer.bed.buildVolume['z'].max = newVal[2]
+        if (newVal && viewer) {
+            viewer.bed.buildVolume['x'].max = newVal[0]
+            viewer.bed.buildVolume['y'].max = newVal[1]
+            viewer.bed.buildVolume['z'].max = newVal[2]
         }
     }
 
@@ -548,7 +553,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('zSlider')
     zSliderChanged(newVal: number) {
-        this.viewer?.setZClipPlane(newVal, -1)
+        viewer?.setZClipPlane(newVal, -1)
     }
 
     get progressColor() {
@@ -557,7 +562,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     @Watch('progressColor')
     progressColorChanged(newVal: string) {
-        this.viewer?.setProgressColor(newVal)
+        viewer?.setProgressColor(newVal)
     }
 
     @Debounce(100)
