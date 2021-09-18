@@ -29,7 +29,9 @@ Mainsail will not work unless Klipper is told to include its configuration. This
 
 To do this, open the default printer.cfg in the Mainsail web GUI:
 
-*content and screenshots here*
+![screenshot-web-editor](../../../assets/img/setup/screenshot-web-editor-printer.png)        
+
+![screenshot-web-editor-printercfg](../../../assets/img/setup/screenshot-printercfg-include-mainsail.png)
 
 Add the following line:
 
