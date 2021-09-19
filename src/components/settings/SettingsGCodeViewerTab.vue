@@ -2,10 +2,6 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ShowCursor')">
-                    <v-switch class="mt-0" hide-details v-model="showCursor"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ShowAxes')">
                     <v-switch class="mt-0" hide-details v-model="showAxes"></v-switch>
                 </settings-row>
@@ -83,14 +79,6 @@ import Vue from 'vue'
     components: {SettingsRow},
 })
 export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
-    get showCursor(): boolean {
-        return this.$store.state.gui.gcodeViewer.showCursor
-    }
-
-    set showCursor(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.showCursor', value: newVal})
-    }
-
     get showAxes(): boolean {
         return this.$store.state.gui.gcodeViewer.showAxes
     }
