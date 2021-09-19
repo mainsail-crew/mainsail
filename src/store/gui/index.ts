@@ -166,7 +166,6 @@ export const getDefaultState = (): GuiState => {
         presets: [],
         cooldownGcode: 'TURN_OFF_HEATERS',
         gcodeViewer: {
-            showCursor : true,
             extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
             gridColor : '#0000FF',
             backgroundColor : '#000000',
@@ -176,8 +175,16 @@ export const getDefaultState = (): GuiState => {
             maxFeed : 100,
             minFeedColor : '#0000FF',
             maxFeedColor : '#FF0000',
-            forceLineRendering : false,
-            progressColor : '#FFFFFF'
+            progressColor : '#FFFFFF',
+            showCursor: true,
+            showTravelMoves: false,
+            hdRendering: false,
+            forceLineRendering: false,
+            transparency: false,
+            voxelMode: false,
+            voxelWidth: 1,
+            voxelHeight: 1,
+            specularLighting: false,
         }
     }
 }

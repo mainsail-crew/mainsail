@@ -2,13 +2,13 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(100vh - 290px);
+    height: calc(100vh - 250px);
     border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
 .slider-autoheight .v-slider {
-    height: calc(100vh - 290px);
+    height: calc(100vh - 250px);
 }
 
 .slider-autoheight .v-slider {
@@ -68,7 +68,6 @@
                 <v-row class="mt-0">
                     <v-col>
                         <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined></v-select>
-                        <v-switch :label="$t('GCodeViewer.ShowToolhead')" class="mt-2" hide-details dense v-model="showCursor"></v-switch>
                     </v-col>
                     <v-col class="text-center">
                         <template v-if="loadedFile === null">
@@ -81,8 +80,42 @@
                         </template>
                     </v-col>
                     <v-col>
-                        <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
-                        <v-switch :label="$t('GCodeViewer.ForceLineRendering')" class="mt-2" v-model="forceLineRendering" hide-details dense ></v-switch>
+                        <v-row>
+                            <v-col>
+                                <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
+                            </v-col>
+                            <v-col class="col-auto">
+                                <v-menu :offset-y="true" :offset-x="true" top :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn class="minwidth-0 px-2" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                                    </template>
+                                    <v-list>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="showCursor"  :label="$t('GCodeViewer.ShowToolhead')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="showTravelMoves"  :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-divider></v-divider>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="hdRendering" :label="$t('GCodeViewer.HDRendering')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="forceLineRendering" :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="transparency" :label="$t('GCodeViewer.Transparency')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="voxelMode" :label="$t('GCodeViewer.VoxelMode')"></v-checkbox>
+                                        </v-list-item>
+                                        <v-list-item class="minHeight36">
+                                            <v-checkbox class="mt-0" hide-details v-model="specularLighting" :label="$t('GCodeViewer.SpecularLighting')"></v-checkbox>
+                                        </v-list-item>
+                                    </v-list>
+                                </v-menu>
+                            </v-col>
+                        </v-row>
                     </v-col>
                 </v-row>
                 <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
@@ -246,7 +279,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         viewer = new GCodeViewer(element)
         viewer.init()
         viewer.setBackgroundColor('#121212')
-        viewer.setCursorVisiblity(false)
+        viewer.setCursorVisiblity(this.showCursor)
         viewer.setZClipPlane(1000000, -1000000)
         viewer.axes.show(this.showAxes)
         viewer.bed.setDelta(this.kinematics.includes('delta'))
@@ -263,7 +296,13 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.bed.buildVolume['z'].min = this.bedMinSize[2]
         }
 
+        viewer.gcodeProcessor.useHighQualityExtrusion(this.hdRendering)
         viewer.gcodeProcessor.updateForceWireMode(this.forceLineRendering)
+        viewer.gcodeProcessor.setAlpha(this.transparency)
+        viewer.gcodeProcessor.setVoxelMode(this.voxelMode)
+        viewer.gcodeProcessor.voxelWidth = this.voxelWidth
+        viewer.gcodeProcessor.voxelHeight = this.voxelHeight
+        viewer.gcodeProcessor.useSpecularColor(this.specularLighting)
         viewer.gcodeProcessor.setLiveTracking(false)
 
         this.loadToolColors(this.extruderColors)
@@ -305,7 +344,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     finishLoad() {
-        this.maxZSlider = viewer.getMaxHeight()
+        this.maxZSlider = viewer.getMaxHeight() + 1
         this.zSlider = this.maxZSlider
         this.loading = false
         viewer.setCursorVisiblity(this.showCursor)
@@ -416,14 +455,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    @Watch('forceLineRendering')
-    async forceLineRenderingChanged(newVal: boolean) {
-        if (viewer) {
-            viewer.gcodeProcessor.updateForceWireMode(newVal)
-            await this.reloadViewer()
-        }
-    }
-
     @Watch('currentPosition')
     currentPositionChanged(newVal: number[]) {
         if (viewer) {
@@ -478,6 +509,117 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('showCursor')
     showCursorChanged(newVal: boolean) {
         viewer?.setCursorVisiblity(newVal)
+    }
+
+    get showTravelMoves(): boolean {
+        return this.$store.state.gui.gcodeViewer.showTravelMoves ?? false
+    }
+
+    set showTravelMoves(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.showTravelMoves', value: newVal})
+    }
+
+    @Watch('showTravelMoves')
+    showTravelMovesChanged(newVal: boolean) {
+        viewer?.toggleTravels(newVal)
+    }
+
+    get hdRendering() {
+        return this.$store.state.gui.gcodeViewer.hdRendering
+    }
+
+    set hdRendering(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.hdRendering', value: newVal})
+    }
+
+    @Watch('hdRendering')
+    async hdRenderingChanged(newVal: boolean) {
+        if (viewer) {
+            viewer.gcodeProcessor.useHighQualityExtrusion(newVal)
+            await this.reloadViewer()
+        }
+    }
+
+    get forceLineRendering() {
+        return this.$store.state.gui.gcodeViewer.forceLineRendering
+    }
+
+    set forceLineRendering(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.forceLineRendering', value: newVal})
+    }
+
+    @Watch('forceLineRendering')
+    async forceLineRenderingChanged(newVal: boolean) {
+        if (viewer) {
+            viewer.gcodeProcessor.updateForceWireMode(newVal)
+            await this.reloadViewer()
+        }
+    }
+
+    get transparency() {
+        return this.$store.state.gui.gcodeViewer.transparency
+    }
+
+    set transparency(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.transparency', value: newVal})
+    }
+
+    @Watch('transparency')
+    async transparencyChanged(newVal: boolean) {
+        if (viewer) {
+            viewer.gcodeProcessor.setAlpha(newVal)
+            await this.reloadViewer()
+        }
+    }
+
+    get voxelMode() {
+        return this.$store.state.gui.gcodeViewer.voxelMode
+    }
+
+    set voxelMode(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.voxelMode', value: newVal})
+    }
+
+    @Watch('voxelMode')
+    async voxelModeChanged(newVal: boolean) {
+        if (viewer) {
+            viewer.gcodeProcessor.setVoxelMode(newVal)
+            viewer.gcodeProcessor.voxelWidth = this.voxelWidth
+            viewer.gcodeProcessor.voxelHeight = this.voxelHeight
+            await this.reloadViewer()
+        }
+    }
+
+    get voxelWidth() {
+        return this.$store.state.gui.gcodeViewer.voxelWidth ?? 1
+    }
+
+    set voxelWidth(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.voxelWidth', value: newVal})
+    }
+
+    get voxelHeight() {
+        return this.$store.state.gui.gcodeViewer.voxelHeight ?? 1
+    }
+
+    set voxelHeight(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.voxelHeight', value: newVal})
+    }
+
+    get specularLighting() {
+        return this.$store.state.gui.gcodeViewer.specularLighting
+    }
+
+    set specularLighting(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.specularLighting', value: newVal})
+    }
+
+    @Watch('specularLighting')
+    async specularLightingChanged(newVal: boolean) {
+        if (viewer) {
+            viewer.gcodeProcessor.useSpecularColor(newVal)
+            //await this.reloadViewer()
+        }
     }
 
     get extruderColors() {
@@ -631,14 +773,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.bed.buildVolume['y'].max = newVal[1]
             viewer.bed.buildVolume['z'].max = newVal[2]
         }
-    }
-
-    get forceLineRendering() {
-        return this.$store.state.gui.gcodeViewer.forceLineRendering
-    }
-
-    set forceLineRendering(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.forceLineRendering', value: newVal})
     }
 
     @Watch('zSlider')
