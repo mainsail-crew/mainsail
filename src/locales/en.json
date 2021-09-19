@@ -592,10 +592,7 @@
 			"GridColor": "Grid Color",
 			"ShowAxes": "Show Axes",
 			"MinFeed" :"Min Feed Rate",
-			"MaxFeed" : "Max Feed Rate",
-			"MinColor" : "Min Feed Rate Color",
-			"MaxColor" : "Max Feed Rate Color",
-			"ProgressColor" : "Progress Color"
+			"MaxFeed" : "Max Feed Rate"
 		}
 	},
 	"GCodeViewer":{

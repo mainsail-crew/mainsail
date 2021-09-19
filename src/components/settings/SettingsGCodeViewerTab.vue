@@ -39,29 +39,23 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.MinColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn :color="minFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                            <v-btn :color="minFeedColor" class="minwidth-0 px-5 mr-3" small v-bind="attrs" v-on="on"></v-btn>
                         </template>
                         <v-color-picker :value="minFeedColor" @update:color="updateColorValue('minFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.MaxColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn :color="maxFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                            <v-btn :color="maxFeedColor" class="minwidth-0 px-5 mr-3" small v-bind="attrs" v-on="on"></v-btn>
                         </template>
                         <v-color-picker :value="maxFeedColor" @update:color="updateColorValue('maxFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
                 </settings-row>
             </v-card-text>
         </v-card>
