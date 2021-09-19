@@ -2,13 +2,13 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(100vh - 300px);
+    height: calc(100vh - 290px);
     border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
 .slider-autoheight .v-slider {
-    height: calc(100vh - 300px);
+    height: calc(100vh - 290px);
 }
 
 .slider-autoheight .v-slider {
@@ -45,8 +45,6 @@
                     <span class="subheading"><v-icon left>mdi-video-3d</v-icon>{{ $t('GCodeViewer.Title') }}</span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn @click="tracking=!tracking" v-if="showTrackingButton" small>{{ $t("GCodeViewer.TrackPrint")}}</v-btn>
-                <v-btn @click="loadCurrentFile" class="ml-3" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile" small>{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
                 <v-btn @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
                 <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
             </v-toolbar>
@@ -67,12 +65,20 @@
                         ></v-slider>
                     </v-col>
                 </v-row>
-                <v-row>
+                <v-row class="mt-0">
                     <v-col>
                         <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined></v-select>
+                        <v-switch :label="$t('GCodeViewer.ShowToolhead')" class="mt-2" hide-details dense v-model="showCursor"></v-switch>
                     </v-col>
                     <v-col class="text-center">
-                        <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
+                        <template v-if="loadedFile === null">
+                            <v-btn @click="loadCurrentFile" class="mr-3" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile">{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
+                            <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
+                        </template>
+                        <template v-else>
+                            <v-btn @click="tracking=!tracking" v-if="showTrackingButton" class="mr-3">{{ tracking ? $t("GCodeViewer.TrackPrintOn") : $t("GCodeViewer.TrackPrintOff") }}</v-btn>
+                            <v-btn @click="clearLoadedFile">{{ $t("GCodeViewer.ClearLoadedFile") }}</v-btn>
+                        </template>
                     </v-col>
                     <v-col>
                         <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
@@ -140,7 +146,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     private loadingPercent = 0
 
     private tracking = false
-    private loadedFile = ''
+    private loadedFile: string | null = null
 
     private reloadRequired = false
     private fileSize = 0
@@ -282,6 +288,13 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.gcodeProcessor.cancelLoad = true
             await this.sleep(1000)
+        }
+    }
+
+    clearLoadedFile() {
+        if (viewer) {
+            viewer.clearScene(true)
+            this.loadedFile = null
         }
     }
 
@@ -427,8 +440,10 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('filePosition')
     filePositionChanged(newVal: number) {
         if (!viewer) return
-        if (newVal > 0 && this.printerIsPrinting && this.tracking) {
-            viewer.gcodeProcessor.updateFilePosition(newVal)
+
+        const offset = 350
+        if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
+            viewer.gcodeProcessor.updateFilePosition(newVal - offset)
         } else {
             viewer.gcodeProcessor.updateFilePosition(0)
         }
@@ -452,12 +467,12 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.tracking = false
     }
 
-    get showCursor() {
-        try {
-            return this.$store.state.gui.gcodeViewer.showCursor ?? false
-        } catch {
-            return false
-        }
+    get showCursor(): boolean {
+        return this.$store.state.gui.gcodeViewer.showCursor ?? false
+    }
+
+    set showCursor(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.showCursor', value: newVal})
     }
 
     @Watch('showCursor')
