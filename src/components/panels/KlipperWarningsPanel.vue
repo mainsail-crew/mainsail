@@ -7,7 +7,7 @@
                 </span>
             </v-toolbar-title>
         </v-toolbar>
-        <v-card-text :class="index > 0 ? 'py-0' : 'pt-3 pb-0'" v-for="(warning, index) in warnings" v-bind:key="warning">
+        <v-card-text :class="index > 0 ? 'py-0' : 'pt-3 pb-0'" v-for="(warning, index) in warnings" v-bind:key="index">
             <v-divider class="my-2" v-if="index"></v-divider>
             <v-row>
                 <v-col>
