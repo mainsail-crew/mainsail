@@ -2,16 +2,8 @@
     <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ShowCursor')">
-                    <v-switch class="mt-0" hide-details v-model="showCursor"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ShowAxes')">
                     <v-switch class="mt-0" hide-details v-model="showAxes"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.ColorMode')">
-                    <v-select :items="colorModes" dense hide-details outlined selected v-model="colorMode"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
@@ -47,29 +39,23 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.MinColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn :color="minFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                            <v-btn :color="minFeedColor" class="minwidth-0 px-5 mr-3" small v-bind="attrs" v-on="on"></v-btn>
                         </template>
                         <v-color-picker :value="minFeedColor" @update:color="updateColorValue('minFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GCodeViewerTab.MaxColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn :color="maxFeedColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
+                            <v-btn :color="maxFeedColor" class="minwidth-0 px-5 mr-3" small v-bind="attrs" v-on="on"></v-btn>
                         </template>
                         <v-color-picker :value="maxFeedColor" @update:color="updateColorValue('maxFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
                 </settings-row>
             </v-card-text>
         </v-card>
@@ -87,14 +73,6 @@ import Vue from 'vue'
     components: {SettingsRow},
 })
 export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
-    get showCursor(): boolean {
-        return this.$store.state.gui.gcodeViewer.showCursor
-    }
-
-    set showCursor(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.showCursor', value: newVal})
-    }
-
     get showAxes(): boolean {
         return this.$store.state.gui.gcodeViewer.showAxes
     }
@@ -112,19 +90,6 @@ export default class SettingsGCodeViewerTab extends Mixins(BaseMixin) {
         let colors = this.extruderColors
         colors[index] = value.hex
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.extruderColors', value: colors})
-    }
-
-    colorModes = [
-        {text: 'Extruder', value: 'extruder'},
-        {text: 'Feed Rate', value: 'feedrate'},
-    ];
-
-    get colorMode(): string {
-        return this.$store.state.gui.gcodeViewer.colorMode
-    }
-
-    set colorMode(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
     }
 
     get backgroundColor(): string {

@@ -618,24 +618,20 @@
 		},
 		"GCodeViewerTab": {
 			"GCodeViewer": "G-Code Viewer",
-			"ShowCursor" : "Show Cursor",
 			"ExtruderColor" : "Extruder Colors",
-			"ColorMode" : "Color Mode",
 			"FeedRate": "Feed Rate",
 			"Extruder" : "Extruder",
 			"BackgroundColor" : "Background Color",
 			"GridColor": "Grid Color",
 			"ShowAxes": "Show Axes",
 			"MinFeed" :"Min Feed Rate",
-			"MaxFeed" : "Max Feed Rate",
-			"MinColor" : "Min Feed Rate Color",
-			"MaxColor" : "Max Feed Rate Color",
-			"ProgressColor" : "Progress Color"
+			"MaxFeed" : "Max Feed Rate"
 		}
 	},
 	"GCodeViewer":{
 		"Title" : "G-Code Viewer",
-		"LoadLocal": "Load Local File",
+		"LoadLocal": "Local File",
+		"ClearLoadedFile": "Clear",
 		"ResetCamera": "Reset Camera",
 		"RenderQuality" : "Render Quality",
 		"Low" : "Low",
@@ -643,9 +639,19 @@
 		"High" : "High",
 		"Ultra" : "Ultra",
 		"Max" : "Max",
+		"ShowToolhead":"Show Toolhead",
+		"ShowTravelMoves":"ShowTravelMoves",
+		"HDRendering":"HD Rendering (Round Extrusions)",
 		"ForceLineRendering":"Force Line Rendering",
+		"Transparency":"Transparency",
+		"VoxelMode":"Voxel Mode (ASMBL)",
+		"SpecularLighting":"Specular Lighting",
 		"ReloadRequired" : "Reload required",
-		"TrackPrint": "Track Print",
-		"ZClip" : "Z Clipping"
+		"LoadCurrentFile": "Current file",
+		"Tracking": "Tracking",
+		"ZClip" : "Z Clipping",
+		"Rendering" : "Rendering",
+		"Downloading" : "Downloading",
+		"ColorMode" : "Color Mode"
 	}
 }
