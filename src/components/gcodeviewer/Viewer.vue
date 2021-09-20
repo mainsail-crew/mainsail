@@ -75,7 +75,7 @@
                             <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
                         </template>
                         <template v-else>
-                            <v-btn @click="tracking=!tracking" v-if="showTrackingButton" class="mr-3">{{ tracking ? $t("GCodeViewer.TrackPrintOn") : $t("GCodeViewer.TrackPrintOff") }}</v-btn>
+                            <v-btn @click="tracking=!tracking" v-if="showTrackingButton" class="mr-3"><v-icon v-html="tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'" class="mr-2"></v-icon>{{ $t("GCodeViewer.Tracking") }}</v-btn>
                             <v-btn @click="clearLoadedFile">{{ $t("GCodeViewer.ClearLoadedFile") }}</v-btn>
                         </template>
                     </v-col>
