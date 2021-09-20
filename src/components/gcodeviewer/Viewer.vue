@@ -223,6 +223,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.loadedFile = this.$store.state.gcodeviewer?.loadedFileBackup ?? null
 
         await this.init()
+
+        window.addEventListener('resize', this.eventListenerResize)
     }
 
     beforeDestroy() {
@@ -230,6 +232,12 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.gcodeProcessor.loadingProgressCallback = null
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
         }
+
+        window.removeEventListener('resize', this.eventListenerResize)
+    }
+
+    eventListenerResize() {
+        viewer?.resize()
     }
 
     get filePosition() {
