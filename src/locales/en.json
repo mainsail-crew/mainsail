@@ -299,6 +299,12 @@
 			"Restart": "Restart",
 			"FirmwareRestart": "Firmware Restart"
 		},
+		"KlipperWarningsPanel": {
+			"KlipperWarnings": "Klipper Warnings",
+			"DownloadLog": "download log",
+			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated.",
+			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated."
+		},
 		"MiniconsolePanel": {
 			"Headline": "Console",
 			"SetupConsole": "Setup Console",

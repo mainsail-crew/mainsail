@@ -9,6 +9,7 @@
         <min-settings-panel></min-settings-panel>
         <moonraker-state-panel></moonraker-state-panel>
         <klippy-state-panel></klippy-state-panel>
+        <klipper-warnings-panel></klipper-warnings-panel>
         <v-card v-if="klipperState === 'ready'" class="mb-6">
             <v-toolbar flat dense>
                 <v-toolbar-title>
@@ -277,9 +278,10 @@ import VueLoadImage from 'vue-load-image'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel'
+import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel'
 
 @Component({
-    components: {KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel},
+    components: {KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel},
     VueLoadImage
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
