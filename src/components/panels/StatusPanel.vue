@@ -73,6 +73,43 @@
                         </v-card-title>
                     </v-img>
                 </template>
+                <template v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
+                    <v-container>
+                        <v-row>
+                            <v-col class="py-2">
+                                <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>{{ current_object !== null ? current_object : '--' }}</span>
+                            </v-col>
+                            <v-col class="col-auto py-2">
+                                <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(current_object)" small v-if="current_object !== null">mdi-close-circle</v-icon>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-divider class="mt-0 mb-0" ></v-divider>
+                    <template v-if="boolShowObjects">
+                        <div  v-for="object in printing_objects" v-bind:key="object.name">
+                            <v-container>
+                                <v-row>
+                                    <v-col class="py-2">
+                                        <span class="subtitle-2 d-block px-0 text--disabled">{{ object.name }}</span>
+                                    </v-col>
+                                    <v-col class="col-auto py-2">
+                                        <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">{{ $t('Panels.StatusPanel.Canceled') }}</v-chip>
+                                        <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(object.name)" small v-else>mdi-close-circle</v-icon>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                            <v-divider class="mt-0 mb-0" ></v-divider>
+                        </div>
+                    </template>
+                    <v-container>
+                        <v-row>
+                            <v-col class="py-1 font-italic text-center">
+                                <span @click="boolShowObjects = !boolShowObjects" class="text--disabled cursor-pointer"><v-icon class="mr-3 text--disabled" small>mdi-chevron-{{ boolShowObjects ? 'up' : 'down' }}</v-icon><small>{{ $t('Panels.StatusPanel.CountObjects', {count: printing_objects.length}) }}</small><v-icon class="ml-3 text--disabled" small>mdi-chevron-{{ boolShowObjects ? 'up' : 'down' }}</v-icon></span>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-divider class="mt-0 mb-0" ></v-divider>
+                </template>
                 <template v-if="display_message || print_stats_message">
                     <v-container>
                         <v-row>
@@ -267,25 +304,44 @@
                 </template>
             </v-card-text>
         </v-card>
+        <v-dialog v-model="cancelObjectDialog.bool" max-width="290">
+            <v-card>
+                <v-toolbar flat dense >
+                    <v-toolbar-title>
+                        <span class="subheading"><v-icon class="mdi mdi-information" left></v-icon>{{ $t("Panels.StatusPanel.ExcludeObjectHeadline") }}</span>
+                    </v-toolbar-title>
+                </v-toolbar>
+                <v-card-text class="mt-3">{{ $t("Panels.StatusPanel.ExcludeObjectText", {name: cancelObjectDialog.objectName}) }}</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="cancelObjectDialog.bool = false">{{ $t("Panels.StatusPanel.Cancel") }}</v-btn>
+                    <v-btn color="primary" text @click="cancelObject">{{ $t("Panels.StatusPanel.ExcludeObject") }}</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import VueLoadImage from 'vue-load-image'
-import MinSettingsPanel from '@/components/panels/MinSettingsPanel'
-import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel'
-import KlippyStatePanel from '@/components/panels/KlippyStatePanel'
-import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel'
+import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
+import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
+import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
+import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 
 @Component({
-    components: {KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel},
-    VueLoadImage
+    components: {KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
+    boolShowObjects = false
+
+    cancelObjectDialog = {
+        bool: false,
+        objectName: ''
+    }
 
     refs = {
         bigThumbnail: HTMLDivElement
@@ -561,6 +617,18 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.current_filename && setting && this.thumbnailBig
     }
 
+    get printing_objects() {
+        return this.$store.state.printer.exclude_object?.objects ?? []
+    }
+
+    get current_object() {
+        return this.$store.state.printer.exclude_object?.current_object ?? null
+    }
+
+    get excluded_objects() {
+        return this.$store.state.printer.exclude_object?.excluded_objects ?? []
+    }
+
     btnPauseJob() {
         this.$socket.emit('printer.print.pause', { }, { loading: 'statusPrintPause' })
     }
@@ -624,6 +692,16 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         if (this.$refs.bigThumbnail) {
             this.$refs.bigThumbnail.$el.style.height = '200px'
         }
+    }
+
+    openCancelObjectDialog(objectName: string) {
+        this.cancelObjectDialog.objectName = objectName
+        this.cancelObjectDialog.bool = true
+    }
+
+    cancelObject() {
+        this.$socket.emit('printer.gcode.script', {script: 'EXCLUDE_OBJECT NAME='+this.cancelObjectDialog.objectName})
+        this.cancelObjectDialog.bool = false
     }
 
     onResize() {

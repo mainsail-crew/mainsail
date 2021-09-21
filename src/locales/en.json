@@ -336,7 +336,13 @@
             "Total": "Total",
             "Slicer": "Slicer",
             "ETA": "ETA",
-            "Unknown": "Unknown"
+            "Unknown": "Unknown",
+			"ExcludeObjectHeadline": "Exclude Object",
+			"ExcludeObjectText": "Do you really want to exclude \"{name}\"?",
+			"Cancel": "cancel",
+			"ExcludeObject": "Exclude object",
+			"CountObjects": "{count} Objects",
+			"Canceled": "Canceled"
 		},
 		"ToolsPanel": {
 			"Headline": "Temperatures",
