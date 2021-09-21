@@ -343,8 +343,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         objectName: ''
     }
 
-    refs = {
-        bigThumbnail: HTMLDivElement
+    $refs!: {
+        bigThumbnail: any
     }
 
     get current_filename() {
@@ -541,7 +541,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find(thumb =>
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) =>
                 thumb.width >= 32 && thumb.width <= 64 &&
                 thumb.height >= 32 && thumb.height <= 64
             )
@@ -565,7 +565,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 let relative_url = ''
@@ -586,7 +586,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
 
             if (thumbnail && 'height' in thumbnail) {
                 return thumbnail.height
@@ -601,7 +601,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
 
             if (thumbnail && 'width' in thumbnail) {
                 return thumbnail.width
@@ -653,7 +653,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', {script: 'M117'})
     }
 
-    formatTime(seconds) {
+    formatTime(seconds: number) {
         let h = Math.floor(seconds / 3600)
         seconds %= 3600
         let m = ('0' + Math.floor(seconds / 60)).slice(-2)
@@ -662,19 +662,17 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return h+':'+m+':'+s
     }
 
-    formatDateTime(msec) {
+    formatDateTime(msec: number) {
         const date = new Date(msec)
         const h = date.getHours() >= 10 ? date.getHours() : '0'+date.getHours()
         const m = date.getMinutes() >= 10 ? date.getMinutes() : '0'+date.getMinutes()
 
         const diff = msec - new Date().getTime()
-        return h+':'+m+((diff > 60*60*24*1000) ? '+'+parseInt(diff / (60*60*24*1000)) : '')
+        return h+':'+m+((diff > 60*60*24*1000) ? '+'+Math.round(diff / (60*60*24*1000)) : '')
     }
 
     @Watch('live_flow')
-    live_flowChanged(newVal) {
-        newVal = parseFloat(newVal)
-
+    live_flowChanged(newVal: number) {
         if (newVal && this.maxFlow < newVal) this.maxFlow = newVal
     }
 
