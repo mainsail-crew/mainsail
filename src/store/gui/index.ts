@@ -178,6 +178,7 @@ export const getDefaultState = (): GuiState => {
             progressColor : '#FFFFFF',
             showCursor: true,
             showTravelMoves: false,
+            showObjectSelection: false,
             hdRendering: false,
             forceLineRendering: false,
             transparency: false,
