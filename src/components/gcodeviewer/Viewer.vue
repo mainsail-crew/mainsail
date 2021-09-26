@@ -96,6 +96,9 @@
                                         <v-list-item class="minHeight36">
                                             <v-checkbox class="mt-0" hide-details v-model="showTravelMoves"  :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
                                         </v-list-item>
+                                        <v-list-item class="minHeight36" v-if="loadedFile === sdCardFilePath && printing_objects.length > 1">
+                                            <v-checkbox class="mt-0" hide-details v-model="showObjectSelection"  :label="$t('GCodeViewer.ShowObjectSelection')"></v-checkbox>
+                                        </v-list-item>
                                         <v-divider></v-divider>
                                         <v-list-item class="minHeight36">
                                             <v-checkbox class="mt-0" hide-details v-model="hdRendering" :label="$t('GCodeViewer.HDRendering')"></v-checkbox>
@@ -260,6 +263,14 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.printerIsPrinting && this.sdCardFilePath === this.loadedFile
     }
 
+    get printing_objects() {
+        return this.$store.state.printer.exclude_object?.objects ?? []
+    }
+
+    get excluded_objects() {
+        return this.$store.state.printer.exclude_object?.excluded_objects ?? []
+    }
+
     async init() {
         let canvasElement = this.$store.state.gcodeviewer?.canvasBackup ?? null
 
@@ -356,6 +367,26 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.zSlider = this.maxZSlider
         this.loading = false
         viewer.setCursorVisiblity(this.showCursor)
+        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
+
+        if (this.loadedFile === this.sdCardFilePath && this.printing_objects.length) {
+            let objects: any = []
+
+            this.printing_objects.forEach((object: any) => {
+                const xValues = object.polygon.map((point: number[]) => point[0])
+                const yValues = object.polygon.map((point: number[]) => point[1])
+
+                objects.push({
+                    cancelled: this.excluded_objects.includes(object.name),
+                    name: object.name,
+                    x: [Math.min(...xValues), Math.max(...xValues)],
+                    y: [Math.min(...yValues), Math.max(...yValues)],
+                })
+            })
+
+            viewer.buildObjects.loadObjectBoundaries(objects)
+            viewer.buildObjects.showObjectSelection(this.showObjectSelection)
+        }
     }
 
     async fileSelected(e: any) {
@@ -423,8 +454,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         await new Promise((resolve) => setTimeout(resolve, ms))
     }
 
-    loadCurrentFile() {
-        this.loadFile('gcodes/' + this.sdCardFilePath)
+    async loadCurrentFile() {
+        await this.loadFile('gcodes/' + this.sdCardFilePath)
         this.loadedFile = this.sdCardFilePath
     }
 
@@ -530,6 +561,19 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Watch('showTravelMoves')
     showTravelMovesChanged(newVal: boolean) {
         viewer?.toggleTravels(newVal)
+    }
+
+    get showObjectSelection(): boolean {
+        return this.$store.state.gui.gcodeViewer.showObjectSelection ?? false
+    }
+
+    set showObjectSelection(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.showObjectSelection', value: newVal})
+    }
+
+    @Watch('showObjectSelection')
+    showObjectSelectionChanged(newVal: boolean) {
+        viewer?.buildObjects.showObjectSelection(newVal)
     }
 
     get hdRendering() {

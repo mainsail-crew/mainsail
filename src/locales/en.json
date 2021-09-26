@@ -369,7 +369,13 @@
             "Total": "Total",
             "Slicer": "Slicer",
             "ETA": "ETA",
-            "Unknown": "Unknown"
+            "Unknown": "Unknown",
+			"ExcludeObjectHeadline": "Exclude Object",
+			"ExcludeObjectText": "Do you really want to exclude \"{name}\"?",
+			"Cancel": "cancel",
+			"ExcludeObject": "Exclude object",
+			"CountObjects": "{count} Objects",
+			"Canceled": "Canceled"
 		},
 		"ToolsPanel": {
 			"Headline": "Temperatures",
@@ -646,7 +652,8 @@
 		"Ultra" : "Ultra",
 		"Max" : "Max",
 		"ShowToolhead":"Show Toolhead",
-		"ShowTravelMoves":"ShowTravelMoves",
+		"ShowTravelMoves":"Show Travel Moves",
+		"ShowObjectSelection":"Show Object Selection",
 		"HDRendering":"HD Rendering (Round Extrusions)",
 		"ForceLineRendering":"Force Line Rendering",
 		"Transparency":"Transparency",
