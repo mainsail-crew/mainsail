@@ -85,7 +85,7 @@ export const maxEventHistory = 500
 
 // timelapse variables
 export const timelapseConsoleFilters = [
-    '_SET_TIMELAPSE_SETUP',
+    '_SET_TIMELAPSE_SETUP ',
     'HYPERLAPSE ACTION=',
     'SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
 ]

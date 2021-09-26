@@ -82,7 +82,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         filters.forEach((filter: string) => {
             try {
                 const regex = new RegExp(filter)
-                events = events.filter(event => event.type !== 'response' || !regex.test(event.message))
+                events = events.filter(event => !regex.test(event.message))
             } catch { window.console.error('Custom console filter \''+filter+'\' doesn\'t work')}
         })
 
@@ -109,18 +109,16 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const filters = rootGetters['gui/getConsoleFilterRules']
         let boolImport = true
-        if (type === 'response') {
-            filters.every((filter: string) => {
-                try {
-                    const regex = new RegExp(filter)
-                    if (regex.test(formatMessage)) boolImport = false
-                } catch {
-                    window.console.error('Custom console filter \''+filter+'\' doesn\'t work')
-                }
+        filters.every((filter: string) => {
+            try {
+                const regex = new RegExp(filter)
+                if (regex.test(formatMessage)) boolImport = false
+            } catch {
+                window.console.error('Custom console filter \''+filter+'\' doesn\'t work')
+            }
 
-                return boolImport
-            })
-        }
+            return boolImport
+        })
 
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+'</a>'

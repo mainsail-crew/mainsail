@@ -26,10 +26,10 @@ export const getters: GetterTree<GuiState, any> = {
         return caseInsensitiveSort(output, 'name')
     },
 
-    getConsoleFilterRules:(state) => {
+    getConsoleFilterRules:(state, getters, rootState) => {
         const output = []
 
-        if (state.components.includes('timelapse'))
+        if (rootState.server.components.includes('timelapse'))
             output.push(...timelapseConsoleFilters)
 
         if (state.console.hideWaitTemperatures)
