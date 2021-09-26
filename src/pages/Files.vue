@@ -273,7 +273,7 @@
         </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="['error', 'printing', 'paused'].includes(klipperState)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="['error', 'printing', 'paused'].includes(printer_state)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
                 <v-list-item
@@ -919,15 +919,14 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     clickRow(item: FileStateFile, force = false) {
         if (!this.contextMenu.shown || force) {
-            if (force) {
-                this.contextMenu.shown = false
-            }
-            if (!item.isDirectory) {
-                this.dialogPrintFile.show = true
-                this.dialogPrintFile.item = item
-            } else {
+            if (force) this.contextMenu.shown = false
+
+            if (item.isDirectory) {
                 this.currentPath += '/' + item.filename
                 this.loadPath()
+            } else if (!['error', 'printing', 'paused'].includes(this.printer_state)) {
+                this.dialogPrintFile.show = true
+                this.dialogPrintFile.item = item
             }
         }
     }
