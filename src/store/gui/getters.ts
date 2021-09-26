@@ -1,6 +1,7 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from '@/store/gui/types'
+import {timelapseConsoleFilters} from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -27,6 +28,9 @@ export const getters: GetterTree<GuiState, any> = {
 
     getConsoleFilterRules:(state) => {
         const output = []
+
+        if (state.components.includes('timelapse'))
+            output.push(...timelapseConsoleFilters)
 
         if (state.console.hideWaitTemperatures)
             output.push('^(?:ok\\s+)?(B|C|T\\d*):')
