@@ -32,7 +32,7 @@ export const getters: GetterTree<GuiState, any> = {
             output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
         if (Array.isArray(state.console.customFilters) && state.console.customFilters.length) {
-            state.console.customFilters.filter((filter: GuiStateConsoleFilter) => filter.bool === true).forEach((filter: GuiStateConsoleFilter) => {
+            state.console.customFilters.filter((filter: GuiStateConsoleFilter) => filter.bool).forEach((filter: GuiStateConsoleFilter) => {
                 filter.regex.split('\n').forEach((rule: string) => {
                     if (rule !== '') output.push(rule)
                 })
