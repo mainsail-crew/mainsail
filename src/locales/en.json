@@ -638,6 +638,15 @@
 			"ShowAxes": "Show Axes",
 			"MinFeed" :"Min Feed Rate",
 			"MaxFeed" : "Max Feed Rate"
+		},
+		"TimelapseTab": {
+			"Timelapse": "Timelapse",
+			"Mode": "Mode",
+			"Autorender": "Autorender",
+			"SaveFrames": "Save Frames",
+			"GcodeVerbose": "GcodeVerbose",
+			"Parkhead": "Parkhead",
+			"Parkpos": "Park position"
 		}
 	},
 	"GCodeViewer":{

@@ -25,17 +25,19 @@
                 </v-toolbar>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
-                        <v-tabs v-model="activeTab" :vertical="true">
-                            <v-tab
-                                v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#'+tab.name"
-                                class="justify-start"
-                                style="width: 200px;"
-                            >
-                                <v-icon left v-html="tab.icon"></v-icon>
-                                <span class="text-truncate">{{ tab.title }}</span>
-                            </v-tab>
-                        </v-tabs>
+                        <perfect-scrollbar class="settings-tabs-bar height500" ref="settingsTabsScroll">
+                            <v-tabs v-model="activeTab" :vertical="true">
+                                <v-tab
+                                    v-for="(tab, index) of tabTitles" v-bind:key="index"
+                                    :href="'#'+tab.name"
+                                    class="justify-start"
+                                    style="width: 200px;"
+                                >
+                                    <v-icon left v-html="tab.icon"></v-icon>
+                                    <span class="text-truncate">{{ tab.title }}</span>
+                                </v-tab>
+                            </v-tabs>
+                        </perfect-scrollbar>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
                         <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
@@ -63,6 +65,7 @@ import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrint
 import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
+import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 @Component({
     components: {
         SettingsThemeTab,
@@ -74,7 +77,8 @@ import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab
         SettingsWebcamTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
-        SettingsGCodeViewerTab
+        SettingsGCodeViewerTab,
+        SettingsTimelapseTab
     }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -136,6 +140,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: 'mdi-video-3d',
                 name: 'g-code-viewer',
                 title: this.$t('Settings.GCodeViewerTab.GCodeViewer')
+            },
+            {
+                icon: 'mdi-timelapse',
+                name: 'timelapse',
+                title: this.$t('Settings.TimelapseTab.Timelapse')
             }
         ]
     }
@@ -153,6 +162,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
         max-height: calc(100vh - 96px);
     }
 
+    .settings-tabs-bar.height500,
     .settings-tabs.height500 {
         max-height: 500px;
     }

@@ -39,5 +39,9 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
         default:
             window.console.log('unknown timelapse event', payload)
         }
+    },
+
+    saveSetting({ commit }, payload) {
+        Vue.$socket.emit('machine.timelapse.post_settings', payload, { action: 'server/timelapse/initSettings' })
     }
 }
