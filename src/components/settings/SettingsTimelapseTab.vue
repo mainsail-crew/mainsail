@@ -14,6 +14,10 @@
                     <v-switch v-model="saveFrames" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.PreviewImage')" :dynamic-slot-width="true">
+                    <v-switch v-model="previewImage" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.GcodeVerbose')" :dynamic-slot-width="true">
                     <v-switch v-model="gcode_verbose" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -21,11 +25,88 @@
                 <settings-row :title="$t('Settings.TimelapseTab.Parkhead')" :dynamic-slot-width="true">
                     <v-switch v-model="parkhead" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <template v-if="parkhead">
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.Parkpos')">
+                        <v-select v-model="parkpos" :items="parkposOptions" hide-details outlined dense></v-select>
+                    </settings-row>
+                    <template v-if="parkpos === 'custom'">
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.PosX')">
+                            <v-text-field v-model="park_custom_pos_x" type="number" suffix="mm" hide-details="auto" outlined dense ></v-text-field>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.PosY')">
+                            <v-text-field v-model="park_custom_pos_y" type="number" suffix="mm" hide-details="auto" outlined dense ></v-text-field>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.PosDZ')">
+                            <v-text-field v-model="park_custom_pos_dz" type="number" suffix="mm" hide-details="auto" outlined dense ></v-text-field>
+                        </settings-row>
+                    </template>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.TravelSpeed')">
+                        <v-text-field v-model="park_travel_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.RetractSpeed')">
+                        <v-text-field v-model="park_retract_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.RetractDistance')">
+                        <v-text-field v-model="park_retract_distance" type="number" suffix="mm" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.ExtractSpeed')">
+                        <v-text-field v-model="park_extrude_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.ExtractDistance')">
+                        <v-text-field v-model="park_extrude_distance" type="number" suffix="mm" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.Parkpos')" :dynamic-slot-width="true">
-                    <v-select v-model="parkpos" :items="parkposOptions" hide-details outlined dense></v-select>
+                <settings-row :title="$t('Settings.TimelapseTab.ConstantRateFactor')">
+                    <v-text-field v-model="constant_frame_factor" type="number" suffix="frames" hide-details="auto" outlined dense ></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.OutputFramerate')">
+                    <v-text-field v-model="output_framerate" type="number" suffix="frames" hide-details="auto" outlined dense ></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.Pixelformat')">
+                    <v-text-field v-model="pixelformat" type="text" hide-details="auto" outlined dense ></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.Extraoutputparams')">
+                    <v-text-field v-model="extraoutputparams" type="text" hide-details="auto" outlined dense ></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.VariableFps')" :dynamic-slot-width="true">
+                    <v-switch v-model="variable_fps" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <template v-if="variable_fps">
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.Targetlength')">
+                        <v-text-field v-model="targetlength" type="number" suffix="s" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.VariableFpsMin')">
+                        <v-text-field v-model="variable_fps_min" type="number" suffix="frames" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.TimelapseTab.VariableFpsMax')">
+                        <v-text-field v-model="variable_fps_max" type="number" suffix="frames" hide-details="auto" outlined dense ></v-text-field>
+                    </settings-row>
+                </template>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.Rotation')">
+                    <v-text-field v-model="rotation" type="number" hide-details="auto" outlined dense ></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.Dublicatelastframe')">
+                    <v-text-field v-model="dublicatelastframe" type="number" hide-details="auto" outlined dense ></v-text-field>
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -102,6 +183,14 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         this.$store.dispatch('server/timelapse/saveSetting', { saveFrames: newVal })
     }
 
+    get previewImage() {
+        return this.$store.state.server.timelapse.settings.previewImage
+    }
+
+    set previewImage(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { previewImage: newVal })
+    }
+
     get gcode_verbose() {
         return this.$store.state.server.timelapse.settings.gcode_verbose
     }
@@ -124,6 +213,150 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
 
     set parkpos(newVal) {
         this.$store.dispatch('server/timelapse/saveSetting', { parkpos: newVal })
+    }
+
+    get park_custom_pos_x() {
+        return this.$store.state.server.timelapse.settings.park_custom_pos_x
+    }
+
+    set park_custom_pos_x(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_x: newVal })
+    }
+
+    get park_custom_pos_y() {
+        return this.$store.state.server.timelapse.settings.park_custom_pos_y
+    }
+
+    set park_custom_pos_y(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_y: newVal })
+    }
+
+    get park_custom_pos_dz() {
+        return this.$store.state.server.timelapse.settings.park_custom_pos_dz
+    }
+
+    set park_custom_pos_dz(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_custom_pos_dz: newVal })
+    }
+
+    get park_travel_speed() {
+        return this.$store.state.server.timelapse.settings.park_travel_speed
+    }
+
+    set park_travel_speed(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_travel_speed: newVal })
+    }
+
+    get park_retract_speed() {
+        return this.$store.state.server.timelapse.settings.park_retract_speed
+    }
+
+    set park_retract_speed(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_retract_speed: newVal })
+    }
+
+    get park_extrude_speed() {
+        return this.$store.state.server.timelapse.settings.park_extrude_speed
+    }
+
+    set park_extrude_speed(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_extrude_speed: newVal })
+    }
+
+    get park_retract_distance() {
+        return this.$store.state.server.timelapse.settings.park_retract_distance
+    }
+
+    set park_retract_distance(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_retract_distance: newVal })
+    }
+
+    get park_extrude_distance() {
+        return this.$store.state.server.timelapse.settings.park_extrude_distance
+    }
+
+    set park_extrude_distance(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { park_extrude_distance: newVal })
+    }
+
+    get constant_frame_factor() {
+        return this.$store.state.server.timelapse.settings.constant_frame_factor
+    }
+
+    set constant_frame_factor(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { constant_frame_factor: newVal })
+    }
+
+    get output_framerate() {
+        return this.$store.state.server.timelapse.settings.output_framerate
+    }
+
+    set output_framerate(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { output_framerate: newVal })
+    }
+
+    get pixelformat() {
+        return this.$store.state.server.timelapse.settings.pixelformat
+    }
+
+    set pixelformat(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { pixelformat: newVal })
+    }
+
+    get extraoutputparams() {
+        return this.$store.state.server.timelapse.settings.extraoutputparams
+    }
+
+    set extraoutputparams(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { extraoutputparams: newVal })
+    }
+
+    get variable_fps() {
+        return this.$store.state.server.timelapse.settings.variable_fps
+    }
+
+    set variable_fps(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { variable_fps: newVal })
+    }
+
+    get targetlength() {
+        return this.$store.state.server.timelapse.settings.targetlength
+    }
+
+    set targetlength(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { targetlength: newVal })
+    }
+
+    get variable_fps_min() {
+        return this.$store.state.server.timelapse.settings.variable_fps_min
+    }
+
+    set variable_fps_min(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { variable_fps_min: newVal })
+    }
+
+    get variable_fps_max() {
+        return this.$store.state.server.timelapse.settings.variable_fps_max
+    }
+
+    set variable_fps_max(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { variable_fps_max: newVal })
+    }
+
+    get rotation() {
+        return this.$store.state.server.timelapse.settings.rotation
+    }
+
+    set rotation(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { rotation: newVal })
+    }
+
+    get dublicatelastframe() {
+        return this.$store.state.server.timelapse.settings.dublicatelastframe
+    }
+
+    set dublicatelastframe(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { dublicatelastframe: newVal })
     }
 }
 </script>
