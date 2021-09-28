@@ -3,14 +3,14 @@
         <v-card flat>
             <v-card-text>
                 <settings-row :title="$t('Settings.TimelapseTab.Enabled')">
-                    <v-switch v-model="Enabled" hide-details class="mt-0"></v-switch>
+                    <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <settings-row :title="$t('Settings.TimelapseTab.Mode')">
                     <v-select v-model="mode" :items="modeOptions" hide-details outlined dense></v-select>
                 </settings-row>
                 <template v-if="mode == 'hyperlapse'">
                     <settings-row :title="$t('Settings.TimelapseTab.HyperlapseCycle')">
-                            <v-text-field v-model="hyperlaseCylce" type="number" suffix="s" hide-details="auto" outlined dense ></v-text-field>
+                            <v-text-field v-model="hyperlapseCycle" type="number" suffix="s" hide-details="auto" outlined dense ></v-text-field>
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
@@ -169,12 +169,28 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         }
     ]
 
+    get enabled() {
+        return this.$store.state.server.timelapse.settings.enabled
+    }  
+
+    set enabled(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { enabled: newVal })
+    }
+
     get mode() {
         return this.$store.state.server.timelapse.settings.mode
     }
 
     set mode(newVal) {
         this.$store.dispatch('server/timelapse/saveSetting', { mode: newVal })
+    }
+
+    get hyperlapseCycle() {
+        return this.$store.state.server.timelapse.settings.hyperlapse_cycle
+    }  
+
+    set hyperlapseCycle(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { hyperlapse_cycle: newVal })
     }
 
     get autorender() {
