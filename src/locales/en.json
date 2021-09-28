@@ -640,6 +640,7 @@
 			"MaxFeed" : "Max Feed Rate"
 		},
 		"TimelapseTab": {
+			"Enabled": "Enabled",
 			"Timelapse": "Timelapse",
 			"Mode": "Mode",
 			"Autorender": "Autorender",
@@ -665,7 +666,8 @@
 			"VariableFpsMin": "Variable FPS min",
 			"VariableFpsMax": "Variable FPS max",
 			"Rotation": "Rotation",
-			"Dublicatelastframe": "Dublicatelastframe"
+			"Dublicatelastframe": "Dublicatelastframe",
+			"HyperlapseCycle": "Hyperlapse Cycle Time"
 		}
 	},
 	"GCodeViewer":{
