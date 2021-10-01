@@ -22,7 +22,7 @@
     "@codemirror/state": "^0.19.1",
     "@codemirror/stream-parser": "^0.19.1",
     "@codemirror/view": "^0.19.1",
-    "@sindarius/gcodeviewer": "^2.1.12",
+    "@sindarius/gcodeviewer": "^2.1.13",
     "axios": "^0.21.1",
     "core-js": "^3.16.0",
     "echarts": "^5.1.2",
