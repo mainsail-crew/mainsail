@@ -106,12 +106,27 @@
                     </v-card-text>
                     <v-fade-transition>
                         <v-overlay v-if="hover" absolute :z-index="4" >
-                            <v-btn color="primary" @click="clickPrinter">{{ printer.socket.isConnected ? $t("Panels.FarmPrinterPanel.SwitchToPrinter") : $t("Panels.FarmPrinterPanel.ReconnectToPrinter") }}</v-btn>
+                            <v-btn color="primary" @click="clickPrinter">{{ $t(getButtonText) }}</v-btn>
                         </v-overlay>
                     </v-fade-transition>
                 </div>
             </template>
         </v-hover>
+
+      <v-dialog v-model="showLogin" persistent :width="400">
+        <v-card dark>
+          <v-toolbar flat dense color="primary">
+            <v-toolbar-title>
+                    <span class="subheading">
+                        <v-icon class="mdi mdi-connection" left></v-icon>
+                        <template>{{ $t("ConnectionDialog.Login", {'host': printer_name}) }}</template>
+                    </span>
+            </v-toolbar-title>
+          </v-toolbar>
+          <login-form :show-error="printer.socket.loginFailed" @login="login"></login-form>
+        </v-card>
+      </v-dialog>
+
     </v-card>
 </template>
 
@@ -122,17 +137,20 @@ import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
+import LoginForm from '@/components/ui/LoginForm.vue'
+import {UserCredentials} from '@/store/auth/types'
 
 @Component({
     components: {
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
-        'mainsail-logo': MainsailLogo
+        'mainsail-logo': MainsailLogo,
+        LoginForm
     }
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     private imageHeight = 200;
-
+    private showLogin = false
     @Prop({ type: Object, required: true }) printer!: FarmPrinterState
     @Ref() readonly imageDiv!: Vue
 
@@ -164,6 +182,10 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
 
     get printer_status() {
         return this.$store.getters['farm/'+this.printer._namespace+'/getStatus']
+    }
+
+    get reqiresLogin() {
+        return this.$store.getters['farm/'+this.printer._namespace+'/getRequiresLogin']
     }
 
     get printer_current_filename() {
@@ -201,11 +223,33 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
         return false
     }
 
+    get getButtonText(): string {
+        if (this.printer.socket.isConnected) {
+            return 'Panels.FarmPrinterPanel.SwitchToPrinter'
+        }
+        if (this.printer.socket.requiresLogin) {
+            return 'Panels.FarmPrinterPanel.Login'
+        }
+
+        return 'Panels.FarmPrinterPanel.ReconnectToPrinter'
+    }
+
     clickPrinter() {
-        if (this.printer.socket.isConnected)
+        if (this.printer.socket.requiresLogin) {
+            this.showLogin = true
+            return
+        }
+        if (this.printer.socket.isConnected) {
             this.$store.dispatch('changePrinter', { printer: this.printer._namespace })
-        else
-            this.$store.dispatch('farm/'+this.printer._namespace+'/reconnect')
+            return
+        }
+        this.$store.dispatch('farm/'+this.printer._namespace+'/reconnect')
+    }
+
+    login(user: UserCredentials) {
+        this.$store.dispatch('farm/'+this.printer._namespace+'/login', user).then(() => {
+            this.showLogin = this.printer.socket.loginFailed
+        })
     }
 
     mounted() {

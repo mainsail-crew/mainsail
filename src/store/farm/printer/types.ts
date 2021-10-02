@@ -14,6 +14,8 @@ export interface FarmPrinterState {
         reconnects: number
         maxReconnects: number
         reconnectInterval: number
+        requiresLogin: boolean
+        loginFailed: boolean
         // eslint-disable-next-line
         wsData: any[]
     },

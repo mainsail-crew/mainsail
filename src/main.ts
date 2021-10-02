@@ -38,6 +38,7 @@ Vue.use(VueToast, {
 //vue-echarts-ts
 import { plugin } from 'echarts-for-vue'
 import * as echarts from 'echarts/core'
+import {setupInterceptors} from '@/plugins/interceptors'
 Vue.use(plugin, { echarts })
 
 //load config.json and init vue
@@ -71,4 +72,5 @@ fetch('/config.json')
     window.console.error('Error:', error)
     })
 
+setupInterceptors()
 

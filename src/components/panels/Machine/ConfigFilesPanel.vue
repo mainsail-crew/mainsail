@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <v-card>
+        <v-card class="mb-6">
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading align-baseline"><v-icon left>mdi-information</v-icon>{{ $t('Machine.ConfigFilesPanel.ConfigFiles') }}</span>

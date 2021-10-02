@@ -12,7 +12,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    init() {
+    init({ dispatch }) {
         window.console.debug('init Server')
 
         Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo'})
@@ -20,6 +20,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo'})
         Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
+        dispatch('auth/getUsers', null, { root: true })
     },
 
     checkDatabases({ dispatch }, payload) {

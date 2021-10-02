@@ -8,6 +8,10 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('reset')
     },
 
+    reconnect() {
+        Vue.$socket.connect()
+    },
+
     setData({ commit }, payload) {
         commit('setData', payload)
     },
