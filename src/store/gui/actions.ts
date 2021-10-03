@@ -10,7 +10,10 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     init({ commit, dispatch, rootState }, payload) {
-        if ('useCross' in payload.value.dashboard?.control) {
+        if (
+            payload.value.dashboard?.control !== undefined &&
+            'useCross' in payload.value.dashboard?.control
+        ) {
             dispatch('saveSetting', { name: 'dashboard.control.style', value: 'cross' })
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'dashboard.control.useCross' })
             delete payload.value.dashboard?.control.useCross
