@@ -73,7 +73,7 @@
                         </v-card-title>
                     </v-img>
                 </template>
-                <template v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
+                <template v-if="['printing', 'paused', 'standby'].includes(printer_state) && printing_objects.length">
                     <v-container>
                         <v-row>
                             <v-col class="py-2">
@@ -81,6 +81,14 @@
                             </v-col>
                             <v-col class="col-auto py-2">
                                 <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(current_object)" small v-if="current_object !== null">mdi-close-circle</v-icon>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-divider class="mt-0 mb-0" ></v-divider>
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                <status-panel-object-map></status-panel-object-map>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -330,9 +338,10 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
+import StatusPanelObjectMap from '@/components/panels/StatusPanelObjectMap.vue'
 
 @Component({
-    components: {KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
+    components: {StatusPanelObjectMap, KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
