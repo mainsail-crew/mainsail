@@ -98,7 +98,7 @@
                             <v-container>
                                 <v-row>
                                     <v-col class="py-2">
-                                        <span class="subtitle-2 d-block px-0 text--disabled">{{ object.name }}</span>
+                                        <span class="subtitle-2 d-block px-0 text--disabled text-truncate">{{ object.name }}</span>
                                     </v-col>
                                     <v-col class="col-auto py-2">
                                         <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">{{ $t('Panels.StatusPanel.Canceled') }}</v-chip>

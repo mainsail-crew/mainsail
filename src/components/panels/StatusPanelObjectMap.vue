@@ -1,21 +1,59 @@
 <style lang="scss" scoped>
     svg {
-        background: rgba(200, 200, 200);
+        //background: rgba(200, 200, 200);
+        border: 2px solid #888;
+    }
+
+    #tooltipObjectMap {
+        display: none;
+        position: absolute;
+        background: black;
+        border-radius: 3px;
+        color: white;
+        padding: 3px 7px;
+        z-index: 100;
+
+        &:before {
+            display: block;
+            content: ' ';
+            width: 0;
+            height: 0;
+            position: absolute;
+            bottom: -10px;
+            left: 10px;
+            border-top: 10px solid black;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
     }
 </style>
 
 <template>
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewBox="viewBox" xml:space="preserve">
-        <g>
-            <polygon
-                v-for="(object, index) in printing_objects"
-                v-bind:key="index"
-                :points="object.polygon.map(point => point.join(',')).join(' ')"
-                :title="object.name"
-                style="fill: rgba(255,255,255,0.7); stroke: gray; stroke-width: 2; fill-rule: evenodd;"
-            />
-        </g>
-    </svg>
+    <div style="position: relative;">
+        <div id="tooltipObjectMap" ref="tooltipObjectMap"></div>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" :viewBox="viewBox" xml:space="preserve">
+            <defs>
+                <marker id="arrowhead" markerWidth="5" markerHeight="4" refX="2" refY="2" orient="auto">
+                    <polygon points="0 0, 5 2, 0 4" :fill="coordinationCrossColor" />
+                </marker>
+            </defs>
+            <line :x1="convertX(0)" :y1="convertY(1)" :x2="convertX(stepperXmax / 4)" :y2="convertY(1)" :stroke="coordinationCrossColor" stroke-width="2" marker-end="url(#arrowhead)" />
+            <line :x1="convertX(1)" :y1="convertY(0)" :x2="convertX(1)" :y2="convertY(stepperYmax / 4)" :stroke="coordinationCrossColor" stroke-width="2" marker-end="url(#arrowhead)" />
+            <g>
+                <line v-for="x in xStripes" v-bind:key="'xLines'+x" :x1="convertX(x)" :x2="convertX(x)" :y1="convertY(stepperYmin)" :y2="convertY(stepperYmax)" :stroke="coordinationCrossColor" :stroke-opacity="0.25" stroke-width="1" />
+                <line v-for="y in yStripes" v-bind:key="'yLines'+y" :x1="convertX(stepperXmin)" :x2="convertX(stepperXmax)" :y1="convertY(y)" :y2="convertY(y)" :stroke="coordinationCrossColor" :stroke-opacity="0.25" stroke-width="1" />
+            </g>
+
+            <g v-for="(object, index) in printing_objects" v-bind:key="index">
+                <polygon
+                    :points="object.polygon.map(point => convertX(point[0])+','+convertY(point[1])).join(' ')"
+                    style="fill: rgba(255,255,255,0.7); stroke: gray; stroke-width: 2; fill-rule: evenodd;"
+                    @mouseover="showObjectTooltip(object.name)"
+                    @mouseout="hideObjectTooltip"
+                />
+            </g>
+        </svg>
+    </div>
 </template>
 
 <script lang="ts">
@@ -25,6 +63,12 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class StatusPanelObjectMap extends Mixins(BaseMixin) {
+    private coordinationCrossColor = '#888'
+    private stripesOffset = 50
+
+    $refs!: {
+        tooltipObjectMap: HTMLDivElement
+    }
 
     get printing_objects() {
         return this.$store.state.printer.exclude_object?.objects ?? []
@@ -39,7 +83,7 @@ export default class StatusPanelObjectMap extends Mixins(BaseMixin) {
     }
 
     get viewBox() {
-        return this.stepperXmin+' '+this.stepperYmin+' '+this.stepperXmax+' '+this.stepperYmax
+        return this.convertX(this.stepperXmin)+' '+this.convertY(this.stepperYmax)+' '+this.absoluteX+' '+this.absoluteY
     }
     
     get stepperXmin() {
@@ -56,6 +100,66 @@ export default class StatusPanelObjectMap extends Mixins(BaseMixin) {
     
     get stepperYmax() {
         return this.$store.state.printer.configfile?.settings?.stepper_y?.position_max ?? 200
+    }
+
+    get absoluteX() {
+        return Math.abs(this.stepperXmin) + Math.abs(this.stepperXmax)
+    }
+
+    get absoluteY() {
+        return Math.abs(this.stepperYmin) + Math.abs(this.stepperYmax)
+    }
+
+    get xStripes() {
+        const output = []
+        const minXstripe = Math.floor(this.stepperXmin / this.stripesOffset) * this.stripesOffset
+        const maxXstripe = Math.floor(this.stepperXmax / this.stripesOffset) * this.stripesOffset
+
+        for (let i = minXstripe; i <= maxXstripe; i = i + this.stripesOffset) {
+            output.push(i)
+        }
+
+        return output
+    }
+
+    get yStripes() {
+        const output = []
+        const minYstripe = Math.floor(this.stepperYmin / this.stripesOffset) * this.stripesOffset
+        const maxYstripe = Math.floor(this.stepperYmax / this.stripesOffset) * this.stripesOffset
+
+        for (let i = minYstripe; i <= maxYstripe; i = i + this.stripesOffset) {
+            output.push(i)
+        }
+
+        return output
+    }
+
+    convertX(x: number) {
+
+
+        return x
+    }
+
+    convertY(y: number) {
+
+        return y * -1
+    }
+
+    showObjectTooltip(text: string) {
+        this.$refs.tooltipObjectMap.innerHTML = text
+        this.$refs.tooltipObjectMap.style.display = 'block'
+
+        window.addEventListener('mousemove', this.moveTooltip)
+    }
+
+    hideObjectTooltip() {
+        this.$refs.tooltipObjectMap.style.display = 'none'
+        window.removeEventListener('mousemove', this.moveTooltip)
+    }
+
+    moveTooltip(event: any) {
+        this.$refs.tooltipObjectMap.style.left = (event.layerX - 20) + 'px'
+        this.$refs.tooltipObjectMap.style.top = (event.layerY - 40) + 'px'
     }
 }
 </script>
