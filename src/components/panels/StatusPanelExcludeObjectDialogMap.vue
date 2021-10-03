@@ -58,11 +58,11 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { Mixins } from 'vue-property-decorator'
+import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class StatusPanelObjectMap extends Mixins(BaseMixin) {
+export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     private coordinationCrossColor = '#888'
     private stripesOffset = 50
 
