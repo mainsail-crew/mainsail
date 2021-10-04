@@ -5,9 +5,9 @@
 <template>
     <div>
         <template v-for="object in printing_objects">
-            <v-row v-bind:key="'div_'+object.name" class="py-3">
-                <v-col class="py-2">
-                    <span class="subtitle-2 d-block px-0 text--disabled text-truncate">{{ object.name }}</span>
+            <v-row v-bind:key="'div_'+object.name" class="py-3 d-flex" @mouseover="mouseOverObject(object.name)" @mouseleave="mouseOverObject('')">
+                <v-col class="py-2 subtitle-2 text--disabled text-truncate">
+                    {{ object.name }}
                 </v-col>
                 <v-col class="col-auto py-2">
                     <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">{{ $t('Panels.StatusPanel.ExcludeObject.Excluded') }}</v-chip>
@@ -41,6 +41,10 @@ export default class StatusPanelObjectsDialogList extends Mixins(BaseMixin) {
     openExcludeObjectDialog(name: string) {
         this.$emit('update:name', name)
         this.$emit('update:bool', true)
+    }
+
+    mouseOverObject(name: string) {
+        this.$emit('update:hoverName', name)
     }
 }
 </script>

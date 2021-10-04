@@ -5,7 +5,7 @@
 <template>
     <div>
         <v-dialog v-model="showDialog" width="900" persistent :fullscreen="isMobile">
-            <v-card style="overflow: hidden;" :height="isMobile ? 0 : 548">
+            <v-card style="overflow: hidden;">
                 <v-toolbar flat dense>
                     <v-toolbar-title>
                         <span class="subheading"><v-icon left>mdi-selection-remove</v-icon>{{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}</span>
@@ -17,14 +17,16 @@
                     <v-row>
                         <v-col class="col-6">
                             <status-panel-exclude-object-dialog-map
-                                :exclude-object-dialog-name.sync="excludeObjectDialogName"
-                                :exclude-object-dialog-bool.sync="excludeObjectDialogBool"
+                                :hover-name="hoverName"
+                                @update:name="updateExcludeObjectDialogName"
+                                @update:bool="updateExcludeObjectDialogBool"
                             ></status-panel-exclude-object-dialog-map>
                         </v-col>
                         <v-col class="col-6">
                             <status-panel-exclude-object-dialog-list
                                 :exclude-object-dialog-name.sync="excludeObjectDialogName"
                                 @update:name="updateExcludeObjectDialogName"
+                                @update:hoverName="updateHoverObjectDialogName"
                                 :exclude-object-dialog-bool.sync="excludeObjectDialogBool"
                                 @update:bool="updateExcludeObjectDialogBool"
                             ></status-panel-exclude-object-dialog-list>
@@ -46,6 +48,8 @@ import StatusPanelExcludeObjectDialogList from '@/components/panels/StatusPanelE
     components: {StatusPanelExcludeObjectDialogList, StatusPanelExcludeObjectDialogMap}
 })
 export default class StatusPanelExcludeObjectDialog extends Mixins(BaseMixin) {
+    private hoverName = ''
+
     @Prop({ required: true }) readonly showDialog!: boolean
     @Prop({ required: true }) readonly excludeObjectDialogBool!: boolean
     @Prop({ required: true }) readonly excludeObjectDialogName!: string
@@ -68,6 +72,10 @@ export default class StatusPanelExcludeObjectDialog extends Mixins(BaseMixin) {
 
     updateExcludeObjectDialogName(newVal: string) {
         this.$emit('update:name', newVal )
+    }
+
+    updateHoverObjectDialogName(newVal: string) {
+        this.hoverName = newVal
     }
 }
 </script>

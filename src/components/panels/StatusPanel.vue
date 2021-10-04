@@ -376,7 +376,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 color: 'orange',
                 icon: 'mdi-selection-remove',
                 loadingName: '',
-                status: this.printing_objects.length ? ['paused', 'printing', 'standby'] : [],
+                status: this.printing_objects.length ? ['paused', 'printing'] : [],
                 click: this.btnExcludeObject
             }, {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),

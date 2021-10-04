@@ -47,9 +47,14 @@
             <g v-for="(object, index) in printing_objects" v-bind:key="index">
                 <polygon
                     :points="object.polygon.map(point => convertX(point[0])+','+convertY(point[1])).join(' ')"
-                    style="fill: rgba(255,255,255,0.7); stroke: gray; stroke-width: 2; fill-rule: evenodd;"
+                    style="cursor: pointer;"
+                    :stroke="current_object === object.name ? primaryColor : '#666'"
+                    stroke-width="2"
+                    fill-rule="evenodd"
+                    :fill="hoverName === object.name ? primaryColor : (excluded_objects.includes(object.name) ? '#6668' : '#bbb')"
                     @mouseover="showObjectTooltip(object.name)"
                     @mouseout="hideObjectTooltip"
+                    @click="openExcludeObjectDialog(object.name)"
                 />
             </g>
         </svg>
@@ -58,13 +63,15 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     private coordinationCrossColor = '#888'
     private stripesOffset = 50
+
+    @Prop({ required: false, default: '' }) readonly hoverName!: string
 
     $refs!: {
         tooltipObjectMap: HTMLDivElement
@@ -134,6 +141,10 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
         return output
     }
 
+    get primaryColor() {
+        return this.$store.state.gui.theme.primary
+    }
+
     convertX(x: number) {
 
 
@@ -146,20 +157,32 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     showObjectTooltip(text: string) {
-        this.$refs.tooltipObjectMap.innerHTML = text
-        this.$refs.tooltipObjectMap.style.display = 'block'
+        if (this.$refs.tooltipObjectMap) {
+            this.$refs.tooltipObjectMap.innerHTML = text
+            this.$refs.tooltipObjectMap.style.display = 'block'
+        }
 
         window.addEventListener('mousemove', this.moveTooltip)
     }
 
     hideObjectTooltip() {
-        this.$refs.tooltipObjectMap.style.display = 'none'
+        if (this.$refs.tooltipObjectMap) {
+            this.$refs.tooltipObjectMap.style.display = 'none'
+        }
+
         window.removeEventListener('mousemove', this.moveTooltip)
     }
 
     moveTooltip(event: any) {
-        this.$refs.tooltipObjectMap.style.left = (event.layerX - 20) + 'px'
-        this.$refs.tooltipObjectMap.style.top = (event.layerY - 40) + 'px'
+        if (this.$refs.tooltipObjectMap) {
+            this.$refs.tooltipObjectMap.style.left = (event.layerX - 20) + 'px'
+            this.$refs.tooltipObjectMap.style.top = (event.layerY - 45) + 'px'
+        }
+    }
+
+    openExcludeObjectDialog(name: string) {
+        this.$emit('update:name', name)
+        this.$emit('update:bool', true)
     }
 }
 </script>

@@ -3,7 +3,7 @@
 </style>
 
 <template>
-    <div v-if="['printing', 'paused', 'standby'].includes(printer_state) && printing_objects.length">
+    <div v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
         <v-container>
             <v-row>
                 <v-col class="py-2">
