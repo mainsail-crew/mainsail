@@ -35,5 +35,6 @@ export interface ServerTimelapseSettingsState {
     rotation: number
     dublicatelastframe: number
     previewImage: boolean
+    blockedsettings: string[]
     [key: string]: any
 }

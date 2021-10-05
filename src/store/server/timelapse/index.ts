@@ -35,7 +35,8 @@ export const getDefaultState = (): ServerTimelapseState => {
             variable_fps_max: 60,
             rotation: 0,
             dublicatelastframe: 0,
-            previewImage: true
+            previewImage: true,
+            blockedsettings: []
         },
         lastFrame: {
             count: 0,
