@@ -15,14 +15,14 @@
                 </v-toolbar>
                 <v-container>
                     <v-row>
-                        <v-col class="col-6">
+                        <v-col class="col-12 col-sm-6 pb-0 pb-sm-3">
                             <status-panel-exclude-object-dialog-map
                                 :hover-name="hoverName"
                                 @update:name="updateExcludeObjectDialogName"
                                 @update:bool="updateExcludeObjectDialogBool"
                             ></status-panel-exclude-object-dialog-map>
                         </v-col>
-                        <v-col class="col-6">
+                        <v-col class="col-12 col-sm-6 pt-0 pt-sm-3">
                             <status-panel-exclude-object-dialog-list
                                 :exclude-object-dialog-name.sync="excludeObjectDialogName"
                                 @update:name="updateExcludeObjectDialogName"
