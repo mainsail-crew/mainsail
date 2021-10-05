@@ -2,26 +2,37 @@
     <div>
         <v-card flat>
             <v-card-text>
+                <h3 class="text-h5 mb-3">{{ $t('Settings.TimelapseTab.General') }}</h3>
                 <settings-row :title="$t('Settings.TimelapseTab.Enabled')">
                     <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.Autorender')" :dynamic-slot-width="true">
+                    <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.Mode')">
                     <v-select v-model="mode" :items="modeOptions" hide-details outlined dense></v-select>
                 </settings-row>
-                <template v-if="mode == 'hyperlapse'">
+                <template v-if="mode === 'hyperlapse'">
+                    <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.TimelapseTab.HyperlapseCycle')">
                             <v-text-field v-model="hyperlapseCycle" type="number" suffix="s" hide-details="auto" outlined dense ></v-text-field>
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.Autorender')" :dynamic-slot-width="true">
-                    <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.TimelapseTab.PreviewImage')" :dynamic-slot-width="true">
+                    <v-switch v-model="previewImage" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.SaveFrames')" :dynamic-slot-width="true">
                     <v-switch v-model="saveFrames" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.TimelapseTab.GcodeVerbose')" :dynamic-slot-width="true">
+                    <v-switch v-model="gcode_verbose" hide-details class="mt-0"></v-switch>
+                </settings-row><v-divider class="my-2"></v-divider>
+                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.Parkhead') }}</h3>
                 <settings-row :title="$t('Settings.TimelapseTab.Parkhead')" :dynamic-slot-width="true">
                     <v-switch v-model="parkhead" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -66,10 +77,7 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.GcodeVerbose')" :dynamic-slot-width="true">
-                    <v-switch v-model="gcode_verbose" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
+                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.RenderingOptions') }}</h3>
                 <settings-row :title="$t('Settings.TimelapseTab.VariableFps')" :dynamic-slot-width="true">
                     <v-switch v-model="variable_fps" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -102,14 +110,11 @@
                     <v-text-field v-model="dublicatelastframe" type="number" hide-details="auto" outlined dense ></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.PreviewImage')" :dynamic-slot-width="true">
-                    <v-switch v-model="previewImage" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.ConstantRateFactor')">
                     <v-text-field v-model="constant_frame_factor" type="number" hide-details="auto" outlined dense ></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.CameraSettings') }}</h3>
                 <settings-row :title="$t('Settings.TimelapseTab.Pixelformat')">
                     <v-text-field v-model="pixelformat" type="text" hide-details="auto" outlined dense ></v-text-field>
                 </settings-row>
