@@ -258,9 +258,17 @@
                         <settings-row title="Timelapse">
                             <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
                         </settings-row>
-                        <settings-row title="Autorender">
-                            <v-switch v-model="timelapseAutorender" hide-details class="mt-0"></v-switch>
-                        </settings-row>
+                        <template v-if="timelapseEnabled">
+                            <settings-row :title="$t('Settings.TimelapseTab.Mode')">
+                                <v-select v-model="timelapseMode" :items="TimelapseModeOptions" hide-details outlined dense></v-select>
+                            </settings-row>
+                            <settings-row :title="$t('Settings.TimelapseTab.Autorender')">
+                                <v-switch v-model="timelapseAutorender" hide-details class="mt-0"></v-switch>
+                            </settings-row>
+                            <settings-row :title="$t('Settings.TimelapseTab.Parkhead')" :dynamic-slot-width="true">
+                                <v-switch v-model="timelapseParkhead" hide-details class="mt-0"></v-switch>
+                            </settings-row>
+                        </template>
                     </v-card-text>
                     <v-divider class="my-2"></v-divider>
                 </template>
@@ -422,6 +430,17 @@ export default class PageFiles extends Mixins(BaseMixin) {
         inputFieldCreateDirectory: HTMLInputElement,
         inputFieldRenameDirectory: HTMLInputElement,
     }
+
+    private TimelapseModeOptions = [
+        {
+            text: 'layermacro',
+            value: 'layermacro'
+        },
+        {
+            text: 'hyperlapse',
+            value: 'hyperlapse'
+        }
+    ]
 
     private search = ''
     private files: FileStateFile[] | null = []
@@ -614,6 +633,14 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     set timelapseEnabled(newVal) {
         this.$socket.emit('machine.timelapse.post_settings', { enabled: newVal }, { action: 'server/timelapse/initSettings' })
+    }
+        
+    get timelapseMode() {
+        return this.$store.state.server.timelapse.settings.mode
+    }
+
+    set timelapseMode(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { mode: newVal })
     }
 
     get timelapseAutorender() {
