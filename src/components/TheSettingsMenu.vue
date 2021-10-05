@@ -4,7 +4,7 @@
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
-            <v-card style="overflow: hidden;" :height="isMobile ? 0 : 548">
+            <v-card style="overflow: hidden;" :height="isMobile ? 0 : 578">
                 <v-toolbar flat dense>
                     <v-toolbar-title>
                         <span class="subheading"><v-icon left>mdi-cogs</v-icon>{{ $t('Settings.InterfaceSettings') }}</span>
@@ -164,6 +164,6 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
     .settings-tabs-bar.height500,
     .settings-tabs.height500 {
-        max-height: 500px;
+        max-height: 530px;
     }
 </style>
