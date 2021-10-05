@@ -251,26 +251,15 @@
                     :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text>{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
+                <v-card-text class="pb-0">{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
                 <template v-if="moonrakerComponents.includes('timelapse')">
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="mt-3 mb-2"></v-divider>
                     <v-card-text class="pb-0">
                         <settings-row title="Timelapse">
                             <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
                         </settings-row>
-                        <template v-if="timelapseEnabled">
-                            <settings-row :title="$t('Settings.TimelapseTab.Mode')">
-                                <v-select v-model="timelapseMode" :items="TimelapseModeOptions" hide-details outlined dense></v-select>
-                            </settings-row>
-                            <settings-row :title="$t('Settings.TimelapseTab.Autorender')">
-                                <v-switch v-model="timelapseAutorender" hide-details class="mt-0"></v-switch>
-                            </settings-row>
-                            <settings-row :title="$t('Settings.TimelapseTab.Parkhead')" :dynamic-slot-width="true">
-                                <v-switch v-model="timelapseParkhead" hide-details class="mt-0"></v-switch>
-                            </settings-row>
-                        </template>
                     </v-card-text>
-                    <v-divider class="my-2"></v-divider>
+                    <v-divider class="mt-2 mb-0"></v-divider>
                 </template>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -633,22 +622,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     set timelapseEnabled(newVal) {
         this.$socket.emit('machine.timelapse.post_settings', { enabled: newVal }, { action: 'server/timelapse/initSettings' })
-    }
-        
-    get timelapseMode() {
-        return this.$store.state.server.timelapse.settings.mode
-    }
-
-    set timelapseMode(newVal) {
-        this.$store.dispatch('server/timelapse/saveSetting', { mode: newVal })
-    }
-
-    get timelapseAutorender() {
-        return this.$store.state.server.timelapse?.settings?.autorender ?? false
-    }
-
-    set timelapseAutorender(newVal) {
-        this.$socket.emit('machine.timelapse.post_settings', { autorender: newVal }, { action: 'server/timelapse/initSettings' })
     }
 
     getJobStatus(item: FileStateFile) {
