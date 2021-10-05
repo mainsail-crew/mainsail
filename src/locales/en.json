@@ -670,8 +670,7 @@
 			"Dublicatelastframe": "Dublicatelastframe",
 			"HyperlapseCycle": "Hyperlapse Cycle Time",
 			"General": "General",
-			"RenderingOptions": "Rendering Options",
-			"CameraSettings": "Camera Settings"
+			"RenderingOptions": "Rendering Options"
 		}
 	},
 	"GCodeViewer":{

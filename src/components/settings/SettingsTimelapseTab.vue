@@ -114,7 +114,6 @@
                     <v-text-field v-model="constant_rate_factor" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('constant_rate_factor')"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.CameraSettings') }}</h3>
                 <settings-row :title="$t('Settings.TimelapseTab.Pixelformat')">
                     <v-text-field v-model="pixelformat" type="text" hide-details="auto" outlined dense :disabled="blockedsettings.includes('pixelformat')"></v-text-field>
                 </settings-row>
