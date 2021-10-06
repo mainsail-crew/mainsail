@@ -119,26 +119,28 @@
                         <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Machine.UpdatePanel.Commits') }}</span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                    <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
-                <v-card-text class="py-0" style="max-height: 400px; overflow-y: scroll;">
-                    <v-row>
-                        <v-col class="pt-3 pl-0">
-                            <v-timeline class="updateManager" align-top dense >
-                                <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
-                                    <v-row class="pt-0">
-                                        <v-col>
-                                            <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
-                                            <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
-                                            <div class="caption">
-                                                <strong>{{ commit.author }}</strong> {{ $t('Machine.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-col>
-                    </v-row>
+                <v-card-text class="py-0 px-0">
+                    <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
+                        <v-row>
+                            <v-col class="pt-3 pl-0">
+                                <v-timeline class="updateManager" align-top dense >
+                                    <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
+                                        <v-row class="pt-0">
+                                            <v-col>
+                                                <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
+                                                <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
+                                                <div class="caption">
+                                                    <strong>{{ commit.author }}</strong> {{ $t('Machine.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-timeline-item>
+                                </v-timeline>
+                            </v-col>
+                        </v-row>
+                    </perfect-scrollbar>
                 </v-card-text>
             </v-card>
         </v-dialog>
