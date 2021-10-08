@@ -1,6 +1,6 @@
 # Mainsail Contributing Guide
 
-Hi! I'm really excited that you are interested in contributing to Vue.js. Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
+Hi! I'm really excited that you are interested in contributing to Mainsail. Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
 
 - [Code of Conduct](https://github.com/meteyou/mainsail/.github/CODE_OF_CONDUCT.md)
 - [Issue Reporting Guidelines](#issue-reporting-guidelines)
