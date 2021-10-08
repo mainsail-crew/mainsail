@@ -1,5 +1,4 @@
 <style scoped>
-
 </style>
 
 <template>
@@ -9,7 +8,8 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        <template v-if="connectingFailed">{{ $t("ConnectionDialog.Failed", {'host': formatHostname}) }}</template>
+                        <template v-if="showLogin">{{ $t("ConnectionDialog.Login", {'host': formatHostname}) }}</template>
+                        <template v-else-if="!isConnecting && connectingFailed">{{ $t("ConnectionDialog.Failed", {'host': formatHostname}) }}</template>
                         <template v-else-if="isConnecting">{{ $t("ConnectionDialog.Connecting", {'host': formatHostname}) }}</template>
                         <template v-else>{{ formatHostname }}</template>
                     </span>
@@ -18,7 +18,7 @@
             <v-card-text class="pt-5" v-if="isConnecting">
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
-            <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
+            <v-card-text class="pt-5" v-if="!isConnecting && !showLogin && connectingFailed">
                 <connection-status :moonraker="false"></connection-status>
                 <p class="text-center mt-3">{{ $t("ConnectionDialog.CannotConnectTo", {'host': formatHostname}) }}</p>
                 <template v-if="counter > 2">
@@ -34,6 +34,9 @@
                     <v-btn @click="reconnect" color="primary">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
                 </div>
             </v-card-text>
+
+            <login-form v-if="showLogin" :show-error="loginFailed" @login="login"></login-form>
+
         </v-card>
     </v-dialog>
 </template>
@@ -44,10 +47,13 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
+import LoginForm from '@/components/ui/LoginForm.vue'
+import {UserCredentials} from '@/store/auth/types'
 
 @Component({
     components: {
         ConnectionStatus,
+        LoginForm
     }
 })
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
@@ -85,10 +91,25 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
         return !this.isConnected
     }
 
+    get showLogin() {
+        return this.$store.state.auth.showLogin
+    }
+
+    get loginFailed() {
+        return this.$store.state.auth.loginFailed
+    }
+
     reconnect() {
         this.counter++
         this.$store.dispatch('socket/setData', { connectingFailed: false })
         this.$socket.connect()
+    }
+
+    login(user: UserCredentials) {
+        this.$store.dispatch('auth/login', {
+            username: user.username,
+            password: user.password
+        })
     }
 }
 </script>

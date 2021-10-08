@@ -1,6 +1,7 @@
 import {Store} from 'vuex'
 import _Vue from 'vue'
 import {RootState} from '@/store/types'
+import {getOneshotToken} from '@/api/moonraker'
 
 export class WebSocketClient {
     url = ''
@@ -12,6 +13,7 @@ export class WebSocketClient {
     timerId: number | null = null
     store: Store<RootState> | null = null
     waits: Wait[] = []
+    oneShotToken: string | undefined
 
     constructor (options: WebSocketPluginOptions) {
         this.url = options.url
@@ -32,8 +34,20 @@ export class WebSocketClient {
     }
 
     connect(): void {
+        const baseUrl = this.store?.getters['socket/getUrl']
         this.store?.dispatch('socket/setData', { isConnecting: true })
-        this.instance = new WebSocket(this.url)
+        getOneshotToken(baseUrl).then(token => {
+            this.oneShotToken = token
+            this.connectWebsocket()
+        }).catch(e => {
+            this.store?.dispatch('socket/onClose', {})
+        })
+    }
+
+    connectWebsocket(): void {
+        const connectionUrl = this.oneShotToken ? `${this.url}?token=${this.oneShotToken}` : this.url
+        this.store?.dispatch('socket/setData', { isConnecting: true })
+        this.instance = new WebSocket(connectionUrl)
 
         this.instance.onopen = () => {
             this.reconnects = 0

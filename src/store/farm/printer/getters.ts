@@ -6,8 +6,12 @@ import {FarmPrinterState} from '@/store/farm/printer/types'
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
 
+    getBaseUrl: (state) => {
+        return `//${state.socket.hostname}:${state.socket.port}`
+    },
+
     getSocketUrl: (state) => {
-        return state.socket.protocol+'://'+state.socket.hostname+':'+state.socket.port+'/websocket'
+        return `${state.socket.protocol}://${state.socket.hostname}:${state.socket.port}/websocket`
     },
 
     getSocketData: (state) => {
@@ -37,13 +41,26 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
     },
 
+    getRequiresLogin: (state) => {
+        return state.socket.requiresLogin
+    },
+
     getLogoColor: (state) => {
         return state.data.gui?.theme?.logo ?? defaultLogoColor
     },
 
     getStatus: (state, getters) => {
         if (!state.socket.isConnected) {
-            return state.socket.isConnecting ? 'Connecting...' : 'Disconnected'
+            // TODO: Translations
+            if (state.socket.requiresLogin) {
+                return 'Login required'
+            }
+
+            if (state.socket.isConnecting) {
+                return 'Connecting...'
+            }
+
+            return 'Disconnected'
         } else if (state.data?.print_stats?.state) {
             if (state.data.print_stats.state === 'printing') {
                 const percent = getters['getPrintPercent']

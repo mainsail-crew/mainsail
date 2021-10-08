@@ -3,6 +3,7 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <config-files-panel></config-files-panel>
+                <users-panel></users-panel>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <klippy-state-panel></klippy-state-panel>
@@ -32,8 +33,10 @@ import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
 import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
 import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
 import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
+import UsersPanel from '@/components/panels/Machine/UsersPanel.vue'
+
 @Component({
-    components: {SystemPanel, ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel}
+    components: {SystemPanel, ConfigFilesPanel, EndstopPanel, LogfilesPanel, UpdatePanel, LimitsPanel, KlippyStatePanel, UsersPanel}
 })
 export default class PageMachine extends Mixins(BaseMixin) {
 

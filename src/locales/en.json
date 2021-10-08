@@ -49,8 +49,16 @@
 			"DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
 		}
 	},
+	"LoginForm": {
+		"Username": "Username",
+		"Password": "Password",
+		"RememberMe": "Remember me",
+		"LoginButton": "Login",
+		"LoginFailed": "Login failed."
+	},
     "ConnectionDialog": {
-        "Connecting": "Connecting to {host}",
+		"Login": "Login to {host}",
+		"Connecting": "Connecting to {host}",
         "Failed": "Connection failed",
         "CannotConnectTo": "Cannot connect to Moonraker ({host}).",
         "TryAgain": "try again",
@@ -257,7 +265,8 @@
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
 			"SwitchToPrinter": "Switch to Printer",
-			"ReconnectToPrinter": "Reconnect"
+			"ReconnectToPrinter": "Reconnect",
+			"Login": "Login"
 		},
 		"KlippyStatePanel": {
 			"KlippyState": "Klippy-State",
@@ -470,6 +479,17 @@
 			"Constants": "Constants",
 			"LastStats": "Last stats",
 			"HostDetails": "Host details"
+		},
+		"UsersPanel": {
+			"Users": "Users",
+			"CreateUser": "Create User",
+			"RemoveUser": "Delete User",
+			"ResetPassword": "Reset Password",
+			"CreatedAt": "Created at {date}",
+			"Username": "Username",
+			"Password": "Password",
+			"Create": "Create",
+			"Cancel": "Cancel"
 		}
 	},
 	"Settings": {

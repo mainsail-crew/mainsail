@@ -1,83 +1,111 @@
 import {ActionTree} from 'vuex'
 import {FarmPrinterState} from '@/store/farm/printer/types'
 import {RootState} from '@/store/types'
+import {getOneshotToken, MoonrakerApi} from '@/api/moonraker'
+import {MoonrakerLoginResponse} from '@/api/moonraker.types'
+import {UserCredentials} from '@/store/auth/types'
 
 export const actions: ActionTree<FarmPrinterState, RootState> = {
     reset({commit}) {
         commit('reset')
     },
 
-    connect({ state, commit, dispatch, getters }) {
-        commit('setSocketData', { isConnecting: true })
-        const socket = new WebSocket(getters.getSocketUrl)
+    async login({state, commit, dispatch, getters}, user: UserCredentials) {
+        const baseUrl = getters.getBaseUrl
+        try {
+            const response: MoonrakerLoginResponse = await MoonrakerApi.login(baseUrl, user.username, user.password)
+            commit('auth/setLoginData', {
+                username: response.username,
+                token: response.token,
+                refreshToken: response.refresh_token,
+                baseUrl,
+            }, { root: true })
 
-        socket.onopen = () => {
-            commit('setSocketData', {
-                instance: socket,
-                reconnects: 0,
-                isConnecting: false,
-                isConnected: true
-            })
-
-            dispatch('initPrinter')
+            commit('setSocketData', {requiresLogin: false, loginFailed: false})
+            dispatch('reconnect')
+        } catch (e) {
+            commit('setSocketData', {loginFailed: true})
         }
+    },
 
-        socket.onclose = (e) => {
-            if (!e.wasClean && state.socket.reconnects < state.socket.maxReconnects) {
-                commit('setSocketData', { reconnects: state.socket.reconnects + 1 })
+    async connect({state, commit, dispatch, getters}) {
+        try {
+            commit('setSocketData', {isConnecting: true})
+            const oneShotToken = await getOneshotToken(getters.getBaseUrl)
+            const connectionUrl = oneShotToken ? `${getters.getSocketUrl}?token=${oneShotToken}` : getters.getSocketUrl
+            const socket = new WebSocket(connectionUrl)
 
-                setTimeout(() => {
-                    dispatch('connect')
-                }, state.socket.reconnectInterval)
-            } else {
+            socket.onopen = () => {
                 commit('setSocketData', {
+                    instance: socket,
+                    reconnects: 0,
                     isConnecting: false,
-                    isConnected: false,
-                    reconnects: 0
+                    isConnected: true
                 })
+
+                dispatch('initPrinter')
             }
-        }
 
-        socket.onerror = () => {
-            window.console.log('Farm Printer WebSocket Error')
-        }
+            socket.onclose = (e) => {
+                if (!e.wasClean && state.socket.reconnects < state.socket.maxReconnects) {
+                    commit('setSocketData', {reconnects: state.socket.reconnects + 1})
 
-        socket.onmessage = (msg) => {
-            const data = JSON.parse(msg.data)
-            if (data && data.method) {
-                switch (data.method) {
-                case 'notify_status_update':
-                    commit('setData', data.params[0])
-                    break
-
-                case 'notify_klippy_disconnected':
-                    dispatch('disconnectKlippy')
-                    break
-
-                case 'notify_klippy_ready':
-                    dispatch('initPrinter')
-                    break
-                }
-            } else if ('result' in data) {
-                if (
-                    state.socket.wsData.filter(item => item.id === data.id).length > 0 &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== undefined &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== ''
-                ) {
-                    let result = data.result
-                    if (result === 'ok') result = { result: result }
-                    if (typeof(result) === 'string') result = { result: result }
-
-                    const preload = {}
-                    const wsData = state.socket.wsData.filter(item => item.id === data.id)[0]
-                    if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
-                    Object.assign(preload, { requestParams: wsData.params })
-                    Object.assign(preload, result)
-
-                    dispatch(wsData.action, preload)
+                    setTimeout(() => {
+                        dispatch('connect')
+                    }, state.socket.reconnectInterval)
+                } else {
+                    commit('setSocketData', {
+                        isConnecting: false,
+                        isConnected: false,
+                        reconnects: 0
+                    })
                 }
             }
+
+            socket.onerror = () => {
+                window.console.log('Farm Printer WebSocket Error')
+            }
+
+            socket.onmessage = (msg) => {
+                const data = JSON.parse(msg.data)
+                if (data && data.method) {
+                    switch (data.method) {
+                    case 'notify_status_update':
+                        commit('setData', data.params[0])
+                        break
+
+                    case 'notify_klippy_disconnected':
+                        dispatch('disconnectKlippy')
+                        break
+
+                    case 'notify_klippy_ready':
+                        dispatch('initPrinter')
+                        break
+                    }
+                } else if ('result' in data) {
+                    if (
+                        state.socket.wsData.filter(item => item.id === data.id).length > 0 &&
+                        state.socket.wsData.filter(item => item.id === data.id)[0].action !== undefined &&
+                        state.socket.wsData.filter(item => item.id === data.id)[0].action !== ''
+                    ) {
+                        let result = data.result
+                        if (result === 'ok') result = {result: result}
+                        if (typeof (result) === 'string') result = {result: result}
+
+                        const preload = {}
+                        const wsData = state.socket.wsData.filter(item => item.id === data.id)[0]
+                        if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
+                        Object.assign(preload, {requestParams: wsData.params})
+                        Object.assign(preload, result)
+
+                        dispatch(wsData.action, preload)
+                    }
+                }
+            }
+        } catch (e) {
+            commit('setSocketData', {requiresLogin: true})
         }
+
     },
 
     reconnect({ state, dispatch }) {
