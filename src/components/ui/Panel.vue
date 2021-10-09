@@ -17,7 +17,8 @@
     <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')">
         <v-toolbar flat dense >
             <v-toolbar-title class="d-flex align-center">
-                <v-icon left v-if="icon !== null">{{ icon }}</v-icon>
+                <slot name="icon" v-if="hasIconSlot"></slot>
+                <v-icon left v-if="icon !== null && !hasIconSlot">{{ icon }}</v-icon>
                 <span class="subheading" v-if="title">{{ title }}</span>
             </v-toolbar-title>
             <v-spacer></v-spacer>
@@ -55,6 +56,10 @@ export default class Panel extends Mixins(BaseMixin) {
 
     set expand(newVal) {
         this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+    }
+
+    get hasIconSlot() {
+        return !! this.$slots.icon
     }
 }
 </script>
