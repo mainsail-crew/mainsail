@@ -6,12 +6,7 @@
 
 <template>
     <div>
-        <v-card class="mb-6">
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-memory</v-icon>{{ $t('Machine.SystemPanel.SystemLoad') }}</span>
-                </v-toolbar-title>
-            </v-toolbar>
+        <panel :title="$t('Machine.SystemPanel.SystemLoad')" icon="mdi-memory" card-class="machine-systemload-panel" :collapsible="true">
             <v-card-text class="px-0 py-2">
                 <div v-for="(mcu, index) of mcus" v-bind:key="mcu.name">
                     <v-divider class="my-2" v-if="index" ></v-divider>
@@ -101,77 +96,73 @@
                     </v-row>
                 </div>
             </v-card-text>
-        </v-card>
+        </panel>
         <v-dialog v-model="mcuDetailsDialog.bool" :max-width="400" :max-height="500" scrollable>
-            <v-card dark>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-text-box-search-outline</v-icon>{{ mcuDetailsDialog.headline }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
+            <panel :title="mcuDetailsDialog.headline" icon="mdi-text-box-search-outline" card-class="machine-systemload-mcu-details-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="mcuDetailsDialog.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
-                <v-card-text class="pt-5" style="height: 350px;">
-                    <template v-if="mcuDetailsDialog.mcu.mcu_constants">
-                        <v-row>
-                            <v-col><span class="headline">{{ $t('Machine.SystemPanel.Constants') }}</span></v-col>
-                        </v-row>
-                        <div v-for="(value, key, index) in mcuDetailsDialog.mcu.mcu_constants" :key="key">
-                            <v-divider class="my-3" v-if="index"></v-divider>
+                </template>
+                <v-card-text class="pt-5 px-0">
+                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                        <template v-if="mcuDetailsDialog.mcu.mcu_constants">
                             <v-row>
-                                <v-col>{{ key }}</v-col>
-                                <v-col class="text-right">{{ value }}</v-col>
+                                <v-col><span class="headline">{{ $t('Machine.SystemPanel.Constants') }}</span></v-col>
                             </v-row>
-                        </div>
-                    </template>
-                    <template v-if="mcuDetailsDialog.mcu.last_stats">
-                        <v-row class="mt-5">
-                            <v-col><span class="headline">{{ $t('Machine.SystemPanel.LastStats') }}</span></v-col>
-                        </v-row>
-                        <div v-for="(value, key, index) in mcuDetailsDialog.mcu.last_stats" :key="key">
-                            <v-divider class="my-3" v-if="index"></v-divider>
-                            <v-row>
-                                <v-col>{{ key }}</v-col>
-                                <v-col class="text-right">{{ value }}</v-col>
+                            <div v-for="(value, key, index) in mcuDetailsDialog.mcu.mcu_constants" :key="key">
+                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-row>
+                                    <v-col>{{ key }}</v-col>
+                                    <v-col class="text-right">{{ value }}</v-col>
+                                </v-row>
+                            </div>
+                        </template>
+                        <template v-if="mcuDetailsDialog.mcu.last_stats">
+                            <v-row class="mt-5">
+                                <v-col><span class="headline">{{ $t('Machine.SystemPanel.LastStats') }}</span></v-col>
                             </v-row>
-                        </div>
-                    </template>
+                            <div v-for="(value, key, index) in mcuDetailsDialog.mcu.last_stats" :key="key">
+                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-row>
+                                    <v-col>{{ key }}</v-col>
+                                    <v-col class="text-right">{{ value }}</v-col>
+                                </v-row>
+                            </div>
+                        </template>
+                    </perfect-scrollbar>
                 </v-card-text>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="hostDetailsDialog.bool" :max-width="600" :max-height="500" scrollable>
-            <v-card dark>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-text-box-search-outline</v-icon>{{ $t('Machine.SystemPanel.HostDetails') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
+            <panel :title="$t('Machine.SystemPanel.HostDetails')" icon="mdi-text-box-search-outline" card-class="machine-systemload-host-details-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="hostDetailsDialog.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
-                <v-card-text class="pt-5" style="height: 350px;">
-                    <template v-if="Object.keys(systemInfo).length">
-                        <div v-for="(infoGroup, key, index) of systemInfo" v-bind:key="key">
-                            <template v-if="key !== 'available_services'">
-                                <v-row :class="index ? 'mt-5' : ''">
-                                    <v-col><span class="headline">{{ key }}</span></v-col>
-                                </v-row>
-                                <div v-for="(value, key, index) in infoGroup" :key="key">
-                                    <v-divider class="my-3" v-if="index"></v-divider>
-                                    <v-row>
-                                        <v-col>{{ key }}</v-col>
-                                        <v-col class="text-right">{{ value }}</v-col>
+                </template>
+                <v-card-text class="pt-5 px-0">
+                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                        <template v-if="Object.keys(systemInfo).length">
+                            <div v-for="(infoGroup, key, index) of systemInfo" v-bind:key="key">
+                                <template v-if="key !== 'available_services'">
+                                    <v-row :class="index ? 'mt-5' : ''">
+                                        <v-col><span class="headline">{{ key }}</span></v-col>
                                     </v-row>
-                                </div>
-                            </template>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <v-row class="mt-5">
-                            <v-col><p>No more Infos</p></v-col>
-                        </v-row>
-                    </template>
+                                    <div v-for="(value, key, index) in infoGroup" :key="key">
+                                        <v-divider class="my-3" v-if="index"></v-divider>
+                                        <v-row>
+                                            <v-col>{{ key }}</v-col>
+                                            <v-col class="text-right">{{ value }}</v-col>
+                                        </v-row>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <v-row class="mt-5">
+                                <v-col><p>No more Infos</p></v-col>
+                            </v-row>
+                        </template>
+                    </perfect-scrollbar>
                 </v-card-text>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -180,8 +171,10 @@
 
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class SystemPanel extends Mixins(BaseMixin) {
 
     private mcuDetailsDialog: { bool: boolean, headline: string, mcu: any } = {

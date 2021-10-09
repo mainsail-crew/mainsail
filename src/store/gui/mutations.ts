@@ -152,5 +152,15 @@ export const mutations: MutationTree<GuiState> = {
 
     setHistoryHidePrintStatus(state, payload) {
         Vue.set(state.history, 'hidePrintStatus', payload)
+    },
+
+    addClosePanel(state, payload) {
+        const exist = state.dashboard.nonExpandPanels?.includes(payload.name) ?? false
+        if (!exist) state.dashboard.nonExpandPanels.push(payload.name)
+    },
+
+    removeClosePanel(state, payload) {
+        const index = state.dashboard.nonExpandPanels.indexOf(payload.name)
+        if (index > -1) state.dashboard.nonExpandPanels.splice(index, 1)
     }
 }

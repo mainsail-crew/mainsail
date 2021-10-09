@@ -1,12 +1,12 @@
 <template>
-    <v-card class="mb-6" v-if="klipperState === 'ready' && existsPrinterConfig && missingConfigs.length">
-        <v-toolbar flat dense color="orange darken-2">
-            <v-toolbar-title>
-                <span class="subheading">
-                    <v-icon class="mdi mdi-alert-circle" left></v-icon>{{ $t("Panels.MinSettingsPanel.MissingConfiguration") }}
-                </span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="klipperState === 'ready' && existsPrinterConfig && missingConfigs.length"
+        icon="mdi-alert-circle"
+        :title="$t('Panels.MinSettingsPanel.MissingConfiguration')"
+        :collapsible="true"
+        card-class="min-settings-panel"
+        toolbar-color="orange darken-2"
+        >
         <v-card-text>
             <v-row>
                 <v-col>
@@ -32,7 +32,7 @@
         <v-card-actions class="justify-center pb-3">
             <v-btn href="https://docs.mainsail.xyz/necessary-configuration" target="_blank" color="white" outlined small><v-icon small class="mr-1">mdi-information</v-icon>{{ $t("Panels.MinSettingsPanel.MoreInformation") }}</v-btn>
         </v-card-actions>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -40,8 +40,10 @@
 import Component from 'vue-class-component'
 import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class MinSettingsPanel extends Mixins(BaseMixin) {
 
     get existsPrinterConfig() {

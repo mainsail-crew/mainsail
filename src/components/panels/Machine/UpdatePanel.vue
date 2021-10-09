@@ -5,23 +5,18 @@
 </style>
 
 <template>
-    <div v-if="enableUpdateManager">
-        <v-card>
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Machine.UpdatePanel.UpdateManager') }}</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
+    <div>
+        <panel :title="$t('Machine.UpdatePanel.UpdateManager')" v-if="enableUpdateManager" icon="mdi-update" card-class="machine-update-panel" :collapsible="true">
+            <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
-            </v-toolbar>
+            </template>
             <v-card-text class="px-0 py-0">
                 <v-container py-0 px-0>
-
                     <div v-for="(value, key, index) of updateableSoftwares" v-bind:key="key">
                         <v-divider class="my-0" v-if="index" ></v-divider>
                         <v-row class="py-2">
@@ -111,16 +106,12 @@
                     </div>
                 </v-container>
             </v-card-text>
-        </v-card>
+        </panel>
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
-            <v-card dark>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Machine.UpdatePanel.Commits') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
+            <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
+                <template v-slot:buttons>
                     <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
+                </template>
                 <v-card-text class="py-0 px-0">
                     <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
                         <v-row>
@@ -142,7 +133,7 @@
                         </v-row>
                     </perfect-scrollbar>
                 </v-card-text>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -153,8 +144,10 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import semver from 'semver'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class UpdatePanel extends Mixins(BaseMixin) {
 
     private commitsOverlay = {
