@@ -22,16 +22,15 @@
 </style>
 
 <template>
-    <v-card
-        :class="(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
+    <panel
+        icon="mdi-printer-3d"
+        :title="printer_name"
+        :card-class="'farmprinter-panel '+(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
         :loading="printer.socket.isConnecting"
+        :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <v-toolbar flat dense :color="isCurrentPrinter ? 'primary' : ''" style="z-index: 5;">
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-printer-3d</v-icon>{{ printer_name }}</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-item-group v-if="printer.socket.isConnected && this.printer_webcams.length">
+        <template v-slot:buttons>
+            <v-item-group v-if="printer.socket.isConnected && printer_webcams.length">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on">
@@ -48,7 +47,7 @@
                                 <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-for="webcam of this.printer_webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
+                        <v-list-item v-for="webcam of printer_webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
                             <v-list-item-icon class="mr-0">
                                 <v-icon small>{{ webcam.icon }}</v-icon>
                             </v-list-item-icon>
@@ -59,7 +58,7 @@
                     </v-list>
                 </v-menu>
             </v-item-group>
-        </v-toolbar>
+        </template>
         <v-hover>
             <template v-slot:default="{ hover }">
                 <div>
@@ -112,7 +111,7 @@
                 </div>
             </template>
         </v-hover>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -122,9 +121,11 @@ import { FarmPrinterState } from '@/store/farm/printer/types'
 import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
     components: {
+        Panel,
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'mainsail-logo': MainsailLogo
