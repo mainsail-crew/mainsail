@@ -1,10 +1,5 @@
 <template>
-    <v-card class="mb-6" v-if="klipperReadyForGui">
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-speedometer</v-icon>{{ $t('Machine.LimitsPanel.MachineLimits')}}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel :title="$t('Machine.LimitsPanel.MachineLimits')" v-if="klipperReadyForGui" icon="mdi-speedometer" card-class="machine-machinelimits-panel" :collapsible="true">
         <v-card-text>
             <v-row>
                 <v-col class="col-6">
@@ -51,7 +46,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </v-card>
+    </panel>
 </template>
 
 <script>
@@ -61,8 +56,9 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base.ts'
 import ToolSlider from '@/components/inputs/ToolSlider'
 import MachineLimitsInput from '@/components/inputs/MachineLimitsInput'
+import Panel from '@/components/ui/Panel'
 @Component({
-    components: {MachineLimitsInput, ToolSlider}
+    components: {Panel, MachineLimitsInput, ToolSlider}
 })
 export default class LimitsPanel extends Mixins(BaseMixin) {
     
