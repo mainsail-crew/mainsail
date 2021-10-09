@@ -62,7 +62,8 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     initProcStats({ commit }, payload) {
-        commit('setThrottledState', payload.throttled_state)
+        if (payload.throttled_state !== null)
+            commit('setThrottledState', payload.throttled_state)
     },
 
     setKlippyReady({ dispatch }) {

@@ -6,12 +6,13 @@
 </style>
 
 <template>
-    <v-card v-if="socketIsConnected" class="mb-6 d-flex flex-column">
-        <v-toolbar flat dense class="order-0">
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-console-line</v-icon>{{ $t("Panels.MiniconsolePanel.Headline") }}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="socketIsConnected"
+        icon="mdi-console-line"
+        :title="$t('Panels.MiniconsolePanel.Headline')"
+        :collapsible="true"
+        card-class="miniconsole-panel"
+    >
         <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
             <v-row>
                 <v-col>
@@ -69,7 +70,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -80,9 +81,11 @@ import {CommandHelp, VTextareaType} from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 import Vue from 'vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
     components: {
+        Panel,
         ConsoleTable,
         CommandHelpModal
     }

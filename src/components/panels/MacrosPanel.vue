@@ -3,12 +3,13 @@
 </style>
 
 <template>
-    <v-card class="mb-6" v-if="klipperReadyForGui && macros.length > 0">
-        <v-toolbar flat dense>
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-code-tags</v-icon>{{ $t('Panels.MacrosPanel.Headline') }}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="klipperReadyForGui && macros.length > 0"
+        icon="mdi-code-tags"
+        :title="$t('Panels.MacrosPanel.Headline')"
+        :collapsible="true"
+        card-class="macros-panel"
+    >
         <v-container>
             <v-row no-gutters v-if="macros.length">
                 <v-col class="text-center mr-fix-2 mb-fix-2">
@@ -22,14 +23,16 @@
                 </v-col>
             </v-row>
         </v-container>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class MacrosPanel extends Mixins(BaseMixin) {
 
     get macros() {

@@ -4,12 +4,14 @@
 
 <template>
     <div>
-        <v-card v-if="displayPanel" class="mb-6">
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon class="mdi mdi-arrow-collapse-vertical" left></v-icon>{{ $t("Panels.ZoffsetPanel.Headline") }}</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
+        <panel
+            v-if="displayPanel"
+            icon="mdi-arrow-collapse-vertical"
+            :title="$t('Panels.ZoffsetPanel.Headline')"
+            :collapsible="true"
+            card-class="zoffset-panel"
+        >
+            <template v-slot:buttons>
                 <template v-if="z_gcode_offset !== 0">
                     <v-btn small class="px-2 minwidth-0" color="grey darken-3" @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"><v-icon small>mdi-broom</v-icon></v-btn>
                     <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
@@ -38,8 +40,7 @@
                     <v-btn small class="px-2 minwidth-0" color="primary ml-3" v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop" @click="saveZOffsetToProbe"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
                     <v-btn small class="px-2 minwidth-0" color="primary ml-3" v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop" @click="saveZOffsetToEndstop"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
                 </template>
-            </v-toolbar>
-
+            </template>
             <v-card-text class="px-0 py-0">
                 <v-container>
                     <v-row class="py-0">
@@ -61,14 +62,9 @@
                     </v-row>
                 </v-container>
             </v-card-text>
-        </v-card>
+        </panel>
         <v-dialog v-model="saveOffsetDialog" max-width="290">
-            <v-card>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon class="mdi mdi-information" left></v-icon>{{ $t("Panels.ZoffsetPanel.SaveInfoHeadline") }}</span>
-                    </v-toolbar-title>
-                </v-toolbar>
+            <panel :title="$t('Panels.ZoffsetPanel.SaveInfoHeadline')" icon="mdi-information" card-class="zoffset-saveinfo-dialog" :margin-bottom="false">
                 <v-card-text class="mt-3" v-if="printerIsPrinting">{{ $t("Panels.ZoffsetPanel.SaveInfoDescriptionPrint") }}</v-card-text>
                 <v-card-text class="mt-3" v-else>{{ $t("Panels.ZoffsetPanel.SaveInfoDescription") }}</v-card-text>
                 <v-card-actions v-if="printerIsPrinting">
@@ -80,7 +76,7 @@
                     <v-btn color="primary" text @click="saveConfig">{{ $t("Panels.ZoffsetPanel.SAVE_CONFIG") }}</v-btn>
                     <v-btn text @click="saveOffsetDialog = false">{{ $t("Panels.ZoffsetPanel.Later") }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -90,8 +86,10 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import {CommandHelp} from '@/store/printer/types'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class ZoffsetPanel extends Mixins(BaseMixin) {
     private saveOffsetDialog = false
 

@@ -23,12 +23,14 @@
 </style>
 
 <template>
-    <v-card v-if="klipperReadyForGui" class="mb-6">
-        <v-toolbar flat dense>
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Headline") }}</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
+    <panel
+        v-if="klipperReadyForGui"
+        icon="mdi-thermometer-lines"
+        :title="$t('Panels.ToolsPanel.Headline')"
+        :collapsible="true"
+        card-class="tools-panel"
+    >
+        <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
@@ -69,7 +71,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-        </v-toolbar>
+        </template>
         <v-card-text class="pa-0 content">
             <v-container class="px-0">
                 <v-row align="center">
@@ -243,7 +245,7 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -257,9 +259,10 @@ import TempChart from '@/components/charts/TempChart.vue'
 import {datasetTypes} from '@/store/variables'
 import {PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan} from '@/store/printer/types'
 import {Debounce} from 'vue-debounce-decorator'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {TempChart, ToolInput}
+    components: {Panel, TempChart, ToolInput}
 })
 export default class ToolsPanel extends Mixins(BaseMixin) {
     convertName = convertName

@@ -3,15 +3,15 @@
 </style>
 
 <template>
-    <v-card class="mb-6" v-if="socketIsConnected">
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading">
-                    <v-icon left>mdi-webcam</v-icon> {{ $t('Panels.WebcamPanel.Headline')}}
-                </span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-item-group v-if="this.webcams.length > 1">
+    <panel
+        v-if="socketIsConnected"
+        icon="mdi-webcam"
+        :title="$t('Panels.WebcamPanel.Headline')"
+        :collapsible="true"
+        card-class="webcam-panel"
+    >
+        <template v-slot:buttons>
+            <v-item-group v-if="webcams.length > 1">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">
@@ -29,7 +29,7 @@
                                 <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
-                        <v-list-item v-for="webcam of this.webcams" v-bind:key="webcam.name" link @click="currentCamName = webcam.name">
+                        <v-list-item v-for="webcam of webcams" v-bind:key="webcam.name" link @click="currentCamName = webcam.name">
                             <v-list-item-icon class="mr-0">
                                 <v-icon small>{{ webcam.icon }}</v-icon>
                             </v-list-item-icon>
@@ -40,7 +40,7 @@
                     </v-list>
                 </v-menu>
             </v-item-group>
-        </v-toolbar>
+        </template>
         <v-card-text class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative;">
@@ -65,7 +65,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -78,9 +78,11 @@ import Component from 'vue-class-component'
 import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import {GuiStateWebcam} from '@/store/gui/types'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
     components: {
+        Panel,
         'webcam-mjpegstreamer': Mjpegstreamer,
         'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
         'webcam-ipstreamer': Ipstreamer,

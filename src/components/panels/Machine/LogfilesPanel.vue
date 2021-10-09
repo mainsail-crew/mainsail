@@ -1,10 +1,5 @@
 <template>
-    <v-card>
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-file-document-edit</v-icon>{{ $t("Machine.LogfilesPanel.Logfiles")}}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel :title="$t('Machine.LogfilesPanel.Logfiles')" icon="mdi-file-document-edit" card-class="machine-logfiles-panel" :collapsible="true">
         <v-card-text :class="'text-center text-lg-left py-0'">
             <v-container pb-0 px-0>
                 <v-row>
@@ -17,15 +12,17 @@
                 </v-row>
             </v-container>
         </v-card-text>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
 
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class LogfilesPanel extends Mixins(BaseMixin) {
     downloadLog(event: any) {
         event.preventDefault()
