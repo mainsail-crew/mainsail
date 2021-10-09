@@ -7,7 +7,7 @@
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
-                    <template v-slot:buttons-left>
+                    <template v-slot:buttons-title>
                         <v-btn text color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
                     </template>
                     <template v-slot:buttons>

@@ -15,13 +15,14 @@
 
 <template>
     <v-card :class="cardClass+' '+(marginBottom ? 'mb-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
-        <v-toolbar flat dense :color="toolbarColor" >
+        <v-toolbar flat dense :color="toolbarColor" :class="toolbarClass" >
+            <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>
                 <v-icon left v-if="icon !== null && !hasIconSlot">{{ icon }}</v-icon>
                 <span class="subheading" v-if="title">{{ title }}</span>
             </v-toolbar-title>
-            <slot name="buttons-left"></slot>
+            <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
             <slot name="buttons"></slot>
             <v-icon
@@ -51,6 +52,7 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: false }) readonly collapsible!: boolean
     @Prop({ required: true }) readonly cardClass!: string
     @Prop({ default: '' }) readonly toolbarColor!: string
+    @Prop({ default: '' }) readonly toolbarClass!: string
     @Prop({ default: false }) readonly loading!: boolean
     @Prop({ default: true }) readonly marginBottom!: boolean
 
