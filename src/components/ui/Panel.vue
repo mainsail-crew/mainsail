@@ -21,6 +21,7 @@
                 <v-icon left v-if="icon !== null && !hasIconSlot">{{ icon }}</v-icon>
                 <span class="subheading" v-if="title">{{ title }}</span>
             </v-toolbar-title>
+            <slot name="buttons-left"></slot>
             <v-spacer></v-spacer>
             <slot name="buttons"></slot>
             <v-icon
