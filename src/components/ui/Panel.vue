@@ -14,7 +14,7 @@
 </style>
 
 <template>
-    <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')" :loading="true">
+    <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')" :loading="loading">
         <v-toolbar flat dense :color="toolbarColor" >
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>

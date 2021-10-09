@@ -30,10 +30,9 @@
         icon="mdi-printer-3d"
         :title="printer_name"
         :card-class="'farmprinter-panel '+(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
-        :loading="true"
+        :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <!--        :loading="printer.socket.isConnecting"-->
         <template v-slot:buttons>
             <v-item-group v-if="printer.socket.isConnected && printer_webcams.length">
                 <v-menu :offset-y="true" title="Webcam">
