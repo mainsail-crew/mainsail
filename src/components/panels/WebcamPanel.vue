@@ -125,9 +125,5 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
 
         return {}
     }
-
-    get nonExpandPanels() {
-        return this.$store.state.gui.dashboard.nonExpandPanels
-    }
 }
 </script>
