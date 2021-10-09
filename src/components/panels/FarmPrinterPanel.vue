@@ -19,6 +19,10 @@
     .webcamContainer .webcamFpsOutput {
         display: none;
     }
+
+    .v-overlay {
+        top: 48px;
+    }
 </style>
 
 <template>
@@ -26,9 +30,10 @@
         icon="mdi-printer-3d"
         :title="printer_name"
         :card-class="'farmprinter-panel '+(!printer.socket.isConnected && !printer.socket.isConnecting ? 'disabledPrinter' : '')"
-        :loading="printer.socket.isConnecting"
+        :loading="true"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
+        <!--        :loading="printer.socket.isConnecting"-->
         <template v-slot:buttons>
             <v-item-group v-if="printer.socket.isConnected && printer_webcams.length">
                 <v-menu :offset-y="true" title="Webcam">

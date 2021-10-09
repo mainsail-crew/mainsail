@@ -11,14 +11,10 @@
     .icon-rotate-180 {
         transform: rotate(180deg);
     }
-
-    header.v-toolbar {
-        z-index: 5;
-    }
 </style>
 
 <template>
-    <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')">
+    <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')" :loading="true">
         <v-toolbar flat dense :color="toolbarColor" >
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>
@@ -54,6 +50,7 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: false }) readonly collapsible!: boolean
     @Prop({ required: true }) readonly cardClass!: string
     @Prop({ default: '' }) readonly toolbarColor!: string
+    @Prop({ default: false }) readonly loading!: boolean
 
     get expand() {
         return this.$store.getters['gui/getPanelExpand'](this.cardClass)
