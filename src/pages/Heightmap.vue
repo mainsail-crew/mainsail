@@ -6,32 +6,16 @@
     <div>
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8">
-                <v-card>
-                    <v-toolbar flat dense>
-                        <v-toolbar-title>
-                            <span class="subheading">
-                                <v-icon left>mdi-grid</v-icon>
-                                {{ $t('Heightmap.Heightmap') }}
-                            </span>
-                            <v-btn
-                                text
-                                color="primary"
-                                class="ml-1 d-none d-sm-inline-flex"
-                                v-if="bed_mesh"
-                                @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        </v-toolbar-title>
-                        <v-spacer class=""></v-spacer>
-                        <v-btn
-                            text
-                            color="primary"
-                            class=" d-sm-none"
-                            @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-item-group class="v-btn-toggle d-none d-sm-flex" name="controllers">
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
-                        </v-item-group>
-                    </v-toolbar>
+                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
+                    <template v-slot:buttons-left>
+                        <v-btn text color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                    </template>
+                    <template v-slot:buttons>
+                        <v-btn text color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
+                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                    </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group class="v-btn-toggle" name="controllers">
                             <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
@@ -79,15 +63,10 @@
                             </v-row>
                         </v-card-text>
                     </template>
-                </v-card>
+                </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <v-card>
-                    <v-toolbar flat dense>
-                        <v-toolbar-title>
-                            <span class="subheading"><v-icon left>mdi-stack-overflow</v-icon>{{ $t('Heightmap.Profiles') }}</span>
-                        </v-toolbar-title>
-                    </v-toolbar>
+                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>
@@ -116,7 +95,7 @@
                     <v-card-text v-else>
                         <p>{{ $t('Heightmap.NoProfile') }}</p>
                     </v-card-text>
-                </v-card>
+                </panel>
             </v-col>
         </v-row>
         <v-row v-else>
@@ -130,11 +109,8 @@
                 icon="mdi-lock-outline"
             >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert>
         </v-row>
-        <v-dialog v-model="renameDialog" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">{{ $t('Heightmap.RenameBedMeshProfile') }}</span>
-                </v-card-title>
+        <v-dialog v-model="renameDialog" persistent :max-width="400">
+            <panel :title="$t('Heightmap.RenameBedMeshProfile')" icon="mdi-grid" card-class="heightmap-rename-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-row>
                         <v-col cols="12">
@@ -147,47 +123,31 @@
                     <v-btn text @click="renameDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="primary" text @click="renameProfile">{{ $t('Heightmap.Rename') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
-        <v-dialog v-model="calibrateDialog" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline">{{ $t('Heightmap.BedMeshCalibrate') }}</span>
-                </v-card-title>
+        <v-dialog v-model="calibrateDialog" persistent :max-width="400">
+            <panel :title="$t('Heightmap.BedMeshCalibrate')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
-                    <v-row>
-                        <v-col>
-                            <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
-                        </v-col>
-                    </v-row>
+                    <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="calibrateDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="primary" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
-        <v-dialog v-model="removeDialog" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <span class="headline"></span>
-                </v-card-title>
+        <v-dialog v-model="removeDialog" persistent :max-width="400">
+            <panel :title="$t('Heightmap.BedMeshRemove')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
-                    <v-container>
-                        <v-row>
-                            <v-col cols="12">
-                                <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
-                            </v-col>
-                        </v-row>
-                    </v-container>
+                    <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="error" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -199,6 +159,7 @@ import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
 import {ECharts} from 'echarts/core'
 import 'echarts-gl'
+import Panel from '@/components/ui/Panel.vue'
 
 interface HeightmapSerie {
     type: string
@@ -216,6 +177,7 @@ interface HeightmapSerie {
 
 @Component({
     components: {
+        Panel,
         ECharts: createComponent({ echarts }),
     }
 })
