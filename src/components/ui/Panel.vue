@@ -11,6 +11,10 @@
     .icon-rotate-180 {
         transform: rotate(180deg);
     }
+
+    header.v-toolbar {
+        z-index: 5;
+    }
 </style>
 
 <template>
