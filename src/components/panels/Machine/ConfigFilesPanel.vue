@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <panel :title="$t('Machine.ConfigFilesPanel.ConfigFiles')" card-class="maschine-configfiles-panel" icon="mdi-information">
+        <panel :title="$t('Machine.ConfigFilesPanel.ConfigFiles')" card-class="machine-configfiles-panel" icon="mdi-information">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 col-lg pr-lg-0">
