@@ -89,7 +89,8 @@ export const getDefaultState = (): GuiState => {
             widescreenLayout3: [
                 { 'name': 'webcam', visable: true },
                 { 'name': 'miniconsole', visable: true },
-            ]
+            ],
+            nonExpandPanels: []
         },
         webcam: {
             selectedCam: '',

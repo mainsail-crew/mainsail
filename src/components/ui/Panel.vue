@@ -1,5 +1,20 @@
+<style lang="scss" scoped>
+    .expanded header.v-toolbar{
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    .expand-button:focus:after {
+        opacity: 0 !important;
+    }
+
+    .icon-rotate-180 {
+        transform: rotate(180deg);
+    }
+</style>
+
 <template>
-    <v-card class="mb-6">
+    <v-card :class="cardClass+' mb-6 '+(!expand ? 'expanded' : '')">
         <v-toolbar flat dense >
             <v-toolbar-title class="d-flex align-center">
                 <v-icon left v-if="icon !== null">{{ icon }}</v-icon>
@@ -7,8 +22,17 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
             <slot name="buttons"></slot>
+            <v-icon
+                v-if="collapsible"
+                @click="expand = !expand"
+                :class="'ml-3 expand-button '+(!expand ? 'icon-rotate-180' : '')"
+            >mdi-chevron-down</v-icon>
         </v-toolbar>
-        <slot></slot>
+        <v-expand-transition>
+            <div v-show="expand || !collapsible">
+                <slot></slot>
+            </div>
+        </v-expand-transition>
     </v-card>
 </template>
 
@@ -22,5 +46,15 @@ import BaseMixin from '@/components/mixins/base'
 export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: null }) readonly icon!: string | null
     @Prop({ required: true, default: '' }) readonly title!: string
+    @Prop({ default: false }) readonly collapsible!: boolean
+    @Prop({ required: true }) readonly cardClass!: string
+
+    get expand() {
+        return this.$store.getters['gui/getPanelExpand'](this.cardClass)
+    }
+
+    set expand(newVal) {
+        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+    }
 }
 </script>
