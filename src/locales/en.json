@@ -178,6 +178,7 @@
 		"Name": "Name",
 		"Abort": "abort",
 		"Rename": "rename",
+		"BedMeshRemove": "Bed Mesh Remove",
 		"BedMeshCalibrate": "Bed Mesh Calibrate",
 		"DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
 		"DeleteBedMeshProfile": "Delete Bed Mesh Profile",

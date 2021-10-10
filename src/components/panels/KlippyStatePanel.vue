@@ -1,10 +1,10 @@
 <template>
-    <v-card v-if="klipperState !== 'ready' && socketIsConnected" class="mb-6">
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-alert-circle</v-icon>{{ $t('Panels.KlippyStatePanel.KlippyState')}}: {{ klipperState }}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="klipperState !== 'ready' && socketIsConnected"
+        icon="mdi-alert-circle"
+        :title="$t('Panels.KlippyStatePanel.KlippyState')+': '+klipperState"
+        card-class="klippy-state-panel"
+    >
         <template v-if="klippyIsConnected">
             <v-card-text class="py-1">
                 <pre style="white-space: pre-wrap;">{{ klippy_message }}</pre>
@@ -23,7 +23,7 @@
                 <p class="mt-2">{{ $t('Panels.KlippyStatePanel.KlipperCheck') }}</p>
             </v-card-text>
         </template>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -31,9 +31,10 @@ import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {ConnectionStatus}
+    components: {Panel, ConnectionStatus}
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
     private timer: number | null = null

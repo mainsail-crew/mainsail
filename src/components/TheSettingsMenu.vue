@@ -4,25 +4,21 @@
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
-            <v-card style="overflow: hidden;" :height="isMobile ? 0 : 578">
-                <v-toolbar flat dense>
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-cogs</v-icon>{{ $t('Settings.InterfaceSettings') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="showSettings = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                    <template v-if="isMobile" v-slot:extension>
-                        <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
-                            <v-tab
-                                v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#'+tab.name"
-                                class="justify-start">
-                                <v-icon left v-html="tab.icon"></v-icon>
-                                {{ tab.title }}
-                            </v-tab>
-                        </v-tabs>
-                    </template>
-                </v-toolbar>
+            <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 578">
+                <template v-slot:buttons>
+                    <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <template v-if="isMobile">
+                    <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
+                        <v-tab
+                            v-for="(tab, index) of tabTitles" v-bind:key="index"
+                            :href="'#'+tab.name"
+                            class="justify-start">
+                            <v-icon left v-html="tab.icon"></v-icon>
+                            {{ tab.title }}
+                        </v-tab>
+                    </v-tabs>
+                </template>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
                         <perfect-scrollbar class="settings-tabs-bar height500" ref="settingsTabsScroll">
@@ -45,7 +41,7 @@
                         </perfect-scrollbar>
                     </v-col>
                 </v-row>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -65,9 +61,11 @@ import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrint
 import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
+import Panel from '@/components/ui/Panel.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 @Component({
     components: {
+        Panel,
         SettingsThemeTab,
         SettingsRemotePrintersTab,
         SettingsPresetsTab,

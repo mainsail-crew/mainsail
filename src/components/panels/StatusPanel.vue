@@ -10,49 +10,42 @@
         <moonraker-state-panel></moonraker-state-panel>
         <klippy-state-panel></klippy-state-panel>
         <klipper-warnings-panel></klipper-warnings-panel>
-        <v-card v-if="klipperState === 'ready'" class="mb-6">
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading align-baseline">
-                        <v-progress-circular
-                            :rotate="-90"
-                            :size="30"
-                            :width="5"
-                            :value="printPercent"
-                            v-if="['paused', 'printing'].includes(printer_state)"
-                            color="primary"
-                            class="mr-1"
-                        >
-                        </v-progress-circular>
-                        <v-icon
-                            v-if="!['paused', 'printing'].includes(printer_state)"
-                            left
-                        >
-                            mdi-information
-                        </v-icon>
-                        {{ printerStateOutput }}
-                    </span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <template >
-                    <v-btn
-                        v-for="button in filteredToolbarButtons"
-                        v-bind:key="button.loadingName"
-                        class="px-2 minwidth-0 ml-3"
-                        :color="button.color"
-                        @click="button.click"
-                        :loading="loadings.includes(button.loadingName)"
-                        small
-                    >
-                        <v-tooltip top>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
-                            </template>
-                            <span>{{ button.text }}</span>
-                        </v-tooltip>
-                    </v-btn>
-                </template>
-            </v-toolbar>
+        <panel
+            v-if="klipperState === 'ready'"
+            icon="mdi-information"
+            :title="printerStateOutput"
+            :collapsible="true"
+            card-class="status-panel"
+        >
+            <template v-slot:icon>
+                <v-progress-circular
+                    :rotate="-90"
+                    :size="30"
+                    :width="5"
+                    :value="printPercent"
+                    color="primary"
+                    class="mr-3"
+                    v-if="['paused', 'printing'].includes(printer_state)"
+                >
+                </v-progress-circular>
+            </template>
+            <template v-slot:buttons >
+                <v-btn
+                    v-for="button in filteredToolbarButtons"
+                    v-bind:key="button.loadingName"
+                    :color="button.color"
+                    @click="button.click"
+                    :loading="loadings.includes(button.loadingName)"
+                    icon
+                >
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
+                        </template>
+                        <span>{{ button.text }}</span>
+                    </v-tooltip>
+                </v-btn>
+            </template>
             <v-card-text class="px-0 py-0 content">
                 <template v-if="boolBigThumbnail">
                     <v-img
@@ -270,7 +263,7 @@
                     </v-container>
                 </template>
             </v-card-text>
-        </v-card>
+        </panel>
     </div>
 </template>
 
@@ -283,9 +276,11 @@ import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
     components: {
+        Panel,
         StatusPanelExcludeObject, KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
 })
 export default class StatusPanel extends Mixins(BaseMixin) {

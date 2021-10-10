@@ -45,12 +45,7 @@
 
 <template>
     <div>
-        <v-card class="fileupload-card mb-3" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading align-baseline"><v-icon left>mdi-file-document-multiple-outline</v-icon>{{ $t("Files.GCodeFiles")}}</span>
-                </v-toolbar-title>
-            </v-toolbar>
+        <panel :title="$t('Files.GCodeFiles')" icon="mdi-file-document-multiple-outline" card-class="gcode-files-panel fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
@@ -218,7 +213,7 @@
             <div class="dragzone" :style="'visibility: '+dropzone.visibility+'; opacity: '+dropzone.hidden">
                 <div class="textnode">{{ $t('Files.DropFilesToAddGcode')}}</div>
             </div>
-        </v-card>
+        </panel>
         <v-snackbar
             :timeout="-1"
             :value="true"
@@ -309,9 +304,8 @@
 				</v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Files.NewDirectory') }}</v-card-title>
+        <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
+            <panel :title="$t('Files.NewDirectory')" card-class="gcode-files-new-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     {{ $t('Files.PleaseEnterANewDirectoryName') }}
                     <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name" ref="inputFieldCreateDirectory"></v-text-field>
@@ -321,11 +315,10 @@
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Files.Create') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
-        <v-dialog v-model="dialogRenameFile.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Files.RenameFile')}}</v-card-title>
+        <v-dialog v-model="dialogRenameFile.show" :max-width="400">
+            <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field :label="$t('Files.Name')" required v-model="dialogRenameFile.newName" ref="inputFieldRenameFile"></v-text-field>
                 </v-card-text>
@@ -334,11 +327,10 @@
                     <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="renameFileAction">{{ $t('Files.Rename') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Files.RenameDirectory') }}</v-card-title>
+            <panel :title="$t('Files.RenameDirectory')" card-class="gcode-files-rename-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field label="Name" required v-model="dialogRenameDirectory.newName" ref="inputFieldRenameDirectory"></v-text-field>
                 </v-card-text>
@@ -347,11 +339,10 @@
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Files.Rename') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Files.DeleteDirectory') }}</v-card-title>
+            <panel :title="$t('Files.DeleteDirectory')" card-class="gcode-files-delete-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
                 </v-card-text>
@@ -360,7 +351,7 @@
                     <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Files.Cancel') }}</v-btn>
                     <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Files.Delete') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -371,6 +362,7 @@ import axios from 'axios'
 import { validGcodeExtensions } from '@/store/variables'
 import {findDirectory, formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
+import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 
 interface draggingFile {
@@ -405,7 +397,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: {SettingsRow}
+    components: {Panel,SettingsRow}
 })
 export default class PageFiles extends Mixins(BaseMixin) {
     validGcodeExtensions = validGcodeExtensions

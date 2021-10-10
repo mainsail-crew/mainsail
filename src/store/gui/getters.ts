@@ -106,5 +106,9 @@ export const getters: GetterTree<GuiState, any> = {
 
             return 0
         })
+    },
+
+    getPanelExpand: (state) => (name: string) => {
+        return !state.dashboard.nonExpandPanels?.includes(name) ?? true
     }
 }

@@ -31,15 +31,28 @@ Each file can be filled with the following content:
 # /etc/nginx/conf.d/upstreams.conf
 
 upstream apiserver {
-    #if you need to change your api port, edit it here
     ip_hash;
     server 127.0.0.1:7125;
 }
 
-upstream mjpgstreamer {
-    #if you need to change your webcam port, edit it here
+upstream mjpgstreamer1 {
     ip_hash;
     server 127.0.0.1:8080;
+}
+
+upstream mjpgstreamer2 {
+    ip_hash;
+    server 127.0.0.1:8081;
+}
+
+upstream mjpgstreamer3 {
+    ip_hash;
+    server 127.0.0.1:8082;
+}
+
+upstream mjpgstreamer4 {
+    ip_hash;
+    server 127.0.0.1:8083;
 }
 ```
 Save the file with `CTRL+O` and close the editor with `CTRL+X`.
@@ -64,12 +77,11 @@ Save the file with `CTRL+O` and close the editor with `CTRL+X`.
 
 server {
     listen 80 default_server;
-    listen [::]:80 default_server;
 
     access_log /var/log/nginx/mainsail-access.log;
     error_log /var/log/nginx/mainsail-error.log;
 
-    #disable this section on smaller hardware like a pi zero
+    # disable this section on smaller hardware like a pi zero
     gzip on;
     gzip_vary on;
     gzip_proxied any;
@@ -77,21 +89,24 @@ server {
     gzip_comp_level 4;
     gzip_buffers 16 8k;
     gzip_http_version 1.1;
-    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/json application/xml;
+    gzip_types text/plain text/css text/xml text/javascript application/javascript application/x-javascript application/json application/xml;
 
-    #web_path from mainsail static files
+    # web_path from mainsail static files
     root /home/pi/mainsail;
 
     index index.html;
     server_name _;
 
-    #disable max upload size
+    # disable max upload size checks
     client_max_body_size 0;
+
+    # disable proxy request buffering
+    proxy_request_buffering off;
 
     location / {
         try_files $uri $uri/ /index.html;
     }
-    
+
     location = /index.html {
         add_header Cache-Control "no-store, no-cache, must-revalidate";
     }
@@ -114,9 +129,21 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Scheme $scheme;
     }
-
+	
     location /webcam/ {
-        proxy_pass http://mjpgstreamer/;
+        proxy_pass http://mjpgstreamer1/;
+    }
+
+    location /webcam2/ {
+        proxy_pass http://mjpgstreamer2/;
+    }
+
+    location /webcam3/ {
+        proxy_pass http://mjpgstreamer3/;
+    }
+
+    location /webcam4/ {
+        proxy_pass http://mjpgstreamer4/;
     }
 }
 ```
@@ -128,13 +155,13 @@ Create directory for static files and active nginx config:
 mkdir ~/mainsail
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/mainsail /etc/nginx/sites-enabled/
-sudo service nginx restart
+sudo systemctl restart nginx
 ```
 
 Now you can check again the API if it works with the reverse proxy. Open the url http://\<printer-ip\>/printer/info in your browser. if you see a content like this:
 
 ```
-{"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-479-gd586fb06", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
+{"result": {"state_message": "Printer is ready", "klipper_path": "/home/pi/klipper", "config_file": "/home/pi/klipper_config/printer.cfg", "software_version": "v0.9.1-785-g1be19177", "hostname": "raspberrypi", "cpu_info": "4 core ARMv7 Processor rev 4 (v7l)", "state": "ready", "python_path": "/home/pi/klippy-env/bin/python", "log_file": "/home/pi/klipper_log/klippy.log"}}
 ```
 
 Now we can install Mainsail (static httpdocs).

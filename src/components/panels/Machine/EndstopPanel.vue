@@ -1,10 +1,5 @@
 <template>
-    <v-card>
-        <v-toolbar flat dense >
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-arrow-expand-vertical</v-icon>{{ $t('Machine.EndstopPanel.Endstops')}}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel :title="$t('Machine.EndstopPanel.Endstops')" icon="mdi-arrow-expand-vertical" card-class="machine-endstop-panel" :collapsible="true">
         <v-card-text class="pb-0">
             <v-container px-0 py-0>
                 <template v-if="Object.keys(endstops).length">
@@ -49,16 +44,18 @@
             <v-btn icon @click="syncEndstops" :loading="loadings.includes('queryEndstops')">
                 <v-icon>mdi-sync</v-icon>
             </v-btn>
-    </v-card-actions>
-    </v-card>
+        </v-card-actions>
+    </panel>
 </template>
 
 <script lang="ts">
 
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class EndstopPanel extends Mixins(BaseMixin) {
     public sortEndstops: any = {}
 

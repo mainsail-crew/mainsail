@@ -23,15 +23,17 @@
 </style>
 
 <template>
-    <v-card v-if="klipperReadyForGui" class="mb-6">
-        <v-toolbar flat dense>
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-thermometer-lines</v-icon>{{ $t("Panels.ToolsPanel.Headline") }}</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
+    <panel
+        v-if="klipperReadyForGui"
+        icon="mdi-thermometer-lines"
+        :title="$t('Panels.ToolsPanel.Headline')"
+        :collapsible="true"
+        card-class="tools-panel"
+    >
+        <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                    <v-btn text v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon>mdi-menu-down</v-icon></v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -55,10 +57,10 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="presets.length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
+            <v-btn text @click="cooldown()" v-if="presets.length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
@@ -69,7 +71,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-        </v-toolbar>
+        </template>
         <v-card-text class="pa-0 content">
             <v-container class="px-0">
                 <v-row align="center">
@@ -195,17 +197,10 @@
             </v-container>
         </v-card-text>
         <v-dialog v-model="editHeater.bool" persistent :width="400">
-            <v-card dark>
-                <v-toolbar flat dense color="primary">
-                    <v-toolbar-title>
-                    <span class="subheading">
-                        <v-icon left>mdi-{{ editHeater.icon }}</v-icon>
-                        {{ convertName(editHeater.name) }}
-                    </span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0" @click="editHeater.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
+            <panel :title="convertName(editHeater.name)" :icon="'mdi-'+editHeater.icon" card-class="tools-edit-heater-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text class="pt-6">
                     <v-row v-for="dataset in editHeater.chartSeries" v-bind:key="dataset">
                         <v-col class="col-12 py-1">
@@ -241,9 +236,9 @@
                         </v-col>
                     </v-row>
                 </v-card-text>
-            </v-card>
+            </panel>
         </v-dialog>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -257,9 +252,10 @@ import TempChart from '@/components/charts/TempChart.vue'
 import {datasetTypes} from '@/store/variables'
 import {PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan} from '@/store/printer/types'
 import {Debounce} from 'vue-debounce-decorator'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {TempChart, ToolInput}
+    components: {Panel, TempChart, ToolInput}
 })
 export default class ToolsPanel extends Mixins(BaseMixin) {
     convertName = convertName

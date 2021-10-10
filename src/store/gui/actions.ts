@@ -191,6 +191,16 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
     },
 
+    saveExpandPanel({ commit, dispatch, state }, payload) {
+        if (!payload.value) commit('addClosePanel', { name: payload.name })
+        else commit('removeClosePanel', { name: payload.name })
+
+        dispatch('updateSettings', {
+            keyName: 'dashboard.nonExpandPanels',
+            newVal: state.dashboard.nonExpandPanels
+        })
+    },
+
     showStatusInHistoryList({ commit, dispatch, state }, name) {
         const array: string[] = [...state.history.hidePrintStatus]
 
