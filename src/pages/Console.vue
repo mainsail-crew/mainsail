@@ -1,37 +1,17 @@
-<style>
-    .gcode-command-field {
+<style scoped>
 
-    }
+.consoleScrollContainer {
+    min-height: 200px;
+    height: calc(100vh - 180px);
+}
 
-    .gcode-command-field .v-input__slot {
-        margin-bottom: 0;
-    }
-
-    .gcode-command-field .v-text-field__details {
-        display: none;
-    }
-
-    .gcode-command-btn {
-        margin-top: 5px;
-    }
-
-    .log-cell.title-cell {
-        vertical-align: top;
-        height: auto !important;
-    }
-
-    .log-cell.content-cell {
-        vertical-align: top;
-        min-height: auto;
-        height: auto !important;
-    }
 </style>
 
 <template>
-    <div>
-        <v-row>
-            <v-col class="col">
-                <v-text-field
+    <div class="d-flex flex-column">
+        <v-row :class="this.consoleDirection === 'table' ? 'order-0' : 'order-1 mt-3'">
+            <v-col>
+                <v-textarea
                     v-model="gcode"
                     :items="items"
                     :label="$t('Console.SendCode')"
@@ -39,205 +19,221 @@
                     class="gcode-command-field"
                     ref="gcodeCommandField"
                     autocomplete="off"
-                    v-on:keyup.enter="doSend"
-                    v-on:keyup.up="onKeyUp"
-                    v-on:keyup.down="onKeyDown"
-                    v-on:keydown.tab="getAutocomplete"
-                ></v-text-field>
+                    no-resize
+                    auto-grow
+                    :rows="rows"
+                    @keydown.enter.prevent.stop="doSend"
+                    @keyup.up="onKeyUp"
+                    @keyup.down="onKeyDown"
+                    @keydown.tab="getAutocomplete"
+                    hide-details
+                    outlined
+                    dense
+                    append-icon="mdi-send"
+                    @click:append="doSend"
+                ></v-textarea>
             </v-col>
 
-            <v-col class="col-auto align-content-center">
-                <v-btn color="info" class="gcode-command-btn" @click="doSend" :loading="loadings.includes('sendGcode')" :disabled="loadings.includes('sendGcode')" >
-                    <v-icon class="mr-2">mdi-send</v-icon> {{ $t('Console.send')}}
-                </v-btn>
-            </v-col>
-
-            <v-col class="col-auto align-content-center">
-                <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
+            <v-col class="col-auto d-flex align-center">
+                <command-help-modal
+                    @onCommand="gcode = $event"
+                ></command-help-modal>
+                <v-menu offset-y :top="consoleDirection === 'shell'" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="gcode-command-btn px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
                             <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Console.HideTemperatures')"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="boolCustomFilters" hide-details :label="$t('Console.CustomFilters')"></v-checkbox>
+                        <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                            <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
                         </v-list-item>
                     </v-list>
                 </v-menu>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col xs12>
-                <v-data-table
-                    :headers="headers"
-                    :options="options"
-                    :sort-by.sync="sortBy"
-                    :items="events"
-                    item-key="date"
-                    hide-default-footer
-                    disable-pagination
-                    class="event-table"
-                    :custom-sort="customSort"
-                    mobile-breakpoint="0"
-                >
-                    <template #no-data>
-                        <div class="text-center">{{ $t("Console.Empty")}}</div>
-                    </template>
-
-                    <template #item="{ item }">
-                        <tr>
-                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-none d-sm-table-cell">
-                                {{ item.date.toLocaleString() }}
-                            </td>
-                            <td class="log-cell title-cell py-2 flex-grow-0 pr-0 d-sm-none">
-                                {{ formatTimeMobile(item.date)}}
-                            </td>
-                            <td class="log-cell content-cell py-2" colspan="2">
-                                <span v-if="item.message" :class="'message '+colorConsoleMessage(item)" v-html="formatConsoleMessage(item.message)"></span>
-                            </td>
-                        </tr>
-                    </template>
-                </v-data-table>
+        <v-row :class="this.consoleDirection === 'table' ? 'order-1' : 'order-0 mt-0'">
+            <v-col :class="this.consoleDirection === 'table' ? 'col' : 'col pt-0'">
+                <v-card>
+                    <v-card-text class="pa-0">
+                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
+                            <console-table ref="console"
+                                           :is-mini="false"
+                                           :events="events"
+                                           @command-click="commandClick"
+                            />
+                        </perfect-scrollbar>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </div>
 </template>
-<script>
-    import { mapState, mapGetters } from 'vuex'
-    import { colorConsoleMessage, formatConsoleMessage } from "@/plugins/helpers"
 
-    export default {
-        name: "console",
-        data () {
-            return {
-                gcode: "",
-                sortBy: 'date',
-                headers: [
-                    {
-                        text: this.$t('Console.Date'),
-                        value: 'date',
-                        width: '15%',
-                        dateType: 'Date',
-                    },
-                    {
-                        text: this.$t('Console.Event'),
-                        sortable: false,
-                        value: 'message',
-                        width: '85%'
-                    },
-                ],
-                options: {
+<script lang="ts">
+import {Component, Mixins, Watch} from 'vue-property-decorator'
+import BaseMixin from '@/components/mixins/base'
+import ConsoleTable from '@/components/console/ConsoleTable.vue'
+import {CommandHelp, VTextareaType} from '@/store/printer/types'
+import {reverseString, strLongestEqual} from '@/plugins/helpers'
+import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import Vue from 'vue'
 
-                },
-                lastCommands: [
-
-                ],
-                lastCommandNumber: null,
-                items: [],
-            }
-        },
-        computed: {
-            ...mapState({
-                helplist: state => state.printer.helplist,
-                loadings: state => state.socket.loadings,
-            }),
-            ...mapGetters([
-
-            ]),
-            events: {
-                get() {
-                    return this.$store.getters["server/getFilterdEvents"]
-                }
-            },
-            hideWaitTemperatures: {
-                get() {
-                    return this.$store.state.gui.console.hideWaitTemperatures
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { console: { hideWaitTemperatures: newVal } })
-                }
-            },
-            boolCustomFilters: {
-                get() {
-                    return this.$store.state.gui.console.boolCustomFilters
-                },
-                set: function(newVal) {
-                    return this.$store.dispatch("gui/setSettings", { console: { boolCustomFilters: newVal } })
-                }
-            }
-        },
-        methods: {
-            doSend() {
-                this.$store.dispatch('printer/sendGcode', this.gcode)
-
-                this.lastCommands.push(this.gcode);
-                this.gcode = "";
-                this.lastCommandNumber = null;
-            },
-            formatTimeMobile(date) {
-                let hours = date.getHours();
-                if (hours < 10) hours = "0"+hours.toString();
-                let minutes = date.getMinutes();
-                if (minutes < 10) minutes = "0"+minutes.toString();
-                let seconds = date.getSeconds();
-                if (seconds < 10) seconds = "0"+seconds.toString();
-
-                return hours+":"+minutes+":"+seconds;
-            },
-            colorConsoleMessage: colorConsoleMessage,
-            formatConsoleMessage: formatConsoleMessage,
-            onKeyUp() {
-                if (this.lastCommandNumber === null && this.lastCommands.length) {
-                    this.lastCommandNumber = this.lastCommands.length - 1;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber > 0) {
-                    this.lastCommandNumber--;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                }
-            },
-            onKeyDown() {
-                if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber++;
-                    this.gcode = this.lastCommands[this.lastCommandNumber];
-                } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
-                    this.lastCommandNumber = null;
-                    this.gcode = "";
-                }
-            },
-            getAutocomplete(e) {
-                e.preventDefault();
-                if (this.gcode.length) {
-                    let commands = this.helplist.filter((element) => element.commandLow.indexOf(this.gcode.toLowerCase()) === 0);
-                    if (commands && commands.length === 1) this.gcode = commands[0].command;
-                    else {
-                        let commands = this.helplist.filter((element) => element.commandLow.includes(this.gcode.toLowerCase()));
-                        if (commands && commands.length) {
-                            let output = "";
-                            commands.forEach(command => output += "<b>"+command.command+":</b> "+command.description+"<br />");
-
-                            this.$store.commit('server/addEvent', { message: output, type: 'command' });
-                        }
-                    }
-                }
-                this.$refs.gcodeCommandField.focus();
-            },
-            customSort: function(items, index, isDesc) {
-                items.sort((a, b) => {
-                    if (index[0] === 'date') {
-                        if (!isDesc[0]) return new Date(b[index]) -  new Date(a[index]);
-                        else return new Date(a[index]) - new Date(b[index]);
-                    } else {
-                        if(typeof a[index] !== 'undefined'){
-                            if (!isDesc[0]) return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
-                            else return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
-                        }
-                    }
-                });
-
-                return items;
-            }
-        },
+@Component({
+    components: {
+        CommandHelpModal,
+        ConsoleTable,
     }
+})
+export default class PageConsole extends Mixins(BaseMixin) {
+    private gcode = ''
+    private lastCommands: string[] = []
+    private lastCommandNumber: number | null = null
+    private items = []
+
+    $refs!: {
+        gcodeCommandField: VTextareaType,
+        console: ConsoleTable,
+        consoleScroll: any
+    }
+
+    get helplist(): CommandHelp[] {
+        return this.$store.state.printer.helplist ?? []
+    }
+
+    get consoleDirection() {
+        return this.$store.state.gui.console.direction ?? 'table'
+    }
+
+    get events() {
+        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table')
+    }
+
+    @Watch('events')
+    eventsChanged() {
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
+    }
+
+    get hideWaitTemperatures(): boolean {
+        return this.$store.state.gui.console.hideWaitTemperatures
+    }
+
+    set hideWaitTemperatures(newVal) {
+        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'console.hideWaitTemperatures', value: newVal }, { action: 'gui/updateDataFromDB' })
+    }
+
+    get rows(): number {
+        return this.gcode?.split('\n').length ?? 1
+    }
+
+    get customFilters(): any[] {
+        return this.$store.state.gui.console.customFilters
+    }
+
+    commandClick(msg: string): void {
+        this.gcode = msg
+
+        this.$nextTick(() => {
+            this.$refs.gcodeCommandField.focus()
+        })
+    }
+
+    doSend(cmd: KeyboardEvent): void {
+        if (!cmd.shiftKey) {
+            if (this.gcode !== '') {
+                this.$store.dispatch('printer/sendGcode', this.gcode)
+                this.lastCommands.push(this.gcode)
+                this.gcode = ''
+                this.lastCommandNumber = null
+                setTimeout(() => {
+                    this.$refs.console.$el.scroll({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
+                    })
+                }, 20)
+            }
+        } else this.gcode += '\n'
+    }
+
+    onKeyUp(): void {
+        if (this.lastCommandNumber === null && this.lastCommands.length) {
+            this.lastCommandNumber = this.lastCommands.length - 1
+            this.gcode = this.lastCommands[this.lastCommandNumber]
+        } else if (this.lastCommandNumber && this.lastCommandNumber > 0) {
+            this.lastCommandNumber--
+            this.gcode = this.lastCommands[this.lastCommandNumber]
+        }
+    }
+
+    onKeyDown(): void {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+            this.lastCommandNumber++
+            this.gcode = this.lastCommands[this.lastCommandNumber]
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+            this.lastCommandNumber = null
+            this.gcode = ''
+        }
+    }
+
+    getAutocomplete(e: Event): void {
+        e.preventDefault()
+        if (this.gcode.length) {
+            let check = this.gcode.toLowerCase()
+            const textarea = this.$refs.gcodeCommandField.$refs.input
+            const sentence = textarea.value
+            const len = sentence.length
+            const pos = textarea.selectionStart
+            const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos)
+            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER
+            if (this.rows > 1) {
+                check = sentence.substr(currentLinePos, currentEndPos - currentLinePos)
+            }
+            let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
+            if (commands?.length === 1) {
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands[0].command)
+                } else {
+                    this.gcode = commands[0].command
+                }
+            } else if(commands?.length > 1) {
+                let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
+                if (this.rows > 1) {
+                    this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command)
+                    }, commands[0].command))
+                } else {
+                    this.gcode = commands.reduce((acc, val) => {
+                        return strLongestEqual(acc, val.command)
+                    }, commands[0].command)
+                }
+                if (commands && commands.length) {
+                    let output = ''
+                    commands.forEach(command => output += '<a class=\'command blue--text\'>'+command.command+'</a>: '+command.description+'<br />')
+
+                    this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })
+                }
+            }
+        }
+        this.$refs.gcodeCommandField.focus()
+    }
+
+    toggleFilter(filter: string): void {
+        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+    }
+
+    mounted() {
+        if (this.consoleDirection === 'shell') this.scrollToBottom()
+    }
+
+    scrollToBottom() {
+        this.$nextTick(() => {
+            if (this.$refs.consoleScroll) {
+                const perfectScroll = ((this.$refs.consoleScroll as Vue).$el as HTMLDivElement)
+                perfectScroll.scrollTop = perfectScroll.scrollHeight
+            }
+        })
+    }
+}
 </script>

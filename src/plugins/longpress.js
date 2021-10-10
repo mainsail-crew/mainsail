@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'
 
 Vue.directive('longpress', {
     bind: function (el, binding, vNode) {
@@ -13,7 +13,7 @@ Vue.directive('longpress', {
             console.warn(warn)
         }
 
-        const debounceTime = parseInt(binding.arg ?? 1000);
+        const debounceTime = parseInt(binding.arg ?? 1000)
 
         // Run Function
         const handler = (e) => {
@@ -25,28 +25,28 @@ Vue.directive('longpress', {
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
-        let before = null;
+        let before = null
         let start = (e) => {
             if ((e.type === 'click' && e.button !== 0)) {
-                return;
+                return
             }
 
             if (!e.touches || e.touches.length < 1) {
-                return;
+                return
             }
 
-            document.querySelector('body').setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;');
+            document.querySelector('body').setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
 
             setTimeout(() => {
-                document.querySelector('body').setAttribute('style', '');
-            }, debounceTime + 200);
+                document.querySelector('body').setAttribute('style', '')
+            }, debounceTime + 200)
 
             if (pressTimer === null) {
                 pressTimer = setTimeout(() => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                    e.cancelBubble = true;
+                    e.preventDefault()
+                    e.stopPropagation()
+                    e.stopImmediatePropagation()
+                    e.cancelBubble = true
                     // Run function
                     handler({
                         clientX: e.touches[0].clientX,
@@ -61,10 +61,10 @@ Vue.directive('longpress', {
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
                         preventDefault: () => e.preventDefault()
-                    });
-                }, debounceTime);
+                    })
+                }, debounceTime)
             }
-            return false;
+            return false
         }
 
         // Cancel Timeout
@@ -74,7 +74,7 @@ Vue.directive('longpress', {
                 clearTimeout(pressTimer)
                 pressTimer = null
                 if (before) {
-                    document.querySelector('body').setAttribute('style', before);
+                    document.querySelector('body').setAttribute('style', before)
                 }
                 /*console.log(e.type);
                 if (e.type === "touchend" && vNode.data.on.click) {
@@ -85,14 +85,14 @@ Vue.directive('longpress', {
 
         // Add Event listeners
         // el.addEventListener("mousedown", start);
-        el.addEventListener("touchstart", start);
+        el.addEventListener('touchstart', start)
         // Cancel timeouts if this events happen
         //el.addEventListener("click", cancel);
         //el.addEventListener("mouseout", cancel);
-        el.addEventListener("touchmove", cancel);
-        el.addEventListener("touchend", cancel);
-        el.addEventListener("touchcancel", cancel);
+        el.addEventListener('touchmove', cancel)
+        el.addEventListener('touchend', cancel)
+        el.addEventListener('touchcancel', cancel)
 
-        document.addEventListener("scroll", cancel);
+        document.addEventListener('scroll', cancel)
     }
-});
+})

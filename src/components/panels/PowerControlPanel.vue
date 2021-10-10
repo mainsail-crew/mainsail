@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import Vue from "vue";
+import { mapState } from 'vuex'
+import Vue from 'vue'
 
 export default {
     components: {},
@@ -45,9 +45,9 @@ export default {
     },
     methods: {
         setPower(device, value) {
-            let rpc = value === 1 ? "machine.device_power.on" : "machine.device_power.off";
-            Vue.prototype.$socket.sendObj(rpc,{ [device.device]: null },"server/power/responseToggle");
+            let rpc = value === 1 ? 'machine.device_power.on' : 'machine.device_power.off'
+            Vue.$socket.emit(rpc,{ [device.device]: null },'server/power/responseToggle')
         },
     },
-};
+}
 </script>

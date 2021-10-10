@@ -5,8 +5,8 @@ nav_order: 1
 has_children: false
 ---
 
-# Welcome to the Mainsail!
-Mainsail is a lightweight & responsive web interface for Klipper, the 3D printer firmware. It focuses especially on an intuitive and consistent interface.
+# Welcome to Mainsail!
+Mainsail aims to make Klipper more accessible to end users through a lightweight, responsive web ui, centred around an intuitive and consistent design philsophy.
 {: .fs-5 }
 
 [Getting Started](/setup){: .btn .btn-primary }
@@ -19,11 +19,13 @@ Mainsail is a lightweight & responsive web interface for Klipper, the 3D printer
 ## Features 
 - Optimized for desktops, tablets and mobile devices
 - Supports multiple 3D printers (Printer Farm)
+- Localization (i18n)
 - File Manager (gcode and config files)
-- Config Editor
+- File Editor (gcode and config files)
+- Print History / Stats
 - Temperature Presets (with custom gcode)
 - Bed Mesh Leveling
-- Webcam support
+- Multi-Webcam support
 - Control power devices (relays, TPLink, Tasmota, ..)
 - Customizable UI (logos, backgrounds & even custom css)
 
