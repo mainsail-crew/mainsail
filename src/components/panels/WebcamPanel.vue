@@ -14,7 +14,7 @@
             <v-item-group v-if="webcams.length > 1">
                 <v-menu :offset-y="true" title="Webcam">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on">
+                        <v-btn small class="px-2 minwidth-0" text v-bind="attrs" v-on="on">
                             <v-icon small v-if="'icon' in currentCam" class="mr-2">{{ currentCam.icon }}</v-icon>
                             {{ 'name' in currentCam ? currentCam.name : "unknown" }}
                             <v-icon small>mdi-menu-down</v-icon>
