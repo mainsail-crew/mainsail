@@ -33,35 +33,33 @@
         :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <template v-slot:buttons>
-            <v-item-group v-if="printer.socket.isConnected && printer_webcams.length">
-                <v-menu :offset-y="true" title="Webcam">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="grey darken-3" v-bind="attrs" v-on="on">
-                            <v-icon small>mdi-webcam</v-icon>
-                            <v-icon small>mdi-menu-down</v-icon>
-                        </v-btn>
-                    </template>
-                    <v-list dense class="py-0">
-                        <v-list-item link @click="currentCamName = 'off'">
-                            <v-list-item-icon class="mr-0">
-                                <v-icon small>mdi-webcam-off</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-list-item v-for="webcam of printer_webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
-                            <v-list-item-icon class="mr-0">
-                                <v-icon small>{{ webcam.icon }}</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title v-text="webcam.name"></v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </v-item-group>
+        <template v-slot:buttons v-if="printer.socket.isConnected && printer_webcams.length">
+            <v-menu :offset-y="true" title="Webcam">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn text v-bind="attrs" v-on="on">
+                        <v-icon small>mdi-webcam</v-icon>
+                        <v-icon small>mdi-menu-down</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense class="py-0">
+                    <v-list-item link @click="currentCamName = 'off'">
+                        <v-list-item-icon class="mr-0">
+                            <v-icon small>mdi-webcam-off</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item v-for="webcam of printer_webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
+                        <v-list-item-icon class="mr-0">
+                            <v-icon small>{{ webcam.icon }}</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title v-text="webcam.name"></v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </template>
         <v-hover>
             <template v-slot:default="{ hover }">

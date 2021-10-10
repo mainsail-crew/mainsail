@@ -33,15 +33,14 @@
                 <v-btn
                     v-for="button in filteredToolbarButtons"
                     v-bind:key="button.loadingName"
-                    class="px-2 minwidth-0 ml-3"
                     :color="button.color"
                     @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
-                    small
+                    icon
                 >
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
+                            <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
                         </template>
                         <span>{{ button.text }}</span>
                     </v-tooltip>

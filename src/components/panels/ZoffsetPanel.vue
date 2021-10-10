@@ -13,10 +13,10 @@
         >
             <template v-slot:buttons>
                 <template v-if="z_gcode_offset !== 0">
-                    <v-btn small class="px-2 minwidth-0" color="grey darken-3" @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"><v-icon small>mdi-broom</v-icon></v-btn>
+                    <v-btn icon @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"><v-icon>mdi-broom</v-icon></v-btn>
                     <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn small class="px-2 minwidth-0 ml-3" color="primary" v-bind="attrs" v-on="on">{{ $t("Panels.ZoffsetPanel.Save") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                            <v-btn text color="primary" v-bind="attrs" v-on="on">{{ $t("Panels.ZoffsetPanel.Save") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item link @click="saveZOffsetToEndstop">

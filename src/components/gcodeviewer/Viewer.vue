@@ -41,8 +41,8 @@
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
             <template v-slot:buttons>
-                <v-btn @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-                <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
+                <v-btn text @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+                <v-btn icon @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
             </template>
             <v-card-text>
                 <v-row>

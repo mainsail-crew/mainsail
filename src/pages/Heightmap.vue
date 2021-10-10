@@ -12,9 +12,9 @@
                     </template>
                     <template v-slot:buttons>
                         <v-btn text color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
-                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
-                        <v-btn small class="px-2 minwidth-0 ml-3" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                        <v-btn icon @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon>mdi-home</v-icon></v-btn>
+                        <v-btn text @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                        <v-btn text @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group class="v-btn-toggle" name="controllers">
