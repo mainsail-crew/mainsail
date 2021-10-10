@@ -12,7 +12,7 @@ services:
       - ./docker/config/moonraker:/home/node/.moonraker_database
     container_name: ${APP_NAME}-stack-api
     ports:
-      - 7125:7125
+      - "7125:7125"
     networks:
       - dev_net
   application:
@@ -24,7 +24,7 @@ services:
       - ./:/home/node/mainsail
     container_name: ${APP_NAME}-stack-npm
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       - api
     networks:
