@@ -18,7 +18,7 @@ Restart Klipper (`sudo service klipper restart`) and check the `klippy.log`, if 
 correctly and then continue the guide.
 
 ### Klipper config changes
-If you have issues after update your Klipper instance, you can check config changes [here](https://github.com/KevinOConnor/klipper/blob/master/docs/Config_Changes.md).
+If you have issues after update your Klipper instance, you can check config changes [here](https://www.klipper3d.org/Config_Changes.html){:target="_blank"}.
 
 ---
 [< table of contents](index.md){: .btn }  [next step >](moonraker.md){: .btn}
