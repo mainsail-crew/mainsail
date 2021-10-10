@@ -13,7 +13,7 @@ description: >-
 
 ## Setup
 Make a copy of the `.env.development.local.example` and omit the .example.
-In the new file edit it to refect your desired printer:
+In the new file edit it to reflect your desired printer:
 ```dotenv
 #for your printer with moonraker running on 192.168.0.15
 VUE_APP_HOSTNAME=192.168.0.15
@@ -26,17 +26,23 @@ cors_domains:
 access the local running dev environment with `http://<your local ip>:<local port>`.
 (for example: `http://localhost:8080`)
 
-### Nodejs Environment >= v15.9.0
-Linux
+### Prepare nodejs using nvm
+POSIX-compliant shell (sh, dash, ksh, zsh, bash)
+unix, macOS, and windows WSL
 ```shell
-curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+nvm install node
 ```
-Debian/Ubuntu
+
+make sure you run node >=15.9.0
 ```shell
-sudo apt-get install -y nodejs 
+node -v
 ```
-For other package-managers look here:
-https://nodejs.org/en/download/package-manager/
+
+#### Troubleshoot 
+follow this guide if you encouter problems with nvm   
+https://github.com/nvm-sh/nvm#troubleshooting-on-linux
+
 
 ## Start
 ```shell
