@@ -20,13 +20,6 @@ If you see a content like this
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
 
-### Change Moonraker to systemd service (December 6th 2020)
-Moonraker is now installed as a systemd service. If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
-```bash
-~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
-```
-This allows logging to stdout which can be viewed with the `journalctl -u moonraker command`.
-
 ### Update Moonraker dependence
 This is only nessasary, if you see missing modules in the moonraker log.
 ```bash
@@ -34,7 +27,7 @@ This is only nessasary, if you see missing modules in the moonraker log.
 ```
 
 ### Moonraker config changes
-If you have issues after update your Moonraker instance, you can check config changes [here](https://github.com/Arksine/moonraker/blob/master/docs/user_changes.md).
+If you have issues after update your Moonraker instance, you can check config changes [here](https://moonraker.readthedocs.io/en/latest/user_changes/){:target="_blank"}.
 
 ---
 [< previous step](klipper.md){: .btn }  [next step >](mainsail.md){: .btn }

@@ -28,7 +28,7 @@ Once you have finished the installation and are connected via SSH, you can conti
 Install the required packages and update the system:
 
 ```bash
-sudo apt update && sudo apt upgrade
+sudo apt update --allow-releaseinfo-change && sudo apt upgrade
 sudo apt install git dfu-util unzip
 ```
 
