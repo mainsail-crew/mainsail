@@ -5,23 +5,18 @@
 </style>
 
 <template>
-    <div v-if="enableUpdateManager">
-        <v-card>
-            <v-toolbar flat dense >
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Machine.UpdatePanel.UpdateManager') }}</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
+    <div>
+        <panel :title="$t('Machine.UpdatePanel.UpdateManager')" v-if="enableUpdateManager" icon="mdi-update" card-class="machine-update-panel" :collapsible="true">
+            <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
+                        <v-btn icon color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
-            </v-toolbar>
+            </template>
             <v-card-text class="px-0 py-0">
                 <v-container py-0 px-0>
-
                     <div v-for="(value, key, index) of updateableSoftwares" v-bind:key="key">
                         <v-divider class="my-0" v-if="index" ></v-divider>
                         <v-row class="py-2">
@@ -111,36 +106,34 @@
                     </div>
                 </v-container>
             </v-card-text>
-        </v-card>
+        </panel>
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
-            <v-card dark>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-update</v-icon>{{ $t('Machine.UpdatePanel.Commits') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
-                <v-card-text class="py-0" style="max-height: 400px; overflow-y: scroll;">
-                    <v-row>
-                        <v-col class="pt-3 pl-0">
-                            <v-timeline class="updateManager" align-top dense >
-                                <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
-                                    <v-row class="pt-0">
-                                        <v-col>
-                                            <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
-                                            <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
-                                            <div class="caption">
-                                                <strong>{{ commit.author }}</strong> {{ $t('Machine.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-                                </v-timeline-item>
-                            </v-timeline>
-                        </v-col>
-                    </v-row>
+            <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
+                <template v-slot:buttons>
+                    <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text class="py-0 px-0">
+                    <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
+                        <v-row>
+                            <v-col class="pt-3 pl-0">
+                                <v-timeline class="updateManager" align-top dense >
+                                    <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
+                                        <v-row class="pt-0">
+                                            <v-col>
+                                                <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
+                                                <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
+                                                <div class="caption">
+                                                    <strong>{{ commit.author }}</strong> {{ $t('Machine.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
+                                                </div>
+                                            </v-col>
+                                        </v-row>
+                                    </v-timeline-item>
+                                </v-timeline>
+                            </v-col>
+                        </v-row>
+                    </perfect-scrollbar>
                 </v-card-text>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -151,8 +144,10 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import semver from 'semver'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class UpdatePanel extends Mixins(BaseMixin) {
 
     private commitsOverlay = {

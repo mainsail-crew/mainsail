@@ -39,15 +39,11 @@
 
 <template>
     <div>
-        <v-card>
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading"><v-icon left>mdi-video-3d</v-icon>{{ $t('GCodeViewer.Title') }}</span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-btn @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired" small>{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-                <v-btn @click="resetCamera" class="px-2 minwidth-0 ml-3" color="grey darken-3" small dense><v-icon small>mdi-camera-retake</v-icon></v-btn>
-            </v-toolbar>
+        <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
+            <template v-slot:buttons>
+                <v-btn text @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
+                <v-btn icon @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
+            </template>
             <v-card-text>
                 <v-row>
                     <v-col>
@@ -123,7 +119,7 @@
                 </v-row>
                 <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
             </v-card-text>
-        </v-card>
+        </panel>
         <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
             <div>
                 {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%<br />
@@ -158,6 +154,7 @@ import BaseMixin from '../mixins/base'
 import GCodeViewer from '@sindarius/gcodeviewer'
 import axios from 'axios'
 import {formatFilesize} from '@/plugins/helpers'
+import Panel from '@/components/ui/Panel.vue'
 
 interface downloadSnackbar {
     status: boolean
@@ -173,8 +170,9 @@ interface downloadSnackbar {
 }
 
 let viewer: any = null
-
-@Component
+@Component({
+    components: {Panel}
+})
 export default class Viewer extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     private isBusy = false

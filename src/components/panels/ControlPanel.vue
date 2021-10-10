@@ -21,19 +21,20 @@
 </style>
 
 <template>
-    <v-card class="mb-6" v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)">
-        <v-toolbar flat dense>
-            <v-toolbar-title>
-                <span class="subheading"><v-icon left>mdi-gamepad</v-icon>{{ $t('Panels.ControlPanel.Headline') }}</span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)"
+        icon="mdi-gamepad"
+        :title="$t('Panels.ControlPanel.Headline')"
+        :collapsible="true"
+        card-class="control-panel"
+    >
         <v-container>
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>
             <control-panel-bars-control v-else></control-panel-bars-control>
             <control-panel-extruder v-if="existsExtruder"></control-panel-extruder>
         </v-container>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
@@ -43,8 +44,11 @@ import ControlPanelExtruder from '@/components/panels/ControlPanelExtruder.vue'
 import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossControl.vue'
 import ControlPanelBarsControl from '@/components/panels/ControlPanelBarsControl.vue'
 import ControlPanelCircleControl from '@/components/panels/ControlPanelCircleControl.vue'
+import Panel from '@/components/ui/Panel.vue'
 @Component({
-    components: {ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
+    components: {
+        Panel,
+        ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
     get controlStyle() {

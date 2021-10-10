@@ -8,7 +8,8 @@ has_toc: false
 ---
 # Setup Guides
 
-To get started, you first have to decide which route you want to follow for the installation. There are several ways to install Mainsail on a Raspberry Pi.
+## Local installation
+Decide which route you want to follow for the installation. There are several ways to install Mainsail on a Raspberry Pi:
 
 - [MainsailOS](mainsail-os.md) <span class="label label-red">recommended</span>  
 	A prebuilt image for your Raspberry Pi. Flash it and you are almost ready to go.
@@ -17,17 +18,9 @@ To get started, you first have to decide which route you want to follow for the 
 - [Manual Setup](manual-setup/index.md)  
 	The rocky road. If you want to know how everything is set up by hand, you will get all the information here.
 
-## my.mainsail.xyz
-In addition to these guides, there is [my.mainsail.xyz](http://my.mainsail.xyz){: target="_blank"}. The latest Mainsail version is always hosted there. This obviates the need to set up a web server for Mainsail on your hardware.
+## Hosted
 
-To use [my.mainsail.xyz](http://my.mainsail.xyz){: target="_blank"}, the following requirements must be met:
-- Klipper must be installed.
-- Moonraker must be installed.
-- my.mainsail.xyz must be configured as a CORS domain in moonraker.conf.
-
-**MainsailOS & KIAUH already fulfill these requirements.**
-
-_Note_, only the static .html, .js and .css files are loaded into your browser storage. No further information is transferred to the server. The communication to your printer is then done locally directly between your browser and your Moonraker installation.  
-If you have any concerns, you can of course still install Mainsail on your hardware locally. Parallel operation is also possible.
+Setup [remote access](../quicktips/remote-access) without installing/configuring a web server!
 {: .info}
 
+A hosted instance of Mainsail can be found and used at [my.mainsail.xyz](http://my.mainsail.xyz), check out the [documentation](mainsail-hosted) for usage and configuration. 

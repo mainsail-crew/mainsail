@@ -10,49 +10,42 @@
         <moonraker-state-panel></moonraker-state-panel>
         <klippy-state-panel></klippy-state-panel>
         <klipper-warnings-panel></klipper-warnings-panel>
-        <v-card v-if="klipperState === 'ready'" class="mb-6">
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading align-baseline">
-                        <v-progress-circular
-                            :rotate="-90"
-                            :size="30"
-                            :width="5"
-                            :value="printPercent"
-                            v-if="['paused', 'printing'].includes(printer_state)"
-                            color="primary"
-                            class="mr-1"
-                        >
-                        </v-progress-circular>
-                        <v-icon
-                            v-if="!['paused', 'printing'].includes(printer_state)"
-                            left
-                        >
-                            mdi-information
-                        </v-icon>
-                        {{ printerStateOutput }}
-                    </span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <template >
-                    <v-btn
-                        v-for="button in filteredToolbarButtons"
-                        v-bind:key="button.loadingName"
-                        class="px-2 minwidth-0 ml-3"
-                        :color="button.color"
-                        @click="button.click"
-                        :loading="loadings.includes(button.loadingName)"
-                        small
-                    >
-                        <v-tooltip top>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon v-bind="attrs" v-on="on" small>{{ button.icon }}</v-icon>
-                            </template>
-                            <span>{{ button.text }}</span>
-                        </v-tooltip>
-                    </v-btn>
-                </template>
-            </v-toolbar>
+        <panel
+            v-if="klipperState === 'ready'"
+            icon="mdi-information"
+            :title="printerStateOutput"
+            :collapsible="true"
+            card-class="status-panel"
+        >
+            <template v-slot:icon>
+                <v-progress-circular
+                    :rotate="-90"
+                    :size="30"
+                    :width="5"
+                    :value="printPercent"
+                    color="primary"
+                    class="mr-3"
+                    v-if="['paused', 'printing'].includes(printer_state)"
+                >
+                </v-progress-circular>
+            </template>
+            <template v-slot:buttons >
+                <v-btn
+                    v-for="button in filteredToolbarButtons"
+                    v-bind:key="button.loadingName"
+                    :color="button.color"
+                    @click="button.click"
+                    :loading="loadings.includes(button.loadingName)"
+                    icon
+                >
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
+                        </template>
+                        <span>{{ button.text }}</span>
+                    </v-tooltip>
+                </v-btn>
+            </template>
             <v-card-text class="px-0 py-0 content">
                 <template v-if="boolBigThumbnail">
                     <v-img
@@ -73,43 +66,10 @@
                         </v-card-title>
                     </v-img>
                 </template>
-                <template v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
-                    <v-container>
-                        <v-row>
-                            <v-col class="py-2">
-                                <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>{{ current_object !== null ? current_object : '--' }}</span>
-                            </v-col>
-                            <v-col class="col-auto py-2">
-                                <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(current_object)" small v-if="current_object !== null">mdi-close-circle</v-icon>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                    <v-divider class="mt-0 mb-0" ></v-divider>
-                    <template v-if="boolShowObjects">
-                        <div  v-for="object in printing_objects" v-bind:key="object.name">
-                            <v-container>
-                                <v-row>
-                                    <v-col class="py-2">
-                                        <span class="subtitle-2 d-block px-0 text--disabled">{{ object.name }}</span>
-                                    </v-col>
-                                    <v-col class="col-auto py-2">
-                                        <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">{{ $t('Panels.StatusPanel.Canceled') }}</v-chip>
-                                        <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(object.name)" small v-else>mdi-close-circle</v-icon>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                            <v-divider class="mt-0 mb-0" ></v-divider>
-                        </div>
-                    </template>
-                    <v-container>
-                        <v-row>
-                            <v-col class="py-1 font-italic text-center">
-                                <span @click="boolShowObjects = !boolShowObjects" class="text--disabled cursor-pointer"><v-icon class="mr-3 text--disabled" small>mdi-chevron-{{ boolShowObjects ? 'up' : 'down' }}</v-icon><small>{{ $t('Panels.StatusPanel.CountObjects', {count: printing_objects.length}) }}</small><v-icon class="ml-3 text--disabled" small>mdi-chevron-{{ boolShowObjects ? 'up' : 'down' }}</v-icon></span>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-                    <v-divider class="mt-0 mb-0" ></v-divider>
-                </template>
+                <status-panel-exclude-object
+                    :show-dialog.sync="boolShowObjects"
+                    @update:showDialog="updateShowDialog"
+                ></status-panel-exclude-object>
                 <template v-if="display_message || print_stats_message">
                     <v-container>
                         <v-row>
@@ -303,22 +263,7 @@
                     </v-container>
                 </template>
             </v-card-text>
-        </v-card>
-        <v-dialog v-model="cancelObjectDialog.bool" max-width="290">
-            <v-card>
-                <v-toolbar flat dense >
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon class="mdi mdi-information" left></v-icon>{{ $t("Panels.StatusPanel.ExcludeObjectHeadline") }}</span>
-                    </v-toolbar-title>
-                </v-toolbar>
-                <v-card-text class="mt-3">{{ $t("Panels.StatusPanel.ExcludeObjectText", {name: cancelObjectDialog.objectName}) }}</v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn text @click="cancelObjectDialog.bool = false">{{ $t("Panels.StatusPanel.Cancel") }}</v-btn>
-                    <v-btn color="primary" text @click="cancelObject">{{ $t("Panels.StatusPanel.ExcludeObject") }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        </panel>
     </div>
 </template>
 
@@ -330,18 +275,17 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
+import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
+    components: {
+        Panel,
+        StatusPanelExcludeObject, KlipperWarningsPanel, KlippyStatePanel, MoonrakerStatePanel, MinSettingsPanel}
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
     boolShowObjects = false
-
-    cancelObjectDialog = {
-        bool: false,
-        objectName: ''
-    }
 
     $refs!: {
         bigThumbnail: any
@@ -422,6 +366,13 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 loadingName: 'statusPrintResume',
                 status: ['paused'],
                 click: this.btnResumeJob
+            }, {
+                text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
+                color: 'orange',
+                icon: 'mdi-selection-remove',
+                loadingName: '',
+                status: this.printing_objects.length ? ['paused', 'printing'] : [],
+                click: this.btnExcludeObject
             }, {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),
                 color: 'red',
@@ -621,12 +572,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.exclude_object?.objects ?? []
     }
 
-    get current_object() {
-        return this.$store.state.printer.exclude_object?.current_object ?? null
-    }
-
-    get excluded_objects() {
-        return this.$store.state.printer.exclude_object?.excluded_objects ?? []
+    updateShowDialog(newVal: boolean) {
+        this.boolShowObjects = newVal
     }
 
     btnPauseJob() {
@@ -635,6 +582,10 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     btnResumeJob() {
         this.$socket.emit('printer.print.resume', { }, { loading: 'statusPrintResume' })
+    }
+
+    btnExcludeObject() {
+        this.boolShowObjects = true
     }
 
     btnCancelJob() {
@@ -690,16 +641,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         if (this.$refs.bigThumbnail) {
             this.$refs.bigThumbnail.$el.style.height = '200px'
         }
-    }
-
-    openCancelObjectDialog(objectName: string) {
-        this.cancelObjectDialog.objectName = objectName
-        this.cancelObjectDialog.bool = true
-    }
-
-    cancelObject() {
-        this.$socket.emit('printer.gcode.script', {script: 'EXCLUDE_OBJECT NAME='+this.cancelObjectDialog.objectName})
-        this.cancelObjectDialog.bool = false
     }
 
     onResize() {

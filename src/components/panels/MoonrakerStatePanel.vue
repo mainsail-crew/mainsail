@@ -1,12 +1,12 @@
 <template>
-    <v-card class="mb-6" v-if="failedComponents.length || warnings.length">
-        <v-toolbar flat dense color="orange darken-2">
-            <v-toolbar-title>
-                <span class="subheading">
-                    <v-icon class="mdi mdi-alert-circle" left></v-icon>{{ $t("Panels.MoonrakerStatePanel.MoonrakerWarnings") }}
-                </span>
-            </v-toolbar-title>
-        </v-toolbar>
+    <panel
+        v-if="failedComponents.length || warnings.length"
+        icon="mdi-alert-circle"
+        :title="$t('Panels.MoonrakerStatePanel.MoonrakerWarnings')"
+        :collapsible="true"
+        card-class="moonraker-state-panel"
+        toolbar-color="orange darken-2"
+    >
         <v-card-text v-if="failedComponents.length">
             <v-row>
                 <v-col>
@@ -27,15 +27,17 @@
         <v-card-actions class="px-4 pt-2 pb-4 text-center text-lg-left">
             <v-btn small :href="apiUrl+'/server/files/moonraker.log'" target="_blank" color="primary" class=""><v-icon class="mr-2" small>mdi-download</v-icon>{{ $t("Panels.MoonrakerStatePanel.DownloadLog") }}</v-btn>
         </v-card-actions>
-    </v-card>
+    </panel>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
 import BaseMixin from '../mixins/base'
 import {Mixins} from 'vue-property-decorator'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class MoonrakerStatePanel extends Mixins(BaseMixin) {
 
     get failedComponents() {

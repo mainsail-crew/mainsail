@@ -4,12 +4,7 @@
 
 <template>
     <div>
-        <v-card>
-            <v-toolbar flat dense>
-                <v-toolbar-title>
-                    <span class="subheading align-baseline"><v-icon left>mdi-information</v-icon>{{ $t('Machine.ConfigFilesPanel.ConfigFiles') }}</span>
-                </v-toolbar-title>
-            </v-toolbar>
+        <panel :title="$t('Machine.ConfigFilesPanel.ConfigFiles')" card-class="machine-configfiles-panel" icon="mdi-information">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 col-lg pr-lg-0">
@@ -134,7 +129,7 @@
                     </tr>
                 </template>
             </v-data-table>
-        </v-card>
+        </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
@@ -157,32 +152,21 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-<!--            <v-dialog v-model="editor.showLoader" hide-overlay persistent width="300">
-            <v-card color="primary" dark >
-                <v-card-text>
-                    {{ $t('Machine.ConfigFilesPanel.PleaseStandBy') }}
-                    <v-progress-linear indeterminate color="white" class="mb-0" ></v-progress-linear>
-                </v-card-text>
-            </v-card>
-        </v-dialog>-->
         <v-dialog v-model="dialogImage.show" hide-overlay fullscreen @keydown.esc="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;" class="fill-height">
-          <v-card style="position: relative;">
-            <v-toolbar dark color="primary">
-              <v-btn icon dark @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
-              <img v-if="dialogImage.item.url" :src="dialogImage.item.url" style="max-height: 100%; width: auto;" alt="image" />
-              <div v-else-if="dialogImage.item.svg"
-                   class="fill-width"
-                   v-html="dialogImage.item.svg"></div>
-            </div>
-          </v-card>
+            <panel :title="dialogImage.item.name" card-class="maschine-configfiles-imageviewer-dialog" toolbar-color="primary" style="position: relative;">
+                <template v-slot:buttons-left>
+                    <v-btn icon dark @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </template>
+                <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
+                    <img v-if="dialogImage.item.url" :src="dialogImage.item.url" style="max-height: 100%; width: auto;" alt="image" />
+                    <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg"></div>
+                </div>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.RenameFile') }}</v-card-title>
+            <panel :title="$t('Machine.ConfigFilesPanel.RenameFile')" card-class="maschine-configfiles-rename-file-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogRenameFile.newName"></v-text-field>
                 </v-card-text>
@@ -191,11 +175,10 @@
                     <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="renameFileAction">{{ $t('Machine.ConfigFilesPanel.Rename') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.CreateFile') }}</v-card-title>
+            <panel :title="$t('Machine.ConfigFilesPanel.CreateFile')" card-class="maschine-configfiles-create-file-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogCreateFile.name"></v-text-field>
                 </v-card-text>
@@ -204,11 +187,10 @@
                     <v-btn color="" text @click="dialogCreateFile.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="createFileAction">{{ $t('Machine.ConfigFilesPanel.Create') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.CreateDirectory') }}</v-card-title>
+            <panel :title="$t('Machine.ConfigFilesPanel.CreateDirectory')" card-class="maschine-configfiles-create-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogCreateDirectory.name"></v-text-field>
                 </v-card-text>
@@ -217,11 +199,10 @@
                     <v-btn color="" text @click="dialogCreateDirectory.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Machine.ConfigFilesPanel.Create') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.RenameDirectory') }}</v-card-title>
+            <panel :title="$t('Machine.ConfigFilesPanel.RenameDirectory')" card-class="maschine-configfiles-rename-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogRenameDirectory.newName"></v-text-field>
                 </v-card-text>
@@ -230,11 +211,10 @@
                     <v-btn color="" text @click="dialogRenameDirectory.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
                     <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Machine.ConfigFilesPanel.Rename') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
-            <v-card>
-                <v-card-title class="headline">{{ $t('Machine.ConfigFilesPanel.DeleteDirectory') }}</v-card-title>
+            <panel :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')" card-class="maschine-configfiles-delete-directory-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p class="mb-0">{{ $t('Machine.ConfigFilesPanel.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
                 </v-card-text>
@@ -243,7 +223,7 @@
                     <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
                     <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Machine.ConfigFilesPanel.Delete') }}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
         <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span><strong>{{ $t('Machine.ConfigFilesPanel.Uploading') }} {{ uploadSnackbar.filename }}</strong><br />
@@ -272,6 +252,7 @@ import {readOnlyRoots} from '@/store/variables'
 import {findDirectory, formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import axios from 'axios'
+import Panel from '@/components/ui/Panel.vue'
 
 interface contextMenu {
     shown: boolean
@@ -286,6 +267,7 @@ interface contextMenu {
 interface dialogImageObject {
     show: boolean
     item: {
+        name: string | null,
         url: string | null,
         svg: string | null
     }
@@ -322,7 +304,9 @@ interface draggingFile {
     item: FileStateFile
 }
 
-@Component
+@Component({
+    components: {Panel}
+})
 export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     sortFiles = sortFiles
     formatFilesize = formatFilesize
@@ -353,6 +337,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private dialogImage: dialogImageObject = {
         show: false,
         item: {
+            name: null,
             url: null,
             svg: null
         }
@@ -551,6 +536,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             if (!item.isDirectory) {
                 if (['png', 'jpeg', 'jpg', 'gif', 'bmp', 'tif', 'svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
                     const url = `${this.apiUrl}/server/files${this.absolutePath}/${item.filename}?t=${Date.now()}`
+                    this.dialogImage.item.name = item.filename
                     if (['svg'].includes(item.filename.split('.').pop()?.toLowerCase() ?? '')) {
                         fetch(url)
                             .then(res => res.text())
