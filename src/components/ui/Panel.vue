@@ -18,6 +18,9 @@
     .v-card.panel .v-toolbar__content {
         padding-right: 0;
     }
+    .v-card.panel .v-toolbar__content .subheading {
+        user-select: none;
+    }
 </style>
 
 <template>
