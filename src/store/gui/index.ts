@@ -20,6 +20,7 @@ export const getDefaultState = (): GuiState => {
         dashboard: {
             boolTempchart: true,
             boolBigThumbnail: true,
+            macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],
             control: {
