@@ -5,14 +5,10 @@
 <template>
     <div>
         <v-dialog v-model="showDialog" width="900" persistent :fullscreen="isMobile">
-            <v-card style="overflow: hidden;">
-                <v-toolbar flat dense>
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-selection-remove</v-icon>{{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="hideDialog"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
+            <panel :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')" icon="mdi-selection-remove" card-class="exclude-object-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn small class="minwidth-0 px-2" text @click="hideDialog"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-container>
                     <v-row>
                         <v-col class="col-12 col-sm-6 pb-0 pb-sm-3">
@@ -33,7 +29,7 @@
                         </v-col>
                     </v-row>
                 </v-container>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -44,8 +40,9 @@ import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import StatusPanelExcludeObjectDialogMap from '@/components/panels/StatusPanelExcludeObjectDialogMap.vue'
 import StatusPanelExcludeObjectDialogList from '@/components/panels/StatusPanelExcludeObjectDialogList.vue'
+import Panel from '@/components/ui/Panel.vue'
 @Component({
-    components: {StatusPanelExcludeObjectDialogList, StatusPanelExcludeObjectDialogMap}
+    components: {Panel, StatusPanelExcludeObjectDialogList, StatusPanelExcludeObjectDialogMap}
 })
 export default class StatusPanelExcludeObjectDialog extends Mixins(BaseMixin) {
     private hoverName = ''
