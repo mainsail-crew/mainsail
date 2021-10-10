@@ -26,7 +26,7 @@ To customise your printer.cfg you will need to SSH to your Pi and:
 
 ```yml
 cd ~/klipper_config
-sudo nano printer.cfg
+nano printer.cfg
 ```
 Then follow the [Klipper documentation](https://klipper3d.org) to construct your printer.cfg file. 
 
