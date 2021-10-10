@@ -142,7 +142,7 @@
         <v-dialog v-model="detailsDialog.boolShow" :max-width="600" persistent>
             <panel :title="$t('History.JobDetails')" icon="mdi-update" card-class="history-detail-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="detailsDialog.boolShow = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="px-0">
                     <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">

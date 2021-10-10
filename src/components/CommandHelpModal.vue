@@ -19,7 +19,7 @@
         <template #default>
             <panel :title="$t('Console.CommandList')" icon="mdi-help" card-class="command-help-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn small class="minwidth-0 px-2" text @click="isOpen = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-title>
                     <v-row>

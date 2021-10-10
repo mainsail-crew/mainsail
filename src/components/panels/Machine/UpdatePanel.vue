@@ -10,7 +10,7 @@
             <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn small class="px-2 minwidth-0" color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon small>mdi-refresh</v-icon></v-btn>
+                        <v-btn icon color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
@@ -110,7 +110,7 @@
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
                 <template v-slot:buttons>
-                    <v-btn small class="minwidth-0 px-2" color="grey darken-3" @click="commitsOverlay.bool = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
                     <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
