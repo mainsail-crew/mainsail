@@ -33,7 +33,7 @@
         <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0" color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                    <v-btn text small class="px-2 minwidth-0" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -57,10 +57,10 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn small class="px-2 minwidth-0" color="primary" @click="cooldown()" v-if="presets.length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
+            <v-btn small class="px-2 minwidth-0" text @click="cooldown()" v-if="presets.length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn small class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                    <v-btn small class="px-2 minwidth-0" text v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
