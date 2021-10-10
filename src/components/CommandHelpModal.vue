@@ -17,14 +17,10 @@
             </v-btn>
         </template>
         <template #default>
-            <v-card>
-                <v-toolbar flat dense>
-                    <v-toolbar-title>
-                        <span class="subheading"><v-icon left>mdi-help</v-icon>{{ $t('Console.CommandList') }}</span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0 px-2" color="grey darken-2" @click="isOpen = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
+            <panel :title="$t('Console.CommandList')" icon="mdi-help" card-class="command-help-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn small class="minwidth-0 px-2" text @click="isOpen = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-title>
                     <v-row>
                         <v-col>
@@ -34,6 +30,7 @@
                                 outlined
                                 hide-details
                                 clearable
+                                dense
                             ></v-text-field>
                         </v-col>
                     </v-row>
@@ -59,7 +56,7 @@
                         </v-row>
                     </v-card-text>
                 </perfect-scrollbar>
-            </v-card>
+            </panel>
         </template>
     </v-dialog>
 </template>
@@ -69,8 +66,10 @@ import BaseMixin from './mixins/base'
 import {CommandHelp} from '@/store/printer/types'
 import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import Component from 'vue-class-component'
-
-@Component
+import Panel from '@/components/ui/Panel.vue'
+@Component({
+    components: {Panel}
+})
 export default class CommandHelpModal extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false }) isMini!: boolean;
     cmdListSearch = '';
