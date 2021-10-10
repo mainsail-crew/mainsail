@@ -7,17 +7,17 @@
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
                     <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
-                    <template v-if="isMobile">
-                        <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
-                            <v-tab
-                                v-for="(tab, index) of tabTitles" v-bind:key="index"
-                                :href="'#'+tab.name"
-                                class="justify-start">
-                                <v-icon left v-html="tab.icon"></v-icon>
-                                {{ tab.title }}
-                            </v-tab>
-                        </v-tabs>
-                    </template>
+                </template>
+                <template v-if="isMobile">
+                    <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
+                        <v-tab
+                            v-for="(tab, index) of tabTitles" v-bind:key="index"
+                            :href="'#'+tab.name"
+                            class="justify-start">
+                            <v-icon left v-html="tab.icon"></v-icon>
+                            {{ tab.title }}
+                        </v-tab>
+                    </v-tabs>
                 </template>
                 <v-row>
                     <v-col class="col-auto pr-0" v-if="!isMobile">
