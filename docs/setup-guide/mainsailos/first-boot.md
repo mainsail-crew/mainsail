@@ -20,12 +20,19 @@ Power on the Pi and leave it to boot.
 
 Initially the green LED on the Pi will be extremely active. After some time it will only intermittently flicker, indicating it has likely completed the boot sequence.
 
+The web ui should now be ready to access on your local network:
+
+```
+http://mainsailos.local
+http://<IP address of your pi>
+```
+
 ## Mainsail.cfg
 
  **Important:** Include the mainsail.cfg into your printer.cfg
 {: .warning}
 
-Mainsail will not work unless Klipper is told to include its configuration. This can be achieved either by placing the contents of mainsail.cfg into your printer.cfg fi>
+Mainsail will not work unless Klipper is told to include its configuration. This can be achieved either by placing the contents of mainsail.cfg into your printer.cfg.
 
 To do this, open the default printer.cfg in the Mainsail web GUI:
 
@@ -38,22 +45,7 @@ Add the following line:
 ```yml
 [include mainsail.cfg]
 ```
-Save the file (ctrl+s) and exit nano (ctrl+x).
-
-Reboot the Pi, or restart the klipper service for it to take affect.
-
-```bash
-sudo reboot
-or 
-sudo systemctl restart klipper
-```
-
-The web ui should now be ready to access on your local network:
-
-```
-http://mainsailos.local
-http://<IP address of your pi>
-```
+and click on the "Save & Restart" button.
 
 ## Updates
 
