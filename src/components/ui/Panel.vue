@@ -24,7 +24,9 @@
             </v-toolbar-title>
             <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
-            <slot name="buttons"></slot>
+            <v-toolbar-items v-if="hasButtonsSlot">
+                <slot name="buttons"></slot>
+            </v-toolbar-items>
             <v-icon
                 v-if="collapsible"
                 @click="expand = !expand"
@@ -66,6 +68,10 @@ export default class Panel extends Mixins(BaseMixin) {
 
     get hasIconSlot() {
         return !! this.$slots.icon
+    }
+
+    get hasButtonsSlot() {
+        return !! this.$slots.buttons
     }
 }
 </script>
