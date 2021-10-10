@@ -1,21 +1,28 @@
 <style lang="scss" scoped>
+
     .expanded header.v-toolbar{
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
     }
 
-    .expand-button:focus:after {
-        opacity: 0 !important;
+    .btn-collapsible i::before {
+        transition: transform 500ms;
     }
 
-    .icon-rotate-180 {
+    .icon-rotate-180:before {
         transform: rotate(180deg);
+    }
+</style>
+
+<style lang="scss">
+    .collapsible .v-toolbar__content {
+        padding-right: 0;
     }
 </style>
 
 <template>
     <v-card :class="cardClass+' '+(marginBottom ? 'mb-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
-        <v-toolbar flat dense :color="toolbarColor" :class="toolbarClass" >
+        <v-toolbar flat dense :color="toolbarColor" :class="getToolbarClass" >
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>
@@ -24,14 +31,15 @@
             </v-toolbar-title>
             <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
-            <v-toolbar-items v-if="hasButtonsSlot">
+            <v-toolbar-items v-if="hasButtonsSlot || collapsible">
                 <slot name="buttons"></slot>
+                <v-btn
+                    v-if="collapsible"
+                    @click="expand = !expand"
+                    icon
+                    class="btn-collapsible"
+                ><v-icon :class="(!expand ? 'icon-rotate-180' : '')">mdi-chevron-down</v-icon></v-btn>
             </v-toolbar-items>
-            <v-icon
-                v-if="collapsible"
-                @click="expand = !expand"
-                :class="'ml-3 expand-button '+(!expand ? 'icon-rotate-180' : '')"
-            >mdi-chevron-down</v-icon>
         </v-toolbar>
         <v-expand-transition>
             <div v-show="expand || !collapsible">
@@ -72,6 +80,14 @@ export default class Panel extends Mixins(BaseMixin) {
 
     get hasButtonsSlot() {
         return !! this.$slots.buttons
+    }
+
+    get getToolbarClass() {
+        let output = this.toolbarClass
+
+        if (this.collapsible) output += ' collapsible'
+
+        return output
     }
 }
 </script>
