@@ -41,6 +41,7 @@
                     @click="expand = !expand"
                     icon
                     class="btn-collapsible"
+                    :ripple="true"
                 ><v-icon :class="(!expand ? 'icon-rotate-180' : '')">mdi-chevron-down</v-icon></v-btn>
             </v-toolbar-items>
         </v-toolbar>
