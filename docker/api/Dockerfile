@@ -18,8 +18,7 @@ RUN echo 'node ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/node && \
     chown node:node -R ./
 #if systemd is installed, we need to backup the current systemctl command
 #RUN mv /bin/systemctl /bin/systemctl.bak
-COPY api/systemctl /bin/systemctl
-RUN chmod +x /bin/systemctl
+RUN ln -s /bin/true /bin/systemctl
 
 USER node
 
@@ -53,8 +52,12 @@ RUN make python
 RUN make build -j8
 
 USER root
+RUN rm /bin/systemctl
 
 RUN apt-get -y install supervisor
+
+RUN ln -s /usr/bin/supervisorctl /bin/systemctl
+
 RUN mkdir -p /var/log/supervisor
 COPY api/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY api/start-api /bin/start-api
