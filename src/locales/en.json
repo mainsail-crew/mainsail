@@ -250,7 +250,8 @@
 			"FeedAmountIn": "Feed amount in",
 			"FeedrateIn": "Feedrate in",
 			"Retract": "Retract",
-			"Extrude": "Extrude"
+			"Extrude": "Extrude",
+			"Goto": "GO"
 		},
 		"MacrosPanel": {
 			"Headline": "Macros"

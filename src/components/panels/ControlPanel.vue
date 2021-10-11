@@ -32,6 +32,7 @@
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>
             <control-panel-bars-control v-else></control-panel-bars-control>
+            <control-panel-goto-control></control-panel-goto-control>
             <control-panel-extruder v-if="existsExtruder"></control-panel-extruder>
         </v-container>
     </panel>
@@ -44,11 +45,12 @@ import ControlPanelExtruder from '@/components/panels/ControlPanelExtruder.vue'
 import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossControl.vue'
 import ControlPanelBarsControl from '@/components/panels/ControlPanelBarsControl.vue'
 import ControlPanelCircleControl from '@/components/panels/ControlPanelCircleControl.vue'
+import ControlPanelGotoControl from '@/components/panels/ControlPanelGoToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
         Panel,
-        ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
+        ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder, ControlPanelGotoControl}
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
     get controlStyle() {
