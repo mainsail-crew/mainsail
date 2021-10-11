@@ -10,7 +10,7 @@
             <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon color="primary" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn icon color="primary" :ripple="true" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
