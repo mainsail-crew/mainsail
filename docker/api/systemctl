@@ -1,5 +1,0 @@
-#!/bin/bash
-if pgrep -x "supervisord" >/dev/null; then
-    supervisorctl $@
-fi
-exit 0
