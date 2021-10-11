@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import {MutationTree} from 'vuex'
-import {GuiState} from '@/store/gui/types'
+import {GuiState, GuiStateMacrogroup} from '@/store/gui/types'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -162,5 +162,28 @@ export const mutations: MutationTree<GuiState> = {
     removeClosePanel(state, payload) {
         const index = state.dashboard.nonExpandPanels.indexOf(payload.name)
         if (index > -1) state.dashboard.nonExpandPanels.splice(index, 1)
+    },
+
+    storeMacrogroup(state, payload) {
+        let newIndex = 0
+
+        if (state.dashboard.macrogroups.length) {
+            const lastGroup = state.dashboard.macrogroups.sort((a: GuiStateMacrogroup, b: GuiStateMacrogroup) => {
+                if (a.index === null) return -1
+                if (b.index === null) return 1
+
+                return b.index - a.index
+            })[0]
+
+            newIndex = (lastGroup.index) + 1
+        }
+        payload.index = newIndex
+
+        state.dashboard.macrogroups.push(payload)
+    },
+
+    destroyMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.index === payload)
+        if (index !== -1) state.dashboard.macrogroups.splice(index, 1)
     }
 }

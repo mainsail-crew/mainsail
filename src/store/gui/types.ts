@@ -39,3 +39,24 @@ export interface GuiStateConsoleFilter {
     name: string
     regex: string
 }
+
+export interface GuiStateMacrogroup {
+    index: number | null
+    name: string
+    color: 'primary' | 'warning' | 'info' | 'danger' | 'custom'
+    colorCustom?: string
+    showInStandby: boolean
+    showInPrinting: boolean
+    showInPause: boolean
+    macros?: GuiStateMacrogroupMacros[]
+}
+
+export interface GuiStateMacrogroupMacros {
+    pos: number
+    name: string
+    color: 'group' | 'primary' | 'warning' | 'info' | 'danger' | 'custom'
+    colorCustom?: string
+    showInStandby: boolean
+    showInPrinting: boolean
+    showInPause: boolean
+}

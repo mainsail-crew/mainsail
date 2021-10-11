@@ -539,7 +539,22 @@
 			"General": "General",
 			"Management": "Management",
 			"Simple": "Simple",
-			"Expert": "Expert"
+			"Expert": "Expert",
+			"NoGroups": "No group found...",
+			"Macrogroups": "Groups",
+			"CreateGroup": "Create Group",
+			"Name": "Name",
+			"ShowInStandby": "Show in Standby-State",
+			"ShowInPrinting": "Show in Printing-State",
+			"ShowInPause": "Show in Pause-State",
+			"Color": "Color",
+			"CustomColor": "Custom Color",
+			"Primary": "primary",
+			"Info": "info",
+			"Warning": "warning",
+			"Danger": "danger",
+			"Custom": "custom",
+			"StoreGroup": "Store Group"
 		},
 		"ControlTab": {
 			"Control": "Control",

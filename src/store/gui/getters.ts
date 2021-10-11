@@ -106,5 +106,9 @@ export const getters: GetterTree<GuiState, any> = {
 
     getPanelExpand: (state) => (name: string) => {
         return !state.dashboard.nonExpandPanels?.includes(name) ?? true
+    },
+
+    getAllMacroGroups: (state) => {
+        return caseInsensitiveSort(state.dashboard.macrogroups ?? [], 'name')
     }
 }

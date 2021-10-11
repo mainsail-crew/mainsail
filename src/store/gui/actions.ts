@@ -225,5 +225,21 @@ export const actions: ActionTree<GuiState, RootState> = {
             name: 'dashboard.'+name,
             value: newVal
         })
-    }
+    },
+
+    storeMarcogroup({ commit, dispatch, state }, payload) {
+        commit('storeMacrogroup', payload)
+        dispatch('updateSettings', {
+            keyName: 'dashboard.macrogroups',
+            newVal: state.dashboard.macrogroups
+        })
+    },
+
+    destroyMacrogroup({ commit, dispatch, state }, payload) {
+        commit('destroyMacrogroup', payload)
+        dispatch('updateSettings', {
+            keyName: 'dashboard.macrogroups',
+            newVal: state.dashboard.macrogroups
+        })
+    },
 }

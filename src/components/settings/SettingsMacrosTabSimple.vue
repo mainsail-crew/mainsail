@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <v-card-text>
         <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
         <template v-if="macros.length">
             <div v-for="(macro, index) in macros" v-bind:key="index">
@@ -17,7 +17,7 @@
                 </v-col>
             </v-row>
         </template>
-    </div>
+    </v-card-text>
 </template>
 
 <script lang="ts">

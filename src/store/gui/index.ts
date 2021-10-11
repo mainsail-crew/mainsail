@@ -22,6 +22,7 @@ export const getDefaultState = (): GuiState => {
             boolBigThumbnail: true,
             macroManagement: 'simple',
             hiddenMacros: [],
+            macrogroups: [],
             hiddenTempChart: [],
             control: {
                 style: 'bars',
