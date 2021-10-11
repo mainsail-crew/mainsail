@@ -7,7 +7,7 @@
         v-if="socketIsConnected"
         icon="mdi-webcam"
         :title="$t('Panels.WebcamPanel.Headline')"
-        :collapsible="true"
+        :collapsible="(this.$route.fullPath !== '/cam')"
         card-class="webcam-panel"
     >
         <template v-slot:buttons v-if="webcams.length > 1">
