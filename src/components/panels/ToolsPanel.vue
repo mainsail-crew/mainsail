@@ -57,7 +57,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn text @click="cooldown()" v-if="presets.length === 0"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
+            <v-btn text @click="cooldown()" v-if="presets.length === 0" color="primary"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
