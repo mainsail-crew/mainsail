@@ -1,0 +1,3 @@
+#!/bin/bash
+chown -hR node:node /home/node/klipper_logs
+/usr/bin/supervisord

@@ -20,3 +20,4 @@ docker/config/*.cfg
 docker/config/*.conf
 docker/config/.mainsail.json
 docker/config/.theme
+.env
