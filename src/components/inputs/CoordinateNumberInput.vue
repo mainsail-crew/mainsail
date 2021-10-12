@@ -1,9 +1,12 @@
 <style scoped>
-
+    .coordinate >>> .v-input__slot {
+        min-height: 36px !important;
+    }
 </style>
 
 <template>
     <v-text-field
+        class="coordinate"
         v-model="coordinate"
         :prefix="label"
         @change="changed"
