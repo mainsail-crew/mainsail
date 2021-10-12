@@ -6,7 +6,7 @@ path: ~/gcode
 
 [mcu]
 serial: /tmp/pseudoserial
-pin_map: arduino
+restart_method: arduino
 baud: 250000
 
 [stepper_x]
@@ -110,70 +110,3 @@ max_z_accel: 100
 # G28 Y0
 # G28 X0
 # G28 Z0
-
-[gcode_macro PAUSE]
-rename_existing: BASE_PAUSE
-default_parameter_X: 230    #edit to your park position
-default_parameter_Y: 230    #edit to your park position
-default_parameter_Z: 10     #edit to your park position
-default_parameter_E: 1      #edit to your retract length
-gcode:
-    SAVE_GCODE_STATE NAME=PAUSE_state
-    BASE_PAUSE
-    G91
-    G1 E-{E} F2100
-    G1 Z{Z}
-    G90
-    G1 X{X} Y{Y} F6000
-[gcode_macro RESUME]
-rename_existing: BASE_RESUME
-default_parameter_E: 1      #edit to your retract length
-gcode:
-    G91
-    G1 E{E} F2100
-    G90
-    RESTORE_GCODE_STATE NAME=PAUSE_state MOVE=1
-    BASE_RESUME
-[gcode_macro CANCEL_PRINT]
-rename_existing: BASE_CANCEL_PRINT
-gcode:
-    TURN_OFF_HEATERS
-    CLEAR_PAUSE
-    SDCARD_RESET_FILE
-    BASE_CANCEL_PRINT
-
-[gcode_macro START_PRINT]
-default_parameter_BED_TEMP: 103.3
-default_parameter_EXTRUDER_TEMP: 103.3
-gcode:
-# Start bed heating
-    M140 S103.3
-# Use absolute coordinates
-    G90
-# Reset the G-Code Z offset (adjust Z offset if needed)
-    SET_GCODE_OFFSET Z=0.0
-# Home the printer
-    G28
-# Move the nozzle near the bed
-    G1 Z5 F3000
-# Move the nozzle very close to the bed
-    G1 Z0.15 F300
-# Wait for bed to reach temperature
-    M190 S103.3
-# Set and wait for nozzle to reach temperature
-    M109 S103.3
-
-[gcode_macro END_PRINT]
-gcode:
-# Turn off bed, extruder, and fan
-    M140 S0
-    M104 S0
-    M106 S0
-# Move nozzle away from print while retracting
-    G91
-    G1 X-2 Y-2 E-3 F300
-# Raise nozzle by 10mm
-    G1 Z10 F3000
-    G90
-# Disable steppers
-    M84

@@ -1,4 +1,4 @@
-FROM debian:buster AS base
+FROM python:3-slim-buster AS base
 
 RUN groupadd --force -g 1000 node
 RUN useradd -ms /bin/bash --no-user-group -g 1000 -u 1000 node
@@ -23,7 +23,7 @@ RUN ln -s /bin/true /bin/systemctl
 USER node
 
 WORKDIR /home/node
-RUN git clone https://github.com/KevinOConnor/klipper
+RUN git clone https://github.com/klipper3d/klipper
 WORKDIR /home/node/klipper
 COPY api/simulavr.config /home/node/klipper/.config
 RUN make
