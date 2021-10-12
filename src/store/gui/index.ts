@@ -157,6 +157,7 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'filename',
                 sortDesc: false,
                 showHiddenFiles: false,
+                hideBackupFiles: false
             }
         },
         editor: {
