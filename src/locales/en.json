@@ -451,7 +451,6 @@
 			"PackagesCanBeUpgraded": "packages can be upgraded",
 			"OSPackages": "OS-Packages",
 			"Commits": "Commits",
-			"CommittedAt": "committed at",
 			"UpToDate": "up-to-date",
 			"Detached": "detached",
 			"Update": "update",
@@ -459,7 +458,11 @@
 			"Dirty": "dirty",
 			"Invalid": "invalid",
 			"Unknown": "unknown",
-			"ERROR": "ERROR"
+			"ERROR": "ERROR",
+			"CommitsOnDate": "Commits on {date}",
+			"CommittedYesterday": "committed yesterday",
+			"CommittedDaysAgo": "committed {days} days ago",
+			"CommittedOnDate": "committed on {date}"
 		},
 		"SystemPanel": {
 			"SystemLoad": "System Loads",
