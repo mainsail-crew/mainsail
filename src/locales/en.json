@@ -397,6 +397,7 @@
 			"ConfigFiles": "Config Files",
 			"SetupCurrentList": "Setup current list",
 			"HiddenFiles": "Hidden files",
+			"HideBackupFiles": "Hide backup files",
 			"CurrentPath": "Current path",
 			"Files": "Files",
 			"FreeDisk": "Free disk",
