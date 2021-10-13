@@ -43,6 +43,9 @@
                                 <v-list-item class="minHeight36">
                                     <v-checkbox class="mt-0" hide-details v-model="showHiddenFiles" :label="$t('Machine.ConfigFilesPanel.HiddenFiles')"></v-checkbox>
                                 </v-list-item>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" hide-details v-model="hideBackupFiles" :label="$t('Machine.ConfigFilesPanel.HideBackupFiles')"></v-checkbox>
+                                </v-list-item>
                             </v-list>
                         </v-menu>
                     </v-col>
@@ -468,6 +471,14 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.showHiddenFiles', value: newVal })
     }
 
+    get hideBackupFiles() {
+        return this.$store.state.gui.settings.configfiles.hideBackupFiles
+    }
+
+    set hideBackupFiles(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.hideBackupFiles', value: newVal })
+    }
+
     get sortBy() {
         return this.$store.state.gui.settings.configfiles.sortBy
     }
@@ -526,6 +537,11 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
         if (!this.showHiddenFiles) {
             this.files = this.files.filter(file => file.filename.substr(0, 1) !== '.')
+        }
+
+        if (this.hideBackupFiles) {
+            const backupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
+            this.files = this.files.filter(file => !file.filename.match(backupFileMatcher))
         }
     }
 
@@ -806,5 +822,8 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     @Watch('showHiddenFiles')
     showHiddenFilesChanged() { this.loadPath() }
+
+    @Watch('hideBackupFiles')
+    hideBackupFilesChanged() { this.loadPath() }
 }
 </script>
