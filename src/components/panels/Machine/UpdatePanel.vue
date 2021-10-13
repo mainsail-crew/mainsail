@@ -1,6 +1,59 @@
-<style scoped>
+<style lang="scss" scoped>
     .cursor--pointer {
         cursor: pointer;
+    }
+
+    ul.commits {
+        list-style: none;
+
+        li {
+            border-color: rgb(48, 54, 61);
+            border-style: solid;
+            border-width: 1px;
+            border-bottom-width: 0;
+
+            &:first-child {
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+            }
+
+            &:last-child {
+                border-bottom-width: 1px;
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+        }
+    }
+</style>
+
+<style lang="scss">
+    .v-timeline.groupedCommits {
+        .v-timeline-item__dot--small {
+            width: 18px;
+            height: 14px;
+            left: calc(50% - 9px);
+
+            &:before {
+                display: block;
+                content: ' ';
+                position: relative;
+                width: 18px;
+                height: 2px;
+                top: 8px;
+                background: rgba(255, 255, 255, 0.50);
+                z-index: 1;
+            }
+        }
+
+        .v-timeline-item__inner-dot {
+            background-color: #1e1e1e !important;
+            border: 2px solid rgba(255, 255, 255, 0.50) !important;
+            width: 8px;
+            height: 8px;
+            position: relative;
+            z-index: 2;
+            margin-left: 5px
+        }
     }
 </style>
 
@@ -116,15 +169,25 @@
                     <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
                         <v-row>
                             <v-col class="pt-3 pl-0">
-                                <v-timeline class="updateManager" align-top dense >
-                                    <v-timeline-item color="primary" small v-for="commit of commitsOverlay.commits" v-bind:key="commit.sha">
+                                <v-timeline class="groupedCommits" align-top dense >
+                                    <v-timeline-item small v-for="group of commitsOverlay.groupedCommits" v-bind:key="group.date.getTime()">
                                         <v-row class="pt-0">
-                                            <v-col>
-                                                <a class="font-weight-bold white--text" :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.subject }}</a><br />
-                                                <p v-if="commit.message" class="mb-0" v-html="convertCommitMessage(commit.message)"></p>
-                                                <div class="caption">
-                                                    <strong>{{ commit.author }}</strong> {{ $t('Machine.UpdatePanel.CommittedAt') }} {{ new Date(commit.date * 1000).toLocaleString() }}
-                                                </div>
+                                            <v-col class="pr-12">
+                                                <h3 class="caption">{{ $t('Machine.UpdatePanel.CommitsOnDate', {date : new Date(group.date).toLocaleDateString(language, dateOptions) }) }}</h3>
+                                                <ul class="commits mt-3 pl-0">
+                                                    <li class="commit px-3 py-2" v-for="commit of group.commits" v-bind:key="commit.sha">
+                                                        <v-row>
+                                                            <v-col>
+                                                                <h4 class="subtitle-2 text--white mb-0" >{{ commit.subject }}<v-chip outlined label x-small class="ml-2 px-2" v-if="!openCommits.includes(commit.sha)" @click="openCommits.push(commit.sha)"><v-icon small>mdi-dots-horizontal</v-icon></v-chip></h4>
+                                                                <p v-if="openCommits.includes(commit.sha)" class="caption text--secondary mb-2" style="white-space: pre;" v-html="convertCommitMessage(commit.message)"></p>
+                                                                <p class="caption mb-0"><span class="font-weight-bold text-decoration-none white--text">{{ commit.author}}</span> <span>{{ convertCommitDate(commit.date) }}</span></p>
+                                                            </v-col>
+                                                            <v-col class="col-auto pt-4 ">
+                                                                <v-chip outlined label small :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.sha.substr(0, 6)}}</v-chip>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </li>
+                                                </ul>
                                             </v-col>
                                         </v-row>
                                     </v-timeline-item>
@@ -145,16 +208,45 @@ import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import semver from 'semver'
 import Panel from '@/components/ui/Panel.vue'
+import {ServerUpdateMangerStateVersionInfoGitRepoCommits} from '@/store/server/updateManager/types'
+import VueI18n from 'vue-i18n'
+import DateTimeFormatOptions = VueI18n.DateTimeFormatOptions
+
+interface groupedCommit {
+    date: Date,
+    commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
+}
+
+interface commitsOverlay {
+    bool: boolean
+    owner: string
+    modul: string
+    commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
+    groupedCommits: groupedCommit[]
+}
+
 @Component({
     components: {Panel}
 })
 export default class UpdatePanel extends Mixins(BaseMixin) {
+    private openCommits: string[] = []
 
-    private commitsOverlay = {
+    private dateOptions: DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    }
+
+    private commitsOverlay: commitsOverlay = {
         bool: false,
         owner: '',
         modul: '',
         commits: [],
+        groupedCommits: []
+    }
+
+    get language() {
+        return this.$store.state.gui.general.language ?? 'en'
     }
 
     get enableUpdateManager() {
@@ -344,22 +436,54 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             'owner' in object &&
             object.commits_behind.length
         ) {
+            this.openCommits = []
             this.commitsOverlay.owner = object.owner
             this.commitsOverlay.modul = key
             this.commitsOverlay.commits = object.commits_behind
+            this.commitsOverlay.groupedCommits = []
+
+            let lastDate: null | Date = null
+            let tmpCommits: ServerUpdateMangerStateVersionInfoGitRepoCommits[] = []
+
+            object.commits_behind.forEach((commit: any) => {
+                const commitDate = new Date(commit.date * 1000)
+                if (lastDate === null ||
+                    commitDate.getFullYear() !== lastDate.getFullYear() ||
+                    commitDate.getMonth() !== lastDate.getMonth() ||
+                    commitDate.getDay() !== lastDate.getDay()
+                ) {
+
+                    if (tmpCommits.length && lastDate !== null) {
+                        this.commitsOverlay.groupedCommits.push({
+                            date: lastDate,
+                            commits: [...tmpCommits]
+                        })
+                    }
+
+                    lastDate = commitDate
+                    tmpCommits = []
+                }
+
+                tmpCommits.push(commit)
+            })
+
+            if (lastDate && tmpCommits.length) {
+                this.commitsOverlay.groupedCommits.push({
+                    date: lastDate,
+                    commits: [...tmpCommits]
+                })
+            }
 
             this.commitsOverlay.bool = true
+
+            window.console.log(this.commitsOverlay.groupedCommits)
         }
     }
 
     convertCommitMessage(message: string) {
-        const lastIndex = message.lastIndexOf('Signed-off-by:')
-        if (lastIndex !== -1) {
-            message = message.substr(0, lastIndex)
-        }
-
-        message = this.trimEndLineBreak(message)
+        //message = this.trimEndLineBreak(message)
         message.replace(/(?:\r\n|\r|\n)/g, '<br />')
+        //message.replaceAll('\\n', '<br />')
 
         return message
     }
@@ -371,6 +495,18 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         }
 
         return message
+    }
+
+    convertCommitDate(timestamp: number) {
+        const commitDay = new Date(timestamp * 1000)
+        commitDay.setHours(0,0,0,0)
+        const todayDay = new Date()
+        todayDay.setHours(0,0,0,0)
+        const diff = Math.floor(todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24)
+
+        if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
+        else if (diff < 29) return this.$t('Machine.UpdatePanel.CommittedDaysAgo', { days: diff })
+        else return this.$t('Machine.UpdatePanel.CommittedOnDate', { date: commitDay.toLocaleDateString(this.language, this.dateOptions) })
     }
 }
 </script>
