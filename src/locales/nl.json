@@ -84,7 +84,7 @@
 		"DoYouWantToStartFilename": "Wil je {filename} starten?",
 		"Download": "Download",
 		"Downloading": "Downloaden",
-		"DropFilesToAddGcode": "Sleep bestanden om gcode toe te voegen",
+		"DropFilesToAddGcode": "Sleep bestanden om G-Code toe te voegen",
 		"EditFile": "Bewerk bestand",
 		"Empty": "Leeg",
 		"FilamentUsage": "Filamentgebruik",
@@ -120,7 +120,7 @@
 		"SuccessfullyRenamed": "{filename} succesvol hernoemd.",
 		"SuccessfullyUploaded": "Upload van {filename} succesvol!",
 		"Total": "Totaal",
-		"UploadNewGcode": "Upload nieuwe Gcode",
+		"UploadNewGcode": "Upload nieuwe G-Code",
 		"Uploading": "Uploaden",
 		"Used": "Gebruikt",
 		"Yes": "Ja"
@@ -551,7 +551,7 @@
 			"EditHeadline": "Bewerk Preset",
 			"Name": "Naam",
 			"PreheatPresets": "Voorverwarm Presets",
-			"PresetInfo": "Je moet een minimum doeltemperatuur of custom gcode instellen.",
+			"PresetInfo": "Je moet een minimum doeltemperatuur of custom G-Code instellen.",
 			"StoreButton": "Sla preset op",
 			"UpdateButton": "Update preset.",
 			"UpdateCooldown": "Update afkoelen"
