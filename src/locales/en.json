@@ -547,6 +547,7 @@
 			"NoGroups": "No group found...",
 			"Macrogroups": "Groups",
 			"CreateGroup": "Create Group",
+			"EditGroup": "Edit Group",
 			"Name": "Name",
 			"ShowInStandby": "Show in Standby-State",
 			"ShowInPrinting": "Show in Printing-State",

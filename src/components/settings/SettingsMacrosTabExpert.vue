@@ -1,13 +1,16 @@
 
 <template>
     <div>
-        <template v-if="boolFormCreate === false">
+        <template v-if="boolFormCreate === false && boolFormEdit === false">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.Macrogroups') }}</h3>
                 <template v-if="groups.length">
                     <div v-for="(group, index) in groups" v-bind:key="index">
                         <v-divider class="my-2" v-if="index"></v-divider>
                         <settings-row :title="group.name" sub-title="blabla" :dynamicSlotWidth="true">
+                            <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
+                                <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                            </v-btn>
                             <v-btn small outlined @click="deleteMacrogroup(group.index)" class="ml-3 minwidth-0 px-2" color="error">
                                 <v-icon small>mdi-delete</v-icon>
                             </v-btn>
@@ -78,6 +81,55 @@
                 </v-card-actions>
             </v-form>
         </template>
+        <template v-else-if="boolFormEdit">
+            <v-card-text>
+                <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.EditGroup') }}</h3>
+                <settings-row :title="$t('Settings.MacrosTab.Name')">
+                    <v-text-field
+                        v-model="editGroup.name"
+                        hide-details="auto"
+                        :rules="[rules.required, rules.groupUnique]"
+                        dense
+                        outlined
+                    ></v-text-field>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.MacrosTab.Color')">
+                    <v-select v-model="editGroup.color" :items="groupColors" outlined dense hide-details></v-select>
+                </settings-row>
+                <template v-if="form.color === 'custom'">
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
+                        <v-menu bottom left offset-y :close-on-content-click="false">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn v-bind="attrs" v-on="on" :color="editGroup.colorCustom" class="minwidth-0 px-5" small></v-btn>
+                            </template>
+                            <v-color-picker
+                                :value="editGroup.colorCustom"
+                                hide-mode-switch
+                                mode="rgba"
+                                @update:color="updateEditFormCustomColor"
+                            ></v-color-picker>
+                        </v-menu>
+                    </settings-row>
+                </template>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.MacrosTab.ShowInStandby')" :dynamicSlotWidth="true">
+                    <v-switch :input-value="editGroup.showInStandby" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.MacrosTab.ShowInPause')" :dynamicSlotWidth="true">
+                    <v-switch :input-value="editGroup.showInPause" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.MacrosTab.ShowInPrinting')" :dynamicSlotWidth="true">
+                    <v-switch :input-value="editGroup.showInPrinting" hide-details class="mt-0"></v-switch>
+                </settings-row>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-end">
+                <v-btn text @click="boolFormEdit = false">{{ $t('Settings.Cancel')}}</v-btn>
+            </v-card-actions>
+        </template>
     </div>
 </template>
 
@@ -111,6 +163,9 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         showInPrinting: true,
         showInPause: true,
     }
+
+    private boolFormEdit = false
+    private editGroup: GuiStateMacrogroup | null = null
 
     get groupColors() {
         return [
@@ -162,6 +217,12 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         this.form.colorCustom = this.clearColorObject(newVal)
     }
 
+    @Debounce(500)
+    updateEditFormCustomColor(newVal: any) {
+        window.console.log(newVal)
+        //this.editGroup?.colorCustom = this.clearColorObject(newVal)
+    }
+
     clearForm() {
         this.form.index = null
         this.form.name = ''
@@ -188,12 +249,22 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         }
     }
 
+    editMacrogroup(group: GuiStateMacrogroup) {
+        this.boolFormEdit = true
+        this.editGroup = group
+    }
+
     deleteMacrogroup(id: number) {
         this.$store.dispatch('gui/destroyMacrogroup',  id)
     }
 
     @Watch('boolFormCreate')
     updatedBoolFormCreate(newVal: boolean) {
+        this.updateShowGeneral(!newVal)
+    }
+
+    @Watch('boolFormEdit')
+    updatedBoolFormEdit(newVal: boolean) {
         this.updateShowGeneral(!newVal)
     }
 }
