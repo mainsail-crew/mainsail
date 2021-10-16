@@ -41,7 +41,7 @@ export interface GuiStateConsoleFilter {
 }
 
 export interface GuiStateMacrogroup {
-    index: number | null
+    id: string | null
     name: string
     color: 'primary' | 'warning' | 'info' | 'danger' | 'custom'
     colorCustom?: string

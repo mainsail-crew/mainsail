@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import {MutationTree} from 'vuex'
-import {GuiState, GuiStateMacrogroup} from '@/store/gui/types'
+import {GuiState, GuiStateMacrogroup, GuiStateMacrogroupMacros} from '@/store/gui/types'
+import { v4 as uuid } from 'uuid'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -165,25 +166,53 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     storeMacrogroup(state, payload) {
-        let newIndex = 0
-
-        if (state.dashboard.macrogroups.length) {
-            const lastGroup = state.dashboard.macrogroups.sort((a: GuiStateMacrogroup, b: GuiStateMacrogroup) => {
-                if (a.index === null) return -1
-                if (b.index === null) return 1
-
-                return b.index - a.index
-            })[0]
-
-            newIndex = (lastGroup.index) + 1
-        }
-        payload.index = newIndex
+        payload.id = uuid()
 
         state.dashboard.macrogroups.push(payload)
     },
 
     destroyMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.index === payload)
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload)
         if (index !== -1) state.dashboard.macrogroups.splice(index, 1)
+    },
+
+    addMacroToMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+
+            const newMacro: GuiStateMacrogroupMacros = {
+                pos: 1,
+                name: payload.macro,
+                color: 'group',
+                colorCustom: '#fff',
+                showInStandby: true,
+                showInPrinting: true,
+                showInPause: true
+            }
+
+            if (macros.length) newMacro.pos = Math.max(...macros.map((m: GuiStateMacrogroupMacros) => m.pos)) + 1
+            macros.push(newMacro)
+
+            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+        }
+    },
+
+    removeMacroFromMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+            const deletedMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
+            if (deletedMacroIndex !== -1) {
+                const oldPos = macros[deletedMacroIndex].pos
+                macros.splice(deletedMacroIndex, 1)
+
+                macros.filter((macro: GuiStateMacrogroupMacros) => macro.pos > oldPos).forEach((macro: GuiStateMacrogroupMacros) => {
+                    macro.pos = macro.pos - 1
+                })
+            }
+
+            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+        }
     }
 }

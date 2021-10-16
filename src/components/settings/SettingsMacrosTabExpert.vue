@@ -125,6 +125,43 @@
                 <settings-row :title="$t('Settings.MacrosTab.ShowInPrinting')" :dynamicSlotWidth="true">
                     <v-switch :input-value="editGroup.showInPrinting" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.GroupMacros') }}</h3>
+                <template v-if="editGroup.macros && editGroup.macros.length">
+                    <template v-for="(macro, index) in editGroup.macros">
+                        <v-divider class="my-2" v-if="index" v-bind:key="'groupMacro_deliver_'+index"></v-divider>
+                        <settings-row :title="macro.name" :sub-title="getMacroDescription(macro.name)" v-bind:key="'groupMacro_macro_'+index" :dynamicSlotWidth="true">
+                            <v-btn small outlined @click="removeMacroFromGroup(macro)" class="ml-3 minwidth-0 px-2" color="error">
+                                <v-icon small>mdi-delete</v-icon>
+                            </v-btn>
+                        </settings-row>
+                    </template>
+                </template>
+                <template v-else>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosTab.NoMacrosInGroup') }}</p>
+                        </v-col>
+                    </v-row>
+                </template>
+                <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
+                <template v-if="availableMacros.length">
+                    <template v-for="(macro, index) in availableMacros">
+                        <v-divider class="my-2" v-if="index" v-bind:key="'availableMacro_deliver_'+index"></v-divider>
+                        <settings-row :title="macro.name" :sub-title="macro.description" v-bind:key="'availableMacro_macro_'+index" :dynamicSlotWidth="true">
+                            <v-btn small outlined class="ml-3" @click="addMacroToGroup(macro)">
+                                <v-icon left small>mdi-plus</v-icon> {{ $t('Settings.MacrosTab.Add') }}
+                            </v-btn>
+                        </settings-row>
+                    </template>
+                </template>
+                <template v-else>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosTab.NoAvailableMacros') }}</p>
+                        </v-col>
+                    </v-row>
+                </template>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="boolFormEdit = false">{{ $t('Settings.Cancel')}}</v-btn>
@@ -138,14 +175,14 @@
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiStateMacrogroup} from '@/store/gui/types'
+import {GuiStateMacrogroup, GuiStateMacrogroupMacros} from '@/store/gui/types'
 import {Debounce} from 'vue-debounce-decorator'
+import {PrinterStateMacro} from '@/store/printer/types'
 
 @Component({
     components: {SettingsRow}
 })
 export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
-
     private rules = {
         required: (value: string) => value !== '' || 'required',
         groupUnique: (value: string) => !this.existsGroupName(value) || 'Name already exists',
@@ -155,7 +192,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     private boolFormCreateValid = false
 
     private form: GuiStateMacrogroup = {
-        index: null,
+        id: null,
         name: '',
         color: 'primary',
         colorCustom: '#000',
@@ -165,7 +202,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     private boolFormEdit = false
-    private editGroup: GuiStateMacrogroup | null = null
+    private editGroupId = ''
 
     get groupColors() {
         return [
@@ -192,12 +229,28 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         ]
     }
 
+    get allMacros() {
+        return this.$store.getters['printer/getAllMacros'] ?? []
+    }
+
+    get availableMacros() {
+        return this.allMacros.filter((m: GuiStateMacrogroupMacros) => !this.editGroupUsedMacros.includes(m.name))
+    }
+
     get groups() {
         return this.$store.getters['gui/getAllMacroGroups'] ?? []
     }
 
+    get editGroupUsedMacros() {
+        return this.editGroup?.macros?.map((m: GuiStateMacrogroupMacros) => m.name) ?? []
+    }
+
+    get editGroup(): GuiStateMacrogroup | null {
+        return this.$store.getters['gui/getMacroGroup'](this.editGroupId)
+    }
+
     existsGroupName(name: string) {
-        return (this.groups.findIndex((group: GuiStateMacrogroup) => group.name === name && group.index != this.form.index) >= 0)
+        return (this.groups.findIndex((group: GuiStateMacrogroup) => group.name === name && group.id != this.form.id) >= 0)
     }
 
     clearColorObject(color: any): string {
@@ -224,7 +277,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     clearForm() {
-        this.form.index = null
+        this.form.id = null
         this.form.name = ''
         this.form.color = 'primary'
         this.form.colorCustom = '#000'
@@ -239,7 +292,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
 
     storeGroup() {
         if (this.boolFormCreateValid) {
-            if (this.form.index !== null) {
+            if (this.form.id !== null) {
                 window.console.log('update group')
                 //this.$store.dispatch('gui/updatePreset',  this.form )
             } else this.$store.dispatch('gui/storeMarcogroup',  this.form )
@@ -251,11 +304,30 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
 
     editMacrogroup(group: GuiStateMacrogroup) {
         this.boolFormEdit = true
-        this.editGroup = group
+        this.editGroupId = group.id
     }
 
     deleteMacrogroup(id: number) {
         this.$store.dispatch('gui/destroyMacrogroup',  id)
+    }
+
+    addMacroToGroup(macro: PrinterStateMacro) {
+        this.$store.dispatch('gui/addMacroToMacrogroup', {
+            group: this.editGroupId,
+            macro: macro.name
+        })
+    }
+
+    removeMacroFromGroup(macro: GuiStateMacrogroupMacros) {
+        this.$store.dispatch('gui/removeMacroFromMacrogroup', {
+            group: this.editGroupId,
+            macro: macro.name
+        })
+    }
+
+    getMacroDescription(macroname: string) {
+        const macro = this.allMacros.filter((m: PrinterStateMacro) => m.name === macroname)
+        return macro?.description ?? null
     }
 
     @Watch('boolFormCreate')

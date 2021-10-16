@@ -559,7 +559,12 @@
 			"Warning": "warning",
 			"Danger": "danger",
 			"Custom": "custom",
-			"StoreGroup": "Store Group"
+			"StoreGroup": "Store Group",
+			"GroupMacros": "Group Macros",
+			"AvailableMacros": "Available Macros",
+			"Add": "add",
+			"NoMacrosInGroup": "No macros in this group.",
+			"NoAvailableMacros": "No available macros."
 		},
 		"ControlTab": {
 			"Control": "Control",

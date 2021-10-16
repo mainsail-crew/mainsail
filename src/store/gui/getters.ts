@@ -1,6 +1,6 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
-import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from '@/store/gui/types'
+import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup, GuiStatePreset} from '@/store/gui/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -110,5 +110,9 @@ export const getters: GetterTree<GuiState, any> = {
 
     getAllMacroGroups: (state) => {
         return caseInsensitiveSort(state.dashboard.macrogroups ?? [], 'name')
+    },
+
+    getMacroGroup: (state) => (id: string) => {
+        return state.dashboard.macrogroups.find((group: GuiStateMacrogroup) => group.id === id)
     }
 }
