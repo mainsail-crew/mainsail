@@ -40,3 +40,11 @@ The Cura plugin "Cura2Moonraker" is required for this. You can find this plugin 
 here: [https://github.com/emtrax-ltd/Cura2MoonrakerPlugin](https://github.com/emtrax-ltd/Cura2MoonrakerPlugin)
 
 ![Cura](../assets/img/additional/Cura-thumbnails.png)
+
+### ideaMaker (since v4.2.1)
+
+To enable thumbnails, open the `Advanced` tab in the `printer settings`, enable the `GCode Thumbnails for Octoprint and Mainsail` option and
+enter your prefered *square format* image size in the `Resolution` fields (e.g. `400 X 400`).
+It's necessary that the thumbnail width and height resolution is equal.
+
+![ideaMaker](../assets/img/additional/IdeaMaker4.2.1-thumbnails.png)
