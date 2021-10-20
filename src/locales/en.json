@@ -49,6 +49,19 @@
 			"DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
 		}
 	},
+	"EmergencyStopDialog": {
+		"EmergencyStop": "Emergency Stop",
+		"AreYouSure": "Are you sure?",
+		"No": "No",
+		"Yes": "Yes"
+	},
+	"PowerDeviceChangeDialog": {
+		"TurnDeviceOn": "Turn {device} on",
+		"TurnDeviceOff": "Turn {device} off",
+		"AreYouSure": "Are you sure?",
+		"No": "No",
+		"Yes": "Yes"
+	},
     "ConnectionDialog": {
         "Connecting": "Connecting to {host}",
         "Failed": "Connection failed",
@@ -491,6 +504,10 @@
 			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
 			"DisplayZOffset": "Show Z-Offset-Panel",
 			"DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
+			"ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
+			"ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
+			"ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
+			"ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
 			"FactoryReset": "Factory reset",
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
