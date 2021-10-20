@@ -12,6 +12,8 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            confirmOnEmergencyStop: false,
+            confirmOnPowerDeviceChange: false,
         },
         theme: {
             logo: defaultLogoColor,
