@@ -33,6 +33,10 @@ export class WebSocketClient {
 
     connect(): void {
         this.store?.dispatch('socket/setData', { isConnecting: true })
+
+        if (this.instance) {
+            this.instance.close()
+        }
         this.instance = new WebSocket(this.url)
 
         this.instance.onopen = () => {
