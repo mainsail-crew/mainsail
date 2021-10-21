@@ -22,6 +22,14 @@
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.GeneralTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
                     <v-btn @click="dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
                 </settings-row>
@@ -131,6 +139,22 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     set displayZOffsetStandby(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.displayZOffsetStandby', value: newVal })
+    }
+
+    get confirmOnEmergencyStop() {
+        return this.$store.state.gui.general.confirmOnEmergencyStop
+    }
+
+    set confirmOnEmergencyStop(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnEmergencyStop', value: newVal })
+    }
+
+    get confirmOnPowerDeviceChange() {
+        return this.$store.state.gui.general.confirmOnPowerDeviceChange
+    }
+
+    set confirmOnPowerDeviceChange(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
     }
 
     resetMainsail() {
