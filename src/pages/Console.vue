@@ -5,6 +5,9 @@
     height: calc(100vh - 180px);
 }
 
+.gcode-command-field {
+    font-family: monospace;
+}
 </style>
 
 <template>
