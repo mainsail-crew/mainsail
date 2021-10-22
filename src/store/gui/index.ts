@@ -14,6 +14,8 @@ export const getDefaultState = (): GuiState => {
             displayZOffsetStandby: false,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
+            calcEstimateTime: ['file', 'filament'],
+            calcEtaTime: ['file', 'filament', 'slicer'],
         },
         theme: {
             logo: defaultLogoColor,
