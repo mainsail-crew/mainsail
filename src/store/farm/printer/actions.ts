@@ -184,7 +184,6 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     },
 
     getMetadataCurrentFile({ commit }, payload) {
-        window.console.log('get farm metadata', payload)
         commit('setCurrentFile', payload)
     },
 
