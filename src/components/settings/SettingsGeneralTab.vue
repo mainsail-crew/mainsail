@@ -10,6 +10,14 @@
                     <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEstimateTime')" :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
+                    <v-select v-model="calcEstimateTime" :items="calcEstimateItems" multiple hide-details dense outlined></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEtaTime')" :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -115,6 +123,37 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         })
 
         return languages
+    }
+
+    get calcEstimateItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+        ]
+    }
+
+    get calcEstimateTime() {
+        return this.$store.state.gui.general.calcEstimateTime
+    }
+
+    set calcEstimateTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEstimateTime', value: newVal })
+    }
+
+    get calcEtaTimeItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+            { value: 'slicer', text: 'Slicer' },
+        ]
+    }
+
+    get calcEtaTime() {
+        return this.$store.state.gui.general.calcEtaTime
+    }
+
+    set calcEtaTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEtaTime', value: newVal })
     }
 
     get boolBigThumbnail() {
