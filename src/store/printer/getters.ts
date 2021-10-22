@@ -638,6 +638,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
             if (!getters.checkConfig(module)) missingModules.push(module)
         })
 
+        if (!getters.checkConfig('display') && !getters.checkConfig('display_status'))
+            missingModules.push('display_status')
+
         return missingModules
     },
 
