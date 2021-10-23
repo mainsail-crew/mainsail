@@ -162,7 +162,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
             output.push({
                 name: 'ETA',
-                value: h+':'+m,
+                value: getters.estimated_time_eta > 0 ? h+':'+m : '--',
                 file: getters.estimated_time_file,
                 filament: getters.estimated_time_filament,
                 slicer: getters.estimated_time_slicer,
@@ -212,18 +212,21 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     estimated_time_eta: (state, getters) => {
         let time = 0
         let timeCount = 0
+        const boolFileCalc = state.data.gui?.general?.calcEtaTime?.includes('file') ?? true
+        const boolFilamentCalc = state.data.gui?.general?.calcEtaTime?.includes('filament') ?? true
+        const boolSlicerCalc = state.data.gui?.general?.calcEtaTime?.includes('slicer') ?? true
 
-        if (getters.estimated_time_file > 0) {
+        if (boolFileCalc && getters.estimated_time_file > 0) {
             time += parseInt(getters.estimated_time_file)
             timeCount++
         }
 
-        if (getters.estimated_time_filament > 0) {
+        if (boolFilamentCalc && getters.estimated_time_filament > 0) {
             time += parseInt(getters.estimated_time_filament)
             timeCount++
         }
 
-        if (getters.estimated_time_slicer > 0) {
+        if (boolSlicerCalc && getters.estimated_time_slicer > 0) {
             time += parseInt(getters.estimated_time_slicer)
             timeCount++
         }

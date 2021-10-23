@@ -386,8 +386,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get rangeY(): number[] {
-        const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
-        const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
+        const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum ?? [0,0]
+        const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum ?? [0,0]
 
         return [axis_minimum[1] ?? 0, axis_maximum[1] ?? 0]
     }

@@ -10,6 +10,14 @@
                     <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEstimateTime')" :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
+                    <v-select v-model="calcEstimateTime" :items="calcEstimateItems" multiple hide-details dense outlined></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEtaTime')" :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -20,6 +28,14 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.GeneralTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
@@ -109,6 +125,37 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         return languages
     }
 
+    get calcEstimateItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+        ]
+    }
+
+    get calcEstimateTime() {
+        return this.$store.state.gui.general.calcEstimateTime
+    }
+
+    set calcEstimateTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEstimateTime', value: newVal })
+    }
+
+    get calcEtaTimeItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+            { value: 'slicer', text: 'Slicer' },
+        ]
+    }
+
+    get calcEtaTime() {
+        return this.$store.state.gui.general.calcEtaTime
+    }
+
+    set calcEtaTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEtaTime', value: newVal })
+    }
+
     get boolBigThumbnail() {
         return this.$store.state.gui.dashboard.boolBigThumbnail
     }
@@ -131,6 +178,22 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     set displayZOffsetStandby(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.displayZOffsetStandby', value: newVal })
+    }
+
+    get confirmOnEmergencyStop() {
+        return this.$store.state.gui.general.confirmOnEmergencyStop
+    }
+
+    set confirmOnEmergencyStop(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnEmergencyStop', value: newVal })
+    }
+
+    get confirmOnPowerDeviceChange() {
+        return this.$store.state.gui.general.confirmOnPowerDeviceChange
+    }
+
+    set confirmOnPowerDeviceChange(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
     }
 
     resetMainsail() {

@@ -12,6 +12,10 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            confirmOnEmergencyStop: false,
+            confirmOnPowerDeviceChange: false,
+            calcEstimateTime: ['file', 'filament'],
+            calcEtaTime: ['file', 'filament', 'slicer'],
         },
         theme: {
             logo: defaultLogoColor,

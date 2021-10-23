@@ -638,6 +638,9 @@ export const getters: GetterTree<PrinterState, RootState> = {
             if (!getters.checkConfig(module)) missingModules.push(module)
         })
 
+        if (!getters.checkConfig('display') && !getters.checkConfig('display_status'))
+            missingModules.push('display_status')
+
         return missingModules
     },
 
@@ -687,16 +690,18 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return 0
     },
 
-    getEstimatedTimeAvg: (state, getters) => {
+    getEstimatedTimeAvg: (state, getters, rootState) => {
         let time = 0
         let timeCount = 0
+        const boolFileCalc = rootState.gui?.general?.calcEstimateTime?.includes('file') ?? false
+        const boolFilamentCalc = rootState.gui?.general?.calcEstimateTime?.includes('filament') ?? false
 
-        if (getters.getEstimatedTimeFile > 0) {
+        if (boolFileCalc && getters.getEstimatedTimeFile > 0) {
             time += parseInt(getters.getEstimatedTimeFile)
             timeCount++
         }
 
-        if (getters.getEstimatedTimeFilament > 0) {
+        if (boolFilamentCalc && getters.getEstimatedTimeFilament > 0) {
             time += parseInt(getters.getEstimatedTimeFilament)
             timeCount++
         }
@@ -706,21 +711,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return 0
     },
 
-    getEstimatedTimeETA: (state, getters) => {
+    getEstimatedTimeETA: (state, getters, rootState) => {
         let time = 0
         let timeCount = 0
+        const boolFileCalc = rootState.gui?.general?.calcEtaTime?.includes('file') ?? false
+        const boolFilamentCalc = rootState.gui?.general?.calcEtaTime?.includes('filament') ?? false
+        const boolSlicerCalc = rootState.gui?.general?.calcEtaTime?.includes('slicer') ?? false
 
-        if (getters.getEstimatedTimeFile > 0) {
+        if (boolFileCalc && getters.getEstimatedTimeFile > 0) {
             time += parseInt(getters.getEstimatedTimeFile)
             timeCount++
         }
 
-        if (getters.getEstimatedTimeFilament > 0) {
+        if (boolFilamentCalc && getters.getEstimatedTimeFilament > 0) {
             time += parseInt(getters.getEstimatedTimeFilament)
             timeCount++
         }
 
-        if (getters.getEstimatedTimeSlicer > 0) {
+        if (boolSlicerCalc && getters.getEstimatedTimeSlicer > 0) {
             time += parseInt(getters.getEstimatedTimeSlicer)
             timeCount++
         }
