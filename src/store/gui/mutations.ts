@@ -198,6 +198,18 @@ export const mutations: MutationTree<GuiState> = {
         }
     },
 
+    updateMacroFromMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+            const updateMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
+            if (updateMacroIndex !== -1) {
+                macros[updateMacroIndex][payload.option] = payload.value
+                Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+            }
+        }
+    },
+
     removeMacroFromMacrogroup(state, payload) {
         const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
         if (index !== -1) {
@@ -213,6 +225,13 @@ export const mutations: MutationTree<GuiState> = {
             }
 
             Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+        }
+    },
+
+    updateMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1 && payload.option in state.dashboard.macrogroups[index]) {
+            Vue.set(state.dashboard.macrogroups[index], payload.option, payload.value)
         }
     }
 }

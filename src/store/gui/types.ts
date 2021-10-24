@@ -43,7 +43,7 @@ export interface GuiStateConsoleFilter {
 export interface GuiStateMacrogroup {
     id: string | null
     name: string
-    color: 'primary' | 'warning' | 'info' | 'danger' | 'custom'
+    color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'custom'
     colorCustom?: string
     showInStandby: boolean
     showInPrinting: boolean
@@ -54,8 +54,7 @@ export interface GuiStateMacrogroup {
 export interface GuiStateMacrogroupMacros {
     pos: number
     name: string
-    color: 'group' | 'primary' | 'warning' | 'info' | 'danger' | 'custom'
-    colorCustom?: string
+    color: 'group' | 'primary' | 'secondary' | 'success' | 'warning' | 'error'
     showInStandby: boolean
     showInPrinting: boolean
     showInPause: boolean

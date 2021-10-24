@@ -1,5 +1,6 @@
 import { ServerStateEvent } from '@/store/server/types'
 import {FileStateFile} from '@/store/files/types'
+import {PrinterStateMacroParams} from '@/store/printer/types'
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
     if (folder !== undefined && folder !== null && dirArray.length) {
@@ -163,4 +164,28 @@ export function formatTime(date: Date): string {
 
 
     return hours+':'+minutes+':'+seconds
+}
+
+export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
+    const paramRegex = /{%?.*?params.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?(.*?)'?\))?(?:\|(int|string))?.*?%?}/
+
+    let params = paramRegex.exec(macro.gcode)
+    let currentMatch = macro.gcode
+    let ret: PrinterStateMacroParams = null
+    while(params) {
+        if (ret === null) {
+            ret = {}
+        }
+        const name = params[1]
+        const t: 'int' | 'string' | 'double' | null = (params[2] ?? params[4] ?? null) as 'int' | 'string' | 'double' | null
+        const def = params[3] ?? null
+        ret[`${name}`] = {
+            type: t,
+            default: def
+        }
+        currentMatch = currentMatch.replace(params[0], '')
+        params = paramRegex.exec(currentMatch)
+    }
+
+    return ret
 }

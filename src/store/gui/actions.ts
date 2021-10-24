@@ -235,6 +235,17 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
+    updateMacrogroup({ commit, dispatch, state }, payload) {
+        if (payload.group) {
+            commit('updateMacrogroup', payload)
+            dispatch('updateSettings', {
+                keyName: 'dashboard.macrogroups',
+                newVal: state.dashboard.macrogroups
+            })
+
+        }
+    },
+
     destroyMacrogroup({ commit, dispatch, state }, payload) {
         commit('destroyMacrogroup', payload)
         dispatch('updateSettings', {
@@ -246,6 +257,17 @@ export const actions: ActionTree<GuiState, RootState> = {
     addMacroToMacrogroup({ commit, dispatch, state }, payload) {
         if (payload.group) {
             commit('addMacroToMacrogroup', payload)
+            dispatch('updateSettings', {
+                keyName: 'dashboard.macrogroups',
+                newVal: state.dashboard.macrogroups
+            })
+
+        }
+    },
+
+    updateMacroFromMacrogroup({ commit, dispatch, state }, payload) {
+        if (payload.group) {
+            commit('updateMacroFromMacrogroup', payload)
             dispatch('updateSettings', {
                 keyName: 'dashboard.macrogroups',
                 newVal: state.dashboard.macrogroups
