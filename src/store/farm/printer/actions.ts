@@ -169,10 +169,10 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     getData({ commit, dispatch }, payload) {
         commit('setData', payload)
 
-        if (payload.print_stats?.filename !== '') {
+        if (payload.status.print_stats?.filename !== '') {
             dispatch('sendObj', {
                 method: 'server.files.metadata',
-                params: { filename: payload.print_stats?.filename },
+                params: { filename: payload.status.print_stats?.filename },
                 action: 'getMetadataCurrentFile'
             })
         }

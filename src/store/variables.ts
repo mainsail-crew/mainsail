@@ -55,7 +55,6 @@ export const initableServerComponents = [
 export const checkKlipperConfigModules = [
     'virtual_sdcard',
     'pause_resume',
-    'display_status',
     'gcode_macro pause',
     'gcode_macro resume',
     'gcode_macro cancel_print',
