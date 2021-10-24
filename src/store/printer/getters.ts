@@ -5,10 +5,35 @@ import {
     PrinterStateFan, PrinterStateFilamentSensors,
     PrinterStateHeater, PrinterStateTemperatureFan,
     PrinterStateMiscellaneous,
-    PrinterStateSensor, PrinterStateMacro
+    PrinterStateSensor, PrinterStateMacro, PrinterStateMacroParams
 } from '@/store/printer/types'
 import {caseInsensitiveSort, formatFrequency} from '@/plugins/helpers'
 import {RootState} from '@/store/types'
+
+const paramRegex = /{%?.*?params.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?(.*?)'?\))?(?:\|(int|string))?.*?%?}/
+const paramTypes = [ 'int', 'string', 'double' ]
+
+function getParams(macro: { gcode: string }): PrinterStateMacroParams {
+    let params = paramRegex.exec(macro.gcode)
+    let currentMatch = macro.gcode
+    let ret: PrinterStateMacroParams = null
+    while(params) {
+        if (ret === null) {
+            ret = {}
+        }
+        const name = params[1]
+        const t: 'int' | 'string' | 'double' | null = (params[2] ?? params[4] ?? null) as 'int' | 'string' | 'double' | null
+        const def = params[3] ?? null
+        ret[`${name}`] = {
+            type: t,
+            default: def
+        }
+        currentMatch = currentMatch.replace(params[0], '')
+        params = paramRegex.exec(currentMatch)
+    }
+    console.log(macro.gcode, ret)
+    return ret
+}
 
 export const getters: GetterTree<PrinterState, RootState> = {
 
@@ -64,7 +89,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     array.push({
                         'name': prop.replace('gcode_macro ', ''),
                         'description': state.configfile.config[prop].description ?? null,
-                        'prop': state.configfile.config[prop]
+                        'prop': state.configfile.config[prop],
+                        'params': getParams(state.configfile.config[prop])
                     })
                 }
             })
@@ -371,7 +397,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
                     'description': state.configfile.config[prop].description ?? null,
-                    'prop': state.configfile.config[prop]
+                    'prop': state.configfile.config[prop],
+                    'params': getParams(state.configfile.config[prop])
                 })
             }
         })
