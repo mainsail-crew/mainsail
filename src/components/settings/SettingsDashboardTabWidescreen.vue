@@ -13,30 +13,34 @@
                     <v-card class="mx-auto" max-width="300" tile >
                         <v-list dense>
                             <v-list-item>
-                                <v-list-item-icon>
-                                    <v-icon>mdi-information</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>{{ $t('Panels.StatusPanel.Headline') }}</v-list-item-title>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-icon color="grey lighten-1">mdi-lock</v-icon>
-                                </v-list-item-action>
+                                <v-row>
+                                    <v-col class="col-auto pr-0">
+                                        <v-icon>mdi-information</v-icon>
+                                    </v-col>
+                                    <v-col>
+                                        {{ $t('Panels.StatusPanel.Headline') }}
+                                    </v-col>
+                                    <v-col class="col-auto">
+                                        <v-icon color="grey lighten-1">mdi-lock</v-icon>
+                                    </v-col>
+                                </v-row>
                             </v-list-item>
                             <draggable v-model="widescreenLayout1" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout1">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
-                                        <v-list-item-icon>
-                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
-                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ getPanelName(element.name) }}</v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
-                                        </v-list-item-action>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            </v-col>
+                                            <v-col class="pr-0">
+                                                {{ getPanelName(element.name) }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            </v-col>
+                                        </v-row>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -49,17 +53,19 @@
                             <draggable v-model="widescreenLayout2" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout2">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
-                                        <v-list-item-icon>
-                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
-                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ getPanelName(element.name) }}</v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
-                                        </v-list-item-action>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            </v-col>
+                                            <v-col class="pr-0">
+                                                {{ getPanelName(element.name) }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            </v-col>
+                                        </v-row>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -72,17 +78,19 @@
                             <draggable v-model="widescreenLayout3" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="widescreenViewport">
                                 <template v-for="(element) in widescreenLayout3">
                                     <v-list-item :key="'item-widescreen-'+element.name" link>
-                                        <v-list-item-icon>
-                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
-                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ getPanelName(element.name) }}</v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState3(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState3(element.name,false)">mdi-checkbox-marked</v-icon>
-                                        </v-list-item-action>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            </v-col>
+                                            <v-col class="pr-0">
+                                                {{ getPanelName(element.name) }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState3(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-else color="primary" @click.stop="changeState3(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            </v-col>
+                                        </v-row>
                                     </v-list-item>
                                 </template>
                             </draggable>
