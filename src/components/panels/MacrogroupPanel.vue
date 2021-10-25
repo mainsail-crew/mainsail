@@ -13,13 +13,12 @@
         <v-card-text class="py-2">
             <v-row>
                 <v-col class="text-center">
-                    <v-btn v-for="(macro, index) in macros"
-                       :key="index"
-                       small
-                       :color="getColor(macro)"
-                       class="mx-1 my-1"
-                       :loading="loadings.includes('macro_'+macro.name)"
-                       @click="doSendMacro(macro.name)">{{ macro.name.replace(/_/g, " ") }}</v-btn>
+                    <macro-button v-for="(macro, index) in macros"
+                        :key="index"
+                        :macro="macro"
+                        :color="getColor(macro)"
+                        class="mx-1 my-1"
+                    />
                 </v-col>
             </v-row>
         </v-card-text>
@@ -31,8 +30,9 @@ import {Component, Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import {GuiStateMacrogroupMacros} from '@/store/gui/types'
+import MacroButton from '@/components/inputs/MacroButton.vue'
 @Component({
-    components: {Panel}
+    components: {MacroButton, Panel}
 })
 export default class MacrogroupPanel extends Mixins(BaseMixin) {
 
@@ -70,11 +70,6 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
         }
 
         return macro.color
-    }
-
-    doSendMacro(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_'+gcode })
     }
 }
 </script>
