@@ -115,16 +115,16 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.ShowInStandby')" :dynamicSlotWidth="true">
-                    <v-switch :input-value="editGroup.showInStandby" @change="updateGroupOptionShowInStandby" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.ShowInPause')" :dynamicSlotWidth="true">
-                    <v-switch :input-value="editGroup.showInPause" @change="updateGroupOptionShowInPause" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.MacrosTab.ShowInPrinting')" :dynamicSlotWidth="true">
-                    <v-switch :input-value="editGroup.showInPrinting" @change="updateGroupOptionShowInPrinting" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.MacrosTab.Status')">
+                    <v-btn small outlined @click="updateGroupOptionShowInStandby(!editGroup.showInStandby)" class="ml-3 minwidth-0 px-2" :color="editGroup.showInStandby ? '' : 'secondary'">
+                        <v-icon small>mdi-sleep</v-icon>
+                    </v-btn>
+                    <v-btn small outlined @click="updateGroupOptionShowInPause(!editGroup.showInPause)" class="ml-3 minwidth-0 px-2" :color="editGroup.showInPause ? '' : 'secondary'">
+                        <v-icon small>mdi-pause</v-icon>
+                    </v-btn>
+                    <v-btn small outlined @click="updateGroupOptionShowInPrinting(!editGroup.showInPrinting)" class="ml-3 minwidth-0 px-2" :color="editGroup.showInPrinting ? '' : 'secondary'">
+                        <v-icon small>mdi-printer-3d-nozzle</v-icon>
+                    </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.GroupMacros') }}</h3>
