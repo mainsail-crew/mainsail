@@ -185,7 +185,6 @@ export const mutations: MutationTree<GuiState> = {
                 pos: 1,
                 name: payload.macro,
                 color: 'group',
-                colorCustom: '#fff',
                 showInStandby: true,
                 showInPrinting: true,
                 showInPause: true

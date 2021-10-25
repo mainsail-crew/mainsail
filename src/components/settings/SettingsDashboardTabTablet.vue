@@ -31,7 +31,7 @@
                                             <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
+                                            <v-list-item-title>{{ getPanelName(element.name) }}</v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-action>
                                             <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
@@ -54,7 +54,7 @@
                                             <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
                                         </v-list-item-icon>
                                         <v-list-item-content>
-                                            <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
+                                            <v-list-item-title>{{ getPanelName(element.name) }}</v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-action>
                                             <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
@@ -79,7 +79,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
 import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
 @Component( {
@@ -88,12 +88,15 @@ import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
     }
 }
 )
-export default class SettingsDashboardTabTablet extends Mixins(BaseMixin) {
+export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     get tabletLayout1() {
-        return this.$store.state.gui?.dashboard?.tabletLayout1?.filter((element: any) => element !== null) ?? []
+        let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
+        panels = panels.concat(this.missingPanelsTablet)
+
+        return panels
     }
 
     set tabletLayout1(newVal) {
@@ -103,7 +106,7 @@ export default class SettingsDashboardTabTablet extends Mixins(BaseMixin) {
     }
 
     get tabletLayout2() {
-        return this.$store.state.gui?.dashboard?.tabletLayout2?.filter((element: any) => element !== null) ?? []
+        return this.$store.getters['gui/getPanels']('tabletLayout2')
     }
 
     set tabletLayout2(newVal) {

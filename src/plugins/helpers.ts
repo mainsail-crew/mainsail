@@ -36,6 +36,8 @@ export const capitalize = (str: string): string => {
 }
 
 export const convertPanelnameToIcon = (name: string): string => {
+    if (name.startsWith('macrogroup_')) return 'mdi-code-tags'
+
     switch (name) {
     case 'webcam': return 'mdi-webcam'
     case 'zoffset': return 'mdi-arrow-collapse-vertical'

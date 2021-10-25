@@ -32,7 +32,7 @@
                                         </v-list-item-icon>
                                         <v-list-item-content>
                                             <v-list-item-title>
-                                                {{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}
+                                                {{ getPanelName(element.name) }}
                                             </v-list-item-title>
                                         </v-list-item-content>
                                         <v-list-item-action>
@@ -58,7 +58,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
+import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
 import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
 @Component( {
@@ -67,12 +67,15 @@ import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
     }
 }
 )
-export default class SettingsDashboardTabMobile extends Mixins(BaseMixin) {
+export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     get mobileLayout() {
-        return this.$store.state.gui?.dashboard?.mobileLayout?.filter((element: any) => element !== null) ?? []
+        let panels = this.$store.getters['gui/getPanels']('mobileLayout')
+        panels = panels.concat(this.missingPanelsMobile)
+
+        return panels
     }
 
     set mobileLayout(newVal) {

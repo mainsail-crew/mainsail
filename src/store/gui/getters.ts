@@ -114,5 +114,14 @@ export const getters: GetterTree<GuiState, any> = {
 
     getMacroGroup: (state) => (id: string) => {
         return state.dashboard.macrogroups.find((group: GuiStateMacrogroup) => group.id === id)
+    },
+
+    getPanels: (state) => (viewport: string) => {
+        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+
+        if (state.dashboard.macroMode === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+        else panels = panels.filter((element: any) => element.name !== 'macros')
+
+        return panels
     }
 }

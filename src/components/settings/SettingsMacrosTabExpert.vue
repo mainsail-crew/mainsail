@@ -227,7 +227,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     private boolFormEdit = false
-    private editGroupId = ''
+    private editGroupId: string | null = ''
 
     get groupColors() {
         return [
