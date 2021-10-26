@@ -7,7 +7,7 @@
                 <template v-if="groups.length">
                     <div v-for="(group, index) in groups" v-bind:key="index">
                         <v-divider class="my-2" v-if="index"></v-divider>
-                        <settings-row :title="group.name" :sub-title="$tc('Settings.MacrosTab.CountMacros', group.macros.length, { count: group.macros.length })" :dynamicSlotWidth="true">
+                        <settings-row :title="group.name" :sub-title="$tc('Settings.MacrosTab.CountMacros', ('macros' in group ? group.macros.length : 0), { count: ('macros' in group ? group.macros.length : 0) })" :dynamicSlotWidth="true">
                             <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
                                 <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
                             </v-btn>
@@ -339,10 +339,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
 
     storeGroup() {
         if (this.boolFormCreateValid) {
-            if (this.form.id !== null) {
-                window.console.log('update group')
-                //this.$store.dispatch('gui/updatePreset',  this.form )
-            } else this.$store.dispatch('gui/storeMarcogroup',  this.form )
+            this.$store.dispatch('gui/storeMarcogroup',  this.form )
 
             this.clearForm()
             this.boolFormCreate = false

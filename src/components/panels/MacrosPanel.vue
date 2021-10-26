@@ -1,7 +1,3 @@
-<style lang="scss" scoped>
-
-</style>
-
 <template>
     <panel
         v-if="klipperReadyForGui && macros.length > 0"
@@ -14,7 +10,7 @@
             <v-row no-gutters v-if="macros.length">
                 <v-col class="text-center mr-fix-2 mb-fix-2">
                     <v-btn v-for="(macro, index) in macros"
-                           :key="index+99"
+                           :key="'macro_'+index"
                            small
                            color="primary"
                            class="mr-2 mb-2"

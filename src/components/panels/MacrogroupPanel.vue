@@ -14,10 +14,10 @@
             <v-row>
                 <v-col class="text-center">
                     <macro-button v-for="(macro, index) in macros"
-                        :key="index"
-                        :macro="macro"
-                        :color="getColor(macro)"
-                        class="mx-1 my-1"
+                                  :key="'macroparam_'+index"
+                                  :macro="macro"
+                                  :color="getColor(macro)"
+                                  class="mx-1 my-1"
                     />
                 </v-col>
             </v-row>
@@ -43,7 +43,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     }
 
     get macros() {
-        let macros = this.macrogroup.macros ?? []
+        let macros = this.macrogroup?.macros ?? []
         macros = macros.filter((macro: GuiStateMacrogroupMacros) => {
             return (
                 (macro.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||

@@ -266,7 +266,8 @@
 			"Extrude": "Extrude"
 		},
 		"MacrosPanel": {
-			"Headline": "Macros"
+			"Headline": "Macros",
+			"Send": "send"
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
