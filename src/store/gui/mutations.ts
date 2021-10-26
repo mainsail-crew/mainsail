@@ -166,8 +166,6 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     storeMacrogroup(state, payload) {
-        payload.id = uuid()
-
         state.dashboard.macrogroups.push(payload)
     },
 

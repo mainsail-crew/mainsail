@@ -9,7 +9,7 @@
             <v-divider class="my-2"></v-divider>
         </v-card-text>
         <template v-if="macroManagement === 'expert'">
-            <settings-macros-tab-expert @update:showGeneral="updateShowGeneral"></settings-macros-tab-expert>
+            <settings-macros-tab-expert @update:showGeneral="updateShowGeneral" @scrollToTop="scrollToTop"></settings-macros-tab-expert>
         </template>
         <template v-else>
             <settings-macros-tab-simple></settings-macros-tab-simple>
@@ -53,6 +53,10 @@ export default class SettingsMacrosTab extends Mixins(BaseMixin) {
 
     updateShowGeneral(newVal: boolean) {
         this.showGeneral = newVal
+    }
+
+    scrollToTop() {
+        this.$emit('scrollToTop')
     }
 }
 </script>

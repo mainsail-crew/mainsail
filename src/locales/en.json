@@ -581,12 +581,13 @@
 			"Warning": "warning",
 			"Error": "error",
 			"Custom": "custom",
-			"StoreGroup": "Store Group",
+			"AddGroup": "add Group",
 			"GroupMacros": "Group Macros",
 			"AvailableMacros": "Available Macros",
 			"Add": "add",
 			"NoMacrosInGroup": "No macros in this group.",
-			"NoAvailableMacros": "No available macros."
+			"NoAvailableMacros": "No available macros.",
+			"UnknownGroup": "Unknown Group"
 		},
 		"ControlTab": {
 			"Control": "Control",

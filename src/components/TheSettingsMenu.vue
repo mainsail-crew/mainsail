@@ -35,7 +35,7 @@
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
                         <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
-                            <component :is="'settings-'+activeTab+'-tab'"></component>
+                            <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
                         </perfect-scrollbar>
                     </v-col>
                 </v-row>
@@ -140,6 +140,10 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
     @Watch('activeTab')
     activeTabWatch() {
+        this.scrollToTop()
+    }
+
+    scrollToTop() {
         if (this.$refs.settingsScroll) this.$refs.settingsScroll.$el.scrollTop = 0
     }
 }

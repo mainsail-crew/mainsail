@@ -3,6 +3,7 @@ import {ActionTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
+import {v4 as uuid} from 'uuid'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit }) {
@@ -227,12 +228,16 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    storeMarcogroup({ commit, dispatch, state }, payload) {
-        commit('storeMacrogroup', payload)
+    async storeMarcogroup({ commit, dispatch, state }, payload) {
+        payload.id = uuid()
+
+        await commit('storeMacrogroup', payload)
         dispatch('updateSettings', {
             keyName: 'dashboard.macrogroups',
             newVal: state.dashboard.macrogroups
         })
+
+        return payload.id
     },
 
     updateMacrogroup({ commit, dispatch, state }, payload) {
