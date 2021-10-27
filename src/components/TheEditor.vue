@@ -6,19 +6,19 @@
 
 <template>
     <div>
-        <v-dialog v-model="show"
+        <v-dialog persistent v-model="show"
             fullscreen
             hide-overlay
             :transition="false"
             @close="close"
-            @keydown.esc="close"
+            @keydown.esc="escClose"
         >
             <v-card>
                 <v-toolbar dark color="primary">
                     <v-btn icon dark @click="close">
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
-                    <v-toolbar-title>{{ filepath ? filepath.slice(1)+"/" : "" }}{{ filename }}</v-toolbar-title>
+                    <v-toolbar-title>{{ filepath ? filepath.slice(1)+"/" : "" }}{{ filename }} {{changed}}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn>
@@ -57,6 +57,48 @@
                 </v-btn>
             </template>
         </v-snackbar>
+        <v-dialog v-model="dialogConfirmChange" persistent :width="600">
+            <v-card dark>
+                <v-toolbar flat dense color="primary">
+                    <v-toolbar-title>
+                    <span class="subheading">
+                        <v-icon class="mdi mdi-help-circle" left></v-icon> {{ $t('Editor.UnsavedChanges') }}
+                    </span>
+                    </v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn small class="minwidth-0" @click="dialogConfirmChange = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                </v-toolbar>
+                <v-card-text class="pt-3">
+                    <v-container class="pb-0">
+
+                        <v-row>
+                            <v-col>
+                                <p class="body-1 mb-2">{{ $t('Editor.UnsavedChangesMessage', {filename: filename}) }}</p>
+                                <p class="body-2">{{ $t('Editor.UnsavedChangesSubMessage') }}</p>
+                            </v-col>
+                        </v-row>
+                        <v-divider></v-divider>
+                        <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn @click="dialogConfirmChange = false">
+                                    {{ $t('Editor.Cancel') }}
+                                </v-btn>
+                                <v-btn @click="discardChanges">
+                                    {{ $t('Editor.DontSave') }}
+                                </v-btn>
+                                <template v-if="restartServiceName != null">
+                                    <v-btn @click="save(restartServiceName)">
+                                        {{ $t('Editor.SaveRestart') }}
+                                    </v-btn>
+                                </template>
+                                <v-btn color="primary" @click="save">
+                                    {{ $t('Editor.SaveClose') }}
+                                </v-btn>
+                        </v-card-actions>
+                    </v-container>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -65,14 +107,21 @@ import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {formatFilesize} from '@/plugins/helpers'
 import Codemirror from '@/components/inputs/Codemirror.vue'
+
 @Component({
     components: {Codemirror}
 })
 export default class TheEditor extends Mixins(BaseMixin) {
+    private dialogConfirmChange = false
+
     formatFilesize = formatFilesize
 
     refs!: {
         editor: any
+    }
+
+    get changed() {
+        return this.$store.state.editor.changed ? '*' : ''
     }
 
     get show() {
@@ -146,11 +195,33 @@ export default class TheEditor extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/cancelLoad')
     }
 
+    escClose() {
+        if (this.$store.state.gui.editor.escToClose)
+            this.close()
+    }
+
     close() {
+        if (this.$store.state.gui.editor.confirmUnsavedChanges)
+            this.promptUnsavedChanges()
+        else
+            this.$store.dispatch('editor/close')
+    }
+
+    discardChanges() {
+        this.dialogConfirmChange = false
         this.$store.dispatch('editor/close')
     }
 
+    promptUnsavedChanges() {
+        if (!this.$store.state.editor.changed)
+            this.$store.dispatch('editor/close')
+        else
+            this.dialogConfirmChange = true
+    }
+
     save(restartServiceName: string | null = null) {
+        this.dialogConfirmChange = false
+
         this.$store.dispatch('editor/saveFile', {
             content: this.sourcecode,
             restartServiceName: restartServiceName

@@ -105,7 +105,12 @@
 		"SaveRestart": "Save & Restart",
 		"SaveClose": "Save & close",
 		"SuccessfullySaved": "{filename} successfully saved.",
-		"FailedSave": "{filename} could not be uploaded!"
+		"FailedSave": "{filename} could not be uploaded!",
+		"UnsavedChanges": "Unsaved Changes",
+		"UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
+		"UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
+		"DontSave": "Don't save",
+		"Cancel": "Cancel"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -664,6 +669,13 @@
 			"ShowAxes": "Show Axes",
 			"MinFeed" :"Min Feed Rate",
 			"MaxFeed" : "Max Feed Rate"
+		},
+		"EditorTab": {
+			"Editor": "Editor",
+			"UseEscToClose": "Use ESC to close editor",
+			"UseEscToCloseDescription": "Allows the ESC key to close the editor",
+			"ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
+			"ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded."
 		}
 	},
 	"GCodeViewer":{

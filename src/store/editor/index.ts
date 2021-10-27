@@ -20,7 +20,9 @@ export const getDefaultState = (): EditorState => {
             total: 0,
             speed: '',
         },
-        cancelToken: null
+        cancelToken: null,
+        loadedHash: '',
+        changed: false
     }
 }
 
