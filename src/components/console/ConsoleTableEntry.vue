@@ -1,6 +1,7 @@
 <style scoped lang="scss">
     .consoleTableRow {
         font-family: 'Roboto Mono', monospace;
+        font-size: .95em;
 
         &+.consoleTableRow .col {
             border-top: 1px solid rgba(255, 255, 255, 0.12);
