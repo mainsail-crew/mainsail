@@ -33,6 +33,7 @@
     "object-assign-deep": "^0.4.0",
     "sass-loader": "^10.2.0",
     "semver": "^7.3.5",
+    "uuid": "^8.3.2",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.6",
     "vue-context": "^6.0.0",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@mdi/font": "^6.2.95",
     "@types/semver": "^7.3.8",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.29.3",
     "@vue/cli-plugin-babel": "^4.5.13",

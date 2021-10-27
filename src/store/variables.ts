@@ -80,3 +80,14 @@ export const allowedMetadata = [
 ]
 
 export const maxEventHistory = 500
+
+export const allDashboardPanels = [
+    'control',
+    'macros',
+    'miniconsole',
+    'miscellaneous',
+    'printsettings',
+    'tools',
+    'webcam',
+    'zoffset',
+]

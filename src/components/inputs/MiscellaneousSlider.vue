@@ -99,8 +99,6 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     increment() {
-        window.console.log(this.value)
-
         this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
         if (this.value < this.off_below) this.value = this.off_below
         this.sendCmd()

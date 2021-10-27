@@ -129,13 +129,23 @@ export interface PrinterStateBedMesh {
     is_active: boolean
 }
 
+export interface PrinterStateMacroParam {
+    type: 'int' | 'double' | 'string' | null,
+    default: string | null
+}
+
+export type PrinterStateMacroParams = {
+    [key: string]: PrinterStateMacroParam
+} | null
+
 export interface PrinterStateMacro {
     name: string
     description: string | null
     prop: {
         // eslint-disable-next-line
         [key: string]: any
-    }
+    },
+    params: PrinterStateMacroParams
 }
 
 export interface PrinterStateKlipperConfig {
