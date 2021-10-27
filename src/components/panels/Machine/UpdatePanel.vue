@@ -475,8 +475,6 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             }
 
             this.commitsOverlay.bool = true
-
-            window.console.log(this.commitsOverlay.groupedCommits)
         }
     }
 

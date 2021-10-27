@@ -5,7 +5,7 @@
     }
 
     .gcode-command-field {
-        font-family: monospace;
+        font-family: 'Roboto Mono', monospace;
     }
 </style>
 

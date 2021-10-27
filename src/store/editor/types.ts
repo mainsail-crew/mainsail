@@ -13,5 +13,7 @@ export interface EditorState {
         total: number
         speed: string
     },
-    cancelToken: any
+    cancelToken: any,
+    loadedHash: string,
+    changed: boolean
 }
