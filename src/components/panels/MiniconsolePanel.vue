@@ -17,63 +17,65 @@
         :collapsible="true"
         card-class="miniconsole-panel"
     >
-        <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
-            <v-row>
-                <v-col>
-                    <v-textarea
-                        v-model="gcode"
-                        :items="items"
-                        :label="$t('Panels.MiniconsolePanel.SendCode')"
-                        solo
-                        class="gcode-command-field"
-                        ref="gcodeCommandField"
-                        autocomplete="off"
-                        no-resize
-                        auto-grow
-                        :rows="rows"
-                        @keydown.enter.prevent.stop="doSend"
-                        @keyup.up="onKeyUp"
-                        @keyup.down="onKeyDown"
-                        @keydown.tab="getAutocomplete"
-                        hide-details
-                        outlined
-                        dense
-                        append-icon="mdi-send"
-                        @click:append="doSend"
-                    ></v-textarea>
-                </v-col>
-                <v-col class="col-auto">
-                    <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
-                    <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item class="minHeight36">
-                                <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
-                            </v-list-item>
-                            <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                                <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-col>
-            </v-row>
-        </v-card-text>
-        <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
-            <v-row>
-                <v-col>
-                    <perfect-scrollbar ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'">
-                        <console-table ref="console"
-                                       :events="events"
-                                       :is-mini="true"
-                                       @command-click="commandClick"
-                        />
-                        <v-divider></v-divider>
-                    </perfect-scrollbar>
-                </v-col>
-            </v-row>
-        </v-card-text>
+        <div class="d-flex flex-column">
+            <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
+                <v-row>
+                    <v-col>
+                        <v-textarea
+                            v-model="gcode"
+                            :items="items"
+                            :label="$t('Panels.MiniconsolePanel.SendCode')"
+                            solo
+                            class="gcode-command-field"
+                            ref="gcodeCommandField"
+                            autocomplete="off"
+                            no-resize
+                            auto-grow
+                            :rows="rows"
+                            @keydown.enter.prevent.stop="doSend"
+                            @keyup.up="onKeyUp"
+                            @keyup.down="onKeyDown"
+                            @keydown.tab="getAutocomplete"
+                            hide-details
+                            outlined
+                            dense
+                            append-icon="mdi-send"
+                            @click:append="doSend"
+                        ></v-textarea>
+                    </v-col>
+                    <v-col class="col-auto">
+                        <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
+                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item class="minHeight36">
+                                    <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                                </v-list-item>
+                                <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                                    <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
+                <v-row>
+                    <v-col>
+                        <perfect-scrollbar ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'">
+                            <console-table ref="console"
+                                           :events="events"
+                                           :is-mini="true"
+                                           @command-click="commandClick"
+                            />
+                            <v-divider></v-divider>
+                        </perfect-scrollbar>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+        </div>
     </panel>
 </template>
 
@@ -247,6 +249,15 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
             if (this.$refs.miniConsoleScroll) {
                 const perfectScroll = ((this.$refs.miniConsoleScroll as Vue).$el as HTMLDivElement)
                 perfectScroll.scrollTop = perfectScroll.scrollHeight
+            }
+        })
+    }
+
+    scrollToTop() {
+        this.$nextTick(() => {
+            if (this.$refs.miniConsoleScroll) {
+                const perfectScroll = ((this.$refs.miniConsoleScroll as Vue).$el as HTMLDivElement)
+                perfectScroll.scrollTop = 0
             }
         })
     }
