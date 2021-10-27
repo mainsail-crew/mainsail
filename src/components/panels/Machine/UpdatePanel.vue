@@ -386,7 +386,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
         let output = ''
         if ('remote_alias' in object && object.remote_alias !== 'origin') output += object.remote_alias
-        if ('branch' in object && object.branch !== 'master') {
+        if ('branch' in object && !['master', 'main'].includes(object.branch)) {
             if (output !== '') output += '/'
 
             output += object.branch
