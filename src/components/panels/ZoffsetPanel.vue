@@ -37,8 +37,8 @@
                             </v-list-item>
                         </v-list>
                     </v-menu>
-                    <v-btn small class="px-2 minwidth-0" color="primary ml-3" v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop" @click="saveZOffsetToProbe"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
-                    <v-btn small class="px-2 minwidth-0" color="primary ml-3" v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop" @click="saveZOffsetToEndstop"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
+                    <v-btn text small class="px-2 minwidth-0" color="primary ml-3" v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop" @click="saveZOffsetToProbe"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
+                    <v-btn text small class="px-2 minwidth-0" color="primary ml-3" v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop" @click="saveZOffsetToEndstop"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
                 </template>
             </template>
             <v-card-text class="px-0 py-0">
