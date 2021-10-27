@@ -59,6 +59,8 @@ import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrint
 import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
+import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
+
 import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
@@ -72,7 +74,8 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsWebcamTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
-        SettingsGCodeViewerTab
+        SettingsGCodeViewerTab,
+        SettingsEditorTab
     }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -134,6 +137,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: 'mdi-video-3d',
                 name: 'g-code-viewer',
                 title: this.$t('Settings.GCodeViewerTab.GCodeViewer')
+            },
+            {
+                icon: 'mdi-file-document-edit-outline',
+                name: 'editor',
+                title: this.$t('Settings.EditorTab.Editor')
             }
         ]
     }

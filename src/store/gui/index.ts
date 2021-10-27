@@ -167,7 +167,9 @@ export const getDefaultState = (): GuiState => {
             }
         },
         editor: {
-            minimap: false
+            minimap: false,
+            escToClose: true,
+            confirmUnsavedChanges: true
         },
         //moonraker DB api dont accept camel case key names
         remotePrinters: [],
@@ -194,7 +196,7 @@ export const getDefaultState = (): GuiState => {
             voxelWidth: 1,
             voxelHeight: 1,
             specularLighting: false,
-        }
+        },
     }
 }
 
