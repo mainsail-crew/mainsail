@@ -121,6 +121,7 @@ export const getDefaultState = (): GuiState => {
         console: {
             hideWaitTemperatures: true,
             direction: 'table',
+            entryStyle: 'default',
             height: 300,
             customFilters: [],
         },

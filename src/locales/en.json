@@ -630,7 +630,10 @@
 			"StoreButton": "Store filter",
 			"UpdateButton": "Update filter",
 			"EditHeadline": "Edit filter",
-			"AddFilter": "add filter"
+			"AddFilter": "add filter",
+			"EntryStyle": "Entry-Design",
+			"EntryStyleDefault": "default",
+			"EntryStyleCompact": "compact"
 		},
 		"PresetsTab": {
 			"PreheatPresets": "Presets",
