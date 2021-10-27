@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import {MutationTree} from 'vuex'
-import {GuiState} from '@/store/gui/types'
+import {GuiState, GuiStateMacrogroup, GuiStateMacrogroupMacros} from '@/store/gui/types'
+import { v4 as uuid } from 'uuid'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -162,5 +163,78 @@ export const mutations: MutationTree<GuiState> = {
     removeClosePanel(state, payload) {
         const index = state.dashboard.nonExpandPanels.indexOf(payload.name)
         if (index > -1) state.dashboard.nonExpandPanels.splice(index, 1)
+    },
+
+    storeMacrogroup(state, payload) {
+        state.dashboard.macrogroups.push(payload)
+    },
+
+    destroyMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload)
+        if (index !== -1) state.dashboard.macrogroups.splice(index, 1)
+    },
+
+    addMacroToMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+
+            const newMacro: GuiStateMacrogroupMacros = {
+                pos: 1,
+                name: payload.macro,
+                color: 'group',
+                showInStandby: true,
+                showInPrinting: true,
+                showInPause: true
+            }
+
+            if (macros.length) newMacro.pos = Math.max(...macros.map((m: GuiStateMacrogroupMacros) => m.pos)) + 1
+            macros.push(newMacro)
+
+            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+        }
+    },
+
+    updateMacroFromMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+            const updateMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
+            if (updateMacroIndex !== -1) {
+                macros[updateMacroIndex][payload.option] = payload.value
+                Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+            }
+        }
+    },
+
+    removeMacroFromMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1) {
+            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
+            const deletedMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
+            if (deletedMacroIndex !== -1) {
+                const oldPos = macros[deletedMacroIndex].pos
+                macros.splice(deletedMacroIndex, 1)
+
+                macros.filter((macro: GuiStateMacrogroupMacros) => macro.pos > oldPos).forEach((macro: GuiStateMacrogroupMacros) => {
+                    macro.pos = macro.pos - 1
+                })
+            }
+
+            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
+        }
+    },
+
+    updateMacrogroup(state, payload) {
+        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
+        if (index !== -1 && payload.option in state.dashboard.macrogroups[index]) {
+            Vue.set(state.dashboard.macrogroups[index], payload.option, payload.value)
+        }
+    },
+
+    deleteFromDashboardLayout(state, payload) {
+        const layoutArray = [...state.dashboard[payload.layoutname]]
+        layoutArray.splice(payload.index, 1)
+        Vue.set(state.dashboard, payload.layoutname, layoutArray)
     }
 }

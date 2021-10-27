@@ -35,7 +35,7 @@
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
                         <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
-                            <component :is="'settings-'+activeTab+'-tab'"></component>
+                            <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
                         </perfect-scrollbar>
                     </v-col>
                 </v-row>
@@ -59,6 +59,8 @@ import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrint
 import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
+import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
+
 import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
@@ -72,7 +74,8 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsWebcamTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
-        SettingsGCodeViewerTab
+        SettingsGCodeViewerTab,
+        SettingsEditorTab
     }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -134,12 +137,21 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 icon: 'mdi-video-3d',
                 name: 'g-code-viewer',
                 title: this.$t('Settings.GCodeViewerTab.GCodeViewer')
+            },
+            {
+                icon: 'mdi-file-document-edit-outline',
+                name: 'editor',
+                title: this.$t('Settings.EditorTab.Editor')
             }
         ]
     }
 
     @Watch('activeTab')
     activeTabWatch() {
+        this.scrollToTop()
+    }
+
+    scrollToTop() {
         if (this.$refs.settingsScroll) this.$refs.settingsScroll.$el.scrollTop = 0
     }
 }

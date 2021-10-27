@@ -1,23 +1,19 @@
 
 <template>
     <v-card flat>
-        <v-card-text>
-            <template v-if="macros.length">
-                <div v-for="(macro, index) in macros" v-bind:key="index">
-                    <v-divider class="my-2" v-if="index"></v-divider>
-                    <settings-row :title="macro.name" :sub-title="macro.description" :dynamicSlotWidth="true">
-                        <v-switch :input-value="getMacroStatus(macro.name)" @change="changeMacroStatus(macro.name)" hide-details class="mt-0"></v-switch>
-                    </settings-row>
-                </div>
-            </template>
-            <template v-else>
-                <v-row>
-                    <v-col>
-                        <p class="mb-0 text-center font-italic">{{ $t('Settings.MacrosTab.NOMacros') }}</p>
-                    </v-col>
-                </v-row>
-            </template>
+        <v-card-text v-if="showGeneral">
+            <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.General') }}</h3>
+            <settings-row :title="$t('Settings.MacrosTab.Management')">
+                <v-select v-model="macroManagement" :items="macroManagements" outlined dense hide-details></v-select>
+            </settings-row>
+            <v-divider class="my-2"></v-divider>
         </v-card-text>
+        <template v-if="macroManagement === 'expert'">
+            <settings-macros-tab-expert @update:showGeneral="updateShowGeneral" @scrollToTop="scrollToTop"></settings-macros-tab-expert>
+        </template>
+        <template v-else>
+            <settings-macros-tab-simple></settings-macros-tab-simple>
+        </template>
     </v-card>
 </template>
 
@@ -26,32 +22,41 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import SettingsMacrosTabSimple from '@/components/settings/SettingsMacrosTabSimple.vue'
+import SettingsMacrosTabExpert from '@/components/settings/SettingsMacrosTabExpert.vue'
 @Component({
-    components: {SettingsRow}
+    components: {SettingsMacrosTabExpert, SettingsMacrosTabSimple, SettingsRow}
 })
 export default class SettingsMacrosTab extends Mixins(BaseMixin) {
+    private showGeneral = true
 
-    get macros() {
-        return this.$store.getters['printer/getAllMacros'] ?? []
+    get macroManagements() {
+        return [
+            {
+                text: this.$t('Settings.MacrosTab.Simple'),
+                value: 'simple',
+            },
+            {
+                text: this.$t('Settings.MacrosTab.Expert'),
+                value: 'expert',
+            },
+        ]
     }
 
-    get hiddenMacros() {
-        return this.$store.state.gui.dashboard.hiddenMacros ?? []
+    get macroManagement() {
+        return this.$store.state.gui?.dashboard?.macroManagement ?? 'simple'
     }
 
-    getMacroStatus(name: string) {
-        return !this.hiddenMacros.includes(name.toUpperCase())
+    set macroManagement(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.macroManagement', value: newVal })
     }
 
-    changeMacroStatus(name: string) {
-        const hiddenMacros = [...this.hiddenMacros]
+    updateShowGeneral(newVal: boolean) {
+        this.showGeneral = newVal
+    }
 
-        if (this.hiddenMacros.includes(name.toUpperCase()))
-            hiddenMacros.splice(hiddenMacros.indexOf(name.toUpperCase()), 1)
-        else
-            hiddenMacros.push(name.toUpperCase())
-
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.hiddenMacros', value: hiddenMacros })
+    scrollToTop() {
+        this.$emit('scrollToTop')
     }
 }
 </script>

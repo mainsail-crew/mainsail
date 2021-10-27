@@ -150,7 +150,6 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     updateConsoleHeight(newVal: number) {
-        window.console.log('updateConsoleHeight', newVal)
         this.consoleHeight = newVal
     }
 
