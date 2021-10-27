@@ -169,7 +169,7 @@ export function formatTime(date: Date): string {
 }
 
 export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
-    const paramRegex = /{%?.*?params\.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?(.*?)'?\))?(?:\|(int|string))?.*?%?}/
+    const paramRegex = /{%?.*?\sparams\.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?(.*?)'?\))?(?:\|(int|string))?.*?%?}/
 
     let params = paramRegex.exec(macro.gcode)
     let currentMatch = macro.gcode
