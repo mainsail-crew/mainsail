@@ -587,7 +587,12 @@
 			"Add": "add",
 			"NoMacrosInGroup": "No macros in this group.",
 			"NoAvailableMacros": "No available macros.",
-			"UnknownGroup": "Unknown Group"
+			"UnknownGroup": "Unknown Group",
+			"ChangeMacroColor": "Change the color of the button.",
+			"ShowInStateStandby": "Show/hide if printer is standby.",
+			"ShowInStatePaused": "Show/hide if printer is paused.",
+			"ShowInStatePrinting": "Show/hide if printer is printing.",
+			"DeleteMacroFromGroup": "Delete macro from group."
 		},
 		"ControlTab": {
 			"Control": "Control",
