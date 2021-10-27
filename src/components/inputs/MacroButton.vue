@@ -34,7 +34,7 @@
                     </v-btn>
                 </template>
                 <v-card max-width="200">
-                    <v-card-text>
+                    <v-card-text class="py-2">
                         <v-row v-for="(name, key) in paramArray" :key="'param_'+key" class="my-2">
                             <v-col class="py-0">
                                 <v-text-field
