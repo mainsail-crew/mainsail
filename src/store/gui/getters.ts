@@ -1,6 +1,6 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
-import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from '@/store/gui/types'
+import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup, GuiStatePreset} from '@/store/gui/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -106,5 +106,33 @@ export const getters: GetterTree<GuiState, any> = {
 
     getPanelExpand: (state) => (name: string) => {
         return !state.dashboard.nonExpandPanels?.includes(name) ?? true
+    },
+
+    getAllMacroGroups: (state) => {
+        return caseInsensitiveSort(state.dashboard.macrogroups ?? [], 'name')
+    },
+
+    getMacroGroup: (state) => (id: string) => {
+        return state.dashboard.macrogroups.find((group: GuiStateMacrogroup) => group.id === id)
+    },
+
+    getPanels: (state, getters) => (viewport: string) => {
+        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+
+        if (state.dashboard.macroManagement === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+        else {
+            panels = panels.filter((element: any) => element.name !== 'macros')
+            const macrogroups = getters['getAllMacroGroups']
+            if (macrogroups.length) {
+                panels = panels.filter((element: any) => {
+                    if (!element.name.startsWith('macrogroup_')) return true
+
+                    const macrogroupId = element.name.substr(11)
+                    return (macrogroups.findIndex((macrogroup: GuiStateMacrogroup) => macrogroup.id === macrogroupId) !== -1)
+                })
+            }
+        }
+
+        return panels
     }
 }

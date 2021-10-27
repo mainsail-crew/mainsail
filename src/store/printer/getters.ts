@@ -5,9 +5,9 @@ import {
     PrinterStateFan, PrinterStateFilamentSensors,
     PrinterStateHeater, PrinterStateTemperatureFan,
     PrinterStateMiscellaneous,
-    PrinterStateSensor, PrinterStateMacro
+    PrinterStateSensor, PrinterStateMacro,
 } from '@/store/printer/types'
-import {caseInsensitiveSort, formatFrequency} from '@/plugins/helpers'
+import {caseInsensitiveSort, formatFrequency, getMacroParams} from '@/plugins/helpers'
 import {RootState} from '@/store/types'
 
 export const getters: GetterTree<PrinterState, RootState> = {
@@ -64,7 +64,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     array.push({
                         'name': prop.replace('gcode_macro ', ''),
                         'description': state.configfile.config[prop].description ?? null,
-                        'prop': state.configfile.config[prop]
+                        'prop': state.configfile.config[prop],
+                        'params': getMacroParams(state.configfile.config[prop])
                     })
                 }
             })
@@ -371,12 +372,28 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
                     'description': state.configfile.config[prop].description ?? null,
-                    'prop': state.configfile.config[prop]
+                    'prop': state.configfile.config[prop],
+                    'params': getMacroParams(state.configfile.config[prop])
                 })
             }
         })
 
         return caseInsensitiveSort(array, 'name')
+    },
+
+    getMacro: (state) => (name: string) => {
+        if ('gcode_macro '+name in state.configfile.config) {
+            const config = state.configfile.config['gcode_macro '+name]
+
+            return {
+                name,
+                description: config.description ?? null,
+                prop: config,
+                params: getMacroParams(config)
+            }
+        }
+
+        return null
     },
 
     getFilamentSensors: state => {

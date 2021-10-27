@@ -13,30 +13,34 @@
                     <v-card class="mx-auto" max-width="300" tile >
                         <v-list dense>
                             <v-list-item>
-                                <v-list-item-icon>
-                                    <v-icon>mdi-information</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title>{{ $t('Panels.StatusPanel.Headline') }}</v-list-item-title>
-                                </v-list-item-content>
-                                <v-list-item-action>
-                                    <v-icon color="grey lighten-1">mdi-lock</v-icon>
-                                </v-list-item-action>
+                                <v-row>
+                                    <v-col class="col-auto pr-0">
+                                        <v-icon>mdi-information</v-icon>
+                                    </v-col>
+                                    <v-col>
+                                        {{ $t('Panels.StatusPanel.Headline') }}
+                                    </v-col>
+                                    <v-col class="col-auto">
+                                        <v-icon color="grey lighten-1">mdi-lock</v-icon>
+                                    </v-col>
+                                </v-row>
                             </v-list-item>
                             <draggable v-model="desktopLayout1" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="desktopViewport">
                                 <template v-for="(element) in desktopLayout1">
                                     <v-list-item :key="'item-desktop-'+element.name" link>
-                                        <v-list-item-icon>
-                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
-                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
-                                        </v-list-item-action>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            </v-col>
+                                            <v-col class="pr-0">
+                                                {{ getPanelName(element.name) }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            </v-col>
+                                        </v-row>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -49,17 +53,19 @@
                             <draggable v-model="desktopLayout2" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="desktopViewport">
                                 <template v-for="(element) in desktopLayout2">
                                     <v-list-item :key="'item-desktop-'+element.name" link>
-                                        <v-list-item-icon>
-                                            <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
-                                            <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
-                                        </v-list-item-icon>
-                                        <v-list-item-content>
-                                            <v-list-item-title>{{ $t('Panels.'+capitalize(element.name)+'Panel.Headline') }}</v-list-item-title>
-                                        </v-list-item-content>
-                                        <v-list-item-action>
-                                            <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                            <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
-                                        </v-list-item-action>
+                                        <v-row>
+                                            <v-col class="col-auto pr-0">
+                                                <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
+                                                <v-icon v-else v-text="convertPanelnameToIcon(element.name)"></v-icon>
+                                            </v-col>
+                                            <v-col class="pr-0">
+                                                {{ getPanelName(element.name) }}
+                                            </v-col>
+                                            <v-col class="col-auto pl-0">
+                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
+                                            </v-col>
+                                        </v-row>
                                     </v-list-item>
                                 </template>
                             </draggable>
@@ -79,21 +85,24 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
 import draggable from 'vuedraggable'
 import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
+import DashboardMixin from '@/components/mixins/dashboard'
 @Component( {
     components: {
         draggable
     }
 }
 )
-export default class SettingsDashboardTabDesktop extends Mixins(BaseMixin) {
+export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) {
     capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
 
     get desktopLayout1() {
-        return this.$store.state.gui?.dashboard?.desktopLayout1?.filter((element: any) => element !== null) ?? []
+        let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
+        panels = panels.concat(this.missingPanelsDesktop)
+
+        return panels
     }
 
     set desktopLayout1(newVal) {
@@ -103,7 +112,7 @@ export default class SettingsDashboardTabDesktop extends Mixins(BaseMixin) {
     }
 
     get desktopLayout2() {
-        return this.$store.state.gui?.dashboard?.desktopLayout2?.filter((element: any) => element !== null) ?? []
+        return this.$store.getters['gui/getPanels']('desktopLayout2')
     }
 
     set desktopLayout2(newVal) {

@@ -266,7 +266,8 @@
 			"Extrude": "Extrude"
 		},
 		"MacrosPanel": {
-			"Headline": "Macros"
+			"Headline": "Macros",
+			"Send": "send"
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
@@ -560,7 +561,38 @@
 		},
 		"MacrosTab": {
 			"Macros": "Macros",
-			"NOMacros": "No macros found..."
+			"NOMacros": "No macros found...",
+			"General": "General",
+			"Management": "Management",
+			"Simple": "Simple",
+			"Expert": "Expert",
+			"NoGroups": "No group found...",
+			"Macrogroups": "Groups",
+			"CreateGroup": "Create Group",
+			"EditGroup": "Edit Group",
+			"CountMacros": "no Macros added | {count} Macro | {count} Macros",
+			"Name": "Name",
+			"Color": "Color",
+			"CustomColor": "Custom Color",
+			"Status": "Status",
+			"Primary": "primary",
+			"Secondary": "secondary",
+			"Success": "success",
+			"Warning": "warning",
+			"Error": "error",
+			"Custom": "custom",
+			"AddGroup": "add Group",
+			"GroupMacros": "Group Macros",
+			"AvailableMacros": "Available Macros",
+			"Add": "add",
+			"NoMacrosInGroup": "No macros in this group.",
+			"NoAvailableMacros": "No available macros.",
+			"UnknownGroup": "Unknown Group",
+			"ChangeMacroColor": "Change the color of the button.",
+			"ShowInStateStandby": "Show/hide if printer is standby.",
+			"ShowInStatePaused": "Show/hide if printer is paused.",
+			"ShowInStatePrinting": "Show/hide if printer is printing.",
+			"DeleteMacroFromGroup": "Delete macro from group."
 		},
 		"ControlTab": {
 			"Control": "Control",
