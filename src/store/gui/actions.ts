@@ -257,6 +257,23 @@ export const actions: ActionTree<GuiState, RootState> = {
             keyName: 'dashboard.macrogroups',
             newVal: state.dashboard.macrogroups
         })
+
+        const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
+            'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
+
+        layouts.forEach((layoutname: string) => {
+            const layoutArray = [...state.dashboard[layoutname]]
+
+            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+payload)
+            if (index !== -1) {
+                commit('deleteFromDashboardLayout', { layoutname, index })
+                dispatch('updateSettings', {
+                    keyName: 'dashboard.'+layoutname,
+                    newVal: state.dashboard[layoutname]
+                })
+            }
+        })
+
     },
 
     addMacroToMacrogroup({ commit, dispatch, state }, payload) {

@@ -230,5 +230,11 @@ export const mutations: MutationTree<GuiState> = {
         if (index !== -1 && payload.option in state.dashboard.macrogroups[index]) {
             Vue.set(state.dashboard.macrogroups[index], payload.option, payload.value)
         }
+    },
+
+    deleteFromDashboardLayout(state, payload) {
+        const layoutArray = [...state.dashboard[payload.layoutname]]
+        layoutArray.splice(payload.index, 1)
+        Vue.set(state.dashboard, payload.layoutname, layoutArray)
     }
 }
