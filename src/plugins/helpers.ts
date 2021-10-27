@@ -189,5 +189,24 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
         params = paramRegex.exec(currentMatch)
     }
 
+    const paramInRegex = /{%?.*?if.*?'([A-Za-z_0-9]+)' (?:not )?in params.*?%?}/
+    params = paramInRegex.exec(macro.gcode)
+    currentMatch = macro.gcode
+
+    while(params) {
+        if (ret === null) {
+            ret = {}
+        }
+        const name = params[1]
+        if (!(`${name}` in ret)) {
+            ret[`${name}`] = {
+                type: null,
+                default: null
+            }
+        }
+        currentMatch = currentMatch.replace(params[0], '')
+        params = paramInRegex.exec(currentMatch)
+    }
+
     return ret
 }
