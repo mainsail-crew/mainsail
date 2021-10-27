@@ -109,11 +109,13 @@ export default class MacroButton extends Mixins(BaseMixin) {
 
         if (this.klipperMacro.params !== null) {
             Object.keys(this.klipperMacro.params).forEach((name: string) => {
-                this.paramArray.push(name)
-                this.params[name] = {
-                    type: this.klipperMacro.params[name].type,
-                    default: this.klipperMacro.params[name].default,
-                    value: this.klipperMacro.params[name].default
+                if (!name.startsWith('_')) {
+                    this.paramArray.push(name)
+                    this.params[name] = {
+                        type: this.klipperMacro.params[name].type,
+                        default: this.klipperMacro.params[name].default,
+                        value: this.klipperMacro.params[name].default
+                    }
                 }
             })
         }
