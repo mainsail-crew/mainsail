@@ -479,6 +479,7 @@
 			"Unknown": "unknown",
 			"ERROR": "ERROR",
 			"CommitsOnDate": "Commits on {date}",
+			"CommittedHoursAgo": "committed {hours} hours ago",
 			"CommittedYesterday": "committed yesterday",
 			"CommittedDaysAgo": "committed {days} days ago",
 			"CommittedOnDate": "committed on {date}"
