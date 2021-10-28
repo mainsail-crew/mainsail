@@ -58,46 +58,33 @@
             </template>
         </v-snackbar>
         <v-dialog v-model="dialogConfirmChange" persistent :width="600">
-            <v-card dark>
-                <v-toolbar flat dense color="primary">
-                    <v-toolbar-title>
-                    <span class="subheading">
-                        <v-icon class="mdi mdi-help-circle" left></v-icon> {{ $t('Editor.UnsavedChanges') }}
-                    </span>
-                    </v-toolbar-title>
-                    <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0" @click="dialogConfirmChange = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
-                </v-toolbar>
+            <panel card-class="editor-confirm-change-dialog" icon="mdi-help-circle" :title="$t('Editor.UnsavedChanges')" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text class="pt-3">
-                    <v-container class="pb-0">
-
-                        <v-row>
-                            <v-col>
-                                <p class="body-1 mb-2">{{ $t('Editor.UnsavedChangesMessage', {filename: filename}) }}</p>
-                                <p class="body-2">{{ $t('Editor.UnsavedChangesSubMessage') }}</p>
-                            </v-col>
-                        </v-row>
-                        <v-divider></v-divider>
-                        <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click="dialogConfirmChange = false">
-                                    {{ $t('Editor.Cancel') }}
-                                </v-btn>
-                                <v-btn @click="discardChanges">
-                                    {{ $t('Editor.DontSave') }}
-                                </v-btn>
-                                <template v-if="restartServiceName != null">
-                                    <v-btn @click="save(restartServiceName)">
-                                        {{ $t('Editor.SaveRestart') }}
-                                    </v-btn>
-                                </template>
-                                <v-btn color="primary" @click="save">
-                                    {{ $t('Editor.SaveClose') }}
-                                </v-btn>
-                        </v-card-actions>
-                    </v-container>
+                    <v-row>
+                        <v-col>
+                            <p class="body-1 mb-2">{{ $t('Editor.UnsavedChangesMessage', {filename: filename}) }}</p>
+                            <p class="body-2">{{ $t('Editor.UnsavedChangesSubMessage') }}</p>
+                        </v-col>
+                    </v-row>
                 </v-card-text>
-            </v-card>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="discardChanges">
+                        {{ $t('Editor.DontSave') }}
+                    </v-btn>
+                    <v-btn text color="primary" @click="save">
+                        {{ $t('Editor.SaveClose') }}
+                    </v-btn>
+                    <template v-if="restartServiceName != null">
+                        <v-btn text color="primary" @click="save(restartServiceName)">
+                            {{ $t('Editor.SaveRestart') }}
+                        </v-btn>
+                    </template>
+                </v-card-actions>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -107,9 +94,10 @@ import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {formatFilesize} from '@/plugins/helpers'
 import Codemirror from '@/components/inputs/Codemirror.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {Codemirror}
+    components: {Panel, Codemirror}
 })
 export default class TheEditor extends Mixins(BaseMixin) {
     private dialogConfirmChange = false
