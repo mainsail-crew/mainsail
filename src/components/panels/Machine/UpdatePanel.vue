@@ -30,8 +30,8 @@
     .v-timeline.groupedCommits {
         .v-timeline-item__dot--small {
             width: 18px;
-            height: 14px;
-            left: calc(50% - 9px);
+            height: 15px;
+            margin-top: 2px;
 
             &:before {
                 display: block;
@@ -39,7 +39,7 @@
                 position: relative;
                 width: 18px;
                 height: 2px;
-                top: 8px;
+                top: 7px;
                 background: rgba(255, 255, 255, 0.50);
                 z-index: 1;
             }
@@ -52,7 +52,8 @@
             height: 8px;
             position: relative;
             z-index: 2;
-            margin-left: 5px
+            margin-left: 5px;
+            margin-top: 2px;
         }
     }
 </style>
@@ -179,7 +180,7 @@
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0" >{{ commit.subject }}<v-chip outlined label x-small class="ml-2 px-2" v-if="!openCommits.includes(commit.sha)" @click="openCommits.push(commit.sha)"><v-icon small>mdi-dots-horizontal</v-icon></v-chip></h4>
-                                                                <p v-if="openCommits.includes(commit.sha)" class="caption text--secondary mb-2" style="white-space: pre;" v-html="convertCommitMessage(commit.message)"></p>
+                                                                <p v-if="openCommits.includes(commit.sha)" class="caption text--secondary mb-2" style="white-space: pre-line;" v-html="commit.message"></p>
                                                                 <p class="caption mb-0"><span class="font-weight-bold text-decoration-none white--text">{{ commit.author}}</span> <span>{{ convertCommitDate(commit.date) }}</span></p>
                                                             </v-col>
                                                             <v-col class="col-auto pt-4 ">
@@ -478,23 +479,6 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         }
     }
 
-    convertCommitMessage(message: string) {
-        //message = this.trimEndLineBreak(message)
-        message.replace(/(?:\r\n|\r|\n)/g, '<br />')
-        //message.replaceAll('\\n', '<br />')
-
-        return message
-    }
-
-    trimEndLineBreak(message: string) {
-        if (['\n', '\r'].includes(message.substr(-1))) {
-            message = message.substr(0, message.length - 2)
-            this.trimEndLineBreak(message)
-        }
-
-        return message
-    }
-
     convertCommitDate(timestamp: number) {
         const commitDay = new Date(timestamp * 1000)
         commitDay.setHours(0,0,0,0)
@@ -502,7 +486,12 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         todayDay.setHours(0,0,0,0)
         const diff = Math.floor(todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24)
 
-        if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
+        if (diff === 0) {
+            const diffHours = Math.floor(((new Date()).getTime() - timestamp * 1000) / (1000 * 60 * 60))
+
+            return this.$t('Machine.UpdatePanel.CommittedHoursAgo', { hours: diffHours })
+        }
+        else if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
         else if (diff < 29) return this.$t('Machine.UpdatePanel.CommittedDaysAgo', { days: diff })
         else return this.$t('Machine.UpdatePanel.CommittedOnDate', { date: commitDay.toLocaleDateString(this.language, this.dateOptions) })
     }
