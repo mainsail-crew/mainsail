@@ -66,7 +66,35 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true">
+                    <v-card-text class="py-3 px-0">
+                        <v-row class="px-3">
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
+                            <v-col class="text-right">{{ bed_mesh.profile_name }}</v-col>
+                        </v-row>
+                        <v-divider class="my-3"></v-divider>
+                        <v-row class="px-3">
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
+                            <v-col class="text-right">{{ bed_mesh.probed_matrix[0].length }}x{{ bed_mesh.probed_matrix.length }}</v-col>
+                        </v-row>
+                        <v-divider class="my-3"></v-divider>
+                        <v-row class="px-3">
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }}, {{ bedMeshMaxPoint.positionY }}]</v-col>
+                            <v-col class="text-right">{{ bedMeshMaxPoint.value }} mm</v-col>
+                        </v-row>
+                        <v-divider class="my-3"></v-divider>
+                        <v-row class="px-3">
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }}, {{ bedMeshMinPoint.positionY }}]</v-col>
+                            <v-col class="text-right">{{ bedMeshMinPoint.value }} mm</v-col>
+                        </v-row>
+                        <v-divider class="my-3"></v-divider>
+                        <v-row class="px-3">
+                            <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
+                            <v-col class="text-right">{{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value) }} mm</v-col>
+                        </v-row>
+                    </v-card-text>
+                </panel>
+                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow" :collapsible="true">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>
@@ -619,6 +647,58 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         else if (this.showMesh) output.push(1)
 
         return output
+    }
+
+    get bedMeshMaxPoint() {
+        if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
+
+        const [ , max] = this.heightmapLimit
+
+        let row = 0
+        let col = 0
+        this.bed_mesh.probed_matrix.forEach((rowPoints: number[], index: number) => {
+            if (Math.max(...rowPoints) === max) {
+                row = index + 1
+                col = rowPoints.findIndex((point: number) => point === max) + 1
+            }
+        })
+
+        const positionX = Math.round((this.bed_mesh.mesh_min[0] + (this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length * (col - 1)) * 10) / 10
+        const positionY = Math.round((this.bed_mesh.mesh_min[1] + (this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length * (row - 1)) * 10) / 10
+
+        return {
+            row,
+            col,
+            positionX,
+            positionY,
+            value: Math.round(max * 1000) / 1000
+        }
+    }
+
+    get bedMeshMinPoint() {
+        if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
+
+        const [min, ] = this.heightmapLimit
+
+        let row = 0
+        let col = 0
+        this.bed_mesh.probed_matrix.forEach((rowPoints: number[], index: number) => {
+            if (Math.min(...rowPoints) === min) {
+                row = index + 1
+                col = rowPoints.findIndex((point: number) => point === min) + 1
+            }
+        })
+
+        const positionX = Math.round((this.bed_mesh.mesh_min[0] + (this.bed_mesh.mesh_max[0] - this.bed_mesh.mesh_min[0]) / this.bed_mesh.probed_matrix[0].length * (col - 1)) * 10) / 10
+        const positionY = Math.round((this.bed_mesh.mesh_min[1] + (this.bed_mesh.mesh_max[1] - this.bed_mesh.mesh_min[1]) / this.bed_mesh.probed_matrix.length * (row - 1)) * 10) / 10
+
+        return {
+            row,
+            col,
+            positionX,
+            positionY,
+            value: Math.round(min * 1000) / 1000
+        }
     }
 
     tooltipFormatter(data: any): string {

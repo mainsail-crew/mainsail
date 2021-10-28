@@ -188,8 +188,6 @@
 		"Flat": "Flat",
 		"Wireframe": "Wireframe",
 		"Scale": "Scale",
-
-
 		"Profiles": "Profiles",
 		"Deleted": "deleted",
 		"RenameBedMeshProfile": "Rename Bed Mesh Profile",
@@ -201,7 +199,15 @@
 		"DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
 		"DeleteBedMeshProfile": "Delete Bed Mesh Profile",
 		"DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",
-		"Remove": "remove"
+		"Remove": "remove",
+		"CurrentMesh": {
+			"Headline": "Current Mesh",
+			"Name": "Name",
+			"Size": "Size",
+			"Min": "Min",
+			"Max": "Max",
+			"Variance": "Variance"
+		}
 	},
 	"History": {
 		"Statistics": "Statistics",
