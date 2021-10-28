@@ -40,20 +40,14 @@
                                 <v-text-field
                                     :label="name"
                                     v-model="params[name].value"
+                                    :placeholder="params[name].default"
+                                    :persistent-placeholder="true"
                                     hide-details
                                     outlined
                                     dense
-                                >
-                                    <template v-slot:append>
-                                        <v-btn
-                                            v-if="params[name].value !== params[name].default"
-                                            @click="params[name].value = params[name].default"
-                                            icon
-                                            small>
-                                            <v-icon>mdi-refresh</v-icon>
-                                        </v-btn>
-                                    </template>
-                                </v-text-field>
+                                    clearable
+                                    clear-icon="mdi-refresh"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row class="my-2">
@@ -78,8 +72,8 @@ import {GuiStateMacrogroupMacros} from '@/store/gui/types'
 
 interface param {
     type: 'int' | 'double' | 'string' | null,
-    default: string | null
-    value: string | null
+    default: string | number | null
+    value: string | number | null
 }
 
 interface params {
@@ -114,7 +108,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
                     this.params[name] = {
                         type: this.klipperMacro.params[name].type,
                         default: this.klipperMacro.params[name].default,
-                        value: this.klipperMacro.params[name].default
+                        value: ''
                     }
                 }
             })
