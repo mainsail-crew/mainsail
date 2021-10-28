@@ -34,7 +34,7 @@
                         </v-tabs>
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'">
-                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll">
+                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll" :options="{ suppressScrollX: true }">
                             <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
                         </perfect-scrollbar>
                     </v-col>
