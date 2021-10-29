@@ -16,15 +16,8 @@
             <panel card-class="editor-dialog" icon="mdi-file-document-edit-outline" :title="(filepath ? filepath.slice(1)+'/': '')+filename+' '+changed">
                 <template v-slot:buttons>
                     <v-btn dark text href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn>
-                    <template v-if="isWriteable">
-                        <v-divider white vertical class="d-none d-md-flex" v-if="restartServiceName === 'klipper'"></v-divider>
-                        <v-btn text :color="restartServiceName === null ? 'primary' : ''" @click="save(null)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span></v-btn>
-                    </template>
-                    <template v-if="restartServiceName !== null">
-                        <v-divider white vertical class="d-none d-sm-flex"></v-divider>
-                        <v-btn color="primary" text @click="save(restartServiceName)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Editor.SaveRestart') }}</v-btn>
-                    </template>
-                    <v-divider white vertical class="d-none d-sm-flex"></v-divider>
+                    <v-btn  v-if="isWriteable" text :color="restartServiceName === null ? 'primary' : ''" @click="save(null)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span></v-btn>
+                    <v-btn v-if="restartServiceName !== null" color="primary" text @click="save(restartServiceName)" class="d-none d-sm-flex"><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Editor.SaveRestart') }}</v-btn>
                     <v-btn icon @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pa-0">
