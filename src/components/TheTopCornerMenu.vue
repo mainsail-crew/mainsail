@@ -23,8 +23,20 @@
                 <template v-if="services.length">
                     <v-divider class="mt-0"></v-divider>
                     <v-subheader class="pt-2" style="height: auto;">{{ $t("App.TopCornerMenu.RestartServices") }}</v-subheader>
-                    <v-list-item class="minheight30"  link @click="serviceRestart(service)" v-for="service in services" v-bind:key="service">
-                        <v-list-item-title><v-icon class="mr-2" small>mdi-restart</v-icon>{{ service.charAt(0).toUpperCase() + service.slice(1) }}</v-list-item-title>
+                    <v-list-item class="minheight30 pr-2" v-for="service in services" v-bind:key="service">
+                        <v-list-item-title>
+                            <v-tooltip left>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">{{ service.charAt(0).toUpperCase() + service.slice(1) }}</span>
+                                </template>
+                                <span>{{ getServiceState(service) }} ({{ getServiceSubState(service) }})</span>
+                            </v-tooltip>
+                        </v-list-item-title>
+                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
+                            <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="serviceStart(service)"><v-icon small>mdi-play</v-icon></v-btn>
+                            <v-btn icon small v-if="getServiceState(service) !== 'inactive'" @click="serviceRestart(service)"><v-icon small>mdi-restart</v-icon></v-btn>
+                            <v-btn icon small v-if="getServiceState(service) !== 'inactive'" @click="serviceStop(service)"><v-icon small>mdi-stop</v-icon></v-btn>
+                        </v-list-item-action>
                     </v-list-item>
                 </template>
                 <template v-if="powerDevices.length">
@@ -92,6 +104,22 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         return this.$store.getters['server/power/getDevices']
     }
 
+    get service_states() {
+        return this.$store.state.server.system_info?.service_state ?? {}
+    }
+
+    getServiceState(name: string) {
+        if (name in this.service_states) return this.service_states[name].active_state
+
+        return null
+    }
+
+    getServiceSubState(name: string) {
+        if (name in this.service_states) return this.service_states[name].sub_state
+
+        return null
+    }
+
     klipperRestart() {
         this.showMenu = false
         this.$store.dispatch('server/addEvent', { message: 'RESTART', type: 'command' })
@@ -104,9 +132,19 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         this.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
     }
 
+    serviceStart(service: string) {
+        this.showMenu = false
+        this.$socket.emit('machine.services.start', { service: service })
+    }
+
     serviceRestart(service: string) {
         this.showMenu = false
         this.$socket.emit('machine.services.restart', { service: service })
+    }
+
+    serviceStop(service: string) {
+        this.showMenu = false
+        this.$socket.emit('machine.services.stop', { service: service })
     }
 
     changeSwitch(device: ServerPowerStateDevice, value: string) {

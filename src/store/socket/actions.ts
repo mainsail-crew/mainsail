@@ -96,6 +96,10 @@ export const actions: ActionTree<SocketState, RootState> = {
             dispatch('server/history/getChanged', payload.params[0], { root: true })
             break
 
+        case 'notify_service_state_changed':
+            dispatch('server/serviceStateChanged', payload.params[0], { root: true })
+            break
+
         default:
             if (payload.result !== 'ok' && payload.error?.message) window.console.error('JSON-RPC: ' + payload.error.message)
             else window.console.debug(payload)
