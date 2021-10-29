@@ -217,7 +217,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     beforeDestroy() {
-        window.addEventListener('resize', this.resize)
+        window.removeEventListener('resize', this.resize)
     }
 
     resize() {
