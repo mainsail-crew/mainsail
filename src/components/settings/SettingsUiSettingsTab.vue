@@ -32,23 +32,23 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.UiSettingsTab.BoolBigThumbnail')" :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.UiSettingsTab.DisplayZOffset')" :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.GeneralTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
             </v-card-text>
