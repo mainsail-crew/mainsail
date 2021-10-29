@@ -58,7 +58,7 @@ import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
 import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
 import SettingsPresetsTab from '@/components/settings/SettingsPresetsTab.vue'
 import SettingsRemotePrintersTab from '@/components/settings/SettingsRemotePrintersTab.vue'
-import SettingsThemeTab from '@/components/settings/SettingsThemeTab.vue'
+import SettingsUiSettingsTab from '@/components/settings/SettingsUiSettingsTab.vue'
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
@@ -67,7 +67,7 @@ import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
         Panel,
-        SettingsThemeTab,
+        SettingsUiSettingsTab,
         SettingsRemotePrintersTab,
         SettingsPresetsTab,
         SettingsConsoleTab,
@@ -97,8 +97,8 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
             },
             {
                 icon: 'mdi-palette',
-                name: 'theme',
-                title: this.$t('Settings.ThemeTab.Theme')
+                name: 'ui-settings',
+                title: this.$t('Settings.UiSettingsTab.UiSettings')
             },
             {
                 icon: 'mdi-monitor-dashboard',
