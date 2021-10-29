@@ -488,7 +488,8 @@
 			"CommittedHoursAgo": "committed {hours} hours ago",
 			"CommittedYesterday": "committed yesterday",
 			"CommittedDaysAgo": "committed {days} days ago",
-			"CommittedOnDate": "committed on {date}"
+			"CommittedOnDate": "committed on {date}",
+			"UpdateAll": "Update all components"
 		},
 		"SystemPanel": {
 			"SystemLoad": "System Loads",
