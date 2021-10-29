@@ -64,15 +64,17 @@
             </template>
         </v-snackbar>
         <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
-            <v-card>
-                <v-card-title class="headline">{{ $t('EmergencyStopDialog.EmergencyStop') }}</v-card-title>
+            <panel :title="$t('EmergencyStopDialog.EmergencyStop')" toolbar-color="error" card-class="emergency-stop-dialog" icon="mdi-alert-circle-outline" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No')}}</v-btn>
-                    <v-btn color="green darken-1" text @click="emergencyStop">{{$t('EmergencyStopDialog.Yes')}}</v-btn>
+                    <v-btn text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No')}}</v-btn>
+                    <v-btn color="primary" text @click="emergencyStop">{{$t('EmergencyStopDialog.Yes')}}</v-btn>
                 </v-card-actions>
-            </v-card>
+            </panel>
         </v-dialog>
     </div>
 </template>
@@ -87,6 +89,7 @@ import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
 import TheThrottledStates from '@/components/TheThrottledStates.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -103,6 +106,7 @@ type uploadSnackbar = {
 
 @Component({
     components: {
+        Panel,
         TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu
