@@ -46,7 +46,7 @@ export const getDefaultState = (): GuiState => {
                 feedamount: 25,
                 feedamounts: [ 50, 25, 10, 5, 1 ],
                 feedrate: 5,
-                feedrates: [ 60, 30, 15, 5, 1 ],
+                feedrates: [ 15, 10, 5, 2, 1 ],
             },
             mobileLayout: [
                 { 'name': 'webcam', visable: false },
