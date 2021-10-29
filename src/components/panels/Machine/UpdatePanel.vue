@@ -132,7 +132,7 @@
                             </v-col>
                         </v-row>
                     </div>
-                    <div v-if="'system' in version_info">
+                    <template v-if="'system' in version_info">
                         <v-divider class="my-0 border-top-2" ></v-divider>
                         <v-row class="pt-2">
                             <v-col class="col-auto pl-6 text-no-wrap">
@@ -157,7 +157,18 @@
                                 ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? $t('Machine.UpdatePanel.Upgrade') : $t('Machine.UpdatePanel.UpToDate') }}</v-chip>
                             </v-col>
                         </v-row>
-                    </div>
+                    </template>
+                    <template v-if="showUpdateAll">
+                        <v-divider class="my-0 border-top-2" ></v-divider>
+                        <v-row class="pt-3">
+                            <v-col class="text-center">
+                                <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                    <v-icon left>mdi-progress-upload</v-icon>
+                                    {{ $t('Machine.UpdatePanel.UpdateAll') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </template>
                 </v-container>
             </v-card-text>
         </panel>
@@ -260,6 +271,24 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     get updateableSoftwares() {
         return this.$store.getters['server/updateManager/getUpdateableSoftwares']
+    }
+
+    get showUpdateAll() {
+        let updateableModuls = 0
+
+        Object.keys(this.updateableSoftwares).forEach((modulename) => {
+            const module = this.updateableSoftwares[modulename]
+            if (
+                'version' in module &&
+                'remote_version' in module &&
+                semver.valid(module.remote_version) &&
+                semver.valid(module.version) &&
+                semver.gt(module.remote_version, module.version)
+            ) updateableModuls++
+        })
+
+        if (this.version_info?.system?.package_count > 0) updateableModuls++
+        return (updateableModuls > 1)
     }
 
     btnSync() {
@@ -416,6 +445,10 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         else if ('is_dirty' in object && object.is_dirty) return true
 
         return false
+    }
+
+    updateAll() {
+        this.$socket.emit('machine.update.full', {  })
     }
 
     updateModule(key: string) {
