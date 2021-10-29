@@ -102,5 +102,12 @@ export const mutations: MutationTree<ServerState> = {
 
     addRootDirectory(state, payload) {
         state.registered_directories.push(payload.name)
+    },
+
+    updateServiceState(state, payload) {
+        const name = Object.keys(payload)[0]
+
+        if (state.system_info?.service_state)
+            Vue.set(state.system_info.service_state, name, payload[name])
     }
 }
