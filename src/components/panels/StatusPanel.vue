@@ -270,6 +270,7 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
+import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin } from '@/store/variables'
 import BaseMixin from '@/components/mixins/base'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
@@ -493,8 +494,8 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             this.current_file.thumbnails.length
         ) {
             const thumbnail = this.current_file.thumbnails.find((thumb: any) =>
-                thumb.width >= 32 && thumb.width <= 64 &&
-                thumb.height >= 32 && thumb.height <= 64
+                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
@@ -516,7 +517,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 let relative_url = ''
@@ -537,7 +538,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'height' in thumbnail) {
                 return thumbnail.height
@@ -552,7 +553,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'thumbnails' in this.current_file &&
             this.current_file.thumbnails.length
         ) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'width' in thumbnail) {
                 return thumbnail.width

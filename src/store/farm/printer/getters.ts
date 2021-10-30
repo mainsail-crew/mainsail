@@ -1,4 +1,4 @@
-import {defaultLogoColor, themeDir} from '@/store/variables'
+import {defaultLogoColor, themeDir, thumbnailBigMin} from '@/store/variables'
 import {convertName} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {FarmPrinterState} from '@/store/farm/printer/types'
@@ -84,7 +84,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
             const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+'/' : ''
-            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) return '//'+state.socket.hostname+':'+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
         }
