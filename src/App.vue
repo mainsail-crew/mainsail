@@ -15,6 +15,10 @@
     .v-btn:not(.v-btn--outlined).primary {
         color: var(--v-btn-text-primary)
     }
+
+    .main-content-scrollbar {
+        height: calc(100vh - 64px);
+    }
 </style>
 
 <template>
@@ -24,9 +28,11 @@
         <the-topbar></the-topbar>
 
         <v-main id="content" :style="mainStyle">
-            <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                <router-view></router-view>
-            </v-container>
+            <perfect-scrollbar class="main-content-scrollbar" :options="{ suppressScrollX: true }">
+                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                    <router-view></router-view>
+                </v-container>
+            </perfect-scrollbar>
         </v-main>
         <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
