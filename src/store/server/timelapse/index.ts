@@ -8,6 +8,7 @@ export const getDefaultState = (): ServerTimelapseState => {
     return {
         settings: {
             enabled: 'true',
+            camera: '0',
             mode: 'layermacro',
             autorender: true,
             autorenderOnce: false,
@@ -36,6 +37,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             rotation: 0,
             dublicatelastframe: 0,
             previewImage: true,
+            time_format_code: '%Y%m%d_%H%M',
             blockedsettings: []
         },
         lastFrame: {
