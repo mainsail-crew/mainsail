@@ -564,7 +564,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                         this.dialogImage.item.url = url
                     }
                 } else {
-                    window.console.log('openFile', item)
                     this.$store.dispatch('editor/openFile', {
                         root: this.root,
                         path: this.currentPath,

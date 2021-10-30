@@ -29,10 +29,10 @@ export const actions: ActionTree<FileState, RootState> = {
         })
     },
 
-    getDirectory({ state, commit }, payload: ApiGetDirectoryReturn) {
+    getDirectory({ state, commit, getters }, payload: ApiGetDirectoryReturn) {
         let root = ''
         let path = ''
-        let parent: FileStateFile[] | null = state.filetree
+        let directory: FileStateFile | null
 
         if (payload.requestParams?.path) {
             const pathArray = payload.requestParams.path.split('/')
@@ -40,11 +40,12 @@ export const actions: ActionTree<FileState, RootState> = {
 
             const slashIndex = payload.requestParams.path.indexOf('/')
             path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
-            parent = findDirectory(state.filetree, pathArray)
+
+            directory = getters['getDirectory'](path)
         }
 
-        if (parent?.length) {
-            parent?.forEach((item: FileStateFile) => {
+        if (directory?.childrens?.length) {
+            directory?.childrens.forEach((item: FileStateFile) => {
                 if (item?.isDirectory && payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) < 0)
                     commit('setDeleteDir', {
                         item: {
@@ -62,9 +63,9 @@ export const actions: ActionTree<FileState, RootState> = {
             })
         }
 
-        if (parent && payload.dirs?.length) {
+        if (directory && payload.dirs?.length) {
             payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (!parent?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
+                if (!directory?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
                     commit('setCreateDir', {
                         item: {
                             path: path.length ? path+'/'+dir.dirname : dir.dirname,
@@ -81,7 +82,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
         if (payload.files?.length) {
             payload.files.forEach((file: ApiGetDirectoryReturnFile) => {
-                const existingFile = parent?.find((element: FileStateFile) => (!element.isDirectory && element.filename === file.filename))
+                const existingFile = directory?.childrens?.find((element: FileStateFile) => (!element.isDirectory && element.filename === file.filename))
 
                 if (existingFile && (
                     existingFile.size !== file.size ||
