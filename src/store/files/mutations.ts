@@ -229,5 +229,10 @@ export const mutations: MutationTree<FileState> = {
 
         const dir = state.filetree.find(dir => dir.filename === path)
         if (dir && 'disk_usage' in dir) Vue.set(dir, 'disk_usage', payload.disk_usage)
+    },
+
+    setRootPermissions(state, payload) {
+        const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.name)
+        if (rootState) Vue.set(rootState, 'permissions', payload.permissions)
     }
 }

@@ -7,10 +7,8 @@ import {
     FileState,
     FileStateFile
 } from '@/store/files/types'
-import {findDirectory} from '@/plugins/helpers'
 import {RootState} from '@/store/types'
 import i18n from '@/plugins/i18n'
-import {readOnlyRoots} from '@/store/variables'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -22,7 +20,7 @@ export const actions: ActionTree<FileState, RootState> = {
             if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
                 commit('createRootDir', {
                     name: dirname,
-                    permissions: readOnlyRoots.includes(dirname) ? 'r' : 'rw'
+                    permissions: 'r'
                 })
                 Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
             }
@@ -42,6 +40,11 @@ export const actions: ActionTree<FileState, RootState> = {
             path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
 
             directory = getters['getDirectory'](path)
+        }
+
+        if ('root_info' in payload) {
+            const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.root_info.name)
+            if (rootState && rootState.permissions !== payload.root_info?.permissions) commit('setRootPermissions', payload.root_info)
         }
 
         if (directory?.childrens?.length) {

@@ -34,6 +34,11 @@ export interface FileStateDiskUsage {
     used: number
 }
 
+export interface FileStateRootInfo {
+    name: string
+    permissions: string
+}
+
 export interface FileStateFileThumbnail {
     width: number
     height: number
@@ -45,6 +50,7 @@ export interface ApiGetDirectoryReturn {
     dirs: ApiGetDirectoryReturnDir[]
     files: ApiGetDirectoryReturnFile[]
     disk_usage: FileStateDiskUsage
+    root_info?: FileStateRootInfo
     // eslint-disable-next-line
     requestParams?: any
 }
