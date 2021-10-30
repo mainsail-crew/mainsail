@@ -45,6 +45,10 @@ export const mutations: MutationTree<EditorState> = {
         Vue.set(state, 'filename', filename)
     },
 
+    setPermissions(state, filename) {
+        Vue.set(state, 'permissions', filename)
+    },
+
     hideEditor(state) {
         Vue.set(state, 'bool', false)
     },
@@ -62,11 +66,8 @@ export const mutations: MutationTree<EditorState> = {
         // the hash took 2 seconds per run, the editor itself is pretty laggy even without hash
         // calculations. Hash calculations with typical config file sizes (50KB) only take 1 or 2ms
         // on my machine, so I guess this is acceptable for most use cases.
-        
-        if (sha256(payload) != state.loadedHash)
-            state.changed = true
-        else
-            state.changed = false
+
+        state.changed = (sha256(payload) != state.loadedHash)
     }
 
 }

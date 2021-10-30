@@ -8,6 +8,7 @@ export const getDefaultState = (): EditorState => {
     return {
         bool: false,
         filename: '',
+        permissions: '',
         fileroot: '',
         filepath: '',
         sourcecode: '',

@@ -10,6 +10,7 @@ import {
 import {findDirectory} from '@/plugins/helpers'
 import {RootState} from '@/store/types'
 import i18n from '@/plugins/i18n'
+import {readOnlyRoots} from '@/store/variables'
 
 export const actions: ActionTree<FileState, RootState> = {
     reset({ commit }) {
@@ -19,7 +20,10 @@ export const actions: ActionTree<FileState, RootState> = {
     initRootDirs({ state, commit }, dirs) {
         dirs.forEach((dirname: string) => {
             if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
-                commit('createRootDir', dirname)
+                commit('createRootDir', {
+                    name: dirname,
+                    permissions: readOnlyRoots.includes(dirname) ? 'r' : 'rw'
+                })
                 Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
             }
         })
@@ -65,6 +69,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         item: {
                             path: path.length ? path+'/'+dir.dirname : dir.dirname,
                             root: root,
+                            permissions: dir.permissions,
                             modified: dir.modified * 1000
                         }
                     })
@@ -95,6 +100,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         item: {
                             path: path.length ? path+'/'+file.filename : file.filename,
                             root: root,
+                            permissions: file.permissions,
                             modified: file.modified,
                             size: file.size,
                         }

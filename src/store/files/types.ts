@@ -6,6 +6,7 @@ export interface FileStateFile {
     isDirectory: boolean
     filename: string
     modified: Date
+    permissions: string
     childrens?: FileStateFile[]
     disk_usage?: FileStateDiskUsage
     print_start_time?: Date | null
@@ -52,10 +53,12 @@ export interface ApiGetDirectoryReturnDir {
     modified: number
     size: number
     dirname: string
+    permissions: string
 }
 
 export interface ApiGetDirectoryReturnFile {
     modified: number
     size: number
     filename: string
+    permissions: string
 }

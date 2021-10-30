@@ -122,8 +122,12 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return this.$store.state.editor.fileroot ?? 'gcodes'
     }
 
+    get permissions(): string {
+        return this.$store.state.editor.permissions ?? 'r'
+    }
+
     get isWriteable() {
-        return ['config', 'gcodes'].includes(this.fileroot)
+        return this.permissions.includes('w')
     }
 
     get sourcecode() {

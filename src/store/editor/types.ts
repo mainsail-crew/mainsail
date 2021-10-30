@@ -2,6 +2,7 @@ export interface EditorState {
     bool: boolean
     filename: string
     fileroot: string
+    permissions: string
     filepath: string
     sourcecode: string
     loaderBool: boolean

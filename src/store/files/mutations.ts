@@ -13,11 +13,12 @@ export const mutations: MutationTree<FileState> = {
         Object.assign(state, getDefaultState())
     },
 
-    createRootDir(state, dirname) {
+    createRootDir(state, payload) {
         state.filetree.push({
             isDirectory: true,
-            filename: dirname,
+            filename: payload.name,
             modified: new Date(),
+            permissions: payload.permissions,
             childrens: [],
             disk_usage: {
                 free: 0,
@@ -62,6 +63,7 @@ export const mutations: MutationTree<FileState> = {
                     isDirectory: false,
                     filename: filename,
                     modified: modified,
+                    permissions: payload.item.permissions,
                     size: payload.item.size,
                     metadataPulled: false,
                 })
@@ -199,6 +201,7 @@ export const mutations: MutationTree<FileState> = {
                 isDirectory: true,
                 filename: dirname,
                 modified: payload.item.modified ?? new Date(),
+                permissions: payload.item.permissions,
                 childrens: [],
             })
         }
