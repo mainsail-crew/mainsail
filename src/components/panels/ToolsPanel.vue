@@ -278,7 +278,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get cooldownGcode(): string {
-        return this.$store.state.gui.cooldown_gcode ?? 'TURN_OFF_HEATERS'
+        return this.$store.state.gui.cooldownGcode ?? 'TURN_OFF_HEATERS'
     }
 
     get boolTempchart(): boolean {
