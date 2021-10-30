@@ -10,6 +10,10 @@
                     <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
+                    <v-select v-model="entryStyle" :items="availableEntryStyles" hide-details outlined dense></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.Height')">
                     <v-slider v-model="consoleHeightTmp" @change="updateConsoleHeight" hide-details :min="200" :max="900" :step="10" :label="consoleHeightTmp+'px'" ></v-slider>
                 </settings-row>
@@ -135,6 +139,26 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'console.direction', value: newVal })
     }
 
+    get availableEntryStyles() {
+        return [
+            {
+                text: this.$t('Settings.ConsoleTab.EntryStyleDefault'),
+                value: 'default'
+            }, {
+                text: this.$t('Settings.ConsoleTab.EntryStyleCompact'),
+                value: 'compact'
+            }
+        ]
+    }
+
+    get entryStyle() {
+        return this.$store.state.gui.console.entryStyle ?? 'default'
+    }
+
+    set entryStyle(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.entryStyle', value: newVal })
+    }
+
     get consoleHeight() {
         return this.$store.state.gui.console.height ?? 300
     }
@@ -150,7 +174,6 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     @Debounce(500)
     updateConsoleHeight(newVal: number) {
-        window.console.log('updateConsoleHeight', newVal)
         this.consoleHeight = newVal
     }
 

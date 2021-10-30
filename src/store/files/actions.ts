@@ -7,7 +7,6 @@ import {
     FileState,
     FileStateFile
 } from '@/store/files/types'
-import {findDirectory} from '@/plugins/helpers'
 import {RootState} from '@/store/types'
 import i18n from '@/plugins/i18n'
 
@@ -19,16 +18,19 @@ export const actions: ActionTree<FileState, RootState> = {
     initRootDirs({ state, commit }, dirs) {
         dirs.forEach((dirname: string) => {
             if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
-                commit('createRootDir', dirname)
+                commit('createRootDir', {
+                    name: dirname,
+                    permissions: 'r'
+                })
                 Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
             }
         })
     },
 
-    getDirectory({ state, commit }, payload: ApiGetDirectoryReturn) {
+    getDirectory({ state, commit, getters }, payload: ApiGetDirectoryReturn) {
         let root = ''
         let path = ''
-        let parent: FileStateFile[] | null = state.filetree
+        let directory: FileStateFile | null
 
         if (payload.requestParams?.path) {
             const pathArray = payload.requestParams.path.split('/')
@@ -36,11 +38,17 @@ export const actions: ActionTree<FileState, RootState> = {
 
             const slashIndex = payload.requestParams.path.indexOf('/')
             path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
-            parent = findDirectory(state.filetree, pathArray)
+
+            directory = getters['getDirectory'](path)
         }
 
-        if (parent?.length) {
-            parent?.forEach((item: FileStateFile) => {
+        if ('root_info' in payload) {
+            const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.root_info.name)
+            if (rootState && rootState.permissions !== payload.root_info?.permissions) commit('setRootPermissions', payload.root_info)
+        }
+
+        if (directory?.childrens?.length) {
+            directory?.childrens.forEach((item: FileStateFile) => {
                 if (item?.isDirectory && payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) < 0)
                     commit('setDeleteDir', {
                         item: {
@@ -58,13 +66,14 @@ export const actions: ActionTree<FileState, RootState> = {
             })
         }
 
-        if (parent && payload.dirs?.length) {
+        if (directory && payload.dirs?.length) {
             payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (!parent?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
+                if (!directory?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
                     commit('setCreateDir', {
                         item: {
                             path: path.length ? path+'/'+dir.dirname : dir.dirname,
                             root: root,
+                            permissions: dir.permissions,
                             modified: dir.modified * 1000
                         }
                     })
@@ -76,7 +85,7 @@ export const actions: ActionTree<FileState, RootState> = {
 
         if (payload.files?.length) {
             payload.files.forEach((file: ApiGetDirectoryReturnFile) => {
-                const existingFile = parent?.find((element: FileStateFile) => (!element.isDirectory && element.filename === file.filename))
+                const existingFile = directory?.childrens?.find((element: FileStateFile) => (!element.isDirectory && element.filename === file.filename))
 
                 if (existingFile && (
                     existingFile.size !== file.size ||
@@ -95,6 +104,7 @@ export const actions: ActionTree<FileState, RootState> = {
                         item: {
                             path: path.length ? path+'/'+file.filename : file.filename,
                             root: root,
+                            permissions: file.permissions,
                             modified: file.modified,
                             size: file.size,
                         }

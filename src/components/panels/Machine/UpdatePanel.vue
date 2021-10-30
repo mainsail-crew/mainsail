@@ -30,8 +30,8 @@
     .v-timeline.groupedCommits {
         .v-timeline-item__dot--small {
             width: 18px;
-            height: 14px;
-            left: calc(50% - 9px);
+            height: 15px;
+            margin-top: 2px;
 
             &:before {
                 display: block;
@@ -39,7 +39,7 @@
                 position: relative;
                 width: 18px;
                 height: 2px;
-                top: 8px;
+                top: 7px;
                 background: rgba(255, 255, 255, 0.50);
                 z-index: 1;
             }
@@ -52,7 +52,8 @@
             height: 8px;
             position: relative;
             z-index: 2;
-            margin-left: 5px
+            margin-left: 5px;
+            margin-top: 2px;
         }
     }
 </style>
@@ -131,7 +132,7 @@
                             </v-col>
                         </v-row>
                     </div>
-                    <div v-if="'system' in version_info">
+                    <template v-if="'system' in version_info">
                         <v-divider class="my-0 border-top-2" ></v-divider>
                         <v-row class="pt-2">
                             <v-col class="col-auto pl-6 text-no-wrap">
@@ -156,7 +157,18 @@
                                 ><v-icon small class="mr-1">mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}</v-icon>{{ version_info.system.package_count ? $t('Machine.UpdatePanel.Upgrade') : $t('Machine.UpdatePanel.UpToDate') }}</v-chip>
                             </v-col>
                         </v-row>
-                    </div>
+                    </template>
+                    <template v-if="showUpdateAll">
+                        <v-divider class="my-0 border-top-2" ></v-divider>
+                        <v-row class="pt-3">
+                            <v-col class="text-center">
+                                <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                    <v-icon left>mdi-progress-upload</v-icon>
+                                    {{ $t('Machine.UpdatePanel.UpdateAll') }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </template>
                 </v-container>
             </v-card-text>
         </panel>
@@ -179,7 +191,7 @@
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0" >{{ commit.subject }}<v-chip outlined label x-small class="ml-2 px-2" v-if="!openCommits.includes(commit.sha)" @click="openCommits.push(commit.sha)"><v-icon small>mdi-dots-horizontal</v-icon></v-chip></h4>
-                                                                <p v-if="openCommits.includes(commit.sha)" class="caption text--secondary mb-2" style="white-space: pre;" v-html="convertCommitMessage(commit.message)"></p>
+                                                                <p v-if="openCommits.includes(commit.sha)" class="caption text--secondary mb-2" style="white-space: pre-line;" v-html="commit.message"></p>
                                                                 <p class="caption mb-0"><span class="font-weight-bold text-decoration-none white--text">{{ commit.author}}</span> <span>{{ convertCommitDate(commit.date) }}</span></p>
                                                             </v-col>
                                                             <v-col class="col-auto pt-4 ">
@@ -259,6 +271,24 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
     get updateableSoftwares() {
         return this.$store.getters['server/updateManager/getUpdateableSoftwares']
+    }
+
+    get showUpdateAll() {
+        let updateableModuls = 0
+
+        Object.keys(this.updateableSoftwares).forEach((modulename) => {
+            const module = this.updateableSoftwares[modulename]
+            if (
+                'version' in module &&
+                'remote_version' in module &&
+                semver.valid(module.remote_version) &&
+                semver.valid(module.version) &&
+                semver.gt(module.remote_version, module.version)
+            ) updateableModuls++
+        })
+
+        if (this.version_info?.system?.package_count > 0) updateableModuls++
+        return (updateableModuls > 1)
     }
 
     btnSync() {
@@ -386,7 +416,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
         let output = ''
         if ('remote_alias' in object && object.remote_alias !== 'origin') output += object.remote_alias
-        if ('branch' in object && object.branch !== 'master') {
+        if ('branch' in object && !['master', 'main'].includes(object.branch)) {
             if (output !== '') output += '/'
 
             output += object.branch
@@ -415,6 +445,10 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         else if ('is_dirty' in object && object.is_dirty) return true
 
         return false
+    }
+
+    updateAll() {
+        this.$socket.emit('machine.update.full', {  })
     }
 
     updateModule(key: string) {
@@ -475,26 +509,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             }
 
             this.commitsOverlay.bool = true
-
-            window.console.log(this.commitsOverlay.groupedCommits)
         }
-    }
-
-    convertCommitMessage(message: string) {
-        //message = this.trimEndLineBreak(message)
-        message.replace(/(?:\r\n|\r|\n)/g, '<br />')
-        //message.replaceAll('\\n', '<br />')
-
-        return message
-    }
-
-    trimEndLineBreak(message: string) {
-        if (['\n', '\r'].includes(message.substr(-1))) {
-            message = message.substr(0, message.length - 2)
-            this.trimEndLineBreak(message)
-        }
-
-        return message
     }
 
     convertCommitDate(timestamp: number) {
@@ -504,7 +519,12 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         todayDay.setHours(0,0,0,0)
         const diff = Math.floor(todayDay.getTime() - commitDay.getTime()) / (1000 * 60 * 60 * 24)
 
-        if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
+        if (diff === 0) {
+            const diffHours = Math.floor(((new Date()).getTime() - timestamp * 1000) / (1000 * 60 * 60))
+
+            return this.$t('Machine.UpdatePanel.CommittedHoursAgo', { hours: diffHours })
+        }
+        else if (diff === 1) return this.$t('Machine.UpdatePanel.CommittedYesterday')
         else if (diff < 29) return this.$t('Machine.UpdatePanel.CommittedDaysAgo', { days: diff })
         else return this.$t('Machine.UpdatePanel.CommittedOnDate', { date: commitDay.toLocaleDateString(this.language, this.dateOptions) })
     }

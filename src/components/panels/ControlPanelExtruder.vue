@@ -37,7 +37,12 @@
             <v-col class="col col-md-6 pt-2">
                 <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedrateIn") }} [mm/s]</span>
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn v-for="rate in feedratesSorted" v-bind:key="rate" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                        </template>
+                        <span v-if="filamentDiameter">{{ Math.round(Math.pow(filamentDiameter / 2, 2) * Math.PI * rate * 10) / 10 }} mm&sup3;/s</span>
+                    </v-tooltip>
                 </v-btn-toggle>
             </v-col>
         </v-row>
@@ -56,6 +61,10 @@ import BaseMixin from '../mixins/base'
 
 @Component
 export default class ControlPanelExtruder extends Mixins(BaseMixin) {
+
+    get filamentDiameter() {
+        return this.$store.state.printer.configfile?.settings?.extruder?.filament_diameter ?? 1.75
+    }
 
     get feedamounts() {
         return this.$store.state.gui.dashboard?.extruder?.feedamounts ?? []

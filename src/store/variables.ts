@@ -40,12 +40,6 @@ export const validGcodeExtensions = [
     '.nc',
 ]
 
-export const readOnlyRoots = [
-    'config_examples',
-    'docs',
-    'logs',
-]
-
 export const initableServerComponents = [
     'history',
     'power',
@@ -80,3 +74,14 @@ export const allowedMetadata = [
 ]
 
 export const maxEventHistory = 500
+
+export const allDashboardPanels = [
+    'control',
+    'macros',
+    'miniconsole',
+    'miscellaneous',
+    'printsettings',
+    'tools',
+    'webcam',
+    'zoffset',
+]

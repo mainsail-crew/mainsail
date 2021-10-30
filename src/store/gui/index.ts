@@ -24,7 +24,9 @@ export const getDefaultState = (): GuiState => {
         dashboard: {
             boolTempchart: true,
             boolBigThumbnail: true,
+            macroManagement: 'simple',
             hiddenMacros: [],
+            macrogroups: [],
             hiddenTempChart: [],
             control: {
                 style: 'bars',
@@ -44,7 +46,7 @@ export const getDefaultState = (): GuiState => {
                 feedamount: 25,
                 feedamounts: [ 50, 25, 10, 5, 1 ],
                 feedrate: 5,
-                feedrates: [ 60, 30, 15, 5, 1 ],
+                feedrates: [ 15, 10, 5, 2, 1 ],
             },
             mobileLayout: [
                 { 'name': 'webcam', visable: false },
@@ -119,6 +121,7 @@ export const getDefaultState = (): GuiState => {
         console: {
             hideWaitTemperatures: true,
             direction: 'table',
+            entryStyle: 'default',
             height: 300,
             customFilters: [],
         },
@@ -165,7 +168,9 @@ export const getDefaultState = (): GuiState => {
             }
         },
         editor: {
-            minimap: false
+            minimap: false,
+            escToClose: true,
+            confirmUnsavedChanges: true
         },
         //moonraker DB api dont accept camel case key names
         remotePrinters: [],
@@ -192,7 +197,7 @@ export const getDefaultState = (): GuiState => {
             voxelWidth: 1,
             voxelHeight: 1,
             specularLighting: false,
-        }
+        },
     }
 }
 

@@ -1,4 +1,3 @@
-import { findDirectory } from '@/plugins/helpers'
 import { themeDir } from '@/store/variables'
 import {GetterTree} from 'vuex'
 import {FileState, FileStateFile} from '@/store/files/types'
@@ -6,10 +5,29 @@ import {FileState, FileStateFile} from '@/store/files/types'
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
 
-    getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
-        const directory = findDirectory(state.filetree, ['config', themeDir])
+    getDirectory: (state) => (requestedPath) => {
+        if (requestedPath.startsWith('/')) requestedPath = requestedPath.substr(1)
 
-        const file = directory?.find((element: FileStateFile) =>
+        const findDirectory = function(filetree: FileStateFile[], pathArray: string[]): FileStateFile | null {
+            if (pathArray.length) {
+                const newFiletree = filetree?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === pathArray[0]))
+                if (newFiletree) {
+                    pathArray.shift()
+
+                    return findDirectory(newFiletree, pathArray)
+                } else return null
+            }
+
+            return filetree
+        }
+
+        return findDirectory({ childrens: state.filetree }, requestedPath.split('/'))
+    },
+
+    getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
+        const directory = getters['getDirectory']('config/'+themeDir)
+
+        const file = directory?.childrens?.find((element: FileStateFile) =>
             element.filename !== undefined && (
                 element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
 				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
@@ -71,10 +89,10 @@ export const getters: GetterTree<FileState, any> = {
         return null
     },
 
-    checkConfigFile: (state) => (acceptName: string) => {
-        const directory = findDirectory(state.filetree, ['config'])
+    checkConfigFile: (state, getters) => (acceptName: string) => {
+        const directory = getters['getDirectory']('config')
 
-        return directory?.findIndex((element: FileStateFile) =>
+        return directory?.childrens?.findIndex((element: FileStateFile) =>
             element.filename !== undefined && element.filename === acceptName
         ) !== -1
     },

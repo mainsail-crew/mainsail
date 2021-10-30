@@ -351,7 +351,7 @@ import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
 import { validGcodeExtensions } from '@/store/variables'
-import {findDirectory, formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
+import {formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 
@@ -403,7 +403,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
     }
 
     private search = ''
-    private files: FileStateFile[] | null = []
     private selected = []
     private hideHeaderColums = []
     private currentPath = 'gcodes'
@@ -519,8 +518,34 @@ export default class PageFiles extends Mixins(BaseMixin) {
         return headers
     }
 
-    get filetree() {
-        return this.$store.state.files.filetree ?? []
+    get directory() {
+        return this.$store.getters['files/getDirectory'](this.currentPath)
+    }
+
+    get disk_usage() {
+        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0}
+    }
+
+    get files() {
+        let files = [...this.directory?.childrens ?? []]
+
+        if (!this.showHiddenFiles) {
+            files = files.filter(file => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
+        }
+
+        if (!this.showPrintedFiles) {
+            files = files.filter(file => {
+                if (file.isDirectory) return true
+                else {
+                    return (this.$store.getters['server/history/getPrintStatusByFilename'](
+                        (this.currentPath+'/'+file.filename).substr(7),
+                        file.modified.getTime()
+                    ) !== 'completed')
+                }
+            })
+        }
+
+        return files
     }
 
     get configHeaders() {
@@ -553,10 +578,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     set showPrintedFiles(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showPrintedFiles', value: newVal })
-    }
-
-    get disk_usage() {
-        return this.$store.getters['files/getDiskUsage'](this.currentPath)
     }
 
     get sortBy() {
@@ -787,38 +808,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     created() {
         this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
-        this.loadPath()
-    }
-
-    loadPath() {
-        let dirArray = this.currentPath.split('/')
-        this.files = findDirectory(this.filetree, dirArray)
-        if (this.files !== null) {
-            if (!this.showHiddenFiles) {
-                this.files = this.files.filter(file => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
-            }
-            if (!this.showPrintedFiles) {
-                this.files = this.files.filter(file => {
-                    if (file.isDirectory) return true
-                    else {
-                        return (this.$store.getters['server/history/getPrintStatusByFilename'](
-                            (this.currentPath+'/'+file.filename).substr(7),
-                            file.modified.getTime()
-                        ) !== 'completed')
-                    }
-                })
-            }
-        }
-    }
-
-    @Watch('filetree', { deep: true })
-    filetreeChanged() {
-        this.loadPath()
-    }
-
-    @Watch('currentPath')
-    currentPathChanged() {
-        this.loadPath()
     }
 
     formatPrintTime(totalSeconds: number) {
@@ -890,7 +879,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
                 this.dialogPrintFile.item = item
             } else {
                 this.currentPath += '/' + item.filename
-                this.loadPath()
             }
         }
     }
@@ -1032,16 +1020,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
             filename: '',
             modified: new Date()
         }
-    }
-
-    @Watch('showHiddenFiles')
-    showHiddenFilesChanged() {
-        this.loadPath()
-    }
-
-    @Watch('showPrintedFiles')
-    showPrintedFilesChanged() {
-        this.loadPath()
     }
 
     @Watch('hideMetadataColums')

@@ -2,6 +2,7 @@ export interface EditorState {
     bool: boolean
     filename: string
     fileroot: string
+    permissions: string
     filepath: string
     sourcecode: string
     loaderBool: boolean
@@ -13,5 +14,7 @@ export interface EditorState {
         total: number
         speed: string
     },
-    cancelToken: any
+    cancelToken: any,
+    loadedHash: string,
+    changed: boolean
 }

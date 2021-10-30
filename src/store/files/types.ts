@@ -6,6 +6,7 @@ export interface FileStateFile {
     isDirectory: boolean
     filename: string
     modified: Date
+    permissions: string
     childrens?: FileStateFile[]
     disk_usage?: FileStateDiskUsage
     print_start_time?: Date | null
@@ -33,6 +34,11 @@ export interface FileStateDiskUsage {
     used: number
 }
 
+export interface FileStateRootInfo {
+    name: string
+    permissions: string
+}
+
 export interface FileStateFileThumbnail {
     width: number
     height: number
@@ -44,6 +50,7 @@ export interface ApiGetDirectoryReturn {
     dirs: ApiGetDirectoryReturnDir[]
     files: ApiGetDirectoryReturnFile[]
     disk_usage: FileStateDiskUsage
+    root_info?: FileStateRootInfo
     // eslint-disable-next-line
     requestParams?: any
 }
@@ -52,10 +59,12 @@ export interface ApiGetDirectoryReturnDir {
     modified: number
     size: number
     dirname: string
+    permissions: string
 }
 
 export interface ApiGetDirectoryReturnFile {
     modified: number
     size: number
     filename: string
+    permissions: string
 }

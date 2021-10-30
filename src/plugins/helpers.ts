@@ -1,5 +1,5 @@
-import { ServerStateEvent } from '@/store/server/types'
 import {FileStateFile} from '@/store/files/types'
+import {PrinterStateMacroParams} from '@/store/printer/types'
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
     if (folder !== undefined && folder !== null && dirArray.length) {
@@ -35,6 +35,8 @@ export const capitalize = (str: string): string => {
 }
 
 export const convertPanelnameToIcon = (name: string): string => {
+    if (name.startsWith('macrogroup_')) return 'mdi-code-tags'
+
     switch (name) {
     case 'webcam': return 'mdi-webcam'
     case 'zoffset': return 'mdi-arrow-collapse-vertical'
@@ -163,4 +165,47 @@ export function formatTime(date: Date): string {
 
 
     return hours+':'+minutes+':'+seconds
+}
+
+export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParams {
+    const paramRegex = /{%?.*?\sparams\.([A-Za-z_0-9]+)(?:\|(int|string|double))?(?:\|default\('?"?(.*?)"?'?\))?(?:\|(int|string))?.*?%?}/
+
+    let params = paramRegex.exec(macro.gcode)
+    let currentMatch = macro.gcode
+    let ret: PrinterStateMacroParams = null
+    while(params) {
+        if (ret === null) {
+            ret = {}
+        }
+        const name = params[1]
+        const t: 'int' | 'string' | 'double' | null = (params[2] ?? params[4] ?? null) as 'int' | 'string' | 'double' | null
+        const def = params[3] ?? null
+        ret[`${name}`] = {
+            type: t,
+            default: def
+        }
+        currentMatch = currentMatch.replace(params[0], '')
+        params = paramRegex.exec(currentMatch)
+    }
+
+    const paramInRegex = /{%?.*?if.*?'([A-Za-z_0-9]+)' (?:not )?in params.*?%?}/
+    params = paramInRegex.exec(macro.gcode)
+    currentMatch = macro.gcode
+
+    while(params) {
+        if (ret === null) {
+            ret = {}
+        }
+        const name = params[1]
+        if (!(`${name}` in ret)) {
+            ret[`${name}`] = {
+                type: null,
+                default: null
+            }
+        }
+        currentMatch = currentMatch.replace(params[0], '')
+        params = paramInRegex.exec(currentMatch)
+    }
+
+    return ret
 }

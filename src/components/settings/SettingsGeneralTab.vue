@@ -18,26 +18,6 @@
                     <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.GeneralTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.GeneralTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
                     <v-btn @click="dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
                 </settings-row>
@@ -154,46 +134,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     set calcEtaTime(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.calcEtaTime', value: newVal })
-    }
-
-    get boolBigThumbnail() {
-        return this.$store.state.gui.dashboard.boolBigThumbnail
-    }
-
-    set boolBigThumbnail(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
-    }
-
-    get displayCancelPrint() {
-        return this.$store.state.gui.general.displayCancelPrint
-    }
-
-    set displayCancelPrint(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayCancelPrint', value: newVal })
-    }
-
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.general.displayZOffsetStandby
-    }
-
-    set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayZOffsetStandby', value: newVal })
-    }
-
-    get confirmOnEmergencyStop() {
-        return this.$store.state.gui.general.confirmOnEmergencyStop
-    }
-
-    set confirmOnEmergencyStop(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnEmergencyStop', value: newVal })
-    }
-
-    get confirmOnPowerDeviceChange() {
-        return this.$store.state.gui.general.confirmOnPowerDeviceChange
-    }
-
-    set confirmOnPowerDeviceChange(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
     }
 
     resetMainsail() {
