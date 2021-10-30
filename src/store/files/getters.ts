@@ -1,4 +1,3 @@
-import { findDirectory } from '@/plugins/helpers'
 import { themeDir } from '@/store/variables'
 import {GetterTree} from 'vuex'
 import {FileState, FileStateFile} from '@/store/files/types'
@@ -26,9 +25,9 @@ export const getters: GetterTree<FileState, any> = {
     },
 
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
-        const directory = findDirectory(state.filetree, ['config', themeDir])
+        const directory = getters['getDirectory']('config/'+themeDir)
 
-        const file = directory?.find((element: FileStateFile) =>
+        const file = directory?.childrens?.find((element: FileStateFile) =>
             element.filename !== undefined && (
                 element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
 				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
@@ -90,10 +89,10 @@ export const getters: GetterTree<FileState, any> = {
         return null
     },
 
-    checkConfigFile: (state) => (acceptName: string) => {
-        const directory = findDirectory(state.filetree, ['config'])
+    checkConfigFile: (state, getters) => (acceptName: string) => {
+        const directory = getters['getDirectory']('config')
 
-        return directory?.findIndex((element: FileStateFile) =>
+        return directory?.childrens?.findIndex((element: FileStateFile) =>
             element.filename !== undefined && element.filename === acceptName
         ) !== -1
     },
