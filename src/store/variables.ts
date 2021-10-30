@@ -40,12 +40,6 @@ export const validGcodeExtensions = [
     '.nc',
 ]
 
-export const readOnlyRoots = [
-    'config_examples',
-    'docs',
-    'logs',
-]
-
 export const initableServerComponents = [
     'history',
     'power',
