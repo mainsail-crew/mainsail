@@ -136,21 +136,21 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> {{ isDirWriteable ? $t('Machine.ConfigFilesPanel.EditFile') : $t('Machine.ConfigFilesPanel.ShowFile')  }}
+                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon> {{ contextMenu.item.permissions.includes('w') ? $t('Machine.ConfigFilesPanel.EditFile') : $t('Machine.ConfigFilesPanel.ShowFile') }}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Machine.ConfigFilesPanel.Download') }}
                 </v-list-item>
-                <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && isDirWriteable">
+                <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
-                <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && isDirWriteable">
+                <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
                     <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
-                <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && isDirWriteable">
+                <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
-                <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && isDirWriteable">
+                <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
             </v-list>
@@ -249,10 +249,9 @@
 
 <script lang="ts">
 
-import {Component, Mixins, Watch} from 'vue-property-decorator'
+import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {readOnlyRoots} from '@/store/variables'
-import {findDirectory, formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
+import {formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
@@ -322,7 +321,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private selected = []
     private options = { }
     private currentPage = 1
-    private files: FileStateFile[] = []
     private currentPath = ''
     private root = 'config'
     private contextMenu: contextMenu = {
@@ -334,6 +332,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -351,6 +350,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -368,6 +368,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -376,6 +377,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -398,6 +400,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -438,12 +441,42 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     get filteredToolbarButtons() {
         return this.toolbarButtons.filter((button) => {
-            return (this.isDirWriteable && button.onlyWriteable) || !button.onlyWriteable
+            return (this.directoryPermissions.includes('w') && button.onlyWriteable) || !button.onlyWriteable
         })
     }
 
-    get filetree() {
-        return this.$store.state.files.filetree
+    get absolutePath() {
+        let path = '/'+this.root
+        if (this.currentPath) path += this.currentPath
+
+        return path
+    }
+
+    get directory() {
+        return this.$store.getters['files/getDirectory'](this.absolutePath)
+    }
+
+    get disk_usage() {
+        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0}
+    }
+
+    get directoryPermissions() {
+        return this.directory?.permissions ?? 'r'
+    }
+
+    get files() {
+        let files = [...this.directory?.childrens ?? []]
+
+        if (!this.showHiddenFiles) {
+            files = files.filter(file => file.filename.substr(0, 1) !== '.')
+        }
+
+        if (this.hideBackupFiles) {
+            const backupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
+            files = files.filter(file => !file.filename.match(backupFileMatcher))
+        }
+
+        return files
     }
 
     get headers() {
@@ -503,46 +536,12 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.registered_directories.filter((dir: string) => dir !== 'gcodes').sort()
     }
 
-    get availableServices() {
-        return this.$store.state.server.system_info.available_services
-    }
-
-    get absolutePath() {
-        let path = '/'+this.root
-        if (this.currentPath) path += this.currentPath
-
-        return path
-    }
-
-    get disk_usage() {
-        return this.$store.getters['files/getDiskUsage'](this.absolutePath)
-    }
-
-    get isDirWriteable() {
-        return !readOnlyRoots.includes(this.root)
-    }
-
     refreshFileList() {
         this.$socket.emit('server.files.get_directory', { path: this.absolutePath.substring(1) }, { action: 'files/getDirectory' })
     }
 
     changeRoot() {
         this.currentPath = ''
-        this.loadPath()
-    }
-
-    loadPath() {
-        let dirArray = this.absolutePath.substring(1).split('/')
-        this.files = findDirectory(this.filetree, dirArray) ?? []
-
-        if (!this.showHiddenFiles) {
-            this.files = this.files.filter(file => file.filename.substr(0, 1) !== '.')
-        }
-
-        if (this.hideBackupFiles) {
-            const backupFileMatcher = /.*\/?printer-\d{8}_\d{6}\.cfg$/
-            this.files = this.files.filter(file => !file.filename.match(backupFileMatcher))
-        }
     }
 
     clickRow(item: FileStateFile, force = false) {
@@ -565,10 +564,12 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                         this.dialogImage.item.url = url
                     }
                 } else {
+                    window.console.log('openFile', item)
                     this.$store.dispatch('editor/openFile', {
                         root: this.root,
                         path: this.currentPath,
-                        filename: item.filename
+                        filename: item.filename,
+                        permissions: item.permissions
                     })
                 }
             } else {
@@ -811,19 +812,5 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             }, { action: 'files/getMove' })
         }
     }
-
-    created() { this.loadPath() }
-
-    @Watch('filetree', { deep: true })
-    filetreeChanged() { this.loadPath() }
-
-    @Watch('currentPath')
-    currentPathChanged() { this.loadPath() }
-
-    @Watch('showHiddenFiles')
-    showHiddenFilesChanged() { this.loadPath() }
-
-    @Watch('hideBackupFiles')
-    hideBackupFilesChanged() { this.loadPath() }
 }
 </script>

@@ -6,6 +6,25 @@ import {FileState, FileStateFile} from '@/store/files/types'
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
 
+    getDirectory: (state) => (requestedPath) => {
+        if (requestedPath.startsWith('/')) requestedPath = requestedPath.substr(1)
+
+        const findDirectory = function(filetree: FileStateFile[], pathArray: string[]): FileStateFile | null {
+            if (pathArray.length) {
+                const newFiletree = filetree?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === pathArray[0]))
+                if (newFiletree) {
+                    pathArray.shift()
+
+                    return findDirectory(newFiletree, pathArray)
+                } else return null
+            }
+
+            return filetree
+        }
+
+        return findDirectory({ childrens: state.filetree }, requestedPath.split('/'))
+    },
+
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
         const directory = findDirectory(state.filetree, ['config', themeDir])
 
