@@ -350,7 +350,7 @@
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
-import { validGcodeExtensions } from '@/store/variables'
+import {thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensions} from '@/store/variables'
 import {formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -839,8 +839,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
     getSmallThumbnail(item: FileStateFile) {
         if (item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(thumb =>
-                thumb.width >= 32 && thumb.width <= 64 &&
-                thumb.height >= 32 && thumb.height <= 64
+                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
@@ -851,7 +851,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     getBigThumbnail(item: FileStateFile) {
         if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
         }
@@ -861,7 +861,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     getThumbnailWidth(item: FileStateFile) {
         if (this.getBigThumbnail(item)) {
-            const thumbnail = item.thumbnails?.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail) return thumbnail.width
         }
