@@ -26,11 +26,11 @@
                 </template>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.PreviewImage')" :sub-title="$t('Settings.TimelapseTab.PreviewImageDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="previewImage" hide-details class="mt-0" :disabled="blockedsettings.includes('previewImage')"></v-switch>
+                    <v-switch v-model="previewimage" hide-details class="mt-0" :disabled="blockedsettings.includes('previewimage')"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.SaveFrames')" :sub-title="$t('Settings.TimelapseTab.SaveFramesDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="saveFrames" hide-details class="mt-0" :disabled="blockedsettings.includes('saveFrames')"></v-switch>
+                    <v-switch v-model="saveframes" hide-details class="mt-0" :disabled="blockedsettings.includes('saveframes')"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.GcodeVerbose')" :sub-title="$t('Settings.TimelapseTab.GcodeVerboseDescription')" :dynamicSlotWidth="true">
@@ -227,20 +227,20 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         this.$store.dispatch('server/timelapse/saveSetting', { autorender: newVal })
     }
 
-    get saveFrames() {
-        return this.$store.state.server.timelapse.settings.saveFrames
+    get saveframes() {
+        return this.$store.state.server.timelapse.settings.saveframes
     }
 
-    set saveFrames(newVal) {
-        this.$store.dispatch('server/timelapse/saveSetting', { saveFrames: newVal })
+    set saveframes(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { saveframes: newVal })
     }
 
-    get previewImage() {
-        return this.$store.state.server.timelapse.settings.previewImage
+    get previewimage() {
+        return this.$store.state.server.timelapse.settings.previewimage
     }
 
-    set previewImage(newVal) {
-        this.$store.dispatch('server/timelapse/saveSetting', { previewImage: newVal })
+    set previewimage(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { previewimage: newVal })
     }
 
     get gcode_verbose() {
