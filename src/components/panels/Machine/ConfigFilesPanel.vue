@@ -773,6 +773,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
