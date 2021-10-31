@@ -45,9 +45,10 @@ export default class KlipperWarningsPanelPanel extends Mixins(BaseMixin) {
     }
 
     getDocsLink(warning: { type: string, option: string, value: string }) {
-        let url = 'https://docs.mainsail.xyz/faq/' + warning.type
+        let url = 'https://docs.mainsail.xyz/faq/klipper_warnings/' + warning.type
 
-        if (warning.type === 'deprecated_option') url += '#' + warning.option
+        if (warning.type === 'deprecated_option' && warning.option.startsWith('default_parameter')) url += '#default_parameter'
+        else if (warning.type === 'deprecated_option') url += '#' + warning.option
         else if (warning.type === 'deprecated_value') url += '#' + warning.value
 
         return url
