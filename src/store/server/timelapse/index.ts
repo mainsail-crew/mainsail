@@ -12,7 +12,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             mode: 'layermacro',
             autorender: true,
             autorenderOnce: false,
-            saveFrames: false,
+            saveframes: false,
             gcode_verbose: true,
             parkhead: false,
             parkpos: 'back_left',
@@ -36,7 +36,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             variable_fps_max: 60,
             rotation: 0,
             dublicatelastframe: 0,
-            previewImage: true,
+            previewimage: true,
             time_format_code: '%Y%m%d_%H%M',
             blockedsettings: []
         },
