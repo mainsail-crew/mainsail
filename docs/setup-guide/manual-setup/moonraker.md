@@ -12,7 +12,7 @@ Moonraker is a web server that exposes APIs which lets Mainsail interact with Kl
 ## Installation
 At first we have to install some OS dependencies:
 ```bash
-sudo apt install python3-virtualenv python3-dev libopenjp2-7 python3-libgpiod curl libcurl4-openssl-dev libssl-dev liblmdb0 libsodium-dev zlib1g-dev
+sudo apt install python3-virtualenv python3-dev libopenjp2-7 python3-libgpiod curl libcurl4-openssl-dev libssl-dev liblmdb-dev libsodium-dev zlib1g-dev libjpeg-dev
 ```
 
 Clone Moonraker into your HOME directory:
