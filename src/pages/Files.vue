@@ -415,6 +415,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -445,6 +446,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -454,6 +456,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -464,6 +467,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -474,6 +478,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -484,6 +489,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -861,7 +867,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     getThumbnailWidth(item: FileStateFile) {
         if (this.getBigThumbnail(item)) {
-            const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
+            const thumbnail = item?.thumbnails?.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail) return thumbnail.width
         }
@@ -1018,6 +1024,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
