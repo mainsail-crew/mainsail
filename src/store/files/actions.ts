@@ -34,7 +34,7 @@ export const actions: ActionTree<FileState, RootState> = {
         const slashIndex = payload.requestParams.path.indexOf('/')
         const path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
 
-        const directory = getters['getDirectory'](path)
+        const directory = getters['getDirectory'](root+'/'+path)
 
         if (payload?.root_info?.name) {
             const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload?.root_info?.name)
@@ -60,7 +60,7 @@ export const actions: ActionTree<FileState, RootState> = {
             })
         }
 
-        if (directory?.childrens?.length && payload.dirs?.length) {
+        if (payload.dirs?.length) {
             payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
                 if (!directory?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
                     commit('setCreateDir', {
