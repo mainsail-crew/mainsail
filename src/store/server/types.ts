@@ -33,6 +33,8 @@ export interface ServerState {
         bits: number
         flags: string[]
     },
+    websocket_count: number
+    moonraker_version: string
 
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState

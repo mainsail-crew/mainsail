@@ -1,5 +1,7 @@
 import { GetterTree } from 'vuex'
-import { RootState } from '@/store/types'
+import {RootState, RootStateDependency} from '@/store/types'
+import semver from 'semver'
+import {minKlipperVersion, minMoonrakerVersion} from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<RootState, any> = {
@@ -32,4 +34,34 @@ export const getters: GetterTree<RootState, any> = {
 
         return 'Mainsail'
     },
+
+    getDependencies: (state) => {
+        const dependencies: RootStateDependency[] = []
+
+        const klipperVersion = state.printer?.software_version ?? ''
+        if (klipperVersion !== '' && semver.valid(klipperVersion) && semver.gte(minKlipperVersion, klipperVersion)) {
+            dependencies.push({
+                serviceName: 'Klipper',
+                installedVersion: klipperVersion,
+                neededVersion: minKlipperVersion
+            })
+        }
+
+        const moonrakerVersion = state.server?.moonraker_version ?? ''
+        if (moonrakerVersion === '') {
+            dependencies.push({
+                serviceName: 'Moonraker',
+                installedVersion: '--',
+                neededVersion: minMoonrakerVersion
+            })
+        } else if (moonrakerVersion !== '' && semver.valid(moonrakerVersion) && semver.gte(minMoonrakerVersion, moonrakerVersion)) {
+            dependencies.push({
+                serviceName: 'Moonraker',
+                installedVersion: moonrakerVersion,
+                neededVersion: minMoonrakerVersion
+            })
+        }
+
+        return dependencies
+    }
 }
