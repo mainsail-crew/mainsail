@@ -36,7 +36,7 @@
                     </v-row>
                 </v-card-title>
                 <v-divider></v-divider>
-                <perfect-scrollbar :class="'command-help-content '+(isMobile ? '' : 'height300')">
+                <overlay-scrollbars :class="'command-help-content '+(isMobile ? '' : 'height300')">
                     <v-card-text class="pt-0">
                         <v-row>
                             <v-col>
@@ -55,7 +55,7 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                </perfect-scrollbar>
+                </overlay-scrollbars>
             </panel>
         </template>
     </v-dialog>

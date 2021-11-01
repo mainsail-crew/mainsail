@@ -24,7 +24,7 @@
 </style>
 
 <template>
-    <v-card :class="'panel '+cardClass+' '+(marginBottom ? 'mb-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
+    <v-card :class="'panel '+cardClass+' '+(marginBottom ? 'mb-3 mb-md-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
         <v-toolbar flat dense :color="toolbarColor" :class="getToolbarClass" >
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">

@@ -2,7 +2,7 @@
 
 .consoleScrollContainer {
     min-height: 200px;
-    height: calc(100vh - 180px);
+    height: calc(var(--app-height) - 180px);
 }
 
 .gcode-command-field {
@@ -60,13 +60,13 @@
             <v-col :class="this.consoleDirection === 'table' ? 'col' : 'col pt-0'">
                 <v-card>
                     <v-card-text class="pa-0">
-                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
+                        <overlay-scrollbars ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
                             <console-table ref="console"
                                            :is-mini="false"
                                            :events="events"
                                            @command-click="commandClick"
                             />
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-card-text>
                 </v-card>
             </v-col>
