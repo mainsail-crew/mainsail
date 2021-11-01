@@ -526,7 +526,6 @@
 		},
 		"WebcamTab": {
 			"Webcams": "Webcams",
-			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
 			"EditWebcam": "Edit Webcam",
@@ -552,7 +551,8 @@
 			"UrlNotAvailable": "URL not available",
 
 			"Name": "Name",
-			"WebcamURL": "Webcam URL",
+			"UrlStream": "URL Stream",
+			"UrlSnapshot": "URL Snapshot",
 			"Service": "Service",
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
@@ -666,6 +666,7 @@
 			"GcodeThumbnails": "Gcode thumbnails",
 			"GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
 			"Guide": "Guide",
+			"ShowWebcamInNavigation": "Show Webcam in navigation",
 			"BoolBigThumbnail": "Large thumbnail",
 			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",

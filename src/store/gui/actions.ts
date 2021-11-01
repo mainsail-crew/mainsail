@@ -11,6 +11,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     init({ commit, dispatch, rootState }, payload) {
+        window.console.debug('init gui')
         if (
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
@@ -20,25 +21,34 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.dashboard?.control.useCross
         }
 
+        if (payload.value.webcam) {
+            window.console.debug('convert old webcam')
+
+            if (payload.value.webcam.configs && payload.value.webcam.configs.length) {
+                payload.value.webcam.configs.forEach((oldWebcam: any) => {
+                    const newWebcam = {...oldWebcam, urlStream: oldWebcam.url, urlSnapshot: oldWebcam.url.replace('action=stream', 'action=snapshot')}
+                    delete newWebcam.url
+                    dispatch('webcam/store', { values: newWebcam })
+                })
+            }
+
+            commit('saveSetting', { name: 'webcamSettings.boolNavi', value: payload.value.webcam.boolNavi })
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
+        }
+
         commit('setData', payload.value)
 
         // init remote printers, when remoteMode is off
         if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
 
+        dispatch('gui/webcam/init', null, { root: true })
         dispatch('printer/init', null, { root: true })
-    },
-
-    updateDataFromDB({ commit }, payload) {
-        commit('saveSetting', {
-            name: payload.key,
-            value: payload.value
-        })
     },
 
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value }, { action: 'gui/updateDataFromDB' })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value })
     },
 
     updateSettings(_, payload) {
@@ -51,7 +61,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 			!Array.isArray(payload.value[keyName])
         ) newState = Object.assign(payload.value[keyName], {...newState})
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState }, { action: 'gui/updateDataFromDB' })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
     },
 
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
@@ -67,6 +77,14 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('updateSettings', {
             keyName: 'gcodefiles',
             newVal: state.gcodefiles
+        })
+    },
+
+    setCurrentWebcam({ commit, dispatch, state }, payload) {
+        commit('setCurrentWebcam', payload)
+        dispatch('updateSettings', {
+            keyName: 'webcamSettings.currentCam',
+            newVal: state.webcamSettings.currentCam
         })
     },
 

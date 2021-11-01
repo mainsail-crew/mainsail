@@ -26,7 +26,7 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
     get url() {
         if (!this.isVisible) return ''
 
-        return this.camSettings.url || ''
+        return this.camSettings.urlStream || ''
     }
 
     get webcamStyle() {

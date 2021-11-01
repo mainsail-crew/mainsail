@@ -127,7 +127,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     }
 
     get boolNaviWebcam(): boolean {
-        return this.$store.state.gui.webcam.boolNavi
+        return this.$store.state.gui.webcamSettings.boolNavi
     }
 
     get moonrakerComponents(): string[] {

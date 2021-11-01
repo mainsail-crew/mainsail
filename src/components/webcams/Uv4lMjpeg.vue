@@ -31,7 +31,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     @Prop({ default: null }) readonly printerUrl!: string | null
 
     get url() {
-        const baseUrl = this.camSettings.url
+        const baseUrl = this.camSettings.urlStream
         const url = new URL(baseUrl, this.printerUrl === null ? this.hostUrl.toString() : this.printerUrl)
 
         return decodeURIComponent(url.toString())

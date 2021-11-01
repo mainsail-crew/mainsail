@@ -1,6 +1,8 @@
 import { ActionTree } from 'vuex'
 import {RootState} from '@/store/types'
 import {GuiWebcamState} from '@/store/gui/webcam/types'
+import { v4 as uuidv4 } from 'uuid'
+import Vue from 'vue'
 
 export const actions: ActionTree<GuiWebcamState, RootState> = {
     reset({ commit }) {
@@ -8,19 +10,26 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
     },
 
     init() {
-        window.console.log('init webcams')
-        //Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices'})
+        window.console.debug('init gui/webcam')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcam/initStore' })
+    },
+
+    initStore({ commit }, payload) {
+        commit('reset')
+        commit('initStore', payload)
     },
 
     upload(_, payload) {
-        window.console.log('upload', payload)
+        Vue.$socket.emit('server.database.post_item', { namespace: 'webcams', key: payload.id, value: payload.value })
     },
 
-    create({ commit, dispatch, state }, payload) {
-        const id = await commit('store', payload)
+    store({ commit, dispatch, state }, payload) {
+        const id = uuidv4()
+
+        commit('store', { id, values: payload.values })
         dispatch('upload', {
             id,
-            newVal: state.webcams[id]
+            value: state.webcams[id]
         })
     },
 
@@ -28,16 +37,12 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
-            newVal: state.webcams[payload.id]
+            value: state.webcams[payload.id]
         })
     },
 
-    destroy({ commit }, payload) {
+    delete({ commit }, payload) {
         commit('delete', payload)
-        //TODO: delete webcam on moonraker db
-        /*dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })*/
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'webcams', key: payload })
     },
 }

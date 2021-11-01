@@ -28,7 +28,7 @@ export const mutations: MutationTree<GuiState> = {
 
     saveSetting(state, payload) {
         // eslint-disable-next-line
-		const deepSet = (obj:any, is:string[] | string, value:any):any => {
+        const deepSet = (obj:any, is:string[] | string, value:any):any => {
             if (is !== undefined && typeof is === 'string')
                 return deepSet(obj,is.split('.'), value)
             else if (is.length==1 && value !== undefined)
@@ -60,6 +60,10 @@ export const mutations: MutationTree<GuiState> = {
 
     setGcodefilesShowHiddenFiles(state, value) {
         Vue.set(state.gcodefiles, 'showHiddenFiles', value)
+    },
+
+    setCurrentWebcam(state, payload) {
+        Vue.set(state.webcamSettings.currentCam, payload.viewport, payload.value)
     },
 
     addPreset(state, payload) {

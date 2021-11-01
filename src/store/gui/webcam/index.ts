@@ -14,7 +14,7 @@ export const getDefaultState = (): GuiWebcamState => {
 const state = getDefaultState()
 
 // eslint-disable-next-line
-export const power: Module<GuiWebcamState, any> = {
+export const webcam: Module<GuiWebcamState, any> = {
     namespaced: true,
     state,
     getters,

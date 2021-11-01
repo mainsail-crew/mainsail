@@ -2,16 +2,14 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <settings-row :title="$t('Settings.WebcamTab.ShowInNavigation')">
-                    <v-switch v-model="boolNavi" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <div v-for="(webcam) in this.webcams" v-bind:key="webcam.index">
+                <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamTab.Webcams') }}</h3>
+                <div v-for="(webcam) in webcams" v-bind:key="webcam.id">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
                             <v-icon small left>mdi-pencil</v-icon> {{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn small outlined @click="deleteWebcam(webcam.index)" class="ml-3 minwidth-0 px-2" color="error">
+                        <v-btn small outlined @click="deleteWebcam(webcam.id)" class="ml-3 minwidth-0 px-2" color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -24,7 +22,7 @@
         <v-card flat v-else>
             <v-form v-model="form.valid" @submit.prevent="saveWebcam">
                 <v-card-title>
-                    {{ form.index === null ? $t("Settings.WebcamTab.CreateWebcam") : $t("Settings.WebcamTab.EditWebcam") }}
+                    {{ form.id === null ? $t("Settings.WebcamTab.CreateWebcam") : $t("Settings.WebcamTab.EditWebcam") }}
                 </v-card-title>
                 <v-card-text>
                     <v-row>
@@ -64,10 +62,20 @@
                             <v-row>
                                 <v-col class="py-1">
                                     <v-text-field
-                                        v-model="form.url"
-                                        :label="$t('Settings.WebcamTab.WebcamURL')"
+                                        v-model="form.urlStream"
+                                        :label="$t('Settings.WebcamTab.UrlStream')"
                                         hide-details="auto"
                                         :rules="[rules.required]"
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col class="py-1">
+                                    <v-text-field
+                                        v-model="form.urlSnapshot"
+                                        :label="$t('Settings.WebcamTab.UrlSnapshot')"
+                                        hide-details="auto"
+                                        :rules="[rules.requiredMjpegAdaptive]"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -113,14 +121,14 @@
                         </v-col>
                         <v-col class="col-12 col-sm-6 text-center" align-self="center">
                             <vue-load-image v-if="['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(form.service)">
-                                <img slot="image" :src="form.url" alt="Preview" :style="webcamStyle" class="webcamImage" />
+                                <img slot="image" :src="form.service === 'mjpegstreamer-adaptive' ? form.urlSnapshot : form.urlStream" alt="Preview" :style="webcamStyle" class="webcamImage" />
                                 <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
                                 <template slot="error">
                                     <v-icon x-large>mdi-webcam-off</v-icon>
                                     <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamTab.UrlNotAvailable') }}</div>
                                 </template>
                             </vue-load-image>
-                            <video v-if="['ipstream'].includes(form.service)" :src="form.url" autoplay :style="webcamStyle" />
+                            <video v-if="['ipstream'].includes(form.service)" :src="form.urlStream" autoplay :style="webcamStyle" />
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -136,7 +144,7 @@
                         text
                         type="submit"
                     >
-                        {{ form.index === null ? $t("Settings.WebcamTab.SaveWebcam") : $t("Settings.WebcamTab.UpdateWebcam") }}
+                        {{ form.id === null ? $t("Settings.WebcamTab.SaveWebcam") : $t("Settings.WebcamTab.UpdateWebcam") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -149,17 +157,18 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiStateWebcam} from '@/store/gui/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 interface webcamForm {
     bool: boolean
-    index: number | null
+    id: string | null
     valid: boolean
     name: string
     icon: string
     service: string
     targetFps: number
-    url: string
+    urlStream: string
+    urlSnapshot: string
     flipX: boolean
     flipY: boolean
 }
@@ -171,40 +180,26 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
 
     private form: webcamForm = {
         bool: false,
-        index: null,
+        id: null,
         valid: false,
         name: '',
         icon: '',
         service: '',
         targetFps: 15,
-        url: '',
+        urlStream: '',
+        urlSnapshot: '',
         flipX: false,
         flipY: false,
     }
 
     private rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamTab.Required'),
+        requiredMjpegAdaptive: (value: string) => (value !== '' && this.form.service === 'mjpegstreamer-adaptive') || this.$t('Settings.WebcamTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamTab.NameAlreadyExists'),
     }
 
     get webcams() {
-        return this.$store.getters['gui/getWebcams'] ?? []
-    }
-
-    get boolDashboard() {
-        return this.$store.state.gui.webcam.boolDashboard ?? false
-    }
-
-    set boolDashboard(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'webcam.boolDashboard', value: newVal })
-    }
-
-    get boolNavi() {
-        return this.$store.state.gui.webcam.boolNavi ?? false
-    }
-
-    set boolNavi(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'webcam.boolNavi', value: newVal })
+        return this.$store.getters['gui/webcam/getWebcams'] ?? []
     }
 
     get iconItems() {
@@ -240,12 +235,12 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
         return ''
     }
 
-    getSubtitle(webcam: GuiStateWebcam) {
-        return webcam.url
+    getSubtitle(webcam: GuiWebcamStateWebcam) {
+        return 'URL: '+ (webcam.service === 'mjpegstreamer-adaptive' ? webcam.urlSnapshot : webcam.urlStream)
     }
 
     existsWebcamName(name: string) {
-        return (this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === name && webcam.index !== this.form.index) !== -1)
+        return (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.name === name && webcam.id !== this.form.id) !== -1)
     }
 
     createWebcam() {
@@ -254,13 +249,14 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
         this.form.bool = true
     }
 
-    editWebcam(webcam: GuiStateWebcam) {
-        this.form.index = webcam.index ?? null
+    editWebcam(webcam: GuiWebcamStateWebcam) {
+        this.form.id = webcam.id ?? null
         this.form.name = webcam.name
         this.form.icon = webcam.icon
         this.form.service = webcam.service
         this.form.targetFps = webcam.targetFps
-        this.form.url = webcam.url
+        this.form.urlStream = webcam.urlStream
+        this.form.urlSnapshot = webcam.urlSnapshot
         this.form.flipX = webcam.flipX
         this.form.flipY = webcam.flipY
 
@@ -270,25 +266,38 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
 
     saveWebcam() {
         if (this.form.valid) {
-            if (this.form.index !== null) this.$store.dispatch('gui/updateWebcam', {...this.form})
-            else this.$store.dispatch('gui/addWebcam', {...this.form})
+            window.console.log(this.form)
+            const values = {
+                name: this.form.name,
+                icon: this.form.icon,
+                service: this.form.service,
+                targetFps: this.form.targetFps,
+                urlStream: this.form.urlStream,
+                urlSnapshot: this.form.urlSnapshot,
+                flipX: this.form.flipX,
+                flipY: this.form.flipY,
+            }
+
+            if (this.form.id !== null) this.$store.dispatch('gui/webcam/update', { id: this.form.id, values: values })
+            else this.$store.dispatch('gui/webcam/store', { values })
 
             this.clearDialog()
         }
     }
 
-    deleteWebcam(index: number) {
-        this.$store.dispatch('gui/deleteWebcam', { index: index })
+    deleteWebcam(id: string) {
+        this.$store.dispatch('gui/webcam/delete', id)
     }
 
     clearDialog() {
         this.form.bool = false
-        this.form.index = null
+        this.form.id = null
         this.form.name = ''
         this.form.icon = 'mdi-webcam'
         this.form.service = 'mjpegstreamer-adaptive'
         this.form.targetFps = 15
-        this.form.url = '/webcam/?action=stream'
+        this.form.urlStream = '/webcam/?action=stream'
+        this.form.urlSnapshot = '/webcam/?action=snapshot'
         this.form.flipX = false
         this.form.flipY = false
     }

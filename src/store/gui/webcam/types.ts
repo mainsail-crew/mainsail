@@ -5,6 +5,7 @@ export interface GuiWebcamState {
 }
 
 export interface GuiWebcamStateWebcam {
+    id?: string
     name: string
     icon: string
     service: 'mjpegstreamer' | 'mjpegstreamer-adaptive' | 'uv4l-mjpeg' | 'ipstream'
