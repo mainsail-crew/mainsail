@@ -44,8 +44,16 @@
 </style>
 
 <template>
-    <div>
-        <panel :title="$t('Files.GCodeFiles')" icon="mdi-file-document-multiple-outline" card-class="gcode-files-panel fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+    <div
+        @dragover="dragOverUpload"
+        @dragleave="dragLeaveUpload"
+        @drop.prevent.stop="dragDropUpload"
+    >
+        <panel
+            :title="$t('Files.GCodeFiles')"
+            icon="mdi-file-document-multiple-outline"
+            card-class="gcode-files-panel"
+        >
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
@@ -125,7 +133,8 @@
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
-                @pagination="refreshMetadata">
+                @pagination="refreshMetadata"
+            >
 
                 <template slot="items">
                     <td v-for="header in filteredHeaders" v-bind:key="header.value">{{ header.text }}</td>
