@@ -12,7 +12,9 @@
             <v-divider class="my-2" v-if="index"></v-divider>
             <v-row>
                 <v-col>
-                    <p class="mb-0">{{ $t('Panels.DependenciesPanel.DependencyDescription', { name: dependency.serviceName, installedVersion: dependency.installedVersion, neededVersion: dependency.neededVersion }) }}</p>
+                    <p class="mb-0 orange--text">
+                        {{ $t('Panels.DependenciesPanel.DependencyDescription', { name: dependency.serviceName, installedVersion: dependency.installedVersion, neededVersion: dependency.neededVersion }) }}
+                    </p>
                 </v-col>
             </v-row>
         </v-card-text>
