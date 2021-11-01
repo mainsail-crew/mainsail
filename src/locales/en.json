@@ -280,6 +280,10 @@
 			"Headline": "Macros",
 			"Send": "send"
 		},
+		"DependenciesPanel": {
+			"Dependency": "Dependency | Dependencies",
+			"DependencyDescription": "Your installed '{name}' version ({installedVersion}) is too old for this Mainsail Build. Please update {name} to min. {neededVersion}."
+		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
 			"SwitchToPrinter": "Switch to Printer",
