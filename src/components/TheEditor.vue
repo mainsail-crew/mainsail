@@ -1,7 +1,5 @@
 <style scoped>
-    .editor-content-container {
-        height: calc(100vh - 48px);
-    }
+
 </style>
 
 <template>
@@ -21,7 +19,9 @@
                     <v-btn icon @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pa-0">
-                    <codemirror ref="editor" v-model="sourcecode" :name="filename" v-bind:file-extension="fileExtension"></codemirror>
+                    <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{  }">
+                        <codemirror ref="editor" v-model="sourcecode" :name="filename" v-bind:file-extension="fileExtension"></codemirror>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>

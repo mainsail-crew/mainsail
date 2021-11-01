@@ -2,13 +2,13 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(100vh - 250px);
+    height: calc(var(--app-height) - 250px);
     border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
 .slider-autoheight .v-slider {
-    height: calc(100vh - 250px);
+    height: calc(var(--app-height) - 250px);
 }
 
 .slider-autoheight .v-slider {

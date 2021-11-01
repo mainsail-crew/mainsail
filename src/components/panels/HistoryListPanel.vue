@@ -145,7 +145,7 @@
                     <v-btn icon @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="px-0">
-                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                    <overlay-scrollbars style="height: 350px;" class="px-6">
                         <v-row>
                             <v-col>{{ $t('History.Filename') }}</v-col>
                             <v-col class="text-right">{{ detailsDialog.item.filename }}</v-col>
@@ -272,7 +272,7 @@
                                 <v-col class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</v-col>
                             </v-row>
                         </template>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>
