@@ -123,6 +123,10 @@ export const getters: GetterTree<GuiState, any> = {
             }
         }
 
+        if (getters['webcam/getWebcams'].length === 0) {
+            panels = panels.filter((element: any) => element.name !== 'webcam')
+        }
+
         return panels
     }
 }
