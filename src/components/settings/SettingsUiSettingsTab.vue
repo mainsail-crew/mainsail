@@ -32,6 +32,10 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.GcodeThumbnails')" :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')" :dynamicSlotWidth="true">
+                    <v-btn outlined small color="primary" href="https://docs.mainsail.xyz/quicktips/thumbnails" target="_blank">{{ $t('Settings.UiSettingsTab.Guide') }}</v-btn>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolBigThumbnail')" :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
