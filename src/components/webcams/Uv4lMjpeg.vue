@@ -20,13 +20,13 @@
 <script lang="ts">
 import {Component, Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiStateWebcam} from '@/store/gui/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     private isVisible = true
 
-    @Prop({ required: true }) readonly camSettings!: GuiStateWebcam
+    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
 
     @Prop({ default: null }) readonly printerUrl!: string | null
 
