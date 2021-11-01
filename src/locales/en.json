@@ -282,7 +282,7 @@
 		},
 		"DependenciesPanel": {
 			"Dependency": "Dependency | Dependencies",
-			"DependencyDescription": "Your installed {name} version does not support all features of Mainsail, or might even cause problems. Please perform an Klipper update to at least {neededVersion}."
+			"DependencyDescription": "Your installed {name} version does not support all features of Mainsail, or might even cause problems. Please perform an {name} update to at least {neededVersion}."
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
