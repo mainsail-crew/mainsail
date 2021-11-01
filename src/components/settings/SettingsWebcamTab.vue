@@ -266,7 +266,6 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
 
     saveWebcam() {
         if (this.form.valid) {
-            window.console.log(this.form)
             const values = {
                 name: this.form.name,
                 icon: this.form.icon,
