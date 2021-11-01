@@ -178,7 +178,7 @@
                     <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
-                    <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
+                    <overlay-scrollbars style="max-height: 400px;" :options="{ overflowBehavior: { x: 'hidden' } }">
                         <v-row>
                             <v-col class="pt-3 pl-0">
                                 <v-timeline class="groupedCommits" align-top dense >
@@ -206,7 +206,7 @@
                                 </v-timeline>
                             </v-col>
                         </v-row>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>

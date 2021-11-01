@@ -162,7 +162,7 @@
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
                 </template>
-                <div class="d-flex justify-center" style="max-height: calc(100vh - 64px); overflow: auto;">
+                <div class="d-flex justify-center" style="max-height: calc(var(--app-height) - 64px); overflow: auto;">
                     <img v-if="dialogImage.item.url" :src="dialogImage.item.url" style="max-height: 100%; width: auto;" alt="image" />
                     <div v-else-if="dialogImage.item.svg" class="fill-width" v-html="dialogImage.item.svg"></div>
                 </div>

@@ -64,14 +64,14 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <perfect-scrollbar ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'">
+                        <overlay-scrollbars ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'" :options="{ }">
                             <console-table ref="console"
                                            :events="events"
                                            :is-mini="true"
                                            @command-click="commandClick"
                             />
                             <v-divider></v-divider>
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -86,7 +86,6 @@ import BaseMixin from '@/components/mixins/base'
 import {CommandHelp, VTextareaType} from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
-import Vue from 'vue'
 import Panel from '@/components/ui/Panel.vue'
 
 @Component({
@@ -127,7 +126,11 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell'){
+            setTimeout(() => {
+                this.scrollToBottom()
+            }, 50)
+        }
     }
 
     get hideWaitTemperatures(): boolean {
@@ -247,8 +250,8 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     scrollToBottom() {
         this.$nextTick(() => {
             if (this.$refs.miniConsoleScroll) {
-                const perfectScroll = ((this.$refs.miniConsoleScroll as Vue).$el as HTMLDivElement)
-                perfectScroll.scrollTop = perfectScroll.scrollHeight
+                const overlayscroll = this.$refs.miniConsoleScroll.osInstance()
+                overlayscroll?.scroll({ y: '100%' })
             }
         })
     }
@@ -256,8 +259,8 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     scrollToTop() {
         this.$nextTick(() => {
             if (this.$refs.miniConsoleScroll) {
-                const perfectScroll = ((this.$refs.miniConsoleScroll as Vue).$el as HTMLDivElement)
-                perfectScroll.scrollTop = 0
+                const overlayscroll = this.$refs.miniConsoleScroll.osInstance()
+                overlayscroll?.scroll({ y: '0%' })
             }
         })
     }

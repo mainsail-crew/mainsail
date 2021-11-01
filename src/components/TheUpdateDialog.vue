@@ -46,7 +46,7 @@
             <v-card-text class="px-3">
                 <v-row>
                     <v-col class="py-6 px-0">
-                        <perfect-scrollbar class="updaterLogScroll" :options="{ suppressScrollX: true }" ref="updaterLogScroll">
+                        <overlay-scrollbars class="updaterLogScroll" ref="updaterLogScroll">
                             <v-data-table
                                 :headers="headers"
                                 :items="messages"
@@ -76,7 +76,7 @@
                                     </tr>
                                 </template>
                             </v-data-table>
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-col>
                 </v-row>
                 <v-row>

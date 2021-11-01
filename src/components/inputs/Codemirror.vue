@@ -2,17 +2,11 @@
     .vue-codemirror .cm-editor {
 
     }
-
-    .editor-content-container {
-        height: calc(100vh - 48px);
-    }
 </style>
 
 <template>
     <div class="vue-codemirror">
-        <perfect-scrollbar class="editor-content-container">
-            <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
-        </perfect-scrollbar>
+        <div ref="codemirror" v-observe-visibility="visibilityChanged"></div>
     </div>
 </template>
 
