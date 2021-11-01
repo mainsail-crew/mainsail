@@ -106,43 +106,6 @@ export const mutations: MutationTree<GuiState> = {
         }
     },
 
-    addWebcam(state, payload) {
-        const newWebcam = {
-            name: payload.name,
-            icon: payload.icon,
-            service: payload.service,
-            targetFps: payload.targetFps,
-            url: payload.url,
-            flipX: payload.flipX,
-            flipY: payload.flipY,
-        }
-
-        state.webcam.configs.push(newWebcam)
-    },
-
-    updateWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            const webcam = {...state.webcam}
-            webcam.configs[payload.index] = {
-                name: payload.name,
-                icon: payload.icon,
-                service: payload.service,
-                targetFps: payload.targetFps,
-                url: payload.url,
-                flipX: payload.flipX,
-                flipY: payload.flipY,
-            }
-
-            Vue.set(state, 'webcam', webcam)
-        }
-    },
-
-    deleteWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            state.webcam.configs.splice(payload.index, 1)
-        }
-    },
-
     setHistoryColumns(state, data) {
         if (data.value && state.history.hideColums.includes(data.name)) {
             state.history.hideColums.splice(state.history.hideColums.indexOf(data.name), 1)

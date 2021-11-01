@@ -42,16 +42,6 @@ export const getters: GetterTree<GuiState, any> = {
         return output
     },
 
-    getWebcams:(state) => {
-        const output = []
-
-        for (const [key, webcam] of Object.entries(state.webcam.configs)) {
-            output.push(Object.assign({}, webcam, { index: key }))
-        }
-
-        return caseInsensitiveSort(output, 'name')
-    },
-
     getDatasetValue: (state) => (payload: { name: string, type: string }) => {
         if (
             payload.name in state.tempchart.datasetSettings &&

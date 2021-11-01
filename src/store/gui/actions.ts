@@ -118,30 +118,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    addWebcam({ commit, dispatch, state }, payload) {
-        commit('addWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })
-    },
-
-    updateWebcam({ commit, dispatch, state }, payload) {
-        commit('updateWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })
-    },
-
-    deleteWebcam({ commit, dispatch, state }, payload) {
-        commit('deleteWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })
-    },
-
     setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
         commit('setTempchartDatasetAdditionalSensorSetting', payload)
         dispatch('updateSettings', {
