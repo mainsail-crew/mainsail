@@ -28,7 +28,7 @@ export const mutations: MutationTree<GuiState> = {
 
     saveSetting(state, payload) {
         // eslint-disable-next-line
-		const deepSet = (obj:any, is:string[] | string, value:any):any => {
+        const deepSet = (obj:any, is:string[] | string, value:any):any => {
             if (is !== undefined && typeof is === 'string')
                 return deepSet(obj,is.split('.'), value)
             else if (is.length==1 && value !== undefined)
@@ -60,6 +60,10 @@ export const mutations: MutationTree<GuiState> = {
 
     setGcodefilesShowHiddenFiles(state, value) {
         Vue.set(state.gcodefiles, 'showHiddenFiles', value)
+    },
+
+    setCurrentWebcam(state, payload) {
+        Vue.set(state.webcamSettings.currentCam, payload.viewport, payload.value)
     },
 
     addPreset(state, payload) {
@@ -103,43 +107,6 @@ export const mutations: MutationTree<GuiState> = {
     deleteConsoleFilter(state, payload) {
         if (state.console.customFilters[payload.index]) {
             state.console.customFilters.splice(payload.index, 1)
-        }
-    },
-
-    addWebcam(state, payload) {
-        const newWebcam = {
-            name: payload.name,
-            icon: payload.icon,
-            service: payload.service,
-            targetFps: payload.targetFps,
-            url: payload.url,
-            flipX: payload.flipX,
-            flipY: payload.flipY,
-        }
-
-        state.webcam.configs.push(newWebcam)
-    },
-
-    updateWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            const webcam = {...state.webcam}
-            webcam.configs[payload.index] = {
-                name: payload.name,
-                icon: payload.icon,
-                service: payload.service,
-                targetFps: payload.targetFps,
-                url: payload.url,
-                flipX: payload.flipX,
-                flipY: payload.flipY,
-            }
-
-            Vue.set(state, 'webcam', webcam)
-        }
-    },
-
-    deleteWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            state.webcam.configs.splice(payload.index, 1)
         }
     },
 

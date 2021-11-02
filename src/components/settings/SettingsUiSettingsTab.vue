@@ -40,6 +40,10 @@
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.ShowWebcamInNavigation')">
+                    <v-switch v-model="boolWebcamInNavigation" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -97,6 +101,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolBigThumbnail(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
+    }
+
+    get boolWebcamInNavigation() {
+        return this.$store.state.gui.webcamSettings.boolNavi ?? false
+    }
+
+    set boolWebcamInNavigation(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'webcamSettings.boolNavi', value: newVal })
     }
 
     get displayCancelPrint() {

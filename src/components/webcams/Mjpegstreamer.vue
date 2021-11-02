@@ -40,7 +40,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     }
 
     get url() {
-        const baseUrl = this.camSettings.url
+        const baseUrl = this.camSettings.urlStream
         const url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
         url.searchParams.append('bypassCache', this.refresh.toString())
 
