@@ -245,12 +245,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_position : 0
     }
 
-    get sdCardConfigPath() {
-        return this.$store.state.printer.configfile?.settings?.virtual_sdcard?.path ?? ''
-    }
-
     get sdCardFilePath() {
-        return this.$store.state.printer.virtual_sdcard?.file_path?.replace(this.sdCardConfigPath+'/', '') ?? ''
+        return this.$store.state.printer.print_stats.filename ?? ''
     }
 
     get currentPosition() {
