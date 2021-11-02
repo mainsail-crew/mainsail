@@ -39,7 +39,20 @@ export const getters: GetterTree<RootState, any> = {
         const dependencies: RootStateDependency[] = []
 
         const klipperVersion = state.printer?.software_version ?? ''
-        if (klipperVersion !== '' && semver.valid(klipperVersion) && semver.gte(minKlipperVersion, klipperVersion)) {
+        const klipperVersionSplits = klipperVersion.split('-')
+        const klipperVersionRelease = klipperVersionSplits[0] ?? ''
+        const klipperVersionBuild = klipperVersionSplits[1] ?? 0
+
+        const minKlipperVersionSplits = minKlipperVersion.split('-')
+        const minKlipperVersionRelease = minKlipperVersionSplits[0] ?? ''
+        const minKlipperVersionBuild = minKlipperVersionSplits[1] ?? 0
+
+        if (
+            semver.valid(klipperVersionRelease) && (
+                semver.gt(minKlipperVersionRelease, klipperVersionRelease) ||
+                (semver.eq(minKlipperVersionRelease, klipperVersionRelease) && klipperVersionBuild < minKlipperVersionBuild)
+            )
+        ) {
             dependencies.push({
                 serviceName: 'Klipper',
                 installedVersion: klipperVersion,
@@ -48,13 +61,26 @@ export const getters: GetterTree<RootState, any> = {
         }
 
         const moonrakerVersion = state.server?.moonraker_version ?? ''
+        const moonrakerVersionSplits = moonrakerVersion.split('-')
+        const moonrakerVersionRelease = moonrakerVersionSplits[0] ?? ''
+        const moonrakerVersionBuild = moonrakerVersionSplits[1] ?? 0
+
+        const minMoonrakerVersionSplits = minMoonrakerVersion.split('-')
+        const minMoonrakerVersionRelease = minMoonrakerVersionSplits[0] ?? ''
+        const minMoonrakerVersionBuild = minMoonrakerVersionSplits[1] ?? 0
+
         if (moonrakerVersion === '') {
             dependencies.push({
                 serviceName: 'Moonraker',
                 installedVersion: '--',
                 neededVersion: minMoonrakerVersion
             })
-        } else if (moonrakerVersion !== '' && semver.valid(moonrakerVersion) && semver.gte(minMoonrakerVersion, moonrakerVersion)) {
+        } else if (
+            semver.valid(moonrakerVersionRelease) && (
+                semver.gt(minMoonrakerVersionRelease, moonrakerVersionRelease) ||
+                (semver.eq(minMoonrakerVersionRelease, moonrakerVersionRelease) && moonrakerVersionBuild < minMoonrakerVersionBuild)
+            )
+        ) {
             dependencies.push({
                 serviceName: 'Moonraker',
                 installedVersion: moonrakerVersion,
