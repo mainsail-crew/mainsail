@@ -7,19 +7,19 @@
         <v-row dense>
             <v-col
                 v-for="webcam in webcams"
-                :key="webcam.name"
+                :key="webcam.id"
                 cols="6"
             >
-                <template v-if="'service' in webcam && webcam.service === 'mjpegstreamer'">
+                <template v-if="webcam.service === 'mjpegstreamer'">
                     <webcam-mjpegstreamer :cam-settings="webcam"></webcam-mjpegstreamer>
                 </template>
-                <template v-else-if="'service' in webcam && webcam.service === 'mjpegstreamer-adaptive'">
+                <template v-else-if="webcam.service === 'mjpegstreamer-adaptive'">
                     <webcam-mjpegstreamer-adaptive :cam-settings="webcam"></webcam-mjpegstreamer-adaptive>
                 </template>
-                <template v-else-if="'service' in webcam && webcam.service === 'uv4l-mjpeg'">
+                <template v-else-if="webcam.service === 'uv4l-mjpeg'">
                     <webcam-uv4l-mjpeg :cam-settings="webcam"></webcam-uv4l-mjpeg>
                 </template>
-                <template v-else-if="'service' in webcam && webcam.service === 'ipstream'">
+                <template v-else-if="webcam.service === 'ipstream'">
                     <webcam-ipstreamer :cam-settings="webcam"></webcam-ipstreamer>
                 </template>
                 <template v-else>
@@ -37,7 +37,7 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import {GuiStateWebcam} from '@/store/gui/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 @Component({
     components: {
@@ -49,6 +49,6 @@ import {GuiStateWebcam} from '@/store/gui/types'
 })
 export default class WebcamGrid extends Mixins(BaseMixin) {
 
-    @Prop() readonly webcams!: GuiStateWebcam[]
+    @Prop() readonly webcams!: GuiWebcamStateWebcam[]
 }
 </script>

@@ -5,6 +5,9 @@ import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
+// load modules
+import { webcam } from '@/store/gui/webcam'
+
 export const getDefaultState = (): GuiState => {
     return {
         general: {
@@ -98,19 +101,12 @@ export const getDefaultState = (): GuiState => {
             ],
             nonExpandPanels: []
         },
-        webcam: {
-            selectedCam: '',
-            boolDashboard: false,
+        webcamSettings: {
+            currentCam: {
+                dashboard: 'all',
+                page: 'all'
+            },
             boolNavi: false,
-            configs: [{
-                name: 'Default',
-                icon: 'mdi-webcam',
-                service: 'mjpegstreamer-adaptive',
-                targetFps: 15,
-                url: '/webcam/?action=stream',
-                flipX: false,
-                flipY: false,
-            }],
         },
         tempchart: {
             autoscale: false,
@@ -209,5 +205,8 @@ export const gui: Module<GuiState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
+    modules: {
+        webcam
+    }
 }
