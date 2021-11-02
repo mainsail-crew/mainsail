@@ -195,7 +195,7 @@
                                                                 <p class="caption mb-0"><span class="font-weight-bold text-decoration-none white--text">{{ commit.author}}</span> <span>{{ convertCommitDate(commit.date) }}</span></p>
                                                             </v-col>
                                                             <v-col class="col-auto pt-4 ">
-                                                                <v-chip outlined label small :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.sha.substr(0, 6)}}</v-chip>
+                                                                <v-chip outlined label small :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.repoName+'/commit/'+commit.sha" target="_blank">{{ commit.sha.substr(0, 6)}}</v-chip>
                                                             </v-col>
                                                         </v-row>
                                                     </li>
@@ -233,6 +233,7 @@ interface commitsOverlay {
     bool: boolean
     owner: string
     modul: string
+    repoName: string
     commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
     groupedCommits: groupedCommit[]
 }
@@ -253,6 +254,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         bool: false,
         owner: '',
         modul: '',
+        repoName: '',
         commits: [],
         groupedCommits: []
     }
@@ -473,6 +475,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             this.openCommits = []
             this.commitsOverlay.owner = object.owner
             this.commitsOverlay.modul = key
+            this.commitsOverlay.repoName = object.repo_name ?? key
             this.commitsOverlay.commits = object.commits_behind
             this.commitsOverlay.groupedCommits = []
 
