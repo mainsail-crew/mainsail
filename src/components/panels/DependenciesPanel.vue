@@ -17,6 +17,7 @@
                 </v-col>
             </v-row>
         </v-card-text>
+        <v-card-actions></v-card-actions>
     </panel>
 </template>
 
