@@ -164,9 +164,14 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
 
     @Watch('messages')
     messagesChanged() {
-        this.$nextTick(() => {
-            if (this.$refs.updaterLogScroll) this.$refs.updaterLogScroll.$el.scrollTop = this.$refs.updaterLogScroll.$el.scrollHeight
-        })
+        setTimeout(() => {
+            this.$nextTick(() => {
+                if (this.$refs.updaterLogScroll) {
+                    const overlayscroll = this.$refs.updaterLogScroll.osInstance()
+                    overlayscroll?.scroll({ y: '100%' })
+                }
+            })
+        }, 50)
     }
 }
 </script>
