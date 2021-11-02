@@ -193,7 +193,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     promptUnsavedChanges() {
-        if (!this.$store.state.editor.changed)
+        if (!this.$store.state.editor.changed || !this.isWriteable)
             this.$store.dispatch('editor/close')
         else
             this.dialogConfirmChange = true
