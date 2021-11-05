@@ -306,9 +306,19 @@
         </v-menu>
         <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
             <panel :title="$t('Files.NewDirectory')" card-class="gcode-files-new-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
                     {{ $t('Files.PleaseEnterANewDirectoryName') }}
-                    <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name" ref="inputFieldCreateDirectory"></v-text-field>
+                    <v-text-field
+                        v-model="dialogCreateDirectory.name"
+                        ref="inputFieldCreateDirectory"
+                        @keypress.enter="createDirectoryAction"
+                        :label="$t('Files.Name')"
+                        :rules="input_rules"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -319,8 +329,17 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field :label="$t('Files.Name')" required v-model="dialogRenameFile.newName" ref="inputFieldRenameFile"></v-text-field>
+                    <v-text-field
+                        v-model="dialogRenameFile.newName"
+                        ref="inputFieldRenameFile"
+                        @keyup.enter="renameFileAction"
+                        :label="$t('Files.Name')"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -331,8 +350,17 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Files.RenameDirectory')" card-class="gcode-files-rename-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameDirectory.newName" ref="inputFieldRenameDirectory"></v-text-field>
+                    <v-text-field
+                        v-model="dialogRenameDirectory.newName"
+                        ref="inputFieldRenameDirectory"
+                        :label="$t('Files.Name')"
+                        @keyup.enter="renameDirectoryAction"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -343,6 +371,9 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Files.DeleteDirectory')" card-class="gcode-files-delete-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
                 </v-card-text>
@@ -791,6 +822,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
     createDirectory() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldCreateDirectory?.focus()
+        }, 200)
     }
 
     createDirectoryAction() {
@@ -974,9 +1009,9 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.dialogRenameFile.newName = item.filename
         this.dialogRenameFile.show = true
 
-        this.$nextTick(() => {
+        setTimeout(() => {
             this.$refs.inputFieldRenameFile?.focus()
-        })
+        }, 200)
     }
 
     renameFileAction() {
@@ -991,6 +1026,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.dialogRenameDirectory.item = item
         this.dialogRenameDirectory.newName = item.filename
         this.dialogRenameDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldRenameDirectory?.focus()
+        }, 200)
     }
 
     renameDirectoryAction() {
