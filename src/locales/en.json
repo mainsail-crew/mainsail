@@ -14,7 +14,7 @@
 			"KlipperControl": "Klipper Control",
 			"KlipperRestart": "Restart",
 			"KlipperFirmwareRestart": "FIRMWARE Restart",
-			"RestartServices": "Restart Services",
+			"ServiceControl": "Service Control",
 			"PowerDevices": "Power Devices",
 			"HostControl": "Host Control",
 			"Reboot": "Reboot",
