@@ -82,4 +82,8 @@ export const mutations: MutationTree<FarmPrinterState> = {
 
         setDataDeep(state.data.gui, payload)
     },
+
+    setWebcamsData(state, payload) {
+        Vue.set(state.data, 'webcams', payload)
+    },
 }

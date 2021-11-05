@@ -201,9 +201,21 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 action: 'getMainsailData'
             })
         }
+
+        if (payload.namespaces.includes('webcams')) {
+            dispatch('sendObj', {
+                method: 'server.database.get_item',
+                params: { namespace: 'webcams' },
+                action: 'getWebcamsData'
+            })
+        }
     },
 
     getMainsailData({ commit }, payload) {
         commit('setMainsailData', payload.value)
+    },
+
+    getWebcamsData({ commit }, payload) {
+        commit('setWebcamsData', payload.value)
     }
 }

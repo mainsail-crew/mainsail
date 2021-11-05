@@ -22,7 +22,8 @@ export const getDefaultState = (): FarmPrinterState => {
             wsData: [],
         },
         data: {
-            gui: getGuiDefaultState()
+            gui: getGuiDefaultState(),
+            webcams: {}
         },
         settings: {
 
