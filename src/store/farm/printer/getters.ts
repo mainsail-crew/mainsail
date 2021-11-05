@@ -2,6 +2,7 @@ import {defaultLogoColor, themeDir, thumbnailBigMin} from '@/store/variables'
 import {convertName} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {FarmPrinterState} from '@/store/farm/printer/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
@@ -237,6 +238,12 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        return state.data.gui.webcam.configs ?? []
+        const webcams: GuiWebcamStateWebcam[] = []
+
+        Object.keys(state.data.webcams).forEach((id: string) => {
+            webcams.push({...state.data?.webcams[id], id})
+        })
+
+        return webcams
     }
 }

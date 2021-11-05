@@ -1,5 +1,6 @@
 import { GuiState } from '@/store/gui/types'
 import { FileStateFile } from '@/store/files/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 export interface FarmPrinterState {
     _namespace: string
@@ -19,6 +20,9 @@ export interface FarmPrinterState {
     },
     data: {
         gui: GuiState
+        webcams: {
+            [key: string]: GuiWebcamStateWebcam
+        }
         // eslint-disable-next-line
         [key: string]: any
     },
