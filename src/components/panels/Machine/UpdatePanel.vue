@@ -80,43 +80,41 @@
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
-                                    <v-item-group>
-                                        <v-menu :offset-y="true" title="Webcam">
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-chip
-                                                    small
-                                                    label
-                                                    outlined
-                                                    :color="getBtnColor(value)"
-                                                    :disabled="getBtnDisabled(value)"
-                                                    class="minwidth-0 px-2 text-uppercase"
-                                                    v-bind="attrs" v-on="on"
-                                                >
-                                                    <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
-                                                    {{ getBtnText(value) }}
-                                                    <v-icon small>mdi-menu-down</v-icon>
-                                                </v-chip>
-                                            </template>
-                                            <v-list dense class="py-0">
-                                                <v-list-item @click="recovery(key, false)">
-                                                    <v-list-item-icon class="mr-0">
-                                                        <v-icon small>mdi-reload</v-icon>
-                                                    </v-list-item-icon>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title>Soft Recovery</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
-                                                <v-list-item @click="recovery(key,true)">
-                                                    <v-list-item-icon class="mr-0">
-                                                        <v-icon small>mdi-reload</v-icon>
-                                                    </v-list-item-icon>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title>Hard Recovery</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
-                                            </v-list>
-                                        </v-menu>
-                                    </v-item-group>
+                                    <v-menu :offset-y="true" title="Webcam">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-chip
+                                                small
+                                                label
+                                                outlined
+                                                :color="getBtnColor(value)"
+                                                :disabled="getBtnDisabled(value)"
+                                                class="minwidth-0 px-2 text-uppercase"
+                                                v-bind="attrs" v-on="on"
+                                            >
+                                                <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                                {{ getBtnText(value) }}
+                                                <v-icon small>mdi-menu-down</v-icon>
+                                            </v-chip>
+                                        </template>
+                                        <v-list dense class="py-0">
+                                            <v-list-item @click="recovery(key, false)">
+                                                <v-list-item-icon class="mr-0">
+                                                    <v-icon small>mdi-reload</v-icon>
+                                                </v-list-item-icon>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>Soft Recovery</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                            <v-list-item @click="recovery(key,true)">
+                                                <v-list-item-icon class="mr-0">
+                                                    <v-icon small>mdi-reload</v-icon>
+                                                </v-list-item-icon>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>Hard Recovery</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
                                 </template>
                                 <template v-else>
                                     <v-chip
@@ -159,7 +157,7 @@
                         </v-row>
                     </template>
                     <template v-if="showUpdateAll">
-                        <v-divider class="my-0 border-top-2" ></v-divider>
+                        <v-divider class="mb-0 mt-2 border-top-2" ></v-divider>
                         <v-row class="pt-3">
                             <v-col class="text-center">
                                 <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
