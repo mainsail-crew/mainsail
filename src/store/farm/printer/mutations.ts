@@ -65,7 +65,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setDatabases(state, payload) {
-        Vue.set(state, 'databases', payload.namespaces)
+        Vue.set(state, 'databases', payload)
     },
 
     setMainsailData(state, payload) {
