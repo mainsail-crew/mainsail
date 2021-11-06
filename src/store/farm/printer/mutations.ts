@@ -26,7 +26,6 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setData(state, payload) {
-        if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
 
         Object.entries(payload).forEach(([key, value]) => {
