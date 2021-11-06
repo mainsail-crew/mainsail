@@ -19,10 +19,12 @@
     "@codemirror/lang-javascript": "^0.19.1",
     "@codemirror/lang-json": "^0.19.1",
     "@codemirror/legacy-modes": "^0.19.0",
+    "@codemirror/search": "^0.19.2",
     "@codemirror/state": "^0.19.1",
     "@codemirror/stream-parser": "^0.19.1",
     "@codemirror/view": "^0.19.1",
     "@sindarius/gcodeviewer": "^2.1.13",
+    "@types/overlayscrollbars": "^1.12.1",
     "axios": "^0.21.1",
     "core-js": "^3.16.0",
     "echarts": "^5.1.2",
@@ -31,8 +33,10 @@
     "joi": "^17.4.1",
     "js-sha256": "^0.9.0",
     "object-assign-deep": "^0.4.0",
+    "overlayscrollbars-vue": "^0.2.2",
     "sass-loader": "^10.2.0",
     "semver": "^7.3.5",
+    "uuid": "^8.3.2",
     "vue": "^2.6.14",
     "vue-class-component": "^7.2.6",
     "vue-context": "^6.0.0",
@@ -45,14 +49,14 @@
     "vue-resource": "^1.5.3",
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.1",
-    "vue2-perfect-scrollbar": "^1.5.0",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.5.8",
+    "vuetify": "^2.5.10",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@mdi/font": "^6.2.95",
     "@types/semver": "^7.3.8",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.29.3",
     "@vue/cli-plugin-babel": "^4.5.13",
@@ -78,21 +82,6 @@
     "vue-router": "^3.5.2",
     "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.2"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/typescript/recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    }
   },
   "postcss": {
     "plugins": {

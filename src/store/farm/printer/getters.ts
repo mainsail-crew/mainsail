@@ -1,7 +1,8 @@
-import {defaultLogoColor, themeDir} from '@/store/variables'
+import {defaultLogoColor, themeDir, thumbnailBigMin} from '@/store/variables'
 import {convertName} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {FarmPrinterState} from '@/store/farm/printer/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
@@ -84,7 +85,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
             const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+'/' : ''
-            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) return '//'+state.socket.hostname+':'+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
         }
@@ -162,7 +163,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
 
             output.push({
                 name: 'ETA',
-                value: h+':'+m,
+                value: getters.estimated_time_eta > 0 ? h+':'+m : '--',
                 file: getters.estimated_time_file,
                 filament: getters.estimated_time_filament,
                 slicer: getters.estimated_time_slicer,
@@ -212,18 +213,21 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     estimated_time_eta: (state, getters) => {
         let time = 0
         let timeCount = 0
+        const boolFileCalc = state.data.gui?.general?.calcEtaTime?.includes('file') ?? true
+        const boolFilamentCalc = state.data.gui?.general?.calcEtaTime?.includes('filament') ?? true
+        const boolSlicerCalc = state.data.gui?.general?.calcEtaTime?.includes('slicer') ?? true
 
-        if (getters.estimated_time_file > 0) {
+        if (boolFileCalc && getters.estimated_time_file > 0) {
             time += parseInt(getters.estimated_time_file)
             timeCount++
         }
 
-        if (getters.estimated_time_filament > 0) {
+        if (boolFilamentCalc && getters.estimated_time_filament > 0) {
             time += parseInt(getters.estimated_time_filament)
             timeCount++
         }
 
-        if (getters.estimated_time_slicer > 0) {
+        if (boolSlicerCalc && getters.estimated_time_slicer > 0) {
             time += parseInt(getters.estimated_time_slicer)
             timeCount++
         }
@@ -234,6 +238,12 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        return state.data.gui.webcam.configs ?? []
+        const webcams: GuiWebcamStateWebcam[] = []
+
+        Object.keys(state.data.webcams).forEach((id: string) => {
+            webcams.push({...state.data?.webcams[id], id})
+        })
+
+        return webcams
     }
 }

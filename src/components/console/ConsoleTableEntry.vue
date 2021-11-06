@@ -1,16 +1,32 @@
 <style scoped lang="scss">
     .consoleTableRow {
+        font-family: 'Roboto Mono', monospace;
+        font-size: .95em;
 
-        &+.consoleTableRow .col {
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        &.default {
+            .col {
+                padding-top: 8px !important;
+                padding-bottom: 8px !important;
+            }
+
+            &+.consoleTableRow .col {
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
+            }
+        }
+
+        &.compact {
+            .col {
+                padding-top: 2px !important;
+                padding-bottom: 2px !important;
+            }
         }
     }
 </style>
 
 <template>
-    <v-row class="ma-0">
-        <v-col class="col-auto pr-0 py-2">{{ event.formatTime }}</v-col>
-        <v-col class="py-2" :class="colorConsoleMessage(event)" v-html="event.formatMessage" @click.capture="commandClick"></v-col>
+    <v-row :class="'ma-0 '+entryStyle">
+        <v-col class="col-auto pr-0">{{ event.formatTime }}</v-col>
+        <v-col  :class="colorConsoleMessage(event)" v-html="event.formatMessage" @click.capture="commandClick"></v-col>
     </v-row>
 </template>
 
@@ -24,6 +40,10 @@ import {ServerStateEvent} from '@/store/server/types'
 export default class ConsoleTableEntry extends Vue {
     @Prop({ required: true })
     readonly event!: ServerStateEvent
+
+    get entryStyle() {
+        return this.$store.state.gui.console.entryStyle ?? 'default'
+    }
 
     colorConsoleMessage(item: ServerStateEvent): string {
         if (item.message.startsWith('!! ')) return 'red--text'

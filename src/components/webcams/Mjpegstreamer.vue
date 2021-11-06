@@ -5,8 +5,8 @@
 </style>
 
 <template>
-    <vue-load-image v-observe-visibility="visibilityChanged">
-        <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" />
+    <vue-load-image v-observe-visibility="visibilityChanged" ref="imageLoader" onload="resetImageRatio">
+        <img slot="image" :src="url" alt="Preview" :style="webcamStyle" class="webcamImage" ref="webcamImage" />
         <div slot="preloader" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
@@ -26,6 +26,7 @@ import BaseMixin from '@/components/mixins/base'
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private isVisible = true
     private refresh = Math.ceil(Math.random() * Math.pow(10, 12))
+    private imageRatio = 0
 
     @Prop({ required: true })
     camSettings: any
@@ -33,8 +34,13 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     @Prop()
     printerUrl: string | undefined
 
+    $refs!: {
+        imageLoader: any,
+        webcamImage: HTMLImageElement,
+    }
+
     get url() {
-        const baseUrl = this.camSettings.url
+        const baseUrl = this.camSettings.urlStream
         const url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
         url.searchParams.append('bypassCache', this.refresh.toString())
 
@@ -53,7 +59,32 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
 
-        if (isVisible) this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
+        if (isVisible) {
+            this.refresh = Math.ceil(Math.random() * Math.pow(10, 12))
+        } else {
+            const width = this.$refs.webcamImage?.width ?? 0
+            const height = this.$refs.webcamImage?.height ?? 0
+            this.imageRatio = (width && height) ? width/height : 0
+            this.resize()
+        }
+    }
+
+    mounted() {
+        window.addEventListener('resize', this.resize)
+    }
+
+    beforeDestroy() {
+        window.removeEventListener('resize', this.resize)
+    }
+
+    resize() {
+        if (this.imageRatio && this.$refs.imageLoader?.$el) {
+            this.$refs.imageLoader.$el.style.height = Math.round(this.$refs.imageLoader.$el.clientWidth / this.imageRatio)+'px'
+        }
+    }
+
+    resetImageRatio() {
+        this.imageRatio = 0
     }
 }
 </script>

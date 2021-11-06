@@ -96,6 +96,10 @@ export const actions: ActionTree<SocketState, RootState> = {
             dispatch('server/history/getChanged', payload.params[0], { root: true })
             break
 
+        case 'notify_service_state_changed':
+            dispatch('server/serviceStateChanged', payload.params[0], { root: true })
+            break
+
         case 'notify_timelapse_event':
             dispatch('server/timelapse/getEvent', payload.params[0], { root: true })
             break

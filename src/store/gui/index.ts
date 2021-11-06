@@ -5,6 +5,9 @@ import { mutations } from '@/store/gui/mutations'
 import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
+// load modules
+import { webcam } from '@/store/gui/webcam'
+
 export const getDefaultState = (): GuiState => {
     return {
         general: {
@@ -12,6 +15,10 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            confirmOnEmergencyStop: false,
+            confirmOnPowerDeviceChange: false,
+            calcEstimateTime: ['file', 'filament'],
+            calcEtaTime: ['file', 'filament', 'slicer'],
         },
         theme: {
             logo: defaultLogoColor,
@@ -20,7 +27,9 @@ export const getDefaultState = (): GuiState => {
         dashboard: {
             boolTempchart: true,
             boolBigThumbnail: true,
+            macroManagement: 'simple',
             hiddenMacros: [],
+            macrogroups: [],
             hiddenTempChart: [],
             control: {
                 style: 'bars',
@@ -40,7 +49,7 @@ export const getDefaultState = (): GuiState => {
                 feedamount: 25,
                 feedamounts: [ 50, 25, 10, 5, 1 ],
                 feedrate: 5,
-                feedrates: [ 60, 30, 15, 5, 1 ],
+                feedrates: [ 15, 10, 5, 2, 1 ],
             },
             mobileLayout: [
                 { 'name': 'webcam', visable: false },
@@ -92,19 +101,12 @@ export const getDefaultState = (): GuiState => {
             ],
             nonExpandPanels: []
         },
-        webcam: {
-            selectedCam: '',
-            boolDashboard: false,
+        webcamSettings: {
+            currentCam: {
+                dashboard: 'all',
+                page: 'all'
+            },
             boolNavi: false,
-            configs: [{
-                name: 'Default',
-                icon: 'mdi-webcam',
-                service: 'mjpegstreamer-adaptive',
-                targetFps: 15,
-                url: '/webcam/?action=stream',
-                flipX: false,
-                flipY: false,
-            }],
         },
         tempchart: {
             autoscale: false,
@@ -115,6 +117,7 @@ export const getDefaultState = (): GuiState => {
         console: {
             hideWaitTemperatures: true,
             direction: 'table',
+            entryStyle: 'default',
             height: 300,
             customFilters: [],
         },
@@ -161,7 +164,9 @@ export const getDefaultState = (): GuiState => {
             }
         },
         editor: {
-            minimap: false
+            minimap: false,
+            escToClose: true,
+            confirmUnsavedChanges: true
         },
         //moonraker DB api dont accept camel case key names
         remotePrinters: [],
@@ -188,7 +193,7 @@ export const getDefaultState = (): GuiState => {
             voxelWidth: 1,
             voxelHeight: 1,
             specularLighting: false,
-        }
+        },
     }
 }
 
@@ -200,5 +205,8 @@ export const gui: Module<GuiState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
+    modules: {
+        webcam
+    }
 }

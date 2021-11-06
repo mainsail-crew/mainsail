@@ -23,6 +23,7 @@ export const actions: ActionTree<EditorState, RootState> = {
         commit('updateLoaderState', true)
 
         commit('setFilename', payload.filename)
+        commit('setPermissions', payload.permissions)
 
         axios.get(url, {
             cancelToken: source.token,

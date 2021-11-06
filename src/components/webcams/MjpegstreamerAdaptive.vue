@@ -98,11 +98,10 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     }
 
     async setFrame() {
-        const baseUrl = this.camSettings.url
+        const baseUrl = this.camSettings.urlSnapshot
         const url = new URL(baseUrl, this.printerUrl === undefined ? this.hostUrl.toString() : this.printerUrl)
 
         url.searchParams.append('bypassCache', this.refresh.toString())
-        url.searchParams.set('action', 'snapshot')
 
         this.request_start_time = performance.now()
         this.currentFPS = (this.time > 0) ? Math.round(1000 / this.time) : 0

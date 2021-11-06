@@ -22,7 +22,8 @@ export const getDefaultState = (): FarmPrinterState => {
             wsData: [],
         },
         data: {
-            gui: getGuiDefaultState()
+            gui: getGuiDefaultState(),
+            webcams: {}
         },
         settings: {
 
@@ -31,7 +32,8 @@ export const getDefaultState = (): FarmPrinterState => {
         current_file: {
             isDirectory: false,
             filename: '',
-            modified: new Date()
+            modified: new Date(),
+            permissions: ''
         },
         theme_files: []
     }

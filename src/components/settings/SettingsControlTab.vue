@@ -3,194 +3,196 @@
 </style>
 
 <template>
-    <v-form ref="formControlExtruder">
+    <div>
         <v-card flat>
             <v-card-text>
-                <settings-row :title="$t('Settings.ControlTab.Style')">
-                    <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details></v-select>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <template v-if="['circle', 'cross'].includes(controlStyle)">
-                    <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
-                        <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
+                <v-form ref="formControlExtruder">
+                    <settings-row :title="$t('Settings.ControlTab.Style')">
+                        <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamicSlotWidth="true">
-                        <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamicSlotWidth="true">
-                        <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                </template>
-                <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
-                    <v-text-field
-                        v-model="feedrateXY"
-                        @blur="blurFeedrateXY"
-                        type="number"
-                        suffix="mm/s"
-                        hide-details="auto"
-                        :rules="[v => v > 0 || 'Minimum speed is 1']"
-                        outlined
-                        dense
-                    ></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
-                    <v-text-field
-                        v-model="feedrateZ"
-                        @blur="blurFeedrateZ"
-                        type="number"
-                        suffix="mm/s"
-                        hide-details="auto"
-                        :rules="[v => v > 0 || 'Minimum speed is 1']"
-                        outlined
-                        dense
-                    ></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <template v-if="controlStyle === 'cross'">
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
-                        <v-combobox
-                            v-model="stepsAll"
-                            hide-selected
-                            hide-details
-                            multiple
-                            small-chips
-                            :deletable-chips="true"
-                            append-icon=""
+                    <template v-if="['circle', 'cross'].includes(controlStyle)">
+                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
+                            <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamicSlotWidth="true">
+                            <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamicSlotWidth="true">
+                            <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                    </template>
+                    <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
+                        <v-text-field
+                            v-model="feedrateXY"
+                            @blur="blurFeedrateXY"
                             type="number"
-                            :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
-                            dense
+                            suffix="mm/s"
+                            hide-details="auto"
+                            :rules="[v => v > 0 || 'Minimum speed is 1']"
                             outlined
-                        ></v-combobox>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                </template>
-                <template v-else-if="controlStyle === 'circle'">
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
-                        <v-combobox
-                            v-model="stepsCircleXY"
-                            hide-selected
-                            hide-details
-                            multiple
-                            small-chips
-                            :deletable-chips="true"
-                            append-icon=""
-                            type="number"
-                            :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
-                            ]"
                             dense
-                            outlined
-                        ></v-combobox>
+                        ></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
-                        <v-combobox
-                            v-model="stepsCircleZ"
-                            hide-selected
-                            hide-details
-                            multiple
-                            small-chips
-                            :deletable-chips="true"
-                            append-icon=""
+                    <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
+                        <v-text-field
+                            v-model="feedrateZ"
+                            @blur="blurFeedrateZ"
                             type="number"
-                            :rules="[
+                            suffix="mm/s"
+                            hide-details="auto"
+                            :rules="[v => v > 0 || 'Minimum speed is 1']"
+                            outlined
+                            dense
+                        ></v-text-field>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
+                    <template v-if="controlStyle === 'cross'">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
+                            <v-combobox
+                                v-model="stepsAll"
+                                hide-selected
+                                hide-details
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                    v => v.length > 0 || 'Minimum 1 value',
+                                    v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                ]"
+                                dense
+                                outlined
+                            ></v-combobox>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                    </template>
+                    <template v-else-if="controlStyle === 'circle'">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                            <v-combobox
+                                v-model="stepsCircleXY"
+                                hide-selected
+                                hide-details
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
                                 v => v.length > 0 || 'Minimum 1 value',
                                 v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
                             ]"
-                            dense
-                            outlined
-                        ></v-combobox>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                </template>
-                <template v-else>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                                dense
+                                outlined
+                            ></v-combobox>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                            <v-combobox
+                                v-model="stepsCircleZ"
+                                hide-selected
+                                hide-details
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                v => v.length > 0 || 'Minimum 1 value',
+                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
+                            ]"
+                                dense
+                                outlined
+                            ></v-combobox>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                    </template>
+                    <template v-else>
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                            <v-combobox
+                                v-model="stepsXY"
+                                hide-selected
+                                hide-details
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                v => v.length > 0 || 'Minimum 1 value',
+                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                            ]"
+                                dense
+                                outlined
+                            ></v-combobox>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                            <v-combobox
+                                v-model="stepsZ"
+                                hide-selected
+                                hide-details
+                                multiple
+                                small-chips
+                                :deletable-chips="true"
+                                append-icon=""
+                                type="number"
+                                :rules="[
+                                v => v.length > 0 || 'Minimum 1 value',
+                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                            ]"
+                                dense
+                                outlined
+                            ></v-combobox>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                    </template>
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
                         <v-combobox
-                            v-model="stepsXY"
+                            v-model="feedamountsE"
                             hide-selected
-                            hide-details
+                            hide-details="auto"
                             multiple
                             small-chips
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
                             :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                            v => v.length > 0 || 'Minimum 1 value',
+                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
+                        ]"
                             dense
                             outlined
                         ></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
                         <v-combobox
-                            v-model="stepsZ"
+                            v-model="feedratesE"
                             hide-selected
-                            hide-details
+                            hide-details="auto"
                             multiple
                             small-chips
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
                             :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                            v => v.length > 0 || 'Minimum 1 value',
+                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
+                        ]"
                             dense
                             outlined
                         ></v-combobox>
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                </template>
-                <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
-                    <v-combobox
-                        v-model="feedamountsE"
-                        hide-selected
-                        hide-details="auto"
-                        multiple
-                        small-chips
-                        :deletable-chips="true"
-                        append-icon=""
-                        type="number"
-                        :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
-                        dense
-                        outlined
-                    ></v-combobox>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
-                    <v-combobox
-                        v-model="feedratesE"
-                        hide-selected
-                        hide-details="auto"
-                        multiple
-                        small-chips
-                        :deletable-chips="true"
-                        append-icon=""
-                        type="number"
-                        :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
-                        dense
-                        outlined
-                    ></v-combobox>
-                </settings-row>
+                </v-form>
             </v-card-text>
         </v-card>
-    </v-form>
+    </div>
 </template>
 
 <script lang="ts">

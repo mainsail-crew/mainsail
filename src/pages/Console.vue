@@ -2,9 +2,12 @@
 
 .consoleScrollContainer {
     min-height: 200px;
-    height: calc(100vh - 180px);
+    height: calc(var(--app-height) - 180px);
 }
 
+.gcode-command-field {
+    font-family: 'Roboto Mono', monospace;
+}
 </style>
 
 <template>
@@ -57,13 +60,13 @@
             <v-col :class="this.consoleDirection === 'table' ? 'col' : 'col pt-0'">
                 <v-card>
                     <v-card-text class="pa-0">
-                        <perfect-scrollbar ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
+                        <overlay-scrollbars ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
                             <console-table ref="console"
                                            :is-mini="false"
                                            :events="events"
                                            @command-click="commandClick"
                             />
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -78,7 +81,6 @@ import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import {CommandHelp, VTextareaType} from '@/store/printer/types'
 import {reverseString, strLongestEqual} from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
-import Vue from 'vue'
 
 @Component({
     components: {
@@ -112,7 +114,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell') this.scrollToBottom()
+        if (this.consoleDirection === 'shell') {
+            setTimeout(() => {
+                this.scrollToBottom()
+            }, 50)
+        }
     }
 
     get hideWaitTemperatures(): boolean {
@@ -230,8 +236,8 @@ export default class PageConsole extends Mixins(BaseMixin) {
     scrollToBottom() {
         this.$nextTick(() => {
             if (this.$refs.consoleScroll) {
-                const perfectScroll = ((this.$refs.consoleScroll as Vue).$el as HTMLDivElement)
-                perfectScroll.scrollTop = perfectScroll.scrollHeight
+                const overlayscroll = this.$refs.consoleScroll.osInstance()
+                overlayscroll?.scroll({ y: '100%' })
             }
         })
     }

@@ -33,7 +33,7 @@
                 class="button-min-width-auto px-3"
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
-                @click="emergencyStop">
+                @click="btnEmergencyStop">
                 <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-flex">{{ $t("App.TopBar.EmergencyStop") }}</span>
             </v-btn>
             <the-settings-menu></the-settings-menu>
@@ -63,6 +63,19 @@
                 </v-btn>
             </template>
         </v-snackbar>
+        <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
+            <panel :title="$t('EmergencyStopDialog.EmergencyStop')" toolbar-color="error" card-class="emergency-stop-dialog" icon="mdi-alert-circle-outline" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="showEmergencyStopDialog = false">{{ $t('EmergencyStopDialog.No')}}</v-btn>
+                    <v-btn color="primary" text @click="emergencyStop">{{$t('EmergencyStopDialog.Yes')}}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -76,6 +89,7 @@ import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
 import TheThrottledStates from '@/components/TheThrottledStates.vue'
+import Panel from '@/components/ui/Panel.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -92,12 +106,15 @@ type uploadSnackbar = {
 
 @Component({
     components: {
+        Panel,
         TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu
     }
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
+    showEmergencyStopDialog = false
+
     uploadSnackbar: uploadSnackbar = {
         status: false,
         filename: '',
@@ -137,7 +154,18 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.save_config_pending ?? false
     }
 
+    btnEmergencyStop() {
+        const confirmOnEmergencyStop = this.$store.state.gui.general.confirmOnEmergencyStop
+        if (confirmOnEmergencyStop) {
+            this.showEmergencyStopDialog = true
+        }
+        else {
+            this.emergencyStop()
+        }
+    }
+
     emergencyStop() {
+        this.showEmergencyStopDialog = false
         this.$socket.emit('printer.emergency_stop', {}, { loading: 'topbarEmergencyStop' })
     }
 

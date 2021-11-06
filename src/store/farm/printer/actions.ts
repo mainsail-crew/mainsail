@@ -47,7 +47,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             if (data && data.method) {
                 switch (data.method) {
                 case 'notify_status_update':
-                    commit('setData', data.params[0])
+                    dispatch('getData', data.params[0])
                     break
 
                 case 'notify_klippy_disconnected':
@@ -166,13 +166,14 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             })
     },
 
-    getData({ commit, dispatch }, payload) {
-        commit('setData', payload)
+    getData({ commit, dispatch, state }, payload) {
+        const data = ('status' in payload) ? {...payload.status} : {...payload}
+        commit('setData', data)
 
-        if (payload.print_stats?.filename !== '') {
+        if ('print_stats' in data && 'filename' in data.print_stats) {
             dispatch('sendObj', {
                 method: 'server.files.metadata',
-                params: { filename: payload.print_stats?.filename },
+                params: { filename: data.print_stats?.filename },
                 action: 'getMetadataCurrentFile'
             })
         }
@@ -201,9 +202,21 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 action: 'getMainsailData'
             })
         }
+
+        if (payload.namespaces.includes('webcams')) {
+            dispatch('sendObj', {
+                method: 'server.database.get_item',
+                params: { namespace: 'webcams' },
+                action: 'getWebcamsData'
+            })
+        }
     },
 
     getMainsailData({ commit }, payload) {
         commit('setMainsailData', payload.value)
+    },
+
+    getWebcamsData({ commit }, payload) {
+        commit('setWebcamsData', payload.value)
     }
 }

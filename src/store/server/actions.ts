@@ -131,5 +131,9 @@ export const actions: ActionTree<ServerState, RootState> = {
                 type: type
             })
         }
+    },
+
+    serviceStateChanged({ commit }, payload) {
+        commit('updateServiceState', payload)
     }
 }

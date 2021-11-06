@@ -14,7 +14,7 @@
 			"KlipperControl": "Klipper Control",
 			"KlipperRestart": "Restart",
 			"KlipperFirmwareRestart": "FIRMWARE Restart",
-			"RestartServices": "Restart Services",
+			"ServiceControl": "Service Control",
 			"PowerDevices": "Power Devices",
 			"HostControl": "Host Control",
 			"Reboot": "Reboot",
@@ -48,6 +48,19 @@
 			"DescriptionPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
 			"DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
 		}
+	},
+	"EmergencyStopDialog": {
+		"EmergencyStop": "Emergency Stop",
+		"AreYouSure": "Are you sure?",
+		"No": "No",
+		"Yes": "Yes"
+	},
+	"PowerDeviceChangeDialog": {
+		"TurnDeviceOn": "Turn {device} on",
+		"TurnDeviceOff": "Turn {device} off",
+		"AreYouSure": "Are you sure?",
+		"No": "No",
+		"Yes": "Yes"
 	},
     "ConnectionDialog": {
         "Connecting": "Connecting to {host}",
@@ -93,7 +106,12 @@
 		"SaveRestart": "Save & Restart",
 		"SaveClose": "Save & close",
 		"SuccessfullySaved": "{filename} successfully saved.",
-		"FailedSave": "{filename} could not be uploaded!"
+		"FailedSave": "{filename} could not be uploaded!",
+		"UnsavedChanges": "Unsaved Changes",
+		"UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
+		"UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
+		"DontSave": "Don't save",
+		"Cancel": "Cancel"
 	},
 	"Files": {
 		"GCodeFiles": "G-Code Files",
@@ -170,8 +188,6 @@
 		"Flat": "Flat",
 		"Wireframe": "Wireframe",
 		"Scale": "Scale",
-
-
 		"Profiles": "Profiles",
 		"Deleted": "deleted",
 		"RenameBedMeshProfile": "Rename Bed Mesh Profile",
@@ -183,7 +199,15 @@
 		"DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
 		"DeleteBedMeshProfile": "Delete Bed Mesh Profile",
 		"DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",
-		"Remove": "remove"
+		"Remove": "remove",
+		"CurrentMesh": {
+			"Headline": "Current Mesh",
+			"Name": "Name",
+			"Size": "Size",
+			"Min": "Min",
+			"Max": "Max",
+			"Variance": "Variance"
+		}
 	},
 	"History": {
 		"Statistics": "Statistics",
@@ -286,7 +310,12 @@
 			"Extrude": "Extrude"
 		},
 		"MacrosPanel": {
-			"Headline": "Macros"
+			"Headline": "Macros",
+			"Send": "send"
+		},
+		"DependenciesPanel": {
+			"Dependency": "Dependency | Dependencies",
+			"DependencyDescription": "Your installed {name} version does not support all features of Mainsail, or might even cause problems. Please perform an {name} update to at least {neededVersion}."
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
@@ -493,9 +522,11 @@
 			"Unknown": "unknown",
 			"ERROR": "ERROR",
 			"CommitsOnDate": "Commits on {date}",
+			"CommittedHoursAgo": "committed {hours} hours ago",
 			"CommittedYesterday": "committed yesterday",
 			"CommittedDaysAgo": "committed {days} days ago",
-			"CommittedOnDate": "committed on {date}"
+			"CommittedOnDate": "committed on {date}",
+			"UpdateAll": "Update all components"
 		},
 		"SystemPanel": {
 			"SystemLoad": "System Loads",
@@ -518,19 +549,16 @@
 			"General": "General",
 			"PrinterName": "Printer Name",
 			"Language": "Language",
-			"BoolBigThumbnail": "Large thumbnail",
-			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
-			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
-			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-			"DisplayZOffset": "Show Z-Offset-Panel",
-			"DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
+			"CalcEstimateTime": "Estimate time calculation",
+			"CalcEstimateTimeDescription": "If multiple are selected, an average will be calculated",
+			"CalcEtaTime": "ETA calculation",
+			"CalcEtaTimeDescription": "If multiple are selected, an average will be calculated",
 			"FactoryReset": "Factory reset",
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
 		},
 		"WebcamTab": {
 			"Webcams": "Webcams",
-			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
 			"EditWebcam": "Edit Webcam",
@@ -556,7 +584,8 @@
 			"UrlNotAvailable": "URL not available",
 
 			"Name": "Name",
-			"WebcamURL": "Webcam URL",
+			"UrlStream": "URL Stream",
+			"UrlSnapshot": "URL Snapshot",
 			"Service": "Service",
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
@@ -572,7 +601,38 @@
 		},
 		"MacrosTab": {
 			"Macros": "Macros",
-			"NOMacros": "No macros found..."
+			"NOMacros": "No macros found...",
+			"General": "General",
+			"Management": "Management",
+			"Simple": "Simple",
+			"Expert": "Expert",
+			"NoGroups": "No group found...",
+			"Macrogroups": "Groups",
+			"CreateGroup": "Create Group",
+			"EditGroup": "Edit Group",
+			"CountMacros": "no Macros added | {count} Macro | {count} Macros",
+			"Name": "Name",
+			"Color": "Color",
+			"CustomColor": "Custom Color",
+			"Status": "Status",
+			"Primary": "primary",
+			"Secondary": "secondary",
+			"Success": "success",
+			"Warning": "warning",
+			"Error": "error",
+			"Custom": "custom",
+			"AddGroup": "add Group",
+			"GroupMacros": "Group Macros",
+			"AvailableMacros": "Available Macros",
+			"Add": "add",
+			"NoMacrosInGroup": "No macros in this group.",
+			"NoAvailableMacros": "No available macros.",
+			"UnknownGroup": "Unknown Group",
+			"ChangeMacroColor": "Change the color of the button.",
+			"ShowInStateStandby": "Show/hide if printer is standby.",
+			"ShowInStatePaused": "Show/hide if printer is paused.",
+			"ShowInStatePrinting": "Show/hide if printer is printing.",
+			"DeleteMacroFromGroup": "Delete macro from group."
 		},
 		"ControlTab": {
 			"Control": "Control",
@@ -605,7 +665,10 @@
 			"StoreButton": "Store filter",
 			"UpdateButton": "Update filter",
 			"EditHeadline": "Edit filter",
-			"AddFilter": "add filter"
+			"AddFilter": "add filter",
+			"EntryStyle": "Entry-Design",
+			"EntryStyleDefault": "default",
+			"EntryStyleCompact": "compact"
 		},
 		"PresetsTab": {
 			"PreheatPresets": "Presets",
@@ -629,10 +692,24 @@
 			"Hostname": "Hostname",
 			"Port": "Port"
 		},
-		"ThemeTab": {
-			"Theme": "Theme",
+		"UiSettingsTab": {
+			"UiSettings": "UI-Settings",
 			"Logo": "Logo",
-			"Primary": "Primary"
+			"Primary": "Primary",
+			"GcodeThumbnails": "Gcode thumbnails",
+			"GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
+			"Guide": "Guide",
+			"ShowWebcamInNavigation": "Show Webcam in navigation",
+			"BoolBigThumbnail": "Large thumbnail",
+			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
+			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
+			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
+			"DisplayZOffset": "Show Z-Offset-Panel",
+			"DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
+			"ConfirmOnEmergencyStop": "Require confirm on Emergency Stop",
+			"ConfirmOnEmergencyStopDescription": "Show a confirmation dialog on Emergency Stop",
+			"ConfirmOnPowerDeviceChange": "Require confirm on Device Power changes",
+			"ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes"
 		},
 		"GCodeViewerTab": {
 			"GCodeViewer": "G-Code Viewer",
@@ -644,6 +721,13 @@
 			"ShowAxes": "Show Axes",
 			"MinFeed" :"Min Feed Rate",
 			"MaxFeed" : "Max Feed Rate"
+		},
+		"EditorTab": {
+			"Editor": "Editor",
+			"UseEscToClose": "Use ESC to close editor",
+			"UseEscToCloseDescription": "Allows the ESC key to close the editor",
+			"ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
+			"ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded."
 		},
 		"TimelapseTab": {
 			"Enabled": "Enabled",

@@ -10,16 +10,12 @@
                     <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.BoolBigThumbnail')" :sub-title="$t('Settings.GeneralTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEstimateTime')" :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
+                    <v-select v-model="calcEstimateTime" :items="calcEstimateItems" multiple hide-details dense outlined></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.GeneralTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.DisplayZOffset')" :sub-title="$t('Settings.GeneralTab.DisplayZOffsetDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.GeneralTab.CalcEtaTime')" :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
@@ -109,28 +105,35 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         return languages
     }
 
-    get boolBigThumbnail() {
-        return this.$store.state.gui.dashboard.boolBigThumbnail
+    get calcEstimateItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+        ]
     }
 
-    set boolBigThumbnail(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
+    get calcEstimateTime() {
+        return this.$store.state.gui.general.calcEstimateTime
     }
 
-    get displayCancelPrint() {
-        return this.$store.state.gui.general.displayCancelPrint
+    set calcEstimateTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEstimateTime', value: newVal })
     }
 
-    set displayCancelPrint(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayCancelPrint', value: newVal })
+    get calcEtaTimeItems() {
+        return [
+            { value: 'file', text: 'File' },
+            { value: 'filament', text: 'Filament' },
+            { value: 'slicer', text: 'Slicer' },
+        ]
     }
 
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.general.displayZOffsetStandby
+    get calcEtaTime() {
+        return this.$store.state.gui.general.calcEtaTime
     }
 
-    set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayZOffsetStandby', value: newVal })
+    set calcEtaTime(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.calcEtaTime', value: newVal })
     }
 
     resetMainsail() {

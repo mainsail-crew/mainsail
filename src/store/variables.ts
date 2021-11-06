@@ -1,6 +1,9 @@
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
+export const minKlipperVersion = 'v0.9.1-778'
+export const minMoonrakerVersion = 'v0.7.1-107'
+
 export const colorArray = [
     '#F44336',
     '#8e379d',
@@ -40,12 +43,6 @@ export const validGcodeExtensions = [
     '.nc',
 ]
 
-export const readOnlyRoots = [
-    'config_examples',
-    'docs',
-    'logs',
-]
-
 export const initableServerComponents = [
     'history',
     'power',
@@ -56,7 +53,6 @@ export const initableServerComponents = [
 export const checkKlipperConfigModules = [
     'virtual_sdcard',
     'pause_resume',
-    'display_status',
     'gcode_macro pause',
     'gcode_macro resume',
     'gcode_macro cancel_print',
@@ -82,6 +78,21 @@ export const allowedMetadata = [
 ]
 
 export const maxEventHistory = 500
+
+export const allDashboardPanels = [
+    'control',
+    'macros',
+    'miniconsole',
+    'miscellaneous',
+    'printsettings',
+    'tools',
+    'webcam',
+    'zoffset',
+]
+
+export const thumbnailSmallMin = 32
+export const thumbnailSmallMax = 64
+export const thumbnailBigMin = 256
 
 // timelapse variables
 export const timelapseConsoleFilters = [

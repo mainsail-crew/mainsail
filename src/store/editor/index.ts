@@ -8,6 +8,7 @@ export const getDefaultState = (): EditorState => {
     return {
         bool: false,
         filename: '',
+        permissions: '',
         fileroot: '',
         filepath: '',
         sourcecode: '',
@@ -20,7 +21,9 @@ export const getDefaultState = (): EditorState => {
             total: 0,
             speed: '',
         },
-        cancelToken: null
+        cancelToken: null,
+        loadedHash: '',
+        changed: false
     }
 }
 

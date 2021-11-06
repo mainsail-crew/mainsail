@@ -6,6 +6,10 @@
     @import './assets/styles/utils.scss';
     @import './assets/styles/updateManager.scss';
 
+    :root {
+        --app-height: 100%;
+    }
+
     #content {
         background-attachment: fixed;
         background-size: cover;
@@ -14,6 +18,10 @@
 
     .v-btn:not(.v-btn--outlined).primary {
         color: var(--v-btn-text-primary)
+    }
+
+    .main-content-scrollbar {
+        height: calc(var(--app-height) - 64px);
     }
 </style>
 
@@ -24,9 +32,11 @@
         <the-topbar></the-topbar>
 
         <v-main id="content" :style="mainStyle">
-            <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
-                <router-view></router-view>
-            </v-container>
+            <overlay-scrollbars class="main-content-scrollbar">
+                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                    <router-view></router-view>
+                </v-container>
+            </overlay-scrollbars>
         </v-main>
         <the-select-printer-dialog v-if="remoteMode"></the-select-printer-dialog>
         <the-connecting-dialog v-else></the-connecting-dialog>
@@ -126,7 +136,7 @@ export default class App extends Mixins(BaseMixin) {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
             '--color-primary': this.primaryColor,
-            '--color-warning': this.warningColor,
+            '--color-warning': this.warningColor
         }
     }
 
@@ -253,8 +263,15 @@ export default class App extends Mixins(BaseMixin) {
         this.drawFavicon(this.print_percent)
     }
 
+    appHeight() {
+        const doc = document.documentElement
+        doc.style.setProperty('--app-height', window.innerHeight+'px')
+    }
+
     mounted(): void {
         this.drawFavicon(this.print_percent)
+        this.appHeight()
+        window.addEventListener('resize', this.appHeight)
     }
 }
 </script>

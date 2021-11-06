@@ -13,11 +13,12 @@ export const mutations: MutationTree<FileState> = {
         Object.assign(state, getDefaultState())
     },
 
-    createRootDir(state, dirname) {
+    createRootDir(state, payload) {
         state.filetree.push({
             isDirectory: true,
-            filename: dirname,
+            filename: payload.name,
             modified: new Date(),
+            permissions: payload.permissions,
             childrens: [],
             disk_usage: {
                 free: 0,
@@ -34,15 +35,15 @@ export const mutations: MutationTree<FileState> = {
         const path = findDirectory(state.filetree, dirArray)
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
-        if (path && fileIndex && fileIndex !== -1) {
+        if (path && fileIndex !== undefined && fileIndex !== -1) {
             // eslint-disable-next-line
-			const currentFile = path[fileIndex] as any
+			const currentFile = {...path[fileIndex]} as any
             allowedMetadata.forEach((key: string) => {
                 if (key in payload) currentFile[key] = payload[key]
             })
             currentFile.metadataPulled = true
 
-            //Vue.set(path, fileIndex, currentFile)
+            Vue.set(path, fileIndex, currentFile)
         } else window.console.error('file not found in filetree: '+payload.filename)
     },
 
@@ -62,6 +63,7 @@ export const mutations: MutationTree<FileState> = {
                     isDirectory: false,
                     filename: filename,
                     modified: modified,
+                    permissions: payload.item.permissions,
                     size: payload.item.size,
                     metadataPulled: false,
                 })
@@ -199,6 +201,7 @@ export const mutations: MutationTree<FileState> = {
                 isDirectory: true,
                 filename: dirname,
                 modified: payload.item.modified ?? new Date(),
+                permissions: payload.item.permissions,
                 childrens: [],
             })
         }
@@ -226,5 +229,10 @@ export const mutations: MutationTree<FileState> = {
 
         const dir = state.filetree.find(dir => dir.filename === path)
         if (dir && 'disk_usage' in dir) Vue.set(dir, 'disk_usage', payload.disk_usage)
+    },
+
+    setRootPermissions(state, payload) {
+        const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.name)
+        if (rootState) Vue.set(rootState, 'permissions', payload.permissions)
     }
 }

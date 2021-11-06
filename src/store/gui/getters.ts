@@ -1,5 +1,6 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
+import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup, GuiStatePreset} from '@/store/gui/types'
 import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from '@/store/gui/types'
 import {timelapseConsoleFilters} from '@/store/variables'
 
@@ -44,16 +45,6 @@ export const getters: GetterTree<GuiState, any> = {
         }
 
         return output
-    },
-
-    getWebcams:(state) => {
-        const output = []
-
-        for (const [key, webcam] of Object.entries(state.webcam.configs)) {
-            output.push(Object.assign({}, webcam, { index: key }))
-        }
-
-        return caseInsensitiveSort(output, 'name')
     },
 
     getDatasetValue: (state) => (payload: { name: string, type: string }) => {
@@ -110,5 +101,37 @@ export const getters: GetterTree<GuiState, any> = {
 
     getPanelExpand: (state) => (name: string) => {
         return !state.dashboard.nonExpandPanels?.includes(name) ?? true
+    },
+
+    getAllMacroGroups: (state) => {
+        return caseInsensitiveSort(state.dashboard.macrogroups ?? [], 'name')
+    },
+
+    getMacroGroup: (state) => (id: string) => {
+        return state.dashboard.macrogroups.find((group: GuiStateMacrogroup) => group.id === id)
+    },
+
+    getPanels: (state, getters) => (viewport: string) => {
+        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+
+        if (state.dashboard.macroManagement === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+        else {
+            panels = panels.filter((element: any) => element.name !== 'macros')
+            const macrogroups = getters['getAllMacroGroups']
+            if (macrogroups.length) {
+                panels = panels.filter((element: any) => {
+                    if (!element.name.startsWith('macrogroup_')) return true
+
+                    const macrogroupId = element.name.substr(11)
+                    return (macrogroups.findIndex((macrogroup: GuiStateMacrogroup) => macrogroup.id === macrogroupId) !== -1)
+                })
+            }
+        }
+
+        if (getters['webcam/getWebcams'].length === 0) {
+            panels = panels.filter((element: any) => element.name !== 'webcam')
+        }
+
+        return panels
     }
 }

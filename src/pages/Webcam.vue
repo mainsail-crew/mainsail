@@ -6,7 +6,7 @@
     <div>
         <v-row>
             <v-col col-12>
-                <webcam-panel></webcam-panel>
+                <webcam-panel viewport="page"></webcam-panel>
             </v-col>
         </v-row>
     </div>

@@ -21,6 +21,7 @@ export interface ServerState {
         cpu_info: ServerStateCpuInfo
         distribution: ServerStateDistribution
         sd_info: ServerStateSdInfo
+        service_state: ServerStateServiceStates
     } | null
     moonraker_stats: {
         cpu_usage: number,
@@ -33,6 +34,8 @@ export interface ServerState {
         bits: number
         flags: string[]
     },
+    websocket_count: number
+    moonraker_version: string
 
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState
@@ -82,4 +85,13 @@ export interface ServerStateSdInfo {
     product_revision: string
     serial_number: string
     total_bytes: number
+}
+
+export interface ServerStateServiceStates {
+    [key: string]: ServerStateServiceState
+}
+
+export interface ServerStateServiceState {
+    active_state: string
+    sub_state: string
 }

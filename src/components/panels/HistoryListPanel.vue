@@ -145,7 +145,7 @@
                     <v-btn icon @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="px-0">
-                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                    <overlay-scrollbars style="height: 350px;" class="px-6">
                         <v-row>
                             <v-col>{{ $t('History.Filename') }}</v-col>
                             <v-col class="text-right">{{ detailsDialog.item.filename }}</v-col>
@@ -272,7 +272,7 @@
                                 <v-col class="text-right">{{ detailsDialog.item.metadata.slicer_version }}</v-col>
                             </v-row>
                         </template>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -287,6 +287,7 @@ import BaseMixin from '@/components/mixins/base'
 import {ServerHistoryStateJob} from '@/store/server/history/types'
 import {caseInsensitiveSort, formatFilesize} from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import {thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin} from '@/store/variables'
 @Component({
     components: {Panel}
 })
@@ -585,8 +586,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             item.metadata.thumbnails.length
         ) {
             const thumbnail = item.metadata.thumbnails.find((thumb: any) =>
-                thumb.width >= 32 && thumb.width <= 64 &&
-                thumb.height >= 32 && thumb.height <= 64
+                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
             )
 
             let relative_url = ''
@@ -607,7 +608,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             'thumbnails' in item.metadata &&
             item.metadata.thumbnails.length
         ) {
-            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             let relative_url = ''
             if (item.filename.lastIndexOf('/') !== -1) {
@@ -623,7 +624,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     getThumbnailWidth(item: ServerHistoryStateJob) {
         if (this.getBigThumbnail(item)) {
-            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item.metadata.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail) return thumbnail.width
         }

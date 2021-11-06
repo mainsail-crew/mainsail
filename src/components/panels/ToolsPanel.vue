@@ -33,7 +33,7 @@
         <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn text v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon>mdi-menu-down</v-icon></v-btn>
+                    <v-btn text color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon>mdi-menu-down</v-icon></v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -278,7 +278,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get cooldownGcode(): string {
-        return this.$store.state.gui.cooldown_gcode ?? 'TURN_OFF_HEATERS'
+        return this.$store.state.gui.cooldownGcode ?? 'TURN_OFF_HEATERS'
     }
 
     get boolTempchart(): boolean {

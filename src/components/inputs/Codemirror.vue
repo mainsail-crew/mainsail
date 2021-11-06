@@ -1,6 +1,6 @@
 <style>
     .vue-codemirror .cm-editor {
-        height: calc(100vh - 64px);
+
     }
 </style>
 
