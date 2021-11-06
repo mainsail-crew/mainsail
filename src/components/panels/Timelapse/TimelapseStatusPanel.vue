@@ -31,7 +31,7 @@
                         <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
                             <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                         </settings-row>
-                        <template v-if="enabled">
+                        <template v-if="enabled && ['printing', 'paused'].includes(klipperState)">
                             <v-divider class="my-2"></v-divider>
                             <settings-row :title="$t('Timelapse.Autorender')" :dynamicSlotWidth="true">
                                 <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>

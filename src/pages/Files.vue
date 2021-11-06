@@ -319,7 +319,6 @@
                     <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
-                    {{ $t('Files.PleaseEnterANewDirectoryName') }}
                     <v-text-field
                         v-model="dialogCreateDirectory.name"
                         ref="inputFieldCreateDirectory"

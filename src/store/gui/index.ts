@@ -129,6 +129,12 @@ export const getDefaultState = (): GuiState => {
             showPrintedFiles: true,
             hideMetadataColums: []
         },
+        timelapse: {
+            countPerPage: 10,
+            sortBy: 'modified',
+            sortDesc: true,
+            showHiddenFiles: false,
+        },
         heightmap: {
             probed: true,
             mesh: false,
