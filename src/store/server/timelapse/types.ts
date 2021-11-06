@@ -8,9 +8,11 @@ export interface ServerTimelapseState {
 
 export interface ServerTimelapseSettingsState {
     mode: 'layermacro' | 'hyperlapse'
+    enabled: boolean
+    camera: number
     autorender: boolean
     autorenderOnce: boolean
-    saveFrames: boolean
+    saveframes: boolean
     gcode_verbose: boolean
     parkhead: boolean
     parkpos: 'center' | 'front_left' | 'front_right' | 'back_left' | 'back_right' | 'custom'
@@ -34,7 +36,8 @@ export interface ServerTimelapseSettingsState {
     variable_fps_max: number
     rotation: number
     dublicatelastframe: number
-    previewImage: boolean
+    previewimage: boolean
+    time_format_code: string
     blockedsettings: string[]
     [key: string]: any
 }
