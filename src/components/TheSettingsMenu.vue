@@ -3,7 +3,7 @@
         <v-btn color="grey darken-3" class="ml-5 minwidth-0 px-2" @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
-        <v-dialog v-model="showSettings" width="900" persistent hide-overlay :fullscreen="isMobile">
+        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
                     <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
