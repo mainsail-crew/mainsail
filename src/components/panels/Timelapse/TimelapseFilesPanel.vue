@@ -253,6 +253,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -263,6 +264,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -273,6 +275,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -283,6 +286,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }

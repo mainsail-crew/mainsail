@@ -1,7 +1,6 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup, GuiStatePreset} from '@/store/gui/types'
-import {GuiState, GuiStateConsoleFilter, GuiStatePreset} from '@/store/gui/types'
 import {timelapseConsoleFilters} from '@/store/variables'
 
 // eslint-disable-next-line

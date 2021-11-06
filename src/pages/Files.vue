@@ -954,7 +954,6 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
             if (item.isDirectory) {
                 this.currentPath += '/' + item.filename
-                this.loadPath()
             } else if (!['error', 'printing', 'paused'].includes(this.printer_state)) {
                 this.dialogPrintFile.show = true
                 this.dialogPrintFile.item = item
