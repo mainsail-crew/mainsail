@@ -29,7 +29,9 @@ export const getters: GetterTree<GuiPresetsState, any> = {
             value: 0
         })
 
-        Object.values(state.presets).forEach((preset: GuiPresetsStatePreset) => {
+        Object.keys(state.presets).forEach((id: string) => {
+            const preset = state.presets[id]
+
             if (
                 payload.name in preset.values &&
                 preset.values[payload.name].bool &&

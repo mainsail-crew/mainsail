@@ -12,6 +12,8 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     init({ commit, dispatch, rootState }, payload) {
         window.console.debug('init gui')
+
+        //added in V2.1
         if (
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
@@ -21,6 +23,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.dashboard?.control.useCross
         }
 
+        //added in V2.1
         if (payload.value.webcam) {
             window.console.debug('convert old webcam')
 
@@ -36,6 +39,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
         }
 
+        //added in V2.1
         if (payload.value.presets) {
             window.console.debug('convert old presets')
 
@@ -43,14 +47,20 @@ export const actions: ActionTree<GuiState, RootState> = {
                 payload.value.presets.forEach((oldPreset: any) => {
                     dispatch('presets/store', { values: oldPreset })
                 })
-            }
 
-            if (payload.value.cooldownGcode) {
-                commit('presets/updateCooldownGcode', payload.value.cooldownGcode)
-                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'cooldownGcode' })
+                delete payload.value.presets
             }
 
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets' })
+        }
+
+        //added in V2.1
+        if (payload.value.cooldownGcode) {
+            window.console.debug('convert old cooldownGcode')
+
+            dispatch('presets/updateCooldownGcode', payload.value.cooldownGcode)
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'cooldownGcode' })
+            delete payload.value.cooldownGcode
         }
 
         commit('setData', payload.value)
