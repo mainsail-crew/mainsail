@@ -7,8 +7,8 @@ import { getters } from '@/store/server/timelapse/getters'
 export const getDefaultState = (): ServerTimelapseState => {
     return {
         settings: {
-            enabled: 'true',
-            camera: '0',
+            enabled: true,
+            camera: '',
             mode: 'layermacro',
             autorender: true,
             autorenderOnce: false,

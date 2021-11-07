@@ -9,7 +9,7 @@ export interface ServerTimelapseState {
 export interface ServerTimelapseSettingsState {
     mode: 'layermacro' | 'hyperlapse'
     enabled: boolean
-    camera: number
+    camera: string
     autorender: boolean
     autorenderOnce: boolean
     saveframes: boolean
