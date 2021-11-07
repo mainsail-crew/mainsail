@@ -599,7 +599,8 @@
 			"ShowInStateStandby": "Show/hide if printer is standby.",
 			"ShowInStatePaused": "Show/hide if printer is paused.",
 			"ShowInStatePrinting": "Show/hide if printer is printing.",
-			"DeleteMacroFromGroup": "Delete macro from group."
+			"DeleteMacroFromGroup": "Delete macro from group.",
+			"DeletedMacro": "Deleted macro"
 		},
 		"ControlTab": {
 			"Control": "Control",
