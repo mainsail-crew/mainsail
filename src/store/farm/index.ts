@@ -35,62 +35,6 @@ export const farm: Module<FarmState, RootState> = {
         }
     },
     actions: {
-        /*readStoredPrinters({ rootState, dispatch }) {
-            if (rootState.socket?.remoteMode) {
-                if (localStorage.getItem('printers')) {
-                    try {
-                        const json = localStorage.getItem('printers') ?? ''
-                        const printers = JSON.parse(json) || []
-                        printers.forEach((printer: any) => {
-                            dispatch('registerPrinter',{
-                                hostname: printer.hostname,
-                                port: printer.port,
-                                protocol: rootState.socket?.protocol,
-                                settings: printer.settings ?? {}
-                            })
-                        })
-                    } catch(e) {
-                        localStorage.removeItem('printers')
-                    }
-                }
-            } else {
-                rootState.gui?.remote_printers?.forEach((printer: any) => {
-                    dispatch('registerPrinter',{
-                        hostname: printer.hostname,
-                        port: printer.port,
-                        webPort: printer.webPort,
-                        protocol: rootState.socket?.protocol,
-                        settings: printer.settings ?? {}
-                    })
-                })
-            }
-        },*/
-        /*savePrinters({ rootState, state, dispatch }) {
-            const printers: any = []
-
-            if (rootState.socket?.remoteMode) {
-                Object.keys(state).forEach((key: string) => {
-                    printers.push({
-                        hostname: state[key].socket.hostname,
-                        port: state[key].socket.port,
-                        settings: state[key].settings,
-                    })
-                })
-
-                localStorage.setItem('printers', JSON.stringify(printers))
-            } else {
-                Object.keys(state).forEach((key: string) => {
-                    printers.push({
-                        hostname: state[key].socket.hostname,
-                        port: state[key].socket.port,
-                        webPort: state[key].socket.webPort,
-                        settings: state[key].settings,
-                    })
-                })
-
-                dispatch('gui/saveSetting', { name: 'remote_printers', value: printers }, { root: true })
-            }
-        },*/
         registerPrinter({ state, commit, dispatch }, payload) {
             if (!this.hasModule(['farm', payload.id])) {
                 this.registerModule(['farm', payload.id], printer)
