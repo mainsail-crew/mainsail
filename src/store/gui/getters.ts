@@ -1,20 +1,10 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
-import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup, GuiStatePreset} from '@/store/gui/types'
+import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup} from '@/store/gui/types'
 import {timelapseConsoleFilters} from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
-
-    getPreheatPresets:(state) => {
-        const output = []
-
-        for (const [key, preset] of Object.entries(state.presets)) {
-            output.push(Object.assign({}, preset, { index: parseInt(key) }))
-        }
-
-        return caseInsensitiveSort(output, 'name')
-    },
 
     getConsoleFilters:(state) => {
         const output = []
@@ -67,37 +57,6 @@ export const getters: GetterTree<GuiState, any> = {
         return true
     },
 
-    getPresetsFromHeater: state => (payload: { name: string }) => {
-        interface preset {
-            value: number
-        }
-
-        const output: preset[] = []
-
-        output.push({
-            value: 0
-        })
-
-        Object.values(state.presets).forEach((preset: GuiStatePreset) => {
-            if (
-                payload.name in preset.values &&
-                preset.values[payload.name].bool &&
-                output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
-            ) {
-                output.push({
-                    value: preset.values[payload.name].value,
-                })
-            }
-        })
-
-        return output.sort((a: preset,b: preset) => {
-            if (a.value > b.value) return -1
-            if (a.value < b.value) return 1
-
-            return 0
-        })
-    },
-
     getPanelExpand: (state) => (name: string) => {
         return !state.dashboard.nonExpandPanels?.includes(name) ?? true
     },
@@ -127,7 +86,7 @@ export const getters: GetterTree<GuiState, any> = {
             }
         }
 
-        if (getters['webcam/getWebcams'].length === 0) {
+        if (getters['webcams/getWebcams'].length === 0) {
             panels = panels.filter((element: any) => element.name !== 'webcam')
         }
 

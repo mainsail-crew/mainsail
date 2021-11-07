@@ -76,7 +76,7 @@ import Component from 'vue-class-component'
 import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 @Component({
     components: {
@@ -92,7 +92,7 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
     @Prop({ default: 'dashboard' }) viewport?: string
 
     get webcams(): GuiWebcamStateWebcam[] {
-        return this.$store.getters['gui/webcam/getWebcams']
+        return this.$store.getters['gui/webcams/getWebcams']
     }
 
     get currentCamId(): string {

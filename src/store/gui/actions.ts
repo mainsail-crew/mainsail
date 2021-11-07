@@ -10,8 +10,14 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('reset')
     },
 
-    init({ commit, dispatch, rootState }, payload) {
+    init() {
         window.console.debug('init gui')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore'})
+    },
+
+    initStore({ commit, dispatch, rootState }, payload) {
+
+        //added in V2.1
         if (
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
@@ -21,8 +27,9 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.dashboard?.control.useCross
         }
 
+        //added in V2.1
         if (payload.value.webcam) {
-            window.console.debug('convert old webcam')
+            window.console.debug('convert old webcams')
 
             if (payload.value.webcam.configs && payload.value.webcam.configs.length) {
                 payload.value.webcam.configs.forEach((oldWebcam: any) => {
@@ -36,13 +43,34 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
         }
 
+        //added in V2.1
+        if (payload.value.presets) {
+            window.console.debug('convert old presets')
+
+            if (payload.value.presets && payload.value.presets.length) {
+                payload.value.presets.forEach((oldPreset: any) => {
+                    dispatch('presets/store', { values: oldPreset })
+                })
+
+                delete payload.value.presets
+            }
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets' })
+        }
+
+        //added in V2.1
+        if (payload.value.cooldownGcode) {
+            window.console.debug('convert old cooldownGcode')
+
+            dispatch('presets/updateCooldownGcode', payload.value.cooldownGcode)
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'cooldownGcode' })
+            delete payload.value.cooldownGcode
+        }
+
         commit('setData', payload.value)
 
         // init remote printers, when remoteMode is off
         if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
-
-        dispatch('gui/webcam/init', null, { root: true })
-        dispatch('printer/init', null, { root: true })
     },
 
     saveSetting({ commit }, payload) {

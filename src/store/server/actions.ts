@@ -23,12 +23,11 @@ export const actions: ActionTree<ServerState, RootState> = {
     },
 
     checkDatabases({ dispatch }, payload) {
-        if (payload.namespaces?.includes('mainsail'))
-            Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/init'})
-        else {
-            Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'init', value: true })
-            dispatch('printer/init', null, { root: true })
-        }
+        if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
+        if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
+
+        dispatch('printer/init', null, { root: true })
     },
 
     initServerInfo: function ({ dispatch, commit }, payload) {

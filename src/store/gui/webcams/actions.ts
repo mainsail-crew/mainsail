@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
 import {RootState} from '@/store/types'
-import {GuiWebcamState} from '@/store/gui/webcam/types'
+import {GuiWebcamState} from '@/store/gui/webcams/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
 
@@ -10,8 +10,8 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
     },
 
     init() {
-        window.console.debug('init gui/webcam')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcam/initStore' })
+        window.console.debug('init gui/webcams')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcams/initStore' })
     },
 
     initStore({ commit }, payload) {

@@ -316,7 +316,7 @@
 		},
 		"DependenciesPanel": {
 			"Dependency": "Dependency | Dependencies",
-			"DependencyDescription": "Your installed {name} version does not support all features of Mainsail, or might even cause problems. Please perform an {name} update to at least {neededVersion}."
+			"DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
 		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
@@ -633,7 +633,8 @@
 			"ShowInStateStandby": "Show/hide if printer is standby.",
 			"ShowInStatePaused": "Show/hide if printer is paused.",
 			"ShowInStatePrinting": "Show/hide if printer is printing.",
-			"DeleteMacroFromGroup": "Delete macro from group."
+			"DeleteMacroFromGroup": "Delete macro from group.",
+			"DeletedMacro": "Deleted macro"
 		},
 		"ControlTab": {
 			"Control": "Control",
