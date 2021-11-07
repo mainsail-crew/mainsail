@@ -7,6 +7,7 @@ import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
 import { consolefilters } from '@/store/gui/consolefilters'
+import { macrogroups } from '@/store/gui/macrogroups'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
@@ -32,7 +33,6 @@ export const getDefaultState = (): GuiState => {
             boolBigThumbnail: true,
             macroManagement: 'simple',
             hiddenMacros: [],
-            macrogroups: [],
             hiddenTempChart: [],
             control: {
                 style: 'bars',
@@ -206,6 +206,7 @@ export const gui: Module<GuiState, any> = {
     mutations,
     modules: {
         consolefilters,
+        macrogroups,
         presets,
         remoteprinters,
         webcams,

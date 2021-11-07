@@ -1,8 +1,8 @@
 import Component from 'vue-class-component'
 import BaseMixin from '@/components/mixins/base'
 import {allDashboardPanels} from '@/store/variables'
-import {GuiStateMacrogroup} from '@/store/gui/types'
 import {capitalize} from '@/plugins/helpers'
+import {GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
@@ -12,7 +12,7 @@ export default class DashboardMixin extends BaseMixin {
     }
 
     get macrogroups() {
-        return this.$store.state.gui.dashboard.macrogroups ?? []
+        return this.$store.getters['gui/macrogroups/getAllMacrogroups'] ?? []
     }
 
     get missingPanelsMobile() {
@@ -56,7 +56,7 @@ export default class DashboardMixin extends BaseMixin {
         const missingPanels: any[] = []
 
         if (this.macroMode === 'expert') {
-            this.macrogroups.forEach((group: GuiStateMacrogroup) => {
+            this.macrogroups.forEach((group: GuiMacrogroupsStateMacrogroup) => {
                 allPanels.push('macrogroup_'+group.id)
             })
 
@@ -77,7 +77,7 @@ export default class DashboardMixin extends BaseMixin {
     getPanelName(name: string) {
         if (name.startsWith('macrogroup_')) {
             const groupId = name.split('_')[1] ?? ''
-            const group = this.macrogroups.find((group: GuiStateMacrogroup) => group.id === groupId)
+            const group = this.macrogroups.find((group: GuiMacrogroupsStateMacrogroup) => group.id === groupId)
 
             return (group) ? group.name : 'Macrogroup'
         }
