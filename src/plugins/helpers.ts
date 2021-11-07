@@ -38,7 +38,7 @@ export const convertPanelnameToIcon = (name: string): string => {
     if (name.startsWith('macrogroup_')) return 'mdi-code-tags'
 
     switch (name) {
-    case 'webcam': return 'mdi-webcam'
+    case 'webcam': return 'mdi-webcams'
     case 'zoffset': return 'mdi-arrow-collapse-vertical'
     case 'control': return 'mdi-gamepad'
     case 'macros': return 'mdi-code-tags'

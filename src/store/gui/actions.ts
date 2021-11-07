@@ -25,7 +25,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         //added in V2.1
         if (payload.value.webcam) {
-            window.console.debug('convert old webcam')
+            window.console.debug('convert old webcams')
 
             if (payload.value.webcam.configs && payload.value.webcam.configs.length) {
                 payload.value.webcam.configs.forEach((oldWebcam: any) => {

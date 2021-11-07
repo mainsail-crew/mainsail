@@ -157,7 +157,7 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 interface webcamForm {
     bool: boolean
@@ -207,7 +207,7 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
             { value: 'mdi-printer-3d',          text: this.$t('Settings.WebcamTab.IconPrinter') },
             { value: 'mdi-printer-3d-nozzle',   text: this.$t('Settings.WebcamTab.IconNozzle') },
             { value: 'mdi-radiator-disabled',   text: this.$t('Settings.WebcamTab.IconBed') },
-            { value: 'mdi-webcam',              text: this.$t('Settings.WebcamTab.IconCam') },
+            { value: 'mdi-webcams',              text: this.$t('Settings.WebcamTab.IconCam') },
             { value: 'mdi-album',               text: this.$t('Settings.WebcamTab.IconFilament') },
             { value: 'mdi-door',                text: this.$t('Settings.WebcamTab.IconDoor') },
             { value: 'mdi-raspberry-pi',        text: this.$t('Settings.WebcamTab.IconMcu') },
@@ -292,11 +292,11 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
         this.form.bool = false
         this.form.id = null
         this.form.name = ''
-        this.form.icon = 'mdi-webcam'
+        this.form.icon = 'mdi-webcams'
         this.form.service = 'mjpegstreamer-adaptive'
         this.form.targetFps = 15
-        this.form.urlStream = '/webcam/?action=stream'
-        this.form.urlSnapshot = '/webcam/?action=snapshot'
+        this.form.urlStream = '/webcams/?action=stream'
+        this.form.urlSnapshot = '/webcams/?action=snapshot'
         this.form.flipX = false
         this.form.flipY = false
     }

@@ -76,7 +76,7 @@ import Component from 'vue-class-component'
 import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 @Component({
     components: {
