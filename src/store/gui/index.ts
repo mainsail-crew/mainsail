@@ -6,7 +6,7 @@ import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
-import { webcam } from '@/store/gui/webcams'
+import { webcams } from '@/store/gui/webcams'
 import { presets } from '@/store/gui/presets'
 
 export const getDefaultState = (): GuiState => {
@@ -206,7 +206,7 @@ export const gui: Module<GuiState, any> = {
     actions,
     mutations,
     modules: {
-        webcam,
+        webcams,
         presets
     }
 }
