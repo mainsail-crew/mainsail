@@ -6,9 +6,9 @@
         :collapsible="true"
         card-class="macros-panel"
     >
-        <v-container>
-            <v-row no-gutters v-if="macros.length">
-                <v-col class="text-center mr-fix-2 mb-fix-2">
+        <v-card-text class="py-2">
+            <v-row>
+                <v-col class="text-center">
                     <macro-button v-for="(macro, index) in macros"
                                   :key="'macro_'+index"
                                   :macro="macro"
@@ -17,7 +17,7 @@
                     />
                 </v-col>
             </v-row>
-        </v-container>
+        </v-card-text>
     </panel>
 </template>
 
