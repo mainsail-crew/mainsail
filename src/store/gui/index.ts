@@ -17,6 +17,8 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            autoLockSliders: false,
+            autoLockSlidersTimeout: 1.5,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
             calcEstimateTime: ['file', 'filament'],
@@ -33,6 +35,7 @@ export const getDefaultState = (): GuiState => {
             hiddenMacros: [],
             macrogroups: [],
             hiddenTempChart: [],
+            lockedSliders: [],
             control: {
                 style: 'bars',
                 feedrateXY: 100,

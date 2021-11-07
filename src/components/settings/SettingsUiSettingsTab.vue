@@ -52,6 +52,30 @@
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="'[WIP] Lock sliders on Mobile and Tablet devices'" :sub-title="'Sliders on small display sizes need to be unlocked manually before manipulation is possible'" :dynamicSlotWidth="true">
+                        <v-switch v-model="autoLockSliders" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <v-expand-transition>
+                    <settings-row v-show="autoLockSliders" :title="'[WIP] Automatic slider locking timeout'" :sub-title="'Lock sliders automatically after a given timeout. If set to 0 or left empty, sliders get automatically locked only by changing pages or on page reload.'" :dynamicSlotWidth="true">
+                            <v-text-field
+                                class="mt-0"
+                                prepend-icon="mdi-timer-outline"
+                                :style="isMobile ? { 'max-width': '140px' } : {}"
+                                v-model="autoLockSlidersTimeout"
+                                label="Timeout"
+                                type="number"
+                                :rules="[t => t >= 0]"
+                                min="0"
+                                step="0.5"
+                                suffix="s"
+                                hide-details
+                                outlined
+                                dense
+                            ></v-text-field>
+                    </settings-row>
+                </v-expand-transition>
+                <v-divider  v-show="autoLockSliders" class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -72,6 +96,7 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 import {Debounce} from 'vue-debounce-decorator'
+
 @Component({
     components: {SettingsRow}
 })
@@ -141,6 +166,22 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set confirmOnPowerDeviceChange(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
+    }
+
+    get autoLockSliders() {
+        return this.$store.state.gui.general.autoLockSliders
+    }
+
+    set autoLockSliders(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.autoLockSliders', value: newVal})
+    }
+
+    get autoLockSlidersTimeout() {
+        return this.$store.state.gui.general.autoLockSlidersTimeout
+    }
+
+    set autoLockSlidersTimeout(newVal) {
+        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.autoLockSlidersTimeout', value: newVal}) : {}
     }
 
     clearColorObject(color: any): string {

@@ -9,12 +9,24 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
+                    <v-btn
+                        v-if="canLock && (autoLockSliders && this.isTouchDevice)"
+                        @click="sliderIsLocked = !sliderIsLocked"
+                        plain
+                        small
+                        icon
+                    >
+                        <v-icon small :color="(sliderIsLocked ? 'red' : '')">
+                            {{ sliderIsLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        </v-icon>
+                    </v-btn>
                     <span>{{ label }}</span>
                     <v-btn
                         v-if="value !== defaultValue"
                         class="ml-2"
                         x-small
                         icon
+                        :disabled="canLock && sliderIsLocked"
                         @click="resetSlider"
                     >
                         <v-icon>mdi-restart</v-icon>
@@ -27,10 +39,11 @@
                 <v-card-text class="py-0">
                     <v-slider
                         v-model="value"
+                        :disabled="canLock && sliderIsLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
-                        @change="changeSlider"
+                        @change="changeSlider && startLockTimer()"
                         hide-details>
 
                         <template v-slot:prepend>
@@ -60,6 +73,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     processedMax = 100
     dynamicStep = 50
 
+    @Prop({ required: true }) readonly sliderName!: string
+    @Prop({ type: Boolean, default: true, required: true }) readonly canLock!: string
     @Prop({ type: Number, required: true }) readonly target!: number
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, default: '' }) readonly attributeName!: string
@@ -81,6 +96,48 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
+
+        //initialize slider lock state on component creation
+        this.autoLockSlidersChanged()
+    }
+
+    @Watch('autoLockSliders')
+    autoLockSlidersChanged(){
+        if(this.autoLockSliders && this.isTouchDevice){
+            this.sliderIsLocked = true
+        } else {
+            this.sliderIsLocked = false
+        }
+    }
+
+    //helper to determine if mobile/tablet or larger
+    get isTouchDevice() {
+        return (this.isMobile || this.isTablet) ?? false
+    }
+
+    get autoLockSliders() {
+        return this.$store.state.gui.general.autoLockSliders
+    }
+
+    get autoLockSlidersTimeout() {
+        return this.$store.state.gui.general.autoLockSlidersTimeout
+    }
+
+    get sliderIsLocked() {
+        return this.$store.getters['gui/getLockedSliders'](this.sliderName)
+    }
+
+    set sliderIsLocked(newVal) {
+        this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
+    }
+
+    startLockTimer() {
+        let timeout = this.autoLockSlidersTimeout
+        setTimeout(() => {
+            if(this.autoLockSliders && timeout > 0 && !this.sliderIsLocked) {
+                this.sliderIsLocked = true
+            }
+        }, timeout * 1000)
     }
 
     get colorBar() {
@@ -120,6 +177,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         }
 
         this.sendCmd()
+        this.startLockTimer()
     }
 
     sendCmd() {
