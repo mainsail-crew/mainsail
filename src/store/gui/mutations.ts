@@ -123,13 +123,23 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     addClosePanel(state, payload) {
-        const exist = state.dashboard.nonExpandPanels?.includes(payload.name) ?? false
-        if (!exist) state.dashboard.nonExpandPanels.push(payload.name)
+        const nonExpandPanels = [...state.dashboard.nonExpandPanels]
+
+        if (!nonExpandPanels.includes(payload.name)) {
+            nonExpandPanels.push(payload.name)
+
+            Vue.set(state.dashboard, 'nonExpandPanels', nonExpandPanels)
+        }
     },
 
     removeClosePanel(state, payload) {
-        const index = state.dashboard.nonExpandPanels.indexOf(payload.name)
-        if (index > -1) state.dashboard.nonExpandPanels.splice(index, 1)
+        const nonExpandPanels = [...state.dashboard.nonExpandPanels]
+        const index = nonExpandPanels.indexOf(payload.name)
+        if (index > -1) {
+            nonExpandPanels.splice(index, 1)
+
+            Vue.set(state.dashboard, 'nonExpandPanels', nonExpandPanels)
+        }
     },
 
     storeMacrogroup(state, payload) {
