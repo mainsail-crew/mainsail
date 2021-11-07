@@ -742,7 +742,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     doUploadFile(file: File) {
         let formData = new FormData()
-        let filename = file.name.replace(' ', '_')
+        let filename = file.name
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true

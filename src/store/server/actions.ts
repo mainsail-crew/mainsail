@@ -22,10 +22,12 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
     },
 
-    checkDatabases({ dispatch }, payload) {
+    checkDatabases({ dispatch, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_consolefilters')) dispatch('gui/consolefilters/init', null, { root: true })
+        if (!rootState.socket?.remoteMode && payload.namespaces?.includes('mainsail_remoteprinters')) dispatch('gui/remoteprinters/init', null, { root: true })
 
         dispatch('printer/init', null, { root: true })
     },
@@ -78,7 +80,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('clearGcodeStore')
 
         let events: ServerStateEvent[] = payload.gcode_store
-        const filters = rootGetters['gui/getConsoleFilterRules']
+        const filters = rootGetters['gui/consolefilters/getConsolefilterRules']
         filters.forEach((filter: string) => {
             try {
                 const regex = new RegExp(filter)
@@ -107,7 +109,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         let formatMessage = formatConsoleMessage(message)
 
-        const filters = rootGetters['gui/getConsoleFilterRules']
+        const filters = rootGetters['gui/consolefilters/getConsolefilterRules']
         let boolImport = true
         filters.every((filter: string) => {
             try {

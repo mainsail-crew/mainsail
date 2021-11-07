@@ -52,7 +52,7 @@ import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
-import SettingsWebcamTab from '@/components/settings/SettingsWebcamTab.vue'
+import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
 import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
 import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
 import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
@@ -74,7 +74,7 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsConsoleTab,
         SettingsControlTab,
         SettingsMacrosTab,
-        SettingsWebcamTab,
+        SettingsWebcamsTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
@@ -108,9 +108,9 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.DashboardTab.Dashboard')
             },
             {
-                icon: 'mdi-webcams',
-                name: 'webcam',
-                title: this.$t('Settings.WebcamTab.Webcams')
+                icon: 'mdi-webcam',
+                name: 'webcams',
+                title: this.$t('Settings.WebcamsTab.Webcams')
             },
             {
                 icon: 'mdi-code-tags',

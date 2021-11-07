@@ -6,8 +6,10 @@ import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
-import { webcams } from '@/store/gui/webcams'
+import { consolefilters } from '@/store/gui/consolefilters'
 import { presets } from '@/store/gui/presets'
+import { remoteprinters } from '@/store/gui/remoteprinters'
+import { webcams } from '@/store/gui/webcams'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -119,8 +121,7 @@ export const getDefaultState = (): GuiState => {
             hideWaitTemperatures: true,
             direction: 'table',
             entryStyle: 'default',
-            height: 300,
-            customFilters: [],
+            height: 300
         },
         gcodefiles: {
             countPerPage: 10,
@@ -175,8 +176,6 @@ export const getDefaultState = (): GuiState => {
             escToClose: true,
             confirmUnsavedChanges: true
         },
-        //moonraker DB api dont accept camel case key names
-        remotePrinters: [],
         gcodeViewer: {
             extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
             gridColor : '#0000FF',
@@ -212,7 +211,9 @@ export const gui: Module<GuiState, any> = {
     actions,
     mutations,
     modules: {
+        consolefilters,
+        presets,
+        remoteprinters,
         webcams,
-        presets
     }
 }

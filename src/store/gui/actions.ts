@@ -17,7 +17,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     initStore({ commit, dispatch, rootState }, payload) {
 
-        //added in V2.1
+        //added in V2.1.0
         if (
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
@@ -27,7 +27,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.dashboard?.control.useCross
         }
 
-        //added in V2.1
+        //added in V2.1.0
         if (payload.value.webcam) {
             window.console.debug('convert old webcams')
 
@@ -43,7 +43,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
         }
 
-        //added in V2.1
+        //added in V2.1.0
         if (payload.value.presets) {
             window.console.debug('convert old presets')
 
@@ -58,7 +58,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets' })
         }
 
-        //added in V2.1
+        //added in V2.1.0
         if (payload.value.cooldownGcode) {
             window.console.debug('convert old cooldownGcode')
 
@@ -67,10 +67,41 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.cooldownGcode
         }
 
-        commit('setData', payload.value)
+        //added in V2.1.0
+        if (payload.value.console.customFilters) {
+            window.console.debug('convert old consolefilters')
 
-        // init remote printers, when remoteMode is off
-        if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
+            if (payload.value.console.customFilters && payload.value.console.customFilters.length) {
+                payload.value.console.customFilters.forEach((oldFilter: any) => {
+                    dispatch('consolefilters/store', {values: oldFilter})
+                })
+            }
+
+            delete payload.value.console.customFilters
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'console.customFilters' })
+        }
+
+        //added in V2.1.0
+        if (payload.value.remote_printers) {
+            if (!rootState.socket?.remoteMode) {
+                window.console.debug('convert old remotePrinters')
+
+                payload.value.remote_printers.forEach((printer: any) => {
+                    const values = {
+                        hostname: printer.hostname ?? '',
+                        port: printer.port ?? 7125,
+                        settings: printer.settings ?? {},
+                    }
+                    dispatch('remoteprinters/store', { values })
+                })
+
+                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remote_printers' })
+            }
+
+            delete payload.value.remote_printers
+        }
+
+        commit('setData', payload.value)
     },
 
     saveSetting({ commit }, payload) {
@@ -113,54 +144,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('updateSettings', {
             keyName: 'webcamSettings.currentCam',
             newVal: state.webcamSettings.currentCam
-        })
-    },
-
-    addPreset({ commit, dispatch, state }, payload) {
-        commit('addPreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    updatePreset({ commit, dispatch, state }, payload) {
-        commit('updatePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    deletePreset({ commit, dispatch, state }, payload) {
-        commit('deletePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    addConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('addConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    updateConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('updateConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    deleteConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('deleteConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
         })
     },
 

@@ -31,7 +31,7 @@
                         <v-btn small outlined class="ml-3" @click="editFilter(filter)">
                             <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn small outlined @click="deleteFilter(filter.index)" class="ml-3 minwidth-0 px-2" color="error">
+                        <v-btn small outlined @click="deleteFilter(filter.id)" class="ml-3 minwidth-0 px-2" color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -43,7 +43,7 @@
         </v-card>
         <v-card flat v-else>
             <v-form v-model="form.valid" @submit.prevent="saveFilter">
-                <v-card-title>{{ form.index !== null ? $t('Settings.ConsoleTab.CreateHeadline') : $t('Settings.ConsoleTab.EditHeadline') }}</v-card-title>
+                <v-card-title>{{ form.id === null ? $t('Settings.ConsoleTab.CreateHeadline') : $t('Settings.ConsoleTab.EditHeadline') }}</v-card-title>
                 <v-card-text>
                     <settings-row :title="$t('Settings.ConsoleTab.Name')">
                         <v-text-field
@@ -68,7 +68,7 @@
                         {{ $t('Settings.Cancel') }}
                     </v-btn>
                     <v-btn color="primary" text type="submit" >
-                        {{ form.index === null ? $t("Settings.ConsoleTab.StoreButton") : $t("Settings.ConsoleTab.UpdateButton") }}
+                        {{ form.id === null ? $t("Settings.ConsoleTab.StoreButton") : $t("Settings.ConsoleTab.UpdateButton") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -77,8 +77,6 @@
 </template>
 
 <script lang="ts">
-
-
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -86,7 +84,7 @@ import {Debounce} from 'vue-debounce-decorator'
 
 interface consoleForm {
     bool: boolean
-    index: number | null
+    id: string | null
     valid: boolean
     name: string
     regex: string
@@ -101,7 +99,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
         valid: false,
         name: '',
         regex: '',
-        index: null,
+        id: null,
     }
 
     private rules = {
@@ -116,7 +114,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     get consoleFilters() {
-        return this.$store.getters['gui/getConsoleFilters'] ?? []
+        return this.$store.getters['gui/consolefilters/getConsolefilters'] ?? []
     }
 
     get availableDirections() {
@@ -186,20 +184,24 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (this.consoleFilters.findIndex((filter: any) => filter.name === name && filter.index !== this.form.index) >= 0)
+        return (this.consoleFilters.findIndex((filter: any) => filter.name === name && filter.id !== this.form.id) >= 0)
     }
 
     clearForm() {
         this.form.bool = false
-        this.form.index = null
+        this.form.id = null
         this.form.name = ''
         this.form.regex = ''
     }
 
     toggleFilter(filter: any) {
-        filter.bool = !filter.bool
+        const values = {
+            name: filter.name,
+            bool: !filter.bool,
+            regex: filter.regex
+        }
 
-        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+        this.$store.dispatch('gui/consolefilters/update', { id: filter.id, values })
     }
 
     createFilter() {
@@ -209,7 +211,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     editFilter(filter: any) {
         this.form.name = filter.name
-        this.form.index = filter.index
+        this.form.id = filter.id
         this.form.regex = filter.regex
 
         this.form.bool = true
@@ -217,17 +219,23 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     saveFilter() {
         if (this.form.valid) {
-            if (this.form.index)
-                this.$store.dispatch('gui/updateConsoleFilter',  this.form)
+            const filter = {
+                name: this.form.name,
+                bool: this.form.bool,
+                regex: this.form.regex,
+            }
+
+            if (this.form.id)
+                this.$store.dispatch('gui/consolefilters/update', { id: this.form.id, values: filter })
             else
-                this.$store.dispatch('gui/addConsoleFilter',  this.form)
+                this.$store.dispatch('gui/consolefilters/store', { values: filter })
 
             this.clearForm()
         }
     }
 
-    deleteFilter(index: number) {
-        this.$store.dispatch('gui/deleteConsoleFilter',  { index: index })
+    deleteFilter(id: string) {
+        this.$store.dispatch('gui/consolefilters/delete', id)
     }
 }
 </script>
