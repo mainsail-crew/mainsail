@@ -37,7 +37,7 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 @Component({
     components: {

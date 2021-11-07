@@ -106,7 +106,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 title: this.$t('Settings.DashboardTab.Dashboard')
             },
             {
-                icon: 'mdi-webcam',
+                icon: 'mdi-webcams',
                 name: 'webcam',
                 title: this.$t('Settings.WebcamTab.Webcams')
             },

@@ -1,6 +1,6 @@
 import { GuiState } from '@/store/gui/types'
 import { FileStateFile } from '@/store/files/types'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 export interface FarmPrinterState {
     _namespace: string

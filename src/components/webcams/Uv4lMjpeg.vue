@@ -20,7 +20,7 @@
 <script lang="ts">
 import {Component, Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {

@@ -30,7 +30,7 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('printer/init', null, { root: true })
         }
 
-        if (payload.namespaces?.includes('webcams')) dispatch('gui/webcam/init', null, { root: true })
+        if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
     },
 
