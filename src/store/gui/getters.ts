@@ -58,5 +58,9 @@ export const getters: GetterTree<GuiState, any> = {
         }
 
         return panels
+    },
+
+    getLockedSliders: (state) => (name: string) => {
+        return state.dashboard.lockedSliders?.includes(name) ?? false
     }
 }

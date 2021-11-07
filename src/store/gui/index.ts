@@ -33,6 +33,7 @@ export const getDefaultState = (): GuiState => {
             hiddenMacros: [],
             macrogroups: [],
             hiddenTempChart: [],
+            lockedSliders: [],
             control: {
                 style: 'bars',
                 feedrateXY: 100,

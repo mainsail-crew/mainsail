@@ -343,5 +343,15 @@ export const actions: ActionTree<GuiState, RootState> = {
             })
 
         }
+    },
+
+    saveSliderLockState({ commit, dispatch, state }, payload) {
+        if (!payload.value) commit('removeFromLockedSliders', {name: payload.name})
+        else commit('addToLockedSliders', { name: payload.name })
+
+        dispatch('updateSettings', {
+            keyName: 'dashboard.lockedSliders',
+            newVal: state.dashboard.lockedSliders
+        })
     }
 }

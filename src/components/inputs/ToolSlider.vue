@@ -9,12 +9,18 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
+                    <v-btn plain small icon @click="isLocked = !isLocked">
+                        <v-icon small :color="(isLocked ? 'red' : '')">
+                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        </v-icon>
+                    </v-btn>
                     <span>{{ label }}</span>
                     <v-btn
                         v-if="value !== defaultValue"
                         class="ml-2"
                         x-small
                         icon
+                        :disabled="isLocked"
                         @click="resetSlider"
                     >
                         <v-icon>mdi-restart</v-icon>
@@ -27,6 +33,7 @@
                 <v-card-text class="py-0">
                     <v-slider
                         v-model="value"
+                        :disabled="isLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
@@ -60,6 +67,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     processedMax = 100
     dynamicStep = 50
 
+    @Prop({ required: true }) readonly sliderName!: string
     @Prop({ type: Number, required: true }) readonly target!: number
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, default: '' }) readonly attributeName!: string
@@ -81,6 +89,14 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
+    }
+
+    get isLocked() {
+        return this.$store.getters['gui/getLockedSliders'](this.sliderName)
+    }
+
+    set isLocked(newVal) {
+        this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
     }
 
     get colorBar() {
