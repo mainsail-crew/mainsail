@@ -101,6 +101,19 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.remote_printers
         }
 
+        //added in V2.1.0
+        if (payload.value.dashboard?.macrogroups) {
+            window.console.debug('convert old macrogroups')
+
+            payload.value.dashboard?.macrogroups.forEach((macrogroup: any) => {
+                dispatch('macrogroups/store', { values: macrogroup })
+            })
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'dashboard.macrogroups' })
+
+            delete payload.value.dashboard.macrogroups
+        }
+
         commit('setData', payload.value)
     },
 
