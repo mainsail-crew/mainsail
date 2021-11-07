@@ -10,8 +10,12 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('reset')
     },
 
-    init({ commit, dispatch, rootState }, payload) {
+    init() {
         window.console.debug('init gui')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore'})
+    },
+
+    initStore({ commit, dispatch, rootState }, payload) {
 
         //added in V2.1
         if (
@@ -67,8 +71,6 @@ export const actions: ActionTree<GuiState, RootState> = {
 
         // init remote printers, when remoteMode is off
         if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
-
-        dispatch('printer/init', null, { root: true })
     },
 
     saveSetting({ commit }, payload) {
