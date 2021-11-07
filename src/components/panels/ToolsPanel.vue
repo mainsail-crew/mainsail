@@ -245,7 +245,6 @@
 import Component from 'vue-class-component'
 import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiStatePreset} from '@/store/gui/types'
 import { convertName } from '@/plugins/helpers'
 import ToolInput from '@/components/inputs/ToolInput.vue'
 import TempChart from '@/components/charts/TempChart.vue'
@@ -253,6 +252,7 @@ import {datasetTypes} from '@/store/variables'
 import {PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan} from '@/store/printer/types'
 import {Debounce} from 'vue-debounce-decorator'
 import Panel from '@/components/ui/Panel.vue'
+import {GuiPresetsStatePreset} from '@/store/gui/presets/types'
 
 @Component({
     components: {Panel, TempChart, ToolInput}
@@ -273,12 +273,12 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         color: '',
     }
 
-    get presets(): GuiStatePreset[] {
-        return this.$store.getters['gui/getPreheatPresets'] ?? []
+    get presets(): GuiPresetsStatePreset[] {
+        return this.$store.getters['gui/presets/getPresets'] ?? []
     }
 
     get cooldownGcode(): string {
-        return this.$store.state.gui.cooldownGcode ?? 'TURN_OFF_HEATERS'
+        return this.$store.getters['gui/presets/getCooldownGcode']
     }
 
     get boolTempchart(): boolean {
@@ -309,7 +309,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         return this.$store.getters['printer/getTemperatureSensors']
     }
 
-    preheat(preset: GuiStatePreset): void {
+    preheat(preset: GuiPresetsStatePreset): void {
         for (const [name, attributes] of Object.entries(preset.values)) {
             if (attributes.bool) {
                 let gcode = 'SET_HEATER_TEMPERATURE HEATER='+name+' TARGET='+attributes.value

@@ -3,13 +3,14 @@
     <div>
         <v-card flat v-if="!form.bool && !cooldownForm.bool">
             <v-card-text>
+                <h3 class="text-h5 mb-3">{{ $t('Settings.PresetsTab.PreheatPresets') }}</h3>
                 <div v-for="(preset, key) in presets" v-bind:key="preset.index">
                     <v-divider class="my-2" v-if="key"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
                             <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
                         </v-btn>
-                        <v-btn small outlined @click="deletePreset(preset.index)" class="ml-3 minwidth-0 px-2" color="error">
+                        <v-btn small outlined @click="deletePreset(preset.id)" class="ml-3 minwidth-0 px-2" color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -27,7 +28,7 @@
         </v-card>
         <v-card flat v-else-if="form.bool">
             <v-form v-model="form.valid" @submit.prevent="savePreset" >
-                <v-card-title>{{ form.index === null ? $t('Settings.PresetsTab.CreateHeadline') : $t('Settings.PresetsTab.EditHeadline') }}</v-card-title>
+                <v-card-title>{{ form.id === null ? $t('Settings.PresetsTab.CreateHeadline') : $t('Settings.PresetsTab.EditHeadline') }}</v-card-title>
                 <v-card-text>
                     <v-row class="mt-3" v-if="form.boolInvalidMin">
                         <v-col class="py-0">
@@ -93,7 +94,7 @@
                         {{ $t('Settings.Cancel') }}
                     </v-btn>
                     <v-btn color="primary" text type="submit" >
-                        {{ form.index === null ? $t("Settings.PresetsTab.StoreButton") : $t("Settings.PresetsTab.UpdateButton") }}
+                        {{ form.id === null ? $t("Settings.PresetsTab.StoreButton") : $t("Settings.PresetsTab.UpdateButton") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -129,14 +130,14 @@ import {convertName} from '@/plugins/helpers'
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiStatePreset} from '@/store/gui/types'
+import {GuiPresetsStatePreset} from '@/store/gui/presets/types'
 
 interface presetForm {
     bool: boolean
     valid: boolean
     name: string
     gcode: string
-    index: number | null
+    id: string | null
     boolInvalidMin: boolean
     values: {
         [key: string]: {
@@ -158,7 +159,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
         valid: false,
         name: '',
         gcode: '',
-        index: null,
+        id: null,
         boolInvalidMin: false,
         values: {}
     }
@@ -175,7 +176,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     get presets() {
-        return this.$store.getters['gui/getPreheatPresets'] ?? []
+        return this.$store.getters['gui/presets/getPresets'] ?? []
     }
 
     get heaters() {
@@ -187,14 +188,14 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
     }
 
     get cooldownGcode() {
-        return this.$store.state.gui.cooldownGcode ?? ''
+        return this.$store.getters['gui/presets/getCooldownGcode']
     }
 
     existsPresetName(name: string) {
-        return (this.presets.findIndex((preset: any) => preset.name === name && preset.index != this.form.index) >= 0)
+        return (this.presets.findIndex((preset: GuiPresetsStatePreset) => preset.name === name && preset.id !== this.form.id) !== -1)
     }
 
-    getSubTitle(preset: GuiStatePreset) {
+    getSubTitle(preset: GuiPresetsStatePreset) {
         let output: string[] = []
 
         Object.keys(preset.values).forEach((key: string) => {
@@ -219,7 +220,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
     clearForm() {
         this.form.bool = false
-        this.form.index = null
+        this.form.id = null
         this.form.name = ''
         this.form.gcode = ''
         this.form.boolInvalidMin = false
@@ -242,9 +243,9 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
         }
     }
 
-    editPreset(preset: any) {
+    editPreset(preset: GuiPresetsStatePreset) {
         this.form.name = preset.name
-        this.form.index = preset.index
+        this.form.id = preset.id ?? null
         this.form.gcode = preset.gcode
         this.form.values = {}
 
@@ -282,9 +283,15 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
         if (setValues === 0) this.form.boolInvalidMin = true
         else if (this.form.valid) {
-            if (this.form.index !== null) {
-                this.$store.dispatch('gui/updatePreset',  this.form )
-            } else this.$store.dispatch('gui/addPreset',  this.form )
+            const preset: GuiPresetsStatePreset = {
+                name: this.form.name,
+                gcode: this.form.gcode,
+                values: this.form.values
+            }
+
+            if (this.form.id !== null) {
+                this.$store.dispatch('gui/presets/update',  { id: this.form.id, values: preset} )
+            } else this.$store.dispatch('gui/presets/store',  { values: preset} )
 
             this.clearForm()
         }
@@ -297,13 +304,13 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
     saveCooldown() {
         if (this.cooldownForm.valid) {
-            this.$store.dispatch('gui/saveSetting', { name: 'cooldownGcode', value: this.cooldownForm.gcode })
+            this.$store.dispatch('gui/presets/updateCooldownGcode', this.cooldownForm.gcode)
             this.cooldownForm.bool = false
         }
     }
 
-    deletePreset(index: number) {
-        this.$store.dispatch('gui/deletePreset',  { index: index } )
+    deletePreset(id: string) {
+        this.$store.dispatch('gui/presets/delete',  id)
     }
 }
 </script>

@@ -6,21 +6,7 @@ export interface GuiState {
         }
         boolNavi: boolean
     }
-    presets: GuiStatePreset[]
     [key: string]: any
-}
-
-export interface GuiStatePreset {
-    index?: number | null
-    name: string
-    gcode: string
-    values: {
-        [key: string]: {
-            bool: boolean
-            type: string
-            value: number
-        }
-    }
 }
 
 export interface GuiStateConsoleFilter {
