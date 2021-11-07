@@ -7,6 +7,7 @@ import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
 import { webcam } from '@/store/gui/webcam'
+import { presets } from '@/store/gui/presets'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -170,8 +171,6 @@ export const getDefaultState = (): GuiState => {
         },
         //moonraker DB api dont accept camel case key names
         remotePrinters: [],
-        presets: [],
-        cooldownGcode: 'TURN_OFF_HEATERS',
         gcodeViewer: {
             extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
             gridColor : '#0000FF',
@@ -207,6 +206,7 @@ export const gui: Module<GuiState, any> = {
     actions,
     mutations,
     modules: {
-        webcam
+        webcam,
+        presets
     }
 }
