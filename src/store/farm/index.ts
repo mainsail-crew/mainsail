@@ -26,10 +26,16 @@ export const farm: Module<FarmState, RootState> = {
         },
         getPrinterName: (state, getters) => (namespace: string) => {
             return getters[namespace+'/getPrinterName']
+        },
+        getPrinterSocketState: (state, getters) => (namespace: string) => {
+            return getters[namespace+'/getPrinterSocketState'] ?? {
+                isConnecting: false,
+                isConnected: false
+            }
         }
     },
     actions: {
-        readStoredPrinters({ rootState, dispatch }) {
+        /*readStoredPrinters({ rootState, dispatch }) {
             if (rootState.socket?.remoteMode) {
                 if (localStorage.getItem('printers')) {
                     try {
@@ -58,8 +64,8 @@ export const farm: Module<FarmState, RootState> = {
                     })
                 })
             }
-        },
-        savePrinters({ rootState, state, dispatch }) {
+        },*/
+        /*savePrinters({ rootState, state, dispatch }) {
             const printers: any = []
 
             if (rootState.socket?.remoteMode) {
@@ -84,47 +90,28 @@ export const farm: Module<FarmState, RootState> = {
 
                 dispatch('gui/saveSetting', { name: 'remote_printers', value: printers }, { root: true })
             }
-        },
-        addPrinter({ dispatch }, payload) {
-            dispatch('registerPrinter', payload)
-            dispatch('savePrinters', payload)
-        },
+        },*/
         registerPrinter({ state, commit, dispatch }, payload) {
-            if ('hostname' in payload && payload.hostname !== '') {
-                const printerExist = Object.entries(state).findIndex((printer) =>
-                    printer.length > 0 &&
-					'socket' in printer[1] &&
-					'hostname' in printer[1].socket && printer[1].socket.hostname === payload.hostname &&
-					'port' in printer[1].socket && printer[1].socket.port === payload.port
-                )
+            if (!this.hasModule(['farm', payload.id])) {
+                this.registerModule(['farm', payload.id], printer)
+                commit('farm/'+payload.id+'/setSocketData', {...payload, _namespace: payload.id }, { root: true })
 
-                const nextPrinterName = 'printer'+Object.entries(state).length
-                if (printerExist === -1 && !this.hasModule(['farm', nextPrinterName])) {
-                    this.registerModule(['farm', nextPrinterName], printer)
-                    commit('farm/'+nextPrinterName+'/setSocketData', {...payload, _namespace: nextPrinterName }, { root: true })
-
-                    if ('settings' in payload) commit('farm/'+nextPrinterName+'/setSettings', payload.settings, { root: true })
-                    dispatch('farm/'+nextPrinterName+'/connect', {}, { root: true })
-                }
+                if ('settings' in payload) commit('farm/'+payload.id+'/setSettings', payload.settings, { root: true })
+                dispatch('farm/'+payload.id+'/connect', {}, { root: true })
             }
         },
         updatePrinter({ dispatch, commit }, payload) {
-            commit(payload.namespace+'/setSocketData', {
-                hostname: payload.hostname,
-                port: payload.port,
+            commit(payload.id+'/setSocketData', {
+                hostname: payload.values.hostname,
+                port: payload.values.port,
                 isConnecting: true,
             })
-            dispatch(payload.namespace+'/reconnect')
-            dispatch('savePrinters')
+            dispatch(payload.id+'/reconnect')
         },
-        removePrinter({ dispatch }, payload) {
-            dispatch('unregisterPrinter', payload)
-            dispatch('savePrinters', payload)
-        },
-        unregisterPrinter({ state }, payload) {
-            if (payload.name in state) {
-				state[payload.name].socket.instance?.close()
-				this.unregisterModule(['farm', payload.name])
+        unregisterPrinter({ state }, id) {
+            if (id in state) {
+				state[id].socket?.instance?.close()
+				this.unregisterModule(['farm', id])
             }
         }
     },

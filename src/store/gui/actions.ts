@@ -81,10 +81,27 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'console.customFilters' })
         }
 
-        commit('setData', payload.value)
+        //added in V2.1.0
+        if (payload.value.remote_printers) {
+            if (!rootState.socket?.remoteMode) {
+                window.console.debug('convert old remotePrinters')
 
-        // init remote printers, when remoteMode is off
-        if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
+                payload.value.remote_printers.forEach((printer: any) => {
+                    const values = {
+                        hostname: printer.hostname ?? '',
+                        port: printer.port ?? 7125,
+                        settings: printer.settings ?? {},
+                    }
+                    dispatch('remoteprinters/store', { values })
+                })
+
+                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remote_printers' })
+            }
+
+            delete payload.value.remote_printers
+        }
+
+        commit('setData', payload.value)
     },
 
     saveSetting({ commit }, payload) {
@@ -127,54 +144,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('updateSettings', {
             keyName: 'webcamSettings.currentCam',
             newVal: state.webcamSettings.currentCam
-        })
-    },
-
-    addPreset({ commit, dispatch, state }, payload) {
-        commit('addPreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    updatePreset({ commit, dispatch, state }, payload) {
-        commit('updatePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    deletePreset({ commit, dispatch, state }, payload) {
-        commit('deletePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    addConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('addConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    updateConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('updateConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    deleteConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('deleteConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
         })
     },
 

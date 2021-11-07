@@ -38,6 +38,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
     },
 
+    getPrinterSocketState: (state) => {
+        return state.socket
+    },
+
     getLogoColor: (state) => {
         return state.data.gui?.theme?.logo ?? defaultLogoColor
     },
