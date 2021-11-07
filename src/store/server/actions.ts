@@ -29,6 +29,9 @@ export const actions: ActionTree<ServerState, RootState> = {
             Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'init', value: true })
             dispatch('printer/init', null, { root: true })
         }
+
+        if (payload.namespaces?.includes('webcams')) dispatch('gui/webcam/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
     },
 
     initServerInfo: function ({ dispatch, commit }, payload) {

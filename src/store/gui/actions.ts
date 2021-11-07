@@ -36,12 +36,28 @@ export const actions: ActionTree<GuiState, RootState> = {
             Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
         }
 
+        if (payload.value.presets) {
+            window.console.debug('convert old presets')
+
+            if (payload.value.presets && payload.value.presets.length) {
+                payload.value.presets.forEach((oldPreset: any) => {
+                    dispatch('presets/store', { values: oldPreset })
+                })
+            }
+
+            if (payload.value.cooldownGcode) {
+                commit('presets/updateCooldownGcode', payload.value.cooldownGcode)
+                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'cooldownGcode' })
+            }
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets' })
+        }
+
         commit('setData', payload.value)
 
         // init remote printers, when remoteMode is off
         if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
 
-        dispatch('gui/webcam/init', null, { root: true })
         dispatch('printer/init', null, { root: true })
     },
 
