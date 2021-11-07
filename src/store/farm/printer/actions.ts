@@ -179,9 +179,12 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
     },
 
-    setSettings({ commit, dispatch }, payload) {
+    setSettings({ commit, dispatch, state }, payload) {
         commit('setSettings', payload)
-        dispatch('farm/savePrinters', {}, { root: true })
+        dispatch('gui/remoteprinters/updateSettings', {
+            id: state._namespace,
+            values: state.settings
+        }, { root: true })
     },
 
     getMetadataCurrentFile({ commit }, payload) {
