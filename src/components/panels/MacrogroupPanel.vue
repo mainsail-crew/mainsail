@@ -31,6 +31,7 @@ import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import {GuiStateMacrogroupMacros} from '@/store/gui/types'
 import MacroButton from '@/components/inputs/MacroButton.vue'
+import {PrinterStateMacro} from '@/store/printer/types'
 @Component({
     components: {MacroButton, Panel}
 })
@@ -42,9 +43,16 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
         return this.$store.getters['gui/getMacroGroup'](this.panelId)
     }
 
+    get allMacros() {
+        return this.$store.getters['printer/getMacros'] ?? []
+    }
+
     get macros() {
         let macros = this.macrogroup?.macros ?? []
+
         macros = macros.filter((macro: GuiStateMacrogroupMacros) => {
+            if (!this.allMacros.find((existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase())) return false
+
             return (
                 (macro.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||
                 (macro.showInPause && this.printer_state === 'paused') ||
