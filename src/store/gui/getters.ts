@@ -1,36 +1,9 @@
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
-import {GuiState, GuiStateConsoleFilter, GuiStateMacrogroup} from '@/store/gui/types'
+import {GuiState, GuiStateMacrogroup} from '@/store/gui/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
-
-    getConsoleFilters:(state) => {
-        const output = []
-
-        for (const [key, filter] of Object.entries(state.console.customFilters)) {
-            output.push(Object.assign({}, filter, { index: key }))
-        }
-
-        return caseInsensitiveSort(output, 'name')
-    },
-
-    getConsoleFilterRules:(state) => {
-        const output = []
-
-        if (state.console.hideWaitTemperatures)
-            output.push('^(?:ok\\s+)?(B|C|T\\d*):')
-
-        if (Array.isArray(state.console.customFilters) && state.console.customFilters.length) {
-            state.console.customFilters.filter((filter: GuiStateConsoleFilter) => filter.bool === true).forEach((filter: GuiStateConsoleFilter) => {
-                filter.regex.split('\n').forEach((rule: string) => {
-                    if (rule !== '') output.push(rule)
-                })
-            })
-        }
-
-        return output
-    },
 
     getDatasetValue: (state) => (payload: { name: string, type: string }) => {
         if (
@@ -38,9 +11,7 @@ export const getters: GetterTree<GuiState, any> = {
 			payload.type in state.tempchart.datasetSettings[payload.name]
         ) return state.tempchart.datasetSettings[payload.name][payload.type]
 
-        if (['temperature', 'target'].includes(payload.type)) return true
-
-        return false
+        return ['temperature', 'target'].includes(payload.type)
     },
 
     getDatasetAdditionalSensorValue: (state) => (payload: { name: string, sensor: string }) => {

@@ -6,8 +6,9 @@ import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
-import { webcams } from '@/store/gui/webcams'
+import { consolefilters } from '@/store/gui/consolefilters'
 import { presets } from '@/store/gui/presets'
+import { webcams } from '@/store/gui/webcams'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -119,8 +120,7 @@ export const getDefaultState = (): GuiState => {
             hideWaitTemperatures: true,
             direction: 'table',
             entryStyle: 'default',
-            height: 300,
-            customFilters: [],
+            height: 300
         },
         gcodefiles: {
             countPerPage: 10,
@@ -206,7 +206,8 @@ export const gui: Module<GuiState, any> = {
     actions,
     mutations,
     modules: {
+        consolefilters,
+        presets,
         webcams,
-        presets
     }
 }

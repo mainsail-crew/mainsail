@@ -9,13 +9,6 @@ export interface GuiState {
     [key: string]: any
 }
 
-export interface GuiStateConsoleFilter {
-    bool: boolean
-    index?: string
-    name: string
-    regex: string
-}
-
 export interface GuiStateMacrogroup {
     id: string | null
     name: string
