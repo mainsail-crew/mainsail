@@ -524,7 +524,7 @@
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
 		},
-		"WebcamTab": {
+		"WebcamsTab": {
 			"Webcams": "Webcams",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
