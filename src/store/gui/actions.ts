@@ -98,9 +98,9 @@ export const actions: ActionTree<GuiState, RootState> = {
         let newState = payload.newVal
         if (
             'value' in payload &&
-			keyName in payload.value &&
-			typeof payload.value[keyName] !== 'string' &&
-			!Array.isArray(payload.value[keyName])
+            keyName in payload.value &&
+            typeof payload.value[keyName] !== 'string' &&
+            !Array.isArray(payload.value[keyName])
         ) newState = Object.assign(payload.value[keyName], {...newState})
 
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
@@ -256,7 +256,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     resetLayout({ dispatch }, name) {
         const defaultState = getDefaultState()
         // eslint-disable-next-line
-		const newVal: any = defaultState.dashboard[name] ?? []
+        const newVal: any = defaultState.dashboard[name] ?? []
 
         dispatch('saveSetting', {
             name: 'dashboard.'+name,
