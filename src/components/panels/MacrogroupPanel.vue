@@ -54,7 +54,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
             if (!this.allMacros.find((existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase())) return false
 
             return (
-                (macro.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||
+                (macro.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
                 (macro.showInPause && this.printer_state === 'paused') ||
                 (macro.showInPrinting && this.printer_state === 'printing')
             )
@@ -65,7 +65,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
 
     get macrogroupStatus() {
         return (
-            (this.macrogroup.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||
+            (this.macrogroup.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
             (this.macrogroup.showInPause && this.printer_state === 'paused') ||
             (this.macrogroup.showInPrinting && this.printer_state === 'printing')
         )
