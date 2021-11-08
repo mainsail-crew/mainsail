@@ -29,9 +29,9 @@
 import {Component, Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import {GuiStateMacrogroupMacros} from '@/store/gui/types'
 import MacroButton from '@/components/inputs/MacroButton.vue'
 import {PrinterStateMacro} from '@/store/printer/types'
+import {GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
 @Component({
     components: {MacroButton, Panel}
 })
@@ -40,7 +40,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     @Prop({ required: true }) panelId!: string
 
     get macrogroup() {
-        return this.$store.getters['gui/getMacroGroup'](this.panelId)
+        return this.$store.getters['gui/macrogroups/getMacrogroup'](this.panelId)
     }
 
     get allMacros() {
@@ -50,28 +50,28 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     get macros() {
         let macros = this.macrogroup?.macros ?? []
 
-        macros = macros.filter((macro: GuiStateMacrogroupMacros) => {
+        macros = macros.filter((macro: GuiMacrogroupsStateMacrogroupMacro) => {
             if (!this.allMacros.find((existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase())) return false
 
             return (
-                (macro.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||
+                (macro.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
                 (macro.showInPause && this.printer_state === 'paused') ||
                 (macro.showInPrinting && this.printer_state === 'printing')
             )
         })
 
-        return macros.sort((a: GuiStateMacrogroupMacros, b: GuiStateMacrogroupMacros) => a.pos - b.pos)
+        return macros.sort((a: GuiMacrogroupsStateMacrogroupMacro, b: GuiMacrogroupsStateMacrogroupMacro) => a.pos - b.pos)
     }
 
     get macrogroupStatus() {
         return (
-            (this.macrogroup.showInStandby && ['standby', 'complete', 'error'].includes(this.printer_state)) ||
+            (this.macrogroup.showInStandby && ['standby', 'cancelled', 'complete', 'error'].includes(this.printer_state)) ||
             (this.macrogroup.showInPause && this.printer_state === 'paused') ||
             (this.macrogroup.showInPrinting && this.printer_state === 'printing')
         )
     }
 
-    getColor(macro: GuiStateMacrogroupMacros) {
+    getColor(macro: GuiMacrogroupsStateMacrogroupMacro) {
         if (macro.color === 'group') {
             if (this.macrogroup.color === 'custom') return this.macrogroup.colorCustom
             else return this.macrogroup.color

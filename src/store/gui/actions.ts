@@ -101,6 +101,19 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.remote_printers
         }
 
+        //added in V2.1.0
+        if (payload.value.dashboard?.macrogroups) {
+            window.console.debug('convert old macrogroups')
+
+            payload.value.dashboard?.macrogroups.forEach((macrogroup: any) => {
+                dispatch('macrogroups/store', { values: macrogroup })
+            })
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'dashboard.macrogroups' })
+
+            delete payload.value.dashboard.macrogroups
+        }
+
         commit('setData', payload.value)
     },
 
@@ -232,85 +245,4 @@ export const actions: ActionTree<GuiState, RootState> = {
             value: newVal
         })
     },
-
-    async storeMarcogroup({ commit, dispatch, state }, payload) {
-        payload.id = uuid()
-
-        await commit('storeMacrogroup', payload)
-        dispatch('updateSettings', {
-            keyName: 'dashboard.macrogroups',
-            newVal: state.dashboard.macrogroups
-        })
-
-        return payload.id
-    },
-
-    updateMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('updateMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    destroyMacrogroup({ commit, dispatch, state }, payload) {
-        commit('destroyMacrogroup', payload)
-        dispatch('updateSettings', {
-            keyName: 'dashboard.macrogroups',
-            newVal: state.dashboard.macrogroups
-        })
-
-        const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
-            'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
-
-        layouts.forEach((layoutname: string) => {
-            const layoutArray = [...state.dashboard[layoutname]]
-
-            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+payload)
-            if (index !== -1) {
-                commit('deleteFromDashboardLayout', { layoutname, index })
-                dispatch('updateSettings', {
-                    keyName: 'dashboard.'+layoutname,
-                    newVal: state.dashboard[layoutname]
-                })
-            }
-        })
-
-    },
-
-    addMacroToMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('addMacroToMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    updateMacroFromMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('updateMacroFromMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    removeMacroFromMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('removeMacroFromMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    }
 }
