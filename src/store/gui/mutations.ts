@@ -96,4 +96,10 @@ export const mutations: MutationTree<GuiState> = {
             Vue.set(state.dashboard, 'nonExpandPanels', nonExpandPanels)
         }
     },
+
+    deleteFromDashboardLayout(state, payload) {
+        const layoutArray = [...state.dashboard[payload.layoutname]]
+        layoutArray.splice(payload.index, 1)
+        Vue.set(state.dashboard, payload.layoutname, layoutArray)
+    },
 }

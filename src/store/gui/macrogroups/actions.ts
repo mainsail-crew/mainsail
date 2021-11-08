@@ -52,8 +52,24 @@ export const actions: ActionTree<GuiMacrogroupsState, RootState> = {
         dispatch('upload', payload.id)
     },
 
-    delete({ commit }, id) {
+    delete({ commit, dispatch, rootState }, id) {
         commit('delete', id)
         Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail_macrogroups', key: id })
+
+        const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
+            'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
+
+        layouts.forEach((layoutname: string) => {
+            const layoutArray = [...rootState.gui?.dashboard[layoutname]]
+
+            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+id)
+            if (index !== -1) {
+                commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
+                dispatch('gui/updateSettings', {
+                    keyName: 'dashboard.'+layoutname,
+                    newVal: rootState.gui?.dashboard[layoutname]
+                }, { root: true })
+            }
+        })
     },
 }
