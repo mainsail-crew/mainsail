@@ -140,6 +140,8 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {caseInsensitiveSort} from '@/plugins/helpers'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 @Component({
     components: {SettingsRow}
 })
@@ -153,17 +155,8 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
             text: 'hyperlapse',
             value: 'hyperlapse'
         }
-    ] 
-    private cameraOptions = [
-        {
-            text: 'Default',
-            value: '0'
-        },
-        {
-            text: 'cam2',
-            value: '1'
-        }
     ]
+
     private parkposOptions = [
         {
             text: 'center',
@@ -190,6 +183,20 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
             value: 'custom'
         }
     ]
+
+    get cameraOptions() {
+        const webcams = this.$store.getters['gui/webcams/getWebcams']
+        const output: any = []
+
+        webcams.filter((webcam: GuiWebcamStateWebcam) => webcam.urlSnapshot !== '').forEach((webcam: GuiWebcamStateWebcam) => {
+            output.push({
+                text: webcam.name,
+                value: webcam.id
+            })
+        })
+
+        return caseInsensitiveSort(output, 'text')
+    }
 
     get blockedsettings() {
         return this.$store.state.server.timelapse.settings.blockedsettings ?? []
