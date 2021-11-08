@@ -11,30 +11,36 @@
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="mr-5 button-min-width-auto px-3 d-none d-sm-flex"
+                class="button-min-width-auto px-3 d-none d-sm-flex"
                 v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
                 <v-icon class="d-md-none">mdi-content-save</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.SAVE_CONFIG") }}</span>
             </v-btn>
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="mr-5 button-min-width-auto px-3 d-none d-sm-flex"
+                class="button-min-width-auto px-3 d-none d-sm-flex file-upload-and-start"
                 v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state)"
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.UploadPrint") }}</span>
             </v-btn>
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
                 class="button-min-width-auto px-3"
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-flex">{{ $t("App.TopBar.EmergencyStop") }}</span>
+                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.EmergencyStop") }}</span>
             </v-btn>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>

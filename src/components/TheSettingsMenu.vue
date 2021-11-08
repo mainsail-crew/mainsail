@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn color="grey darken-3" class="ml-5 minwidth-0 px-2" @click="showSettings = true">
+        <v-btn icon tile large @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent hide-overlay :fullscreen="isMobile">
