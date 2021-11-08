@@ -6,8 +6,10 @@
 
 <template>
     <div>
-        <v-app-bar app elevate-on-scroll>
+        <v-app-bar app elevate-on-scroll height="48px">
             <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
+            <v-app-bar-title v-if="!isBigDrawer" class="text-no-wrap">{{ printerName }}</v-app-bar-title>
+            <!-- printer Farm Button goes here -->
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
@@ -158,6 +160,17 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get saveConfigPending() {
         return this.$store.state.printer.configfile?.save_config_pending ?? false
+    }
+
+    get printerName():string {
+        if (this.$store.state.gui.general.printername.length)
+            return this.$store.state.gui.general.printername
+
+        return this.$store.state.printer.hostname
+    }
+
+    get isBigDrawer():boolean {
+        return false
     }
 
     btnEmergencyStop() {
