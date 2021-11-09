@@ -24,7 +24,7 @@
 
 <template>
     <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="200px" app> 
-        <v-list-item class="pa-0 justify-center no-text-decoration no-background small-list-item" style="height:48px;" router to="/" :ripple="false">
+        <v-list-item class="pa-0 justify-center no-text-decoration no-background small-list-item" router to="/" :ripple="false">
             <v-list-item-content tile>
                 <template v-if="sidebarLogo">
                     <img :src="sidebarLogo" style="height: 32px;" class="mr-3 nav-logo" alt="Logo" />
@@ -37,6 +37,21 @@
         <v-divider></v-divider>
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
+                <template v-if="countPrinters">
+                    <v-list-item 
+                        router to="/allPrinters"
+                        class="small-list-item mt-1"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-view-dashboard-outline</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title tile>{{ $t("App.Printers")}}</v-list-item-title>
+                        </v-list-item-content>
+
+                    </v-list-item>
+                    <v-divider class="my-1"></v-divider>
+                </template>
                 <div v-for="(category, index) in naviPoints" :key="index"> 
                     <v-list-item 
                         router :to="category.path"
@@ -74,7 +89,10 @@
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">mdi-help-circle-outline</v-icon>
                             </template>
-                            <span class="dark"><!-- Logos  hier mit rein, damit man erkennt welche version für was steht :) -->v{{ mainsailVersion }}<br />{{ klipperVersion }}</span>
+                            <span class="dark d-inline-block">
+                                <img height="12" src="/img/logo.svg"> v{{ mainsailVersion }}<br />
+                                <img height="12" src="/img/klipper.svg" style="transform: rotate(90deg);"> {{ klipperVersion }}
+                            </span>
                         </v-tooltip>
                     </v-list-item-icon>
 
@@ -178,6 +196,10 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
 
     get isUpdateAvailable(): boolean {
         return this.$store.getters['server/updateManager/isUpdateAvailable']
+    }
+
+    get countPrinters() {
+        return this.$store.getters['farm/countPrinters']
     }
 
     showInNavi(route: AppRoute): boolean {

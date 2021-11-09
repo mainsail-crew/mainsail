@@ -8,8 +8,8 @@
     <div>
         <v-app-bar app elevate-on-scroll height="48px">
             <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
-            <v-app-bar-title v-if="!isBigDrawer" class="text-no-wrap">{{ printerName }}</v-app-bar-title>
-            <!-- printer Farm Button goes here -->
+            <v-toolbar-title class="text-no-wrap mr-2">{{ printerName }}</v-toolbar-title>
+            <printer-selector v-if="countPrinters"></printer-selector>
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
@@ -98,6 +98,7 @@ import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
 import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
+import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -117,7 +118,8 @@ type uploadSnackbar = {
         Panel,
         TheThrottledStates,
         TheSettingsMenu,
-        TheTopCornerMenu
+        TheTopCornerMenu,
+        PrinterSelector
     }
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
@@ -169,8 +171,12 @@ export default class TheTopbar extends Mixins(BaseMixin) {
         return this.$store.state.printer.hostname
     }
 
-    get isBigDrawer():boolean {
-        return false
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    }
+
+    get countPrinters() {
+        return this.$store.getters['farm/countPrinters']
     }
 
     btnEmergencyStop() {
