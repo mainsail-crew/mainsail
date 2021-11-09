@@ -18,5 +18,22 @@ export const mutations: MutationTree<ServerTimelapseState> = {
     setLastFrame(state, payload) {
         Vue.set(state.lastFrame, 'count', payload.count)
         Vue.set(state.lastFrame, 'file', payload.file)
+    },
+
+    setRenderStatus(state, payload) {
+        window.console.log(payload)
+        Vue.set(state, 'rendering', {
+            status: payload.status,
+            progress: payload.progress ?? 0,
+            filename: payload.filename ?? ''
+        })
+    },
+
+    resetSnackbar(state) {
+        Vue.set(state, 'rendering', {
+            status: '',
+            progress: 0,
+            filename: ''
+        })
     }
 }

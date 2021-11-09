@@ -35,7 +35,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             variable_fps_min: 5,
             variable_fps_max: 60,
             rotation: 0,
-            dublicatelastframe: 0,
+            duplicatelastframe: 0,
             previewimage: true,
             time_format_code: '%Y%m%d_%H%M',
             blockedsettings: []
@@ -43,6 +43,11 @@ export const getDefaultState = (): ServerTimelapseState => {
         lastFrame: {
             count: 0,
             file: ''
+        },
+        rendering: {
+            status: '',
+            progress: 0,
+            filename: ''
         }
     }
 }

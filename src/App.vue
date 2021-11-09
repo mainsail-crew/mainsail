@@ -42,6 +42,7 @@
         <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
+        <the-timelapse-rendering-snackbar>-</the-timelapse-rendering-snackbar>
     </v-app>
 </template>
 
@@ -55,9 +56,11 @@ import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
+import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
 
 @Component({
     components: {
+        TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
         TheConnectingDialog,

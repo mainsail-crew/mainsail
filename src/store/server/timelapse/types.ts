@@ -3,6 +3,11 @@ export interface ServerTimelapseState {
     lastFrame: {
         count: number
         file: string
+    },
+    rendering: {
+        status: string
+        progress: number
+        filename: string
     }
 }
 
@@ -35,7 +40,7 @@ export interface ServerTimelapseSettingsState {
     variable_fps_min: number
     variable_fps_max: number
     rotation: number
-    dublicatelastframe: number
+    duplicatelastframe: number
     previewimage: boolean
     time_format_code: string
     blockedsettings: string[]

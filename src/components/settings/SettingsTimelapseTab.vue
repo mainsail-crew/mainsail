@@ -110,8 +110,8 @@
                     <v-text-field v-model="rotation" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('rotation')"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.Dublicatelastframe')" :sub-title="$t('Settings.TimelapseTab.DublicatelastframeDescription')">
-                    <v-text-field v-model="dublicatelastframe" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('dublicatelastframe')"></v-text-field>
+                <settings-row :title="$t('Settings.TimelapseTab.duplicatelastframe')" :sub-title="$t('Settings.TimelapseTab.duplicatelastframeDescription')">
+                    <v-text-field v-model="duplicatelastframe" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('duplicatelastframe')"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.ConstantRateFactor')" :sub-title="$t('Settings.TimelapseTab.ConstantRateFactorDescription')">
@@ -410,12 +410,12 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
         this.$store.dispatch('server/timelapse/saveSetting', { rotation: newVal })
     }
 
-    get dublicatelastframe() {
-        return this.$store.state.server.timelapse.settings.dublicatelastframe
+    get duplicatelastframe() {
+        return this.$store.state.server.timelapse.settings.duplicatelastframe
     }
 
-    set dublicatelastframe(newVal) {
-        this.$store.dispatch('server/timelapse/saveSetting', { dublicatelastframe: newVal })
+    set duplicatelastframe(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { duplicatelastframe: newVal })
     }
 
     get camera() {

@@ -36,6 +36,10 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
             })
             break
 
+        case 'render':
+            commit('setRenderStatus', payload)
+            break
+
         default:
             window.console.log('unknown timelapse event', payload)
         }
@@ -43,5 +47,9 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
 
     saveSetting({ commit }, payload) {
         Vue.$socket.emit('machine.timelapse.post_settings', payload, { action: 'server/timelapse/initSettings' })
+    },
+
+    resetSnackbar({ commit }) {
+        commit('resetSnackbar')
     }
 }
