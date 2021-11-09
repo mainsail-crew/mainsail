@@ -17,7 +17,7 @@
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="button-min-width-auto px-3 d-none d-sm-flex"
+                class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
                 v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
@@ -28,8 +28,8 @@
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="button-min-width-auto px-3 d-none d-sm-flex file-upload-and-start"
-                v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state)"
+                class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
+                v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state) && !boolHideUploadAndPrintButton"
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.UploadPrint") }}</span>
@@ -38,8 +38,8 @@
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
-                class="button-min-width-auto px-3"
-                v-if="klippyIsConnected"
+                class="button-min-width-auto px-3 emergency-button"
+                v-if="klippyIsConnected && !boolHideEmergencyButton"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
                 <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.EmergencyStop") }}</span>
@@ -177,6 +177,14 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get countPrinters() {
         return this.$store.getters['farm/countPrinters']
+    }
+
+    get boolHideUploadAndPrintButton() {
+        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+    }
+
+    get boolHideEmergencyButton() {
+        return this.$store.state.gui.dashboard.boolHideEmergencyButton ?? false
     }
 
     btnEmergencyStop() {
