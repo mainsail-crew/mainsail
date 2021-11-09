@@ -57,10 +57,12 @@ export const actions: ActionTree<SocketState, RootState> = {
             break
 
         case 'notify_klippy_disconnected':
+            window.console.log('notify disconnected')
             commit('server/setKlippyDisconnected', null, { root: true })
             break
 
         case 'notify_klippy_shutdown':
+            window.console.log('notify shutdown')
             commit('server/setKlippyShutdown', null, { root: true })
             break
 

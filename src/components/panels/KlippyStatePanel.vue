@@ -58,7 +58,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
 
     @Watch('klipperState')
     klipperStateChanged(newVal: string) {
-        if (newVal === 'ready') {
+        if (['ready', 'disconnected'].includes(newVal)) {
             if (this.timer) {
                 clearInterval(this.timer)
                 this.timer = null
