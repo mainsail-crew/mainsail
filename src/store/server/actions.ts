@@ -22,11 +22,13 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
     },
 
-    checkDatabases({ dispatch }, payload) {
+    checkDatabases({ dispatch, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_consolefilters')) dispatch('gui/consolefilters/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_macrogroups')) dispatch('gui/macrogroups/init', null, { root: true })
+        if (!rootState.socket?.remoteMode && payload.namespaces?.includes('mainsail_remoteprinters')) dispatch('gui/remoteprinters/init', null, { root: true })
 
         dispatch('printer/init', null, { root: true })
     },

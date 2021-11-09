@@ -184,7 +184,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     existsPresetName(name: string) {
-        return (this.consoleFilters.findIndex((filter: any) => filter.name === name && filter.index !== this.form.index) >= 0)
+        return (this.consoleFilters.findIndex((filter: any) => filter.name === name && filter.id !== this.form.id) >= 0)
     }
 
     clearForm() {

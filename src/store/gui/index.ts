@@ -7,7 +7,9 @@ import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
 import { consolefilters } from '@/store/gui/consolefilters'
+import { macrogroups } from '@/store/gui/macrogroups'
 import { presets } from '@/store/gui/presets'
+import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
 
 export const getDefaultState = (): GuiState => {
@@ -33,7 +35,6 @@ export const getDefaultState = (): GuiState => {
             boolBigThumbnail: true,
             macroManagement: 'simple',
             hiddenMacros: [],
-            macrogroups: [],
             hiddenTempChart: [],
             lockedSliders: [],
             control: {
@@ -172,8 +173,6 @@ export const getDefaultState = (): GuiState => {
             escToClose: true,
             confirmUnsavedChanges: true
         },
-        //moonraker DB api dont accept camel case key names
-        remotePrinters: [],
         gcodeViewer: {
             extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
             gridColor : '#0000FF',
@@ -210,7 +209,9 @@ export const gui: Module<GuiState, any> = {
     mutations,
     modules: {
         consolefilters,
+        macrogroups,
         presets,
+        remoteprinters,
         webcams,
     }
 }

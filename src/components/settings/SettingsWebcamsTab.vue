@@ -37,7 +37,7 @@
                                                 </v-btn>
                                             </template>
                                             <v-list dense class="py-0">
-                                                <v-list-item v-for="icon of this.iconItems" v-bind:key="icon.value" link @click="setFormIcon(icon.value)">
+                                                <v-list-item v-for="icon of iconItems" v-bind:key="icon.value" link @click="setFormIcon(icon.value)">
                                                     <v-list-item-icon class="mr-0">
                                                         <v-icon small>{{ icon.value }}</v-icon>
                                                     </v-list-item-icon>
@@ -207,7 +207,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
             { value: 'mdi-printer-3d',          text: this.$t('Settings.WebcamsTab.IconPrinter') },
             { value: 'mdi-printer-3d-nozzle',   text: this.$t('Settings.WebcamsTab.IconNozzle') },
             { value: 'mdi-radiator-disabled',   text: this.$t('Settings.WebcamsTab.IconBed') },
-            { value: 'mdi-webcams',              text: this.$t('Settings.WebcamsTab.IconCam') },
+            { value: 'mdi-webcam',              text: this.$t('Settings.WebcamsTab.IconCam') },
             { value: 'mdi-album',               text: this.$t('Settings.WebcamsTab.IconFilament') },
             { value: 'mdi-door',                text: this.$t('Settings.WebcamsTab.IconDoor') },
             { value: 'mdi-raspberry-pi',        text: this.$t('Settings.WebcamsTab.IconMcu') },
@@ -277,26 +277,26 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
                 flipY: this.form.flipY,
             }
 
-            if (this.form.id !== null) this.$store.dispatch('gui/webcam/update', { id: this.form.id, values: values })
-            else this.$store.dispatch('gui/webcam/store', { values })
+            if (this.form.id !== null) this.$store.dispatch('gui/webcams/update', { id: this.form.id, values: values })
+            else this.$store.dispatch('gui/webcams/store', { values })
 
             this.clearDialog()
         }
     }
 
     deleteWebcam(id: string) {
-        this.$store.dispatch('gui/webcam/delete', id)
+        this.$store.dispatch('gui/webcams/delete', id)
     }
 
     clearDialog() {
         this.form.bool = false
         this.form.id = null
         this.form.name = ''
-        this.form.icon = 'mdi-webcams'
+        this.form.icon = 'mdi-webcam'
         this.form.service = 'mjpegstreamer-adaptive'
         this.form.targetFps = 15
-        this.form.urlStream = '/webcams/?action=stream'
-        this.form.urlSnapshot = '/webcams/?action=snapshot'
+        this.form.urlStream = '/webcam/?action=stream'
+        this.form.urlSnapshot = '/webcam/?action=snapshot'
         this.form.flipX = false
         this.form.flipY = false
     }
