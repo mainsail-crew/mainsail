@@ -58,6 +58,8 @@
                             hide-details
                             outlined
                             dense
+                            :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                            @click:prepend="getAutocomplete"
                             append-icon="mdi-send"
                             @click:append="doSend"
                         ></v-textarea>
@@ -129,6 +131,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     get events() {
         return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table', 250)
     }
+
 
     @Watch('events')
     eventsChanged() {
