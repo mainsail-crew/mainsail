@@ -35,7 +35,7 @@
             <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
             <v-toolbar-items v-show="hasButtonsSlot || collapsible">
-                <div v-show="expand || !hideButtonsOnCollapse">
+                <div class="d-flex align-center" v-if="expand || !hideButtonsOnCollapse">
                     <slot name="buttons"></slot>
                 </div>
                 <v-btn
