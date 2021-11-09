@@ -13,21 +13,23 @@
                 </v-btn>
             </template>
             <v-list dense>
-                <v-subheader class="" style="height: auto;">{{ $t("App.TopCornerMenu.KlipperControl") }}</v-subheader>
-                <v-list-item class="minheight30 pr-2" link @click="klipperRestart()">
-                    <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperRestart") }}</v-list-item-title>
-                    <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
-                        <v-icon class="mr-2" small>mdi-restart</v-icon>
-                    </v-list-item-action>
-                </v-list-item>
-                <v-list-item class="minheight30 pr-2" link @click="klipperFirmwareRestart()">
-                    <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperFirmwareRestart") }}</v-list-item-title>
-                    <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
-                        <v-icon class="mr-2" small>mdi-restart</v-icon>
-                    </v-list-item-action>
-                </v-list-item>
+                <template v-if="klipperState !== 'disconnected'">
+                    <v-subheader class="" style="height: auto;">{{ $t("App.TopCornerMenu.KlipperControl") }}</v-subheader>
+                    <v-list-item class="minheight30 pr-2" link @click="klipperRestart()">
+                        <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperRestart") }}</v-list-item-title>
+                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
+                            <v-icon class="mr-2" small>mdi-restart</v-icon>
+                        </v-list-item-action>
+                    </v-list-item>
+                    <v-list-item class="minheight30 pr-2" link @click="klipperFirmwareRestart()">
+                        <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperFirmwareRestart") }}</v-list-item-title>
+                        <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
+                            <v-icon class="mr-2" small>mdi-restart</v-icon>
+                        </v-list-item-action>
+                    </v-list-item>
+                </template>
                 <template v-if="services.length">
-                    <v-divider class="mt-0"></v-divider>
+                    <v-divider class="mt-0" v-if="klipperState !== 'disconnected'"></v-divider>
                     <v-subheader class="pt-2" style="height: auto;">{{ $t("App.TopCornerMenu.ServiceControl") }}</v-subheader>
                     <v-list-item class="minheight30 pr-2" v-for="service in services" v-bind:key="service">
                         <v-list-item-title>
