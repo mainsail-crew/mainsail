@@ -1,66 +1,93 @@
 <style>
-    .sidebar-wrapper .v-navigation-drawer__content {
-        padding-bottom: 3em;
+    .nav-logo {
+        height: 32px;
     }
-
-    #sidebarVersions {
-        position: absolute;
-        left: 0;
-        bottom: 0;
+    .small-list-item {
+        height: 48px;
     }
-
-    @media screen and (max-width: 1024px) {
-        .sidebar-wrapper .v-navigation-drawer__content {
-            padding-bottom: 0;
-        }
-
-        #sidebarVersions {
-            display: none;
-        }
+    .no-text-decoration {
+        text-decoration: none;
+        background-color: transparent;
+    }
+    .no-background:before {
+        background-color: rgba(255, 255, 255, 0) !important;
+    }
+</style>
+<style scoped>
+    .active-nav-item {
+        border-right: 4px solid var(--v-primary-base);
+    }
+    .nowrap {
+        white-space: nowrap !important;
     }
 </style>
 
 <template>
-    <v-navigation-drawer class="sidebar-wrapper" persistent v-model="naviDrawer" mobile-breakpoint="1280" enable-resize-watcher fixed app :src="sidebarBackground">
-        <div id="nav-header">
-            <template v-if="sidebarLogo">
-                <img :src="sidebarLogo" style="height: 40px;" class="mr-3" alt="Logo" />
-            </template>
-            <template v-else>
-                <mainsail-logo :color="logoColor" style="height: 40px;" class="mr-3"></mainsail-logo>
-            </template>
-            <v-toolbar-title>{{ printerName }}</v-toolbar-title>
-        </div>
-        <ul class="navi" :expand="$vuetify.breakpoint.mdAndUp">
-            <the-sidebar-printer-menu></the-sidebar-printer-menu>
-            <li v-for="(category, index) in naviPoints" :key="index" :prepend-icon="category.icon"
-                :class="[category.path !== '/' && currentPage.includes(category.path) ? 'active' : '', 'nav-item']"
-                :value="true"
-            >
-                <router-link
-                    style="position: relative;"
-                    slot="activator" class="nav-link" exact :to="category.path" @click.prevent
-                    v-if="showInNavi(category)">
-                    <v-icon>mdi-{{ category.icon }}</v-icon>
-                    <span class="nav-title">{{ $t(`Router.${category.title}`) }}</span>
-                    <v-icon class="nav-arrow" v-if="category.children && category.children.length > 0">mdi-chevron-down</v-icon>
-                </router-link>
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="200px" app> 
+        <v-list-item class="pa-0 justify-center no-text-decoration no-background small-list-item" style="height:48px;" router to="/" :ripple="false">
+            <v-list-item-content tile>
+                <template v-if="sidebarLogo">
+                    <img :src="sidebarLogo" style="height: 32px;" class="mr-3 nav-logo" alt="Logo" />
+                </template>
+                <template v-else>
+                    <mainsail-logo :color="logoColor" style="height: 32px;" class="mr-3 nav-logo"></mainsail-logo>
+                </template>
+            </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list class="pr-0 pt-0 ml-0">
+            <v-list-item-group active-class="active-nav-item">
+                <div v-for="(category, index) in naviPoints" :key="index"> 
+                    <v-list-item 
+                        router :to="category.path"
+                        v-if="showInNavi(category)"
+                        class="small-list-item"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-{{ category.icon }}</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title tile>{{ $t(`Router.${category.title}`) }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </div>
+            </v-list-item-group>
+        </v-list>
+        <template v-slot:append>
+            <v-list-item class="small-list-item mb-2">
+                <template v-if="!boolWideNavDrawer">
+                    <!-- <v-list-item-icon>
+                        <v-menu right offset-x open-on-hover>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">mdi-help-circle-outline</v-icon>
+                            </template>
+                            <v-card>
+                                -- Logos  hier mit rein, damit man erkennt welche version für was steht :) --
+                                <div overflow-hidden class="nowrap body-2" id="mainsailVersion" > v{{ mainsailVersion }}</div>
+                                <div overflow-hidden class="nowrap body-2" id="klipperVersion" v-if="klipperVersion" >{{ klipperVersion }}</div>
+                            </v-card>
+                        </v-menu>
+                    </v-list-item-icon> -->
 
-                <ul class="child">
-                    <li v-for="(page, pageIndex) in category.children" class="nav-item" v-bind:key="`${index}-${pageIndex}`">
-                        <router-link :to="page.path" class="nav-link" @click.prevent v-if="klippy_state !== 'error' || page.alwaysShow">
-                            <v-icon>mdi-{{ page.icon }}</v-icon>
-                            <span class="nav-title">{{ $t(`Router.${page.title}`) }}</span>
-                        </router-link>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <p id="sidebarVersions" class="mb-0 text-body-2 pl-3 pb-2">
-            v{{ mainsailVersion }}
-            <span class="" v-if="klipperVersion"><br />{{ klipperVersion }}</span>
-        </p>
-    </v-navigation-drawer>
+                    <v-list-item-icon>
+                        <v-tooltip right color="panel">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">mdi-help-circle-outline</v-icon>
+                            </template>
+                            <span class="dark"><!-- Logos  hier mit rein, damit man erkennt welche version für was steht :) -->v{{ mainsailVersion }}<br />{{ klipperVersion }}</span>
+                        </v-tooltip>
+                    </v-list-item-icon>
+
+                </template>
+                <template v-else-if="boolWideNavDrawer">
+                    <v-list-item-content>
+                        <div overflow-hidden class="nowrap body-2" id="mainsilVersion" > v{{ mainsailVersion }}</div>
+                        <div overflow-hidden class="nowrap body-2" id="klipperVersion" v-if="klipperVersion" >{{ klipperVersion }}</div>
+                    </v-list-item-content>
+                </template>
+            </v-list-item>
+        </template>
+    </v-navigation-drawer>  
 </template>
 
 <script lang="ts">
@@ -81,10 +108,13 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
     }
 })
-export default class TheSidebar extends Mixins(BaseMixin) {
-
+export default class TheSidebarAlt extends Mixins(BaseMixin) {
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
+    }
+
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
     }
 
     set naviDrawer(newVal: boolean) {

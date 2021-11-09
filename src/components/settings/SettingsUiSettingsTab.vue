@@ -59,6 +59,9 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <settings-row :title="$t('Settings.UiSettingsTab.BoolWideNavDrawer')" :sub-title="$t('Settings.UiSettingsTab.BoolWideNavDrawerDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="boolWideNavDrawer" hide-details class="mt-0"></v-switch>
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -141,6 +144,15 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set confirmOnPowerDeviceChange(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
+    }
+
+
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    }
+
+    set boolWideNavDrawer(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolWideNavDrawer', value: newVal })
     }
 
     clearColorObject(color: any): string {

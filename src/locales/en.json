@@ -669,6 +669,8 @@
 			"ShowWebcamInNavigation": "Show Webcam in navigation",
 			"BoolBigThumbnail": "Large thumbnail",
 			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
+			"BoolWideNavDrawer": "Wide Navigation Drawer",
+			"BoolWideNavDrawerDescription": "Display a wider Navigation Toolbar",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
 			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
 			"DisplayZOffset": "Show Z-Offset-Panel",
