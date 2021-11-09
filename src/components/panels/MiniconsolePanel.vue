@@ -23,7 +23,7 @@
 
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
+                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">

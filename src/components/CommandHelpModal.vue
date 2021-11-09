@@ -8,12 +8,12 @@
     >
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
-                <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
+                <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
             </template>
             <template v-else>
                 <v-btn
                     class="gcode-command-btn px-2 minwidth-0"
-                    color="grey darken-3"
+                    color="lightgray"
                     :small="isMini"
                     v-bind="attrs"
                     v-on="on">
