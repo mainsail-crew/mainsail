@@ -10,7 +10,7 @@
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
                     <v-btn
-                        v-if="canLock && (autoLockSliders && this.isTouchDevice)"
+                        v-if="canLock && (lockSliders && this.isTouchDevice)"
                         @click="sliderIsLocked = !sliderIsLocked"
                         plain
                         small
@@ -43,15 +43,15 @@
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
-                        @change="changeSlider && startLockTimer()"
+                        @change="changeSlider"
                         hide-details>
 
                         <template v-slot:prepend>
-                            <v-icon @click="decrement">mdi-minus</v-icon>
+                            <v-icon @click="decrement" :disabled="canLock && sliderIsLocked">mdi-minus</v-icon>
                         </template>
 
                         <template v-slot:append>
-                            <v-icon @click="increment">mdi-plus</v-icon>
+                            <v-icon @click="increment" :disabled="canLock && sliderIsLocked">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -98,12 +98,12 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         }
 
         //initialize slider lock state on component creation
-        this.autoLockSlidersChanged()
+        this.lockSlidersChanged()
     }
 
-    @Watch('autoLockSliders')
-    autoLockSlidersChanged(){
-        if(this.autoLockSliders && this.isTouchDevice){
+    @Watch('lockSliders')
+    lockSlidersChanged(){
+        if(this.lockSliders && this.isTouchDevice){
             this.sliderIsLocked = true
         } else {
             this.sliderIsLocked = false
@@ -115,8 +115,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         return (this.isMobile || this.isTablet) ?? false
     }
 
-    get autoLockSliders() {
-        return this.$store.state.gui.general.autoLockSliders
+    get lockSliders() {
+        return this.$store.state.gui.general.lockSliders
     }
 
     get autoLockSlidersTimeout() {
@@ -133,11 +133,12 @@ export default class ToolSlider extends Mixins(BaseMixin) {
 
     startLockTimer() {
         let timeout = this.autoLockSlidersTimeout
-        setTimeout(() => {
-            if(this.autoLockSliders && timeout > 0 && !this.sliderIsLocked) {
-                this.sliderIsLocked = true
-            }
-        }, timeout * 1000)
+
+        if(this.lockSliders && this.isTouchDevice) {
+            setTimeout(() => {
+                (timeout > 0 && !this.sliderIsLocked) ? this.sliderIsLocked = true : {}
+            }, timeout * 1000)
+        }
     }
 
     get colorBar() {
@@ -177,13 +178,14 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         }
 
         this.sendCmd()
-        this.startLockTimer()
     }
 
     sendCmd() {
         const gcode = this.command + ' ' + this.attributeName + (Math.max(1, this.value) * this.attributeScale).toFixed(0)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
         this.$socket.emit('printer.gcode.script', {script: gcode})
+
+        this.startLockTimer()
     }
 
     decrement() {

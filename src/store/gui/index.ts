@@ -19,7 +19,7 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
-            autoLockSliders: false,
+            lockSliders: false,
             autoLockSlidersTimeout: 1.5,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
