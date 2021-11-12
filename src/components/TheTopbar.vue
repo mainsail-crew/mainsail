@@ -39,7 +39,7 @@
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
                 class="button-min-width-auto px-3 emergency-button"
-                v-if="klippyIsConnected && !boolHideEmergencyButton"
+                v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
                 <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.EmergencyStop") }}</span>
@@ -181,10 +181,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get boolHideUploadAndPrintButton() {
         return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
-    }
-
-    get boolHideEmergencyButton() {
-        return this.$store.state.gui.dashboard.boolHideEmergencyButton ?? false
     }
 
     btnEmergencyStop() {

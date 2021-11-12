@@ -67,10 +67,6 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
                 </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.BoolHideEmergencyButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideEmergencyButtonDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="boolHideEmergencyButton" hide-details class="mt-0"></v-switch>
-                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -169,14 +165,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolHideUploadAndPrintButton(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolHideUploadAndPrintButton', value: newVal })
-    }
-
-    get boolHideEmergencyButton() {
-        return this.$store.state.gui.dashboard.boolHideEmergencyButton ?? false
-    }
-
-    set boolHideEmergencyButton(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolHideEmergencyButton', value: newVal })
     }
 
     clearColorObject(color: any): string {
