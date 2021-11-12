@@ -104,11 +104,9 @@ import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
-import TheSidebarPrinterMenu from '@/components/TheSidebarPrinterMenu.vue'
 
 @Component({
     components: {
-        TheSidebarPrinterMenu,
         TheSelectPrinterDialog
     }
 })
