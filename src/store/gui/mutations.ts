@@ -203,5 +203,9 @@ export const mutations: MutationTree<GuiState> = {
         const layoutArray = [...state.dashboard[payload.layoutname]]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
+    },
+
+    toggleHideUploadAndPrintBtn(state, payload) {
+        Vue.set(state.dashboard, 'boolHideUploadAndPrintButton', payload)
     }
 }

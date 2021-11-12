@@ -164,7 +164,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set boolHideUploadAndPrintButton(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolHideUploadAndPrintButton', value: newVal })
+        this.$store.dispatch('gui/toggleHideUploadAndPrintBtn', newVal)
     }
 
     clearColorObject(color: any): string {
