@@ -59,39 +59,9 @@
         </v-list>
         <template v-slot:append>
             <v-list-item class="small-list-item mb-2">
-                <template v-if="!boolWideNavDrawer">
-                    <!-- <v-list-item-icon>
-                        <v-menu right offset-x open-on-hover>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">mdi-help-circle-outline</v-icon>
-                            </template>
-                            <v-card>
-                                -- Logos  hier mit rein, damit man erkennt welche version für was steht :) --
-                                <div overflow-hidden class="nowrap body-2" id="mainsailVersion" > v{{ mainsailVersion }}</div>
-                                <div overflow-hidden class="nowrap body-2" id="klipperVersion" v-if="klipperVersion" >{{ klipperVersion }}</div>
-                            </v-card>
-                        </v-menu>
-                    </v-list-item-icon> -->
-
-                    <v-list-item-icon>
-                        <v-tooltip right color="panel">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">mdi-help-circle-outline</v-icon>
-                            </template>
-                            <span class="dark d-inline-block">
-                                <img height="12" src="/img/logo.svg"> v{{ mainsailVersion }}<br />
-                                <img height="12" src="/img/klipper.svg" style="transform: rotate(90deg);"> {{ klipperVersion }}
-                            </span>
-                        </v-tooltip>
-                    </v-list-item-icon>
-
-                </template>
-                <template v-else-if="boolWideNavDrawer">
-                    <v-list-item-content>
-                        <div overflow-hidden class="nowrap body-2" id="mainsilVersion" > v{{ mainsailVersion }}</div>
-                        <div overflow-hidden class="nowrap body-2" id="klipperVersion" v-if="klipperVersion" >{{ klipperVersion }}</div>
-                    </v-list-item-content>
-                </template>
+                <v-list-item-icon>
+                    <about-modal></about-modal>
+                </v-list-item-icon>
             </v-list-item>
         </template>
     </v-navigation-drawer>  
@@ -104,10 +74,12 @@ import {Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
+import AboutModal from '@/components/modals/AboutModal.vue'
 
 @Component({
     components: {
-        TheSelectPrinterDialog
+        TheSelectPrinterDialog,
+        AboutModal
     }
 })
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
@@ -125,14 +97,6 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
 
     get sidebarBackground(): string {
         return this.$store.getters['files/getSidebarBackground']
-    }
-
-    get mainsailVersion(): string {
-        return this.$store.state.packageVersion
-    }
-
-    get klipperVersion():string {
-        return this.$store.state.printer?.software_version ?? ''
     }
 
     get naviPoints(): AppRoute[] {
