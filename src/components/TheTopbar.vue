@@ -6,9 +6,17 @@
 
 <template>
     <div>
-        <v-app-bar app elevate-on-scroll height="48px">
+        <v-app-bar app elevate-on-scroll height="48px" clipped-left>
             <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
-            <v-toolbar-title class="text-no-wrap mr-2">{{ printerName }}</v-toolbar-title>
+            <router-link to="/">
+                <template v-if="sidebarLogo">
+                    <img :src="sidebarLogo" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" alt="Logo" />
+                </template>
+                <template v-else>
+                    <mainsail-logo :color="logoColor" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" router to="/" :ripple="false"></mainsail-logo>
+                </template>
+            </router-link>
+            <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
             <printer-selector v-if="countPrinters"></printer-selector>
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
@@ -99,6 +107,7 @@ import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
 import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PrinterSelector from '@/components/ui/PrinterSelector.vue'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -119,7 +128,8 @@ type uploadSnackbar = {
         TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu,
-        PrinterSelector
+        PrinterSelector,
+        MainsailLogo
     }
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
@@ -181,6 +191,14 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get boolHideUploadAndPrintButton() {
         return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+    }
+
+    get sidebarLogo(): string {
+        return this.$store.getters['files/getSidebarLogo']
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.theme.logo
     }
 
     btnEmergencyStop() {

@@ -23,18 +23,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="200px" app> 
-        <v-list-item class="pa-0 justify-center no-text-decoration no-background small-list-item" router to="/" :ripple="false">
-            <v-list-item-content tile>
-                <template v-if="sidebarLogo">
-                    <img :src="sidebarLogo" style="height: 32px;" class="mr-3 nav-logo" alt="Logo" />
-                </template>
-                <template v-else>
-                    <mainsail-logo :color="logoColor" style="height: 32px;" class="mr-3 nav-logo"></mainsail-logo>
-                </template>
-            </v-list-item-content>
-        </v-list-item>
-        <v-divider></v-divider>
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="200px" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -42,7 +31,7 @@
                         router to="/allPrinters"
                         class="small-list-item mt-1"
                     >
-                        <v-list-item-icon>
+                        <v-list-item-icon class="my-3 mr-3">
                             <v-icon>mdi-view-dashboard-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
@@ -58,7 +47,7 @@
                         v-if="showInNavi(category)"
                         class="small-list-item"
                     >
-                        <v-list-item-icon>
+                        <v-list-item-icon class="my-3 mr-3">
                             <v-icon>mdi-{{ category.icon }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
@@ -116,14 +105,11 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheSidebarPrinterMenu from '@/components/TheSidebarPrinterMenu.vue'
-import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 @Component({
     components: {
-        MainsailLogo,
         TheSidebarPrinterMenu,
         TheSelectPrinterDialog
-
     }
 })
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
@@ -131,20 +117,12 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         return this.$store.state.naviDrawer
     }
 
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
-    }
-
     set naviDrawer(newVal: boolean) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
-    get logoColor(): string {
-        return this.$store.state.gui.theme.logo
-    }
-
-    get sidebarLogo(): string {
-        return this.$store.getters['files/getSidebarLogo']
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
     }
 
     get sidebarBackground(): string {
@@ -161,13 +139,6 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
 
     get naviPoints(): AppRoute[] {
         return routes.filter((element) => element.showInNavi)
-    }
-
-    get printerName():string {
-        if (this.$store.state.gui.general.printername.length)
-            return this.$store.state.gui.general.printername
-
-        return this.$store.state.printer.hostname
     }
 
     get klippy_state(): string {

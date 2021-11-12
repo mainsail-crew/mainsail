@@ -237,6 +237,6 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        return state.data.gui.webcam.configs ?? []
+        return state.data.gui.webcam?.configs ?? []
     }
 }
