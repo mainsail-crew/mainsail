@@ -11,7 +11,7 @@
 
 <template>
     <panel
-        v-if="socketIsConnected"
+        v-if="socketIsConnected && klipperState !== 'disconnected'"
         icon="mdi-console-line"
         :title="$t('Panels.MiniconsolePanel.Headline')"
         :collapsible="true"

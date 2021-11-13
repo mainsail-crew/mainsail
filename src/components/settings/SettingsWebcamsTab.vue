@@ -2,7 +2,7 @@
     <div>
         <v-card flat v-if="!form.bool">
             <v-card-text>
-                <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamTab.Webcams') }}</h3>
+                <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
                 <div v-for="(webcam) in webcams" v-bind:key="webcam.id">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
@@ -16,13 +16,13 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createWebcam">{{ $t("Settings.WebcamTab.AddWebcam")}}</v-btn>
+                <v-btn text color="primary" @click="createWebcam">{{ $t("Settings.WebcamsTab.AddWebcam")}}</v-btn>
             </v-card-actions>
         </v-card>
         <v-card flat v-else>
             <v-form v-model="form.valid" @submit.prevent="saveWebcam">
                 <v-card-title>
-                    {{ form.id === null ? $t("Settings.WebcamTab.CreateWebcam") : $t("Settings.WebcamTab.EditWebcam") }}
+                    {{ form.id === null ? $t("Settings.WebcamsTab.CreateWebcam") : $t("Settings.WebcamsTab.EditWebcam") }}
                 </v-card-title>
                 <v-card-text>
                     <v-row>
@@ -37,7 +37,7 @@
                                                 </v-btn>
                                             </template>
                                             <v-list dense class="py-0">
-                                                <v-list-item v-for="icon of this.iconItems" v-bind:key="icon.value" link @click="setFormIcon(icon.value)">
+                                                <v-list-item v-for="icon of iconItems" v-bind:key="icon.value" link @click="setFormIcon(icon.value)">
                                                     <v-list-item-icon class="mr-0">
                                                         <v-icon small>{{ icon.value }}</v-icon>
                                                     </v-list-item-icon>
@@ -52,7 +52,7 @@
                                 <v-col class="col-10">
                                     <v-text-field
                                         v-model="form.name"
-                                        :label="$t('Settings.WebcamTab.Name')"
+                                        :label="$t('Settings.WebcamsTab.Name')"
                                         hide-details="auto"
                                         :rules="[rules.required, rules.unique]"
                                         dense
@@ -63,7 +63,7 @@
                                 <v-col class="py-1">
                                     <v-text-field
                                         v-model="form.urlStream"
-                                        :label="$t('Settings.WebcamTab.UrlStream')"
+                                        :label="$t('Settings.WebcamsTab.UrlStream')"
                                         hide-details="auto"
                                         :rules="[rules.required]"
                                     ></v-text-field>
@@ -73,7 +73,7 @@
                                 <v-col class="py-1">
                                     <v-text-field
                                         v-model="form.urlSnapshot"
-                                        :label="$t('Settings.WebcamTab.UrlSnapshot')"
+                                        :label="$t('Settings.WebcamsTab.UrlSnapshot')"
                                         hide-details="auto"
                                         :rules="[rules.requiredMjpegAdaptive]"
                                     ></v-text-field>
@@ -85,7 +85,7 @@
                                         v-model="form.service"
                                         :items="serviceItems"
                                         hide-details
-                                        :label="$t('Settings.WebcamTab.Service')"
+                                        :label="$t('Settings.WebcamsTab.Service')"
                                     ></v-select>
                                 </v-col>
                             </v-row>
@@ -94,7 +94,7 @@
                                     <v-text-field
                                         v-model="form.targetFps"
                                         hide-details
-                                        :label="$t('Settings.WebcamTab.TargetFPS')"
+                                        :label="$t('Settings.WebcamsTab.TargetFPS')"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -104,7 +104,7 @@
                                         v-model="form.flipX"
                                         hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamTab.FlipHorizontally')"
+                                        :label="$t('Settings.WebcamsTab.FlipHorizontally')"
                                     ></v-checkbox>
                                 </v-col>
                             </v-row>
@@ -114,7 +114,7 @@
                                         v-model="form.flipY"
                                         hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamTab.FlipVertically')"
+                                        :label="$t('Settings.WebcamsTab.FlipVertically')"
                                     ></v-checkbox>
                                 </v-col>
                             </v-row>
@@ -125,7 +125,7 @@
                                 <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
                                 <template slot="error">
                                     <v-icon x-large>mdi-webcam-off</v-icon>
-                                    <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamTab.UrlNotAvailable') }}</div>
+                                    <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamsTab.UrlNotAvailable') }}</div>
                                 </template>
                             </vue-load-image>
                             <video v-if="['ipstream'].includes(form.service)" :src="form.urlStream" autoplay :style="webcamStyle" />
@@ -144,7 +144,7 @@
                         text
                         type="submit"
                     >
-                        {{ form.id === null ? $t("Settings.WebcamTab.SaveWebcam") : $t("Settings.WebcamTab.UpdateWebcam") }}
+                        {{ form.id === null ? $t("Settings.WebcamsTab.SaveWebcam") : $t("Settings.WebcamsTab.UpdateWebcam") }}
                     </v-btn>
                 </v-card-actions>
             </v-form>
@@ -157,7 +157,7 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 interface webcamForm {
     bool: boolean
@@ -176,7 +176,7 @@ interface webcamForm {
 @Component({
     components: {SettingsRow}
 })
-export default class SettingsWebcamTab extends Mixins(BaseMixin) {
+export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
     private form: webcamForm = {
         bool: false,
@@ -193,34 +193,34 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
     }
 
     private rules = {
-        required: (value: string) => value !== '' || this.$t('Settings.WebcamTab.Required'),
-        requiredMjpegAdaptive: (value: string) => (value !== '' && this.form.service === 'mjpegstreamer-adaptive') || this.$t('Settings.WebcamTab.Required'),
-        unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamTab.NameAlreadyExists'),
+        required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
+        requiredMjpegAdaptive: (value: string) => (value !== '' && this.form.service === 'mjpegstreamer-adaptive') || this.$t('Settings.WebcamsTab.Required'),
+        unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
     }
 
     get webcams() {
-        return this.$store.getters['gui/webcam/getWebcams'] ?? []
+        return this.$store.getters['gui/webcams/getWebcams'] ?? []
     }
 
     get iconItems() {
         return [
-            { value: 'mdi-printer-3d',          text: this.$t('Settings.WebcamTab.IconPrinter') },
-            { value: 'mdi-printer-3d-nozzle',   text: this.$t('Settings.WebcamTab.IconNozzle') },
-            { value: 'mdi-radiator-disabled',   text: this.$t('Settings.WebcamTab.IconBed') },
-            { value: 'mdi-webcam',              text: this.$t('Settings.WebcamTab.IconCam') },
-            { value: 'mdi-album',               text: this.$t('Settings.WebcamTab.IconFilament') },
-            { value: 'mdi-door',                text: this.$t('Settings.WebcamTab.IconDoor') },
-            { value: 'mdi-raspberry-pi',        text: this.$t('Settings.WebcamTab.IconMcu') },
-            { value: 'mdi-campfire',            text: this.$t('Settings.WebcamTab.IconHot') },
+            { value: 'mdi-printer-3d',          text: this.$t('Settings.WebcamsTab.IconPrinter') },
+            { value: 'mdi-printer-3d-nozzle',   text: this.$t('Settings.WebcamsTab.IconNozzle') },
+            { value: 'mdi-radiator-disabled',   text: this.$t('Settings.WebcamsTab.IconBed') },
+            { value: 'mdi-webcam',              text: this.$t('Settings.WebcamsTab.IconCam') },
+            { value: 'mdi-album',               text: this.$t('Settings.WebcamsTab.IconFilament') },
+            { value: 'mdi-door',                text: this.$t('Settings.WebcamsTab.IconDoor') },
+            { value: 'mdi-raspberry-pi',        text: this.$t('Settings.WebcamsTab.IconMcu') },
+            { value: 'mdi-campfire',            text: this.$t('Settings.WebcamsTab.IconHot') },
         ]
     }
 
     get serviceItems() {
         return [
-            { value: 'mjpegstreamer',           text: this.$t('Settings.WebcamTab.Mjpegstreamer')},
-            { value: 'mjpegstreamer-adaptive',  text: this.$t('Settings.WebcamTab.MjpegstreamerAdaptive') },
-            { value: 'uv4l-mjpeg',              text: this.$t('Settings.WebcamTab.Uv4lMjpeg') },
-            { value: 'ipstream',                text: this.$t('Settings.WebcamTab.Ipstream') },
+            { value: 'mjpegstreamer',           text: this.$t('Settings.WebcamsTab.Mjpegstreamer')},
+            { value: 'mjpegstreamer-adaptive',  text: this.$t('Settings.WebcamsTab.MjpegstreamerAdaptive') },
+            { value: 'uv4l-mjpeg',              text: this.$t('Settings.WebcamsTab.Uv4lMjpeg') },
+            { value: 'ipstream',                text: this.$t('Settings.WebcamsTab.Ipstream') },
         ]
     }
 
@@ -277,15 +277,15 @@ export default class SettingsWebcamTab extends Mixins(BaseMixin) {
                 flipY: this.form.flipY,
             }
 
-            if (this.form.id !== null) this.$store.dispatch('gui/webcam/update', { id: this.form.id, values: values })
-            else this.$store.dispatch('gui/webcam/store', { values })
+            if (this.form.id !== null) this.$store.dispatch('gui/webcams/update', { id: this.form.id, values: values })
+            else this.$store.dispatch('gui/webcams/store', { values })
 
             this.clearDialog()
         }
     }
 
     deleteWebcam(id: string) {
-        this.$store.dispatch('gui/webcam/delete', id)
+        this.$store.dispatch('gui/webcams/delete', id)
     }
 
     clearDialog() {

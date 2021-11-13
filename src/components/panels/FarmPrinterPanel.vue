@@ -33,7 +33,7 @@
         :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <template v-slot:buttons v-if="printer.socket.isConnected && printer_webcams.length">
+        <template v-slot:buttons v-show="printer.socket.isConnected && printer_webcams.length">
             <v-menu :offset-y="true" title="Webcam">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
@@ -42,7 +42,7 @@
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">
-                    <v-list-item link @click="currentCamName = 'off'">
+                    <v-list-item link @click="currentCamId = 'off'">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>mdi-webcam-off</v-icon>
                         </v-list-item-icon>
@@ -50,7 +50,7 @@
                             <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-for="webcam of printer_webcams" v-bind:key="webcam.index" link @click="currentCamName = webcam.name">
+                    <v-list-item v-for="webcam of printer_webcams" v-bind:key="webcam.index" link @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>{{ webcam.icon }}</v-icon>
                         </v-list-item-icon>
@@ -70,7 +70,7 @@
                         class="d-flex align-end"
                         ref="imageDiv"
                     >
-                        <div v-if="printer.socket.isConnected && currentCamName !== 'off' && currentWebcam" class="webcamContainer">
+                        <div v-if="printer.socket.isConnected && currentCamId !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
                                 <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
                             </template>
@@ -153,12 +153,12 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
         return this.$store.getters['farm/'+this.printer._namespace+'/isCurrentPrinter']
     }
 
-    get currentCamName() {
-        return this.$store.getters['farm/'+this.printer._namespace+'/getSetting']('currentCamName', 'off')
+    get currentCamId() {
+        return this.$store.getters['farm/'+this.printer._namespace+'/getSetting']('currentCamId', 'off')
     }
 
-    set currentCamName(newVal) {
-        this.$store.dispatch('farm/'+this.printer._namespace+'/setSettings', { currentCamName: newVal })
+    set currentCamId(newVal) {
+        this.$store.dispatch('farm/'+this.printer._namespace+'/setSettings', { currentCamId: newVal })
     }
 
     get printer_name() {
@@ -198,7 +198,7 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     get currentWebcam() {
-        const currentCam = this.printer_webcams.find((webcam: any) => webcam.name === this.currentCamName)
+        const currentCam = this.printer_webcams.find((webcam: any) => webcam.id === this.currentCamId)
         if (currentCam) return currentCam
 
         return false

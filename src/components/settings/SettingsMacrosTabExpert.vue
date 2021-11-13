@@ -101,38 +101,40 @@
                                     </v-col>
                                     <v-col>
                                         <settings-row :title="macro.name" :sub-title="getMacroDescription(macro.name)" v-bind:key="'groupMacro_macro_'+index" :dynamicSlotWidth="true">
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-btn small outlined v-bind="attrs" v-on="on" @click="changeColorMacroFromGroup(macro)" class="ml-3 minwidth-0 px-2" :color="macro.color ">
-                                                        <v-icon small left>mdi-palette</v-icon> {{ macro.color }}
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
-                                            </v-tooltip>
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInStandby', !macro.showInStandby)" class="ml-3 minwidth-0 px-2" :color="macro.showInStandby ? '' : 'secondary'">
-                                                        <v-icon small>mdi-sleep</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
-                                            </v-tooltip>
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInPause', !macro.showInPause)" class="ml-3 minwidth-0 px-2" :color="macro.showInPause ? '' : 'secondary'">
-                                                        <v-icon small>mdi-pause</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
-                                            </v-tooltip>
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
-                                                    <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInPrinting', !macro.showInPrinting)" class="ml-3 minwidth-0 px-2" :color="macro.showInPrinting ? '' : 'secondary'">
-                                                        <v-icon small>mdi-printer-3d-nozzle</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('Settings.MacrosTab.ShowInStatePrinting') }}</span>
-                                            </v-tooltip>
+                                            <template v-if="existsMacro(macro.name)">
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn small outlined v-bind="attrs" v-on="on" @click="changeColorMacroFromGroup(macro)" class="ml-3 minwidth-0 px-2" :color="macro.color ">
+                                                            <v-icon small left>mdi-palette</v-icon> {{ macro.color }}
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
+                                                </v-tooltip>
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInStandby', !macro.showInStandby)" class="ml-3 minwidth-0 px-2" :color="macro.showInStandby ? '' : 'secondary'">
+                                                            <v-icon small>mdi-sleep</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
+                                                </v-tooltip>
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInPause', !macro.showInPause)" class="ml-3 minwidth-0 px-2" :color="macro.showInPause ? '' : 'secondary'">
+                                                            <v-icon small>mdi-pause</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
+                                                </v-tooltip>
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-btn small outlined v-bind="attrs" v-on="on" @click="updateMacroFromGroup(macro, 'showInPrinting', !macro.showInPrinting)" class="ml-3 minwidth-0 px-2" :color="macro.showInPrinting ? '' : 'secondary'">
+                                                            <v-icon small>mdi-printer-3d-nozzle</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('Settings.MacrosTab.ShowInStatePrinting') }}</span>
+                                                </v-tooltip>
+                                            </template>
                                             <v-tooltip top>
                                                 <template v-slot:activator="{ on, attrs }">
                                                     <v-btn small outlined v-bind="attrs" v-on="on" @click="removeMacroFromGroup(macro)" class="ml-3 minwidth-0 px-2" color="error">
@@ -188,9 +190,9 @@ import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import draggable from 'vuedraggable'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {GuiStateMacrogroup, GuiStateMacrogroupMacros} from '@/store/gui/types'
 import {Debounce} from 'vue-debounce-decorator'
 import {PrinterStateMacro} from '@/store/printer/types'
+import {GuiMacrogroupsStateMacrogroup, GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
 
 @Component({
     components: {SettingsRow, draggable}
@@ -251,24 +253,24 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     get availableMacros() {
-        return this.allMacros.filter((m: GuiStateMacrogroupMacros) => !this.editGroupUsedMacros.includes(m.name))
+        return this.allMacros.filter((m: GuiMacrogroupsStateMacrogroupMacro) => !this.editGroupUsedMacros.includes(m.name))
     }
 
     get groups() {
-        return this.$store.getters['gui/getAllMacroGroups'] ?? []
+        return this.$store.getters['gui/macrogroups/getAllMacrogroups'] ?? []
     }
 
     get editGroupUsedMacros() {
-        return this.editGroup?.macros?.map((m: GuiStateMacrogroupMacros) => m.name) ?? []
+        return this.editGroup?.macros?.map((m: GuiMacrogroupsStateMacrogroupMacro) => m.name) ?? []
     }
 
-    get editGroup(): GuiStateMacrogroup | null {
-        return this.$store.getters['gui/getMacroGroup'](this.editGroupId)
+    get editGroup(): GuiMacrogroupsStateMacrogroup | null {
+        return this.$store.getters['gui/macrogroups/getMacrogroup'](this.editGroupId)
     }
 
     get editGroupMacros() {
         const macros = this.editGroup?.macros ?? []
-        macros.sort((a, b) => a.pos - b.pos)
+        macros.sort((a: GuiMacrogroupsStateMacrogroupMacro, b: GuiMacrogroupsStateMacrogroupMacro) => a.pos - b.pos)
 
         return macros
     }
@@ -278,7 +280,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     existsGroupName(name: string) {
-        return (this.groups.findIndex((group: GuiStateMacrogroup) => group.name === name && group.id != this.editGroupId) >= 0)
+        return (this.groups.findIndex((group: GuiMacrogroupsStateMacrogroup) => group.name === name && group.id != this.editGroupId) >= 0)
     }
 
     clearColorObject(color: any): string {
@@ -294,37 +296,38 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     async addGroup() {
-        this.editGroupId = await this.$store.dispatch('gui/storeMarcogroup',  {
+        const values = {
             name: '',
             color: 'primary',
             colorCustom: '#fff',
             showInStandby: true,
             showInPause: true,
             showInPrinting: true,
-        })
+        }
+        this.editGroupId = await this.$store.dispatch('gui/macrogroups/store',  { values })
 
         this.boolFormEdit = true
     }
 
-    editMacrogroup(group: GuiStateMacrogroup) {
+    editMacrogroup(group: GuiMacrogroupsStateMacrogroup) {
         this.boolFormEdit = true
         this.editGroupId = group.id
     }
 
     deleteMacrogroup(id: string) {
-        this.$store.dispatch('gui/destroyMacrogroup',  id)
+        this.$store.dispatch('gui/macrogroups/delete', id)
     }
 
     addMacroToGroup(macro: PrinterStateMacro) {
-        this.$store.dispatch('gui/addMacroToMacrogroup', {
-            group: this.editGroupId,
+        this.$store.dispatch('gui/macrogroups/addMacroToMacrogroup', {
+            id: this.editGroupId,
             macro: macro.name
         })
     }
 
-    updateMacroFromGroup(macro: GuiStateMacrogroupMacros, option: string, value: boolean | string | number) {
-        this.$store.dispatch('gui/updateMacroFromMacrogroup', {
-            group: this.editGroupId,
+    updateMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro, option: string, value: boolean | string | number) {
+        this.$store.dispatch('gui/macrogroups/updateMacroFromMacrogroup', {
+            id: this.editGroupId,
             macro: macro.name,
             option: option,
             value: value
@@ -341,7 +344,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         this.updateMacroFromGroup(this.editGroupMacros[newIndex], 'pos', oldPos)
     }
 
-    changeColorMacroFromGroup(macro: GuiStateMacrogroupMacros) {
+    changeColorMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro) {
         let index = this.macroColors.findIndex((color) => color.value === macro.color) + 1
         const maxIndex = this.macroColors.length - 1
 
@@ -351,23 +354,31 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         this.updateMacroFromGroup(macro, 'color', newColor)
     }
 
-    removeMacroFromGroup(macro: GuiStateMacrogroupMacros) {
-        this.$store.dispatch('gui/removeMacroFromMacrogroup', {
-            group: this.editGroupId,
+    removeMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro) {
+        this.$store.dispatch('gui/macrogroups/removeMacroFromMacrogroup', {
+            id: this.editGroupId,
             macro: macro.name
         })
     }
 
+    existsMacro(macroname: string) {
+        return (this.allMacros.findIndex((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase()) !== -1)
+    }
+
     getMacroDescription(macroname: string) {
         const macro = this.allMacros.find((m: PrinterStateMacro) => m.name.toLowerCase() === macroname.toLowerCase())
+        if (!macro) return this.$t('Settings.MacrosTab.DeletedMacro')
+
         return macro?.description ?? null
     }
 
     updateMacrogroupOption(option: string, newVal: boolean | string) {
-        this.$store.dispatch('gui/updateMacrogroup', {
-            group: this.editGroupId,
-            option: option,
-            value: newVal
+        const values:any = {}
+        values[option] = newVal
+
+        this.$store.dispatch('gui/macrogroups/update', {
+            id: this.editGroupId,
+            values
         })
     }
 

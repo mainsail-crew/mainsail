@@ -3,7 +3,7 @@
         <v-btn icon tile large @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
-        <v-dialog v-model="showSettings" width="900" persistent hide-overlay :fullscreen="isMobile">
+        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
                     <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
@@ -52,7 +52,7 @@ import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
-import SettingsWebcamTab from '@/components/settings/SettingsWebcamTab.vue'
+import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
 import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
 import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
 import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
@@ -73,7 +73,7 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsConsoleTab,
         SettingsControlTab,
         SettingsMacrosTab,
-        SettingsWebcamTab,
+        SettingsWebcamsTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
@@ -107,8 +107,8 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
             },
             {
                 icon: 'mdi-webcam',
-                name: 'webcam',
-                title: this.$t('Settings.WebcamTab.Webcams')
+                name: 'webcams',
+                title: this.$t('Settings.WebcamsTab.Webcams')
             },
             {
                 icon: 'mdi-code-tags',

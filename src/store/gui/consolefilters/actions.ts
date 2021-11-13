@@ -1,17 +1,17 @@
 import { ActionTree } from 'vuex'
 import {RootState} from '@/store/types'
-import {GuiWebcamState} from '@/store/gui/webcam/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
+import {GuiConsolefiltersState} from '@/store/gui/consolefilters/types'
 
-export const actions: ActionTree<GuiWebcamState, RootState> = {
+export const actions: ActionTree<GuiConsolefiltersState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
 
     init() {
-        window.console.debug('init gui/webcam')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'webcams' }, { action: 'gui/webcam/initStore' })
+        window.console.debug('init gui/consolefilters')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_consolefilters' }, { action: 'gui/consolefilters/initStore' })
     },
 
     initStore({ commit }, payload) {
@@ -20,7 +20,7 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
     },
 
     upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'webcams', key: payload.id, value: payload.value })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail_consolefilters', key: payload.id, value: payload.value })
     },
 
     store({ commit, dispatch, state }, payload) {
@@ -29,7 +29,7 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         commit('store', { id, values: payload.values })
         dispatch('upload', {
             id,
-            value: state.webcams[id]
+            value: state.consolefilters[id]
         })
     },
 
@@ -37,12 +37,12 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
-            value: state.webcams[payload.id]
+            value: state.consolefilters[payload.id]
         })
     },
 
     delete({ commit }, payload) {
         commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'webcams', key: payload })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail_consolefilters', key: payload })
     },
 }

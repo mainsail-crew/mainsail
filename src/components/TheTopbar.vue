@@ -247,7 +247,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     doUploadAndStart(file: File) {
         const formData = new FormData()
-        const filename = file.name.replace(' ', '_')
+        const filename = file.name
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true

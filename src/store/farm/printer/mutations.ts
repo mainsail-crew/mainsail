@@ -26,7 +26,6 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setData(state, payload) {
-        if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
 
         Object.entries(payload).forEach(([key, value]) => {
@@ -65,7 +64,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setDatabases(state, payload) {
-        Vue.set(state, 'databases', payload.namespaces)
+        Vue.set(state, 'databases', payload)
     },
 
     setMainsailData(state, payload) {
@@ -81,5 +80,9 @@ export const mutations: MutationTree<FarmPrinterState> = {
         }
 
         setDataDeep(state.data.gui, payload)
+    },
+
+    setWebcamsData(state, payload) {
+        Vue.set(state.data, 'webcams', payload)
     },
 }

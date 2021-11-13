@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import {GuiWebcamState, GuiWebcamStateWebcam} from '@/store/gui/webcam/types'
+import {GuiWebcamState, GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiWebcamState, any> = {

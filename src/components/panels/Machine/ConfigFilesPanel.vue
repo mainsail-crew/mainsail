@@ -168,22 +168,19 @@
                 </div>
             </panel>
         </v-dialog>
-        <v-dialog v-model="dialogRenameFile.show" max-width="400">
-            <panel :title="$t('Machine.ConfigFilesPanel.RenameFile')" card-class="maschine-configfiles-rename-file-dialog" :margin-bottom="false">
-                <v-card-text>
-                    <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogRenameFile.newName"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">{{ $t('Machine.ConfigFilesPanel.Rename') }}</v-btn>
-                </v-card-actions>
-            </panel>
-        </v-dialog>
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.CreateFile')" card-class="maschine-configfiles-create-file-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogCreateFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogCreateFile.name"></v-text-field>
+                    <v-text-field
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        v-model="dialogCreateFile.name"
+                        ref="inputDialogCreateFileName"
+                        @keyup.enter="createFileAction"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -192,10 +189,40 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="dialogRenameFile.show" max-width="400">
+            <panel :title="$t('Machine.ConfigFilesPanel.RenameFile')" card-class="maschine-configfiles-rename-file-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>
+                    <v-text-field
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        v-model="dialogRenameFile.newName"
+                        ref="inputDialogRenameFileName"
+                        @keyup.enter="renameFileAction"
+                        required
+                    ></v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">{{ $t('Machine.ConfigFilesPanel.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="renameFileAction">{{ $t('Machine.ConfigFilesPanel.Rename') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.CreateDirectory')" card-class="maschine-configfiles-create-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogCreateDirectory.name"></v-text-field>
+                    <v-text-field
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        v-model="dialogCreateDirectory.name"
+                        ref="inputDialogCreateDirectoryName"
+                        @keyup.enter="createDirectoryAction"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -206,8 +233,17 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.RenameDirectory')" card-class="maschine-configfiles-rename-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field  :label="$t('Machine.ConfigFilesPanel.Name')" required v-model="dialogRenameDirectory.newName"></v-text-field>
+                    <v-text-field
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        v-model="dialogRenameDirectory.newName"
+                        ref="inputDialogRenameDirectoryName"
+                        @keyup.enter="renameDirectoryAction"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -218,6 +254,9 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')" card-class="maschine-configfiles-delete-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Machine.ConfigFilesPanel.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
                 </v-card-text>
@@ -316,6 +355,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     $refs!: {
         fileUpload: HTMLInputElement,
+        inputDialogCreateFileName: HTMLInputElement,
+        inputDialogRenameFileName: HTMLInputElement,
+        inputDialogCreateDirectoryName: HTMLInputElement,
+        inputDialogRenameDirectoryName: HTMLInputElement,
     }
 
     private selected = []
@@ -344,6 +387,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             svg: null
         }
     }
+    private dialogCreateFile = {
+        show: false,
+        name: '',
+    }
     private dialogRenameFile: dialogRenameObject = {
         show: false,
         newName: '',
@@ -353,10 +400,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             permissions: '',
             modified: new Date()
         }
-    }
-    private dialogCreateFile = {
-        show: false,
-        name: '',
     }
     private dialogCreateDirectory = {
         show: false,
@@ -605,6 +648,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     createDirecotry() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogCreateDirectoryName?.focus()
+        }, 200)
     }
 
     createDirectoryAction() {
@@ -619,6 +666,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameDirectory.item = item
         this.dialogRenameDirectory.newName = item.filename
         this.dialogRenameDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogRenameDirectoryName?.focus()
+        }, 200)
     }
 
     renameDirectoryAction() {
@@ -642,6 +693,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     createFile() {
         this.dialogCreateFile.name = ''
         this.dialogCreateFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogCreateFileName?.focus()
+        }, 200)
     }
 
     createFileAction() {
@@ -669,6 +724,10 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         this.dialogRenameFile.item = item
         this.dialogRenameFile.newName = item.filename
         this.dialogRenameFile.show = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogRenameFileName?.focus()
+        }, 200)
     }
 
     renameFileAction() {
