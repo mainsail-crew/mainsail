@@ -16,7 +16,26 @@
         :title="$t('Panels.MiniconsolePanel.Headline')"
         :collapsible="true"
         card-class="miniconsole-panel"
+        :hideButtonsOnCollapse="true"
     >
+        <template v-slot:buttons>
+            <command-help-modal @onCommand="gcode = $event" :inToolbar="true" ></command-help-modal>
+
+            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
+                </template>
+                <v-list>
+                    <v-list-item class="minHeight36">
+                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                    </v-list-item>
+                    <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                        <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+
+        </template>
         <div class="d-flex flex-column">
             <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
                 <v-row>
@@ -39,25 +58,14 @@
                             hide-details
                             outlined
                             dense
+                            :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                            @click:prepend="getAutocomplete"
                             append-icon="mdi-send"
                             @click:append="doSend"
                         ></v-textarea>
                     </v-col>
                     <v-col class="col-auto">
-                        <command-help-modal @onCommand="gcode = $event" ></command-help-modal>
-                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0" color="grey darken-3 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item class="minHeight36">
-                                    <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
-                                </v-list-item>
-                                <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                                    <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
+
                     </v-col>
                 </v-row>
             </v-card-text>
@@ -123,6 +131,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     get events() {
         return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table', 250)
     }
+
 
     @Watch('events')
     eventsChanged() {
