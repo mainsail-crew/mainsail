@@ -299,8 +299,8 @@
 		"KlipperWarningsPanel": {
 			"KlipperWarnings": "Klipper Warnings",
 			"DownloadLog": "download log",
-			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated.",
-			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated."
+			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release."
 		},
 		"MiniconsolePanel": {
 			"Headline": "Console",
