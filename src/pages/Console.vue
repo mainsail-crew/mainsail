@@ -32,6 +32,8 @@
                     hide-details
                     outlined
                     dense
+                    :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                    @click:prepend="getAutocomplete"
                     append-icon="mdi-send"
                     @click:append="doSend"
                 ></v-textarea>

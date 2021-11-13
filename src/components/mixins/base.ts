@@ -59,4 +59,8 @@ export default class BaseMixin extends Vue {
     get isWidescreen() {
         return this.$vuetify.breakpoint.xl
     }
+
+    get isTouchDevice() {
+        return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0))
+    }
 }

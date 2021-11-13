@@ -245,4 +245,12 @@ export const actions: ActionTree<GuiState, RootState> = {
             value: newVal
         })
     },
+
+    toggleHideUploadAndPrintBtn({commit, dispatch, state}, payload) {
+        commit('toggleHideUploadAndPrintBtn', payload)
+        dispatch('updateSettings', {
+            keyName: 'dashboard.boolHideUploadAndPrintButton',
+            newVal: state.dashboard.boolHideUploadAndPrintButton
+        })
+    }
 }
