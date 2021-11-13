@@ -6,7 +6,7 @@
         <v-dialog v-model="showSettings" width="900" persistent hide-overlay :fullscreen="isMobile">
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
