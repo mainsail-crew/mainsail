@@ -27,7 +27,7 @@ ____
 
 Whilst this guide makes specific use of balenaEtcher it is entirely possible to use any flashing software of your choice and then follow the manual steps to enable SSH / network after. 
 
-*  [Download](https://github.com/raymondh2/MainsailOS/releases) the latest MainsailOS release (don't unpack the zip; you don't need to).
+*  [Download](https://github.com/mainsail-crew/MainsailOS/releases) the latest MainsailOS release (don't unpack the zip; you don't need to).
 *  [Download](https://www.balena.io/etcher/) and install the latest balenaEtcher.
 
 # Flashing MainsailOS
