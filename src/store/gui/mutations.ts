@@ -120,5 +120,9 @@ export const mutations: MutationTree<GuiState> = {
 
             Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
         }
+    },
+
+    toggleHideUploadAndPrintBtn(state, payload) {
+        Vue.set(state.dashboard, 'boolHideUploadAndPrintButton', payload)
     }
 }

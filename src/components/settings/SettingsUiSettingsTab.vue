@@ -83,6 +83,14 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.BoolWideNavDrawer')" :sub-title="$t('Settings.UiSettingsTab.BoolWideNavDrawerDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="boolWideNavDrawer" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -182,6 +190,22 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set autoLockSlidersTimeout(newVal) {
         (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.autoLockSlidersTimeout', value: newVal}) : {}
+    }
+
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    }
+
+    set boolWideNavDrawer(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolWideNavDrawer', value: newVal })
+    }
+
+    get boolHideUploadAndPrintButton() {
+        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+    }
+
+    set boolHideUploadAndPrintButton(newVal) {
+        this.$store.dispatch('gui/toggleHideUploadAndPrintBtn', newVal)
     }
 
     clearColorObject(color: any): string {

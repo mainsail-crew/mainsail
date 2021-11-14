@@ -33,6 +33,7 @@ export const getDefaultState = (): GuiState => {
         dashboard: {
             boolTempchart: true,
             boolBigThumbnail: true,
+            boolWideNavDrawer: false,
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],

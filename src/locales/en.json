@@ -299,8 +299,8 @@
 		"KlipperWarningsPanel": {
 			"KlipperWarnings": "Klipper Warnings",
 			"DownloadLog": "download log",
-			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated.",
-			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated."
+			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release."
 		},
 		"MiniconsolePanel": {
 			"Headline": "Console",
@@ -670,6 +670,10 @@
 			"ShowWebcamInNavigation": "Show Webcam in navigation",
 			"BoolBigThumbnail": "Large thumbnail",
 			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
+			"BoolWideNavDrawer": "Wide Navigation Drawer",
+			"BoolWideNavDrawerDescription": "Display a wider Navigation Toolbar",
+			"BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
+			"BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the topbar.",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
 			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
 			"DisplayZOffset": "Show Z-Offset-Panel",

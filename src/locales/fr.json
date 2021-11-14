@@ -17,8 +17,8 @@
       "KlipperRestart": "Redémarrage de Klipper",
       "PowerDevices": "Modules d'alimentation",
       "Reboot": "Redémarrage",
-      "RestartServices": "Redémarrage des services",
-      "Shutdown": "Arrêt"
+      "Shutdown": "Arrêt",
+      "ServiceControl": "Contrôle des services"
     },
     "ThrottledStates": {
       "DescriptionUnderVoltageDetected": "rPI alimentation inférieure à 4.65V",
@@ -57,7 +57,8 @@
     "Heightmap": "Maillage",
     "G-Code Files": "Fichiers G-Code",
     "History": "Historique",
-    "Machine": "Machine"
+    "Machine": "Machine",
+    "G-Code Viewer": "Visualiseur G-code"
   },
   "Editor": {
     "Minimap": "Afficher minimap",
@@ -67,11 +68,16 @@
     "SaveClose": "Sauvegarde et fermeture",
     "SaveRestart": "Sauvegarde et redémarrage",
     "SuccessfullySaved": "Le fichier {filename} a été sauvegardé",
-    "Uploading": "Téléchargement"
+    "Uploading": "Téléchargement",
+    "Cancel": "Annuler",
+    "DontSave": "Ne pas sauvegarder",
+    "UnsavedChanges": "Changements non sauvegardés",
+    "UnsavedChangesMessage": "Désirez-vous sauvegarder les changements dans {filename}?",
+    "UnsavedChangesSubMessage": "Vos changements seront perdus si vous ne les sauvegardez pas. Vous pouvez desactiver ce message dans les réglages de l'éditeur."
   },
   "Files": {
     "GCodeFiles": "Fichiers G-Code",
-    "UploadNewGcode": "Charger nouveau Gcode",
+    "UploadNewGcode": "Charger nouveau G-Code",
     "CreateNewDirectory": "Créer un dossier",
     "RefreshCurrentDirectory": "Rafraichir le contenu du dossier",
     "SetupCurrentList": "Configurer liste",
@@ -120,7 +126,8 @@
     "SuccessfullyDeleted": "Fichier {filename} éffacé",
     "SuccessfullyMoved": "Fichier {filename} déplacé",
     "SuccessfullyRenamed": "Fichier {filename} renommé",
-    "SuccessfullyUploaded": "Fichier {filename} mis à jour"
+    "SuccessfullyUploaded": "Fichier {filename} mis à jour",
+    "View3D": "Vue 3D"
   },
   "Console": {
     "SetupConsole": "Configuration console",
@@ -130,31 +137,40 @@
     "CommandList": "Liste des commandes"
   },
   "Heightmap": {
-    "Heightmap": "Profil de hauteur",
+    "Heightmap": "Maillage de hauteur",
     "TitleHomeAll": "Réf. tous",
     "Clear": "effacer",
     "ErrorKlipperNotReady": "Klipper pas prêt, maillage désactivé",
-    "TitleClear": "Effacer Maillage",
+    "TitleClear": "Effacer maillage",
     "Calibrate": "calibration",
-    "TitleCalibrate": "Calibrer nouveau Maillage",
-    "NoBedMeshHasBeenLoadedYet": "Aucun profil chargé",
+    "TitleCalibrate": "Calibrer nouveau maillage",
+    "NoBedMeshHasBeenLoadedYet": "Aucun maillage chargé",
     "Probed": "Mesuré",
     "Mesh": "Calculé",
     "Scale": "Echelle",
     "Profiles": "Profils",
     "Deleted": "effacé",
-    "RenameBedMeshProfile": "Renommer profil Maillage",
+    "RenameBedMeshProfile": "Renommer maillage",
     "Name": "Nom",
     "Abort": "Annuler",
     "Rename": "renommer",
-    "BedMeshCalibrate": "Calibration Maillage",
-    "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du Maillage plateau ?",
-    "DeleteBedMeshProfile": "Effacer profil Maillage",
-    "DoYouReallyWantToDelete": "Voulez-vous effacer le profil \"{name}\"?",
+    "BedMeshCalibrate": "Calibration maillage",
+    "DoYouReallyWantToCalibrate": "Voulez-vous démarrer la calibration du maillage plateau ?",
+    "DeleteBedMeshProfile": "Effacer maillage",
+    "DoYouReallyWantToDelete": "Voulez-vous effacer le maillage \"{name}\"?",
     "Remove": "supprimer",
     "Flat": "Plat",
-    "NoProfile": "Aucun profil disponible",
-    "Wireframe": "Maillage"
+    "NoProfile": "Aucun maillage disponible",
+    "Wireframe": "Maillage",
+    "BedMeshRemove": "Annulation maillage",
+    "CurrentMesh": {
+      "Headline": "Maillage courant",
+      "Max": "Max",
+      "Min": "Min",
+      "Name": "Nom",
+      "Size": "Taille",
+      "Variance": "Variance"
+    }
   },
   "History": {
     "Statistics": "Statistiques",
@@ -224,11 +240,13 @@
       "Extrude": "Extrusion"
     },
     "MacrosPanel": {
-      "Headline": "Macros"
+      "Headline": "Macros",
+      "Send": "envoi"
     },
     "FarmPrinterPanel": {
       "WebcamOff": "Arrêt",
-      "SwitchToPrinter": "Changer d'imprimante"
+      "SwitchToPrinter": "Changer d'imprimante",
+      "ReconnectToPrinter": "Re-connection"
     },
     "KlippyStatePanel": {
       "KlippyState": "Etat-Klippy",
@@ -295,7 +313,14 @@
       "Slicer": "Trancheur",
       "ETA": "TEA",
       "Unknown": "Inconnu",
-      "Requested": "Requis"
+      "Requested": "Requis",
+      "ExcludeObject": {
+        "Cancel": "annuler",
+        "ExcludeObject": "Exclure l'objet",
+        "ExcludeObjectHeadline": "Objet exclus",
+        "ExcludeObjectText": "Voulez-vous exclure \"{name}\"?",
+        "Excluded": "Exclus"
+      }
     },
     "ToolsPanel": {
       "Headline": "Températures",
@@ -347,12 +372,22 @@
       "FollowingPluginHasAnError": "Le Plug-in suivant a une erreur",
       "MoonrakerErrorInfo": "Une erreur a été détectée lors du chargement d'un composant de Moonraker. Contrôlez le fichier log et corrigez.",
       "MoonrakerWarnings": "Avertissement Moonraker"
+    },
+    "DependenciesPanel": {
+      "Dependency": "Dépendance(s)",
+      "DependencyDescription": "Votre version {name} ne supporte pas toutes possibilités de Mainsail. Mettez à jour {name} vers {neededVersion}."
+    },
+    "KlipperWarningsPanel": {
+      "DeprecatedOption": "L'option '{option}' dans la section '{section}' est obsolète.",
+      "DeprecatedValue": "La valeur '{value}' dans l'option '{option}' dans la section '{section}' est obsolète.",
+      "DownloadLog": "téléchargement du fichier log",
+      "KlipperWarnings": "Avertissements Klipper"
     }
   },
   "Settings": {
     "Cancel": "Annuler",
     "ConsoleTab": {
-      "AddFilter": "ajouter filtre",
+      "AddFilter": "Ajouter filtre",
       "Console": "Console",
       "CreateHeadline": "Créer filtre",
       "Direction": "Direction",
@@ -364,7 +399,10 @@
       "Name": "Nom",
       "Regex": "Regex",
       "StoreButton": "Sauvegarder filtre",
-      "UpdateButton": "Mettre à jour filtre"
+      "UpdateButton": "Mettre à jour filtre",
+      "EntryStyle": "Style de dialogue d'entrée",
+      "EntryStyleCompact": "compact",
+      "EntryStyleDefault": "defaut"
     },
     "ControlTab": {
       "Control": "Contrôle",
@@ -378,27 +416,61 @@
       "MoveDistancesZInMm": "Déplacement Z en mm",
       "SpeedEInMms": "Vitesse E en mm/s",
       "SpeedXY": "Vitesse XY",
-      "SpeedZ": "Vitesse Z"
+      "SpeedZ": "Vitesse Z",
+      "Bars": "Barres",
+      "Circle": "Cercle",
+      "Cross": "Croix",
+      "Style": "Style"
     },
     "Edit": "Edition",
     "GeneralTab": {
-      "BoolBigThumbnail": "Grande miniature",
-      "BoolBigThumbnailDescription": "Afficher une grande miniature à l'écran durant l'impression",
-      "DisplayCANCEL_PRINT": "Afficher \"Annuler impression\"",
-      "DisplayCANCEL_PRINTDescription": "Affiche le bouton \"Annuler impression\" de manière permanente. Pas de confirmation demandée",
-      "DisplayZOffset": "Afficher Offset-Z",
-      "DisplayZOffsetDescription": "Autrement le panneau n'apparait qu'une fois l'impression démarrée",
-      "FactoryInfo": "Voulez-vous vraiment restorer Mainsail aux réglage d'usine ?",
+      "FactoryInfo": "Voulez-vous vraiment restaurer Mainsail aux réglage d'usine ?",
       "FactoryReset": "Réglages d'usine",
       "General": "Général",
       "Language": "Langue",
       "PrinterName": "Nom de l'imprimante",
-      "ResetMainsail": "Mise à zéro Mainsail"
+      "ResetMainsail": "Mise à zéro Mainsail",
+      "CalcEtaTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
+      "CalcEstimateTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
+      "CalcEtaTime": "Calcul du TEA",
+      "CalcEstimateTime": "Calcul du temps estimé"
     },
     "InterfaceSettings": "Réglages interface",
     "MacrosTab": {
       "Macros": "Macros",
-      "NOMacros": "Pas de macros trouvées"
+      "NOMacros": "Pas de macros trouvées",
+      "Add": "ajouter",
+      "AddGroup": "ajouter un groupe",
+      "AvailableMacros": "Macros disponibles",
+      "ChangeMacroColor": "Changement de la couleur du bouton",
+      "Color": "Couleur",
+      "CountMacros": "aucune Macro ajoutée | {count} Macro | {count} Macros",
+      "CreateGroup": "Créer un groupe",
+      "Custom": "spécial",
+      "CustomColor": "Couleur spéciale",
+      "DeleteMacroFromGroup": "Effacer la Macro du groupe",
+      "DeletedMacro": "Macro effacée",
+      "EditGroup": "Edition du groupe",
+      "Error": "erreur",
+      "Expert": "Expert",
+      "General": "Général",
+      "GroupMacros": "Macros de groupe",
+      "Macrogroups": "Groupe",
+      "Management": "Gestion",
+      "Name": "Nom",
+      "NoAvailableMacros": "Pas de Macros disponibles",
+      "NoGroups": "Pas de groupe trouvé",
+      "NoMacrosInGroup": "Aucune Macro dans ce groupe",
+      "Primary": "primaire",
+      "Secondary": "secondaire",
+      "ShowInStatePaused": "Affiche/cache si l'imprimante est en pause",
+      "ShowInStatePrinting": "Affiche/cache si l'imprimante est active",
+      "ShowInStateStandby": "Affiche/cache si l'imprimante est en veille",
+      "Simple": "Simple",
+      "Status": "Status",
+      "Success": "réussi",
+      "UnknownGroup": "Groupe inconnu",
+      "Warning": "attention"
     },
     "DashboardTab": {
       "Dashboard": "Tableau de bord",
@@ -430,12 +502,7 @@
       "RemotePrinters": "Imprimante distante",
       "UpdatePrinter": "Mise à jour imprimante"
     },
-    "ThemeTab": {
-      "Logo": "Logo",
-      "Primary": "Primaire",
-      "Theme": "Thème"
-    },
-    "WebcamTab": {
+    "WebcamsTab": {
       "AddWebcam": "Ajouter caméra",
       "CreateWebcam": "Créer caméra",
       "EditWebcam": "Editer caméra",
@@ -457,13 +524,50 @@
       "Required": "requis",
       "SaveWebcam": "sauvegarde caméra",
       "Service": "Service",
-      "ShowInNavigation": "Afficher dans la navigation",
       "TargetFPS": "IPS destination",
       "UpdateWebcam": "Mise à jour Caméra",
       "UrlNotAvailable": "URL non disponible",
       "Uv4lMjpeg": "UV4L-MJPEG",
-      "WebcamURL": "URL Caméra",
-      "Webcams": "Caméras"
+      "Webcams": "Caméras",
+      "UrlStream": "URL du flux",
+      "UrlSnapshot": "URL des instantanés"
+    },
+    "EditorTab": {
+      "ConfirmUnsavedChanges": "Demande de sauvegarder ou annuler des changements",
+      "ConfirmUnsavedChangesDescription": "Si actif, l'éditeur requiert une confirmation de sauvegarde ou d'annulation des changements effectués. Si inactif, les changements sont annulés sans confirmation.",
+      "Editor": "Editeur",
+      "UseEscToClose": "Utiliser la touche \"esc\" pour fermer l'éditeur",
+      "UseEscToCloseDescription": "Autoriser la touche \"esc\" de fermer l'éditeur"
+    },
+    "GCodeViewerTab": {
+      "BackgroundColor": "Couleur de l'arrière-plan",
+      "Extruder": "Extrudeur",
+      "ExtruderColor": "Couleur de l'extrudeur",
+      "FeedRate": "Débit de l'extrudeur",
+      "GCodeViewer": "Visualeur G-Code",
+      "GridColor": "Couleur de la grille",
+      "MaxFeed": "Débit maximum",
+      "MinFeed": "Débit minimum",
+      "ShowAxes": "Affiche les axes"
+    },
+    "UiSettingsTab": {
+      "BoolBigThumbnail": "Grande miniature",
+      "BoolBigThumbnailDescription": "Affiche une grande miniature dans l'écran de status durant l'impression.",
+      "ConfirmOnEmergencyStop": "Requiert une confirmation en cas d'arrêt d'urgence",
+      "ConfirmOnEmergencyStopDescription": "Affiche une demande de confirmation en cas d'arrêt d'urgence",
+      "ConfirmOnPowerDeviceChange": "Requiert une confirmation pour changement de mode de modules de puissance",
+      "ConfirmOnPowerDeviceChangeDescription": "Affiche une demande de confirmation pour changement de mode de modules de puissance",
+      "DisplayCANCEL_PRINT": "Affiche CANCEL_PRINT",
+      "DisplayCANCEL_PRINTDescription": "Affiche le bouton CANCEL_PRINT de manière permanente. Pas de confirmation demandée.",
+      "DisplayZOffset": "Affiche le panneau Z-Offset",
+      "DisplayZOffsetDescription": "Autrement le panneau n'apparaît qu'une fois l'impression démarrée.",
+      "GcodeThumbnails": "Miniature G-Code",
+      "GcodeThumbnailsDescription": "Cliquez sur le bouton pour abtenir des instructions",
+      "Guide": "Guide",
+      "Logo": "Logo",
+      "Primary": "Primaire",
+      "ShowWebcamInNavigation": "Affiche \"Webcam\" dans le menu de navigation",
+      "UiSettings": "Paramètres interface utilisateur"
     }
   },
   "ConnectionDialog": {
@@ -505,7 +609,8 @@
       "Total": "Total",
       "UploadFile": "Chargement d'un fichier",
       "Uploading": "Téléchargement",
-      "Used": "Utilisé"
+      "Used": "Utilisé",
+      "HideBackupFiles": "Cacher les fichiers de sauvegarde"
     },
     "EndstopPanel": {
       "Endstop": "Fin de course",
@@ -538,20 +643,25 @@
     },
     "UpdatePanel": {
       "CheckForUpdates": "Contrôle de mises à jour",
-      "Commits": "Publié",
-      "CommittedAt": "Publié à",
+      "Commits": "publié",
       "Detached": "détaché",
       "Dirty": "différent",
       "ERROR": "Erreur",
       "Invalid": "invalide",
       "OSPackages": "Paquets système",
-      "PackagesCanBeUpgraded": "Les paquets peuvent être mis à jour",
+      "PackagesCanBeUpgraded": " paquets peuvent être mis à jour",
       "System": "Système",
       "Unknown": "inconnu",
       "UpToDate": "à jour",
       "Update": "mise à jour",
       "UpdateManager": "Gestionnaire de mises à jour",
-      "Upgrade": "mise à jour"
+      "Upgrade": "mise à jour",
+      "CommitsOnDate": "Publié le {date}",
+      "CommittedDaysAgo": "Publié il y a {days} jours",
+      "CommittedHoursAgo": "Publié il y a {hours} heures",
+      "CommittedOnDate": "Publié le {date}",
+      "CommittedYesterday": "Publié hier",
+      "UpdateAll": "Mettre tout à jour"
     }
   },
   "SelectPrinterDialog": {
@@ -570,5 +680,45 @@
     "TryAgain": "re-essayer",
     "UpdatePrinter": "Mise à jour imprimante",
     "YouCanFindMore": "Vous pouvez trouver plus de détails ici:"
+  },
+  "EmergencyStopDialog": {
+    "AreYouSure": "Etes-vous sûr ?",
+    "No": "Non",
+    "Yes": "Oui",
+    "EmergencyStop": "Arrêt d'urgence"
+  },
+  "GCodeViewer": {
+    "ClearLoadedFile": "Effacer",
+    "ColorMode": "Mode couleur",
+    "Downloading": "Téléchargement",
+    "ForceLineRendering": "Force le rendu des lignes",
+    "HDRendering": "Rendu HD (extrusions rondes)",
+    "High": "Haut",
+    "LoadCurrentFile": "Charge le fichier courant",
+    "LoadLocal": "Fichier local",
+    "Low": "Bas",
+    "Max": "Max",
+    "Medium": "Moyen",
+    "ReloadRequired": "Rechargement requis",
+    "RenderQuality": "Qualité du rendu",
+    "Rendering": "Rendu",
+    "ResetCamera": "Raz caméra",
+    "ShowObjectSelection": "Affiche les objets séléctionnés",
+    "ShowToolhead": "Affiche la tête d'impression",
+    "ShowTravelMoves": "Affiche les mouvements",
+    "SpecularLighting": "Lumière spéculaire",
+    "Title": "Visualiseur G-code",
+    "Tracking": "Suivi",
+    "Transparency": "Transparence",
+    "Ultra": "Ultra",
+    "VoxelMode": "Mode Voxel (ASMBL)",
+    "ZClip": "Limitation en Z"
+  },
+  "PowerDeviceChangeDialog": {
+    "AreYouSure": "Etes-vous sûr ?",
+    "No": "Non",
+    "Yes": "Oui",
+    "TurnDeviceOff": "Arrêter {device}",
+    "TurnDeviceOn": "Mettre en marche {device}"
   }
 }
