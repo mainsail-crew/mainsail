@@ -60,7 +60,7 @@
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.menuStyle')" :sub-title="$t('Settings.UiSettingsTab.menuStyleDescription')">
+                <settings-row :title="$t('Settings.UiSettingsTab.MenuStyle')" :sub-title="$t('Settings.UiSettingsTab.MenuStyleDescription')">
                     <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -78,13 +78,8 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {defaultLogoColor, defaultPrimaryColor, defaultMenuStyle} from '@/store/variables'
+import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 import {Debounce} from 'vue-debounce-decorator'
-
-interface menuStyle {
-    text: string
-    value: string
-}
 
 @Component({
     components: {SettingsRow}
@@ -93,17 +88,6 @@ interface menuStyle {
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
-    private defaultMenuStyle = defaultMenuStyle
-    private menuStyles: menuStyle[] = [
-        {
-            text: 'Icons only',
-            value: 'iconsOnly'
-        },
-        {
-            text: 'Icons + Text',
-            value: 'iconsAndText'
-        }
-    ]
 
     get logoColor() {
         return this.$store.state.gui.theme.logo
@@ -170,11 +154,24 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get menuStyleSetting() {
-        return this.$store.state.gui.dashboard.menuStyle ?? defaultMenuStyle
+        return this.$store.state.gui.dashboard.menuStyle
     }
 
     set menuStyleSetting(newVal) {
-        this.$store.dispatch('gui/setMenuStyle', newVal)
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.menuStyle', value: newVal })
+    }
+
+    get menuStyles() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsOnly'),
+                value: 'iconsOnly'
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsAndText'),
+                value: 'iconsAndText'
+            }
+        ]
     }
 
     get boolHideUploadAndPrintButton() {

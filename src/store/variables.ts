@@ -92,5 +92,3 @@ export const allDashboardPanels = [
 export const thumbnailSmallMin = 32
 export const thumbnailSmallMax = 64
 export const thumbnailBigMin = 256
-
-export const defaultMenuStyle = 'iconsOnly'

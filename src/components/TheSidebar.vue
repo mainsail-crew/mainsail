@@ -82,8 +82,6 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
-import {defaultMenuStyle} from '@/store/variables'
-
 
 @Component({
     components: {
@@ -91,6 +89,7 @@ import {defaultMenuStyle} from '@/store/variables'
         AboutModal
     }
 })
+
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
@@ -101,7 +100,7 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get menuStyle() {
-        return this.$store.state.gui.dashboard.menuStyle ?? defaultMenuStyle
+        return this.$store.state.gui.dashboard.menuStyle
     }
 
     get sidebarBackground(): string {
