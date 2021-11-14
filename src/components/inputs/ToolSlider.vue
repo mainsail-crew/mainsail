@@ -132,13 +132,10 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     startLockTimer() {
-        let timeout = this.autoLockSlidersTimeout
+        if (!this.isTouchDevice || !this.lockSliders || this.sliderIsLocked) return
 
-        if(this.lockSliders && this.isTouchDevice) {
-            setTimeout(() => {
-                (timeout > 0 && !this.sliderIsLocked) ? this.sliderIsLocked = true : {}
-            }, timeout * 1000)
-        }
+        let timeout = this.autoLockSlidersTimeout
+        if (timeout > 0) setTimeout(() => this.sliderIsLocked = true, timeout * 1000)
     }
 
     get colorBar() {
