@@ -96,12 +96,9 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
-
-        //initialize slider lock state on component creation
-        this.lockSlidersChanged()
     }
 
-    @Watch('lockSliders')
+    @Watch('lockSliders', {immediate: true})
     lockSlidersChanged(){
         if(this.lockSliders && this.isTouchDevice){
             this.sliderIsLocked = true
