@@ -17,13 +17,20 @@
     .active-nav-item {
         border-right: 4px solid var(--v-primary-base);
     }
-    .nowrap {
-        white-space: nowrap !important;
+    .menu-item-icon {
+        opacity: .85;
+    }
+    .menu-item-title {
+        line-height: 30px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        opacity: .85;
     }
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="200px" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(menuStyle === 'iconsOnly')" :key="menuStyle" width="220px" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -31,11 +38,11 @@
                         router to="/allPrinters"
                         class="small-list-item mt-1"
                     >
-                        <v-list-item-icon class="my-3 mr-3">
+                        <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                             <v-icon>mdi-view-dashboard-outline</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title tile>{{ $t("App.Printers")}}</v-list-item-title>
+                            <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers")}}</v-list-item-title>
                         </v-list-item-content>
 
                     </v-list-item>
@@ -47,11 +54,11 @@
                         v-if="showInNavi(category)"
                         class="small-list-item"
                     >
-                        <v-list-item-icon class="my-3 mr-3">
+                        <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                             <v-icon>mdi-{{ category.icon }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title tile>{{ $t(`Router.${category.title}`) }}</v-list-item-title>
+                            <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </div>
@@ -59,7 +66,7 @@
         </v-list>
         <template v-slot:append>
             <v-list-item class="small-list-item mb-2">
-                <v-list-item-icon>
+                <v-list-item-icon class="menu-item-icon">
                     <about-modal></about-modal>
                 </v-list-item-icon>
             </v-list-item>
@@ -82,6 +89,7 @@ import AboutModal from '@/components/modals/AboutModal.vue'
         AboutModal
     }
 })
+
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
@@ -91,8 +99,8 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    get menuStyle() {
+        return this.$store.state.gui.dashboard.menuStyle
     }
 
     get sidebarBackground(): string {
