@@ -19,8 +19,8 @@ You can contribute in a couple of different ways:
    (For Example: [BabelEdit](https://www.codeandweb.com/babeledit), [i18N-Manager](https://www.electronjs.org/apps/i18n-manager))
 2. Create/Update translations using [VSCode](https://code.visualstudio.com/) and [i18n Ally](https://github.com/lokalise/i18n-ally).
 
-If you have a finished translation file, you can make a [PR (pull request)](https://github.com/meteyou/mainsail/pulls)
-on github or create an [issue](https://github.com/meteyou/mainsail/issues) on github and attach the translation.
+If you have a finished translation file, you can make a [PR (pull request)](https://github.com/mainsail-crew/mainsail/pulls)
+on github or create an [issue](https://github.com/mainsail-crew/mainsail/issues) on github and attach the translation.
 
 ## Testing
 

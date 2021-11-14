@@ -27,7 +27,7 @@ Add the following section to your printers moonraker.conf:
 
 [update_manager client mainsail]
 type: web
-repo: meteyou/mainsail
+repo: mainsail-crew/mainsail
 path: ~/mainsail
 ```
 

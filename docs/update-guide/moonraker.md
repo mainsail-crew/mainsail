@@ -26,7 +26,7 @@ To use the update manager in Mainsail you have to add this in your moonraker.con
 
 [update_manager client mainsail]
 type: web
-repo: meteyou/mainsail
+repo: mainsail-crew/mainsail
 path: ~/mainsail
 ```
 

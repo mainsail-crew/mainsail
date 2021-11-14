@@ -72,7 +72,7 @@ trusted_clients:
 
 [update_manager mainsail]
 type: web
-repo: meteyou/mainsail
+repo: mainsail-crew/mainsail
 path: ~/mainsail
 ```
 

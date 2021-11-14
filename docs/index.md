@@ -10,8 +10,8 @@ Mainsail aims to make Klipper more accessible to end users through a lightweight
 {: .fs-5 }
 
 [Getting Started](/setup){: .btn .btn-primary }
-[GitHub](https://github.com/meteyou/mainsail){: .btn}{:target="_blank"}
-[Release Notes](https://github.com/meteyou/mainsail/releases){: .btn}{:target="_blank"}
+[GitHub](https://github.com/mainsail-crew/mainsail){: .btn}{:target="_blank"}
+[Release Notes](https://github.com/mainsail-crew/mainsail/releases){: .btn}{:target="_blank"}
 
 ## Screenshots
 ![Dashboard](assets/img/screenshot.png)
@@ -34,7 +34,7 @@ Do you need help or just want to talk? Join us on discord. We have a very active
 Have you found a bug? Then we would like you to create an Issue on GitHub.
 
 [Discord](https://discord.gg/skWTwTD){: .btn}{:target="_blank"}
-[GitHub Issues](https://github.com/meteyou/mainsail/issues){: .btn}{:target="_blank"}
+[GitHub Issues](https://github.com/mainsail-crew/mainsail/issues){: .btn}{:target="_blank"}
 
 ## Support this project
 The project is primarily developed and maintained by meteyou. To keep the project going he invests his free time, almost every day. To motivate him (☕🍺😜) there are several ways to support the project.
