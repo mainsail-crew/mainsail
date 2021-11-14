@@ -10,7 +10,7 @@
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
                     <v-btn
-                        v-if="canLock && (lockSliders && this.isTouchDevice)"
+                        v-if="canLock && lockSliders && isTouchDevice"
                         @click="sliderIsLocked = !sliderIsLocked"
                         plain
                         small
@@ -105,11 +105,6 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         } else {
             this.sliderIsLocked = false
         }
-    }
-
-    //helper to determine if mobile/tablet or larger
-    get isTouchDevice() {
-        return (this.isMobile || this.isTablet) ?? false
     }
 
     get lockSliders() {
