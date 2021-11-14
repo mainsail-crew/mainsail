@@ -60,8 +60,8 @@
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.BoolWideNavDrawer')" :sub-title="$t('Settings.UiSettingsTab.BoolWideNavDrawerDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="boolWideNavDrawer" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.UiSettingsTab.menuStyle')" :sub-title="$t('Settings.UiSettingsTab.menuStyleDescription')">
+                    <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
@@ -78,14 +78,32 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
+import {defaultLogoColor, defaultPrimaryColor, defaultMenuStyle} from '@/store/variables'
 import {Debounce} from 'vue-debounce-decorator'
+
+interface menuStyle {
+    text: string
+    value: string
+}
+
 @Component({
     components: {SettingsRow}
 })
+
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
+    private defaultMenuStyle = defaultMenuStyle
+    private menuStyles: menuStyle[] = [
+        {
+            text: 'Icons only',
+            value: 'iconsOnly'
+        },
+        {
+            text: 'Icons + Text',
+            value: 'iconsAndText'
+        }
+    ]
 
     get logoColor() {
         return this.$store.state.gui.theme.logo
@@ -151,12 +169,12 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
     }
 
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    get menuStyleSetting() {
+        return this.$store.state.gui.dashboard.menuStyle ?? defaultMenuStyle
     }
 
-    set boolWideNavDrawer(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolWideNavDrawer', value: newVal })
+    set menuStyleSetting(newVal) {
+        this.$store.dispatch('gui/setMenuStyle', newVal)
     }
 
     get boolHideUploadAndPrintButton() {

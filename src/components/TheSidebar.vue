@@ -30,7 +30,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="!boolWideNavDrawer" :key="boolWideNavDrawer ? 'wide' : 'mini'" width="220px" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(menuStyle === 'iconsOnly')" :key="menuStyle" width="220px" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -82,6 +82,8 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
+import {defaultMenuStyle} from '@/store/variables'
+
 
 @Component({
     components: {
@@ -98,8 +100,8 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
-    get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    get menuStyle() {
+        return this.$store.state.gui.dashboard.menuStyle ?? defaultMenuStyle
     }
 
     get sidebarBackground(): string {

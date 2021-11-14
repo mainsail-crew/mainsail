@@ -252,5 +252,13 @@ export const actions: ActionTree<GuiState, RootState> = {
             keyName: 'dashboard.boolHideUploadAndPrintButton',
             newVal: state.dashboard.boolHideUploadAndPrintButton
         })
+    },
+
+    setMenuStyle({commit, dispatch, state}, payload) {
+        commit('setMenuStyle', payload)
+        dispatch('updateSettings', {
+            keyName: 'dashboard.menuStyle',
+            newVal: state.dashboard.menuStyle
+        })
     }
 }
