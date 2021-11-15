@@ -84,8 +84,8 @@
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.BoolWideNavDrawer')" :sub-title="$t('Settings.UiSettingsTab.BoolWideNavDrawerDescription')" :dynamicSlotWidth="true">
-                    <v-switch v-model="boolWideNavDrawer" hide-details class="mt-0"></v-switch>
+                <settings-row :title="$t('Settings.UiSettingsTab.MenuStyle')" :sub-title="$t('Settings.UiSettingsTab.MenuStyleDescription')">
+                    <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
@@ -108,6 +108,7 @@ import {Debounce} from 'vue-debounce-decorator'
 @Component({
     components: {SettingsRow}
 })
+
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
@@ -196,8 +197,25 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
     }
 
-    set boolWideNavDrawer(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolWideNavDrawer', value: newVal })
+    get menuStyleSetting() {
+        return this.$store.state.gui.dashboard.menuStyle
+    }
+
+    set menuStyleSetting(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.menuStyle', value: newVal })
+    }
+
+    get menuStyles() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsOnly'),
+                value: 'iconsOnly'
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsAndText'),
+                value: 'iconsAndText'
+            }
+        ]
     }
 
     get boolHideUploadAndPrintButton() {
