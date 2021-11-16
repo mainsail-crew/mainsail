@@ -14,7 +14,7 @@
 			"KlipperControl": "Klipper Control",
 			"KlipperRestart": "Restart",
 			"KlipperFirmwareRestart": "FIRMWARE Restart",
-			"RestartServices": "Restart Services",
+			"ServiceControl": "Service Control",
 			"PowerDevices": "Power Devices",
 			"HostControl": "Host Control",
 			"Reboot": "Reboot",
@@ -280,6 +280,10 @@
 			"Headline": "Macros",
 			"Send": "send"
 		},
+		"DependenciesPanel": {
+			"Dependency": "Dependency | Dependencies",
+			"DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
+		},
 		"FarmPrinterPanel": {
 			"WebcamOff": "Off",
 			"SwitchToPrinter": "Switch to Printer",
@@ -295,8 +299,8 @@
 		"KlipperWarningsPanel": {
 			"KlipperWarnings": "Klipper Warnings",
 			"DownloadLog": "download log",
-			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated.",
-			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated."
+			"DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+			"DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release."
 		},
 		"MiniconsolePanel": {
 			"Headline": "Console",
@@ -520,9 +524,8 @@
 			"FactoryInfo": "Do you really want to reset mainsail to factory settings?",
 			"ResetMainsail": "reset mainsail"
 		},
-		"WebcamTab": {
+		"WebcamsTab": {
 			"Webcams": "Webcams",
-			"ShowInNavigation": "Show in navigation",
 			"AddWebcam": "add webcam",
 			"CreateWebcam": "Create Webcam",
 			"EditWebcam": "Edit Webcam",
@@ -548,7 +551,8 @@
 			"UrlNotAvailable": "URL not available",
 
 			"Name": "Name",
-			"WebcamURL": "Webcam URL",
+			"UrlStream": "URL Stream",
+			"UrlSnapshot": "URL Snapshot",
 			"Service": "Service",
 			"TargetFPS": "Target FPS",
 			"FlipHorizontally": "Flip webcam horizontally",
@@ -595,7 +599,8 @@
 			"ShowInStateStandby": "Show/hide if printer is standby.",
 			"ShowInStatePaused": "Show/hide if printer is paused.",
 			"ShowInStatePrinting": "Show/hide if printer is printing.",
-			"DeleteMacroFromGroup": "Delete macro from group."
+			"DeleteMacroFromGroup": "Delete macro from group.",
+			"DeletedMacro": "Deleted macro"
 		},
 		"ControlTab": {
 			"Control": "Control",
@@ -659,8 +664,18 @@
 			"UiSettings": "UI-Settings",
 			"Logo": "Logo",
 			"Primary": "Primary",
+			"GcodeThumbnails": "Gcode thumbnails",
+			"GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
+			"Guide": "Guide",
+			"ShowWebcamInNavigation": "Show Webcam in navigation",
 			"BoolBigThumbnail": "Large thumbnail",
 			"BoolBigThumbnailDescription": "Display a large thumbnail in the status panel during a print.",
+			"MenuStyle": "Style of the side menu",
+			"MenuStyleDescription": "Change the appearance of the side menu",
+			"MenuStyleIconsOnly": "Icons only",
+			"MenuStyleIconsAndText": "Icons + Text",
+			"BoolHideUploadAndPrintButton": "Hide Upload and Print Button",
+			"BoolHideUploadAndPrintButtonDescription": "Show or hide the \"Upload and Print\" button in the topbar.",
 			"DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
 			"DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
 			"DisplayZOffset": "Show Z-Offset-Panel",

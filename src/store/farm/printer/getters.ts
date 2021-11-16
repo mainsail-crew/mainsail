@@ -1,7 +1,8 @@
-import {defaultLogoColor, themeDir} from '@/store/variables'
+import {defaultLogoColor, themeDir, thumbnailBigMin} from '@/store/variables'
 import {convertName} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {FarmPrinterState} from '@/store/farm/printer/types'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FarmPrinterState, any> = {
@@ -35,6 +36,10 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         ) return state.data.gui.general.printername
 
         return state.socket.port !== 80 ? state.socket.hostname+':'+state.socket.port : state.socket.hostname
+    },
+
+    getPrinterSocketState: (state) => {
+        return state.socket
     },
 
     getLogoColor: (state) => {
@@ -84,7 +89,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
         if (state.current_file.filename && state.current_file.thumbnails?.length) {
             const indexLastDir = state.current_file.filename.lastIndexOf('/')
             const dir = (indexLastDir !== -1) ? state.current_file.filename.substr(0, indexLastDir)+'/' : ''
-            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = state.current_file.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) return '//'+state.socket.hostname+':'+state.socket.port+'/server/files/gcodes/'+dir+thumbnail.relative_path
         }
@@ -237,6 +242,12 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterWebcams: (state) => {
-        return state.data.gui.webcam.configs ?? []
+        const webcams: GuiWebcamStateWebcam[] = []
+
+        Object.keys(state.data.webcams).forEach((id: string) => {
+            webcams.push({...state.data?.webcams[id], id})
+        })
+
+        return webcams
     }
 }

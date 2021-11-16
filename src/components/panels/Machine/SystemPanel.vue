@@ -103,7 +103,7 @@
                     <v-btn icon @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
-                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                    <overlay-scrollbars style="height: 350px;" class="px-6">
                         <template v-if="mcuDetailsDialog.mcu.mcu_constants">
                             <v-row>
                                 <v-col><span class="headline">{{ $t('Machine.SystemPanel.Constants') }}</span></v-col>
@@ -128,7 +128,7 @@
                                 </v-row>
                             </div>
                         </template>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -138,7 +138,7 @@
                     <v-btn icon @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
-                    <perfect-scrollbar style="height: 350px;" :options="{ suppressScrollX: true }" class="px-6">
+                    <overlay-scrollbars style="height: 350px;" class="px-6">
                         <template v-if="Object.keys(systemInfo).length">
                             <div v-for="(infoGroup, key, index) of systemInfo" v-bind:key="key">
                                 <template v-if="key !== 'available_services'">
@@ -160,7 +160,7 @@
                                 <v-col><p>No more Infos</p></v-col>
                             </v-row>
                         </template>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>

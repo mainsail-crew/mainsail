@@ -10,7 +10,14 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('reset')
     },
 
-    init({ commit, dispatch, rootState }, payload) {
+    init() {
+        window.console.debug('init gui')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore'})
+    },
+
+    initStore({ commit, dispatch, rootState }, payload) {
+
+        //added in V2.1.0
         if (
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
@@ -20,25 +27,100 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.dashboard?.control.useCross
         }
 
+        //added in V2.1.0
+        if (payload.value.webcam) {
+            window.console.debug('convert old webcams')
+
+            if (payload.value.webcam.configs && payload.value.webcam.configs.length) {
+                payload.value.webcam.configs.forEach((oldWebcam: any) => {
+                    const newWebcam = {...oldWebcam, urlStream: oldWebcam.url, urlSnapshot: oldWebcam.url.replace('action=stream', 'action=snapshot')}
+                    delete newWebcam.url
+                    dispatch('webcam/store', { values: newWebcam })
+                })
+            }
+
+            commit('saveSetting', { name: 'webcamSettings.boolNavi', value: payload.value.webcam.boolNavi })
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'webcam' })
+        }
+
+        //added in V2.1.0
+        if (payload.value.presets) {
+            window.console.debug('convert old presets')
+
+            if (payload.value.presets && payload.value.presets.length) {
+                payload.value.presets.forEach((oldPreset: any) => {
+                    dispatch('presets/store', { values: oldPreset })
+                })
+
+                delete payload.value.presets
+            }
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets' })
+        }
+
+        //added in V2.1.0
+        if (payload.value.cooldownGcode) {
+            window.console.debug('convert old cooldownGcode')
+
+            dispatch('presets/updateCooldownGcode', payload.value.cooldownGcode)
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'cooldownGcode' })
+            delete payload.value.cooldownGcode
+        }
+
+        //added in V2.1.0
+        if (payload.value.console.customFilters) {
+            window.console.debug('convert old consolefilters')
+
+            if (payload.value.console.customFilters && payload.value.console.customFilters.length) {
+                payload.value.console.customFilters.forEach((oldFilter: any) => {
+                    dispatch('consolefilters/store', {values: oldFilter})
+                })
+            }
+
+            delete payload.value.console.customFilters
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'console.customFilters' })
+        }
+
+        //added in V2.1.0
+        if (payload.value.remote_printers) {
+            if (!rootState.socket?.remoteMode) {
+                window.console.debug('convert old remotePrinters')
+
+                payload.value.remote_printers.forEach((printer: any) => {
+                    const values = {
+                        hostname: printer.hostname ?? '',
+                        port: printer.port ?? 7125,
+                        settings: printer.settings ?? {},
+                    }
+                    dispatch('remoteprinters/store', { values })
+                })
+
+                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remote_printers' })
+            }
+
+            delete payload.value.remote_printers
+        }
+
+        //added in V2.1.0
+        if (payload.value.dashboard?.macrogroups) {
+            window.console.debug('convert old macrogroups')
+
+            payload.value.dashboard?.macrogroups.forEach((macrogroup: any) => {
+                dispatch('macrogroups/store', { values: macrogroup })
+            })
+
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'dashboard.macrogroups' })
+
+            delete payload.value.dashboard.macrogroups
+        }
+
         commit('setData', payload.value)
-
-        // init remote printers, when remoteMode is off
-        if (!rootState.socket?.remoteMode) dispatch('farm/readStoredPrinters', {}, { root: true })
-
-        dispatch('printer/init', null, { root: true })
-    },
-
-    updateDataFromDB({ commit }, payload) {
-        commit('saveSetting', {
-            name: payload.key,
-            value: payload.value
-        })
     },
 
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value }, { action: 'gui/updateDataFromDB' })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: payload.name, value: payload.value })
     },
 
     updateSettings(_, payload) {
@@ -51,7 +133,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 			!Array.isArray(payload.value[keyName])
         ) newState = Object.assign(payload.value[keyName], {...newState})
 
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState }, { action: 'gui/updateDataFromDB' })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
     },
 
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
@@ -70,75 +152,11 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    addPreset({ commit, dispatch, state }, payload) {
-        commit('addPreset', payload)
+    setCurrentWebcam({ commit, dispatch, state }, payload) {
+        commit('setCurrentWebcam', payload)
         dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    updatePreset({ commit, dispatch, state }, payload) {
-        commit('updatePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    deletePreset({ commit, dispatch, state }, payload) {
-        commit('deletePreset', payload)
-        dispatch('updateSettings', {
-            keyName: 'presets',
-            newVal: state.presets
-        })
-    },
-
-    addConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('addConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    updateConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('updateConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    deleteConsoleFilter({ commit, dispatch, state }, payload) {
-        commit('deleteConsoleFilter', payload)
-        dispatch('updateSettings', {
-            keyName: 'console.customFilters',
-            newVal: state.console.customFilters
-        })
-    },
-
-    addWebcam({ commit, dispatch, state }, payload) {
-        commit('addWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })
-    },
-
-    updateWebcam({ commit, dispatch, state }, payload) {
-        commit('updateWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
-        })
-    },
-
-    deleteWebcam({ commit, dispatch, state }, payload) {
-        commit('deleteWebcam', payload)
-        dispatch('updateSettings', {
-            keyName: 'webcam.configs',
-            newVal: state.webcam.configs
+            keyName: 'webcamSettings.currentCam',
+            newVal: state.webcamSettings.currentCam
         })
     },
 
@@ -228,84 +246,11 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    async storeMarcogroup({ commit, dispatch, state }, payload) {
-        payload.id = uuid()
-
-        await commit('storeMacrogroup', payload)
+    toggleHideUploadAndPrintBtn({commit, dispatch, state}, payload) {
+        commit('toggleHideUploadAndPrintBtn', payload)
         dispatch('updateSettings', {
-            keyName: 'dashboard.macrogroups',
-            newVal: state.dashboard.macrogroups
+            keyName: 'dashboard.boolHideUploadAndPrintButton',
+            newVal: state.dashboard.boolHideUploadAndPrintButton
         })
-
-        return payload.id
-    },
-
-    updateMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('updateMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    destroyMacrogroup({ commit, dispatch, state }, payload) {
-        commit('destroyMacrogroup', payload)
-        dispatch('updateSettings', {
-            keyName: 'dashboard.macrogroups',
-            newVal: state.dashboard.macrogroups
-        })
-
-        const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
-            'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
-
-        layouts.forEach((layoutname: string) => {
-            const layoutArray = [...state.dashboard[layoutname]]
-
-            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+payload)
-            if (index !== -1) {
-                commit('deleteFromDashboardLayout', { layoutname, index })
-                dispatch('updateSettings', {
-                    keyName: 'dashboard.'+layoutname,
-                    newVal: state.dashboard[layoutname]
-                })
-            }
-        })
-
-    },
-
-    addMacroToMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('addMacroToMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    updateMacroFromMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('updateMacroFromMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
-    },
-
-    removeMacroFromMacrogroup({ commit, dispatch, state }, payload) {
-        if (payload.group) {
-            commit('removeMacroFromMacrogroup', payload)
-            dispatch('updateSettings', {
-                keyName: 'dashboard.macrogroups',
-                newVal: state.dashboard.macrogroups
-            })
-
-        }
     }
 }

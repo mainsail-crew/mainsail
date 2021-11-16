@@ -28,47 +28,36 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     getDirectory({ state, commit, getters }, payload: ApiGetDirectoryReturn) {
-        let root = ''
-        let path = ''
-        let directory: FileStateFile | null
+        const pathArray = payload.requestParams.path.split('/')
+        const root = pathArray.length ? pathArray[0] : payload.requestParams.path
 
-        if (payload.requestParams?.path) {
-            const pathArray = payload.requestParams.path.split('/')
-            root = pathArray.length ? pathArray[0] : payload.requestParams.path
-
-            const slashIndex = payload.requestParams.path.indexOf('/')
-            path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
-
-            directory = getters['getDirectory'](path)
-        }
-
-        if ('root_info' in payload) {
-            const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload.root_info.name)
-            if (rootState && rootState.permissions !== payload.root_info?.permissions) commit('setRootPermissions', payload.root_info)
-        }
+        const slashIndex = payload.requestParams.path.indexOf('/')
+        const path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
+        const directory = getters['getDirectory'](root+'/'+path)
 
         if (directory?.childrens?.length) {
             directory?.childrens.forEach((item: FileStateFile) => {
-                if (item?.isDirectory && payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) < 0)
+                if (item?.isDirectory && payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) < 0) {
                     commit('setDeleteDir', {
                         item: {
                             path: path.length ? path+'/'+item.filename : item.filename,
                             root: root
                         }
                     })
-                else if (!item?.isDirectory && payload.files?.findIndex((element: ApiGetDirectoryReturnFile) => element.filename === item.filename) < 0)
+                } else if (!item?.isDirectory && payload.files?.findIndex((element: ApiGetDirectoryReturnFile) => element.filename === item.filename) < 0) {
                     commit('setDeleteFile', {
                         item: {
                             path: path.length ? path+'/'+item.filename : item.filename,
                             root: root
                         }
                     })
+                }
             })
         }
 
-        if (directory && payload.dirs?.length) {
+        if (payload.dirs?.length) {
             payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (!directory?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname))) {
+                if (directory?.childrens?.findIndex((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname)) === -1) {
                     commit('setCreateDir', {
                         item: {
                             path: path.length ? path+'/'+dir.dirname : dir.dirname,
@@ -111,6 +100,11 @@ export const actions: ActionTree<FileState, RootState> = {
                     })
                 }
             })
+        }
+
+        if (payload?.root_info?.name) {
+            const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload?.root_info?.name)
+            if (rootState && rootState.permissions !== payload.root_info?.permissions) commit('setRootPermissions', payload.root_info)
         }
 
         if (payload.requestParams?.path && payload.disk_usage) {

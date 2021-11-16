@@ -1,12 +1,12 @@
 <template>
     <div>
-        <v-btn color="grey darken-3" class="ml-5 minwidth-0 px-2" @click="showSettings = true">
+        <v-btn icon tile large @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
-        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile">
+        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile" @keydown.esc="showSettings = false">
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
-                    <v-btn icon @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
@@ -19,9 +19,9 @@
                         </v-tab>
                     </v-tabs>
                 </template>
-                <v-row>
+                <v-row class="flex-row flex-nowrap">
                     <v-col class="col-auto pr-0" v-if="!isMobile">
-                        <perfect-scrollbar class="settings-tabs-bar height500" ref="settingsTabsScroll">
+                        <overlay-scrollbars class="settings-tabs-bar height500" ref="settingsTabsScroll">
                             <v-tabs v-model="activeTab" :vertical="true">
                                 <v-tab
                                     v-for="(tab, index) of tabTitles" v-bind:key="index"
@@ -33,12 +33,12 @@
                                     <span class="text-truncate">{{ tab.title }}</span>
                                 </v-tab>
                             </v-tabs>
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-col>
-                    <v-col :class="isMobile ? '' : 'pl-0'">
-                        <perfect-scrollbar :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll" :options="{ suppressScrollX: true }">
+                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'width: 700px;'">
+                        <overlay-scrollbars :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll" :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
-                        </perfect-scrollbar>
+                        </overlay-scrollbars>
                     </v-col>
                 </v-row>
             </panel>
@@ -52,7 +52,7 @@ import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsGeneralTab from '@/components/settings/SettingsGeneralTab.vue'
-import SettingsWebcamTab from '@/components/settings/SettingsWebcamTab.vue'
+import SettingsWebcamsTab from '@/components/settings/SettingsWebcamsTab.vue'
 import SettingsMacrosTab from '@/components/settings/SettingsMacrosTab.vue'
 import SettingsControlTab from '@/components/settings/SettingsControlTab.vue'
 import SettingsConsoleTab from '@/components/settings/SettingsConsoleTab.vue'
@@ -73,7 +73,7 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsConsoleTab,
         SettingsControlTab,
         SettingsMacrosTab,
-        SettingsWebcamTab,
+        SettingsWebcamsTab,
         SettingsGeneralTab,
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
@@ -107,8 +107,8 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
             },
             {
                 icon: 'mdi-webcam',
-                name: 'webcam',
-                title: this.$t('Settings.WebcamTab.Webcams')
+                name: 'webcams',
+                title: this.$t('Settings.WebcamsTab.Webcams')
             },
             {
                 icon: 'mdi-code-tags',
@@ -165,7 +165,10 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     }
 
     scrollToTop() {
-        if (this.$refs.settingsScroll) this.$refs.settingsScroll.$el.scrollTop = 0
+        if (this.$refs.settingsScroll) {
+            const overlayscroll = this.$refs.settingsScroll.osInstance()
+            overlayscroll?.scroll({ y: '0%' })
+        }
     }
 }
 </script>
@@ -173,7 +176,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 <style scoped>
     .settings-tabs {
         height: auto;
-        max-height: calc(100vh - 96px);
+        max-height: calc(var(--app-height) - 96px);
     }
 
     .settings-tabs-bar {
@@ -184,4 +187,11 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     .settings-tabs.height500 {
         max-height: 500px;
     }
+</style>
+
+<style>
+    .settings-tabs .v-select__selections input {
+        width: 100px;
+    }
+
 </style>

@@ -15,3 +15,9 @@ export interface RootState {
     server?: ServerState
     editor?: EditorState
 }
+
+export interface RootStateDependency {
+    serviceName: string,
+    installedVersion: string,
+    neededVersion: string
+}

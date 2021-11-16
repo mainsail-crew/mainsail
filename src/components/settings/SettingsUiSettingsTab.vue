@@ -32,8 +32,16 @@
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.GcodeThumbnails')" :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')" :dynamicSlotWidth="true">
+                    <v-btn outlined small color="primary" href="https://docs.mainsail.xyz/quicktips/thumbnails" target="_blank">{{ $t('Settings.UiSettingsTab.Guide') }}</v-btn>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolBigThumbnail')" :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.ShowWebcamInNavigation')">
+                    <v-switch v-model="boolWebcamInNavigation" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')" :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')" :dynamicSlotWidth="true">
@@ -51,6 +59,14 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.MenuStyle')" :sub-title="$t('Settings.UiSettingsTab.MenuStyleDescription')">
+                    <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
+                    <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
+                </settings-row>
             </v-card-text>
         </v-card>
     </div>
@@ -64,9 +80,11 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 import {Debounce} from 'vue-debounce-decorator'
+
 @Component({
     components: {SettingsRow}
 })
+
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
@@ -93,6 +111,14 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set boolBigThumbnail(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
+    }
+
+    get boolWebcamInNavigation() {
+        return this.$store.state.gui.webcamSettings.boolNavi ?? false
+    }
+
+    set boolWebcamInNavigation(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'webcamSettings.boolNavi', value: newVal })
     }
 
     get displayCancelPrint() {
@@ -125,6 +151,35 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set confirmOnPowerDeviceChange(newVal) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
+    }
+
+    get menuStyleSetting() {
+        return this.$store.state.gui.dashboard.menuStyle
+    }
+
+    set menuStyleSetting(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.menuStyle', value: newVal })
+    }
+
+    get menuStyles() {
+        return [
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsOnly'),
+                value: 'iconsOnly'
+            },
+            {
+                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsAndText'),
+                value: 'iconsAndText'
+            }
+        ]
+    }
+
+    get boolHideUploadAndPrintButton() {
+        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+    }
+
+    set boolHideUploadAndPrintButton(newVal) {
+        this.$store.dispatch('gui/toggleHideUploadAndPrintBtn', newVal)
     }
 
     clearColorObject(color: any): string {

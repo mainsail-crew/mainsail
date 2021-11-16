@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import {MutationTree} from 'vuex'
-import {GuiState, GuiStateMacrogroup, GuiStateMacrogroupMacros} from '@/store/gui/types'
-import { v4 as uuid } from 'uuid'
+import {GuiState} from '@/store/gui/types'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -28,7 +27,7 @@ export const mutations: MutationTree<GuiState> = {
 
     saveSetting(state, payload) {
         // eslint-disable-next-line
-		const deepSet = (obj:any, is:string[] | string, value:any):any => {
+        const deepSet = (obj:any, is:string[] | string, value:any):any => {
             if (is !== undefined && typeof is === 'string')
                 return deepSet(obj,is.split('.'), value)
             else if (is.length==1 && value !== undefined)
@@ -62,85 +61,8 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(state.gcodefiles, 'showHiddenFiles', value)
     },
 
-    addPreset(state, payload) {
-        state.presets.push({
-            name: payload.name,
-            gcode: payload.gcode,
-            values: payload.values
-        })
-    },
-
-    updatePreset(state, payload) {
-        if (state.presets[payload.index]) {
-            Vue.set(state.presets[payload.index], 'name', payload.name)
-            Vue.set(state.presets[payload.index], 'gcode', payload.gcode)
-            Vue.set(state.presets[payload.index], 'values', payload.values)
-        }
-    },
-
-    deletePreset(state, payload) {
-        if (state.presets[payload.index]) {
-            state.presets.splice(payload.index, 1)
-        }
-    },
-
-    addConsoleFilter(state, payload) {
-        state.console.customFilters.push({
-            name: payload.name,
-            regex: payload.regex,
-            bool: payload.bool
-        })
-    },
-
-    updateConsoleFilter(state, payload) {
-        if (state.console.customFilters[payload.index]) {
-            Vue.set(state.console.customFilters[payload.index], 'name', payload.name)
-            Vue.set(state.console.customFilters[payload.index], 'regex', payload.regex)
-            Vue.set(state.console.customFilters[payload.index], 'bool', payload.bool)
-        }
-    },
-
-    deleteConsoleFilter(state, payload) {
-        if (state.console.customFilters[payload.index]) {
-            state.console.customFilters.splice(payload.index, 1)
-        }
-    },
-
-    addWebcam(state, payload) {
-        const newWebcam = {
-            name: payload.name,
-            icon: payload.icon,
-            service: payload.service,
-            targetFps: payload.targetFps,
-            url: payload.url,
-            flipX: payload.flipX,
-            flipY: payload.flipY,
-        }
-
-        state.webcam.configs.push(newWebcam)
-    },
-
-    updateWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            const webcam = {...state.webcam}
-            webcam.configs[payload.index] = {
-                name: payload.name,
-                icon: payload.icon,
-                service: payload.service,
-                targetFps: payload.targetFps,
-                url: payload.url,
-                flipX: payload.flipX,
-                flipY: payload.flipY,
-            }
-
-            Vue.set(state, 'webcam', webcam)
-        }
-    },
-
-    deleteWebcam(state, payload) {
-        if (state.webcam.configs[payload.index]) {
-            state.webcam.configs.splice(payload.index, 1)
-        }
+    setCurrentWebcam(state, payload) {
+        Vue.set(state.webcamSettings.currentCam, payload.viewport, payload.value)
     },
 
     setHistoryColumns(state, data) {
@@ -156,79 +78,22 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     addClosePanel(state, payload) {
-        const exist = state.dashboard.nonExpandPanels?.includes(payload.name) ?? false
-        if (!exist) state.dashboard.nonExpandPanels.push(payload.name)
+        const nonExpandPanels = [...state.dashboard.nonExpandPanels]
+
+        if (!nonExpandPanels.includes(payload.name)) {
+            nonExpandPanels.push(payload.name)
+
+            Vue.set(state.dashboard, 'nonExpandPanels', nonExpandPanels)
+        }
     },
 
     removeClosePanel(state, payload) {
-        const index = state.dashboard.nonExpandPanels.indexOf(payload.name)
-        if (index > -1) state.dashboard.nonExpandPanels.splice(index, 1)
-    },
+        const nonExpandPanels = [...state.dashboard.nonExpandPanels]
+        const index = nonExpandPanels.indexOf(payload.name)
+        if (index > -1) {
+            nonExpandPanels.splice(index, 1)
 
-    storeMacrogroup(state, payload) {
-        state.dashboard.macrogroups.push(payload)
-    },
-
-    destroyMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload)
-        if (index !== -1) state.dashboard.macrogroups.splice(index, 1)
-    },
-
-    addMacroToMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
-        if (index !== -1) {
-            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
-
-            const newMacro: GuiStateMacrogroupMacros = {
-                pos: 1,
-                name: payload.macro,
-                color: 'group',
-                showInStandby: true,
-                showInPrinting: true,
-                showInPause: true
-            }
-
-            if (macros.length) newMacro.pos = Math.max(...macros.map((m: GuiStateMacrogroupMacros) => m.pos)) + 1
-            macros.push(newMacro)
-
-            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
-        }
-    },
-
-    updateMacroFromMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
-        if (index !== -1) {
-            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
-            const updateMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
-            if (updateMacroIndex !== -1) {
-                macros[updateMacroIndex][payload.option] = payload.value
-                Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
-            }
-        }
-    },
-
-    removeMacroFromMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
-        if (index !== -1) {
-            const macros = [...state.dashboard.macrogroups[index]?.macros ?? []]
-            const deletedMacroIndex = macros.findIndex((m: GuiStateMacrogroupMacros) => m.name === payload.macro)
-            if (deletedMacroIndex !== -1) {
-                const oldPos = macros[deletedMacroIndex].pos
-                macros.splice(deletedMacroIndex, 1)
-
-                macros.filter((macro: GuiStateMacrogroupMacros) => macro.pos > oldPos).forEach((macro: GuiStateMacrogroupMacros) => {
-                    macro.pos = macro.pos - 1
-                })
-            }
-
-            Vue.set(state.dashboard.macrogroups[index], 'macros', macros)
-        }
-    },
-
-    updateMacrogroup(state, payload) {
-        const index = state.dashboard.macrogroups.findIndex((group: GuiStateMacrogroup) => group.id === payload.group)
-        if (index !== -1 && payload.option in state.dashboard.macrogroups[index]) {
-            Vue.set(state.dashboard.macrogroups[index], payload.option, payload.value)
+            Vue.set(state.dashboard, 'nonExpandPanels', nonExpandPanels)
         }
     },
 
@@ -236,5 +101,9 @@ export const mutations: MutationTree<GuiState> = {
         const layoutArray = [...state.dashboard[payload.layoutname]]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
+    },
+
+    toggleHideUploadAndPrintBtn(state, payload) {
+        Vue.set(state.dashboard, 'boolHideUploadAndPrintButton', payload)
     }
 }

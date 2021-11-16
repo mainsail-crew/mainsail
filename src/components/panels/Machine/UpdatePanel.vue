@@ -80,43 +80,41 @@
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
-                                    <v-item-group>
-                                        <v-menu :offset-y="true" title="Webcam">
-                                            <template v-slot:activator="{ on, attrs }">
-                                                <v-chip
-                                                    small
-                                                    label
-                                                    outlined
-                                                    :color="getBtnColor(value)"
-                                                    :disabled="getBtnDisabled(value)"
-                                                    class="minwidth-0 px-2 text-uppercase"
-                                                    v-bind="attrs" v-on="on"
-                                                >
-                                                    <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
-                                                    {{ getBtnText(value) }}
-                                                    <v-icon small>mdi-menu-down</v-icon>
-                                                </v-chip>
-                                            </template>
-                                            <v-list dense class="py-0">
-                                                <v-list-item @click="recovery(key, false)">
-                                                    <v-list-item-icon class="mr-0">
-                                                        <v-icon small>mdi-reload</v-icon>
-                                                    </v-list-item-icon>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title>Soft Recovery</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
-                                                <v-list-item @click="recovery(key,true)">
-                                                    <v-list-item-icon class="mr-0">
-                                                        <v-icon small>mdi-reload</v-icon>
-                                                    </v-list-item-icon>
-                                                    <v-list-item-content>
-                                                        <v-list-item-title>Hard Recovery</v-list-item-title>
-                                                    </v-list-item-content>
-                                                </v-list-item>
-                                            </v-list>
-                                        </v-menu>
-                                    </v-item-group>
+                                    <v-menu :offset-y="true" title="Webcam">
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-chip
+                                                small
+                                                label
+                                                outlined
+                                                :color="getBtnColor(value)"
+                                                :disabled="getBtnDisabled(value)"
+                                                class="minwidth-0 px-2 text-uppercase"
+                                                v-bind="attrs" v-on="on"
+                                            >
+                                                <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                                {{ getBtnText(value) }}
+                                                <v-icon small>mdi-menu-down</v-icon>
+                                            </v-chip>
+                                        </template>
+                                        <v-list dense class="py-0">
+                                            <v-list-item @click="recovery(key, false)">
+                                                <v-list-item-icon class="mr-0">
+                                                    <v-icon small>mdi-reload</v-icon>
+                                                </v-list-item-icon>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>Soft Recovery</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                            <v-list-item @click="recovery(key,true)">
+                                                <v-list-item-icon class="mr-0">
+                                                    <v-icon small>mdi-reload</v-icon>
+                                                </v-list-item-icon>
+                                                <v-list-item-content>
+                                                    <v-list-item-title>Hard Recovery</v-list-item-title>
+                                                </v-list-item-content>
+                                            </v-list-item>
+                                        </v-list>
+                                    </v-menu>
                                 </template>
                                 <template v-else>
                                     <v-chip
@@ -159,7 +157,7 @@
                         </v-row>
                     </template>
                     <template v-if="showUpdateAll">
-                        <v-divider class="my-0 border-top-2" ></v-divider>
+                        <v-divider class="mb-0 mt-2 border-top-2" ></v-divider>
                         <v-row class="pt-3">
                             <v-col class="text-center">
                                 <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
@@ -178,7 +176,7 @@
                     <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
-                    <perfect-scrollbar style="max-height: 400px;" :options="{ suppressScrollX: true }">
+                    <overlay-scrollbars style="max-height: 400px;" :options="{ overflowBehavior: { x: 'hidden' } }">
                         <v-row>
                             <v-col class="pt-3 pl-0">
                                 <v-timeline class="groupedCommits" align-top dense >
@@ -195,7 +193,7 @@
                                                                 <p class="caption mb-0"><span class="font-weight-bold text-decoration-none white--text">{{ commit.author}}</span> <span>{{ convertCommitDate(commit.date) }}</span></p>
                                                             </v-col>
                                                             <v-col class="col-auto pt-4 ">
-                                                                <v-chip outlined label small :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.modul+'/commit/'+commit.sha" target="_blank">{{ commit.sha.substr(0, 6)}}</v-chip>
+                                                                <v-chip outlined label small :href="'https://github.com/'+commitsOverlay.owner+'/'+commitsOverlay.repoName+'/commit/'+commit.sha" target="_blank">{{ commit.sha.substr(0, 6)}}</v-chip>
                                                             </v-col>
                                                         </v-row>
                                                     </li>
@@ -206,7 +204,7 @@
                                 </v-timeline>
                             </v-col>
                         </v-row>
-                    </perfect-scrollbar>
+                    </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>
@@ -233,6 +231,7 @@ interface commitsOverlay {
     bool: boolean
     owner: string
     modul: string
+    repoName: string
     commits: ServerUpdateMangerStateVersionInfoGitRepoCommits[]
     groupedCommits: groupedCommit[]
 }
@@ -253,6 +252,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         bool: false,
         owner: '',
         modul: '',
+        repoName: '',
         commits: [],
         groupedCommits: []
     }
@@ -473,6 +473,7 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
             this.openCommits = []
             this.commitsOverlay.owner = object.owner
             this.commitsOverlay.modul = key
+            this.commitsOverlay.repoName = object.repo_name ?? key
             this.commitsOverlay.commits = object.commits_behind
             this.commitsOverlay.groupedCommits = []
 

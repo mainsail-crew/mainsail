@@ -2,13 +2,13 @@
 <style>
 .viewer {
     width: 100%;
-    height: calc(100vh - 250px);
+    height: calc(var(--app-height) - 250px);
     border: 1px solid #3f3f3f;
 }
 
 .slider-autoheight,
 .slider-autoheight .v-slider {
-    height: calc(100vh - 250px);
+    height: calc(var(--app-height) - 250px);
 }
 
 .slider-autoheight .v-slider {
@@ -245,12 +245,8 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.printerIsPrinting ? this.$store.state.printer.virtual_sdcard.file_position : 0
     }
 
-    get sdCardConfigPath() {
-        return this.$store.state.printer.configfile?.settings?.virtual_sdcard?.path ?? ''
-    }
-
     get sdCardFilePath() {
-        return this.$store.state.printer.virtual_sdcard?.file_path?.replace(this.sdCardConfigPath+'/', '') ?? ''
+        return this.$store.state.printer.print_stats.filename ?? ''
     }
 
     get currentPosition() {

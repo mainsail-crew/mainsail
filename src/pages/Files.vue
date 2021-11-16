@@ -44,8 +44,16 @@
 </style>
 
 <template>
-    <div>
-        <panel :title="$t('Files.GCodeFiles')" icon="mdi-file-document-multiple-outline" card-class="gcode-files-panel fileupload-card" @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
+    <div
+        @dragover="dragOverUpload"
+        @dragleave="dragLeaveUpload"
+        @drop.prevent.stop="dragDropUpload"
+    >
+        <panel
+            :title="$t('Files.GCodeFiles')"
+            icon="mdi-file-document-multiple-outline"
+            card-class="gcode-files-panel"
+        >
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
@@ -125,7 +133,8 @@
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
-                @pagination="refreshMetadata">
+                @pagination="refreshMetadata"
+            >
 
                 <template slot="items">
                     <td v-for="header in filteredHeaders" v-bind:key="header.value">{{ header.text }}</td>
@@ -297,9 +306,19 @@
         </v-menu>
         <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
             <panel :title="$t('Files.NewDirectory')" card-class="gcode-files-new-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
                     {{ $t('Files.PleaseEnterANewDirectoryName') }}
-                    <v-text-field label="Name" :rules="input_rules" @keypress.enter="createDirectoryAction" required v-model="dialogCreateDirectory.name" ref="inputFieldCreateDirectory"></v-text-field>
+                    <v-text-field
+                        v-model="dialogCreateDirectory.name"
+                        ref="inputFieldCreateDirectory"
+                        @keypress.enter="createDirectoryAction"
+                        :label="$t('Files.Name')"
+                        :rules="input_rules"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -310,8 +329,17 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field :label="$t('Files.Name')" required v-model="dialogRenameFile.newName" ref="inputFieldRenameFile"></v-text-field>
+                    <v-text-field
+                        v-model="dialogRenameFile.newName"
+                        ref="inputFieldRenameFile"
+                        @keyup.enter="renameFileAction"
+                        :label="$t('Files.Name')"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -322,8 +350,17 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Files.RenameDirectory')" card-class="gcode-files-rename-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
-                    <v-text-field label="Name" required v-model="dialogRenameDirectory.newName" ref="inputFieldRenameDirectory"></v-text-field>
+                    <v-text-field
+                        v-model="dialogRenameDirectory.newName"
+                        ref="inputFieldRenameDirectory"
+                        :label="$t('Files.Name')"
+                        @keyup.enter="renameDirectoryAction"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -334,6 +371,9 @@
         </v-dialog>
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Files.DeleteDirectory')" card-class="gcode-files-delete-directory-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
                 </v-card-text>
@@ -350,7 +390,7 @@
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
-import { validGcodeExtensions } from '@/store/variables'
+import {thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensions} from '@/store/variables'
 import {formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -415,6 +455,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -445,6 +486,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -454,6 +496,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -464,6 +507,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -474,6 +518,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -484,6 +529,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         item: {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }
@@ -668,7 +714,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     doUploadFile(file: File) {
         let formData = new FormData()
-        let filename = file.name.replace(' ', '_')
+        let filename = file.name
 
         this.uploadSnackbar.filename = filename
         this.uploadSnackbar.status = true
@@ -776,6 +822,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
     createDirectory() {
         this.dialogCreateDirectory.name = ''
         this.dialogCreateDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldCreateDirectory?.focus()
+        }, 200)
     }
 
     createDirectoryAction() {
@@ -839,8 +889,8 @@ export default class PageFiles extends Mixins(BaseMixin) {
     getSmallThumbnail(item: FileStateFile) {
         if (item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(thumb =>
-                thumb.width >= 32 && thumb.width <= 64 &&
-                thumb.height >= 32 && thumb.height <= 64
+                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
@@ -851,7 +901,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     getBigThumbnail(item: FileStateFile) {
         if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+thumbnail.relative_path+'?timestamp='+item.modified.getTime()
         }
@@ -861,7 +911,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     getThumbnailWidth(item: FileStateFile) {
         if (this.getBigThumbnail(item)) {
-            const thumbnail = item.thumbnails?.find(thumb => thumb.width >= 300 && thumb.width <= 400)
+            const thumbnail = item?.thumbnails?.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail) return thumbnail.width
         }
@@ -959,9 +1009,9 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.dialogRenameFile.newName = item.filename
         this.dialogRenameFile.show = true
 
-        this.$nextTick(() => {
+        setTimeout(() => {
             this.$refs.inputFieldRenameFile?.focus()
-        })
+        }, 200)
     }
 
     renameFileAction() {
@@ -976,6 +1026,10 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.dialogRenameDirectory.item = item
         this.dialogRenameDirectory.newName = item.filename
         this.dialogRenameDirectory.show = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldRenameDirectory?.focus()
+        }, 200)
     }
 
     renameDirectoryAction() {
@@ -1018,6 +1072,7 @@ export default class PageFiles extends Mixins(BaseMixin) {
         this.draggingFile.item = {
             isDirectory: false,
             filename: '',
+            permissions: '',
             modified: new Date()
         }
     }

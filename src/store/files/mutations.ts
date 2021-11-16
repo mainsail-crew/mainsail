@@ -35,15 +35,15 @@ export const mutations: MutationTree<FileState> = {
         const path = findDirectory(state.filetree, dirArray)
 
         const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
-        if (path && fileIndex !== -1) {
+        if (path && fileIndex !== undefined && fileIndex !== -1) {
             // eslint-disable-next-line
-			const currentFile = path[fileIndex] as any
+			const currentFile = {...path[fileIndex]} as any
             allowedMetadata.forEach((key: string) => {
                 if (key in payload) currentFile[key] = payload[key]
             })
             currentFile.metadataPulled = true
 
-            //Vue.set(path, fileIndex, currentFile)
+            Vue.set(path, fileIndex, currentFile)
         } else window.console.error('file not found in filetree: '+payload.filename)
     },
 

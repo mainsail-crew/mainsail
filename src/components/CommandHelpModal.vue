@@ -7,14 +7,19 @@
         :fullscreen="isMobile"
     >
         <template #activator="{ on, attrs }">
-            <v-btn
-                class="gcode-command-btn px-2 minwidth-0"
-                color="grey darken-3"
-                :small="isMini"
-                v-bind="attrs"
-                v-on="on">
-                <v-icon>mdi-help</v-icon>
-            </v-btn>
+            <template v-if="inToolbar">
+                <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
+            </template>
+            <template v-else>
+                <v-btn
+                    class="gcode-command-btn px-2 minwidth-0"
+                    color="lightgray"
+                    :small="isMini"
+                    v-bind="attrs"
+                    v-on="on">
+                    <v-icon>mdi-help</v-icon>
+                </v-btn>
+            </template>
         </template>
         <template #default>
             <panel :title="$t('Console.CommandList')" icon="mdi-help" card-class="command-help-dialog" :margin-bottom="false">
@@ -36,7 +41,7 @@
                     </v-row>
                 </v-card-title>
                 <v-divider></v-divider>
-                <perfect-scrollbar :class="'command-help-content '+(isMobile ? '' : 'height300')">
+                <overlay-scrollbars :class="'command-help-content '+(isMobile ? '' : 'height300')">
                     <v-card-text class="pt-0">
                         <v-row>
                             <v-col>
@@ -55,7 +60,7 @@
                             </v-col>
                         </v-row>
                     </v-card-text>
-                </perfect-scrollbar>
+                </overlay-scrollbars>
             </panel>
         </template>
     </v-dialog>
@@ -72,6 +77,8 @@ import Panel from '@/components/ui/Panel.vue'
 })
 export default class CommandHelpModal extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false }) isMini!: boolean;
+    @Prop({ required: false, default: false }) inToolbar!: boolean;
+
     cmdListSearch = '';
     isOpen = false;
 

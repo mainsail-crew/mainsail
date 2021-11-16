@@ -1,6 +1,9 @@
 export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
+export const minKlipperVersion = 'v0.9.1-778'
+export const minMoonrakerVersion = 'v0.7.1-107'
+
 export const colorArray = [
     '#F44336',
     '#8e379d',
@@ -85,3 +88,7 @@ export const allDashboardPanels = [
     'webcam',
     'zoffset',
 ]
+
+export const thumbnailSmallMin = 32
+export const thumbnailSmallMax = 64
+export const thumbnailBigMin = 256

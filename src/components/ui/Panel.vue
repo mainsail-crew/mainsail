@@ -24,7 +24,7 @@
 </style>
 
 <template>
-    <v-card :class="'panel '+cardClass+' '+(marginBottom ? 'mb-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
+    <v-card :class="'panel '+cardClass+' '+(marginBottom ? 'mb-3 mb-md-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
         <v-toolbar flat dense :color="toolbarColor" :class="getToolbarClass" >
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
@@ -34,8 +34,10 @@
             </v-toolbar-title>
             <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
-            <v-toolbar-items v-if="hasButtonsSlot || collapsible">
-                <slot name="buttons"></slot>
+            <v-toolbar-items v-show="hasButtonsSlot || collapsible">
+                <div class="d-flex align-center" v-if="expand || !hideButtonsOnCollapse">
+                    <slot name="buttons"></slot>
+                </div>
                 <v-btn
                     v-if="collapsible"
                     @click="expand = !expand"
@@ -69,6 +71,7 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: '' }) readonly toolbarClass!: string
     @Prop({ default: false }) readonly loading!: boolean
     @Prop({ default: true }) readonly marginBottom!: boolean
+    @Prop({ default: false }) readonly hideButtonsOnCollapse!: boolean
 
     get expand() {
         return this.$store.getters['gui/getPanelExpand'](this.cardClass)

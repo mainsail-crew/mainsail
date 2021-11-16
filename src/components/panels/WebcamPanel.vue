@@ -20,7 +20,7 @@
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">
-                    <v-list-item link @click="currentCamName = 'all'">
+                    <v-list-item link @click="currentCamId = 'all'">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>mdi-view-grid</v-icon>
                         </v-list-item-icon>
@@ -28,7 +28,7 @@
                             <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-for="webcam of webcams" v-bind:key="webcam.name" link @click="currentCamName = webcam.name">
+                    <v-list-item v-for="webcam of webcams" v-bind:key="webcam.id" link @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>{{ webcam.icon }}</v-icon>
                         </v-list-item-icon>
@@ -42,19 +42,19 @@
         <v-card-text class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative;">
-                    <template v-if="'service' in this.currentCam && this.currentCam.service === 'grid'">
+                    <template v-if="this.currentCam.service === 'grid'">
                         <webcam-grid :webcams="this.webcams"></webcam-grid>
                     </template>
-                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer'">
+                    <template v-else-if="this.currentCam.service === 'mjpegstreamer'">
                         <webcam-mjpegstreamer :cam-settings="this.currentCam"></webcam-mjpegstreamer>
                     </template>
-                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'mjpegstreamer-adaptive'">
+                    <template v-else-if="this.currentCam.service === 'mjpegstreamer-adaptive'">
                         <webcam-mjpegstreamer-adaptive :cam-settings="this.currentCam"></webcam-mjpegstreamer-adaptive>
                     </template>
-                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'uv4l-mjpeg'">
+                    <template v-else-if="this.currentCam.service === 'uv4l-mjpeg'">
                         <webcam-uv4l-mjpeg :cam-settings="this.currentCam"></webcam-uv4l-mjpeg>
                     </template>
-                    <template v-else-if="'service' in this.currentCam && this.currentCam.service === 'ipstream'">
+                    <template v-else-if="this.currentCam.service === 'ipstream'">
                         <webcam-ipstreamer :cam-settings="this.currentCam"></webcam-ipstreamer>
                     </template>
                     <template v-else>
@@ -73,10 +73,10 @@ import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import WebcamGrid from '@/components/webcams/WebcamGrid.vue'
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {GuiStateWebcam} from '@/store/gui/types'
 import Panel from '@/components/ui/Panel.vue'
+import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 
 @Component({
     components: {
@@ -89,39 +89,35 @@ import Panel from '@/components/ui/Panel.vue'
     }
 })
 export default class WebcamPanel extends Mixins(BaseMixin) {
+    @Prop({ default: 'dashboard' }) viewport?: string
 
-    get webcams(): GuiStateWebcam[] {
-        return this.$store.getters['gui/getWebcams']
+    get webcams(): GuiWebcamStateWebcam[] {
+        return this.$store.getters['gui/webcams/getWebcams']
     }
 
-    get currentCamName(): string {
-        let currentCamName = this.$store.state.gui.webcam.selectedCam
-        if (currentCamName !== undefined && this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === currentCamName) !== -1)
-            return currentCamName
+    get currentCamId(): string {
+        if (this.webcams.length === 1) return this.webcams[0].id ?? 'all'
 
-        if (currentCamName !== undefined && Array.isArray(this.webcams) && this.webcams.length === 1)
-            return this.webcams[0].name
-
-        return 'all'
+        let currentCamId = this.$store.state.gui.webcamSettings.currentCam[this.viewport ?? ''] ?? 'all'
+        if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.id === currentCamId) !== -1)
+            return currentCamId
+        else if (currentCamId !== undefined && this.webcams.length === 1)
+            return this.webcams[0].id ?? ''
+        else return 'all'
     }
 
-    set currentCamName(newVal: string) {
-        this.$store.dispatch('gui/saveSetting', { name: 'webcam.selectedCam', value: newVal })
+    set currentCamId(newVal: string) {
+        this.$store.dispatch('gui/setCurrentWebcam', { viewport: this.viewport, value: newVal })
     }
 
     get currentCam(): any {
-        if (this.currentCamName === 'all') {
-            return {
-                name: this.$t('Panels.WebcamPanel.All'),
-                service: 'grid',
-                icon: 'mdi-view-grid',
-            }
-        } else {
-            const currentCam = this.webcams.findIndex((webcam: GuiStateWebcam) => webcam.name === this.currentCamName)
-            if (currentCam !== -1) return this.webcams[currentCam]
-        }
+        const cam = this.webcams.find((cam: GuiWebcamStateWebcam) => cam.id === this.currentCamId)
 
-        return {}
+        return cam ?? {
+            name: this.$t('Panels.WebcamPanel.All'),
+            service: 'grid',
+            icon: 'mdi-view-grid',
+        }
     }
 }
 </script>
