@@ -42,6 +42,7 @@
                 <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
+                        v-touch="{start: resetLockTimer}"
                         :disabled="canLock && sliderIsLocked"
                         :min="0.0"
                         :max="1.0"
@@ -74,6 +75,7 @@ import {Debounce} from 'vue-debounce-decorator'
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     convertName = convertName
+    private timeout: number | undefined
     private min = 0
     private value = 0
 
@@ -98,6 +100,16 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         }
     }
 
+    startLockTimer() {
+        let t = this.autoLockSlidersTimeout
+        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
+        this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
+    }
+
+    resetLockTimer() {
+        clearTimeout(this.timeout)
+    }
+
     get lockSliders() {
         return this.$store.state.gui.general.lockSliders
     }
@@ -113,13 +125,6 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     set sliderIsLocked(newVal) {
         if (!this.controllable) return
         this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
-    }
-
-    startLockTimer() {
-        if (!this.isTouchDevice || !this.lockSliders || this.sliderIsLocked) return
-
-        let timeout = this.autoLockSlidersTimeout
-        if (timeout > 0) setTimeout(() => this.sliderIsLocked = true, timeout * 1000)
     }
 
     @Debounce(500)

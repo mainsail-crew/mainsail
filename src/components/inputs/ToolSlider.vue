@@ -39,6 +39,7 @@
                 <v-card-text class="py-0">
                     <v-slider
                         v-model="value"
+                        v-touch="{start: resetLockTimer}"
                         :disabled="canLock && sliderIsLocked"
                         :min="min"
                         :max="processedMax"
@@ -68,6 +69,7 @@ import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
+    private timeout: number | undefined
     value = 0
     startValue = 0
     processedMax = 100
@@ -107,6 +109,16 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         }
     }
 
+    startLockTimer() {
+        let t = this.autoLockSlidersTimeout
+        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
+        this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
+    }
+
+    resetLockTimer() {
+        clearTimeout(this.timeout)
+    }
+
     get lockSliders() {
         return this.$store.state.gui.general.lockSliders
     }
@@ -121,13 +133,6 @@ export default class ToolSlider extends Mixins(BaseMixin) {
 
     set sliderIsLocked(newVal) {
         this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
-    }
-
-    startLockTimer() {
-        if (!this.isTouchDevice || !this.lockSliders || this.sliderIsLocked) return
-
-        let timeout = this.autoLockSlidersTimeout
-        if (timeout > 0) setTimeout(() => this.sliderIsLocked = true, timeout * 1000)
     }
 
     get colorBar() {
