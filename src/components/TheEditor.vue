@@ -161,6 +161,8 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
         if (this.filename === 'moonraker.conf')
             return 'moonraker'
+        else if (this.filename === 'webcam.conf')
+            return 'webcamd'
         else if (this.filename.startsWith('webcam') && this.filename.endsWith('.txt'))
             return 'webcamd'
         else if (this.filename.startsWith('mooncord') && this.filename.endsWith('.json'))
