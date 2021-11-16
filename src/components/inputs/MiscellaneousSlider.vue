@@ -48,7 +48,7 @@
                         :max="1.0"
                         :step="0.01"
                         :color="value < off_below && value > 0 ? 'red' : undefined"
-                        @change="changeSlicer()"
+                        @change="changeSlider"
                         hide-details
                     >
                         <template v-slot:prepend>
@@ -128,7 +128,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     @Debounce(500)
-    changeSlicer() {
+    changeSlider() {
         this.sendCmd()
     }
 
