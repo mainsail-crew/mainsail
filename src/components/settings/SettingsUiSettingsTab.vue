@@ -57,12 +57,12 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <v-expand-transition>
-                    <settings-row v-show="lockSliders" :title="$t('Settings.UiSettingsTab.AutoLockSlidersTimeout')" :sub-title="$t('Settings.UiSettingsTab.AutoLockSlidersTimeoutDescription')" :dynamicSlotWidth="true">
+                    <settings-row v-show="lockSliders" :title="$t('Settings.UiSettingsTab.LockSlidersTimeout')" :sub-title="$t('Settings.UiSettingsTab.LockSlidersTimeoutDescription')" :dynamicSlotWidth="true">
                             <v-text-field
                                 class="mt-0"
                                 prepend-icon="mdi-timer-outline"
                                 :style="isMobile ? { 'max-width': '140px' } : {}"
-                                v-model="autoLockSlidersTimeout"
+                                v-model="lockSlidersTimeout"
                                 label="Timeout"
                                 type="number"
                                 :rules="[t => t >= 0]"
@@ -185,12 +185,12 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.lockSliders', value: newVal})
     }
 
-    get autoLockSlidersTimeout() {
-        return this.$store.state.gui.general.autoLockSlidersTimeout
+    get lockSlidersTimeout() {
+        return this.$store.state.gui.general.lockSlidersTimeout
     }
 
-    set autoLockSlidersTimeout(newVal) {
-        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.autoLockSlidersTimeout', value: newVal}) : {}
+    set lockSlidersTimeout(newVal) {
+        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersTimeout', value: newVal}) : {}
     }
 
     get boolWideNavDrawer() {
