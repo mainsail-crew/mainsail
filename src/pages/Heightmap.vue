@@ -137,14 +137,16 @@
                 icon="mdi-lock-outline"
             >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert>
         </v-row>
-        <v-dialog v-model="renameDialog" persistent :max-width="400">
+        <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel :title="$t('Heightmap.RenameBedMeshProfile')" icon="mdi-grid" card-class="heightmap-rename-dialog" :margin-bottom="false">
                 <v-card-text>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field :label="$t('Heightmap.Name')" required v-model="newName"></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <v-text-field
+                        :label="$t('Heightmap.Name')" 
+                        v-model="newName"
+                        ref="inputDialogRenameHeightmapName"
+                        @keyup.enter="renameProfile"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -153,7 +155,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="calibrateDialog" persistent :max-width="400">
+        <v-dialog v-model="calibrateDialog" persistent :max-width="400" @keydown.esc="calibrateDialog = false">
             <panel :title="$t('Heightmap.BedMeshCalibrate')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
@@ -165,7 +167,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="removeDialog" persistent :max-width="400">
+        <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel :title="$t('Heightmap.BedMeshRemove')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
@@ -213,7 +215,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     $refs!: {
         // eslint-disable-next-line
-        heightmap: any
+        heightmap: any,
+        inputDialogRenameHeightmapName: HTMLInputElement,
     }
 
     private renameDialog = false
@@ -716,6 +719,10 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     openRenameProfile(): void {
         this.newName = this.bed_mesh?.profile_name ?? ''
         this.renameDialog = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogRenameHeightmapName?.focus()
+        }, 200)
     }
 
     renameProfile(): void {
