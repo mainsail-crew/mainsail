@@ -108,7 +108,7 @@
                                 <v-icon>mdi-folder</v-icon>
                             </template>
                             <template v-else-if="item.filename.endsWith('zip')">
-                                <v-icon>mdi-package-variant-closed</v-icon>
+                                <v-icon>mdi-folder-zip-outline</v-icon>
                             </template>
                             <template v-else-if="getThumbnail(item)">
                                 <v-tooltip v-if="!item.isDirectory && getThumbnail(item)" top content-class="tooltip__content-opacity1">
