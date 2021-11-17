@@ -7,9 +7,9 @@
         <panel card-class="select-printer-dialog" icon="mdi-connection" :title="panelTitle" :margin-bottom="false" toolbar-color="primary">
             <template v-slot:buttons>
                 <template v-if="!isConnecting && !connectingFailed">
-                    <template v-if="dialogEditPrinter.bool"><v-btn text class="minwidth-0" @click="dialogEditPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
-                    <template v-else-if="dialogAddPrinter.bool"><v-btn text class="minwidth-0" v-if="dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
-                    <template v-else-if="printers.length > 0"><v-btn text class="minwidth-0" @click="checkPrinters"><v-icon>mdi-sync</v-icon></v-btn></template>
+                    <template v-if="dialogEditPrinter.bool"><v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
+                    <template v-else-if="dialogAddPrinter.bool"><v-btn icon tile class="minwidth-0" v-if="dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
+                    <template v-else-if="printers.length > 0"><v-btn icon tile class="minwidth-0" @click="checkPrinters"><v-icon>mdi-sync</v-icon></v-btn></template>
                 </template>
             </template>
             <template v-if="isConnecting">
@@ -21,8 +21,8 @@
                 <v-card-text>
                     <p>{{ $t("SelectPrinterDialog.CannotConnectTo", {'host': parseInt(port) !== 80 ? hostname+":"+port : hostname}) }}</p>
                     <div class="text-center">
-                        <v-btn @click="switchToChangePrinter" color="white" outlined class="mr-3">{{ $t("SelectPrinterDialog.ChangePrinter") }}</v-btn>
-                        <v-btn @click="reconnect" color="primary">{{ $t("SelectPrinterDialog.TryAgain") }}</v-btn>
+                        <v-btn text @click="switchToChangePrinter" color="white" class="mr-3">{{ $t("SelectPrinterDialog.ChangePrinter") }}</v-btn>
+                        <v-btn text @click="reconnect" color="primary">{{ $t("SelectPrinterDialog.TryAgain") }}</v-btn>
                     </div>
                 </v-card-text>
             </template>
@@ -169,11 +169,13 @@ import BaseMixin from './mixins/base'
 import {FarmPrinterState} from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+
 @Component({
     components: {Panel}
 })
-export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
+export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
+    
     private dialogAddPrinter = {
         bool: false,
         hostname: '',
