@@ -101,7 +101,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     startLockTimer() {
-        let t = this.autoLockSlidersTimeout
+        let t = this.lockSlidersTimeout
         if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
         this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
     }
@@ -111,11 +111,11 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     get lockSliders() {
-        return this.$store.state.gui.general.lockSliders
+        return this.$store.state.gui.general.lockSlidersOnTouchDevices
     }
 
-    get autoLockSlidersTimeout() {
-        return this.$store.state.gui.general.autoLockSlidersTimeout
+    get lockSlidersTimeout() {
+        return this.$store.state.gui.general.lockSlidersTimeout
     }
 
     get sliderIsLocked() {
