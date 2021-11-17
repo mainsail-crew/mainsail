@@ -155,7 +155,7 @@
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel :title="$t('Timelapse.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -176,7 +176,7 @@
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel :title="$t('Timelapse.NewDirectory')" card-class="gcode-files-new-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -198,7 +198,7 @@
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Timelapse.RenameDirectory')" card-class="gcode-files-rename-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -219,7 +219,7 @@
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Timelapse.DeleteDirectory')" card-class="gcode-files-delete-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Timelapse.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>
@@ -229,6 +229,29 @@
                     <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{ $t('Timelapse.Cancel') }}</v-btn>
                     <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Timelapse.Delete') }}</v-btn>
                 </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="boolVideoDialog" :max-width="700">
+            <panel :title="$t('Timelapse.Video')" icon="mdi-file-video" card-class="timelapse-video-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="boolVideoDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text class="">
+                    <v-row>
+                        <v-col class="pb-0">
+                            <video :src="hostUrl+'server/files/'+videoDialogFilename" controls style="width: 100%;">
+                                Sorry, your browser doesn't support embedded videos,
+                                but don't worry, you can <a :href="hostUrl+'server/files/'+videoDialogFilename">download it</a>
+                                and watch it with your favorite video player!
+                            </video>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="text-center">
+                            <v-btn color="primary" :href="hostUrl+'server/files/'+videoDialogFilename" target="_blank">{{ $t('Timelapse.Download') }}</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
             </panel>
         </v-dialog>
     </div>
@@ -262,6 +285,8 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     private search = ''
     private currentPath = 'timelapse'
+    private boolVideoDialog = false
+    private videoDialogFilename = ''
 
     private dialogCreateDirectory = {
         show: false,
@@ -424,12 +449,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             if (item.isDirectory) this.currentPath += '/' + item.filename
             else if (item.filename.endsWith('zip')) {
                 this.downloadFile(item.filename)
-
-
-                // const filename = (this.currentPath+'/'+item.filename)
-                // const href = this.apiUrl + '/server/files/' + encodeURI(filename)
-                // console.log(href)
-                // window.open(href)
+            } else if (item.filename.endsWith('mp4')) {
+                this.videoDialogFilename =  this.currentPath + '/' + item.filename
+                this.boolVideoDialog = true
             }
         }
     }

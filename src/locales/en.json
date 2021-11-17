@@ -302,7 +302,8 @@
 		"TargetFps": "Target FPS",
 		"StartRender": "start render",
 		"TimelapseRendering": "Timelapse rendering",
-		"TimelapseRenderingSuccessful": "Timelapse rendering successful"
+		"TimelapseRenderingSuccessful": "Timelapse rendering successful",
+    "Video": "Video"
 	},
   "Panels": {
     "ControlPanel": {
