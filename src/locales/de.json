@@ -3,7 +3,7 @@
   "App": {
     "Printers": "Drucker",
     "TopBar": {
-      "SAVE_CONFIG": "SAVE_CONFIG",
+      "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Hochladen & Drucken",
       "EmergencyStop": "Notaus",
       "Uploading": "Hochladen",
@@ -11,10 +11,10 @@
       "CannotUploadTheFile": "Hochladen nicht möglich!"
     },
     "TopCornerMenu": {
-      "KlipperControl": "Klipper",
+      "KlipperControl": "Klipper-Steuerung",
       "KlipperRestart": "Neustart",
-      "KlipperFirmwareRestart": "FIRMWARE Neustart",
-      "RestartServices": "Dienste Neustart",
+      "KlipperFirmwareRestart": "Firmware Neustart",
+      "ServiceControl": "Dienst-Steuerung",
       "PowerDevices": "Stromversorgung",
       "HostControl": "Host-Steuerung",
       "Reboot": "Neustart",
@@ -32,13 +32,13 @@
       "HeadlineCurrentFlags": "Derzeitige flags",
       "HeadlinePreviouslyFlags": "Bisherige flags",
       "TitleUnderVoltageDetected": "Unterspannung erkannt",
-      "TitleFrequencyCapped": "Frequenz gekappt",
-      "TitleCurrentlyThrottled": "Derzeit gedrosselt",
+      "TitleFrequencyCapped": "Frequenz begrenzt",
+      "TitleCurrentlyThrottled": "Drosselung aktiv",
       "TitleTemperatureLimitActive": "Temperaturgrenze aktiv",
-      "TitlePreviouslyUnderVolted": "Unterspannung zuvor",
-      "TitlePreviouslyFrequencyCapped": "Bish. Frequenz überschritten",
-      "TitlePreviouslyThrottled": "Zuvor gedrosselt",
-      "TitlePreviouslyTemperatureLimited": "Zuvor temperaturbegrenzt",
+      "TitlePreviouslyUnderVolted": "Vorh. Unterspannung registriert",
+      "TitlePreviouslyFrequencyCapped": "Vorh. Frequenzbegrenzung registriert",
+      "TitlePreviouslyThrottled": "Vorh. Drosselung registriert",
+      "TitlePreviouslyTemperatureLimited": "Vorh. Temperaturbegrenzung registriert",
       "DescriptionUnderVoltageDetected": "rPI-Versorgungsspannung derzeit unter 4,65V",
       "DescriptionFrequencyCapped": "rPi ARM max Frequenz ist derzeit auf 1,2 GHz begrenzt.",
       "DescriptionCurrentlyThrottled": "rPi ARM-Kern(e) sind derzeit gedrosselt.",
@@ -49,15 +49,28 @@
       "DescriptionPreviouslyTemperatureLimited": "Die Temperatur des rPi uC (nur 3A+/3B+) lag seit dem letzten Einschalten mindestens einmal über dem Soft-Limit (Standard 60C)."
     }
   },
+  "EmergencyStopDialog": {
+    "EmergencyStop": "Notaus",
+    "AreYouSure": "Bist du sicher?",
+    "No": "Nein",
+    "Yes": "Ja"
+  },
+  "PowerDeviceChangeDialog": {
+    "TurnDeviceOn": "{device} anschalten",
+    "TurnDeviceOff": "{device} ausschalten",
+    "AreYouSure": "Bist du sicher?",
+    "No": "Nein",
+    "Yes": "Ja"
+  },
   "ConnectionDialog": {
-    "Connecting": "Verbindung zu {host}",
+    "Connecting": "Verbinde zu {host}",
     "Failed": "Verbindung fehlgeschlagen",
     "CannotConnectTo": "Kann keine Verbindung zu Moonraker ({host}) herstellen.",
     "TryAgain": "Erneut versuchen",
-    "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, wirf bitte einen Blick in die Logdatei im pfad:"
+    "CheckMoonrakerLog": "Wenn diese Meldung wiederholt erscheint, schaue bitte in die Logdatei unter:"
   },
   "SelectPrinterDialog": {
-    "Connecting": "Verbindung zu {host}",
+    "Connecting": "Verbinde zu {host}",
     "ConnectionFailed": "Verbindung fehlgeschlagen",
     "CannotConnectTo": "Kann keine Verbindung zu {host} herstellen.",
     "TryAgain": "Erneut versuchen",
@@ -70,7 +83,7 @@
     "HostnameInvalid": "ungültiger Hostname/IP",
     "PortRequired": "Port ist erforderlich",
     "Hello": "Hallo und willkommen im Remote-Modus von Mainsail!",
-    "RememberToAdd": "Bitte denk daran, {cors} in moonraker.conf innerhalb von 'cors_domains' hinzuzufügen.",
+    "RememberToAdd": "Bitte denk daran, {cors} in moonraker.conf unter 'cors_domains' hinzuzufügen.",
     "YouCanFindMore": "Weitere Details findest du unter"
   },
   "Router": {
@@ -81,7 +94,8 @@
     "Heightmap": "Heightmap",
     "G-Code Files": "G-Code Dateien",
     "History": "Verlauf",
-    "Machine": "Maschine"
+    "Machine": "Maschine",
+    "G-Code Viewer": "G-Code-Betrachter"
   },
   "Editor": {
     "Minimap": "Minimap anzeigen",
@@ -91,26 +105,31 @@
     "SaveRestart": "Speichern & Neustart",
     "SaveClose": "Speichern & schließen",
     "SuccessfullySaved": "{filename} erfolgreich gespeichert.",
-    "FailedSave": "{filename} konnte nicht hochgeladen werden!"
+    "FailedSave": "{filename} konnte nicht hochgeladen werden!",
+    "UnsavedChanges": "Ungespeicherte Änderungen",
+    "UnsavedChangesMessage": "Möchtest du die Änderungen an {filename} speichern?",
+    "UnsavedChangesSubMessage": "Deine Änderungen werden verloren gehen wenn du sie nicht speicherst. Du kannst diese Meldung in den Editor-Einstellungen deaktivieren.",
+    "DontSave": "Nicht speichern",
+    "Cancel": "Abbrechen"
   },
   "Files": {
     "GCodeFiles": "G-Code Dateien",
     "UploadNewGcode": "G-Code hochladen",
     "CreateNewDirectory": "Ordner erstellen",
-    "RefreshCurrentDirectory": "Ordner aktualisieren",
+    "RefreshCurrentDirectory": "Verzeichnis aktualisieren",
     "SetupCurrentList": "Einstellungen",
     "HiddenFiles": "Versteckte Dateien",
     "PrintedFiles": "Bereits gedruckt",
     "FreeDisk": "Freier Speicherplatz",
-    "Used": "Benutzt",
+    "Used": "Belegt",
     "Free": "Frei",
     "Total": "Gesamt",
     "Files": "Dateien",
     "AllFiles": "Alle",
     "Search": "Suchen",
     "Empty": "Leer",
-    "DropFilesToAddGcode": "Dateien ablegen, um G-Code hinzuzufügen.",
-    "PrintStart": "Start des Druckvorgangs",
+    "DropFilesToAddGcode": "Drag & Drop, um G-Code hinzuzufügen.",
+    "PrintStart": "Druck starten",
     "Preheat": "Vorheizen",
     "Download": "Herunterladen",
     "Rename": "Umbenennen",
@@ -120,7 +139,7 @@
     "No": "Nein",
     "Yes": "Ja",
     "NewDirectory": "Neues Verzeichnis",
-    "PleaseEnterANewDirectoryName": "Bitte gebe einen neuen Verzeichnisnamen an: ",
+    "PleaseEnterANewDirectoryName": "Bitte gebe einen neuen Verzeichnisnamen ein: ",
     "RenameFile": "Datei umbenennen",
     "EditFile": "Datei bearbeiten",
     "Name": "Name",
@@ -144,7 +163,8 @@
     "SuccessfullyRenamed": "{filename} erfolgreich umbenannt.",
     "SuccessfullyMoved": "{filename} erfolgreich verschoben.",
     "SuccessfullyCreated": "{filename} erfolgreich erstellt.",
-    "SuccessfullyDeleted": "{filename} erfolgreich gelöscht."
+    "SuccessfullyDeleted": "{filename} erfolgreich gelöscht.",
+    "View3D" : "3D Betrachtung"
   },
   "Console": {
     "SetupConsole": "Einstellungen",
@@ -156,17 +176,17 @@
   "Heightmap": {
     "Heightmap": "Heightmap",
     "ErrorKlipperNotReady": "Klipper nicht bereit. Heightmap deaktiviert.",
-    "NoProfile": "kein Profil verfügbar",
+    "NoProfile": "Kein Profil verfügbar",
     "TitleHomeAll": "Home alle",
     "Clear": "Löschen",
     "TitleClear": "Lösche Bed Mesh",
     "Calibrate": "kalibrieren",
     "TitleCalibrate": "Neues Bed Mesh kalibrieren",
-    "NoBedMeshHasBeenLoadedYet": "Bisher wurde kein Bed Mesh geladen",
+    "NoBedMeshHasBeenLoadedYet": "Es wurde noch kein Bed Mesh geladen.",
     "Probed": "Abgetastet",
     "Mesh": "Mesh",
     "Flat": "Flach",
-    "Wireframe": "Drahtmodell",
+    "Wireframe": "Drahtgitter",
     "Scale": "Maßstab",
     "Profiles": "Profile",
     "Deleted": "gelöscht",
@@ -174,11 +194,20 @@
     "Name": "Name",
     "Abort": "abbruch",
     "Rename": "umbenennen",
-    "BedMeshCalibrate": "Bed Mesh Kalibrieren",
-    "DoYouReallyWantToCalibrate": "Möchtest du wirklich neu kalibrieren?",
+    "BedMeshRemove": "Bed Mesh entfernen",
+    "BedMeshCalibrate": "Bed Mesh Kalibrierung",
+    "DoYouReallyWantToCalibrate": "Möchtest du wirklich die Kalibrierung starten?",
     "DeleteBedMeshProfile": "Lösche Bed Mesh",
     "DoYouReallyWantToDelete": "Möchtest du das Profil \"{name}\" wirklich löschen?",
-    "Remove": "entfernen"
+    "Remove": "löschen",
+    "CurrentMesh": {
+      "Headline": "Aktuelles Mesh",
+      "Name": "Name",
+      "Size": "Größe",
+      "Min": "Min",
+      "Max": "Max",
+      "Variance": "Varianz"
+    }
   },
   "History": {
     "Statistics": "Statistik",
@@ -190,16 +219,16 @@
     "FilamentUsage": "Filamentverbrauch",
     "PrinttimeAvg": "Druckzeit - Ø",
     "PrintHistory": "Historie",
-    "TitleRefreshHistory": "Historie erneuern",
+    "TitleRefreshHistory": "Historie aktualisieren",
     "TitleSettings": "Einstellungen",
     "Search": "Suchen",
     "Jobs": "Drucke",
     "AllJobs": "Alle",
     "Empty": "leer",
     "Details": "Details",
-    "Reprint": "erneut drucken",
+    "Reprint": "Erneut drucken",
     "Delete": "Löschen",
-    "JobDetails": "Druck Details",
+    "JobDetails": "Job Details",
     "Filename": "Dateiname",
     "Filesize": "Dateigröße",
     "LastModified": "Zuletzt geändert",
@@ -241,18 +270,24 @@
       "Y": "Y",
       "Z": "Z",
       "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
-      "SettingsInterfaceControl": "Einstellungen > Schnittstelle > Steuerung",
+      "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
       "FeedAmountIn": "Vorschub in",
       "FeedrateIn": "Geschwindigkeit in",
       "Retract": "Rückzug",
       "Extrude": "Extrudieren"
     },
     "MacrosPanel": {
-      "Headline": "Makros"
+      "Headline": "Makros",
+      "Send": "senden"
+    },
+    "DependenciesPanel": {
+      "Dependency": "Abhängigkeit | Abhängigkeiten",
+      "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}."
     },
     "FarmPrinterPanel": {
       "WebcamOff": "Aus",
-      "SwitchToPrinter": "Zum Drucker wechseln"
+      "SwitchToPrinter": "Zum Drucker wechseln",
+      "ReconnectToPrinter": "Neu verbinden"
     },
     "KlippyStatePanel": {
       "KlippyState": "Klippy-Status",
@@ -260,6 +295,12 @@
       "KlipperCheck": "Bitte überprüfen Sie, ob der Klipper-Dienst läuft und ein UDS (Unix Domain Socket) konfiguriert ist.",
       "Restart": "Neustart",
       "FirmwareRestart": "Firmware Neustart"
+    },
+    "KlipperWarningsPanel": {
+      "KlipperWarnings": "Klipper Warnungen",
+      "DownloadLog": "Logdatei herunterladen",
+      "DeprecatedOption": "Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt.",
+      "DeprecatedValue": "Wert '{value}' in Option '{option}' im Abschnitt '{section}' ist veraltet und wird in einem zukünftigen Release entfernt."
     },
     "MiniconsolePanel": {
       "Headline": "Konsole",
@@ -311,8 +352,8 @@
       "CancelPrint": "Druck abbrechen",
       "ClearPrintStats": "Druckstatistiken löschen",
       "ReprintJob": "Auftrag erneut drucken",
-      "Requested": "Gewünschte",
-      "Speed": "Tempo",
+      "Requested": "Angefordert",
+      "Speed": "Geschwindigkeit",
       "Flow": "Fluss",
       "Max": "max",
       "Filament": "Filament",
@@ -325,7 +366,14 @@
       "Total": "Gesamt",
       "Slicer": "Slicer",
       "ETA": "ETA",
-      "Unknown": "Unbekannt"
+      "Unknown": "Unbekannt",
+      "ExcludeObject": {
+        "ExcludeObject": "Objekt ausschließen",
+        "Excluded": "ausgeschlossen",
+        "ExcludeObjectHeadline": "Objekt ausschließen",
+        "ExcludeObjectText": "Willst du wirklich \"{name}\" ausschließen?",
+        "Cancel": "abbrechen"
+      }
     },
     "ToolsPanel": {
       "Headline": "Temperaturen",
@@ -377,7 +425,8 @@
     "ConfigFilesPanel": {
       "ConfigFiles": "Konfigurationsdateien",
       "SetupCurrentList": "Einstellungen",
-      "HiddenFiles": "Versteckt Dateien",
+      "HiddenFiles": "Versteckte Dateien",
+      "HideBackupFiles": "Verstecke Sicherungsdateien",
       "CurrentPath": "Aktueller Pfad",
       "Files": "Dateien",
       "FreeDisk": "Freier Speicherplatz",
@@ -415,7 +464,7 @@
       "EndstopInfo": "Drücke die Sync-Schaltfläche in der rechten Ecke, um den aktuellen Zustand abzufragen."
     },
     "LimitsPanel": {
-      "MachineLimits": "Beschränkungen",
+      "MachineLimits": "Betriebsgrenzen",
       "Velocity": "Geschwindigkeit",
       "Acceleration": "Beschleunigung",
       "Deceleration": "Verlangsamung",
@@ -431,7 +480,6 @@
       "PackagesCanBeUpgraded": "Paketupdates sind verfügbar",
       "OSPackages": "OS-Pakete",
       "Commits": "Commits",
-      "CommittedAt": "committed am",
       "UpToDate": "aktuell",
       "Detached": "abgetrennt",
       "Update": "update",
@@ -439,7 +487,13 @@
       "Dirty": "kompromittiert",
       "Invalid": "ungültig",
       "Unknown": "unbekannt",
-      "ERROR": "FEHLER"
+      "ERROR": "FEHLER",
+      "CommitsOnDate": "Engereicht am {date}",
+      "CommittedHoursAgo": "eingereicht vor {hours} Stunden",
+      "CommittedYesterday": "eingereicht gestern",
+      "CommittedDaysAgo": "eingereicht vor {days} Tagen",
+      "CommittedOnDate": "eingereicht am {date}",
+      "UpdateAll": "Alle Komponenten updaten"
     },
     "SystemPanel": {
       "SystemLoad": "Systemauslastung",
@@ -462,19 +516,16 @@
       "General": "Allgemein",
       "PrinterName": "Druckername",
       "Language": "Sprache",
-      "BoolBigThumbnail": "Großes Vorschaubild",
-      "BoolBigThumbnailDescription": "Während eines Druckvorgangs eine große Miniaturansicht im Statusfeld anzeigen.",
-      "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT",
-      "DisplayCANCEL_PRINTDescription": "Zeigt die Schaltfläche CANCEL_PRINT permanent an - keine zweite Ebenenbestätigung erforderlich.",
-      "DisplayZOffset": "Zeige Z-Versatz Panel",
-      "DisplayZOffsetDescription": "Zeigt den Z-Versatz-Panel auch ohne aktiven Druck an",
+      "CalcEstimateTime": "Berechnung der geschätzten Zeit",
+      "CalcEstimateTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
+      "CalcEtaTime": "ETA Berechnung",
+      "CalcEtaTimeDescription": "Bei Mehrfachauswahl wird ein Durchschnitt berechnet",
       "FactoryReset": "Werkseinstellungen",
       "FactoryInfo": "Mainsail wirklich auf die Werkseinstellungen zurücksetzen?",
       "ResetMainsail": "Mainsail zurücksetzen"
     },
     "WebcamTab": {
       "Webcams": "Webcams",
-      "ShowInNavigation": "In der Navigation anzeigen",
       "AddWebcam": "Webcam hinzufügen",
       "CreateWebcam": "Erstelle Webcam",
       "EditWebcam": "Webcam bearbeiten",
@@ -496,7 +547,8 @@
       "NameAlreadyExists": "Name existiert bereits",
       "UrlNotAvailable": "URL nicht verfügbar",
       "Name": "Name",
-      "WebcamURL": "Webcam URL",
+      "UrlStream": "Stream URL",
+      "UrlSnapshot": "Schnappschuss URL",
       "Service": "Dienst",
       "TargetFPS": "Ziel FPS",
       "FlipHorizontally": "Webcam waagerecht spiegeln",
@@ -512,10 +564,46 @@
     },
     "MacrosTab": {
       "Macros": "Makros",
-      "NOMacros": "keine Makros gefunden..."
+      "NOMacros": "keine Makros gefunden...",
+      "General": "Allgemein",
+      "Management": "Verwaltung",
+      "Simple": "Einfach",
+      "Expert": "Experte",
+      "NoGroups": "Keine Gruppen gefunden...",
+      "Macrogroups": "Gruppen",
+      "CreateGroup": "Gruppe erstellen",
+      "EditGroup": "Gruppe bearbeiten",
+      "CountMacros": "keine Makros hinzugefügt | {count} Makro | {count} Makros",
+      "Name": "Name",
+      "Color": "Farbe",
+      "CustomColor": "Benutzerdefinierte Farbe",
+      "Status": "Status",
+      "Primary": "primär",
+      "Secondary": "sekundär",
+      "Success": "Erfolg",
+      "Warning": "Warnung",
+      "Error": "Fehler",
+      "Custom": "benutzerdefiniert",
+      "AddGroup": "Gruppe hinzufügen",
+      "GroupMacros": "Makros gruppieren",
+      "AvailableMacros": "Vorhandene Makros",
+      "Add": "hinzufügen",
+      "NoMacrosInGroup": "Keine Makros in dieser Gruppe.",
+      "NoAvailableMacros": "Keine verfügbaren Makros.",
+      "UnknownGroup": "Unbekannte Gruppe",
+      "ChangeMacroColor": "Farbe der Schaltfläche ändern.",
+      "ShowInStateStandby": "Anzeigen/verstecken wenn der Drucker im Standby ist.",
+      "ShowInStatePaused": "Anzeigen/verstecken wenn der Drucker pausiert ist.",
+      "ShowInStatePrinting": "Anzeigen/verstecken wenn der Drucker am drucken ist.",
+      "DeleteMacroFromGroup": "Makro aus Gruppe entfernen.",
+      "DeletedMacro": "Makro gelöscht"
     },
     "ControlTab": {
       "Control": "Steuerung",
+      "Style": "Stil",
+      "Bars": "Balken",
+      "Circle": "Kreis",
+      "Cross": "Kreuz",
       "SpeedXY": "Geschw. XY",
       "SpeedZ": "Geschw. Z",
       "EnableCross": "Steuerkreuz aktivieren",
@@ -541,7 +629,10 @@
       "StoreButton": "Filter speichern",
       "UpdateButton": "Filter aktualisieren",
       "EditHeadline": "Filter bearbeiten",
-      "AddFilter": "Filter hinzufügen"
+      "AddFilter": "Filter hinzufügen",
+      "EntryStyle": "Stil der Einträge",
+      "EntryStyleDefault": "standard",
+      "EntryStyleCompact": "kompakt"
     },
     "PresetsTab": {
       "PreheatPresets": "presets",
@@ -565,10 +656,79 @@
       "Hostname": "Hostname",
       "Port": "Port"
     },
-    "ThemeTab": {
-      "Theme": "Theme",
+    "UiSettingsTab": {
+      "UiSettings": "UI-Einstellungen",
       "Logo": "Logo",
-      "Primary": "Primär"
+      "Primary": "Primärfarbe",
+      "GcodeThumbnails": "Gcode Vorschaubilder",
+      "GcodeThumbnailsDescription": "Klicke auf die Schaltfläche um zum Leitfaden zu gelangen.",
+      "Guide": "Leitfaden",
+      "ShowWebcamInNavigation": "Zeige Webcam in der Navigation",
+      "BoolBigThumbnail": "Große Vorschaubilder",
+      "BoolBigThumbnailDescription": "Zeige ein großes Thumbnail in der Status-Anzeige während eines Drucks.",
+      "MenuStyle": "Stil der Navigation",
+      "MenuStyleDescription": "Erscheinungsbild der Navigation ändern",
+      "MenuStyleIconsOnly": "Nur Icons",
+      "MenuStyleIconsAndText": "Icons + Text",
+      "BoolHideUploadAndPrintButton": "Verstecke \"Hochladen & Drucken\" Button",
+      "BoolHideUploadAndPrintButtonDescription": "Verstecke oder zeige die \"Hochladen & Drucken\" Schaltfläche in der Kopfleiste.",
+      "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
+      "DisplayCANCEL_PRINTDescription": "Zeigt die CANCEL_PRINT Schaltfläche dauerhaft an - keine weitere Bestätigung erforderlich.",
+      "DisplayZOffset": "Zeige Z-Offset-Panel an",
+      "DisplayZOffsetDescription": "Andernfalls wird das Bedienfeld nur nach dem Starten eines Drucks angezeigt .",
+      "LockSliders": "Sperre Schieberegler auf Touchscreen Geräten",
+      "LockSlidersDescription": "Schieberegler müssen zuerst entsperrt werden bevor Änderungen erlaubt werden.",
+      "LockSlidersDelay": "Verzögerung der Sperre für Schieberegler",
+      "LockSlidersDelayDescription": "Schieberegler werden nach einer bestimmten Verzögerung gesperrt. Wenn 0 oder leer, dann sperren Schieberegler nur nach wechseln/neuladen der Seite.",
+      "ConfirmOnEmergencyStop": "Bestätigung für Notstopp erforderlich",
+      "ConfirmOnEmergencyStopDescription": "Zeige vor einem Notstop einen Bestätigungsdialog.",
+      "ConfirmOnPowerDeviceChange": "Bestätigung für Änderung der Stromversorgung von Geräten",
+      "ConfirmOnPowerDeviceChangeDescription": "Zeige vor Änderung der Stromversorgung von Geräten einen Bestätigungsdialog."
+    },
+    "GCodeViewerTab": {
+      "GCodeViewer": "G-Code Betrachter",
+      "ExtruderColor" : "Extruder Farben",
+      "FeedRate": "Vorschub",
+      "Extruder" : "Extruder",
+      "BackgroundColor" : "Hintergrundfarbe",
+      "GridColor": "Gitterfarbe",
+      "ShowAxes": "Zeige Achsen an",
+      "MinFeed" :"Min Vorschub",
+      "MaxFeed" : "Max Vorschub"
+    },
+    "EditorTab": {
+      "Editor": "Editor",
+      "UseEscToClose": "ESC drücken um Editor zu schließen",
+      "UseEscToCloseDescription": "Erlaubt es den Editor mit ESC zu schließen.",
+      "ConfirmUnsavedChanges": "Aufforderung zum Speichern oder Verwerfen nicht gespeicherter Änderungen",
+      "ConfirmUnsavedChangesDescription": "Wenn aktiviert, dann ist eine Bestätigung notwendig um ungespeicherte Änderungen zu speichern/verwerfen. Wenn deaktiviert,dann werden Änderungen im Hintergrund verworfen."
     }
+  },
+  "GCodeViewer":{
+    "Title" : "G-Code Betrachter",
+    "LoadLocal": "Lokale Datei",
+    "ClearLoadedFile": "Löschen",
+    "ResetCamera": "Kamera zurücksetzen",
+    "RenderQuality" : "Darstellungsqualität",
+    "Low" : "Gering",
+    "Medium" : "Mittel",
+    "High" : "Hoch",
+    "Ultra" : "Ultra",
+    "Max" : "Max",
+    "ShowToolhead":"Zeige Werkzeugkopf",
+    "ShowTravelMoves":"Zeige Bewegungen im Eilgang",
+    "ShowObjectSelection":"Zeige Objektauswahl",
+    "HDRendering":"HD Darstellung (Runde Extrusionen)",
+    "ForceLineRendering":"Erzwinge Liniendarstellung",
+    "Transparency":"Transparenz",
+    "VoxelMode":"Voxel Modus (ASMBL)",
+    "SpecularLighting":"Glanzlichter",
+    "ReloadRequired" : "Neu laden erforderlich",
+    "LoadCurrentFile": "Momentane Datei",
+    "Tracking": "Tracking",
+    "ZClip" : "Z Clipping",
+    "Rendering" : "Rendering",
+    "Downloading" : "Downloaden",
+    "ColorMode" : "Farbmodus"
   }
 }
