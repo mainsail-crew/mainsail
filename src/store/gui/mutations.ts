@@ -10,7 +10,7 @@ export const mutations: MutationTree<GuiState> = {
 
     setData(state, payload) {
         // eslint-disable-next-line
-		const setDataDeep = (currentState: any, payload: any) => {
+        const setDataDeep = (currentState: any, payload: any) => {
             if (typeof payload === 'object') {
                 Object.keys(payload).forEach((key: string) => {
                     const value = payload[key]
