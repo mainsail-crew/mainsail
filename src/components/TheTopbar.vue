@@ -95,7 +95,7 @@
         <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
             <panel :title="$t('EmergencyStopDialog.EmergencyStop')" toolbar-color="error" card-class="emergency-stop-dialog" icon="mdi-alert-circle-outline" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>

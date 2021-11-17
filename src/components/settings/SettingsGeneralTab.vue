@@ -32,7 +32,7 @@
                     </span>
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-btn small class="minwidth-0" @click="dialogResetMainsail = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile class="minwidth-0" @click="dialogResetMainsail = false"><v-icon small>mdi-close-thick</v-icon></v-btn>
                 </v-toolbar>
                 <v-card-text class="pt-3">
                     <v-container class="pb-0">

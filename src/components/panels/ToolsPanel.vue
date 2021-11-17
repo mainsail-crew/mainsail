@@ -220,7 +220,7 @@
         <v-dialog v-model="editHeater.bool" persistent :width="400">
             <panel :title="convertName(editHeater.name)" :icon="'mdi-'+editHeater.icon" card-class="tools-edit-heater-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-6">
                     <v-row v-for="dataset in editHeater.chartSeries" v-bind:key="dataset">

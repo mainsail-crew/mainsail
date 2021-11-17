@@ -173,7 +173,7 @@
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
                 <template v-slot:buttons>
-                    <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
                     <overlay-scrollbars style="max-height: 400px;" :options="{ overflowBehavior: { x: 'hidden' } }">
