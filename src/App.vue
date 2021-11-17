@@ -55,6 +55,7 @@ import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
+import {panelToolbarHeight, topbarHeight, sidebarItemHeight} from '@/store/variables'
 
 @Component({
     components: {
@@ -67,6 +68,9 @@ import TheEditor from '@/components/TheEditor.vue'
     }
 })
 export default class App extends Mixins(BaseMixin) {
+    panelToolbarHeight = panelToolbarHeight
+    topbarHeight = topbarHeight
+    sidebarItemHeight = sidebarItemHeight
 
     get title(): string {
         return this.$store.getters['getTitle']
@@ -136,7 +140,11 @@ export default class App extends Mixins(BaseMixin) {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
             '--color-primary': this.primaryColor,
-            '--color-warning': this.warningColor
+            '--color-warning': this.warningColor,
+            '--panel-toolbar-icon-btn-width': panelToolbarHeight + 'px',
+            '--panel-toolbar-text-btn-height': panelToolbarHeight + 'px',
+            '--topbar-icon-btn-width': topbarHeight + 'px',
+            '--sidebar-menu-item-height': sidebarItemHeight + 'px'
         }
     }
 
