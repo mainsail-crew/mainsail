@@ -10,7 +10,7 @@ export const mutations: MutationTree<GuiState> = {
 
     setData(state, payload) {
         // eslint-disable-next-line
-		const setDataDeep = (currentState: any, payload: any) => {
+        const setDataDeep = (currentState: any, payload: any) => {
             if (typeof payload === 'object') {
                 Object.keys(payload).forEach((key: string) => {
                     const value = payload[key]
@@ -101,6 +101,25 @@ export const mutations: MutationTree<GuiState> = {
         const layoutArray = [...state.dashboard[payload.layoutname]]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
+    },
+
+    addToLockedSliders(state, payload){
+        const lockedSliders = [...state.dashboard.lockedSliders]
+        if (!lockedSliders.includes(payload.name)) {
+            lockedSliders.push(payload.name)
+
+            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
+        }
+    },
+
+    removeFromLockedSliders(state, payload){
+        const lockedSliders = [...state.dashboard.lockedSliders]
+        const index = lockedSliders.indexOf(payload.name)
+        if (index > -1) {
+            lockedSliders.splice(index, 1)
+
+            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
+        }
     },
 
     toggleHideUploadAndPrintBtn(state, payload) {
