@@ -521,9 +521,16 @@
       "CalcEtaTime": "ETA calculation",
       "CalcEtaTimeDescription": "If multiple are selected, an average will be calculated",
       "FactoryReset": "Factory reset",
-      "FactoryInfo": "Do you really want to reset mainsail to factory settings?",
-      "ResetMainsail": "reset mainsail"
-    },
+	  "FactoryDialog": "Please select all the sections you want to reset:",
+	  "Reset": "reset",
+	  "DbGeneral": "General",
+	  "DbPresets": "Presets",
+	  "DbMacrogroups": "Macrogroups",
+	  "DbRemoteprinters": "Remoteprinters",
+	  "DbHistoryJobs": "History Jobs",
+	  "DbHistoryTotals": "History Totals",
+	  "DbWebcams": "Webcams"
+	},
     "WebcamsTab": {
       "Webcams": "Webcams",
       "AddWebcam": "add webcam",

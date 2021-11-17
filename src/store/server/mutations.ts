@@ -33,6 +33,10 @@ export const mutations: MutationTree<ServerState> = {
         })
     },
 
+    saveDbNamespaces(state, payload) {
+        Vue.set(state, 'dbNamespaces', payload)
+    },
+
     setConfig(state, payload) {
         Object.entries(payload.config).forEach(([key, value]) => {
             Vue.set(state.config, key, value)
