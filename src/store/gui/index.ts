@@ -20,7 +20,7 @@ export const getDefaultState = (): GuiState => {
             displayCancelPrint: false,
             displayZOffsetStandby: false,
             lockSlidersOnTouchDevices: true,
-            lockSlidersTimeout: 1.5,
+            lockSlidersDelay: 1.5,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
             calcEstimateTime: ['file', 'filament'],

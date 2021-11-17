@@ -110,7 +110,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     startLockTimer() {
-        let t = this.lockSlidersTimeout
+        let t = this.lockSlidersDelay
         if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
         this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
     }
@@ -123,8 +123,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         return this.$store.state.gui.general.lockSlidersOnTouchDevices
     }
 
-    get lockSlidersTimeout() {
-        return this.$store.state.gui.general.lockSlidersTimeout
+    get lockSlidersDelay() {
+        return this.$store.state.gui.general.lockSlidersDelay
     }
 
     get sliderIsLocked() {
