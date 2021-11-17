@@ -84,8 +84,8 @@
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.MenuStyle')" :sub-title="$t('Settings.UiSettingsTab.MenuStyleDescription')">
-                    <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
+                <settings-row :title="$t('Settings.UiSettingsTab.NavigationStyle')" :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription')">
+                    <v-select v-model="navigationStyleSetting" :items="navigationStyles" outlined dense hide-details class="mt-0"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
@@ -197,22 +197,22 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
     }
 
-    get menuStyleSetting() {
-        return this.$store.state.gui.dashboard.menuStyle
+    get navigationStyleSetting() {
+        return this.$store.state.gui.dashboard.navigationStyle
     }
 
-    set menuStyleSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.menuStyle', value: newVal })
+    set navigationStyleSetting(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.navigationStyle', value: newVal })
     }
 
-    get menuStyles() {
+    get navigationStyles() {
         return [
             {
-                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsOnly'),
+                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsOnly'),
                 value: 'iconsOnly'
             },
             {
-                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsAndText'),
+                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
                 value: 'iconsAndText'
             }
         ]
