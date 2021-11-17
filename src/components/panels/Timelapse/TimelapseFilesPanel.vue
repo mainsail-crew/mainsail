@@ -60,7 +60,7 @@
             </v-card-text>
             <v-divider class="mb-3"></v-divider>
             <v-data-table
-                :items="mp4Files"
+                :items="displayFiles"
                 class="files-table"
                 :headers="headers"
                 :custom-sort="sortFiles"
@@ -107,22 +107,23 @@
                             <template v-if="item.isDirectory">
                                 <v-icon>mdi-folder</v-icon>
                             </template>
+                            <template v-else-if="item.filename.endsWith('zip')">
+                                <v-icon>mdi-package-variant-closed</v-icon>
+                            </template>
+                            <template v-else-if="getThumbnail(item)">
+                                <v-tooltip v-if="!item.isDirectory && getThumbnail(item)" top content-class="tooltip__content-opacity1">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <vue-load-image>
+                                            <img slot="image" :src="getThumbnail(item)" :alt="item.filename" width="32" v-bind="attrs" v-on="on" />
+                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                            <v-icon slot="error">mdi-file</v-icon>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="getThumbnail(item)" :alt="item.filename" width="250" /></span>
+                                </v-tooltip>
+                            </template>
                             <template v-else>
-                                <template v-if="getThumbnail(item)">
-                                    <v-tooltip v-if="!item.isDirectory && getThumbnail(item)" top content-class="tooltip__content-opacity1">
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <vue-load-image>
-                                                <img slot="image" :src="getThumbnail(item)" :alt="item.filename" width="32" v-bind="attrs" v-on="on" />
-                                                <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
-                                                <v-icon slot="error">mdi-file</v-icon>
-                                            </vue-load-image>
-                                        </template>
-                                        <span><img :src="getThumbnail(item)" :alt="item.filename" width="250" /></span>
-                                    </v-tooltip>
-                                </template>
-                                <template v-else>
-                                    <v-icon>mdi-file</v-icon>
-                                </template>
+                                <v-icon>mdi-file</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -134,11 +135,8 @@
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon left>mdi-cloud-download</v-icon> {{ $t('Timelapse.DownloadVideo')}}
-                </v-list-item>
-                <v-list-item @click="downloadFileZip" v-if="!contextMenu.item.isDirectory && existsFramesZip(contextMenu.item)">
-                    <v-icon left>mdi-cloud-download</v-icon> {{ $t('Timelapse.DownloadFrames')}}
+                <v-list-item @click="downloadFile(contextMenu.item.filename)" v-if="!contextMenu.item.isDirectory">
+                    <v-icon left>mdi-cloud-download</v-icon> {{ $t('Timelapse.Download')}}
                 </v-list-item>
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
                     <v-icon left>mdi-rename-box</v-icon> {{ $t('Timelapse.Rename')}}
@@ -374,11 +372,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'timelapse.countPerPage', value: newVal })
     }
 
-    get mp4Files() {
+    get displayFiles() {
         return this.files?.filter((file) => {
             if (file.isDirectory) return true
 
-            return file.filename.endsWith('mp4')
+            return (file.filename.endsWith('mp4') || file.filename.endsWith('zip'))
         }) ?? []
     }
 
@@ -421,16 +419,17 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
     clickRow(item: FileStateFile, force = false) {
         if (!this.contextMenu.shown || force) {
-            if (force) {
-                this.contextMenu.shown = false
-            }
-            if (!item.isDirectory) {
+            if (force) this.contextMenu.shown = false
+
+            if (item.isDirectory) this.currentPath += '/' + item.filename
+            else if (item.filename.endsWith('zip')) {
+                this.downloadFile(item.filename)
+
+
                 // const filename = (this.currentPath+'/'+item.filename)
                 // const href = this.apiUrl + '/server/files/' + encodeURI(filename)
                 // console.log(href)
                 // window.open(href)
-            } else {
-                this.currentPath += '/' + item.filename
             }
         }
     }
@@ -459,9 +458,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         return (this.files.findIndex((file) => file.filename === zipFilename) !== -1)
     }
 
-    downloadFile() {
-        const filename = (this.currentPath+'/'+this.contextMenu.item.filename)
-        const href = this.apiUrl + '/server/files/' + encodeURI(filename)
+    downloadFile(filename: string) {
+        const path = (this.currentPath+'/'+filename)
+        const href = this.apiUrl + '/server/files/' + encodeURI(path)
 
         window.open(href)
     }
@@ -493,14 +492,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             this.$socket.emit('server.files.move', {
                 source: this.currentPath+'/'+oldNameWithoutExtension+'.jpg',
                 dest: this.currentPath+'/'+this.dialogRenameFile.newName+'.jpg'
-            })
-        }
-
-        const fileZip = this.files.find((file) => file.filename === oldNameWithoutExtension+'.zip')
-        if (fileZip) {
-            this.$socket.emit('server.files.move', {
-                source: this.currentPath+'/'+oldNameWithoutExtension+'.zip',
-                dest: this.currentPath+'/'+this.dialogRenameFile.newName+'.zip'
             })
         }
     }
