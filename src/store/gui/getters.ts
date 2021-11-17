@@ -1,4 +1,3 @@
-import {caseInsensitiveSort} from '@/plugins/helpers'
 import {GetterTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
