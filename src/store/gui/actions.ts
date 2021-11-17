@@ -3,7 +3,6 @@ import {ActionTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
-import {v4 as uuid} from 'uuid'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit }) {
