@@ -168,24 +168,35 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    resetMoonrakerDB() {
-        Vue.$socket.emit('server.database.list', { }, { action: 'gui/resetMoonrakerDB2' })
+    async resetMoonrakerDB({ commit, dispatch }, payload) {
+        await commit('setResetDatabases', payload)
+        dispatch('resetMoonrakerDbLoop')
     },
 
-    resetMoonrakerDB2(_, payload) {
-        if ('namespaces' in payload && payload.namespaces.includes('mainsail')) {
-            Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/resetMoonrakerDB3' })
-        }
+    async resetMoonrakerDbLoop({ state, commit }) {
+        if (state.resetDatabases.length) {
+            const namespace = state.resetDatabases[0]
+
+            if (namespace.startsWith('mainsail') || namespace === 'webcams') {
+                Vue.$socket.emit('server.database.get_item', { namespace: namespace }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            } else if (namespace === 'history_jobs') {
+                Vue.$socket.emit('server.history.delete_job', { all: true }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            } else if (namespace === 'history_totals') {
+                Vue.$socket.emit('server.history.reset_totals', { }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            }
+
+            await commit('removeResetDatabase', namespace)
+        } else window.location.reload()
     },
 
-    resetMoonrakerDB3(_, payload) {
+    resetMoonrakerDbLoopItems({ dispatch }, payload) {
         if ('value' in payload && Object.keys(payload.value).length) {
             Object.keys(payload.value).forEach(key => {
-                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: key })
+                Vue.$socket.emit('server.database.delete_item', { namespace: payload.namespace, key: key })
             })
-
-            window.location.reload()
         }
+
+        dispatch('resetMoonrakerDbLoop')
     },
 
     setHistoryColumns({ commit, dispatch, state }, data) {
