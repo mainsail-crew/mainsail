@@ -29,6 +29,7 @@ export const getDefaultState = (): ServerState => {
             bits: 0,
             flags: [],
         },
+        dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: ''
     }

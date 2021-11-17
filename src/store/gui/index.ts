@@ -19,6 +19,8 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            lockSlidersOnTouchDevices: true,
+            lockSlidersDelay: 1.5,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
             calcEstimateTime: ['file', 'filament'],
@@ -31,9 +33,12 @@ export const getDefaultState = (): GuiState => {
         dashboard: {
             boolTempchart: true,
             boolBigThumbnail: true,
+            boolWideNavDrawer: false,
+            navigationStyle: 'iconsOnly',
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],
+            lockedSliders: [],
             control: {
                 style: 'bars',
                 feedrateXY: 100,

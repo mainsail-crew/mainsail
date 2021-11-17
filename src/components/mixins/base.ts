@@ -60,6 +60,10 @@ export default class BaseMixin extends Vue {
         return this.$vuetify.breakpoint.xl
     }
 
+    get isTouchDevice() {
+        return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0))
+    }
+
     get moonrakerComponents() {
         return this.$store.state.server?.components ?? []
     }

@@ -34,6 +34,7 @@ export interface ServerState {
         bits: number
         flags: string[]
     },
+    dbNamespaces: string[]
     websocket_count: number
     moonraker_version: string
 

@@ -23,7 +23,7 @@ ____
 
 # Preparation
 
-*  [Download](https://github.com/raymondh2/MainsailOS/releases) the latest MainsailOS release (don't unpack the zip; you don't need to).
+*  [Download](https://github.com/mainsail-crew/MainsailOS/releases) the latest MainsailOS release (don't unpack the zip; you don't need to).
 *  [Download](https://www.raspberrypi.org/software/) and install the latest Raspberry Pi Imager (aka. rpi-imager).
 
 # Flashing MainsailOS

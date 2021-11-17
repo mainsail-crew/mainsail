@@ -8,7 +8,7 @@ color_scheme: "mainsail"
 search_enabled: true
 aux_links:
   "Mainsail on GitHub":
-    - "//github.com/meteyou/mainsail"
+    - "//github.com/mainsail-crew/mainsail"
 aux_links_new_tab: true
 
 defaults:

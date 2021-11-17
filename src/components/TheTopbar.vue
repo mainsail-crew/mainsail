@@ -6,35 +6,51 @@
 
 <template>
     <div>
-        <v-app-bar app elevate-on-scroll>
+        <v-app-bar app elevate-on-scroll height="48px" clipped-left>
             <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
+            <router-link to="/">
+                <template v-if="sidebarLogo">
+                    <img :src="sidebarLogo" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" alt="Logo" />
+                </template>
+                <template v-else>
+                    <mainsail-logo :color="logoColor" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" router to="/" :ripple="false"></mainsail-logo>
+                </template>
+            </router-link>
+            <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
+            <printer-selector v-if="countPrinters"></printer-selector>
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="mr-5 button-min-width-auto px-3 d-none d-sm-flex"
+                class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
                 v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
                 <v-icon class="d-md-none">mdi-content-save</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.SAVE_CONFIG") }}</span>
             </v-btn>
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
-                class="mr-5 button-min-width-auto px-3 d-none d-sm-flex"
-                v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state)"
+                class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
+                v-if="klippyIsConnected && ['standby', 'complete', 'cancelled'].includes(printer_state) && !boolHideUploadAndPrintButton"
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.UploadPrint") }}</span>
             </v-btn>
-            <v-btn
+            <v-btn tile large
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
-                class="button-min-width-auto px-3"
+                class="button-min-width-auto px-3 emergency-button"
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-flex">{{ $t("App.TopBar.EmergencyStop") }}</span>
+                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.EmergencyStop") }}</span>
             </v-btn>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
@@ -90,6 +106,8 @@ import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
 import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
+import PrinterSelector from '@/components/ui/PrinterSelector.vue'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 type uploadSnackbar = {
     status: boolean
@@ -109,7 +127,9 @@ type uploadSnackbar = {
         Panel,
         TheThrottledStates,
         TheSettingsMenu,
-        TheTopCornerMenu
+        TheTopCornerMenu,
+        PrinterSelector,
+        MainsailLogo
     }
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
@@ -152,6 +172,33 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     get saveConfigPending() {
         return this.$store.state.printer.configfile?.save_config_pending ?? false
+    }
+
+    get printerName():string {
+        if (this.$store.state.gui.general.printername.length)
+            return this.$store.state.gui.general.printername
+
+        return this.$store.state.printer.hostname
+    }
+
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    }
+
+    get countPrinters() {
+        return this.$store.getters['farm/countPrinters']
+    }
+
+    get boolHideUploadAndPrintButton() {
+        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+    }
+
+    get sidebarLogo(): string {
+        return this.$store.getters['files/getSidebarLogo']
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.theme.logo
     }
 
     btnEmergencyStop() {
