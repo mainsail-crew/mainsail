@@ -9,12 +9,24 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
+                    <v-btn
+                        v-if="canLock && lockSliders && isTouchDevice"
+                        @click="sliderIsLocked = !sliderIsLocked"
+                        plain
+                        small
+                        icon
+                    >
+                        <v-icon small :color="(sliderIsLocked ? 'red' : '')">
+                            {{ sliderIsLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        </v-icon>
+                    </v-btn>
                     <span>{{ label }}</span>
                     <v-btn
                         v-if="value !== defaultValue"
                         class="ml-2"
                         x-small
                         icon
+                        :disabled="canLock && sliderIsLocked"
                         @click="resetSlider"
                     >
                         <v-icon>mdi-restart</v-icon>
@@ -27,6 +39,8 @@
                 <v-card-text class="py-0">
                     <v-slider
                         v-model="value"
+                        v-touch="{start: resetLockTimer}"
+                        :disabled="canLock && sliderIsLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
@@ -34,11 +48,11 @@
                         hide-details>
 
                         <template v-slot:prepend>
-                            <v-icon @click="decrement">mdi-minus</v-icon>
+                            <v-icon @click="decrement" :disabled="canLock && sliderIsLocked">mdi-minus</v-icon>
                         </template>
 
                         <template v-slot:append>
-                            <v-icon @click="increment">mdi-plus</v-icon>
+                            <v-icon @click="increment" :disabled="canLock && sliderIsLocked">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -55,11 +69,14 @@ import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
+    private timeout: number | undefined
     value = 0
     startValue = 0
     processedMax = 100
     dynamicStep = 50
 
+    @Prop({ required: true }) readonly sliderName!: string
+    @Prop({ type: Boolean, default: true, required: true }) readonly canLock!: string
     @Prop({ type: Number, required: true }) readonly target!: number
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, default: '' }) readonly attributeName!: string
@@ -81,6 +98,41 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
+    }
+
+    @Watch('lockSliders', {immediate: true})
+    lockSlidersChanged(){
+        if(this.lockSliders && this.isTouchDevice){
+            this.sliderIsLocked = true
+        } else {
+            this.sliderIsLocked = false
+        }
+    }
+
+    startLockTimer() {
+        let t = this.lockSlidersDelay
+        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
+        this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
+    }
+
+    resetLockTimer() {
+        clearTimeout(this.timeout)
+    }
+
+    get lockSliders() {
+        return this.$store.state.gui.general.lockSlidersOnTouchDevices
+    }
+
+    get lockSlidersDelay() {
+        return this.$store.state.gui.general.lockSlidersDelay
+    }
+
+    get sliderIsLocked() {
+        return this.$store.getters['gui/getLockedSliders'](this.sliderName)
+    }
+
+    set sliderIsLocked(newVal) {
+        this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
     }
 
     get colorBar() {
@@ -126,6 +178,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         const gcode = this.command + ' ' + this.attributeName + (Math.max(1, this.value) * this.attributeScale).toFixed(0)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
         this.$socket.emit('printer.gcode.script', {script: gcode})
+
+        this.startLockTimer()
     }
 
     decrement() {

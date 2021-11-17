@@ -3,7 +3,6 @@ import {ActionTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
-import {v4 as uuid} from 'uuid'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit }) {
@@ -128,9 +127,9 @@ export const actions: ActionTree<GuiState, RootState> = {
         let newState = payload.newVal
         if (
             'value' in payload &&
-			keyName in payload.value &&
-			typeof payload.value[keyName] !== 'string' &&
-			!Array.isArray(payload.value[keyName])
+            keyName in payload.value &&
+            typeof payload.value[keyName] !== 'string' &&
+            !Array.isArray(payload.value[keyName])
         ) newState = Object.assign(payload.value[keyName], {...newState})
 
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
@@ -238,11 +237,21 @@ export const actions: ActionTree<GuiState, RootState> = {
     resetLayout({ dispatch }, name) {
         const defaultState = getDefaultState()
         // eslint-disable-next-line
-		const newVal: any = defaultState.dashboard[name] ?? []
+        const newVal: any = defaultState.dashboard[name] ?? []
 
         dispatch('saveSetting', {
             name: 'dashboard.'+name,
             value: newVal
+        })
+    },
+
+    saveSliderLockState({ commit, dispatch, state }, payload) {
+        if (!payload.value) commit('removeFromLockedSliders', {name: payload.name})
+        else commit('addToLockedSliders', { name: payload.name })
+
+        dispatch('updateSettings', {
+            keyName: 'dashboard.lockedSliders',
+            newVal: state.dashboard.lockedSliders
         })
     },
 
