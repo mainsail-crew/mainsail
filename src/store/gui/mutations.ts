@@ -105,5 +105,22 @@ export const mutations: MutationTree<GuiState> = {
 
     toggleHideUploadAndPrintBtn(state, payload) {
         Vue.set(state.dashboard, 'boolHideUploadAndPrintButton', payload)
+    },
+
+    setResetDatabases(state, payload) {
+        const array: string[] = []
+        Object.keys(payload).forEach((element) => {
+            if (payload[element] === true) array.push(element)
+        })
+
+        Vue.set(state, 'resetDatabases', array)
+    },
+
+    removeResetDatabase(state, payload) {
+        const array = [...state.resetDatabases]
+        const index = array.findIndex((element) => element === payload)
+        if (index !== -1) array.splice(index, 1)
+
+        Vue.set(state, 'resetDatabases', array)
     }
 }
