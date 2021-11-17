@@ -21,7 +21,7 @@
     }
 
     .main-content-scrollbar {
-        height: calc(var(--app-height) - 64px);
+        height: calc(var(--app-height) - 48px);
     }
 </style>
 
