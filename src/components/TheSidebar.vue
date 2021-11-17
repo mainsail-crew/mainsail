@@ -30,7 +30,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(menuStyle === 'iconsOnly')" :key="menuStyle" width="220px" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" width="220px" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -99,8 +99,8 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
-    get menuStyle() {
-        return this.$store.state.gui.dashboard.menuStyle
+    get navigationStyle() {
+        return this.$store.state.gui.dashboard.navigationStyle
     }
 
     get sidebarBackground(): string {
