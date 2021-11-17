@@ -178,11 +178,11 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get lockSliders() {
-        return this.$store.state.gui.general.lockSliders
+        return this.$store.state.gui.general.lockSlidersOnTouchDevices
     }
 
     set lockSliders(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.lockSliders', value: newVal})
+        this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersOnTouchDevices', value: newVal})
     }
 
     get lockSlidersTimeout() {
