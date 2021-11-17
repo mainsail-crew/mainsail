@@ -156,10 +156,10 @@
             </v-list>
         </v-menu>
         <v-dialog v-model="dialogImage.show" hide-overlay fullscreen @keydown.esc="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;" class="fill-height">
-            <panel :title="dialogImage.item.name" card-class="maschine-configfiles-imageviewer-dialog" toolbar-color="primary" style="position: relative;">
-                <template v-slot:buttons-left>
-                    <v-btn icon dark @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
-                        <v-icon>mdi-close</v-icon>
+            <panel :title="dialogImage.item.name" card-class="maschine-configfiles-imageviewer-dialog" style="position: relative;">
+                <template v-slot:buttons>
+                    <v-btn icon @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
+                        <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <div class="d-flex justify-center" style="max-height: calc(var(--app-height) - 64px); overflow: auto;">
