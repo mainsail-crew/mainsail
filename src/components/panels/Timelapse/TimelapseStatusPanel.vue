@@ -22,7 +22,7 @@
                 </v-row>
             </v-card-text>
             <v-card-text :class="framesCount ? 'pt-0' : ''">
-                <v-row>
+                <v-row v-if="framesCount > 0">
                     <v-col>
                         <template v-if="framesCount > 0">
                             <settings-row :title="$t('Timelapse.Frames')">
@@ -53,6 +53,11 @@
                                 </v-col>
                             </v-row>
                         </template>
+                    </v-col>
+                </v-row>
+                <v-row v-else>
+                    <v-col>
+                        <p class="text-center my-0 font-italic">{{ $t('Timelapse.NoActiveTimelapse') }}</p>
                     </v-col>
                 </v-row>
             </v-card-text>

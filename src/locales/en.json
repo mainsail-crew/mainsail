@@ -304,7 +304,8 @@
 		"StartRender": "start render",
 		"TimelapseRendering": "Timelapse rendering",
 		"TimelapseRenderingSuccessful": "Timelapse rendering successful",
-    "Video": "Video"
+    "Video": "Video",
+    "NoActiveTimelapse": "No records available."
 	},
   "Panels": {
     "ControlPanel": {
