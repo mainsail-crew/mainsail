@@ -255,17 +255,26 @@
                     :src="getBigThumbnail(dialogPrintFile.item)"
                 ></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text>{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
+                <v-card-text class="pb-0">{{ $t('Files.DoYouWantToStartFilename', {'filename': dialogPrintFile.item.filename}) }}</v-card-text>
+                <template v-if="moonrakerComponents.includes('timelapse')">
+                    <v-divider class="mt-3 mb-2"></v-divider>
+                    <v-card-text class="pb-0">
+                        <settings-row title="Timelapse">
+                            <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
+                        </settings-row>
+                    </v-card-text>
+                    <v-divider class="mt-2 mb-0"></v-divider>
+                </template>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialogPrintFile.show = false">{{ $t('Files.No')}}</v-btn>
-                    <v-btn color="green darken-1" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.Yes')}}</v-btn>
+                    <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel')}}</v-btn>
+                    <v-btn color="primary" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.StartPrint')}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="['error', 'printing', 'paused'].includes(klipperState)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="['error', 'printing', 'paused'].includes(printer_state)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
                 <v-list-item
@@ -310,7 +319,6 @@
                     <v-btn icon tile @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
-                    {{ $t('Files.PleaseEnterANewDirectoryName') }}
                     <v-text-field
                         v-model="dialogCreateDirectory.name"
                         ref="inputFieldCreateDirectory"
@@ -394,6 +402,7 @@ import {thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensi
 import {formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
+import SettingsRow from '@/components/settings/SettingsRow.vue'
 
 interface draggingFile {
     status: boolean
@@ -427,7 +436,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: {Panel}
+    components: {Panel,SettingsRow}
 })
 export default class PageFiles extends Mixins(BaseMixin) {
     validGcodeExtensions = validGcodeExtensions
@@ -441,6 +450,17 @@ export default class PageFiles extends Mixins(BaseMixin) {
         inputFieldCreateDirectory: HTMLInputElement,
         inputFieldRenameDirectory: HTMLInputElement,
     }
+
+    private TimelapseModeOptions = [
+        {
+            text: 'layermacro',
+            value: 'layermacro'
+        },
+        {
+            text: 'hyperlapse',
+            value: 'hyperlapse'
+        }
+    ]
 
     private search = ''
     private selected = []
@@ -652,6 +672,14 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     set countPerPage(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
+    }
+
+    get timelapseEnabled() {
+        return this.$store.state.server.timelapse?.settings?.enabled ?? false
+    }
+
+    set timelapseEnabled(newVal) {
+        this.$socket.emit('machine.timelapse.post_settings', { enabled: newVal }, { action: 'server/timelapse/initSettings' })
     }
 
     getJobStatus(item: FileStateFile) {
@@ -921,14 +949,13 @@ export default class PageFiles extends Mixins(BaseMixin) {
 
     clickRow(item: FileStateFile, force = false) {
         if (!this.contextMenu.shown || force) {
-            if (force) {
-                this.contextMenu.shown = false
-            }
-            if (!item.isDirectory) {
+            if (force) this.contextMenu.shown = false
+
+            if (item.isDirectory) {
+                this.currentPath += '/' + item.filename
+            } else if (!['error', 'printing', 'paused'].includes(this.printer_state)) {
                 this.dialogPrintFile.show = true
                 this.dialogPrintFile.item = item
-            } else {
-                this.currentPath += '/' + item.filename
             }
         }
     }
