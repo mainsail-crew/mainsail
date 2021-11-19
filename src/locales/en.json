@@ -139,6 +139,7 @@
     "DoYouWantToStartFilename": "Do you want to start {filename}?",
     "No": "No",
     "Yes": "Yes",
+    "StartPrint": "Start print",
     "NewDirectory": "New Directory",
     "PleaseEnterANewDirectoryName": "Please enter a new directory name: ",
     "RenameFile": "Rename File",
