@@ -5,6 +5,7 @@ import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
+import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
 import {Component} from 'vue'
 import Viewer from '../pages/Viewer.vue'
@@ -75,6 +76,15 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: true,
         moonrakerComponent: 'history'
+    },
+    {
+        title: 'Timelapse',
+        path: '/timelapse',
+        icon: 'timelapse',
+        component: Timelapse,
+        alwaysShow: false,
+        showInNavi: true,
+        moonrakerComponent: 'timelapse'
     },
     {
         title: 'Machine',

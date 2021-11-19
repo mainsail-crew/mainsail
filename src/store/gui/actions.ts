@@ -67,7 +67,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         //added in V2.1.0
-        if (payload.value.console.customFilters) {
+        if (payload.value.console?.customFilters) {
             window.console.debug('convert old consolefilters')
 
             if (payload.value.console.customFilters && payload.value.console.customFilters.length) {
