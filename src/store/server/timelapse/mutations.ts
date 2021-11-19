@@ -21,7 +21,6 @@ export const mutations: MutationTree<ServerTimelapseState> = {
     },
 
     setRenderStatus(state, payload) {
-        window.console.log(payload)
         Vue.set(state, 'rendering', {
             status: payload.status,
             progress: payload.progress ?? 0,
