@@ -13,9 +13,9 @@
         <template v-slot:buttons v-if="webcams.length > 1">
             <v-menu :offset-y="true" title="Webcam">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn text v-bind="attrs" v-on="on">
+                    <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon small v-if="'icon' in currentCam" class="mr-2">{{ currentCam.icon }}</v-icon>
-                        {{ 'name' in currentCam ? currentCam.name : "unknown" }}
+                        <span v-show="$vuetify.breakpoint.mdAndUp">{{ 'name' in currentCam ? currentCam.name : "unknown" }}</span>
                         <v-icon small>mdi-menu-down</v-icon>
                     </v-btn>
                 </template>

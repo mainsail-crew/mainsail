@@ -8,7 +8,7 @@
     <div>
         <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
             <template v-slot:activator="{ on, attrs }">
-                <v-btn icon tile large v-bind="attrs" v-on="on">
+                <v-btn icon tile v-bind="attrs" v-on="on">
                     <v-icon>mdi-power-standby</v-icon>
                 </v-btn>
             </template>
@@ -102,6 +102,7 @@ interface dialogPowerDeviceChange {
 
 @Component
 export default class TheTopCornerMenu extends Mixins(BaseMixin) {
+
     showMenu = false
     dialogPowerDeviceChange : dialogPowerDeviceChange = {
         show: false,

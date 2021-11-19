@@ -70,12 +70,12 @@
                         ></v-text-field>
                         <v-spacer></v-spacer>
                         <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
-                        <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" color="primary" class="px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
-                        <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                        <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary--text px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
+                        <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
                             <v-list>
                                 <v-list-item class="minHeight36">
@@ -316,7 +316,7 @@
         <v-dialog v-model="dialogCreateDirectory.show" :max-width="400">
             <panel :title="$t('Files.NewDirectory')" card-class="gcode-files-new-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -338,7 +338,7 @@
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -359,7 +359,7 @@
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Files.RenameDirectory')" card-class="gcode-files-rename-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -380,7 +380,7 @@
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Files.DeleteDirectory')" card-class="gcode-files-delete-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Files.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>

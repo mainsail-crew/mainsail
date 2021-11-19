@@ -33,7 +33,7 @@
         :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <template v-slot:buttons v-show="printer.socket.isConnected && printer_webcams.length">
+        <template v-slot:buttons v-if="printer.socket.isConnected && printer_webcams.length">
             <v-menu :offset-y="true" title="Webcam">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">

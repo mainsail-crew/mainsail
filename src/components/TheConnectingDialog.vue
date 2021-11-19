@@ -5,7 +5,7 @@
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
         <v-card dark>
-            <v-toolbar flat dense color="primary">
+            <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
@@ -31,7 +31,7 @@
                     <v-divider class="mt-4 mb-5"></v-divider>
                 </template>
                 <div class="text-center">
-                    <v-btn @click="reconnect" color="primary">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
+                    <v-btn @click="reconnect" class="primary--text">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
                 </div>
             </v-card-text>
         </v-card>
