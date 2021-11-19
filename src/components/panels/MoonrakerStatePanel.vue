@@ -23,9 +23,9 @@
             <v-divider class="my-2" v-if="index"></v-divider>
             <p class="orange--text mb-0">{{ warning }}</p>
         </v-card-text>
-        <v-divider class="mb-2 mt-3"></v-divider>
-        <v-card-actions class="px-4 pt-2 pb-4 text-center text-lg-left">
-            <v-btn small :href="apiUrl+'/server/files/moonraker.log'" target="_blank" color="primary" class=""><v-icon class="mr-2" small>mdi-download</v-icon>{{ $t("Panels.MoonrakerStatePanel.DownloadLog") }}</v-btn>
+        <v-divider class="mt-3"></v-divider>
+        <v-card-actions class="justify-start">
+            <v-btn small :href="apiUrl+'/server/files/moonraker.log'" target="_blank" class="ml-2 primary--text"><v-icon class="mr-2" small>mdi-download</v-icon>{{ $t("Panels.MoonrakerStatePanel.DownloadLog") }}</v-btn>
         </v-card-actions>
     </panel>
 </template>

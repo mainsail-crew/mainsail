@@ -1,13 +1,26 @@
+<style>
+    .topbar .v-toolbar__content {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+</style>
 <style scoped>
     .button-min-width-auto {
         min-width: auto !important;
+    }
+    .topbar .v-btn {
+        height: 100% !important;
+        max-height: none;
+    }
+    .topbar .v-btn.v-btn--icon {
+        width: var(--topbar-icon-btn-width) !important;
     }
 </style>
 
 <template>
     <div>
-        <v-app-bar app elevate-on-scroll height="48px" clipped-left>
-            <v-app-bar-nav-icon @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
+        <v-app-bar app elevate-on-scroll :height="topbarHeight" class="topbar pa-0" clipped-left>
+            <v-app-bar-nav-icon tile @click.stop="naviDrawer = !naviDrawer"></v-app-bar-nav-icon>
             <router-link to="/">
                 <template v-if="sidebarLogo">
                     <img :src="sidebarLogo" style="height: 32px;" class="nav-logo ml-4 mr-1 d-none d-sm-flex" alt="Logo" />
@@ -21,7 +34,7 @@
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input type="file" ref="fileUploadAndStart" :accept="validGcodeExtensions.join(', ')" style="display: none" @change="uploadAndStart" />
-            <v-btn tile large
+            <v-btn tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
@@ -32,7 +45,7 @@
                 @click="saveConfig">
                 <v-icon class="d-md-none">mdi-content-save</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.SAVE_CONFIG") }}</span>
             </v-btn>
-            <v-btn tile large
+            <v-btn tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
@@ -42,7 +55,7 @@
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon><span class="d-none d-md-inline">{{ $t("App.TopBar.UploadPrint") }}</span>
             </v-btn>
-            <v-btn tile large
+            <v-btn tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
@@ -82,7 +95,7 @@
         <v-dialog v-model="showEmergencyStopDialog" width="400" :fullscreen="isMobile">
             <panel :title="$t('EmergencyStopDialog.EmergencyStop')" toolbar-color="error" card-class="emergency-stop-dialog" icon="mdi-alert-circle-outline" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
@@ -108,6 +121,7 @@ import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
+import {topbarHeight} from '@/store/variables'
 
 type uploadSnackbar = {
     status: boolean
@@ -133,6 +147,8 @@ type uploadSnackbar = {
     }
 })
 export default class TheTopbar extends Mixins(BaseMixin) {
+    topbarHeight = topbarHeight
+
     showEmergencyStopDialog = false
 
     uploadSnackbar: uploadSnackbar = {

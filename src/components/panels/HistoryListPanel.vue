@@ -21,10 +21,10 @@
                         ></v-text-field>
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
-                        <v-btn :title="$t('History.TitleRefreshHistory')" color="grey darken-3" class="px-2 minwidth-0 ml-3" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn :title="$t('History.TitleRefreshHistory')" class="px-2 minwidth-0 ml-3" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                                <v-btn class="px-2 minwidth-0 ml-3" :title="$t('History.TitleSettings')" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
                             <v-list>
                                 <template v-if="allPrintStatusArray.length">
@@ -139,10 +139,10 @@
                 </v-list-item>
             </v-list>
         </v-menu>
-        <v-dialog v-model="detailsDialog.boolShow" :max-width="600" persistent>
+        <v-dialog v-model="detailsDialog.boolShow" :max-width="600" persistent @keydown.esc="detailsDialog.boolShow = false">
             <panel :title="$t('History.JobDetails')" icon="mdi-update" card-class="history-detail-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="px-0">
                     <overlay-scrollbars style="height: 350px;" class="px-6">

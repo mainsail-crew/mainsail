@@ -34,7 +34,7 @@ export const getDefaultState = (): GuiState => {
             boolTempchart: true,
             boolBigThumbnail: true,
             boolWideNavDrawer: false,
-            navigationStyle: 'iconsOnly',
+            navigationStyle: 'iconsAndText',
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],

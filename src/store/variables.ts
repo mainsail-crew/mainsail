@@ -92,3 +92,8 @@ export const allDashboardPanels = [
 export const thumbnailSmallMin = 32
 export const thumbnailSmallMax = 64
 export const thumbnailBigMin = 256
+
+export const navigationWidth = 220
+export const navigationItemHeight = 48
+export const panelToolbarHeight = 48
+export const topbarHeight = 48

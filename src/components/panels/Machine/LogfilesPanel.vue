@@ -4,10 +4,10 @@
             <v-container pb-0 px-0>
                 <v-row>
                     <v-col :class="'col-12' +(klipperState !== 'ready' ? 'col-md-6' : 'col-md-12')+ ''">
-                        <v-btn :href="this.apiUrl+'/server/files/klippy.log'" @click="downloadLog" block color="primary"><v-icon class="mr-2">mdi-download</v-icon>Klipper</v-btn>
+                        <v-btn :href="this.apiUrl+'/server/files/klippy.log'" @click="downloadLog" block class="primary--text"><v-icon class="mr-2">mdi-download</v-icon>Klipper</v-btn>
                     </v-col>
                     <v-col :class="'col-12 pt-0 ' +(klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12')+ ''">
-                        <v-btn :href="this.apiUrl+'/server/files/moonraker.log'" @click="downloadLog" block color="primary"><v-icon class="mr-2">mdi-download</v-icon>Moonraker</v-btn>
+                        <v-btn :href="this.apiUrl+'/server/files/moonraker.log'" @click="downloadLog" block class="primary--text"><v-icon class="mr-2">mdi-download</v-icon>Moonraker</v-btn>
                     </v-col>
                 </v-row>
             </v-container>

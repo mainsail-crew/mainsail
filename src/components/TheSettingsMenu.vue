@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn icon tile large @click="showSettings = true">
+        <v-btn icon tile @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile" @keydown.esc="showSettings = false">
