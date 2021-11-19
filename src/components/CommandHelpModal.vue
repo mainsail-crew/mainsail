@@ -8,7 +8,7 @@
     >
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
-                <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
+                <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
             </template>
             <template v-else>
                 <v-btn
@@ -24,7 +24,7 @@
         <template #default>
             <panel :title="$t('Console.CommandList')" icon="mdi-help" card-class="command-help-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-title>
                     <v-row>
@@ -72,9 +72,11 @@ import {CommandHelp} from '@/store/printer/types'
 import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import Panel from '@/components/ui/Panel.vue'
+
 @Component({
     components: {Panel}
 })
+
 export default class CommandHelpModal extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false }) isMini!: boolean;
     @Prop({ required: false, default: false }) inToolbar!: boolean;

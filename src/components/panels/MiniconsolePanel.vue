@@ -23,7 +23,7 @@
 
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
+                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
@@ -38,36 +38,29 @@
         </template>
         <div class="d-flex flex-column">
             <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
-                <v-row>
-                    <v-col>
-                        <v-textarea
-                            v-model="gcode"
-                            :items="items"
-                            :label="$t('Panels.MiniconsolePanel.SendCode')"
-                            solo
-                            class="gcode-command-field"
-                            ref="gcodeCommandField"
-                            autocomplete="off"
-                            no-resize
-                            auto-grow
-                            :rows="rows"
-                            @keydown.enter.prevent.stop="doSend"
-                            @keyup.up="onKeyUp"
-                            @keyup.down="onKeyDown"
-                            @keydown.tab="getAutocomplete"
-                            hide-details
-                            outlined
-                            dense
-                            :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
-                            @click:prepend="getAutocomplete"
-                            append-icon="mdi-send"
-                            @click:append="doSend"
-                        ></v-textarea>
-                    </v-col>
-                    <v-col class="col-auto">
-
-                    </v-col>
-                </v-row>
+                <v-textarea
+                    v-model="gcode"
+                    :items="items"
+                    :label="$t('Panels.MiniconsolePanel.SendCode')"
+                    solo
+                    class="gcode-command-field"
+                    ref="gcodeCommandField"
+                    autocomplete="off"
+                    no-resize
+                    auto-grow
+                    :rows="rows"
+                    @keydown.enter.prevent.stop="doSend"
+                    @keyup.up="onKeyUp"
+                    @keyup.down="onKeyDown"
+                    @keydown.tab="getAutocomplete"
+                    hide-details
+                    outlined
+                    dense
+                    :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                    @click:prepend="getAutocomplete"
+                    append-icon="mdi-send"
+                    @click:append="doSend"
+                ></v-textarea>
             </v-card-text>
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>

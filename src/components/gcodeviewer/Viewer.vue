@@ -41,8 +41,19 @@
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
             <template v-slot:buttons>
-                <v-btn text @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-                <v-btn icon @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
+                <v-btn 
+                    :icon="$vuetify.breakpoint.xs"
+                    :text="$vuetify.breakpoint.smAndUp"
+                    tile
+                    @click="reloadViewer"
+                    color="info"
+                    class="ml-3"
+                    v-show="reloadRequired"
+                >
+                    <span v-show="$vuetify.breakpoint.smAndUp">{{$t("GCodeViewer.ReloadRequired")}}</span>
+                    <v-icon v-show="$vuetify.breakpoint.xs">mdi-reload-alert</v-icon>
+                </v-btn>
+                <v-btn icon tile @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
             </template>
             <v-card-text>
                 <v-row>
@@ -175,6 +186,7 @@ let viewer: any = null
 })
 export default class Viewer extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
+
     private isBusy = false
     private loading = false
     private loadingPercent = 0

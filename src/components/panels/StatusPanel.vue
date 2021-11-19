@@ -38,6 +38,7 @@
                     @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
                     icon
+                    tile
                 >
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
