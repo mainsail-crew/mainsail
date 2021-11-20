@@ -248,7 +248,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn color="primary" :href="hostUrl+'server/files/'+videoDialogFilename" target="_blank">{{ $t('Timelapse.Download') }}</v-btn>
+                            <v-btn text color="primary" :href="hostUrl+'server/files/'+videoDialogFilename" target="_blank">{{ $t('Timelapse.Download') }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>
