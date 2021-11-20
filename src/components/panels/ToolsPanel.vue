@@ -377,13 +377,13 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         const serieName = 'bool'+type.charAt(0).toUpperCase() + type.slice(1)
         const value = this.editHeater[serieName]
 
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
+        this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
     setVisibleAdditionalSensor(sensor: string): void {
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: this.editHeater.additionSensors[sensor].bool }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
+        this.$store.dispatch('gui/saveSetting', { name, value: this.editHeater.additionSensors[sensor].bool })
     }
 
     @Debounce(500)
@@ -391,8 +391,8 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         if (typeof value === 'object' && 'hex' in value) value = value.hex
         this.$store.commit('printer/tempHistory/setColor', { name: this.editHeater.name, value: value })
 
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
+        this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
 
