@@ -120,15 +120,21 @@
                             </v-row>
                         </v-col>
                         <v-col class="col-12 col-sm-6 text-center" align-self="center">
-                            <vue-load-image v-if="['mjpegstreamer', 'mjpegstreamer-adaptive', 'uv4l-mjpeg'].includes(form.service)">
-                                <img slot="image" :src="form.service === 'mjpegstreamer-adaptive' ? form.urlSnapshot : form.urlStream" alt="Preview" :style="webcamStyle" class="webcamImage" />
-                                <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
-                                <template slot="error">
-                                    <v-icon x-large>mdi-webcam-off</v-icon>
-                                    <div class="subtitle-1 mt-2">{{ $t('Settings.WebcamsTab.UrlNotAvailable') }}</div>
-                                </template>
-                            </vue-load-image>
-                            <video v-if="['ipstream'].includes(form.service)" :src="form.urlStream" autoplay :style="webcamStyle" />
+                            <template v-if="form.service === 'mjpegstreamer'">
+                                <webcam-mjpegstreamer :cam-settings="form"></webcam-mjpegstreamer>
+                            </template>
+                            <template v-else-if="form.service === 'mjpegstreamer-adaptive'">
+                                <webcam-mjpegstreamer-adaptive :cam-settings="form"></webcam-mjpegstreamer-adaptive>
+                            </template>
+                            <template v-else-if="form.service === 'uv4l-mjpeg'">
+                                <webcam-uv4l-mjpeg :cam-settings="form"></webcam-uv4l-mjpeg>
+                            </template>
+                            <template v-else-if="form.service === 'ipstream'">
+                                <webcam-ipstreamer :cam-settings="form"></webcam-ipstreamer>
+                            </template>
+                            <template v-else>
+                                <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>
+                            </template>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -158,6 +164,10 @@ import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
+import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
+import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
+import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
+import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
 
 interface webcamForm {
     bool: boolean
@@ -174,7 +184,13 @@ interface webcamForm {
 }
 
 @Component({
-    components: {SettingsRow}
+    components: {
+        SettingsRow,
+        'webcam-mjpegstreamer': Mjpegstreamer,
+        'webcam-mjpegstreamer-adaptive': MjpegstreamerAdaptive,
+        'webcam-uv4l-mjpeg': Uv4lMjpeg,
+        'webcam-ipstreamer': Ipstreamer,
+    }
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
