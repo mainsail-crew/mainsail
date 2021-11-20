@@ -20,7 +20,7 @@
             </v-card-actions>
         </v-card>
         <v-card flat v-else>
-            <v-form v-model="form.valid" @submit.prevent="saveWebcam">
+            <v-form v-model="form.valid" ref="webcamForm" @submit.prevent="saveWebcam">
                 <v-card-title>
                     {{ form.id === null ? $t("Settings.WebcamsTab.CreateWebcam") : $t("Settings.WebcamsTab.EditWebcam") }}
                 </v-card-title>
@@ -65,7 +65,7 @@
                                         v-model="form.urlStream"
                                         :label="$t('Settings.WebcamsTab.UrlStream')"
                                         hide-details="auto"
-                                        :rules="[rules.required]"
+                                        :rules="form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -75,7 +75,7 @@
                                         v-model="form.urlSnapshot"
                                         :label="$t('Settings.WebcamsTab.UrlSnapshot')"
                                         hide-details="auto"
-                                        :rules="[rules.requiredMjpegAdaptive]"
+                                        :rules="form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
@@ -210,8 +210,11 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
     private rules = {
         required: (value: string) => value !== '' || this.$t('Settings.WebcamsTab.Required'),
-        requiredMjpegAdaptive: (value: string) => (value !== '' && this.form.service === 'mjpegstreamer-adaptive') || this.$t('Settings.WebcamsTab.Required'),
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
+    }
+
+    $refs!: {
+        webcamForm: any
     }
 
     get webcams() {
@@ -278,6 +281,10 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
         this.form.bool = true
         this.form.valid = false
+
+        this.$nextTick(() => {
+            this.$refs.webcamForm?.validate()
+        })
     }
 
     saveWebcam() {
