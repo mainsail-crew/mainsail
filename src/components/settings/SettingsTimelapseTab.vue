@@ -12,7 +12,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.Camera')" :sub-title="$t('Settings.TimelapseTab.CameraDescription')">
-                    <v-select v-model="camera" :items="cameraOptions" hide-details outlined dense :disabled="blockedsettings.includes('cameraOptions')"></v-select>
+                    <v-select v-model="camera" :items="cameraOptions" hide-details outlined dense :disabled="blockedsettings.includes('camera') || blockedsettings.includes('snapshoturl')"></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.Mode')" :sub-title="$t('Settings.TimelapseTab.ModeDescription')">
