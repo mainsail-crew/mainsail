@@ -45,7 +45,7 @@
                                 </settings-row>
                             </template>
                         </template>
-                        <template v-if="framesCount > 0 && ['complete', 'canceled'].includes(printer_state)">
+                        <template v-if="framesCount > 0 && !['printing', 'paused'].includes(printer_state)">
                             <v-divider class="mt-2 mb-4"></v-divider>
                             <v-row>
                                 <v-col class="text-center">
