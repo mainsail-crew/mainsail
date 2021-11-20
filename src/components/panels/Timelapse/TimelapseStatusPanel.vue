@@ -49,7 +49,8 @@
                             <v-divider class="mt-2 mb-4"></v-divider>
                             <v-row>
                                 <v-col class="text-center">
-                                    <v-btn class="primary" :disabled="disableRenderButton" @click="boolDialogRendersettings = true">{{ $t('Timelapse.Render') }}</v-btn>
+                                    <v-btn text color="primary" :disabled="disableRenderButton" @click="boolDialogRendersettings = true">{{ $t('Timelapse.Render') }}</v-btn>
+                                    <v-btn text color="primary" @click="saveFrames" :loading="loadings.includes('timelapse_saveframes')">{{ $t('Timelapse.SaveFrames') }}</v-btn>
                                 </v-col>
                             </v-row>
                         </template>
@@ -166,7 +167,6 @@ import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
-import Vue from 'vue'
 @Component({
     components: {Panel, SettingsRow}
 })
@@ -291,7 +291,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     startRender() {
         this.boolDialogRendersettings = false
 
-        Vue.$socket.emit('machine.timelapse.render', {})
+        this.$socket.emit('machine.timelapse.render', {})
+    }
+
+    saveFrames() {
+        this.$socket.emit('machine.timelapse.saveframes', {}, { loading: 'timelapse_saveframes' })
     }
 }
 </script>
