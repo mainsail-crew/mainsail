@@ -306,7 +306,8 @@
 		"TimelapseRendering": "Timelapse rendering",
 		"TimelapseRenderingSuccessful": "Timelapse rendering successful",
     "Video": "Video",
-    "NoActiveTimelapse": "No records available."
+    "NoActiveTimelapse": "No records available.",
+    "SaveFrames": "Save frames"
 	},
   "Panels": {
     "ControlPanel": {
