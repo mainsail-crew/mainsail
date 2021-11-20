@@ -564,6 +564,7 @@
   },
   "Settings": {
     "InterfaceSettings": "Interface Settings",
+    "Close": "Close",
     "Cancel": "Cancel",
     "Edit": "Edit",
     "GeneralTab": {
