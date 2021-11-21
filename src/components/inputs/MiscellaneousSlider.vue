@@ -10,7 +10,7 @@
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
                     <v-btn
-                        v-if="lockSliders && this.isTouchDevice && controllable"
+                        v-if="lockSliders && this.isTouchDevice && pwm"
                         @click="isLocked = !isLocked"
                         plain
                         small
