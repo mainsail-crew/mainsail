@@ -7,7 +7,7 @@
         <v-dialog v-model="showDialog" width="900" persistent :fullscreen="isMobile">
             <panel :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')" icon="mdi-selection-remove" card-class="exclude-object-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-container>
                     <v-row>

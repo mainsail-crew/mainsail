@@ -3,7 +3,7 @@
         height: 32px;
     }
     .small-list-item {
-        height: 48px;
+        height: var(--sidebar-menu-item-height);
     }
     .no-text-decoration {
         text-decoration: none;
@@ -30,7 +30,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" width="220px" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -82,6 +82,7 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
+import {navigationWidth} from '@/store/variables'
 
 @Component({
     components: {
@@ -91,6 +92,8 @@ import AboutModal from '@/components/modals/AboutModal.vue'
 })
 
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
+    navigationWidth = navigationWidth
+
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
     }

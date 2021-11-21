@@ -67,7 +67,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         //added in V2.1.0
-        if (payload.value.console.customFilters) {
+        if (payload.value.console?.customFilters) {
             window.console.debug('convert old consolefilters')
 
             if (payload.value.console.customFilters && payload.value.console.customFilters.length) {
@@ -259,11 +259,6 @@ export const actions: ActionTree<GuiState, RootState> = {
     saveSliderLockState({ commit, dispatch, state }, payload) {
         if (!payload.value) commit('removeFromLockedSliders', {name: payload.name})
         else commit('addToLockedSliders', { name: payload.name })
-
-        dispatch('updateSettings', {
-            keyName: 'dashboard.lockedSliders',
-            newVal: state.dashboard.lockedSliders
-        })
     },
 
     toggleHideUploadAndPrintBtn({commit, dispatch, state}, payload) {

@@ -24,7 +24,6 @@
                             v-for="button in filteredToolbarButtons"
                             v-bind:key="button.loadingName"
                             class="px-2 minwidth-0 ml-3"
-                            :color="button.color"
                             @click="button.click"
                             :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
                         >
@@ -37,7 +36,7 @@
                         </v-btn>
                         <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" color="grey darken-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
                             <v-list>
                                 <v-list-item class="minHeight36">
@@ -156,10 +155,10 @@
             </v-list>
         </v-menu>
         <v-dialog v-model="dialogImage.show" hide-overlay fullscreen @keydown.esc="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;" class="fill-height">
-            <panel :title="dialogImage.item.name" card-class="maschine-configfiles-imageviewer-dialog" toolbar-color="primary" style="position: relative;">
-                <template v-slot:buttons-left>
-                    <v-btn icon dark @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
-                        <v-icon>mdi-close</v-icon>
+            <panel :title="dialogImage.item.name" card-class="maschine-configfiles-imageviewer-dialog" style="position: relative;">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="dialogImage.show = false; dialogImage.item.url = null; dialogImage.item.svg = null;">
+                        <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <div class="d-flex justify-center" style="max-height: calc(var(--app-height) - 64px); overflow: auto;">
@@ -171,7 +170,7 @@
         <v-dialog v-model="dialogCreateFile.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.CreateFile')" card-class="maschine-configfiles-create-file-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogCreateFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -192,7 +191,7 @@
         <v-dialog v-model="dialogRenameFile.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.RenameFile')" card-class="maschine-configfiles-rename-file-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -213,7 +212,7 @@
         <v-dialog v-model="dialogCreateDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.CreateDirectory')" card-class="maschine-configfiles-create-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -234,7 +233,7 @@
         <v-dialog v-model="dialogRenameDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.RenameDirectory')" card-class="maschine-configfiles-rename-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -255,7 +254,7 @@
         <v-dialog v-model="dialogDeleteDirectory.show" max-width="400">
             <panel :title="$t('Machine.ConfigFilesPanel.DeleteDirectory')" card-class="maschine-configfiles-delete-directory-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('Machine.ConfigFilesPanel.DeleteDirectoryQuestion', { name: dialogDeleteDirectory.item.filename } )}}</p>

@@ -21,11 +21,21 @@
     .v-card.panel .v-toolbar__content .subheading {
         user-select: none;
     }
+    .panel-toolbar {
+        overflow-y: hidden;
+    }
+    .panel-toolbar .v-btn {
+        height: 100% !important;
+        max-height: none;
+    }
+    .panel-toolbar .v-btn.v-btn--icon {
+        width: var(--panel-toolbar-icon-btn-width) !important;
+    }
 </style>
 
 <template>
     <v-card :class="'panel '+cardClass+' '+(marginBottom ? 'mb-3 mb-md-6' : '')+' '+(!expand ? 'expanded' : '')" :loading="loading">
-        <v-toolbar flat dense :color="toolbarColor" :class="getToolbarClass" >
+        <v-toolbar flat dense :color="toolbarColor" :class="getToolbarClass" :height="panelToolbarHeight" class="panel-toolbar">
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>
@@ -44,7 +54,9 @@
                     icon
                     class="btn-collapsible"
                     :ripple="true"
-                ><v-icon :class="(!expand ? 'icon-rotate-180' : '')">mdi-chevron-down</v-icon></v-btn>
+                >
+                    <v-icon :class="(!expand ? 'icon-rotate-180' : '')">mdi-chevron-down</v-icon>
+                </v-btn>
             </v-toolbar-items>
         </v-toolbar>
         <v-expand-transition>
@@ -60,9 +72,13 @@
 import Component from 'vue-class-component'
 import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import {panelToolbarHeight} from '@/store/variables'
 
 @Component
+
 export default class Panel extends Mixins(BaseMixin) {
+    panelToolbarHeight = panelToolbarHeight
+    
     @Prop({ default: null }) readonly icon!: string | null
     @Prop({ required: true, default: '' }) readonly title!: string
     @Prop({ default: false }) readonly collapsible!: boolean

@@ -64,7 +64,7 @@
             <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon color="primary" :ripple="true" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn icon tile color="primary" :ripple="true" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
@@ -76,7 +76,7 @@
                         <v-row class="py-2">
                             <v-col class="pl-6">
                                 <strong>{{ 'name' in value ? value.name : key }}</strong><br />
-                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
+                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
@@ -160,7 +160,7 @@
                         <v-divider class="mb-0 mt-2 border-top-2" ></v-divider>
                         <v-row class="pt-3">
                             <v-col class="text-center">
-                                <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                <v-btn text color="primary" small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
                                     <v-icon left>mdi-progress-upload</v-icon>
                                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                                 </v-btn>
@@ -173,7 +173,7 @@
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
                 <template v-slot:buttons>
-                    <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
                     <overlay-scrollbars style="max-height: 400px;" :options="{ overflowBehavior: { x: 'hidden' } }">

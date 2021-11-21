@@ -34,7 +34,7 @@ export const getDefaultState = (): GuiState => {
             boolTempchart: true,
             boolBigThumbnail: true,
             boolWideNavDrawer: false,
-            navigationStyle: 'iconsOnly',
+            navigationStyle: 'iconsAndText',
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],
@@ -135,6 +135,12 @@ export const getDefaultState = (): GuiState => {
             showHiddenFiles: false,
             showPrintedFiles: true,
             hideMetadataColums: []
+        },
+        timelapse: {
+            countPerPage: 10,
+            sortBy: 'modified',
+            sortDesc: true,
+            showHiddenFiles: false,
         },
         heightmap: {
             probed: true,

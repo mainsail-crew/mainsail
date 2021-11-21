@@ -100,7 +100,7 @@
         <v-dialog v-model="mcuDetailsDialog.bool" :max-width="400" :max-height="500" scrollable>
             <panel :title="mcuDetailsDialog.headline" icon="mdi-text-box-search-outline" card-class="machine-systemload-mcu-details-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px;" class="px-6">
@@ -135,7 +135,7 @@
         <v-dialog v-model="hostDetailsDialog.bool" :max-width="600" :max-height="500" scrollable>
             <panel :title="$t('Machine.SystemPanel.HostDetails')" icon="mdi-text-box-search-outline" card-class="machine-systemload-host-details-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px;" class="px-6">
