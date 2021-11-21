@@ -48,6 +48,7 @@ export const initableServerComponents = [
     'power',
     'updateManager',
     'timelapse',
+    'jobQueue',
 ]
 
 export const checkKlipperConfigModules = [
