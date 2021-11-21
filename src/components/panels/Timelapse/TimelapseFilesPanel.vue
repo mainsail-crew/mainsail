@@ -31,8 +31,8 @@
                             style="max-width: 300px;"
                         ></v-text-field>
                         <v-spacer></v-spacer>
-                        <v-btn v-if="this.directoryPermissions.includes('w')" @click="createDirectory" :title="$t('Timelapse.CreateNewDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
-                        <v-btn @click="refreshFileList" :title="$t('Timelapse.RefreshCurrentDirectory')" color="grey darken-3" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn v-if="this.directoryPermissions.includes('w')" @click="createDirectory" :title="$t('Timelapse.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
+                        <v-btn @click="refreshFileList" :title="$t('Timelapse.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
