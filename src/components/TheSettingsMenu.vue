@@ -35,7 +35,7 @@
                             </v-tabs>
                         </overlay-scrollbars>
                     </v-col>
-                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'width: 700px;'">
+                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'min-width: 500px;'">
                         <overlay-scrollbars :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll" :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
                         </overlay-scrollbars>
