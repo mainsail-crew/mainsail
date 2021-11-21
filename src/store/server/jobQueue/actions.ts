@@ -14,16 +14,30 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
 
     getStatus({ commit }, payload) {
         if ('queued_jobs' in payload) commit('setQueuedJobs', payload.queued_jobs)
-        if ('queue_status' in payload) commit('setQueueStatus', payload.queue_status)
-        window.console.log(payload)
+        if ('queue_state' in payload) commit('setQueueState', payload.queue_state)
     },
 
-    addToQueue(_, filenames: string[]) {
+    async addToQueue({ state }, filenames: string[]) {
+        if (state.queued_jobs.length === 0 && state.queue_state === 'ready')
+            await Vue.$socket.emit('server.job_queue.pause', {}, { action: 'server/jobQueue/getStatus' })
+
         Vue.$socket.emit('server.job_queue.post_job', { filenames: filenames }, { action: 'server/jobQueue/getStatus' })
     },
 
-    deleteFromQueue(_, jobIds: string[]) {
-        Vue.$socket.emit('server.job_queue.delete_job', { filenames: jobIds }, { action: 'server/jobQueue/getStatus' })
+    deleteFromQueue(_, job_ids: string[]) {
+        Vue.$socket.emit('server.job_queue.delete_job', { job_ids }, { action: 'server/jobQueue/getStatus' })
+    },
+
+    clearQueue(_) {
+        Vue.$socket.emit('server.job_queue.delete_job', { all: true }, { action: 'server/jobQueue/getStatus' })
+    },
+
+    resume(_) {
+        Vue.$socket.emit('server.job_queue.resume', { }, { action: 'server/jobQueue/getStatus', loading: 'resumeJobqueue' })
+    },
+
+    pause(_) {
+        Vue.$socket.emit('server.job_queue.pause', { }, { action: 'server/jobQueue/getStatus', loading: 'pauseJobqueue' })
     }
 
 }

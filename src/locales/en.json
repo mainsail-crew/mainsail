@@ -131,6 +131,7 @@
     "Empty": "Empty",
     "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
     "PrintStart": "Print start",
+    "AddToQueue": "Add to Queue",
     "Preheat": "Preheat",
     "Download": "Download",
     "Rename": "Rename",
@@ -167,6 +168,15 @@
     "SuccessfullyCreated": "Successfully created {filename}.",
     "SuccessfullyDeleted": "Successfully deleted {filename}.",
     "View3D" : "View 3D"
+  },
+  "JobQueue": {
+    "JobQueue": "Job Queue",
+    "Jobs": "Jobs",
+    "AllJobs": "All Jobs",
+    "Empty": "Empty",
+    "Delete": "Delete",
+    "Resume": "Resume",
+    "Pause": "Pause"
   },
   "Console": {
     "SetupConsole": "Setup Console",

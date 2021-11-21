@@ -1,9 +1,9 @@
 export interface ServerJobQueueState {
-    queued_jobs: ServerJobQueueStateJobs[],
+    queued_jobs: ServerJobQueueStateJob[],
     queue_state: string
 }
 
-export interface ServerJobQueueStateJobs {
+export interface ServerJobQueueStateJob {
     filename:string
     job_id: string
     time_added: number
