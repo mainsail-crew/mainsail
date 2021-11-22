@@ -42,8 +42,8 @@
                         :disabled="['printing', 'paused'].includes(printer_state)"
                         class="pa-1"
                     >
-                        <span class="d-none ml-1 d-md-inline">{{ $t("Panels.ToolsPanel.Presets") }}</span>
-                        <v-icon v-show="$vuetify.breakpoint.smAndDown">mdi-fire</v-icon>
+                        <span class="d-none ml-1 d-md-block">{{ $t("Panels.ToolsPanel.Presets") }}</span>
+                        <v-icon class="d-md-none">mdi-fire</v-icon>
                         <v-icon>mdi-menu-down</v-icon>
                     </v-btn>
                 </template>
