@@ -89,7 +89,7 @@ export const getters: GetterTree<ServerState, any> = {
             let tempSensor = rootGetters['printer/getHostTempSensor']
             if (tempSensor === null) {
                 tempSensor = {
-                    temperature: state.cpu_temp.toFixed(0),
+                    temperature: state.cpu_temp?.toFixed(0),
                     measured_min_temp: null,
                     measured_max_temp: null
                 }
