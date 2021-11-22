@@ -4,10 +4,10 @@
 
 <template>
     <v-row>
-        <v-col class="col-md-8">
+        <v-col class="col-12 col-md-8">
             <timelapse-files-panel></timelapse-files-panel>
         </v-col>
-        <v-col class="col-md-4 pt-0 pt-md-3">
+        <v-col class="col-12 col-md-4 pt-0 pt-md-3">
             <timelapse-status-panel></timelapse-status-panel>
         </v-col>
     </v-row>
