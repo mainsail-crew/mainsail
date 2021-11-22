@@ -90,7 +90,7 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
-                            <v-col class="text-right">{{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value) }} mm</v-col>
+                            <v-col class="text-right">{{ Math.round(Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value) * 1000 ) / 1000 }} mm</v-col>
                         </v-row>
                     </v-card-text>
                 </panel>
