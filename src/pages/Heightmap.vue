@@ -225,7 +225,6 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     private calibrateDialog = false
     private newName = ''
 
-    private heightmapScale = 0.5
     private probedOpacity = 1
     private meshOpacity = 1
     private flatOpacity = 0.5
@@ -409,6 +408,16 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleVisualMap', value: newVal })
     }
 
+
+    get heightmapScale(): number {
+        return this.$store.state.gui.heightmap.scaleHeight ?? 0.5
+    }
+
+    set heightmapScale(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleHeight', value: newVal })
+    }
+
+
     get rangeX(): number[] {
         const axis_minimum = this.$store.state.printer.toolhead?.axis_minimum
         const axis_maximum = this.$store.state.printer.toolhead?.axis_maximum
@@ -447,7 +456,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 0.5)
+        const maxRange = Math.max(minRange, 2)
 
         return [minRange, maxRange]
     }
