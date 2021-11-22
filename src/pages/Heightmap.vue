@@ -49,6 +49,7 @@
                                     <v-checkbox v-model="showMesh" :label="$t('Heightmap.Mesh')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                     <v-checkbox v-model="showFlat" :label="$t('Heightmap.Flat')" hide-details class="mx-3 mt-0" ></v-checkbox>
                                 </v-col>
+     
                             </v-row>
                         </v-card-text>
                         <v-divider></v-divider>
@@ -446,8 +447,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get heightmapRangeLimit(): number[] {
         const [min, max] = this.heightmapLimit
 
-        const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 0.5)
+        const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10 
+        const maxRange = Math.max(minRange, 2)
 
         return [minRange, maxRange]
     }
