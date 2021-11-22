@@ -256,11 +256,6 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    saveSliderLockState({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('removeFromLockedSliders', {name: payload.name})
-        else commit('addToLockedSliders', { name: payload.name })
-    },
-
     toggleHideUploadAndPrintBtn({commit, dispatch, state}, payload) {
         commit('toggleHideUploadAndPrintBtn', payload)
         dispatch('updateSettings', {

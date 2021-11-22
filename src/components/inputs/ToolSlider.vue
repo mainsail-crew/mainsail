@@ -10,14 +10,14 @@
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
                     <v-btn
-                        v-if="canLock && lockSliders && isTouchDevice"
-                        @click="sliderIsLocked = !sliderIsLocked"
+                        v-if="lockSliders && isTouchDevice"
+                        @click="isLocked = !isLocked"
                         plain
                         small
                         icon
                     >
-                        <v-icon small :color="(sliderIsLocked ? 'red' : '')">
-                            {{ sliderIsLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        <v-icon small :color="(isLocked ? 'red' : '')">
+                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
                     <span>{{ label }}</span>
@@ -26,7 +26,7 @@
                         class="ml-2"
                         x-small
                         icon
-                        :disabled="canLock && sliderIsLocked"
+                        :disabled="isLocked"
                         @click="resetSlider"
                     >
                         <v-icon>mdi-restart</v-icon>
@@ -40,7 +40,7 @@
                     <v-slider
                         v-model="value"
                         v-touch="{start: resetLockTimer}"
-                        :disabled="canLock && sliderIsLocked"
+                        :disabled="isLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
@@ -48,11 +48,11 @@
                         hide-details>
 
                         <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="canLock && sliderIsLocked">mdi-minus</v-icon>
+                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
                         </template>
 
                         <template v-slot:append>
-                            <v-icon @click="increment" :disabled="canLock && sliderIsLocked">mdi-plus</v-icon>
+                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -70,13 +70,12 @@ import {Debounce} from 'vue-debounce-decorator'
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
     private timeout: number | undefined
+    private isLocked = false
     value = 0
     startValue = 0
     processedMax = 100
     dynamicStep = 50
 
-    @Prop({ required: true }) readonly sliderName!: string
-    @Prop({ type: Boolean, default: true, required: true }) readonly canLock!: string
     @Prop({ type: Number, required: true }) readonly target!: number
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, default: '' }) readonly attributeName!: string
@@ -102,17 +101,13 @@ export default class ToolSlider extends Mixins(BaseMixin) {
 
     @Watch('lockSliders', {immediate: true})
     lockSlidersChanged(){
-        if(this.lockSliders && this.isTouchDevice){
-            this.sliderIsLocked = true
-        } else {
-            this.sliderIsLocked = false
-        }
+        this.isLocked = this.lockSliders && this.isTouchDevice
     }
 
     startLockTimer() {
         let t = this.lockSlidersDelay
         if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
-        this.timeout = setTimeout(() => this.sliderIsLocked = true, t * 1000)
+        this.timeout = setTimeout(() => this.isLocked = true, t * 1000)
     }
 
     resetLockTimer() {
@@ -125,14 +120,6 @@ export default class ToolSlider extends Mixins(BaseMixin) {
 
     get lockSlidersDelay() {
         return this.$store.state.gui.general.lockSlidersDelay
-    }
-
-    get sliderIsLocked() {
-        return this.$store.getters['gui/getLockedSliders'](this.sliderName)
-    }
-
-    set sliderIsLocked(newVal) {
-        this.$store.dispatch('gui/saveSliderLockState', { name: this.sliderName, value: newVal })
     }
 
     get colorBar() {
