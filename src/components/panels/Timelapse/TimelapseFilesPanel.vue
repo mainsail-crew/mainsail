@@ -82,7 +82,7 @@
                 </template>
 
                 <template #no-data>
-                    <div class="text-center">{{ $t('Timelapse.Empty') }}</div>
+                    <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
                 <template slot="body.prepend" v-if="(currentPath !== 'timelapse')">

@@ -24,47 +24,43 @@
                         </v-row>
                     </v-card-text>
                 </v-col>
-                <v-col class="col-12 col-sm-6 col-md-12 pt-3 pt-md-0 text--secondary" align-self="center">
+                <v-col class="col-12 col-sm-6 col-md-12 pt-3 pt-md-0 text--secondary" align-self="center" v-if="framesCount > 0">
                     <v-card-text :class="framesCount ? 'pt-0' : ''">
-                        <v-row v-if="framesCount > 0">
-                            <v-col>
-                                <template v-if="framesCount > 0">
-                                    <settings-row :title="$t('Timelapse.Frames')">
-                                        {{ framesCount }}
-                                    </settings-row>
-                                    <v-divider class="my-2"></v-divider>
-                                    <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamicSlotWidth="true">
-                                        {{ estimatedVideoLength }}
-                                    </settings-row>
-                                </template>
-                                <template v-if="['printing', 'paused'].includes(printer_state)">
-                                    <v-divider class="my-2"></v-divider>
-                                    <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
-                                        <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
-                                    </settings-row>
-                                    <template v-if="enabled">
-                                        <v-divider class="my-2" v-if="framesCount > 0"></v-divider>
-                                        <settings-row :title="$t('Timelapse.Autorender')" :dynamicSlotWidth="true">
-                                            <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
-                                        </settings-row>
-                                    </template>
-                                </template>
-                                <template v-if="framesCount > 0 && !['printing', 'paused'].includes(printer_state)">
-                                    <v-divider class="mt-2 mb-4"></v-divider>
-                                    <v-row>
-                                        <v-col class="text-center">
-                                            <v-btn text color="primary" :disabled="disableRenderButton" @click="boolDialogRendersettings = true">{{ $t('Timelapse.Render') }}</v-btn>
-                                            <v-btn text color="primary" @click="saveFrames" :loading="loadings.includes('timelapse_saveframes')">{{ $t('Timelapse.SaveFrames') }}</v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </template>
-                            </v-col>
-                        </v-row>
-                        <v-row v-else>
-                            <v-col>
-                                <p class="text-center my-0 font-italic">{{ $t('Timelapse.NoActiveTimelapse') }}</p>
-                            </v-col>
-                        </v-row>
+                        <template v-if="framesCount > 0">
+                            <settings-row :title="$t('Timelapse.Frames')">
+                                {{ framesCount }}
+                            </settings-row>
+                            <v-divider class="my-2"></v-divider>
+                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamicSlotWidth="true">
+                                {{ estimatedVideoLength }}
+                            </settings-row>
+                        </template>
+                        <template v-if="['printing', 'paused'].includes(printer_state)">
+                            <v-divider class="my-2"></v-divider>
+                            <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
+                                <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
+                            </settings-row>
+                            <template v-if="enabled">
+                                <v-divider class="my-2" v-if="framesCount > 0"></v-divider>
+                                <settings-row :title="$t('Timelapse.Autorender')" :dynamicSlotWidth="true">
+                                    <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
+                                </settings-row>
+                            </template>
+                        </template>
+                        <template v-if="framesCount > 0 && !['printing', 'paused'].includes(printer_state)">
+                            <v-divider class="mt-2 mb-4"></v-divider>
+                            <v-row>
+                                <v-col class="text-center">
+                                    <v-btn text color="primary" :disabled="disableRenderButton" @click="boolDialogRendersettings = true">{{ $t('Timelapse.Render') }}</v-btn>
+                                    <v-btn text color="primary" @click="saveFrames" :loading="loadings.includes('timelapse_saveframes')">{{ $t('Timelapse.SaveFrames') }}</v-btn>
+                                </v-col>
+                            </v-row>
+                        </template>
+                    </v-card-text>
+                </v-col>
+                <v-col class="col-12 text--secondary" align-self="center" v-else>
+                    <v-card-text class="pt-0 pt-md-3">
+                        <p class="text-center my-0 font-italic">{{ $t('Timelapse.NoActiveTimelapse') }}</p>
                     </v-card-text>
                 </v-col>
             </v-row>
