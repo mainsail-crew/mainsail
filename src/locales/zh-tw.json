@@ -63,28 +63,28 @@
     "Yes": "是"
   },
   "ConnectionDialog": {
-        "Connecting": "連接到 {host}",
-        "Failed": "連接失敗",
-        "CannotConnectTo": "不能連接到 Moonraker ({host}).",
-        "TryAgain": "重試",
-        "CheckMoonrakerLog": "如果此消息重複出現，請查看下面的日誌檔案:"
+    "Connecting": "連接到 {host}",
+    "Failed": "連接失敗",
+    "CannotConnectTo": "不能連接到 Moonraker ({host}).",
+    "TryAgain": "重試",
+    "CheckMoonrakerLog": "如果此消息重複出現，請查看下面的日誌檔案:"
   },
   "SelectPrinterDialog": {
-        "Connecting": "連接到 {host}",
-        "ConnectionFailed": "連接失敗",
-        "CannotConnectTo": "不能連接到 {host}.",
-        "TryAgain": "重試",
-        "SelectPrinter": "選擇印表機",
-        "AddPrinter": "新增印表機",
-        "EditPrinter": "編輯印表機",
-        "UpdatePrinter": "更新印表機",
-        "ChangePrinter": "改變印表機",
-        "HostnameRequired": "主機名必填",
-        "HostnameInvalid": "無效的 主機名/IP",
-        "PortRequired": "通訊埠必填",
-        "Hello": "歡迎來到Mainsail的遠端模式!",
-        "RememberToAdd": "記住在moonraker.conf的'cors_domains'中新增 {cors}.",
-        "YouCanFindMore": "您可以在以下網址找到更多詳細訊息:"
+    "Connecting": "連接到 {host}",
+    "ConnectionFailed": "連接失敗",
+    "CannotConnectTo": "不能連接到 {host}.",
+    "TryAgain": "重試",
+    "SelectPrinter": "選擇印表機",
+    "AddPrinter": "新增印表機",
+    "EditPrinter": "編輯印表機",
+    "UpdatePrinter": "更新印表機",
+    "ChangePrinter": "改變印表機",
+    "HostnameRequired": "主機名必填",
+    "HostnameInvalid": "無效的 主機名/IP",
+    "PortRequired": "通訊埠必填",
+    "Hello": "歡迎來到Mainsail的遠端模式!",
+    "RememberToAdd": "記住在moonraker.conf的'cors_domains'中新增 {cors}.",
+    "YouCanFindMore": "您可以在以下網址找到更多詳細訊息:"
   },
   "Router": {
     "Dashboard": "儀表板",
