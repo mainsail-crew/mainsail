@@ -12,7 +12,8 @@
             outlined
             dense
             :append-icon="this.value !== this.defaultValue ? 'mdi-refresh' : ''"
-            :error="this.value > this.defaultValue"
+            :error="this.value <= 0"
+            min="1"
             @click:append="resetLimit"
             hide-details
         ></v-text-field>
