@@ -37,7 +37,7 @@
             <v-col class="col col-md-6 pt-2">
                 <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedrateIn") }} [mm/s]</span>
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate">
+                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate" color="panel">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
                         </template>
@@ -48,8 +48,26 @@
         </v-row>
         <v-row class="">
             <v-col class="col text-center pt-0">
-                <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
-                <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
+                <v-tooltip top :disabled="boolExtrudePossible" color="panel">
+                    <template v-slot:activator="{ on }">
+                        <div v-on="on" class="d-inline-block">
+                            <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
+                        </div>
+                    </template>
+                    <span>
+                        {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
+                    </span>
+                </v-tooltip>
+                <v-tooltip top :disabled="boolExtrudePossible" color="panel">
+                    <template v-slot:activator="{ on }">
+                        <div v-on="on" class="d-inline-block">
+                            <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
+                        </div>
+                    </template>
+                    <span>
+                        {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
+                    </span>
+                </v-tooltip>
             </v-col>
         </v-row>
     </div>
@@ -100,6 +118,10 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
 
     get boolExtrudePossible() {
         return this.$store.getters['printer/getExtrudePossible']
+    }
+
+    get minExtrudeTemp() {
+        return this.$store.state.printer.configfile.config.extruder.min_extrude_temp
     }
 
     doSend(gcode: string) {
