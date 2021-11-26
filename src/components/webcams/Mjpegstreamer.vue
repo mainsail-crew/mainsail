@@ -35,6 +35,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private imageRatio = 0
     private currentFPS = 0
     private timerFPS: number | null = null
+    private timerRestart: number | null = null
     private stream: ReadableStream | null = null
 
     @Prop({ required: true })
@@ -104,6 +105,10 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
                     frames = 0
                 }, 1000)
 
+                this.timerRestart = setInterval(() => {
+                    this.restartStream()
+                }, 60000)
+
                 this.stream = new ReadableStream({
                     start(controller) {
                         return pump()
@@ -162,14 +167,23 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
         if (isVisible) {
             this.startStream()
         } else {
-            if (this.timerFPS) clearTimeout(this.timerFPS)
-            this.stream?.cancel()
+            this.stopStream()
         }
     }
 
     beforeDestroy() {
+        this.stopStream()
+    }
+
+    stopStream() {
         if (this.timerFPS) clearTimeout(this.timerFPS)
+        if (this.timerRestart) clearTimeout(this.timerRestart)
         this.stream?.cancel()
+    }
+
+    async restartStream() {
+        this.stopStream()
+        this.startStream()
     }
 }
 </script>
