@@ -367,6 +367,15 @@
       "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
       "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release."
     },
+    "MachineSettingsPanel": {
+      "Headline": "Machine Settings",
+      "MotionSettings": {
+        "Velocity": "Velocity",
+        "Acceleration": "Acceleration",
+        "Deceleration": "Deceleration",
+        "SquareCornerVelocity": "Square Corner Velocity"
+      }
+    },
     "MiniconsolePanel": {
       "Headline": "Console",
       "SetupConsole": "Setup Console",
@@ -527,13 +536,6 @@
       "TRIGGERED": "TRIGGERED",
       "open": "OPEN",
       "EndstopInfo": "Press the sync-button on the right-bottom to load the current endstop status."
-    },
-    "LimitsPanel": {
-      "MachineLimits": "Machine Limits",
-      "Velocity": "Velocity",
-      "Acceleration": "Acceleration",
-      "Deceleration": "Deceleration",
-      "SquareCornerVelocity": "Square corner velocity"
     },
     "LogfilesPanel": {
       "Logfiles": "Logfiles"

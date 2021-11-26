@@ -25,7 +25,7 @@ import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class MachineLimitsInput extends Mixins(BaseMixin) {
+export default class MotionSettingsInput extends Mixins(BaseMixin) {
     private value: any = 0
 
     @Prop({ type: String, required: true }) readonly label!: string
