@@ -11,7 +11,7 @@
             @close="close"
             @keydown.esc="escClose"
         >
-            <panel card-class="editor-dialog" icon="mdi-file-document-edit-outline" :title="(filepath ? filepath.slice(1)+'/': '')+filename+' '+changed">
+            <panel card-class="editor-dialog" :icon="(isWriteable ? ' mdi-file-document-edit-outline' : 'mdi-file-document-outline')" :title="(filepath ? filepath.slice(1)+'/': '')+filename+' '+(isWriteable ? changed : '('+$t('Editor.FileReadOnly')+')')">
                 <template v-slot:buttons>
                     <v-btn text tile href="https://www.klipper3d.org/Config_Reference.html" v-if="restartServiceName === 'klipper'" target="_blank" class="d-none d-md-flex"><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn>
                     <v-btn v-if="isWriteable" text tile :color="restartServiceName === null ? 'primary' : ''" @click="save(null)" ><v-icon small class="mr-1">mdi-content-save</v-icon><span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span></v-btn>
