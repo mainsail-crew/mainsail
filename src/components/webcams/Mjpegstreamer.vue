@@ -16,7 +16,7 @@
 
 <template>
     <div v-observe-visibility="visibilityChanged" style="position: relative;">
-        <img ref="image" class="webcamImage" />
+        <img ref="image" class="webcamImage" :style="webcamStyle" />
         <span class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
     </div>
 </template>
@@ -32,7 +32,6 @@ const TYPE_JPEG = 'image/jpeg'
 @Component
 export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private isVisible = true
-    private imageRatio = 0
     private currentFPS = 0
     private timerFPS: number | null = null
     private timerRestart: number | null = null
