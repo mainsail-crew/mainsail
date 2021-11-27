@@ -969,7 +969,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     addToQueue(item: FileStateFile) {
-        this.$store.dispatch('server/jobQueue/addToQueue', [item.filename])
+        let path = this.currentPath.slice(7)
+        if (path != '') path += '/'
+        const filename = path+item.filename
+
+        this.$store.dispatch('server/jobQueue/addToQueue', [filename])
     }
 
     changeMetadataVisible(name: string) {
