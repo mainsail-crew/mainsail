@@ -141,6 +141,9 @@ export const getDefaultState = (): GuiState => {
             sortDesc: true,
             showHiddenFiles: false,
         },
+        jobqueue: {
+            countPerPage: 10,
+        },
         heightmap: {
             probed: true,
             mesh: false,
