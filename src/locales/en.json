@@ -370,10 +370,18 @@
     "MachineSettingsPanel": {
       "Headline": "Machine Settings",
       "MotionSettings": {
+        "Motion": "Motion",
         "Velocity": "Velocity",
         "Acceleration": "Acceleration",
         "Deceleration": "Deceleration",
         "SquareCornerVelocity": "Square Corner Velocity"
+      },
+      "FirmwareRetractionSettings": {
+        "FirmwareRetraction": "Firmware Retraction",
+        "RetractLength": "Retract Length",
+        "RetractSpeed": "Retract Speed",
+        "UnretractExtraLength": "Unretract Extra Length",
+        "UnretractSpeed": "Unretract Speed"
       }
     },
     "MiniconsolePanel": {
