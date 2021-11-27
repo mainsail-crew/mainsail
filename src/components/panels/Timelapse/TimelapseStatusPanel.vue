@@ -16,7 +16,7 @@
                         <v-row>
                             <v-col>
                                 <vue-load-image>
-                                    <img slot="image" :src="frameUrl" :alt="$t('Timelapse.Preview')" class="w-100" />
+                                    <img slot="image" :src="frameUrl" :alt="$t('Timelapse.Preview')" class="w-100" :style="webcamStyle" />
                                     <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
@@ -292,6 +292,25 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
 
     get disableRenderButton() {
         return ((this.$store.state.server.timelapse?.rendering.status ?? '') === 'running')
+    }
+
+    get camId() {
+        return this.$store.state.server.timelapse.settings.camera ?? ''
+    }
+
+    get camSettings() {
+        return this.$store.getters['gui/webcams/getWebcam'](this.camId)
+    }
+
+    get webcamStyle() {
+        if (this.camSettings === undefined) return ''
+
+        let transforms = ''
+        if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
+        if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
+        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
+
+        return ''
     }
 
     startRender() {
