@@ -18,9 +18,6 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     async addToQueue({ state }, filenames: string[]) {
-        if (state.queued_jobs.length === 0 && state.queue_state === 'ready')
-            await Vue.$socket.emit('server.job_queue.pause', {}, { action: 'server/jobQueue/getStatus' })
-
         Vue.$socket.emit('server.job_queue.post_job', { filenames: filenames }, { action: 'server/jobQueue/getStatus' })
     },
 
