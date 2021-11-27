@@ -2,7 +2,7 @@ export const defaultLogoColor = '#D41216'
 export const defaultPrimaryColor = '#2196f3'
 
 export const minKlipperVersion = 'v0.9.1-778'
-export const minMoonrakerVersion = 'v0.7.1-107'
+export const minMoonrakerVersion = 'v0.7.1-193'
 
 export const colorArray = [
     '#F44336',
