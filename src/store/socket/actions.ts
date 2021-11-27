@@ -104,6 +104,10 @@ export const actions: ActionTree<SocketState, RootState> = {
             dispatch('server/timelapse/getEvent', payload.params[0], { root: true })
             break
 
+        case 'notify_job_queue_changed':
+            dispatch('server/jobQueue/getEvent', payload.params[0], { root: true })
+            break
+
         default:
             if (payload.result !== 'ok' && payload.error?.message) window.console.error('JSON-RPC: ' + payload.error.message)
             else window.console.debug(payload)
