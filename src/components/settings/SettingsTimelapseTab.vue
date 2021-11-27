@@ -106,10 +106,6 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.TimelapseTab.Rotation')" :sub-title="$t('Settings.TimelapseTab.RotationDescription')">
-                    <v-text-field v-model="rotation" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('rotation')"></v-text-field>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.duplicatelastframe')" :sub-title="$t('Settings.TimelapseTab.duplicatelastframeDescription')">
                     <v-text-field v-model="duplicatelastframe" type="number" hide-details="auto" outlined dense :disabled="blockedsettings.includes('duplicatelastframe')"></v-text-field>
                 </settings-row>
@@ -400,14 +396,6 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
 
     set variable_fps_max(newVal) {
         this.$store.dispatch('server/timelapse/saveSetting', { variable_fps_max: newVal })
-    }
-
-    get rotation() {
-        return this.$store.state.server.timelapse.settings.rotation
-    }
-
-    set rotation(newVal) {
-        this.$store.dispatch('server/timelapse/saveSetting', { rotation: newVal })
     }
 
     get duplicatelastframe() {
