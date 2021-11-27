@@ -25,7 +25,7 @@
     "@codemirror/view": "^0.19.1",
     "@sindarius/gcodeviewer": "^2.1.13",
     "@types/overlayscrollbars": "^1.12.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^3.16.0",
     "echarts": "^5.1.2",
     "echarts-for-vue": "^1.4.1",

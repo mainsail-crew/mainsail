@@ -48,10 +48,10 @@
                     @click="reloadViewer"
                     color="info"
                     class="ml-3"
-                    v-show="reloadRequired"
+                    v-show="!reloadRequired"
                 >
-                    <span v-show="$vuetify.breakpoint.smAndUp">{{$t("GCodeViewer.ReloadRequired")}}</span>
-                    <v-icon v-show="$vuetify.breakpoint.xs">mdi-reload-alert</v-icon>
+                    <span class="d-none d-sm-block">{{$t("GCodeViewer.ReloadRequired")}}</span>
+                    <v-icon class="d-sm-none">mdi-reload-alert</v-icon>
                 </v-btn>
                 <v-btn icon tile @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
             </template>

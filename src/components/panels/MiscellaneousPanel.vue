@@ -13,7 +13,6 @@
         <div v-for="(object, index) of miscellaneous" v-bind:key="index">
             <v-divider v-if="index"></v-divider>
             <miscellaneous-slider
-                :slider-name="object.name"
                 :name="object.name"
                 :type="object.type"
                 :target="object.power"
@@ -23,7 +22,6 @@
                 :off_below="object.off_below"
                 :max="object.max_power"
                 :multi="parseInt(object.scale)"
-                :can-lock="true"
             ></miscellaneous-slider>
         </div>
         <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_'+index">

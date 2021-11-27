@@ -38,7 +38,6 @@ export const getDefaultState = (): GuiState => {
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],
-            lockedSliders: [],
             control: {
                 style: 'bars',
                 feedrateXY: 100,

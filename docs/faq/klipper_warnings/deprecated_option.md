@@ -28,7 +28,7 @@ This would define a macro called `PRINT_START` that can be called with an `EXTRU
 ```yaml
 [gcode_macro PRINT_START]
 gcode:
-  {% set EXTRUDER_TEMP = params.EXTRUDER|default(10)|int %}
+  {% set EXTRUDER_TEMP = params.EXTRUDER|default(230)|int %}
 ```
 {% endraw %}
 Take note of the following important aspects:
