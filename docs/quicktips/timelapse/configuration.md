@@ -33,8 +33,8 @@ your end gcode or the Render button in mainsail.
 
 ### Camera
 This setting let you choose which camera should be used to take frames from.
-It depends on the 'webcam' namespace in the moonraker DB and uses the
-'snapshoturl' associated whith selected camera.
+It depends on the 'webcams' namespace in the moonraker DB and uses the
+'snapshoturl', 'flipX' and 'flipY' associated whith selected camera.
 
 ### Mode
 At the moment there are to modes available 'layermacro' and 'hyperlapse'
@@ -135,10 +135,6 @@ your system console or refer to the ffmpeg documentation: https://ffmpeg.org/ffm
 
 ### duplicatelastframe
 Duplicates the last frame to the end of the output video.
-
-### rotation 
-Rotates the output video 0-359 degrees. (Unit degree)
-Note: This will be disabled if extraoutputparams are specified.
 
 ### extraoutputparams
 Defines extra output parameters to FFMPEG 
