@@ -403,7 +403,7 @@ import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
 import {thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensions} from '@/store/variables'
-import {formatFilesize, formatDate, sortFiles} from '@/plugins/helpers'
+import {formatFilesize, formatDate, sortFiles, formatPrintTime} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
@@ -446,6 +446,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     validGcodeExtensions = validGcodeExtensions
     formatDate = formatDate
     formatFilesize = formatFilesize
+    formatPrintTime = formatPrintTime
     sortFiles = sortFiles
 
     $refs!: {
@@ -890,32 +891,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
     created() {
         this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
-    }
-
-    formatPrintTime(totalSeconds: number) {
-        if (totalSeconds) {
-            let output = ''
-
-            const days = Math.floor(totalSeconds / (3600 * 24))
-            if (days) {
-                totalSeconds %= (3600 * 24)
-                output += days+'d'
-            }
-
-            const hours = Math.floor(totalSeconds / 3600)
-            totalSeconds %= 3600
-            if (hours) output += ' '+hours+'h'
-
-            const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' '+minutes+'m'
-
-            const seconds = totalSeconds % 60
-            if (seconds) output += ' '+seconds.toFixed(0)+'s'
-
-            return output
-        }
-
-        return '--'
     }
 
     getSmallThumbnail(item: FileStateFile) {

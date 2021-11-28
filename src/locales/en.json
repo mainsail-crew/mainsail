@@ -157,6 +157,7 @@
     "LastModified": "Last modified",
     "ObjectHeight": "Object Height",
     "LayerHeight": "Layer Height",
+    "Filament": "Filament",
     "FilamentUsage": "Filament Usage",
     "FilamentWeight": "Filament Weight",
     "PrintTime": "Print Time",

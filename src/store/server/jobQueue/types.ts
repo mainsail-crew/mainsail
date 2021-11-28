@@ -4,8 +4,9 @@ export interface ServerJobQueueState {
 }
 
 export interface ServerJobQueueStateJob {
-    filename:string
+    filename: string
     job_id: string
     time_added: number
     time_in_queue: number
+    metadata?: any
 }

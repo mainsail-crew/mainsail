@@ -107,6 +107,32 @@ export const formatFrequency = (frequency: number): string => {
     return Math.max(frequency, 0.1).toFixed() + units[i]
 }
 
+export const formatPrintTime = (totalSeconds: number): string => {
+    if (totalSeconds) {
+        let output = ''
+
+        const days = Math.floor(totalSeconds / (3600 * 24))
+        if (days) {
+            totalSeconds %= (3600 * 24)
+            output += days+'d'
+        }
+
+        const hours = Math.floor(totalSeconds / 3600)
+        totalSeconds %= 3600
+        if (hours) output += ' '+hours+'h'
+
+        const minutes = Math.floor(totalSeconds / 60)
+        if (minutes) output += ' '+minutes+'m'
+
+        const seconds = totalSeconds % 60
+        if (seconds) output += ' '+seconds.toFixed(0)+'s'
+
+        return output
+    }
+
+    return '--'
+}
+
 export const sortFiles = (items: FileStateFile[] | null, sortBy: string[], sortDesc: boolean[]): FileStateFile[] => {
     const sortBySingle = sortBy.length ? sortBy[0] : 'filename'
     const sortDescSingle = sortDesc[0]

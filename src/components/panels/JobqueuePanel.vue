@@ -61,9 +61,36 @@
                         class="file-list-cursor user-select-none"
                     >
                         <td class="pr-0 text-center" style="width: 32px;">
-                            <v-icon>mdi-file</v-icon>
+                            <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                                <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top content-class="tooltip__content-opacity1">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <vue-load-image>
+                                            <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
+                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                            <v-icon slot="error">mdi-file</v-icon>
+                                        </vue-load-image>
+                                    </template>
+                                    <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                </v-tooltip>
+                            </template>
+                            <template v-else-if="getSmallThumbnail(item)">
+                                <vue-load-image>
+                                    <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                    <v-icon slot="error">mdi-file</v-icon>
+                                </vue-load-image>
+                            </template>
+                            <template v-else>
+                                <v-icon>mdi-file</v-icon>
+                            </template>
                         </td>
-                        <td class=" ">{{ item.filename }}</td>
+                        <td class=" ">
+                            {{ item.filename }}
+                            <template v-if="item.metadata.metadataPulled">
+                                <br />
+                                <small>{{ getDescription(item) }}</small>
+                            </template>
+                        </td>
                     </tr>
                 </template>
             </v-data-table>
@@ -82,9 +109,10 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {ServerHistoryStateJob} from '@/store/server/history/types'
-import {formatFilesize} from '@/plugins/helpers'
+import {formatFilesize, formatPrintTime} from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import {ServerJobQueueStateJob} from '@/store/server/jobQueue/types'
+import {thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin} from '@/store/variables'
 @Component({
     components: {Panel}
 })
@@ -100,7 +128,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     get jobs() {
-        return this.$store.state.server.jobQueue.queued_jobs ?? []
+        return this.$store.getters['server/jobQueue/getJobs']
     }
 
     get queueState() {
@@ -168,6 +196,48 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     pauseJobqueue() {
         this.$store.dispatch('server/jobQueue/pause')
+    }
+
+    getSmallThumbnail(item: ServerJobQueueStateJob) {
+        if (item?.metadata?.thumbnails?.length) {
+            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) =>
+                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
+                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
+            )
+            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
+
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+thumbnail.relative_path+'?timestamp='+item.metadata?.modified.getTime()
+        }
+
+        return ''
+    }
+
+    getBigThumbnail(item: ServerJobQueueStateJob) {
+        if (item?.metadata?.thumbnails?.length) {
+            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
+            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
+
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+thumbnail.relative_path+'?timestamp='+item.metadata?.modified.getTime()
+        }
+
+        return ''
+    }
+
+    getDescription(item: ServerJobQueueStateJob) {
+        let output = ''
+
+        output += this.$t('Files.Filament')+': '
+        if (item.metadata?.filament_total || item.metadata.filament_weight_total) {
+            if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed()+' mm'
+            if (item.metadata?.filament_total && item.metadata.filament_weight_total) output += ' / '
+            if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2)+' g'
+        } else output += '--'
+
+        output += ', '+this.$t('Files.PrintTime')+': '
+        if (item.metadata?.estimated_time) output += formatPrintTime(item.metadata.estimated_time)
+        else output += '--'
+
+        return output
     }
 }
 </script>
