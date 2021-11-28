@@ -24,6 +24,14 @@ export const getters: GetterTree<FileState, any> = {
         return findDirectory({childrens: state.filetree} as FileStateFile, requestedPath.split('/'))
     },
 
+    getFile: (state, getters) => (requestedFilename: string) => {
+        const path = requestedFilename.slice(0, requestedFilename.lastIndexOf('/'))
+        const filename = requestedFilename.slice(requestedFilename.lastIndexOf('/') + 1)
+        const directory = getters['getDirectory'](path)
+
+        return directory?.childrens?.find((file: FileStateFile) => file.filename === filename && !file.isDirectory)
+    },
+
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
         const directory = getters['getDirectory']('config/'+themeDir)
 
