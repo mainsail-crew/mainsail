@@ -86,7 +86,7 @@
                         </td>
                         <td class=" ">
                             {{ item.filename }}
-                            <template v-if="item.metadata.metadataPulled">
+                            <template v-if="existMetadata(item)">
                                 <br />
                                 <small>{{ getDescription(item) }}</small>
                             </template>
@@ -238,6 +238,10 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         else output += '--'
 
         return output
+    }
+
+    existMetadata(item: ServerJobQueueStateJob) {
+        return item?.metadata?.metadataPulled
     }
 }
 </script>
