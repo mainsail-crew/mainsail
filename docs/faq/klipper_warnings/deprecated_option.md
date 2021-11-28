@@ -11,6 +11,17 @@ has_toc: false
 
 # Deprecated Options
 
+###### NTC 100K beta 3950
+## Removal of `NTC 100K beta 3950`
+
+The "NTC 100K beta 3950" temperature sensor is _deprecated_. This sensor will be removed in the near future.  
+Most users will find the "Generic 3950" temperature sensor more accurate.
+
+To continue to use the older (typically less accurate) definition, define a custom thermistor with `temperature1: 25`, `resistance1: 100000`, and `beta: 3950`.
+
+[Source](https://www.klipper3d.org/Config_Changes.html){:target="_blank"}.
+{: .info}
+
 ###### default_parameter
 ## Removal of `default_parameter_` for gcode macros.
 
