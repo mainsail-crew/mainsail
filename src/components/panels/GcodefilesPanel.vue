@@ -1007,7 +1007,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('editor/openFile', {
             root: 'gcodes',
             path: path !== '' ? '/'+path : '',
-            filename: item.filename
+            filename: item.filename,
+            permissions: item.permissions
         })
     }
 
