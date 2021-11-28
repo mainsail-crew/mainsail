@@ -595,7 +595,8 @@
       "DbRemoteprinters": "Remoteprinters",
       "DbHistoryJobs": "History Jobs",
       "DbHistoryTotals": "History Totals",
-      "DbWebcams": "Webcams"
+      "DbWebcams": "Webcams",
+      "DbTimelapseSettings": "Timelapse Settings"
     },
     "WebcamsTab": {
       "Webcams": "Webcams",
