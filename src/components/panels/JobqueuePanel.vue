@@ -206,7 +206,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
             )
             const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+thumbnail.relative_path+'?timestamp='+item.metadata?.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURIComponent(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
         }
 
         return ''
@@ -217,7 +217,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
             const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
             const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+thumbnail.relative_path+'?timestamp='+item.metadata?.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURIComponent(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
         }
 
         return ''
