@@ -48,7 +48,7 @@
                     @click="reloadViewer"
                     color="info"
                     class="ml-3"
-                    v-show="!reloadRequired"
+                    v-show="reloadRequired"
                 >
                     <span class="d-none d-sm-block">{{$t("GCodeViewer.ReloadRequired")}}</span>
                     <v-icon class="d-sm-none">mdi-reload-alert</v-icon>
