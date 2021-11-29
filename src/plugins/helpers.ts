@@ -46,6 +46,7 @@ export const convertPanelnameToIcon = (name: string): string => {
     case 'miscellaneous': return 'mdi-dip-switch'
     case 'tools': return 'mdi-thermometer-lines'
     case 'miniconsole': return 'mdi-console-line'
+    case 'machine-settings': return 'mdi-engine'
 
     default: return 'mdi-information'
     }
