@@ -82,6 +82,13 @@ export default class DashboardMixin extends BaseMixin {
             return (group) ? group.name : 'Macrogroup'
         }
 
-        return this.$t('Panels.'+capitalize(name)+'Panel.Headline')
+        if (name.includes('-')) {
+            let panelName = ''
+            const subStrings = name.split('-')
+            subStrings.forEach((subStr) => {panelName += capitalize(subStr)})
+            return this.$t('Panels.' + panelName + 'Panel.Headline')
+        }
+
+        return this.$t('Panels.' + capitalize(name) + 'Panel.Headline')
     }
 }
