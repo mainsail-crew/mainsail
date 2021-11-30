@@ -258,13 +258,7 @@
       "TRIGGERED": "ATTIVATO",
       "open": "APERTO"
     },
-    "LimitsPanel": {
-      "Acceleration": "Accelerazione",
-      "Deceleration": "Decelerazione",
-      "MachineLimits": "Limiti della Macchina",
-      "SquareCornerVelocity": "Square corner velocity",
-      "Velocity": "Velocità"
-    },
+    "LimitsPanel": {},
     "LogfilesPanel": {
       "Logfiles": "File di registro"
     },
@@ -283,7 +277,6 @@
     "UpdatePanel": {
       "CheckForUpdates": "Verifica aggiornamenti",
       "Commits": "Commits",
-      "CommittedAt": "committed at",
       "Detached": "detached",
       "Dirty": "dirty",
       "ERROR": "ERRORE",
@@ -470,6 +463,23 @@
       "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura.",
       "DownloadLog": "scarica log",
       "KlipperWarnings": "Avvisi di Klipper"
+    },
+    "MachineSettingsPanel": {
+      "Headline": "Impostazioni Macchina",
+      "FirmwareRetractionSettings": {
+        "FirmwareRetraction": "Retrazione Firmware",
+        "RetractLength": "Lunghezza Retrazione",
+        "RetractSpeed": "Velocità Retrazione",
+        "UnretractSpeed": "Velocità Ri-estrusione",
+        "UnretractExtraLength": "Lunghezza Extra Ri-estrusione"
+      },
+      "MotionSettings": {
+        "Acceleration": "Accelerazione",
+        "Deceleration": "Decelerazione",
+        "Motion": "Movimento",
+        "SquareCornerVelocity": "Velocità Angolo Retto",
+        "Velocity": "Velocità"
+      }
     }
   },
   "Router": {
@@ -565,7 +575,8 @@
       "DbRemoteprinters": "Stampantiremote",
       "DbWebcams": "Webcam",
       "FactoryDialog": "Seleziona tutte le sezioni che vuoi reimpostare:",
-      "Reset": "reimposta"
+      "Reset": "reimposta",
+      "DbTimelapseSettings": "Impostazioni Timelapse"
     },
     "InterfaceSettings": "Impostazioni dell'Interfaccia",
     "MacrosTab": {
