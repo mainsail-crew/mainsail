@@ -12,7 +12,8 @@
             outlined
             dense
             :append-icon="this.value !== this.defaultValue ? 'mdi-refresh' : ''"
-            :error="this.value > this.defaultValue"
+            :error="this.value <= 0"
+            min="1"
             @click:append="resetLimit"
             hide-details
         ></v-text-field>
@@ -25,7 +26,7 @@ import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class MachineLimitsInput extends Mixins(BaseMixin) {
+export default class MotionSettingsInput extends Mixins(BaseMixin) {
     private value: any = 0
 
     @Prop({ type: String, required: true }) readonly label!: string

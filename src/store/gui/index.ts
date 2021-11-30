@@ -64,6 +64,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true },
                 { 'name': 'tools', visable: true },
                 { 'name': 'miniconsole', visable: false },
@@ -74,6 +75,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true  },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true  },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true  },
             ],
             tabletLayout2: [
@@ -86,6 +88,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true },
             ],
             desktopLayout2: [
@@ -101,6 +104,7 @@ export const getDefaultState = (): GuiState => {
             widescreenLayout2: [
                 { 'name': 'tools', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
             ],
             widescreenLayout3: [
                 { 'name': 'webcam', visable: true },

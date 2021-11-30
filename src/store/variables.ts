@@ -83,6 +83,7 @@ export const maxEventHistory = 500
 export const allDashboardPanels = [
     'control',
     'macros',
+    'machine-settings',
     'miniconsole',
     'miscellaneous',
     'printsettings',
