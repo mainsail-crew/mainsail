@@ -34,17 +34,29 @@
                 attribute-name="S">
             </tool-slider>
         </template>
+        <v-divider></v-divider>
+        <v-subheader style="height:auto" class="pb-1 pt-3">
+            {{ $t('Panels.PrintsettingsPanel.PressureAdvanceSettings.PressureAdvance') }}
+        </v-subheader>
+        <pressure-advance-settings></pressure-advance-settings>
     </panel>
 </template>
 
 <script lang="ts">
-
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import Panel from '@/components/ui/Panel.vue'
+import SubPanel from '@/components/ui/SubPanel.vue'
+import ToolSlider from '@/components/inputs/ToolSlider.vue'
+import PressureAdvanceSettings from '@/components/panels/PressureAdvanceSettings.vue'
+
 @Component({
-    components: {Panel, ToolSlider}
+    components: {
+        Panel,
+        SubPanel,
+        ToolSlider,
+        PressureAdvanceSettings
+    }
 })
 export default class PrintsettingsPanel extends Mixins(BaseMixin) {
 
