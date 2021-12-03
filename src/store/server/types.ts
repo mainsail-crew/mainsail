@@ -56,6 +56,7 @@ export interface ServerStateCpuInfo {
     bits: string
     cpu_count: number
     cpu_desc: string
+    serial_number: string
     hardware_desc: string
     memory_units: string
     model: string

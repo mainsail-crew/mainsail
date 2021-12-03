@@ -275,14 +275,17 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     appHeight() {
-        const doc = document.documentElement
-        doc.style.setProperty('--app-height', window.innerHeight+'px')
+        this.$nextTick(() => {
+            const doc = document.documentElement
+            doc.style.setProperty('--app-height', window.innerHeight+'px')
+        })
     }
 
     mounted(): void {
         this.drawFavicon(this.print_percent)
         this.appHeight()
         window.addEventListener('resize', this.appHeight)
+        window.addEventListener('orientationchange', this.appHeight)
     }
 }
 </script>

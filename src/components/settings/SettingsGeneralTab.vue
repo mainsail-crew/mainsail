@@ -72,6 +72,13 @@
                                 class="mt-0"
                             ></v-checkbox>
                             <v-checkbox
+                                v-model="dbCheckboxes.timelapse"
+                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
+                                v-if="moonrakerDbNamespaces.includes('timelapse')"
+                                hide-details
+                                class="mt-0"
+                            ></v-checkbox>
+                            <v-checkbox
                                 v-model="dbCheckboxes.history_jobs"
                                 :label="$t('Settings.GeneralTab.DbHistoryJobs')"
                                 v-if="moonrakerComponents.includes('history')"
@@ -122,6 +129,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         mainsail_presets: false,
         mainsail_macrogroups: false,
         mainsail_remoteprinters: false,
+        timelapse: false,
         history_jobs: false,
         history_totals: false,
     }
