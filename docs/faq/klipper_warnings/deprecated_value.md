@@ -11,6 +11,18 @@ has_toc: false
 
 # Deprecated Values
 
+###### NTC 100K beta 3950
+## Removal of `NTC 100K beta 3950` sensor type.
+
+The "NTC 100K beta 3950" temperature sensor is _deprecated_ and will be removed in the near future. 
+
+In order to solve the problem search in your config for `sensor_type: NTC 100K beta 3950` and replace it with `sensor_type: Generic 3950`.
+
+Most users will find the "Generic 3950" temperature sensor more accurate. Anyway you can continue to use the older (typically less accurate) definition. Therefor define a custom thermistor with `temperature1: 25`, `resistance1: 100000`, and `beta: 3950`.
+
+[Source](https://www.klipper3d.org/Config_Changes.html){:target="_blank"} Klipper Configuration Changes
+{: .info}
+
 ###### rpi_temperature
 ## Removal of `rpi_temperature` sensor alias.
 

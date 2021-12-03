@@ -176,7 +176,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         if (state.resetDatabases.length) {
             const namespace = state.resetDatabases[0]
 
-            if (namespace.startsWith('mainsail') || namespace === 'webcams') {
+            if (namespace.startsWith('mainsail') || ['webcams', 'timelapse'].includes(namespace)) {
                 Vue.$socket.emit('server.database.get_item', { namespace: namespace }, { action: 'gui/resetMoonrakerDbLoopItems' })
             } else if (namespace === 'history_jobs') {
                 Vue.$socket.emit('server.history.delete_job', { all: true }, { action: 'gui/resetMoonrakerDbLoopItems' })

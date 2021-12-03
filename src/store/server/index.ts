@@ -9,6 +9,7 @@ import { power } from '@/store/server/power'
 import { updateManager } from '@/store/server/updateManager'
 import { history } from '@/store/server/history'
 import { timelapse } from '@/store/server/timelapse'
+import { jobQueue } from '@/store/server/jobQueue'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -50,5 +51,6 @@ export const server: Module<ServerState, any> = {
         updateManager,
         history,
         timelapse,
+        jobQueue,
     }
 }

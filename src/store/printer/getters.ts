@@ -502,12 +502,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
             const settings = objects[key]
+            const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
             if (
                 'sensor_type' in settings &&
 				sensorTypes.includes(settings.sensor_type) &&
-				key in state
+                caseKey in state 
             ) {
-                const value = state[key]
+                const value = state[caseKey]
 
                 output = {
                     temperature: value.temperature?.toFixed(0),
@@ -528,11 +529,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
             const value = objects[key]
+            const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
+            
             if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
                 output.push({
-                    key: key,
+                    key: caseKey,
                     settings: value,
-                    object: key in state ? state[key] : {}
+                    object: caseKey in state ? state[caseKey] : {}
                 })
             }
         })
