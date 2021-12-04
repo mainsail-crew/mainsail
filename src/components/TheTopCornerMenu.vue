@@ -75,7 +75,7 @@
         </v-menu>
         <v-dialog v-model="dialogPowerDeviceChange.show" width="400" :fullscreen="isMobile">
             <v-card>
-                <v-card-title class="headline">{{ $t(this.dialogPowerDeviceChange.value === 'off' ? 'PowerDeviceChangeDialog.TurnDeviceOn' : 'PowerDeviceChangeDialog.TurnDeviceOff', {'device': dialogPowerDeviceChange.device}) }}</v-card-title>
+                <v-card-title class="headline">{{ this.dialogPowerDeviceChange.value === 'off' ? $t('PowerDeviceChangeDialog.TurnDeviceOn', {'device': dialogPowerDeviceChange.device}) : $t('PowerDeviceChangeDialog.TurnDeviceOff', {'device': dialogPowerDeviceChange.device}) }}</v-card-title>
                 <v-card-text>{{ $t('PowerDeviceChangeDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
