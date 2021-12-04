@@ -568,7 +568,8 @@
       "CommittedYesterday": "committed yesterday",
       "CommittedDaysAgo": "committed {days} days ago",
       "CommittedOnDate": "committed on {date}",
-      "UpdateAll": "Update all components"
+      "UpdateAll": "Update all components",
+      "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available"
     },
     "SystemPanel": {
       "SystemLoad": "System Loads",
