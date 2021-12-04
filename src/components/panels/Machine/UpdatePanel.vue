@@ -314,6 +314,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.gt(object.remote_version, object.version)
             ) return 'primary'
 
+            if ((object.commits_behind ?? []).length) return 'primary'
+
             if (
                 'version' in object &&
                 'remote_version' in object && (
@@ -345,6 +347,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.valid(object.version) &&
                 semver.gt(object.remote_version, object.version)
             ) return this.$t('Machine.UpdatePanel.Update')
+
+            if ((object.commits_behind ?? []).length) return this.$t('Machine.UpdatePanel.Update')
 
             if (
                 'version' in object &&
@@ -378,6 +382,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.gt(object.remote_version, object.version)
             ) return 'progress-upload'
 
+            if ((object.commits_behind ?? []).length) return 'progress-upload'
+
             if (
                 'version' in object &&
                 'remote_version' in object && (
@@ -398,6 +404,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         if ('is_dirty' in object && object.is_dirty) return false
 
         if (typeof object === 'object' && object !== false) {
+            if ((object.commits_behind ?? []).length) return false
+
             if (
                 'version' in object &&
                 'remote_version' in object &&
@@ -411,8 +419,9 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     getVersionOutput(object: any) {
-        const local_version = 'version' in object ? object.version : '?'
-        const remote_version = 'remote_version' in object ? object.remote_version : '?'
+        const local_version = object.version ?? '?'
+        const remote_version =  object.remote_version ?? '?'
+        const commits_behind = object.commits_behind ?? []
 
         let output = ''
         if ('remote_alias' in object && object.remote_alias !== 'origin') output += object.remote_alias
@@ -425,6 +434,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
         if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
             output += local_version+' > '+remote_version
+        else if (commits_behind.length)
+            output += local_version+' > '+ this.$tc('Machine.UpdatePanel.CommitsAvailabe', commits_behind.length, { count: commits_behind.length })
         else if ('full_version_string' in object && object.full_version_string !== '?')
             output += object.full_version_string
         else
