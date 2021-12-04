@@ -104,9 +104,7 @@
     "LayerHeight": "Altezza del Layer",
     "Name": "Nome",
     "NewDirectory": "Nuova Directory",
-    "No": "Cancella",
     "ObjectHeight": "Altezza dell'oggetto",
-    "PleaseEnterANewDirectoryName": "Immettere un nuovo nome della directory: ",
     "Preheat": "Preriscaldare",
     "PrintStart": "Inizio Stampa",
     "PrintTime": "Tempo di Stampa",
@@ -128,7 +126,6 @@
     "UploadNewGcode": "Carica nuovo Gcode",
     "Uploading": "Caricamento",
     "Used": "Utilizzato",
-    "Yes": "Si",
     "AddToQueue": "Aggiungi alla coda",
     "Filament": "Filamento",
     "StartPrint": "Avvia stampa",
@@ -238,7 +235,6 @@
       "HiddenFiles": "File nascosti",
       "LastModified": "Ultima modifica",
       "Name": "Nome",
-      "PleaseStandBy": "Un attimo per favore",
       "RefreshDirectory": "Aggiorna Directory",
       "Rename": "Rinomina",
       "RenameDirectory": "Rinomina Directory",
@@ -258,7 +254,6 @@
       "TRIGGERED": "ATTIVATO",
       "open": "APERTO"
     },
-    "LimitsPanel": {},
     "LogfilesPanel": {
       "Logfiles": "File di registro"
     },
@@ -533,7 +528,6 @@
     },
     "ControlTab": {
       "Control": "Controllo",
-      "EnableCross": "Abilita movement cross",
       "InvertXMovement": "Inverti il movimento per l'asse X",
       "InvertYMovement": "Inverti il movimento per l'asse Y",
       "InvertZMovement": "Inverti il movimento per l'asse Z",
@@ -588,7 +582,6 @@
       "ChangeMacroColor": "Cambia il colore del bottone.",
       "Color": "Colore",
       "CountMacros": "nessuna Macro aggiunta | {count} Macro | {count} Macros",
-      "CreateGroup": "Crea Gruppo",
       "Custom": "pers.",
       "CustomColor": "Colore Pers.",
       "DeleteMacroFromGroup": "Elimina macro dal gruppo.",
@@ -637,8 +630,6 @@
       "RemotePrinters": "Stampanti Remote",
       "UpdatePrinter": "Aggiorna Stampante"
     },
-    "ThemeTab": {},
-    "WebcamTab": {},
     "Close": "Chiudi",
     "EditorTab": {
       "ConfirmUnsavedChanges": "Chiedi di salvare o disdire modifiche non salvate",
@@ -649,9 +640,7 @@
     },
     "GCodeViewerTab": {
       "BackgroundColor": "Colore Background",
-      "Extruder": "Estrusore",
       "ExtruderColor": "Colori Estrusore",
-      "FeedRate": "Feed Rate",
       "GCodeViewer": "Visualizzatore G-Code",
       "GridColor": "Colore Griglia",
       "MaxFeed": "Max Feed Rate",
@@ -698,8 +687,6 @@
       "RetractDistance": "Distanza Retrazione",
       "RetractDistanceDescription": "tset",
       "RetractSpeed": "Velocità Retrazione",
-      "Rotation": "Rotazione",
-      "RotationDescription": "Ruota l'output del video di 0-359 gradi",
       "SaveFrames": "Salva Frame",
       "SaveFramesDescription": "Salva i Frame in un file zip per rendering esterno",
       "Targetlength": "Lunghezza target",
@@ -769,7 +756,6 @@
       "Service": "Servizio",
       "TargetFPS": "Target FPS",
       "UpdateWebcam": "Aggiorna Webcam",
-      "UrlNotAvailable": "URL non disponibile",
       "UrlSnapshot": "URL Snaphot",
       "UrlStream": "URL Stream",
       "Uv4lMjpeg": "UV4L-MJPEG",
@@ -798,7 +784,6 @@
     "ReloadRequired": "Ricarica necessaria",
     "RenderQuality": "Qualità di render",
     "Rendering": "Rendering",
-    "ResetCamera": "Reset Camera",
     "ShowObjectSelection": "Mostra Selezione Oggetti",
     "ShowToolhead": "Mostra Toolhead",
     "ShowTravelMoves": "Mostra spostamenti",
@@ -807,8 +792,7 @@
     "Tracking": "Tracciamento",
     "Transparency": "Trasparenza",
     "Ultra": "Ultra",
-    "VoxelMode": "Modalità Voxel (ASMBL)",
-    "ZClip": "Z Clipping"
+    "VoxelMode": "Modalità Voxel (ASMBL)"
   },
   "JobQueue": {
     "AllJobs": "Tutti i lavori",
@@ -838,7 +822,6 @@
     "DeleteDirectoryQuestion": "Vuoi veramente eliminare la directory \"{name}\" con tutto il suo contenuto?",
     "Download": "Scarica",
     "DuplicateLastframe": "Duplica ultimo frame",
-    "EditFile": "Modifica File",
     "Empty": "Nessun timelapse completato.",
     "Enabled": "Abilitato",
     "EstimatedLength": "Lunghezza stimata",
@@ -855,7 +838,6 @@
     "Name": "Nome",
     "NewDirectory": "Nuova Directory",
     "NoActiveTimelapse": "Nessuna registrazione.",
-    "PleaseEnterANewDirectoryName": "Immetti un nuovo nome per la directory:",
     "Preview": "Anteprima",
     "RefreshCurrentDirectory": "aggiorna directory",
     "Rename": "Rinomina",
