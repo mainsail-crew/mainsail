@@ -106,7 +106,7 @@
     "SaveRestart": "保存并重启",
     "SaveClose": "保存并关闭",
     "SuccessfullySaved": "{filename} 保存成功.",
-    "FailedSave": "{filename} 无法上传!"
+    "FailedSave": "{filename} 无法上传!",
     "UnsavedChanges": "修改未保存",
     "UnsavedChangesMessage": "你想保存此修改过的文件吗 {filename}?",
     "UnsavedChangesSubMessage": "如果不保存你将要丢失你修改的文件. 你可以在设置里面关闭此条信息.",
@@ -357,9 +357,9 @@
     "KlippyStatePanel": {
       "KlippyState": "Klippy状态: ",
       "MoonrakerCannotConnect": "Moonraker 不能连接到 Klipper!",
-      "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)."
+      "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket).",
       "Restart": "重启",
-      "FirmwareRestart": "Firmware 重启",
+      "FirmwareRestart": "Firmware 重启"
     },
     "KlipperWarningsPanel": {
       "KlipperWarnings": "Klipper 警告",
