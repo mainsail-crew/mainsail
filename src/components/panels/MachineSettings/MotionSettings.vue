@@ -1,7 +1,7 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col class="col-6">
+            <v-col class="col-12 col-sm-6">
                 <motion-settings-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity')"
                     :target="current_velocity"
@@ -11,7 +11,7 @@
                     attribute-name="VELOCITY"
                 ></motion-settings-input>
             </v-col>
-            <v-col class="col-6">
+            <v-col class="col-12 col-sm-6">
                 <motion-settings-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity')"
                     :target="current_square_corner_velocity"
@@ -23,7 +23,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="col-6">
+            <v-col class="col-12 col-sm-6">
                 <motion-settings-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration')"
                     :target="current_accel"
@@ -33,7 +33,7 @@
                     attribute-name="ACCEL"
                 ></motion-settings-input>
             </v-col>
-            <v-col class="col-6">
+            <v-col class="col-12 col-sm-6">
                 <motion-settings-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Deceleration')"
                     :target="current_accel_to_decel"
