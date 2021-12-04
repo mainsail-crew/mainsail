@@ -1,7 +1,7 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col class="col-12" sm="6">
+            <v-col class="col-12 col-sm-6">
                 <firmware-retraction-settings-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractLength')"
                     :target="current_retract_length"
@@ -11,7 +11,7 @@
                     attribute-name="RETRACT_LENGTH"
                 ></firmware-retraction-settings-input>
             </v-col>
-            <v-col class="col-12" sm="6">
+            <v-col class="col-12 col-sm-6">
                 <firmware-retraction-settings-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractSpeed')"
                     :target="current_retract_speed"
@@ -22,7 +22,7 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col class="col-12" sm="6">
+            <v-col class="col-12 col-sm-6">
                 <firmware-retraction-settings-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength')"
                     :target="current_unretract_extra_length"
@@ -32,7 +32,7 @@
                     attribute-name="UNRETRACT_EXTRA_LENGTH"
                 ></firmware-retraction-settings-input>
             </v-col>
-            <v-col class="col-12" sm="6">
+            <v-col class="col-12 col-sm-6">
                 <firmware-retraction-settings-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractSpeed')"
                     :target="current_unretract_speed"
