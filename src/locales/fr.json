@@ -610,8 +610,8 @@
       "ConstantRateFactorDescription": "Ce paramètre configure le rapport entre la taille du fichier vidéo et sa qualité. Il peut aller de 0 à 51. 0 est la meilleure qualité, 23 la qualité par défault et 51 la qualité la plus faible.Une value plus faible augmente la qualité, 17-28 est le meilleur choix. Utilisez 17 ou 18 pour avoir un rendu sans pertes.",
       "Enabled": "Activé",
       "EnabledDescription": "Si inactif, les macros G-Code sont ignorées et le rendu automatique est supprimé.",
-      "ExtractDistance": "Distance d'extrusion",
-      "ExtractSpeed": "Vitesse d'extrusion",
+      "UnretractDistance": "Distance d'extrusion",
+      "UnretractSpeed": "Vitesse d'extrusion",
       "Extraoutputparams": "Paramètres de sortie supplémentaires",
       "ExtraoutputparamsDescription": "Definit les paramètres supplémentaires pour le flux FFMPEG. En cas de paramètres spécifiés, la rotation d'image n'est plus possible.",
       "GcodeVerbose": "G-Code détaillé",
@@ -659,8 +659,8 @@
       "VariableFpsMaxDescription": "Nombre maximum d'IPS en mode variable.",
       "RetractSpeedDescription": "Vitesse de rétractation du filament avant parking.",
       "RetractDistanceDescription": "Distance de rétractation du filament avant parking.",
-      "ExtractDistanceDescription": "Distance d'extrusion du filament après parking et avant reprise d'impression.",
-      "ExtractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression."
+      "UnretractDistanceDescription": "Distance d'extrusion du filament après parking et avant reprise d'impression.",
+      "UnretractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression."
     }
   },
   "ConnectionDialog": {
