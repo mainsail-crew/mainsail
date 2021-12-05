@@ -131,7 +131,7 @@
                 <v-list-item @click="clickRow(contextMenu.item)">
                     <v-icon class="mr-1">mdi-text-box-search</v-icon> {{ $t('History.Details') }}
                 </v-list-item>
-                <v-list-item @click="startPrint(contextMenu.item)" v-if="contextMenu.item.exists" :disabled="is_printing">
+                <v-list-item @click="startPrint(contextMenu.item)" v-if="contextMenu.item.exists" :disabled="printerIsPrinting || !klipperReadyForGui">
                     <v-icon class="mr-1">mdi-printer</v-icon> {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)">
