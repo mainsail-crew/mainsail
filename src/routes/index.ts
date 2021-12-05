@@ -41,6 +41,7 @@ const routes: AppRoute[] = [
         component: Console,
         alwaysShow: true,
         showInNavi: true,
+        klipperIsConnected: true
     },
     {
         title: 'Heightmap',
@@ -117,5 +118,6 @@ export interface AppRoute {
     registeredDirectory?: string,
     moonrakerComponent?: string,
     klipperComponent?: string,
+    klipperIsConnected?: boolean,
     children?: AppRoute[]
 }
