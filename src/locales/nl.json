@@ -36,7 +36,6 @@
 			"KlipperRestart": "Herstart",
 			"PowerDevices": "Power Apparaten",
 			"Reboot": "Opnieuw opstarten",
-			"RestartServices": "Herstart Services",
 			"ServiceControl": "Services Beheer",
 			"Shutdown": "Afsluiten"
 		},
@@ -114,9 +113,7 @@
 		"LayerHeight": "Laaghoogte",
 		"Name": "Naam",
 		"NewDirectory": "Nieuwe map",
-		"No": "Nee",
 		"ObjectHeight": "Objecthoogte",
-		"PleaseEnterANewDirectoryName": "Geef een nieuwe mapnaam: ",
 		"Preheat": "Voorverwarmen",
 		"PrintStart": "Start print",
 		"PrintTime": "Printtijd",
@@ -139,8 +136,7 @@
 		"UploadNewGcode": "Upload nieuwe G-Code",
 		"Uploading": "Uploaden",
 		"Used": "Gebruikt",
-		"View3D": "Bekijk in 3D",
-		"Yes": "Ja"
+		"View3D": "Bekijk in 3D"
 	},
 	"GCodeViewer": {
 		"ClearLoadedFile": "Leeg",
@@ -157,7 +153,6 @@
 		"ReloadRequired": "Herladen nodig",
 		"RenderQuality": "Render kwaliteit",
 		"Rendering": "Renderen",
-		"ResetCamera": "Reset Camera",
 		"ShowObjectSelection": "Toon object selectie",
 		"ShowToolhead": "Toon Toolhead",
 		"ShowTravelMoves": "Toon bewegingen",
@@ -166,8 +161,7 @@
 		"Tracking": "Tracking",
 		"Transparency": "Transparantie",
 		"Ultra": "Ultra",
-		"VoxelMode": "Voxel Modus (ASMBL)",
-		"ZClip": "Z Clipping"
+		"VoxelMode": "Voxel Modus (ASMBL)"
 	},
 	"Heightmap": {
 		"Abort": "annuleer",
@@ -283,7 +277,6 @@
 			"HideBackupFiles": "Verberg backups",
 			"LastModified": "Laatst bewerkt",
 			"Name": "Naam",
-			"PleaseStandBy": "Een moment geduld",
 			"RefreshDirectory": "Ververs map",
 			"Rename": "Hernoem",
 			"RenameDirectory": "Hernoem map",
@@ -301,13 +294,6 @@
 			"Endstops": "Endstops",
 			"TRIGGERED": "GETRIGGERED",
 			"open": "OPEN"
-		},
-		"LimitsPanel": {
-			"Acceleration": "Acceleratie",
-			"Deceleration": "Deceleratie",
-			"MachineLimits": "Machine limieten",
-			"SquareCornerVelocity": "Hoeksnelheid",
-			"Velocity": "Snelheid"
 		},
 		"LogfilesPanel": {
 			"Logfiles": "Logbestanden"
@@ -329,7 +315,6 @@
 			"Commits": "Commits",
 			"CommitsAvailabe": "geen commits beschikbaar | {count} commit beschikbaar | {count} commits beschikbaar",
 			"CommitsOnDate": "Gecommit op {date}",
-			"CommittedAt": "gecommit op",
 			"CommittedDaysAgo": "{days} dagen geleden gecommit",
 			"CommittedHoursAgo": "{days} uur geleden gecommit",
 			"CommittedOnDate": "gecommit op {date}",
@@ -626,7 +611,6 @@
 			"Circle": "Cirkel",
 			"Control": "Bediening",
 			"Cross": "Kruis",
-			"EnableCross": "Schakel bewegingskruis in",
 			"InvertXMovement": "Inverteer X beweging",
 			"InvertYMovement": "Inverteer Y beweging",
 			"InvertZMovement": "Inverteer Z beweging",
@@ -657,9 +641,7 @@
 		},
 		"GCodeViewerTab": {
 			"BackgroundColor": "Achtergrondkleur",
-			"Extruder": "Extruder",
 			"ExtruderColor": "Extruderkleuren",
-			"FeedRate": "Feed Rate",
 			"GCodeViewer": "G-Code Viewer",
 			"GridColor": "Rasterkleur",
 			"MaxFeed": "Max Doorvoer",
@@ -667,8 +649,6 @@
 			"ShowAxes": "Toon Assen"
 		},
 		"GeneralTab": {
-			"BoolBigThumbnail": "Grote thumbnail",
-			"BoolBigThumbnailDescription": "Toon een grote thumbnail in het statuspaneel tijdens een print.",
 			"CalcEstimateTime": "Bereken geschatte tijd",
 			"CalcEstimateTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
 			"CalcEtaTime": "ETA berekening",
@@ -681,18 +661,12 @@
 			"DbRemoteprinters": "Printers op afstand",
 			"DbTimelapseSettings": "Timelapse Instellingen",
 			"DbWebcams": "Webcams",
-			"DisplayCANCEL_PRINT": "Toon CANCEL_PRINT",
-			"DisplayCANCEL_PRINTDescription": "Toont de CANCEL_PRINT knop permanent - geen tweede bevestiging nodig.",
-			"DisplayZOffset": "Toon Z-Offset paneel",
-			"DisplayZOffsetDescription": "Anders toont het paneel alleen nadat een print is gestart.",
 			"FactoryDialog": "Selecteer de secties die je wil resetten:",
-			"FactoryInfo": "Weet je zeker dat je mainsail naar fabrieksinstellingen wilt herstellen?",
 			"FactoryReset": "Herstel naar fabrieksinstellingen",
 			"General": "Algemeen",
 			"Language": "Taal",
 			"PrinterName": "Printer naam",
-			"Reset": "reset",
-			"ResetMainsail": "reset mainsail"
+			"Reset": "reset"
 		},
 		"InterfaceSettings": "Interface Instellingen",
 		"MacrosTab": {
@@ -702,7 +676,6 @@
 			"ChangeMacroColor": "Verander de kleur van de knop",
 			"Color": "Kleur",
 			"CountMacros": "geen Macros toegevoegd | {count} Macro | {count} Macros",
-			"CreateGroup": "Creëer groep",
 			"Custom": "custom",
 			"CustomColor": "Custom Kleur",
 			"DeleteMacroFromGroup": "Verwijder macro uit groep.",
@@ -753,11 +726,6 @@
 			"RemotePrinters": "Printers op afstand",
 			"UpdatePrinter": "Update Printer"
 		},
-		"ThemeTab": {
-			"Logo": "Logo",
-			"Primary": "Primair",
-			"Theme": "Thema"
-		},
 		"TimelapseTab": {
 			"Autorender": "Autorender",
 			"AutorenderDescription": "Wanneer ingeschakeld, zal de timelapse video automatisch renderen aan het eind van de print",
@@ -767,10 +735,6 @@
 			"ConstantRateFactorDescription": "Dit bepaalt de kwaliteit vs bestandsgrootte van de gerenderde video. De CRF schaal is van 0-51 waar 0 zonder verlies is, 23 de standaard en 51 de slechts mogelijke kwaliteit. Een lagere waarde geeft over het algemeen betere kwaliteit en een gangbare waarde is 17-28. Zie 17 of 18 als praktisch zonder kwaliteitsverlies.",
 			"Enabled": "Ingeschakeld",
 			"EnabledDescription": "Indien uitgeschakeld, worden gcode macros genegeerd en autorender overgeslagen.",
-			"ExtractDistance": "Extrude afstand",
-			"ExtractDistanceDescription": "",
-			"ExtractSpeed": "Extrude snelheid",
-			"ExtractSpeedDescription": "",
 			"Extraoutputparams": "Extraoutputparams",
 			"ExtraoutputparamsDescription": "Definieert extra parameters voor FFMPEG. Note: Alles wat hier wordt toegevoegd zal de rotatie instelling ongedaan maken",
 			"GcodeVerbose": "GcodeVerbose",
@@ -801,8 +765,6 @@
 			"RetractDistanceDescription": "",
 			"RetractSpeed": "Retractie Snelheid",
 			"RetractSpeedDescription": "",
-			"Rotation": "Rotatie",
-			"RotationDescription": "Roteert de uitvoer video 0-359 graden",
 			"SaveFrames": "Sla frames op",
 			"SaveFramesDescription": "Sla de frames op in een zip-bestand voor externe rendering",
 			"Targetlength": "Doel lengte",
@@ -854,38 +816,6 @@
 			"ShowWebcamInNavigation": "Toon Webcam in de navigatie",
 			"UiSettings": "UI Instellingen"
 		},
-		"WebcamTab": {
-			"AddWebcam": "voeg webcam toe",
-			"CreateWebcam": "Creëer Webcam",
-			"EditWebcam": "Bewerk Webcam",
-			"FlipHorizontally": "Flip webcam horizontaal",
-			"FlipVertically": "Flip webcam verticaal",
-			"IconBed": "Bed",
-			"IconCam": "Camera",
-			"IconDoor": "Deur",
-			"IconFilament": "Filament",
-			"IconHot": "Heet",
-			"IconMcu": "MCU",
-			"IconNozzle": "Nozzle",
-			"IconPrinter": "Printer",
-			"Ipstream": "IP Camera",
-			"Mjpegstreamer": "MJPEG-Streamer",
-			"MjpegstreamerAdaptive": "Adaptieve MJPEG-Streamer (experimenteel)",
-			"Name": "Naam",
-			"NameAlreadyExists": "Naam bestaat al",
-			"Required": "verplicht",
-			"SaveWebcam": "Sla Webcam op",
-			"Service": "Service",
-			"ShowInNavigation": "Toon in navigatie",
-			"TargetFPS": "Doel FPS",
-			"UpdateWebcam": "Update Webcam",
-			"UrlNotAvailable": "URL niet beschikbaar",
-			"UrlSnapshot": "Snapshot URL",
-			"UrlStream": "Stream URL",
-			"Uv4lMjpeg": "UV4L-MJPEG",
-			"WebcamURL": "Webcam URL",
-			"Webcams": "Webcams"
-		},
 		"WebcamsTab": {
 			"AddWebcam": "voeg webcam toe",
 			"CreateWebcam": "Nieuwe Webcam",
@@ -910,7 +840,6 @@
 			"Service": "Dienst",
 			"TargetFPS": "Doel FPS",
 			"UpdateWebcam": "Update Webcam",
-			"UrlNotAvailable": "URL niet beschikbaar",
 			"UrlSnapshot": "URL Snapshot",
 			"UrlStream": "URL Stream",
 			"Uv4lMjpeg": "UV4L-MJPEG",
@@ -929,7 +858,6 @@
 		"DeleteDirectoryQuestion": "Weet je zeker dat je de \"{name}\" map wil verwijderen met alle inhoud?",
 		"Download": "Download",
 		"DuplicateLastframe": "Herhaal laatste frame",
-		"EditFile": "Bewerk bestand",
 		"Empty": "Geen voltooide timelapse gevonden.",
 		"Enabled": "Ingeschakeld",
 		"EstimatedLength": "Geschatte lengte",
@@ -946,7 +874,6 @@
 		"Name": "Naam",
 		"NewDirectory": "Nieuwe map",
 		"NoActiveTimelapse": "Geen opnames beschikbaar.",
-		"PleaseEnterANewDirectoryName": "Geef een nieuwe mapnaam: ",
 		"Preview": "Voorbeeld",
 		"RefreshCurrentDirectory": "ververs map",
 		"Rename": "Hernoem",
