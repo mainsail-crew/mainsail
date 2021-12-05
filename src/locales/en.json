@@ -405,13 +405,7 @@
     "PrintsettingsPanel": {
       "Headline": "Print Settings",
       "SpeedFactor": "Speed factor",
-      "ExtrusionFactor": "Extrusion factor",
-      "PressureAdvanceSettings": {
-        "Extruder": "Extruder",
-        "PressureAdvance": "Pressure Advance",
-        "Advance": "Advance",
-        "SmoothTime": "Smooth Time"
-      }
+      "ExtrusionFactor": "Extrusion factor"
     },
     "MiscellaneousPanel": {
       "Headline": "Miscellaneous",
