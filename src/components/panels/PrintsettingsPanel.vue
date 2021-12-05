@@ -12,7 +12,7 @@
     >
         <tool-slider
             :label="$t('Panels.PrintsettingsPanel.SpeedFactor')"
-            icon="mdi-rabbit"
+            icon="mdi-speedometer"
             :target="speed_factor"
             :max="200"
             :multi="100"
