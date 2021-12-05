@@ -56,7 +56,7 @@ const routes: AppRoute[] = [
         path: '/files',
         icon: 'file-document-multiple-outline',
         component: Files,
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
         registeredDirectory: 'gcodes',
     },
@@ -73,7 +73,7 @@ const routes: AppRoute[] = [
         path: '/history',
         icon: 'history',
         component: History,
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'history'
     },
@@ -82,7 +82,7 @@ const routes: AppRoute[] = [
         path: '/timelapse',
         icon: 'timelapse',
         component: Timelapse,
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'timelapse'
     },

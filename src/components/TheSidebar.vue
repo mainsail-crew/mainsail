@@ -147,15 +147,17 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     showInNavi(route: AppRoute): boolean {
-        if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
+        let bool = true
 
-        if (route.title === 'Webcam') return this.boolNaviWebcam
+        if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) bool = false
 
-        if (route.moonrakerComponent) return this.moonrakerComponents.includes(route.moonrakerComponent)
-        if (route.registeredDirectory) return this.registeredDirectories.includes(route.registeredDirectory)
-        if (route.klipperComponent) return (route.klipperComponent in this.klipperConfigfileSettings)
+        if (route.title === 'Webcam' && !this.boolNaviWebcam) bool = false
 
-        return true
+        if (route.moonrakerComponent && !this.moonrakerComponents.includes(route.moonrakerComponent)) bool = false
+        if (route.registeredDirectory  && !this.registeredDirectories.includes(route.registeredDirectory)) bool = false
+        if (route.klipperComponent && !(route.klipperComponent in this.klipperConfigfileSettings)) bool = false
+
+        return bool
     }
 
     mounted() {
