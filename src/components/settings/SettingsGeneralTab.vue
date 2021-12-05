@@ -7,15 +7,15 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.Language')">
-                    <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense></v-select>
+                    <v-select v-model="currentLanguage" :items="availableLanguages" hide-details outlined dense attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.CalcEstimateTime')" :sub-title="$t('Settings.GeneralTab.CalcEstimateTimeDescription')">
-                    <v-select v-model="calcEstimateTime" :items="calcEstimateItems" multiple hide-details dense outlined></v-select>
+                    <v-select v-model="calcEstimateTime" :items="calcEstimateItems" multiple hide-details dense outlined attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.CalcEtaTime')" :sub-title="$t('Settings.GeneralTab.CalcEtaTimeDescription')">
-                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined></v-select>
+                    <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">

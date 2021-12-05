@@ -27,6 +27,7 @@
         item-text="value"
         type="number"
         @change="setTemps"
+        attach
     ></v-combobox>
 </template>
 

@@ -80,6 +80,7 @@
                                 outlined
                                 dense
                                 hide-details
+                                attach
                             ></v-select>
                         </v-col>
                         <v-col class="col-4">

@@ -8,7 +8,7 @@
             <v-card-text>
                 <v-form ref="formControlExtruder">
                     <settings-row :title="$t('Settings.ControlTab.Style')">
-                        <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details></v-select>
+                        <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">

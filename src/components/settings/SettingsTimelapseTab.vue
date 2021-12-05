@@ -12,11 +12,11 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.Camera')" :sub-title="$t('Settings.TimelapseTab.CameraDescription')">
-                    <v-select v-model="camera" :items="cameraOptions" hide-details outlined dense :disabled="blockedsettings.includes('camera') || blockedsettings.includes('snapshoturl')"></v-select>
+                    <v-select v-model="camera" :items="cameraOptions" hide-details outlined dense :disabled="blockedsettings.includes('camera') || blockedsettings.includes('snapshoturl')" attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.TimelapseTab.Mode')" :sub-title="$t('Settings.TimelapseTab.ModeDescription')">
-                    <v-select v-model="mode" :items="modeOptions" hide-details outlined dense :disabled="blockedsettings.includes('modeOptions')"></v-select>
+                    <v-select v-model="mode" :items="modeOptions" hide-details outlined dense :disabled="blockedsettings.includes('modeOptions')" attach></v-select>
                 </settings-row>
                 <template v-if="mode === 'hyperlapse'">
                     <v-divider class="my-2"></v-divider>
@@ -43,7 +43,7 @@
                 <template v-if="parkhead">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.TimelapseTab.Parkpos')" :sub-title="$t('Settings.TimelapseTab.ParkposDescription')">
-                        <v-select v-model="parkpos" :items="parkposOptions" hide-details outlined dense :disabled="blockedsettings.includes('parkposOptions')"></v-select>
+                        <v-select v-model="parkpos" :items="parkposOptions" hide-details outlined dense :disabled="blockedsettings.includes('parkposOptions')" attach></v-select>
                     </settings-row>
                     <template v-if="parkpos === 'custom'">
                         <v-divider class="my-2"></v-divider>
