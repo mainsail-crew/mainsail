@@ -20,6 +20,9 @@
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
+                    <v-icon small :class="'mr-2'">
+                        {{ icon }}
+                    </v-icon>
                     <span>{{ label }}</span>
                     <v-btn
                         v-if="value !== defaultValue"
@@ -80,6 +83,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, default: '' }) readonly attributeName!: string
     @Prop({ type: String, default: '' }) readonly label!: string
+    @Prop({ type: String, default: '' }) readonly icon!: string 
     @Prop({ type: String, default: '%' }) readonly unit!: string
     @Prop({ type: Number, default: 1 }) readonly attributeScale!: number
     @Prop({ type: Number, default: 0 }) readonly min!: number

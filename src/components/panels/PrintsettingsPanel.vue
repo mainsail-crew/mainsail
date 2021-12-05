@@ -12,6 +12,7 @@
     >
         <tool-slider
             :label="$t('Panels.PrintsettingsPanel.SpeedFactor')"
+            icon="mdi-rabbit"
             :target="speed_factor"
             :max="200"
             :multi="100"
@@ -24,6 +25,7 @@
             <v-divider></v-divider>
             <tool-slider
                 :label="$t('Panels.PrintsettingsPanel.ExtrusionFactor')"
+                icon="mdi-printer-3d-nozzle-outline"
                 :target="extrude_factor"
                 :max="200"
                 :multi="100"
