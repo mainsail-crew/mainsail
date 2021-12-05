@@ -60,7 +60,8 @@
     "Empty": "Vuoto",
     "HideTemperatures": "Nascondi temperature",
     "SendCode": "Invia codice...",
-    "SetupConsole": "Impostazione Console"
+    "SetupConsole": "Impostazione Console",
+    "HideTimelapse": "Nascondi Timelapse"
   },
   "Editor": {
     "ConfigReference": "Configurazione di Riferimento",
@@ -289,7 +290,8 @@
       "CommittedHoursAgo": "committed {hours} hours ago",
       "CommittedOnDate": "committed on {date}",
       "CommittedYesterday": "committed yesterday",
-      "UpdateAll": "Aggiorna tutti i componenti"
+      "UpdateAll": "Aggiorna tutti i componenti",
+      "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available"
     }
   },
   "Panels": {
@@ -339,7 +341,8 @@
       "Headline": "Console",
       "HideTemperatures": "Nascondi Temperature",
       "SendCode": "Invia codice...",
-      "SetupConsole": "Impostazioni Console"
+      "SetupConsole": "Impostazioni Console",
+      "HideTimelapse": "Nascondi Timelapse"
     },
     "MiscellaneousPanel": {
       "Headline": "Miscellanea",
@@ -656,8 +659,8 @@
       "ConstantRateFactorDescription": "Questo configura la qualità vs grandezza del video. Il raggio della scala del CRF è 0-51, dove 0 è lossless, 23 è il default e 51 è la qualità peggiore possibile. Un valore più basso porta generalmente ad una qualità maggiore e un raggio consigliato è di 17-28. Considera 17 o 18 come visualmente lossless.",
       "Enabled": "Abilitato",
       "EnabledDescription": "Se disabilitato, le macro gcode sono ignorate e autorender è ignorato.",
-      "UnretractDistance": "Distanza Estrusione",
-      "UnretractSpeed": "Velocità Estrusione",
+      "UnretractDistance": "Distanza Ri-estrusione",
+      "UnretractSpeed": "Velocità Ri-estrusione",
       "Extraoutputparams": "Parametrioutputextra",
       "ExtraoutputparamsDescription": "Definisce output aggiuntivi a FFMPEG. Nota: Specificare qualsiasi cosa qui disabiliterà l'impostazione di rotazione",
       "GcodeVerbose": "VerbosoGcode",
@@ -701,7 +704,10 @@
       "VariableFpsMax": "FPS Variabili max",
       "VariableFpsMin": "FPS Variabili min",
       "duplicatelastframe": "duplicaultimoframe",
-      "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video"
+      "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
+      "RetractSpeedDescription": "Velocità alla quale l'estrusore retrae il filamento.",
+      "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
+      "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione."
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Grande anteprima",
