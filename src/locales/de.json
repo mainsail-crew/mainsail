@@ -371,6 +371,12 @@
         "Deceleration": "Verlangsamung",
         "SquareCornerVelocity": "Eck-Geschwindigkeit"
       },
+      "PressureAdvanceSettings": {
+        "PressureAdvance": "Pressure Advance",
+        "Extruder": "Extruder",
+        "Advance": "Advance",
+        "SmoothTime": "Smooth Time"
+      },
       "FirmwareRetractionSettings": {
         "FirmwareRetraction": "Firmware Rückzug",
         "RetractLength": "Rückzugslänge",

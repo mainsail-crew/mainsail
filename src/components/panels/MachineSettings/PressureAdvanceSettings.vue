@@ -1,7 +1,7 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col v-if="this.all_extruders.length > 1" class="col-12" xl="4">
+            <v-col v-if="this.all_extruders.length > 1" class="col-12 col-xl-4">
                 <div class="d-flex align-center">
                     <v-btn
                         v-if="this.selectedExtruder !== this.current_active_extruder"
@@ -13,7 +13,7 @@
                     </v-btn>
                     <v-select
                         v-model="selectedExtruder"
-                        :label="$t('Panels.PrintsettingsPanel.PressureAdvanceSettings.Extruder')"
+                        :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder')"
                         :items="all_extruders"
                         :value="current_active_extruder"
                         hide-details
@@ -22,9 +22,9 @@
                     ></v-select>
                 </div>
             </v-col>
-            <v-col class="col-12" md="6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
+            <v-col class="col-12 col-md-6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
                 <pressure-advance-settings-input
-                    :label="$t('Panels.PrintsettingsPanel.PressureAdvanceSettings.Advance')"
+                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance')"
                     :target="current_pressure_advance"
                     :step="0.001"
                     :max="1"
@@ -34,9 +34,9 @@
                     attribute-name="ADVANCE"
                 ></pressure-advance-settings-input>
             </v-col>
-            <v-col class="col-12" md="6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
+            <v-col class="col-12 col-md-6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
                 <pressure-advance-settings-input
-                    :label="$t('Panels.PrintsettingsPanel.PressureAdvanceSettings.SmoothTime')"
+                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime')"
                     :target="current_smooth_time"
                     :step="0.01"
                     :max="0.2"
