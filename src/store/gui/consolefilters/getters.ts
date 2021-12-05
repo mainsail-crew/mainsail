@@ -21,6 +21,13 @@ export const getters: GetterTree<GuiConsolefiltersState, any> = {
         if (rootState.gui.console.hideWaitTemperatures)
             output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
+        if (rootState.gui.console.hideTlCommands) {
+            output.push('^_TIMELAPSE_NEW_FRAME')
+            output.push('^TIMELAPSE_TAKE_FRAME')
+            output.push('^TIMELAPSE_RENDER')
+            output.push('^_SET_TIMELAPSE_SETUP')
+        }
+
         Object.keys(state.consolefilters).forEach((id: string) => {
             const filter = state.consolefilters[id]
             if (filter.bool) {

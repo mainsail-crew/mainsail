@@ -181,6 +181,7 @@
     "SendCode": "Send code...",
     "Empty": "Empty",
     "HideTemperatures": "Hide temperatures",
+    "HideTimelapse": "Hide Timelapse",
     "CommandList": "Command list"
   },
   "Heightmap": {
@@ -383,6 +384,7 @@
       "Headline": "Console",
       "SetupConsole": "Setup Console",
       "HideTemperatures": "Hide temperatures",
+      "HideTimelapse": "Hide Timelapse",
       "SendCode": "Send code..."
     },
     "MinSettingsPanel": {
