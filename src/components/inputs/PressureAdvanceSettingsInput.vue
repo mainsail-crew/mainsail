@@ -5,7 +5,7 @@
             @click:append="resetLimit"
             :label="label"
             :suffix="unit"
-            :append-icon="this.value !== this.defaultValue ? 'mdi-refresh' : ''"
+            :append-icon="this.value !== this.defaultValue ? 'mdi-restart' : ''"
             :error="this.value < 0"
             :step="step"
             type="number"
