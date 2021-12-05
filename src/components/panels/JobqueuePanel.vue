@@ -13,6 +13,7 @@
                     icon
                     tile
                     v-if="queueState === 'paused'"
+                    :disabled="!klipperReadyForGui"
                 >
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">

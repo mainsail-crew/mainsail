@@ -268,13 +268,13 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel')}}</v-btn>
-                    <v-btn color="primary" text @click="startPrint(dialogPrintFile.item.filename)">{{$t('Files.StartPrint')}}</v-btn>
+                    <v-btn color="primary" text @click="startPrint(dialogPrintFile.item.filename)" :disabled="printerIsPrinting || !klipperReadyForGui">{{$t('Files.StartPrint')}}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="['error', 'printing', 'paused'].includes(printer_state)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="printerIsPrinting || !klipperReadyForGui" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
                 <v-list-item @click="addToQueue(contextMenu.item)" v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')">
