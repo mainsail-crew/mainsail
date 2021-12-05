@@ -127,6 +127,7 @@ export const getDefaultState = (): GuiState => {
         },
         console: {
             hideWaitTemperatures: true,
+            hideTlCommands: true,
             direction: 'table',
             entryStyle: 'default',
             height: 300
