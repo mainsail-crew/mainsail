@@ -36,6 +36,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     private timerFPS: number | null = null
     private timerRestart: number | null = null
     private stream: ReadableStream | null = null
+    private controller: AbortController | null = null
 
     @Prop({ required: true })
     camSettings: any
@@ -84,8 +85,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
             return contentLength
         }
 
+        this.controller = new AbortController()
+        const { signal } = this.controller
+
         //readable stream credit to from https://github.com/aruntj/mjpeg-readable-stream
-        fetch(this.url)
+        fetch(this.url, { signal })
             .then(response => response.body)
             .then(rb => {
                 const reader = rb?.getReader()
@@ -177,6 +181,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     stopStream() {
         if (this.timerFPS) clearTimeout(this.timerFPS)
         if (this.timerRestart) clearTimeout(this.timerRestart)
+        this.controller?.abort()
         this.stream?.cancel()
     }
 
