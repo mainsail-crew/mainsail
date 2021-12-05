@@ -51,7 +51,7 @@
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.1",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.5.10",
+    "vuetify": "^2.6.1",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -71,7 +71,6 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
     "generate-file-webpack-plugin": "^1.0.1",
-    "node-sass": "^6.0.1",
     "sass": "~1.32",
     "sw-precache-webpack-plugin": "^1.0.0",
     "typescript": "^4.3.5",
