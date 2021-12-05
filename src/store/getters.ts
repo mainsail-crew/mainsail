@@ -69,13 +69,7 @@ export const getters: GetterTree<RootState, any> = {
         const minMoonrakerVersionRelease = minMoonrakerVersionSplits[0] ?? ''
         const minMoonrakerVersionBuild = parseInt(minMoonrakerVersionSplits[1] ?? 0)
 
-        if (moonrakerVersion === '') {
-            dependencies.push({
-                serviceName: 'Moonraker',
-                installedVersion: '--',
-                neededVersion: minMoonrakerVersion
-            })
-        } else if (
+        if (
             semver.valid(moonrakerVersionRelease) && (
                 semver.gt(minMoonrakerVersionRelease, moonrakerVersionRelease) ||
                 (semver.eq(minMoonrakerVersionRelease, moonrakerVersionRelease) && moonrakerVersionBuild < minMoonrakerVersionBuild)

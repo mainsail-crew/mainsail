@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div>
+    <div v-if="klipperReadyForGui">
         <panel :title="$t('Machine.SystemPanel.SystemLoad')" icon="mdi-memory" card-class="machine-systemload-panel" :collapsible="true">
             <v-card-text class="px-0 py-2">
                 <div v-for="(mcu, index) of mcus" v-bind:key="mcu.name">
