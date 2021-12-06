@@ -37,7 +37,8 @@
       "PowerDevices": "Силовые устройства",
       "Reboot": "Перезагрузка",
       "RestartServices": "Перезапуск служб",
-      "Shutdown": "Выключение"
+      "Shutdown": "Выключение",
+      "ServiceControl": "Контроль обслуживания"
     },
     "UpdateDialog": {
       "Recovering": "Восстановление",
@@ -63,7 +64,12 @@
     "SaveClose": "Сохранить и закрыть",
     "SaveRestart": "Сохранить и перезапустить",
     "SuccessfullySaved": "{filename} успешно сохранено.",
-    "Uploading": "Загрузка"
+    "Uploading": "Загрузка",
+    "Cancel": "Отмена",
+    "DontSave": "Не сохранять",
+    "UnsavedChanges": "Несохраненные изменения",
+    "UnsavedChangesMessage": "Хотите ли вы сохранить изменения в {filename}?",
+    "UnsavedChangesSubMessage": "Ваши изменения будут потеряны, если вы их не сохраните. Вы можете отключить это сообщение в настройках редактора."
   },
   "Files": {
     "AllFiles": "Все",
@@ -116,7 +122,11 @@
     "SuccessfullyDeleted": "Успешно удалено {filename}.",
     "SuccessfullyMoved": "Успешное перемещение {filename}.",
     "SuccessfullyRenamed": "Успешное переименование {filename}.",
-    "SuccessfullyUploaded": "Загрузка {filename} успешна!"
+    "SuccessfullyUploaded": "Загрузка {filename} успешна!",
+    "AddToQueue": "Добавить в очередь заданий",
+    "Filament": "Филамент",
+    "StartPrint": "Druck starten",
+    "View3D": "3D просмотр"
   },
   "Heightmap": {
     "Abort": "Отменить",
@@ -143,7 +153,16 @@
     "ErrorKlipperNotReady": "Клиппер не готов. Карта высот отключена.",
     "Flat": "Плоский",
     "NoProfile": "Профиль отсутствует",
-    "Wireframe": "Каркас"
+    "Wireframe": "Каркас",
+    "BedMeshRemove": "Удалить сетку кровати",
+    "CurrentMesh": {
+      "Headline": "Текущая сетка",
+      "Max": "Макс",
+      "Min": "Мин",
+      "Name": "Имя",
+      "Size": "Размер",
+      "Variance": "Отклонение"
+    }
   },
   "History": {
     "AllJobs": "весь",
@@ -217,7 +236,8 @@
     },
     "FarmPrinterPanel": {
       "WebcamOff": "Офф",
-      "SwitchToPrinter": "Переключение на принтер"
+      "SwitchToPrinter": "Переключение на принтер",
+      "ReconnectToPrinter": "Подключите"
     },
     "KlippyStatePanel": {
       "FirmwareRestart": "Перезапуск прошивки",
@@ -294,7 +314,14 @@
       "Y": "Y",
       "Z": "Z",
       "Headline": "Статус",
-      "Requested": "Запрошено"
+      "Requested": "Запрошено",
+      "ExcludeObject": {
+        "Cancel": "Отмена",
+        "ExcludeObject": "Исключить объект",
+        "ExcludeObjectHeadline": "Objekt ausschließen",
+        "ExcludeObjectText": "Вы действительно хотите исключить \"{name}\"?",
+        "Excluded": "исключено"
+      }
     },
     "ToolsPanel": {
       "AutoscaleChart": "Автомасштабируемая диаграмма",
@@ -341,7 +368,8 @@
       "ZBabyStepping": "Z Смещение"
     },
     "MacrosPanel": {
-      "Headline": "Макросы"
+      "Headline": "Макросы",
+      "Send": "отправить"
     },
     "MoonrakerStatePanel": {
       "DownloadLog": "Скачать журнал",
@@ -366,6 +394,33 @@
       "SaveInfoHeadline": "Информация",
       "ToEndstop": "до конечной остановки",
       "ToProbe": "к зонду"
+    },
+    "DependenciesPanel": {
+      "Dependency": "Зависимость | Зависимости",
+      "DependencyDescription": "Ваша текущая версия {name} не поддерживает все функции Mainsail. Обновите {name} по крайней мере до версии {neededVersion}."
+    },
+    "KlipperWarningsPanel": {
+      "DeprecatedOption": "Опция '{option}' в разделе '{section}' устарела и будет удалена в будущем выпуске.",
+      "DeprecatedValue": "Значение '{value}' в опции '{option}' в секции '{section}' устарело и будет удалено в будущем релизе.",
+      "DownloadLog": "Загрузить файл журнала",
+      "KlipperWarnings": "Предупреждения о клиперах"
+    },
+    "MachineSettingsPanel": {
+      "Headline": "Настройки машины",
+      "FirmwareRetractionSettings": {
+        "FirmwareRetraction": "Отступление от прошивки",
+        "RetractLength": "Длина втягивания",
+        "RetractSpeed": "Скорость втягивания",
+        "UnretractExtraLength": "Дополнительная длина удлинителя",
+        "UnretractSpeed": "Скорость выдвижения"
+      },
+      "MotionSettings": {
+        "Acceleration": "Ускорение",
+        "Deceleration": "Замедление",
+        "Motion": "Движение",
+        "SquareCornerVelocity": "Угловая скорость",
+        "Velocity": "Скорость"
+      }
     }
   },
   "Router": {
@@ -376,7 +431,9 @@
     "History": "Курс",
     "Machine": "Машина",
     "Printers": "Принтер",
-    "Webcam": "Веб-камера"
+    "Webcam": "Веб-камера",
+    "G-Code Viewer": "Программа просмотра G-кодов",
+    "Timelapse": "Time-lapse"
   },
   "Settings": {
     "Cancel": "Отмена",
@@ -393,7 +450,9 @@
       "Name": "Имя",
       "Regex": "Regex",
       "StoreButton": "Фильтр магазина",
-      "UpdateButton": "Обновление фильтра"
+      "UpdateButton": "Обновление фильтра",
+      "EntryStyleCompact": "компактный",
+      "EntryStyleDefault": "стандарт"
     },
     "ControlTab": {
       "Control": "Контроль",
@@ -407,7 +466,11 @@
       "MoveDistancesZInMm": "Расстояние перемещения Z в мм",
       "SpeedEInMms": "Скорость E в мм/с",
       "SpeedXY": "Скорость XY",
-      "SpeedZ": "Скорость Z"
+      "SpeedZ": "Скорость Z",
+      "Bars": "Бар",
+      "Circle": "Круг",
+      "Cross": "Крест",
+      "Style": "Стиль"
     },
     "Edit": "Редактировать",
     "GeneralTab": {
@@ -422,12 +485,56 @@
       "General": "Общий",
       "Language": "Язык",
       "PrinterName": "Имя принтера",
-      "ResetMainsail": "сбросить грот"
+      "ResetMainsail": "сбросить грот",
+      "CalcEstimateTime": "Расчет расчетного времени",
+      "CalcEstimateTimeDescription": "В случае множественного выбора рассчитывается среднее значение",
+      "CalcEtaTime": "Расчет расчетного времени прибытия",
+      "CalcEtaTimeDescription": "В случае множественного выбора рассчитывается среднее значение",
+      "DbGeneral": "Общий",
+      "DbHistoryTotals": "Общий счетчик истории",
+      "DbMacrogroups": "Макрогруппы",
+      "DbPresets": "Предустановки",
+      "DbRemoteprinters": "Удаленный принтер",
+      "DbTimelapseSettings": "Настройки временного интервала",
+      "DbWebcams": "Веб-камеры",
+      "FactoryDialog": "Пожалуйста, выберите все разделы, которые вы хотите сбросить:",
+      "Reset": "сброс"
     },
     "InterfaceSettings": "Настройки интерфейса",
     "MacrosTab": {
       "Macros": "Макросы",
-      "NOMacros": "Макросы не найдены..."
+      "NOMacros": "Макросы не найдены...",
+      "Add": "добавить",
+      "AddGroup": "Добавить группу",
+      "AvailableMacros": "Существующие макросы",
+      "ChangeMacroColor": "Измените цвет кнопки.",
+      "Color": "Цвет",
+      "CountMacros": "макросы не добавлены | {count} макрос | {count} макросы",
+      "Custom": "пользовательский",
+      "CustomColor": "Пользовательский цвет",
+      "DeleteMacroFromGroup": "Удалить макрос из группы.",
+      "DeletedMacro": "Макрос удален",
+      "EditGroup": "Редактирование группы",
+      "Error": "Ошибка",
+      "Expert": "Эксперт",
+      "General": "Общий",
+      "GroupMacros": "Групповые макросы",
+      "Macrogroups": "Группы",
+      "Management": "Администрация",
+      "Name": "Имя",
+      "NoAvailableMacros": "Нет доступных макросов.",
+      "NoGroups": "Группы не найдены...",
+      "NoMacrosInGroup": "В этой группе нет макросов.",
+      "Primary": "основной",
+      "Secondary": "вторичный",
+      "ShowInStatePaused": "Показать/скрыть, когда принтер приостановлен.",
+      "ShowInStatePrinting": "Показать/скрыть, когда принтер печатает.",
+      "ShowInStateStandby": "Показать/скрыть, когда принтер находится в режиме ожидания.",
+      "Simple": "Просто",
+      "Status": "Статус",
+      "Success": "Успех",
+      "UnknownGroup": "Неизвестная группа",
+      "Warning": "Предупреждение"
     },
     "PresetsTab": {
       "AddPreset": "добавление предустановки",
@@ -493,6 +600,134 @@
       "ResetLayout": "Сброс макета",
       "Tablet": "Планшет",
       "Widescreen": "Широкоэкранный"
+    },
+    "Close": "Закрыть",
+    "EditorTab": {
+      "ConfirmUnsavedChanges": "Предложение сохранить или отменить несохраненные изменения",
+      "ConfirmUnsavedChangesDescription": "Если включено, то для сохранения/отмены несохраненных изменений требуется подтверждение. Если отключено, изменения отбрасываются в фоновом режиме.",
+      "Editor": "Редактор",
+      "UseEscToClose": "Нажмите ESC, чтобы закрыть редактор",
+      "UseEscToCloseDescription": "Позволяет закрыть редактор с помощью ESC."
+    },
+    "GCodeViewerTab": {
+      "BackgroundColor": "Цвет фона",
+      "ExtruderColor": "Цвета экструдера",
+      "GCodeViewer": "Программа просмотра G-кода",
+      "GridColor": "Цвет сетки",
+      "MaxFeed": "Максимальная подача",
+      "MinFeed": "Мин. подача",
+      "ShowAxes": "Показать оси"
+    },
+    "TimelapseTab": {
+      "Autorender": "Авторы",
+      "AutorenderDescription": "Если эта опция активирована, то по окончании процесса печати автоматически выводится таймлапс видео.",
+      "Camera": "Камера",
+      "CameraDescription": "Определяет, какая камера будет использоваться",
+      "ConstantRateFactor": "Коэффициент постоянной ставки",
+      "ConstantRateFactorDescription": "Это настраивает качество в зависимости от размера файла отрендеренного видео. Шкала CRF варьируется от 0-51, где 0 - без потерь, 23 - значение по умолчанию, а 51 - наихудшее возможное качество. Меньшее значение обычно приводит к более высокому качеству, и субъективно разумный диапазон составляет 17-28. 17 или 18 считаются визуально без потерь.",
+      "Enabled": "Активирует",
+      "EnabledDescription": "Если эта опция отключена, макросы G-кода игнорируются, а Autorender пропускается.",
+      "Extraoutputparams": "Дополнительный выходной параметр",
+      "ExtraoutputparamsDescription": "Устанавливает дополнительные параметры вывода для FFMPEG. Примечание: Если вы укажете здесь что-либо, настройка вращения будет отключена.",
+      "GcodeVerbose": "Подробные G-коды",
+      "GcodeVerboseDescription": "Если включено, макросы G-кода записывают информацию в консоль",
+      "General": "Общий",
+      "HyperlapseCycle": "Продолжительность цикла гиперлапса",
+      "HyperlapseCycleDescription": "Снимок делается каждые X секунд",
+      "Mode": "Режим",
+      "ModeDescription": "Выберите между макросъемкой слоя и режимом гиперлапса (с привязкой ко времени)",
+      "OutputFramerate": "Выходная частота кадров",
+      "OutputFramerateDescription": "Определяет частоту кадров видео. Примечание: Этот параметр игнорируется, если включена переменная_fps",
+      "Parkhead": "Печатающая головка Park",
+      "ParkheadDescription": "Если этот параметр включен, печатающая головка паркуется перед получением изображения.",
+      "Parkpos": "Положение в парке",
+      "ParkposDescription": "Выберите положение парка",
+      "Pixelformat": "Формат пикселя",
+      "PixelformatDescription": "Определяет пиксельный формат выходного видео",
+      "PosDZ": "Позиция Z",
+      "PosDZDescription": "Парковочное положение Z (относительное)",
+      "PosX": "Позиция X",
+      "PosXDescription": "Парковочное положение X (абсолютное)",
+      "PosY": "Должность Y",
+      "PosYDescription": "Положение парковки Y (абсолютное)",
+      "PreviewImage": "Изображение для предварительного просмотра",
+      "PreviewImageDescription": "Сохраняет миниатюру с тем же именем, что и видео.",
+      "RenderingOptions": "Параметры рендеринга",
+      "RetractDistance": "Длина втягивания",
+      "RetractSpeed": "Скорость втягивания",
+      "SaveFrames": "Сохранить изображения",
+      "SaveFramesDescription": "Сохранение изображений в zip-файле для внешнего рендеринга",
+      "Targetlength": "Целевая продолжительность",
+      "TargetlengthDescription": "Длительность цели при активации переменного FPS",
+      "TimeFormatCode": "Код формата времени",
+      "TimeFormatCodeDescription": "Определяет, как метка времени должна быть закодирована в выходном файле",
+      "Timelapse": "Time-lapse",
+      "TravelSpeed": "Быстрая скорость перемещения",
+      "TravelSpeedDescription": "Быстрая скорость перемещения для перехода в парковочное положение и возобновления печати",
+      "VariableFps": "Переменный FPS",
+      "VariableFpsDescription": "Если эта опция активирована, частота кадров выходного видео рассчитывается на основе целевой длительности.",
+      "VariableFpsMax": "Макс. Переменный FPS",
+      "VariableFpsMin": "Мин. переменная FPS",
+      "duplicatelastframe": "Дублирование последнего изображения",
+      "duplicatelastframeDescription": "Дублирует последнее изображение в конце видеоролика"
+    },
+    "UiSettingsTab": {
+      "BoolBigThumbnail": "Большие эскизы",
+      "BoolBigThumbnailDescription": "Отображение большого эскиза на экране состояния во время печати.",
+      "BoolHideUploadAndPrintButton": "Скрыть кнопку \"Загрузить и распечатать\"",
+      "BoolHideUploadAndPrintButtonDescription": "Скрыть или показать кнопку \"Загрузка и печать\" в строке заголовка.",
+      "ConfirmOnEmergencyStop": "Требуется подтверждение для аварийной остановки",
+      "ConfirmOnEmergencyStopDescription": "Показать диалог подтверждения перед аварийной остановкой.",
+      "ConfirmOnPowerDeviceChange": "Подтверждение для изменения питания устройств",
+      "ConfirmOnPowerDeviceChangeDescription": "Отображение диалога подтверждения перед изменением питания устройств.",
+      "DisplayCANCEL_PRINT": "Показать CANCEL_PRINT",
+      "DisplayCANCEL_PRINTDescription": "Отображает кнопку CANCEL_PRINT постоянно - дальнейшее подтверждение не требуется.",
+      "DisplayZOffset": "Показать панель Z-смещения",
+      "DisplayZOffsetDescription": "В противном случае панель управления отображается только после запуска печати.",
+      "GcodeThumbnails": "Эскизы G-кода",
+      "GcodeThumbnailsDescription": "Нажмите на кнопку, чтобы перейти к руководству.",
+      "Guide": "Руководство",
+      "LockSliders": "Блокировка слайдера на устройствах с сенсорным экраном",
+      "LockSlidersDelay": "Задержка блокировки ползунка",
+      "LockSlidersDelayDescription": "Ползунки блокируются после определенной задержки. Если 0 или пусто, то ползунки блокируются только после изменения/перезагрузки страницы.",
+      "LockSlidersDescription": "Перед внесением изменений ползунки должны быть сначала разблокированы.",
+      "Logo": "Логотип",
+      "NavigationStyle": "Стиль навигации",
+      "NavigationStyleDescription": "Изменение внешнего вида навигации",
+      "NavigationStyleIconsAndText": "Иконки + текст",
+      "NavigationStyleIconsOnly": "Только значки",
+      "Primary": "Основной цвет",
+      "ShowWebcamInNavigation": "Показать веб-камеру в навигации",
+      "UiSettings": "Настройки пользовательского интерфейса"
+    },
+    "WebcamsTab": {
+      "AddWebcam": "Добавить веб-камеру",
+      "CreateWebcam": "Создать веб-камеру",
+      "EditWebcam": "Редактирование веб-камеры",
+      "FlipHorizontally": "Зеркальное отображение веб-камеры по горизонтали",
+      "FlipVertically": "Зеркальная веб-камера в вертикальном положении",
+      "IconBed": "Кровать",
+      "IconCam": "Камера",
+      "IconDoor": "Дверь",
+      "IconFilament": "Филамент",
+      "IconHot": "Горячий",
+      "IconMcu": "MCU",
+      "IconNozzle": "Форсунка",
+      "IconPrinter": "Принтер",
+      "Ipstream": "IP-камера",
+      "Mjpegstreamer": "MJPEG стример",
+      "MjpegstreamerAdaptive": "Адаптивный стример MJPEG (экспериментальный)",
+      "Name": "Имя",
+      "NameAlreadyExists": "Имя уже существует",
+      "Required": "нуждается в",
+      "SaveWebcam": "Сохранить веб-камеру",
+      "Service": "Сервис",
+      "TargetFPS": "Целевой FPS",
+      "UpdateWebcam": "Обновление веб-камеры",
+      "UrlSnapshot": "URL моментального снимка",
+      "UrlStream": "URL потока",
+      "Uv4lMjpeg": "UV4L-MJPEG",
+      "Webcams": "Веб-камеры"
     }
   },
   "title": "Pусский",
@@ -535,7 +770,8 @@
       "Total": "Всего",
       "UploadFile": "Загрузить файл",
       "Uploading": "Загрузка",
-      "Used": "Используется"
+      "Used": "Используется",
+      "HideBackupFiles": "Скрыть файлы резервного копирования"
     },
     "EndstopPanel": {
       "Endstop": "Концевой упор",
@@ -600,5 +836,102 @@
     "TryAgain": "повторите попытку",
     "UpdatePrinter": "Обновление принтера",
     "YouCanFindMore": "Более подробную информацию вы можете найти на сайте"
+  },
+  "Timelapse": {
+    "AllFiles": "Все",
+    "Cancel": "Отмена",
+    "Autorender": "Авторы",
+    "Create": "Создать",
+    "CreateNewDirectory": "Новый каталог",
+    "CurrentPath": "Текущий путь",
+    "Delete": "Удалить",
+    "DeleteDirectory": "Удалить каталог",
+    "DeleteDirectoryQuestion": "Вы действительно хотите удалить каталог \"{name}\" со всем его содержимым?",
+    "Download": "Скачать",
+    "DuplicateLastframe": "Дублирование последнего изображения",
+    "Empty": "Готовых таймлапсов не найдено.",
+    "Enabled": "Активирует",
+    "EstimatedLength": "Предполагаемая длина",
+    "Files": "Файлы",
+    "Filesize": "Размер файла",
+    "Fixed": "исправить",
+    "Framerate": "Частота кадров",
+    "Frames": "Изображения",
+    "Free": "Бесплатно",
+    "FreeDisk": "Свободное пространство",
+    "LastModified": "Последнее изменение",
+    "MaxFramerate": "Макс. Частота кадров",
+    "MinFramerate": "Мин. частота кадров",
+    "Name": "Имя",
+    "NewDirectory": "Новый каталог",
+    "NoActiveTimelapse": "Записи отсутствуют.",
+    "Preview": "Предварительный просмотр",
+    "RefreshCurrentDirectory": "Обновление каталога",
+    "Rename": "Переименовать",
+    "RenameDirectory": "Переименовать каталог",
+    "RenameFile": "Переименовать файл",
+    "Render": "рендеринг",
+    "RenderSettings": "Настройки рендеринга",
+    "SaveFrames": "Сохранить изображения",
+    "Search": "suche",
+    "StartRender": "Начать рендеринг",
+    "Status": "Статус",
+    "TargetFps": "Целевой FPS",
+    "Targetlength": "Целевая продолжительность",
+    "TimelapseFiles": "Файлы замедленного действия",
+    "TimelapseRendering": "Временная визуализация",
+    "TimelapseRenderingSuccessful": "Успешный рендеринг с замедленной съемкой",
+    "Total": "Всего",
+    "Type": "Тип",
+    "Used": "Оккупированный",
+    "Variable": "Переменная",
+    "Video": "Видео"
+  },
+  "PowerDeviceChangeDialog": {
+    "AreYouSure": "Вы уверены?",
+    "No": "Нет",
+    "TurnDeviceOff": "{device} выключить",
+    "TurnDeviceOn": "{device} Включите",
+    "Yes": "Да"
+  },
+  "JobQueue": {
+    "AllJobs": "Все заказы",
+    "Delete": "Удалить",
+    "Empty": "Пустой",
+    "JobQueue": "Очередь на работу",
+    "Jobs": "Заказы",
+    "Pause": "Pause",
+    "Resume": "Продолжить"
+  },
+  "EmergencyStopDialog": {
+    "AreYouSure": "Вы уверены?",
+    "EmergencyStop": "Аварийная остановка",
+    "No": "Нет",
+    "Yes": "Ja"
+  },
+  "GCodeViewer": {
+    "ClearLoadedFile": "Удалить",
+    "ColorMode": "Цветовой режим",
+    "Downloading": "Скачать",
+    "ForceLineRendering": "Отображение линии силы",
+    "HDRendering": "HD-представление (круглые экструзии)",
+    "High": "Высокий",
+    "LoadCurrentFile": "Текущий файл",
+    "LoadLocal": "Локальный файл",
+    "Low": "Низкий",
+    "Max": "Макс",
+    "Medium": "Средний",
+    "ReloadRequired": "Требуется перезагрузка",
+    "RenderQuality": "Качество презентации",
+    "Rendering": "Рендеринг",
+    "ShowObjectSelection": "Показать выбор объекта",
+    "ShowToolhead": "Показать головку инструмента",
+    "ShowTravelMoves": "Показывайте движения в быстром темпе",
+    "SpecularLighting": "Основные моменты",
+    "Title": "Программа просмотра G-кода",
+    "Tracking": "Отслеживание",
+    "Transparency": "Прозрачность",
+    "Ultra": "Ультра",
+    "VoxelMode": "Воксельный режим (ASMBL)"
   }
 }
