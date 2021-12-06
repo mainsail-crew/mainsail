@@ -766,6 +766,7 @@
       "DirectionShell": "Last entry at the bottom",
       "Height": "Height",
       "HideTemperatures": "Hide temperatures",
+      "HideTimelapse": "Hide Timelapse",
       "CreateHeadline": "Create filter",
       "Name": "Name",
       "Regex": "Regex",
