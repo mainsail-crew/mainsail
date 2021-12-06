@@ -5,7 +5,7 @@
 <template>
     <div>
         <v-row v-if="klipperReadyForGui">
-            <v-col class="col-12 col-md-8">
+            <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
                         <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
@@ -66,7 +66,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -94,7 +94,7 @@
                         </v-row>
                     </v-card-text>
                 </panel>
-                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow" :collapsible="true">
+                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow" :collapsible="true" class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>

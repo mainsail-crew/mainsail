@@ -8,7 +8,7 @@
             <v-card-text>
                 <v-form ref="formControlExtruder">
                     <settings-row :title="$t('Settings.ControlTab.Style')">
-                        <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details></v-select>
+                        <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
@@ -35,6 +35,7 @@
                             :rules="[v => v > 0 || 'Minimum speed is 1']"
                             outlined
                             dense
+                            hide-spin-buttons
                         ></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
@@ -48,6 +49,7 @@
                             :rules="[v => v > 0 || 'Minimum speed is 1']"
                             outlined
                             dense
+                            hide-spin-buttons
                         ></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
@@ -68,6 +70,7 @@
                                 ]"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -89,6 +92,7 @@
                             ]"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -108,6 +112,7 @@
                             ]"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -129,6 +134,7 @@
                             ]"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -148,6 +154,7 @@
                             ]"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -168,6 +175,7 @@
                         ]"
                             dense
                             outlined
+                            hide-spin-buttons
                         ></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
@@ -187,6 +195,7 @@
                         ]"
                             dense
                             outlined
+                            hide-spin-buttons
                         ></v-combobox>
                     </settings-row>
                 </v-form>

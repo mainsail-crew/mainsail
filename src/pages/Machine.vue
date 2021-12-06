@@ -12,7 +12,7 @@
                     <v-col class="col-md-6 pb-0 pb-md-3" v-if="klipperState === 'ready'">
                         <endstop-panel></endstop-panel>
                     </v-col>
-                    <v-col :class="(klipperState !== 'ready' ? 'col-md-12' : 'col-md-6 pt-0 pt-md-3')">
+                    <v-col :class="(klipperState !== 'ready' ? 'col-md-12' : 'col-md-6 pl-0 pl-md-3')">
                         <logfiles-panel></logfiles-panel>
                     </v-col>
                 </v-row>

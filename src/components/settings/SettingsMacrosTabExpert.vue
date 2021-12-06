@@ -44,7 +44,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.MacrosTab.Color')">
-                    <v-select v-model="editGroup.color" :items="groupColors" @change="updateGroupOptionColor" outlined dense hide-details></v-select>
+                    <v-select v-model="editGroup.color" :items="groupColors" @change="updateGroupOptionColor" outlined dense hide-details attach></v-select>
                 </settings-row>
                 <template v-if="editGroup.color === 'custom'">
                     <v-divider class="my-2"></v-divider>

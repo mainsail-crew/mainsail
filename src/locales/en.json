@@ -111,7 +111,8 @@
     "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
     "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
     "DontSave": "Don't save",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "FileReadOnly": "read-only"
   },
   "Files": {
     "GCodeFiles": "G-Code Files",
@@ -335,7 +336,8 @@
       "FeedAmountIn": "Feed amount in",
       "FeedrateIn": "Feedrate in",
       "Retract": "Retract",
-      "Extrude": "Extrude"
+      "Extrude": "Extrude",
+      "HotendTooCold": "Hotend temp. lower than"
     },
     "MacrosPanel": {
       "Headline": "Macros",
