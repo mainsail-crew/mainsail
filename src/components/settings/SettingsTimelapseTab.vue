@@ -72,12 +72,12 @@
                         <v-text-field v-model="park_retract_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_retract_distance')" hide-spin-buttons></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.ExtractSpeed')" :sub-title="$t('Settings.TimelapseTab.ExtractSpeedDescription')">
-                        <v-text-field v-model="park_extrude_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_speed')" hide-spin-buttons></v-text-field>
+                    <settings-row :title="$t('Settings.TimelapseTab.UnretractSpeed')" :sub-title="$t('Settings.TimelapseTab.UnretractSpeedDescription')">
+                        <v-text-field v-model="park_extrude_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_speed')"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.ExtractDistance')" :sub-title="$t('Settings.TimelapseTab.ExtractDistanceDescription')">
-                        <v-text-field v-model="park_extrude_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_distance')" hide-spin-buttons></v-text-field>
+                    <settings-row :title="$t('Settings.TimelapseTab.UnretractDistance')" :sub-title="$t('Settings.TimelapseTab.UnretractDistanceDescription')">
+                        <v-text-field v-model="park_extrude_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_distance')"></v-text-field>
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
