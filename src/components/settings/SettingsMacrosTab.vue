@@ -4,7 +4,7 @@
         <v-card-text v-if="showGeneral">
             <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.General') }}</h3>
             <settings-row :title="$t('Settings.MacrosTab.Management')">
-                <v-select v-model="macroManagement" :items="macroManagements" outlined dense hide-details></v-select>
+                <v-select v-model="macroManagement" :items="macroManagements" outlined dense hide-details attach></v-select>
             </settings-row>
             <v-divider class="my-2"></v-divider>
         </v-card-text>

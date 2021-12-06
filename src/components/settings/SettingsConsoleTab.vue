@@ -7,11 +7,11 @@
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <settings-row :title="$t('Settings.ConsoleTab.Direction')">
-                    <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense></v-select>
+                    <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
-                    <v-select v-model="entryStyle" :items="availableEntryStyles" hide-details outlined dense></v-select>
+                    <v-select v-model="entryStyle" :items="availableEntryStyles" hide-details outlined dense attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.Height')">

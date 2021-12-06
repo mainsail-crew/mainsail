@@ -72,6 +72,7 @@
                                 hide-details
                                 outlined
                                 dense
+                                hide-spin-buttons
                             ></v-text-field>
                     </settings-row>
                 </v-expand-transition>
@@ -85,7 +86,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.NavigationStyle')" :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription')">
-                    <v-select v-model="navigationStyleSetting" :items="navigationStyles" outlined dense hide-details class="mt-0"></v-select>
+                    <v-select v-model="navigationStyleSetting" :items="navigationStyles" outlined dense hide-details class="mt-0" attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">

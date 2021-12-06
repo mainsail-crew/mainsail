@@ -4,17 +4,17 @@
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
-        <panel card-class="select-printer-dialog" icon="mdi-connection" :title="panelTitle" :margin-bottom="false" toolbar-color="primary">
+        <panel card-class="select-printer-dialog" icon="mdi-connection" :title="panelTitle" :margin-bottom="false" toolbar-color="toolbar">
             <template v-slot:buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool"><v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
                     <template v-else-if="dialogAddPrinter.bool"><v-btn icon tile class="minwidth-0" v-if="dialogAddPrinter.bool" @click="dialogAddPrinter.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn></template>
-                    <template v-else-if="printers.length > 0"><v-btn icon tile class="minwidth-0" @click="checkPrinters"><v-icon>mdi-sync</v-icon></v-btn></template>
+                    <template v-else-if="printers.length > 0"><v-btn icon tile class="minwidth-0" @click="checkPrinters" color="primary"><v-icon>mdi-sync</v-icon></v-btn></template>
                 </template>
             </template>
             <template v-if="isConnecting">
                 <v-card-text>
-                    <v-progress-linear color="white" indeterminate></v-progress-linear>
+                    <v-progress-linear color="primary" indeterminate></v-progress-linear>
                 </v-card-text>
             </template>
             <template v-else-if="!isConnecting && connectingFailed">
@@ -103,8 +103,9 @@
                 <v-card-actions>
                     <v-btn
                         color="red"
-                        text
-                        class="minwidth-0"
+                        icon
+                        tile
+                        class="minwidth-0 rounded"
                         @click="delPrinter"
                     >
                         <v-icon small>mdi-delete</v-icon>
@@ -124,13 +125,15 @@
                     <v-row v-if="printers.length">
                         <v-col class="px-6">
                             <v-row v-for="(printer, index) in printers" v-bind:key="index">
-                                <v-col class="rounded transition-swing secondary py-2 px-2 mb-2" style="cursor: pointer;" @click="connect(printer)">
+                                <v-col class="rounded transition-swing toolbar py-2 px-2 mb-2 overflow-hidden" style="cursor: pointer;" @click="connect(printer)">
                                     <v-row align="center">
                                         <v-col class="col-auto pr-0">
                                             <v-progress-circular
                                                 indeterminate
                                                 color="primary"
                                                 v-if="printer.socket.isConnecting"
+                                                size="24"
+                                                width="2.5"
                                             ></v-progress-circular>
                                             <v-icon
                                                 :color="printer.socket.isConnected ? 'green' : 'red'"
@@ -138,7 +141,7 @@
                                             >mdi-{{ printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel' }}</v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col class="col-auto"><v-btn small class="minwidth-0" v-on:click.stop.prevent="editPrinter(printer)"><v-icon small>mdi-pencil</v-icon></v-btn></v-col>
+                                        <v-col class="col-auto pa-0"><v-btn tile text icon large class="mr-1" v-on:click.stop.prevent="editPrinter(printer)"><v-icon small>mdi-pencil</v-icon></v-btn></v-col>
                                     </v-row>
                                 </v-col>
                             </v-row>
@@ -153,7 +156,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn @click="dialogAddPrinter.bool = true">{{ $t("SelectPrinterDialog.AddPrinter") }}</v-btn>
+                            <v-btn text color="primary" @click="dialogAddPrinter.bool = true">{{ $t("SelectPrinterDialog.AddPrinter") }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>

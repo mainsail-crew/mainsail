@@ -74,7 +74,7 @@
                 </v-row>
                 <v-row class="mt-0">
                     <v-col>
-                        <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined></v-select>
+                        <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined attach></v-select>
                     </v-col>
                     <v-col class="text-center">
                         <template v-if="loadedFile === null">
@@ -89,7 +89,7 @@
                     <v-col>
                         <v-row>
                             <v-col>
-                                <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
+                                <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined attach></v-select>
                             </v-col>
                             <v-col class="col-auto">
                                 <v-menu :offset-y="true" :offset-x="true" top :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">

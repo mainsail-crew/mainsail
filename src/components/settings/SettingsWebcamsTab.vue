@@ -86,6 +86,7 @@
                                         :items="serviceItems"
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.Service')"
+                                        attach
                                     ></v-select>
                                 </v-col>
                             </v-row>
