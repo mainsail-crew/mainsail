@@ -28,6 +28,7 @@
         type="number"
         @change="setTemps"
         attach
+        hide-spin-buttons
     ></v-combobox>
 </template>
 

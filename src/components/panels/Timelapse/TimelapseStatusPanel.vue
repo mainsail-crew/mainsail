@@ -92,6 +92,7 @@
                                     outlined
                                     dense
                                     hide-details
+                                    hide-spin-buttons
                                 ></v-text-field>
                                 <v-text-field
                                     :label="$t('Timelapse.MaxFramerate')"
@@ -100,6 +101,7 @@
                                     outlined
                                     dense
                                     hide-details
+                                    hide-spin-buttons
                                     class="mt-3"
                                 ></v-text-field>
                                 <v-text-field
@@ -109,6 +111,7 @@
                                     outlined
                                     dense
                                     hide-details
+                                    hide-spin-buttons
                                     class="mt-3"
                                 ></v-text-field>
                             </template>
@@ -120,6 +123,7 @@
                                     outlined
                                     dense
                                     hide-details
+                                    hide-spin-buttons
                                 ></v-text-field>
                             </template>
                             <v-text-field
@@ -129,6 +133,7 @@
                                 outlined
                                 dense
                                 hide-details
+                                hide-spin-buttons
                                 class="mt-3"
                             ></v-text-field>
                         </v-col>

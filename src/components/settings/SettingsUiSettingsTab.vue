@@ -72,6 +72,7 @@
                                 hide-details
                                 outlined
                                 dense
+                                hide-spin-buttons
                             ></v-text-field>
                     </settings-row>
                 </v-expand-transition>
