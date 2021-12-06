@@ -53,7 +53,8 @@
     "HideTemperatures": "Скрытые температуры",
     "SendCode": "Отправьте код...",
     "SetupConsole": "Мебельная консоль",
-    "CommandList": "Список команд"
+    "CommandList": "Список команд",
+    "HideTimelapse": "Скрыть таймлапс"
   },
   "Editor": {
     "Minimap": "Показать минимум",
@@ -257,7 +258,8 @@
       "Send": "Отправить",
       "SendCode": "Отправьте код...",
       "SetupConsole": "Настройка консоли ",
-      "Headline": "Консоль"
+      "Headline": "Консоль",
+      "HideTimelapse": "Скрыть таймлапс"
     },
     "MiscellaneousPanel": {
       "ExtrusionFactor": "коэффициент экструзии",
@@ -448,7 +450,8 @@
       "StoreButton": "Фильтр магазина",
       "UpdateButton": "Обновление фильтра",
       "EntryStyleCompact": "компактный",
-      "EntryStyleDefault": "стандарт"
+      "EntryStyleDefault": "стандарт",
+      "EntryStyle": "Стиль записей"
     },
     "ControlTab": {
       "Control": "Контроль",
@@ -485,7 +488,8 @@
       "DbTimelapseSettings": "Настройки временного интервала",
       "DbWebcams": "Веб-камеры",
       "FactoryDialog": "Пожалуйста, выберите все разделы, которые вы хотите сбросить:",
-      "Reset": "сброс"
+      "Reset": "сброс",
+      "DbHistoryJobs": "История печати"
     },
     "InterfaceSettings": "Настройки интерфейса",
     "MacrosTab": {
@@ -521,7 +525,8 @@
       "Status": "Статус",
       "Success": "Успех",
       "UnknownGroup": "Неизвестная группа",
-      "Warning": "Предупреждение"
+      "Warning": "Предупреждение",
+      "Group": "Группировка макросов"
     },
     "PresetsTab": {
       "AddPreset": "добавление предустановки",
@@ -621,7 +626,15 @@
       "VariableFpsMax": "Макс. Переменный FPS",
       "VariableFpsMin": "Мин. переменная FPS",
       "duplicatelastframe": "Дублирование последнего изображения",
-      "duplicatelastframeDescription": "Дублирует последнее изображение в конце видеоролика"
+      "duplicatelastframeDescription": "Дублирует последнее изображение в конце видеоролика",
+      "RetractSpeedDescription": "Скорость, с которой экструдер втягивает нить.",
+      "RetractDistanceDescription": "Длина нити, которую втягивает экструдер.",
+      "UnretractSpeed": "Скорость втягивания",
+      "UnretractSpeedDescription": "Скорость, с которой экструдер продвигает нить после втягивания.",
+      "UnretractDistance": "Расстояние расцепления",
+      "UnretractDistanceDescription": "Длина нити, которую экструдер продвигает после обратного рывка.",
+      "VariableFpsMinDescription": "Минимальное количество IPS в переменном режиме.",
+      "VariableFpsMaxDescription": "Максимальное количество IPS в переменном режиме."
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Большие эскизы",
@@ -760,7 +773,13 @@
       "UpToDate": "актуальная информация",
       "Update": "обновление",
       "UpdateManager": "Менеджер по обновлению",
-      "Upgrade": "обновление"
+      "Upgrade": "обновление",
+      "CommitsAvailabe": "нет доступных коммитов | {count} доступных коммитов | {count} доступных коммитов",
+      "CommitsOnDate": "Отправлено {date}",
+      "CommittedDaysAgo": "Отправлено {days} назад",
+      "CommittedHoursAgo": "Отправлено {hours} назад",
+      "CommittedOnDate": "подана {date}",
+      "CommittedYesterday": "представленный вчера"
     }
   },
   "SelectPrinterDialog": {
