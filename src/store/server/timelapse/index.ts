@@ -13,6 +13,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             autorender: true,
             autorenderOnce: false,
             saveframes: false,
+            stream_delay_compensation: 0.05,
             gcode_verbose: true,
             parkhead: false,
             parkpos: 'back_left',
@@ -24,6 +25,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             park_retract_distance: 1,
             park_extrude_speed: 15,
             park_extrude_distance: 1,
+            park_time: 0.1,
             hyperlapse_cycle: 30,
 
             constant_rate_factor: 23,
