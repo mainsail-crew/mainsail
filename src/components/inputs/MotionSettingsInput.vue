@@ -46,13 +46,13 @@ export default class MotionSettingsInput extends Mixins(BaseMixin) {
         this.value = this.target
     }
 
-    resetLimit() {
+    resetLimit(): void {
         this.value = this.defaultValue
 
         this.sendCmd()
     }
 
-    sendCmd() {
+    sendCmd(): void {
         const gcode = 'SET_VELOCITY_LIMIT ' + this.attributeName + '=' + Math.max(1, this.value).toFixed(0)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
         this.$socket.emit('printer.gcode.script', {script: gcode})

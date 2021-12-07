@@ -45,13 +45,13 @@ export default class PressureAdvanceSettingsInput extends Mixins(BaseMixin) {
         this.value = this.target
     }
 
-    resetLimit() {
+    resetLimit(): void {
         this.value = this.defaultValue
 
         this.sendCmd()
     }
 
-    sendCmd() {
+    sendCmd(): void {
         const gcode = 'SET_PRESSURE_ADVANCE ' + 'EXTRUDER=' + this.extruder + ' '
                     + this.attributeName + '=' + Math.max(0, this.value).toFixed(4)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})

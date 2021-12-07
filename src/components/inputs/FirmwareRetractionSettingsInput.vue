@@ -43,13 +43,13 @@ export default class FirmwareRetractionSettingsInput extends Mixins(BaseMixin) {
         this.value = this.target
     }
 
-    resetLimit() {
+    resetLimit(): void {
         this.value = this.defaultValue
 
         this.sendCmd()
     }
 
-    sendCmd() {
+    sendCmd(): void {
         const gcode = 'SET_RETRACTION ' + this.attributeName + '=' + Math.max(0, this.value).toFixed(2)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
         this.$socket.emit('printer.gcode.script', {script: gcode})
