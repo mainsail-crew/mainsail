@@ -76,7 +76,8 @@
     "DontSave": "Non salvare",
     "UnsavedChanges": "Modifiche non salvate",
     "UnsavedChangesMessage": "Vuoi salvare le modifiche apportate a {filename}?",
-    "UnsavedChangesSubMessage": "Le tue modifiche andranno perse se non le salvi. Puoi disabilitare questo messaggio nelle impostazioni dell'editor."
+    "UnsavedChangesSubMessage": "Le tue modifiche andranno perse se non le salvi. Puoi disabilitare questo messaggio nelle impostazioni dell'editor.",
+    "FileReadOnly": "read-only"
   },
   "Files": {
     "AllFiles": "Tutto",
@@ -313,7 +314,8 @@
       "X": "X",
       "Y": "Y",
       "Z": "Z",
-      "ZTilt": "Inclinazione Z"
+      "ZTilt": "Inclinazione Z",
+      "HotendTooCold": "Temp. hotend più bassa di"
     },
     "FarmPrinterPanel": {
       "SwitchToPrinter": "Passa alla Stampante",
@@ -527,7 +529,8 @@
       "UpdateButton": "Aggiorna filtro",
       "EntryStyle": "Entry-Design",
       "EntryStyleCompact": "compatto",
-      "EntryStyleDefault": "default"
+      "EntryStyleDefault": "default",
+      "HideTimelapse": "Nascondi Timelapse"
     },
     "ControlTab": {
       "Control": "Controllo",
@@ -707,7 +710,11 @@
       "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
       "RetractSpeedDescription": "Velocità alla quale l'estrusore retrae il filamento.",
       "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
-      "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione."
+      "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione.",
+      "ParkTime": "Tempo Parcheggio",
+      "ParkTimeDescription": "Aggiungi tempo extra durante il parcheggio.",
+      "StreamDelayCompensation": "Compensazione Ritardo Stream",
+      "StreamDelayCompensationDescription": "Ritarda cattura frame"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Grande anteprima",
