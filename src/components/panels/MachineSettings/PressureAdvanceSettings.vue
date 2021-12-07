@@ -22,7 +22,7 @@
                     ></v-select>
                 </div>
             </v-col>
-            <v-col class="col-12 col-md-6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
+            <v-col :class="(this.all_extruders.length > 1) ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <pressure-advance-settings-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance')"
                     :target="current_pressure_advance"
@@ -34,7 +34,7 @@
                     attribute-name="ADVANCE"
                 ></pressure-advance-settings-input>
             </v-col>
-            <v-col class="col-12 col-md-6" :xl="(this.all_extruders.length > 1) ? 4 : 6">
+            <v-col :class="(this.all_extruders.length > 1) ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <pressure-advance-settings-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime')"
                     :target="current_smooth_time"
