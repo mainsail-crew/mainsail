@@ -16,6 +16,7 @@
                             hide-details
                             dense
                             @change="changeRoot"
+                            attach
                         ></v-select>
                     </v-col>
                     <v-col class="col col-lg-auto pl-lg-0 text-right">
@@ -34,7 +35,7 @@
                                 <span>{{ button.text }}</span>
                             </v-tooltip>
                         </v-btn>
-                        <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')">
+                        <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>

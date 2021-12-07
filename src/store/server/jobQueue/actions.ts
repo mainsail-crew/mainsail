@@ -35,7 +35,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     start(_) {
-        Vue.$socket.emit('server.job_queue.start', { }, { loading: 'resumeJobqueue' })
+        Vue.$socket.emit('server.job_queue.start', { }, { loading: 'startJobqueue' })
     },
 
     pause(_) {

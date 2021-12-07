@@ -111,7 +111,8 @@
     "UnsavedChangesMessage": "Do you want to save your changes made to {filename}?",
     "UnsavedChangesSubMessage": "Your changes will be lost if you don't save them. You can disable this message in the editor settings.",
     "DontSave": "Don't save",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "FileReadOnly": "read-only"
   },
   "Files": {
     "GCodeFiles": "G-Code Files",
@@ -173,7 +174,7 @@
     "AllJobs": "All Jobs",
     "Empty": "Empty",
     "Delete": "Delete",
-    "Resume": "Resume",
+    "Start": "Start",
     "Pause": "Pause"
   },
   "Console": {
@@ -335,7 +336,8 @@
       "FeedAmountIn": "Feed amount in",
       "FeedrateIn": "Feedrate in",
       "Retract": "Retract",
-      "Extrude": "Extrude"
+      "Extrude": "Extrude",
+      "HotendTooCold": "Hotend temp. lower than"
     },
     "MacrosPanel": {
       "Headline": "Macros",
@@ -644,6 +646,8 @@
       "AutorenderDescription": "If enabled, the timelapse video will automatically render at the end of the print",
       "SaveFrames": "Save Frames",
       "SaveFramesDescription": "Save the frames to a zip-file for external rendering",
+      "StreamDelayCompensation": "Stream Delay Compensation",
+      "StreamDelayCompensationDescription": "Delay frame capture",
       "PreviewImage": "Preview Image",
       "PreviewImageDescription": "Save a preview image with the same name as the video",
       "GcodeVerbose": "Verbose G-Code",
@@ -652,6 +656,8 @@
       "ParkheadDescription": "If enabled, the toolhead will be parked before taking a frame.",
       "Parkpos": "Park position",
       "ParkposDescription": "Select the parking position",
+      "ParkTime": "Park Time",
+      "ParkTimeDescription": "Add additional idle time when parking.",
       "PosX": "Position X",
       "PosXDescription": "Park postion X (absolute)",
       "PosY": "Position Y",
@@ -762,6 +768,7 @@
       "DirectionShell": "Last entry at the bottom",
       "Height": "Height",
       "HideTemperatures": "Hide temperatures",
+      "HideTimelapse": "Hide Timelapse",
       "CreateHeadline": "Create filter",
       "Name": "Name",
       "Regex": "Regex",

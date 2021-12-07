@@ -16,6 +16,7 @@
             min="1"
             @click:append="resetLimit"
             hide-details
+            hide-spin-buttons
         ></v-text-field>
     </form>
 </template>

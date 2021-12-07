@@ -7,7 +7,7 @@
         <v-col
             v-for="(printer,key) in printers"
             v-bind:key="key"
-            class="col-12 col-sm-6 col-md-4"
+            class="col-12 col-sm-6 col-md-4 pb-0"
             >
             <farm-printer-panel v-bind:printer="printer"></farm-printer-panel>
         </v-col>

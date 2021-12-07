@@ -18,6 +18,7 @@ export interface ServerTimelapseSettingsState {
     autorender: boolean
     autorenderOnce: boolean
     saveframes: boolean
+    stream_delay_compensation: number
     gcode_verbose: boolean
     parkhead: boolean
     parkpos: 'center' | 'front_left' | 'front_right' | 'back_left' | 'back_right' | 'custom'
@@ -29,6 +30,7 @@ export interface ServerTimelapseSettingsState {
     park_retract_distance: number
     park_extrude_speed: number
     park_extrude_distance: number
+    park_time: number
     hyperlapse_cycle: number
 
     constant_rate_factor: number

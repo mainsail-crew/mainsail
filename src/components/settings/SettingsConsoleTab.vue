@@ -7,11 +7,11 @@
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <settings-row :title="$t('Settings.ConsoleTab.Direction')">
-                    <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense></v-select>
+                    <v-select v-model="consoleDirection" :items="availableDirections" hide-details outlined dense attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
-                    <v-select v-model="entryStyle" :items="availableEntryStyles" hide-details outlined dense></v-select>
+                    <v-select v-model="entryStyle" :items="availableEntryStyles" hide-details outlined dense attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.Height')">
@@ -21,6 +21,12 @@
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
                     <v-switch v-model="hideWaitTemperatures" hide-details class="mt-0"></v-switch>
                 </settings-row>
+                <template v-if="moonrakerComponents.includes('timelapse')">
+                    <v-divider class="my-2"></v-divider>
+                    <settings-row :title="$t('Settings.ConsoleTab.HideTimelapse')" :dynamic-slot-width="true">
+                        <v-switch v-model="hideTimelapse" hide-details class="mt-0"></v-switch>
+                    </settings-row>
+                </template>
                 <v-divider class="my-2"></v-divider>
                 <div v-for="(filter, index) in consoleFilters" v-bind:key="index">
                     <v-divider class="my-2" v-if="index"></v-divider>
@@ -181,6 +187,14 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
 
     set hideWaitTemperatures(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+    }
+
+    get hideTimelapse() {
+        return this.$store.state.gui.console.hideTimelapse
+    }
+
+    set hideTimelapse(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.hideTimelapse', value: newVal })
     }
 
     existsPresetName(name: string) {
