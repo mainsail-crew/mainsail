@@ -537,6 +537,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     removeFile() {
+        const filename = this.contextMenu.item.filename.slice(0, this.contextMenu.item.filename.lastIndexOf('.'))
+        const previewFilename = filename+'.jpg'
+        const previewExists = (this.files.findIndex((file) => file.filename === previewFilename) !== -1)
+
+        if(previewExists) this.$socket.emit('server.files.delete_file', { path: this.currentPath+'/'+previewFilename }, { action: 'files/getDeleteFile' })
         this.$socket.emit('server.files.delete_file', { path: this.currentPath+'/'+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' })
     }
 
@@ -546,8 +551,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     deleteDirectoryAction() {
-        //TODO: delete all files (mp4, jpg, zip)
-
         this.dialogDeleteDirectory.show = false
         this.$socket.emit('server.files.delete_directory', { path: this.currentPath+'/'+this.contextMenu.item.filename, force: true }, { action: 'files/getDeleteDir' })
     }
