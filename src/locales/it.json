@@ -60,7 +60,8 @@
     "Empty": "Vuoto",
     "HideTemperatures": "Nascondi temperature",
     "SendCode": "Invia codice...",
-    "SetupConsole": "Impostazione Console"
+    "SetupConsole": "Impostazione Console",
+    "HideTimelapse": "Nascondi Timelapse"
   },
   "Editor": {
     "ConfigReference": "Configurazione di Riferimento",
@@ -75,7 +76,8 @@
     "DontSave": "Non salvare",
     "UnsavedChanges": "Modifiche non salvate",
     "UnsavedChangesMessage": "Vuoi salvare le modifiche apportate a {filename}?",
-    "UnsavedChangesSubMessage": "Le tue modifiche andranno perse se non le salvi. Puoi disabilitare questo messaggio nelle impostazioni dell'editor."
+    "UnsavedChangesSubMessage": "Le tue modifiche andranno perse se non le salvi. Puoi disabilitare questo messaggio nelle impostazioni dell'editor.",
+    "FileReadOnly": "read-only"
   },
   "Files": {
     "AllFiles": "Tutto",
@@ -289,7 +291,8 @@
       "CommittedHoursAgo": "committed {hours} hours ago",
       "CommittedOnDate": "committed on {date}",
       "CommittedYesterday": "committed yesterday",
-      "UpdateAll": "Aggiorna tutti i componenti"
+      "UpdateAll": "Aggiorna tutti i componenti",
+      "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available"
     }
   },
   "Panels": {
@@ -311,7 +314,8 @@
       "X": "X",
       "Y": "Y",
       "Z": "Z",
-      "ZTilt": "Inclinazione Z"
+      "ZTilt": "Inclinazione Z",
+      "HotendTooCold": "Temp. hotend più bassa di"
     },
     "FarmPrinterPanel": {
       "SwitchToPrinter": "Passa alla Stampante",
@@ -339,7 +343,8 @@
       "Headline": "Console",
       "HideTemperatures": "Nascondi Temperature",
       "SendCode": "Invia codice...",
-      "SetupConsole": "Impostazioni Console"
+      "SetupConsole": "Impostazioni Console",
+      "HideTimelapse": "Nascondi Timelapse"
     },
     "MiscellaneousPanel": {
       "Headline": "Miscellanea",
@@ -524,7 +529,8 @@
       "UpdateButton": "Aggiorna filtro",
       "EntryStyle": "Entry-Design",
       "EntryStyleCompact": "compatto",
-      "EntryStyleDefault": "default"
+      "EntryStyleDefault": "default",
+      "HideTimelapse": "Nascondi Timelapse"
     },
     "ControlTab": {
       "Control": "Controllo",
@@ -656,8 +662,8 @@
       "ConstantRateFactorDescription": "Questo configura la qualità vs grandezza del video. Il raggio della scala del CRF è 0-51, dove 0 è lossless, 23 è il default e 51 è la qualità peggiore possibile. Un valore più basso porta generalmente ad una qualità maggiore e un raggio consigliato è di 17-28. Considera 17 o 18 come visualmente lossless.",
       "Enabled": "Abilitato",
       "EnabledDescription": "Se disabilitato, le macro gcode sono ignorate e autorender è ignorato.",
-      "UnretractDistance": "Distanza Estrusione",
-      "UnretractSpeed": "Velocità Estrusione",
+      "UnretractDistance": "Distanza Ri-estrusione",
+      "UnretractSpeed": "Velocità Ri-estrusione",
       "Extraoutputparams": "Parametrioutputextra",
       "ExtraoutputparamsDescription": "Definisce output aggiuntivi a FFMPEG. Nota: Specificare qualsiasi cosa qui disabiliterà l'impostazione di rotazione",
       "GcodeVerbose": "VerbosoGcode",
@@ -701,7 +707,14 @@
       "VariableFpsMax": "FPS Variabili max",
       "VariableFpsMin": "FPS Variabili min",
       "duplicatelastframe": "duplicaultimoframe",
-      "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video"
+      "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
+      "RetractSpeedDescription": "Velocità alla quale l'estrusore retrae il filamento.",
+      "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
+      "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione.",
+      "ParkTime": "Tempo Parcheggio",
+      "ParkTimeDescription": "Aggiungi tempo extra durante il parcheggio.",
+      "StreamDelayCompensation": "Compensazione Ritardo Stream",
+      "StreamDelayCompensationDescription": "Ritarda cattura frame"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Grande anteprima",
