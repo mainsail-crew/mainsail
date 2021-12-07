@@ -206,7 +206,7 @@
       "Rename": "átnevez",
       "BedMeshRemove": "Síkrács eltávolítása",
       "BedMeshCalibrate": "Síkrács kalibrálása",
-      "DoYouReallyWantToCalibrate": "Tényleg el akarod kezdeni az asztal kalibrálását?",
+       "DoYouReallyWantToCalibrate": "Tényleg el akarod kezdeni az asztal kalibrálását?",
       "DeleteBedMeshProfile": "Síkrács profil törlése",
       "DoYouReallyWantToDelete": "Tényleg törölni akarod a profilt?: \"{name}\"",
       "Remove": "eltávolítás",
@@ -383,6 +383,7 @@
         "Headline": "Konzol",
         "SetupConsole": "Konzol beállítása",
         "HideTemperatures": "Hőmérséklet elrejtése",
+        "HideTimelapse": "Idővonal elrejtése",
         "SendCode": "Kód küldése..."
       },
       "MinSettingsPanel": {
@@ -706,6 +707,7 @@
         "NOMacros": "Nem található makró ...",
         "General": "Általános",
         "Management": "Menedzselés",
+        "Group": "Csoport",
         "Simple": "Egyszerű",
         "Expert": "Szakértői",
         "NoGroups": "Csoport nem található...",
@@ -760,6 +762,7 @@
         "DirectionShell": "Alul az utolsó bejegyzés",
         "Height": "Magasság",
         "HideTemperatures": "Hőmérsékletek elrejtése",
+        "HideTimelapse": "Idővonal elrejtése",
         "CreateHeadline": "Szűrő létrehozása",
         "Name": "Név",
         "Regex": "Reguláris kif.",
