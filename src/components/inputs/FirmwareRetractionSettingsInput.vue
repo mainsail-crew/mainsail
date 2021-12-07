@@ -10,6 +10,7 @@
             :step="step"
             type="number"
             min="0"
+            hide-spin-buttons
             hide-details
             outlined
             dense
