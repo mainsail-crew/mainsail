@@ -4,15 +4,17 @@
 
 <template>
     <div v-if="['printing', 'paused'].includes(printer_state) && printing_objects.length">
-        <v-container>
-            <v-row>
-                <v-col class="py-2">
-                    <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>{{ current_object !== null ? current_object : '--' }}</span>
-                </v-col>
-                <v-col class="col-auto py-2">
-                    <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(current_object)" small v-if="current_object !== null">mdi-close-circle</v-icon>
-                </v-col>
-            </v-row>
+        <v-container class="py-0">
+            <div class="d-flex flex-row flex-nowrap justify-space-between">
+                <div class="py-2" style="width: calc(100% - 25px);">
+                    <span class="subtitle-2 d-block px-0 text--disabled text-truncate">
+                        <v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>{{ current_object !== null ? current_object : '--' }}
+                    </span>
+                </div>
+                <div class="py-2 pl-0">
+                    <v-icon class="text--disabled cursor-pointer" @click="openCancelObjectDialog(current_object)" small v-if="current_object !== null">mdi-selection-remove</v-icon>
+                </div>
+            </div>
         </v-container>
         <v-divider class="mt-0 mb-0" ></v-divider>
         <v-dialog v-model="boolShowExcludeObjectDialog" max-width="400">
