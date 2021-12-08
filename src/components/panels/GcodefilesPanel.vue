@@ -274,10 +274,10 @@
         </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="printerIsPrinting || !klipperReadyForGui" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
-                <v-list-item @click="addToQueue(contextMenu.item)" v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')">
+                <v-list-item @click="addToQueue(contextMenu.item)" v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')" :disabled="!isGcodeFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-playlist-plus</v-icon> {{ $t('Files.AddToQueue')}}
                 </v-list-item>
                 <v-list-item
@@ -310,7 +310,7 @@
                 <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
                 </v-list-item>
-                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory" :disabled="!isGcodeFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-video-3d</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
@@ -1110,6 +1110,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             let headerElement = this.headers.find(element => element.value === key)
             if (headerElement) headerElement.visible = false
         })
+    }
+
+    isGcodeFile(file: FileStateFile) {
+        const format = file.filename.slice(file.filename.lastIndexOf('.'))
+
+        return validGcodeExtensions.includes(format)
     }
 
     view3D(item: FileStateFile) {
