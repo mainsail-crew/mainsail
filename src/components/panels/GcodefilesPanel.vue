@@ -944,7 +944,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
             if (item.isDirectory) {
                 this.currentPath += '/' + item.filename
-            } else if (!['error', 'printing', 'paused'].includes(this.printer_state)) {
+            } else if (!['error', 'printing', 'paused'].includes(this.printer_state) && this.isGcodeFile(item)) {
                 this.dialogPrintFile.show = true
                 this.dialogPrintFile.item = item
             }
