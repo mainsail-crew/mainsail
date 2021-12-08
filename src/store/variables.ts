@@ -79,6 +79,7 @@ export const allowedMetadata = [
 ]
 
 export const maxEventHistory = 500
+export const maxGcodeHistory = 50
 
 export const allDashboardPanels = [
     'control',
