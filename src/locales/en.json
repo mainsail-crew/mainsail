@@ -607,6 +607,7 @@
       "Reset": "reset",
       "DbGeneral": "General",
       "DbPresets": "Presets",
+      "DbGcodehistry": "G-Code History",
       "DbMacrogroups": "Macrogroups",
       "DbRemoteprinters": "Remoteprinters",
       "DbHistoryJobs": "History Jobs",
