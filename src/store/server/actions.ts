@@ -27,6 +27,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_consolefilters')) dispatch('gui/consolefilters/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_gcodehistory')) dispatch('gui/gcodehistory/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_macrogroups')) dispatch('gui/macrogroups/init', null, { root: true })
         if (!rootState.socket?.remoteMode && payload.namespaces?.includes('mainsail_remoteprinters')) dispatch('gui/remoteprinters/init', null, { root: true })
 

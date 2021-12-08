@@ -107,7 +107,6 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     private gcode = ''
-    private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
     private items = [];
     private cmdListSearch: string | null = null
@@ -162,6 +161,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.gcode?.split('\n').length ?? 1
     }
 
+    get lastCommands(): string[] {
+        return this.$store.state.gui.gcodehistory.history ?? []
+    }
+
     commandClick(msg: string): void {
         this.gcode = msg
 
@@ -174,7 +177,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         if (!cmd.shiftKey) {
             if (this.gcode !== '') {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
-                this.lastCommands.push(this.gcode)
+                this.$store.dispatch('gui/gcodehistory/addToHistory', this.gcode)
                 this.gcode = ''
                 this.lastCommandNumber = null
                 setTimeout(() => {

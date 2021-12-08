@@ -51,6 +51,13 @@
                                 class="mt-0"
                             ></v-checkbox>
                             <v-checkbox
+                                v-model="dbCheckboxes.mainsail_gcodehistory"
+                                :label="$t('Settings.GeneralTab.DbGcodehistry')"
+                                v-if="moonrakerDbNamespaces.includes('mainsail_gcodehistory')"
+                                hide-details
+                                class="mt-0"
+                            ></v-checkbox>
+                            <v-checkbox
                                 v-model="dbCheckboxes.mainsail_macrogroups"
                                 :label="$t('Settings.GeneralTab.DbMacrogroups')"
                                 v-if="moonrakerDbNamespaces.includes('mainsail_macrogroups')"
@@ -127,6 +134,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     private dbCheckboxes = {
         mainsail: false,
         mainsail_presets: false,
+        mainsail_gcodehistory: false,
         mainsail_macrogroups: false,
         mainsail_remoteprinters: false,
         timelapse: false,
