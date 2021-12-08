@@ -69,7 +69,7 @@
                             style="max-width: 300px;"
                         ></v-text-field>
                         <v-spacer></v-spacer>
-                        <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                        <input type="file" ref="fileUpload" :accept="validGcodeExtensions.join(', ')" style="display: none" multiple @change="uploadFile" />
                         <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary--text px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                         <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
                         <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
