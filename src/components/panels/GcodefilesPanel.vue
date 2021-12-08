@@ -292,6 +292,10 @@
                 >
                     <v-icon class="mr-1">mdi-fire</v-icon> {{ $t('Files.Preheat')}}
                 </v-list-item>
+                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory" :disabled="!isGcodeFile(contextMenu.item)">
+                    <v-icon class="mr-1">mdi-video-3d</v-icon>
+                    {{ $t('Files.View3D') }}
+                </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Files.Download')}}
                 </v-list-item>
@@ -309,10 +313,6 @@
                 </v-list-item>
                 <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
-                </v-list-item>
-                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory" :disabled="!isGcodeFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-video-3d</v-icon>
-                    {{ $t('Files.View3D') }}
                 </v-list-item>
             </v-list>
         </v-menu>
