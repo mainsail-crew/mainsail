@@ -161,6 +161,7 @@
     "PrintTime": "Print Time",
     "Slicer": "Slicer",
     "Downloading": "Downloading",
+    "WrongFileUploaded": "Upload was denied for {filename}. Wrong file format!",
     "SuccessfullyUploaded": "Upload of {filename} successful!",
     "SuccessfullyRenamed": "Successfully renamed {filename}.",
     "SuccessfullyMoved": "Successfully moved {filename}.",

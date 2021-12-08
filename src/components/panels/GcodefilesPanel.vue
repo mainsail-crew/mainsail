@@ -727,11 +727,23 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.dropzone.opacity = 0
 
             if (e.dataTransfer.files.length) {
+                const files = [...e.dataTransfer.files].filter((file: File) => {
+                    const format = file.name.slice(file.name.lastIndexOf('.'))
+
+                    if (!validGcodeExtensions.includes(format)) {
+                        this.$toast.error(this.$t('Files.WrongFileUploaded', { filename: file.name }).toString())
+
+                        return false
+                    }
+
+                    return true
+                })
+
                 this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
                 let successFiles = []
                 this.uploadSnackbar.number = 0
-                this.uploadSnackbar.max = e.dataTransfer.files.length
-                for (const file of e.dataTransfer.files) {
+                this.uploadSnackbar.max = files.length
+                for (const file of files) {
                     this.uploadSnackbar.number++
                     const result = await this.doUploadFile(file)
                     successFiles.push(result)
