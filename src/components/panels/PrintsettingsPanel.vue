@@ -41,13 +41,11 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
-import SubPanel from '@/components/ui/SubPanel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 
 @Component({
     components: {
         Panel,
-        SubPanel,
         ToolSlider
     }
 })
