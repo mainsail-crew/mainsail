@@ -375,6 +375,12 @@
         "Deceleration": "Deceleration",
         "SquareCornerVelocity": "Square Corner Velocity"
       },
+      "PressureAdvanceSettings": {
+        "PressureAdvance": "Pressure Advance",
+        "Extruder": "Extruder",
+        "Advance": "Advance",
+        "SmoothTime": "Smooth Time"
+      },
       "FirmwareRetractionSettings": {
         "FirmwareRetraction": "Firmware Retraction",
         "RetractLength": "Retract Length",
