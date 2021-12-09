@@ -69,7 +69,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
 
     get all_extruders(): string[] {
         Object.keys(this.$store.state.printer).forEach((e) => {
-            (e.match(/^(extruder)\d*$/)) ? this.extruders.push(e) : {}
+            if (e.startsWith('extruder') && !this.extruders.includes(e)) this.extruders.push(e)
         })
         this.extruders.length === 1 ? this.resetToActiveExtruder() : {}
 
