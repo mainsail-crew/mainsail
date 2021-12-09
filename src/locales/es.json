@@ -158,7 +158,8 @@
     "SendCode": "Enviar Codigo....",
     "Empty": "Vacio",
     "HideTemperatures": "Ocultar Temperaturas",
-    "CommandList": "Lista de comandos"
+    "CommandList": "Lista de comandos",
+    "HideTimelapse": "Ocultar timelapse"
   },
   "Heightmap": {
     "Heightmap": "Mapa de altura",
@@ -283,7 +284,8 @@
       "Headline": "Consola",
       "SetupConsole": "Configurar Consola",
       "HideTemperatures": "Ocultar temperaturas",
-      "SendCode": "Enviar codigo..."
+      "SendCode": "Enviar codigo...",
+      "HideTimelapse": "Ocultar timelapse"
     },
     "MinSettingsPanel": {
       "MissingConfiguration": "Configuracion no entrada",
@@ -489,7 +491,8 @@
       "CommittedHoursAgo": "Confirmado hace {hours} horas",
       "CommittedOnDate": "Confirmado en {date}",
       "CommittedYesterday": "Confirmado ayer",
-      "UpdateAll": "Actualizar todo"
+      "UpdateAll": "Actualizar todo",
+      "CommitsAvailabe": "Sin confrmaciones disponibles | {count} confimacion disponible | {count} confirmaciones disponibles"
     },
     "SystemPanel": {
       "SystemLoad": "Carga del sistema",
@@ -698,7 +701,11 @@
       "TargetlengthDescription": "Indica la duracion del video cuando FPS variable esta activado",
       "GcodeVerbose": "Gcode Verbose",
       "HyperlapseCycle": "Tiempo de ciclo Hyperlapse",
-      "HyperlapseCycleDescription": "Una foto es tomada cada X segundos"
+      "HyperlapseCycleDescription": "Una foto es tomada cada X segundos",
+      "RetractDistanceDescription": "El largo del filamento que el extrusor retrae",
+      "RetractSpeedDescription": "Velocidad con que el extrusor retrae el filamento",
+      "UnretractDistanceDescription": "El largo del filamenteto que el extrusor vuelve a extruir despues de la retraccion",
+      "UnretractSpeedDescription": "Velocidad con la que el extrusor vuelve a extruir despues de la retraccion"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Miniatura grande",
