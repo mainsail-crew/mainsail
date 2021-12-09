@@ -3,7 +3,7 @@
         height: 32px;
     }
     .small-list-item {
-        height: 48px;
+        height: var(--sidebar-menu-item-height);
     }
     .no-text-decoration {
         text-decoration: none;
@@ -30,7 +30,7 @@
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(menuStyle === 'iconsOnly')" :key="menuStyle" width="220px" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
         <v-list class="pr-0 pt-0 ml-0">
             <v-list-item-group active-class="active-nav-item">
                 <template v-if="countPrinters">
@@ -82,6 +82,7 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
+import {navigationWidth} from '@/store/variables'
 
 @Component({
     components: {
@@ -91,6 +92,8 @@ import AboutModal from '@/components/modals/AboutModal.vue'
 })
 
 export default class TheSidebarAlt extends Mixins(BaseMixin) {
+    navigationWidth = navigationWidth
+
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
     }
@@ -99,8 +102,8 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         this.$store.dispatch('setNaviDrawer', newVal)
     }
 
-    get menuStyle() {
-        return this.$store.state.gui.dashboard.menuStyle
+    get navigationStyle() {
+        return this.$store.state.gui.dashboard.navigationStyle
     }
 
     get sidebarBackground(): string {
@@ -145,12 +148,11 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
 
     showInNavi(route: AppRoute): boolean {
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
-
-        if (route.title === 'Webcam') return this.boolNaviWebcam
-
-        if (route.moonrakerComponent) return this.moonrakerComponents.includes(route.moonrakerComponent)
-        if (route.registeredDirectory) return this.registeredDirectories.includes(route.registeredDirectory)
-        if (route.klipperComponent) return (route.klipperComponent in this.klipperConfigfileSettings)
+        else if (route.title === 'Webcam' && !this.boolNaviWebcam) return false
+        else if (route.moonrakerComponent && !this.moonrakerComponents.includes(route.moonrakerComponent)) return false
+        else if (route.registeredDirectory  && !this.registeredDirectories.includes(route.registeredDirectory)) return false
+        else if (route.klipperComponent && !(route.klipperComponent in this.klipperConfigfileSettings)) return false
+        else if (route.klipperIsConnected && !this.klippyIsConnected) return false
 
         return true
     }

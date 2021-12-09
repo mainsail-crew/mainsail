@@ -41,8 +41,19 @@
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
             <template v-slot:buttons>
-                <v-btn text @click="reloadViewer" color="info" class="ml-3" v-show="reloadRequired">{{$t("GCodeViewer.ReloadRequired")}}</v-btn>
-                <v-btn icon @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
+                <v-btn 
+                    :icon="$vuetify.breakpoint.xs"
+                    :text="$vuetify.breakpoint.smAndUp"
+                    tile
+                    @click="reloadViewer"
+                    color="info"
+                    class="ml-3"
+                    v-show="reloadRequired"
+                >
+                    <span class="d-none d-sm-block">{{$t("GCodeViewer.ReloadRequired")}}</span>
+                    <v-icon class="d-sm-none">mdi-reload-alert</v-icon>
+                </v-btn>
+                <v-btn icon tile @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
             </template>
             <v-card-text>
                 <v-row>
@@ -63,7 +74,7 @@
                 </v-row>
                 <v-row class="mt-0">
                     <v-col>
-                        <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined></v-select>
+                        <v-select :items="colorModes" :label="$t('GCodeViewer.ColorMode')" item-text="text" dense v-model="colorMode" hide-details outlined attach></v-select>
                     </v-col>
                     <v-col class="text-center">
                         <template v-if="loadedFile === null">
@@ -78,7 +89,7 @@
                     <v-col>
                         <v-row>
                             <v-col>
-                                <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined></v-select>
+                                <v-select :items="renderQualities" :label="$t('GCodeViewer.RenderQuality')" item-text="label" dense v-model="renderQuality" hide-details outlined attach></v-select>
                             </v-col>
                             <v-col class="col-auto">
                                 <v-menu :offset-y="true" :offset-x="true" top :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
@@ -175,6 +186,7 @@ let viewer: any = null
 })
 export default class Viewer extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
+
     private isBusy = false
     private loading = false
     private loadingPercent = 0

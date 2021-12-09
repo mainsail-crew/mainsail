@@ -13,10 +13,10 @@
         >
             <template v-slot:buttons>
                 <template v-if="z_gcode_offset !== 0">
-                    <v-btn icon @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"><v-icon>mdi-broom</v-icon></v-btn>
+                    <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"><v-icon>mdi-broom</v-icon></v-btn>
                     <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn text color="primary" v-bind="attrs" v-on="on">{{ $t("Panels.ZoffsetPanel.Save") }} <v-icon small>mdi-menu-down</v-icon></v-btn>
+                            <v-btn text tile color="primary" v-bind="attrs" v-on="on" class="pa-1"><span class="ml-1">{{ $t("Panels.ZoffsetPanel.Save") }}</span><v-icon>mdi-menu-down</v-icon></v-btn>
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item link @click="saveZOffsetToEndstop">
@@ -37,8 +37,8 @@
                             </v-list-item>
                         </v-list>
                     </v-menu>
-                    <v-btn text small class="px-2 minwidth-0" color="primary ml-3" v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop" @click="saveZOffsetToProbe"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
-                    <v-btn text small class="px-2 minwidth-0" color="primary ml-3" v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop" @click="saveZOffsetToEndstop"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
+                    <v-btn text tile class="px-2 minwidth-0" color="primary ml-3" v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop" @click="saveZOffsetToProbe"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
+                    <v-btn text tile class="px-2 minwidth-0" color="primary ml-3" v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop" @click="saveZOffsetToEndstop"><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t("Panels.ZoffsetPanel.Save") }}</v-btn>
                 </template>
             </template>
             <v-card-text class="px-0 py-0">

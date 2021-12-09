@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn icon tile large @click="showSettings = true">
+        <v-btn icon tile @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
         <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile" @keydown.esc="showSettings = false">
@@ -35,7 +35,7 @@
                             </v-tabs>
                         </overlay-scrollbars>
                     </v-col>
-                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'width: 700px;'">
+                    <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'min-width: 500px;'">
                         <overlay-scrollbars :class="'settings-tabs '+(isMobile ? '' : 'height500')" ref="settingsScroll" :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component :is="'settings-'+activeTab+'-tab'" @scrollToTop="scrollToTop"></component>
                         </overlay-scrollbars>
@@ -62,6 +62,7 @@ import SettingsUiSettingsTab from '@/components/settings/SettingsUiSettingsTab.v
 import SettingsDashboardTab from '@/components/settings/SettingsDashboardTab.vue'
 import SettingsGCodeViewerTab from '@/components/settings/SettingsGCodeViewerTab.vue'
 import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
+import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
 @Component({
@@ -77,7 +78,8 @@ import Panel from '@/components/ui/Panel.vue'
         SettingsGeneralTab,
         SettingsDashboardTab,
         SettingsGCodeViewerTab,
-        SettingsEditorTab
+        SettingsEditorTab,
+        SettingsTimelapseTab
     }
 })
 export default class TheSettingsMenu extends Mixins(BaseMixin) {
@@ -89,7 +91,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     }
 
     get tabTitles() {
-        return [
+        const tabs = [
             {
                 icon: 'mdi-cog',
                 name: 'general',
@@ -145,7 +147,17 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
                 name: 'editor',
                 title: this.$t('Settings.EditorTab.Editor')
             }
-        ].sort((a, b) => {
+        ]
+
+        if (this.moonrakerComponents.includes('timelapse')) {
+            tabs.push({
+                icon: 'mdi-timelapse',
+                name: 'timelapse',
+                title: this.$t('Settings.TimelapseTab.Timelapse')
+            })
+        }
+
+        return tabs.sort((a, b) => {
             if (a.name === 'general') return -1
             if (b.name === 'general') return 1
 

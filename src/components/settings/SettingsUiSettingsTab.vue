@@ -52,6 +52,31 @@
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.UiSettingsTab.LockSliders')" :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription')" :dynamicSlotWidth="true">
+                        <v-switch v-model="lockSliders" hide-details class="mt-0"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
+                <v-expand-transition>
+                    <settings-row v-show="lockSliders" :title="$t('Settings.UiSettingsTab.LockSlidersDelay')" :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription')" :dynamicSlotWidth="true">
+                            <v-text-field
+                                class="mt-0"
+                                prepend-icon="mdi-timer-outline"
+                                :style="isMobile ? { 'max-width': '140px' } : {}"
+                                v-model="lockSlidersDelay"
+                                label="Timeout"
+                                type="number"
+                                :rules="[t => t >= 0]"
+                                min="0"
+                                step="0.5"
+                                suffix="s"
+                                hide-details
+                                outlined
+                                dense
+                                hide-spin-buttons
+                            ></v-text-field>
+                    </settings-row>
+                </v-expand-transition>
+                <v-divider  v-show="lockSliders" class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop')" :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription')" :dynamicSlotWidth="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
@@ -60,8 +85,8 @@
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.UiSettingsTab.MenuStyle')" :sub-title="$t('Settings.UiSettingsTab.MenuStyleDescription')">
-                    <v-select v-model="menuStyleSetting" :items="menuStyles" outlined dense hide-details class="mt-0"></v-select>
+                <settings-row :title="$t('Settings.UiSettingsTab.NavigationStyle')" :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription')">
+                    <v-select v-model="navigationStyleSetting" :items="navigationStyles" outlined dense hide-details class="mt-0" attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')" :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')" :dynamicSlotWidth="true">
@@ -153,22 +178,42 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
     }
 
-    get menuStyleSetting() {
-        return this.$store.state.gui.dashboard.menuStyle
+    get lockSliders() {
+        return this.$store.state.gui.general.lockSlidersOnTouchDevices
     }
 
-    set menuStyleSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.menuStyle', value: newVal })
+    set lockSliders(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersOnTouchDevices', value: newVal})
     }
 
-    get menuStyles() {
+    get lockSlidersDelay() {
+        return this.$store.state.gui.general.lockSlidersDelay
+    }
+
+    set lockSlidersDelay(newVal) {
+        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersDelay', value: newVal}) : {}
+    }
+
+    get boolWideNavDrawer() {
+        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+    }
+
+    get navigationStyleSetting() {
+        return this.$store.state.gui.dashboard.navigationStyle
+    }
+
+    set navigationStyleSetting(newVal) {
+        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.navigationStyle', value: newVal })
+    }
+
+    get navigationStyles() {
         return [
             {
-                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsOnly'),
+                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsOnly'),
                 value: 'iconsOnly'
             },
             {
-                text: this.$t('Settings.UiSettingsTab.MenuStyleIconsAndText'),
+                text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
                 value: 'iconsAndText'
             }
         ]

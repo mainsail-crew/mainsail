@@ -33,7 +33,19 @@
         <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn text color="primary" v-bind="attrs" v-on="on" :disabled="['printing', 'paused'].includes(printer_state)">{{ $t("Panels.ToolsPanel.Presets") }} <v-icon>mdi-menu-down</v-icon></v-btn>
+                    <v-btn 
+                        text
+                        tile
+                        color="primary"
+                        v-bind="attrs"
+                        v-on="on"
+                        :disabled="['printing', 'paused'].includes(printer_state)"
+                        class="pa-1"
+                    >
+                        <span class="d-none ml-1 d-md-block">{{ $t("Panels.ToolsPanel.Presets") }}</span>
+                        <v-icon class="d-md-none">mdi-fire</v-icon>
+                        <v-icon>mdi-menu-down</v-icon>
+                    </v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" v-bind:key="preset.index" link @click="preheat(preset)">
@@ -49,18 +61,27 @@
                 <v-list dense class="py-0">
                     <v-list-item link @click="cooldown()">
                         <v-list-item-icon class="mr-0">
-                            <v-icon small>mdi-snowflake</v-icon>
+                            <v-icon small color="primary">mdi-snowflake</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
-                            <v-list-item-title>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-list-item-title>
+                            <v-list-item-title class="primary--text">{{ $t("Panels.ToolsPanel.Cooldown") }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <v-btn text @click="cooldown()" v-if="presets.length === 0" color="primary"><v-icon small class="mr-1">mdi-snowflake</v-icon>{{ $t("Panels.ToolsPanel.Cooldown") }}</v-btn>
+            <v-btn
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
+                tile
+                @click="cooldown()"
+                v-if="presets.length === 0"
+                color="primary"
+            >
+                <v-icon small>mdi-snowflake</v-icon><span class="d-none ml-1 d-md-inline">{{ $t("Panels.ToolsPanel.Cooldown") }}</span>
+            </v-btn>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
@@ -199,7 +220,7 @@
         <v-dialog v-model="editHeater.bool" persistent :width="400">
             <panel :title="convertName(editHeater.name)" :icon="'mdi-'+editHeater.icon" card-class="tools-edit-heater-dialog" :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-6">
                     <v-row v-for="dataset in editHeater.chartSeries" v-bind:key="dataset">
@@ -356,13 +377,13 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         const serieName = 'bool'+type.charAt(0).toUpperCase() + type.slice(1)
         const value = this.editHeater[serieName]
 
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
+        this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
     setVisibleAdditionalSensor(sensor: string): void {
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: this.editHeater.additionSensors[sensor].bool }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
+        this.$store.dispatch('gui/saveSetting', { name, value: this.editHeater.additionSensors[sensor].bool })
     }
 
     @Debounce(500)
@@ -370,8 +391,8 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         if (typeof value === 'object' && 'hex' in value) value = value.hex
         this.$store.commit('printer/tempHistory/setColor', { name: this.editHeater.name, value: value })
 
-        const path = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: path, value: value }, { action: 'gui/updateDataFromDB' })
+        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
+        this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
 

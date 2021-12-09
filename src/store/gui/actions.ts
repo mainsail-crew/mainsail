@@ -3,7 +3,6 @@ import {ActionTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
-import {v4 as uuid} from 'uuid'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit }) {
@@ -68,7 +67,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         }
 
         //added in V2.1.0
-        if (payload.value.console.customFilters) {
+        if (payload.value.console?.customFilters) {
             window.console.debug('convert old consolefilters')
 
             if (payload.value.console.customFilters && payload.value.console.customFilters.length) {
@@ -128,9 +127,9 @@ export const actions: ActionTree<GuiState, RootState> = {
         let newState = payload.newVal
         if (
             'value' in payload &&
-			keyName in payload.value &&
-			typeof payload.value[keyName] !== 'string' &&
-			!Array.isArray(payload.value[keyName])
+            keyName in payload.value &&
+            typeof payload.value[keyName] !== 'string' &&
+            !Array.isArray(payload.value[keyName])
         ) newState = Object.assign(payload.value[keyName], {...newState})
 
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: keyName, value: newState })
@@ -168,24 +167,35 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    resetMoonrakerDB() {
-        Vue.$socket.emit('server.database.list', { }, { action: 'gui/resetMoonrakerDB2' })
+    async resetMoonrakerDB({ commit, dispatch }, payload) {
+        await commit('setResetDatabases', payload)
+        dispatch('resetMoonrakerDbLoop')
     },
 
-    resetMoonrakerDB2(_, payload) {
-        if ('namespaces' in payload && payload.namespaces.includes('mainsail')) {
-            Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/resetMoonrakerDB3' })
-        }
+    async resetMoonrakerDbLoop({ state, commit }) {
+        if (state.resetDatabases.length) {
+            const namespace = state.resetDatabases[0]
+
+            if (namespace.startsWith('mainsail') || ['webcams', 'timelapse'].includes(namespace)) {
+                Vue.$socket.emit('server.database.get_item', { namespace: namespace }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            } else if (namespace === 'history_jobs') {
+                Vue.$socket.emit('server.history.delete_job', { all: true }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            } else if (namespace === 'history_totals') {
+                Vue.$socket.emit('server.history.reset_totals', { }, { action: 'gui/resetMoonrakerDbLoopItems' })
+            }
+
+            await commit('removeResetDatabase', namespace)
+        } else window.location.reload()
     },
 
-    resetMoonrakerDB3(_, payload) {
+    resetMoonrakerDbLoopItems({ dispatch }, payload) {
         if ('value' in payload && Object.keys(payload.value).length) {
             Object.keys(payload.value).forEach(key => {
-                Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: key })
+                Vue.$socket.emit('server.database.delete_item', { namespace: payload.namespace, key: key })
             })
-
-            window.location.reload()
         }
+
+        dispatch('resetMoonrakerDbLoop')
     },
 
     setHistoryColumns({ commit, dispatch, state }, data) {
@@ -238,7 +248,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     resetLayout({ dispatch }, name) {
         const defaultState = getDefaultState()
         // eslint-disable-next-line
-		const newVal: any = defaultState.dashboard[name] ?? []
+        const newVal: any = defaultState.dashboard[name] ?? []
 
         dispatch('saveSetting', {
             name: 'dashboard.'+name,

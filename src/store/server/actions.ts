@@ -22,13 +22,16 @@ export const actions: ActionTree<ServerState, RootState> = {
         Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases'})
     },
 
-    checkDatabases({ dispatch, rootState }, payload) {
+    checkDatabases({ dispatch, commit, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_consolefilters')) dispatch('gui/consolefilters/init', null, { root: true })
+        if (payload.namespaces?.includes('mainsail_gcodehistory')) dispatch('gui/gcodehistory/init', null, { root: true })
         if (payload.namespaces?.includes('mainsail_macrogroups')) dispatch('gui/macrogroups/init', null, { root: true })
         if (!rootState.socket?.remoteMode && payload.namespaces?.includes('mainsail_remoteprinters')) dispatch('gui/remoteprinters/init', null, { root: true })
+
+        commit('saveDbNamespaces', payload.namespaces)
 
         dispatch('printer/init', null, { root: true })
     },
@@ -85,7 +88,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         filters.forEach((filter: string) => {
             try {
                 const regex = new RegExp(filter)
-                events = events.filter(event => event.type !== 'response' || !regex.test(event.message))
+                events = events.filter(event => !regex.test(event.message))
             } catch { window.console.error('Custom console filter \''+filter+'\' doesn\'t work')}
         })
 
@@ -112,18 +115,16 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         const filters = rootGetters['gui/consolefilters/getConsolefilterRules']
         let boolImport = true
-        if (type === 'response') {
-            filters.every((filter: string) => {
-                try {
-                    const regex = new RegExp(filter)
-                    if (regex.test(formatMessage)) boolImport = false
-                } catch {
-                    window.console.error('Custom console filter \''+filter+'\' doesn\'t work')
-                }
+        filters.every((filter: string) => {
+            try {
+                const regex = new RegExp(filter)
+                if (regex.test(formatMessage)) boolImport = false
+            } catch {
+                window.console.error('Custom console filter \''+filter+'\' doesn\'t work')
+            }
 
-                return boolImport
-            })
-        }
+            return boolImport
+        })
 
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">'+formatMessage+'</a>'

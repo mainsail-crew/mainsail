@@ -64,7 +64,7 @@
             <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon color="primary" :ripple="true" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
+                        <v-btn icon tile color="primary" :ripple="true" :loading="loadings.includes('loadingBtnSyncUpdateManager')" :disabled="['printing', 'paused'].includes(printer_state)" @click="btnSync" v-bind="attrs" v-on="on"><v-icon>mdi-refresh</v-icon></v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
@@ -76,7 +76,7 @@
                         <v-row class="py-2">
                             <v-col class="pl-6">
                                 <strong>{{ 'name' in value ? value.name : key }}</strong><br />
-                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
+                                <span @click="openCommitsOverlay(key, value)" :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">mdi-information</v-icon>{{ getVersionOutput(value) }}</span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
@@ -160,7 +160,7 @@
                         <v-divider class="mb-0 mt-2 border-top-2" ></v-divider>
                         <v-row class="pt-3">
                             <v-col class="text-center">
-                                <v-btn color="primary" outlined small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                <v-btn text color="primary" small @click="updateAll" :disabled="['printing', 'paused'].includes(this.printer_state)">
                                     <v-icon left>mdi-progress-upload</v-icon>
                                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                                 </v-btn>
@@ -173,7 +173,7 @@
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <panel :title="$t('Machine.UpdatePanel.Commits')" icon="mdi-update" :margin-bottom="false" card-class="machine-update-commits-dialog">
                 <template v-slot:buttons>
-                    <v-btn icon @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
                     <overlay-scrollbars style="max-height: 400px;" :options="{ overflowBehavior: { x: 'hidden' } }">
@@ -314,6 +314,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.gt(object.remote_version, object.version)
             ) return 'primary'
 
+            if ((object.commits_behind ?? []).length) return 'primary'
+
             if (
                 'version' in object &&
                 'remote_version' in object && (
@@ -345,6 +347,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.valid(object.version) &&
                 semver.gt(object.remote_version, object.version)
             ) return this.$t('Machine.UpdatePanel.Update')
+
+            if ((object.commits_behind ?? []).length) return this.$t('Machine.UpdatePanel.Update')
 
             if (
                 'version' in object &&
@@ -378,6 +382,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.gt(object.remote_version, object.version)
             ) return 'progress-upload'
 
+            if ((object.commits_behind ?? []).length) return 'progress-upload'
+
             if (
                 'version' in object &&
                 'remote_version' in object && (
@@ -398,6 +404,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
         if ('is_dirty' in object && object.is_dirty) return false
 
         if (typeof object === 'object' && object !== false) {
+            if ((object.commits_behind ?? []).length) return false
+
             if (
                 'version' in object &&
                 'remote_version' in object &&
@@ -411,8 +419,9 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     }
 
     getVersionOutput(object: any) {
-        const local_version = 'version' in object ? object.version : '?'
-        const remote_version = 'remote_version' in object ? object.remote_version : '?'
+        const local_version = object.version ?? '?'
+        const remote_version =  object.remote_version ?? '?'
+        const commits_behind = object.commits_behind ?? []
 
         let output = ''
         if ('remote_alias' in object && object.remote_alias !== 'origin') output += object.remote_alias
@@ -425,6 +434,8 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
 
         if (semver.valid(remote_version) && semver.valid(local_version) && semver.gt(remote_version, local_version))
             output += local_version+' > '+remote_version
+        else if (commits_behind.length)
+            output += local_version+' > '+ this.$tc('Machine.UpdatePanel.CommitsAvailabe', commits_behind.length, { count: commits_behind.length })
         else if ('full_version_string' in object && object.full_version_string !== '?')
             output += object.full_version_string
         else

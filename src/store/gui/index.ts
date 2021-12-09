@@ -7,6 +7,7 @@ import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
 import { consolefilters } from '@/store/gui/consolefilters'
+import { gcodehistory } from '@/store/gui/gcodehistory'
 import { macrogroups } from '@/store/gui/macrogroups'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
@@ -19,6 +20,8 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             displayCancelPrint: false,
             displayZOffsetStandby: false,
+            lockSlidersOnTouchDevices: true,
+            lockSlidersDelay: 1.5,
             confirmOnEmergencyStop: false,
             confirmOnPowerDeviceChange: false,
             calcEstimateTime: ['file', 'filament'],
@@ -32,7 +35,7 @@ export const getDefaultState = (): GuiState => {
             boolTempchart: true,
             boolBigThumbnail: true,
             boolWideNavDrawer: false,
-            menuStyle: 'iconsOnly',
+            navigationStyle: 'iconsAndText',
             macroManagement: 'simple',
             hiddenMacros: [],
             hiddenTempChart: [],
@@ -62,6 +65,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true },
                 { 'name': 'tools', visable: true },
                 { 'name': 'miniconsole', visable: false },
@@ -72,6 +76,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true  },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true  },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true  },
             ],
             tabletLayout2: [
@@ -84,6 +89,7 @@ export const getDefaultState = (): GuiState => {
                 { 'name': 'control', visable: true },
                 { 'name': 'macros', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
                 { 'name': 'miscellaneous', visable: true },
             ],
             desktopLayout2: [
@@ -99,6 +105,7 @@ export const getDefaultState = (): GuiState => {
             widescreenLayout2: [
                 { 'name': 'tools', visable: true },
                 { 'name': 'printsettings', visable: true },
+                { 'name': 'machine-settings', visable: true },
             ],
             widescreenLayout3: [
                 { 'name': 'webcam', visable: true },
@@ -121,6 +128,7 @@ export const getDefaultState = (): GuiState => {
         },
         console: {
             hideWaitTemperatures: true,
+            hideTlCommands: true,
             direction: 'table',
             entryStyle: 'default',
             height: 300
@@ -132,6 +140,15 @@ export const getDefaultState = (): GuiState => {
             showHiddenFiles: false,
             showPrintedFiles: true,
             hideMetadataColums: []
+        },
+        timelapse: {
+            countPerPage: 10,
+            sortBy: 'modified',
+            sortDesc: true,
+            showHiddenFiles: false,
+        },
+        jobqueue: {
+            countPerPage: 10,
         },
         heightmap: {
             probed: true,
@@ -208,6 +225,7 @@ export const gui: Module<GuiState, any> = {
     mutations,
     modules: {
         consolefilters,
+        gcodehistory,
         macrogroups,
         presets,
         remoteprinters,

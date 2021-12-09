@@ -23,11 +23,14 @@
 
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template v-slot:activator="{ on, attrs }">
-                    <v-btn icon v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
+                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
                         <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                    </v-list-item>
+                    <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
+                        <v-checkbox class="mt-0" v-model="hideTlCommands" hide-details :label="$t('Panels.MiniconsolePanel.HideTimelapse')"></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
                         <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
@@ -38,36 +41,29 @@
         </template>
         <div class="d-flex flex-column">
             <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
-                <v-row>
-                    <v-col>
-                        <v-textarea
-                            v-model="gcode"
-                            :items="items"
-                            :label="$t('Panels.MiniconsolePanel.SendCode')"
-                            solo
-                            class="gcode-command-field"
-                            ref="gcodeCommandField"
-                            autocomplete="off"
-                            no-resize
-                            auto-grow
-                            :rows="rows"
-                            @keydown.enter.prevent.stop="doSend"
-                            @keyup.up="onKeyUp"
-                            @keyup.down="onKeyDown"
-                            @keydown.tab="getAutocomplete"
-                            hide-details
-                            outlined
-                            dense
-                            :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
-                            @click:prepend="getAutocomplete"
-                            append-icon="mdi-send"
-                            @click:append="doSend"
-                        ></v-textarea>
-                    </v-col>
-                    <v-col class="col-auto">
-
-                    </v-col>
-                </v-row>
+                <v-textarea
+                    v-model="gcode"
+                    :items="items"
+                    :label="$t('Panels.MiniconsolePanel.SendCode')"
+                    solo
+                    class="gcode-command-field"
+                    ref="gcodeCommandField"
+                    autocomplete="off"
+                    no-resize
+                    auto-grow
+                    :rows="rows"
+                    @keydown.enter.prevent.stop="doSend"
+                    @keyup.up="onKeyUp"
+                    @keyup.down="onKeyDown"
+                    @keydown.tab="getAutocomplete"
+                    hide-details
+                    outlined
+                    dense
+                    :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                    @click:prepend="getAutocomplete"
+                    append-icon="mdi-send"
+                    @click:append="doSend"
+                ></v-textarea>
             </v-card-text>
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
@@ -111,7 +107,6 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     private gcode = ''
-    private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
     private items = [];
     private cmdListSearch: string | null = null
@@ -147,7 +142,15 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     set hideWaitTemperatures(newVal) {
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'console.hideWaitTemperatures', value: newVal }, { action: 'gui/updateDataFromDB' })
+        this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+    }
+
+    get hideTlCommands(): boolean {
+        return this.$store.state.gui.console.hideTlCommands
+    }
+
+    set hideTlCommands(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.hideTlCommands', value: newVal })
     }
 
     get customFilters(): any[] {
@@ -156,6 +159,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
 
     get rows(): number {
         return this.gcode?.split('\n').length ?? 1
+    }
+
+    get lastCommands(): string[] {
+        return this.$store.state.gui.gcodehistory.history ?? []
     }
 
     commandClick(msg: string): void {
@@ -170,7 +177,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         if (!cmd.shiftKey) {
             if (this.gcode !== '') {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
-                this.lastCommands.push(this.gcode)
+                this.$store.dispatch('gui/gcodehistory/addToHistory', this.gcode)
                 this.gcode = ''
                 this.lastCommandNumber = null
                 setTimeout(() => {

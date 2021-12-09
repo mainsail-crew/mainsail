@@ -1,6 +1,6 @@
 {
   "name": "mainsail",
-  "version": "2.1.0-alpha",
+  "version": "2.1.0-beta4",
   "private": true,
   "decription": "a klipper web interface",
   "author": {
@@ -25,7 +25,7 @@
     "@codemirror/view": "^0.19.1",
     "@sindarius/gcodeviewer": "^2.1.13",
     "@types/overlayscrollbars": "^1.12.1",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "core-js": "^3.16.0",
     "echarts": "^5.1.2",
     "echarts-for-vue": "^1.4.1",
@@ -33,6 +33,7 @@
     "joi": "^17.4.1",
     "js-sha256": "^0.9.0",
     "object-assign-deep": "^0.4.0",
+    "overlayscrollbars": "^1.13.1",
     "overlayscrollbars-vue": "^0.2.2",
     "sass-loader": "^10.2.0",
     "semver": "^7.3.5",
@@ -50,7 +51,7 @@
     "vue-simple-upload": "^0.1.6",
     "vue-toast-notification": "^0.6.1",
     "vuedraggable": "^2.24.3",
-    "vuetify": "^2.5.10",
+    "vuetify": "^2.6.1",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -70,7 +71,6 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
     "generate-file-webpack-plugin": "^1.0.1",
-    "node-sass": "^6.0.1",
     "sass": "~1.32",
     "sw-precache-webpack-plugin": "^1.0.0",
     "typescript": "^4.3.5",

@@ -42,6 +42,7 @@
         <the-connecting-dialog v-else></the-connecting-dialog>
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
+        <the-timelapse-rendering-snackbar>-</the-timelapse-rendering-snackbar>
     </v-app>
 </template>
 
@@ -55,9 +56,12 @@ import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
+import {panelToolbarHeight, topbarHeight, navigationItemHeight} from '@/store/variables'
+import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
 
 @Component({
     components: {
+        TheTimelapseRenderingSnackbar,
         TheEditor,
         TheSelectPrinterDialog,
         TheConnectingDialog,
@@ -67,6 +71,9 @@ import TheEditor from '@/components/TheEditor.vue'
     }
 })
 export default class App extends Mixins(BaseMixin) {
+    panelToolbarHeight = panelToolbarHeight
+    topbarHeight = topbarHeight
+    navigationItemHeight = navigationItemHeight
 
     get title(): string {
         return this.$store.getters['getTitle']
@@ -136,7 +143,11 @@ export default class App extends Mixins(BaseMixin) {
         return {
             '--v-btn-text-primary': this.primaryTextColor,
             '--color-primary': this.primaryColor,
-            '--color-warning': this.warningColor
+            '--color-warning': this.warningColor,
+            '--panel-toolbar-icon-btn-width': panelToolbarHeight + 'px',
+            '--panel-toolbar-text-btn-height': panelToolbarHeight + 'px',
+            '--topbar-icon-btn-width': topbarHeight + 'px',
+            '--sidebar-menu-item-height': navigationItemHeight + 'px'
         }
     }
 
@@ -264,14 +275,17 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     appHeight() {
-        const doc = document.documentElement
-        doc.style.setProperty('--app-height', window.innerHeight+'px')
+        this.$nextTick(() => {
+            const doc = document.documentElement
+            doc.style.setProperty('--app-height', window.innerHeight+'px')
+        })
     }
 
     mounted(): void {
         this.drawFavicon(this.print_percent)
         this.appHeight()
         window.addEventListener('resize', this.appHeight)
+        window.addEventListener('orientationchange', this.appHeight)
     }
 }
 </script>

@@ -224,11 +224,12 @@ export const mutations: MutationTree<FileState> = {
     },
 
     setDiskUsage(state, payload) {
-        let path = payload.path
-        if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
+        const parentPath = payload.path.substr(0, payload.path.lastIndexOf('/'))
+        const pathName = payload.path.substr(payload.path.lastIndexOf('/') + 1)
+        const parent = findDirectory(state.filetree, parentPath.split('/'))
+        const directory = parent?.find((element) => element.isDirectory && element.filename === pathName)
 
-        const dir = state.filetree.find(dir => dir.filename === path)
-        if (dir && 'disk_usage' in dir) Vue.set(dir, 'disk_usage', payload.disk_usage)
+        if (directory) Vue.set(directory, 'disk_usage', payload.disk_usage)
     },
 
     setRootPermissions(state, payload) {

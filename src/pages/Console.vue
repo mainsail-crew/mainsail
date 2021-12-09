@@ -51,6 +51,9 @@
                         <v-list-item class="minHeight36">
                             <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Console.HideTemperatures')"></v-checkbox>
                         </v-list-item>
+                        <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
+                            <v-checkbox class="mt-0" v-model="hideTlCommands" hide-details :label="$t('Console.HideTimelapse')"></v-checkbox>
+                        </v-list-item>
                         <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
                             <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
                         </v-list-item>
@@ -92,7 +95,6 @@ import CommandHelpModal from '@/components/CommandHelpModal.vue'
 })
 export default class PageConsole extends Mixins(BaseMixin) {
     private gcode = ''
-    private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
     private items = []
 
@@ -128,7 +130,15 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     set hideWaitTemperatures(newVal) {
-        this.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'console.hideWaitTemperatures', value: newVal }, { action: 'gui/updateDataFromDB' })
+        this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+    }
+
+    get hideTlCommands(): boolean {
+        return this.$store.state.gui.console.hideWaitTemperatures
+    }
+
+    set hideTlCommands(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'console.hideTlCommands', value: newVal })
     }
 
     get rows(): number {
@@ -137,6 +147,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     get customFilters(): any[] {
         return this.$store.state.gui.console.customFilters
+    }
+
+    get lastCommands(): string[] {
+        return this.$store.state.gui.gcodehistory.history ?? []
     }
 
     commandClick(msg: string): void {
@@ -151,7 +165,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
         if (!cmd.shiftKey) {
             if (this.gcode !== '') {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
-                this.lastCommands.push(this.gcode)
+                this.$store.dispatch('gui/gcodehistory/addToHistory', this.gcode)
                 this.gcode = ''
                 this.lastCommandNumber = null
                 setTimeout(() => {

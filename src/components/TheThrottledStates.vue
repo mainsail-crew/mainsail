@@ -3,14 +3,14 @@
 </style>
 
 <template>
-    <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu" v-if="throttledStateFlags.length">
+    <v-menu bottom :offset-y="true" :close-on-content-click="false" v-model="showMenu" v-if="throttledStateFlags.length">
         <template v-slot:activator="{ on, attrs }">
-            <v-btn :color="currentFlags.length ? 'error' : 'warning'" icon class="mr-3" v-bind="attrs" v-on="on">
+            <v-btn :color="currentFlags.length ? 'error' : 'warning'" icon tile class="mr-3" v-bind="attrs" v-on="on">
                 <v-icon>mdi-raspberry-pi</v-icon>
             </v-btn>
         </template>
 
-        <v-list width="300">
+        <v-list min-width="300" max-width="600">
             <template v-if="currentFlags.length">
                 <v-subheader class="" style="height: auto;">{{ $t("App.ThrottledStates.HeadlineCurrentFlags") }}</v-subheader>
                 <v-list-item v-for="(flag) in currentFlags" :key="flag" two-line>

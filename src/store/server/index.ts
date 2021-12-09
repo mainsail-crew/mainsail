@@ -8,6 +8,8 @@ import { getters } from '@/store/server/getters'
 import { power } from '@/store/server/power'
 import { updateManager } from '@/store/server/updateManager'
 import { history } from '@/store/server/history'
+import { timelapse } from '@/store/server/timelapse'
+import { jobQueue } from '@/store/server/jobQueue'
 
 // create getDefaultState
 export const getDefaultState = (): ServerState => {
@@ -28,6 +30,7 @@ export const getDefaultState = (): ServerState => {
             bits: 0,
             flags: [],
         },
+        dbNamespaces: [],
         websocket_count: 0,
         moonraker_version: ''
     }
@@ -47,5 +50,7 @@ export const server: Module<ServerState, any> = {
         power,
         updateManager,
         history,
+        timelapse,
+        jobQueue,
     }
 }

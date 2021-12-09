@@ -6,7 +6,7 @@
                     <v-row v-for="key of Object.keys(endstops)" v-bind:key="key">
                         <v-col class="py-1">
                             <label class="mt-1 d-inline-block">{{ $t('Machine.EndstopPanel.Endstop')}} <b>{{ key.toUpperCase() }}</b></label>
-                            <v-chip class="float-right" small :color="endstops[key] === 'open' ? 'green' : 'red' " text-color="white">
+                            <v-chip small label class="float-right" :color="endstops[key] === 'open' ? 'green' : 'red' " text-color="white">
                                 <template v-if="endstops[key] === 'open'">
                                     {{ $t('Machine.EndstopPanel.open')}}
                                 </template>
@@ -19,7 +19,7 @@
                     <v-row v-if="existProbe">
                         <v-col class="py-1">
                             <label class="mt-1 d-inline-block">Probe</label>
-                            <v-chip class="float-right" small :color="probe ? 'red' : 'green' " text-color="white">
+                            <v-chip small label class="float-right" :color="probe ? 'red' : 'green' " text-color="white">
                             <template v-if="probe">
                                 {{ $t('Machine.EndstopPanel.TRIGGERED')}}
                             </template>

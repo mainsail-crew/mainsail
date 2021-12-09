@@ -9,29 +9,54 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-icon small :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')" v-if="type !== 'output_pin'">mdi-fan</v-icon>
+                    <v-btn
+                        v-if="lockSliders && this.isTouchDevice && pwm"
+                        @click="isLocked = !isLocked"
+                        plain
+                        small
+                        icon
+                    >
+                        <v-icon small :color="(isLocked ? 'red' : '')">
+                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        </v-icon>
+                    </v-btn>
+                    <v-icon
+                        small
+                        :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')"
+                        v-if="type !== 'output_pin'"
+                    >
+                        mdi-fan
+                    </v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">{{ Math.round(rpm) }} RPM</small>
-                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">{{ Math.round(parseFloat(value)*100) }} %</span>
-                    <v-icon v-if="controllable && !pwm" @click="switchOutputPin">{{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}</v-icon>
+                    <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">
+                        {{ Math.round(rpm) }} RPM
+                    </small>
+                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">
+                        {{ Math.round(parseFloat(value)*100) }} %
+                    </span>
+                    <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
+                        {{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}
+                    </v-icon>
                 </v-subheader>
                 <v-card-text class="py-0" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
+                        v-touch="{start: resetLockTimer}"
+                        :disabled="isLocked"
                         :min="0.0"
                         :max="1.0"
                         :step="0.01"
                         :color="value < off_below && value > 0 ? 'red' : undefined"
-                        @change="changeSlicer()"
+                        @change="changeSlider"
                         hide-details
                     >
                         <template v-slot:prepend>
-                            <v-icon @click="decrement">mdi-minus</v-icon>
+                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
                         </template>
 
                         <template v-slot:append>
-                            <v-icon @click="increment">mdi-plus</v-icon>
+                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -50,6 +75,8 @@ import {Debounce} from 'vue-debounce-decorator'
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     convertName = convertName
+    private timeout: number | undefined
+    private isLocked = false
     private min = 0
     private value = 0
 
@@ -63,8 +90,31 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     @Prop({ type: Number, default: 1 }) multi!: number
     @Prop({ type: Number, default: 0 }) off_below!: number
 
+    @Watch('lockSliders', {immediate: true})
+    lockSlidersChanged(){
+        this.isLocked = this.lockSliders && this.isTouchDevice
+    }
+
+    startLockTimer() {
+        let t = this.lockSlidersDelay
+        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
+        this.timeout = setTimeout(() => this.isLocked = true, t * 1000)
+    }
+
+    resetLockTimer() {
+        clearTimeout(this.timeout)
+    }
+
+    get lockSliders() {
+        return this.$store.state.gui.general.lockSlidersOnTouchDevices
+    }
+
+    get lockSlidersDelay() {
+        return this.$store.state.gui.general.lockSlidersDelay
+    }
+
     @Debounce(500)
-    changeSlicer() {
+    changeSlider() {
         this.sendCmd()
     }
 
@@ -84,6 +134,8 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
             this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
             this.$socket.emit('printer.gcode.script', {script: gcode})
         }
+
+        this.startLockTimer()
     }
 
     switchOutputPin() {

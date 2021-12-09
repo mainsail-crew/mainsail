@@ -57,12 +57,10 @@ export const actions: ActionTree<SocketState, RootState> = {
             break
 
         case 'notify_klippy_disconnected':
-            window.console.log('notify disconnected')
             commit('server/setKlippyDisconnected', null, { root: true })
             break
 
         case 'notify_klippy_shutdown':
-            window.console.log('notify shutdown')
             commit('server/setKlippyShutdown', null, { root: true })
             break
 
@@ -100,6 +98,14 @@ export const actions: ActionTree<SocketState, RootState> = {
 
         case 'notify_service_state_changed':
             dispatch('server/serviceStateChanged', payload.params[0], { root: true })
+            break
+
+        case 'notify_timelapse_event':
+            dispatch('server/timelapse/getEvent', payload.params[0], { root: true })
+            break
+
+        case 'notify_job_queue_changed':
+            dispatch('server/jobQueue/getEvent', payload.params[0], { root: true })
             break
 
         default:

@@ -71,11 +71,10 @@ export default class ControlMixin extends Vue {
     }
 
     doSendMove(gcode: string, feedrate: number) {
-        if (this.absolute_coordinates) {
-            gcode = 'G91' + '\n' +
-                'G1 ' + gcode + ' F'+feedrate*60 + '\n' +
-                'G90'
-        } else gcode = 'G1 ' + gcode + ' F'+feedrate*60
+        gcode = 'G91' + '\n' +
+            'G1 ' + gcode + ' F'+feedrate*60
+
+        if (this.absolute_coordinates) gcode += '\nG90'
 
         this.doSend(gcode)
     }

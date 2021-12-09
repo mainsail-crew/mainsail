@@ -59,6 +59,7 @@
                                 suffix="°C"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-text-field>
                         </settings-row>
                     </div>
@@ -77,6 +78,7 @@
                                 suffix="°C"
                                 dense
                                 outlined
+                                hide-spin-buttons
                             ></v-text-field>
                         </settings-row>
                     </div>

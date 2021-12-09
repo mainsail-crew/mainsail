@@ -8,7 +8,7 @@
     <div>
         <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
             <template v-slot:activator="{ on, attrs }">
-                <v-btn icon tile large v-bind="attrs" v-on="on">
+                <v-btn icon tile v-bind="attrs" v-on="on">
                     <v-icon>mdi-power-standby</v-icon>
                 </v-btn>
             </template>
@@ -75,7 +75,7 @@
         </v-menu>
         <v-dialog v-model="dialogPowerDeviceChange.show" width="400" :fullscreen="isMobile">
             <v-card>
-                <v-card-title class="headline">{{ $t(this.dialogPowerDeviceChange.value === 'off' ? 'PowerDeviceChangeDialog.TurnDeviceOn' : 'PowerDeviceChangeDialog.TurnDeviceOff', {'device': dialogPowerDeviceChange.device}) }}</v-card-title>
+                <v-card-title class="headline">{{ this.dialogPowerDeviceChange.value === 'off' ? $t('PowerDeviceChangeDialog.TurnDeviceOn', {'device': dialogPowerDeviceChange.device}) : $t('PowerDeviceChangeDialog.TurnDeviceOff', {'device': dialogPowerDeviceChange.device}) }}</v-card-title>
                 <v-card-text>{{ $t('PowerDeviceChangeDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -102,6 +102,7 @@ interface dialogPowerDeviceChange {
 
 @Component
 export default class TheTopCornerMenu extends Mixins(BaseMixin) {
+
     showMenu = false
     dialogPowerDeviceChange : dialogPowerDeviceChange = {
         show: false,

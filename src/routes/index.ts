@@ -5,6 +5,7 @@ import Console from '../pages/Console.vue'
 import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
+import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
 import {Component} from 'vue'
 import Viewer from '../pages/Viewer.vue'
@@ -40,6 +41,7 @@ const routes: AppRoute[] = [
         component: Console,
         alwaysShow: true,
         showInNavi: true,
+        klipperIsConnected: true
     },
     {
         title: 'Heightmap',
@@ -55,7 +57,7 @@ const routes: AppRoute[] = [
         path: '/files',
         icon: 'file-document-multiple-outline',
         component: Files,
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
         registeredDirectory: 'gcodes',
     },
@@ -72,9 +74,18 @@ const routes: AppRoute[] = [
         path: '/history',
         icon: 'history',
         component: History,
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
         moonrakerComponent: 'history'
+    },
+    {
+        title: 'Timelapse',
+        path: '/timelapse',
+        icon: 'timelapse',
+        component: Timelapse,
+        alwaysShow: true,
+        showInNavi: true,
+        moonrakerComponent: 'timelapse'
     },
     {
         title: 'Machine',
@@ -107,5 +118,6 @@ export interface AppRoute {
     registeredDirectory?: string,
     moonrakerComponent?: string,
     klipperComponent?: string,
+    klipperIsConnected?: boolean,
     children?: AppRoute[]
 }

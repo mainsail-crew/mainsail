@@ -45,7 +45,7 @@
                         </template>
                         <v-color-picker :value="minFeedColor" @update:color="updateColorValue('minFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed"></v-text-field>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="minFeed" hide-spin-buttons></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
@@ -55,7 +55,7 @@
                         </template>
                         <v-color-picker :value="maxFeedColor" @update:color="updateColorValue('maxFeedColor', $event)" hide-mode-switch mode="rgba"></v-color-picker>
                     </v-menu>
-                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed"></v-text-field>
+                    <v-text-field :rules="[v => v > 0 || 'Minimum speed is 1']" @blur="feedBlur" dense hide-details="auto" outlined suffix="mm/s" type="number" v-model="maxFeed" hide-spin-buttons></v-text-field>
                 </settings-row>
             </v-card-text>
         </v-card>

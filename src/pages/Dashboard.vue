@@ -59,36 +59,38 @@
 
 import Component from 'vue-class-component'
 import {Mixins} from 'vue-property-decorator'
-import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
+import ControlPanel from '@/components/panels/ControlPanel.vue'
+import DashboardMixin from '@/components/mixins/dashboard'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
+import MachineSettingsPanel from '@/components/panels/MachineSettings/MachineSettingsPanel.vue'
+import MacrogroupPanel from '@/components/panels/MacrogroupPanel.vue'
+import MacrosPanel from '@/components/panels/MacrosPanel.vue'
+import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
+import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
+import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
+import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolsPanel from '@/components/panels/ToolsPanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
-import ControlPanel from '@/components/panels/ControlPanel.vue'
-import MacrosPanel from '@/components/panels/MacrosPanel.vue'
-import MacrogroupPanel from '@/components/panels/MacrogroupPanel.vue'
-import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
-import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
-import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
-import DashboardMixin from '@/components/mixins/dashboard'
 
 @Component({
     components: {
-        PrintsettingsPanel,
-        MiniconsolePanel,
-        MiscellaneousPanel,
         ControlPanel,
-        MacrosPanel,
-        MacrogroupPanel,
-        ZoffsetPanel,
-        WebcamPanel,
-        ToolsPanel,
-        StatusPanel,
-        MoonrakerStatePanel,
         KlippyStatePanel,
-        MinSettingsPanel
+        MachineSettingsPanel,
+        MacrogroupPanel,
+        MacrosPanel,
+        MiniconsolePanel,
+        MinSettingsPanel,
+        MiscellaneousPanel,
+        MoonrakerStatePanel,
+        PrintsettingsPanel,
+        StatusPanel,
+        ToolsPanel,
+        WebcamPanel,
+        ZoffsetPanel
     }
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {

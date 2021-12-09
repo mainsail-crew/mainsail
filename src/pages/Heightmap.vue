@@ -5,22 +5,22 @@
 <template>
     <div>
         <v-row v-if="klipperReadyForGui">
-            <v-col class="col-12 col-md-8">
+            <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
-                        <v-btn text color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
                     </template>
                     <template v-slot:buttons>
-                        <v-btn text color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-btn icon class="d-none d-sm-flex" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
-                        <v-btn text class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
-                        <v-btn text class="d-none d-sm-flex" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                        <v-btn text tile color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
+                        <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                        <v-btn text tile class="d-none d-sm-flex" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
-                        <v-item-group class="v-btn-toggle" name="controllers">
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
-                            <v-btn small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
+                        <v-item-group tile class="v-btn-toggle" name="controllers">
+                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
                     </v-card-text>
                     <template v-if="!(bed_mesh)">
@@ -66,7 +66,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -90,11 +90,11 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
-                            <v-col class="text-right">{{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value) }} mm</v-col>
+                            <v-col class="text-right">{{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value).toFixed(3) }} mm</v-col>
                         </v-row>
                     </v-card-text>
                 </panel>
-                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow" :collapsible="true">
+                <panel :title="$t('Heightmap.Profiles')" card-class="heightmap-profiles-panel" icon="mdi-stack-overflow" :collapsible="true" class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>
@@ -137,14 +137,16 @@
                 icon="mdi-lock-outline"
             >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert>
         </v-row>
-        <v-dialog v-model="renameDialog" persistent :max-width="400">
+        <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel :title="$t('Heightmap.RenameBedMeshProfile')" icon="mdi-grid" card-class="heightmap-rename-dialog" :margin-bottom="false">
                 <v-card-text>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field :label="$t('Heightmap.Name')" required v-model="newName"></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <v-text-field
+                        :label="$t('Heightmap.Name')" 
+                        v-model="newName"
+                        ref="inputDialogRenameHeightmapName"
+                        @keyup.enter="renameProfile"
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -153,7 +155,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="calibrateDialog" persistent :max-width="400">
+        <v-dialog v-model="calibrateDialog" persistent :max-width="400" @keydown.esc="calibrateDialog = false">
             <panel :title="$t('Heightmap.BedMeshCalibrate')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
@@ -165,7 +167,7 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="removeDialog" persistent :max-width="400">
+        <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel :title="$t('Heightmap.BedMeshRemove')" icon="mdi-grid" card-class="heightmap-calibrate-dialog" :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile })  }}</p>
@@ -213,7 +215,8 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     $refs!: {
         // eslint-disable-next-line
-        heightmap: any
+        heightmap: any,
+        inputDialogRenameHeightmapName: HTMLInputElement,
     }
 
     private renameDialog = false
@@ -440,6 +443,21 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         return [min, max]
     }
 
+    get probedHeightmapLimit(): number[] {
+        let min = 0
+        let max = 0
+
+        if (this.bed_mesh) {
+            const points = []
+            for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
+
+            min = Math.min(min, ...points)
+            max = Math.max(max, ...points)
+        }
+
+        return [min, max]
+    }
+
     get heightmapRangeLimit(): number[] {
         const [min, max] = this.heightmapLimit
 
@@ -652,7 +670,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get bedMeshMaxPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
-        const [ , max] = this.heightmapLimit
+        const [ , max] = this.probedHeightmapLimit
 
         let row = 0
         let col = 0
@@ -678,7 +696,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get bedMeshMinPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
-        const [min, ] = this.heightmapLimit
+        const [min, ] = this.probedHeightmapLimit
 
         let row = 0
         let col = 0
@@ -716,6 +734,10 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     openRenameProfile(): void {
         this.newName = this.bed_mesh?.profile_name ?? ''
         this.renameDialog = true
+
+        setTimeout(() => {
+            this.$refs.inputDialogRenameHeightmapName?.focus()
+        }, 200)
     }
 
     renameProfile(): void {

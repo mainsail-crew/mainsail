@@ -1,6 +1,7 @@
 import { ServerPowerState } from '@/store/server/power/types'
 import { ServerUpdateMangerState } from '@/store/server/updateManager/types'
 import { ServerHistoryState } from '@/store/server/history/types'
+import { ServerTimelapseState } from '@/store/server/timelapse/types'
 
 export interface ServerState {
     klippy_connected: boolean
@@ -33,12 +34,14 @@ export interface ServerState {
         bits: number
         flags: string[]
     },
+    dbNamespaces: string[]
     websocket_count: number
     moonraker_version: string
 
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState
     history?: ServerHistoryState
+    timelapse?: ServerTimelapseState
 }
 
 export interface ServerStateEvent {
@@ -53,6 +56,7 @@ export interface ServerStateCpuInfo {
     bits: string
     cpu_count: number
     cpu_desc: string
+    serial_number: string
     hardware_desc: string
     memory_units: string
     model: string

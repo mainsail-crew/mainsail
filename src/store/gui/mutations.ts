@@ -10,7 +10,7 @@ export const mutations: MutationTree<GuiState> = {
 
     setData(state, payload) {
         // eslint-disable-next-line
-		const setDataDeep = (currentState: any, payload: any) => {
+        const setDataDeep = (currentState: any, payload: any) => {
             if (typeof payload === 'object') {
                 Object.keys(payload).forEach((key: string) => {
                     const value = payload[key]
@@ -103,7 +103,43 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },
 
+    addToLockedSliders(state, payload){
+        const lockedSliders = [...state.dashboard.lockedSliders]
+        if (!lockedSliders.includes(payload.name)) {
+            lockedSliders.push(payload.name)
+
+            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
+        }
+    },
+
+    removeFromLockedSliders(state, payload){
+        const lockedSliders = [...state.dashboard.lockedSliders]
+        const index = lockedSliders.indexOf(payload.name)
+        if (index > -1) {
+            lockedSliders.splice(index, 1)
+
+            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
+        }
+    },
+
     toggleHideUploadAndPrintBtn(state, payload) {
         Vue.set(state.dashboard, 'boolHideUploadAndPrintButton', payload)
+    },
+
+    setResetDatabases(state, payload) {
+        const array: string[] = []
+        Object.keys(payload).forEach((element) => {
+            if (payload[element] === true) array.push(element)
+        })
+
+        Vue.set(state, 'resetDatabases', array)
+    },
+
+    removeResetDatabase(state, payload) {
+        const array = [...state.resetDatabases]
+        const index = array.findIndex((element) => element === payload)
+        if (index !== -1) array.splice(index, 1)
+
+        Vue.set(state, 'resetDatabases', array)
     }
 }
