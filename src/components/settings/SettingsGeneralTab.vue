@@ -19,7 +19,7 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
-                    <v-btn @click="dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
+                    <v-btn @click="resetDbCheckboxes(); dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
                 </settings-row>
             </v-card-text>
         </v-card>
@@ -212,6 +212,12 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     get moonrakerComponents() {
         return this.$store.state.server.components ?? []
+    }
+
+    resetDbCheckboxes() {
+        Object.keys(this.dbCheckboxes).forEach((dbname: string) => {
+            this.dbCheckboxes[dbname] = false
+        })
     }
 
     resetMainsail() {
