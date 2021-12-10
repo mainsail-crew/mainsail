@@ -20,6 +20,7 @@
                 :controllable="object.controllable"
                 :pwm="object.pwm"
                 :off_below="object.off_below"
+                :min="object.min_power"
                 :max="object.max_power"
                 :multi="parseInt(object.scale)"
             ></miscellaneous-slider>

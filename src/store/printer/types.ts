@@ -97,6 +97,7 @@ export interface PrinterStateMiscellaneous {
     // eslint-disable-next-line
     config: any
     off_below?: number
+    min_power?: number
     max_power?: number
 }
 

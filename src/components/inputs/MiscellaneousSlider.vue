@@ -77,10 +77,10 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     convertName = convertName
     private timeout: number | undefined
     private isLocked = false
-    private min = 0
     private value = 0
 
     @Prop({ type: Number, required: true }) target!: number
+    @Prop({ type: Number, default: 0 }) min!: number
     @Prop({ type: Number, default: 1 }) max!: number
     @Prop({ type: String, default: '' }) name!: string
     @Prop({ type: String, default: '' }) type!: string
@@ -162,7 +162,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     @Watch('target')
     targetChanged(newVal: number) {
-        this.value = newVal / this.max
-    }
+        this.value = (newVal - this.min) / (this.max - this.min)
+  }
 }
 </script>
