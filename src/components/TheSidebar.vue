@@ -27,43 +27,47 @@
         text-transform: uppercase;
         opacity: .85;
     }
+    .nav-scrollbar {
+        height: 100%;
+    }
 </style>
 
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
-        <v-list class="pr-0 pt-0 ml-0">
-            <v-list-item-group active-class="active-nav-item">
-                <template v-if="countPrinters">
-                    <v-list-item 
-                        router to="/allPrinters"
-                        class="small-list-item mt-1"
-                    >
-                        <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                            <v-icon>mdi-view-dashboard-outline</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers")}}</v-list-item-title>
-                        </v-list-item-content>
-
-                    </v-list-item>
-                    <v-divider class="my-1"></v-divider>
-                </template>
-                <div v-for="(category, index) in naviPoints" :key="index"> 
-                    <v-list-item 
-                        router :to="category.path"
-                        v-if="showInNavi(category)"
-                        class="small-list-item"
-                    >
-                        <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                            <v-icon>mdi-{{ category.icon }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </div>
-            </v-list-item-group>
-        </v-list>
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app>
+        <overlay-scrollbars class="nav-scrollbar">
+            <v-list class="pr-0 pt-0 ml-0">
+                <v-list-item-group active-class="active-nav-item">
+                    <template v-if="countPrinters">
+                        <v-list-item 
+                            router to="/allPrinters"
+                            class="small-list-item mt-1"
+                        >
+                            <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                <v-icon>mdi-view-dashboard-outline</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers")}}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-divider class="my-1"></v-divider>
+                    </template>
+                    <div v-for="(category, index) in naviPoints" :key="index"> 
+                        <v-list-item 
+                            router :to="category.path"
+                            v-if="showInNavi(category)"
+                            class="small-list-item"
+                        >
+                            <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                <v-icon>mdi-{{ category.icon }}</v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </div>
+                </v-list-item-group>
+            </v-list>
+        </overlay-scrollbars>
         <template v-slot:append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
