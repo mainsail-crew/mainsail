@@ -18,13 +18,56 @@
                     <v-select v-model="calcEtaTime" :items="calcEtaTimeItems" multiple hide-details dense outlined attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
+                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamicSlotWidth="true">
+                    <v-btn @click="resetDbCheckboxes(); dialogBackupMainsail=true" small>{{ $t('Settings.GeneralTab.Backup') }}</v-btn>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
                     <v-btn @click="resetDbCheckboxes(); dialogResetMainsail=true" color="error" small>{{ $t('Settings.GeneralTab.FactoryReset') }}</v-btn>
                 </settings-row>
             </v-card-text>
         </v-card>
+        <v-dialog v-model="dialogBackupMainsail" persistent :width="360">
+            <panel :title="$t('Settings.GeneralTab.Backup')" card-class="mainsail-backup-dialog" :margin-bottom="false" icon="mdi-help-circle">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="dialogBackupMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0">{{ $t('Settings.GeneralTab.Backup') }}</p>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="pl-6">
+                            <template v-for="db in availableDbs">
+                                <v-checkbox
+                                    v-model="dbCheckboxes[db.name]"
+                                    :label="db.label"
+                                    v-if="moonrakerDbNamespaces.includes(db.name)"
+                                    hide-details
+                                    class="mt-0"
+                                    :key="db.name"
+                                ></v-checkbox>
+                            </template>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="text-center">
+                            <v-btn
+                                color="red"
+                                @click="backupMainsail"
+                                :loading="dialogBackupMainsailLoading"
+                            >
+                                {{ $t('Settings.GeneralTab.Backup') }}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </panel>
+        </v-dialog>
         <v-dialog v-model="dialogResetMainsail" persistent :width="360">
-            <panel :title="$t('Settings.GeneralTab.FactoryReset')" card-class="ractory-reset-dialog" :margin-bottom="false" icon="mdi-help-circle">
+            <panel :title="$t('Settings.GeneralTab.FactoryReset')" card-class="factory-reset-dialog" :margin-bottom="false" icon="mdi-help-circle">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogResetMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -36,55 +79,16 @@
                     </v-row>
                     <v-row>
                         <v-col class="pl-6">
-                            <v-checkbox
-                                v-model="dbCheckboxes.mainsail"
-                                :label="$t('Settings.GeneralTab.DbGeneral')"
-                                v-if="moonrakerDbNamespaces.includes('mainsail')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.mainsail_presets"
-                                :label="$t('Settings.GeneralTab.DbPresets')"
-                                v-if="moonrakerDbNamespaces.includes('mainsail_presets')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.mainsail_gcodehistory"
-                                :label="$t('Settings.GeneralTab.DbGcodehistry')"
-                                v-if="moonrakerDbNamespaces.includes('mainsail_gcodehistory')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.mainsail_macrogroups"
-                                :label="$t('Settings.GeneralTab.DbMacrogroups')"
-                                v-if="moonrakerDbNamespaces.includes('mainsail_macrogroups')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.mainsail_remoteprinters"
-                                :label="$t('Settings.GeneralTab.DbRemoteprinters')"
-                                v-if="moonrakerDbNamespaces.includes('mainsail_remoteprinters')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.webcams"
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
-                                v-if="moonrakerDbNamespaces.includes('webcams')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="dbCheckboxes.timelapse"
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
-                                v-if="moonrakerDbNamespaces.includes('timelapse')"
-                                hide-details
-                                class="mt-0"
-                            ></v-checkbox>
+                            <template v-for="db in availableDbs">
+                                <v-checkbox
+                                    v-model="dbCheckboxes[db.name]"
+                                    :label="db.label"
+                                    v-if="moonrakerDbNamespaces.includes(db.name)"
+                                    hide-details
+                                    class="mt-0"
+                                    :key="db.name"
+                                ></v-checkbox>
+                            </template>
                             <v-checkbox
                                 v-model="dbCheckboxes.history_jobs"
                                 :label="$t('Settings.GeneralTab.DbHistoryJobs')"
@@ -129,8 +133,12 @@ import Panel from '@/components/ui/Panel.vue'
     components: {Panel, SettingsRow}
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin) {
+    private dialogBackupMainsail = false
+    private dialogBackupMainsailLoading = false
+
     private dialogResetMainsail = false
     private dialogResetMainsailLoading = false
+
     private dbCheckboxes = {
         mainsail: false,
         mainsail_presets: false,
@@ -140,6 +148,33 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         timelapse: false,
         history_jobs: false,
         history_totals: false,
+    }
+
+    get availableDbs() {
+        return [
+            {
+                name: 'mainsail',
+                label: this.$t('Settings.GeneralTab.DbGeneral')
+            }, {
+                name: 'mainsail_presets',
+                label: this.$t('Settings.GeneralTab.DbPresets')
+            }, {
+                name: 'mainsail_gcodehistory',
+                label: this.$t('Settings.GeneralTab.DbGcodehistry')
+            }, {
+                name: 'mainsail_macrogroups',
+                label: this.$t('Settings.GeneralTab.DbMacrogroups')
+            }, {
+                name: 'mainsail_remoteprinters',
+                label: this.$t('Settings.GeneralTab.DbRemoteprinters')
+            }, {
+                name: 'webcams',
+                label: this.$t('Settings.GeneralTab.DbWebcams')
+            }, {
+                name: 'timelapse',
+                label: this.$t('Settings.GeneralTab.DbTimelapseSettings')
+            }
+        ]
     }
 
     get printerName() {
@@ -223,6 +258,13 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     resetMainsail() {
         this.$store.dispatch('gui/resetMoonrakerDB', this.dbCheckboxes)
         this.dialogResetMainsailLoading = true
+    }
+
+    async backupMainsail() {
+        this.dialogBackupMainsailLoading = true
+        await this.$store.dispatch('gui/backupMoonrakerDB', this.dbCheckboxes)
+        this.dialogBackupMainsailLoading = false
+        this.dialogBackupMainsail = false
     }
 }
 </script>

@@ -194,30 +194,29 @@ export const actions: ActionTree<GuiState, RootState> = {
         window.location.reload()
     },
 
-    async resetMoonrakerDbLoop({ state, commit }) {
-        if (state.resetDatabases.length) {
-            const namespace = state.resetDatabases[0]
+    async backupMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
+        const namespaces: string[] = []
+        Object.keys(payload).forEach((element) => {
+            if (payload[element] === true) namespaces.push(element)
+        })
 
-            if (namespace.startsWith('mainsail') || ['webcams', 'timelapse'].includes(namespace)) {
-                Vue.$socket.emit('server.database.get_item', { namespace: namespace }, { action: 'gui/resetMoonrakerDbLoopItems' })
-            } else if (namespace === 'history_jobs') {
-                Vue.$socket.emit('server.history.delete_job', { all: true }, { action: 'gui/resetMoonrakerDbLoopItems' })
-            } else if (namespace === 'history_totals') {
-                Vue.$socket.emit('server.history.reset_totals', { }, { action: 'gui/resetMoonrakerDbLoopItems' })
-            }
+        const backup: any = {}
+        for (const namespace of namespaces) {
+            const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + namespace
 
-            await commit('removeResetDatabase', namespace)
-        } else window.location.reload()
-    },
-
-    resetMoonrakerDbLoopItems({ dispatch }, payload) {
-        if ('value' in payload && Object.keys(payload.value).length) {
-            Object.keys(payload.value).forEach(key => {
-                Vue.$socket.emit('server.database.delete_item', { namespace: payload.namespace, key: key })
-            })
+            const response = await fetch(url)
+            const objects = await response.json()
+            if (objects?.result?.value) backup[namespace] = {...objects?.result?.value}
         }
 
-        dispatch('resetMoonrakerDbLoop')
+        const element = document.createElement('a')
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(backup)))
+        element.setAttribute('download', 'backup-mainsail.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+
+        document.body.removeChild(element)
     },
 
     setHistoryColumns({ commit, dispatch, state }, data) {

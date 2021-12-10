@@ -613,7 +613,10 @@
       "DbHistoryJobs": "History Jobs",
       "DbHistoryTotals": "History Totals",
       "DbWebcams": "Webcams",
-      "DbTimelapseSettings": "Timelapse Settings"
+      "DbTimelapseSettings": "Timelapse Settings",
+      "MoonrakerDb": "Moonraker DB",
+      "Backup": "Backup",
+      "Restore": "Restore"
     },
     "WebcamsTab": {
       "Webcams": "Webcams",
