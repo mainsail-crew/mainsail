@@ -139,7 +139,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     private dialogResetMainsail = false
     private dialogResetMainsailLoading = false
 
-    private dbCheckboxes = {
+    private dbCheckboxes: {[key: string]: boolean} = {
         mainsail: false,
         mainsail_presets: false,
         mainsail_gcodehistory: false,
