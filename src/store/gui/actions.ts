@@ -167,9 +167,31 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
     },
 
-    async resetMoonrakerDB({ commit, dispatch }, payload) {
-        await commit('setResetDatabases', payload)
-        dispatch('resetMoonrakerDbLoop')
+    async resetMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
+        const namespaces: string[] = []
+        Object.keys(payload).forEach((element) => {
+            if (payload[element] === true) namespaces.push(element)
+        })
+
+        for (const namespace of namespaces) {
+            if (namespace.startsWith('mainsail') || ['webcams', 'timelapse'].includes(namespace)) {
+                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + namespace
+
+                const response = await fetch(url)
+                const objects = await response.json()
+                if (objects?.result?.value) {
+                    for (const item of Object.keys(objects?.result?.value)) {
+                        await fetch(url+'&key='+item, { method: 'DELETE' })
+                    }
+                }
+            } else if (namespace === 'history_jobs') {
+                await fetch(rootGetters['socket/getUrl'] + '/server/history/job?all=true', { method: 'DELETE' })
+            } else if (namespace === 'history_totals') {
+                await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
+            }
+        }
+
+        window.location.reload()
     },
 
     async resetMoonrakerDbLoop({ state, commit }) {
