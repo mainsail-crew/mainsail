@@ -37,7 +37,10 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
             break
 
         case 'render':
-            commit('setRenderStatus', payload)
+            if (payload.status === 'error') {
+                Vue.$toast.error(payload.msg)
+                commit('resetSnackbar')
+            } else commit('setRenderStatus', payload)
             break
 
         default:
