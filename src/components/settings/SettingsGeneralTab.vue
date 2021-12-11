@@ -19,7 +19,9 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamicSlotWidth="true">
+                    <input type="file" :accept="['.json']" ref="uploadBackupFile" class="d-none" @change="uploadRestore" />
                     <v-btn @click="resetDbCheckboxes(); dialogBackupMainsail=true" small>{{ $t('Settings.GeneralTab.Backup') }}</v-btn>
+                    <v-btn @click="restoreDb()" small :loading="loadings.includes('restoreUploadButton')" class="ml-3">{{ $t('Settings.GeneralTab.Restore') }}</v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
@@ -129,6 +131,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
+
 @Component({
     components: {Panel, SettingsRow}
 })
@@ -148,6 +151,10 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         timelapse: false,
         history_jobs: false,
         history_totals: false,
+    }
+
+    $refs!: {
+        uploadBackupFile: HTMLInputElement
     }
 
     get availableDbs() {
@@ -253,6 +260,31 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         Object.keys(this.dbCheckboxes).forEach((dbname: string) => {
             this.dbCheckboxes[dbname] = false
         })
+    }
+
+    restoreDb() {
+        window.console.log('restore DB')
+        this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
+        this.$refs?.uploadBackupFile?.click()
+    }
+
+    uploadRestore() {
+        window.console.log('upload DB', this.$refs.uploadBackupFile)
+        if (this.$refs.uploadBackupFile.files?.length) {
+            window.console.log(this.$refs.uploadBackupFile.files)
+
+            const backup = this.$refs.uploadBackupFile.files[0]
+            if (backup) {
+                const reader = new FileReader()
+                reader.readAsText(backup, 'UTF-8')
+                reader.onload = function (evt) {
+                    window.console.log(evt?.target?.result)
+                }
+                reader.onerror = function (evt) {
+                    window.console.log(evt)
+                }
+            }
+        }
     }
 
     resetMainsail() {
