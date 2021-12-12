@@ -1,3 +1,5 @@
+import {GuiMacrosState} from '@/store/gui/macros/types'
+
 export interface GuiState {
     general: {
         printername: string
@@ -69,6 +71,7 @@ export interface GuiState {
         voxelHeight: number
         specularLighting: boolean
     }
+    macros?: GuiMacrosState
     uiSettings: {
         logo: string
         primary: string

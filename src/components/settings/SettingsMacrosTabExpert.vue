@@ -192,7 +192,7 @@ import draggable from 'vuedraggable'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {Debounce} from 'vue-debounce-decorator'
 import {PrinterStateMacro} from '@/store/printer/types'
-import {GuiMacrogroupsStateMacrogroup, GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
+import {GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro} from '@/store/gui/macros/types'
 
 @Component({
     components: {SettingsRow, draggable}
@@ -253,24 +253,24 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     get availableMacros() {
-        return this.allMacros.filter((m: GuiMacrogroupsStateMacrogroupMacro) => !this.editGroupUsedMacros.includes(m.name))
+        return this.allMacros.filter((m: GuiMacrosStateMacrogroupMacro) => !this.editGroupUsedMacros.includes(m.name))
     }
 
     get groups() {
-        return this.$store.getters['gui/macrogroups/getAllMacrogroups'] ?? []
+        return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
     }
 
     get editGroupUsedMacros() {
-        return this.editGroup?.macros?.map((m: GuiMacrogroupsStateMacrogroupMacro) => m.name) ?? []
+        return this.editGroup?.macros?.map((m: GuiMacrosStateMacrogroupMacro) => m.name) ?? []
     }
 
-    get editGroup(): GuiMacrogroupsStateMacrogroup | null {
-        return this.$store.getters['gui/macrogroups/getMacrogroup'](this.editGroupId)
+    get editGroup(): GuiMacrosStateMacrogroup | null {
+        return this.$store.getters['gui/macros/getMacrogroup'](this.editGroupId)
     }
 
     get editGroupMacros() {
         const macros = this.editGroup?.macros ?? []
-        macros.sort((a: GuiMacrogroupsStateMacrogroupMacro, b: GuiMacrogroupsStateMacrogroupMacro) => a.pos - b.pos)
+        macros.sort((a: GuiMacrosStateMacrogroupMacro, b: GuiMacrosStateMacrogroupMacro) => a.pos - b.pos)
 
         return macros
     }
@@ -280,7 +280,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     existsGroupName(name: string) {
-        return (this.groups.findIndex((group: GuiMacrogroupsStateMacrogroup) => group.name === name && group.id != this.editGroupId) >= 0)
+        return (this.groups.findIndex((group: GuiMacrosStateMacrogroup) => group.name === name && group.id != this.editGroupId) >= 0)
     }
 
     clearColorObject(color: any): string {
@@ -304,29 +304,29 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
             showInPause: true,
             showInPrinting: true,
         }
-        this.editGroupId = await this.$store.dispatch('gui/macrogroups/store',  { values })
+        this.editGroupId = await this.$store.dispatch('gui/macros/store',  { values })
 
         this.boolFormEdit = true
     }
 
-    editMacrogroup(group: GuiMacrogroupsStateMacrogroup) {
+    editMacrogroup(group: GuiMacrosStateMacrogroup) {
         this.boolFormEdit = true
         this.editGroupId = group.id
     }
 
     deleteMacrogroup(id: string) {
-        this.$store.dispatch('gui/macrogroups/delete', id)
+        this.$store.dispatch('gui/macros/delete', id)
     }
 
     addMacroToGroup(macro: PrinterStateMacro) {
-        this.$store.dispatch('gui/macrogroups/addMacroToMacrogroup', {
+        this.$store.dispatch('gui/macros/addMacroToMacrogroup', {
             id: this.editGroupId,
             macro: macro.name
         })
     }
 
-    updateMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro, option: string, value: boolean | string | number) {
-        this.$store.dispatch('gui/macrogroups/updateMacroFromMacrogroup', {
+    updateMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro, option: string, value: boolean | string | number) {
+        this.$store.dispatch('gui/macros/updateMacroFromMacrogroup', {
             id: this.editGroupId,
             macro: macro.name,
             option: option,
@@ -344,7 +344,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         this.updateMacroFromGroup(this.editGroupMacros[newIndex], 'pos', oldPos)
     }
 
-    changeColorMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro) {
+    changeColorMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
         let index = this.macroColors.findIndex((color) => color.value === macro.color) + 1
         const maxIndex = this.macroColors.length - 1
 
@@ -354,8 +354,8 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         this.updateMacroFromGroup(macro, 'color', newColor)
     }
 
-    removeMacroFromGroup(macro: GuiMacrogroupsStateMacrogroupMacro) {
-        this.$store.dispatch('gui/macrogroups/removeMacroFromMacrogroup', {
+    removeMacroFromGroup(macro: GuiMacrosStateMacrogroupMacro) {
+        this.$store.dispatch('gui/macros/removeMacroFromMacrogroup', {
             id: this.editGroupId,
             macro: macro.name
         })
@@ -376,7 +376,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         const values:any = {}
         values[option] = newVal
 
-        this.$store.dispatch('gui/macrogroups/update', {
+        this.$store.dispatch('gui/macros/update', {
             id: this.editGroupId,
             values
         })

@@ -68,7 +68,7 @@
 import Component from 'vue-class-component'
 import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
+import {GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macros/types'
 
 interface param {
     type: 'int' | 'double' | 'string' | null,

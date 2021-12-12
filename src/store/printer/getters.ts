@@ -49,7 +49,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const array: PrinterStateMacro[] = []
         const hiddenMacros: string[] = []
 
-        rootState.gui?.macrogroups.hiddenMacros.forEach((item: string, index: number) => {
+        rootState.gui?.macros?.hiddenMacros.forEach((item: string, index: number) => {
             hiddenMacros[index] = item.toLowerCase()
         })
 

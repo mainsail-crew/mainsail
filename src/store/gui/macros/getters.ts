@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import {GuiMacrogroupsState, GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
+import {GuiMacrogroupsState, GuiMacrogroupsStateMacrogroup} from '@/store/gui/macros/types'
 import {caseInsensitiveSort} from '@/plugins/helpers'
 
 // eslint-disable-next-line

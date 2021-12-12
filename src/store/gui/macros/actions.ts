@@ -2,16 +2,16 @@ import { ActionTree } from 'vuex'
 import {RootState} from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import {GuiMacrogroupsState} from '@/store/gui/macrogroups/types'
+import {GuiMacrosState} from '@/store/gui/macros/types'
 
-export const actions: ActionTree<GuiMacrogroupsState, RootState> = {
+export const actions: ActionTree<GuiMacrosState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
 
     init() {
-        window.console.debug('init gui/macrogroups')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_macrogroups' }, { action: 'gui/macrogroups/initStore' })
+        window.console.debug('init gui/macros')
+        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_macrogroups' }, { action: 'gui/macros/initStore' })
     },
 
     initStore({ commit }, payload) {
@@ -19,8 +19,14 @@ export const actions: ActionTree<GuiMacrogroupsState, RootState> = {
         commit('initStore', payload)
     },
 
+    saveSetting({ commit }, payload) {
+        commit('saveSetting', payload)
+
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'macros.'+payload.name, value: payload.value })
+    },
+
     upload({ state }, id) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail_macrogroups', key: id, value: state.macrogroups[id] })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'macros.macrogroups.'+id, value: state.macrogroups[id] })
     },
 
     async store({ commit, dispatch, state }, payload) {
@@ -60,6 +66,7 @@ export const actions: ActionTree<GuiMacrogroupsState, RootState> = {
             'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
 
         layouts.forEach((layoutname: string) => {
+            // @ts-ignore
             const layoutArray = [...rootState.gui?.dashboard[layoutname]]
 
             const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+id)
@@ -67,6 +74,7 @@ export const actions: ActionTree<GuiMacrogroupsState, RootState> = {
                 commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
                 dispatch('gui/updateSettings', {
                     keyName: 'dashboard.'+layoutname,
+                    // @ts-ignore
                     newVal: rootState.gui?.dashboard[layoutname]
                 }, { root: true })
             }

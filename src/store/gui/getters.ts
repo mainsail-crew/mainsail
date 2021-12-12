@@ -1,6 +1,6 @@
 import {GetterTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
-import {GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
+import {GuiMacrosStateMacrogroup} from '@/store/gui/macros/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
@@ -32,16 +32,16 @@ export const getters: GetterTree<GuiState, any> = {
         // @ts-ignore
         let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
 
-        if (rootState.gui.macrogroups.macroManagement === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+        if (rootState.gui.macros.mode === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
         else {
             panels = panels.filter((element: any) => element.name !== 'macros')
-            const macrogroups = getters['macrogroups/getAllMacrogroups']
+            const macrogroups = getters['macros/getAllMacrogroups']
             if (macrogroups.length) {
                 panels = panels.filter((element: any) => {
                     if (!element.name.startsWith('macrogroup_')) return true
 
                     const macrogroupId = element.name.substr(11)
-                    return (macrogroups.findIndex((macrogroup: GuiMacrogroupsStateMacrogroup) => macrogroup.id === macrogroupId) !== -1)
+                    return (macrogroups.findIndex((macrogroup: GuiMacrosStateMacrogroup) => macrogroup.id === macrogroupId) !== -1)
                 })
             }
         }

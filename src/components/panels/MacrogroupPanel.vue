@@ -31,7 +31,7 @@ import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import MacroButton from '@/components/inputs/MacroButton.vue'
 import {PrinterStateMacro} from '@/store/printer/types'
-import {GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
+import {GuiMacrosStateMacrogroupMacro} from '@/store/gui/macros/types'
 @Component({
     components: {MacroButton, Panel}
 })
@@ -40,7 +40,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     @Prop({ required: true }) panelId!: string
 
     get macrogroup() {
-        return this.$store.getters['gui/macrogroups/getMacrogroup'](this.panelId)
+        return this.$store.getters['gui/macros/getMacrogroup'](this.panelId)
     }
 
     get allMacros() {
@@ -50,7 +50,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     get macros() {
         let macros = this.macrogroup?.macros ?? []
 
-        macros = macros.filter((macro: GuiMacrogroupsStateMacrogroupMacro) => {
+        macros = macros.filter((macro: GuiMacrosStateMacrogroupMacro) => {
             if (!this.allMacros.find((existMacro: PrinterStateMacro) => existMacro.name.toLowerCase() === macro.name.toLowerCase())) return false
 
             return (
@@ -60,7 +60,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
             )
         })
 
-        return macros.sort((a: GuiMacrogroupsStateMacrogroupMacro, b: GuiMacrogroupsStateMacrogroupMacro) => a.pos - b.pos)
+        return macros.sort((a: GuiMacrosStateMacrogroupMacro, b: GuiMacrosStateMacrogroupMacro) => a.pos - b.pos)
     }
 
     get macrogroupStatus() {
@@ -71,7 +71,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
         )
     }
 
-    getColor(macro: GuiMacrogroupsStateMacrogroupMacro) {
+    getColor(macro: GuiMacrosStateMacrogroupMacro) {
         if (macro.color === 'group') {
             if (this.macrogroup.color === 'custom') return this.macrogroup.colorCustom
             else return this.macrogroup.color

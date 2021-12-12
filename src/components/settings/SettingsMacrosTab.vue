@@ -4,11 +4,11 @@
         <v-card-text v-if="showGeneral">
             <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.General') }}</h3>
             <settings-row :title="$t('Settings.MacrosTab.Management')">
-                <v-select v-model="macroManagement" :items="macroManagements" outlined dense hide-details attach></v-select>
+                <v-select v-model="mode" :items="modes" outlined dense hide-details attach></v-select>
             </settings-row>
             <v-divider class="my-2"></v-divider>
         </v-card-text>
-        <template v-if="macroManagement === 'expert'">
+        <template v-if="mode === 'expert'">
             <settings-macros-tab-expert @update:showGeneral="updateShowGeneral" @scrollToTop="scrollToTop"></settings-macros-tab-expert>
         </template>
         <template v-else>
@@ -30,7 +30,7 @@ import SettingsMacrosTabExpert from '@/components/settings/SettingsMacrosTabExpe
 export default class SettingsMacrosTab extends Mixins(BaseMixin) {
     private showGeneral = true
 
-    get macroManagements() {
+    get modes() {
         return [
             {
                 text: this.$t('Settings.MacrosTab.Simple'),
@@ -43,12 +43,12 @@ export default class SettingsMacrosTab extends Mixins(BaseMixin) {
         ]
     }
 
-    get macroManagement() {
-        return this.$store.state.gui?.macrogroups?.macroManagement ?? 'simple'
+    get mode() {
+        return this.$store.state.gui?.macros?.mode ?? 'simple'
     }
 
-    set macroManagement(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'macrogroups.macroManagement', value: newVal })
+    set mode(newVal) {
+        this.$store.dispatch('gui/macros/saveSetting', { name: 'mode', value: newVal })
     }
 
     updateShowGeneral(newVal: boolean) {

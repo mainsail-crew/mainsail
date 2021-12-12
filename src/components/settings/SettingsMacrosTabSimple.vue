@@ -34,7 +34,7 @@ export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
     }
 
     get hiddenMacros() {
-        return this.$store.state.gui.macrogroups.hiddenMacros ?? []
+        return this.$store.state.gui.macros.hiddenMacros ?? []
     }
 
     getMacroStatus(name: string) {
@@ -49,7 +49,7 @@ export default class SettingsMacrosTabSimple extends Mixins(BaseMixin) {
         else
             hiddenMacros.push(name.toUpperCase())
 
-        this.$store.dispatch('gui/saveSetting', { name: 'macrogroups.hiddenMacros', value: hiddenMacros })
+        this.$store.dispatch('gui/macros/saveSetting', { name: 'hiddenMacros', value: hiddenMacros })
     }
 }
 </script>
