@@ -44,7 +44,7 @@ export default class MacrogroupPanel extends Mixins(BaseMixin) {
     }
 
     get allMacros() {
-        return this.$store.getters['printer/getMacros'] ?? []
+        return this.$store.getters['printer/getAllMacros'] ?? []
     }
 
     get macros() {
