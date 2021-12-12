@@ -8,27 +8,6 @@ export const mutations: MutationTree<GuiMacrosState> = {
         Object.assign(state, getDefaultState())
     },
 
-    initStore(state, payload) {
-        Vue.set(state, 'macrogroups', payload.value)
-    },
-
-    saveSetting(state, payload) {
-        // eslint-disable-next-line
-        const deepSet = (obj:any, is:string[] | string, value:any):any => {
-            if (is !== undefined && typeof is === 'string')
-                return deepSet(obj,is.split('.'), value)
-            else if (is.length==1 && value !== undefined)
-                return obj[is[0]] = value
-            else if (is.length==0)
-                return obj
-            else
-            if (!(is[0] in obj)) obj[is[0]] = {}
-            return deepSet(obj[is[0]],is.slice(1), value)
-        }
-
-        deepSet(state, payload.name, payload.value)
-    },
-
     groupStore(state, payload) {
         Vue.set(state.macrogroups, payload.id, payload.values)
     },

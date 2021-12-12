@@ -9,11 +9,6 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         commit('reset')
     },
 
-    initStore({ commit }, payload) {
-        commit('reset')
-        commit('initStore', payload)
-    },
-
     saveSetting({ dispatch }, payload) {
         dispatch('gui/saveSetting', {
             name: 'macros.'+payload.name,
