@@ -616,7 +616,9 @@
       "DbTimelapseSettings": "Timelapse Settings",
       "MoonrakerDb": "Moonraker DB",
       "Backup": "Backup",
-      "Restore": "Restore"
+      "Restore": "Restore",
+      "CannotReadJson": "Cannot read/parse backup file.",
+      "RestoreDialog": "Please select all the sections you want to restore:"
     },
     "WebcamsTab": {
       "Webcams": "Webcams",

@@ -59,7 +59,7 @@
                             <v-btn
                                 color="red"
                                 @click="backupMainsail"
-                                :loading="dialogBackupMainsailLoading"
+                                :loading="loadings.includes('backupMainsail')"
                             >
                                 {{ $t('Settings.GeneralTab.Backup') }}
                             </v-btn>
@@ -112,9 +112,48 @@
                             <v-btn
                                 color="red"
                                 @click="resetMainsail"
-                                :loading="dialogResetMainsailLoading"
+                                :loading="loadings.includes('resetMainsail')"
                             >
                                 {{ $t('Settings.GeneralTab.Reset') }}
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="dialogRestoreMainsail" persistent :width="360">
+            <panel :title="$t('Settings.GeneralTab.Restore')" card-class="factory-reset-dialog" :margin-bottom="false" icon="mdi-help-circle">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="dialogRestoreMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>
+                    <v-row>
+                        <v-col>
+                            <p class="mb-0">{{ $t('Settings.GeneralTab.RestoreDialog') }}</p>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="pl-6">
+                            <template v-for="db in availableDbs">
+                                <v-checkbox
+                                    v-model="dbCheckboxes[db.name]"
+                                    :label="db.label"
+                                    v-if="restoreableNamespaces.includes(db.name)"
+                                    hide-details
+                                    class="mt-0"
+                                    :key="db.name"
+                                ></v-checkbox>
+                            </template>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="text-center">
+                            <v-btn
+                                color="red"
+                                @click="restoreDbAction"
+                                :loading="loadings.includes('restoreMainsail')"
+                            >
+                                {{ $t('Settings.GeneralTab.Restore') }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -131,16 +170,15 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
+import Vue from 'vue'
 
 @Component({
     components: {Panel, SettingsRow}
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     private dialogBackupMainsail = false
-    private dialogBackupMainsailLoading = false
-
     private dialogResetMainsail = false
-    private dialogResetMainsailLoading = false
+    private dialogRestoreMainsail = false
 
     private dbCheckboxes: {[key: string]: boolean} = {
         mainsail: false,
@@ -152,6 +190,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         history_jobs: false,
         history_totals: false,
     }
+
+    private restoreableNamespaces: string[] = []
+    private restoreObjects: any = {}
 
     $refs!: {
         uploadBackupFile: HTMLInputElement
@@ -263,39 +304,51 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     restoreDb() {
-        window.console.log('restore DB')
         this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
         this.$refs?.uploadBackupFile?.click()
     }
 
     uploadRestore() {
-        window.console.log('upload DB', this.$refs.uploadBackupFile)
         if (this.$refs.uploadBackupFile.files?.length) {
-            window.console.log(this.$refs.uploadBackupFile.files)
-
             const backup = this.$refs.uploadBackupFile.files[0]
             if (backup) {
                 const reader = new FileReader()
                 reader.readAsText(backup, 'UTF-8')
-                reader.onload = function (evt) {
-                    window.console.log(evt?.target?.result)
+                reader.onload = (evt) => {
+                    try {
+                        this.restoreObjects = JSON.parse(evt?.target?.result+'')
+                        this.restoreableNamespaces = Object.keys(this.restoreObjects)
+                        this.dialogRestoreMainsail = true
+                    } catch (e) {
+                        Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson')+'')
+                    }
                 }
-                reader.onerror = function (evt) {
+                reader.onerror = (evt) => {
                     window.console.log(evt)
                 }
             }
         }
     }
 
+    restoreDbAction() {
+        this.$store.dispatch('socket/addLoading', 'restoreDbAction')
+        //this.dialogRestoreMainsailLoading = true
+
+        this.$store.dispatch('gui/restoreMoonrakerDB', {
+            dbCheckboxes: this.dbCheckboxes,
+            restoreObjects: this.restoreObjects
+        })
+    }
+
     resetMainsail() {
         this.$store.dispatch('gui/resetMoonrakerDB', this.dbCheckboxes)
-        this.dialogResetMainsailLoading = true
+        this.$store.dispatch('socket/addLoading', 'resetMainsail')
     }
 
     async backupMainsail() {
-        this.dialogBackupMainsailLoading = true
+        await this.$store.dispatch('socket/addLoading', 'backupMainsail')
         await this.$store.dispatch('gui/backupMoonrakerDB', this.dbCheckboxes)
-        this.dialogBackupMainsailLoading = false
+        await this.$store.dispatch('socket/removeLoading', 'backupMainsail')
         this.dialogBackupMainsail = false
     }
 }

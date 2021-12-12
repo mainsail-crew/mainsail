@@ -219,6 +219,54 @@ export const actions: ActionTree<GuiState, RootState> = {
         document.body.removeChild(element)
     },
 
+    async restoreMoonrakerDB({ rootGetters }, payload) {
+        const namespaces: string[] = []
+        Object.keys(payload.dbCheckboxes).forEach((element) => {
+            if (payload.dbCheckboxes[element] === true) namespaces.push(element)
+        })
+
+        for (const namespace of namespaces) {
+            const listUrl = rootGetters['socket/getUrl'] + '/server/database/list'
+
+            let existingNamespaces: string[] = []
+            const responseNamespaces = await fetch(listUrl)
+            const objectsNamespaces = await responseNamespaces.json()
+            if (objectsNamespaces?.result?.namespaces) {
+                existingNamespaces = objectsNamespaces?.result?.namespaces
+            }
+
+            const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+            if (existingNamespaces.includes(namespace)) {
+                const url = baseUrl + '?namespace=' + namespace
+
+                const response = await fetch(url)
+                const objects = await response.json()
+                if (objects?.result?.value) {
+                    for (const item of Object.keys(objects?.result?.value)) {
+                        await fetch(url + '&key=' + item, {method: 'DELETE'})
+                    }
+                }
+            }
+
+            for (const key of Object.keys(payload.restoreObjects[namespace])) {
+                const value = payload.restoreObjects[namespace][key]
+                await fetch(baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        namespace,
+                        key,
+                        value
+                    })
+                })
+            }
+        }
+
+        window.location.reload()
+    },
+
     setHistoryColumns({ commit, dispatch, state }, data) {
         commit('setHistoryColumns', data)
         dispatch('updateSettings', {
