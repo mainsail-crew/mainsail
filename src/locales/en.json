@@ -729,6 +729,7 @@
       "Management": "Management",
       "Simple": "Simple",
       "Expert": "Expert",
+      "Group": "Group",
       "NoGroups": "No group found...",
       "Macrogroups": "Groups",
       "EditGroup": "Edit Group",

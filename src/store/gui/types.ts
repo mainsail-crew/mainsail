@@ -1,4 +1,5 @@
 import {GuiMacrosState} from '@/store/gui/macros/types'
+import {GuiConsoleState} from '@/store/gui/console/types'
 
 export interface GuiState {
     general: {
@@ -7,13 +8,7 @@ export interface GuiState {
         calcEstimateTime: string[] // file, filament are possible values
         calcEtaTime: string[] // file, filament, slicer are possible values
     }
-    console: {
-        hideWaitTemperatures: boolean
-        hideTlCommands: boolean
-        direction: 'table' | 'shell'
-        entryStyle: 'default' | 'compact'
-        height: number
-    }
+    console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
         feedrateXY: number

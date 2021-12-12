@@ -29,11 +29,11 @@ export const mutations: MutationTree<GuiMacrosState> = {
         deepSet(state, payload.name, payload.value)
     },
 
-    store(state, payload) {
+    groupStore(state, payload) {
         Vue.set(state.macrogroups, payload.id, payload.values)
     },
 
-    update(state, payload) {
+    groupUpdate(state, payload) {
         if (payload.id in state.macrogroups) {
             const preset = {...state.macrogroups[payload.id]}
             Object.assign(preset, payload.values)
@@ -86,7 +86,7 @@ export const mutations: MutationTree<GuiMacrosState> = {
         Vue.set(state.macrogroups[payload.id], 'macros', macros)
     },
 
-    delete(state, payload) {
+    groupDelete(state, payload) {
         if (payload in state.macrogroups) {
             Vue.delete(state.macrogroups, payload)
         }

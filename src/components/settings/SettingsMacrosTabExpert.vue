@@ -304,7 +304,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
             showInPause: true,
             showInPrinting: true,
         }
-        this.editGroupId = await this.$store.dispatch('gui/macros/store',  { values })
+        this.editGroupId = await this.$store.dispatch('gui/macros/groupStore',  { values })
 
         this.boolFormEdit = true
     }
@@ -315,7 +315,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
     }
 
     deleteMacrogroup(id: string) {
-        this.$store.dispatch('gui/macros/delete', id)
+        this.$store.dispatch('gui/macros/groupDelete', id)
     }
 
     addMacroToGroup(macro: PrinterStateMacro) {
@@ -376,7 +376,7 @@ export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
         const values:any = {}
         values[option] = newVal
 
-        this.$store.dispatch('gui/macros/update', {
+        this.$store.dispatch('gui/macros/groupUpdate', {
             id: this.editGroupId,
             values
         })

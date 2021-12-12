@@ -365,7 +365,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getAllMacros: state => {
         const array: PrinterStateMacro[] = []
 
-        Object.keys(state.configfile?.config).forEach(prop => {
+        Object.keys(state.configfile?.config ?? {}).forEach(prop => {
             if (prop.startsWith('gcode_macro') &&
 				!prop.startsWith('gcode_macro _') &&
 				!Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')) {

@@ -6,7 +6,7 @@ import { getters } from '@/store/gui/getters'
 import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
 
 // load modules
-import { consolefilters } from '@/store/gui/consolefilters'
+import { console } from '@/store/gui/console'
 import { gcodehistory } from '@/store/gui/gcodehistory'
 import { macros } from '@/store/gui/macros'
 import { presets } from '@/store/gui/presets'
@@ -20,13 +20,6 @@ export const getDefaultState = (): GuiState => {
             language: 'en',
             calcEstimateTime: ['file', 'filament'],
             calcEtaTime: ['file', 'filament', 'slicer']
-        },
-        console: {
-            hideWaitTemperatures: true,
-            hideTlCommands: true,
-            direction: 'table',
-            entryStyle: 'default',
-            height: 300
         },
         control: {
             style: 'bars',
@@ -221,7 +214,7 @@ export const gui: Module<GuiState, any> = {
     actions,
     mutations,
     modules: {
-        consolefilters,
+        console,
         gcodehistory,
         macros,
         presets,

@@ -9,58 +9,54 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
         commit('reset')
     },
 
-    init() {
-        window.console.debug('init gui/macros')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_macrogroups' }, { action: 'gui/macros/initStore' })
-    },
-
     initStore({ commit }, payload) {
         commit('reset')
         commit('initStore', payload)
     },
 
-    saveSetting({ commit }, payload) {
-        commit('saveSetting', payload)
-
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'macros.'+payload.name, value: payload.value })
+    saveSetting({ dispatch }, payload) {
+        dispatch('gui/saveSetting', {
+            name: 'macros.'+payload.name,
+            value: payload.value
+        }, { root: true })
     },
 
-    upload({ state }, id) {
+    groupUpload({ state }, id) {
         Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'macros.macrogroups.'+id, value: state.macrogroups[id] })
     },
 
-    async store({ commit, dispatch, state }, payload) {
+    async groupStore({ commit, dispatch, state }, payload) {
         const id = uuidv4()
 
-        await commit('store', { id, values: payload.values })
-        await dispatch('upload', id)
+        await commit('groupStore', { id, values: payload.values })
+        await dispatch('groupUpload', id)
 
         return id
     },
 
-    update({ commit, dispatch, state }, payload) {
+    groupUpdate({ commit, dispatch, state }, payload) {
         commit('update', payload)
-        dispatch('upload', payload.id)
+        dispatch('groupUpload', payload.id)
     },
 
     addMacroToMacrogroup({ commit, dispatch }, payload) {
         commit('addMacroToMacrogroup', payload)
-        dispatch('upload', payload.id)
+        dispatch('groupUpload', payload.id)
     },
 
     updateMacroFromMacrogroup({ commit, dispatch }, payload) {
         commit('updateMacroFromMacrogroup', payload)
-        dispatch('upload', payload.id)
+        dispatch('groupUpload', payload.id)
     },
 
     removeMacroFromMacrogroup({ commit, dispatch }, payload) {
         commit('removeMacroFromMacrogroup', payload)
-        dispatch('upload', payload.id)
+        dispatch('groupUpload', payload.id)
     },
 
-    delete({ commit, dispatch, rootState }, id) {
-        commit('delete', id)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail_macrogroups', key: id })
+    groupDelete({ commit, dispatch, rootState }, id) {
+        commit('groupDelete', id)
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.'+id })
 
         const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
             'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']

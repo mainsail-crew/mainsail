@@ -5,8 +5,11 @@ import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
 
 export const actions: ActionTree<GuiState, RootState> = {
-    reset({ commit }) {
+    reset({ commit, dispatch }) {
         commit('reset')
+
+        dispatch('console/reset')
+        dispatch('macros/reset')
     },
 
     init() {
@@ -16,6 +19,8 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     initStore({ commit, dispatch, rootState }, payload) {
         window.console.log(payload)
+
+        if (rootState.socket?.remoteMode && 'remoteprinters' in payload.value) delete payload.value.remoteprinters
 
         commit('setData', payload.value)
     },
@@ -66,7 +71,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setTempchartDatasetAdditionalSensorSetting({ commit, dispatch, state }, payload) {
         commit('setTempchartDatasetAdditionalSensorSetting', payload)
         dispatch('updateSettings', {
-            keyName: 'tempchart',
+            keyName: 'view.tempchart',
             newVal: state.view.tempchart
         })
     },
@@ -78,7 +83,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         })
 
         for (const namespace of namespaces) {
-            if (namespace.startsWith('mainsail') || ['webcams', 'timelapse'].includes(namespace)) {
+            if (['mainsail', 'webcams', 'timelapse'].includes(namespace)) {
                 const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + namespace
 
                 const response = await fetch(url)
@@ -174,7 +179,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setHistoryColumns({ commit, dispatch, state }, data) {
         commit('setHistoryColumns', data)
         dispatch('updateSettings', {
-            keyName: 'history',
+            keyName: 'view.history',
             newVal: state.view.history
         })
     },

@@ -25,11 +25,6 @@ export const actions: ActionTree<ServerState, RootState> = {
     checkDatabases({ dispatch, commit, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
-        if (payload.namespaces?.includes('mainsail_presets')) dispatch('gui/presets/init', null, { root: true })
-        if (payload.namespaces?.includes('mainsail_consolefilters')) dispatch('gui/consolefilters/init', null, { root: true })
-        if (payload.namespaces?.includes('mainsail_gcodehistory')) dispatch('gui/gcodehistory/init', null, { root: true })
-        if (payload.namespaces?.includes('mainsail_macrogroups')) dispatch('gui/macrogroups/init', null, { root: true })
-        if (!rootState.socket?.remoteMode && payload.namespaces?.includes('mainsail_remoteprinters')) dispatch('gui/remoteprinters/init', null, { root: true })
 
         commit('saveDbNamespaces', payload.namespaces)
 
@@ -84,7 +79,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('clearGcodeStore')
 
         let events: ServerStateEvent[] = payload.gcode_store
-        const filters = rootGetters['gui/consolefilters/getConsolefilterRules']
+        const filters = rootGetters['gui/console/getConsolefilterRules']
         filters.forEach((filter: string) => {
             try {
                 const regex = new RegExp(filter)
@@ -113,7 +108,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         let formatMessage = formatConsoleMessage(message)
 
-        const filters = rootGetters['gui/consolefilters/getConsolefilterRules']
+        const filters = rootGetters['gui/console/getConsolefilterRules']
         let boolImport = true
         filters.every((filter: string) => {
             try {
