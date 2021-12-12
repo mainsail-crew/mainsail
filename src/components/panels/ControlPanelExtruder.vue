@@ -85,11 +85,11 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     get feedamounts() {
-        return this.$store.state.gui.dashboard?.extruder?.feedamounts ?? []
+        return this.$store.state.gui.control.extruder?.feedamounts ?? []
     }
 
     get feedrates() {
-        return this.$store.state.gui.dashboard?.extruder?.feedrates ?? []
+        return this.$store.state.gui.control.extruder?.feedrates ?? []
     }
 
     get feedamountsSorted() {
