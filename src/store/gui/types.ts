@@ -1,5 +1,6 @@
 import {GuiMacrosState} from '@/store/gui/macros/types'
 import {GuiConsoleState} from '@/store/gui/console/types'
+import {GuiPresetsState} from '@/store/gui/presets/types'
 
 export interface GuiState {
     general: {
@@ -67,6 +68,7 @@ export interface GuiState {
         specularLighting: boolean
     }
     macros?: GuiMacrosState
+    presets?: GuiPresetsState
     uiSettings: {
         logo: string
         primary: string
