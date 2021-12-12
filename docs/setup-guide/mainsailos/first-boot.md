@@ -32,9 +32,9 @@ http://<IP address of your pi>
  **Important:** Include the mainsail.cfg into your printer.cfg
 {: .warning}
 
-Mainsail will not work unless Klipper is told to include its configuration. This can be achieved either by placing the contents of mainsail.cfg into your printer.cfg.
+Mainsail will not work unless Klipper is told to include its configuration. This can be completed  by placing the contents of `mainsail.cfg` into your `printer.cfg` file.  If you don't have a `printer.cfg` file, you can create one.
 
-To do this, open the default printer.cfg in the Mainsail web GUI:
+To do this, open the default `printer.cfg` configuration file in the Mainsail web GUI:
 
 ![screenshot-web-editor](../../../assets/img/setup/screenshot-web-editor-printer.png)        
 
@@ -49,7 +49,7 @@ and click on the "Save & Restart" button.
 
 ## Updates
 
-Once you've successfully navigated to the Mainsail web ui we _thoroughly_ recommend that you run updates.
+Once you've successfully navigated to the Mainsail web interface we _thoroughly_ recommend that you run updates.
 
 Klipper, Moonraker and Mainsail have fast development cycles and whilst we do our best to ensure MainsailOS ships as close to the bleeding edge as we can, there will always be a short delay before releases make it into the image.
 
