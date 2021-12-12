@@ -473,19 +473,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.history.countPerPage
+        return this.$store.state.gui.view.historycountPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'history.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.countPerPage', value: newVal })
     }
 
     get hideColums() {
-        return this.$store.state.gui.history.hideColums
+        return this.$store.state.gui.view.history.hideColums
     }
 
     set hideColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'history.hideColums', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
     }
 
     refreshHistory() {

@@ -177,23 +177,23 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     private homeCols = 6
 
     get selectedCrossStep() {
-        return this.$store.state.gui.dashboard.control.selectedCrossStep
+        return this.$store.state.gui.control.selectedCrossStep
     }
 
     set selectedCrossStep(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.selectedCrossStep', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCrossStep', value: newVal })
     }
 
     get reverseX() {
-        return this.$store.state.gui.dashboard.control.reverseX
+        return this.$store.state.gui.control.reverseX
     }
 
     get reverseY() {
-        return this.$store.state.gui.dashboard.control.reverseY
+        return this.$store.state.gui.control.reverseY
     }
 
     get reverseZ() {
-        return this.$store.state.gui.dashboard.control.reverseZ
+        return this.$store.state.gui.control.reverseZ
     }
 
     get stepsAll() {

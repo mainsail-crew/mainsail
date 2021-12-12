@@ -6,6 +6,8 @@ import {GuiMacrogroupsState} from '@/store/gui/macrogroups/types'
 
 export const getDefaultState = (): GuiMacrogroupsState => {
     return {
+        macroManagement: 'simple',
+        hiddenMacros: [],
         macrogroups: {},
     }
 }

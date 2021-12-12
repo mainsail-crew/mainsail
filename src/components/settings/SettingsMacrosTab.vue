@@ -44,11 +44,11 @@ export default class SettingsMacrosTab extends Mixins(BaseMixin) {
     }
 
     get macroManagement() {
-        return this.$store.state.gui?.dashboard?.macroManagement ?? 'simple'
+        return this.$store.state.gui?.macrogroups?.macroManagement ?? 'simple'
     }
 
     set macroManagement(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.macroManagement', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'macrogroups.macroManagement', value: newVal })
     }
 
     updateShowGeneral(newVal: boolean) {

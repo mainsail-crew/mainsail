@@ -8,7 +8,7 @@ import {GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
 export default class DashboardMixin extends BaseMixin {
 
     get macroMode() {
-        return this.$store.state.gui.dashboard.macroManagement ?? 'simple'
+        return this.$store.state.gui.macrogroups.macroManagement ?? 'simple'
     }
 
     get macrogroups() {
@@ -67,7 +67,7 @@ export default class DashboardMixin extends BaseMixin {
             if (!panels.find((panel) => panel.name === panelname))
                 missingPanels.push({
                     name: panelname,
-                    visable: true
+                    visible: true
                 })
         })
 

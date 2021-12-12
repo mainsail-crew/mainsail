@@ -43,38 +43,38 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setHeaterChartVisibility(state, payload) {
-        const index = state.dashboard.hiddenTempChart.indexOf(payload.name.toUpperCase())
+        const index = state.view.tempchart.hiddenDataset.indexOf(payload.name.toUpperCase())
 
-        if (payload.hidden && index === -1) state.dashboard.hiddenTempChart.push(payload.name.toUpperCase())
-        else if (payload.hidden !== true && index > -1) state.dashboard.hiddenTempChart.splice(index, 1)
+        if (payload.hidden && index === -1) state.view.tempchart.hiddenDataset.push(payload.name.toUpperCase())
+        else if (payload.hidden !== true && index > -1) state.view.tempchart.hiddenDataset.splice(index, 1)
     },
 
     setGcodefilesMetadata(state, data) {
-        if (data.value && state.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.gcodefiles.hideMetadataColums.splice(state.gcodefiles.hideMetadataColums.indexOf(data.name), 1)
-        } else if (!data.value && !state.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.gcodefiles.hideMetadataColums.push(data.name)
+        if (data.value && state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
+            state.view.gcodefiles.hideMetadataColums.splice(state.view.gcodefiles.hideMetadataColums.indexOf(data.name), 1)
+        } else if (!data.value && !state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
+            state.view.gcodefiles.hideMetadataColums.push(data.name)
         }
     },
 
     setGcodefilesShowHiddenFiles(state, value) {
-        Vue.set(state.gcodefiles, 'showHiddenFiles', value)
+        Vue.set(state.view.gcodefiles, 'showHiddenFiles', value)
     },
 
     setCurrentWebcam(state, payload) {
-        Vue.set(state.webcamSettings.currentCam, payload.viewport, payload.value)
+        Vue.set(state.view.webcam.currentCam, payload.viewport, payload.value)
     },
 
     setHistoryColumns(state, data) {
-        if (data.value && state.history.hideColums.includes(data.name)) {
-            state.history.hideColums.splice(state.history.hideColums.indexOf(data.name), 1)
-        } else if (!data.value && !state.history.hideColums.includes(data.name)) {
-            state.history.hideColums.push(data.name)
+        if (data.value && state.view.history.hideColums.includes(data.name)) {
+            state.view.history.hideColums.splice(state.view.history.hideColums.indexOf(data.name), 1)
+        } else if (!data.value && !state.view.history.hideColums.includes(data.name)) {
+            state.view.history.hideColums.push(data.name)
         }
     },
 
     setHistoryHidePrintStatus(state, payload) {
-        Vue.set(state.history, 'hidePrintStatus', payload)
+        Vue.set(state.view.history, 'hidePrintStatus', payload)
     },
 
     addClosePanel(state, payload) {
@@ -98,13 +98,14 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     deleteFromDashboardLayout(state, payload) {
+        // @ts-ignore
         const layoutArray = [...state.dashboard[payload.layoutname]]
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },
 
     addToLockedSliders(state, payload){
-        const lockedSliders = [...state.dashboard.lockedSliders]
+        const lockedSliders = [...state.view.lockedSliders]
         if (!lockedSliders.includes(payload.name)) {
             lockedSliders.push(payload.name)
 
@@ -113,7 +114,7 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     removeFromLockedSliders(state, payload){
-        const lockedSliders = [...state.dashboard.lockedSliders]
+        const lockedSliders = [...state.view.lockedSliders]
         const index = lockedSliders.indexOf(payload.name)
         if (index > -1) {
             lockedSliders.splice(index, 1)

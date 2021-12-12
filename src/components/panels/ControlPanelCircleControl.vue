@@ -344,15 +344,15 @@ import ControlMixin from '@/components/mixins/control'
 @Component
 export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {
     get reverseX() {
-        return this.$store.state.gui.dashboard.control.reverseX
+        return this.$store.state.gui.control.reverseX
     }
 
     get reverseY() {
-        return this.$store.state.gui.dashboard.control.reverseY
+        return this.$store.state.gui.control.reverseY
     }
 
     get reverseZ() {
-        return this.$store.state.gui.dashboard.control.reverseZ
+        return this.$store.state.gui.control.reverseZ
     }
 
     get stepsXY() {

@@ -7,19 +7,19 @@ export const getters: GetterTree<GuiState, any> = {
 
     getDatasetValue: (state) => (payload: { name: string, type: string }) => {
         if (
-            payload.name in state.tempchart.datasetSettings &&
-            payload.type in state.tempchart.datasetSettings[payload.name]
-        ) return state.tempchart.datasetSettings[payload.name][payload.type]
+            payload.name in state.view.tempchart.datasetSettings &&
+            payload.type in state.view.tempchart.datasetSettings[payload.name]
+        ) return state.view.tempchart.datasetSettings[payload.name][payload.type]
 
         return ['temperature', 'target'].includes(payload.type)
     },
 
     getDatasetAdditionalSensorValue: (state) => (payload: { name: string, sensor: string }) => {
         if (
-            payload.name in state.tempchart.datasetSettings &&
-            'additionalSensors' in state.tempchart.datasetSettings[payload.name] &&
-            payload.sensor in state.tempchart.datasetSettings[payload.name].additionalSensors
-        ) return state.tempchart.datasetSettings[payload.name].additionalSensors[payload.sensor]
+            payload.name in state.view.tempchart.datasetSettings &&
+            'additionalSensors' in state.view.tempchart.datasetSettings[payload.name] &&
+            payload.sensor in state.view.tempchart.datasetSettings[payload.name].additionalSensors
+        ) return state.view.tempchart.datasetSettings[payload.name].additionalSensors[payload.sensor]
 
         return true
     },
@@ -28,10 +28,11 @@ export const getters: GetterTree<GuiState, any> = {
         return !state.dashboard.nonExpandPanels?.includes(name) ?? true
     },
 
-    getPanels: (state, getters) => (viewport: string) => {
-        let panels = state.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
+    getPanels: (state, getters, rootState) => (viewport: string) => {
+        // @ts-ignore
+        let panels = state.view.dashboard[viewport]?.filter((element: any) => element !== null) ?? []
 
-        if (state.dashboard.macroManagement === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
+        if (rootState.gui.macrogroups.macroManagement === 'simple') panels = panels.filter((element: any) => !element.name.startsWith('macrogroup_'))
         else {
             panels = panels.filter((element: any) => element.name !== 'macros')
             const macrogroups = getters['macrogroups/getAllMacrogroups']
@@ -53,6 +54,6 @@ export const getters: GetterTree<GuiState, any> = {
     },
 
     getLockedSliders: (state) => (name: string) => {
-        return state.dashboard.lockedSliders?.includes(name) ?? false
+        return state.view.lockedSliders?.includes(name) ?? false
     }
 }

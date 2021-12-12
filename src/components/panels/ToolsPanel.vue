@@ -303,19 +303,19 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get boolTempchart(): boolean {
-        return this.$store.state.gui.dashboard?.boolTempchart ?? false
+        return this.$store.state.gui.view.tempchart.boolTempchart ?? false
     }
 
     set boolTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.boolTempchart', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: newVal })
     }
 
     get autoscaleTempchart(): boolean {
-        return this.$store.state.gui.tempchart.autoscale ?? false
+        return this.$store.state.gui.view.tempchart.autoscale ?? false
     }
 
     set autoscaleTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'tempchart.autoscale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.autoscale', value: newVal })
     }
 
     get heaters(): PrinterStateHeater[] {

@@ -21,8 +21,8 @@ export const actions: ActionTree<GuiState, RootState> = {
             payload.value.dashboard?.control !== undefined &&
             'useCross' in payload.value.dashboard?.control
         ) {
-            dispatch('saveSetting', { name: 'dashboard.control.style', value: 'cross' })
-            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'dashboard.control.useCross' })
+            dispatch('saveSetting', { name: 'control.style', value: 'cross' })
+            Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'control.useCross' })
             delete payload.value.dashboard?.control.useCross
         }
 
@@ -139,7 +139,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {
             keyName: 'gcodefiles',
-            newVal: state.gcodefiles
+            newVal: state.view.gcodefiles
         })
     },
 
@@ -147,7 +147,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setGcodefilesShowHiddenFiles', data)
         dispatch('updateSettings', {
             keyName: 'gcodefiles',
-            newVal: state.gcodefiles
+            newVal: state.view.gcodefiles
         })
     },
 
@@ -155,7 +155,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setCurrentWebcam', payload)
         dispatch('updateSettings', {
             keyName: 'webcamSettings.currentCam',
-            newVal: state.webcamSettings.currentCam
+            newVal: state.view.webcam.currentCam
         })
     },
 
@@ -163,7 +163,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setTempchartDatasetAdditionalSensorSetting', payload)
         dispatch('updateSettings', {
             keyName: 'tempchart',
-            newVal: state.tempchart
+            newVal: state.view.tempchart
         })
     },
 
@@ -271,19 +271,19 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setHistoryColumns', data)
         dispatch('updateSettings', {
             keyName: 'history',
-            newVal: state.history
+            newVal: state.view.history
         })
     },
 
     hideStatusInHistoryList({ commit, dispatch, state }, name) {
-        const array: string[] = [...state.history.hidePrintStatus]
+        const array: string[] = [...state.view.history.hidePrintStatus]
 
         if (!array.includes(name)) {
             array.push(name)
             commit('setHistoryHidePrintStatus', array)
 
             dispatch('updateSettings', {
-                keyName: 'history.hidePrintStatus',
+                keyName: 'view.history.hidePrintStatus',
                 newVal: array
             })
         }
@@ -300,7 +300,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     showStatusInHistoryList({ commit, dispatch, state }, name) {
-        const array: string[] = [...state.history.hidePrintStatus]
+        const array: string[] = [...state.view.history.hidePrintStatus]
 
         const index = array.indexOf(name)
         if (index !== -1) {
@@ -308,7 +308,7 @@ export const actions: ActionTree<GuiState, RootState> = {
             commit('setHistoryHidePrintStatus', array)
 
             dispatch('updateSettings', {
-                keyName: 'history.hidePrintStatus',
+                keyName: 'view.history.hidePrintStatus',
                 newVal: array
             })
         }
@@ -316,7 +316,7 @@ export const actions: ActionTree<GuiState, RootState> = {
 
     resetLayout({ dispatch }, name) {
         const defaultState = getDefaultState()
-        // eslint-disable-next-line
+        // @ts-ignore
         const newVal: any = defaultState.dashboard[name] ?? []
 
         dispatch('saveSetting', {
@@ -328,8 +328,8 @@ export const actions: ActionTree<GuiState, RootState> = {
     toggleHideUploadAndPrintBtn({commit, dispatch, state}, payload) {
         commit('toggleHideUploadAndPrintBtn', payload)
         dispatch('updateSettings', {
-            keyName: 'dashboard.boolHideUploadAndPrintButton',
-            newVal: state.dashboard.boolHideUploadAndPrintButton
+            keyName: 'uiSettings.boolHideUploadAndPrintButton',
+            newVal: state.uiSettings.boolHideUploadAndPrintButton
         })
     }
 }

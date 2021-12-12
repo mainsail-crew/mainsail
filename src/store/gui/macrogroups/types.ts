@@ -1,4 +1,6 @@
 export interface GuiMacrogroupsState {
+    macroManagement: 'simple' | 'expert'
+    hiddenMacros: string[]
     macrogroups: {
         [key: string]: GuiMacrogroupsStateMacrogroup
     }

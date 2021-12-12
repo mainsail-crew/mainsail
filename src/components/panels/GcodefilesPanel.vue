@@ -628,55 +628,55 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get hideMetadataColums() {
-        return this.$store.state.gui.gcodefiles.hideMetadataColums
+        return this.$store.state.gui.view.gcodefiles.hideMetadataColums
     }
 
     set hideMetadataColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.hideMetadataColums', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColums', value: newVal })
     }
 
     get showHiddenFiles() {
-        return this.$store.state.gui.gcodefiles.showHiddenFiles
+        return this.$store.state.gui.view.gcodefiles.showHiddenFiles
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showHiddenFiles', value: newVal })
     }
 
     get showPrintedFiles() {
-        return this.$store.state.gui.gcodefiles.showPrintedFiles
+        return this.$store.state.gui.view.gcodefiles.showPrintedFiles
     }
 
     set showPrintedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showPrintedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
     }
 
     get sortBy() {
-        return this.$store.state.gui.gcodefiles.sortBy
+        return this.$store.state.gui.view.gcodefiles.sortBy
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.gcodefiles.sortDesc
+        return this.$store.state.gui.view.gcodefiles.sortDesc
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortDesc', value: newVal })
     }
 
     get countPerPage() {
-        return this.$store.state.gui.gcodefiles.countPerPage
+        return this.$store.state.gui.view.gcodefiles.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
     get timelapseEnabled() {

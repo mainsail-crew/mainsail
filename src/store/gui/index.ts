@@ -18,113 +18,8 @@ export const getDefaultState = (): GuiState => {
         general: {
             printername: '',
             language: 'en',
-            displayCancelPrint: false,
-            displayZOffsetStandby: false,
-            lockSlidersOnTouchDevices: true,
-            lockSlidersDelay: 1.5,
-            confirmOnEmergencyStop: false,
-            confirmOnPowerDeviceChange: false,
             calcEstimateTime: ['file', 'filament'],
-            calcEtaTime: ['file', 'filament', 'slicer'],
-        },
-        theme: {
-            logo: defaultLogoColor,
-            primary: defaultPrimaryColor,
-        },
-        dashboard: {
-            boolTempchart: true,
-            boolBigThumbnail: true,
-            boolWideNavDrawer: false,
-            navigationStyle: 'iconsAndText',
-            macroManagement: 'simple',
-            hiddenMacros: [],
-            hiddenTempChart: [],
-            control: {
-                style: 'bars',
-                feedrateXY: 100,
-                stepsXY: [ 100, 10, 1 ],
-                feedrateZ: 25,
-                stepsZ: [ 25, 1, 0.1 ],
-                stepsAll: [0.1, 1, 10, 25, 50, 100],
-                stepsCircleXY: [1, 10, 50, 100],
-                stepsCircleZ: [0.1, 1, 10, 50],
-                selectedCrossStep: null,
-                reverseX: false,
-                reverseY: false,
-                reverseZ: false
-            },
-            extruder: {
-                feedamount: 25,
-                feedamounts: [ 50, 25, 10, 5, 1 ],
-                feedrate: 5,
-                feedrates: [ 15, 10, 5, 2, 1 ],
-            },
-            mobileLayout: [
-                { 'name': 'webcam', visable: false },
-                { 'name': 'zoffset', visable: true },
-                { 'name': 'control', visable: true },
-                { 'name': 'macros', visable: true },
-                { 'name': 'printsettings', visable: true },
-                { 'name': 'machine-settings', visable: true },
-                { 'name': 'miscellaneous', visable: true },
-                { 'name': 'tools', visable: true },
-                { 'name': 'miniconsole', visable: false },
-            ],
-            tabletLayout1: [
-                { 'name': 'webcam', visable: true  },
-                { 'name': 'zoffset', visable: true  },
-                { 'name': 'control', visable: true  },
-                { 'name': 'macros', visable: true },
-                { 'name': 'printsettings', visable: true  },
-                { 'name': 'machine-settings', visable: true },
-                { 'name': 'miscellaneous', visable: true  },
-            ],
-            tabletLayout2: [
-                { 'name': 'tools', visable: true },
-                { 'name': 'miniconsole', visable: true },
-            ],
-            desktopLayout1: [
-                { 'name': 'webcam', visable: true },
-                { 'name': 'zoffset', visable: true },
-                { 'name': 'control', visable: true },
-                { 'name': 'macros', visable: true },
-                { 'name': 'printsettings', visable: true },
-                { 'name': 'machine-settings', visable: true },
-                { 'name': 'miscellaneous', visable: true },
-            ],
-            desktopLayout2: [
-                { 'name': 'tools', visable: true },
-                { 'name': 'miniconsole', visable: true },
-            ],
-            widescreenLayout1: [
-                { 'name': 'zoffset', visable: true },
-                { 'name': 'control', visable: true },
-                { 'name': 'macros', visable: true },
-                { 'name': 'miscellaneous', visable: true },
-            ],
-            widescreenLayout2: [
-                { 'name': 'tools', visable: true },
-                { 'name': 'printsettings', visable: true },
-                { 'name': 'machine-settings', visable: true },
-            ],
-            widescreenLayout3: [
-                { 'name': 'webcam', visable: true },
-                { 'name': 'miniconsole', visable: true },
-            ],
-            nonExpandPanels: []
-        },
-        webcamSettings: {
-            currentCam: {
-                dashboard: 'all',
-                page: 'all'
-            },
-            boolNavi: false,
-        },
-        tempchart: {
-            autoscale: false,
-            datasetSettings: {
-
-            },
+            calcEtaTime: ['file', 'filament', 'slicer']
         },
         console: {
             hideWaitTemperatures: true,
@@ -133,59 +28,82 @@ export const getDefaultState = (): GuiState => {
             entryStyle: 'default',
             height: 300
         },
-        gcodefiles: {
-            countPerPage: 10,
-            sortBy: 'modified',
-            sortDesc: true,
-            showHiddenFiles: false,
-            showPrintedFiles: true,
-            hideMetadataColums: []
+        control: {
+            style: 'bars',
+            feedrateXY: 100,
+            stepsXY: [ 100, 10, 1 ],
+            feedrateZ: 25,
+            stepsZ: [ 25, 1, 0.1 ],
+            stepsAll: [0.1, 1, 10, 25, 50, 100],
+            stepsCircleXY: [1, 10, 50, 100],
+            stepsCircleZ: [0.1, 1, 10, 50],
+            selectedCrossStep: null,
+            reverseX: false,
+            reverseY: false,
+            reverseZ: false,
+            extruder: {
+                feedamount: 25,
+                feedamounts: [ 50, 25, 10, 5, 1 ],
+                feedrate: 5,
+                feedrates: [ 15, 10, 5, 2, 1 ],
+            },
         },
-        timelapse: {
-            countPerPage: 10,
-            sortBy: 'modified',
-            sortDesc: true,
-            showHiddenFiles: false,
-        },
-        jobqueue: {
-            countPerPage: 10,
-        },
-        heightmap: {
-            probed: true,
-            mesh: false,
-            flat: false,
-            wireframe: true,
-            scale: 0.5,
-            scaleVisualMap: false,
-        },
-        history: {
-            countPerPage: 10,
-            toggleChartCol3: 'filament_usage',
-            hidePrintStatus: [],
-            hideColums: [
-                'size',
-                'modified',
-                'end_time',
-                'total_duration',
-                'filament_total',
-                'first_layer_extr_temp',
-                'first_layer_bed_temp',
-                'first_layer_height',
-                'layer_height',
-                'object_height',
-            ]
-        },
-        settings: {
-            configfiles: {
-                countPerPage: 10,
-                sortBy: 'filename',
-                sortDesc: false,
-                showHiddenFiles: false,
-                hideBackupFiles: false
-            }
+        dashboard: {
+            nonExpandPanels: [],
+            mobileLayout: [
+                { 'name': 'webcam', visible: false },
+                { 'name': 'zoffset', visible: true },
+                { 'name': 'control', visible: true },
+                { 'name': 'macros', visible: true },
+                { 'name': 'printsettings', visible: true },
+                { 'name': 'machine-settings', visible: true },
+                { 'name': 'miscellaneous', visible: true },
+                { 'name': 'tools', visible: true },
+                { 'name': 'miniconsole', visible: false },
+            ],
+            tabletLayout1: [
+                { 'name': 'webcam', visible: true  },
+                { 'name': 'zoffset', visible: true  },
+                { 'name': 'control', visible: true  },
+                { 'name': 'macros', visible: true },
+                { 'name': 'printsettings', visible: true  },
+                { 'name': 'machine-settings', visible: true },
+                { 'name': 'miscellaneous', visible: true  },
+            ],
+            tabletLayout2: [
+                { 'name': 'tools', visible: true },
+                { 'name': 'miniconsole', visible: true },
+            ],
+            desktopLayout1: [
+                { 'name': 'webcam', visible: true },
+                { 'name': 'zoffset', visible: true },
+                { 'name': 'control', visible: true },
+                { 'name': 'macros', visible: true },
+                { 'name': 'printsettings', visible: true },
+                { 'name': 'machine-settings', visible: true },
+                { 'name': 'miscellaneous', visible: true },
+            ],
+            desktopLayout2: [
+                { 'name': 'tools', visible: true },
+                { 'name': 'miniconsole', visible: true },
+            ],
+            widescreenLayout1: [
+                { 'name': 'zoffset', visible: true },
+                { 'name': 'control', visible: true },
+                { 'name': 'macros', visible: true },
+                { 'name': 'miscellaneous', visible: true },
+            ],
+            widescreenLayout2: [
+                { 'name': 'tools', visible: true },
+                { 'name': 'printsettings', visible: true },
+                { 'name': 'machine-settings', visible: true },
+            ],
+            widescreenLayout3: [
+                { 'name': 'webcam', visible: true },
+                { 'name': 'miniconsole', visible: true },
+            ],
         },
         editor: {
-            minimap: false,
             escToClose: true,
             confirmUnsavedChanges: true
         },
@@ -194,7 +112,7 @@ export const getDefaultState = (): GuiState => {
             gridColor : '#0000FF',
             backgroundColor : '#000000',
             colorMode : 2,
-            showAxes : 'true',
+            showAxes : true,
             minFeed : 20,
             maxFeed : 100,
             minFeedColor : '#0000FF',
@@ -210,6 +128,85 @@ export const getDefaultState = (): GuiState => {
             voxelWidth: 1,
             voxelHeight: 1,
             specularLighting: false,
+        },
+        uiSettings: {
+            logo: defaultLogoColor,
+            primary: defaultPrimaryColor,
+            displayCancelPrint: false,
+            displayZOffsetStandby: false,
+            lockSlidersOnTouchDevices: true,
+            lockSlidersDelay: 1.5,
+            confirmOnEmergencyStop: false,
+            confirmOnPowerDeviceChange: false,
+            boolBigThumbnail: true,
+            boolWideNavDrawer: false,
+            boolHideUploadAndPrintButton: false,
+            boolWebcamNavi: false,
+            navigationStyle: 'iconsAndText',
+        },
+        view: {
+            configfiles: {
+                countPerPage: 10,
+                sortBy: 'filename',
+                sortDesc: false,
+                showHiddenFiles: false,
+                hideBackupFiles: false
+            },
+            gcodefiles: {
+                countPerPage: 10,
+                sortBy: 'modified',
+                sortDesc: true,
+                showHiddenFiles: false,
+                showPrintedFiles: true,
+                hideMetadataColums: []
+            },
+            heightmap: {
+                probed: true,
+                mesh: false,
+                flat: false,
+                wireframe: true,
+                scale: 0.5,
+                scaleVisualMap: false,
+            },
+            history: {
+                countPerPage: 10,
+                toggleChartCol3: 'filament_usage',
+                hidePrintStatus: [],
+                hideColums: [
+                    'size',
+                    'modified',
+                    'end_time',
+                    'total_duration',
+                    'filament_total',
+                    'first_layer_extr_temp',
+                    'first_layer_bed_temp',
+                    'first_layer_height',
+                    'layer_height',
+                    'object_height',
+                ]
+            },
+            jobqueue: {
+                countPerPage: 10,
+            },
+            lockedSliders: [],
+            tempchart: {
+                boolTempchart: true,
+                hiddenDataset: [],
+                autoscale: false,
+                datasetSettings: { },
+            },
+            timelapse: {
+                countPerPage: 10,
+                sortBy: 'modified',
+                sortDesc: true,
+                showHiddenFiles: false,
+            },
+            webcam: {
+                currentCam: {
+                    dashboard: 'all',
+                    page: 'all'
+                },
+            },
         },
     }
 }

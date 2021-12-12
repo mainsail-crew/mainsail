@@ -101,19 +101,19 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     get currentFeedAmount() {
-        return parseFloat(this.$store.state.gui.dashboard.extruder.feedamount)
+        return parseFloat(this.$store.state.gui.control.extruder.feedamount)
     }
 
     set currentFeedAmount(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedamount', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamount', value: newVal })
     }
 
     get currentFeedRate() {
-        return parseFloat(this.$store.state.gui.dashboard.extruder.feedrate)
+        return parseFloat(this.$store.state.gui.control.extruder.feedrate)
     }
 
     set currentFeedRate(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedrate', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrate', value: newVal })
     }
 
     get boolExtrudePossible() {
