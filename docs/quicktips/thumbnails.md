@@ -12,20 +12,37 @@ description: >-
 
 ![preview](../assets/img/additional/large-preview.png)
 
-### PrusaSlicer (since v2.3.0)
+<details open markdown="block">
+  <summary>
+    Slicers
+  </summary>
+  {: .text-delta }
+1. TOC
+{:toc}
+</details>
+
+## PrusaSlicer (since v2.3.0)
 
 In "Expert" mode PrusaSlicer has an option in the "Printer Settings" tab to activate previews.
 Under `General / Firmware`, enter `32x32,400x300` as "G-code thumbnails".
 
 ![PrusaSlicer](../assets/img/additional/PrusaSlicer2.3.0-thumbnails.png)
 
-### SuperSlicer (since v2.2.54.0)
+<div class="youtube-container">
+  <iframe type="text/html" src="https://www.youtube.com/embed/4nFqfq8kikU" frameborder="0"></iframe>
+</div>
+
+## SuperSlicer (since v2.2.54.0)
 
 In "Expert" mode SuperSlicer has some very convenient options in the "Printer Settings" tab to activate and customize the previews.
 
 ![SuperSlicer](../assets/img/additional/SuperSlicer-thumbnails.png)
 
-### PrusaSlicer/SuperSlicer
+<div class="youtube-container">
+  <iframe type="text/html" src="https://www.youtube.com/embed/xdOM5Uco9hM" frameborder="0"></iframe>
+</div>
+
+## PrusaSlicer/SuperSlicer
 
 To enable thumbnails, click on `Help > Show Configuration Folder` and navigate to your printer profiles inside the `printer` folder.
 Open your printer profile in a text editor and find `thumbnails =` and add the resolutions `32x32,400x300`. Save the file and restart your Slicer.
@@ -34,14 +51,14 @@ Open your printer profile in a text editor and find `thumbnails =` and add the r
 
 From now on the gcode files contain thumbnails displayed by mainsail.
 
-### Cura
+## Cura
 
 The Cura plugin "Cura2Moonraker" is required for this. You can find this plugin and a install guide
 here: [https://github.com/emtrax-ltd/Cura2MoonrakerPlugin](https://github.com/emtrax-ltd/Cura2MoonrakerPlugin)
 
 ![Cura](../assets/img/additional/Cura-thumbnails.png)
 
-### ideaMaker (since v4.2.1)
+## ideaMaker (since v4.2.1)
 
 To enable thumbnails, open the `Advanced` tab in the `printer settings`, enable the `GCode Thumbnails for Octoprint and Mainsail` option and
 enter your prefered *square format* image size in the `Resolution` fields (e.g. `400 X 400`).
