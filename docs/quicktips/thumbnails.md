@@ -43,15 +43,6 @@ In "Expert" mode SuperSlicer has some very convenient options in the "Printer Se
   <iframe type="text/html" src="https://www.youtube.com/embed/xdOM5Uco9hM" frameborder="0"></iframe>
 </div>
 
-## PrusaSlicer/SuperSlicer
-
-To enable thumbnails, click on `Help > Show Configuration Folder` and navigate to your printer profiles inside the `printer` folder.
-Open your printer profile in a text editor and find `thumbnails =` and add the resolutions `32x32,400x300`. Save the file and restart your Slicer.
-
-![PrusaSlicer](../assets/img/additional/PrusaSlicer-thumbnails.png)
-
-From now on the gcode files contain thumbnails displayed by mainsail.
-
 ## Cura
 
 The Cura plugin "Cura2Moonraker" is required for this. You can find this plugin and a install guide
