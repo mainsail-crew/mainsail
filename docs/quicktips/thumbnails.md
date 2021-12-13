@@ -8,6 +8,7 @@ description: >-
 ---
 
 # {{ page.title }}
+{: .no_toc}
 {{ page.description }}
 
 ![preview](../assets/img/additional/large-preview.png)
