@@ -20,9 +20,10 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     initStore({ commit, dispatch, rootState }, payload) {
-        window.console.log(payload)
-
-        if (rootState.socket?.remoteMode && 'remoteprinters' in payload.value) delete payload.value.remoteprinters
+        if ('remoteprinters' in payload.value) {
+            if (!rootState.socket?.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
+            delete payload.value.remoteprinters
+        }
 
         commit('setData', payload.value)
     },

@@ -1,6 +1,7 @@
 import {GuiMacrosState} from '@/store/gui/macros/types'
 import {GuiConsoleState} from '@/store/gui/console/types'
 import {GuiPresetsState} from '@/store/gui/presets/types'
+import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
 
 export interface GuiState {
     general: {
@@ -69,6 +70,7 @@ export interface GuiState {
     }
     macros?: GuiMacrosState
     presets?: GuiPresetsState
+    remoteprinters?: GuiRemoteprintersState
     uiSettings: {
         logo: string
         primary: string
