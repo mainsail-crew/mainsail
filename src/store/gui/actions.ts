@@ -104,18 +104,22 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async backupMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
-        const namespaces: string[] = []
-        Object.keys(payload).forEach((element) => {
-            if (payload[element] === true) namespaces.push(element)
-        })
-
         const backup: any = {}
-        for (const namespace of namespaces) {
-            const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + namespace
 
-            const response = await fetch(url)
-            const objects = await response.json()
-            if (objects?.result?.value) backup[namespace] = {...objects?.result?.value}
+        const responseMainsail = await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail')
+        const objectsMainsail = await responseMainsail.json()
+        const mainsailDb = objectsMainsail?.result?.value ?? {}
+
+        for (const key of payload) {
+            if (['timelapse', 'webcams'].includes(key)) {
+                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + key
+
+                const response = await fetch(url)
+                const objects = await response.json()
+                if (objects?.result?.value) backup[key] = {...objects?.result?.value}
+            } else if (key in mainsailDb) {
+                backup[key] = {...mainsailDb[key]}
+            }
         }
 
         const element = document.createElement('a')

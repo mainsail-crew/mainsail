@@ -20,7 +20,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamicSlotWidth="true">
                     <input type="file" :accept="['.json']" ref="uploadBackupFile" class="d-none" @change="uploadRestore" />
-                    <v-btn @click="backupDb" small>{{ $t('Settings.GeneralTab.Backup') }}</v-btn>
+                    <v-btn @click="backupDb" :loading="loadings.includes('backupDbButton')" small>{{ $t('Settings.GeneralTab.Backup') }}</v-btn>
                     <v-btn @click="restoreDb" small :loading="loadings.includes('restoreUploadButton')" class="ml-3">{{ $t('Settings.GeneralTab.Restore') }}</v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -44,14 +44,27 @@
                         <v-col class="pl-6">
                             <template v-for="db in mainsailKeys">
                                 <v-checkbox
-                                    v-model="dbCheckboxes[db.name]"
                                     :label="db.label"
-                                    v-if="moonrakerDbNamespaces.includes(db.name)"
                                     hide-details
                                     class="mt-0"
                                     :key="db.name"
+                                    @change="changeNamespace(db.name)"
                                 ></v-checkbox>
                             </template>
+                            <v-checkbox
+                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
+                                v-if="availableNamespaces.includes('timelapse')"
+                                hide-details
+                                class="mt-0"
+                                @change="changeNamespace('timelapse')"
+                            ></v-checkbox>
+                            <v-checkbox
+                                :label="$t('Settings.GeneralTab.DbWebcams')"
+                                v-if="availableNamespaces.includes('webcams')"
+                                hide-details
+                                class="mt-0"
+                                @change="changeNamespace('webcams')"
+                            ></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -384,18 +397,28 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         await this.$store.dispatch('gui/resetMoonrakerDB', this.dbCheckboxes)
     }
 
+    async backupDb() {
+        this.$store.dispatch('socket/addLoading', 'backupDbButton')
+        await this.refreshNamespaces()
+        if (this.availableNamespaces.includes('mainsail')) await this.refreshMainsailKeys()
+        else this.mainsailKeys = []
+
+        this.dbCheckboxes = []
+        this.dialogBackupMainsail = true
+    }
+
+    async backupMainsail() {
+        await this.$store.dispatch('socket/addLoading', 'backupMainsail')
+        await this.$store.dispatch('gui/backupMoonrakerDB', this.dbCheckboxes)
+        await this.$store.dispatch('socket/removeLoading', 'backupMainsail')
+        this.dialogBackupMainsail = false
+    }
+
 
 
 
 
     //old.....
-
-    async backupDb() {
-        this.$store.dispatch('socket/addLoading', 'backupDbButton')
-        await this.refreshMainsailKeys()
-
-        this.dialogBackupMainsail = true
-    }
 
     async restoreDb() {
         this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
@@ -432,13 +455,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             dbCheckboxes: this.dbCheckboxes,
             restoreObjects: this.restoreObjects
         })
-    }
-
-    async backupMainsail() {
-        await this.$store.dispatch('socket/addLoading', 'backupMainsail')
-        await this.$store.dispatch('gui/backupMoonrakerDB', this.dbCheckboxes)
-        await this.$store.dispatch('socket/removeLoading', 'backupMainsail')
-        this.dialogBackupMainsail = false
     }
 }
 </script>
