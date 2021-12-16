@@ -80,14 +80,9 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async resetMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
-        const namespaces: string[] = []
-        Object.keys(payload).forEach((element) => {
-            if (payload[element] === true) namespaces.push(element)
-        })
-
-        for (const namespace of namespaces) {
-            if (['mainsail', 'webcams', 'timelapse'].includes(namespace)) {
-                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + namespace
+        for (const key of payload) {
+            if (['webcams', 'timelapse'].includes(key)) {
+                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + key
 
                 const response = await fetch(url)
                 const objects = await response.json()
@@ -96,10 +91,12 @@ export const actions: ActionTree<GuiState, RootState> = {
                         await fetch(url+'&key='+item, { method: 'DELETE' })
                     }
                 }
-            } else if (namespace === 'history_jobs') {
+            } else if (key === 'history_jobs') {
                 await fetch(rootGetters['socket/getUrl'] + '/server/history/job?all=true', { method: 'DELETE' })
-            } else if (namespace === 'history_totals') {
+            } else if (key === 'history_totals') {
                 await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
+            } else {
+                await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, { method: 'DELETE' })
             }
         }
 
