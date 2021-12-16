@@ -197,7 +197,7 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     get stepsAll() {
-        return this.$store.state.gui.dashboard?.control?.stepsAll ?? []
+        return this.$store.state.gui.control?.stepsAll ?? []
     }
 
     get stepsReversed() {

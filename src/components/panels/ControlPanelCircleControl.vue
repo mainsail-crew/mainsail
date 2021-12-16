@@ -356,7 +356,7 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     get stepsXY() {
-        const steps = this.$store.state.gui.dashboard?.control?.stepsCircleXY ?? []
+        const steps = this.$store.state.gui.control?.stepsCircleXY ?? []
 
         return Array.from(new Set([
             ...(steps ?? []),
@@ -364,7 +364,7 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     get stepsZ() {
-        const steps = this.$store.state.gui.dashboard?.control?.stepsCircleZ ?? []
+        const steps = this.$store.state.gui.control?.stepsCircleZ ?? []
 
         return Array.from(new Set([
             ...(steps ?? []),
