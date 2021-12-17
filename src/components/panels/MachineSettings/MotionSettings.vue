@@ -35,7 +35,7 @@
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Deceleration')"
+                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel')"
                     :target="current_accel_to_decel"
                     :max="max_accel_to_decel"
                     :default-value="max_accel_to_decel"
