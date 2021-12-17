@@ -368,7 +368,7 @@
         "Motion": "Bewegung",
         "Velocity": "Geschwindigkeit",
         "Acceleration": "Beschleunigung",
-        "Deceleration": "Verlangsamung",
+        "MaxAccelToDecel": "Max. Beschl. zu Verz.",
         "SquareCornerVelocity": "Eck-Geschwindigkeit"
       },
       "PressureAdvanceSettings": {
