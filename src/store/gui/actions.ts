@@ -133,45 +133,57 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async restoreMoonrakerDB({ rootGetters }, payload) {
-        const namespaces: string[] = []
-        Object.keys(payload.dbCheckboxes).forEach((element) => {
-            if (payload.dbCheckboxes[element] === true) namespaces.push(element)
-        })
+        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+        const mainsailUrl = baseUrl + '?namespace=mainsail'
+        const responseNamespaces = await fetch(rootGetters['socket/getUrl'] + '/server/database/list')
+        const objectsNamespaces = await responseNamespaces.json()
+        const namespacesArray = objectsNamespaces?.result?.namespaces ?? []
+        let mainsailArray: string[] = []
 
-        for (const namespace of namespaces) {
-            const listUrl = rootGetters['socket/getUrl'] + '/server/database/list'
+        if (namespacesArray.includes('mainsail')) {
+            const responseMainsail = await fetch(mainsailUrl)
+            const objectsMainsail = await responseMainsail.json()
+            mainsailArray = Object.keys(objectsMainsail?.result?.value ?? {})
+        }
 
-            let existingNamespaces: string[] = []
-            const responseNamespaces = await fetch(listUrl)
-            const objectsNamespaces = await responseNamespaces.json()
-            if (objectsNamespaces?.result?.namespaces) {
-                existingNamespaces = objectsNamespaces?.result?.namespaces
-            }
-
-            const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
-            if (existingNamespaces.includes(namespace)) {
-                const url = baseUrl + '?namespace=' + namespace
-
-                const response = await fetch(url)
-                const objects = await response.json()
-                if (objects?.result?.value) {
-                    for (const item of Object.keys(objects?.result?.value)) {
-                        await fetch(url + '&key=' + item, {method: 'DELETE'})
+        for (const key of payload.dbCheckboxes) {
+            if (['timelapse', 'webcams'].includes(key)) {
+                if (namespacesArray.includes(key)) {
+                    const url = baseUrl + '?namespace=' + key
+                    const response = await fetch(url)
+                    const objects = await response.json()
+                    if (objects?.result?.value) {
+                        for (const item of Object.keys(objects?.result?.value)) {
+                            await fetch(url + '&key=' + item, {method: 'DELETE'})
+                        }
                     }
                 }
-            }
 
-            for (const key of Object.keys(payload.restoreObjects[namespace])) {
-                const value = payload.restoreObjects[namespace][key]
-                await fetch(baseUrl, {
+                for (const key2 of Object.keys(payload.restoreObjects[key])) {
+                    const value = payload.restoreObjects[key][key2]
+                    await fetch(baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            namespace: key,
+                            key: key2,
+                            value
+                        })
+                    })
+                }
+            } else {
+                if (mainsailArray.includes(key)) await fetch(mainsailUrl+'&key='+key, { method: 'DELETE' })
+                await fetch(mainsailUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        namespace,
+                        namespace: 'mainsail',
                         key,
-                        value
+                        value: payload.restoreObjects[key]
                     })
                 })
             }

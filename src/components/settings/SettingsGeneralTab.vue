@@ -160,12 +160,13 @@
                     </v-row>
                     <v-row>
                         <v-col class="pl-6">
-                            <template v-for="db in mainsailKeys">
+                            <template v-for="db in restoreableNamespaces">
                                 <v-checkbox
                                     :label="db.label"
                                     hide-details
                                     class="mt-0"
                                     :key="db.name"
+                                    @change="changeNamespace(db.name)"
                                 ></v-checkbox>
                             </template>
                         </v-col>
@@ -206,7 +207,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     private dbCheckboxes: string[] = []
 
-    private restoreableNamespaces: string[] = []
+    private restoreableNamespaces: { name: string, label: string}[] = []
     private restoreObjects: any = {}
 
     private mainsailKeys: { name: string, label: string}[] = []
@@ -379,8 +380,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             const index = this.dbCheckboxes.indexOf(name)
             if (index >= 0) this.dbCheckboxes.splice(index, 1)
         } else this.dbCheckboxes.push(name)
-
-        window.console.log(this.dbCheckboxes)
     }
 
     async resetMainsail() {
@@ -414,15 +413,8 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         this.dialogBackupMainsail = false
     }
 
-
-
-
-
-    //old.....
-
     async restoreDb() {
         this.$store.dispatch('socket/addLoading', 'restoreUploadButton')
-        await this.refreshMainsailKeys()
         this.$refs?.uploadBackupFile?.click()
     }
 
@@ -433,18 +425,42 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 const reader = new FileReader()
                 reader.readAsText(backup, 'UTF-8')
                 reader.onload = (evt) => {
+                    this.restoreableNamespaces = []
                     try {
                         this.restoreObjects = JSON.parse(evt?.target?.result+'')
-                        this.restoreableNamespaces = Object.keys(this.restoreObjects)
+
+                        Object.keys(this.restoreObjects).forEach((tmp: string) => {
+                            const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
+                            const tmpNamespace = namespace ? namespace : { name: tmp, label: tmp }
+
+                            this.restoreableNamespaces.push(tmpNamespace)
+                        })
+
+                        this.restoreableNamespaces = this.restoreableNamespaces.sort((a, b) => {
+                            if (a.name === 'general') return -1
+                            if (b.name === 'general') return 1
+
+                            const stringA = a.label.toString().toLowerCase()
+                            const stringB = b.label.toString().toLowerCase()
+
+                            if (stringA < stringB) return -1
+                            if (stringA > stringB) return 1
+
+                            return 0
+                        })
+
+                        this.dbCheckboxes = []
                         this.dialogRestoreMainsail = true
                     } catch (e) {
                         Vue.$toast.error(this.$t('Settings.GeneralTab.CannotReadJson')+'')
                     }
                 }
                 reader.onerror = (evt) => {
-                    window.console.log(evt)
+                    window.console.error(evt)
                 }
             }
+
+            this.$refs.uploadBackupFile.value = ''
         }
     }
 
