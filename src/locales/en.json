@@ -608,6 +608,7 @@
       "DbGeneral": "General",
       "DbPresets": "Presets",
       "DbConsoleHistory": "Console History",
+      "DbTempchart": "Tempchart",
       "DbGcodehistry": "G-Code History",
       "DbMacrogroups": "Macrogroups",
       "DbRemoteprinters": "Remoteprinters",
