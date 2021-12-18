@@ -256,6 +256,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 name: 'uiSettings',
                 label: this.$t('Settings.UiSettingsTab.UiSettings')+''
             }, {
+                name: 'view',
+                label: this.$t('Settings.GeneralTab.DbView')+''
+            }, {
                 name: 'webcams',
                 label: this.$t('Settings.WebcamsTab.Webcams')+''
             }
