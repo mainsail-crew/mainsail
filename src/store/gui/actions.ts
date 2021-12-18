@@ -3,6 +3,7 @@ import {ActionTree} from 'vuex'
 import {GuiState} from '@/store/gui/types'
 import {RootState} from '@/store/types'
 import { getDefaultState } from './index'
+import {themeDir} from '@/store/variables'
 
 export const actions: ActionTree<GuiState, RootState> = {
     reset({ commit, dispatch }) {
@@ -80,9 +81,19 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     async resetMoonrakerDB({ commit, dispatch, rootGetters }, payload) {
+        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+
+        const urlDefault = rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
+        const responseDefault = await fetch(urlDefault)
+        let defaults: any = {}
+        if (responseDefault) {
+            defaults = await responseDefault.json()
+            if (defaults.error?.code === 404) defaults = {}
+        }
+
         for (const key of payload) {
             if (['webcams', 'timelapse'].includes(key)) {
-                const url = rootGetters['socket/getUrl'] + '/server/database/item?namespace=' + key
+                const url = baseUrl + '?namespace=' + key
 
                 const response = await fetch(url)
                 const objects = await response.json()
@@ -91,12 +102,42 @@ export const actions: ActionTree<GuiState, RootState> = {
                         await fetch(url+'&key='+item, { method: 'DELETE' })
                     }
                 }
+
+                if (key in defaults) {
+                    for (const key2 of defaults[key]) {
+                        await fetch(baseUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                namespace: key,
+                                key: key2,
+                                value: defaults[key][key2]
+                            })
+                        })
+                    }
+                }
             } else if (key === 'history_jobs') {
                 await fetch(rootGetters['socket/getUrl'] + '/server/history/job?all=true', { method: 'DELETE' })
             } else if (key === 'history_totals') {
                 await fetch(rootGetters['socket/getUrl'] + '/server/history/reset_totals', { method: 'POST' })
             } else {
                 await fetch(rootGetters['socket/getUrl'] + '/server/database/item?namespace=mainsail&key=' + key, { method: 'DELETE' })
+
+                if (key in defaults) {
+                    await fetch(baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            namespace: 'mainsail',
+                            key: key,
+                            value: defaults[key]
+                        })
+                    })
+                }
             }
         }
 
