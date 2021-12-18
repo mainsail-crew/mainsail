@@ -250,9 +250,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 name: 'remoteprinters',
                 label: this.$t('Settings.RemotePrintersTab.RemotePrinters')+''
             }, {
-                name: 'tempchart',
-                label: this.$t('Settings.GeneralTab.DbTempchart')+''
-            }, {
                 name: 'timelapse',
                 label: this.$t('Settings.TimelapseTab.Timelapse')+''
             }, {
