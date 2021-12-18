@@ -239,7 +239,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 label: this.$t('Settings.GCodeViewerTab.GCodeViewer')+''
             }, {
                 name: 'gcodehistory',
-                label: this.$t('Settings.GCodeViewerTab.GCodeViewer')+''
+                label: this.$t('Settings.GeneralTab.DbConsoleHistory')+''
             }, {
                 name: 'macros',
                 label: this.$t('Settings.MacrosTab.Macros')+''
@@ -253,7 +253,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
                 name: 'timelapse',
                 label: this.$t('Settings.TimelapseTab.Timelapse')+''
             }, {
-                name: 'uisettings',
+                name: 'uiSettings',
                 label: this.$t('Settings.UiSettingsTab.UiSettings')+''
             }, {
                 name: 'webcams',
