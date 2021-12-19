@@ -11,7 +11,7 @@ permalink: /configuration
 **Mainsail requires a minimum configuration to function properly and will display a warning at startup if the required parts are not found in your configuration file(s).**
 {: .warning}
 
-The following configuration elements are mandatory and  must be configured for Mainsail to operate:
+The following configuration elements are mandatory and  must be configured for Mainsail to operate correctly:
 
 *  [Virtual SD Card](configuration#virtual_sdcard) 
 *  [Display Status](configuration#display_status)
@@ -22,28 +22,28 @@ The following configuration elements are optional, including making tweaks and a
 *  [Custom Commands](configuration#customisation)
 
 ## Virtual SD Card
-This allows gcode file uploads.
+The `Virtual SD Card` allows gcode file uploads.
 ```yaml
 [virtual_sdcard]
 path: ~/gcode_files
 ```
 
 ## Display Status
-This is required for messages in your status panel, if you don't have a `[display]` in your configuration.
+`Display Status` is required for messages in your status panel, if you don't have `[display]` in your configuration.
 ```yaml
 [display_status]
 ```
 
 ## Pause, Resume, Cancel
-This enables pause / resume in mainsail.
+These macros control the current print job.
 
 ```yaml
 [pause_resume]
 ```
 
 # Macros
-## for pause / resume / cancel functionality
-These should be modified to your own needs.
+## Add pause / resume / cancel functionality
+You can modify the below macros to fit your needs.
 {% raw %}
 ```yaml
 [gcode_macro PAUSE]
@@ -118,12 +118,12 @@ gcode:
 # Optional
 
 ## Customisation
-Klipper has many canned/preset commands that are themselves just macros. 
+Klipper has a number of preet commands that are also just macros.
 
-The default configuration of these may not suit your needs or preferences, (though they are usually a good place to start). It's possible to adjust these by including them in your config, along with whatever code you would like to run. 
+The default configuration of these may not suit your needs or preferences, though they are usually a good place to start. It's possible to adjust these by including them in your config, along with any additional code you would like to run. 
 
 ## Example
-Adjusting the `BED_MESH_CALIBRATE` command (which can be run from the Sidebar > Heightmap > Calibrate.
+Adjusting the `BED_MESH_CALIBRATE` command, which is found in the menu at Sidebar > Heightmap > Calibrate.
 {% raw %}
 ```yaml
 [gcode_macro BED_MESH_CALIBRATE]
