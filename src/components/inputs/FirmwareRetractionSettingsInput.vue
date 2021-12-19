@@ -1,34 +1,55 @@
+<style scoped>
+    ._spin_button_group {
+        width: 24px;
+        margin: -6px -6px 0 -6px;
+    }
+</style>
+
 <template>
     <form v-on:submit.prevent="sendCmd">
         <v-text-field
             v-model="value"
+            class="d-flex align-center"
             @click:append="resetLimit"
             :label="label"
             :suffix="unit"
-            :append-icon="this.value !== this.defaultValue ? 'mdi-refresh' : ''"
-            :error="this.value < 0"
+            :append-icon="this.value !== this.defaultValue ? 'mdi-restart' : ''"
+            :error="(this.value < this.min) || ((this.value > this.max) && this.max !== -1)"
             :step="step"
+            :min="min"
+            :max="max"
+            :dec="dec"
             type="number"
-            min="0"
             hide-spin-buttons
             hide-details
             outlined
             dense
-        ></v-text-field>
+        >
+            <template v-slot:append-outer>
+                <div class="_spin_button_group">
+                    <v-btn @click="increment" class="mt-n3" icon plain small><v-icon>mdi-chevron-up</v-icon></v-btn>
+                    <v-btn @click="decrement" class="mb-n3" icon plain small><v-icon>mdi-chevron-down</v-icon></v-btn>
+                </div>
+            </template>
+        </v-text-field>
     </form>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
 import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import {Debounce} from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class FirmwareRetractionSettingsInput extends Mixins(BaseMixin) {
-    private value: any = 0
+    private value: number = 0
 
     @Prop({ type: String, required: true }) readonly label!: string
-    @Prop({ type: Number, required: false }) readonly step!: string
+    @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
+    @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
+    @Prop({ type: Number, required: false , default: -1 }) readonly max!: number
+    @Prop({ type: Number, required: true , default: 0 }) readonly dec!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly defaultValue!: number
     @Prop({ type: String, required: true }) readonly attributeName!: string
@@ -49,8 +70,19 @@ export default class FirmwareRetractionSettingsInput extends Mixins(BaseMixin) {
         this.sendCmd()
     }
 
+    decrement(): void {
+        this.value = (this.value > this.min) ? Math.round((this.value - this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.min
+        this.sendCmd()
+    }
+
+    increment(): void {
+        this.value = (this.value < this.max || this.max === -1) ? Math.round((this.value + this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.max
+        this.sendCmd()
+    }
+
+    @Debounce(500)
     sendCmd(): void {
-        const gcode = 'SET_RETRACTION ' + this.attributeName + '=' + Math.max(0, this.value).toFixed(2)
+        const gcode = 'SET_RETRACTION ' + this.attributeName + '=' + Math.max(this.min, this.value).toFixed(this.dec)
         this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
         this.$socket.emit('printer.gcode.script', {script: gcode})
     }
