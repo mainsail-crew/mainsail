@@ -720,10 +720,14 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     tooltipFormatter(data: any): string {
-        return '<b>'+data.seriesName+'</b><br />' +
-            '<b>' + data.dimensionNames[0]+'</b>: '+data.data[0].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[1]+'</b>: '+data.data[1].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[2]+'</b>: '+data.data[2].toFixed(3) + ' mm '
+        const outputArray: string[] = []
+        outputArray.push('<b>'+data.seriesName+'</b>')
+
+        Object.keys(data.encode).sort().forEach((axisName: string) => {
+            outputArray.push('<b>' + axisName.toUpperCase() + '</b>: '+data.data[data.encode[axisName][0]].toFixed(axisName === 'z' ? 3 : 1) + ' mm')
+        })
+
+        return outputArray.join('<br />')
     }
 
     loadProfile(name: string): void {
