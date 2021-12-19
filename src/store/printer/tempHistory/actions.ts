@@ -15,20 +15,24 @@ import {
 import {RootState} from '@/store/types'
 
 export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
-    reset({ commit }) {
+    reset({ commit, state }) {
+        if (state.updateSourceInterval !== null)
+            clearInterval(state.updateSourceInterval)
+
         commit('reset')
     },
 
     init({ commit, rootGetters, dispatch }, payload) {
+        window.console.debug('init printer/tempHistory')
         commit('reset')
 
         const now = new Date()
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
         const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
 
-        if ('requestParams' in payload) delete payload.requestParams
-
         if (payload !== undefined) {
+            if ('requestParams' in payload) delete payload.requestParams
+
             const objectKeys = Object.keys(payload)
             // eslint-disable-next-line
 			const importData: any = {}
@@ -198,13 +202,20 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
             commit('setInitSeries', series)
 
-            setInterval(() => {
+            const updateSourceInterval = setInterval(() => {
                 dispatch('updateSource')
             }, datasetInterval)
+
+            commit('setUpdateSourceInterval', updateSourceInterval)
         }
     },
 
-    updateSource({ commit, rootState, rootGetters }) {
+    async updateSource({ commit, rootState, rootGetters, state }) {
+        /*if (state.timeLastUpdate !== null) {
+            const t0 = performance.now()
+            window.console.debug('update Source', t0-state.timeLastUpdate)
+        }*/
+
         if (rootState?.printer?.heaters?.available_sensors?.length) {
             const data: PrinterTempHistoryStateSourceEntry = {
                 date: new Date()
@@ -222,10 +233,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 }
             })
 
-            commit('addToSource', {
+            await commit('addToSource', {
                 data: data,
                 maxHistory: rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
             })
         }
+
+        //commit('saveLastDate', performance.now())
     },
 }
