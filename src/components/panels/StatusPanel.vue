@@ -388,7 +388,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 color: 'error',
                 icon: 'mdi-stop',
                 loadingName: 'statusPrintCancel',
-                status: this.$store.state.gui.general.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
+                status: this.$store.state.gui.uiSettings.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
                 click: this.btnCancelJob
             }, {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
@@ -573,7 +573,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get boolBigThumbnail() {
-        const setting = this.$store.state.gui.dashboard.boolBigThumbnail ?? true
+        const setting = this.$store.state.gui.uiSettings.boolBigThumbnail ?? true
 
         return this.current_filename && setting && this.thumbnailBig
     }

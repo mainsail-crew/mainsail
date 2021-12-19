@@ -8,11 +8,7 @@ export const mutations: MutationTree<GuiGcodehistoryState> = {
         Object.assign(state, getDefaultState())
     },
 
-    initStore(state, payload) {
-        Vue.set(state, 'history', payload.value?.history)
-    },
-
     updateHistory(state, payload) {
-        Vue.set(state, 'history', payload)
+        Vue.set(state, 'entries', payload)
     },
 }

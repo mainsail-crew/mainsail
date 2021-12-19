@@ -89,11 +89,11 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get toggleChart () {
-        return this.$store.state.gui.history.toggleChartCol3
+        return this.$store.state.gui.view.history.toggleChartCol3
     }
 
     set toggleChart(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'history.toggleChartCol3', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.history.toggleChartCol3', value: newVal })
     }
 
     formatPrintTime(totalSeconds: number) {

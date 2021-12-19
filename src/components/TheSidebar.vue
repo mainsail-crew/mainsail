@@ -103,7 +103,7 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get navigationStyle() {
-        return this.$store.state.gui.dashboard.navigationStyle
+        return this.$store.state.gui.uiSettings.navigationStyle
     }
 
     get sidebarBackground(): string {
@@ -119,7 +119,7 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get boolNaviWebcam(): boolean {
-        return this.$store.state.gui.webcamSettings.boolNavi
+        return this.$store.state.gui.uiSettings.boolWebcamNavi
     }
 
     get moonrakerComponents(): string[] {

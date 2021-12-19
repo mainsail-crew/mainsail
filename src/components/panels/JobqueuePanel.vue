@@ -137,11 +137,11 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.jobqueue.countPerPage
+        return this.$store.state.gui.view.jobqueue.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'jobqueue.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
     refreshHistory() {

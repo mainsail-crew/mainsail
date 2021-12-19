@@ -1,10 +1,12 @@
-export interface GuiMacrogroupsState {
+export interface GuiMacrosState {
+    mode: 'simple' | 'expert'
+    hiddenMacros: string[]
     macrogroups: {
-        [key: string]: GuiMacrogroupsStateMacrogroup
+        [key: string]: GuiMacrosStateMacrogroup
     }
 }
 
-export interface GuiMacrogroupsStateMacrogroup {
+export interface GuiMacrosStateMacrogroup {
     id: string | null
     name: string
     color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'custom'
@@ -12,10 +14,10 @@ export interface GuiMacrogroupsStateMacrogroup {
     showInStandby: boolean
     showInPrinting: boolean
     showInPause: boolean
-    macros?: GuiMacrogroupsStateMacrogroupMacro[]
+    macros?: GuiMacrosStateMacrogroupMacro[]
 }
 
-export interface GuiMacrogroupsStateMacrogroupMacro {
+export interface GuiMacrosStateMacrogroupMacro {
     pos: number
     name: string
     color: 'group' | 'primary' | 'secondary' | 'success' | 'warning' | 'error'

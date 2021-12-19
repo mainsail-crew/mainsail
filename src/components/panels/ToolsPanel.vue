@@ -303,19 +303,19 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
     }
 
     get boolTempchart(): boolean {
-        return this.$store.state.gui.dashboard?.boolTempchart ?? false
+        return this.$store.state.gui.view.tempchart.boolTempchart ?? false
     }
 
     set boolTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.boolTempchart', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.boolTempchart', value: newVal })
     }
 
     get autoscaleTempchart(): boolean {
-        return this.$store.state.gui.tempchart.autoscale ?? false
+        return this.$store.state.gui.view.tempchart.autoscale ?? false
     }
 
     set autoscaleTempchart(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'tempchart.autoscale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.tempchart.autoscale', value: newVal })
     }
 
     get heaters(): PrinterStateHeater[] {
@@ -377,12 +377,12 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         const serieName = 'bool'+type.charAt(0).toUpperCase() + type.slice(1)
         const value = this.editHeater[serieName]
 
-        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.'+type
+        const name = 'view.tempchart.datasetSettings.'+this.editHeater.name+'.'+type
         this.$store.dispatch('gui/saveSetting', { name, value })
     }
 
     setVisibleAdditionalSensor(sensor: string): void {
-        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
+        const name = 'view.tempchart.datasetSettings.'+this.editHeater.name+'.additionalSensors.'+sensor
         this.$store.dispatch('gui/saveSetting', { name, value: this.editHeater.additionSensors[sensor].bool })
     }
 
@@ -391,7 +391,7 @@ export default class ToolsPanel extends Mixins(BaseMixin) {
         if (typeof value === 'object' && 'hex' in value) value = value.hex
         this.$store.commit('printer/tempHistory/setColor', { name: this.editHeater.name, value: value })
 
-        const name = 'tempchart.datasetSettings.'+this.editHeater.name+'.color'
+        const name = 'view.tempchart.datasetSettings.'+this.editHeater.name+'.color'
         this.$store.dispatch('gui/saveSetting', { name, value })
     }
 

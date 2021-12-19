@@ -37,7 +37,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -62,7 +62,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -87,7 +87,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState3(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState3(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState3(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -159,7 +159,7 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     changeState1(name: string, newVal: boolean) {
         const index = this.widescreenLayout1.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.widescreenLayout1[index].visable = newVal
+            this.widescreenLayout1[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout1', value: this.widescreenLayout1 })
         }
     }
@@ -167,7 +167,7 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     changeState2(name: string, newVal: boolean) {
         const index = this.widescreenLayout2.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.widescreenLayout2[index].visable = newVal
+            this.widescreenLayout2[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout2', value: this.widescreenLayout2 })
         }
     }
@@ -175,7 +175,7 @@ export default class SettingsDashboardTabWidescreen extends Mixins(DashboardMixi
     changeState3(name: string, newVal: boolean) {
         const index = this.widescreenLayout3.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.widescreenLayout3[index].visable = newVal
+            this.widescreenLayout3[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.widescreenLayout3', value: this.widescreenLayout3 })
         }
     }

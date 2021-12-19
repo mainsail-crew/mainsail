@@ -210,7 +210,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get autoscale() {
-        return this.$store.state.gui.tempchart.autoscale ?? true
+        return this.$store.state.gui.view.tempchart.autoscale ?? true
     }
 
     get maxTemp() {
