@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import {GuiConsolefiltersState, GuiConsolefiltersStateFilter} from '@/store/gui/consolefilters/types'
 import {caseInsensitiveSort} from '@/plugins/helpers'
+import {timelapseConsoleFilters} from '@/store/variables'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiConsolefiltersState, any> = {
@@ -21,12 +22,8 @@ export const getters: GetterTree<GuiConsolefiltersState, any> = {
         if (rootState.gui.console.hideWaitTemperatures)
             output.push('^(?:ok\\s+)?(B|C|T\\d*):')
 
-        if (rootState.gui.console.hideTlCommands) {
-            output.push('^_TIMELAPSE_NEW_FRAME')
-            output.push('^TIMELAPSE_TAKE_FRAME')
-            output.push('^TIMELAPSE_RENDER')
-            output.push('^_SET_TIMELAPSE_SETUP')
-        }
+        if (rootState.gui.console.hideTlCommands)
+            timelapseConsoleFilters.forEach((rule: string) => { output.push(rule) })
 
         Object.keys(state.consolefilters).forEach((id: string) => {
             const filter = state.consolefilters[id]
