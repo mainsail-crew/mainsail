@@ -29,6 +29,65 @@ export const actions: ActionTree<GuiState, RootState> = {
         commit('setData', payload.value)
     },
 
+    /*
+     * Create mainsail namespace in moonraker DB and fill in default values
+     */
+    async initDb({ dispatch, rootGetters }) {
+        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+
+        const urlDefault = rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/default.json?time=' + Date.now()
+        const responseDefault = await fetch(urlDefault)
+        let defaults: any = {}
+        if (responseDefault) {
+            defaults = await responseDefault.json()
+            if (defaults.error?.code === 404) defaults = {}
+        }
+
+        for (const key in defaults) {
+            if (['webcams', 'timelapse'].includes(key)) {
+                for (const key2 of defaults[key]) {
+                    await fetch(baseUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            namespace: key,
+                            key: key2,
+                            value: defaults[key][key2]
+                        })
+                    })
+                }
+            } else {
+                await fetch(baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        namespace: 'mainsail',
+                        key: key,
+                        value: defaults[key]
+                    })
+                })
+            }
+        }
+
+        await fetch(baseUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                namespace: 'mainsail',
+                key: 'initVersion',
+                value: rootGetters['getVersion']
+            })
+        })
+
+        dispatch('init')
+    },
+
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 

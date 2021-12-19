@@ -357,9 +357,11 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             const objects = await response.json()
             if (objects?.result?.value) {
                 Object.keys(objects?.result?.value).forEach((tmp: string) => {
-                    const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
-                    const tmpNamespace = namespace ? namespace : { name: tmp, label: tmp }
-                    this.mainsailKeys.push(tmpNamespace)
+                    if (tmp !== 'initVersion') {
+                        const namespace = this.availableKeys.find((namespace) => namespace.name === tmp)
+                        const tmpNamespace = namespace ? namespace : { name: tmp, label: tmp }
+                        this.mainsailKeys.push(tmpNamespace)
+                    }
                 })
 
                 this.mainsailKeys = this.mainsailKeys.sort((a, b) => {

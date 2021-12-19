@@ -24,6 +24,7 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     checkDatabases({ dispatch, commit, rootState }, payload) {
         if (payload.namespaces?.includes('mainsail')) dispatch('gui/init', null, { root: true })
+        else dispatch('gui/initDb', null, { root: true })
         if (payload.namespaces?.includes('webcams')) dispatch('gui/webcams/init', null, { root: true })
 
         commit('saveDbNamespaces', payload.namespaces)
