@@ -373,7 +373,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set showProbed(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.probed', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.probed', value: newVal })
     }
 
     get showMesh(): boolean {
@@ -381,7 +381,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set showMesh(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.mesh', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.mesh', value: newVal })
     }
 
     get showFlat(): boolean {
@@ -389,7 +389,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set showFlat(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.flat', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.flat', value: newVal })
     }
 
     get wireframe(): boolean {
@@ -397,7 +397,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set wireframe(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.wireframe', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
     get scale(): boolean {
@@ -405,7 +405,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set scale(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scale', value: newVal })
     }
 
     get scaleVisualMap(): boolean {
@@ -413,7 +413,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     set scaleVisualMap(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleVisualMap', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleVisualMap', value: newVal })
     }
 
     get rangeX(): number[] {
