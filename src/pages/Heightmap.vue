@@ -66,7 +66,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh !== null && bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -362,7 +362,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get showProbed(): boolean {
-        return this.$store.state.gui.heightmap.probed ?? true
+        return this.$store.state.gui.view.heightmap.probed ?? true
     }
 
     set showProbed(newVal) {
@@ -370,7 +370,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get showMesh(): boolean {
-        return this.$store.state.gui.heightmap.mesh ?? true
+        return this.$store.state.gui.view.heightmap.mesh ?? true
     }
 
     set showMesh(newVal) {
@@ -378,7 +378,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get showFlat(): boolean {
-        return this.$store.state.gui.heightmap.flat ?? true
+        return this.$store.state.gui.view.heightmap.flat ?? true
     }
 
     set showFlat(newVal) {
@@ -386,7 +386,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get wireframe(): boolean {
-        return this.$store.state.gui.heightmap.wireframe ?? true
+        return this.$store.state.gui.view.heightmap.wireframe ?? true
     }
 
     set wireframe(newVal) {
@@ -394,7 +394,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get scale(): boolean {
-        return this.$store.state.gui.heightmap.scale ?? true
+        return this.$store.state.gui.view.heightmap.scale ?? true
     }
 
     set scale(newVal) {
@@ -402,7 +402,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get scaleVisualMap(): boolean {
-        return this.$store.state.gui.heightmap.scaleVisualMap ?? false
+        return this.$store.state.gui.view.heightmap.scaleVisualMap ?? false
     }
 
     set scaleVisualMap(newVal) {
