@@ -244,6 +244,13 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get chartOptions() {
         return {
             tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.9)',
+                borderWidth: 0,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: '14px'
+                },
+                padding: 15,
                 formatter: this.tooltipFormatter
             },
             darkMode: true,
