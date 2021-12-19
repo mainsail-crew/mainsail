@@ -613,6 +613,7 @@
       "DbTimelapseSettings": "Timelapse Settings",
       "MoonrakerDb": "Moonraker DB",
       "Backup": "Backup",
+      "BackupDialog": "Please select all the sections you want to create a backup:",
       "Restore": "Restore",
       "CannotReadJson": "Cannot read/parse backup file.",
       "RestoreDialog": "Please select all the sections you want to restore:"

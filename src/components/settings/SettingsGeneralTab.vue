@@ -37,7 +37,7 @@
                 <v-card-text>
                     <v-row>
                         <v-col>
-                            <p class="mb-0">{{ $t('Settings.GeneralTab.Backup') }}</p>
+                            <p class="mb-0">{{ $t('Settings.GeneralTab.BackupDialog') }}</p>
                         </v-col>
                     </v-row>
                     <v-row>
