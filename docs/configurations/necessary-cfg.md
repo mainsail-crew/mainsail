@@ -118,7 +118,7 @@ gcode:
 # Optional
 
 ## Customisation
-Klipper has a number of preet commands that are also just macros.
+Klipper has a number of preset commands that are also just macros.
 
 The default configuration of these may not suit your needs or preferences, though they are usually a good place to start. It's possible to adjust these by including them in your config, along with any additional code you would like to run. 
 
