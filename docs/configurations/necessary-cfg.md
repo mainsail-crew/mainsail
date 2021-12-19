@@ -35,7 +35,7 @@ path: ~/gcode_files
 ```
 
 ## Pause, Resume, Cancel
-These macros control the current print job.
+These macros enable pause and resume in Klipper.
 
 ```yaml
 [pause_resume]
