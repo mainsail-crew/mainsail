@@ -104,7 +104,10 @@ export const topbarHeight = 48
 
 // timelapse variables
 export const timelapseConsoleFilters = [
-    '_SET_TIMELAPSE_SETUP ',
-    'HYPERLAPSE ACTION=',
-    'SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
+    '^_TIMELAPSE_NEW_FRAME',
+    '^TIMELAPSE_TAKE_FRAME',
+    '^TIMELAPSE_RENDER',
+    '^_SET_TIMELAPSE_SETUP',
+    '^HYPERLAPSE ACTION=',
+    '^SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
 ]
