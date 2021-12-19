@@ -167,7 +167,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         this.dialogPowerDeviceChange.device = device.device
         this.dialogPowerDeviceChange.value = value
 
-        const confirmOnPowerDeviceChange = this.$store.state.gui.general.confirmOnPowerDeviceChange
+        const confirmOnPowerDeviceChange = this.$store.state.gui.uiSettings.confirmOnPowerDeviceChange
         if (confirmOnPowerDeviceChange) {
             this.dialogPowerDeviceChange.show = true
         }

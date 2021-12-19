@@ -9,21 +9,21 @@ export const mutations: MutationTree<GuiRemoteprintersState> = {
     },
 
     store(state, payload) {
-        Vue.set(state.remoteprinters, payload.id, payload.values)
+        Vue.set(state.printers, payload.id, payload.values)
     },
 
     update(state, payload) {
-        if (payload.id in state.remoteprinters) {
-            const preset = {...state.remoteprinters[payload.id]}
+        if (payload.id in state.printers) {
+            const preset = {...state.printers[payload.id]}
             Object.assign(preset, payload.values)
 
-            Vue.set(state.remoteprinters, payload.id, preset)
+            Vue.set(state.printers, payload.id, preset)
         }
     },
 
     delete(state, payload) {
-        if (payload in state.remoteprinters) {
-            Vue.delete(state.remoteprinters, payload)
+        if (payload in state.printers) {
+            Vue.delete(state.printers, payload)
         }
     },
 }

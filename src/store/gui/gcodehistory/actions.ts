@@ -9,22 +9,12 @@ export const actions: ActionTree<GuiGcodehistoryState, RootState> = {
         commit('reset')
     },
 
-    init() {
-        window.console.debug('init gui/gcodehistory')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_gcodehistory' }, { action: 'gui/gcodehistory/initStore' })
-    },
-
-    initStore({ commit }, payload) {
-        commit('reset')
-        commit('initStore', payload)
-    },
-
     upload({ state }) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail_gcodehistory', key: 'history', value: state.history })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'gcodehistory.entries', value: state.entries })
     },
 
     async addToHistory({ commit, dispatch, state }, payload) {
-        const newHistory = [...state.history]
+        const newHistory = [...state.entries]
         newHistory.push(payload)
 
         while (newHistory.length > maxGcodeHistory) newHistory.splice(0, 1)

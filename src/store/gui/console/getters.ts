@@ -1,13 +1,13 @@
 import { GetterTree } from 'vuex'
-import {GuiConsolefiltersState, GuiConsolefiltersStateFilter} from '@/store/gui/consolefilters/types'
+import {GuiConsoleState, GuiConsoleStateFilter} from '@/store/gui/console/types'
 import {caseInsensitiveSort} from '@/plugins/helpers'
 import {timelapseConsoleFilters} from '@/store/variables'
 
 // eslint-disable-next-line
-export const getters: GetterTree<GuiConsolefiltersState, any> = {
+export const getters: GetterTree<GuiConsoleState, any> = {
 
     getConsolefilters:(state) => {
-        const consolefilters: GuiConsolefiltersStateFilter[] = []
+        const consolefilters: GuiConsoleStateFilter[] = []
 
         Object.keys(state.consolefilters).forEach((id: string) => {
             consolefilters.push({...state.consolefilters[id], id})

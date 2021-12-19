@@ -37,7 +37,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -89,7 +89,7 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     changeState(name: string, newVal: boolean) {
         const index = this.mobileLayout.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.mobileLayout[index].visable = newVal
+            this.mobileLayout[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.mobileLayout', value: this.mobileLayout })
         }
     }

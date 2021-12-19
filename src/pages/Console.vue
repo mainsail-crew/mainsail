@@ -150,7 +150,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get lastCommands(): string[] {
-        return this.$store.state.gui.gcodehistory.history ?? []
+        return this.$store.state.gui.gcodehistory.entries ?? []
     }
 
     commandClick(msg: string): void {

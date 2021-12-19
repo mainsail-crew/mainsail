@@ -120,7 +120,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     get consoleFilters() {
-        return this.$store.getters['gui/consolefilters/getConsolefilters'] ?? []
+        return this.$store.getters['gui/console/getConsolefilters'] ?? []
     }
 
     get availableDirections() {
@@ -140,7 +140,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     set consoleDirection(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.direction', value: newVal })
+        this.$store.dispatch('gui/console/saveSetting', { name: 'direction', value: newVal })
     }
 
     get availableEntryStyles() {
@@ -160,7 +160,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     set entryStyle(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.entryStyle', value: newVal })
+        this.$store.dispatch('gui/console/saveSetting', { name: 'entryStyle', value: newVal })
     }
 
     get consoleHeight() {
@@ -168,7 +168,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     set consoleHeight(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.height', value: newVal })
+        this.$store.dispatch('gui/console/saveSetting', { name: 'height', value: newVal })
     }
 
     @Watch('consoleHeight')
@@ -186,15 +186,15 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
     }
 
     set hideWaitTemperatures(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+        this.$store.dispatch('gui/console/saveSetting', { name: 'hideWaitTemperatures', value: newVal })
     }
 
     get hideTimelapse() {
-        return this.$store.state.gui.console.hideTimelapse
+        return this.$store.state.gui.console.hideTlCommands
     }
 
     set hideTimelapse(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'console.hideTimelapse', value: newVal })
+        this.$store.dispatch('gui/console/saveSetting', { name: 'hideTlCommands', value: newVal })
     }
 
     existsPresetName(name: string) {
@@ -215,7 +215,7 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
             regex: filter.regex
         }
 
-        this.$store.dispatch('gui/consolefilters/update', { id: filter.id, values })
+        this.$store.dispatch('gui/console/filterUpdate', { id: filter.id, values })
     }
 
     createFilter() {
@@ -240,16 +240,16 @@ export default class SettingsConsoleTab extends Mixins(BaseMixin) {
             }
 
             if (this.form.id)
-                this.$store.dispatch('gui/consolefilters/update', { id: this.form.id, values: filter })
+                this.$store.dispatch('gui/console/filterUpdate', { id: this.form.id, values: filter })
             else
-                this.$store.dispatch('gui/consolefilters/store', { values: filter })
+                this.$store.dispatch('gui/console/filterStore', { values: filter })
 
             this.clearForm()
         }
     }
 
     deleteFilter(id: string) {
-        this.$store.dispatch('gui/consolefilters/delete', id)
+        this.$store.dispatch('gui/console/filterDelete', id)
     }
 }
 </script>

@@ -198,7 +198,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+        return this.$store.state.gui.uiSettings.boolWideNavDrawer ?? false
     }
 
     get countPrinters() {
@@ -214,11 +214,11 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     get logoColor(): string {
-        return this.$store.state.gui.theme.logo
+        return this.$store.state.gui.uiSettings.logo
     }
 
     btnEmergencyStop() {
-        const confirmOnEmergencyStop = this.$store.state.gui.general.confirmOnEmergencyStop
+        const confirmOnEmergencyStop = this.$store.state.gui.uiSettings.confirmOnEmergencyStop
         if (confirmOnEmergencyStop) {
             this.showEmergencyStopDialog = true
         }

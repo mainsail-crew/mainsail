@@ -532,47 +532,47 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.settings.configfiles.countPerPage
+        return this.$store.state.gui.view.configfiles.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.countPerPage', value: newVal })
     }
 
     get showHiddenFiles() {
-        return this.$store.state.gui.settings.configfiles.showHiddenFiles
+        return this.$store.state.gui.view.configfiles.showHiddenFiles
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.showHiddenFiles', value: newVal })
     }
 
     get hideBackupFiles() {
-        return this.$store.state.gui.settings.configfiles.hideBackupFiles
+        return this.$store.state.gui.view.configfiles.hideBackupFiles
     }
 
     set hideBackupFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.hideBackupFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.hideBackupFiles', value: newVal })
     }
 
     get sortBy() {
-        return this.$store.state.gui.settings.configfiles.sortBy
+        return this.$store.state.gui.view.configfiles.sortBy
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'filename'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.settings.configfiles.sortDesc
+        return this.$store.state.gui.view.configfiles.sortDesc
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.sortDesc', value: newVal })
     }
 
     get registeredDirectories() {
