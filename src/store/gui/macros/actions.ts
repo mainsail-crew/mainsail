@@ -30,7 +30,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
     },
 
     groupUpdate({ commit, dispatch, state }, payload) {
-        commit('update', payload)
+        commit('groupUpdate', payload)
         dispatch('groupUpload', payload.id)
     },
 
