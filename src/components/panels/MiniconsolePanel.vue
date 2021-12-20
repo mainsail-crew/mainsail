@@ -154,7 +154,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     get customFilters(): any[] {
-        return this.$store.state.gui.console.customFilters
+        return this.$store.state.gui.console.consolefilters
     }
 
     get rows(): number {
