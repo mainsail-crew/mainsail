@@ -364,8 +364,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private selected = []
     private options = { }
     private currentPage = 1
-    private currentPath = ''
-    private root = 'config'
     private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
@@ -577,6 +575,22 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     get registeredDirectories() {
         return this.$store.state.server.registered_directories.filter((dir: string) => dir !== 'gcodes').sort()
+    }
+
+    get root() {
+        return this.$store.state.gui.settings.configfiles.root
+    }
+
+    set root(newVal) {
+        this.$store.state.gui.settings.configfiles.root = newVal
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.settings.configfiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.state.gui.settings.configfiles.currentPath = newVal
     }
 
     refreshFileList() {

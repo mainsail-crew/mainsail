@@ -182,7 +182,9 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'filename',
                 sortDesc: false,
                 showHiddenFiles: false,
-                hideBackupFiles: false
+                hideBackupFiles: false,
+                currentPath: '',
+                root: 'config'
             }
         },
         editor: {
