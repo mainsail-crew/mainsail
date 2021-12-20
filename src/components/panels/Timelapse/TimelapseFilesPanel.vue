@@ -39,7 +39,7 @@
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
-                        <span><b>{{ $t('Timelapse.CurrentPath') }}:</b> {{ this.currentPath !== 'timelapse' ? "/"+this.currentPath.substring(7) : "/" }}</span>
+                        <span><b>{{ $t('Timelapse.CurrentPath') }}:</b> {{ this.currentPath !== 'timelapse' ? "/"+this.currentPath.substring(10) : "/" }}</span>
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
@@ -284,7 +284,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     private search = ''
-    private currentPath = 'timelapse'
     private boolVideoDialog = false
     private videoDialogFilename = ''
 
@@ -403,6 +402,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
             return (file.filename.endsWith('mp4') || file.filename.endsWith('zip'))
         }) ?? []
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.timelapse.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.state.gui.timelapse.currentPath = newVal
     }
 
     createDirectory() {

@@ -146,6 +146,7 @@ export const getDefaultState = (): GuiState => {
             sortBy: 'modified',
             sortDesc: true,
             showHiddenFiles: false,
+            currentPath: 'timelapse'
         },
         jobqueue: {
             countPerPage: 10,
