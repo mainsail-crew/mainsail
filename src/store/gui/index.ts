@@ -138,7 +138,8 @@ export const getDefaultState = (): GuiState => {
             sortDesc: true,
             showHiddenFiles: false,
             showPrintedFiles: true,
-            hideMetadataColums: []
+            hideMetadataColums: [],
+            currentPath: 'gcodes'
         },
         timelapse: {
             countPerPage: 10,
