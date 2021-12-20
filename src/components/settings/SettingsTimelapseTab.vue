@@ -68,21 +68,27 @@
                         <v-text-field v-model="park_travel_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_travel_speed')" hide-spin-buttons></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.RetractSpeed')" :sub-title="$t('Settings.TimelapseTab.RetractSpeedDescription')">
-                        <v-text-field v-model="park_retract_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_retract_speed')" hide-spin-buttons></v-text-field>
+                    <settings-row :title="$t('Settings.TimelapseTab.FwRetract')" :sub-title="$t('Settings.TimelapseTab.FwRetractDescription')" :dynamicSlotWidth="true">
+                        <v-switch v-model="fw_retract" hide-details class="mt-0" :disabled="blockedsettings.includes('fw_retract')"></v-switch>
                     </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.RetractDistance')" :sub-title="$t('Settings.TimelapseTab.RetractDistanceDescription')">
-                        <v-text-field v-model="park_retract_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_retract_distance')" hide-spin-buttons></v-text-field>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.UnretractSpeed')" :sub-title="$t('Settings.TimelapseTab.UnretractSpeedDescription')">
-                        <v-text-field v-model="park_extrude_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_speed')" hide-spin-buttons></v-text-field>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.TimelapseTab.UnretractDistance')" :sub-title="$t('Settings.TimelapseTab.UnretractDistanceDescription')">
-                        <v-text-field v-model="park_extrude_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_distance')" hide-spin-buttons></v-text-field>
-                    </settings-row>
+                    <template v-if="!fw_retract">
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.RetractSpeed')" :sub-title="$t('Settings.TimelapseTab.RetractSpeedDescription')">
+                            <v-text-field v-model="park_retract_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_retract_speed')" hide-spin-buttons></v-text-field>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.RetractDistance')" :sub-title="$t('Settings.TimelapseTab.RetractDistanceDescription')">
+                            <v-text-field v-model="park_retract_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_retract_distance')" hide-spin-buttons></v-text-field>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.UnretractSpeed')" :sub-title="$t('Settings.TimelapseTab.UnretractSpeedDescription')">
+                            <v-text-field v-model="park_extrude_speed" type="number" suffix="mm/s" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_speed')" hide-spin-buttons></v-text-field>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                        <settings-row :title="$t('Settings.TimelapseTab.UnretractDistance')" :sub-title="$t('Settings.TimelapseTab.UnretractDistanceDescription')">
+                            <v-text-field v-model="park_extrude_distance" type="number" suffix="mm" hide-details="auto" outlined dense :disabled="blockedsettings.includes('park_extrude_distance')" hide-spin-buttons></v-text-field>
+                        </settings-row>
+                    </template>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.TimelapseTab.ParkTime')" :sub-title="$t('Settings.TimelapseTab.ParkTimeDescription')">
                         <v-text-field v-model="park_time" type="number" suffix="s" hide-details="auto" step="0.1" outlined dense :disabled="blockedsettings.includes('park_time')"></v-text-field>
@@ -356,6 +362,14 @@ export default class SettingsTimelapseTab extends Mixins(BaseMixin) {
 
     set park_time(newVal) {
         this.$store.dispatch('server/timelapse/saveSetting', { park_time: newVal })
+    }
+
+    get fw_retract() {
+        return this.$store.state.server.timelapse.settings.fw_retract
+    }
+
+    set fw_retract(newVal) {
+        this.$store.dispatch('server/timelapse/saveSetting', { fw_retract: newVal })
     }
 
     get constant_rate_factor() {
