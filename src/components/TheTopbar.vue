@@ -206,7 +206,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
     }
 
     get boolHideUploadAndPrintButton() {
-        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+        return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
     }
 
     get sidebarLogo(): string {
