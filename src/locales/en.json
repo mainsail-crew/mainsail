@@ -675,6 +675,8 @@
       "PosYDescription": "Park postion Y (absolute)",
       "PosDZ": "Position Z",
       "PosDZDescription": "Park postion Z (relative)",
+      "FwRetract": "FW Retract",
+      "FwRetractDescription": "Use firmware retraction in the timelapse macro",
       "TravelSpeed": "Travel Speed",
       "TravelSpeedDescription": "Travel speed while moving to the parking position and resuming",
       "RetractSpeed": "Retract Speed",
