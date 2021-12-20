@@ -567,7 +567,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
-        // this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.presentWorkingDirectory', value: newVal })
         this.$store.state.gui.gcodefiles.currentPath = newVal
     }
 
