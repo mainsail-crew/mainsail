@@ -586,7 +586,8 @@
       "Memory": "Mem",
       "Constants": "Constants",
       "LastStats": "Last stats",
-      "HostDetails": "Host details"
+      "HostDetails": "Host details",
+      "Distro": "Distro"
     }
   },
   "Settings": {
