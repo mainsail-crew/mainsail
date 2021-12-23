@@ -25,6 +25,7 @@
                                 @update:hoverName="updateHoverObjectDialogName"
                                 :exclude-object-dialog-bool.sync="excludeObjectDialogBool"
                                 @update:bool="updateExcludeObjectDialogBool"
+                                :hover-name="hoverName"
                             ></status-panel-exclude-object-dialog-list>
                         </v-col>
                     </v-row>
