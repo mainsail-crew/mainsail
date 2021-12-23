@@ -289,9 +289,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             await this.$store.dispatch('gcodeviewer/setCanvasBackup', canvasElement)
         } else {
             this.$refs.viewerCanvasContainer.appendChild(canvasElement)
-            window.console.log('init else')
             if (viewer?.gcodeProcessor) {
-                window.console.log('view.gcodeprocessor exists', viewer, viewer?.gcodeProcessor)
                 viewer.gcodeProcessor.updateFilePosition(viewer?.fileSize)
             }
         }
@@ -402,7 +400,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.buildObjects.showObjectSelection(this.showObjectSelection)
         }
 
-        window.console.log('finishLoad', viewer.fileSize)
         viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
     }
 
