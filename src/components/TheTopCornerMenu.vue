@@ -43,7 +43,7 @@
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                             <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="serviceStart(service)"><v-icon small>mdi-play</v-icon></v-btn>
                             <v-btn icon small v-else @click="serviceRestart(service)"><v-icon small>mdi-restart</v-icon></v-btn>
-                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="serviceStop(service)"><v-icon small>mdi-stop</v-icon></v-btn>
+                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="serviceStop(service)" :style="service === 'moonraker' ? 'visibility: hidden;' : ''"><v-icon small>mdi-stop</v-icon></v-btn>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
