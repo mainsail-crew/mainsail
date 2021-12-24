@@ -24,7 +24,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
     init({ commit, rootGetters, dispatch }, payload) {
         window.console.debug('init printer/tempHistory')
-        commit('reset')
+        dispatch('reset')
 
         const now = new Date()
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
@@ -216,9 +216,21 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
             window.console.debug('update Source', t0-state.timeLastUpdate)
         }*/
 
+
         if (rootState?.printer?.heaters?.available_sensors?.length) {
+            const now = new Date()
+
+            if (state.source.length) {
+                const lastEntry = state.source[state.source.length - 1]
+                const secondsBefore = lastEntry.date.getSeconds()
+                const secondsAfter = now.getSeconds()
+                const diff = now.getTime() - lastEntry.date.getTime()
+
+                if (secondsBefore === secondsAfter && diff < 1000) return
+            }
+
             const data: PrinterTempHistoryStateSourceEntry = {
-                date: new Date()
+                date: now
             }
 
             rootState.printer.heaters.available_sensors.forEach((key: string) => {
