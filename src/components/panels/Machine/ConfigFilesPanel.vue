@@ -294,6 +294,7 @@ import {formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
+import {hiddenRootDirectories} from '@/store/variables'
 
 interface contextMenu {
     shown: boolean
@@ -576,7 +577,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     get registeredDirectories() {
-        return this.$store.state.server.registered_directories.filter((dir: string) => dir !== 'gcodes').sort()
+        return this.$store.state.server.registered_directories.filter((dir: string) => !hiddenRootDirectories.includes(dir)).sort()
     }
 
     refreshFileList() {

@@ -111,3 +111,12 @@ export const timelapseConsoleFilters = [
     '^HYPERLAPSE ACTION=',
     '^SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
 ]
+
+/*
+ * List of hidden root directories in config files panel
+ */
+export const hiddenRootDirectories = [
+    'gcodes',
+    'timelapse',
+    'timelapse_frames'
+]
