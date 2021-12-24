@@ -255,6 +255,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 const name = nameSplit.length > 1 ? nameSplit[1] : nameSplit[0]
                 if (!name.startsWith('_')) {
                     let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
+                    const settings = state.configfile?.settings[key.toLowerCase()] ?? {}
                     const power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
                     const rpm = 'rpm' in value ? value.rpm : false
                     let pwm = controllable
@@ -265,13 +266,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     if (nameSplit[0].toLowerCase() === 'output_pin') {
                         controllable = true
                         pwm = false
-                        if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
-                            if ('pwm' in state.configfile.settings[key.toLowerCase()])
-                                pwm = state.configfile.settings[key.toLowerCase()]?.pwm ?? false
-
-                            if ('scale' in state.configfile.settings[key.toLowerCase()])
-                                scale = state.configfile.settings[key.toLowerCase()]?.scale ?? 1
-                        }
+                        if ('pwm' in settings) pwm = settings?.pwm ?? false
+                        if ('scale' in settings) scale = settings?.scale ?? 1
                     }
 
                     const tmp = {
@@ -283,17 +279,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         rpm: rpm,
                         scale: scale,
                         object: value,
-                        config: state.configfile?.settings[key] ?? {},
+                        config: settings,
                         off_below: undefined,
                         max_power: undefined
                     }
 
                     if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
-                        if ('off_below' in state.configfile.settings[key.toLowerCase()])
-                            tmp.off_below = state.configfile.settings[key.toLowerCase()]?.off_below ?? 0
+                        if ('off_below' in settings)
+                            tmp.off_below = settings?.off_below ?? 0
 
-                        if ('max_power' in state.configfile.settings[key.toLowerCase()])
-                            tmp.max_power = state.configfile.settings[key.toLowerCase()]?.max_power ?? 1
+                        if ('max_power' in settings)
+                            tmp.max_power = settings?.max_power ?? 1
                     }
 
                     output.push(tmp)
