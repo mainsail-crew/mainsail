@@ -65,6 +65,7 @@
 import Component from 'vue-class-component'
 import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import {defaultPrimaryColor} from '@/store/variables'
 
 @Component
 export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
@@ -142,7 +143,7 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     }
 
     get primaryColor() {
-        return this.$store.state.gui.theme.primary
+        return this.$store.state.gui.theme?.primary ?? defaultPrimaryColor
     }
 
     convertX(x: number) {
