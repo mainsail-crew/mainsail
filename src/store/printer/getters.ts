@@ -267,10 +267,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         pwm = false
                         if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
                             if ('pwm' in state.configfile.settings[key.toLowerCase()])
-                                pwm = state.configfile.settings[key.toLowerCase()].pwm
+                                pwm = state.configfile.settings[key.toLowerCase()]?.pwm ?? false
 
                             if ('scale' in state.configfile.settings[key.toLowerCase()])
-                                scale = state.configfile.settings[key.toLowerCase()].scale
+                                scale = state.configfile.settings[key.toLowerCase()]?.scale ?? 1
                         }
                     }
 
@@ -283,17 +283,17 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         rpm: rpm,
                         scale: scale,
                         object: value,
-                        config: state.configfile.settings[key],
+                        config: state.configfile.settings[key] ?? {},
                         off_below: undefined,
                         max_power: undefined
                     }
 
                     if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
                         if ('off_below' in state.configfile.settings[key.toLowerCase()])
-                            tmp.off_below = state.configfile.settings[key.toLowerCase()].off_below
+                            tmp.off_below = state.configfile.settings[key.toLowerCase()]?.off_below ?? 0
 
                         if ('max_power' in state.configfile.settings[key.toLowerCase()])
-                            tmp.max_power = state.configfile.settings[key.toLowerCase()].max_power
+                            tmp.max_power = state.configfile.settings[key.toLowerCase()]?.max_power ?? 1
                     }
 
                     output.push(tmp)
