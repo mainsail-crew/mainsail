@@ -283,7 +283,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         rpm: rpm,
                         scale: scale,
                         object: value,
-                        config: state.configfile.settings[key] ?? {},
+                        config: state.configfile?.settings[key] ?? {},
                         off_below: undefined,
                         max_power: undefined
                     }
