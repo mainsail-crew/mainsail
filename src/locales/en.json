@@ -34,6 +34,7 @@
           "HostShutdown": "Host shutdown"
         },
         "Description": {
+          "KlipperStop": "If you stop Klipper now, the current print will fail.",
           "KlipperRestart": "If you restart Klipper now, the current print will fail.",
           "KlipperFirmwareRestart": "If you restart the Klipper firmware now, the current print will fail.",
           "ServiceStart": "If you start this service now, you are very likely risking a failure of your ongoing print job.",
