@@ -138,10 +138,6 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
         return this.$route.fullPath
     }
 
-    get isUpdateAvailable(): boolean {
-        return this.$store.getters['server/updateManager/isUpdateAvailable']
-    }
-
     get countPrinters() {
         return this.$store.getters['farm/countPrinters']
     }
