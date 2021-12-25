@@ -34,13 +34,13 @@
           "HostShutdown": "Host shutdown"
         },
         "Description": {
-          "KlipperRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "KlipperFirmwareRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceStart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "KlipperRestart": "If you restart Klipper now, the current print will fail.",
+          "KlipperFirmwareRestart": "If you restart the Klipper firmware now, the current print will fail.",
+          "ServiceStart": "If you start this service now, you are very likely risking a failure of your ongoing print job.",
           "ServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceStop": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "HostReboot": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "HostShutdown": "If you restart this service now, you are very likely risking a failure of your ongoing print job."
+          "ServiceStop": "If you stop this service now, you are very likely risking a failure of your ongoing print job.",
+          "HostReboot": "If you reboot the host now, the current print will fail.",
+          "HostShutdown": "If you shutdown the host now, the current print will fail."
         }
       }
     },
