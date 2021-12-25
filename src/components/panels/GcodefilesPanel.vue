@@ -73,7 +73,7 @@
                         <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary--text px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                         <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
                         <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
-                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+                        <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
