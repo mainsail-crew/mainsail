@@ -23,20 +23,26 @@
       "Reboot": "Reboot",
       "Shutdown": "Shutdown",
       "Cancel": "Cancel",
-      "ConfirmationDialogTitleKlipperRestart": "Klipper restart",
-      "ConfirmationDialogTitleKlipperFirmwareRestart": "Klipper firmware restart",
-      "ConfirmationDialogTitleServiceStart": "Service start",
-      "ConfirmationDialogTitleServiceRestart": "Service restart",
-      "ConfirmationDialogTitleServiceStop": "Service stop",
-      "ConfirmationDialogTitleHostReboot": "Host reboot",
-      "ConfirmationDialogTitleHostShutdown": "Host shutdown",
-      "ConfirmationDialogDescriptionKlipperRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionKlipperFirmwareRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionServiceStart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionServiceStop": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionHostReboot": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-      "ConfirmationDialogDescriptionHostShutdown": "If you restart this service now, you are very likely risking a failure of your ongoing print job."
+      "ConfirmationDialog": {
+        "Title": {
+          "KlipperRestart": "Klipper restart",
+          "KlipperFirmwareRestart": "Klipper firmware restart",
+          "ServiceStart": "Service start",
+          "ServiceRestart": "Service restart",
+          "ServiceStop": "Service stop",
+          "HostReboot": "Host reboot",
+          "HostShutdown": "Host shutdown"
+        },
+        "Description": {
+          "KlipperRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "KlipperFirmwareRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "ServiceStart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "ServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "ServiceStop": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "HostReboot": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "HostShutdown": "If you restart this service now, you are very likely risking a failure of your ongoing print job."
+        }
+      },
     },
     "UpdateDialog": {
       "Updating": "Updating {software}...",
