@@ -15,13 +15,13 @@
             <v-list dense>
                 <template v-if="klipperState !== 'disconnected'">
                     <v-subheader class="" style="height: auto;">{{ $t("App.TopCornerMenu.KlipperControl") }}</v-subheader>
-                    <v-list-item class="minheight30 pr-2" link @click="klipperRestart()">
+                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperRestart)">
                         <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperRestart") }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
                         </v-list-item-action>
                     </v-list-item>
-                    <v-list-item class="minheight30 pr-2" link @click="klipperFirmwareRestart()">
+                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperFirmwareRestart)">
                         <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperFirmwareRestart") }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -41,9 +41,9 @@
                             </v-tooltip>
                         </v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
-                            <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="serviceStart(service)"><v-icon small>mdi-play</v-icon></v-btn>
-                            <v-btn icon small v-else @click="serviceRestart(service)"><v-icon small>mdi-restart</v-icon></v-btn>
-                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="serviceStop(service)" :style="service === 'moonraker' ? 'visibility: hidden;' : ''"><v-icon small>mdi-stop</v-icon></v-btn>
+                            <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="checkDialog(serviceStart, service)"><v-icon small>mdi-play</v-icon></v-btn>
+                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service)"><v-icon small>mdi-restart</v-icon></v-btn>
+                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="checkDialog(serviceStop, service)" :style="service === 'moonraker' ? 'visibility: hidden;' : ''"><v-icon small>mdi-stop</v-icon></v-btn>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
@@ -59,13 +59,13 @@
                 </template>
                 <v-divider class="mt-0"></v-divider>
                 <v-subheader class="pt-2" style="height: auto;">{{ $t("App.TopCornerMenu.HostControl") }}</v-subheader>
-                <v-list-item class="minheight30 pr-2" link @click="hostReboot()">
+                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostReboot)">
                     <v-list-item-title>{{ $t("App.TopCornerMenu.Reboot") }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                         <v-icon class="mr-2" small>mdi-power</v-icon>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item class="minheight30 pr-2" link @click="hostShutdown()">
+                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostShutdown)">
                     <v-list-item-title>{{ $t("App.TopCornerMenu.Shutdown") }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                         <v-icon class="mr-2" small>mdi-power</v-icon>
@@ -84,6 +84,29 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="dialogConfirmation.show" width="400" :fullscreen="isMobile">
+            <panel card-class="confirm-top-corner-menu-dialog" icon="mdi-help-circle" :title="dialogConfirmation.title" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="dialogConfirmation.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text class="pt-3">
+                    <v-row>
+                        <v-col>
+                            <p class="body-2">{{ dialogConfirmation.description }}</p>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="dialogConfirmation.show = false">
+                        {{ $t('App.TopCornerMenu.Cancel') }}
+                    </v-btn>
+                    <v-btn text color="primary" @click="executeDialog">
+                        {{ dialogConfirmation.actionButtonText }}
+                    </v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -93,6 +116,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {ServerPowerStateDevice} from '@/store/server/power/types'
+import Panel from '@/components/ui/Panel.vue'
 
 interface dialogPowerDeviceChange {
     show: boolean
@@ -100,7 +124,18 @@ interface dialogPowerDeviceChange {
     value: string
 }
 
-@Component
+interface dialogConfirmation {
+    show: boolean
+    serviceName: string | null
+    executableFunction: any | null
+    title: string
+    description: string
+    actionButtonText: string
+}
+
+@Component({
+    components: {Panel}
+})
 export default class TheTopCornerMenu extends Mixins(BaseMixin) {
 
     showMenu = false
@@ -108,6 +143,15 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         show: false,
         device: '',
         value: ''
+    }
+
+    dialogConfirmation: dialogConfirmation = {
+        show: false,
+        serviceName: null,
+        executableFunction: null,
+        title: '',
+        description: '',
+        actionButtonText: ''
     }
 
     get services() {
@@ -134,6 +178,32 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         if (name in this.service_states) return this.service_states[name].sub_state
 
         return null
+    }
+
+    checkDialog(executableFunction: any, serviceName: string | null = null) {
+        if (this.printerIsPrinting) {
+            const functionName = (executableFunction.name ?? 'unknown').replace('bound ', '')
+            let action: string = 'Restart'
+            const actionTypes = ['Start', 'Restart', 'Stop', 'Reboot', 'Shutdown']
+
+            actionTypes.forEach((actionType: string) => {
+                if (functionName.endsWith(actionType)) action = actionType
+            })
+
+            this.dialogConfirmation.executableFunction = executableFunction
+            this.dialogConfirmation.serviceName = serviceName
+
+            const functionNameUppercase = functionName.trim().charAt(0).toUpperCase() + functionName.trim().slice(1)
+            this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialogTitle' + functionNameUppercase)+''
+            this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialogDescription' + functionNameUppercase)+''
+            this.dialogConfirmation.actionButtonText = this.$t('App.TopCornerMenu.' + action.charAt(0).toUpperCase() + action.slice(1))+''
+            this.dialogConfirmation.show = true
+        } else executableFunction(serviceName)
+    }
+
+    executeDialog() {
+        this.dialogConfirmation.executableFunction(this.dialogConfirmation.serviceName)
+        this.dialogConfirmation.show = false
     }
 
     klipperRestart() {
@@ -170,8 +240,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         const confirmOnPowerDeviceChange = this.$store.state.gui.uiSettings.confirmOnPowerDeviceChange
         if (confirmOnPowerDeviceChange) {
             this.dialogPowerDeviceChange.show = true
-        }
-        else {
+        } else {
             this.powerDeviceToggle()
         }
     }
