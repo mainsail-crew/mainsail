@@ -42,7 +42,7 @@
           "HostReboot": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
           "HostShutdown": "If you restart this service now, you are very likely risking a failure of your ongoing print job."
         }
-      },
+      }
     },
     "UpdateDialog": {
       "Updating": "Updating {software}...",
