@@ -195,7 +195,10 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
 
             const functionNameUppercase = functionName.trim().charAt(0).toUpperCase() + functionName.trim().slice(1)
             this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialog.Title.' + functionNameUppercase)+''
-            this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.' + functionNameUppercase)+''
+
+            if (serviceName === 'klipper' && action === 'Stop') this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperStop')+''
+            else this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.' + functionNameUppercase)+''
+
             this.dialogConfirmation.actionButtonText = this.$t('App.TopCornerMenu.' + action.charAt(0).toUpperCase() + action.slice(1))+''
             this.dialogConfirmation.show = true
         } else executableFunction(serviceName)
