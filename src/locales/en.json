@@ -17,8 +17,32 @@
       "ServiceControl": "Service Control",
       "PowerDevices": "Power Devices",
       "HostControl": "Host Control",
+      "Start": "Start",
+      "Stop": "Stop",
+      "Restart": "Restart",
       "Reboot": "Reboot",
-      "Shutdown": "Shutdown"
+      "Shutdown": "Shutdown",
+      "Cancel": "Cancel",
+      "ConfirmationDialog": {
+        "Title": {
+          "KlipperRestart": "Klipper restart",
+          "KlipperFirmwareRestart": "Klipper firmware restart",
+          "ServiceStart": "Service start",
+          "ServiceRestart": "Service restart",
+          "ServiceStop": "Service stop",
+          "HostReboot": "Host reboot",
+          "HostShutdown": "Host shutdown"
+        },
+        "Description": {
+          "KlipperRestart": "If you restart Klipper now, the current print will fail.",
+          "KlipperFirmwareRestart": "If you restart the Klipper firmware now, the current print will fail.",
+          "ServiceStart": "If you start this service now, you are very likely risking a failure of your ongoing print job.",
+          "ServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
+          "ServiceStop": "If you stop this service now, you are very likely risking a failure of your ongoing print job.",
+          "HostReboot": "If you reboot the host now, the current print will fail.",
+          "HostShutdown": "If you shutdown the host now, the current print will fail."
+        }
+      }
     },
     "UpdateDialog": {
       "Updating": "Updating {software}...",
