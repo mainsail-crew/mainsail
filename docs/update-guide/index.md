@@ -7,9 +7,9 @@ permalink: /update/
 has_toc: false
 ---
 
-There are currently two methods to update either via the web interface, or manually. 
+There are two methods to update: using Mainsail's interface in your web browser, or manually updating.
 
-- [Update Manager](update-manager) <span class="label label-red">recommended</span>  
-        A built in update utility found in the web ui, under the machine tab.
-- [Manual Update](manual-update)  
-        Guides on manual update methods for each component; Klipper, Moonraker and Mainsail.
+- [Update Manager Guide](update-manager) <span class="label label-red">recommended</span>  
+        Update Klipper, Moonraker and Mainsail in your web browser using Mainsail.  This is the recommended method. 
+- [Manual Update Guide](manual-update)  
+        Review the included guides on how to manually update each component, including Klipper, Moonraker, and Mainsail.

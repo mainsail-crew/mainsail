@@ -6,21 +6,26 @@ nav_order: 3
 permalink: /update/moonraker
 ---
 
-## Moonraker
+## Updating Moonraker
+
+To update Moonraker directly from its repository, run the following command in a terminal:
+
 ```bash
 cd ~/moonraker
 git pull
 ```
 
-Restart Moonraker (`sudo service moonraker restart`) and open the url `http://<printer-ip>:7125/printer/info` in your browser.
+Restart Moonraker using the command `sudo service moonraker restart` and open the URL `http://<printer-ip>:7125/printer/info` in your browser.
 
-If you see a content like this
+Your printer is updated and ready if you see the following message:
 ```
 {"result": {"hostname": "voron250", "error_detected": false, "version": "v0.8.0-643-g528f9f25", "is_ready": true, "message": "Printer is ready", "cpu": "4 core ARMv7 Processor rev 4 (v7l)"}}
 ```
 
-### Add Moonraker update manager
-To use the update manager in Mainsail you have to add this in your moonraker.conf:
+### Add Moonraker to the update manager
+
+If you wan to update Moonraker using the update manager, you need to add the following section to your printer's `moonraker.conf`:
+
 ```
 [update_manager]
 
@@ -30,21 +35,21 @@ repo: mainsail-crew/mainsail
 path: ~/mainsail
 ```
 
-### Change Moonraker to systemd service (December 6th 2020)
-Moonraker is now installed as a systemd service. If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
+### Moonraker as a systemd service
+As of December 2020, Moonraker is added as a systemd service during installation.  If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
 ```
-This allows logging to stdout which can be viewed with the `journalctl -u moonraker command`.
+This allows logging to `stdout` which can be viewed with the command `journalctl -u moonraker' in your terminal.
 
-### Update Moonraker dependence
-This is only nessasary, if you see missing modules in the moonraker log.
+### Update Moonraker's dependencies
+This is only nessasary if you see missing modules in the Moonraker log.  You can run the following command to update Moonraker's dependencies:
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -r
 ```
 
-### Moonraker config changes
-If you have issues after update your Moonraker instance, you can check config changes [here](https://github.com/Arksine/moonraker/blob/master/docs/user_changes.md).
+### Moonraker configuration changes
+If you have issues after updating Moonraker, please review the list of changes requiring user intervention [here](https://github.com/Arksine/moonraker/blob/master/docs/user_changes.md).
 
 ---
 [< previous step](klipper.md){: .btn }  [next step >](mainsail.md){: .btn }
