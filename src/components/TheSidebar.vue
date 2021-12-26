@@ -60,7 +60,6 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-list-item
                                 router :to="category.path"
-                                v-if="showInNavi(category)"
                                 class="small-list-item"
                                 v-bind="attrs"
                                 v-on="on"
@@ -105,7 +104,7 @@ import {navigationWidth} from '@/store/variables'
     }
 })
 
-export default class TheSidebarAlt extends Mixins(BaseMixin) {
+export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
 
     get naviDrawer(): boolean {
@@ -125,7 +124,9 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get naviPoints(): AppRoute[] {
-        return routes.filter((element) => element.showInNavi)
+        return routes.filter((element) => {
+            return element.showInNavi && this.showInNavi(element)
+        })
     }
 
     get klippy_state(): string {
@@ -157,6 +158,8 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     showInNavi(route: AppRoute): boolean {
+        window.console.log(route)
+
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
         else if (route.title === 'Webcam' && !this.boolNaviWebcam) return false
         else if (route.moonrakerComponent && !this.moonrakerComponents.includes(route.moonrakerComponent)) return false
