@@ -17,7 +17,7 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 ![Dashboard](assets/img/screenshot.png)
 
 ## Features 
-- Responsive UI, optimized for desktops, tablets and mobile devices
+- Responsive web interface, optimized for desktops, tablets and mobile devices
 - Supports multiple 3D printers (Printer Farm)
 - Localization (i18n)
 - File Manager (gcode and config files)
@@ -26,8 +26,8 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 - Temperature Presets (with custom gcode)
 - Bed Mesh Leveling
 - Multi-Webcam support
-- Control power devices (relays, TPLink, Tasmota, and more)
-- Customizable UI (logos, backgrounds & custom CSS)
+- Control power devices such as relays, TPLink and Tasmota devices, and more)
+- Customizable user interface includinglogos, backgrounds, and custom CSS
 
 ## Help and Support
 Do you need help or just want to talk? Join our active community on Discord. 
