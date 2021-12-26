@@ -8,8 +8,8 @@ permalink: /setup/kiauh
 ---
 # Installing Mainsail with KIAUH
 
-[KIAUH](https://github.com/th33xitus/kiauh) is a handy tool that helps you install or upgrade Klipper, Moonraker, Mainsail and various other extensions easily and comfortably.
+[KIAUH](https://github.com/th33xitus/kiauh) is a tool that helps you install or upgrade Klipper, Moonraker, Mainsail, and other extensions.
 
 ![](../assets/img/setup/kiauh.png)
 
-For more information and get to the guide click [here](https://github.com/th33xitus/kiauh).
+You can visit [KIAUH on GitHub](https://github.com/th33xitus/kiauh) to learn more and view its documentation.
