@@ -306,7 +306,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
     saveCooldown() {
         if (this.cooldownForm.valid) {
-            this.$store.dispatch('gui/presets/updateCooldownGcode', this.cooldownForm.gcode)
+            this.$store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: this.cooldownForm.gcode })
             this.cooldownForm.bool = false
         }
     }

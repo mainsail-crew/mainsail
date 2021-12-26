@@ -26,6 +26,7 @@ export const getDefaultState = (): ServerTimelapseState => {
             park_extrude_speed: 15,
             park_extrude_distance: 1,
             park_time: 0.1,
+            fw_retract: false,
             hyperlapse_cycle: 30,
 
             constant_rate_factor: 23,

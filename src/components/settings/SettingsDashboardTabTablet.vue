@@ -37,7 +37,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState1(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState1(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -62,7 +62,7 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visable" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
+                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState2(element.name,true)">mdi-checkbox-blank-outline</v-icon>
                                                 <v-icon v-else color="primary" @click.stop="changeState2(element.name,false)">mdi-checkbox-marked</v-icon>
                                             </v-col>
                                         </v-row>
@@ -124,7 +124,7 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     changeState1(name: string, newVal: boolean) {
         const index = this.tabletLayout1.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.tabletLayout1[index].visable = newVal
+            this.tabletLayout1[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.tabletLayout1', value: this.tabletLayout1 })
         }
     }
@@ -132,7 +132,7 @@ export default class SettingsDashboardTabTablet extends Mixins(DashboardMixin) {
     changeState2(name: string, newVal: boolean) {
         const index = this.tabletLayout2.findIndex((element: any) => element.name === name)
         if (index !== -1) {
-            this.tabletLayout2[index].visable = newVal
+            this.tabletLayout2[index].visible = newVal
             this.$store.dispatch('gui/saveSetting', {name: 'dashboard.tabletLayout2', value: this.tabletLayout2 })
         }
     }

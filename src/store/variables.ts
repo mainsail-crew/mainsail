@@ -35,6 +35,9 @@ export const additionalSensors = [
     'htu21d',
 ]
 
+/*
+ * List of valid gcode file extensions
+ */
 export const validGcodeExtensions = [
     '.gcode',
     '.g',
@@ -43,6 +46,9 @@ export const validGcodeExtensions = [
     '.nc',
 ]
 
+/*
+ * List of initable server components
+ */
 export const initableServerComponents = [
     'history',
     'power',
@@ -51,6 +57,9 @@ export const initableServerComponents = [
     'jobQueue',
 ]
 
+/*
+ * List of required klipper config modules
+ */
 export const checkKlipperConfigModules = [
     'virtual_sdcard',
     'pause_resume',
@@ -59,6 +68,9 @@ export const checkKlipperConfigModules = [
     'gcode_macro cancel_print',
 ]
 
+/*
+ * List of allowed metadata fields
+ */
 export const allowedMetadata = [
     'estimated_time',
     'filament_total',
@@ -79,7 +91,11 @@ export const allowedMetadata = [
 ]
 
 export const maxEventHistory = 500
+export const maxGcodeHistory = 50
 
+/*
+ * List of generic dashboard panels
+ */
 export const allDashboardPanels = [
     'control',
     'macros',
@@ -101,9 +117,23 @@ export const navigationItemHeight = 48
 export const panelToolbarHeight = 48
 export const topbarHeight = 48
 
-// timelapse variables
+/*
+ * List of hidden timelapse console outputs
+ */
 export const timelapseConsoleFilters = [
-    '_SET_TIMELAPSE_SETUP ',
-    'HYPERLAPSE ACTION=',
-    'SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
+    '^_TIMELAPSE_NEW_FRAME',
+    '^TIMELAPSE_TAKE_FRAME',
+    '^TIMELAPSE_RENDER',
+    '^_SET_TIMELAPSE_SETUP',
+    '^HYPERLAPSE ACTION=',
+    '^SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
+]
+
+/*
+ * List of hidden root directories in config files panel
+ */
+export const hiddenRootDirectories = [
+    'gcodes',
+    'timelapse',
+    'timelapse_frames'
 ]

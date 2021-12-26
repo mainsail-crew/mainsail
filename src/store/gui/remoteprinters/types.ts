@@ -1,7 +1,7 @@
 import {FarmPrinterStateSocket} from '@/store/farm/printer/types'
 
 export interface GuiRemoteprintersState {
-    remoteprinters: {
+    printers: {
         [key: string]: GuiRemoteprintersStatePrinter
     }
 }

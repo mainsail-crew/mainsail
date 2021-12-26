@@ -104,7 +104,7 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
     }
 
     get displayZOffsetStandby() {
-        return this.$store.state.gui.general.displayZOffsetStandby ?? false
+        return this.$store.state.gui.uiSettings.displayZOffsetStandby ?? false
     }
 
     get homing_origin() {

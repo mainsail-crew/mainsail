@@ -40,6 +40,6 @@ Before progressing to the next step, ensure that you have:
 
 
 ---
-[< first boot](first-boot){: .btn }  [next step >](pre-flight){: .btn }
+[< first boot](first-boot){: .btn }  [next step >](../pre-flight){: .btn }
 
 
