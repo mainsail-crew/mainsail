@@ -32,12 +32,37 @@
     "TopCornerMenu": {
       "HostControl": "Controllo dell'host",
       "KlipperControl": "Controllo di Klipper",
-      "KlipperFirmwareRestart": "Riavvio del FIRMWARE",
+      "KlipperFirmwareRestart": "Riavvia firmware",
       "KlipperRestart": "Riavvia",
       "PowerDevices": "Dispositivi",
       "Reboot": "Riavvio",
       "Shutdown": "Arresta",
-      "ServiceControl": "Controllo Servizi"
+      "ServiceControl": "Controllo Servizi",
+      "Cancel": "Cancella",
+      "Restart": "Riavvia",
+      "Start": "Avvia",
+      "Stop": "Ferma",
+      "ConfirmationDialog": {
+        "Description": {
+          "HostReboot": "Se riavvii l'host ora, la stampa corrente fallirà.",
+          "HostShutdown": "Se spegni l'host ora, la stampa corrente fallirà.",
+          "KlipperFirmwareRestart": "Se riavvii il firmware di Klipper ora, la stampa corrente fallirà.",
+          "KlipperRestart": "Se riavvii Klipper ora, la stampa corrente fallirà.",
+          "KlipperStop": "Se arresti Klipper ora, la stampa corrente fallirà.",
+          "ServiceRestart": "Se riavvii questo servizio ora, rischi molto probabilmente un fallimento della tua attuale stampa.",
+          "ServiceStart": "Se avvii questo servizio ora, rischi molto probabilmente un fallimento della tua attuale stampa.",
+          "ServiceStop": "Se fermi questo servizio ora, rischi molto probabilmente un fallimento della tua attuale stampa."
+        },
+        "Title": {
+          "HostReboot": "Riavvia host",
+          "HostShutdown": "Arresto host",
+          "KlipperFirmwareRestart": "Riavvia firmware di klipper",
+          "KlipperRestart": "Riavvia klipper",
+          "ServiceRestart": "Riavvia servizio",
+          "ServiceStart": "Avvia servizio",
+          "ServiceStop": "Ferma servizio"
+        }
+      }
     },
     "UpdateDialog": {
       "Close": "Chiudi",
@@ -131,7 +156,8 @@
     "AddToQueue": "Aggiungi alla coda",
     "Filament": "Filamento",
     "StartPrint": "Avvia stampa",
-    "View3D": "Vedi 3D"
+    "View3D": "Vedi 3D",
+    "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!"
   },
   "Heightmap": {
     "Abort": "interrompi",
@@ -269,7 +295,8 @@
       "Memory": "Memoria",
       "Os": "SO",
       "SystemLoad": "Carichi di Sistema",
-      "Version": "Versione"
+      "Version": "Versione",
+      "Distro": "Distro"
     },
     "UpdatePanel": {
       "CheckForUpdates": "Verifica aggiornamenti",
@@ -478,7 +505,14 @@
         "Deceleration": "Decelerazione",
         "Motion": "Movimento",
         "SquareCornerVelocity": "Velocità Angolo Retto",
-        "Velocity": "Velocità"
+        "Velocity": "Velocità",
+        "MaxAccelToDecel": "Max Accel. a Decel."
+      },
+      "PressureAdvanceSettings": {
+        "Advance": "Advance",
+        "Extruder": "Estrusore",
+        "PressureAdvance": "Pressure Advance",
+        "SmoothTime": "Smooth Time"
       }
     }
   },
@@ -576,7 +610,15 @@
       "DbWebcams": "Webcam",
       "FactoryDialog": "Seleziona tutte le sezioni che vuoi reimpostare:",
       "Reset": "reimposta",
-      "DbTimelapseSettings": "Impostazioni Timelapse"
+      "DbTimelapseSettings": "Impostazioni Timelapse",
+      "Backup": "Backup",
+      "BackupDialog": "Selezione tutte le sezioni per cui vuoi creare un backup:",
+      "CannotReadJson": "Impossibile leggere il file di backup.",
+      "DbConsoleHistory": "Cronologia Console",
+      "DbView": "Vedi Impostazioni ",
+      "MoonrakerDb": "Moonraker DB",
+      "Restore": "Ripristina",
+      "RestoreDialog": "Seleziona tutte le sezioni che vuoi ripristinare:"
     },
     "InterfaceSettings": "Impostazioni dell'Interfaccia",
     "MacrosTab": {
@@ -612,7 +654,8 @@
       "Status": "Stato",
       "Success": "successo",
       "UnknownGroup": "Gruppo Sconosciuto",
-      "Warning": "attenzione"
+      "Warning": "attenzione",
+      "Group": "Gruppo"
     },
     "PresetsTab": {
       "AddPreset": "aggiungi preset",
@@ -714,7 +757,9 @@
       "ParkTime": "Tempo Parcheggio",
       "ParkTimeDescription": "Aggiungi tempo extra durante il parcheggio.",
       "StreamDelayCompensation": "Compensazione Ritardo Stream",
-      "StreamDelayCompensationDescription": "Ritarda cattura frame"
+      "StreamDelayCompensationDescription": "Ritarda cattura frame",
+      "FwRetract": "Retrazione FW",
+      "FwRetractDescription": "Usa la retrazione firmware nella macro timelapse"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Grande anteprima",
@@ -814,7 +859,8 @@
     "JobQueue": "Coda dei lavori",
     "Jobs": "Lavori",
     "Pause": "Pausa",
-    "Resume": "Riprendi"
+    "Resume": "Riprendi",
+    "Start": "Avvia"
   },
   "PowerDeviceChangeDialog": {
     "AreYouSure": "Sei sicuro?",
