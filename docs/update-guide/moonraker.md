@@ -24,7 +24,7 @@ Your printer is updated and ready if you see the following message:
 
 ### Add Moonraker to the update manager
 
-If you wan to update Moonraker using the update manager, you need to add the following section to your printer's `moonraker.conf`:
+If you want to update Moonraker using the update manager, you need to add the following section to your printer's `moonraker.conf`:
 
 ```
 [update_manager]
@@ -36,14 +36,14 @@ path: ~/mainsail
 ```
 
 ### Moonraker as a systemd service
-As of December 2020, Moonraker is added as a systemd service during installation.  If `moonraker.conf` is not located in the home directory, the command will looks something like the following:
+As of December 2020, Moonraker is added as a systemd service during installation.  If `moonraker.conf` is not located in the home directory, run this command in your terminal:
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -f -c /home/pi/klipper_config/moonraker.conf
 ```
-This allows logging to `stdout` which can be viewed with the command `journalctl -u moonraker' in your terminal.
+This allows logging to `stdout` which can be viewed with the command `journalctl -u moonraker` in your terminal.
 
 ### Update Moonraker's dependencies
-This is only nessasary if you see missing modules in the Moonraker log.  You can run the following command to update Moonraker's dependencies:
+Updating Moonraker's dependecencies manually is only needed if you see missing modules in the Moonraker log.  You can run the following command to update Moonraker's dependencies:
 ```bash
 ~/moonraker/scripts/install-moonraker.sh -r
 ```

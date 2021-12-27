@@ -8,7 +8,7 @@ permalink: /update/mainsail
 
 ## Updating Mainsail
 
-To update Mainsail manually, follow the steps below in your terminal:
+To update Mainsail manually, run the commands below in your terminal:
 
 ```bash
 cd ~/mainsail

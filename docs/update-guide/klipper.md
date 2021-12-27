@@ -9,7 +9,7 @@ permalink: /update/klipper
 ## Klipper
 ### Update from Repository
 
-To update Klipper directly from its repository, run the following command:
+To update Klipper directly from its repository, run the following command in a terminal:
 
 ```bash
 cd ~/klipper

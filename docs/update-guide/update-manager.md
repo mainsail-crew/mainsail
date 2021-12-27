@@ -14,9 +14,7 @@ You can find further information on this topic in the [Moonraker documentation](
 
 ## Enabling Update Manager
 
-To use the built in Update Manager it must first be enabled by editing the moonraker.conf file:
-
-From a terminal navigate to Klipper's configuration directory:
+To use the built in Update Manager it must first be enabled by editing the `moonraker.conf` file.  From a terminal navigate to Klipper's configuration directory and edit the configuration file:
 
 ```bash
 cd ~/klipper_config
@@ -42,7 +40,7 @@ sudo systemctl restart moonraker
 
 With the update manager enabled, reload your web browser and select the 'Machine' tab from the sidebar. You should now see the Update Manager panel.
 
-Holding shift whilst clicking the browser's refresh button (or pressing ctrl+f5) will force it to reload the page fully (without the cache).
+Holding shift while clicking the browser's refresh button (or pressing Control + F5) will force it to reload the page fully without the cache.
 {: .info}
 
 The update order is top to bottom.
