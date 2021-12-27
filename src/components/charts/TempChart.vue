@@ -14,7 +14,7 @@ import { convertName } from '@/plugins/helpers'
 import Component from 'vue-class-component'
 import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {PrinterTempHistoryStateSerie} from '@/store/printer/tempHistory/types'
+import {PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry} from '@/store/printer/tempHistory/types'
 
 import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
@@ -210,7 +210,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get autoscale() {
-        return this.$store.state.gui.tempchart.autoscale ?? true
+        return this.$store.state.gui.view.tempchart.autoscale ?? true
     }
 
     get maxTemp() {
@@ -243,15 +243,24 @@ export default class TempChart extends Mixins(BaseMixin) {
     updateChart() {
         if (this.chart && this.isVisible) {
             //const t0 = performance.now()
+            const limitDate = new Date(Date.now() - this.maxHistory * 1000)
+            let newSource = [...this.source].filter((entry: PrinterTempHistoryStateSourceEntry) => {
+                return entry.date >= limitDate
+            })
 
             this.chart?.setOption({
                 dataset: {
-                    source: this.source
+                    source: newSource
                 },
             })
 
             //const t1 = performance.now()
-            //window.console.debug(t1-t0)
+            //window.console.debug('calc chart', (t1-t0).toFixed(), newSource.length, this.source.length)
+
+            // reset tempHistory if working sources are smaller than 80%
+            if (this.source.length > 0 && newSource.length < this.maxHistory * 0.8) {
+                this.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
+            }
         }
     }
 

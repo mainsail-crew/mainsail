@@ -45,6 +45,11 @@ export const getters: GetterTree<ServerState, any> = {
             cpuDesc: string | null
             version: string | null
             os: string | null
+            release_info?: {
+                name: string
+                version_id: string
+                id: string
+            } | null
             load: number
             loadPercent: number
             loadProgressColor: string
@@ -100,6 +105,7 @@ export const getters: GetterTree<ServerState, any> = {
                 cpuDesc: state.system_info?.cpu_info?.cpu_desc ?? null,
                 version,
                 os: state.system_info?.distribution?.name ?? null,
+                release_info: state.system_info?.distribution?.release_info ?? null,
                 load,
                 loadPercent: loadPercent < 100 ? loadPercent : 100,
                 loadProgressColor,

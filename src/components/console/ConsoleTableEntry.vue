@@ -25,7 +25,7 @@
 
 <template>
     <v-row :class="'ma-0 '+entryStyle">
-        <v-col class="col-auto pr-0">{{ event.formatTime }}</v-col>
+        <v-col class="col-auto pr-0 text--secondary">{{ event.formatTime }}</v-col>
         <v-col  :class="colorConsoleMessage(event)" v-html="event.formatMessage" @click.capture="commandClick"></v-col>
     </v-row>
 </template>
@@ -48,7 +48,7 @@ export default class ConsoleTableEntry extends Vue {
     colorConsoleMessage(item: ServerStateEvent): string {
         if (item.message.startsWith('!! ')) return 'red--text'
 
-        return ''
+        return 'white--text'
     }
 
     commandClick(event: Event) {

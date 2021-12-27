@@ -52,7 +52,7 @@ import Panel from '@/components/ui/Panel.vue'
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
     get controlStyle() {
-        return this.$store.state.gui.dashboard.control.style ?? 'bars'
+        return this.$store.state.gui.control.style ?? 'bars'
     }
 
     get existsExtruder() {

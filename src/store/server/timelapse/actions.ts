@@ -11,7 +11,6 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
     init() {
         Vue.$socket.emit('machine.timelapse.get_settings', {}, { action: 'server/timelapse/initSettings'})
         Vue.$socket.emit('machine.timelapse.lastframeinfo', {}, { action: 'server/timelapse/initLastFrameinfo'})
-        //Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices'})
     },
 
     initSettings({ commit }, payload) {

@@ -7,6 +7,10 @@ export const actions: ActionTree<GcodeviewerState, RootState> = {
         commit('reset')
     },
 
+    setViewerBackup({ commit }, backup) {
+        commit('setViewerBackup', backup)
+    },
+
     setCanvasBackup({ commit }, backup) {
         commit('setCanvasBackup', backup)
     },

@@ -8,14 +8,14 @@ import {caseInsensitiveSort} from '@/plugins/helpers'
 // eslint-disable-next-line
 export const getters: GetterTree<GuiRemoteprintersState, any> = {
     getRemoteprinters: (state, getters, rootState, rootGetters) => {
-        const remoteprinters: GuiRemoteprintersStatePrinter[] = []
+        const printers: GuiRemoteprintersStatePrinter[] = []
 
-        Object.keys(state.remoteprinters).forEach((id: string) => {
+        Object.keys(state.printers).forEach((id: string) => {
             const socket = {...rootGetters['farm/getPrinterSocketState'](id)}
 
-            remoteprinters.push({...state.remoteprinters[id], id, socket})
+            printers.push({...state.printers[id], id, socket})
         })
 
-        return caseInsensitiveSort(remoteprinters, 'hostname')
+        return caseInsensitiveSort(printers, 'hostname')
     },
 }

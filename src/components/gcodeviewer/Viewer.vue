@@ -234,6 +234,7 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     async mounted() {
         this.loadedFile = this.$store.state.gcodeviewer?.loadedFileBackup ?? null
+        viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
 
         await this.init()
 
@@ -244,6 +245,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.gcodeProcessor.loadingProgressCallback = null
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
+            this.$store.dispatch('gcodeviewer/setViewerBackup', viewer)
         }
 
         window.removeEventListener('resize', this.eventListenerResize)
@@ -258,7 +260,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get sdCardFilePath() {
-        return this.$store.state.printer.print_stats.filename ?? ''
+        return this.$store.state.printer.print_stats?.filename ?? ''
     }
 
     get currentPosition() {
@@ -285,7 +287,12 @@ export default class Viewer extends Mixins(BaseMixin) {
             canvasElement.className = 'viewer'
             this.$refs.viewerCanvasContainer.appendChild(canvasElement)
             await this.$store.dispatch('gcodeviewer/setCanvasBackup', canvasElement)
-        } else this.$refs.viewerCanvasContainer.appendChild(canvasElement)
+        } else {
+            this.$refs.viewerCanvasContainer.appendChild(canvasElement)
+            if (viewer?.gcodeProcessor) {
+                viewer.gcodeProcessor.updateFilePosition(viewer?.fileSize)
+            }
+        }
 
         if (viewer === null) {
             await this.viewerInit(canvasElement)
@@ -373,7 +380,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         this.zSlider = this.maxZSlider
         this.loading = false
         viewer.setCursorVisiblity(this.showCursor)
-        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
 
         if (this.loadedFile === this.sdCardFilePath && this.printing_objects.length) {
             let objects: any = []
@@ -393,6 +399,8 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.buildObjects.loadObjectBoundaries(objects)
             viewer.buildObjects.showObjectSelection(this.showObjectSelection)
         }
+
+        viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
     }
 
     async fileSelected(e: any) {
@@ -521,7 +529,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (newVal > 0 && this.printerIsPrinting && this.tracking && newVal > offset) {
             viewer.gcodeProcessor.updateFilePosition(newVal - offset)
         } else {
-            viewer.gcodeProcessor.updateFilePosition(0)
+            viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
         }
     }
 

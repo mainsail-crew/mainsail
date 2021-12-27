@@ -8,6 +8,10 @@ export const mutations: MutationTree<GcodeviewerState> = {
         Object.assign(state, getDefaultState())
     },
 
+    setViewerBackup(state, backup) {
+        Vue.set(state, 'viewerBackup', backup)
+    },
+
     setCanvasBackup(state, backup) {
         Vue.set(state, 'canvasBackup', backup)
     },

@@ -31,6 +31,7 @@ export interface ServerTimelapseSettingsState {
     park_extrude_speed: number
     park_extrude_distance: number
     park_time: number
+    fw_retract: boolean
     hyperlapse_cycle: number
 
     constant_rate_factor: number

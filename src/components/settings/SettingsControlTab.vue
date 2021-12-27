@@ -236,55 +236,55 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
     }
 
     get controlStyle() {
-        return this.$store.state.gui.dashboard.control.style ?? 'bar'
+        return this.$store.state.gui.control.style ?? 'bar'
     }
 
     set controlStyle(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.style', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.style', value: newVal })
     }
 
     get reverseX() {
-        return this.$store.state.gui.dashboard.control.reverseX
+        return this.$store.state.gui.control.reverseX
     }
 
     set reverseX(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.reverseX', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.reverseX', value: newVal })
     }
 
     get reverseY() {
-        return this.$store.state.gui.dashboard.control.reverseY
+        return this.$store.state.gui.control.reverseY
     }
 
     set reverseY(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.reverseY', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.reverseY', value: newVal })
     }
 
     get reverseZ() {
-        return this.$store.state.gui.dashboard.control.reverseZ
+        return this.$store.state.gui.control.reverseZ
     }
 
     set reverseZ(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.reverseZ', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.reverseZ', value: newVal })
     }
 
     get feedrateXY() {
-        return this.$store.state.gui.dashboard.control.feedrateXY
+        return this.$store.state.gui.control.feedrateXY
     }
 
     set feedrateXY(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.feedrateXY', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.feedrateXY', value: newVal })
     }
 
     get feedrateZ() {
-        return this.$store.state.gui.dashboard.control.feedrateZ
+        return this.$store.state.gui.control.feedrateZ
     }
 
     set feedrateZ(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.feedrateZ', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.feedrateZ', value: newVal })
     }
 
     get stepsAll() {
-        const steps = this.$store.state.gui.dashboard.control.stepsAll
+        const steps = this.$store.state.gui.control.stepsAll
         return (steps ?? []).sort(function (a: number,b: number) { return b-a })
     }
 
@@ -292,11 +292,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absSteps = []
         for(const value of newVal) absSteps.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsAll', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsAll', value: absSteps })
     }
 
     get stepsXY() {
-        const steps = this.$store.state.gui.dashboard.control.stepsXY
+        const steps = this.$store.state.gui.control.stepsXY
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -304,11 +304,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absSteps = []
         for(const value of steps) absSteps.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsXY', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsXY', value: absSteps })
     }
 
     get stepsZ() {
-        const steps = this.$store.state.gui.dashboard.control.stepsZ
+        const steps = this.$store.state.gui.control.stepsZ
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -316,11 +316,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absSteps = []
         for(const value of steps) absSteps.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsZ', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsZ', value: absSteps })
     }
 
     get stepsCircleXY() {
-        const steps = this.$store.state.gui.dashboard.control.stepsCircleXY
+        const steps = this.$store.state.gui.control.stepsCircleXY
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -328,11 +328,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absSteps = []
         for(const value of steps) absSteps.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsCircleXY', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleXY', value: absSteps })
     }
 
     get stepsCircleZ() {
-        const steps = this.$store.state.gui.dashboard.control.stepsCircleZ
+        const steps = this.$store.state.gui.control.stepsCircleZ
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -340,11 +340,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absSteps = []
         for(const value of steps) absSteps.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.control.stepsCircleZ', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleZ', value: absSteps })
     }
 
     get feedamountsE() {
-        const steps = this.$store.state.gui.dashboard.extruder.feedamounts
+        const steps = this.$store.state.gui.control.extruder.feedamounts
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -352,11 +352,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absAmounts = []
         for(const value of amounts) absAmounts.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedamounts', value: absAmounts })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamounts', value: absAmounts })
     }
 
     get feedratesE() {
-        const steps = this.$store.state.gui.dashboard.extruder.feedrates
+        const steps = this.$store.state.gui.control.extruder.feedrates
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
@@ -364,7 +364,7 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const absRates = []
         for(const value of rates) absRates.push(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'dashboard.extruder.feedrates', value: absRates })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: absRates })
     }
 
     blurFeedrateXY() {

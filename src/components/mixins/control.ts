@@ -13,11 +13,11 @@ export default class ControlMixin extends Vue {
     }
 
     get feedrateXY() {
-        return this.$store.state.gui.dashboard?.control?.feedrateXY ?? 100
+        return this.$store.state.gui.control?.feedrateXY ?? 100
     }
 
     get feedrateZ() {
-        return this.$store.state.gui.dashboard?.control?.feedrateZ ?? 10
+        return this.$store.state.gui.control?.feedrateZ ?? 10
     }
 
     get existsQGL() {
