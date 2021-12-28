@@ -11,14 +11,39 @@
             "CannotUploadTheFile": "Kan ikke uploade filen!"
         },
         "TopCornerMenu": {
-            "KlipperControl": "Klipper Control",
+            "KlipperControl": "Klipper styring",
             "KlipperRestart": "Genstart",
-            "KlipperFirmwareRestart": "Genstart alt",
-            "ServiceControl": "Service Control",
-            "PowerDevices": "Strøm enheder",
+            "KlipperFirmwareRestart": "Genstart firmware",
+            "ServiceControl": "Services",
+            "PowerDevices": "Strømstyring",
             "HostControl": "Værtsstyring",
+            "Start": "Start",
+            "Stop": "Stop",
+            "Restart": "Genstart",
             "Reboot": "Genstart",
-            "Shutdown": "Luk ned"
+            "Shutdown": "Luk ned",
+            "Cancel": "Annuller",
+            "ConfirmationDialog": {
+              "Title": {
+                "KlipperRestart": "Genstart Klipper",
+                "KlipperFirmwareRestart": "Genstart Klipper firmware",
+                "ServiceStart": "Start service",
+                "ServiceRestart": "Genstart service",
+                "ServiceStop": "Stop service",
+                "HostReboot": "Genstart vært",
+                "HostShutdown": "Luk vært ned"
+              },
+              "Description": {
+                "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
+                "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
+                "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
+                "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
+                "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
+              }
+            }
         },
         "UpdateDialog": {
             "Updating": "Updaterer {software}...",
@@ -155,6 +180,7 @@
         "LastModified": "Sidst ændret",
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
+        "Filament": "Filament",
         "FilamentUsage": "Filament forbrug (m)",
         "FilamentWeight": "Filament vægt (g)",
         "PrintTime": "Printtid",
@@ -264,7 +290,7 @@
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "HistoryFilamentUsage": "Filament",
-        "HistoryPrinttimeAVG": "Print",
+        "HistoryPrinttimeAVG": "Antal print",
         "ShowStatusName": "Vis \"{name}\" ({count})"
     },
     "Timelapse": {
@@ -362,7 +388,7 @@
         "KlipperWarningsPanel": {
             "KlipperWarnings": "Klipper advarsler",
             "DownloadLog": "Download log",
-            "DeprecatedOption": "Funktionen \"{option}\" i sehtion \"{section}\" er forældet.",
+            "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
             "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet."
         },
         "MachineSettingsPanel": {
@@ -585,7 +611,8 @@
             "Memory": "Hukommelse",
             "Constants": "Konstanter",
             "LastStats": "Seneste data",
-            "HostDetails": "Værtsdetaljer"
+            "HostDetails": "Værtsdetaljer",
+            "Distro": "Distro"
         }
     },
     "Settings": {
@@ -604,15 +631,18 @@
             "FactoryReset": "Komplet nulstilling",
             "FactoryDialog": "Vælg venligst de sektioner du ønsker at nulstille:",
             "Reset": "Nulstil",
-            "DbGeneral": "Generelt",
-            "DbPresets": "Forudinstillinger",
-            "DbGcodehistry": "G-Code Historik",
-            "DbMacrogroups": "Makrogrupper",
-            "DbRemoteprinters": "Fjernprintere",
+            "DbConsolehistory": "Terminal Historik",
+            "DbView": "Vis indstillinger",
             "DbHistoryJobs": "Jobhistorik",
             "DbHistoryTotals": "Totalhistorik",
             "DbWebcams": "Webcams",
-            "DbTimelapseSettings": "Timelapse indstillinger"
+            "DbTimelapseSettings": "Timelapse indstillinger",
+            "MoonrakerDb": "Moonraker DB",
+            "Backup": "Backup",
+            "BackupDialog": "Vælg de sektioner du ønsker at lave backup af:",
+            "Restore": "Gendan",
+            "CannotReadJson": "Kan ikke læse backup-fil",
+            "RestoreDialog": "Vælg de sektioner du ønsker at gendanne fra backup:"
         },
         "WebcamsTab": {
             "Webcams": "Webcams",
@@ -622,13 +652,13 @@
             "SaveWebcam": "Gem Webcam",
             "UpdateWebcam": "Opdater Webcam",
             "IconPrinter": "Printer",
-            "IconNozzle": "Nozzle",
+            "IconNozzle": "Dyse",
             "IconBed": "Bed",
-            "IconCam": "Cam",
+            "IconCam": "Kamera",
             "IconFilament": "Filament",
-            "IconDoor": "Door",
+            "IconDoor": "Dør",
             "IconMcu": "MCU",
-            "IconHot": "Hot",
+            "IconHot": "Bål",
             "Mjpegstreamer": "MJPEG-Streamer",
             "MjpegstreamerAdaptive": "Adaptiv MJPEG-Streamer (eksperimental)",
             "Uv4lMjpeg": "UV4L-MJPEG",
@@ -671,6 +701,8 @@
             "PosYDescription": "Parkeringspostion Y (absolut)",
             "PosDZ": "Position Z",
             "PosDZDescription": "Parkeringspostion Z (relativ)",
+            "FwRetract": "Firmware Retract",
+            "FwRetractDescription": "Brug firmware retraction i timelapse makroen",
             "TravelSpeed": "Travel-hastighed",
             "TravelSpeedDescription": "Travel-hastighed til og fra parkeringsposition",
             "RetractSpeed": "Retract hastighed",
@@ -682,7 +714,7 @@
             "UnretractDistance": "Unretract distance",
             "UnretractDistanceDescription": "Længden af unretracts.",
             "ConstantRateFactor": "Constant Rate Faktor",
-            "ConstantRateFactorDescription": "Konfigurerer Kvalitet / Filstørrelse af den renderede video. Kan justeres mellem 0–51, Hvor 0 er tabsfri, 23 er standard og 51 er værste kvalitet (mindste filstørrelse). En lavere værdi giver højere kvalitet, og et \"normalt\" område er 17-28. 17 eller 18 kan betragtes som visuelt tabsfrit.",
+            "ConstantRateFactorDescription": "Konfigurerer Kvalitet / Filstørrelse af den renderede video. Kan justeres mellem 0-51, Hvor 0 er tabsfri, 23 er standard og 51 er værste kvalitet (mindste filstørrelse). En lavere værdi giver højere kvalitet, og et \"normalt\" område er 17-28. 17 eller 18 kan betragtes som visuelt tabsfrit.",
             "OutputFramerate": "Output Framerate",
             "OutputFramerateDescription": "Definerer framerate i videoen. Bemærk: Dette ignoreres hvis \"variable_fps\" er aktiveret",
             "Pixelformat": "Pixelformat",
@@ -723,6 +755,7 @@
             "Management": "Management",
             "Simple": "Simpel",
             "Expert": "Ekspert",
+            "Group": "Gruppe",
             "NoGroups": "Ingen grupper fundet...",
             "Macrogroups": "Grupper",
             "EditGroup": "Edit Gruppe",
