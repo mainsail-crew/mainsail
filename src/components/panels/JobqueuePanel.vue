@@ -8,8 +8,8 @@
             <template v-slot:buttons>
                 <v-btn
                     color="success"
-                    @click="resumeJobqueue"
-                    :loading="loadings.includes('resumeJobqueue')"
+                    @click="startJobqueue"
+                    :loading="loadings.includes('startJobqueue')"
                     icon
                     tile
                     v-if="queueState === 'paused'"
@@ -19,7 +19,7 @@
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
                         </template>
-                        <span>{{ $t('JobQueue.Resume') }}</span>
+                        <span>{{ $t('JobQueue.Start') }}</span>
                     </v-tooltip>
                 </v-btn>
                 <v-btn
@@ -137,11 +137,11 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.jobqueue.countPerPage
+        return this.$store.state.gui.view.jobqueue.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'jobqueue.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.jobqueue.countPerPage', value: newVal })
     }
 
     refreshHistory() {
@@ -191,8 +191,8 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         this.$store.dispatch('server/jobQueue/deleteFromQueue', [item.job_id])
     }
 
-    resumeJobqueue() {
-        this.$store.dispatch('server/jobQueue/resume')
+    startJobqueue() {
+        this.$store.dispatch('server/jobQueue/start')
     }
 
     pauseJobqueue() {

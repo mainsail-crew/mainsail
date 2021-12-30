@@ -95,7 +95,6 @@ import CommandHelpModal from '@/components/CommandHelpModal.vue'
 })
 export default class PageConsole extends Mixins(BaseMixin) {
     private gcode = ''
-    private lastCommands: string[] = []
     private lastCommandNumber: number | null = null
     private items = []
 
@@ -147,7 +146,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get customFilters(): any[] {
-        return this.$store.state.gui.console.customFilters
+        return this.$store.state.gui.console.consolefilters
+    }
+
+    get lastCommands(): string[] {
+        return this.$store.state.gui.gcodehistory.entries ?? []
     }
 
     commandClick(msg: string): void {
@@ -162,7 +165,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
         if (!cmd.shiftKey) {
             if (this.gcode !== '') {
                 this.$store.dispatch('printer/sendGcode', this.gcode)
-                this.lastCommands.push(this.gcode)
+                this.$store.dispatch('gui/gcodehistory/addToHistory', this.gcode)
                 this.gcode = ''
                 this.lastCommandNumber = null
                 setTimeout(() => {

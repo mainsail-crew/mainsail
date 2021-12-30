@@ -114,11 +114,11 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     get logoColor(): string {
-        return this.$store.state.gui.theme.logo
+        return this.$store.state.gui.uiSettings.logo
     }
 
     get primaryColor(): string {
-        return this.$store.state.gui.theme.primary
+        return this.$store.state.gui.uiSettings.primary
     }
 
     get warningColor(): string {

@@ -66,7 +66,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh !== null && bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -244,6 +244,13 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get chartOptions() {
         return {
             tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.9)',
+                borderWidth: 0,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: '14px'
+                },
+                padding: 15,
                 formatter: this.tooltipFormatter
             },
             darkMode: true,
@@ -362,51 +369,51 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get showProbed(): boolean {
-        return this.$store.state.gui.heightmap.probed ?? true
+        return this.$store.state.gui.view.heightmap.probed ?? true
     }
 
     set showProbed(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.probed', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.probed', value: newVal })
     }
 
     get showMesh(): boolean {
-        return this.$store.state.gui.heightmap.mesh ?? true
+        return this.$store.state.gui.view.heightmap.mesh ?? true
     }
 
     set showMesh(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.mesh', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.mesh', value: newVal })
     }
 
     get showFlat(): boolean {
-        return this.$store.state.gui.heightmap.flat ?? true
+        return this.$store.state.gui.view.heightmap.flat ?? true
     }
 
     set showFlat(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.flat', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.flat', value: newVal })
     }
 
     get wireframe(): boolean {
-        return this.$store.state.gui.heightmap.wireframe ?? true
+        return this.$store.state.gui.view.heightmap.wireframe ?? true
     }
 
     set wireframe(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.wireframe', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
     get scale(): boolean {
-        return this.$store.state.gui.heightmap.scale ?? true
+        return this.$store.state.gui.view.heightmap.scale ?? true
     }
 
     set scale(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scale', value: newVal })
     }
 
     get scaleVisualMap(): boolean {
-        return this.$store.state.gui.heightmap.scaleVisualMap ?? false
+        return this.$store.state.gui.view.heightmap.scaleVisualMap ?? false
     }
 
     set scaleVisualMap(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleVisualMap', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleVisualMap', value: newVal })
     }
 
     get rangeX(): number[] {
@@ -435,6 +442,21 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
             if (this.showMesh) {
                 for (const row of this.bed_mesh.mesh_matrix) for (const col of row) points.push(col)
             }
+
+            min = Math.min(min, ...points)
+            max = Math.max(max, ...points)
+        }
+
+        return [min, max]
+    }
+
+    get probedHeightmapLimit(): number[] {
+        let min = 0
+        let max = 0
+
+        if (this.bed_mesh) {
+            const points = []
+            for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
 
             min = Math.min(min, ...points)
             max = Math.max(max, ...points)
@@ -655,7 +677,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get bedMeshMaxPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
-        const [ , max] = this.heightmapLimit
+        const [ , max] = this.probedHeightmapLimit
 
         let row = 0
         let col = 0
@@ -681,7 +703,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get bedMeshMinPoint() {
         if (this.bed_mesh.profile_name === '') return { row: 0, col: 0, positionX: 0, positionY: 0, value: 0 }
 
-        const [min, ] = this.heightmapLimit
+        const [min, ] = this.probedHeightmapLimit
 
         let row = 0
         let col = 0
@@ -705,10 +727,14 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     tooltipFormatter(data: any): string {
-        return '<b>'+data.seriesName+'</b><br />' +
-            '<b>' + data.dimensionNames[0]+'</b>: '+data.data[0].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[1]+'</b>: '+data.data[1].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[2]+'</b>: '+data.data[2].toFixed(3) + ' mm '
+        const outputArray: string[] = []
+        outputArray.push('<b>'+data.seriesName+'</b>')
+
+        Object.keys(data.encode).sort().forEach((axisName: string) => {
+            outputArray.push('<b>' + axisName.toUpperCase() + '</b>: '+data.data[data.encode[axisName][0]].toFixed(axisName === 'z' ? 3 : 1) + ' mm')
+        })
+
+        return outputArray.join('<br />')
     }
 
     loadProfile(name: string): void {

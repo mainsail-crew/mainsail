@@ -115,95 +115,95 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultPrimaryColor = defaultPrimaryColor
 
     get logoColor() {
-        return this.$store.state.gui.theme.logo
+        return this.$store.state.gui.uiSettings.logo
     }
 
     set logoColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'theme.logo', value: newVal})
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.logo', value: newVal})
     }
 
     get primaryColor() {
-        return this.$store.state.gui.theme.primary
+        return this.$store.state.gui.uiSettings.primary
     }
 
     set primaryColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'theme.primary', value: newVal})
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.primary', value: newVal})
     }
 
     get boolBigThumbnail() {
-        return this.$store.state.gui.dashboard.boolBigThumbnail
+        return this.$store.state.gui.uiSettings.boolBigThumbnail
     }
 
     set boolBigThumbnail(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.boolBigThumbnail', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.boolBigThumbnail', value: newVal })
     }
 
     get boolWebcamInNavigation() {
-        return this.$store.state.gui.webcamSettings.boolNavi ?? false
+        return this.$store.state.gui.uiSettings.boolWebcamNavi ?? false
     }
 
     set boolWebcamInNavigation(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'webcamSettings.boolNavi', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolWebcamNavi', value: newVal })
     }
 
     get displayCancelPrint() {
-        return this.$store.state.gui.general.displayCancelPrint
+        return this.$store.state.gui.uiSettings.displayCancelPrint
     }
 
     set displayCancelPrint(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayCancelPrint', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.displayCancelPrint', value: newVal })
     }
 
     get displayZOffsetStandby() {
-        return this.$store.state.gui.general.displayZOffsetStandby
+        return this.$store.state.gui.uiSettings.displayZOffsetStandby
     }
 
     set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.displayZOffsetStandby', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.displayZOffsetStandby', value: newVal })
     }
 
     get confirmOnEmergencyStop() {
-        return this.$store.state.gui.general.confirmOnEmergencyStop
+        return this.$store.state.gui.uiSettings.confirmOnEmergencyStop
     }
 
     set confirmOnEmergencyStop(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnEmergencyStop', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
     }
 
     get confirmOnPowerDeviceChange() {
-        return this.$store.state.gui.general.confirmOnPowerDeviceChange
+        return this.$store.state.gui.uiSettings.confirmOnPowerDeviceChange
     }
 
     set confirmOnPowerDeviceChange(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.confirmOnPowerDeviceChange', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
     }
 
     get lockSliders() {
-        return this.$store.state.gui.general.lockSlidersOnTouchDevices
+        return this.$store.state.gui.uiSettings.lockSlidersOnTouchDevices
     }
 
     set lockSliders(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersOnTouchDevices', value: newVal})
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.lockSlidersOnTouchDevices', value: newVal})
     }
 
     get lockSlidersDelay() {
-        return this.$store.state.gui.general.lockSlidersDelay
+        return this.$store.state.gui.uiSettings.lockSlidersDelay
     }
 
     set lockSlidersDelay(newVal) {
-        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'general.lockSlidersDelay', value: newVal}) : {}
+        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.lockSlidersDelay', value: newVal}) : {}
     }
 
     get boolWideNavDrawer() {
-        return this.$store.state.gui.dashboard.boolWideNavDrawer ?? false
+        return this.$store.state.gui.uiSettings.boolWideNavDrawer ?? false
     }
 
     get navigationStyleSetting() {
-        return this.$store.state.gui.dashboard.navigationStyle
+        return this.$store.state.gui.uiSettings.navigationStyle
     }
 
     set navigationStyleSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.navigationStyle', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.navigationStyle', value: newVal })
     }
 
     get navigationStyles() {
@@ -220,11 +220,11 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     get boolHideUploadAndPrintButton() {
-        return this.$store.state.gui.dashboard.boolHideUploadAndPrintButton ?? false
+        return this.$store.state.gui.uiSettings.boolHideUploadAndPrintButton ?? false
     }
 
     set boolHideUploadAndPrintButton(newVal) {
-        this.$store.dispatch('gui/toggleHideUploadAndPrintBtn', newVal)
+        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
     }
 
     clearColorObject(color: any): string {

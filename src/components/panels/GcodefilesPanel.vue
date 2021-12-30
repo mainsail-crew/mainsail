@@ -69,11 +69,11 @@
                             style="max-width: 300px;"
                         ></v-text-field>
                         <v-spacer></v-spacer>
-                        <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                        <input type="file" ref="fileUpload" :accept="validGcodeExtensions.join(', ')" style="display: none" multiple @change="uploadFile" />
                         <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary--text px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                         <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
                         <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
-                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+                        <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
@@ -274,10 +274,10 @@
         </v-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="printerIsPrinting || !klipperReadyForGui" v-if="!contextMenu.item.isDirectory">
+                <v-list-item @click="clickRow(contextMenu.item, true)" :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart')}}
                 </v-list-item>
-                <v-list-item @click="addToQueue(contextMenu.item)" v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')">
+                <v-list-item @click="addToQueue(contextMenu.item)" v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')" :disabled="!isGcodeFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-playlist-plus</v-icon> {{ $t('Files.AddToQueue')}}
                 </v-list-item>
                 <v-list-item
@@ -291,6 +291,10 @@
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
                 >
                     <v-icon class="mr-1">mdi-fire</v-icon> {{ $t('Files.Preheat')}}
+                </v-list-item>
+                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory" :disabled="!isGcodeFile(contextMenu.item)">
+                    <v-icon class="mr-1">mdi-video-3d</v-icon>
+                    {{ $t('Files.View3D') }}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Files.Download')}}
@@ -309,10 +313,6 @@
                 </v-list-item>
                 <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
                     <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete')}}
-                </v-list-item>
-                <v-list-item @click="view3D(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-video-3d</v-icon>
-                    {{ $t('Files.View3D') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -635,55 +635,55 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get hideMetadataColums() {
-        return this.$store.state.gui.gcodefiles.hideMetadataColums
+        return this.$store.state.gui.view.gcodefiles.hideMetadataColums
     }
 
     set hideMetadataColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.hideMetadataColums', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColums', value: newVal })
     }
 
     get showHiddenFiles() {
-        return this.$store.state.gui.gcodefiles.showHiddenFiles
+        return this.$store.state.gui.view.gcodefiles.showHiddenFiles
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showHiddenFiles', value: newVal })
     }
 
     get showPrintedFiles() {
-        return this.$store.state.gui.gcodefiles.showPrintedFiles
+        return this.$store.state.gui.view.gcodefiles.showPrintedFiles
     }
 
     set showPrintedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showPrintedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
     }
 
     get sortBy() {
-        return this.$store.state.gui.gcodefiles.sortBy
+        return this.$store.state.gui.view.gcodefiles.sortBy
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.gcodefiles.sortDesc
+        return this.$store.state.gui.view.gcodefiles.sortDesc
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortDesc', value: newVal })
     }
 
     get countPerPage() {
-        return this.$store.state.gui.gcodefiles.countPerPage
+        return this.$store.state.gui.view.gcodefiles.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
     get timelapseEnabled() {
@@ -734,11 +734,23 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             this.dropzone.opacity = 0
 
             if (e.dataTransfer.files.length) {
+                const files = [...e.dataTransfer.files].filter((file: File) => {
+                    const format = file.name.slice(file.name.lastIndexOf('.'))
+
+                    if (!validGcodeExtensions.includes(format)) {
+                        this.$toast.error(this.$t('Files.WrongFileUploaded', { filename: file.name }).toString())
+
+                        return false
+                    }
+
+                    return true
+                })
+
                 this.$store.dispatch('socket/addLoading', { name: 'gcodeUpload' })
                 let successFiles = []
                 this.uploadSnackbar.number = 0
-                this.uploadSnackbar.max = e.dataTransfer.files.length
-                for (const file of e.dataTransfer.files) {
+                this.uploadSnackbar.max = files.length
+                for (const file of files) {
                     this.uploadSnackbar.number++
                     const result = await this.doUploadFile(file)
                     successFiles.push(result)
@@ -939,7 +951,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
 
             if (item.isDirectory) {
                 this.currentPath += '/' + item.filename
-            } else if (!['error', 'printing', 'paused'].includes(this.printer_state)) {
+            } else if (!['error', 'printing', 'paused'].includes(this.printer_state) && this.isGcodeFile(item)) {
                 this.dialogPrintFile.show = true
                 this.dialogPrintFile.item = item
             }
@@ -1105,6 +1117,12 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             let headerElement = this.headers.find(element => element.value === key)
             if (headerElement) headerElement.visible = false
         })
+    }
+
+    isGcodeFile(file: FileStateFile) {
+        const format = file.filename.slice(file.filename.lastIndexOf('.'))
+
+        return validGcodeExtensions.includes(format)
     }
 
     view3D(item: FileStateFile) {

@@ -6,9 +6,7 @@
         :collapsible="true"
         card-class="machine-settings-panel"
     >
-        <motion-settings v-if="!existsFirmwareRetraction"></motion-settings>
-
-        <div v-if="existsFirmwareRetraction">
+        <div>
             <sub-panel
                 :title="$t('Panels.MachineSettingsPanel.MotionSettings.Motion')"
                 sub-panel-class="motion-settings-subpanel"
@@ -16,6 +14,13 @@
                 <motion-settings></motion-settings>
             </sub-panel>
             <sub-panel
+                :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance')"
+                sub-panel-class="pressure-advance-settings-subpanel"
+            >
+                <pressure-advance-settings></pressure-advance-settings>
+            </sub-panel>
+            <sub-panel
+                v-if="existsFirmwareRetraction"
                 :title="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.FirmwareRetraction')"
                 sub-panel-class="firmware-retraction-settings-subpanel"
             >
@@ -31,6 +36,7 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import SubPanel from '@/components/ui/SubPanel.vue'
 import MotionSettings from '@/components/panels/MachineSettings/MotionSettings.vue'
+import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
 import FirmwareRetractionSettings from '@/components/panels/MachineSettings/FirmwareRetractionSettings.vue'
 
 @Component({
@@ -38,6 +44,7 @@ import FirmwareRetractionSettings from '@/components/panels/MachineSettings/Firm
         Panel,
         SubPanel,
         MotionSettings,
+        PressureAdvanceSettings,
         FirmwareRetractionSettings
     }
 })

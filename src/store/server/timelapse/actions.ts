@@ -11,7 +11,6 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
     init() {
         Vue.$socket.emit('machine.timelapse.get_settings', {}, { action: 'server/timelapse/initSettings'})
         Vue.$socket.emit('machine.timelapse.lastframeinfo', {}, { action: 'server/timelapse/initLastFrameinfo'})
-        //Vue.$socket.emit('machine.device_power.devices', {}, { action: 'server/power/getDevices'})
     },
 
     initSettings({ commit }, payload) {
@@ -37,7 +36,10 @@ export const actions: ActionTree<ServerTimelapseState, RootState> = {
             break
 
         case 'render':
-            commit('setRenderStatus', payload)
+            if (payload.status === 'error') {
+                Vue.$toast.error(payload.msg)
+                commit('resetSnackbar')
+            } else commit('setRenderStatus', payload)
             break
 
         default:

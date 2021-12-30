@@ -6,6 +6,7 @@ import { getters } from '@/store/gcodeviewer/getters'
 
 export const getDefaultState = (): GcodeviewerState => {
     return {
+        viewerBackup: null,
         canvasBackup: null,
         loadedFileBackup: null
     }

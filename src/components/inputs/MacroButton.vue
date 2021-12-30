@@ -68,7 +68,7 @@
 import Component from 'vue-class-component'
 import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiMacrogroupsStateMacrogroupMacro} from '@/store/gui/macrogroups/types'
+import {GuiMacrosStateMacrogroupMacro} from '@/store/gui/macros/types'
 
 interface param {
     type: 'int' | 'double' | 'string' | null,
@@ -85,7 +85,7 @@ export default class MacroButton extends Mixins(BaseMixin) {
     private paramArray: string[] = []
     private params: params = {}
 
-    @Prop({ required: true }) readonly macro!: GuiMacrogroupsStateMacrogroupMacro
+    @Prop({ required: true }) readonly macro!: GuiMacrosStateMacrogroupMacro
     @Prop({ default: 'primary' }) readonly color!: string
 
     get klipperMacro() {

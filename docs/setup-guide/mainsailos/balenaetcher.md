@@ -47,6 +47,7 @@ balenaEtcher appearance may vary depending on the host OS.
 ![screenshot-balena-select-sd-card-choice](../../assets/img/setup/balena-select-sd-card-choice.png)
 
 * Return the the main screen, and select 'Flash'. Accept any warnings to continue.
+
 **FLASHING WILL DESTROY ALL DATA ON YOUR SD CARD AND CANNOT BE REVERSED**
 {: .alert}
 

@@ -369,31 +369,31 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     get sortBy() {
-        return this.$store.state.gui.timelapse.sortBy ?? 'modified'
+        return this.$store.state.gui.view.gcodefiles.sortBy ?? 'modified'
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.timelapse.sortDesc ?? true
+        return this.$store.state.gui.view.gcodefiles.sortDesc ?? true
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortDesc', value: newVal })
     }
 
     get countPerPage() {
-        return this.$store.state.gui.timelapse?.countPerPage ?? 10
+        return this.$store.state.gui.view.gcodefiles?.countPerPage ?? 10
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.countPerPage', value: newVal })
     }
 
     get displayFiles() {
@@ -544,6 +544,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     removeFile() {
+        const filename = this.contextMenu.item.filename.slice(0, this.contextMenu.item.filename.lastIndexOf('.'))
+        const previewFilename = filename+'.jpg'
+        const previewExists = (this.files.findIndex((file) => file.filename === previewFilename) !== -1)
+
+        if(previewExists) this.$socket.emit('server.files.delete_file', { path: this.currentPath+'/'+previewFilename }, { action: 'files/getDeleteFile' })
         this.$socket.emit('server.files.delete_file', { path: this.currentPath+'/'+this.contextMenu.item.filename }, { action: 'files/getDeleteFile' })
     }
 
@@ -553,8 +558,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     deleteDirectoryAction() {
-        //TODO: delete all files (mp4, jpg, zip)
-
         this.dialogDeleteDirectory.show = false
         this.$socket.emit('server.files.delete_directory', { path: this.currentPath+'/'+this.contextMenu.item.filename, force: true }, { action: 'files/getDeleteDir' })
     }
