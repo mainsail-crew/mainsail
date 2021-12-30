@@ -6,21 +6,14 @@ import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }) {
-        Object.keys(state.remoteprinters).forEach((printerId) => {
+        Object.keys(state.printers).forEach((printerId) => {
             dispatch('farm/unregisterPrinter', printerId, { root: true })
         })
 
         commit('reset')
     },
 
-    init() {
-        window.console.debug('init gui/remoteprinters')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_remoteprinters' }, { action: 'gui/remoteprinters/initStore' })
-    },
-
     initFromLocalstorage({ dispatch }) {
-        window.console.debug('init gui/remoteprinters from localStorage')
-
         const value = JSON.parse(localStorage.getItem('printers') ?? '{}')
         if (Array.isArray(value)) {
             const printers: any = {}
@@ -30,15 +23,14 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 printers[id] = printer
             })
 
-            dispatch('initStore', { value: printers })
-        } else dispatch('initStore', { value })
+            dispatch('initStore', printers)
+        }
     },
 
     async initStore({ commit, dispatch, state }, payload) {
         dispatch('reset')
-
-        Object.keys(payload.value).forEach((printerId: string) => {
-            const printer = payload.value[printerId]
+        Object.keys(payload).forEach((printerId: string) => {
+            const printer = payload[printerId]
             commit('store', { id: printerId, values: printer })
             dispatch('farm/registerPrinter', {
                 id: printerId,
@@ -53,23 +45,23 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         if (rootState.socket?.remoteMode) {
             const printers: any[] = []
 
-            Object.keys(state.remoteprinters).forEach((id: string) => {
+            Object.keys(state.printers).forEach((id: string) => {
                 printers.push({
-                    hostname: state.remoteprinters[id].hostname,
-                    port: state.remoteprinters[id].port,
-                    settings: state.remoteprinters[id].settings,
+                    hostname: state.printers[id].hostname,
+                    port: state.printers[id].port,
+                    settings: state.printers[id].settings,
                 })
             })
 
             localStorage.setItem('printers', JSON.stringify(printers))
-        } else if (id in state.remoteprinters) {
+        } else if (id in state.printers) {
             const value = {
-                hostname: state.remoteprinters[id].hostname,
-                port: state.remoteprinters[id].port,
-                settings: state.remoteprinters[id].settings ?? {},
+                hostname: state.printers[id].hostname,
+                port: state.printers[id].port,
+                settings: state.printers[id].settings ?? {},
             }
 
-            Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail_remoteprinters', key: id, value })
+            Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'remoteprinters.printers.'+id, value })
         }
     },
 
@@ -107,6 +99,6 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('delete', id)
         dispatch('farm/unregisterPrinter', id, { root: true })
 
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail_remoteprinters', key: id })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers'+id })
     },
 }

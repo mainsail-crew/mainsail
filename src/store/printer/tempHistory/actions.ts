@@ -15,20 +15,24 @@ import {
 import {RootState} from '@/store/types'
 
 export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
-    reset({ commit }) {
+    reset({ commit, state }) {
+        if (state.updateSourceInterval !== null)
+            clearInterval(state.updateSourceInterval)
+
         commit('reset')
     },
 
     init({ commit, rootGetters, dispatch }, payload) {
-        commit('reset')
+        window.console.debug('init printer/tempHistory')
+        dispatch('reset')
 
         const now = new Date()
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
         const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
 
-        if ('requestParams' in payload) delete payload.requestParams
-
         if (payload !== undefined) {
+            if ('requestParams' in payload) delete payload.requestParams
+
             const objectKeys = Object.keys(payload)
             // eslint-disable-next-line
 			const importData: any = {}
@@ -198,16 +202,35 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
             commit('setInitSeries', series)
 
-            setInterval(() => {
+            const updateSourceInterval = setInterval(() => {
                 dispatch('updateSource')
             }, datasetInterval)
+
+            commit('setUpdateSourceInterval', updateSourceInterval)
         }
     },
 
-    updateSource({ commit, rootState, rootGetters }) {
+    async updateSource({ commit, rootState, rootGetters, state }) {
+        /*if (state.timeLastUpdate !== null) {
+            const t0 = performance.now()
+            window.console.debug('update Source', t0-state.timeLastUpdate)
+        }*/
+
+
         if (rootState?.printer?.heaters?.available_sensors?.length) {
+            const now = new Date()
+
+            if (state.source.length) {
+                const lastEntry = state.source[state.source.length - 1]
+                const secondsBefore = lastEntry.date.getSeconds()
+                const secondsAfter = now.getSeconds()
+                const diff = now.getTime() - lastEntry.date.getTime()
+
+                if (secondsBefore === secondsAfter && diff < 1000) return
+            }
+
             const data: PrinterTempHistoryStateSourceEntry = {
-                date: new Date()
+                date: now
             }
 
             rootState.printer.heaters.available_sensors.forEach((key: string) => {
@@ -222,10 +245,12 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
                 }
             })
 
-            commit('addToSource', {
+            await commit('addToSource', {
                 data: data,
                 maxHistory: rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
             })
         }
+
+        //commit('saveLastDate', performance.now())
     },
 }

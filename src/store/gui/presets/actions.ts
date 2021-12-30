@@ -9,18 +9,15 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
         commit('reset')
     },
 
-    init() {
-        window.console.debug('init gui/presets')
-        Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail_presets' }, { action: 'gui/presets/initStore' })
-    },
-
-    initStore({ commit }, payload) {
-        commit('reset')
-        commit('initStore', payload)
+    saveSetting({ dispatch }, payload) {
+        dispatch('gui/saveSetting', {
+            name: 'presets.'+payload.name,
+            value: payload.value
+        }, { root: true })
     },
 
     upload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail_presets', key: payload.id, value: payload.value })
+        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'presets.presets.'+payload.id, value: payload.value })
     },
 
     store({ commit, dispatch, state }, payload) {
@@ -41,16 +38,8 @@ export const actions: ActionTree<GuiPresetsState, RootState> = {
         })
     },
 
-    updateCooldownGcode({ commit, dispatch }, payload) {
-        commit('updateCooldownGcode', payload)
-        dispatch('upload', {
-            id: 'cooldownGcode',
-            value: payload
-        })
-    },
-
     delete({ commit }, payload) {
         commit('delete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail_presets', key: payload })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'presets.presets.'+payload })
     },
 }

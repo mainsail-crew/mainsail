@@ -111,7 +111,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                     name: current.status,
                     value: 1,
                     itemStyle: itemStyle,
-                    showInTable: !rootState.gui?.history.hidePrintStatus.includes(current.status),
+                    showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
                     label: {
                         color: '#fff'
                     }
@@ -216,7 +216,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     },
 
     getFilterdJobList: (state, getters, rootState) => {
-        const hideStatus = rootState.gui.history.hidePrintStatus
+        const hideStatus = rootState.gui.view.history.hidePrintStatus
 
         return state.jobs.filter((job: ServerHistoryStateJob) => {
             return !hideStatus.includes(job.status)

@@ -119,11 +119,11 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     get lockSliders() {
-        return this.$store.state.gui.general.lockSlidersOnTouchDevices
+        return this.$store.state.gui.uiSettings.lockSlidersOnTouchDevices
     }
 
     get lockSlidersDelay() {
-        return this.$store.state.gui.general.lockSlidersDelay
+        return this.$store.state.gui.uiSettings.lockSlidersDelay
     }
 
     get colorBar() {

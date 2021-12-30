@@ -38,13 +38,16 @@
 </template>
 
 <script lang="ts">
-
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import Panel from '@/components/ui/Panel.vue'
+import ToolSlider from '@/components/inputs/ToolSlider.vue'
+
 @Component({
-    components: {Panel, ToolSlider}
+    components: {
+        Panel,
+        ToolSlider
+    }
 })
 export default class PrintsettingsPanel extends Mixins(BaseMixin) {
 

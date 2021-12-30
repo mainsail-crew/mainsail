@@ -97,10 +97,10 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setThrottledState(state, payload) {
-        if ('bits' in payload)
+        if (payload && 'bits' in payload)
             Vue.set(state.throttled_state, 'bits', payload.bits)
 
-        if ('flags' in payload)
+        if (payload && 'flags' in payload)
             Vue.set(state.throttled_state, 'flags', payload.flags)
     },
 

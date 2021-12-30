@@ -97,7 +97,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
         panels = panels.concat(this.missingPanelsMobile)
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
@@ -105,14 +105,14 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
         panels = panels.concat(this.missingPanelsTablet)
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
 
     get tabletLayout2() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout2')
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
@@ -120,14 +120,14 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
         panels = panels.concat(this.missingPanelsDesktop)
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
 
     get desktopLayout2() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout2')
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
@@ -135,21 +135,21 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get widescreenLayout1() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
         panels = panels.concat(this.missingPanelsWidescreen)
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
 
     get widescreenLayout2() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout2')
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }
 
     get widescreenLayout3() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout3')
-        panels = panels.filter((element: any) => element.visable)
+        panels = panels.filter((element: any) => element.visible)
 
         return panels
     }

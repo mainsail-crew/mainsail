@@ -31,39 +31,52 @@
         height: 100%;
     }
 </style>
-
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app>
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
                     <template v-if="countPrinters">
-                        <v-list-item 
-                            router to="/allPrinters"
-                            class="small-list-item mt-1"
-                        >
-                            <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                <v-icon>mdi-view-dashboard-outline</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers")}}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                        <v-tooltip right>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-list-item
+                                    router to="/allPrinters"
+                                    class="small-list-item mt-1"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                        <v-icon>mdi-view-dashboard-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers") }}</v-list-item-title>
+                                    </v-list-item-content>
+
+                                </v-list-item>
+                            </template>
+                            <span v-if="navigationStyle === 'iconsOnly'">{{ $t("App.Printers") }}</span>
+                        </v-tooltip>
                         <v-divider class="my-1"></v-divider>
                     </template>
-                    <div v-for="(category, index) in naviPoints" :key="index"> 
-                        <v-list-item 
-                            router :to="category.path"
-                            v-if="showInNavi(category)"
-                            class="small-list-item"
-                        >
-                            <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                <v-icon>mdi-{{ category.icon }}</v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                                <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                    <div v-for="(category, index) in naviPoints" :key="index">
+                        <v-tooltip right :open-delay="500">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-list-item
+                                    router :to="category.path"
+                                    class="small-list-item"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                        <v-icon>mdi-{{ category.icon }}</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </template>
+                            <span v-if="navigationStyle === 'iconsOnly'">{{ $t(`Router.${category.title}`) }}</span>
+                        </v-tooltip>
                     </div>
                 </v-list-item-group>
             </v-list>
@@ -95,7 +108,7 @@ import {navigationWidth} from '@/store/variables'
     }
 })
 
-export default class TheSidebarAlt extends Mixins(BaseMixin) {
+export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
 
     get naviDrawer(): boolean {
@@ -107,7 +120,7 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get navigationStyle() {
-        return this.$store.state.gui.dashboard.navigationStyle
+        return this.$store.state.gui.uiSettings.navigationStyle
     }
 
     get sidebarBackground(): string {
@@ -115,7 +128,9 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get naviPoints(): AppRoute[] {
-        return routes.filter((element) => element.showInNavi)
+        return routes.filter((element) => {
+            return element.showInNavi && this.showInNavi(element)
+        })
     }
 
     get klippy_state(): string {
@@ -123,7 +138,7 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
     }
 
     get boolNaviWebcam(): boolean {
-        return this.$store.state.gui.webcamSettings.boolNavi
+        return this.$store.state.gui.uiSettings.boolWebcamNavi
     }
 
     get moonrakerComponents(): string[] {
@@ -140,10 +155,6 @@ export default class TheSidebarAlt extends Mixins(BaseMixin) {
 
     get currentPage(): string {
         return this.$route.fullPath
-    }
-
-    get isUpdateAvailable(): boolean {
-        return this.$store.getters['server/updateManager/isUpdateAvailable']
     }
 
     get countPrinters() {

@@ -55,19 +55,19 @@ import ControlMixin from '@/components/mixins/control'
 @Component
 export default class ControlPanelBarsControl extends Mixins(BaseMixin, ControlMixin) {
     get stepsXYsorted() {
-        return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return b-a })
+        return [...this.$store.state.gui.control.stepsXY].sort(function(a, b) { return b-a })
     }
 
     get stepsXYsortedReverse() {
-        return [...this.$store.state.gui.dashboard.control.stepsXY].sort(function(a, b) { return a-b })
+        return [...this.$store.state.gui.control.stepsXY].sort(function(a, b) { return a-b })
     }
 
     get stepsZsorted() {
-        return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return b-a })
+        return [...this.$store.state.gui.control.stepsZ].sort(function(a, b) { return b-a })
     }
 
     get stepsZsortedReverse() {
-        return [...this.$store.state.gui.dashboard.control.stepsZ].sort(function(a, b) { return a-b })
+        return [...this.$store.state.gui.control.stepsZ].sort(function(a, b) { return a-b })
     }
 }
 </script>
