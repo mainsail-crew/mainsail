@@ -579,19 +579,19 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     get root() {
-        return this.$store.state.gui.settings.configfiles.root
+        return this.$store.state.gui.view.configfiles.rootPath
     }
 
     set root(newVal) {
-        this.$store.state.gui.settings.configfiles.root = newVal
+        this.$store.state.gui.view.configfiles.rootPath = newVal
     }
 
     get currentPath() {
-        return this.$store.state.gui.settings.configfiles.currentPath
+        return this.$store.state.gui.view.configfiles.currentPath
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.settings.configfiles.currentPath = newVal
+        this.$store.state.gui.view.configfiles.currentPath = newVal
     }
 
     refreshFileList() {

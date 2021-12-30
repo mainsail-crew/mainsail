@@ -563,11 +563,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     ]
 
     get currentPath() {
-        return this.$store.state.gui.gcodefiles.currentPath
+        return this.$store.state.gui.view.gcodefiles.currentPath
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.gcodefiles.currentPath = newVal
+        this.$store.state.gui.view.gcodefiles.currentPath = newVal
     }
 
     get headers() {

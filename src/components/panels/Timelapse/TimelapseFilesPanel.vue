@@ -405,11 +405,11 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     get currentPath() {
-        return this.$store.state.gui.timelapse.currentPath
+        return this.$store.state.gui.view.timelapse.currentPath
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.timelapse.currentPath = newVal
+        this.$store.state.gui.view.timelapse.currentPath = newVal
     }
 
     createDirectory() {
