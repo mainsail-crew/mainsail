@@ -631,7 +631,7 @@
             "FactoryReset": "Komplet nulstilling",
             "FactoryDialog": "Vælg venligst de sektioner du ønsker at nulstille:",
             "Reset": "Nulstil",
-            "DbConsolehistory": "Terminal Historik",
+            "DbConsoleHistory": "Terminal Historik",
             "DbView": "Vis indstillinger",
             "DbHistoryJobs": "Jobhistorik",
             "DbHistoryTotals": "Totalhistorik",
