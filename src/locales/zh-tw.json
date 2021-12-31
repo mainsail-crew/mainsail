@@ -563,10 +563,6 @@
       "FactoryReset": "恢復設定",
     "FactoryDialog": "請選擇您要重置的所有部分：",
     "Reset": "重置",
-    "DbGeneral": "一般",
-    "DbPresets": "預設",
-    "DbMacrogroups": "巨集組",
-    "DbRemoteprinters": "遠端印表機",
     "DbHistoryJobs": "歷史工作",
     "DbHistoryTotals": "歷史總計",
     "DbWebcams": "網路攝影機"
