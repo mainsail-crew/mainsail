@@ -56,7 +56,7 @@
                     <v-divider class="my-1"></v-divider>
                 </template>
                 <div v-for="(category, index) in naviPoints" :key="index">
-                    <v-tooltip right :open-delay="500">
+                    <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
                         <template v-slot:activator="{ on, attrs }">
                             <v-list-item
                                 router :to="category.path"
@@ -72,7 +72,7 @@
                                 </v-list-item-content>
                             </v-list-item>
                         </template>
-                        <span v-if="navigationStyle === 'iconsOnly'">{{ $t(`Router.${category.title}`) }}</span>
+                        <span>{{ $t(`Router.${category.title}`) }}</span>
                     </v-tooltip>
                 </div>
             </v-list-item-group>
