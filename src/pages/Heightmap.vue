@@ -18,7 +18,7 @@
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group tile class="v-btn-toggle" name="controllers">
-                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn text small class="px-2 minwidth-0" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>mdi-home</v-icon></v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
