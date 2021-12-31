@@ -292,8 +292,8 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
             }
 
             if (this.form.id !== null) {
-                this.$store.dispatch('gui/presets/update',  { id: this.form.id, values: preset} )
-            } else this.$store.dispatch('gui/presets/store',  { values: preset} )
+                this.$store.dispatch('gui/presets/update',  { id: this.form.id, values: preset } )
+            } else this.$store.dispatch('gui/presets/store',  { values: preset } )
 
             this.clearForm()
         }
