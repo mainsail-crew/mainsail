@@ -17,7 +17,32 @@
       "HostControl": "Controalr Host",
       "Reboot": "Reiniciar",
       "Shutdown": "Apagar",
-      "ServiceControl": "Control del Servico"
+      "ServiceControl": "Control del Servico",
+      "Cancel": "Cancelar",
+      "Restart": "Reiniciar",
+      "Start": "Iniciar",
+      "Stop": "Parar",
+      "ConfirmationDialog": {
+        "Description": {
+          "HostReboot": "Si reinicia el host ahora, la impresion actual fallara",
+          "HostShutdown": "Si apaga el host ahora, la impresion actual fallara",
+          "KlipperFirmwareRestart": "Si reinicia el firmware de Klipper ahora, la impresion actual fallara",
+          "KlipperRestart": "Si reinicia Klipper ahora, la impresion actual fallara",
+          "KlipperStop": "Si para Klipper ahora, la impresion actual fallara",
+          "ServiceRestart": "Si reinicia el servicio ahora, probablemente corra riesgo de faalar su trabajo de impresion en curso",
+          "ServiceStart": "Si inicia este servicio ahora, probablemente corra riesgo de faalar su trabajo de impresion en curso",
+          "ServiceStop": "Si para este servicio ahora, probablemente corra riesgo de faalar su trabajo de impresion en curso"
+        },
+        "Title": {
+          "HostReboot": "Reiniciar host",
+          "HostShutdown": "Apagar Host",
+          "KlipperFirmwareRestart": "Reiniciar firmware de Klipper",
+          "KlipperRestart": "Reiniciar Klipper",
+          "ServiceRestart": "Reiniciar Servicio",
+          "ServiceStart": "Iniciar Servicio",
+          "ServiceStop": "Parar servicio"
+        }
+      }
     },
     "UpdateDialog": {
       "Updating": "Actualizando {software}...",
@@ -97,7 +122,8 @@
     "DontSave": "No guardar",
     "UnsavedChanges": "Cambios sin guardar",
     "UnsavedChangesMessage": "Quiere guardar los cambios al archivo {filename}?",
-    "UnsavedChangesSubMessage": "Sus cambios se perderan si no los guarda. Puede desactivar este menssaje en la configuracion del editor "
+    "UnsavedChangesSubMessage": "Sus cambios se perderan si no los guarda. Puede desactivar este menssaje en la configuracion del editor ",
+    "FileReadOnly": "Solo lectura"
   },
   "Files": {
     "GCodeFiles": "Archivos G-Code",
@@ -151,7 +177,8 @@
     "AddToQueue": "Agregar a la cola",
     "Filament": "Filamento",
     "StartPrint": "Iniciar impresion",
-    "View3D": "Vista 3D"
+    "View3D": "Vista 3D",
+    "WrongFileUploaded": "Subida denegada para {filename}. Formato de archivo erroneo"
   },
   "Console": {
     "SetupConsole": "Confiurar Consola",
@@ -262,7 +289,8 @@
       "FeedAmountIn": "Cantidad en",
       "FeedrateIn": "Velocidad en",
       "Retract": "Retraer",
-      "Extrude": "Extruir"
+      "Extrude": "Extruir",
+      "HotendTooCold": "Hotend temp. por debajo de"
     },
     "MacrosPanel": {
       "Headline": "Macros",
@@ -420,10 +448,16 @@
       "Headline": "Configuracion Impresora",
       "MotionSettings": {
         "Acceleration": "Aceleracion",
-        "Deceleration": "Desaceleracion",
         "Motion": "Movimiento",
         "SquareCornerVelocity": "Velocidad angulo recto",
-        "Velocity": "Velocidad"
+        "Velocity": "Velocidad",
+        "MaxAccelToDecel": "Max Accel. to Decel."
+      },
+      "PressureAdvanceSettings": {
+        "Advance": "Avance",
+        "Extruder": "Extrusor",
+        "PressureAdvance": "Avance de presion",
+        "SmoothTime": "Smooth Time"
       }
     }
   },
@@ -504,7 +538,8 @@
       "Memory": "Mem",
       "Constants": "Constantes",
       "LastStats": "Ultimas estadisticas",
-      "HostDetails": "Detalles del host"
+      "HostDetails": "Detalles del host",
+      "Distro": "Distribucion"
     }
   },
   "Settings": {
@@ -520,16 +555,20 @@
       "CalcEstimateTimeDescription": "Si se selecciona muchos un promedio sera calculado",
       "CalcEtaTimeDescription": "Si se selecciona muchos un promedio sera calculado",
       "CalcEtaTime": "Calculo de ETA",
-      "DbGeneral": "General",
       "DbHistoryJobs": "Historial de trabajos",
       "DbHistoryTotals": "Trabajos totales",
-      "DbMacrogroups": "Gupos de Macros",
-      "DbPresets": "Pre-configuraciones",
-      "DbRemoteprinters": "Impresoras remotas",
       "DbTimelapseSettings": "Configuracion Timelapse",
       "DbWebcams": "Camaras Web",
       "FactoryDialog": "Elija las secciones que quiere reiniciar",
-      "Reset": "Reiniciar"
+      "Reset": "Reiniciar",
+      "Backup": "Backup",
+      "BackupDialog": "Elija todas las secciones a las que quiere hacer backup",
+      "CannotReadJson": "No se puede leer/analizar el archivo de backup",
+      "DbConsoleHistory": "Historial de consola",
+      "DbView": "Configuraciones de Vista",
+      "MoonrakerDb": "Moonraker DB",
+      "Restore": "Restore",
+      "RestoreDialog": "Elija las secciones que quiere restaurar"
     },
     "DashboardTab": {
       "Dashboard": "Panel",
@@ -572,7 +611,8 @@
       "Status": "Estado",
       "Success": "Exito",
       "UnknownGroup": "Grupo desconocido",
-      "Warning": "Alerta"
+      "Warning": "Alerta",
+      "Group": "Grupo"
     },
     "ControlTab": {
       "Control": "Controlar",
@@ -607,7 +647,8 @@
       "AddFilter": "agregar filtro",
       "EntryStyle": "Estilo",
       "EntryStyleCompact": "Compacto",
-      "EntryStyleDefault": "Predeterminado"
+      "EntryStyleDefault": "Predeterminado",
+      "HideTimelapse": "Ocultar timelapse"
     },
     "PresetsTab": {
       "PreheatPresets": "Precalentamiento",
@@ -705,7 +746,13 @@
       "RetractDistanceDescription": "El largo del filamento que el extrusor retrae",
       "RetractSpeedDescription": "Velocidad con que el extrusor retrae el filamento",
       "UnretractDistanceDescription": "El largo del filamenteto que el extrusor vuelve a extruir despues de la retraccion",
-      "UnretractSpeedDescription": "Velocidad con la que el extrusor vuelve a extruir despues de la retraccion"
+      "UnretractSpeedDescription": "Velocidad con la que el extrusor vuelve a extruir despues de la retraccion",
+      "FwRetract": "Retraccion de firmware",
+      "FwRetractDescription": "Use la retraccion de firmware en la macro de timelapse",
+      "StreamDelayCompensation": "Compensación de retraso de stream",
+      "StreamDelayCompensationDescription": "Retraso de captura de cuadro",
+      "ParkTimeDescription": "Agregue tiempo de inactividad adicional al apartar.",
+      "ParkTime": "Park Time"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Miniatura grande",
@@ -805,7 +852,7 @@
     "JobQueue": "Cola de tareas",
     "Jobs": "Tareas",
     "Pause": "Pasusar",
-    "Resume": "Reanudar"
+    "Start": "Iniciar"
   },
   "PowerDeviceChangeDialog": {
     "AreYouSure": "Esta seguro?",
