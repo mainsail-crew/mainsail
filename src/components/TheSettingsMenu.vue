@@ -187,9 +187,8 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
 <style scoped>
     .settings-tabs {
-        height: auto;
         min-height: 100%;
-        max-height: calc(var(--app-height) - 96px);
+        height: calc(var(--app-height) - 96px);
     }
 
     .settings-tabs-bar {
@@ -199,6 +198,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
     .settings-tabs.height500 {
         height: 500px;
+        max-height: calc(var(--app-height) - 111px);
     }
 </style>
 
