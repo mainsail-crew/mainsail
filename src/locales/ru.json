@@ -480,11 +480,7 @@
       "CalcEstimateTimeDescription": "В случае множественного выбора рассчитывается среднее значение",
       "CalcEtaTime": "Расчет расчетного времени прибытия",
       "CalcEtaTimeDescription": "В случае множественного выбора рассчитывается среднее значение",
-      "DbGeneral": "Общий",
       "DbHistoryTotals": "Общий счетчик истории",
-      "DbMacrogroups": "Макрогруппы",
-      "DbPresets": "Предустановки",
-      "DbRemoteprinters": "Удаленный принтер",
       "DbTimelapseSettings": "Настройки временного интервала",
       "DbWebcams": "Веб-камеры",
       "FactoryDialog": "Пожалуйста, выберите все разделы, которые вы хотите сбросить:",
@@ -862,8 +858,7 @@
     "Empty": "Пустой",
     "JobQueue": "Очередь на работу",
     "Jobs": "Заказы",
-    "Pause": "Pause",
-    "Resume": "Продолжить"
+    "Pause": "Pause"
   },
   "EmergencyStopDialog": {
     "AreYouSure": "Вы уверены?",

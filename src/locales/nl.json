@@ -251,8 +251,7 @@
 		"Empty": "Leeg",
 		"JobQueue": "Job wachtrij",
 		"Jobs": "Jobs",
-		"Pause": "Pauze",
-		"Resume": "Hervatten"
+		"Pause": "Pauze"
 	},
 	"Machine": {
 		"ConfigFilesPanel": {
@@ -653,12 +652,8 @@
 			"CalcEstimateTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
 			"CalcEtaTime": "ETA berekening",
 			"CalcEtaTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
-			"DbGeneral": "Algemeen",
 			"DbHistoryJobs": "Geschiedenis Jobs",
 			"DbHistoryTotals": "Geschiedenis Totalen",
-			"DbMacrogroups": "Macro groepen",
-			"DbPresets": "Voorinstellingen",
-			"DbRemoteprinters": "Printers op afstand",
 			"DbTimelapseSettings": "Timelapse Instellingen",
 			"DbWebcams": "Webcams",
 			"FactoryDialog": "Selecteer de secties die je wil resetten:",
