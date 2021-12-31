@@ -110,7 +110,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {
-            keyName: 'gcodefiles',
+            keyName: 'view.gcodefiles',
             newVal: state.view.gcodefiles
         })
     },
@@ -118,7 +118,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
         commit('setGcodefilesShowHiddenFiles', data)
         dispatch('updateSettings', {
-            keyName: 'gcodefiles',
+            keyName: 'view.gcodefiles',
             newVal: state.view.gcodefiles
         })
     },
