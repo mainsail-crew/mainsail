@@ -601,12 +601,8 @@
       "CalcEstimateTimeDescription": "Se più di uno è selezionato, sarà calcolata la media",
       "CalcEtaTime": "Calcolo ETA",
       "CalcEtaTimeDescription": "Se più di uno è selezionato, sarà calcolata la media",
-      "DbGeneral": "Generale",
       "DbHistoryJobs": "Cronologia Lavori",
       "DbHistoryTotals": "Cronologia Totali",
-      "DbMacrogroups": "Macrogruppi",
-      "DbPresets": "Preset",
-      "DbRemoteprinters": "Stampantiremote",
       "DbWebcams": "Webcam",
       "FactoryDialog": "Seleziona tutte le sezioni che vuoi reimpostare:",
       "Reset": "reimposta",
@@ -859,7 +855,6 @@
     "JobQueue": "Coda dei lavori",
     "Jobs": "Lavori",
     "Pause": "Pausa",
-    "Resume": "Riprendi",
     "Start": "Avvia"
   },
   "PowerDeviceChangeDialog": {
