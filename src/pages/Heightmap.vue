@@ -12,7 +12,7 @@
                     </template>
                     <template v-slot:buttons>
                         <v-btn text tile color="primary" class="d-sm-none" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
+                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
                         <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="meshLoaded" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                         <v-btn text tile class="d-none d-sm-flex" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                     </template>
@@ -184,6 +184,7 @@
 <script lang="ts">
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 
 import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
@@ -211,7 +212,7 @@ interface HeightmapSerie {
         ECharts: createComponent({ echarts }),
     }
 })
-export default class PageHeightmap extends Mixins(BaseMixin) {
+export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     $refs!: {
         // eslint-disable-next-line
