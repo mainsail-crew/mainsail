@@ -398,6 +398,7 @@
                 "Velocity": "Hastighed (Feedrate)",
                 "Acceleration": "Acceleration",
                 "Deceleration": "Deceleration",
+                "MaxAccelToDecel": "Maks. accel. til decel.",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne"
             },
             "PressureAdvanceSettings": {
