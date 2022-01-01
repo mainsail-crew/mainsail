@@ -172,7 +172,6 @@
     "AllJobs": "所有的任务",
     "Empty": "空",
     "Delete": "删除",
-    "Resume": "恢复",
     "Pause": "暂停"
   },
     "Console": {
@@ -592,10 +591,6 @@
       "FactoryReset": "恢复出厂设置",
       "FactoryDialog": "选择你想要回复出厂值的部分:",
       "Reset": "重启",
-      "DbGeneral": "通用",
-      "DbPresets": "预设",
-      "DbMacrogroups": "小组",
-      "DbRemoteprinters": "远程打印机",
       "DbHistoryJobs": "工作历史",
       "DbHistoryTotals": "总历史",
       "DbWebcams": "网络摄像头",
