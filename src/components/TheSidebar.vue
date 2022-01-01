@@ -61,7 +61,7 @@
                         <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span>
                     </v-list-item>
                     <template v-if="countPrinters">
-                        <v-tooltip right>
+                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-list-item
                                     router to="/allPrinters"
@@ -78,12 +78,12 @@
 
                                 </v-list-item>
                             </template>
-                            <span v-if="navigationStyle === 'iconsOnly'">{{ $t("App.Printers") }}</span>
+                            <span>{{ $t("App.Printers") }}</span>
                         </v-tooltip>
                         <v-divider class="my-1"></v-divider>
                     </template>
                     <div v-for="(category, index) in naviPoints" :key="index">
-                        <v-tooltip right :open-delay="500">
+                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-list-item
                                     router :to="category.path"
@@ -99,7 +99,7 @@
                                     </v-list-item-content>
                                 </v-list-item>
                             </template>
-                            <span v-if="navigationStyle === 'iconsOnly'">{{ $t(`Router.${category.title}`) }}</span>
+                            <span>{{ $t(`Router.${category.title}`) }}</span>
                         </v-tooltip>
                     </div>
                 </v-list-item-group>
