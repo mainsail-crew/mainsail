@@ -26,8 +26,8 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 - Temperature Presets (with custom gcode)
 - Bed Mesh Leveling
 - Multi-Webcam support
-- Control power devices such as relays, TPLink and Tasmota devices, and more)
-- Customizable user interface includinglogos, backgrounds, and custom CSS
+- Control power devices such as relays, TPLink and Tasmota devices, and more
+- Customizable user interface including logos, backgrounds, and custom CSS
 
 ## Help and Support
 Do you need help or just want to talk? Join our active community on Discord. 
