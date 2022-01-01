@@ -93,6 +93,8 @@ export interface GuiState {
             sortDesc: boolean
             showHiddenFiles: boolean
             hideBackupFiles: boolean
+            currentPath: string
+            rootPath: string
         }
         gcodefiles: {
             countPerPage: number
@@ -101,6 +103,7 @@ export interface GuiState {
             showHiddenFiles: boolean
             showPrintedFiles: boolean
             hideMetadataColums: string[]
+            currentPath: string
         }
         heightmap: {
             probed: boolean
@@ -131,6 +134,7 @@ export interface GuiState {
             sortBy: string
             sortDesc: boolean
             showHiddenFiles: boolean
+            currentPath: string
         }
         webcam: {
             currentCam: {
