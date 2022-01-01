@@ -42,7 +42,7 @@
     }
 </style>
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="isTemporary" :hide-overlay="isTemporary" clipped app :style="cssVars"> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" :hide-overlay="!isMobile" clipped app :style="cssVars"> 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
@@ -188,15 +188,15 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         return this.$store.getters['farm/countPrinters']
     }
 
-    get isTemporary(): boolean {
-        if(this.isTouchDevice && !this.$vuetify.breakpoint.mobile && this.$vuetify.breakpoint.lgAndDown) {
+    get boolNaviTemp(): boolean {
+        if(!this.isMobile && this.$vuetify.breakpoint.mdAndDown) {
             return true
         }
         return false
     }
 
     get cssVars(): any {
-        if(this.isTemporary){
+        if(this.boolNaviTemp){
             return {
                 'top': `${topbarHeight}px !important`,
                 'padding-bottom': `${topbarHeight}px`
