@@ -16,7 +16,7 @@ cd ~/klipper
 git pull
 ```
 
-Restart Klipper using the command `sudo service klipper restart` and check the `klippy.log`.  if Klipper startsed correctly without any errors you may continue. 
+Restart Klipper using the command `sudo service klipper restart` and check the `klippy.log`.  if Klipper started correctly without any errors you may continue. 
 
 ### Klipper configuration changes
 If you have any issues after updating your Klipper instance, you can check the configuration changes [here](https://github.com/KevinOConnor/klipper/blob/master/docs/Config_Changes.md).
