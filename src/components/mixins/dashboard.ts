@@ -15,6 +15,11 @@ export default class DashboardMixin extends BaseMixin {
         return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
     }
 
+
+    get webcams() {
+        return this.$store.getters['gui/webcams/getWebcams'] ?? []
+    }
+
     get missingPanelsMobile() {
         const panels = [
             ...this.$store.state.gui.dashboard.mobileLayout,
@@ -55,12 +60,18 @@ export default class DashboardMixin extends BaseMixin {
         let allPanels = [...allDashboardPanels]
         const missingPanels: any[] = []
 
+        // remove macros panel and add macrogroups panels if macroMode === expert
         if (this.macroMode === 'expert') {
             this.macrogroups.forEach((group: GuiMacrosStateMacrogroup) => {
                 allPanels.push('macrogroup_'+group.id)
             })
 
             allPanels = allPanels.filter((name) => name !== 'macros')
+        }
+
+        // remove webcam panel, if no webcam exists
+        if (this.webcams.length === 0) {
+            allPanels = allPanels.filter((name) => name !== 'webcam')
         }
 
         allPanels.forEach((panelname) => {

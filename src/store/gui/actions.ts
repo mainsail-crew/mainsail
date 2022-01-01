@@ -20,10 +20,33 @@ export const actions: ActionTree<GuiState, RootState> = {
         Vue.$socket.emit('server.database.get_item', { namespace: 'mainsail' }, { action: 'gui/initStore'})
     },
 
-    initStore({ commit, dispatch, rootState }, payload) {
+    async initStore({ commit, dispatch, rootGetters, rootState }, payload) {
+        const baseUrl = rootGetters['socket/getUrl'] + '/server/database/item'
+        const mainsailUrl = baseUrl + '?namespace=mainsail'
+
         if ('remoteprinters' in payload.value) {
             if (!rootState.socket?.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
             delete payload.value.remoteprinters
+        }
+
+        //update cooldownGcode from V2.0.1 to V2.1.0
+        if ('cooldownGcode' in payload.value) {
+            window.console.debug('update cooldownGcode to new namespace')
+            dispatch('saveSetting', { name: 'presets.cooldownGcode', value: payload.value.cooldownGcode })
+
+            await fetch(mainsailUrl+'&key=cooldownGcode', { method: 'DELETE' })
+            delete payload.value.cooldownGcode
+        }
+
+        //update presets from V2.0.1 to V2.1.0
+        if ('presets' in payload.value && Array.isArray(payload.value.presets)) {
+            window.console.debug('update presets to new namespace')
+
+            payload.value.presets.forEach((preset: any) => {
+                dispatch('presets/store', { values: preset })
+            })
+
+            delete payload.value.presets
         }
 
         commit('setData', payload.value)
@@ -110,7 +133,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setGcodefilesMetadata({ commit, dispatch, state }, data) {
         commit('setGcodefilesMetadata', data)
         dispatch('updateSettings', {
-            keyName: 'gcodefiles',
+            keyName: 'view.gcodefiles',
             newVal: state.view.gcodefiles
         })
     },
@@ -118,7 +141,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setGcodefilesShowHiddenFiles({ commit, dispatch, state }, data) {
         commit('setGcodefilesShowHiddenFiles', data)
         dispatch('updateSettings', {
-            keyName: 'gcodefiles',
+            keyName: 'view.gcodefiles',
             newVal: state.view.gcodefiles
         })
     },
