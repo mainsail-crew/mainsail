@@ -2,24 +2,33 @@
     .nav-logo {
         height: 32px;
     }
+
     .small-list-item {
         height: var(--sidebar-menu-item-height);
     }
+
     .no-text-decoration {
         text-decoration: none;
         background-color: transparent;
     }
+
     .no-background:before {
         background-color: rgba(255, 255, 255, 0) !important;
+    }
+
+    .no-border {
+        border: 0 !important;
     }
 </style>
 <style scoped>
     .active-nav-item {
         border-right: 4px solid var(--v-primary-base);
     }
+
     .menu-item-icon {
         opacity: .85;
     }
+
     .menu-item-title {
         line-height: 30px;
         font-size: 14px;
@@ -27,15 +36,30 @@
         text-transform: uppercase;
         opacity: .85;
     }
+
     .nav-scrollbar {
         height: 100%;
     }
 </style>
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="isTemporary" :hide-overlay="isTemporary" clipped app :style="cssVars"> 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
+                    <v-list-item
+                        router to="/"
+                        class="d-flex d-sm-none sidebar-logo no-text-decoration no-background no-border"
+                        :style="'height: ' + topbarHeight + 'px'"
+                        :ripple="false"
+                    >
+                        <template v-if="sidebarLogo">
+                            <img :src="sidebarLogo" style="height: 32px;" class="nav-logo mr-3" alt="Logo" />
+                        </template>
+                        <template v-else>
+                            <mainsail-logo :color="logoColor" style="height: 32px;" class="nav-logo mr-4" :ripple="false"></mainsail-logo>
+                        </template>
+                        <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span>
+                    </v-list-item>
                     <template v-if="countPrinters">
                         <v-tooltip right>
                             <template v-slot:activator="{ on, attrs }">
@@ -99,17 +123,20 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
-import {navigationWidth} from '@/store/variables'
+import {navigationWidth, topbarHeight} from '@/store/variables'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 @Component({
     components: {
         TheSelectPrinterDialog,
-        AboutModal
+        AboutModal,
+        MainsailLogo
     }
 })
 
 export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
+    topbarHeight = topbarHeight
 
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
@@ -160,6 +187,39 @@ export default class TheSidebar extends Mixins(BaseMixin) {
     get countPrinters() {
         return this.$store.getters['farm/countPrinters']
     }
+
+    get isTemporary(): boolean {
+        if(this.isTouchDevice && !this.$vuetify.breakpoint.mobile && this.$vuetify.breakpoint.lgAndDown) {
+            return true
+        }
+        return false
+    }
+
+    get cssVars(): any {
+        if(this.isTemporary){
+            return {
+                'top': `${topbarHeight}px !important`,
+                'padding-bottom': `${topbarHeight}px`
+            }
+        }
+        return {}
+    }
+
+    get sidebarLogo(): string {
+        return this.$store.getters['files/getSidebarLogo']
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.uiSettings.logo
+    }
+
+    get printerName():string {
+        if (this.$store.state.gui.general.printername.length)
+            return this.$store.state.gui.general.printername
+
+        return this.$store.state.printer.hostname
+    }
+
 
     showInNavi(route: AppRoute): boolean {
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
