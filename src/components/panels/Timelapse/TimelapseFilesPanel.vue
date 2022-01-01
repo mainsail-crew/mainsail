@@ -409,7 +409,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.view.timelapse.currentPath = newVal
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
     }
 
     createDirectory() {

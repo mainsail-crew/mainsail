@@ -567,7 +567,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.view.gcodefiles.currentPath = newVal
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
     }
 
     get headers() {

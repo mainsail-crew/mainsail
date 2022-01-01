@@ -583,7 +583,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set root(newVal) {
-        this.$store.state.gui.view.configfiles.rootPath = newVal
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.rootPath', value: newVal })
     }
 
     get currentPath() {
@@ -591,7 +591,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     set currentPath(newVal) {
-        this.$store.state.gui.view.configfiles.currentPath = newVal
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
     refreshFileList() {
