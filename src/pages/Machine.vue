@@ -7,6 +7,7 @@
             <v-col class="col-12 col-md-6 pt-0 pt-md-3">
                 <klippy-state-panel></klippy-state-panel>
                 <system-panel></system-panel>
+                <disk-panel></disk-panel>
                 <update-panel></update-panel>
                 <v-row>
                     <v-col class="col-md-6 pb-0 pb-md-3" v-if="klipperState === 'ready'">
@@ -30,8 +31,10 @@ import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
 import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
 import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
 import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
+import DiskPanel from '@/components/panels/Machine/DiskPanel.vue'
 @Component({
     components: {
+        DiskPanel,
         SystemPanel,
         ConfigFilesPanel,
         EndstopPanel,
