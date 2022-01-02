@@ -1,6 +1,8 @@
 export interface PrinterTempHistoryState {
     source: PrinterTempHistoryStateSourceEntry[]
     series: PrinterTempHistoryStateSerie[]
+    timeLastUpdate: number | null
+    updateSourceInterval: number | null
 }
 
 export interface PrinterTempHistoryStateSerie {

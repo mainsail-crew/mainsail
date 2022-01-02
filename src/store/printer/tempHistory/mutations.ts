@@ -17,8 +17,20 @@ export const mutations: MutationTree<PrinterTempHistoryState> = {
     },
 
     addToSource(state, payload) {
-        state.source.push(payload.data)
-        while (state.source.length > payload.maxHistory) state.source.splice(0, 1)
+        const newSource = [...state.source]
+        newSource.push(payload.data)
+        while (newSource.length > payload.maxHistory) newSource.splice(0, 1)
+
+        Vue.set(state, 'source', newSource)
+    },
+
+    // function for debugging tempchart update interval (browser sleep)
+    saveLastDate(state, payload) {
+        Vue.set(state, 'timeLastUpdate', payload)
+    },
+
+    setUpdateSourceInterval(state, payload) {
+        Vue.set(state, 'updateSourceInterval', payload)
     },
 
     setColor(state, payload) {

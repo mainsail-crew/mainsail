@@ -61,7 +61,8 @@ export default class BaseMixin extends Vue {
     }
 
     get isTouchDevice() {
-        return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0))
+        // ignore if browser reports maxTouchPoints === 256, can happen on Windows 10
+        return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256))
     }
 
     get moonrakerComponents() {

@@ -344,19 +344,19 @@ import ControlMixin from '@/components/mixins/control'
 @Component
 export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {
     get reverseX() {
-        return this.$store.state.gui.dashboard.control.reverseX
+        return this.$store.state.gui.control.reverseX
     }
 
     get reverseY() {
-        return this.$store.state.gui.dashboard.control.reverseY
+        return this.$store.state.gui.control.reverseY
     }
 
     get reverseZ() {
-        return this.$store.state.gui.dashboard.control.reverseZ
+        return this.$store.state.gui.control.reverseZ
     }
 
     get stepsXY() {
-        const steps = this.$store.state.gui.dashboard?.control?.stepsCircleXY ?? []
+        const steps = this.$store.state.gui.control?.stepsCircleXY ?? []
 
         return Array.from(new Set([
             ...(steps ?? []),
@@ -364,7 +364,7 @@ export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlM
     }
 
     get stepsZ() {
-        const steps = this.$store.state.gui.dashboard?.control?.stepsCircleZ ?? []
+        const steps = this.$store.state.gui.control?.stepsCircleZ ?? []
 
         return Array.from(new Set([
             ...(steps ?? []),

@@ -18,7 +18,32 @@
       "PowerDevices": "Modules d'alimentation",
       "Reboot": "Redémarrage",
       "Shutdown": "Arrêt",
-      "ServiceControl": "Contrôle des services"
+      "ServiceControl": "Contrôle des services",
+      "Cancel": "Annuler",
+      "ConfirmationDialog": {
+        "Description": {
+          "HostReboot": "Si vous redémarez le \"host\" maintenant, votre impression sera annulée.",
+          "HostShutdown": "Si vous éteignez le \"host\" maintenant, votre impression sera annulée.",
+          "KlipperFirmwareRestart": "Si vous redémarrez le firmware Klipper maintenant, votre impression sera annulée.",
+          "KlipperRestart": "Si vous redémarrez Klipper maintenant, votre impression sera annulée.",
+          "KlipperStop": "Si vous arrêtez Klipper maintenant, votre impression sera annulée.",
+          "ServiceRestart": "Si vous redémarrez ce service maintenant, il y a de fortes chances que votre impression sera annulée.",
+          "ServiceStart": "Si vous démarrez ce service maintenant, il y a de fortes chances que votre impression sera annulée.",
+          "ServiceStop": "Si vous arrêtez ce service maintenant, il y a de fortes chances que votre impression sera annulée."
+        },
+        "Title": {
+          "HostReboot": "Redémarrer \"host\"",
+          "HostShutdown": "Eteindre \"host\"",
+          "KlipperFirmwareRestart": "Redémarrer firmware Klipper",
+          "KlipperRestart": "Redémarrer Klipper",
+          "ServiceRestart": "Redémarrer ce service",
+          "ServiceStart": "Démarrer ce service",
+          "ServiceStop": "Arrêter ce service"
+        }
+      },
+      "Restart": "Redémarrer",
+      "Start": "Démarrer",
+      "Stop": "Arrêter"
     },
     "ThrottledStates": {
       "DescriptionUnderVoltageDetected": "rPI alimentation inférieure à 4.65V",
@@ -74,7 +99,8 @@
     "DontSave": "Ne pas sauvegarder",
     "UnsavedChanges": "Changements non sauvegardés",
     "UnsavedChangesMessage": "Désirez-vous sauvegarder les changements dans {filename} ?",
-    "UnsavedChangesSubMessage": "Vos changements seront perdus si vous ne les sauvegardez pas. Vous pouvez desactiver ce message dans les réglages de l'éditeur."
+    "UnsavedChangesSubMessage": "Vos changements seront perdus si vous ne les sauvegardez pas. Vous pouvez desactiver ce message dans les réglages de l'éditeur.",
+    "FileReadOnly": "lecture seule"
   },
   "Files": {
     "GCodeFiles": "Fichiers G-Code",
@@ -128,14 +154,16 @@
     "View3D": "Vue 3D",
     "StartPrint": "Imprimer",
     "Filament": "Filament",
-    "AddToQueue": "Ajouter à la queue"
+    "AddToQueue": "Ajouter à la queue",
+    "WrongFileUploaded": "Téléchargem,ent refusé pour {filename}. Mauvais format de fichier !"
   },
   "Console": {
     "SetupConsole": "Configuration console",
     "SendCode": "Envoyer la commande",
     "Empty": "vide",
     "HideTemperatures": "Cacher les températures",
-    "CommandList": "Liste des commandes"
+    "CommandList": "Liste des commandes",
+    "HideTimelapse": "Cacher accéléré"
   },
   "Heightmap": {
     "Heightmap": "Maillage de hauteur",
@@ -238,7 +266,8 @@
       "FeedAmountIn": "Longueur à extraire",
       "FeedrateIn": "Vitesse d'extrusion",
       "Retract": "Rétractation",
-      "Extrude": "Extrusion"
+      "Extrude": "Extrusion",
+      "HotendTooCold": "Tête d'impression trop froide"
     },
     "MacrosPanel": {
       "Headline": "Macros",
@@ -260,7 +289,8 @@
       "Headline": "Console",
       "SetupConsole": "Réglage Console",
       "HideTemperatures": "Cacher températures",
-      "SendCode": "Envoyer la commande..."
+      "SendCode": "Envoyer la commande...",
+      "HideTimelapse": "Cacher accéléré"
     },
     "MinSettingsPanel": {
       "MissingConfiguration": "Configuration absente",
@@ -387,10 +417,10 @@
     "MachineSettingsPanel": {
       "MotionSettings": {
         "Acceleration": "Accélération",
-        "Deceleration": "Décélération",
         "SquareCornerVelocity": "Vitesse des angles droits",
         "Velocity": "Vitesse",
-        "Motion": "Déplacements"
+        "Motion": "Déplacements",
+        "MaxAccelToDecel": "Décélération maximum"
       },
       "Headline": "Réglages machine",
       "FirmwareRetractionSettings": {
@@ -399,6 +429,12 @@
         "RetractSpeed": "Vitesse de rétractation",
         "UnretractExtraLength": "Distance d'extrusion supplémentaire",
         "UnretractSpeed": "Vitesse d'extrusion"
+      },
+      "PressureAdvanceSettings": {
+        "Advance": "avance",
+        "Extruder": "extrudeur",
+        "PressureAdvance": "pression en avance",
+        "SmoothTime": "Temps de lissage"
       }
     }
   },
@@ -420,7 +456,8 @@
       "UpdateButton": "Mettre à jour le filtre",
       "EntryStyle": "Style de dialogue d'entrée",
       "EntryStyleCompact": "compact",
-      "EntryStyleDefault": "defaut"
+      "EntryStyleDefault": "defaut",
+      "HideTimelapse": "Cacher accéléré"
     },
     "ControlTab": {
       "Control": "Contrôle",
@@ -449,16 +486,20 @@
       "CalcEstimateTimeDescription": "En cas de séléction multiple, une moyenne est calculée",
       "CalcEtaTime": "Calcul du TEA",
       "CalcEstimateTime": "Calcul du temps estimé",
-      "DbGeneral": "Général",
       "DbHistoryJobs": "Historique des travaux",
       "DbHistoryTotals": "Historique totaux",
-      "DbMacrogroups": "Groupe de macros",
-      "DbPresets": "Réglages",
-      "DbRemoteprinters": "Imprimantes distantes",
       "DbWebcams": "Caméras",
       "FactoryDialog": "Choisissez les sections à réinitialiser",
       "Reset": "réinitalisation",
-      "DbTimelapseSettings": "Accéléré"
+      "DbTimelapseSettings": "Accéléré",
+      "Backup": "Sauvegarde",
+      "BackupDialog": "Choisissez les sections que vous désirez sauvegarder:",
+      "CannotReadJson": "Lecture/interprétation du fichier de sauvegarde impossible.",
+      "DbConsoleHistory": "Historique des commandes de console",
+      "DbView": "Réglages de visualisation",
+      "MoonrakerDb": "Base de données Moonraker",
+      "Restore": "Restauration",
+      "RestoreDialog": "Choisissez les sections que vous désirez restaurer:"
     },
     "InterfaceSettings": "Réglages interface",
     "MacrosTab": {
@@ -494,7 +535,8 @@
       "Status": "Status",
       "Success": "réussi",
       "UnknownGroup": "Groupe inconnu",
-      "Warning": "attention"
+      "Warning": "attention",
+      "Group": "Groupe"
     },
     "DashboardTab": {
       "Dashboard": "Tab. de bord",
@@ -655,12 +697,16 @@
       "VariableFpsMin": "IPS variable min",
       "duplicatelastframe": "Multiplie la dernière image",
       "duplicatelastframeDescription": "Multiplie n fois la dernière image de la vidéo.",
-      "VariableFpsMinDescription": "Nombre minimum d'IPS en mode variable.",
-      "VariableFpsMaxDescription": "Nombre maximum d'IPS en mode variable.",
       "RetractSpeedDescription": "Vitesse de rétractation du filament avant parking.",
       "RetractDistanceDescription": "Distance de rétractation du filament avant parking.",
       "UnretractDistanceDescription": "Distance d'extrusion du filament après parking et avant reprise d'impression.",
-      "UnretractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression."
+      "UnretractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression.",
+      "ParkTime": "Temps de parking",
+      "ParkTimeDescription": "Ajoute un temps aditionnel en position de parking",
+      "StreamDelayCompensation": "Dlai de compensation du flux",
+      "StreamDelayCompensationDescription": "Délai avant capture d'une image du flux.",
+      "FwRetract": "Rétractation firmware",
+      "FwRetractDescription": "Utilisation de la rétractation firmware dans la macro \"accéléré\" (timelapse)"
     }
   },
   "ConnectionDialog": {
@@ -724,7 +770,8 @@
       "Memory": "Mémoire",
       "Os": "OS",
       "SystemLoad": "Charge Système",
-      "Version": "Version"
+      "Version": "Version",
+      "Distro": "Distribution"
     },
     "UpdatePanel": {
       "CheckForUpdates": "Contrôle de disponibilité de mises à jour",
@@ -746,7 +793,8 @@
       "CommittedHoursAgo": "Publié il y a {hours} heures",
       "CommittedOnDate": "Publié le {date}",
       "CommittedYesterday": "Publié hier",
-      "UpdateAll": "Mettre tout à jour"
+      "UpdateAll": "Mettre tout à jour",
+      "CommitsAvailabe": "pas de mise à jour disponible | {count} mise à jour disponible | {count} mises à jour disponibles"
     }
   },
   "SelectPrinterDialog": {
@@ -861,6 +909,6 @@
     "JobQueue": "Queue des travaux",
     "Jobs": "Travaux",
     "Pause": "Pause",
-    "Resume": "Reprise"
+    "Start": "Impression"
   }
 }

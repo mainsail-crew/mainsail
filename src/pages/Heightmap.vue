@@ -8,23 +8,23 @@
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
-                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
                     </template>
                     <template v-slot:buttons>
-                        <v-btn text tile color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
-                        <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                        <v-btn text tile color="primary" class="d-sm-none" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
+                        <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="meshLoaded" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                         <v-btn text tile class="d-none d-sm-flex" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group tile class="v-btn-toggle" name="controllers">
-                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn text small class="px-2 minwidth-0" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>mdi-home</v-icon></v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
                     </v-card-text>
-                    <template v-if="!(bed_mesh)">
-                        <v-card-text>
+                    <template v-if="!(meshLoaded)">
+                        <v-card-text class="text-center py-3 font-italic">
                             {{ $t('Heightmap.NoBedMeshHasBeenLoadedYet') }}
                         </v-card-text>
                     </template>
@@ -66,7 +66,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="meshLoaded" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -184,6 +184,7 @@
 <script lang="ts">
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 
 import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
@@ -211,7 +212,7 @@ interface HeightmapSerie {
         ECharts: createComponent({ echarts }),
     }
 })
-export default class PageHeightmap extends Mixins(BaseMixin) {
+export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     $refs!: {
         // eslint-disable-next-line
@@ -244,6 +245,13 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     get chartOptions() {
         return {
             tooltip: {
+                backgroundColor: 'rgba(0,0,0,0.9)',
+                borderWidth: 0,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: '14px'
+                },
+                padding: 15,
                 formatter: this.tooltipFormatter
             },
             darkMode: true,
@@ -362,51 +370,51 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     }
 
     get showProbed(): boolean {
-        return this.$store.state.gui.heightmap.probed ?? true
+        return this.$store.state.gui.view.heightmap.probed ?? true
     }
 
     set showProbed(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.probed', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.probed', value: newVal })
     }
 
     get showMesh(): boolean {
-        return this.$store.state.gui.heightmap.mesh ?? true
+        return this.$store.state.gui.view.heightmap.mesh ?? true
     }
 
     set showMesh(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.mesh', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.mesh', value: newVal })
     }
 
     get showFlat(): boolean {
-        return this.$store.state.gui.heightmap.flat ?? true
+        return this.$store.state.gui.view.heightmap.flat ?? true
     }
 
     set showFlat(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.flat', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.flat', value: newVal })
     }
 
     get wireframe(): boolean {
-        return this.$store.state.gui.heightmap.wireframe ?? true
+        return this.$store.state.gui.view.heightmap.wireframe ?? true
     }
 
     set wireframe(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.wireframe', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.wireframe', value: newVal })
     }
 
     get scale(): boolean {
-        return this.$store.state.gui.heightmap.scale ?? true
+        return this.$store.state.gui.view.heightmap.scale ?? true
     }
 
     set scale(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scale', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scale', value: newVal })
     }
 
     get scaleVisualMap(): boolean {
-        return this.$store.state.gui.heightmap.scaleVisualMap ?? false
+        return this.$store.state.gui.view.heightmap.scaleVisualMap ?? false
     }
 
     set scaleVisualMap(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'heightmap.scaleVisualMap', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.heightmap.scaleVisualMap', value: newVal })
     }
 
     get rangeX(): number[] {
@@ -719,11 +727,23 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         }
     }
 
+    get meshLoaded() {
+        if(this.bed_mesh !== null) {
+            return this.bed_mesh.profile_name !== ''
+        } else {
+            return false
+        }
+    }
+
     tooltipFormatter(data: any): string {
-        return '<b>'+data.seriesName+'</b><br />' +
-            '<b>' + data.dimensionNames[0]+'</b>: '+data.data[0].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[1]+'</b>: '+data.data[1].toFixed(1) + ' mm <br />' +
-            '<b>' + data.dimensionNames[2]+'</b>: '+data.data[2].toFixed(3) + ' mm '
+        const outputArray: string[] = []
+        outputArray.push('<b>'+data.seriesName+'</b>')
+
+        Object.keys(data.encode).sort().forEach((axisName: string) => {
+            outputArray.push('<b>' + axisName.toUpperCase() + '</b>: '+data.data[data.encode[axisName][0]].toFixed(axisName === 'z' ? 3 : 1) + ' mm')
+        })
+
+        return outputArray.join('<br />')
     }
 
     loadProfile(name: string): void {

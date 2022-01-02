@@ -2,17 +2,22 @@ import Component from 'vue-class-component'
 import BaseMixin from '@/components/mixins/base'
 import {allDashboardPanels} from '@/store/variables'
 import {capitalize} from '@/plugins/helpers'
-import {GuiMacrogroupsStateMacrogroup} from '@/store/gui/macrogroups/types'
+import {GuiMacrosStateMacrogroup} from '@/store/gui/macros/types'
 
 @Component
 export default class DashboardMixin extends BaseMixin {
 
     get macroMode() {
-        return this.$store.state.gui.dashboard.macroManagement ?? 'simple'
+        return this.$store.state.gui.macros.mode ?? 'simple'
     }
 
     get macrogroups() {
-        return this.$store.getters['gui/macrogroups/getAllMacrogroups'] ?? []
+        return this.$store.getters['gui/macros/getAllMacrogroups'] ?? []
+    }
+
+
+    get webcams() {
+        return this.$store.getters['gui/webcams/getWebcams'] ?? []
     }
 
     get missingPanelsMobile() {
@@ -55,19 +60,25 @@ export default class DashboardMixin extends BaseMixin {
         let allPanels = [...allDashboardPanels]
         const missingPanels: any[] = []
 
+        // remove macros panel and add macrogroups panels if macroMode === expert
         if (this.macroMode === 'expert') {
-            this.macrogroups.forEach((group: GuiMacrogroupsStateMacrogroup) => {
+            this.macrogroups.forEach((group: GuiMacrosStateMacrogroup) => {
                 allPanels.push('macrogroup_'+group.id)
             })
 
             allPanels = allPanels.filter((name) => name !== 'macros')
         }
 
+        // remove webcam panel, if no webcam exists
+        if (this.webcams.length === 0) {
+            allPanels = allPanels.filter((name) => name !== 'webcam')
+        }
+
         allPanels.forEach((panelname) => {
             if (!panels.find((panel) => panel.name === panelname))
                 missingPanels.push({
                     name: panelname,
-                    visable: true
+                    visible: true
                 })
         })
 
@@ -77,7 +88,7 @@ export default class DashboardMixin extends BaseMixin {
     getPanelName(name: string) {
         if (name.startsWith('macrogroup_')) {
             const groupId = name.split('_')[1] ?? ''
-            const group = this.macrogroups.find((group: GuiMacrogroupsStateMacrogroup) => group.id === groupId)
+            const group = this.macrogroups.find((group: GuiMacrosStateMacrogroup) => group.id === groupId)
 
             return (group) ? group.name : 'Macrogroup'
         }

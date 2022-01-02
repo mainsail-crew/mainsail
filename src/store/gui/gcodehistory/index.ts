@@ -6,7 +6,7 @@ import {GuiGcodehistoryState} from '@/store/gui/gcodehistory/types'
 
 export const getDefaultState = (): GuiGcodehistoryState => {
     return {
-        history: [],
+        entries: [],
     }
 }
 

@@ -173,7 +173,6 @@
       "AllJobs": "Minden Feladat",
       "Empty": "Üres",
       "Delete": "Törlés",
-      "Resume": "Folytatás",
       "Pause": "Szünet"
     },
     "Console": {
@@ -595,10 +594,6 @@
         "FactoryReset": "Gyári visszaállítás",
         "FactoryDialog": "Kérlek válaszd ki a visszaállítandó részeket:",
         "Reset": "Visszaállítás",
-        "DbGeneral": "Általános",
-        "DbPresets": "Alapbeállítások",
-        "DbMacrogroups": "Mac csoportok",
-        "DbRemoteprinters": "Távoli nyomtatók",
         "DbHistoryJobs": "Elvégzett feladatok",
         "DbHistoryTotals": "Feladatok összesen",
         "DbWebcams": "Webkamerák",

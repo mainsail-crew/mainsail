@@ -146,11 +146,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get customFilters(): any[] {
-        return this.$store.state.gui.console.customFilters
+        return this.$store.state.gui.console.consolefilters
     }
 
     get lastCommands(): string[] {
-        return this.$store.state.gui.gcodehistory.history ?? []
+        return this.$store.state.gui.gcodehistory.entries ?? []
     }
 
     commandClick(msg: string): void {

@@ -43,7 +43,7 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getLogoColor: (state) => {
-        return state.data.gui?.theme?.logo ?? defaultLogoColor
+        return state.data.gui?.uiSettings?.logo ?? defaultLogoColor
     },
 
     getStatus: (state, getters) => {

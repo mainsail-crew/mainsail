@@ -39,7 +39,7 @@
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
-                        <span><b>{{ $t('Timelapse.CurrentPath') }}:</b> {{ this.currentPath !== 'timelapse' ? "/"+this.currentPath.substring(7) : "/" }}</span>
+                        <span><b>{{ $t('Timelapse.CurrentPath') }}:</b> {{ this.currentPath !== 'timelapse' ? "/"+this.currentPath.substring(10) : "/" }}</span>
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
@@ -284,7 +284,6 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     private search = ''
-    private currentPath = 'timelapse'
     private boolVideoDialog = false
     private videoDialogFilename = ''
 
@@ -370,31 +369,31 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     }
 
     get sortBy() {
-        return this.$store.state.gui.timelapse.sortBy ?? 'modified'
+        return this.$store.state.gui.view.gcodefiles.sortBy ?? 'modified'
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.timelapse.sortDesc ?? true
+        return this.$store.state.gui.view.gcodefiles.sortDesc ?? true
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.sortDesc', value: newVal })
     }
 
     get countPerPage() {
-        return this.$store.state.gui.timelapse?.countPerPage ?? 10
+        return this.$store.state.gui.view.gcodefiles?.countPerPage ?? 10
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'timelapse.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.timelapse.countPerPage', value: newVal })
     }
 
     get displayFiles() {
@@ -403,6 +402,14 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
 
             return (file.filename.endsWith('mp4') || file.filename.endsWith('zip'))
         }) ?? []
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.view.timelapse.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.timelapse.currentPath', value: newVal })
     }
 
     createDirectory() {

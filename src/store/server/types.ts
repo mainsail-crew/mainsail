@@ -75,6 +75,11 @@ export interface ServerStateDistribution {
         major: string
         minor: string
     }
+    release_info?: {
+        name: string
+        version_id: string
+        id: string
+    }
 }
 
 export interface ServerStateSdInfo {

@@ -17,8 +17,33 @@
       "ServiceControl": "Dienst-Steuerung",
       "PowerDevices": "Stromversorgung",
       "HostControl": "Host-Steuerung",
+      "Start": "Start",
+      "Stop": "Stop",
+      "Restart": "Neustart",
       "Reboot": "Neustart",
-      "Shutdown": "Herunterfahren"
+      "Shutdown": "Herunterfahren",
+      "Cancel": "Abbrechen",
+      "ConfirmationDialog": {
+        "Title": {
+          "KlipperRestart": "Klipper Neustart",
+          "KlipperFirmwareRestart": "Klipper Firmware Neustart",
+          "ServiceStart": "Service Start",
+          "ServiceRestart": "Service Neustart",
+          "ServiceStop": "Service Stop",
+          "HostReboot": "Host Neustart",
+          "HostShutdown": "Host Herunterfahren"
+        },
+        "Description": {
+          "KlipperStop": "Wenn du Klipper jetzt stoppst, wird der momentane Druck fehlschlagen.",
+          "KlipperRestart": "Wenn du Klipper jetzt neustartest, wird der momentane Druck fehlschlagen.",
+          "KlipperFirmwareRestart": "Wenn du die Klipper Firmware jetzt neustartest, wird der momentane Druck fehlschlagen.",
+          "ServiceStart": "Wenn du diesen Service jetzt startest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
+          "ServiceRestart": "Wenn du diesen Service jetzt neustartest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
+          "ServiceStop": "Wenn du diesen Service jetzt stoppst, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
+          "HostReboot": "Wenn du den Host jetzt neustartest, wird der momentane Druck fehlschlagen.",
+          "HostShutdown": "Wenn du den Host jetzt herunterfährst, wird der momentane Druck fehlschlagen."
+        }
+      }
     },
     "UpdateDialog": {
       "Updating": "Aktualisiere {software}...",
@@ -111,7 +136,8 @@
     "UnsavedChangesMessage": "Möchtest du die Änderungen an {filename} speichern?",
     "UnsavedChangesSubMessage": "Deine Änderungen werden verloren gehen wenn du sie nicht speicherst. Du kannst diese Meldung in den Editor-Einstellungen deaktivieren.",
     "DontSave": "Nicht speichern",
-    "Cancel": "Abbrechen"
+    "Cancel": "Abbrechen",
+    "FileReadOnly": "schreibgeschützt"
   },
   "Files": {
     "GCodeFiles": "G-Code Dateien",
@@ -160,6 +186,7 @@
     "PrintTime": "Druckdauer",
     "Slicer": "Slicer",
     "Downloading": "Herunterladen",
+    "WrongFileUploaded": "Hochladen von {filename} verweigert. Falsches Dateiformat!",
     "SuccessfullyUploaded": "Hochladen von {filename} erfolgreich!",
     "SuccessfullyRenamed": "{filename} erfolgreich umbenannt.",
     "SuccessfullyMoved": "{filename} erfolgreich verschoben.",
@@ -173,14 +200,15 @@
     "AllJobs": "Alle Aufträge",
     "Empty": "Leer",
     "Delete": "Löschen",
-    "Resume": "Fortsetzen",
+    "Start": "Start",
     "Pause": "Pause"
   },
   "Console": {
     "SetupConsole": "Einstellungen",
     "SendCode": "Code senden...",
     "Empty": "Leer",
-    "HideTemperatures": "verstecke Temperaturen",
+    "HideTemperatures": "Temperaturen ausblenden",
+    "HideTimelapse": "Timelapse ausblenden",
     "CommandList": "Kommandoliste"
   },
   "Heightmap": {
@@ -334,7 +362,8 @@
       "FeedAmountIn": "Vorschub in",
       "FeedrateIn": "Geschwindigkeit in",
       "Retract": "Rückzug",
-      "Extrude": "Extrudieren"
+      "Extrude": "Extrudieren",
+      "HotendTooCold": "Hotend-Temp. niedriger als"
     },
     "MacrosPanel": {
       "Headline": "Makros",
@@ -368,7 +397,7 @@
         "Motion": "Bewegung",
         "Velocity": "Geschwindigkeit",
         "Acceleration": "Beschleunigung",
-        "Deceleration": "Verlangsamung",
+        "MaxAccelToDecel": "Max. Beschl. zu Verz.",
         "SquareCornerVelocity": "Eck-Geschwindigkeit"
       },
       "PressureAdvanceSettings": {
@@ -389,6 +418,7 @@
       "Headline": "Konsole",
       "SetupConsole": "Einstellungen",
       "HideTemperatures": "Temperaturmeldungen ausblenden",
+      "HideTimelapse": "Timelapse ausblenden",
       "SendCode": "Befehl senden..."
     },
     "MinSettingsPanel": {
@@ -509,7 +539,7 @@
       "ConfigFiles": "Konfigurationsdateien",
       "SetupCurrentList": "Einstellungen",
       "HiddenFiles": "Versteckte Dateien",
-      "HideBackupFiles": "Verstecke Sicherungsdateien",
+      "HideBackupFiles": "Sicherungsdateien ausblenden",
       "CurrentPath": "Aktueller Pfad",
       "Files": "Dateien",
       "FreeDisk": "Freier Speicherplatz",
@@ -568,7 +598,8 @@
       "CommittedYesterday": "eingereicht gestern",
       "CommittedDaysAgo": "eingereicht vor {days} Tagen",
       "CommittedOnDate": "eingereicht am {date}",
-      "UpdateAll": "Alle Komponenten updaten"
+      "UpdateAll": "Alle Komponenten updaten",
+      "CommitsAvailabe": "keine Einreichung verfügbar | {count} Einreichung verfügbar | {count} Einreichungen verfügbar"
     },
     "SystemPanel": {
       "SystemLoad": "Systemauslastung",
@@ -580,7 +611,8 @@
       "Memory": "Mem",
       "Constants": "Konstanten",
       "LastStats": "Letzte Statistik",
-      "HostDetails": "Host-Details"
+      "HostDetails": "Host-Details",
+      "Distro": "Distribution"
     }
   },
   "Settings": {
@@ -599,14 +631,18 @@
       "FactoryReset": "Werkseinstellungen",
       "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
       "Reset": "zurücksetzen",
-      "DbGeneral": "Allgemein",
-      "DbPresets": "Presets",
-      "DbMacrogroups": "Macro-Gruppen",
-      "DbRemoteprinters": "Remote Drucker",
+      "DbConsoleHistory": "Verlauf der Konsole",
+      "DbView": "Ansichtseinstellungen",
       "DbHistoryJobs": "Historie Druckvorgänge",
       "DbHistoryTotals": "Historie Gesamtzähler",
       "DbWebcams": "Webcams",
-      "DbTimelapseSettings": "Zeitraffer Einstellungen"
+      "DbTimelapseSettings": "Zeitraffer Einstellungen",
+      "MoonrakerDb": "Moonraker Datenbank",
+      "Backup": "Datensicherung",
+      "BackupDialog": "Bitte wähle alle Abschnitte aus, die du sichern möchtest:",
+      "Restore": "Wiederherstellung",
+      "CannotReadJson": "Sicherungsdatei kann nicht gelesen/analysiert werden.",
+      "RestoreDialog": "Bitte wähle alle Abschnitte aus, die du wiederherstellen möchtest:"
     },
     "WebcamsTab": {
       "Webcams": "Webcams",
@@ -647,6 +683,8 @@
       "AutorenderDescription": "Wenn diese Option aktiviert ist, wird das Zeitraffervideo am Ende des Druckvorgangs automatisch gerendert",
       "SaveFrames": "Bilder speichern",
       "SaveFramesDescription": "Speichern der Bilder in einer Zip-Datei für externes Rendern",
+      "StreamDelayCompensation": "Stream-Verzögerungs-Kompensation",
+      "StreamDelayCompensationDescription": "Verzögern der Bildaufnahme",
       "PreviewImage": "Vorschaubild",
       "PreviewImageDescription": "Speichert ein Vorschaubild mit demselben Namen wie das Video",
       "GcodeVerbose": "Ausführliche G-Codes",
@@ -655,12 +693,16 @@
       "ParkheadDescription": "Wenn diese Option aktiviert ist, wird der Druckkopf vor der Aufnahme eines Bildes geparkt.",
       "Parkpos": "Park-Position",
       "ParkposDescription": "Wähle Park-Position",
+      "ParkTime": "Park Dauer",
+      "ParkTimeDescription": "Verlängern der Park Dauer",
       "PosX": "Position X",
       "PosXDescription": "Park-Postion X (absolut)",
       "PosY": "Position Y",
       "PosYDescription": "Park-Postion Y (absolut)",
       "PosDZ": "Position Z",
       "PosDZDescription": "Park-Postion Z (relativ)",
+      "FwRetract": "Firmware Rückzug",
+      "FwRetractDescription": "Benutze Firmware Rückzug im Timelapse Makro",
       "TravelSpeed": "Eilgang Geschwindigkeit",
       "TravelSpeedDescription": "Eilgang Geschwindigkeit für die Fahrt zur Park-Position und Wiederaufnahme des Drucks",
       "RetractSpeed": "Rückzuggeschwindigkeit",
@@ -713,6 +755,7 @@
       "Management": "Verwaltung",
       "Simple": "Einfach",
       "Expert": "Experte",
+      "Group": "Gruppe",
       "NoGroups": "Keine Gruppen gefunden...",
       "Macrogroups": "Gruppen",
       "EditGroup": "Gruppe bearbeiten",
@@ -735,9 +778,9 @@
       "NoAvailableMacros": "Keine verfügbaren Makros.",
       "UnknownGroup": "Unbekannte Gruppe",
       "ChangeMacroColor": "Farbe der Schaltfläche ändern.",
-      "ShowInStateStandby": "Anzeigen/verstecken wenn der Drucker im Standby ist.",
-      "ShowInStatePaused": "Anzeigen/verstecken wenn der Drucker pausiert ist.",
-      "ShowInStatePrinting": "Anzeigen/verstecken wenn der Drucker am drucken ist.",
+      "ShowInStateStandby": "Anzeigen/ausblenden wenn der Drucker im Standby ist.",
+      "ShowInStatePaused": "Anzeigen/ausblenden wenn der Drucker pausiert ist.",
+      "ShowInStatePrinting": "Anzeigen/ausblenden wenn der Drucker am drucken ist.",
       "DeleteMacroFromGroup": "Makro aus Gruppe entfernen.",
       "DeletedMacro": "Makro gelöscht"
     },
@@ -764,7 +807,8 @@
       "DirectionTable": "Letzter Eintrag oben",
       "DirectionShell": "Letzter Eintrag unten",
       "Height": "Höhe",
-      "HideTemperatures": "Temperaturen verstecken",
+      "HideTemperatures": "Temperaturen ausblenden",
+      "HideTimelapse": "Timelapse ausblenden",
       "CreateHeadline": "Filter erstellen",
       "Name": "Name",
       "Regex": "Regex",
@@ -812,8 +856,8 @@
       "NavigationStyleDescription": "Erscheinungsbild der Navigation ändern",
       "NavigationStyleIconsOnly": "Nur Icons",
       "NavigationStyleIconsAndText": "Icons + Text",
-      "BoolHideUploadAndPrintButton": "Verstecke \"Hochladen & Drucken\" Button",
-      "BoolHideUploadAndPrintButtonDescription": "Verstecke oder zeige die \"Hochladen & Drucken\" Schaltfläche in der Kopfleiste.",
+      "BoolHideUploadAndPrintButton": "\"Hochladen & Drucken\" Schaltfläche ausblenden",
+      "BoolHideUploadAndPrintButtonDescription": "Blendet die \"Hochladen & Drucken\" Schaltfläche in der Kopfleiste ein oder aus.",
       "DisplayCANCEL_PRINT": "Zeige CANCEL_PRINT an",
       "DisplayCANCEL_PRINTDescription": "Zeigt die CANCEL_PRINT Schaltfläche dauerhaft an - keine weitere Bestätigung erforderlich.",
       "DisplayZOffset": "Zeige Z-Offset-Panel an",

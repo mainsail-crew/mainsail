@@ -6,7 +6,7 @@ import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
 
 export const getDefaultState = (): GuiRemoteprintersState => {
     return {
-        remoteprinters: {},
+        printers: {},
     }
 }
 

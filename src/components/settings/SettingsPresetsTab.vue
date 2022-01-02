@@ -292,8 +292,8 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
             }
 
             if (this.form.id !== null) {
-                this.$store.dispatch('gui/presets/update',  { id: this.form.id, values: preset} )
-            } else this.$store.dispatch('gui/presets/store',  { values: preset} )
+                this.$store.dispatch('gui/presets/update',  { id: this.form.id, values: preset } )
+            } else this.$store.dispatch('gui/presets/store',  { values: preset } )
 
             this.clearForm()
         }
@@ -306,7 +306,7 @@ export default class SettingsPresetsTab extends Mixins(BaseMixin) {
 
     saveCooldown() {
         if (this.cooldownForm.valid) {
-            this.$store.dispatch('gui/presets/updateCooldownGcode', this.cooldownForm.gcode)
+            this.$store.dispatch('gui/presets/saveSetting', { name: 'cooldownGcode', value: this.cooldownForm.gcode })
             this.cooldownForm.bool = false
         }
     }

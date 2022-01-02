@@ -5,8 +5,8 @@
 <template>
     <div>
         <template v-for="object in printing_objects">
-            <v-row v-bind:key="'div_'+object.name" class="py-3 d-flex" @mouseover="mouseOverObject(object.name)" @mouseleave="mouseOverObject('')">
-                <v-col class="py-2 subtitle-2 text--disabled text-truncate">
+            <v-row v-bind:key="'div_'+object.name" class="py-3 d-flex" @click="mouseOverObject(object.name)" @mouseover="mouseOverObject(object.name)" @mouseleave="mouseOverObject('')">
+                <v-col :class="'py-2 subtitle-2 text-truncate '+(hoverName === object.name ? 'text--white' : 'text--disabled')">
                     {{ object.name }}
                 </v-col>
                 <v-col class="col-auto py-2">
@@ -21,11 +21,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import {Mixins, Prop} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class StatusPanelObjectsDialogList extends Mixins(BaseMixin) {
+    @Prop({ required: false, default: '' }) readonly hoverName!: string
+
     get printing_objects() {
         return this.$store.state.printer.exclude_object?.objects ?? []
     }

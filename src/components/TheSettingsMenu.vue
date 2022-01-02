@@ -3,7 +3,7 @@
         <v-btn icon tile @click="showSettings = true">
             <v-icon>mdi-cogs</v-icon>
         </v-btn>
-        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile" @keydown.esc="showSettings = false">
+        <v-dialog v-model="showSettings" width="900" persistent :fullscreen="isMobile" @keydown.esc="showSettings = false" scrollable>
             <panel :title="$t('Settings.InterfaceSettings')" icon="mdi-cogs" card-class="settings-menu-dialog" :margin-bottom="false" style="overflow: hidden;" :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
@@ -187,17 +187,18 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
 <style scoped>
     .settings-tabs {
-        height: auto;
-        max-height: calc(var(--app-height) - 96px);
+        min-height: 100%;
+        height: calc(var(--app-height) - 96px);
     }
 
     .settings-tabs-bar {
         border-right: 1px solid rgba(255, 255, 255, 0.12);
+        height: 100%;
     }
 
-    .settings-tabs-bar.height500,
     .settings-tabs.height500 {
-        max-height: 500px;
+        height: 500px;
+        max-height: calc(var(--app-height) - 111px);
     }
 </style>
 

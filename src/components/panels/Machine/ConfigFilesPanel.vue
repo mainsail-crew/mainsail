@@ -35,7 +35,7 @@
                                 <span>{{ button.text }}</span>
                             </v-tooltip>
                         </v-btn>
-                        <v-menu :offset-y="true" :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
+                        <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
@@ -294,6 +294,7 @@ import {formatDate, formatFilesize, sortFiles} from '@/plugins/helpers'
 import {FileStateFile} from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
+import {hiddenRootDirectories} from '@/store/variables'
 
 interface contextMenu {
     shown: boolean
@@ -364,8 +365,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private selected = []
     private options = { }
     private currentPage = 1
-    private currentPath = ''
-    private root = 'config'
     private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
@@ -532,51 +531,67 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     }
 
     get countPerPage() {
-        return this.$store.state.gui.settings.configfiles.countPerPage
+        return this.$store.state.gui.view.configfiles.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.countPerPage', value: newVal })
     }
 
     get showHiddenFiles() {
-        return this.$store.state.gui.settings.configfiles.showHiddenFiles
+        return this.$store.state.gui.view.configfiles.showHiddenFiles
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.showHiddenFiles', value: newVal })
     }
 
     get hideBackupFiles() {
-        return this.$store.state.gui.settings.configfiles.hideBackupFiles
+        return this.$store.state.gui.view.configfiles.hideBackupFiles
     }
 
     set hideBackupFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.hideBackupFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.hideBackupFiles', value: newVal })
     }
 
     get sortBy() {
-        return this.$store.state.gui.settings.configfiles.sortBy
+        return this.$store.state.gui.view.configfiles.sortBy
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'filename'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.settings.configfiles.sortDesc
+        return this.$store.state.gui.view.configfiles.sortDesc
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'settings.configfiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.configfiles.sortDesc', value: newVal })
     }
 
     get registeredDirectories() {
-        return this.$store.state.server.registered_directories.filter((dir: string) => dir !== 'gcodes').sort()
+        return this.$store.state.server.registered_directories.filter((dir: string) => !hiddenRootDirectories.includes(dir)).sort()
+    }
+
+    get root() {
+        return this.$store.state.gui.view.configfiles.rootPath
+    }
+
+    set root(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.rootPath', value: newVal })
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.view.configfiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
     refreshFileList() {

@@ -62,6 +62,7 @@
                             <br />
                             <span v-if="hostStats.version">{{ $t('Machine.SystemPanel.Version') }}: {{ hostStats.version }}<br /></span>
                             <span v-if="hostStats.os">{{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}<br /></span>
+                            <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">{{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }} {{ hostStats.release_info.version_id }} <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span><br /></span>
                             <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }}</span>
                             <span v-if="hostStats.memoryFormat">, {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }}</span>
                             <template v-if="hostStats.tempSensor">

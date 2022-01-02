@@ -73,7 +73,7 @@
                         <v-btn @click="clickUploadButton" :title="$t('Files.UploadNewGcode')" class="primary--text px-2 minwidth-0 ml-3" :loading="loadings.includes('gcodeUpload')"><v-icon>mdi-upload</v-icon></v-btn>
                         <v-btn @click="createDirectory" :title="$t('Files.CreateNewDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-folder-plus</v-icon></v-btn>
                         <v-btn @click="refreshFileList" :title="$t('Files.RefreshCurrentDirectory')" class="px-2 minwidth-0 ml-3"><v-icon>mdi-refresh</v-icon></v-btn>
-                        <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
+                        <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"><v-icon>mdi-cog</v-icon></v-btn>
                             </template>
@@ -470,7 +470,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private search = ''
     private selected = []
     private hideHeaderColums = []
-    private currentPath = 'gcodes'
     private dropzone = {
         visibility: 'hidden',
         opacity: 0,
@@ -563,6 +562,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         (value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!'
     ]
 
+    get currentPath() {
+        return this.$store.state.gui.view.gcodefiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+    }
+
     get headers() {
         const headers = [
             { text: '',                                     value: '',                          align: 'left',  configable: false,  visible: true, filterable: false },
@@ -628,55 +635,55 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get hideMetadataColums() {
-        return this.$store.state.gui.gcodefiles.hideMetadataColums
+        return this.$store.state.gui.view.gcodefiles.hideMetadataColums
     }
 
     set hideMetadataColums(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.hideMetadataColums', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.hideMetadataColums', value: newVal })
     }
 
     get showHiddenFiles() {
-        return this.$store.state.gui.gcodefiles.showHiddenFiles
+        return this.$store.state.gui.view.gcodefiles.showHiddenFiles
     }
 
     set showHiddenFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showHiddenFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showHiddenFiles', value: newVal })
     }
 
     get showPrintedFiles() {
-        return this.$store.state.gui.gcodefiles.showPrintedFiles
+        return this.$store.state.gui.view.gcodefiles.showPrintedFiles
     }
 
     set showPrintedFiles(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.showPrintedFiles', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.showPrintedFiles', value: newVal })
     }
 
     get sortBy() {
-        return this.$store.state.gui.gcodefiles.sortBy
+        return this.$store.state.gui.view.gcodefiles.sortBy
     }
 
     set sortBy(newVal) {
         if (newVal === undefined) newVal = 'modified'
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortBy', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortBy', value: newVal })
     }
 
     get sortDesc() {
-        return this.$store.state.gui.gcodefiles.sortDesc
+        return this.$store.state.gui.view.gcodefiles.sortDesc
     }
 
     set sortDesc(newVal) {
         if (newVal === undefined) newVal = false
 
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.sortDesc', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.sortDesc', value: newVal })
     }
 
     get countPerPage() {
-        return this.$store.state.gui.gcodefiles.countPerPage
+        return this.$store.state.gui.view.gcodefiles.countPerPage
     }
 
     set countPerPage(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'gcodefiles.countPerPage', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
     get timelapseEnabled() {
