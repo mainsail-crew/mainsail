@@ -25,13 +25,13 @@
       "Cancel": "Cancel",
       "ConfirmationDialog": {
         "Title": {
-          "KlipperRestart": "Klipper restart",
-          "KlipperFirmwareRestart": "Klipper firmware restart",
-          "ServiceStart": "Service start",
-          "ServiceRestart": "Service restart",
-          "ServiceStop": "Service stop",
-          "HostReboot": "Host reboot",
-          "HostShutdown": "Host shutdown"
+          "KlipperRestart": "Klipper Restart",
+          "KlipperFirmwareRestart": "Klipper Firmware Restart",
+          "ServiceStart": "Service Start",
+          "ServiceRestart": "Service Restart",
+          "ServiceStop": "Service Stop",
+          "HostReboot": "Host Reboot",
+          "HostShutdown": "Host Shutdown"
         },
         "Description": {
           "KlipperStop": "If you stop Klipper now, the current print will fail.",

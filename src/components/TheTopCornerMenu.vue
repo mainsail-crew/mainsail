@@ -85,7 +85,7 @@
             </v-card>
         </v-dialog>
         <v-dialog v-model="dialogConfirmation.show" width="400" :fullscreen="isMobile">
-            <panel card-class="confirm-top-corner-menu-dialog" icon="mdi-help-circle" :title="dialogConfirmation.title" :margin-bottom="false">
+            <panel card-class="confirm-top-corner-menu-dialog" icon="mdi-alert" :title="dialogConfirmation.title" :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogConfirmation.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -101,7 +101,7 @@
                     <v-btn text @click="dialogConfirmation.show = false">
                         {{ $t('App.TopCornerMenu.Cancel') }}
                     </v-btn>
-                    <v-btn text color="primary" @click="executeDialog">
+                    <v-btn text color="error" @click="executeDialog">
                         {{ dialogConfirmation.actionButtonText }}
                     </v-btn>
                 </v-card-actions>
