@@ -42,7 +42,7 @@
     }
 </style>
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" :hide-overlay="!isMobile" clipped app :style="cssVars"> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" clipped app :style="cssVars"> 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
