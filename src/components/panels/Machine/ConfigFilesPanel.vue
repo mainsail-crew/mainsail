@@ -365,8 +365,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private selected = []
     private options = { }
     private currentPage = 1
-    private currentPath = ''
-    private root = 'config'
     private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
@@ -578,6 +576,22 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     get registeredDirectories() {
         return this.$store.state.server.registered_directories.filter((dir: string) => !hiddenRootDirectories.includes(dir)).sort()
+    }
+
+    get root() {
+        return this.$store.state.gui.view.configfiles.rootPath
+    }
+
+    set root(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.rootPath', value: newVal })
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.view.configfiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
     }
 
     refreshFileList() {

@@ -143,7 +143,9 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'filename',
                 sortDesc: false,
                 showHiddenFiles: false,
-                hideBackupFiles: false
+                hideBackupFiles: false,
+                currentPath: '',
+                rootPath: 'config'
             },
             gcodefiles: {
                 countPerPage: 10,
@@ -151,7 +153,8 @@ export const getDefaultState = (): GuiState => {
                 sortDesc: true,
                 showHiddenFiles: false,
                 showPrintedFiles: true,
-                hideMetadataColums: []
+                hideMetadataColums: [],
+                currentPath: 'gcodes'
             },
             heightmap: {
                 probed: true,
@@ -193,6 +196,7 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
+                currentPath: 'timelapse'
             },
             webcam: {
                 currentCam: {
