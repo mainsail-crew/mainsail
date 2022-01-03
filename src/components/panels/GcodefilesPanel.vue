@@ -470,7 +470,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private search = ''
     private selected = []
     private hideHeaderColums = []
-    private currentPath = 'gcodes'
     private dropzone = {
         visibility: 'hidden',
         opacity: 0,
@@ -562,6 +561,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private input_rules = [
         (value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!'
     ]
+
+    get currentPath() {
+        return this.$store.state.gui.view.gcodefiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+    }
 
     get headers() {
         const headers = [

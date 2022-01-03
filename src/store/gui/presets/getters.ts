@@ -11,9 +11,11 @@ export const getters: GetterTree<GuiPresetsState, any> = {
     getPresets:(state) => {
         const presets: GuiPresetsStatePreset[] = []
 
-        Object.keys(state.presets).forEach((id: string) => {
-            presets.push({...state.presets[id], id})
-        })
+        if ('presets' in state) {
+            Object.keys(state.presets).forEach((id: string) => {
+                presets.push({...state.presets[id], id})
+            })
+        }
 
         return caseInsensitiveSort(presets, 'name')
     },
@@ -29,19 +31,21 @@ export const getters: GetterTree<GuiPresetsState, any> = {
             value: 0
         })
 
-        Object.keys(state.presets).forEach((id: string) => {
-            const preset = state.presets[id]
+        if ('presets' in state) {
+            Object.keys(state.presets).forEach((id: string) => {
+                const preset = state.presets[id]
 
-            if (
-                payload.name in preset.values &&
-                preset.values[payload.name].bool &&
-                output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
-            ) {
-                output.push({
-                    value: preset.values[payload.name].value,
-                })
-            }
-        })
+                if (
+                    payload.name in preset.values &&
+                    preset.values[payload.name].bool &&
+                    output.findIndex((entry: preset) => entry.value === preset.values[payload.name].value) === -1
+                ) {
+                    output.push({
+                        value: preset.values[payload.name].value,
+                    })
+                }
+            })
+        }
 
         return output.sort((a: preset,b: preset) => {
             if (a.value > b.value) return -1
