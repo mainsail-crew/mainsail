@@ -14,7 +14,7 @@
             :label="label"
             :suffix="unit"
             :append-icon="this.value !== this.defaultValue ? 'mdi-restart' : ''"
-            :error="(this.value < this.min) || ((this.value > this.max) && this.max !== -1)"
+            :error="(this.value < this.min) || ((this.value > this.max) && this.max !== null)"
             :step="step"
             :min="min"
             :max="max"
@@ -48,7 +48,7 @@ export default class PressureAdvanceSettingsInput extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) readonly label!: string
     @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
     @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
-    @Prop({ type: Number, required: false , default: -1 }) readonly max!: number
+    @Prop({ type: Number, default: null }) readonly max!: number | null
     @Prop({ type: Number, required: true , default: 0 }) readonly dec!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly defaultValue!: number
@@ -73,12 +73,11 @@ export default class PressureAdvanceSettingsInput extends Mixins(BaseMixin) {
 
     decrement(): void {
         this.value = (this.value > this.min) ? Math.round((this.value - this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.min
-        console.log(this.value)
         this.sendCmd()
     }
 
     increment(): void {
-        this.value = (this.value < this.max || this.max === -1) ? Math.round((this.value + this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.max
+        this.value = (this.value < this.max! || this.max === null) ? Math.round((this.value + this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.max
         this.sendCmd()
     }
 
