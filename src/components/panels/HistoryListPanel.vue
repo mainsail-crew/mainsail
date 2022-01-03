@@ -1,3 +1,12 @@
+<style lang="scss">
+    .history-jobs-table {
+
+        th.text-start {
+            padding-right: 0 !important;
+        }
+    }
+</style>
+
 <template>
     <div>
         <panel
@@ -43,8 +52,9 @@
             </v-card-text>
             <v-divider class="mb-3"></v-divider>
             <v-data-table
+                v-model="selectedJobs"
                 :items="jobs"
-                class="files-table"
+                class="history-jobs-table"
                 :headers="filteredHeaders"
                 :options="options"
                 :custom-sort="sortFiles"
@@ -59,17 +69,19 @@
                 item-key="name"
                 :search="search"
                 :custom-filter="advancedSearch"
-                mobile-breakpoint="0">
+                mobile-breakpoint="0"
+                show-select
+                @item-selected="handleItemSelected">
 
                 <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.text">{{ props.item[header.value] }}</td>
+                    <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">{{ props.item[header.value] }}</td>
                 </template>
 
-                <template #no-data>
+                <template slot="no-data">
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
-                <template #item="{ index, item }">
+                <template v-slot:item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
@@ -77,7 +89,15 @@
                         @click="clickRow(item)"
                         :class="'file-list-cursor user-select-none '+(item.exists ? '' : 'text--disabled')"
                     >
-                        <td class="pr-0 text-center" style="width: 32px;">
+                        <td class="pr-0">
+                            <v-simple-checkbox
+                                :value="isSelected"
+                                class="pa-0 mr-0"
+                                v-ripple
+                                @click.stop="select(!isSelected)"
+                            ></v-simple-checkbox>
+                        </td>
+                        <td class="px-0 text-center" style="width: 32px;">
                             <template v-if="!item.exists">
                                 <v-icon class="text--disabled">mdi-file-cancel</v-icon>
                             </template>
@@ -280,9 +300,7 @@
 </template>
 
 <script lang="ts">
-
-
-import {Component, Mixins} from 'vue-property-decorator'
+import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {ServerHistoryStateJob} from '@/store/server/history/types'
 import {caseInsensitiveSort, formatFilesize} from '@/plugins/helpers'
@@ -312,6 +330,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         item: {},
         boolShow: false,
     }
+    private selectedJobs: ServerHistoryStateJob[] = []
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
@@ -579,6 +598,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     }
 
+    handleItemSelected(item: any, value: boolean) {
+        window.console.log(item, value)
+    }
+
     getSmallThumbnail(item: ServerHistoryStateJob) {
         if (
             'metadata' in item &&
@@ -688,6 +711,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return value
             }
         } else return '--'
+    }
+
+    @Watch('selectedJobs')
+    updateSelectedJobs(newVal: ServerHistoryStateJob[]) {
+        window.console.log(newVal)
     }
 }
 </script>
