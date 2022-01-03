@@ -42,23 +42,25 @@
     }
 </style>
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" clipped app :style="cssVars"> 
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" clipped app :style="sidebarCssVars"> 
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
                     <v-list-item
                         router to="/"
-                        class="d-flex d-sm-none sidebar-logo no-text-decoration no-background no-border"
+                        :class="'d-flex d-sm-none sidebar-logo no-text-decoration no-background no-border ' + ((navigationStyle === 'iconsOnly') ? 'pa-0 justify-center' : '')"
                         :style="'height: ' + topbarHeight + 'px'"
                         :ripple="false"
                     >
                         <template v-if="sidebarLogo">
-                            <img :src="sidebarLogo" style="height: 32px;" class="nav-logo mr-3" alt="Logo" />
+                            <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
                         </template>
                         <template v-else>
-                            <mainsail-logo :color="logoColor" style="height: 32px;" class="nav-logo mr-4" :ripple="false"></mainsail-logo>
+                            <mainsail-logo :color="logoColor" :style="logoCssVars" class="nav-logo" :ripple="false"></mainsail-logo>
                         </template>
-                        <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span>
+                        <template v-if="navigationStyle !== 'iconsOnly'">
+                            <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span> 
+                        </template>
                     </v-list-item>
                     <template v-if="countPrinters">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
@@ -195,7 +197,7 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         return false
     }
 
-    get cssVars(): any {
+    get sidebarCssVars(): any {
         if(this.boolNaviTemp){
             return {
                 'top': `${topbarHeight}px !important`,
@@ -220,6 +222,14 @@ export default class TheSidebar extends Mixins(BaseMixin) {
         return this.$store.state.printer.hostname
     }
 
+    get logoCssVars() {
+        if(this.navigationStyle !== 'iconsOnly'){
+            return {
+                'margin-right': '16px'
+            }
+        }
+        return {}
+    }
 
     showInNavi(route: AppRoute): boolean {
         if (['shutdown', 'error', 'disconnected'].includes(this.klippy_state) && !route.alwaysShow) return false
