@@ -23,3 +23,19 @@ export interface ServerHistoryStateJob {
     start_time: number
     total_duration: number
 }
+
+export interface ServerHistoryStateAllPrintStatusEntry {
+    name: string
+    value: number
+    showInTable: boolean
+    itemStyle: {
+        opacity: number
+        color: string
+        borderColor: string
+        borderWidth: number
+        borderRadius: number
+    }
+    label: {
+        color: string
+    }
+}

@@ -179,7 +179,8 @@ export const getDefaultState = (): GuiState => {
                     'first_layer_height',
                     'layer_height',
                     'object_height',
-                ]
+                ],
+                selectedJobs: []
             },
             jobqueue: {
                 countPerPage: 10,

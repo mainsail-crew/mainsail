@@ -66,12 +66,11 @@
                     itemsPerPageAllText: $t('History.AllJobs'),
                     itemsPerPageOptions: [10,25,50,100,-1]
                 }"
-                item-key="name"
+                item-key="job_id"
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
-                show-select
-                @item-selected="handleItemSelected">
+                show-select>
 
                 <template slot="items" slot-scope="props">
                     <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">{{ props.item[header.value] }}</td>
@@ -300,7 +299,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Watch} from 'vue-property-decorator'
+import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import {ServerHistoryStateJob} from '@/store/server/history/types'
 import {caseInsensitiveSort, formatFilesize} from '@/plugins/helpers'
@@ -312,12 +311,9 @@ import {thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin} from '@/store/var
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
 
-    private boolAllData = false
     private search = ''
     private sortBy = 'start_time'
     private sortDesc = true
-    private selected = []
-    private hideHeaderColums = []
     private options = { }
     private contextMenu = {
         shown: false,
@@ -330,10 +326,17 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         item: {},
         boolShow: false,
     }
-    private selectedJobs: ServerHistoryStateJob[] = []
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
+    }
+
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
+    }
+
+    set selectedJobs(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
     }
 
     get headers() {
@@ -598,10 +601,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     }
 
-    handleItemSelected(item: any, value: boolean) {
-        window.console.log(item, value)
-    }
-
     getSmallThumbnail(item: ServerHistoryStateJob) {
         if (
             'metadata' in item &&
@@ -711,11 +710,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 return value
             }
         } else return '--'
-    }
-
-    @Watch('selectedJobs')
-    updateSelectedJobs(newVal: ServerHistoryStateJob[]) {
-        window.console.log(newVal)
     }
 }
 </script>

@@ -250,10 +250,13 @@
   "History": {
     "Statistics": "Statistics",
     "TotalPrinttime": "Total Printtime",
+    "SelectedPrinttime": "Selected Printtime",
     "LongestPrinttime": "Longest Printtime",
     "AvgPrinttime": "Avg. Printtime",
+    "SelectedFilamentUsed": "Selected Filament Used",
     "TotalFilamentUsed": "Total Filament Used",
     "TotalJobs": "Total Jobs",
+    "SelectedJobs": "Selected Jobs",
     "FilamentUsage": "Filament usage",
     "PrinttimeAvg": "Printtime AVG",
     "PrintHistory": "Print History",

@@ -56,8 +56,20 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         }]
     }
 
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
+    }
+
     get allPrintStatusArray() {
         return this.$store.getters['server/history/getAllPrintStatusArray']
+    }
+
+    get selectedPrintStatusArray() {
+        return this.$store.getters['server/history/getSelectedPrintStatusArray']
+    }
+
+    get printStatusArray() {
+        return this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
     }
 
     get chart (): ECharts | null {
@@ -66,7 +78,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     mounted() {
-        this.chartOptions.series[0].data = this.allPrintStatusArray
+        this.chartOptions.series[0].data = this.printStatusArray
         this.chart?.setOption(this.chartOptions)
 
         window.addEventListener('resize', this.eventListenerResize)
@@ -81,8 +93,8 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         if (this.chart) this.chart.dispose()
     }
 
-    @Watch('allPrintStatusArray')
-    allPrintStatusArrayChanged(newVal: any) {
+    @Watch('printStatusArray')
+    printStatusArrayChanged(newVal: any) {
         this.chart?.setOption({
             series: {
                 data: newVal
