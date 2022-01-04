@@ -35,9 +35,11 @@ http://<IP address of your Pi>
  **Important:** Include `mainsail.cfg` in your printer.cfg file
 {: .warning}
 
-Mainsail will not work correctly until 'mainsail.cfg' is included in Klipper's configuration file.  Open Klipper's default 'printer.cfg' file in Mainsail's file manager located in `Settings > Machine`.  If you do not have a `printer.cfg` file, you can create one. Add the following line to `printer.cfg` 
+Mainsail will not work correctly until `mainsail.cfg` is included in Klipper's configuration file.  Open Klipper's default `printer.cfg` file in Mainsail's file manager located in `Settings > Machine`.  If you do not have a `printer.cfg` file, you can create one. Add the following line to `printer.cfg` 
 
-`[include mainsail.cfg]`
+```
+[include mainsail.cfg]
+```
 
 ![screenshot-web-editor](../../../assets/img/setup/screenshot-web-editor-printer.png)        
 
