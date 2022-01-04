@@ -65,6 +65,7 @@
                             <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">{{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }} {{ hostStats.release_info.version_id }} <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span><br /></span>
                             <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }}</span>
                             <span v-if="hostStats.memoryFormat">, {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }}</span>
+                            <span v-if="disk_usage.total > 0">, {{ $t('Machine.SystemPanel.Disk') }}: {{ formatFilesize(disk_usage.used) }} / {{ formatFilesize(disk_usage.total) }}</span>
                             <template v-if="hostStats.tempSensor">
                                 <span>, </span>
                                 <template v-if="hostStats.tempSensor.measured_min_temp !== null && hostStats.tempSensor.measured_max_temp !== null">
@@ -173,10 +174,12 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import {formatFilesize} from '@/plugins/helpers'
 @Component({
     components: {Panel}
 })
 export default class SystemPanel extends Mixins(BaseMixin) {
+    formatFilesize = formatFilesize
 
     private mcuDetailsDialog: { bool: boolean, headline: string, mcu: any } = {
         bool: false,
@@ -201,6 +204,14 @@ export default class SystemPanel extends Mixins(BaseMixin) {
 
     get systemInfo() {
         return this.$store.state.server?.system_info ?? {}
+    }
+
+    get directory() {
+        return this.$store.getters['files/getDirectory']('gcodes')
+    }
+
+    get disk_usage() {
+        return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0}
     }
 
     openMcuDetails(mcu: any) {

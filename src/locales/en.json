@@ -609,6 +609,7 @@
       "Awake": "Awake",
       "Frequency": "Freq",
       "Memory": "Mem",
+      "Disk": "Disk",
       "Constants": "Constants",
       "LastStats": "Last stats",
       "HostDetails": "Host details",
