@@ -153,7 +153,7 @@ export const actions: ActionTree<GuiState, RootState> = {
     setCurrentWebcam({ commit, dispatch, state }, payload) {
         commit('setCurrentWebcam', payload)
         dispatch('updateSettings', {
-            keyName: 'webcamSettings.currentCam',
+            keyName: 'view.webcam.currentCam',
             newVal: state.view.webcam.currentCam
         })
     },
