@@ -511,7 +511,9 @@
         "Target": "target temperature",
         "Power": "PWM-power",
         "Speed": "PWM-speed"
-      }
+      },
+      "TempTooLow": "Temperature too low for {name}! (min: {min})",
+      "TempTooHigh": "Temperature too high for {name}! (max: {max})"
     },
     "WebcamPanel": {
       "Headline": "Webcam",
