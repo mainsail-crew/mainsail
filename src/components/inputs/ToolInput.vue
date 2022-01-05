@@ -26,10 +26,13 @@
         :items="items"
         item-text="value"
         type="number"
-        @change="setTemps"
-        attach
+        @keyup.enter="setTemps"
+        @keyup.tab="setTemps"
+        @change="changeValue"
+        @blur="onBlur"
         hide-spin-buttons
-    ></v-combobox>
+    >
+    </v-combobox>
 </template>
 
 <script lang="ts">
@@ -48,6 +51,19 @@ export default class ToolInput extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) readonly command!: string
     @Prop({ type: String, required: true }) readonly attributeName!: string
     @Prop({ type: Array, default: [] }) items!: number[]
+
+    changeValue(newVal: any) {
+        if (typeof newVal === 'object') {
+            this.setTemps()
+        }
+    }
+
+    onBlur(event: any) {
+        if ('target' in event && event.target && 'value' in event.target) {
+            this.value = event.target.value ?? this.value
+            this.setTemps()
+        }
+    }
 
     setTemps(): void {
         if (typeof this.value === 'object') this.value = this.value.value ?? 0
