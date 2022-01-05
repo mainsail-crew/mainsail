@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Prop} from 'vue-property-decorator'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 const CONTENT_LENGTH = 'content-length'
@@ -188,6 +188,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     async restartStream() {
         this.stopStream()
         this.startStream()
+    }
+
+    @Watch('url')
+    urlChanged() {
+        this.restartStream()
     }
 }
 </script>
