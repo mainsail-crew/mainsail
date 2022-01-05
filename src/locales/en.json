@@ -25,23 +25,23 @@
       "Cancel": "Cancel",
       "ConfirmationDialog": {
         "Title": {
-          "KlipperRestart": "Klipper restart",
-          "KlipperFirmwareRestart": "Klipper firmware restart",
-          "ServiceStart": "Service start",
-          "ServiceRestart": "Service restart",
-          "ServiceStop": "Service stop",
-          "HostReboot": "Host reboot",
-          "HostShutdown": "Host shutdown"
+          "KlipperRestart": "Klipper Restart",
+          "KlipperFirmwareRestart": "Klipper Firmware Restart",
+          "ServiceStart": "Service Start",
+          "ServiceRestart": "Service Restart",
+          "ServiceStop": "Service Stop",
+          "HostReboot": "Host Reboot",
+          "HostShutdown": "Host Shutdown"
         },
         "Description": {
-          "KlipperStop": "If you stop Klipper now, the current print will fail.",
-          "KlipperRestart": "If you restart Klipper now, the current print will fail.",
-          "KlipperFirmwareRestart": "If you restart the Klipper firmware now, the current print will fail.",
-          "ServiceStart": "If you start this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceStop": "If you stop this service now, you are very likely risking a failure of your ongoing print job.",
-          "HostReboot": "If you reboot the host now, the current print will fail.",
-          "HostShutdown": "If you shutdown the host now, the current print will fail."
+          "KlipperStop": "Stopping Klipper will cause the current print to fail!",
+          "KlipperRestart": "Restarting Klipper will cause the current print to fail!",
+          "KlipperFirmwareRestart": "Restarting the Klipper Firmware will cause the current print to fail!",
+          "ServiceStart": "Starting this service may cause the current print to fail!",
+          "ServiceRestart": "Restarting this service may cause the current print to fail!",
+          "ServiceStop": "Stopping this service may cause the current print to fail!",
+          "HostReboot": "Rebooting the Host will cause the current print to fail!",
+          "HostShutdown": "Shutting down the Host will cause the current print to fail!"
         }
       }
     },
@@ -511,7 +511,9 @@
         "Target": "target temperature",
         "Power": "PWM-power",
         "Speed": "PWM-speed"
-      }
+      },
+      "TempTooLow": "Temperature too low for {name}! (min: {min})",
+      "TempTooHigh": "Temperature too high for {name}! (max: {max})"
     },
     "WebcamPanel": {
       "Headline": "Webcam",

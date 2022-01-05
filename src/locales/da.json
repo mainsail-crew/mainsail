@@ -181,7 +181,7 @@
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
         "Filament": "Filament",
-        "FilamentUsage": "Filament forbrug",
+        <"FilamentUsage": "Filament forbrug",
         "FilamentWeight": "Filament vægt",
         "PrintTime": "Printtid",
         "Slicer": "Slicer",

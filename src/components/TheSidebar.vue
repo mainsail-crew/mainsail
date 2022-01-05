@@ -2,24 +2,33 @@
     .nav-logo {
         height: 32px;
     }
+
     .small-list-item {
         height: var(--sidebar-menu-item-height);
     }
+
     .no-text-decoration {
         text-decoration: none;
         background-color: transparent;
     }
+
     .no-background:before {
         background-color: rgba(255, 255, 255, 0) !important;
+    }
+
+    .no-border {
+        border: 0 !important;
     }
 </style>
 <style scoped>
     .active-nav-item {
         border-right: 4px solid var(--v-primary-base);
     }
+
     .menu-item-icon {
         opacity: .85;
     }
+
     .menu-item-title {
         line-height: 30px;
         font-size: 14px;
@@ -27,56 +36,77 @@
         text-transform: uppercase;
         opacity: .85;
     }
+
+    .nav-scrollbar {
+        height: 100%;
+    }
 </style>
-
 <template>
-    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" clipped app> 
-        <v-list class="pr-0 pt-0 ml-0">
-            <v-list-item-group active-class="active-nav-item">
-                <template v-if="countPrinters">
-                    <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-list-item
-                                router to="/allPrinters"
-                                class="small-list-item mt-1"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                    <v-icon>mdi-view-dashboard-outline</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers") }}</v-list-item-title>
-                                </v-list-item-content>
+    <v-navigation-drawer v-model="naviDrawer" :src="sidebarBackground" :mini-variant="(navigationStyle === 'iconsOnly')" :key="navigationStyle" :width="navigationWidth" :temporary="boolNaviTemp" clipped app :style="sidebarCssVars"> 
+        <overlay-scrollbars class="nav-scrollbar">
+            <v-list class="pr-0 pt-0 ml-0">
+                <v-list-item-group active-class="active-nav-item">
+                    <v-list-item
+                        router to="/"
+                        :class="'d-flex d-sm-none sidebar-logo no-text-decoration no-background no-border ' + ((navigationStyle === 'iconsOnly') ? 'pa-0 justify-center' : '')"
+                        :style="'height: ' + topbarHeight + 'px'"
+                        :ripple="false"
+                    >
+                        <template v-if="sidebarLogo">
+                            <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
+                        </template>
+                        <template v-else>
+                            <mainsail-logo :color="logoColor" :style="logoCssVars" class="nav-logo" :ripple="false"></mainsail-logo>
+                        </template>
+                        <template v-if="navigationStyle !== 'iconsOnly'">
+                            <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span> 
+                        </template>
+                    </v-list-item>
+                    <template v-if="countPrinters">
+                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-list-item
+                                    router to="/allPrinters"
+                                    class="small-list-item mt-1"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                        <v-icon>mdi-view-dashboard-outline</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title tile class="menu-item-title">{{ $t("App.Printers") }}</v-list-item-title>
+                                    </v-list-item-content>
 
-                            </v-list-item>
-                        </template>
-                        <span v-if="navigationStyle === 'iconsOnly'">{{ $t("App.Printers") }}</span>
-                    </v-tooltip>
-                    <v-divider class="my-1"></v-divider>
-                </template>
-                <div v-for="(category, index) in naviPoints" :key="index">
-                    <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-list-item
-                                router :to="category.path"
-                                class="small-list-item"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                    <v-icon>mdi-{{ category.icon }}</v-icon>
-                                </v-list-item-icon>
-                                <v-list-item-content>
-                                    <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
-                                </v-list-item-content>
-                            </v-list-item>
-                        </template>
-                        <span>{{ $t(`Router.${category.title}`) }}</span>
-                    </v-tooltip>
-                </div>
-            </v-list-item-group>
-        </v-list>
+                                </v-list-item>
+                            </template>
+                            <span>{{ $t("App.Printers") }}</span>
+                        </v-tooltip>
+                        <v-divider class="my-1"></v-divider>
+                    </template>
+                    <div v-for="(category, index) in naviPoints" :key="index">
+                        <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-list-item
+                                    router :to="category.path"
+                                    class="small-list-item"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                >
+                                    <v-list-item-icon class="my-3 mr-3 menu-item-icon">
+                                        <v-icon>mdi-{{ category.icon }}</v-icon>
+                                    </v-list-item-icon>
+                                    <v-list-item-content>
+                                        <v-list-item-title tile class="menu-item-title">{{ $t(`Router.${category.title}`) }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </template>
+                            <span>{{ $t(`Router.${category.title}`) }}</span>
+                        </v-tooltip>
+                    </div>
+                </v-list-item-group>
+            </v-list>
+        </overlay-scrollbars>
         <template v-slot:append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
@@ -95,17 +125,20 @@ import BaseMixin from '@/components/mixins/base'
 import {PrinterStateKlipperConfig} from '@/store/printer/types'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
-import {navigationWidth} from '@/store/variables'
+import {navigationWidth, topbarHeight} from '@/store/variables'
+import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 
 @Component({
     components: {
         TheSelectPrinterDialog,
-        AboutModal
+        AboutModal,
+        MainsailLogo
     }
 })
 
 export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
+    topbarHeight = topbarHeight
 
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer
@@ -155,6 +188,47 @@ export default class TheSidebar extends Mixins(BaseMixin) {
 
     get countPrinters() {
         return this.$store.getters['farm/countPrinters']
+    }
+
+    get boolNaviTemp(): boolean {
+        if(!this.isMobile && this.$vuetify.breakpoint.mdAndDown) {
+            return true
+        }
+        return false
+    }
+
+    get sidebarCssVars(): any {
+        if(this.boolNaviTemp){
+            return {
+                'top': `${topbarHeight}px !important`,
+                'padding-bottom': `${topbarHeight}px`
+            }
+        }
+        return {}
+    }
+
+    get sidebarLogo(): string {
+        return this.$store.getters['files/getSidebarLogo']
+    }
+
+    get logoColor(): string {
+        return this.$store.state.gui.uiSettings.logo
+    }
+
+    get printerName():string {
+        if (this.$store.state.gui.general.printername.length)
+            return this.$store.state.gui.general.printername
+
+        return this.$store.state.printer.hostname
+    }
+
+    get logoCssVars() {
+        if(this.navigationStyle !== 'iconsOnly'){
+            return {
+                'margin-right': '16px'
+            }
+        }
+        return {}
     }
 
     showInNavi(route: AppRoute): boolean {

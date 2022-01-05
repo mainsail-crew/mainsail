@@ -27,21 +27,21 @@
         "Title": {
           "KlipperRestart": "Klipper Neustart",
           "KlipperFirmwareRestart": "Klipper Firmware Neustart",
-          "ServiceStart": "Service Start",
-          "ServiceRestart": "Service Neustart",
-          "ServiceStop": "Service Stop",
+          "ServiceStart": "Dienst Start",
+          "ServiceRestart": "Dienst Neustart",
+          "ServiceStop": "Dienst Stop",
           "HostReboot": "Host Neustart",
           "HostShutdown": "Host Herunterfahren"
         },
         "Description": {
-          "KlipperStop": "Wenn du Klipper jetzt stoppst, wird der momentane Druck fehlschlagen.",
-          "KlipperRestart": "Wenn du Klipper jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "KlipperFirmwareRestart": "Wenn du die Klipper Firmware jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "ServiceStart": "Wenn du diesen Service jetzt startest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "ServiceRestart": "Wenn du diesen Service jetzt neustartest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "ServiceStop": "Wenn du diesen Service jetzt stoppst, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "HostReboot": "Wenn du den Host jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "HostShutdown": "Wenn du den Host jetzt herunterfährst, wird der momentane Druck fehlschlagen."
+          "KlipperStop": "Ein Stopp von Klipper wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "KlipperRestart": "Ein Neustart von Klipper wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "KlipperFirmwareRestart": "Ein Neustart der Klipper Firmware wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceStart": "Ein Start dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceRestart": "Ein Neustart dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceStop": "Ein Stopp dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "HostReboot": "Ein Neustart des Hosts wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "HostShutdown": "Ein Herunterfahren des Hosts wird zum Abbruch des aktuellen Druckauftrags führen!"
         }
       }
     },
@@ -200,7 +200,7 @@
     "AllJobs": "Alle Aufträge",
     "Empty": "Leer",
     "Delete": "Löschen",
-    "Resume": "Fortsetzen",
+    "Start": "Start",
     "Pause": "Pause"
   },
   "Console": {
