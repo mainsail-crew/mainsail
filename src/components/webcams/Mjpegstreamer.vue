@@ -17,7 +17,7 @@
 <template>
     <div v-observe-visibility="visibilityChanged" style="position: relative;">
         <img ref="image" class="webcamImage" :style="webcamStyle" />
-        <span class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
+        <span class="webcamFpsOutput" v-if="showFps">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
     </div>
 </template>
 
@@ -43,6 +43,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     @Prop()
     printerUrl: string | undefined
+
+    @Prop({ default: true }) showFps!: boolean
 
     $refs!: {
         canvas: HTMLCanvasElement,

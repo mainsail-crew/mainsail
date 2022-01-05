@@ -72,7 +72,7 @@
                     >
                         <div v-if="printer.socket.isConnected && currentCamId !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
+                                <webcam-mjpegstreamer :cam-settings="currentWebcam" :show-fps="false"></webcam-mjpegstreamer>
                             </template>
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer-adaptive'">
                                 <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam" :printer-url="printerUrl" :show-fps="false"></webcam-mjpegstreamer-adaptive>
