@@ -13,13 +13,13 @@ description: >-
 <!-- {{ page.description }} -->
 
 
-We would like acknowledge the valuable contributions that many people and projects have made to Mainsail, particularly the:
+We would like acknowledge the valuable contributions that many people and projects have made to Mainsail, especially the following:
 
 - contributors, who help make Mainsail better
 - testers, who help find bugs in Mainsail, so they can be quickly fixed
-- supporters via patreon/ko-fi
+- supporters via P atreon and Ko-fi
 
-..and of course the projects Mainsail is built on, especially [Klipper](https://github.com/KevinOConnor/klipper){:target="_blank"}, [Moonraker](https://github.com/Arksine/moonraker){:target="_blank"} and [MainsailOS](https://github.com/mainsail-crew/MainsailOS/){:target="_blank"}.
+We would like to thank the projects Mainsail is built on, especially [Klipper](https://github.com/KevinOConnor/klipper){:target="_blank"}, [Moonraker](https://github.com/Arksine/moonraker){:target="_blank"}, and [MainsailOS](https://github.com/mainsail-crew/MainsailOS/){:target="_blank"}.
 
 **THANK YOU for your continued support.**
 
