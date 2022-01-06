@@ -46,16 +46,16 @@
             }
         },
         "UpdateDialog": {
-            "Updating": "Updaterer {software}...",
-            "UpdatingDone": "Updatering af {software} udført!",
+            "Updating": "Opdaterer {software}...",
+            "UpdatingDone": "Opdatering af {software} udført!",
             "Recovering": "Gendanner {software}...",
             "RecoveringDone": "Gendannelse af {software} udført!",
             "Empty": "Tøm",
             "Close": "Luk"
         },
         "ThrottledStates": {
-            "HeadlineCurrentFlags": "Lige nu varsel",
-            "HeadlinePreviouslyFlags": "Tidligere varsel",
+            "HeadlineCurrentFlags": "\"Lige nu\" varsel",
+            "HeadlinePreviouslyFlags": "\"Tidligere\" varsel",
             "TitleUnderVoltageDetected": "Lav spænding opdaget",
             "TitleFrequencyCapped": "Maks. frekvens formindsket",
             "TitleCurrentlyThrottled": "Begrænset i øjeblikket",
@@ -102,7 +102,7 @@
         "SelectPrinter": "Vælg printer",
         "AddPrinter": "Tilføj Printer",
         "EditPrinter": "Rediger Printer",
-        "UpdatePrinter": "Updater Printer",
+        "UpdatePrinter": "Opdater Printer",
         "ChangePrinter": "Skift Printer",
         "HostnameRequired": "Værtsnavn er påkrævet",
         "HostnameInvalid": "Ugyldigt værtsnavn/IP",
@@ -175,14 +175,14 @@
         "DeleteDirectory": "Slet mappe",
         "DeleteDirectoryQuestion": "Vil du slette mappen \"{name}\" og alt dens indhold?",
         "Uploading": "Uploader",
-        "CurrentPath": "Du er her:",
+        "CurrentPath": "Du er her",
         "Filesize": "Filstørrelse",
         "LastModified": "Sidst ændret",
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
         "Filament": "Filament",
-        "FilamentUsage": "Filament forbrug (m)",
-        "FilamentWeight": "Filament vægt (g)",
+        <"FilamentUsage": "Filament forbrug",
+        "FilamentWeight": "Filament vægt",
         "PrintTime": "Printtid",
         "Slicer": "Slicer",
         "Downloading": "Downloader",
@@ -430,8 +430,8 @@
         },
         "PrintsettingsPanel": {
             "Headline": "Print indstillinger",
-            "SpeedFactor": "Hastigheds faktor",
-            "ExtrusionFactor": "Ekstrusions factor"
+            "SpeedFactor": "Hastighed",
+            "ExtrusionFactor": "Ekstrudering"
         },
         "MiscellaneousPanel": {
             "Headline": "Diverse",
@@ -580,11 +580,11 @@
             "Logfiles": "Logfiles"
         },
         "UpdatePanel": {
-            "UpdateManager": "Updaterings Manager",
-            "CheckForUpdates": "Tjek for updateringer",
+            "UpdateManager": "Opdaterings Manager",
+            "CheckForUpdates": "Tjek for opdateringer",
             "System": "System",
-            "PackagesCanBeUpgraded": "Packages kan opgraderes",
-            "OSPackages": "OS-Packages",
+            "PackagesCanBeUpgraded": "Pakker kan opgraderes",
+            "OSPackages": "OS-Pakker",
             "Commits": "Forpligtelse",
             "UpToDate": "up-to-date",
             "Detached": "Løsrevet",
@@ -753,7 +753,7 @@
             "Macros": "Macroer",
             "NOMacros": "Ingen macroer fundet...",
             "General": "Generelt",
-            "Management": "Management",
+            "Management": "Håndtering",
             "Simple": "Simpel",
             "Expert": "Ekspert",
             "Group": "Gruppe",
@@ -805,7 +805,7 @@
         "ConsoleTab": {
             "Console": "Terminal",
             "Direction": "Retning",
-            "DirectionTable": "Sidste handling øvert",
+            "DirectionTable": "Sidste handling øverst",
             "DirectionShell": "Sidste handling nederst",
             "Height": "Højde",
             "HideTemperatures": "Skjul temperaturer",
