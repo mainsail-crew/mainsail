@@ -212,6 +212,9 @@
                         <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'nozzle_diameter').visible">{{ item.nozzle_diameter ? item.nozzle_diameter.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_name').visible">{{ item.filament_name ? item.filament_name : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_type').visible">{{ item.filament_type ? item.filament_type : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_weight_total').visible">{{ item.filament_weight_total ? item.filament_weight_total.toFixed(2)+' g' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
@@ -579,6 +582,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             { text: this.$t('Files.LastModified'),          value: 'modified',                  align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.ObjectHeight'),          value: 'object_height',             align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.LayerHeight'),           value: 'layer_height',              align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.NozzleDiameter'),        value: 'nozzle_diameter',           align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.FilamentName'),          value: 'filament_name',             align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.FilamentType'),          value: 'filament_type',             align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.FilamentUsage'),         value: 'filament_total',            align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.FilamentWeight'),        value: 'filament_weight_total',     align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.PrintTime'),             value: 'estimated_time',            align: 'right', configable: true,   visible: true },
