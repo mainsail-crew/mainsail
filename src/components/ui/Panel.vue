@@ -8,9 +8,8 @@
     .btn-collapsible i::before {
         transition: transform 500ms;
     }
-
-    .icon-rotate-180:before {
-        transform: rotate(180deg);
+    .icon-rotate-90:before {
+        transform: rotate(90deg);
     }
 </style>
 
@@ -55,7 +54,7 @@
                     class="btn-collapsible"
                     :ripple="true"
                 >
-                    <v-icon :class="(!expand ? 'icon-rotate-180' : '')">mdi-chevron-down</v-icon>
+                    <v-icon :class="(expand ? '' : 'icon-rotate-90')">mdi-chevron-down</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
