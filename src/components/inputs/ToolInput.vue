@@ -27,7 +27,7 @@
         item-text="value"
         type="number"
         @keyup.enter="setTemps"
-        @keyup.tab="setTemps"
+        @keydown.tab="setTemps"
         @change="changeValue"
         @blur="onBlur"
         hide-spin-buttons
@@ -59,7 +59,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
     }
 
     onBlur(event: any) {
-        if ('target' in event && event.target && 'value' in event.target && this.value !== event.target.value) {
+        if ('target' in event && event.target && 'value' in event.target) {
             this.value = event.target.value ?? this.value
             this.setTemps()
         }
@@ -67,7 +67,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
 
     setTemps(): void {
         if (typeof this.value === 'object') this.value = this.value.value ?? 0
-        if (this.value === '') this.value = 0
+        if (this.value === null) this.value = 0
 
         if (this.value > this.max_temp) {
             this.value = { value: this.target, text: this.target }
@@ -75,7 +75,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
         } else if (this.value < this.min_temp && this.value != 0) {
             this.value = { value: this.target, text: this.target }
             this.$toast.error(this.$t('Panels.ToolsPanel.TempTooLow', { name: this.name, min: this.min_temp })+'')
-        } else {
+        } else if (this.target !== parseFloat(this.value)) {
             const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: gcode })
