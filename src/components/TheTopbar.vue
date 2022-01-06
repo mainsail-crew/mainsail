@@ -15,6 +15,11 @@
     .topbar .v-btn.v-btn--icon {
         width: var(--topbar-icon-btn-width) !important;
     }
+    @media (min-width: 768px) {
+        header.topbar {
+            z-index: 8 !important;
+        }
+    }
 </style>
 
 <template>
