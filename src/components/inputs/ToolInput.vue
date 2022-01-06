@@ -59,7 +59,7 @@ export default class ToolInput extends Mixins(BaseMixin) {
     }
 
     onBlur(event: any) {
-        if ('target' in event && event.target && 'value' in event.target) {
+        if ('target' in event && event.target && 'value' in event.target && this.value !== event.target.value) {
             this.value = event.target.value ?? this.value
             this.setTemps()
         }
