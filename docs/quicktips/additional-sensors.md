@@ -13,7 +13,7 @@ description: >-
 
 ## Raspberry Pi temperature sensor
 
-Append the following section to your printer.cfg:
+Append the following section to your `printer.cfg`:
 
 ```yaml
 [temperature_sensor raspberry_pi]
@@ -24,7 +24,7 @@ max_temp: 100
 
 ## ATSAM, ATAMD, and STM32 temperature sensor
 
-Append the following section to your printer.cfg:
+Append the following section to your `printer.cfg`:
 
 ```yaml
 [temperature_sensor mcu_temp]

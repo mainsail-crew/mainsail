@@ -18,11 +18,11 @@ You will need to decide if you want to receive status messages on your smartphon
 
 ## Status messages
 
-For simple status messages there are a couple of additional tools that can be used:
+For simple status messages there are a two additional tools that can be used:
 - __Discord:__ Mooncord is a bot that sends you status messages over Discord: [https://github.com/eliteSchwein/mooncord](https://github.com/eliteSchwein/mooncord)
 - __Telegram:__ moonraker-telegram is a bot that sends you status messages over the messaging application Telegram: [https://github.com/Raabi91/moonraker-telegram](https://github.com/Raabi91/moonraker-telegram)
 
-These tools are installed on the local machine and send status messages their respective platforms. No changes are needed to externally access your local network.
+These tools are installed on the local machine and send status messages to their respective platforms. No changes are needed to externally access your local network.
 
 For details, please refer to each project's instructions and documentation.
 
@@ -53,7 +53,7 @@ What you <b>could do</b>:
 	<ul>
 		<li>Set up your own secured VPN tunnel.
 			<ul>
-				<li>Either in the router</li>
+				<li>In your router</li>
 				<li>Or your Raspberry Pi</li>
 			</ul>
 		</li>

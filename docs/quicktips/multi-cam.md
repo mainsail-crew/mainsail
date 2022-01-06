@@ -12,12 +12,12 @@ description: >-
 {{ page.description }}
 
 __Disclaimer__  
-Thank you [Charlie_Powell](https://community.octoprint.org/u/Charlie_Powell) for letting us adapt his guide for mainsailOS!  
+Thank you to [Charlie_Powell](https://community.octoprint.org/u/Charlie_Powell) for letting us adapt his guide for MainsailOS!  
 The original guide can be found [here](https://community.octoprint.org/t/setting-up-multiple-webcams-in-octopi-the-right-way/32669).
 {: .info}
 
 ## Prerequisites
-For multicam to work, you will need
+For multicam to work, you will need:
 
 - mainsailOS v0.5.0 or higher
 - SSH access

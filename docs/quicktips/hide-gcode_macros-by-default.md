@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/hide-gcode_macros
 description: >-
-  You can show and hige G-Code macros in the interface settings
+  You can show and hide G-Code macros in the interface settings
 ---
 
 # {{ page.title }}
