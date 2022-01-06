@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/hide-gcode_macros
 description: >-
-  As you probably already noticed, you can show and hide the gcode macros in the interface settings, but there is more...
+  You can show and hige G-Code macros in the interface settings
 ---
 
 # {{ page.title }}
@@ -25,10 +25,10 @@ gcode:
 	M300
 ```
 
-`MY_AWESOME_GCODE` appears in your interface settings, `_MY_HELPER_CODE` not.
+`MY_AWESOME_GCODE` appears in your interface settings, `_MY_HELPER_CODE` does not.
 
 ![](../assets/img/quicktips/hide-gcode_macros/my_awesome_macro.png)
 
-By the way, this also works for other configuration sections like, **fans and outputs.**
+This also works for other configuration sections including **fans and outputs.**
 {: .info}
 

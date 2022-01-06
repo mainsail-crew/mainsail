@@ -1,24 +1,25 @@
 ---
 layout: default
-title: Print History/Stats
+title: Print History and Statistics
 parent: Quicktips
 has_children: false
 permalink: /quicktips/history
 description: >-
-  Since Mainsail 1.5.0 it is possible to report and visualize print statistics. These contain various information such as print status, print duration, amount of filament used, etc.
+  You can view your print history and statistics in the History section of Mainsail.  
+  
 ---
 
 # {{ page.title }}
 {{ page.description }}  
-It's also possible to reprint jobs.
+This includes print job status, duration, amount of filament used, and more.  You can also reprint a print job.
 
 ![](../assets/img/quicktips/history/history.png){: style="width: 50%;"}
 
 ## Enable print history tracking
 
-For this, it is necessary to enable print history tracking in moonraker.
+To enable print history tracking, you must first enable this feature in Moonraker.
 
-Just add `[history]` to your moonraker.conf and restart moonraker.
+Add `[history]` to your `moonraker.conf ` configuration file and restart Moonraker.
 
-The new history entry will appear in Mainsails sidebar.
+The new history entry will appear in Mainsail's sidebar.
 

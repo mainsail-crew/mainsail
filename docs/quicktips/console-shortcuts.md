@@ -5,22 +5,22 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/console-shortcuts
 description: >-
-  Similar to a terminal of your OS, there are some keyboard shortcuts in Mainsail that make your everyday life easier.
+  Keyboard shortcuts are available for those who prefer using the keyboard.
 ---
 
 # {{ page.title }}
 {{ page.description }}
 
-## Help command
+## List of Commands
 
-Issue a `HELP` command to get a list of possible commands.
+Issue a `HELP` command in the console to get a list of all available commands.
 
 ## Autocomplete
 
-You can start typing a command and then complete it with the tab-key. If there are several possibilities, you will get a list of choices.
+You can start typing a command and then complete it with the Tab key. If there are several possibilities, a list of choices will be displayed.
 
 ![](../assets/img/quicktips/console-shortcuts/tab_complete.gif)
 
 ## Scroll through commands
 
-Using the &uarr; up / &darr; down  arrow keys you can scroll through previous commands.
+Use the &uarr; up / &darr; down  arrow keys to scroll through previously used commands in the console.

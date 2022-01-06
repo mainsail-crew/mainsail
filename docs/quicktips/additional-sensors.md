@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/additional-sensors
 description: >-
-  Integrate additional sensors into the temperature graph. For example Raspberry Pi, MCU, BMExxx, HTU21D, LM75 and more..
+  You can integrate additional sensors from different vendors into the temperature graph in Mainsail.
 ---
 
 # {{ page.title }}
