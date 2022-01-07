@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/additional-sensors
 description: >-
-  You can integrate additional sensors from different vendors into the temperature graph in Mainsail.
+  You can integrate additional sensors [supported by Klipper](https://www.klipper3d.org/Config_Reference.html#temperature-sensors) into the temperature graph in Mainsail.
 ---
 
 # {{ page.title }}
