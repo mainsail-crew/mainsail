@@ -801,7 +801,11 @@
       "MoveDistancesXYInMm": "Verfahrwege XY in mm",
       "MoveDistancesZInMm": "Verfahrwege Z in mm",
       "MoveDistancesEInMm": "Verfahrwege E in mm",
-      "SpeedEInMms": "Geschw. E in mm/s"
+      "SpeedEInMms": "Geschw. E in mm/s",
+      "MinimumValues": "Minimum: {minimum} Eintrag",
+      "MaximumValues": "Maximum: {maximum} Einträge",
+      "MaximumValuesVisibility": "Maximal {maximum} Einträge für beste Darstellung",
+      "ValueGreaterThan": "Wert muss größer als {value} sein"
     },
     "ConsoleTab": {
       "Console": "Konsole",

@@ -32,7 +32,7 @@
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
-                            :rules="[v => v > 0 || 'Minimum speed is 1']"
+                            :rules="[v => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', {value: '0'})]"
                             outlined
                             dense
                             hide-spin-buttons
@@ -46,7 +46,7 @@
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
-                            :rules="[v => v > 0 || 'Minimum speed is 1']"
+                            :rules="[v => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', {value: '0'})]"
                             outlined
                             dense
                             hide-spin-buttons
@@ -58,15 +58,15 @@
                             <v-combobox
                                 v-model="stepsAll"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 9 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '9'}),
                                 ]"
                                 dense
                                 outlined
@@ -80,16 +80,16 @@
                             <v-combobox
                                 v-model="stepsCircleXY"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', {maximum: '4'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -100,16 +100,16 @@
                             <v-combobox
                                 v-model="stepsCircleZ"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', {maximum: '4'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -122,16 +122,16 @@
                             <v-combobox
                                 v-model="stepsXY"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 3 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '3'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -142,16 +142,16 @@
                             <v-combobox
                                 v-model="stepsZ"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 3 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '3'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -169,10 +169,10 @@
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
-                            :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
+                                :rules="[
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '5'}),
+                                ]"
                             dense
                             outlined
                             hide-spin-buttons
@@ -189,10 +189,10 @@
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
-                            :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
+                                :rules="[
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '5'}),
+                                ]"
                             dense
                             outlined
                             hide-spin-buttons
