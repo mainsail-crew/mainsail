@@ -383,6 +383,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.clearScene(true)
             this.loadedFile = null
+            this.tracking = false
         }
     }
 
