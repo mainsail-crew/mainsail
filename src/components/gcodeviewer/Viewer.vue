@@ -554,6 +554,8 @@ export default class Viewer extends Mixins(BaseMixin) {
     async trackingChanged(newVal: boolean) {
         if (!viewer) return
         if (newVal) {
+            //Set zSlider to max value
+            this.zSlider = this.maxZSlider
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer?.forceRender()
