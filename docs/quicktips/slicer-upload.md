@@ -16,10 +16,10 @@ Moonraker is compatible with Octoprint's API. To enable Octoprint API compatibil
 ```
 
 
-### PrusaSlicer / SuperSlicer (Mainsail v2.3.0 and up)
+### PrusaSlicer / SuperSlicer (PrusaSlicer v2.3.0 and up)
 Enable advanced or expert mode and change the options under `Printer Settings / General` as shown in the screenshot below. A "Physical Printer" must be configured in `Printer Settings / General`.
 
-### PrusaSlicer / SuperSlicer (prior to Mainsail v2.3.0)
+### PrusaSlicer / SuperSlicer (prior to PrusaSlicer v2.3.0)
 
 Enable advanced or expert mode and change the options under `Printer Settings / General` as shown in the screenshot below.
 For "API Key" you can type anything.
