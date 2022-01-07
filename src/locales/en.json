@@ -804,7 +804,11 @@
       "MoveDistancesXYInMm": "Move distances XY in mm",
       "MoveDistancesZInMm": "Move distances Z in mm",
       "MoveDistancesEInMm": "Move distances E in mm",
-      "SpeedEInMms": "Speed E in mm/s"
+      "SpeedEInMms": "Speed E in mm/s",
+      "MinimumValues": "Minimum values: {minimum}",
+      "MaximumValues": "Maximum values: {maximum}",
+      "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibilty",
+      "ValueGreaterThan": "Value has to be greater than {value}"
     },
     "ConsoleTab": {
       "Console": "Console",
