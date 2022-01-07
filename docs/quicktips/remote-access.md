@@ -65,12 +65,12 @@ What you <b>could do</b>:
 Several routers allow you to set up a VPN tunnel. After you have configured the VPN and logged in from another device, you will have secure access to your entire network, including Mainsail.
 
 If your router does not support this, you can also set up your own VPN, for example, using your Raspberry Pi.  
-[OpenVPN](https://openvpn.net/), [WireGuard](https://www.wireguard.com/) or [PiVPN](https://www.pivpn.io/)are all options that could work.
+[OpenVPN](https://openvpn.net/), [WireGuard](https://www.wireguard.com/) or [PiVPN](https://www.pivpn.io/) are all options that could work.
 
 To be able to reach your home network even with a non-static IP address, you will need to use a Dynamic DNS service. This will forward a domain directly to your IP address. Often these DynDNS services can also be set up directly in your router so when your external IP address changes, your domain will be automatically updated.  Free Dynamic DNS services include [DuckDNS](https://www.duckdns.org) or [FreeDNS ](https://freedns.afraid.org/)
 
 __Notice__  
-The devices that you use to access VPN tunnel are assigned to a different address range. This address range must be configured in Moonraker under _trusted_clients_ and _cors_domains_.See also [https://moonraker.readthedocs.io/en/latest/configuration/#authorization](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)  <br/><br/>
+The devices that you use to access VPN tunnel are assigned to a different address range. This address range must be configured in Moonraker under _trusted_clients_ and _cors_domains_. See also [Moonraker's documentation on network authorization.](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)  <br/><br/>
 For example:  
 __192.168.1__.x&emsp;_// devices on your regular LAN_  
 __192.168.50__.x&emsp;_// devices connected through your VPN tunnel_
