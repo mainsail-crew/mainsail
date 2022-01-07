@@ -13,7 +13,7 @@ description: >-
 
 ## Moonraker.conf
 
-To enable updates in Moonraker's web interface, add the following section to your printer's `moonraker.conf`:
+To enable updates in Mmainsail's web interface, add the following section to your printer's `moonraker.conf`:
 
 ```yaml
 [update_manager]
