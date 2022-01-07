@@ -82,7 +82,7 @@
                     <v-col class="col-auto pr-6">
                         <v-slider
                             vertical
-                            :disabled="tracking || loading || !loadedFile"
+                            :disabled="loading || !loadedFile"
                             :max="maxZSlider"
                             :min="0"
                             :value="zSlider"
@@ -383,6 +383,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer) {
             viewer.clearScene(true)
             this.loadedFile = null
+            this.tracking = false
         }
     }
 
@@ -554,6 +555,8 @@ export default class Viewer extends Mixins(BaseMixin) {
     async trackingChanged(newVal: boolean) {
         if (!viewer) return
         if (newVal) {
+            //Set zSlider to max value
+            this.zSlider = this.maxZSlider
             //Force renderers reload.
             viewer.gcodeProcessor.updateFilePosition(0)
             viewer?.forceRender()
