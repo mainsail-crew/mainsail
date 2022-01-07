@@ -82,7 +82,7 @@
                     <v-col class="col-auto pr-6">
                         <v-slider
                             vertical
-                            :disabled="tracking || loading || !loadedFile"
+                            :disabled="loading || !loadedFile"
                             :max="maxZSlider"
                             :min="0"
                             :value="zSlider"
