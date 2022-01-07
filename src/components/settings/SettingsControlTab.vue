@@ -32,7 +32,7 @@
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
-                            :rules="[v => v > 0 || 'Minimum speed is 1']"
+                            :rules="[v => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', {value: '0'})]"
                             outlined
                             dense
                             hide-spin-buttons
@@ -46,7 +46,7 @@
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
-                            :rules="[v => v > 0 || 'Minimum speed is 1']"
+                            :rules="[v => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', {value: '0'})]"
                             outlined
                             dense
                             hide-spin-buttons
@@ -58,15 +58,15 @@
                             <v-combobox
                                 v-model="stepsAll"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                    v => v.length > 0 || 'Minimum 1 value',
-                                    v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 9 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '9'}),
                                 ]"
                                 dense
                                 outlined
@@ -80,16 +80,16 @@
                             <v-combobox
                                 v-model="stepsCircleXY"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', {maximum: '4'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -100,16 +100,16 @@
                             <v-combobox
                                 v-model="stepsCircleZ"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 4 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 4 || $t('Settings.ControlTab.MaximumValues', {maximum: '4'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -122,16 +122,16 @@
                             <v-combobox
                                 v-model="stepsXY"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 3 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '3'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -142,16 +142,16 @@
                             <v-combobox
                                 v-model="stepsZ"
                                 hide-selected
-                                hide-details
+                                hide-details="auto"
                                 multiple
                                 small-chips
                                 :deletable-chips="true"
                                 append-icon=""
                                 type="number"
                                 :rules="[
-                                v => v.length > 0 || 'Minimum 1 value',
-                                v => v.length < 9 || 'For narrow screens it is recommended to enter max. 3 values.',
-                            ]"
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 3 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '3'}),
+                                ]"
                                 dense
                                 outlined
                                 hide-spin-buttons
@@ -169,10 +169,10 @@
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
-                            :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
+                                :rules="[
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '5'}),
+                                ]"
                             dense
                             outlined
                             hide-spin-buttons
@@ -189,10 +189,10 @@
                             :deletable-chips="true"
                             append-icon=""
                             type="number"
-                            :rules="[
-                            v => v.length > 0 || 'Minimum 1 value',
-                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
-                        ]"
+                                :rules="[
+                                    v => v.length > 0 || $t('Settings.ControlTab.MinimumValues', {minimum: '1'}),
+                                    v => v.length <= 5 || $t('Settings.ControlTab.MaximumValuesVisibility', {maximum: '5'}),
+                                ]"
                             dense
                             outlined
                             hide-spin-buttons
@@ -291,8 +291,9 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
     set stepsAll(newVal) {
         const absSteps = []
         for(const value of newVal) absSteps.push(Math.abs(value))
+        const steps = absSteps.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsAll', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsAll', value: steps })
     }
 
     get stepsXY() {
@@ -300,11 +301,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set stepsXY(steps) {
+    set stepsXY(newVal) {
         const absSteps = []
-        for(const value of steps) absSteps.push(Math.abs(value))
+        for(const value of newVal) absSteps.push(Math.abs(value))
+        const steps = absSteps.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsXY', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsXY', value: steps })
     }
 
     get stepsZ() {
@@ -312,11 +314,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set stepsZ(steps) {
+    set stepsZ(newVal) {
         const absSteps = []
-        for(const value of steps) absSteps.push(Math.abs(value))
+        for(const value of newVal) absSteps.push(Math.abs(value))
+        const steps = absSteps.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsZ', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsZ', value: steps })
     }
 
     get stepsCircleXY() {
@@ -324,11 +327,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set stepsCircleXY(steps) {
+    set stepsCircleXY(newVal) {
         const absSteps = []
-        for(const value of steps) absSteps.push(Math.abs(value))
+        for(const value of newVal) absSteps.push(Math.abs(value))
+        const steps = absSteps.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleXY', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleXY', value: steps })
     }
 
     get stepsCircleZ() {
@@ -336,11 +340,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set stepsCircleZ(steps) {
+    set stepsCircleZ(newVal) {
         const absSteps = []
-        for(const value of steps) absSteps.push(Math.abs(value))
+        for(const value of newVal) absSteps.push(Math.abs(value))
+        const steps = absSteps.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleZ', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleZ', value: steps })
     }
 
     get feedamountsE() {
@@ -348,11 +353,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set feedamountsE(amounts) {
+    set feedamountsE(newVal) {
         const absAmounts = []
-        for(const value of amounts) absAmounts.push(Math.abs(value))
+        for(const value of newVal) absAmounts.push(Math.abs(value))
+        const amounts = absAmounts.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamounts', value: absAmounts })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamounts', value: amounts })
     }
 
     get feedratesE() {
@@ -360,11 +366,12 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         return steps.sort(function (a: number,b: number) { return b-a })
     }
 
-    set feedratesE(rates) {
+    set feedratesE(newVal) {
         const absRates = []
-        for(const value of rates) absRates.push(Math.abs(value))
+        for(const value of newVal) absRates.push(Math.abs(value))
+        const rates = absRates.filter(this.onlyUnique)
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: absRates })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: rates })
     }
 
     blurFeedrateXY() {
@@ -373,6 +380,10 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
 
     blurFeedrateZ() {
         if (!(this.feedrateZ > 0)) this.feedrateZ = 25
+    }
+
+    onlyUnique(value: any, index: any, self: any[]) {
+        return self.indexOf(value) === index
     }
 
     mounted() {
