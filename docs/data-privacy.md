@@ -11,7 +11,7 @@ has_toc: false
 
 Mainsail understands the need for data privacy and it has been designed to only run in your browser locally.
 
-The following table applies to Mainsail when installed locallly or accessed remotely at [my.mainsail.xyz](http://my.mainsail.xyz).
+The following table applies to Mainsail when installed locally or accessed remotely at [my.mainsail.xyz](http://my.mainsail.xyz).
 
 | YES | NO |
 | :--------------: | :---------------: |

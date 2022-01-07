@@ -19,7 +19,7 @@ The original guide can be found [here](https://community.octoprint.org/t/setting
 ## Prerequisites
 For multicam to work, you will need:
 
-- mainsailOS v0.5.0 or higher
+- MainsailOS v0.5.0 or higher
 - SSH access
 - Two or more cameras
 
@@ -42,7 +42,7 @@ You should now have two identical files with different names:
 ## Edit the original configuration file for a specific camera
 Find the path to the camera by its ID. This makes it easier to stop `dev/video0` and `/dev/video1` from being switchedin the future.
 
-In a termina, run the comman `ls /dev/v4l/by-id`, copy your camera id and paste it into the editor in Mainsail. For example:
+In a terminal, run the command `ls /dev/v4l/by-id`, copy your camera id and paste it into the editor in Mainsail. For example:
 
 ```bash
 $ ls  /dev/v4l/by-id/
@@ -67,7 +67,7 @@ Add `camera="usb"` at the beginning of the file and then add a line with  `camer
 `camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"`
 
 __Note__  
-If you are using a Raspberry Pi branded camera, seet camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.
+If you are using a Raspberry Pi branded camera, set camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.
 
 {: .info}
 
@@ -84,7 +84,7 @@ Similar to finding the first camera, run `ls` and copy the ID of the second came
 ls  /dev/v4l/by-id/
 ```
 
-Edit `/home/pi/klipper_config/webcam2.txt` as described above andd add:
+Edit `/home/pi/klipper_config/webcam2.txt` as described above and add:
 `camera="usb"` and `set camera_usb_options` but this time using the ID for the second camera:
 
 ```bash
@@ -106,7 +106,7 @@ webcam3.txt => -p 8083
 __INFO__  
 MainsailOS comes setup with four nginx reverse proxies for port 8080 through 8083, so you can configure 4 webcams with this guide. 
 For more webcams you will need to edit the nginx configuration, which is not recommended.  It can be easy to make a mistake when editing nginx, which will also  cause Mainsail to stop working.  
-If you need more than four webcams,visit us on [Discord](https://discord.gg/skWTwTD){:target="_blank"} and we will help you.
+If you need more than four webcams, visit us on [Discord](https://discord.gg/skWTwTD){:target="_blank"} and we will help you.
 {: .warning}
 
 ## 4. Test that it works
