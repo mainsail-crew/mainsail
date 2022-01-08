@@ -48,9 +48,10 @@
                 <v-list-item-group active-class="active-nav-item">
                     <v-list-item
                         router to="/"
-                        :class="'d-flex d-sm-none sidebar-logo no-text-decoration no-background no-border ' + ((navigationStyle === 'iconsOnly') ? 'pa-0 justify-center' : '')"
+                        :class="'sidebar-logo no-text-decoration no-background no-border ' + ((navigationStyle === 'iconsOnly') ? 'pa-0 justify-center' : '')"
                         :style="'height: ' + topbarHeight + 'px'"
                         :ripple="false"
+                        v-if="isMobile"
                     >
                         <template v-if="sidebarLogo">
                             <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />

@@ -153,9 +153,9 @@
         </v-row>
         <v-row no-gutters class="mt-3">
             <v-col class="col-12">
-                <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep">
-                    <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="steps of stepsReversed" :key="'all-'+steps">
-                        <span class="body-2">{{ steps }}</span>
+                <v-btn-toggle v-if="stepsReversed.length > 0" dense no-gutters style="flex-wrap: nowrap; width: 100%;" v-model="selectedCrossStep" :key="'all-steps-'+stepsReversed.join('_')">
+                    <v-btn dense class="btnMinWidthAuto flex-grow-1 px-0" v-for="step of stepsReversed" :key="'step-'+step">
+                        <span class="body-2">{{ step }}</span>
                     </v-btn>
                 </v-btn-toggle>
                 <div class="font-weight-bold warning rounded pa-2" v-else>

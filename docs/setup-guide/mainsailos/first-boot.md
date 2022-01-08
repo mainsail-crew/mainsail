@@ -47,11 +47,10 @@ Mainsail will not work correctly until `mainsail.cfg` is included in Klipper's c
 
 and click on  the`Save & Restart` button.
 
-{: .info}
-
 ## Updates
 
 Once you've successfully navigated to the Mainsail's web interface it is _strongly_ recommend that you run any available updates.
+{: .info}
 
 Klipper, Moonraker and Mainsail have fast development cycles and while we do our best to ensure MainsailOS ships as close to upstream as we can, there will always be a short delay before releases make it into MainsailOS' image.
 

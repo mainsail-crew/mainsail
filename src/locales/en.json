@@ -2,6 +2,13 @@
   "title": "English",
   "App": {
     "Printers": "Printers",
+    "Titles": {
+      "Error": "ERROR",
+      "Pause": "Pause Print",
+      "Printing": "{percent}% Printing - {filename}",
+      "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename}",
+      "Complete": "Complete - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Upload & Print",
@@ -25,23 +32,23 @@
       "Cancel": "Cancel",
       "ConfirmationDialog": {
         "Title": {
-          "KlipperRestart": "Klipper restart",
-          "KlipperFirmwareRestart": "Klipper firmware restart",
-          "ServiceStart": "Service start",
-          "ServiceRestart": "Service restart",
-          "ServiceStop": "Service stop",
-          "HostReboot": "Host reboot",
-          "HostShutdown": "Host shutdown"
+          "KlipperRestart": "Klipper Restart",
+          "KlipperFirmwareRestart": "Klipper Firmware Restart",
+          "ServiceStart": "Service Start",
+          "ServiceRestart": "Service Restart",
+          "ServiceStop": "Service Stop",
+          "HostReboot": "Host Reboot",
+          "HostShutdown": "Host Shutdown"
         },
         "Description": {
-          "KlipperStop": "If you stop Klipper now, the current print will fail.",
-          "KlipperRestart": "If you restart Klipper now, the current print will fail.",
-          "KlipperFirmwareRestart": "If you restart the Klipper firmware now, the current print will fail.",
-          "ServiceStart": "If you start this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceRestart": "If you restart this service now, you are very likely risking a failure of your ongoing print job.",
-          "ServiceStop": "If you stop this service now, you are very likely risking a failure of your ongoing print job.",
-          "HostReboot": "If you reboot the host now, the current print will fail.",
-          "HostShutdown": "If you shutdown the host now, the current print will fail."
+          "KlipperStop": "Stopping Klipper will cause the current print to fail!",
+          "KlipperRestart": "Restarting Klipper will cause the current print to fail!",
+          "KlipperFirmwareRestart": "Restarting the Klipper Firmware will cause the current print to fail!",
+          "ServiceStart": "Starting this service may cause the current print to fail!",
+          "ServiceRestart": "Restarting this service may cause the current print to fail!",
+          "ServiceStop": "Stopping this service may cause the current print to fail!",
+          "HostReboot": "Rebooting the Host will cause the current print to fail!",
+          "HostShutdown": "Shutting down the Host will cause the current print to fail!"
         }
       }
     },
@@ -180,7 +187,10 @@
     "LastModified": "Last modified",
     "ObjectHeight": "Object Height",
     "LayerHeight": "Layer Height",
+    "NozzleDiameter": "Nozzle Diameter",
     "Filament": "Filament",
+    "FilamentName": "Filament Name",
+    "FilamentType": "Filament Type",
     "FilamentUsage": "Filament Usage",
     "FilamentWeight": "Filament Weight",
     "PrintTime": "Print Time",
@@ -514,7 +524,9 @@
         "Target": "target temperature",
         "Power": "PWM-power",
         "Speed": "PWM-speed"
-      }
+      },
+      "TempTooLow": "Temperature too low for {name}! (min: {min})",
+      "TempTooHigh": "Temperature too high for {name}! (max: {max})"
     },
     "WebcamPanel": {
       "Headline": "Webcam",
@@ -802,7 +814,11 @@
       "MoveDistancesXYInMm": "Move distances XY in mm",
       "MoveDistancesZInMm": "Move distances Z in mm",
       "MoveDistancesEInMm": "Move distances E in mm",
-      "SpeedEInMms": "Speed E in mm/s"
+      "SpeedEInMms": "Speed E in mm/s",
+      "MinimumValues": "Minimum values: {minimum}",
+      "MaximumValues": "Maximum values: {maximum}",
+      "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibilty",
+      "ValueGreaterThan": "Value has to be greater than {value}"
     },
     "ConsoleTab": {
       "Console": "Console",
