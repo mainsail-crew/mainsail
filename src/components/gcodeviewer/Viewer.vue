@@ -327,7 +327,8 @@ export default class Viewer extends Mixins(BaseMixin) {
     viewerInit(element: HTMLCanvasElement) {
         viewer = new GCodeViewer(element)
         viewer.init()
-        viewer.setBackgroundColor('#121212')
+        viewer.setBackgroundColor(this.backgroundColor)
+        viewer.bed.setBedColor(this.gridColor)
         viewer.setCursorVisiblity(this.showCursor)
         viewer.setZClipPlane(1000000, -1000000)
         viewer.axes.show(this.showAxes)
@@ -753,7 +754,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get backgroundColor() {
-        return this.$store.state.gui.gcodeViewer?.backgroundColor ?? '#000000'
+        return this.$store.state.gui.gcodeViewer?.backgroundColor ?? '#121212'
     }
 
     @Watch('backgroundColor')
@@ -763,7 +764,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get gridColor() {
-        return this.$store.state.gui.gcodeViewer?.gridColor ?? '#000000'
+        return this.$store.state.gui.gcodeViewer?.gridColor ?? '#B3B3B3'
     }
 
     @Watch('gridColor')
