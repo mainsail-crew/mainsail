@@ -2,6 +2,13 @@
   "title": "Deutsch",
   "App": {
     "Printers": "Drucker",
+    "Titles": {
+      "Error": "FEHLER",
+      "Pause": "Druck pausiert",
+      "Printing": "{percent}% Drucken - {filename}",
+      "PrintingETA": "{percent}% Drucken - ETA: {eta} - {filename}",
+      "Complete": "Fertiggestellt - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Hochladen & Drucken",
