@@ -2,6 +2,13 @@
   "title": "English",
   "App": {
     "Printers": "Printers",
+    "Titles": {
+      "Error": "ERROR",
+      "Pause": "Pause Print",
+      "Printing": "{percent}% Printing - {filename}",
+      "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename}",
+      "Complete": "Complete - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Upload & Print",

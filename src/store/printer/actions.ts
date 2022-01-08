@@ -35,7 +35,6 @@ export const actions: ActionTree<PrinterState, RootState> = {
     initSubscripts(_, payload) {
         let subscripts = {}
         const blocklist = [
-            'gcode_macro',
             'menu',
         ]
 
