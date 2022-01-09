@@ -2,6 +2,13 @@
   "title": "English",
   "App": {
     "Printers": "Printers",
+    "Titles": {
+      "Error": "ERROR",
+      "Pause": "Pause Print",
+      "Printing": "{percent}% Printing - {filename}",
+      "PrintingETA": "{percent}% Printing - ETA: {eta} - {filename}",
+      "Complete": "Complete - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Upload & Print",
@@ -180,7 +187,10 @@
     "LastModified": "Last modified",
     "ObjectHeight": "Object Height",
     "LayerHeight": "Layer Height",
+    "NozzleDiameter": "Nozzle Diameter",
     "Filament": "Filament",
+    "FilamentName": "Filament Name",
+    "FilamentType": "Filament Type",
     "FilamentUsage": "Filament Usage",
     "FilamentWeight": "Filament Weight",
     "PrintTime": "Print Time",
@@ -801,7 +811,11 @@
       "MoveDistancesXYInMm": "Move distances XY in mm",
       "MoveDistancesZInMm": "Move distances Z in mm",
       "MoveDistancesEInMm": "Move distances E in mm",
-      "SpeedEInMms": "Speed E in mm/s"
+      "SpeedEInMms": "Speed E in mm/s",
+      "MinimumValues": "Minimum values: {minimum}",
+      "MaximumValues": "Maximum values: {maximum}",
+      "MaximumValuesVisibility": "Maximum of {maximum} values is recommended for best visibilty",
+      "ValueGreaterThan": "Value has to be greater than {value}"
     },
     "ConsoleTab": {
       "Console": "Console",

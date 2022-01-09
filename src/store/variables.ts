@@ -73,8 +73,11 @@ export const checkKlipperConfigModules = [
  */
 export const allowedMetadata = [
     'estimated_time',
+    'filament_name',
+    'filament_type',
     'filament_total',
     'filament_weight_total',
+    'nozzle_diameter',
     'first_layer_bed_temp',
     'first_layer_extr_temp',
     'first_layer_height',
