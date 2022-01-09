@@ -133,7 +133,7 @@
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
-                @pagination="refreshMetadata"
+                @current-items="refreshMetadata"
             >
 
                 <template slot="items">
@@ -904,14 +904,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     }
 
-    refreshMetadata(data: any) {
-        const items = sortFiles(this.files, [this.sortBy], [this.sortDesc])
-        for (let i = data.pageStart; i < data.pageStop; i++) {
-            if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
-                let filename = (this.currentPath+'/'+items[i].filename).substring(7)
-                this.$socket.emit('server.files.metadata', { filename: filename }, { action: 'files/getMetadata' })
-            }
-        }
+    refreshMetadata(data: FileStateFile[]) {
+        const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
+        items.forEach((file: FileStateFile) => {
+            this.$store.dispatch('files/requestMetadata', {
+                filename: (this.currentPath+'/'+file.filename)
+            })
+        })
     }
 
     created() {
