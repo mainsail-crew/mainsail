@@ -10,6 +10,13 @@
             "UploadOfFileSuccessful": "Upload af {file} udført",
             "CannotUploadTheFile": "Kan ikke uploade filen!"
         },
+        "Titles": {
+            "Error": "Fejl",
+            "Pause": "Pause",
+            "PrintingETA": "Print ETA",
+            "Printing": "Printer",
+            "Complete": "Færdig"
+        },
         "TopCornerMenu": {
             "KlipperControl": "Klipper styring",
             "KlipperRestart": "Genstart",
@@ -192,7 +199,10 @@
         "SuccessfullyMoved": "{filename} flyttet.",
         "SuccessfullyCreated": "{filename} oprettet.",
         "SuccessfullyDeleted": "{filename} slettet.",
-        "View3D": "Vis i 3D"
+        "View3D": "Vis i 3D",
+        "NozzleDiameter": "Nozzle diameter",
+        "FilamentName": "Filament navn",
+        "FilamentType": "Filament type"
     },
     "JobQueue": {
         "JobQueue": "Jobkø",
@@ -221,7 +231,7 @@
         "Calibrate": "Kalibrer",
         "TitleCalibrate": "Kalibrer nyt Bed Mesh",
         "NoBedMeshHasBeenLoadedYet": "Intet Bed Mesh indlæst.",
-        "Probed": "Reel",
+        "Probed": "Målt",
         "Mesh": "Mesh",
         "Flat": "Fladt",
         "Wireframe": "Wireframe",
@@ -299,7 +309,7 @@
         "CreateNewDirectory": "Ny mappe",
         "RefreshCurrentDirectory": "Opdater mappe",
         "Empty": "Ingen færdige Timelapse filer fundet.",
-        "CurrentPath": "Du er her:",
+        "CurrentPath": "Du er her",
         "FreeDisk": "Ledig plads",
         "Used": "Brugt",
         "Free": "Ledig",
@@ -512,7 +522,9 @@
                 "Target": "Indstillet temperatur",
                 "Power": "PWM-power",
                 "Speed": "PWM-hastighed"
-            }
+            },
+            "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})",
+            "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})"
         },
         "WebcamPanel": {
             "Headline": "Webcam",
@@ -541,7 +553,7 @@
             "SetupCurrentList": "Indstil visning",
             "HiddenFiles": "Skjulte filer",
             "HideBackupFiles": "Skjul backupfiler",
-            "CurrentPath": "Du er her:",
+            "CurrentPath": "Du er her",
             "Files": "Filer",
             "FreeDisk": "Ledig plads",
             "Used": "Brugt",
@@ -577,10 +589,10 @@
             "EndstopInfo": "Klik på \"Sync\"-knappen nederst til højre for at opdatere Endstop status."
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfiles"
+            "Logfiles": "Logfiler"
         },
         "UpdatePanel": {
-            "UpdateManager": "Opdaterings Manager",
+            "UpdateManager": "Opdateringsmanager",
             "CheckForUpdates": "Tjek for opdateringer",
             "System": "System",
             "PackagesCanBeUpgraded": "Pakker kan opgraderes",
@@ -800,7 +812,11 @@
             "MoveDistancesXYInMm": "Distance XY i mm",
             "MoveDistancesZInMm": "Distance Z i mm",
             "MoveDistancesEInMm": "Distance E i mm",
-            "SpeedEInMms": "Hastighed E i mm/s"
+            "SpeedEInMms": "Hastighed E i mm/s",
+            "ValueGreaterThan": "Værdi større end",
+            "MinimumValues": "Minimumsværdier",
+            "MaximumValues": "Maksimumværdier",
+            "MaximumValuesVisibility": "Vis maksimumværdier"
         },
         "ConsoleTab": {
             "Console": "Terminal",
