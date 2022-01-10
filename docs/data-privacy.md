@@ -22,7 +22,7 @@ The following table applies to Mainsail when installed locally or accessed remot
 Accessing [my.mainsail.xyz](http://my.mainsail.xyz) stores the .html, .js and .css files for Mainsail locally in your brower's storage in exactly the same way that an instance running on your local hardware would do. There is no functional difference or concerns between accessing Mainsail locally or in a remotely public hosted instance. 
 
  
-Running Mainsail both locally and remotelly in parallel is also possible.
+Running Mainsail both locally and remotely in parallel is also possible.
 
 # Third party software
 
