@@ -71,6 +71,13 @@
       "DescriptionPreviouslyFrequencyCapped": "rPi ARM la fecuencia maxima fue al menos una vez limitada a 1.2 GHz desde el ultimo encendido.",
       "DescriptionPreviouslyThrottled": "rPI ARM el nucleo se redujo al menos una vez desde el último encendido",
       "DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) la temperatura estuvo por lo menos una vez del limite (default 60C) desde el ultimo encendido."
+    },
+    "Titles": {
+      "Complete": "Completado - {filename}",
+      "Error": "Error",
+      "Pause": "Pausar impresion",
+      "Printing": "{percent}% imprimiendo - {filename}",
+      "PrintingETA": "{percent}% imprimiendo - ETA: {eta} - {filename}"
     }
   },
   "ConnectionDialog": {
@@ -178,7 +185,10 @@
     "Filament": "Filamento",
     "StartPrint": "Iniciar impresion",
     "View3D": "Vista 3D",
-    "WrongFileUploaded": "Subida denegada para {filename}. Formato de archivo erroneo"
+    "WrongFileUploaded": "Subida denegada para {filename}. Formato de archivo erroneo",
+    "FilamentName": "Nombre del filamento",
+    "FilamentType": "Tipo del filamento",
+    "NozzleDiameter": "Diametro del pico"
   },
   "Console": {
     "SetupConsole": "Confiurar Consola",
@@ -405,7 +415,9 @@
         "Target": "temperatura objetivo",
         "Power": "Poder PWM",
         "Speed": "Velocidad PWN"
-      }
+      },
+      "TempTooHigh": "Temperatura muy alta para {name}! (max: {max})",
+      "TempTooLow": "Temperatura muy baja para {name}! (min: {min})"
     },
     "WebcamPanel": {
       "Headline": "Camara Web",
@@ -629,7 +641,11 @@
       "Bars": "Barras",
       "Circle": "Circulo",
       "Cross": "Cruz",
-      "Style": "Estylo"
+      "Style": "Estylo",
+      "MaximumValues": "Valores Maximos: {maximum}",
+      "MaximumValuesVisibility": "Maximo valor de {maximum} se recomiendo para mejor visibilidad",
+      "MinimumValues": "Valores Minimos: {minimum}",
+      "ValueGreaterThan": "El valor tiene que se mas gande de  {value}"
     },
     "ConsoleTab": {
       "Console": "Consola",
@@ -752,7 +768,9 @@
       "StreamDelayCompensation": "Compensación de retraso de stream",
       "StreamDelayCompensationDescription": "Retraso de captura de cuadro",
       "ParkTimeDescription": "Agregue tiempo de inactividad adicional al apartar.",
-      "ParkTime": "Park Time"
+      "ParkTime": "Park Time",
+      "VariableFpsMinDescription": "",
+      "VariableFpsMaxDescription": ""
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Miniatura grande",
