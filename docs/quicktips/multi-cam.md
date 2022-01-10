@@ -57,14 +57,19 @@ This example will use the first one: `usb-046d_0825_88C56B60-video-index0`
 
 
 __Note__  
-Not sure which device is which? You can run lsusb to match a name to an ID.
+Not sure which device is which? You can run `lsusb` to match a camera name to an ID.
 {: .info}
 
 Edit `/home/pi/klipper_config/webcam.txt`  by clicking on it in Mainsail.
 
-Add `camera="usb"` at the beginning of the file and then add a line with  `camera_usb_options` to indicate the device:
+Insert two lines at the beginning of `webcam.txt`:
 
-`camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"`
+```
+camera="usb"
+camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"
+```
+
+The `device long id` should match the camera name from running `lsusb`.
 
 __Note__  
 If you are using a Raspberry Pi branded camera, set camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.
