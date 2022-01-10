@@ -21,6 +21,13 @@
 			"TitleTemperatureLimitActive": "Temperatuurlimiet actief",
 			"TitleUnderVoltageDetected": "Ondervoltage gedetecteerd"
 		},
+		"Titles": {
+			"Complete": "Kompleet - {filename}",
+			"Error": "FOUT",
+			"Pause": "Pauzeer print",
+			"Printing": "{percent}% Printen - {filename}",
+			"PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}"
+		},
 		"TopBar": {
 			"CannotUploadTheFile": "Kan het bestand niet uploaden!",
 			"EmergencyStop": "Noodstop",
@@ -127,6 +134,8 @@
 		"EditFile": "Bewerk bestand",
 		"Empty": "Leeg",
 		"Filament": "Filament",
+		"FilamentName": "Filamentnaam",
+		"FilamentType": "Filament Type",
 		"FilamentUsage": "Filamentgebruik",
 		"FilamentWeight": "Filament Gewicht",
 		"Files": "Bestanden",
@@ -139,6 +148,7 @@
 		"LayerHeight": "Laaghoogte",
 		"Name": "Naam",
 		"NewDirectory": "Nieuwe map",
+		"NozzleDiameter": "Nozzle Diameter",
 		"ObjectHeight": "Objecthoogte",
 		"Preheat": "Voorverwarmen",
 		"PrintStart": "Start print",
@@ -554,6 +564,8 @@
 			"ShowTargetTemperatureInChart": "Toon doeltemperatuur in de grafiek",
 			"State": "Status",
 			"Target": "Doel",
+			"TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
+			"TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
 			"Temperatures": "Temperaturen",
 			"TemperaturesInChart": "Temperatuur [°C]",
 			"UNKNOWN": "ONBEKEND"
@@ -651,6 +663,9 @@
 			"InvertXMovement": "Inverteer X beweging",
 			"InvertYMovement": "Inverteer Y beweging",
 			"InvertZMovement": "Inverteer Z beweging",
+			"MaximumValues": "Maximale waarden: {maximum}",
+			"MaximumValuesVisibility": "Maximum van {maximum} waarden is geadviseerd voor beste overzicht",
+			"MinimumValues": "Minimale waarden: {minimum}",
 			"MoveDistancesEInMm": "Afstanden E in mm",
 			"MoveDistancesInMm": "Afstanden in mm",
 			"MoveDistancesXYInMm": "Afstanden XY in mm",
@@ -658,7 +673,8 @@
 			"SpeedEInMms": "Snelheid E in mm/s",
 			"SpeedXY": "Snelheid XY",
 			"SpeedZ": "Snelheid Z",
-			"Style": "Stijl"
+			"Style": "Stijl",
+			"ValueGreaterThan": "Waarde moet groter zijn dan {value}"
 		},
 		"DashboardTab": {
 			"Dashboard": "Dashboard",
