@@ -198,6 +198,25 @@
                             hide-spin-buttons
                         ></v-combobox>
                     </settings-row>
+                    <settings-row title="Z-Offsets" :mobile-second-row="true">
+                        <v-combobox
+                            v-model="offsetsZ"
+                            hide-selected
+                            hide-details="auto"
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                            v => v.length > 0 || 'Minimum 1 value',
+                            v => v.length < 6 || 'For narrow screens it is recommended to enter max. 5 values.',
+                        ]"
+                            dense
+                            outlined
+                            hide-spin-buttons
+                        />
+                    </settings-row>
                 </v-form>
             </v-card-text>
         </v-card>
@@ -347,6 +366,19 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
 
         this.$store.dispatch('gui/saveSetting', { name: 'control.stepsCircleZ', value: steps })
     }
+
+    get offsetsZ() {
+        const steps = this.$store.state.gui.control.offsetsZ
+        return steps.sort(function (a: number,b: number) { return a-b })
+    }
+
+    set offsetsZ(steps) {
+        const absSteps = []
+        for(const value of steps) absSteps.push(Math.abs(value))
+
+        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetsZ', value: absSteps })
+    }
+
 
     get feedamountsE() {
         const steps = this.$store.state.gui.control.extruder.feedamounts

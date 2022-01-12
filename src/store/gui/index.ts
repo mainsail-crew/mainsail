@@ -27,6 +27,7 @@ export const getDefaultState = (): GuiState => {
             stepsXY: [ 100, 10, 1 ],
             feedrateZ: 25,
             stepsZ: [ 25, 1, 0.1 ],
+            offsetsZ: [ 0.01, 0.05 ],
             stepsAll: [0.1, 1, 10, 25, 50, 100],
             stepsCircleXY: [1, 10, 50, 100],
             stepsCircleZ: [0.1, 1, 10, 50],

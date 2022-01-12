@@ -50,13 +50,19 @@
                     </v-row>
                     <v-row>
                         <v-col class="col text-center d-flex flex-column align-center flex-sm-row justify-center">
-                            <v-btn-toggle dense no-gutters class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-first" >
-                                <v-btn small @click="sendBabySteppingDownFine()" class="" :loading="loadings.includes('babySteppingDownFine')" ><v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon> -0.01<span class="d-sm-none d-md-inline">mm</span></v-btn>
-                                <v-btn small @click="sendBabySteppingDown()" class="" :loading="loadings.includes('babySteppingDown')" >-0.05<span class="d-sm-none d-md-inline">mm</span></v-btn>
+                            <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-first" >
+                                <v-btn small @click="sendBabyStepUp(offset)" v-for="(offset, index) in offsetsZ" :key="`offsets-${index}`"> 
+                                    <v-icon v-if="index == 0" small class="mr-2">mdi-arrow-expand-up</v-icon>+{{offset}}<span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                             </v-btn-toggle>
-                            <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-last" >
-                                <v-btn small @click="sendBabySteppingUpFine()" class="" :loading="loadings.includes('babySteppingUpFine')" ><v-icon small class="mr-2">mdi-arrow-expand-up</v-icon> +0.01<span class="d-sm-none d-md-inline">mm</span></v-btn>
-                                <v-btn small @click="sendBabySteppingUp()" class="" :loading="loadings.includes('babySteppingUp')" >+0.05<span class="d-sm-none d-md-inline">mm</span></v-btn>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col class="col text-center d-flex flex-column align-center flex-sm-row justify-center">
+                            <v-btn-toggle dense no-gutters class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-last">
+                                <v-btn small @click="sendBabyStepDown(offset)" v-for="(offset, index) in offsetsZ" :key="`offsets-${index}`"> 
+                                    <v-icon v-if="index == 0" small class="mr-2">mdi-arrow-collapse-down</v-icon>-{{offset}}<span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                             </v-btn-toggle>
                         </v-col>
                     </v-row>
@@ -115,6 +121,10 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
         return this.homing_origin.length > 1 ? Math.round(this.homing_origin[2] * 1000) / 1000 : 0
     }
 
+    get offsetsZ() {
+        return this.$store.state.gui.control.offsetsZ
+    }
+
     get homed_axis() {
         return this.$store.state.printer.toolhead.homed_axes ?? ''
     }
@@ -141,6 +151,18 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
         const gcode = 'SET_GCODE_OFFSET Z_ADJUST=-0.05'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDown' })
+    }
+
+    sendBabyStepDown(offset: number) {
+        const gcode = `SET_GCODE_OFFSET Z_ADJUST=-${offset} ${(this.homed_axis === 'xyz' ? 'MOVE=1' : '')}`
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepDown' })
+    }
+
+    sendBabyStepUp(offset: number) {
+        const gcode = `SET_GCODE_OFFSET Z_ADJUST=+${offset} ${(this.homed_axis === 'xyz' ? 'MOVE=1' : '')}`
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepUp' })
     }
 
     sendBabySteppingUpFine() {

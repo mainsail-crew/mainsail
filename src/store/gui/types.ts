@@ -17,6 +17,7 @@ export interface GuiState {
         stepsXY: number[]
         feedrateZ: number
         stepsZ: number[]
+        offsetsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
         stepsCircleZ: number[]
