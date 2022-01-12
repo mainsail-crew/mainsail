@@ -186,19 +186,21 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
             this.dialogConfirmation.serviceName = serviceName
 
             const actionUppercase = action.trim().charAt(0).toUpperCase() + action.trim().slice(1)
+            let titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase
+            let descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase
+            const buttonKey = 'App.TopCornerMenu.' + actionUppercase
 
             if (serviceName === 'klipper' && ['stop', 'restart', 'firmwareRestart'].includes(action)){
-                this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialog.Title.' + (action !== 'stop' ? 'Klipper' : 'Service') + actionUppercase).toString()
-                this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase).toString()
+                titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.' + (action !== 'stop' ? 'Klipper' : 'Service') + actionUppercase
+                descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase
             } else if (serviceName === 'host') {
-                this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase).toString()
-                this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase).toString()
-            } else {
-                this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase).toString()
-                this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase).toString()
+                titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase
+                descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase
             }
 
-            this.dialogConfirmation.actionButtonText = this.$t('App.TopCornerMenu.' + actionUppercase).toString()
+            this.dialogConfirmation.title = this.$t(titleKey).toString()
+            this.dialogConfirmation.description = this.$t(descriptionKey).toString()
+            this.dialogConfirmation.actionButtonText = this.$t(buttonKey).toString()
             this.dialogConfirmation.show = true
         } else executableFunction(serviceName)
     }
