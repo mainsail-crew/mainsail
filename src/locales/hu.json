@@ -397,7 +397,7 @@
         "Motion": "Mozgás",
         "Velocity": "Gyorsaság",
         "Acceleration": "Gyorsulás",
-        "Deceleration": "Lassulás",
+        "MaxAccelToDecel": "Lassulás Max Gyorsulása",
         "SquareCornerVelocity": "Sebesség a sarkokban"
       },
       "PressureAdvanceSettings": {
