@@ -7,7 +7,6 @@
             <v-col class="col-12 col-md-6 pt-0 pt-md-3">
                 <klippy-state-panel></klippy-state-panel>
                 <system-panel></system-panel>
-                <disk-panel></disk-panel>
                 <update-panel></update-panel>
                 <v-row>
                     <v-col class="col-md-6 pb-0 pb-md-3" v-if="klipperState === 'ready'">

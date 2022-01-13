@@ -618,6 +618,7 @@
       "Version": "Version",
       "Os": "OS",
       "Load": "Load",
+      "CPU": "CPU",
       "Awake": "Awake",
       "Frequency": "Freq",
       "Memory": "Mem",
@@ -626,14 +627,6 @@
       "LastStats": "Last stats",
       "HostDetails": "Host details",
       "Distro": "Distro"
-    },
-    "DiskPanel": {
-      "DiskUsage": "Disk usage",
-      "UsedSize": "{used} used",
-      "FreeSize": "{used} free",
-      "Manufacturer": "Manufacturer",
-      "Capacity": "Capacity",
-      "Unknown": "Unknown"
     }
   },
   "Settings": {
