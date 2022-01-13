@@ -34,10 +34,15 @@ export interface ServerState {
         bits: number
         flags: string[]
     },
+    network_stats: {
+        [name: string]: ServerStateNetworkInterface
+    },
+    system_cpu_usage: {
+        [name: string]: number
+    },
     dbNamespaces: string[]
     websocket_count: number
     moonraker_version: string
-
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState
     history?: ServerHistoryState
@@ -101,4 +106,10 @@ export interface ServerStateServiceStates {
 export interface ServerStateServiceState {
     active_state: string
     sub_state: string
+}
+
+export interface ServerStateNetworkInterface {
+    bandwidth: number
+    rx_bytes: number
+    tx_bytes: number
 }

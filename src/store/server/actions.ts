@@ -67,6 +67,13 @@ export const actions: ActionTree<ServerState, RootState> = {
             commit('setThrottledState', payload.throttled_state)
     },
 
+    updateProcStats({ commit }, payload) {
+        if ('cpu_temp' in payload) commit('setCpuTemp', payload.cpu_temp)
+        if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
+        if ('network' in payload) commit('setNetworkStats', payload.network)
+        if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
+    },
+
     setKlippyReady({ dispatch }) {
         dispatch('printer/reset', null, { root: true })
         dispatch('printer/init', null, { root: true })
