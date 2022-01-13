@@ -1,5 +1,5 @@
 import {GetterTree} from 'vuex'
-import {ServerState} from '@/store/server/types'
+import {ServerState, ServerStateNetworkInterface} from '@/store/server/types'
 import {formatConsoleMessage, formatFilesize, formatTime} from '@/plugins/helpers'
 
 // eslint-disable-next-line
@@ -118,5 +118,25 @@ export const getters: GetterTree<ServerState, any> = {
         }
 
         return output
+    },
+
+    getCpuUsage: (state) => {
+        if ('cpu' in state.system_cpu_usage) {
+            return Math.round(state.system_cpu_usage.cpu)
+        }
+
+        return null
+    },
+
+    getNetworkInterfaces: (state) => {
+        const interfaces: { [key: string]: ServerStateNetworkInterface } = {}
+
+        Object.keys(state.network_stats).forEach((interfaceName: string) => {
+            if (interfaceName !== 'lo') {
+                interfaces[interfaceName] = {...state.network_stats[interfaceName]}
+            }
+        })
+
+        return interfaces
     },
 }

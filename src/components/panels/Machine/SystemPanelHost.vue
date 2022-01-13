@@ -20,8 +20,10 @@
                 <span v-if="hostStats.os">{{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}<br /></span>
                 <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">{{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }} {{ hostStats.release_info.version_id }} <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span><br /></span>
                 <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }}</span>
+                <span v-if="cpuUsage">, {{ $t('Machine.SystemPanel.CPU') }}: {{ cpuUsage }}%</span>
                 <span v-if="hostStats.memoryFormat">, {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }}</span>
                 <span v-if="disk_usage.total > 0">, {{ $t('Machine.SystemPanel.Disk') }}: {{ formatFilesize(disk_usage.used) }} / {{ formatFilesize(disk_usage.total) }}</span>
+                <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">, {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s</span>
                 <template v-if="hostStats.tempSensor">
                     <span>, </span>
                     <template v-if="hostStats.tempSensor.measured_min_temp !== null && hostStats.tempSensor.measured_max_temp !== null">
@@ -115,6 +117,14 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
 
     get disk_usage() {
         return this.directory?.disk_usage ?? { used: 0, free: 0, total: 0}
+    }
+
+    get cpuUsage() {
+        return this.$store.getters['server/getCpuUsage'] ?? null
+    }
+
+    get networkInterfaces() {
+        return this.$store.getters['server/getNetworkInterfaces'] ?? null
     }
 }
 </script>
