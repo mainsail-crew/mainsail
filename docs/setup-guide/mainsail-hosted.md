@@ -13,25 +13,22 @@ permalink: /setup/mainsail-hosted
 Mainsail and MainsailOS respect [Data Privacy](../data-privacy). 
 {: .info}
 
-The hosted version of mainsail can be used:
-
-* On the same (local) network as your printer.
-* On a remote (different) network to your printer (requires the configuration of [remote access](../quicktips/remote-access)).
+The hosted version of Mainsail can be used on the same local network with your printer or on a different remote to network and requires you to setup [remote access](../quicktips/remote-access).
 
 ## Requirements
 
-- MainsailOS and KIAUH are preconfigured to meet the requirements for the hosted service to work.
-- If you have a manual installation, then the following requirements must be met:
-  * Klipper must be installed.
-  * Moonraker must be installed.
-  * my.mainsail.xyz must be configured as a CORS domain in moonraker.conf.
+- MainsailOS and KIAUH are preconfigured to meet the requirements for the hosted service.
+- If you have a manual installation, the following requirements must be met:
+  * Klipper
+  * Moonraker
+  * `my.mainsail.xyz` must be configured as a CORS domain in `moonraker.conf`.
 
-## Editing moonraker.conf
+### Editing moonraker.conf for remote access
 
-Further information can be found in the Moonraker [documentation](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)
+You can  learn more about editing Moonraker's authorization [configuration documentation here.](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)
 {: .info}
 
-To allow [my.mainsail.xyz](http://my.mainsail.xyz) to access your local installation, navigate to moonraker.conf open it and add the following code: 
+To configure [my.mainsail.xyz](http://my.mainsail.xyz) for access with your local installation, open `moonraker.conf`  and add the following `authorization` section: 
 
 ```yml
 [authorization]

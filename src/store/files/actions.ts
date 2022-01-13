@@ -112,6 +112,15 @@ export const actions: ActionTree<FileState, RootState> = {
         }
     },
 
+    requestMetadata({ commit }, payload: { filename: string }) {
+        const rootPath = payload.filename.substr(0, payload.filename.indexOf('/'))
+        if (rootPath === 'gcodes') {
+            const requestFilename = payload.filename.substr(7)
+            commit('setMetadataRequested', { filename: requestFilename })
+            Vue.$socket.emit('server.files.metadata', { filename: requestFilename }, { action: 'files/getMetadata' })
+        }
+    },
+
     getMetadata({ commit, rootState }, payload) {
         if (payload !== undefined && payload.filename !== '') {
             if (payload.filename === rootState?.printer?.print_stats?.filename) {

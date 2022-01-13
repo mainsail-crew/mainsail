@@ -23,12 +23,14 @@ export const getters: GetterTree<GuiPresetsState, any> = {
     getPresetsFromHeater: state => (payload: { name: string }) => {
         interface preset {
             value: number
+            text: string
         }
 
         const output: preset[] = []
 
         output.push({
-            value: 0
+            value: 0,
+            text: '0 °C'
         })
 
         if ('presets' in state) {
@@ -42,6 +44,7 @@ export const getters: GetterTree<GuiPresetsState, any> = {
                 ) {
                     output.push({
                         value: preset.values[payload.name].value,
+                        text: preset.values[payload.name].value + ' °C'
                     })
                 }
             })

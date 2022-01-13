@@ -2,6 +2,7 @@ import { GetterTree } from 'vuex'
 import {RootState, RootStateDependency} from '@/store/types'
 import semver from 'semver'
 import {minKlipperVersion, minMoonrakerVersion} from '@/store/variables'
+import i18n from '@/plugins/i18n'
 
 // eslint-disable-next-line
 export const getters: GetterTree<RootState, any> = {
@@ -10,24 +11,33 @@ export const getters: GetterTree<RootState, any> = {
     },
 
     getTitle: (state, getters) => {
-        if (state.socket?.isConnected) {
-            if (state.server?.klippy_state !== 'ready') return 'ERROR'
-            else if (state.printer?.print_stats?.state === 'paused') return 'Pause Print'
-            else if (state.printer?.print_stats?.state === 'printing') {
+        if (state.socket?.isConnected && state.printer) {
+            let printer_state = state.printer?.print_stats?.state ?? ''
+
+            if (state.printer['gcode_macro TIMELAPSE_TAKE_FRAME']?.is_paused && printer_state === 'paused')
+                printer_state = 'printing'
+
+            if (state.server?.klippy_state !== 'ready') return i18n.t('App.Titles.Error')
+            else if (printer_state === 'paused') return i18n.t('App.Titles.Pause')
+            else if (printer_state === 'printing') {
                 const eta = getters['printer/getEstimatedTimeETA']
 
-                let output = (getters['printer/getPrintPercent'] * 100).toFixed(0)+'% Printing'
                 if (eta) {
                     const date = new Date(eta)
                     const h = date.getHours() >= 10 ? date.getHours() : '0'+date.getHours()
                     const m = date.getMinutes() >= 10 ? date.getMinutes() : '0'+date.getMinutes()
                     const diff = eta - new Date().getTime()
-                    output += ' - ETA: '+h+':'+m+((diff > 60*60*24*1000) ? '+'+(diff / (60*60*24*1000)).toFixed() : '')
-                }
-                output += ' - '+state.printer.print_stats?.filename
 
-                return output
-            } else if (state.printer?.print_stats?.state === 'complete') return 'Complete - '+state.printer.print_stats.filename
+                    return i18n.t('App.Titles.PrintingETA', {
+                        percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
+                        filename: state.printer.print_stats?.filename,
+                        eta: h+':'+m+((diff > 60*60*24*1000) ? '+'+(diff / (60*60*24*1000)).toFixed() : '')
+                    })
+                } else return i18n.t('App.Titles.Printing', {
+                    percent: (getters['printer/getPrintPercent'] * 100).toFixed(0),
+                    filename: state.printer.print_stats?.filename,
+                })
+            } else if (state.printer?.print_stats?.state === 'complete') return i18n.t('App.Titles.Complete', { filename: state.printer.print_stats.filename })
 
             return state.gui?.general.printername ?? state.printer?.hostname ?? 'Mainsail'
         }
