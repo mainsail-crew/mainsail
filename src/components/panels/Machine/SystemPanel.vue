@@ -26,13 +26,16 @@ import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import SystemPanelHost from '@/components/panels/Machine/SystemPanelHost.vue'
 import SystemPanelMcu from '@/components/panels/Machine/SystemPanelMcu.vue'
+import {caseInsensitiveSort} from '@/plugins/helpers'
 @Component({
     components: {SystemPanelMcu, SystemPanelHost, Panel}
 })
 export default class SystemPanel extends Mixins(BaseMixin) {
 
     get mcus() {
-        return this.$store.getters['printer/getMcus'] ?? []
+        const mcus = this.$store.getters['printer/getMcus'] ?? []
+
+        return caseInsensitiveSort(mcus, 'name')
     }
 
     get hostStats() {
