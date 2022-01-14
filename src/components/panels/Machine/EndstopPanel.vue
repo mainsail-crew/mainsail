@@ -60,7 +60,14 @@ export default class EndstopPanel extends Mixins(BaseMixin) {
     public sortEndstops: any = {}
 
     get endstops() {
-        return this.$store.state.printer.endstops ?? {}
+        const endstops = this.$store.state.printer.endstops ?? {}
+
+        return Object.keys(endstops).sort().reduce(
+            (obj: any, key: string) => {
+                obj[key] = endstops[key]
+                return obj
+            }, {}
+        )
     }
 
     get existProbe () {
