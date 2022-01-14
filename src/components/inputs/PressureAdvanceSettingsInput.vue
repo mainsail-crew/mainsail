@@ -13,8 +13,8 @@
             @click:append="resetLimit"
             :label="label"
             :suffix="unit"
-            :append-icon="this.value !== this.defaultValue ? 'mdi-restart' : ''"
-            :error="(this.value < this.min) || ((this.value > this.max) && this.max !== null)"
+            :append-icon="value !== defaultValue ? 'mdi-restart' : ''"
+            :error="(value < min) || ((value > max) && max !== null)"
             :step="step"
             :min="min"
             :max="max"
@@ -27,8 +27,22 @@
         >
             <template v-slot:append-outer>
                 <div class="_spin_button_group">
-                    <v-btn @click="increment" class="mt-n3" icon plain small><v-icon>mdi-chevron-up</v-icon></v-btn>
-                    <v-btn @click="decrement" class="mb-n3" icon plain small><v-icon>mdi-chevron-down</v-icon></v-btn>
+                    <v-btn
+                        @click="increment"
+                        :disabled="(value >= max) && max !== null"
+                        class="mt-n3"
+                        icon plain small
+                    >
+                        <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn
+                        @click="decrement"
+                        :disabled="value <= min"
+                        class="mb-n3"
+                        icon plain small
+                    >
+                        <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
                 </div>
             </template>
         </v-text-field>

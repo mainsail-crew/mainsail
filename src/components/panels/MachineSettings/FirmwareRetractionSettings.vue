@@ -3,7 +3,7 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractLength')"
+                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractLength').toString()"
                     :target="current_retract_length"
                     :default-value="config_retract_length"
                     :step="0.01"
@@ -16,7 +16,7 @@
             </v-col>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractSpeed')"
+                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractSpeed').toString()"
                     :target="current_retract_speed"
                     :default-value="config_retract_speed"
                     :step="1"
@@ -31,7 +31,7 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength')"
+                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength').toString()"
                     :target="current_unretract_extra_length"
                     :default-value="config_unretract_extra_length"
                     :step="0.01"
@@ -44,7 +44,7 @@
             </v-col>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractSpeed')"
+                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractSpeed').toString()"
                     :target="current_unretract_speed"
                     :default-value="config_unretract_speed"
                     :step="1"
@@ -71,35 +71,35 @@ import FirmwareRetractionSettingsInput from '@/components/inputs/FirmwareRetract
 export default class FirmwareRetractionSettings extends Mixins(BaseMixin) {
 
     get current_retract_length(): number {
-        return this.$store.state.printer?.firmware_retraction?.retract_length ?? 0
+        return Math.floor(this.$store.state.printer?.firmware_retraction?.retract_length * 100) / 100 ?? 0
     }
 
     get current_retract_speed(): number {
-        return this.$store.state.printer?.firmware_retraction?.retract_speed ?? 20
+        return Math.trunc(this.$store.state.printer?.firmware_retraction?.retract_speed) ?? 20
     }
 
     get current_unretract_extra_length(): number {
-        return this.$store.state.printer?.firmware_retraction?.unretract_extra_length ?? 0
+        return Math.floor(this.$store.state.printer?.firmware_retraction?.unretract_extra_length * 100) / 100 ?? 0
     }
 
     get current_unretract_speed(): number {
-        return this.$store.state.printer?.firmware_retraction?.unretract_speed ?? 10
+        return Math.trunc(this.$store.state.printer?.firmware_retraction?.unretract_speed) ?? 10
     }
     
     get config_retract_length(): number {
-        return this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length ?? 0
+        return Math.floor(this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length * 100) / 100 ?? 0
     }
 
     get config_retract_speed(): number {
-        return this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_speed ?? 20
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_speed) ?? 20
     }
 
     get config_unretract_extra_length(): number {
-        return this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_extra_length ?? 0
+        return Math.floor(this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_extra_length * 100) / 100 ?? 0
     }
 
     get config_unretract_speed(): number {
-        return this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_speed ?? 10
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_speed) ?? 10
     }
 }
 </script>

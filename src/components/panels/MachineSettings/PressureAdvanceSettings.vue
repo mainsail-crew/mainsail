@@ -13,7 +13,7 @@
                     </v-btn>
                     <v-select
                         v-model="selectedExtruder"
-                        :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder')"
+                        :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder').toString()"
                         :items="all_extruders"
                         :value="active_extruder"
                         hide-details
@@ -24,7 +24,7 @@
             </v-col>
             <v-col :class="(this.all_extruders.length > 1) ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <pressure-advance-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance')"
+                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
                     :target="current_pressure_advance"
                     :default-value="default_pressure_advance"
                     :extruder="selectedExtruder"
@@ -38,7 +38,7 @@
             </v-col>
             <v-col :class="(this.all_extruders.length > 1) ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <pressure-advance-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime')"
+                    :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
                     :target="current_smooth_time"
                     :default-value="default_smooth_time"
                     :extruder="selectedExtruder"
@@ -86,19 +86,19 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     }
 
     get current_pressure_advance(): number {
-        return this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance ?? 0
+        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance * 1000) / 1000 ?? 0
     }
 
     get current_smooth_time(): number {
-        return this.$store.state.printer?.[this.selectedExtruder]?.smooth_time ?? 0.04
+        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.smooth_time * 100) / 100 ?? 0.04
     }
 
     get default_pressure_advance(): number {
-        return this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance ?? 0
+        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance * 1000) / 1000 ?? 0
     }
 
     get default_smooth_time(): number {
-        return this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time ?? 0.04
+        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time * 100) / 100 ?? 0.04
     }
 
 }
