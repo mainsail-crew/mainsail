@@ -30,9 +30,14 @@
                 {{ snackbarHeadline }}<br />
                 <strong>{{ filename }}</strong>
             </div>
-            <span v-if="loaderProgress.total > 1" class="mr-1">({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})</span>
-            {{ Math.round(100 * loaderProgress.loaded / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s<br />
-            <v-progress-linear class="mt-2" :value="100 * loaderProgress.loaded / loaderProgress.total"></v-progress-linear>
+            <template v-if="loaderProgress.total > 0">
+                <span class="mr-1">({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})</span>
+                {{ Math.round(100 * loaderProgress.loaded / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s<br />
+                <v-progress-linear class="mt-2" :value="100 * loaderProgress.loaded / loaderProgress.total"></v-progress-linear>
+            </template>
+            <template v-else>
+                <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
+            </template>
             <template v-slot:action="{ attrs }">
                 <v-btn
                     color="red"
