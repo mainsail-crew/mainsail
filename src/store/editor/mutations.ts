@@ -19,6 +19,7 @@ export const mutations: MutationTree<EditorState> = {
     },
 
     updateLoader(state, payload) {
+        window.console.log(payload)
         Vue.set(state, 'loaderProgress', payload)
     },
 
