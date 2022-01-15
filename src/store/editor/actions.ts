@@ -28,6 +28,8 @@ export const actions: ActionTree<EditorState, RootState> = {
         axios.get(url, {
             cancelToken: source.token,
             onDownloadProgress: (progressEvent) => {
+                const total = progressEvent.total > 0 ? progressEvent.total : (payload.size ?? 0)
+
                 let speedOutput: string = state.loaderProgress.speed
                 let lastTimestamp = state.loaderProgress.lastTimestamp
                 let lastLoaded = state.loaderProgress.lastLoaded
@@ -50,9 +52,9 @@ export const actions: ActionTree<EditorState, RootState> = {
                     direction: 'downloading',
                     speed: speedOutput,
                     loaded: progressEvent.loaded,
-                    total: progressEvent.total,
-                    lastLoaded: lastLoaded,
-                    lastTimestamp: lastTimestamp
+                    total,
+                    lastLoaded,
+                    lastTimestamp
                 })
             },
             responseType: 'blob'

@@ -626,6 +626,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                         root: this.root,
                         path: this.currentPath,
                         filename: item.filename,
+                        size: item.size,
                         permissions: item.permissions
                     })
                 }
