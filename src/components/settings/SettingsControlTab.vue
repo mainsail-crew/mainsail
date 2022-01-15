@@ -373,10 +373,11 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
     }
 
     set offsetsZ(steps) {
-        const absSteps = []
-        for(const value of steps) absSteps.push(Math.abs(value))
+        // Use a set to prevent adding duplicate entries.
+        const absSteps = new Set()
+        for(const value of steps) absSteps.add(Math.abs(value))
 
-        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetsZ', value: absSteps })
+        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetsZ', value: Array.from(absSteps)})
     }
 
 
