@@ -1,5 +1,7 @@
 <style>
-
+    .v-btn-toggle {
+        width: 100%;
+    }
 </style>
 
 <template>
@@ -51,16 +53,14 @@
                     <v-row>
                         <v-col class="col text-center d-flex flex-column align-center flex-sm-row justify-center">
                             <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-first" >
-                                <v-btn small @click="sendBabyStepUp(offset)" v-for="(offset, index) in offsetsZ" :key="`offsets-${index}`"> 
+                                <v-btn small @click="sendBabyStepUp(offset)" class="flex-grow-1" v-for="(offset, index) in offsetsZ" :key="`offsetsUp-${index}`">
                                     <v-icon v-if="index == 0" small class="mr-2">mdi-arrow-expand-up</v-icon>+{{offset}}<span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
                             </v-btn-toggle>
                         </v-col>
-                    </v-row>
-                    <v-row>
                         <v-col class="col text-center d-flex flex-column align-center flex-sm-row justify-center">
                             <v-btn-toggle dense no-gutters class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-last">
-                                <v-btn small @click="sendBabyStepDown(offset)" v-for="(offset, index) in offsetsZ" :key="`offsets-${index}`"> 
+                                <v-btn small @click="sendBabyStepDown(offset)" class="flex-grow-1" v-for="(offset, index) in offsetsZ" :key="`offsetsDown-${index}`">
                                     <v-icon v-if="index == 0" small class="mr-2">mdi-arrow-collapse-down</v-icon>-{{offset}}<span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
                             </v-btn-toggle>
