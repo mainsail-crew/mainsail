@@ -1032,6 +1032,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             root: 'gcodes',
             path: path !== '' ? '/'+path : '',
             filename: item.filename,
+            size: item.size,
             permissions: item.permissions
         })
     }
