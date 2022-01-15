@@ -141,18 +141,6 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
         return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
     }
 
-    sendBabySteppingDownFine() {
-        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=-0.01'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDownFine' })
-    }
-
-    sendBabySteppingDown() {
-        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=-0.05'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingDown' })
-    }
-
     sendBabyStepDown(offset: number) {
         const gcode = `SET_GCODE_OFFSET Z_ADJUST=-${offset} ${(this.homed_axis === 'xyz' ? 'MOVE=1' : '')}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
@@ -163,18 +151,6 @@ export default class ZoffsetPanel extends Mixins(BaseMixin) {
         const gcode = `SET_GCODE_OFFSET Z_ADJUST=+${offset} ${(this.homed_axis === 'xyz' ? 'MOVE=1' : '')}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babyStepUp' })
-    }
-
-    sendBabySteppingUpFine() {
-        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=0.01'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUpFine' })
-    }
-
-    sendBabySteppingUp() {
-        const gcode = 'SET_GCODE_OFFSET Z_ADJUST=0.05'+(this.homed_axis === 'xyz' ? ' MOVE=1' : '')
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'babySteppingUp' })
     }
 
     clearZOffset() {
