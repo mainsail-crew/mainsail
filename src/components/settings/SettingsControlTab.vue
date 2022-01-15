@@ -198,7 +198,7 @@
                             hide-spin-buttons
                         ></v-combobox>
                     </settings-row>
-                    <settings-row title="Z-Offsets" :mobile-second-row="true">
+                    <settings-row :title="$t('Settings.ControlTab.ZOffsets')" :mobile-second-row="true">
                         <v-combobox
                             v-model="offsetsZ"
                             hide-selected

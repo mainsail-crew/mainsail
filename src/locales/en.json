@@ -811,6 +811,7 @@
       "MoveDistancesXYInMm": "Move distances XY in mm",
       "MoveDistancesZInMm": "Move distances Z in mm",
       "MoveDistancesEInMm": "Move distances E in mm",
+      "ZOffsets": "Z Offsets",
       "SpeedEInMms": "Speed E in mm/s",
       "MinimumValues": "Minimum values: {minimum}",
       "MaximumValues": "Maximum values: {maximum}",
