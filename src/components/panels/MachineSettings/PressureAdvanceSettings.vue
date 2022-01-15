@@ -45,7 +45,7 @@
                     :min="0"
                     :max="0.2"
                     :step="0.01"
-                    :dec="2"
+                    :dec="3"
                     unit="s"
                     attribute-name="SMOOTH_TIME"
                 ></pressure-advance-settings-input>
@@ -90,7 +90,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     }
 
     get current_smooth_time(): number {
-        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.smooth_time * 100) / 100 ?? 0.04
+        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.smooth_time * 1000) / 1000 ?? 0.04
     }
 
     get default_pressure_advance(): number {
@@ -98,7 +98,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     }
 
     get default_smooth_time(): number {
-        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time * 100) / 100 ?? 0.04
+        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time * 1000) / 1000 ?? 0.04
     }
 
 }
