@@ -4,6 +4,8 @@ title: Configuration
 nav_order: 5
 has_children: false
 permalink: /configuration
+redirect_from:
+  - /necessary-configuration
 ---
 
 # Required configuration
