@@ -161,11 +161,20 @@
             </template>
         </v-snackbar>
         <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
-            <div>
-                {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
-                <strong>{{ downloadSnackbar.filename }}</strong>
-            </div>
-            <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
+            <template v-if="downloadSnackbar.total > 0">
+                <div>
+                    {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
+                    <strong>{{ downloadSnackbar.filename }}</strong>
+                </div>
+                <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
+            </template>
+            <template v-else>
+                <div>
+                    {{ $t('GCodeViewer.Downloading') }}<br />
+                    <strong>{{ downloadSnackbar.filename }}</strong>
+                </div>
+                <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
+            </template>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto;" >
                     <v-icon class="0">mdi-close</v-icon>
