@@ -925,7 +925,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                return encodeURI(`${this.apiUrl}/server/files/${this.currentPath}/${thumbnail.relative_path}?timestamp=${item.modified.getTime()}`)
+                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(thumbnail.relative_path)}?timestamp=${item.modified.getTime()}`
             }
         }
 
@@ -937,7 +937,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) {
-                return encodeURI(`${this.apiUrl}/server/files/${this.currentPath}/${thumbnail.relative_path}?timestamp=${item.modified.getTime()}`)
+                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(thumbnail.relative_path)}?timestamp=${item.modified.getTime()}`
             }
         }
 

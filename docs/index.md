@@ -20,8 +20,8 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 - Responsive web interface, optimized for desktops, tablets and mobile devices
 - Supports multiple 3D printers (Printer Farm)
 - Localization (i18n)
-- File Manager (gcode and config files)
-- File Editor (gcode and config files)
+- File Manager (G-Code and config files)
+- File Editor (G-Code and config files)
 - Print History and Statistics
 - Job Queue
 - Temperature Presets (with custom gcode)

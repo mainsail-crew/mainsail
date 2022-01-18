@@ -11,26 +11,20 @@ description: >-
 {{ page.description }}  
 
 __Notice__  
-This is not a complete guide with every single step in detail, but rather a recommendation of what to do and especially what not to do to get access to the printer from somewhere remote from your network.
+This guide does not include every step in detail, but is a recommendation for safe remote access.
 {: .info}
 
-You have to decide if you ..
-- only want to have status messages on your smartphone
-- or you need full remote access to Mainsail from everywhere
-
-Of course, you can also use a combination of both.
+You will need to decide if you want to receive status messages on your smartphone, have full remote access to Mainsail, or both.
 
 ## Status messages
 
-For simple status messages there are a couple of additional tools that can be used:
-- __discord:__ Mooncord is a bot that sends you status messages over discord.  
-[https://github.com/eliteSchwein/mooncord](https://github.com/eliteSchwein/mooncord)
-- __telegram:__ moonraker-telegram is a bot that sends you status messages over telegram.  
-[https://github.com/Raabi91/moonraker-telegram](https://github.com/Raabi91/moonraker-telegram)
+For simple status messages there are a two additional tools that can be used:
+- __Discord:__ Mooncord is a bot that sends you status messages over Discord: [https://github.com/eliteSchwein/mooncord](https://github.com/eliteSchwein/mooncord)
+- __Telegram:__ moonraker-telegram is a bot that sends you status messages over the messaging application Telegram: [https://github.com/Raabi91/moonraker-telegram](https://github.com/Raabi91/moonraker-telegram)
 
-These tools are installed on the local machine and send the status messages via the respective platforms. Thus, no access to your local network from outside is necessary.
+These tools are installed on the local machine and send status messages to their respective platforms. No changes are needed to externally access your local network.
 
-For details, please refer to the projects instructions.
+For details, please refer to each project's instructions and documentation.
 
 ## Remote Access to Mainsail
 
@@ -45,9 +39,9 @@ What <b>not to do</b>:
 <div class="warning">
 What you <b>could do</b>:  
 	<ul>
-		<li>Use an external service provider (e.g. tailscale) to gain access to your home network.
+		<li>Use an external service provider such as Tailscale to gain access to your home network.
 			<ul>
-				<li>Con: you give the control out of your hand</li>
+				<li>A potential downside is not having personal control of the connection.</li>
 			</ul>
 		</li>
 		<li>Reverse Proxy</li>
@@ -59,8 +53,8 @@ What you <b>could do</b>:
 	<ul>
 		<li>Set up your own secured VPN tunnel.
 			<ul>
-				<li>either in the router</li>
-				<li>or your Pi</li>
+				<li>In your router</li>
+				<li>Or your Raspberry Pi</li>
 			</ul>
 		</li>
 	</ul>
@@ -68,18 +62,15 @@ What you <b>could do</b>:
 
 ## Set up VPN
 
-Several routers allow you to set up a VPN tunnel without much effort.  
-After you have entered the login data into e.g. your smartphone, you will have secure access to your entire network, including Mainsail.
+Several routers allow you to set up a VPN tunnel. After you have configured the VPN and logged in from another device, you will have secure access to your entire network, including Mainsail.
 
-If your router does not support this, you can also set up your own VPN, e.g. on your Pi.  
-Therefore you could use: [OpenVPN](https://openvpn.net/), [WireGuard](https://www.wireguard.com/) or [PiVPN](https://www.pivpn.io/)
+If your router does not support this, you can also set up your own VPN, for example, using your Raspberry Pi.  
+[OpenVPN](https://openvpn.net/), [WireGuard](https://www.wireguard.com/) or [PiVPN](https://www.pivpn.io/) are all options that could work.
 
-To be able to reach your home network even with a non-static IP address, you should use a dynamic DNS service. This will forward a domain directly to your IP address. Often, these DynDNS services can also be set up directly in the router, so that the IP address gets automatically updated on a change.
-
-Some free services: [DuckDNS](https://www.duckdns.org) or [FreeDNS ](https://freedns.afraid.org/)
+To be able to reach your home network even with a non-static IP address, you will need to use a Dynamic DNS service. This will forward a domain directly to your IP address. Often these DynDNS services can also be set up directly in your router so when your external IP address changes, your domain will be automatically updated.  Free Dynamic DNS services include [DuckDNS](https://www.duckdns.org) or [FreeDNS ](https://freedns.afraid.org/)
 
 __Notice__  
-The devices that dial in via the VPN tunnel are assigned to a different address range. This address range must be configured in moonraker under _trusted_clients_ and _cors_domains_. [https://moonraker.readthedocs.io/en/latest/configuration/#authorization](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)  <br/><br/>
+The devices that you use to access VPN tunnel are assigned to a different address range. This address range must be configured in Moonraker under _trusted_clients_ and _cors_domains_. See also [Moonraker's documentation on network authorization.](https://moonraker.readthedocs.io/en/latest/configuration/#authorization)  <br/><br/>
 For example:  
 __192.168.1__.x&emsp;_// devices on your regular LAN_  
 __192.168.50__.x&emsp;_// devices connected through your VPN tunnel_
