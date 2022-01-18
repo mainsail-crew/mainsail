@@ -25,7 +25,7 @@
             outlined
             dense
         >
-            <template v-slot:append-outer>
+            <template v-if="hasSpinner" v-slot:append-outer>
                 <div class="_spin_button_group">
                     <v-btn
                         @click="increment"
@@ -62,6 +62,7 @@ export default class PressureAdvanceSettingsInput extends Mixins(BaseMixin) {
 
     @Prop({ type: String, required: true }) readonly label!: string
     @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
+    @Prop({ type: Boolean, required: false , default: false }) readonly hasSpinner!: number
     @Prop({ type: Number, required: false , default: 1 }) readonly spinnerFactor!: number
     @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
     @Prop({ type: Number, default: null }) readonly max!: number | null
