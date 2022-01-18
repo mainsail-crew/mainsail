@@ -657,7 +657,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     downloadFile() {
         const filename = (this.absolutePath+'/'+this.contextMenu.item.filename)
-        const href = encodeURI(`${this.apiUrl}/server/files${filename}`)
+        const href = `${this.apiUrl}/server/files${encodeURI(filename)}`
         window.open(href)
     }
 

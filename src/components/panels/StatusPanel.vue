@@ -514,7 +514,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return encodeURI(`${this.apiUrl}/server/files/gcodes/${relative_url+thumbnail.relative_path}?timestamp=${this.current_file.modified}`)
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
                 }
             }
         }
@@ -536,7 +536,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return encodeURI(`${this.apiUrl}/server/files/gcodes/${relative_url+thumbnail.relative_path}?timestamp=${this.current_file.modified}`)
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
                 }
             }
         }
