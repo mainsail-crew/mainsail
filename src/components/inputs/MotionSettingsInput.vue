@@ -62,6 +62,7 @@ export default class MotionSettingsInput extends Mixins(BaseMixin) {
 
     @Prop({ type: String, required: true }) readonly label!: string
     @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
+    @Prop({ type: Number, required: false , default: 1 }) readonly spinnerFactor!: number
     @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
     @Prop({ type: Number, default: null }) readonly max!: number | null
     @Prop({ type: Number, required: true , default: 0 }) readonly dec!: number
@@ -86,12 +87,12 @@ export default class MotionSettingsInput extends Mixins(BaseMixin) {
     }
 
     decrement(): void {
-        this.value = (this.value > this.min) ? Math.round((this.value - this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.min
+        this.value = (this.value > this.min) ? Math.round((this.value - this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec) : this.min
         this.sendCmd()
     }
 
     increment(): void {
-        this.value = (this.value < this.max! || this.max === null) ? Math.round((this.value + this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.max
+        this.value = (this.value < this.max! || this.max === null) ? Math.round((this.value + this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec) : this.max
         this.sendCmd()
     }
 
