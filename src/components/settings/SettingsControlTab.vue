@@ -7,25 +7,25 @@
         <v-card flat>
             <v-card-text>
                 <v-form ref="formControlExtruder">
-                    <settings-row :title="$t('Settings.ControlTab.Style')">
+                    <settings-row :title="$t('Settings.ControlTab.Style').toString()">
                         <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
-                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement').toString()" :dynamicSlotWidth="true">
                             <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement').toString()" :dynamicSlotWidth="true">
                             <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement').toString()" :dynamicSlotWidth="true">
                             <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedXY').toString()">
                         <v-text-field
                             v-model="feedrateXY"
                             @blur="blurFeedrateXY"
@@ -39,7 +39,7 @@
                         ></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedZ').toString()">
                         <v-text-field
                             v-model="feedrateZ"
                             @blur="blurFeedrateZ"
@@ -54,7 +54,7 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="controlStyle === 'cross'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm')" :mobile-second-row="true">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()" :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsAll"
                                 hide-selected
@@ -76,7 +76,7 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else-if="controlStyle === 'circle'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()" :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleXY"
                                 hide-selected
@@ -96,7 +96,7 @@
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()" :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleZ"
                                 hide-selected
@@ -118,7 +118,7 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm')" :mobile-second-row="true">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()" :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsXY"
                                 hide-selected
@@ -138,7 +138,7 @@
                             ></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
+                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()" :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsZ"
                                 hide-selected
@@ -159,7 +159,7 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm')" :mobile-second-row="true">
+                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()" :mobile-second-row="true">
                         <v-combobox
                             v-model="feedamountsE"
                             hide-selected
@@ -179,7 +179,7 @@
                         ></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
+                    <settings-row :title="$t('Settings.ControlTab.SpeedEInMms').toString()" :mobile-second-row="true">
                         <v-combobox
                             v-model="feedratesE"
                             hide-selected
