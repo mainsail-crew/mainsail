@@ -14,7 +14,7 @@
             :label="label"
             :suffix="unit"
             :append-icon="value !== defaultValue ? 'mdi-restart' : ''"
-            :error="(value < min) || ((value > max) && max !== null)"
+            :error="error = ((value < min) || ((value > max) && max !== null))"
             :step="step"
             :min="min"
             :max="max"
@@ -29,7 +29,7 @@
                 <div class="_spin_button_group">
                     <v-btn
                         @click="increment"
-                        :disabled="(value >= max) && max !== null"
+                        :disabled="((value >= max) && max !== null) || error"
                         class="mt-n3"
                         icon plain small
                     >
@@ -37,7 +37,7 @@
                     </v-btn>
                     <v-btn
                         @click="decrement"
-                        :disabled="value <= min"
+                        :disabled="(value <= min) || error"
                         class="mb-n3"
                         icon plain small
                     >
@@ -58,6 +58,7 @@ import BaseMixin from '@/components/mixins/base'
 @Component
 export default class FirmwareRetractionSettingsInput extends Mixins(BaseMixin) {
     private value: number = 0
+    private error: boolean | undefined
 
     @Prop({ type: String, required: true }) readonly label!: string
     @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
