@@ -6,7 +6,7 @@ has_children: false
 ---
 
 # Welcome to Mainsail!
-Mainsail makes Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy..
+Mainsail makes Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
 {: .fs-5 }
 
 [Getting Started](/setup){: .btn .btn-primary }
@@ -23,11 +23,17 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 - File Manager (gcode and config files)
 - File Editor (gcode and config files)
 - Print History and Statistics
+- Job Queue
 - Temperature Presets (with custom gcode)
-- Bed Mesh Leveling
+- Bed Mesh visualisation
+- G-Code Viewer
 - Multi-Webcam support
+- Timelapse integration
 - Control power devices such as relays, TPLink and Tasmota devices, and more
+- Powerful Macro-Management
+- Configurable dashboard
 - Customizable user interface including logos, backgrounds, and custom CSS
+- Exclude objects (not yet officially supported by Klipper)
 
 ## Help and Support
 Do you need help or just want to talk? Join our active community on Discord. 
