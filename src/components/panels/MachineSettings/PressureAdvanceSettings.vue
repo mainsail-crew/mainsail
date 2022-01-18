@@ -89,19 +89,19 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     }
 
     get current_pressure_advance(): number {
-        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance * 1000) / 1000 ?? 0
+        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000) / 1000
     }
 
     get current_smooth_time(): number {
-        return Math.floor(this.$store.state.printer?.[this.selectedExtruder]?.smooth_time * 1000) / 1000 ?? 0.04
+        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.smooth_time ?? 0.04) * 1000) / 1000
     }
 
     get default_pressure_advance(): number {
-        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance * 1000) / 1000 ?? 0
+        return Math.floor((this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000) / 1000
     }
 
     get default_smooth_time(): number {
-        return Math.floor(this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time * 1000) / 1000 ?? 0.04
+        return Math.floor((this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance_smooth_time ?? 0.04) * 1000) / 1000
     }
 
 }

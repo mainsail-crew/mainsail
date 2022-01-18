@@ -78,35 +78,35 @@ import MotionSettingsInput from '@/components/inputs/MotionSettingsInput.vue'
 export default class MotionSettings extends Mixins(BaseMixin) {
     
     get current_velocity(): number {
-        return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity) ?? 300
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
     }
 
     get current_accel(): number {
-        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel) ?? 3000
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel ?? 3000)
     }
 
     get current_accel_to_decel(): number {
-        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel) ?? 1500
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? 1500)
     }
 
     get current_square_corner_velocity(): number {
-        return Math.floor(this.$store.state.printer?.toolhead?.square_corner_velocity * 10) / 10 ?? 8
+        return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
     
     get max_velocity(): number {
-        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity) ?? 300
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300)
     }
 
     get max_accel(): number {
-        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel) ?? 3000
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel ?? 3000)
     }
 
     get max_accel_to_decel(): number {
-        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel) ?? 1500
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel ?? 1500)
     }
 
     get max_square_corner_velocity(): number {
-        return Math.floor(this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity * 10) / 10 ?? 8
+        return Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) / 10
     }
 }
 </script>
