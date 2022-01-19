@@ -227,6 +227,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private removeDialog = false
     private calibrateDialog = false
     private newName = ''
+    private oldName = ''
 
     private heightmapScale = 0.5
     private probedOpacity = 1
@@ -755,6 +756,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     openRenameProfile(): void {
         this.newName = this.bed_mesh?.profile_name ?? ''
+        this.oldName = this.bed_mesh.profile_name
         this.renameDialog = true
 
         setTimeout(() => {
@@ -764,8 +766,15 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     renameProfile(): void {
         this.renameDialog = false
+
         this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE='+this.oldName, type: 'command' })
+
         this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName }, { loading: 'bedMeshRename' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE REMOVE='+this.oldName }, { loading: 'bedMeshRename' })
+
+        this.newName = ''
+        this.oldName = ''
     }
 
     openRemoveProfile(name: string): void {
