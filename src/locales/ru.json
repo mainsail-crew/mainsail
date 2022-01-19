@@ -46,6 +46,13 @@
       "UpdatingDone": "Обновление выполнено",
       "Empty": "пустой",
       "Close": "закрыть"
+    },
+    "Titles": {
+      "Complete": "Завершено - {filename}",
+      "Error": "ОШИБКА",
+      "Pause": "Приостановить печать",
+      "Printing": "{percent}% Печать - {filename}",
+      "PrintingETA": "{percent}% Печать - ETA: {eta} - {filename}"
     }
   },
   "Console": {
@@ -123,7 +130,10 @@
     "AddToQueue": "Добавить в очередь заданий",
     "Filament": "Филамент",
     "StartPrint": "Druck starten",
-    "View3D": "3D просмотр"
+    "View3D": "3D просмотр",
+    "FilamentName": "Название нити",
+    "FilamentType": "Тип нити накаливания",
+    "NozzleDiameter": "Диаметр сопла"
   },
   "Heightmap": {
     "Abort": "Отменить",
@@ -351,7 +361,9 @@
       },
       "Headline": "Температуры",
       "ShowNameInChart": "Показать {name} на графике",
-      "ShowNameInList": "Показать {name} в списке"
+      "ShowNameInList": "Показать {name} в списке",
+      "TempTooHigh": "Температура слишком высока для {name}! (max: {max})",
+      "TempTooLow": "Температура слишком низкая для {name}! (min: {min})"
     },
     "WebcamPanel": {
       "All": "Все",
@@ -468,7 +480,11 @@
       "Bars": "Бар",
       "Circle": "Круг",
       "Cross": "Крест",
-      "Style": "Стиль"
+      "Style": "Стиль",
+      "MaximumValues": "Максимальные значения: {maximum}",
+      "MaximumValuesVisibility": "Для лучшей видимости рекомендуется максимальное из {maximum} значений",
+      "MinimumValues": "Минимальные значения: {minimum}",
+      "ValueGreaterThan": "Значение должно быть больше, чем {value}"
     },
     "Edit": "Редактировать",
     "GeneralTab": {
