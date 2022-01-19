@@ -37,7 +37,31 @@
       "PowerDevices": "Силовые устройства",
       "Reboot": "Перезагрузка",
       "Shutdown": "Выключение",
-      "ServiceControl": "Контроль обслуживания"
+      "ServiceControl": "Контроль обслуживания",
+      "Start": "Начало",
+      "Stop": "Стоп",
+      "ConfirmationDialog": {
+        "Title": {
+          "HostReboot": "Перезагрузка хоста",
+          "HostShutdown": "Выключение хоста",
+          "KlipperFirmwareRestart": "Перезапуск прошивки клиппера",
+          "KlipperRestart": "Перезапуск клиппера",
+          "ServiceRestart": "Перезапуск службы",
+          "ServiceStart": "Начало обслуживания",
+          "ServiceStop": "Остановка обслуживания"
+        },
+        "Description": {
+          "HostReboot": "Перезагрузка хоста приведет к сбою текущей печати!",
+          "HostShutdown": "Выключение хоста приведет к сбою текущей печати!",
+          "KlipperFirmwareRestart": "Перезапуск прошивки клиппера приведет к сбою текущей печати!",
+          "KlipperRestart": "Перезапуск Klipper приведет к сбою текущей печати!",
+          "KlipperStop": "Остановка Klipper приведет к сбою текущей печати!",
+          "ServiceRestart": "Перезапуск этой службы может привести к сбою текущей печати!",
+          "ServiceStart": "Запуск этой службы может привести к сбою текущей печати!",
+          "ServiceStop": "Остановка этой службы может привести к сбою текущей печати!"
+        }
+      },
+      "Cancel": "Отмена"
     },
     "UpdateDialog": {
       "Recovering": "Восстановление",
@@ -76,7 +100,8 @@
     "DontSave": "Не сохранять",
     "UnsavedChanges": "Несохраненные изменения",
     "UnsavedChangesMessage": "Хотите ли вы сохранить изменения в {filename}?",
-    "UnsavedChangesSubMessage": "Ваши изменения будут потеряны, если вы их не сохраните. Вы можете отключить это сообщение в настройках редактора."
+    "UnsavedChangesSubMessage": "Ваши изменения будут потеряны, если вы их не сохраните. Вы можете отключить это сообщение в настройках редактора.",
+    "FileReadOnly": "только для чтения"
   },
   "Files": {
     "AllFiles": "Все",
@@ -133,7 +158,8 @@
     "View3D": "3D просмотр",
     "FilamentName": "Название нити",
     "FilamentType": "Тип нити накаливания",
-    "NozzleDiameter": "Диаметр сопла"
+    "NozzleDiameter": "Диаметр сопла",
+    "WrongFileUploaded": "В загрузке файла {filename} было отказано. Неправильный формат файла!"
   },
   "Heightmap": {
     "Abort": "Отменить",
@@ -239,7 +265,8 @@
       "Y": "Y",
       "Z": "Z",
       "ZTilt": "Z Tilt",
-      "Headline": "Управление"
+      "Headline": "Управление",
+      "HotendTooCold": "Температура нагревателя ниже, чем"
     },
     "FarmPrinterPanel": {
       "WebcamOff": "Офф",
@@ -430,6 +457,12 @@
         "Motion": "Движение",
         "SquareCornerVelocity": "Угловая скорость",
         "Velocity": "Скорость"
+      },
+      "PressureAdvanceSettings": {
+        "Advance": "Аванс",
+        "Extruder": "Экструдер",
+        "PressureAdvance": "Опережение давления",
+        "SmoothTime": "Плавное время"
       }
     }
   },
@@ -463,7 +496,8 @@
       "UpdateButton": "Обновление фильтра",
       "EntryStyleCompact": "компактный",
       "EntryStyleDefault": "стандарт",
-      "EntryStyle": "Стиль записей"
+      "EntryStyle": "Стиль записей",
+      "HideTimelapse": "Скрыть таймлапс"
     },
     "ControlTab": {
       "Control": "Контроль",
@@ -501,7 +535,15 @@
       "DbWebcams": "Веб-камеры",
       "FactoryDialog": "Пожалуйста, выберите все разделы, которые вы хотите сбросить:",
       "Reset": "сброс",
-      "DbHistoryJobs": "История печати"
+      "DbHistoryJobs": "История печати",
+      "Backup": "Резервная копия",
+      "BackupDialog": "Пожалуйста, выберите все разделы, для которых вы хотите создать резервную копию:",
+      "CannotReadJson": "Невозможно прочитать/разобрать файл резервной копии.",
+      "DbConsoleHistory": "История консоли",
+      "DbView": "Просмотр настроек",
+      "MoonrakerDb": "Moonraker DB",
+      "Restore": "Восстановить",
+      "RestoreDialog": "Пожалуйста, выберите все разделы, которые вы хотите восстановить:"
     },
     "InterfaceSettings": "Настройки интерфейса",
     "MacrosTab": {
@@ -646,7 +688,13 @@
       "UnretractDistance": "Расстояние расцепления",
       "UnretractDistanceDescription": "Длина нити, которую экструдер продвигает после обратного рывка.",
       "VariableFpsMinDescription": "Минимальное количество IPS в переменном режиме.",
-      "VariableFpsMaxDescription": "Максимальное количество IPS в переменном режиме."
+      "VariableFpsMaxDescription": "Максимальное количество IPS в переменном режиме.",
+      "FwRetract": "Отступление от прошивки",
+      "FwRetractDescription": "Использование ресайза прошивки в макросъемке таймлапса",
+      "ParkTime": "Продолжительность парка",
+      "ParkTimeDescription": "Увеличение продолжительности парка",
+      "StreamDelayCompensation": "Компенсация задержки потока",
+      "StreamDelayCompensationDescription": "Задержка захвата изображения"
     },
     "UiSettingsTab": {
       "BoolBigThumbnail": "Большие эскизы",
@@ -769,7 +817,8 @@
       "Memory": "Память",
       "Os": "OS",
       "SystemLoad": "Нагрузки на систему",
-      "Version": "Версия"
+      "Version": "Версия",
+      "Distro": "Распространение"
     },
     "UpdatePanel": {
       "CheckForUpdates": "Проверьте наличие обновлений",
@@ -791,7 +840,8 @@
       "CommittedDaysAgo": "Отправлено {days} назад",
       "CommittedHoursAgo": "Отправлено {hours} назад",
       "CommittedOnDate": "подана {date}",
-      "CommittedYesterday": "представленный вчера"
+      "CommittedYesterday": "представленный вчера",
+      "UpdateAll": "Обновление всех компонентов"
     }
   },
   "SelectPrinterDialog": {
@@ -874,7 +924,8 @@
     "Empty": "Пустой",
     "JobQueue": "Очередь на работу",
     "Jobs": "Заказы",
-    "Pause": "Pause"
+    "Pause": "Pause",
+    "Start": "Начало"
   },
   "EmergencyStopDialog": {
     "AreYouSure": "Вы уверены?",
