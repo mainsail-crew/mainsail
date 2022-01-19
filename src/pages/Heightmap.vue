@@ -1,5 +1,7 @@
 <style scoped>
-
+.rename-profile {
+    text-transform: none;
+}
 </style>
 
 <template>
@@ -8,7 +10,7 @@
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
-                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
+                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex rename-profile" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
                     </template>
                     <template v-slot:buttons>
                         <v-btn text tile color="primary" class="d-sm-none" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
