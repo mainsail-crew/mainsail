@@ -133,7 +133,7 @@
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
-                @pagination="refreshMetadata"
+                @current-items="refreshMetadata"
             >
 
                 <template slot="items">
@@ -212,6 +212,9 @@
                         <td class="text-right" v-if="headers.find(header => header.value === 'modified').visible">{{ formatDate(item.modified) }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'object_height').visible">{{ item.object_height ? item.object_height.toFixed(2)+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'layer_height').visible">{{ item.layer_height ? item.layer_height.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'nozzle_diameter').visible">{{ item.nozzle_diameter ? item.nozzle_diameter.toFixed(2)+' mm' : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_name').visible">{{ item.filament_name ? item.filament_name : '--' }}</td>
+                        <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_type').visible">{{ item.filament_type ? item.filament_type : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_total').visible">{{ item.filament_total ? item.filament_total.toFixed()+' mm' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'filament_weight_total').visible">{{ item.filament_weight_total ? item.filament_weight_total.toFixed(2)+' g' : '--' }}</td>
                         <td class="text-no-wrap text-right" v-if="headers.find(header => header.value === 'estimated_time').visible">{{ formatPrintTime(item.estimated_time) }}</td>
@@ -470,7 +473,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private search = ''
     private selected = []
     private hideHeaderColums = []
-    private currentPath = 'gcodes'
     private dropzone = {
         visibility: 'hidden',
         opacity: 0,
@@ -563,6 +565,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         (value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!'
     ]
 
+    get currentPath() {
+        return this.$store.state.gui.view.gcodefiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.gcodefiles.currentPath', value: newVal })
+    }
+
     get headers() {
         const headers = [
             { text: '',                                     value: '',                          align: 'left',  configable: false,  visible: true, filterable: false },
@@ -572,6 +582,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             { text: this.$t('Files.LastModified'),          value: 'modified',                  align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.ObjectHeight'),          value: 'object_height',             align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.LayerHeight'),           value: 'layer_height',              align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.NozzleDiameter'),        value: 'nozzle_diameter',           align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.FilamentName'),          value: 'filament_name',             align: 'right', configable: true,   visible: true },
+            { text: this.$t('Files.FilamentType'),          value: 'filament_type',             align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.FilamentUsage'),         value: 'filament_total',            align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.FilamentWeight'),        value: 'filament_weight_total',     align: 'right', configable: true,   visible: true },
             { text: this.$t('Files.PrintTime'),             value: 'estimated_time',            align: 'right', configable: true,   visible: true },
@@ -891,14 +904,13 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             value.toString().toLowerCase().indexOf(search.toLowerCase()) !== -1
     }
 
-    refreshMetadata(data: any) {
-        const items = sortFiles(this.files, [this.sortBy], [this.sortDesc])
-        for (let i = data.pageStart; i < data.pageStop; i++) {
-            if (items[i] && !items[i].isDirectory && !items[i].metadataPulled) {
-                let filename = (this.currentPath+'/'+items[i].filename).substring(7)
-                this.$socket.emit('server.files.metadata', { filename: filename }, { action: 'files/getMetadata' })
-            }
-        }
+    refreshMetadata(data: FileStateFile[]) {
+        const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
+        items.forEach((file: FileStateFile) => {
+            this.$store.dispatch('files/requestMetadata', {
+                filename: (this.currentPath+'/'+file.filename)
+            })
+        })
     }
 
     created() {
@@ -912,7 +924,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
             )
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) {
+                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(thumbnail.relative_path)}?timestamp=${item.modified.getTime()}`
+            }
         }
 
         return ''
@@ -922,7 +936,9 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         if (item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(thumb => thumb.width >= thumbnailBigMin)
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+this.currentPath+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail) {
+                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(thumbnail.relative_path)}?timestamp=${item.modified.getTime()}`
+            }
         }
 
         return ''
@@ -1020,6 +1036,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             root: 'gcodes',
             path: path !== '' ? '/'+path : '',
             filename: item.filename,
+            size: item.size,
             permissions: item.permissions
         })
     }

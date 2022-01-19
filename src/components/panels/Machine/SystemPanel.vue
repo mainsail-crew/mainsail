@@ -173,6 +173,7 @@
 import {Component, Mixins} from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import {caseInsensitiveSort} from '@/plugins/helpers'
 @Component({
     components: {Panel}
 })
@@ -192,7 +193,9 @@ export default class SystemPanel extends Mixins(BaseMixin) {
     }
 
     get mcus() {
-        return this.$store.getters['printer/getMcus'] ?? []
+        const mcus = this.$store.getters['printer/getMcus'] ?? []
+
+        return caseInsensitiveSort(mcus, 'name')
     }
 
     get hostStats() {

@@ -13,8 +13,8 @@
             @click:append="resetLimit"
             :label="label"
             :suffix="unit"
-            :append-icon="this.value !== this.defaultValue ? 'mdi-restart' : ''"
-            :error="(this.value < this.min) || ((this.value > this.max) && this.max !== -1)"
+            :append-icon="value !== defaultValue ? 'mdi-restart' : ''"
+            :error="error = ((value < min) || ((value > max) && max !== null))"
             :step="step"
             :min="min"
             :max="max"
@@ -25,10 +25,24 @@
             outlined
             dense
         >
-            <template v-slot:append-outer>
+            <template v-if="hasSpinner" v-slot:append-outer>
                 <div class="_spin_button_group">
-                    <v-btn @click="increment" class="mt-n3" icon plain small><v-icon>mdi-chevron-up</v-icon></v-btn>
-                    <v-btn @click="decrement" class="mb-n3" icon plain small><v-icon>mdi-chevron-down</v-icon></v-btn>
+                    <v-btn
+                        @click="increment"
+                        :disabled="((value >= max) && max !== null) || error"
+                        class="mt-n3"
+                        icon plain small
+                    >
+                        <v-icon>mdi-chevron-up</v-icon>
+                    </v-btn>
+                    <v-btn
+                        @click="decrement"
+                        :disabled="(value <= min) || error"
+                        class="mb-n3"
+                        icon plain small
+                    >
+                        <v-icon>mdi-chevron-down</v-icon>
+                    </v-btn>
                 </div>
             </template>
         </v-text-field>
@@ -44,11 +58,14 @@ import BaseMixin from '@/components/mixins/base'
 @Component
 export default class MotionSettingsInput extends Mixins(BaseMixin) {
     private value: number = 0
+    private error: boolean | undefined
 
     @Prop({ type: String, required: true }) readonly label!: string
     @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
+    @Prop({ type: Boolean, required: false , default: false }) readonly hasSpinner!: number
+    @Prop({ type: Number, required: false , default: 1 }) readonly spinnerFactor!: number
     @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
-    @Prop({ type: Number, required: false , default: -1 }) readonly max!: number
+    @Prop({ type: Number, default: null }) readonly max!: number | null
     @Prop({ type: Number, required: true , default: 0 }) readonly dec!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
     @Prop({ type: Number, required: true, default: 0 }) readonly defaultValue!: number
@@ -71,12 +88,12 @@ export default class MotionSettingsInput extends Mixins(BaseMixin) {
     }
 
     decrement(): void {
-        this.value = (this.value > this.min) ? Math.round((this.value - this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.min
+        this.value = (this.value > this.min) ? Math.round((this.value - this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec) : this.min
         this.sendCmd()
     }
 
     increment(): void {
-        this.value = (this.value < this.max || this.max === -1) ? Math.round((this.value + this.step) * (10 ** this.dec)) / (10 ** this.dec) : this.max
+        this.value = (this.value < this.max! || this.max === null) ? Math.round((this.value + this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec) : this.max
         this.sendCmd()
     }
 

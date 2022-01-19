@@ -101,16 +101,16 @@ export const getDefaultState = (): GuiState => {
             confirmUnsavedChanges: true
         },
         gcodeViewer: {
-            extruderColors : ['#00FFFFFF','#FF00FFFF','#FFFF00FF','#000000FF','#FFFFFFFF'],
-            gridColor : '#0000FF',
-            backgroundColor : '#000000',
+            extruderColors : ['#E76F51FF','#F4A261FF','#E9C46AFF','#2A9D8FFF','#264653FF'],
+            gridColor : '#B3B3B3',
+            backgroundColor : '#121212',
             colorMode : 2,
             showAxes : true,
             minFeed : 20,
             maxFeed : 100,
-            minFeedColor : '#0000FF',
-            maxFeedColor : '#FF0000',
-            progressColor : '#FFFFFF',
+            minFeedColor : '#2196f3',
+            maxFeedColor : '#D41216',
+            progressColor : '#FFFFFFB2',
             showCursor: true,
             showTravelMoves: false,
             showObjectSelection: false,
@@ -143,7 +143,9 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'filename',
                 sortDesc: false,
                 showHiddenFiles: false,
-                hideBackupFiles: false
+                hideBackupFiles: false,
+                currentPath: '',
+                rootPath: 'config'
             },
             gcodefiles: {
                 countPerPage: 10,
@@ -151,7 +153,8 @@ export const getDefaultState = (): GuiState => {
                 sortDesc: true,
                 showHiddenFiles: false,
                 showPrintedFiles: true,
-                hideMetadataColums: []
+                hideMetadataColums: [],
+                currentPath: 'gcodes'
             },
             heightmap: {
                 probed: true,
@@ -193,6 +196,7 @@ export const getDefaultState = (): GuiState => {
                 sortBy: 'modified',
                 sortDesc: true,
                 showHiddenFiles: false,
+                currentPath: 'timelapse'
             },
             webcam: {
                 currentCam: {

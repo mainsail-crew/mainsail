@@ -2,6 +2,13 @@
   "title": "Deutsch",
   "App": {
     "Printers": "Drucker",
+    "Titles": {
+      "Error": "FEHLER",
+      "Pause": "Druck pausiert",
+      "Printing": "{percent}% Drucken - {filename}",
+      "PrintingETA": "{percent}% Drucken - ETA: {eta} - {filename}",
+      "Complete": "Fertiggestellt - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "SAVE CONFIG",
       "UploadPrint": "Hochladen & Drucken",
@@ -27,21 +34,21 @@
         "Title": {
           "KlipperRestart": "Klipper Neustart",
           "KlipperFirmwareRestart": "Klipper Firmware Neustart",
-          "ServiceStart": "Service Start",
-          "ServiceRestart": "Service Neustart",
-          "ServiceStop": "Service Stop",
+          "ServiceStart": "Dienst Start",
+          "ServiceRestart": "Dienst Neustart",
+          "ServiceStop": "Dienst Stop",
           "HostReboot": "Host Neustart",
           "HostShutdown": "Host Herunterfahren"
         },
         "Description": {
-          "KlipperStop": "Wenn du Klipper jetzt stoppst, wird der momentane Druck fehlschlagen.",
-          "KlipperRestart": "Wenn du Klipper jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "KlipperFirmwareRestart": "Wenn du die Klipper Firmware jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "ServiceStart": "Wenn du diesen Service jetzt startest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "ServiceRestart": "Wenn du diesen Service jetzt neustartest, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "ServiceStop": "Wenn du diesen Service jetzt stoppst, riskierst du höchstwahrscheinlich einen Fehlschlag des momentanen Druckauftrags.",
-          "HostReboot": "Wenn du den Host jetzt neustartest, wird der momentane Druck fehlschlagen.",
-          "HostShutdown": "Wenn du den Host jetzt herunterfährst, wird der momentane Druck fehlschlagen."
+          "KlipperStop": "Ein Stopp von Klipper wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "KlipperRestart": "Ein Neustart von Klipper wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "KlipperFirmwareRestart": "Ein Neustart der Klipper Firmware wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceStart": "Ein Start dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceRestart": "Ein Neustart dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "ServiceStop": "Ein Stopp dieses Dienstes kann zum Abbruch des aktuellen Druckauftrags führen!",
+          "HostReboot": "Ein Neustart des Hosts wird zum Abbruch des aktuellen Druckauftrags führen!",
+          "HostShutdown": "Ein Herunterfahren des Hosts wird zum Abbruch des aktuellen Druckauftrags führen!"
         }
       }
     },
@@ -180,7 +187,10 @@
     "LastModified": "Zuletzt geändert",
     "ObjectHeight": "Objekthöhe",
     "LayerHeight": "Schichthöhe",
+    "NozzleDiameter": "Düsendurchmesser",
     "Filament": "Filament",
+    "FilamentName": "Filament Name",
+    "FilamentType": "Filament Typ",
     "FilamentUsage": "Filamentverbrauch",
     "FilamentWeight": "Filamentgewicht",
     "PrintTime": "Druckdauer",
@@ -511,7 +521,9 @@
         "Target": "Zieltemperatur",
         "Power": "PWM-Leistung",
         "Speed": "PWM-Geschwindigkeit"
-      }
+      },
+      "TempTooLow": "Temperature von {name} zu niedrig! (min: {min})",
+      "TempTooHigh": "Temperature von {name} zu hoch! (max: {max})"
     },
     "WebcamPanel": {
       "Headline": "Webcam",
@@ -799,7 +811,11 @@
       "MoveDistancesXYInMm": "Verfahrwege XY in mm",
       "MoveDistancesZInMm": "Verfahrwege Z in mm",
       "MoveDistancesEInMm": "Verfahrwege E in mm",
-      "SpeedEInMms": "Geschw. E in mm/s"
+      "SpeedEInMms": "Geschw. E in mm/s",
+      "MinimumValues": "Minimum: {minimum} Eintrag",
+      "MaximumValues": "Maximum: {maximum} Einträge",
+      "MaximumValuesVisibility": "Maximal {maximum} Einträge für beste Darstellung",
+      "ValueGreaterThan": "Wert muss größer als {value} sein"
     },
     "ConsoleTab": {
       "Console": "Konsole",

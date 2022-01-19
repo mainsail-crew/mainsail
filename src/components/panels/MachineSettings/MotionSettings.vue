@@ -3,12 +3,14 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity')"
+                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
                     :target="current_velocity"
                     :default-value="max_velocity"
+                    :hasSpinner="true"
+                    :spinnerFactor="5"
                     :step="1"
                     :min="1"
-                    :max="-1"
+                    :max="null"
                     :dec="0"
                     unit="mm/s"
                     attribute-name="VELOCITY"
@@ -16,13 +18,14 @@
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity')"
+                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
                     :target="current_square_corner_velocity"
                     :default-value="max_square_corner_velocity"
-                    :step="1"
-                    :min="1"
-                    :max="-1"
-                    :dec="0"
+                    :hasSpinner="true"
+                    :step="0.1"
+                    :min="0.1"
+                    :max="null"
+                    :dec="1"
                     unit="mm/s"
                     attribute-name="SQUARE_CORNER_VELOCITY"
                 ></motion-settings-input>
@@ -31,12 +34,14 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration')"
+                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
                     :target="current_accel"
                     :default-value="max_accel"
+                    :hasSpinner="true"
+                    :spinnerFactor="100"
                     :step="1"
                     :min="1"
-                    :max="-1"
+                    :max="null"
                     :dec="0"
                     unit="mm/s²"
                     attribute-name="ACCEL"
@@ -44,12 +49,14 @@
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel')"
+                    :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
                     :target="current_accel_to_decel"
                     :default-value="max_accel_to_decel"
+                    :hasSpinner="true"
+                    :spinnerFactor="100"
                     :step="1"
                     :min="1"
-                    :max="-1"
+                    :max="null"
                     :dec="0"
                     unit="mm/s²"
                     attribute-name="ACCEL_TO_DECEL"
@@ -71,35 +78,35 @@ import MotionSettingsInput from '@/components/inputs/MotionSettingsInput.vue'
 export default class MotionSettings extends Mixins(BaseMixin) {
     
     get current_velocity(): number {
-        return this.$store.state.printer?.toolhead?.max_velocity ?? 300
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
     }
 
     get current_accel(): number {
-        return this.$store.state.printer?.toolhead?.max_accel ?? 3000
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel ?? 3000)
     }
 
     get current_accel_to_decel(): number {
-        return this.$store.state.printer?.toolhead?.max_accel_to_decel ?? 1500
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? 1500)
     }
 
     get current_square_corner_velocity(): number {
-        return this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8
+        return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
     
     get max_velocity(): number {
-        return this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300)
     }
 
     get max_accel(): number {
-        return this.$store.state.printer?.configfile?.settings?.printer?.max_accel ?? 3000
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel ?? 3000)
     }
 
     get max_accel_to_decel(): number {
-        return this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel ?? 1500
+        return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel ?? 1500)
     }
 
     get max_square_corner_velocity(): number {
-        return this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8
+        return Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) / 10
     }
 }
 </script>

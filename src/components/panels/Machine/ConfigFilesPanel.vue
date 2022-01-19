@@ -365,8 +365,6 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     private selected = []
     private options = { }
     private currentPage = 1
-    private currentPath = ''
-    private root = 'config'
     private contextMenu: contextMenu = {
         shown: false,
         isDirectory: false,
@@ -580,6 +578,22 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
         return this.$store.state.server.registered_directories.filter((dir: string) => !hiddenRootDirectories.includes(dir)).sort()
     }
 
+    get root() {
+        return this.$store.state.gui.view.configfiles.rootPath
+    }
+
+    set root(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.rootPath', value: newVal })
+    }
+
+    get currentPath() {
+        return this.$store.state.gui.view.configfiles.currentPath
+    }
+
+    set currentPath(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.configfiles.currentPath', value: newVal })
+    }
+
     refreshFileList() {
         this.$socket.emit('server.files.get_directory', { path: this.absolutePath.substring(1) }, { action: 'files/getDirectory' })
     }
@@ -612,6 +626,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
                         root: this.root,
                         path: this.currentPath,
                         filename: item.filename,
+                        size: item.size,
                         permissions: item.permissions
                     })
                 }
@@ -642,7 +657,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
 
     downloadFile() {
         const filename = (this.absolutePath+'/'+this.contextMenu.item.filename)
-        const href = this.apiUrl + '/server/files' + filename
+        const href = `${this.apiUrl}/server/files${encodeURI(filename)}`
         window.open(href)
     }
 

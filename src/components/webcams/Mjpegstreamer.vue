@@ -17,13 +17,13 @@
 <template>
     <div v-observe-visibility="visibilityChanged" style="position: relative;">
         <img ref="image" class="webcamImage" :style="webcamStyle" />
-        <span class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
+        <span class="webcamFpsOutput" v-if="showFps">{{ $t('Panels.WebcamPanel.FPS')}}: {{ fpsOutput }}</span>
     </div>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Prop} from 'vue-property-decorator'
+import {Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 const CONTENT_LENGTH = 'content-length'
@@ -43,6 +43,8 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     @Prop()
     printerUrl: string | undefined
+
+    @Prop({ default: true }) showFps!: boolean
 
     $refs!: {
         canvas: HTMLCanvasElement,
@@ -188,6 +190,11 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
     async restartStream() {
         this.stopStream()
         this.startStream()
+    }
+
+    @Watch('url')
+    urlChanged() {
+        this.restartStream()
     }
 }
 </script>

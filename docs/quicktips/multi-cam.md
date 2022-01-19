@@ -12,75 +12,91 @@ description: >-
 {{ page.description }}
 
 __Disclaimer__  
-Thank you [Charlie_Powell](https://community.octoprint.org/u/Charlie_Powell) for letting us adapt your guide for mainsailOS!  
+Thank you to [Charlie_Powell](https://community.octoprint.org/u/Charlie_Powell) for letting us adapt his guide for MainsailOS!  
 The original guide can be found [here](https://community.octoprint.org/t/setting-up-multiple-webcams-in-octopi-the-right-way/32669).
 {: .info}
 
 ## Prerequisites
-You need:
+For multicam to work, you will need:
 
-- mainsailOS v0.5.0 or higher
-- ssh access
-- at least two cameras
+- MainsailOS v0.5.0 or higher
+- SSH access
+- Two or more cameras
 
 __WARNING__  
-**If you are working on a existing installation, make a backup!**
+**If you are working with an existing installation, make a backup!**
 {: .warning}
 
 ## Creating the configuration files
-mainsailOS supports an infinite number of webcam*.txt-style configuration files. They can be placed in
+MainsailOS supports an infinite number of `webcam*.txt` style configuration files. They should be placed in
 `/home/pi/klipper_config`.
 
-In the UI, got to 'Settings > Interface' click on (1) and save as `webcam2.txt`.
+In Mainsail's user interface, go to 'Settings > Interface' and click on (1) and save as `webcam2.txt`.
 
 :image:
 
-Now you should have two identical files:
+You should now have two identical files with different names:
 1. `/home/pi/klipper_config/webcam.txt`
 2. `/home/pi/klipper_config/webcam2.txt`
 
-## Editing the original configuration file for a specific camera
-Find out the path to the camera by ID. This makes it much easier to stop /dev/video0 and /dev/video1 from switching on you.
+## Edit the original configuration file for a specific camera
+Find the path to the camera by its ID. This makes it easier to stop `dev/video0` and `/dev/video1` from being switchedin the future.
 
-Run `ls /dev/v4l/by-id`, copy your camera id and paste it into the editor in mainsail. For example:
+In a terminal, run the command `ls /dev/v4l/by-id`, copy your camera id and paste it into the editor in Mainsail. For example:
 
 ```bash
 $ ls  /dev/v4l/by-id/
+```
+
+returns
+
+```
 usb-046d_0825_88C56B60-video-index0  usb-046d_0825_88C56B60-video-index1
 ```
-I'll use the first one `usb-046d_0825_88C56B60-video-index0`
+This example will use the first one: `usb-046d_0825_88C56B60-video-index0`
 
 
 __Note__  
-Not sure which device is which? You can run lsusb to match a name to an ID.
+Not sure which device is which? You can run `lsusb` to match a camera name to an ID.
 {: .info}
 
-Then edit `/home/pi/klipper_config/webcam.txt` in by clicking on it in mainsail.
+Edit `/home/pi/klipper_config/webcam.txt`  by clicking on it in Mainsail.
 
-Set `camera="usb"` at the top, and the `camera_usb_options` line to indicate the device:
+Insert two lines at the beginning of `webcam.txt`:
 
-`camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"`
+```
+camera="usb"
+camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"
+```
+
+The `device long id` should match the camera name from running `lsusb`.
 
 __Note__  
-Using a Raspberry Pi camera? Set camera="raspi" at the top of the file, and you can ignore referencing the cameras by device ID.
+If you are using a Raspberry Pi branded camera, set camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.
+
 {: .info}
 
 ## 3. Editing the second configuration file
-There's two things that need adjusting here: the port mjpg_streamer will be running under, and the device again.
+When using a second camera, you must add the port `mjpg_streamer` runs under and the device.
 
 __Note__  
-Using 1 RPi camera and 1 USB camera? You don't need to reference them by ID, since camera="raspi" vs. camera="usb" is enough.
+If you are using one Raspberry Pi branded camera and a different USB camera you don't need to reference them by ID, as camera="raspi" and camera="usb" is enough.
 {: .info}
 
-Find the long ID of the second camera, as you did for the first one.
+Similar to finding the first camera, run `ls` and copy the ID of the second camera:
 
-Editing `/home/pi/klipper_config/webcam2.txt` like described above.
+```bash
+ls  /dev/v4l/by-id/
+```
 
-As above again, set camera="usb" and set camera_usb_options but this time using the ID for the second camera:
+Edit `/home/pi/klipper_config/webcam2.txt` as described above and add:
+`camera="usb"` and `set camera_usb_options` but this time using the ID for the second camera:
 
-`camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"`
+```bash
+camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"
+```
 
-Adjust the port, by editing camera_http_options:
+Adjust the port by editing `camera_http_options`:
 
 `camera_http_options="-n -p 8081"`
 
@@ -93,23 +109,22 @@ webcam3.txt => -p 8083
 ```
 
 __INFO__  
-mainsailOS comes already setup with four nginx reverse proxies for port 8080 to 8083, so you can configure 4 webcams easy with this guide,
-for more webcams you need to configure the nginx config, which we dont recommend!  
-It includes editing nginx configuration, which is easy to mess up and having mainsail stop working as well.  
-If you need more than four webcams, hop onto our [Discord](https://discord.gg/skWTwTD){:target="_blank"} and we will help you.
+MainsailOS comes setup with four nginx reverse proxies for port 8080 through 8083, so you can configure 4 webcams with this guide. 
+For more webcams you will need to edit the nginx configuration, which is not recommended.  It can be easy to make a mistake when editing nginx, which will also  cause Mainsail to stop working.  
+If you need more than four webcams, visit us on [Discord](https://discord.gg/skWTwTD){:target="_blank"} and we will help you.
 {: .warning}
 
-## 4. Test it works
-Restart webcamd click the button, 
-and try and find your second camera under `http://<your-ip>/webcam2/`.
-If it doesn't work, check in the webcam log under the filemanager log section for details.
+## 4. Test that it works
+Restart `webcamd` by clicking the power button icon in the upper right corner of Mainsail and click `Webcamd` to restart it. 
+Find your second camera under `http://<your-ip>/webcam2/`.
+If it doesn't work, check in the webcam log in the filemanager log section for details.
 
-If it works, you can use the URLs in mainsail:
+If it works, you can use the URLs in Mainsail:
 
 Stream: `http://<your-ip>/webcam2/`
 
 __DONE__  
-Congratulations, you set up multi webcam with mainsailOS!  
-If you want to add more, just follow the guide again and increment the webcam*.txt number i.e. webcam**3**.txt and so on.  
-The webcams are easy accessible through your `http://<your-ip>/webcam`, `http://<your-ip>/webcam2` and so on.
+Congratulations, you set up multi webcam with Mainsail!  
+If you want to add more,  follow the guide again and increment the `webcam*.txt` number, i.e. `webcam**3**.txt` and so on.  
+The webcams are accessible through your `http://<your-ip>/webcam`, `http://<your-ip>/webcam2`, etc.
 {: .success}

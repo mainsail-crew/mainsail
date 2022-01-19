@@ -1,5 +1,7 @@
 <style scoped>
-
+.rename-profile {
+    text-transform: none;
+}
 </style>
 
 <template>
@@ -8,23 +10,23 @@
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
-                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="bed_mesh" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex rename-profile" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
                     </template>
                     <template v-slot:buttons>
-                        <v-btn text tile color="primary" class=" d-sm-none" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
-                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
-                        <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
+                        <v-btn text tile color="primary" class="d-sm-none" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
+                        <v-btn icon tile class="d-none d-sm-flex" @click="homePrinter" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')" :ripple="true"><v-icon>mdi-home</v-icon></v-btn>
+                        <v-btn text tile class="d-none d-sm-flex" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="meshLoaded" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                         <v-btn text tile class="d-none d-sm-flex" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group tile class="v-btn-toggle" name="controllers">
-                            <v-btn text small class="px-2 minwidth-0" color="primary" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon small>mdi-home</v-icon></v-btn>
+                            <v-btn text small class="px-2 minwidth-0" :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" @click="homePrinter" :loading="loadings.includes('homeAll')" :title="$t('Heightmap.TitleHomeAll')"><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>mdi-home</v-icon></v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="clearBedMesh" :loading="loadings.includes('bedMeshClear')" v-if="bed_mesh" :title="$t('Heightmap.TitleClear')">{{ $t('Heightmap.Clear') }}</v-btn>
                             <v-btn text small class="px-2 minwidth-0" color="primary" @click="calibrateDialog = true" :loading="loadings.includes('bedMeshCalibrate')" :disabled="printerIsPrinting" :title="$t('Heightmap.TitleCalibrate')">{{ $t('Heightmap.Calibrate') }}</v-btn>
                         </v-item-group>
                     </v-card-text>
-                    <template v-if="!(bed_mesh)">
-                        <v-card-text>
+                    <template v-if="!(meshLoaded)">
+                        <v-card-text class="text-center py-3 font-italic">
                             {{ $t('Heightmap.NoBedMeshHasBeenLoadedYet') }}
                         </v-card-text>
                     </template>
@@ -66,7 +68,7 @@
                 </panel>
             </v-col>
             <v-col class="col-12 col-md-4">
-                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="bed_mesh !== null && bed_mesh.profile_name !== ''" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
+                <panel :title="$t('Heightmap.CurrentMesh.Headline')" v-if="meshLoaded" card-class="heightmap-current-mesh-panel" icon="mdi-information" :collapsible="true" class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -184,6 +186,7 @@
 <script lang="ts">
 import {Component, Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 
 import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
@@ -211,7 +214,7 @@ interface HeightmapSerie {
         ECharts: createComponent({ echarts }),
     }
 })
-export default class PageHeightmap extends Mixins(BaseMixin) {
+export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     $refs!: {
         // eslint-disable-next-line
@@ -224,6 +227,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
     private removeDialog = false
     private calibrateDialog = false
     private newName = ''
+    private oldName = ''
 
     private heightmapScale = 0.5
     private probedOpacity = 1
@@ -726,6 +730,14 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
         }
     }
 
+    get meshLoaded() {
+        if(this.bed_mesh !== null) {
+            return this.bed_mesh.profile_name !== ''
+        } else {
+            return false
+        }
+    }
+
     tooltipFormatter(data: any): string {
         const outputArray: string[] = []
         outputArray.push('<b>'+data.seriesName+'</b>')
@@ -744,6 +756,7 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     openRenameProfile(): void {
         this.newName = this.bed_mesh?.profile_name ?? ''
+        this.oldName = this.bed_mesh.profile_name
         this.renameDialog = true
 
         setTimeout(() => {
@@ -753,8 +766,15 @@ export default class PageHeightmap extends Mixins(BaseMixin) {
 
     renameProfile(): void {
         this.renameDialog = false
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase(), type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
+
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE='+this.oldName, type: 'command' })
+
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName }, { loading: 'bedMeshRename' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE REMOVE='+this.oldName }, { loading: 'bedMeshRename' })
+
+        this.newName = ''
+        this.oldName = ''
     }
 
     openRemoveProfile(name: string): void {

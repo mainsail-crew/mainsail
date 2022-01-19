@@ -21,6 +21,13 @@
 			"TitleTemperatureLimitActive": "Temperatuurlimiet actief",
 			"TitleUnderVoltageDetected": "Ondervoltage gedetecteerd"
 		},
+		"Titles": {
+			"Complete": "Kompleet - {filename}",
+			"Error": "FOUT",
+			"Pause": "Pauzeer print",
+			"Printing": "{percent}% Printen - {filename}",
+			"PrintingETA": "{percent}% Printen - ETA: {eta} - {filename}"
+		},
 		"TopBar": {
 			"CannotUploadTheFile": "Kan het bestand niet uploaden!",
 			"EmergencyStop": "Noodstop",
@@ -30,14 +37,39 @@
 			"Uploading": "Uploaden"
 		},
 		"TopCornerMenu": {
+			"Cancel": "Annuleer",
+			"ConfirmationDialog": {
+				"Description": {
+					"HostReboot": "Wanneer je nu de host reboot, zal de huidige print mislukken.",
+					"HostShutdown": "Wanneer je nu de host afsluit, zal de huidige print mislukken.",
+					"KlipperFirmwareRestart": "Wanneer je nu de Klipper firmware herstart, zal de huidige print mislukken.",
+					"KlipperRestart": "Wanneer je nu Klipper herstart, zal de huidige print mislukken.",
+					"KlipperStop": "Wanneer je nu Klipper stopt, zal de huidige print mislukken.",
+					"ServiceRestart": "Wanneer je nu deze service herstart, is de kans groot dat de huidige print zal mislukken.",
+					"ServiceStart": "Wanneer je nu deze service start, is de kans groot dat de huidige print zal mislukken.",
+					"ServiceStop": "Wanneer je nu deze service stopt, is de kans groot dat de huidige print zal mislukken."
+				},
+				"Title": {
+					"HostReboot": "Host reboot",
+					"HostShutdown": "Host afsluiten",
+					"KlipperFirmwareRestart": "Klipper firmware herstarten",
+					"KlipperRestart": "Klipper herstarten",
+					"ServiceRestart": "Service herstarten",
+					"ServiceStart": "Service starten",
+					"ServiceStop": "Service stoppen"
+				}
+			},
 			"HostControl": "Host Beheer",
 			"KlipperControl": "Klipper Beheer",
 			"KlipperFirmwareRestart": "FIRMWARE herstart",
 			"KlipperRestart": "Herstart",
 			"PowerDevices": "Power Apparaten",
 			"Reboot": "Opnieuw opstarten",
+			"Restart": "Herstart",
 			"ServiceControl": "Services Beheer",
-			"Shutdown": "Afsluiten"
+			"Shutdown": "Afsluiten",
+			"Start": "Start",
+			"Stop": "Stop"
 		},
 		"UpdateDialog": {
 			"Close": "Sluiten",
@@ -69,6 +101,7 @@
 		"DontSave": "Sla niet op",
 		"Downloading": "Downloaden",
 		"FailedSave": "{filename} kon niet worden geupload!",
+		"FileReadOnly": "alleen-lezen",
 		"Minimap": "Toon minimap",
 		"SaveClose": "Bewaar & sluiten",
 		"SaveRestart": "Bewaar & herstart",
@@ -101,6 +134,8 @@
 		"EditFile": "Bewerk bestand",
 		"Empty": "Leeg",
 		"Filament": "Filament",
+		"FilamentName": "Filamentnaam",
+		"FilamentType": "Filament Type",
 		"FilamentUsage": "Filamentgebruik",
 		"FilamentWeight": "Filament Gewicht",
 		"Files": "Bestanden",
@@ -113,6 +148,7 @@
 		"LayerHeight": "Laaghoogte",
 		"Name": "Naam",
 		"NewDirectory": "Nieuwe map",
+		"NozzleDiameter": "Nozzle Diameter",
 		"ObjectHeight": "Objecthoogte",
 		"Preheat": "Voorverwarmen",
 		"PrintStart": "Start print",
@@ -136,7 +172,8 @@
 		"UploadNewGcode": "Upload nieuwe G-Code",
 		"Uploading": "Uploaden",
 		"Used": "Gebruikt",
-		"View3D": "Bekijk in 3D"
+		"View3D": "Bekijk in 3D",
+		"WrongFileUploaded": "Upload is gewijgerd voor {filename}. Verkeerd bestandsformaat!"
 	},
 	"GCodeViewer": {
 		"ClearLoadedFile": "Leeg",
@@ -251,7 +288,8 @@
 		"Empty": "Leeg",
 		"JobQueue": "Job wachtrij",
 		"Jobs": "Jobs",
-		"Pause": "Pauze"
+		"Pause": "Pauze",
+		"Start": "Start"
 	},
 	"Machine": {
 		"ConfigFilesPanel": {
@@ -300,6 +338,7 @@
 		"SystemPanel": {
 			"Awake": "Wakker",
 			"Constants": "Constanten",
+			"Distro": "Distributie",
 			"Frequency": "Freq",
 			"HostDetails": "Host details",
 			"LastStats": "Laatste statistieken",
@@ -343,6 +382,7 @@
 			"FeedrateIn": "Feedsnelheid in",
 			"Headline": "Bediening",
 			"Home": "Home",
+			"HotendTooCold": "Hotend temp. lager dan",
 			"InvertX": "Inverteer X",
 			"InvertY": "Inverteer Y",
 			"InvertZ": "Inverteer Z",
@@ -392,9 +432,16 @@
 			"MotionSettings": {
 				"Acceleration": "Acceleratie",
 				"Deceleration": "Vertraging",
+				"MaxAccelToDecel": "Max Accel. naar Decel.",
 				"Motion": "Beweging",
 				"SquareCornerVelocity": "Hoeksnelheid (SCV)",
 				"Velocity": "Snelheid"
+			},
+			"PressureAdvanceSettings": {
+				"Advance": "Advance",
+				"Extruder": "Extruder",
+				"PressureAdvance": "Pressure Advance",
+				"SmoothTime": "Smooth Time"
 			}
 		},
 		"MacrosPanel": {
@@ -517,6 +564,8 @@
 			"ShowTargetTemperatureInChart": "Toon doeltemperatuur in de grafiek",
 			"State": "Status",
 			"Target": "Doel",
+			"TempTooHigh": "Temperatuur te hoog voor {name}! (max: {max})",
+			"TempTooLow": "Temperatuur te laag voor {name}! (min: {min})",
 			"Temperatures": "Temperaturen",
 			"TemperaturesInChart": "Temperatuur [°C]",
 			"UNKNOWN": "ONBEKEND"
@@ -600,6 +649,7 @@
 			"EntryStyleDefault": "standaard",
 			"Height": "Hoogte",
 			"HideTemperatures": "Verberg temperaturen",
+			"HideTimelapse": "Verberg Timelapse",
 			"Name": "Naam",
 			"Regex": "Regex",
 			"StoreButton": "Sla filter op",
@@ -613,6 +663,9 @@
 			"InvertXMovement": "Inverteer X beweging",
 			"InvertYMovement": "Inverteer Y beweging",
 			"InvertZMovement": "Inverteer Z beweging",
+			"MaximumValues": "Maximale waarden: {maximum}",
+			"MaximumValuesVisibility": "Maximum van {maximum} waarden is geadviseerd voor beste overzicht",
+			"MinimumValues": "Minimale waarden: {minimum}",
 			"MoveDistancesEInMm": "Afstanden E in mm",
 			"MoveDistancesInMm": "Afstanden in mm",
 			"MoveDistancesXYInMm": "Afstanden XY in mm",
@@ -620,7 +673,8 @@
 			"SpeedEInMms": "Snelheid E in mm/s",
 			"SpeedXY": "Snelheid XY",
 			"SpeedZ": "Snelheid Z",
-			"Style": "Stijl"
+			"Style": "Stijl",
+			"ValueGreaterThan": "Waarde moet groter zijn dan {value}"
 		},
 		"DashboardTab": {
 			"Dashboard": "Dashboard",
@@ -648,20 +702,28 @@
 			"ShowAxes": "Toon Assen"
 		},
 		"GeneralTab": {
+			"Backup": "Backup",
+			"BackupDialog": "Selecteer alle secties waarvan je een backup wilt maken:",
 			"CalcEstimateTime": "Bereken geschatte tijd",
 			"CalcEstimateTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
 			"CalcEtaTime": "ETA berekening",
 			"CalcEtaTimeDescription": "Als meerdere geselecteerd zijn, wordt het gemiddelde berekend",
+			"CannotReadJson": "Kan het backup bestand niet lezen/verwerken. ",
+			"DbConsoleHistory": "Console Geschiedenis",
 			"DbHistoryJobs": "Geschiedenis Jobs",
 			"DbHistoryTotals": "Geschiedenis Totalen",
 			"DbTimelapseSettings": "Timelapse Instellingen",
+			"DbView": "Weergaveinstellingen",
 			"DbWebcams": "Webcams",
 			"FactoryDialog": "Selecteer de secties die je wil resetten:",
 			"FactoryReset": "Herstel naar fabrieksinstellingen",
 			"General": "Algemeen",
 			"Language": "Taal",
+			"MoonrakerDb": "Moonraker DB",
 			"PrinterName": "Printer naam",
-			"Reset": "reset"
+			"Reset": "reset",
+			"Restore": "Herstellen",
+			"RestoreDialog": "Kies alle secties die je wil herstellen:"
 		},
 		"InterfaceSettings": "Interface Instellingen",
 		"MacrosTab": {
@@ -733,6 +795,8 @@
 			"EnabledDescription": "Indien uitgeschakeld, worden gcode macros genegeerd en autorender overgeslagen.",
 			"Extraoutputparams": "Extraoutputparams",
 			"ExtraoutputparamsDescription": "Definieert extra parameters voor FFMPEG. Note: Alles wat hier wordt toegevoegd zal de rotatie instelling ongedaan maken",
+			"FwRetract": "Firmware Retractie",
+			"FwRetractDescription": "Gebruik firmware retractie in de timelapse macro",
 			"GcodeVerbose": "GcodeVerbose",
 			"GcodeVerboseDescription": "Indien ingeschakeld, kunnen Gcode macros informatie in de console tonen",
 			"General": "Algemeen",
@@ -742,6 +806,8 @@
 			"ModeDescription": "Kies tussen Layermacro en Hyperlapse (tijd gebaseerde) modus",
 			"OutputFramerate": "Uitvoer Framerate",
 			"OutputFramerateDescription": "Definieert  de framerate van de video. Note: dit wordt genegeerd wanneer variable_fps is ingeschakeld",
+			"ParkTime": "Parkeerduur",
+			"ParkTimeDescription": "Voeg extra tijd toe bij het parkeren.",
 			"Parkhead": "Parkhead",
 			"ParkheadDescription": "Indien ingeschakeld, wordt de printkop geparkeerd voor een foto te nemen.",
 			"Parkpos": "Parkeer postitie",
@@ -758,11 +824,13 @@
 			"PreviewImageDescription": "Sla een voorbeeld afbeelding op met dezelfde naam als de video",
 			"RenderingOptions": "Rendering opties",
 			"RetractDistance": "Retractie Afstand",
-			"RetractDistanceDescription": "",
+			"RetractDistanceDescription": "De lengte filament die de extruder terugtrekt.",
 			"RetractSpeed": "Retractie Snelheid",
-			"RetractSpeedDescription": "",
+			"RetractSpeedDescription": "Snelheid waarmee de extruder het filament terugtrekt.",
 			"SaveFrames": "Sla frames op",
 			"SaveFramesDescription": "Sla de frames op in een zip-bestand voor externe rendering",
+			"StreamDelayCompensation": "Stream Delay Compensatie",
+			"StreamDelayCompensationDescription": "Vertraag de beeldopname.",
 			"Targetlength": "Doel lengte",
 			"TargetlengthDescription": "De beoogde lengte wanneer variabele FPS is ingeschakeld",
 			"TimeFormatCode": "Tijd Format Code",
@@ -770,10 +838,10 @@
 			"Timelapse": "Timelapse",
 			"TravelSpeed": "Bewegingssnelheid",
 			"TravelSpeedDescription": "Bewegingssnelheid tijdens het bewegen van en naar de parkeerpositie",
-			"UnretractDistance": "",
-			"UnretractDistanceDescription": "",
-			"UnretractSpeed": "",
-			"UnretractSpeedDescription": "",
+			"UnretractDistance": "Deretactie lengte",
+			"UnretractDistanceDescription": "De lengte van het filament dat de extruder terug voert na een retractie.",
+			"UnretractSpeed": "Untretract Snelheid",
+			"UnretractSpeedDescription": "De snelheid waarmee het filament teruggevoerd wordt door de extruder na een retractie.",
 			"VariableFps": "Variabele FPS",
 			"VariableFpsDescription": "Indien ingeschakeld, wordt de framerate van de video berekend op basis van de beoogde lengte",
 			"VariableFpsMax": "Variabele FPS max",

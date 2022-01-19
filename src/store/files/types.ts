@@ -25,6 +25,7 @@ export interface FileStateFile {
     slicer_version?: string
     thumbnails?: FileStateFileThumbnail[]
     metadataPulled?: boolean,
+    metadataRequested?: boolean,
     size?: number
 }
 

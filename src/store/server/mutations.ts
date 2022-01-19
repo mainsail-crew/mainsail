@@ -10,7 +10,12 @@ export const mutations: MutationTree<ServerState> = {
         Object.assign(state, getDefaultState())
     },
 
+    setKlippyConnected(state) {
+        Vue.set(state, 'klippy_connected', true)
+    },
+
     setKlippyDisconnected(state) {
+        Vue.set(state, 'klippy_connected', false)
         Vue.set(state, 'klippy_state', 'disconnected')
         Vue.set(state, 'klippy_message', 'Disconnected...')
     },
