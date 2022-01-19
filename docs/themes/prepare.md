@@ -11,7 +11,9 @@ description: >-
 # {{ page.title }}
 {{ page.description }}
 
-## .theme folder
+## Preparing your custom theme
+Create a `.theme` folder in your Mainsail `config` folder.  The dot in the name means that it is hidden folder and you will need to activate *show hidden files* in your file manager to see it.
+
 You only need to create a ".theme" folder in your config folder.  
 There you will place all the files you need to personalize Mainsail.
 
