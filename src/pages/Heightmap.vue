@@ -764,8 +764,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     renameProfile(): void {
         this.renameDialog = false
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase(), type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName }, { loading: 'bedMeshRename' })
     }
 
     openRemoveProfile(name: string): void {
