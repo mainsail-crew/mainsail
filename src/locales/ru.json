@@ -61,7 +61,8 @@
           "ServiceStop": "Остановка этой службы может привести к сбою текущей печати!"
         }
       },
-      "Cancel": "Отмена"
+      "Cancel": "Отмена",
+      "Restart": "Перезапустить"
     },
     "UpdateDialog": {
       "Recovering": "Восстановление",
@@ -456,7 +457,8 @@
         "Deceleration": "Замедление",
         "Motion": "Движение",
         "SquareCornerVelocity": "Угловая скорость",
-        "Velocity": "Скорость"
+        "Velocity": "Скорость",
+        "MaxAccelToDecel": "Макс. ускорение - замедление."
       },
       "PressureAdvanceSettings": {
         "Advance": "Аванс",
