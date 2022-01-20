@@ -372,7 +372,7 @@
       "FeedAmountIn": "进料量",
       "FeedrateIn": "进料速度",
       "Retract": "回抽",
-      "Extrude": "挤出"
+      "Extrude": "挤出",
       "HotendTooCold": "挤出头温度. 低于"
     },
       "MacrosPanel": {
@@ -391,9 +391,9 @@
     "KlippyStatePanel": {
       "KlippyState": "Klippy状态: ",
       "MoonrakerCannotConnect": "Moonraker 不能连接到 Klipper!",
-      "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket)."
+      "KlipperCheck": "请检查Klipper服务是否运行并且已经设置UDS(Unix Domain Socket).",
       "Restart": "重启",
-      "FirmwareRestart": "Firmware 重启",
+      "FirmwareRestart": "Firmware 重启"
     },
     "KlipperWarningsPanel": {
       "KlipperWarnings": "Klipper 警告",
@@ -521,7 +521,7 @@
         "Target": "目标温度",
         "Power": "PWM-功率",
         "Speed": "PWM-速度"
-      }
+      },
       "TempTooLow": "温度过低 {name}! (min: {min})",
       "TempTooHigh": "温度过高 {name}! (max: {max})"  
     },
@@ -610,7 +610,7 @@
       "CommittedYesterday": "昨天提交",
       "CommittedDaysAgo": "{days} 天前提交",
       "CommittedOnDate": "在 {date} 这一天提交",
-      "UpdateAll": "更新所有的零件"
+      "UpdateAll": "更新所有的零件",
       "CommitsAvailabe": "无提交有效 | {count} 提交有效 | {count} 提交有效"
     },
     "SystemPanel": {
@@ -623,7 +623,7 @@
       "Memory": "内存",
       "Constants": "常数",
       "LastStats": "最后统计",
-      "HostDetails": "主控细节"
+      "HostDetails": "主控细节",
       "Distro": "发行版"
     }
   },
@@ -811,7 +811,7 @@
       "MoveDistancesXYInMm": "移动距离 XY 毫米",
       "MoveDistancesZInMm": "移动距离 Z 毫米",
       "MoveDistancesEInMm": "移动距离 E 毫米",
-      "SpeedEInMms": "移动 E in mm/s"
+      "SpeedEInMms": "移动 E in mm/s",
       "MinimumValues": "最小值: {minimum}",
       "MaximumValues": "最大值: {maximum}",
       "MaximumValuesVisibility": "最大值 {maximum} 推荐为了最好的可视化",
