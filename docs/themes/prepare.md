@@ -21,7 +21,7 @@ The dot in the folder name means that it is a hidden folder. You will need to ac
 ![screenshot](../assets/img/customizing/screenshot-display-hidden-files.png)
 
 ## Directory structure
-The below directory and file strucutre provides an overview of files you could include.  All listed files in the `.theme` folder are optional and will only be loaded if they are provided.
+The below directory and file structure provides an overview of files you could include.  All listed files in the `.theme` folder are optional and will only be loaded if they are provided.
 {: .info}
 
 ```
