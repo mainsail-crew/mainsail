@@ -15,7 +15,7 @@ description: >-
 ## .theme folder
 You can use Mainsail's built-in file manager (`Settings > Machine`) to create the `.theme` folder.   Upload the files to this folder and edit your CSS files.
 
-The dot in the folder name means that it is a hidden folder. You will need to activate "Show Hidden Files" in your operating system.
+The dot in the folder name means that it is a hidden folder. You will need to activate "Show Hidden Files" in Mainsail's file manager.
 {: .info}
 
 ![screenshot](../assets/img/customizing/screenshot-display-hidden-files.png)
