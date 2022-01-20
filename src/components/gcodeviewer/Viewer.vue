@@ -750,11 +750,11 @@ export default class Viewer extends Mixins(BaseMixin) {
         {text: 'Feature', value: 2},
     ]
 
-    get colorMode(): string {
-        return this.$store.state.gui.gcodeViewer.colorMode ?? 2
+    get colorMode(): number {
+        return this.$store.state.gui.gcodeViewer?.colorMode ?? 2
     }
 
-    set colorMode(newVal: string) {
+    set colorMode(newVal: number) {
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
 
         if (viewer) {
