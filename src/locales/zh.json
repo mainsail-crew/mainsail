@@ -171,11 +171,8 @@
     "Delete": "删除",
     "StartJob": "开始工作",
     "DoYouWantToStartFilename": "你想要开始 {filename}?",
-    "No": "不",
-    "Yes": "是的",
     "StartPrint": "开始打印",
     "NewDirectory": "新建目录",
-    "PleaseEnterANewDirectoryName": "请输入新目录名称: ",
     "RenameFile": "重命名文件",
     "EditFile": "编辑文件",
     "Name": "文件名",
@@ -204,13 +201,12 @@
     "SuccessfullyDeleted": "成功删除 {filename}.",
     "View3D" : "打开 3D"
   },
-    "JobQueue": {
+  "JobQueue": {
     "JobQueue": "打印队列",
     "Jobs": "任务",
     "AllJobs": "所有的任务",
     "Empty": "空",
     "Delete": "删除",
-    "Resume": "恢复",
     "Pause": "暂停"
   },
     "Console": {
@@ -769,7 +765,6 @@
       "Expert": "专业",
       "NoGroups": "没有发现组...",
       "Macrogroups": "组",
-      "CreateGroup": "创建组",
       "EditGroup": "编辑组",
       "CountMacros": "没有发现宏 | {count} 宏 | {count} 宏",
       "Name": "名字",
