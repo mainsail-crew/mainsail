@@ -12,11 +12,11 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
     },
 
-    setSocket({ commit, state }, payload) {
+    async setSocket({ commit, state }, payload) {
         commit('setData', payload)
 
         if ('$socket' in Vue.prototype) {
-            Vue.prototype.$socket.close()
+            await Vue.prototype.$socket.close()
             Vue.prototype.$socket.setUrl(state.protocol+'://'+payload.hostname+':'+payload.port+'/websocket')
             Vue.prototype.$socket.connect()
         }
