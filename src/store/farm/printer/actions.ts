@@ -132,7 +132,6 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     initPrinter({ state, commit, dispatch }) {
         commit('resetData')
 
-        window.console.log(state.server)
         if (state.server.klippy_connected) {
             dispatch('sendObj', {
                 method: 'printer.objects.list',
@@ -153,8 +152,6 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     },
 
     getObjectsList({ dispatch }, payload) {
-        window.console.log('getObjectList')
-
         const allowed = [
             'webhooks',
             'print_stats',
