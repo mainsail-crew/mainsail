@@ -18,7 +18,7 @@ The original guide can be found [here](https://community.octoprint.org/t/setting
 
 ## Webcam Setup
 
-Mainsail supports an infinite number of `webcam*.txt` style configuration files. They should be placed in `/home/pi/klipper_config`. As of Mainsail 2.1, you may need to re-enable your webcam.  To enable your webcam, go to `Settings > Interface` in Mainsail.  Uncomment the following lines by removing the `#` symbol:
+MainsailOS supports an infinite number of `webcam*.txt` style configuration files. They should be placed in `/home/pi/klipper_config`. As of MainsailOS 2.1, you may need to re-enable your webcam.  To enable your webcam, go to `Settings > Interface` in Mainsail.  Uncomment the following lines by removing the `#` symbol:
 
 ```
 # camera="usb"
