@@ -32,6 +32,9 @@ export const farm: Module<FarmState, RootState> = {
                 isConnecting: false,
                 isConnected: false
             }
+        },
+        existsPrinter: (state) => (namespace: string) => {
+            return Object.keys(state).includes(namespace)
         }
     },
     actions: {
