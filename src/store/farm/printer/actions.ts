@@ -61,23 +61,27 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     break
                 }
             } else if ('result' in data) {
+                const requestIndex = state.socket.wsData.findIndex(item => item.id === data.id)
+
                 if (
-                    state.socket.wsData.filter(item => item.id === data.id).length > 0 &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== undefined &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== ''
+                    requestIndex !== -1 &&
+                    state.socket.wsData[requestIndex].action !== undefined &&
+                    state.socket.wsData[requestIndex].action !== ''
                 ) {
                     let result = data.result
                     if (result === 'ok') result = { result: result }
                     if (typeof(result) === 'string') result = { result: result }
 
                     const preload = {}
-                    const wsData = state.socket.wsData.filter(item => item.id === data.id)[0]
+                    const wsData = state.socket.wsData[requestIndex]
                     if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
                     Object.assign(preload, { requestParams: wsData.params })
                     Object.assign(preload, result)
 
                     dispatch(wsData.action, preload)
                 }
+
+                if (requestIndex !== -1) state.socket.wsData.splice(requestIndex, 1)
             }
         }
     },
