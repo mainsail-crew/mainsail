@@ -19,7 +19,10 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 isConnected: true
             })
 
-            dispatch('initPrinter')
+            dispatch('sendObj', {
+                method: 'server.info',
+                action: 'getServerInfo',
+            })
         }
 
         socket.onclose = (e) => {
@@ -47,6 +50,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         socket.onmessage = (msg) => {
             const data = JSON.parse(msg.data)
             if (data && data.method) {
+
                 switch (data.method) {
                 case 'notify_status_update':
                     dispatch('getData', data.params[0])
@@ -57,7 +61,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     break
 
                 case 'notify_klippy_ready':
-                    dispatch('initPrinter')
+                    dispatch('connectKlippy')
                     break
                 }
             } else if ('result' in data) {
@@ -81,7 +85,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     dispatch(wsData.action, preload)
                 }
 
-                if (requestIndex !== -1) state.socket.wsData.splice(requestIndex, 1)
+                if (requestIndex !== -1) commit('removeWsData', requestIndex)
             }
         }
     },
@@ -111,17 +115,30 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
     },
 
-    disconnectKlippy({ commit }) {
-        commit('setData', { print_stats: { state: 'error' }})
+    connectKlippy({ commit, dispatch }) {
+        commit('setKlippyConnected', true)
+        dispatch('initPrinter')
     },
 
-    initPrinter({ commit, dispatch }) {
+    disconnectKlippy({ commit }) {
+        commit('setKlippyConnected', false)
+    },
+
+    getServerInfo({ commit, dispatch }, payload) {
+        commit('setKlippyConnected', payload.klippy_connected)
+        dispatch('initPrinter')
+    },
+
+    initPrinter({ state, commit, dispatch }) {
         commit('resetData')
 
-        dispatch('sendObj', {
-            method: 'printer.objects.list',
-            action: 'getObjectsList',
-        })
+        window.console.log(state.server)
+        if (state.server.klippy_connected) {
+            dispatch('sendObj', {
+                method: 'printer.objects.list',
+                action: 'getObjectsList',
+            })
+        }
 
         dispatch('sendObj', {
             method: 'server.files.list',
@@ -136,6 +153,8 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     },
 
     getObjectsList({ dispatch }, payload) {
+        window.console.log('getObjectList')
+
         const allowed = [
             'webhooks',
             'print_stats',
