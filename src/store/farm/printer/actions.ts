@@ -7,7 +7,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         commit('reset')
     },
 
-    connect({ state, commit, dispatch, getters }) {
+    connect({ state, commit, dispatch, getters, rootGetters }) {
         commit('setSocketData', { isConnecting: true })
         const socket = new WebSocket(getters.getSocketUrl)
 
@@ -23,6 +23,8 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
 
         socket.onclose = (e) => {
+            if (!rootGetters['farm/existsPrinter'](state._namespace)) return
+
             if (!e.wasClean && state.socket.reconnects < state.socket.maxReconnects) {
                 commit('setSocketData', { reconnects: state.socket.reconnects + 1 })
 
@@ -39,7 +41,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
 
         socket.onerror = () => {
-            window.console.log('Farm Printer WebSocket Error')
+            window.console.error('Farm Printer WebSocket Error')
         }
 
         socket.onmessage = (msg) => {
@@ -146,7 +148,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         ]
 
         let subscripts = {}
-        payload.objects.forEach((object: string) => {
+        payload.objects?.forEach((object: string) => {
             const splits = object.split(' ')
             const objectName = splits[0]
 

@@ -17,8 +17,8 @@ export const actions: ActionTree<SocketState, RootState> = {
 
         if ('$socket' in Vue.prototype) {
             await Vue.prototype.$socket.close()
-            Vue.prototype.$socket.setUrl(state.protocol+'://'+payload.hostname+':'+payload.port+'/websocket')
-            Vue.prototype.$socket.connect()
+            await Vue.prototype.$socket.setUrl(state.protocol+'://'+payload.hostname+':'+payload.port+'/websocket')
+            await Vue.prototype.$socket.connect()
         }
     },
 
@@ -33,12 +33,8 @@ export const actions: ActionTree<SocketState, RootState> = {
             commit('server/updateManager/setStatus', { busy: false }, { root: true })
     },
 
-    onClose ({ commit }, event) {
+    onClose ({ commit }) {
         commit('setDisconnected')
-
-        if (event.wasClean) {
-            window.console.log('Socket closed clear')
-        }
     },
 
     onMessage ({ commit, dispatch }, payload) {
