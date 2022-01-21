@@ -46,7 +46,21 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     addWsData(state, payload) {
-        state.socket.wsData.push(payload)
+        const wsData = [...state.socket.wsData]
+        wsData.push(payload)
+
+        Vue.set(state.socket, 'wsData', wsData)
+    },
+
+    removeWsData(state, index) {
+        const wsData = [...state.socket.wsData]
+        wsData.splice(index, 1)
+
+        Vue.set(state.socket, 'wsData', wsData)
+    },
+
+    setKlippyConnected(state, payload) {
+        Vue.set(state.server, 'klippy_connected', payload)
     },
 
     setCurrentFile(state, payload) {
