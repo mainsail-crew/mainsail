@@ -407,7 +407,7 @@
         "Motion": "运动",
         "Velocity": "速度",
         "Acceleration": "加速度",
-        "Deceleration": "减速度",
+        "MaxAccelToDecel": "最大加速. 到减速.",
         "SquareCornerVelocity": "直角拐角速度"
       },
       "PressureAdvanceSettings": {
