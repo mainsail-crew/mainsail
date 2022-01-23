@@ -7,7 +7,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         commit('reset')
     },
 
-    connect({ state, commit, dispatch, getters }) {
+    connect({ state, commit, dispatch, getters, rootGetters }) {
         commit('setSocketData', { isConnecting: true })
         const socket = new WebSocket(getters.getSocketUrl)
 
@@ -19,10 +19,15 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 isConnected: true
             })
 
-            dispatch('initPrinter')
+            dispatch('sendObj', {
+                method: 'server.info',
+                action: 'getServerInfo',
+            })
         }
 
         socket.onclose = (e) => {
+            if (!rootGetters['farm/existsPrinter'](state._namespace)) return
+
             if (!e.wasClean && state.socket.reconnects < state.socket.maxReconnects) {
                 commit('setSocketData', { reconnects: state.socket.reconnects + 1 })
 
@@ -39,12 +44,13 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
 
         socket.onerror = () => {
-            window.console.log('Farm Printer WebSocket Error')
+            window.console.error('Farm Printer WebSocket Error')
         }
 
         socket.onmessage = (msg) => {
             const data = JSON.parse(msg.data)
             if (data && data.method) {
+
                 switch (data.method) {
                 case 'notify_status_update':
                     dispatch('getData', data.params[0])
@@ -55,27 +61,31 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                     break
 
                 case 'notify_klippy_ready':
-                    dispatch('initPrinter')
+                    dispatch('connectKlippy')
                     break
                 }
             } else if ('result' in data) {
+                const requestIndex = state.socket.wsData.findIndex(item => item.id === data.id)
+
                 if (
-                    state.socket.wsData.filter(item => item.id === data.id).length > 0 &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== undefined &&
-					state.socket.wsData.filter(item => item.id === data.id)[0].action !== ''
+                    requestIndex !== -1 &&
+                    state.socket.wsData[requestIndex].action !== undefined &&
+                    state.socket.wsData[requestIndex].action !== ''
                 ) {
                     let result = data.result
                     if (result === 'ok') result = { result: result }
                     if (typeof(result) === 'string') result = { result: result }
 
                     const preload = {}
-                    const wsData = state.socket.wsData.filter(item => item.id === data.id)[0]
+                    const wsData = state.socket.wsData[requestIndex]
                     if (wsData.actionPreload) Object.assign(preload, wsData.actionPreload)
                     Object.assign(preload, { requestParams: wsData.params })
                     Object.assign(preload, result)
 
                     dispatch(wsData.action, preload)
                 }
+
+                if (requestIndex !== -1) commit('removeWsData', requestIndex)
             }
         }
     },
@@ -105,17 +115,29 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         }
     },
 
-    disconnectKlippy({ commit }) {
-        commit('setData', { print_stats: { state: 'error' }})
+    connectKlippy({ commit, dispatch }) {
+        commit('setKlippyConnected', true)
+        dispatch('initPrinter')
     },
 
-    initPrinter({ commit, dispatch }) {
+    disconnectKlippy({ commit }) {
+        commit('setKlippyConnected', false)
+    },
+
+    getServerInfo({ commit, dispatch }, payload) {
+        commit('setKlippyConnected', payload.klippy_connected)
+        dispatch('initPrinter')
+    },
+
+    initPrinter({ state, commit, dispatch }) {
         commit('resetData')
 
-        dispatch('sendObj', {
-            method: 'printer.objects.list',
-            action: 'getObjectsList',
-        })
+        if (state.server.klippy_connected) {
+            dispatch('sendObj', {
+                method: 'printer.objects.list',
+                action: 'getObjectsList',
+            })
+        }
 
         dispatch('sendObj', {
             method: 'server.files.list',
@@ -146,7 +168,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         ]
 
         let subscripts = {}
-        payload.objects.forEach((object: string) => {
+        payload.objects?.forEach((object: string) => {
             const splits = object.split(' ')
             const objectName = splits[0]
 

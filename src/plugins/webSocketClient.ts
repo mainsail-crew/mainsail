@@ -31,8 +31,10 @@ export class WebSocketClient {
         this.store?.dispatch(eventName, event)
     }
 
-    connect(): void {
-        this.store?.dispatch('socket/setData', { isConnecting: true })
+    async connect() {
+        this.store?.dispatch('socket/setData', {
+            isConnecting: true
+        })
 
         if (this.instance) {
             this.instance.close()
@@ -44,13 +46,13 @@ export class WebSocketClient {
             this.store?.dispatch('socket/onOpen', event)
         }
 
-        this.instance.onclose = (e) => {
+        this.instance.onclose = async (e) => {
             if (!e.wasClean && this.reconnects < this.maxReconnects) {
                 this.reconnects++
                 setTimeout(() => {
                     this.connect()
                 }, this.reconnectInterval)
-            } else this.store?.dispatch('socket/onClose', e)
+            } else await this.store?.dispatch('socket/onClose', e)
         }
 
         this.instance.onerror = () => {
@@ -82,8 +84,8 @@ export class WebSocketClient {
         }
     }
 
-    close():void {
-        if (this.instance) this.instance.close()
+    async close() {
+        if (this.instance) await this.instance.close()
     }
 
     getWaitById(id: number): Wait | null {
