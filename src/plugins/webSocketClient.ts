@@ -64,7 +64,7 @@ export class WebSocketClient {
             if (this.store) {
                 const wait = this.getWaitById(data.id)
                 if (wait && wait.action !== ''){
-                    if (data.error && data.error.message) {
+                    if (data.error && data.error.message && wait.action) {
                         window.console.error('Response Error: '+wait.action+' > '+data.error.message)
                     } else if (wait.action) {
                         let result = data.result
