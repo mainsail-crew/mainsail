@@ -49,6 +49,8 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     getStatus: (state, getters) => {
         if (!state.socket.isConnected) {
             return state.socket.isConnecting ? 'Connecting...' : 'Disconnected'
+        } else if (!state.server.klippy_connected) {
+            return 'ERROR'
         } else if (state.data?.print_stats?.state) {
             if (state.data.print_stats.state === 'printing') {
                 const percent = getters['getPrintPercent']
@@ -123,6 +125,8 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     },
 
     getPrinterPreview: (state, getters) => {
+        if (!state.server.klippy_connected) return []
+
         const output = []
 
         Object.keys(state.data).filter((key) => key.startsWith('extruder')).forEach((key) => {
@@ -244,9 +248,11 @@ export const getters: GetterTree<FarmPrinterState, any> = {
     getPrinterWebcams: (state) => {
         const webcams: GuiWebcamStateWebcam[] = []
 
-        Object.keys(state.data.webcams).forEach((id: string) => {
-            webcams.push({...state.data?.webcams[id], id})
-        })
+        if (state.data.webcams) {
+            Object.keys(state.data.webcams).forEach((id: string) => {
+                webcams.push({...state.data?.webcams[id], id})
+            })
+        }
 
         return webcams
     }

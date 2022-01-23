@@ -11,6 +11,7 @@
             v-model="value"
             class="d-flex align-center"
             @click:append="resetLimit"
+            @blur="value = target"
             :label="label"
             :suffix="unit"
             :append-icon="value !== defaultValue ? 'mdi-restart' : ''"
