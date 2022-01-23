@@ -29,10 +29,11 @@ export const actions: ActionTree<ServerState, RootState> = {
 
         commit('saveDbNamespaces', payload.namespaces)
 
-        dispatch('printer/init', null, { root: true })
+        Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected'})
+        //dispatch('printer/init', null, { root: true })
     },
 
-    initServerInfo: function ({ dispatch, commit }, payload) {
+    initServerInfo({ dispatch, commit }, payload) {
         // delete old plugin entries
         if ('plugins' in payload) delete payload.plugins
         if ('failed_plugins' in payload) delete payload.failed_plugins
@@ -70,6 +71,65 @@ export const actions: ActionTree<ServerState, RootState> = {
     setKlippyReady({ dispatch }) {
         dispatch('printer/reset', null, { root: true })
         dispatch('printer/init', null, { root: true })
+    },
+
+    setKlippyDisconnected({ commit, dispatch, state }) {
+        commit('setKlippyDisconnected', null)
+        if (state.klippy_state_timer !== null) dispatch('stopKlippyStateInterval')
+        dispatch('startKlippyConnectedInterval')
+    },
+
+    setKlippyShutdown({ commit }) {
+        commit('setKlippyShutdown', null)
+    },
+
+    startKlippyConnectedInterval({ commit, state }) {
+        if (state.klippy_connected_timer === null) {
+            const timer = setInterval(() => {
+                Vue.$socket.emit('server.info', {}, { action: 'server/checkKlippyConnected'})
+            }, 2000)
+            commit('setKlippyConnectedTimer', timer)
+        }
+    },
+
+    async checkKlippyConnected({ commit, dispatch, state }, payload) {
+        if (payload.klippy_connected) {
+            if (state.klippy_connected_timer !== null) {
+                clearInterval(state.klippy_connected_timer)
+                await commit('setKlippyConnectedTimer', null)
+            }
+
+            await commit('setKlippyConnected')
+            dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
+        } else if (!payload.klippy_connected && state.klippy_connected_timer === null)
+            dispatch('startKlippyConnectedInterval')
+    },
+
+    startKlippyStateInterval({ commit, state }) {
+        if (state.klippy_state_timer === null) {
+            const timer = setInterval(() => {
+                Vue.$socket.emit('printer.info', {}, { action: 'server/checkKlippyState'})
+            }, 2000)
+            commit('setKlippyStateTimer', timer)
+        }
+    },
+
+    stopKlippyStateInterval({ commit, state }) {
+        if (state.klippy_state_timer !== null) {
+            clearInterval(state.klippy_state_timer)
+            commit('setKlippyStateTimer', null)
+        }
+    },
+
+    checkKlippyState({ commit, dispatch, state }, payload: { state: string, state_message: string | null }) {
+        commit('setKlippyState', payload.state)
+        commit('setKlippyMessage', payload.state_message)
+
+        if (payload.state !== 'ready' && state.klippy_connected && state.klippy_state_timer === null) {
+            dispatch('startKlippyStateInterval')
+        } else if (payload.state === 'ready' && state.klippy_state_timer !== null) {
+            dispatch('stopKlippyStateInterval')
+        }
     },
 
     getData({ commit }, payload){
