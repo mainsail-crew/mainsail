@@ -68,7 +68,9 @@ export const actions: ActionTree<ServerState, RootState> = {
             commit('setThrottledState', payload.throttled_state)
     },
 
-    setKlippyReady({ dispatch }) {
+    setKlippyReady({ dispatch, state }) {
+        if (state.klippy_connected_timer !== null) dispatch('stopKlippyConnectedInterval')
+        if (state.klippy_state_timer !== null) dispatch('stopKlippyStateInterval')
         dispatch('printer/reset', null, { root: true })
         dispatch('printer/init', null, { root: true })
     },
@@ -92,13 +94,16 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
+    stopKlippyConnectedInterval({ commit, state }) {
+        if (state.klippy_connected_timer !== null) {
+            clearInterval(state.klippy_connected_timer)
+            commit('setKlippyConnectedTimer', null)
+        }
+    },
+
     async checkKlippyConnected({ commit, dispatch, state }, payload) {
         if (payload.klippy_connected) {
-            if (state.klippy_connected_timer !== null) {
-                clearInterval(state.klippy_connected_timer)
-                await commit('setKlippyConnectedTimer', null)
-            }
-
+            await dispatch('stopKlippyConnectedInterval')
             await commit('setKlippyConnected')
             dispatch('checkKlippyState', { state: payload.klippy_state, state_message: null })
         } else if (!payload.klippy_connected && state.klippy_connected_timer === null)
@@ -129,6 +134,8 @@ export const actions: ActionTree<ServerState, RootState> = {
             dispatch('startKlippyStateInterval')
         } else if (payload.state === 'ready' && state.klippy_state_timer !== null) {
             dispatch('stopKlippyStateInterval')
+        } else if (payload.state === 'ready' && state.klippy_state_timer === null) {
+            dispatch('printer/init', null, { root: true })
         }
     },
 
