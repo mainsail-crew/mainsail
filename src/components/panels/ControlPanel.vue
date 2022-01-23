@@ -24,7 +24,7 @@
     <panel
         v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)"
         icon="mdi-gamepad"
-        :title="$t('Panels.ControlPanel.Headline')"
+        :title="'Toolhead Controls'"
         :collapsible="true"
         card-class="control-panel"
     >
@@ -32,7 +32,6 @@
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>
             <control-panel-bars-control v-else></control-panel-bars-control>
-            <control-panel-extruder v-if="existsExtruder"></control-panel-extruder>
         </v-container>
     </panel>
 </template>
@@ -57,10 +56,6 @@ export default class ControlPanel extends Mixins(BaseMixin) {
 
     get existsExtruder() {
         return 'extruder' in this.$store.state.printer
-    }
-
-    get boolExtrudePossible() {
-        return this.$store.getters['printer/getExtrudePossible']
     }
 }
 </script>

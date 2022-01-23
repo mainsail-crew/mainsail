@@ -7,6 +7,7 @@
         <v-card flat>
             <v-card-text>
                 <v-form ref="formControlExtruder">
+                    <v-card-title class="mx-n4">Toolhead Controls</v-card-title>
                     <settings-row :title="$t('Settings.ControlTab.Style').toString()">
                         <v-select v-model="controlStyle" :items="controlStyles" outlined dense hide-details attach></v-select>
                     </settings-row>
@@ -159,6 +160,7 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
+                    <v-card-title class="mx-n4">Extruder Controls</v-card-title>
                     <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()" :mobile-second-row="true">
                         <v-combobox
                             v-model="feedamountsE"

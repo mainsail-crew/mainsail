@@ -60,6 +60,7 @@
 import Component from 'vue-class-component'
 import {Mixins} from 'vue-property-decorator'
 import ControlPanel from '@/components/panels/ControlPanel.vue'
+import ExtruderControlPanel from '@/components/panels/ExtruderControlPanel.vue'
 import DashboardMixin from '@/components/mixins/dashboard'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import MachineSettingsPanel from '@/components/panels/MachineSettings/MachineSettingsPanel.vue'
@@ -78,6 +79,7 @@ import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
 @Component({
     components: {
         ControlPanel,
+        ExtruderControlPanel,
         KlippyStatePanel,
         MachineSettingsPanel,
         MacrogroupPanel,

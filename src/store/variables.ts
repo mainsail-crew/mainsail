@@ -101,6 +101,7 @@ export const maxGcodeHistory = 50
  */
 export const allDashboardPanels = [
     'control',
+    'extruder-control',
     'macros',
     'machine-settings',
     'miniconsole',
