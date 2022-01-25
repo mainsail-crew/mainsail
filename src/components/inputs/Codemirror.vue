@@ -23,6 +23,7 @@ import { gcode } from '@/plugins/StreamParserGcode'
 import {EditorView, keymap} from '@codemirror/view'
 import {indentWithTab} from '@codemirror/commands'
 import {json} from '@codemirror/lang-json'
+import {codeFolding, foldGutter} from '@codemirror/fold'
 
 @Component
 export default class Codemirror extends Mixins(BaseMixin) {
@@ -94,6 +95,8 @@ export default class Codemirror extends Mixins(BaseMixin) {
                     this.$emit('input', this.content)
                 }
             }),
+            foldGutter(),
+            codeFolding()
         ]
 
         if (['cfg', 'conf'].includes(this.fileExtension))
