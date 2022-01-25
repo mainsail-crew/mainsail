@@ -8,16 +8,18 @@ permalink: /update/klipper
 
 ## Klipper
 ### Update from Repository
+
+To update Klipper directly from its repository, run the following command in a terminal:
+
 ```bash
 cd ~/klipper
 git pull
 ```
 
-Restart Klipper (`sudo service klipper restart`) and check the `klippy.log`, if Klipper starts
-correctly and then continue the guide.
+Restart Klipper using the command `sudo service klipper restart` and check the `klippy.log`.  if Klipper started correctly without any errors you may continue. 
 
-### Klipper config changes
-If you have issues after update your Klipper instance, you can check config changes [here](https://github.com/KevinOConnor/klipper/blob/master/docs/Config_Changes.md).
+### Klipper configuration changes
+If you have any issues after updating your Klipper instance, you can check the configuration changes [here](https://github.com/KevinOConnor/klipper/blob/master/docs/Config_Changes.md).
 
 ---
 [< table of contents](index.md){: .btn }  [next step >](moonraker.md){: .btn}

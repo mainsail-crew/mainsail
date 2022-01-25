@@ -1,4 +1,5 @@
 {
+  "_last_update:": "09.01.2022",
   "title": "Français",
   "App": {
     "Printers": "Imprimantes",
@@ -72,6 +73,13 @@
       "Updating": "Mise à jour {software}...",
       "UpdatingDone": "Mise à jour {software} effectuée !",
       "RecoveringDone": "Restauration {software} effectuée !"
+    },
+    "Titles": {
+      "Error": "ERREUR",
+      "Pause": "Pause impression",
+      "Printing": "{percent}% imprimé - {filename}",
+      "PrintingETA": "{percent}% imprimé - TEA: {eta} - {filename}",
+      "Complete": "Terminé - {filename}"
     }
   },
   "Router": {
@@ -155,7 +163,10 @@
     "StartPrint": "Imprimer",
     "Filament": "Filament",
     "AddToQueue": "Ajouter à la queue",
-    "WrongFileUploaded": "Téléchargem,ent refusé pour {filename}. Mauvais format de fichier !"
+    "WrongFileUploaded": "Téléchargem,ent refusé pour {filename}. Mauvais format de fichier !",
+    "FilamentName": "Nom du filament",
+    "FilamentType": "Type de filament",
+    "NozzleDiameter": "Diamètre de la buze"
   },
   "Console": {
     "SetupConsole": "Configuration console",
@@ -376,7 +387,9 @@
         "Speed": "Vitesse-PWM",
         "Target": "température cible",
         "Temperature": "température actuelle"
-      }
+      },
+      "TempTooHigh": "La température de {name} est trop haute, (max: {max})",
+      "TempTooLow": "La température de {name} est trop basse, (min: {min})"
     },
     "WebcamPanel": {
       "Headline": "Caméra",
@@ -474,7 +487,11 @@
       "Bars": "Barres",
       "Circle": "Cercle",
       "Cross": "Croix",
-      "Style": "Style"
+      "Style": "Style",
+      "MaximumValues": "Valeurs maximum: {maximum}",
+      "MinimumValues": "Valeurs minimum: {minimum}",
+      "MaximumValuesVisibility": "Le maximum de {maximum} valeurs est recommandé pour la meilleure visibilité",
+      "ValueGreaterThan": "La valeur doit être supérieure à {value}"
     },
     "Edit": "Edition",
     "GeneralTab": {
@@ -660,7 +677,7 @@
       "GcodeVerboseDescription": "Si activé, les macros G-Code envoient des informations détaillées à la console.",
       "General": "Général",
       "Mode": "Mode",
-      "ModeDescription": "Choix entre les modes macro de couche (layermacro) et Hyperlapse (basé sur le temps).",
+      "ModeDescription": "Choix entre les modes Layermacro (macro de couche) et Hyperlapse (basé sur le temps).",
       "HyperlapseCycle": "Temps de cycle Hyperlapse",
       "HyperlapseCycleDescription": "Une image sera capturée chaque X secondes.",
       "OutputFramerate": "Images par seconde",
@@ -690,7 +707,7 @@
       "TimeFormatCodeDescription": "Définit comment le code horaire du fichier de sortie doit être encodé.",
       "Timelapse": "Accéléré",
       "TravelSpeed": "Vitesse de déplacement",
-      "TravelSpeedDescription": "Vitesse de déplacement pour se rendre à la position de parking et pour reprendre l'impresion.",
+      "TravelSpeedDescription": "Vitesse de déplacement pour se rendre à la position de parking et pour reprendre l'impression.",
       "VariableFps": "IPS variable",
       "VariableFpsDescription": "Si activé, le nombre d'images par seconde (IPS) sera calculé tenant compte de la taille du fichier de sortie.",
       "VariableFpsMax": "IPS variable max",
@@ -703,10 +720,12 @@
       "UnretractSpeedDescription": "Vitesse d'extrusion du filament après parking et avant reprise d'impression.",
       "ParkTime": "Temps de parking",
       "ParkTimeDescription": "Ajoute un temps aditionnel en position de parking",
-      "StreamDelayCompensation": "Dlai de compensation du flux",
+      "StreamDelayCompensation": "Délai de compensation du flux",
       "StreamDelayCompensationDescription": "Délai avant capture d'une image du flux.",
       "FwRetract": "Rétractation firmware",
-      "FwRetractDescription": "Utilisation de la rétractation firmware dans la macro \"accéléré\" (timelapse)"
+      "FwRetractDescription": "Utilisation de la rétractation firmware dans la macro \"accéléré\" (timelapse)",
+      "VariableFpsMaxDescription": "En cas d'IPS variable, nombre maximum d'images par seconde (IPS)",
+      "VariableFpsMinDescription": "En cas d'IPS variable, nombre minimum d'images par seconde (IPS)"
     }
   },
   "ConnectionDialog": {
@@ -854,7 +873,7 @@
   },
   "Timelapse": {
     "AllFiles": "Tous",
-    "Autorender": "Affichage automatique",
+    "Autorender": "Calcul automatique",
     "Cancel": "Annuler",
     "Create": "Créer",
     "CreateNewDirectory": "nouveau dossier",
@@ -885,8 +904,8 @@
     "Rename": "Renommer",
     "RenameDirectory": "Renommer le dossier",
     "RenameFile": "Renommer le fichier",
-    "Render": "afficher",
-    "RenderSettings": "Paramètres d'affichage",
+    "Render": "calculer",
+    "RenderSettings": "Paramètres de calcul de la vidéo",
     "SaveFrames": "Sauvegarde des images",
     "Search": "recherche",
     "StartRender": "affiche",
@@ -894,8 +913,8 @@
     "TargetFps": "IPS fichier",
     "Targetlength": "Taille fichier",
     "TimelapseFiles": "Fichiers vidéo",
-    "TimelapseRendering": "Affiche vidéos",
-    "TimelapseRenderingSuccessful": "Affichage réussi",
+    "TimelapseRendering": "Calcul de la vidéo",
+    "TimelapseRenderingSuccessful": "Calcul de la vidéo réussi",
     "Total": "Total",
     "Type": "Type",
     "Used": "Utilisé",

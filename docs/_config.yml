@@ -17,3 +17,6 @@ defaults:
       path: "" # an empty string here means all files in the project
     values:
       image: assets/img/rtfm.png
+      
+plugins:
+  - jekyll-redirect-from

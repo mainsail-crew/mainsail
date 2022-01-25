@@ -28,6 +28,22 @@ export const mutations: MutationTree<FileState> = {
         })
     },
 
+    setMetadataRequested(state, payload) {
+        let filename = 'gcodes/'+payload.filename
+        const dirArray = filename.split('/')
+        filename = dirArray[dirArray.length-1]
+        const path = findDirectory(state.filetree, dirArray)
+
+        const fileIndex = path?.findIndex((element: FileStateFile) => element.filename === filename)
+        if (path && fileIndex !== undefined && fileIndex !== -1) {
+            // eslint-disable-next-line
+			const currentFile = {...path[fileIndex]} as any
+            currentFile.metadataRequested = true
+
+            Vue.set(path, fileIndex, currentFile)
+        } else window.console.error('file not found in filetree: '+payload.filename)
+    },
+
     setMetadata(state, payload) {
         let filename = 'gcodes/'+payload.filename
         const dirArray = filename.split('/')
@@ -41,6 +57,7 @@ export const mutations: MutationTree<FileState> = {
             allowedMetadata.forEach((key: string) => {
                 if (key in payload) currentFile[key] = payload[key]
             })
+            currentFile.metadataRequested = true
             currentFile.metadataPulled = true
 
             Vue.set(path, fileIndex, currentFile)
@@ -65,11 +82,13 @@ export const mutations: MutationTree<FileState> = {
                     modified: modified,
                     permissions: payload.item.permissions,
                     size: payload.item.size,
+                    metadataRequested: false,
                     metadataPulled: false,
                 })
             } else {
                 parent[indexFile].modified = new Date(payload.item.modified * 1000)
                 parent[indexFile].size = payload.item.size
+                parent[indexFile].metadataRequested = false
                 parent[indexFile].metadataPulled = false
 
                 const extension = filename.substr(filename.lastIndexOf('.') + 1)

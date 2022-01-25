@@ -1,5 +1,7 @@
 <style scoped>
-
+.rename-profile {
+    text-transform: none;
+}
 </style>
 
 <template>
@@ -8,7 +10,7 @@
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
                     <template v-slot:buttons-title>
-                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
+                        <v-btn text tile color="primary" class="ml-1 d-none d-sm-inline-flex rename-profile" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh.profile_name }}</v-btn>
                     </template>
                     <template v-slot:buttons>
                         <v-btn text tile color="primary" class="d-sm-none" v-if="meshLoaded" @click="openRenameProfile()">{{ bed_mesh ? bed_mesh.profile_name : "" }}</v-btn>
@@ -225,6 +227,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private removeDialog = false
     private calibrateDialog = false
     private newName = ''
+    private oldName = ''
 
     private heightmapScale = 0.5
     private probedOpacity = 1
@@ -753,6 +756,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     openRenameProfile(): void {
         this.newName = this.bed_mesh?.profile_name ?? ''
+        this.oldName = this.bed_mesh.profile_name
         this.renameDialog = true
 
         setTimeout(() => {
@@ -762,8 +766,15 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     renameProfile(): void {
         this.renameDialog = false
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase(), type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName.toUpperCase() }, { loading: 'bedMeshRename' })
+
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE='+this.newName, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE='+this.oldName, type: 'command' })
+
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE SAVE='+this.newName }, { loading: 'bedMeshRename' })
+        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_PROFILE REMOVE='+this.oldName }, { loading: 'bedMeshRename' })
+
+        this.newName = ''
+        this.oldName = ''
     }
 
     openRemoveProfile(name: string): void {

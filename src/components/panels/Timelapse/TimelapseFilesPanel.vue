@@ -443,7 +443,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
         const filename = item.filename.slice(0, item.filename.lastIndexOf('.'))
         const preview = this.files?.find((file) => file.filename === filename+'.jpg')
         if (preview) {
-            return this.apiUrl+'/server/files/'+this.currentPath+'/'+preview.filename+'?timestamp='+preview.modified.getTime()
+            return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(preview.filename)}?timestamp=${preview.modified.getTime()}`
         }
 
         return ''
@@ -457,7 +457,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
             else if (item.filename.endsWith('zip')) {
                 this.downloadFile(item.filename)
             } else if (item.filename.endsWith('mp4')) {
-                this.videoDialogFilename =  this.currentPath + '/' + item.filename
+                this.videoDialogFilename =  encodeURI(`${this.currentPath}/${item.filename}`)
                 this.boolVideoDialog = true
             }
         }

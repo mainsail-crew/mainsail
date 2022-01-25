@@ -21,6 +21,9 @@ export const getDefaultState = (): FarmPrinterState => {
             reconnectInterval: 1000,
             wsData: [],
         },
+        server: {
+            klippy_connected: false
+        },
         data: {
             gui: getGuiDefaultState(),
             webcams: {}
