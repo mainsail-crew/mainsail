@@ -2,6 +2,13 @@
     "title": "Dansk",
     "App": {
         "Printers": "Printere",
+        "Titles": {
+            "Error": "Fejl",
+            "Pause": "Pauset",
+            "Printing": "{percent}% printet",
+            "PrintingETA": "{percent}% printet - ETA {eta}",
+            "Complete": "Færdig - {filename}"
+        },
         "TopBar": {
             "SAVE_CONFIG": "GEM KONFIGURATION",
             "UploadPrint": "Upload & Print",
@@ -9,13 +16,6 @@
             "Uploading": "Uploader",
             "UploadOfFileSuccessful": "Upload af {file} udført",
             "CannotUploadTheFile": "Kan ikke uploade filen!"
-        },
-        "Titles": {
-            "Error": "Fejl",
-            "Pause": "Pause",
-            "PrintingETA": "Print ETA",
-            "Printing": "Printer",
-            "Complete": "Færdig"
         },
         "TopCornerMenu": {
             "KlipperControl": "Klipper styring",
@@ -187,7 +187,10 @@
         "LastModified": "Sidst ændret",
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
+        "NozzleDiameter": "Nozzle diameter",
         "Filament": "Filament",
+        "FilamentName": "Filament navn",
+        "FilamentType": "Filament type",
         "FilamentUsage": "Filament forbrug",
         "FilamentWeight": "Filament vægt",
         "PrintTime": "Printtid",
@@ -199,10 +202,7 @@
         "SuccessfullyMoved": "{filename} flyttet.",
         "SuccessfullyCreated": "{filename} oprettet.",
         "SuccessfullyDeleted": "{filename} slettet.",
-        "View3D": "Vis i 3D",
-        "NozzleDiameter": "Nozzle diameter",
-        "FilamentName": "Filament navn",
-        "FilamentType": "Filament type"
+        "View3D": "Vis i 3D"
     },
     "JobQueue": {
         "JobQueue": "Jobkø",
@@ -407,7 +407,6 @@
                 "Motion": "Bevægelse",
                 "Velocity": "Hastighed (Feedrate)",
                 "Acceleration": "Acceleration",
-                "Deceleration": "Deceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne"
             },
