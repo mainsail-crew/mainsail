@@ -2,6 +2,13 @@
   "title": "Magyar",
   "App": {
     "Printers": "Nyomtatók",
+    "Titles": {
+      "Error": "HIBA",
+      "Pause": "Nyomtatás Állj",
+      "Printing": "{percent}% Nyomtatás - {filename}",
+      "PrintingETA": "{percent}% Nyomtatás - IDŐ: {eta} - {filename}",
+      "Complete": "Elkészült - {filename}"
+    },
     "TopBar": {
       "SAVE_CONFIG": "BÁLLÍTÁS MENTÉSE",
       "UploadPrint": "Feltöltés és nyomtatás",
@@ -180,9 +187,12 @@
     "LastModified": "Legutóbb módosítva",
     "ObjectHeight": "Tárgymagasság",
     "LayerHeight": "Rétegmagasság",
+    "NozzleDiameter": "Fúvóka Átmérője",
     "Filament": "Filament",
-    "FilamentUsage": "Filament felhasználás",
-    "FilamentWeight": "Filament súlya",
+    "FilamentName": "Filament Neve",
+    "FilamentType": "Filament Típus",
+    "FilamentUsage": "Filament Felhasználás",
+    "FilamentWeight": "Filament Súlya",
     "PrintTime": "Nyomtatási idő",
     "Slicer": "Slicer",
     "Downloading": "Letöltés...",
@@ -397,7 +407,7 @@
         "Motion": "Mozgás",
         "Velocity": "Gyorsaság",
         "Acceleration": "Gyorsulás",
-        "Deceleration": "Lassulás",
+        "MaxAccelToDecel": "Lassulás Max Gyorsulása",
         "SquareCornerVelocity": "Sebesség a sarkokban"
       },
       "PressureAdvanceSettings": {
@@ -801,7 +811,11 @@
       "MoveDistancesXYInMm": "XY mozgás táv. mm-ben",
       "MoveDistancesZInMm": "Z mozdítás mm-ben",
       "MoveDistancesEInMm": "E-mozgás táv. mm-ben",
-      "SpeedEInMms": "E sebessége mm/s-ban"
+      "SpeedEInMms": "E sebessége mm/s-ban",
+      "MinimumValues": "Minimum értékek: {minimum}",
+      "MaximumValues": "Maximum értékek: {maximum}",
+      "MaximumValuesVisibility": "A legjobb láthatósághoz ajánlott Maximum érték: {maximum}",
+      "ValueGreaterThan": "Az értéknek nagyobbnak kell lennie mint: {value}"
     },
     "ConsoleTab": {
       "Console": "Konzol",

@@ -5,7 +5,7 @@ parent: Quicktips
 has_children: false
 permalink: /quicktips/additional-sensors
 description: >-
-  Integrate additional sensors into the temperature graph. For example Raspberry Pi, MCU, BMExxx, HTU21D, LM75 and more..
+  You can integrate additional sensors [supported by Klipper](https://www.klipper3d.org/Config_Reference.html#temperature-sensors) into the temperature graph in Mainsail.
 ---
 
 # {{ page.title }}
@@ -13,7 +13,7 @@ description: >-
 
 ## Raspberry Pi temperature sensor
 
-Append the following section to your printer.cfg:
+Append the following section to your `printer.cfg`:
 
 ```yaml
 [temperature_sensor raspberry_pi]
@@ -24,7 +24,7 @@ max_temp: 100
 
 ## ATSAM, ATAMD, and STM32 temperature sensor
 
-Append the following section to your printer.cfg:
+Append the following section to your `printer.cfg`:
 
 ```yaml
 [temperature_sensor mcu_temp]

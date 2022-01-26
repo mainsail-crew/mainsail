@@ -50,7 +50,7 @@ import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
         ConnectionStatus,
     }
 })
-export default class TheUpdateDialog extends Mixins(BaseMixin) {
+export default class TheConnectingDialog extends Mixins(BaseMixin) {
     counter = 0
 
     get protocol() {

@@ -161,11 +161,20 @@
             </template>
         </v-snackbar>
         <v-snackbar v-model="downloadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
-            <div>
-                {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
-                <strong>{{ downloadSnackbar.filename }}</strong>
-            </div>
-            <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
+            <template v-if="downloadSnackbar.total > 0">
+                <div>
+                    {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
+                    <strong>{{ downloadSnackbar.filename }}</strong>
+                </div>
+                <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
+            </template>
+            <template v-else>
+                <div>
+                    {{ $t('GCodeViewer.Downloading') }}<br />
+                    <strong>{{ downloadSnackbar.filename }}</strong>
+                </div>
+                <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
+            </template>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto;" >
                     <v-icon class="0">mdi-close</v-icon>
@@ -294,6 +303,10 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     get excluded_objects() {
         return this.$store.state.printer.exclude_object?.excluded_objects ?? []
+    }
+
+    get nozzle_diameter() {
+        return this.$store.state.printer.configfile?.settings?.extruder?.nozzle_diameter ?? 0.4
     }
 
     async init() {
@@ -717,8 +730,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer && colors.length) {
             viewer.gcodeProcessor.resetTools()
             colors.forEach((color: string) => {
-                //Todo get nozzle size
-                viewer.gcodeProcessor.addTool(color, 0.4) //Default the nozzle to 0.4 for now.
+                viewer.gcodeProcessor.addTool(color, this.nozzle_diameter)
             })
             this.setReloadRequiredFlag()
         }
@@ -738,11 +750,11 @@ export default class Viewer extends Mixins(BaseMixin) {
         {text: 'Feature', value: 2},
     ]
 
-    get colorMode(): string {
-        return this.$store.state.gui.gcodeViewer.colorMode ?? 2
+    get colorMode(): number {
+        return this.$store.state.gui.gcodeViewer?.colorMode ?? 2
     }
 
-    set colorMode(newVal: string) {
+    set colorMode(newVal: number) {
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
 
         if (viewer) {

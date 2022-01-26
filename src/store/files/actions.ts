@@ -220,8 +220,10 @@ export const actions: ActionTree<FileState, RootState> = {
             Vue.$toast.error(payload.error.message)
         } else {
             const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/')+1)
+            const fileExtension = payload.item.path.substr(payload.item.path.lastIndexOf('.')+1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', {filename: delPath}))
+            if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
+                Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', {filename: delPath}))
         }
     },
 }

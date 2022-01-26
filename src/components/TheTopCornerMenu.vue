@@ -15,13 +15,13 @@
             <v-list dense>
                 <template v-if="klipperState !== 'disconnected'">
                     <v-subheader class="" style="height: auto;">{{ $t("App.TopCornerMenu.KlipperControl") }}</v-subheader>
-                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperRestart)">
+                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperRestart, 'klipper', 'restart')">
                         <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperRestart") }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
                         </v-list-item-action>
                     </v-list-item>
-                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperFirmwareRestart)">
+                    <v-list-item class="minheight30 pr-2" link @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')">
                         <v-list-item-title>{{ $t("App.TopCornerMenu.KlipperFirmwareRestart") }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -41,9 +41,9 @@
                             </v-tooltip>
                         </v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
-                            <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="checkDialog(serviceStart, service)"><v-icon small>mdi-play</v-icon></v-btn>
-                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service)"><v-icon small>mdi-restart</v-icon></v-btn>
-                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="checkDialog(serviceStop, service)" :style="service === 'moonraker' ? 'visibility: hidden;' : ''"><v-icon small>mdi-stop</v-icon></v-btn>
+                            <v-btn icon small v-if="getServiceState(service) === 'inactive'" @click="checkDialog(serviceStart, service, 'start')"><v-icon small>mdi-play</v-icon></v-btn>
+                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service, 'restart')"><v-icon small>mdi-restart</v-icon></v-btn>
+                            <v-btn icon small :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'" @click="checkDialog(serviceStop, service, 'stop')" :style="service === 'moonraker' ? 'visibility: hidden;' : ''"><v-icon small>mdi-stop</v-icon></v-btn>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
@@ -59,13 +59,13 @@
                 </template>
                 <v-divider class="mt-0"></v-divider>
                 <v-subheader class="pt-2" style="height: auto;">{{ $t("App.TopCornerMenu.HostControl") }}</v-subheader>
-                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostReboot)">
+                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostReboot, 'host', 'reboot')">
                     <v-list-item-title>{{ $t("App.TopCornerMenu.Reboot") }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                         <v-icon class="mr-2" small>mdi-power</v-icon>
                     </v-list-item-action>
                 </v-list-item>
-                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostShutdown)">
+                <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostShutdown, 'host', 'shutdown')">
                     <v-list-item-title>{{ $t("App.TopCornerMenu.Shutdown") }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto;">
                         <v-icon class="mr-2" small>mdi-power</v-icon>
@@ -180,27 +180,27 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
         return null
     }
 
-    checkDialog(executableFunction: any, serviceName: string | null = null) {
+    checkDialog(executableFunction: any, serviceName: string, action: string) {
         if (this.printerIsPrinting) {
-            const functionName = (executableFunction.name ?? 'unknown').replace('bound ', '')
-            let action: string = 'Restart'
-            const actionTypes = ['Start', 'Restart', 'Stop', 'Reboot', 'Shutdown']
-
-            actionTypes.forEach((actionType: string) => {
-                if (functionName.endsWith(actionType)) action = actionType
-            })
-
             this.dialogConfirmation.executableFunction = executableFunction
             this.dialogConfirmation.serviceName = serviceName
 
-            const functionNameUppercase = functionName.trim().charAt(0).toUpperCase() + functionName.trim().slice(1)
-            this.dialogConfirmation.title = this.$t('App.TopCornerMenu.ConfirmationDialog.Title.' + functionNameUppercase)+''
+            const actionUppercase = action.trim().charAt(0).toUpperCase() + action.trim().slice(1)
+            let titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase
+            let descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase
+            const buttonKey = 'App.TopCornerMenu.' + actionUppercase
 
-            if (serviceName === 'klipper' && action === 'Stop') this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperStop')+''
-            else if (serviceName === 'klipper' && action === 'Restart') this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.KlipperRestart')+''
-            else this.dialogConfirmation.description = this.$t('App.TopCornerMenu.ConfirmationDialog.Description.' + functionNameUppercase)+''
+            if (serviceName === 'klipper' && ['stop', 'restart', 'firmwareRestart'].includes(action)){
+                titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.' + (action !== 'stop' ? 'Klipper' : 'Service') + actionUppercase
+                descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase
+            } else if (serviceName === 'host') {
+                titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase
+                descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase
+            }
 
-            this.dialogConfirmation.actionButtonText = this.$t('App.TopCornerMenu.' + action.charAt(0).toUpperCase() + action.slice(1))+''
+            this.dialogConfirmation.title = this.$t(titleKey).toString()
+            this.dialogConfirmation.description = this.$t(descriptionKey).toString()
+            this.dialogConfirmation.actionButtonText = this.$t(buttonKey).toString()
             this.dialogConfirmation.show = true
         } else executableFunction(serviceName)
     }

@@ -71,6 +71,13 @@
       "RecoveringDone": "Recupero {software} completato!",
       "Updating": "Aggiornamento {software} in corso...",
       "UpdatingDone": "Aggiornamento {software} completato!"
+    },
+    "Titles": {
+      "Error": "ERRORE",
+      "Complete": "Completo - {filename}",
+      "Pause": "Pausa Stampa",
+      "Printing": "{percent}% Stampando - {filename}",
+      "PrintingETA": "{percent}% Stampando - ETA: {eta} - {filename}"
     }
   },
   "ConnectionDialog": {
@@ -157,7 +164,10 @@
     "Filament": "Filamento",
     "StartPrint": "Avvia stampa",
     "View3D": "Vedi 3D",
-    "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!"
+    "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!",
+    "FilamentName": "Nome Filamento",
+    "FilamentType": "Tipo Filamento",
+    "NozzleDiameter": "Diametro Ugello"
   },
   "Heightmap": {
     "Abort": "interrompi",
@@ -458,7 +468,9 @@
       "ShowNameInList": "Mostra {name} nell'elenco",
       "State": "Stato",
       "Target": "Obiettivo",
-      "TemperaturesInChart": "Temperatura [°C]"
+      "TemperaturesInChart": "Temperatura [°C]",
+      "TempTooHigh": "Temperatura troppo alta per {name}! (max: {max})",
+      "TempTooLow": "Temperatura troppo bassa per {name}! (min: {min})"
     },
     "WebcamPanel": {
       "All": "Tutto",
@@ -581,7 +593,11 @@
       "Bars": "Barre",
       "Circle": "Cerchio",
       "Cross": "Croce",
-      "Style": "Stile"
+      "Style": "Stile",
+      "MaximumValues": "Valori massimi: {maximum}",
+      "MinimumValues": "Valori minimi: {minimum}",
+      "ValueGreaterThan": "Il valore deve essere più grande di {value}",
+      "MaximumValuesVisibility": "Il massimo dei valori {maximum} è raccomandato per la migliore visibilità"
     },
     "DashboardTab": {
       "Dashboard": "Dashboard",

@@ -47,6 +47,7 @@
                                     dense
                                     clearable
                                     clear-icon="mdi-refresh"
+                                    @keyup.enter="sendWithParams"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
