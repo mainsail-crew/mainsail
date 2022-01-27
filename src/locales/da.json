@@ -31,25 +31,25 @@
             "Shutdown": "Luk ned",
             "Cancel": "Annuller",
             "ConfirmationDialog": {
-              "Title": {
-                "KlipperRestart": "Genstart Klipper",
-                "KlipperFirmwareRestart": "Genstart Klipper firmware",
-                "ServiceStart": "Start service",
-                "ServiceRestart": "Genstart service",
-                "ServiceStop": "Stop service",
-                "HostReboot": "Genstart vært",
-                "HostShutdown": "Luk vært ned"
-              },
-              "Description": {
-                "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
-                "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
-                "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
-                "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
-                "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
-              }
+                "Title": {
+                    "KlipperRestart": "Genstart Klipper",
+                    "KlipperFirmwareRestart": "Genstart Klipper firmware",
+                    "ServiceStart": "Start service",
+                    "ServiceRestart": "Genstart service",
+                    "ServiceStop": "Stop service",
+                    "HostReboot": "Genstart vært",
+                    "HostShutdown": "Luk vært ned"
+                },
+                "Description": {
+                    "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
+                    "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
+                    "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
+                    "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
+                    "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
+                }
             }
         },
         "UpdateDialog": {
