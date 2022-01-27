@@ -30,7 +30,7 @@
                     :extruder="selectedExtruder"
                     :hasSpinner="true"
                     :min="0"
-                    :max="1"
+                    :max="null"
                     :step="0.001"
                     :dec="3"
                     unit="mm/s"

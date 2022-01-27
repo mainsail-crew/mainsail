@@ -1,6 +1,6 @@
 {
   "name": "mainsail",
-  "version": "2.1.0-rc1",
+  "version": "2.1.0",
   "private": true,
   "decription": "a klipper web interface",
   "author": {
@@ -92,5 +92,8 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "engines": {
+    "node": "^16"
+  }
 }

@@ -1,4 +1,4 @@
-FROM node:buster AS base
+FROM node:16-buster AS base
 
 EXPOSE 8080
 
