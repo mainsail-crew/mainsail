@@ -1,20 +1,22 @@
 ---
 layout: default
-title: Logos/Icons
+title: Logos and Icons
 parent: Theming
 nav_order: 20
 permalink: /theming/favicons
 description: >-
-  Replace the default logos/icons, to quickly recognize your printers.
+  Replace the default logos and icons with your own.
 ---
 
 # {{ page.title }}
 {{ page.description }}
 
-For uploads you can use the built-in file manager. `(Settings > Machine)`
+You can use the built in file manager in `Settings > Machine` to upload your own logos and icons.  Customizing your icons can help identify your printers.
 
 ## Sidebar logo
-Just upload a logo into your .theme folder and name it `sidebar-logo.<extension>`.
+Upload a logo into your .theme folder and name it `sidebar-logo.<extension>`, where extension is one of the valid file types below.
+
+For more information on creating and uploading to your `.theme` folder, please refer to the [Customizing your theme](/theming/prepare) chapter.
 
 | Filename					| sidebar-logo				|
 | Valid file extensions		| .svg, .jpg, .png and .gif	|
@@ -30,7 +32,7 @@ Upload favicons into your .theme folder and name them `favicon-32x32.png` *(requ
 | Valid file extensions		| .png							|
 | Recommended image size	| 32x32px, 16x16px				|
 
-A hard browser refresh may be necessary (CTRL+SHIFT+F5 on windows or CMD+SHIFT+R on mac).
+A browser refresh may be necessary (CTRL+SHIFT+F5 on windows or CMD++SHIFT+R on macOS) to reload without the browser cache.
 {: .info}
 
 ![screenshot](../assets/img/customizing/screenshot-favicons.png)

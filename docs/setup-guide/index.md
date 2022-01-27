@@ -20,6 +20,6 @@ You will need to choose which way you want to install Mainsail on a Raspberry Pi
 
 ## Hosted
 
-You an also setup [remote access](../quicktips/remote-access) without installing or configuring a web server.
+You an also setup [remote access](/quicktips/remote-access) without installing or configuring a web server.
 
-You can test and review a hosted version of Mainsail at [my.mainsail.xyz](http://my.mainsail.xyz). Please read the [documentation](mainsail-hosted) for usage and configuration. 
+You can test and review a hosted version of Mainsail at [my.mainsail.xyz](http://my.mainsail.xyz). Please read the [documentation](/setup/mainsail-hosted) for usage and configuration. 

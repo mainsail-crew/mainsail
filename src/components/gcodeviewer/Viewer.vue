@@ -305,6 +305,10 @@ export default class Viewer extends Mixins(BaseMixin) {
         return this.$store.state.printer.exclude_object?.excluded_objects ?? []
     }
 
+    get nozzle_diameter() {
+        return this.$store.state.printer.configfile?.settings?.extruder?.nozzle_diameter ?? 0.4
+    }
+
     async init() {
         let canvasElement = this.$store.state.gcodeviewer?.canvasBackup ?? null
 
@@ -726,8 +730,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         if (viewer && colors.length) {
             viewer.gcodeProcessor.resetTools()
             colors.forEach((color: string) => {
-                //Todo get nozzle size
-                viewer.gcodeProcessor.addTool(color, 0.4) //Default the nozzle to 0.4 for now.
+                viewer.gcodeProcessor.addTool(color, this.nozzle_diameter)
             })
             this.setReloadRequiredFlag()
         }
@@ -747,11 +750,11 @@ export default class Viewer extends Mixins(BaseMixin) {
         {text: 'Feature', value: 2},
     ]
 
-    get colorMode(): string {
-        return this.$store.state.gui.gcodeViewer.colorMode ?? 2
+    get colorMode(): number {
+        return this.$store.state.gui.gcodeViewer?.colorMode ?? 2
     }
 
-    set colorMode(newVal: string) {
+    set colorMode(newVal: number) {
         this.$store.dispatch('gui/saveSetting', {name: 'gcodeViewer.colorMode', value: newVal})
 
         if (viewer) {
