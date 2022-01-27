@@ -4,7 +4,7 @@ title: Logos/Icons
 parent: Theming
 grand_parent: Features
 nav_order: 20
-permalink: /features/theming/favicons
+permalink: /features/theming/icons
 redirect_from:
   - /theming/favicons
 description: >-

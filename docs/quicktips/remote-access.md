@@ -2,6 +2,7 @@
 layout: default
 title: Remote Access
 parent: Quicktips
+nav_order: 20
 permalink: /quicktips/remote-access
 description: >-
   A guide to safe remote access.

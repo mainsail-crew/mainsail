@@ -2,7 +2,7 @@
 layout: default
 title: Print History and Statistics
 parent: Features
-nav_order: 30
+nav_order: 50
 has_children: false
 permalink: /features/history
 redirect_from:

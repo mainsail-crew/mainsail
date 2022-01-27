@@ -2,6 +2,7 @@
 layout: default
 title: Console Shortcuts
 parent: Features
+nav_order: 50
 has_children: false
 permalink: /features/console-shortcuts
 redirect_from:
