@@ -99,6 +99,6 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('delete', id)
         dispatch('farm/unregisterPrinter', id, { root: true })
 
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers'+id })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers.'+id })
     },
 }
