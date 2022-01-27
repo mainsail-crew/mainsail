@@ -2,6 +2,13 @@
     "title": "Dansk",
     "App": {
         "Printers": "Printere",
+        "Titles": {
+            "Error": "Fejl",
+            "Pause": "Pauset",
+            "Printing": "{percent}% printet",
+            "PrintingETA": "{percent}% printet - ETA {eta}",
+            "Complete": "Færdig - {filename}"
+        },
         "TopBar": {
             "SAVE_CONFIG": "GEM KONFIGURATION",
             "UploadPrint": "Upload & Print",
@@ -9,13 +16,6 @@
             "Uploading": "Uploader",
             "UploadOfFileSuccessful": "Upload af {file} udført",
             "CannotUploadTheFile": "Kan ikke uploade filen!"
-        },
-        "Titles": {
-            "Error": "Fejl",
-            "Pause": "Pause",
-            "PrintingETA": "Print ETA",
-            "Printing": "Printer",
-            "Complete": "Færdig"
         },
         "TopCornerMenu": {
             "KlipperControl": "Klipper styring",
@@ -31,25 +31,25 @@
             "Shutdown": "Luk ned",
             "Cancel": "Annuller",
             "ConfirmationDialog": {
-              "Title": {
-                "KlipperRestart": "Genstart Klipper",
-                "KlipperFirmwareRestart": "Genstart Klipper firmware",
-                "ServiceStart": "Start service",
-                "ServiceRestart": "Genstart service",
-                "ServiceStop": "Stop service",
-                "HostReboot": "Genstart vært",
-                "HostShutdown": "Luk vært ned"
-              },
-              "Description": {
-                "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
-                "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
-                "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
-                "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
-                "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
-              }
+                "Title": {
+                    "KlipperRestart": "Genstart Klipper",
+                    "KlipperFirmwareRestart": "Genstart Klipper firmware",
+                    "ServiceStart": "Start service",
+                    "ServiceRestart": "Genstart service",
+                    "ServiceStop": "Stop service",
+                    "HostReboot": "Genstart vært",
+                    "HostShutdown": "Luk vært ned"
+                },
+                "Description": {
+                    "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
+                    "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
+                    "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
+                    "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
+                    "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
+                }
             }
         },
         "UpdateDialog": {
@@ -187,7 +187,10 @@
         "LastModified": "Sidst ændret",
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
+        "NozzleDiameter": "Nozzle diameter",
         "Filament": "Filament",
+        "FilamentName": "Filament navn",
+        "FilamentType": "Filament type",
         "FilamentUsage": "Filament forbrug",
         "FilamentWeight": "Filament vægt",
         "PrintTime": "Printtid",
@@ -199,10 +202,7 @@
         "SuccessfullyMoved": "{filename} flyttet.",
         "SuccessfullyCreated": "{filename} oprettet.",
         "SuccessfullyDeleted": "{filename} slettet.",
-        "View3D": "Vis i 3D",
-        "NozzleDiameter": "Nozzle diameter",
-        "FilamentName": "Filament navn",
-        "FilamentType": "Filament type"
+        "View3D": "Vis i 3D"
     },
     "JobQueue": {
         "JobQueue": "Jobkø",
@@ -407,7 +407,6 @@
                 "Motion": "Bevægelse",
                 "Velocity": "Hastighed (Feedrate)",
                 "Acceleration": "Acceleration",
-                "Deceleration": "Deceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne"
             },
