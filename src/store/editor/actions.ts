@@ -125,7 +125,7 @@ export const actions: ActionTree<EditorState, RootState> = {
             dispatch('clearLoader')
             Vue.$toast.success(i18n.t('Editor.SuccessfullySaved', { filename: data.item.path }).toString())
             if (payload.restartServiceName === 'klipper') {
-                //dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
+                dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
                 Vue.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
             } else if (payload.restartServiceName !== null) {
                 Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })

@@ -6,14 +6,8 @@
         card-class="klippy-state-panel"
     >
         <template v-if="klippyIsConnected">
-            <v-card-text class="py-1 mt-2" v-if="klippy_message !== null">
+            <v-card-text class="py-1 mt-2">
                 <pre style="white-space: pre-wrap;">{{ klippy_message }}</pre>
-            </v-card-text>
-            <v-card-text v-else class="text-center py-3">
-                <v-progress-circular
-                    indeterminate
-                    color="primary"
-                ></v-progress-circular>
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
@@ -34,7 +28,7 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import {Mixins, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -43,10 +37,11 @@ import Panel from '@/components/ui/Panel.vue'
     components: {Panel, ConnectionStatus}
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
-    //private timer: number | null = null
+    private timer: number | null = null
+
 
     get klippy_message() {
-        return this.$store.state.server.klippy_message ?? null
+        return this.$store.state.server.klippy_message ?? ''
     }
 
     restart() {
@@ -57,7 +52,7 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
         this.$socket.emit('printer.firmware_restart', { }, { loading: 'firmwareRestart' })
     }
 
-    /*requestKlippyState() {
+    requestKlippyState() {
         this.$socket.emit('printer.info', {}, { action: 'printer/getInfo' })
     }
 
@@ -73,6 +68,6 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
                 this.requestKlippyState()
             }, 2000)
         }
-    }*/
+    }
 }
 </script>

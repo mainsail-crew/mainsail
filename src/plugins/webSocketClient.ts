@@ -64,9 +64,8 @@ export class WebSocketClient {
             if (this.store) {
                 const wait = this.getWaitById(data.id)
                 if (wait && wait.action !== ''){
-                    if (data.error?.message) {
-                        if (data.error?.message !== 'Klippy Disconnected')
-                            window.console.error('Response Error: '+wait.action+' > '+data.error.message)
+                    if (data.error && data.error.message) {
+                        window.console.error('Response Error: '+wait.action+' > '+data.error.message)
                     } else if (wait.action) {
                         let result = data.result
                         if (result === 'ok') result = { result: result }

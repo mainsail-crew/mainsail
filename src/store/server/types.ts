@@ -5,9 +5,7 @@ import { ServerTimelapseState } from '@/store/server/timelapse/types'
 
 export interface ServerState {
     klippy_connected: boolean
-    klippy_connected_timer: number | null
     klippy_state: string
-    klippy_state_timer: number | null
     klippy_message: string
     components: string[],
     failed_components: string[],
