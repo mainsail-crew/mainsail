@@ -1,11 +1,13 @@
 ---
 layout: default
-title: Multicam
-parent: Quicktips
+title: Webcams
+parent: Features
 has_children: false
-permalink: /quicktips/multicam
+permalink: /features/multicam
+redirect_from:
+  - /quicktips/webcams
 description: >-
-    How to setup multi Webcams with mainsailOS.
+    How to setup multiple Webcams with mainsailOS.
 ---
 
 # {{ page.title }}

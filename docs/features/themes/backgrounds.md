@@ -5,6 +5,8 @@ parent: Theming
 grand_parent: Features
 nav_order: 10
 permalink: /features/theming/backgrounds
+redirect_from:
+  - /theming/backgrounds
 description: >-
   Place some background images to give Mainsail its own look with ease.
 ---

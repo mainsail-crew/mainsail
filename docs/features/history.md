@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Print History and Statistics
-parent: Quicktips
+parent: Features
+nav_order: 30
 has_children: false
-permalink: /quicktips/history
+permalink: /features/history
+redirect_from:
+  - /quicktips/history
 description: >-
   You can view your print history and statistics in the History section of Mainsail.  
   

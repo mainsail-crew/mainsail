@@ -5,7 +5,9 @@ grand_parent: Theming
 parent: Community Themes
 nav_exclude: true
 nav_order: 150
-permalink: /theming/themes/submit
+permalink: /features/theming/themes/submit
+redirect_from:
+  - /theming/themes/submit
 description: >-
   Submit a theme! 
 ---

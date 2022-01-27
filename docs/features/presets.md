@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Presets
-parent: Quicktips
+parent: Features
+nav_order: 40
 has_children: false
-permalink: /quicktips/presets
+permalink: /features/presets
+redirect_from:
+  - /quicktips/presets
 description: >-
   Mainsail supports so-called presets. They are often used for preheat & cooldown, but also execute normal gcode.
 ---
@@ -18,7 +21,7 @@ In Mainsails interface settings you will find a section called "Preheat Presets"
 
 Enter a name for your preset, such as filament, color or other text and the temperature you wish to set the preset at. You can disable individual heaters and even specify a custom gcode for the preheat phase. The G-Code will be executed after the selected temperatures are set.
 
-![](../assets/img/quicktips/presets/preheat.png)
+![](/assets/img/quicktips/presets/preheat.png)
 
 ### Further Examples
 
@@ -27,4 +30,4 @@ You can add custom G-Code to make it easier to switch between different Z-Offset
 
 To configure the G-Code enter `SET_GCODE_OFFSET Z=0.2`, and change `0.2` to the offset you need.
 
-![](../assets/img/quicktips/presets/gcodeoffset.png)
+![](/assets/img/quicktips/presets/gcodeoffset.png)
