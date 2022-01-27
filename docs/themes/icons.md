@@ -16,7 +16,7 @@ You can use the built in file manager in `Settings > Machine` to upload your own
 ## Sidebar logo
 Upload a logo into your .theme folder and name it `sidebar-logo.<extension>`, where extension is one of the valid file types below.
 
-For more information on creating and uploading to your `.theme` folder, please refer to the [Customizing your theme](/docs/theming/prepare) chapter.
+For more information on creating and uploading to your `.theme` folder, please refer to the [Customizing your theme](/theming/prepare) chapter.
 
 | Filename					| sidebar-logo				|
 | Valid file extensions		| .svg, .jpg, .png and .gif	|
