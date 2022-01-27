@@ -15,7 +15,9 @@ import { jobQueue } from '@/store/server/jobQueue'
 export const getDefaultState = (): ServerState => {
     return {
         klippy_connected: false,
+        klippy_connected_timer: null,
         klippy_state: '',
+        klippy_state_timer: null,
         klippy_message: '',
         components: [],
         failed_components: [],
