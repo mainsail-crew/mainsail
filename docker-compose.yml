@@ -17,11 +17,15 @@ services:
       - dev_net
   npm:
     build:
-      context: ./docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile
     image: mainsail-stack-npm/1
+    env_file:
+      - .env
     volumes:
-      - ./:/home/node/mainsail
+      - ./src/:/home/node/mainsail/src
+      - ./public/:/home/node/mainsail/public
+      - ./vie-config.ts:/vite.config.ts
     container_name: mainsail-stack-npm
     ports:
       - "8080:8080"

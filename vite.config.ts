@@ -3,7 +3,11 @@ import {VitePWA} from 'vite-plugin-pwa'
 import loadVersion from 'vite-plugin-package-version'
 import {defineConfig} from 'vite'
 
-import viteComponents, {VuetifyResolver,} from 'vite-plugin-components'
+import Components from 'unplugin-vue-components/vite'
+import {
+    VuetifyResolver,
+} from 'unplugin-vue-components/resolvers'
+
 import path from 'path'
 
 // https://vitejs.dev/config/
@@ -11,8 +15,8 @@ export default defineConfig({
     plugins: [
         vue(),
         loadVersion(),
-        viteComponents({
-            customComponentResolvers: [
+        Components({
+            resolvers: [
                 VuetifyResolver(),
             ],
         }),
@@ -41,9 +45,6 @@ export default defineConfig({
             }
         }),
     ],
-    define: {
-        '__APP_VERSION__': JSON.stringify(process.env.npm_package_version),
-    },
     envPrefix: 'VUE_',
     resolve: {
         alias: {
@@ -54,5 +55,4 @@ export default defineConfig({
     server: {
         port: 8080
     }
-
 })
