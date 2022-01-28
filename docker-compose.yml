@@ -26,7 +26,7 @@ services:
       # Do not bind '.' as volume.  As we want the node modules being installed in the container
       - ./src/:/home/node/mainsail/src
       - ./public/:/home/node/mainsail/public
-      - ./vite-config.ts:/home/node/mainsail/vite.config.ts
+      - ./vite.config.ts:/home/node/mainsail/vite.config.ts
       - ./index/html:/home/node/mainsail/index.html
     container_name: mainsail-stack-npm
     ports:
