@@ -34,7 +34,8 @@
                     :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
                     @click:prepend="getAutocomplete"
                     append-icon="mdi-send"
-                    @click:append="doSend"></v-textarea>
+                    @click:append="doSend"
+                ></v-textarea>
             </v-col>
 
             <v-col class="col-auto d-flex align-center">
@@ -43,7 +44,8 @@
                     offset-y
                     :top="consoleDirection === 'shell'"
                     :close-on-content-click="false"
-                    :title="$t('Console.SetupConsole')">
+                    :title="$t('Console.SetupConsole')"
+                >
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"
                             ><v-icon>mdi-filter</v-icon></v-btn
@@ -55,14 +57,16 @@
                                 class="mt-0"
                                 v-model="hideWaitTemperatures"
                                 hide-details
-                                :label="$t('Console.HideTemperatures')"></v-checkbox>
+                                :label="$t('Console.HideTemperatures')"
+                            ></v-checkbox>
                         </v-list-item>
                         <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
                             <v-checkbox
                                 class="mt-0"
                                 v-model="hideTlCommands"
                                 hide-details
-                                :label="$t('Console.HideTimelapse')"></v-checkbox>
+                                :label="$t('Console.HideTimelapse')"
+                            ></v-checkbox>
                         </v-list-item>
                         <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
                             <v-checkbox
@@ -70,7 +74,8 @@
                                 v-model="filter.bool"
                                 @change="toggleFilter(filter)"
                                 hide-details
-                                :label="filter.name"></v-checkbox>
+                                :label="filter.name"
+                            ></v-checkbox>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -85,7 +90,8 @@
                                 ref="console"
                                 :is-mini="false"
                                 :events="events"
-                                @command-click="commandClick" />
+                                @command-click="commandClick"
+                            />
                         </overlay-scrollbars>
                     </v-card-text>
                 </v-card>

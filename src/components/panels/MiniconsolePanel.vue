@@ -15,14 +15,16 @@
         :title="$t('Panels.MiniconsolePanel.Headline')"
         :collapsible="true"
         card-class="miniconsole-panel"
-        :hideButtonsOnCollapse="true">
+        :hideButtonsOnCollapse="true"
+    >
         <template v-slot:buttons>
             <command-help-modal @onCommand="gcode = $event" :inToolbar="true"></command-help-modal>
 
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
-                :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+                :title="$t('Panels.MiniconsolePanel.SetupConsole')"
+            >
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
@@ -32,14 +34,16 @@
                             class="mt-0"
                             v-model="hideWaitTemperatures"
                             hide-details
-                            :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                            :label="$t('Panels.MiniconsolePanel.HideTemperatures')"
+                        ></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
                         <v-checkbox
                             class="mt-0"
                             v-model="hideTlCommands"
                             hide-details
-                            :label="$t('Panels.MiniconsolePanel.HideTimelapse')"></v-checkbox>
+                            :label="$t('Panels.MiniconsolePanel.HideTimelapse')"
+                        ></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
                         <v-checkbox
@@ -47,7 +51,8 @@
                             v-model="filter.bool"
                             @change="toggleFilter(filter)"
                             hide-details
-                            :label="filter.name"></v-checkbox>
+                            :label="filter.name"
+                        ></v-checkbox>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -75,7 +80,8 @@
                     :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
                     @click:prepend="getAutocomplete"
                     append-icon="mdi-send"
-                    @click:append="doSend"></v-textarea>
+                    @click:append="doSend"
+                ></v-textarea>
             </v-card-text>
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
@@ -83,12 +89,14 @@
                         <overlay-scrollbars
                             ref="miniConsoleScroll"
                             :style="'height: ' + consoleHeight + 'px;'"
-                            :options="{}">
+                            :options="{}"
+                        >
                             <console-table
                                 ref="console"
                                 :events="events"
                                 :is-mini="true"
-                                @command-click="commandClick" />
+                                @command-click="commandClick"
+                            />
                             <v-divider></v-divider>
                         </overlay-scrollbars>
                     </v-col>

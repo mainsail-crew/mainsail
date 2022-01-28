@@ -14,7 +14,8 @@
                             outlined
                             @click="deletePreset(preset.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                        >
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -47,7 +48,8 @@
                             hide-details="auto"
                             :rules="[rules.required, rules.unique]"
                             dense
-                            outlined></v-text-field>
+                            outlined
+                        ></v-text-field>
                     </settings-row>
                     <div v-for="heater of heaters" v-bind:key="heater.name">
                         <v-divider class="my-2"></v-divider>
@@ -55,7 +57,8 @@
                             <v-checkbox
                                 v-model="form.values[heater.name].bool"
                                 hide-details
-                                class="shrink mt-0"></v-checkbox>
+                                class="shrink mt-0"
+                            ></v-checkbox>
                             <v-text-field
                                 v-model="form.values[heater.name].value"
                                 hide-details="auto"
@@ -63,7 +66,8 @@
                                 suffix="°C"
                                 dense
                                 outlined
-                                hide-spin-buttons></v-text-field>
+                                hide-spin-buttons
+                            ></v-text-field>
                         </settings-row>
                     </div>
                     <div v-for="fan of temperatureFans" v-bind:key="'temperature_fan ' + fan.name">
@@ -72,7 +76,8 @@
                             <v-checkbox
                                 v-model="form.values['temperature_fan ' + fan.name].bool"
                                 hide-details
-                                class="shrink mt-0"></v-checkbox>
+                                class="shrink mt-0"
+                            ></v-checkbox>
                             <v-text-field
                                 v-model="form.values['temperature_fan ' + fan.name].value"
                                 hide-details="auto"
@@ -80,7 +85,8 @@
                                 suffix="°C"
                                 dense
                                 outlined
-                                hide-spin-buttons></v-text-field>
+                                hide-spin-buttons
+                            ></v-text-field>
                         </settings-row>
                     </div>
                     <v-divider class="my-2"></v-divider>

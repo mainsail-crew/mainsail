@@ -5,7 +5,8 @@
         :title="$t('Panels.MoonrakerStatePanel.MoonrakerWarnings')"
         :collapsible="true"
         card-class="moonraker-state-panel"
-        toolbar-color="orange darken-2">
+        toolbar-color="orange darken-2"
+    >
         <v-card-text v-if="failedComponents.length">
             <v-row>
                 <v-col>
@@ -23,7 +24,8 @@
         <v-card-text
             :class="index > 0 ? 'py-0' : 'pt-3 pb-0'"
             v-for="(warning, index) in warnings"
-            v-bind:key="warning">
+            v-bind:key="warning"
+        >
             <v-divider class="my-2" v-if="index"></v-divider>
             <p class="orange--text mb-0">{{ warning }}</p>
         </v-card-text>

@@ -32,7 +32,8 @@
                         :src="sidebarLogo"
                         style="height: 32px"
                         class="nav-logo ml-4 mr-1 d-none d-sm-flex"
-                        alt="Logo" />
+                        alt="Logo"
+                    />
                 </template>
                 <template v-else>
                     <mainsail-logo
@@ -41,7 +42,8 @@
                         class="nav-logo ml-4 mr-1 d-none d-sm-flex"
                         router
                         to="/"
-                        :ripple="false"></mainsail-logo>
+                        :ripple="false"
+                    ></mainsail-logo>
                 </template>
             </router-link>
             <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
@@ -53,7 +55,8 @@
                 ref="fileUploadAndStart"
                 :accept="validGcodeExtensions.join(', ')"
                 style="display: none"
-                @change="uploadAndStart" />
+                @change="uploadAndStart"
+            />
             <v-btn
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
@@ -63,7 +66,8 @@
                 v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
-                @click="saveConfig">
+                @click="saveConfig"
+            >
                 <v-icon class="d-md-none">mdi-content-save</v-icon
                 ><span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
@@ -79,7 +83,8 @@
                     !boolHideUploadAndPrintButton
                 "
                 :loading="loadings.includes('btnUploadAndStart')"
-                @click="btnUploadAndStart">
+                @click="btnUploadAndStart"
+            >
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon
                 ><span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
@@ -91,7 +96,8 @@
                 class="button-min-width-auto px-3 emergency-button"
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
-                @click="btnEmergencyStop">
+                @click="btnEmergencyStop"
+            >
                 <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon
                 ><span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
@@ -115,7 +121,8 @@
                 toolbar-color="error"
                 card-class="emergency-stop-dialog"
                 icon="mdi-alert-circle-outline"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

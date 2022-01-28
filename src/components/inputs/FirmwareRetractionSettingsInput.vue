@@ -24,7 +24,8 @@
             hide-spin-buttons
             hide-details
             outlined
-            dense>
+            dense
+        >
             <template v-if="hasSpinner" v-slot:append-outer>
                 <div class="_spin_button_group">
                     <v-btn
@@ -33,7 +34,8 @@
                         class="mt-n3"
                         icon
                         plain
-                        small>
+                        small
+                    >
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn @click="decrement" :disabled="value <= min || error" class="mb-n3" icon plain small>

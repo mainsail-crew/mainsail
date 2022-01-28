@@ -30,7 +30,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport">
+                                group="widescreenViewport"
+                            >
                                 <template v-for="element in widescreenLayout1">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>
@@ -70,7 +71,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport">
+                                group="widescreenViewport"
+                            >
                                 <template v-for="element in widescreenLayout2">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>
@@ -110,7 +112,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport">
+                                group="widescreenViewport"
+                            >
                                 <template v-for="element in widescreenLayout3">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>

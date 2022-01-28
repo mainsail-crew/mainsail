@@ -5,7 +5,8 @@
         :title="$t('Panels.KlipperWarningsPanel.KlipperWarnings') + ' (' + warnings.length + ')'"
         :collapsible="true"
         card-class="klipper-warnings-panel"
-        toolbar-color="orange darken-2">
+        toolbar-color="orange darken-2"
+    >
         <v-card-text :class="index > 0 ? 'py-0' : 'pt-3 pb-0'" v-for="(warning, index) in warnings" v-bind:key="index">
             <v-divider class="my-2" v-if="index"></v-divider>
             <v-row>

@@ -65,7 +65,8 @@ ul.commits {
             v-if="enableUpdateManager"
             icon="mdi-update"
             card-class="machine-update-panel"
-            :collapsible="true">
+            :collapsible="true"
+        >
             <template v-slot:buttons>
                 <v-tooltip top>
                     <template v-slot:activator="{ on, attrs }">
@@ -113,7 +114,8 @@ ul.commits {
                                                 :disabled="getBtnDisabled(value)"
                                                 class="minwidth-0 px-2 text-uppercase"
                                                 v-bind="attrs"
-                                                v-on="on">
+                                                v-on="on"
+                                            >
                                                 <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
                                                 {{ getBtnText(value) }}
                                                 <v-icon small>mdi-menu-down</v-icon>
@@ -205,7 +207,8 @@ ul.commits {
                                     color="primary"
                                     small
                                     @click="updateAll"
-                                    :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                    :disabled="['printing', 'paused'].includes(this.printer_state)"
+                                >
                                     <v-icon left>mdi-progress-upload</v-icon>
                                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                                 </v-btn>
@@ -220,7 +223,8 @@ ul.commits {
                 :title="$t('Machine.UpdatePanel.Commits')"
                 icon="mdi-update"
                 :margin-bottom="false"
-                card-class="machine-update-commits-dialog">
+                card-class="machine-update-commits-dialog"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -232,7 +236,8 @@ ul.commits {
                                     <v-timeline-item
                                         small
                                         v-for="group of commitsOverlay.groupedCommits"
-                                        v-bind:key="group.date.getTime()">
+                                        v-bind:key="group.date.getTime()"
+                                    >
                                         <v-row class="pt-0">
                                             <v-col class="pr-12">
                                                 <h3 class="caption">
@@ -249,7 +254,8 @@ ul.commits {
                                                     <li
                                                         class="commit px-3 py-2"
                                                         v-for="commit of group.commits"
-                                                        v-bind:key="commit.sha">
+                                                        v-bind:key="commit.sha"
+                                                    >
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0">
@@ -270,7 +276,8 @@ ul.commits {
                                                                     v-if="openCommits.includes(commit.sha)"
                                                                     class="caption text--secondary mb-2"
                                                                     style="white-space: pre-line"
-                                                                    v-html="commit.message"></p>
+                                                                    v-html="commit.message"
+                                                                ></p>
                                                                 <p class="caption mb-0">
                                                                     <span
                                                                         class="font-weight-bold text-decoration-none white--text"

@@ -20,7 +20,8 @@
                     <v-list-item
                         class="minheight30 pr-2"
                         link
-                        @click="checkDialog(klipperRestart, 'klipper', 'restart')">
+                        @click="checkDialog(klipperRestart, 'klipper', 'restart')"
+                    >
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -29,7 +30,8 @@
                     <v-list-item
                         class="minheight30 pr-2"
                         link
-                        @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')">
+                        @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')"
+                    >
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -87,7 +89,8 @@
                         :disabled="
                             device.status === 'error' ||
                             (device.locked_while_printing && ['printing', 'paused'].includes(printer_state))
-                        ">
+                        "
+                    >
                         <v-list-item-title>{{ device.device }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'"
@@ -136,7 +139,8 @@
                 card-class="confirm-top-corner-menu-dialog"
                 icon="mdi-alert"
                 :title="dialogConfirmation.title"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogConfirmation.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

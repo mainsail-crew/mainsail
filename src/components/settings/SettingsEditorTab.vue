@@ -5,14 +5,16 @@
                 <settings-row
                     :title="$t('Settings.EditorTab.UseEscToClose')"
                     :sub-title="$t('Settings.EditorTab.UseEscToCloseDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamicSlotWidth="true"
+                >
                     <v-switch v-model="escToClose" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.EditorTab.ConfirmUnsavedChanges')"
                     :sub-title="$t('Settings.EditorTab.ConfirmUnsavedChangesDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamicSlotWidth="true"
+                >
                     <v-switch v-model="confirmUnsavedChanges" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>

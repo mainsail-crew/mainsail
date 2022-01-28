@@ -11,7 +11,8 @@
                         hide-details
                         outlined
                         dense
-                        attach></v-select>
+                        attach
+                    ></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.EntryStyle')">
@@ -21,7 +22,8 @@
                         hide-details
                         outlined
                         dense
-                        attach></v-select>
+                        attach
+                    ></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.Height')">
@@ -32,7 +34,8 @@
                         :min="200"
                         :max="900"
                         :step="10"
-                        :label="consoleHeightTmp + 'px'"></v-slider>
+                        :label="consoleHeightTmp + 'px'"
+                    ></v-slider>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
@@ -53,7 +56,8 @@
                             outlined
                             class="minwidth-0 px-2"
                             :color="filter.bool ? 'white' : 'grey'"
-                            @click="toggleFilter(filter)">
+                            @click="toggleFilter(filter)"
+                        >
                             <v-icon small>mdi-{{ filter.bool ? 'filter' : 'filter-off' }}</v-icon>
                         </v-btn>
                         <v-btn small outlined class="ml-3" @click="editFilter(filter)">
@@ -64,7 +68,8 @@
                             outlined
                             @click="deleteFilter(filter.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                        >
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -86,7 +91,8 @@
                             hide-details="auto"
                             :rules="[rules.required, rules.unique]"
                             dense
-                            outlined></v-text-field>
+                            outlined
+                        ></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ConsoleTab.Regex')">

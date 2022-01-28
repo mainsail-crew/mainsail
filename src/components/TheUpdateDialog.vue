@@ -56,7 +56,8 @@
                                 :custom-sort="customSort"
                                 sort-by="date"
                                 :sort-desc="true"
-                                color="primary">
+                                color="primary"
+                            >
                                 <template #no-data>
                                     <div class="py-2">{{ $t('App.UpdateDialog.Empty') }}</div>
                                 </template>

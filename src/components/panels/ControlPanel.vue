@@ -26,7 +26,8 @@
         icon="mdi-gamepad"
         :title="$t('Panels.ControlPanel.Headline')"
         :collapsible="true"
-        card-class="control-panel">
+        card-class="control-panel"
+    >
         <v-container>
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>

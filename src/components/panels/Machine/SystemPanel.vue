@@ -10,7 +10,8 @@
             :title="$t('Machine.SystemPanel.SystemLoad')"
             icon="mdi-memory"
             card-class="machine-systemload-panel"
-            :collapsible="true">
+            :collapsible="true"
+        >
             <v-card-text class="px-0 py-2">
                 <div v-for="(mcu, index) of mcus" v-bind:key="mcu.name">
                     <v-divider class="my-2" v-if="index"></v-divider>
@@ -30,7 +31,8 @@
                                     v-if="
                                         mcu.tempSensor.measured_min_temp !== null &&
                                         mcu.tempSensor.measured_max_temp !== null
-                                    ">
+                                    "
+                                >
                                     <v-tooltip top>
                                         <template v-slot:activator="{ on, attrs }">
                                             <span v-bind="attrs" v-on="on"
@@ -52,7 +54,8 @@
                                 :size="55"
                                 :width="7"
                                 :value="mcu.loadPercent"
-                                :color="mcu.loadProgressColor">
+                                :color="mcu.loadProgressColor"
+                            >
                                 {{ mcu.loadPercent }}
                             </v-progress-circular>
                         </v-col>
@@ -95,7 +98,8 @@
                                     v-if="
                                         hostStats.tempSensor.measured_min_temp !== null &&
                                         hostStats.tempSensor.measured_max_temp !== null
-                                    ">
+                                    "
+                                >
                                     <v-tooltip top>
                                         <template v-slot:activator="{ on, attrs }">
                                             <span v-bind="attrs" v-on="on"
@@ -117,7 +121,8 @@
                                 :size="55"
                                 :width="7"
                                 :value="hostStats.loadPercent"
-                                :color="hostStats.loadProgressColor">
+                                :color="hostStats.loadProgressColor"
+                            >
                                 {{ hostStats.loadPercent }}
                             </v-progress-circular>
                         </v-col>
@@ -130,7 +135,8 @@
                 :title="mcuDetailsDialog.headline"
                 icon="mdi-text-box-search-outline"
                 card-class="machine-systemload-mcu-details-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -173,7 +179,8 @@
                 :title="$t('Machine.SystemPanel.HostDetails')"
                 icon="mdi-text-box-search-outline"
                 card-class="machine-systemload-host-details-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

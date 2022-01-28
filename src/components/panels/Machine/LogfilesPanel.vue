@@ -3,7 +3,8 @@
         :title="$t('Machine.LogfilesPanel.Logfiles')"
         icon="mdi-file-document-edit"
         card-class="machine-logfiles-panel"
-        :collapsible="true">
+        :collapsible="true"
+    >
         <v-card-text :class="'text-center text-lg-left py-0'">
             <v-container pb-0 px-0>
                 <v-row>
@@ -17,7 +18,8 @@
                         >
                     </v-col>
                     <v-col
-                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
+                        :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''"
+                    >
                         <v-btn
                             :href="this.apiUrl + '/server/files/moonraker.log'"
                             @click="downloadLog"

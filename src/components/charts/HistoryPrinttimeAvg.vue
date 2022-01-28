@@ -4,7 +4,8 @@
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
         style="height: 175px; width: 100%"
-        v-observe-visibility="visibilityChanged"></ECharts>
+        v-observe-visibility="visibilityChanged"
+    ></ECharts>
 </template>
 
 <script lang="ts">

@@ -27,7 +27,8 @@
         icon="mdi-thermometer-lines"
         :title="$t('Panels.ToolsPanel.Headline')"
         :collapsible="true"
-        card-class="tools-panel">
+        card-class="tools-panel"
+    >
         <template v-slot:buttons>
             <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
                 <template v-slot:activator="{ on, attrs }">
@@ -38,7 +39,8 @@
                         v-bind="attrs"
                         v-on="on"
                         :disabled="['printing', 'paused'].includes(printer_state)"
-                        class="pa-1">
+                        class="pa-1"
+                    >
                         <span class="d-none ml-1 d-md-block">{{ $t('Panels.ToolsPanel.Presets') }}</span>
                         <v-icon class="d-md-none">mdi-fire</v-icon>
                         <v-icon>mdi-menu-down</v-icon>
@@ -74,7 +76,8 @@
                 tile
                 @click="cooldown()"
                 v-if="presets.length === 0"
-                color="primary">
+                color="primary"
+            >
                 <v-icon small>mdi-snowflake</v-icon
                 ><span class="d-none ml-1 d-md-inline">{{ $t('Panels.ToolsPanel.Cooldown') }}</span>
             </v-btn>
@@ -88,14 +91,16 @@
                             class="mt-0"
                             v-model="boolTempchart"
                             hide-details
-                            :label="$t('Panels.ToolsPanel.ShowChart')"></v-checkbox>
+                            :label="$t('Panels.ToolsPanel.ShowChart')"
+                        ></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36">
                         <v-checkbox
                             class="mt-0"
                             v-model="autoscaleTempchart"
                             hide-details
-                            :label="$t('Panels.ToolsPanel.AutoscaleChart')"></v-checkbox>
+                            :label="$t('Panels.ToolsPanel.AutoscaleChart')"
+                        ></v-checkbox>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -132,11 +137,13 @@
                         <v-col
                             class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
-                            style="min-width: 75px">
+                            style="min-width: 75px"
+                        >
                             <div
                                 :style="'background-color: ' + heater.chartColor + 'cc;'"
                                 class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(heater)"></div>
+                                @click="openHeater(heater)"
+                            ></div>
                         </v-col>
                         <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
@@ -164,7 +171,8 @@
                                 :max_temp="heater.max_temp"
                                 :items="heater.presets"
                                 command="SET_HEATER_TEMPERATURE"
-                                attribute-name="HEATER"></tool-input>
+                                attribute-name="HEATER"
+                            ></tool-input>
                         </v-col>
                     </v-row>
                 </div>
@@ -186,11 +194,13 @@
                         <v-col
                             class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
-                            style="min-width: 75px">
+                            style="min-width: 75px"
+                        >
                             <div
                                 :style="'background-color: ' + fan.chartColor + 'cc;'"
                                 class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(fan)"></div>
+                                @click="openHeater(fan)"
+                            ></div>
                         </v-col>
                         <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
@@ -227,7 +237,8 @@
                                 :max_temp="fan.max_temp"
                                 :items="fan.presets"
                                 command="SET_TEMPERATURE_FAN_TARGET"
-                                attribute-name="temperature_fan"></tool-input>
+                                attribute-name="temperature_fan"
+                            ></tool-input>
                         </v-col>
                     </v-row>
                 </div>
@@ -258,11 +269,13 @@
                         <v-col
                             class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
-                            style="min-width: 75px">
+                            style="min-width: 75px"
+                        >
                             <div
                                 :style="'background-color: ' + sensor.chartColor + 'CC;'"
                                 class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(sensor)"></div>
+                                @click="openHeater(sensor)"
+                            ></div>
                         </v-col>
                         <v-col class="py-2 d-none d-md-block"><span>&nbsp;</span></v-col>
                         <v-col class="py-2 text-center">
@@ -300,7 +313,8 @@
                 :title="convertName(editHeater.name)"
                 :icon="'mdi-' + editHeater.icon"
                 card-class="tools-edit-heater-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <template v-slot:buttons>
                     <v-btn icon tile @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -320,7 +334,8 @@
                                 "
                                 hide-details
                                 class="mt-0"
-                                @change="setVisible(dataset)"></v-checkbox>
+                                @change="setVisible(dataset)"
+                            ></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-row v-for="key in Object.keys(editHeater.additionSensors)" v-bind:key="key">
@@ -330,7 +345,8 @@
                                 :label="$t('Panels.ToolsPanel.ShowNameInList', { name: key })"
                                 hide-details
                                 class="mt-0"
-                                @change="setVisibleAdditionalSensor(key)"></v-checkbox>
+                                @change="setVisibleAdditionalSensor(key)"
+                            ></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -340,7 +356,8 @@
                                 mode="hexa"
                                 :value="editHeater.color"
                                 @update:color="setChartColor"
-                                class="mx-auto"></v-color-picker>
+                                class="mx-auto"
+                            ></v-color-picker>
                         </v-col>
                     </v-row>
                 </v-card-text>

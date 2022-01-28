@@ -30,7 +30,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="mobileViewport">
+                                group="mobileViewport"
+                            >
                                 <template v-for="element in mobileLayout">
                                     <v-list-item :key="'item-mobile-' + element.name" link>
                                         <v-row>

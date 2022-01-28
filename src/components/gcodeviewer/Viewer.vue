@@ -66,7 +66,8 @@
                     @click="reloadViewer"
                     color="info"
                     class="ml-3"
-                    v-show="reloadRequired">
+                    v-show="reloadRequired"
+                >
                     <span class="d-none d-sm-block">{{ $t('GCodeViewer.ReloadRequired') }}</span>
                     <v-icon class="d-sm-none">mdi-reload-alert</v-icon>
                 </v-btn>
@@ -85,7 +86,8 @@
                             :min="0"
                             :value="zSlider"
                             class="slider-autoheight mt-3"
-                            @input="updateZSlider"></v-slider>
+                            @input="updateZSlider"
+                        ></v-slider>
                     </v-col>
                 </v-row>
                 <v-row class="mt-0 d-flex align-top">
@@ -93,7 +95,8 @@
                         <v-row>
                             <v-col
                                 order-md="2"
-                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4">
+                                class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4"
+                            >
                                 <template v-if="loadedFile === null">
                                     <v-btn
                                         @click="loadCurrentFile"
@@ -107,7 +110,8 @@
                                     <v-btn @click="tracking = !tracking" class="mr-3" v-if="showTrackingButton"
                                         ><v-icon
                                             v-html="tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'"
-                                            class="mr-2"></v-icon
+                                            class="mr-2"
+                                        ></v-icon
                                         >{{ $t('GCodeViewer.Tracking') }}</v-btn
                                     >
                                     <v-btn @click="clearLoadedFile">{{ $t('GCodeViewer.ClearLoadedFile') }}</v-btn>
@@ -121,7 +125,8 @@
                                     dense
                                     v-model="colorMode"
                                     hide-details
-                                    outlined></v-select>
+                                    outlined
+                                ></v-select>
                             </v-col>
                             <v-col order-md="3" class="col-12 col-sm-6 col-md-4">
                                 <v-select
@@ -131,7 +136,8 @@
                                     dense
                                     v-model="renderQuality"
                                     hide-details
-                                    outlined></v-select>
+                                    outlined
+                                ></v-select>
                             </v-col>
                         </v-row>
                     </v-col>
@@ -140,7 +146,8 @@
                         :offset-x="true"
                         top
                         :close-on-content-click="false"
-                        :title="$t('Files.SetupCurrentList')">
+                        :title="$t('Files.SetupCurrentList')"
+                    >
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on"
                                 ><v-icon>mdi-cog</v-icon></v-btn
@@ -152,23 +159,27 @@
                                     class="mt-0"
                                     hide-details
                                     v-model="showCursor"
-                                    :label="$t('GCodeViewer.ShowToolhead')"></v-checkbox>
+                                    :label="$t('GCodeViewer.ShowToolhead')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="showTravelMoves"
-                                    :label="$t('GCodeViewer.ShowTravelMoves')"></v-checkbox>
+                                    :label="$t('GCodeViewer.ShowTravelMoves')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item
                                 class="minHeight36"
-                                v-if="loadedFile === sdCardFilePath && printing_objects.length > 1">
+                                v-if="loadedFile === sdCardFilePath && printing_objects.length > 1"
+                            >
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="showObjectSelection"
-                                    :label="$t('GCodeViewer.ShowObjectSelection')"></v-checkbox>
+                                    :label="$t('GCodeViewer.ShowObjectSelection')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-divider></v-divider>
                             <v-list-item class="minHeight36">
@@ -176,35 +187,40 @@
                                     class="mt-0"
                                     hide-details
                                     v-model="hdRendering"
-                                    :label="$t('GCodeViewer.HDRendering')"></v-checkbox>
+                                    :label="$t('GCodeViewer.HDRendering')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="forceLineRendering"
-                                    :label="$t('GCodeViewer.ForceLineRendering')"></v-checkbox>
+                                    :label="$t('GCodeViewer.ForceLineRendering')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="transparency"
-                                    :label="$t('GCodeViewer.Transparency')"></v-checkbox>
+                                    :label="$t('GCodeViewer.Transparency')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="voxelMode"
-                                    :label="$t('GCodeViewer.VoxelMode')"></v-checkbox>
+                                    :label="$t('GCodeViewer.VoxelMode')"
+                                ></v-checkbox>
                             </v-list-item>
                             <v-list-item class="minHeight36">
                                 <v-checkbox
                                     class="mt-0"
                                     hide-details
                                     v-model="specularLighting"
-                                    :label="$t('GCodeViewer.SpecularLighting')"></v-checkbox>
+                                    :label="$t('GCodeViewer.SpecularLighting')"
+                                ></v-checkbox>
                             </v-list-item>
                         </v-list>
                     </v-menu>
@@ -215,7 +231,8 @@
                     hidden
                     multiple
                     ref="fileInput"
-                    type="file" />
+                    type="file"
+                />
             </v-card-text>
         </panel>
         <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>

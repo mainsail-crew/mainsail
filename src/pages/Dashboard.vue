@@ -7,7 +7,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-mobileLayout-' + component.name"></component>
+                        :key="'dashboard-mobileLayout-' + component.name"
+                    ></component>
                 </template>
             </v-col>
         </v-row>
@@ -18,7 +19,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-tabletLayout1-' + component.name"></component>
+                        :key="'dashboard-tabletLayout1-' + component.name"
+                    ></component>
                 </template>
             </v-col>
             <v-col class="col-6">
@@ -26,7 +28,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-tabletLayout2-' + component.name"></component>
+                        :key="'dashboard-tabletLayout2-' + component.name"
+                    ></component>
                 </template>
             </v-col>
         </v-row>
@@ -37,7 +40,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-desktopLayout1-' + component.name"></component>
+                        :key="'dashboard-desktopLayout1-' + component.name"
+                    ></component>
                 </template>
             </v-col>
             <v-col class="col-7">
@@ -45,7 +49,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-desktopLayout2-' + component.name"></component>
+                        :key="'dashboard-desktopLayout2-' + component.name"
+                    ></component>
                 </template>
             </v-col>
         </v-row>
@@ -56,7 +61,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-desktopLayout1-' + component.name"></component>
+                        :key="'dashboard-desktopLayout1-' + component.name"
+                    ></component>
                 </template>
             </v-col>
             <v-col class="col-5">
@@ -64,7 +70,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-desktopLayout2-' + component.name"></component>
+                        :key="'dashboard-desktopLayout2-' + component.name"
+                    ></component>
                 </template>
             </v-col>
             <v-col class="col-4">
@@ -72,7 +79,8 @@
                     <component
                         v-bind:is="extractPanelName(component.name)"
                         :panel-id="extractPanelId(component.name)"
-                        :key="'dashboard-desktopLayout3-' + component.name"></component>
+                        :key="'dashboard-desktopLayout3-' + component.name"
+                    ></component>
                 </template>
             </v-col>
         </v-row>

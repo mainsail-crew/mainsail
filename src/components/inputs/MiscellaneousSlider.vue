@@ -14,7 +14,8 @@
                         @click="isLocked = !isLocked"
                         plain
                         small
-                        icon>
+                        icon
+                    >
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
@@ -22,7 +23,8 @@
                     <v-icon
                         small
                         :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')"
-                        v-if="type !== 'output_pin'">
+                        v-if="type !== 'output_pin'"
+                    >
                         mdi-fan
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
@@ -47,7 +49,8 @@
                         :step="0.01"
                         :color="value < off_below && value > 0 ? 'red' : undefined"
                         @change="changeSlider"
-                        hide-details>
+                        hide-details
+                    >
                         <template v-slot:prepend>
                             <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
                         </template>

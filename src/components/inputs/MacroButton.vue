@@ -17,7 +17,8 @@
             :color="color"
             :class="paramArray.length ? 'macroWithParameters' : ''"
             :loading="loadings.includes('macro_' + macro.name)"
-            @click="doSendMacro(macro.name)">
+            @click="doSendMacro(macro.name)"
+        >
             {{ macro.name.replace(/_/g, ' ') }}
         </v-btn>
         <template v-if="paramArray.length">
@@ -41,7 +42,8 @@
                                     dense
                                     clearable
                                     clear-icon="mdi-refresh"
-                                    @keyup.enter="sendWithParams"></v-text-field>
+                                    @keyup.enter="sendWithParams"
+                                ></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row class="my-2">

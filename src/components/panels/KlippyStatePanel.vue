@@ -3,7 +3,8 @@
         v-if="klipperState !== 'ready' && socketIsConnected"
         icon="mdi-alert-circle"
         :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
-        card-class="klippy-state-panel">
+        card-class="klippy-state-panel"
+    >
         <template v-if="klippyIsConnected">
             <v-card-text class="py-1 mt-2" v-if="klippy_message !== null">
                 <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>

@@ -113,33 +113,39 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'svg' }"
-                                        style="height: 400px; width: 100%; overflow: hidden"></ECharts>
+                                        style="height: 400px; width: 100%; overflow: hidden"
+                                    ></ECharts>
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col
-                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start">
+                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start"
+                                >
                                     <v-switch
                                         v-model="scaleVisualMap"
                                         :label="$t('Heightmap.Scale')"
-                                        class="mt-0 ml-5"></v-switch>
+                                        class="mt-0 ml-5"
+                                    ></v-switch>
                                 </v-col>
                                 <v-col class="d-flex justify-center pt-0 pb-6 pb-sm-3 pr-sm-16">
                                     <v-checkbox
                                         v-model="showProbed"
                                         :label="$t('Heightmap.Probed')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0"
+                                    ></v-checkbox>
                                     <v-checkbox
                                         v-model="showMesh"
                                         :label="$t('Heightmap.Mesh')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0"
+                                    ></v-checkbox>
                                     <v-checkbox
                                         v-model="showFlat"
                                         :label="$t('Heightmap.Flat')"
                                         hide-details
-                                        class="mx-3 mt-0"></v-checkbox>
+                                        class="mx-3 mt-0"
+                                    ></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -150,7 +156,8 @@
                                     <v-checkbox
                                         v-model="wireframe"
                                         :label="$t('Heightmap.Wireframe')"
-                                        hide-details></v-checkbox>
+                                        hide-details
+                                    ></v-checkbox>
                                 </v-col>
                                 <v-col class="col-8">
                                     <v-slider
@@ -161,7 +168,8 @@
                                         :step="0.1"
                                         ticks="always"
                                         class="mt-4"
-                                        hide-details></v-slider>
+                                        hide-details
+                                    ></v-slider>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -175,7 +183,8 @@
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
                     :collapsible="true"
-                    class="mt-0">
+                    class="mt-0"
+                >
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -218,7 +227,8 @@
                     card-class="heightmap-profiles-panel"
                     icon="mdi-stack-overflow"
                     :collapsible="true"
-                    class="mt-6 mt-md-0">
+                    class="mt-6 mt-md-0"
+                >
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>
@@ -291,14 +301,16 @@
                 :title="$t('Heightmap.RenameBedMeshProfile')"
                 icon="mdi-grid"
                 card-class="heightmap-rename-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <v-card-text>
                     <v-text-field
                         :label="$t('Heightmap.Name')"
                         v-model="newName"
                         ref="inputDialogRenameHeightmapName"
                         @keyup.enter="renameProfile"
-                        required></v-text-field>
+                        required
+                    ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -312,7 +324,8 @@
                 :title="$t('Heightmap.BedMeshCalibrate')"
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
                 </v-card-text>
@@ -328,7 +341,8 @@
                 :title="$t('Heightmap.BedMeshRemove')"
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
-                :margin-bottom="false">
+                :margin-bottom="false"
+            >
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile }) }}</p>
                 </v-card-text>

@@ -30,7 +30,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="tabletViewport">
+                                group="tabletViewport"
+                            >
                                 <template v-for="element in tabletLayout1">
                                     <v-list-item :key="'item-tablet-' + element.name" link>
                                         <v-row>
@@ -70,7 +71,8 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="tabletViewport">
+                                group="tabletViewport"
+                            >
                                 <template v-for="element in tabletLayout2">
                                     <v-list-item :key="'item-tablet-' + element.name" link>
                                         <v-row>

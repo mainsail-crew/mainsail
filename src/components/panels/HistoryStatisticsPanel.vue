@@ -3,7 +3,8 @@
         icon="mdi-chart-areaspline"
         :title="$t('History.Statistics')"
         card-class="history-statistics-panel"
-        :collapsible="true">
+        :collapsible="true"
+    >
         <v-card-text class="pa-0">
             <v-row align="center">
                 <v-col class="col-12 col-sm-6 col-md-4">
