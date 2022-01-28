@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Logos/Icons
+title: Logos and Icons
 parent: Theming
 grand_parent: Features
 nav_order: 20
