@@ -5,6 +5,7 @@ import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 export interface FarmPrinterState {
     _namespace: string
     socket: FarmPrinterStateSocket
+    server: FarmPrinterStateServer
     data: {
         gui: GuiState
         webcams: {
@@ -33,4 +34,8 @@ export interface FarmPrinterStateSocket {
     reconnectInterval: number
     // eslint-disable-next-line
     wsData: any[]
+}
+
+export interface FarmPrinterStateServer {
+    klippy_connected: boolean
 }

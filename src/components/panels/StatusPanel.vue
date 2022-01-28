@@ -377,19 +377,19 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 status: ['paused'],
                 click: this.btnResumeJob
             }, {
-                text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
-                color: 'warning',
-                icon: 'mdi-selection-remove',
-                loadingName: '',
-                status: this.printing_objects.length ? ['paused', 'printing'] : [],
-                click: this.btnExcludeObject
-            }, {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),
                 color: 'error',
                 icon: 'mdi-stop',
                 loadingName: 'statusPrintCancel',
                 status: this.$store.state.gui.uiSettings.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
                 click: this.btnCancelJob
+            }, {
+                text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
+                color: 'warning',
+                icon: 'mdi-selection-remove',
+                loadingName: '',
+                status: this.printing_objects.length ? ['paused', 'printing'] : [],
+                click: this.btnExcludeObject
             }, {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
                 color: 'primary',
@@ -513,8 +513,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                     relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
                 }
 
-                if (thumbnail && 'relative_path' in thumbnail)
-                    return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+this.current_file.modified
+                if (thumbnail && 'relative_path' in thumbnail) {
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
+                }
             }
         }
 
@@ -534,8 +535,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                     relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
                 }
 
-                if (thumbnail && 'relative_path' in thumbnail)
-                    return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+this.current_file.modified
+                if (thumbnail && 'relative_path' in thumbnail) {
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
+                }
             }
         }
 

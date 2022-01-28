@@ -1,9 +1,9 @@
 <template>
     <v-row>
-        <v-col :class="showJobQueue ? 'col-8' : 'col-12'">
+        <v-col :class="(showJobQueue ? 'col-12 col-md-8 pt-0 pt-md-3 order-1 order-md-0' : 'col-12')">
             <gcodefiles-panel></gcodefiles-panel>
         </v-col>
-        <v-col v-if="showJobQueue" class="col-4">
+        <v-col v-if="showJobQueue" class="col-12 col-md-4 pb-0 pb-sm-3 order-0 order-md-1">
             <jobqueue-panel></jobqueue-panel>
         </v-col>
     </v-row>

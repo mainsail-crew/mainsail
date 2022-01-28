@@ -33,8 +33,8 @@
         :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''"
     >
-        <template v-slot:buttons v-if="printer.socket.isConnected && printer_webcams.length">
-            <v-menu :offset-y="true" title="Webcam">
+        <template v-slot:buttons>
+            <v-menu :offset-y="true" title="Webcam" v-if="showWebcamSwitch">
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
                         <v-icon small>mdi-webcam</v-icon>
@@ -72,7 +72,7 @@
                     >
                         <div v-if="printer.socket.isConnected && currentCamId !== 'off' && currentWebcam" class="webcamContainer">
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer'">
-                                <webcam-mjpegstreamer :cam-settings="currentWebcam"></webcam-mjpegstreamer>
+                                <webcam-mjpegstreamer :cam-settings="currentWebcam" :printer-url="printerUrl" :show-fps="false"></webcam-mjpegstreamer>
                             </template>
                             <template v-if="'service' in currentWebcam && currentWebcam.service === 'mjpegstreamer-adaptive'">
                                 <webcam-mjpegstreamer-adaptive :cam-settings="currentWebcam" :printer-url="printerUrl" :show-fps="false"></webcam-mjpegstreamer-adaptive>
@@ -191,6 +191,10 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
 
     get printer_preview() {
         return this.$store.getters['farm/'+this.printer._namespace+'/getPrinterPreview']
+    }
+
+    get showWebcamSwitch() {
+        return (this.printer.socket.isConnected && this.printer_webcams.length > 0)
     }
 
     get printer_webcams() {

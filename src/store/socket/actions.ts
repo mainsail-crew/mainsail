@@ -12,13 +12,13 @@ export const actions: ActionTree<SocketState, RootState> = {
         commit('setData', payload)
     },
 
-    setSocket({ commit, state }, payload) {
+    async setSocket({ commit, state }, payload) {
         commit('setData', payload)
 
         if ('$socket' in Vue.prototype) {
-            Vue.prototype.$socket.close()
-            Vue.prototype.$socket.setUrl(state.protocol+'://'+payload.hostname+':'+payload.port+'/websocket')
-            Vue.prototype.$socket.connect()
+            await Vue.prototype.$socket.close()
+            await Vue.prototype.$socket.setUrl(state.protocol+'://'+payload.hostname+':'+payload.port+'/websocket')
+            await Vue.prototype.$socket.connect()
         }
     },
 
@@ -33,12 +33,8 @@ export const actions: ActionTree<SocketState, RootState> = {
             commit('server/updateManager/setStatus', { busy: false }, { root: true })
     },
 
-    onClose ({ commit }, event) {
+    onClose ({ commit }) {
         commit('setDisconnected')
-
-        if (event.wasClean) {
-            window.console.log('Socket closed clear')
-        }
     },
 
     onMessage ({ commit, dispatch }, payload) {
@@ -52,16 +48,17 @@ export const actions: ActionTree<SocketState, RootState> = {
             break
 
         case 'notify_klippy_ready':
+            commit('server/setKlippyConnected', null, { root: true })
             dispatch('printer/reset', null, { root: true })
             dispatch('printer/init', null, { root: true })
             break
 
         case 'notify_klippy_disconnected':
-            commit('server/setKlippyDisconnected', null, { root: true })
+            dispatch('server/setKlippyDisconnected', null, { root: true })
             break
 
         case 'notify_klippy_shutdown':
-            commit('server/setKlippyShutdown', null, { root: true })
+            dispatch('server/setKlippyShutdown', null, { root: true })
             break
 
         case 'notify_proc_stat_update':

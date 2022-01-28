@@ -11,7 +11,7 @@ description: >-
 # {{ page.title }}
 {{ page.description }}
 
-Start with [prepare](/theming/prepare) to create a basic structure for your own theme, or take a look in [themes](/theming/themes) to see if there are already suitable themes from the Mainsail community.
+Start with the [Prepare](/theming/prepare) section to create a basic structure for your own theme or take a look in [themes](/theming/themes) to see if there are themes from the Mainsail community you would like to use or customize.
 
 <div class="youtube-container">
   <iframe type="text/html" src="https://www.youtube.com/embed/kbSfLQtl4tA" frameborder="0"></iframe>

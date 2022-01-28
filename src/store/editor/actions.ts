@@ -28,6 +28,8 @@ export const actions: ActionTree<EditorState, RootState> = {
         axios.get(url, {
             cancelToken: source.token,
             onDownloadProgress: (progressEvent) => {
+                const total = progressEvent.total > 0 ? progressEvent.total : (payload.size ?? 0)
+
                 let speedOutput: string = state.loaderProgress.speed
                 let lastTimestamp = state.loaderProgress.lastTimestamp
                 let lastLoaded = state.loaderProgress.lastLoaded
@@ -50,9 +52,9 @@ export const actions: ActionTree<EditorState, RootState> = {
                     direction: 'downloading',
                     speed: speedOutput,
                     loaded: progressEvent.loaded,
-                    total: progressEvent.total,
-                    lastLoaded: lastLoaded,
-                    lastTimestamp: lastTimestamp
+                    total,
+                    lastLoaded,
+                    lastTimestamp
                 })
             },
             responseType: 'blob'
@@ -123,7 +125,7 @@ export const actions: ActionTree<EditorState, RootState> = {
             dispatch('clearLoader')
             Vue.$toast.success(i18n.t('Editor.SuccessfullySaved', { filename: data.item.path }).toString())
             if (payload.restartServiceName === 'klipper') {
-                dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
+                //dispatch('server/addEvent', { message: 'FIRMWARE_RESTART', type: 'command' })
                 Vue.$socket.emit('printer.gcode.script', { script: 'FIRMWARE_RESTART' })
             } else if (payload.restartServiceName !== null) {
                 Vue.$socket.emit('machine.services.restart', { service: payload.restartServiceName })

@@ -595,8 +595,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 relative_url = item.filename.substr(0, item.filename.lastIndexOf('/')+1)
             }
 
-            if (thumbnail && 'relative_path' in thumbnail)
-                return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+item.metadata.modified
+            if (thumbnail && 'relative_path' in thumbnail) {
+                return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${item.metadata.modified}`
+            }
         }
 
         return false
@@ -616,7 +617,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             }
 
             if (thumbnail && 'relative_path' in thumbnail)
-                return this.apiUrl+'/server/files/gcodes/'+relative_url+thumbnail.relative_path+'?timestamp='+item.metadata.modified
+                return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${item.metadata.modified}`
         }
 
         return false
