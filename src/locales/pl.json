@@ -27,28 +27,28 @@
         "Start": "Start",
         "Stop": "Stop",
         "Restart": "Restart",
-        "Reboot": "Ponownie uruchom",
+        "Reboot": "Uruchom ponownie",
         "Shutdown": "Wyłącz",
         "Cancel": "Anuluj",
         "ConfirmationDialog": {
           "Title": {
             "KlipperRestart": "Restart",
-            "KlipperFirmwareRestart": "Ponownie uruchom Klipper",
+            "KlipperFirmwareRestart": "Uruchom ponownie Klippera",
             "ServiceStart": "Start usługi",
             "ServiceRestart": "Restart usługi",
             "ServiceStop": "Zatrzymaj usługę",
-            "HostReboot": "Reboot hosta",
+            "HostReboot": "Ponowne uruchomienie hosta",
             "HostShutdown": "Zatrzymanie hosta"
           },
           "Description": {
-            "KlipperStop": "Zatrzymanie zastopuje wydruk!",
-            "KlipperRestart": "Ponowne uruchomienie zastopuje wydruk!",
-            "KlipperFirmwareRestart": "Restart zastopuje wydruk!",
-            "ServiceStart": "Uruchomienie tej usługi zastopuje wydruk!",
-            "ServiceRestart": "Ponowne uruchomienie zastopuje wydruk!",
+            "KlipperStop": "Zatrzymanie Klippera zatrzyma wydruk!",
+            "KlipperRestart": "Ponowne uruchomienie zatrzyma wydruk!",
+            "KlipperFirmwareRestart": "Restart zatrzyma wydruk!",
+            "ServiceStart": "Uruchomienie tej usługi zatrzyma wydruk!",
+            "ServiceRestart": "Ponowne uruchomienie zatrzyma wydruk!",
             "ServiceStop": "Zatrzymanie tej usługi może zastopować wydruk!",
-            "HostReboot": "Ponowne uruchomienie hosta zastopuje wydruk!",
-            "HostShutdown": "Wyłączenie hosta zastopuje wydruk!"
+            "HostReboot": "Ponowne uruchomienie hosta zatrzyma wydruk!",
+            "HostShutdown": "Wyłączenie hosta zatrzyma wydruk!"
           }
         }
       },
@@ -69,16 +69,16 @@
         "TitleTemperatureLimitActive": "Aktywny limit temperatury",
         "TitlePreviouslyUnderVolted": "Poprzednio poniżej napięcia", 
         "TitlePreviouslyFrequencyCapped": "Poprzednio ograniczone taktowanie", 
-        "TitlePreviouslyThrottled": "Poprzednio Zdławione", 
+        "TitlePreviouslyThrottled": "Poprzednio zdławione", 
         "TitlePreviouslyTemperatureLimited": "Poprzednio ograniczone temperaturowo", 
         "DescriptionUnderVoltageDetected": "Zasilanie rPi poniżej 4.65V",
-        "DescriptionFrequencyCapped": "Aktualne taktowanie rPI jest aktualnie ograniczone do 1.2 GHz.",
+        "DescriptionFrequencyCapped": "Taktowanie rPi ograniczone do 1.2 GHz.",
         "DescriptionCurrentlyThrottled": "Częstotliwość rdzeni rPi jest aktualnie obniżona.", 
         "DescriptionTemperatureLimitActive": "Temperatura rPi (wyłącznie 3A+/3B+) jest aktualnie powyżej ograniczeń programowych (domyślnie 60C).",
-        "DescriptionPreviouslyUnderVolted": "Zasilanie rPi było poniżej 4.65V conajmniej raz od ostatniego włączenia.",
-        "DescriptionPreviouslyFrequencyCapped": "Taktowanie rPi było conajmniej raz ograniczone do 1.2 GHz od ostatniego włączenia.",
-        "DescriptionPreviouslyThrottled": "Rdzenie rPi były conajmniej raz obniżone od ostatniego włączenia.", 
-        "DescriptionPreviouslyTemperatureLimited": "Temperatura rPi (wyłącznie 3A+/3B+) przekraczała conajmniej raz 60C od ostatniego uruchomienia."
+        "DescriptionPreviouslyUnderVolted": "Zasilanie rPi było poniżej 4.65V co najmniej raz od ostatniego włączenia.",
+        "DescriptionPreviouslyFrequencyCapped": "Taktowanie rPi było ograniczone co najmniej raz do 1.2 GHz od ostatniego włączenia.",
+        "DescriptionPreviouslyThrottled": "Rdzenie rPi były co najmniej raz obniżone od ostatniego włączenia.", 
+        "DescriptionPreviouslyTemperatureLimited": "Temperatura rPi (wyłącznie 3A+/3B+) przekraczała co najmniej raz 60C od ostatniego uruchomienia."
       }
     },
     "EmergencyStopDialog": {
@@ -114,8 +114,8 @@
         "HostnameRequired": "Hostname jest wymagany",
         "HostnameInvalid": "Nieprawidłowy Hostname/ip",
         "PortRequired": "Port jest wymagany",
-        "Hello": "Cześć , witaj w zdalnym połączeniu z Mainsailem!",
-        "RememberToAdd": "Pamiętaj aby dodać {cors} w moonraker.conf wewnątrz 'cors_domains'.",
+        "Hello": "Witaj w zdalnym połączeniu z Mainsailem!",
+        "RememberToAdd": "Pamiętaj , aby dodać {cors} w moonraker.conf wewnątrz 'cors_domains'.",
         "YouCanFindMore": "Możesz znaleźć więcej szczegółów w"
     },
     "Router": {
@@ -123,7 +123,7 @@
       "Printers": "Drukarki",
       "Webcam": "Kamera internetowa",
       "Console": "Konsola poleceń",
-      "Heightmap": "Hipsometria", 
+      "Heightmap": "Mapa stołu", 
       "G-Code Files": "Pliki G-Code",
       "History": "Historia",
       "Timelapse": "Timelapse",
@@ -133,7 +133,7 @@
     "Editor": {
       "Minimap": "Pokaż minimapę",
       "Downloading": "Pobieranie",
-      "Uploading": "Wysyłanie",
+      "Uploading": "Wgrywanie",
       "ConfigReference": "Wzór konfiguracji", 
       "SaveRestart": "Zapisz i uruchom ponownie",
       "SaveClose": "Zapisz i zamknij",
@@ -170,7 +170,7 @@
       "Rename": "Zmień nazwę",
       "Delete": "Usuń",
       "StartJob": "Start pracy",
-      "DoYouWantToStartFilename": "Chcesz rozpocząć druk {filename}?",
+      "DoYouWantToStartFilename": "Czy chcesz rozpocząć druk {filename}?",
       "StartPrint": "Start druku",
       "NewDirectory": "Nowy katalog",
       "RenameFile": "Zmiana nazwy pliku",
@@ -180,7 +180,7 @@
       "Create": "Stwórz",
       "RenameDirectory": "Zmiana nazwy katalogu",
       "DeleteDirectory": "Usuwanie katalogu",
-      "DeleteDirectoryQuestion": "Na pewno chcesz usunąć katalog \"{name}\" z całą jej zawartością?",
+      "DeleteDirectoryQuestion": "Czy na pewno chcesz usunąć katalog \"{name}\" z całą jej zawartością?",
       "Uploading": "Wgrywanie",
       "CurrentPath": "Aktualna ścieżka",
       "Filesize": "Rozmiar pliku",
@@ -205,7 +205,7 @@
       "View3D" : "Zobacz w 3D"
     },
     "JobQueue": {
-      "JobQueue": "Kolejka wydruku",
+      "JobQueue": "Kolejka wydruków",
       "Jobs": "Wydruki",
       "AllJobs": "Wszystkie wydruki",
       "Empty": "Puste",
@@ -215,14 +215,14 @@
     },
     "Console": {
       "SetupConsole": "Konsola ustawień", 
-      "SendCode": "Wysyłanie pliku...",
+      "SendCode": "Wgrywanie pliku...",
       "Empty": "Puste",
       "HideTemperatures": "Ukryj temperatury",
       "HideTimelapse": "Ukryj timelapse",
       "CommandList": "Lista komend"
     },
     "Heightmap": {
-      "Heightmap": "Mapa hipsometryczna", 
+      "Heightmap": "Mapa stołu", 
       "ErrorKlipperNotReady": "Klipper nie jest gotowy. Mapa stołu wyłączona", 
       "NoProfile": "Brak profili",
       "TitleHomeAll": "Pozycja zerowa wszystkich osi",
@@ -381,7 +381,7 @@
       },
       "DependenciesPanel": {
         "Dependency": "Zależność | Zależności",
-        "DependencyDescription": "Twoja aktualna {name} wersja nie wspiera wszystkich funkcji Mainsaila. Zaktualizuj {name} do wersji conajmniej {neededVersion}."
+        "DependencyDescription": "Twoja aktualna {name} wersja nie wspiera wszystkich funkcji Mainsaila. Zaktualizuj {name} do wersji co najmniej {neededVersion}."
       },
       "FarmPrinterPanel": {
         "WebcamOff": "Wyłącz",
@@ -391,7 +391,7 @@
       "KlippyStatePanel": {
         "KlippyState": "Status Klippera",
         "MoonrakerCannotConnect": "Moonraker nie może połączyć się z Klipperem!",
-        "KlipperCheck": "Sprawdź , czy Klipper jest uruchomiony oraz czy UDS (Unix Domain Socket) jest skonfigurowany.",
+        "KlipperCheck": "Sprawdź , czy Klipper jest uruchomiony oraz czy UDS (Unix Domain Socket) został skonfigurowany poprawnie.",
         "Restart": "Ponowne uruchomienie",
         "FirmwareRestart": "Ponowne uruchomienie oprogramowania"
       },
@@ -699,7 +699,7 @@
         "StreamDelayCompensationDescription": "Ulepszenie jakości timelapse",
         "PreviewImage": "Podgląd obrazu",
         "PreviewImageDescription": "Zapisz podglądowy obraz z taką samą nazwą jak film",
-        "GcodeVerbose": "Wysyłanie informacji z G-Code do konsoli",
+        "GcodeVerbose": "Wgrywanie informacji z G-Code do konsoli",
         "GcodeVerboseDescription": "Jeżeli włączone , makra G-Code będzie wysyłał informacje do konsoli.",
         "Parkhead": "Parkuj głowicę",
         "ParkheadDescription": "Jeżeli włączone , głowica będzie parkowana przed uchwyceniem klatki.",
@@ -844,7 +844,7 @@
         "EditHeadline": "Edytuj preset",
         "Name": "Nazwa",
         "CustomGCode": "Własny G-Code",
-        "PresetInfo": "Musisz conajmniej podać temperaturę , albo dodać G-Code.",
+        "PresetInfo": "Musisz co najmniej podać temperaturę , albo dodać G-Code.",
         "StoreButton": "Zapisz preset",
         "UpdateButton": "Zaktualizuj preset",
         "EditCooldown": "Edytuj czas przerw",
