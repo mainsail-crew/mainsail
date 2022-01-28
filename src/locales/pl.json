@@ -369,7 +369,7 @@
         "Z": "Z",
         "PleaseConfigureSteps": "Proszę skonfigurować kroki",
         "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
-        "FeedAmountIn": "Ilość wejścia filamentu",
+        "FeedAmountIn": "Ilość wej. filamentu",
         "FeedrateIn": "Tempo filamentu",
         "Retract": "Retrakcja",
         "Extrude": "Wytłocz",
@@ -513,8 +513,8 @@
         "Min": "Min.",
         "Max": "Maks.",
         "Avg": "Śred.",
-        "ShowNameInChart": "Pokaż {name} w wykresie",
-        "ShowNameInList": "Pokaż {name} w liście",
+        "ShowNameInChart": "Pokaż {name} na wykresie",
+        "ShowNameInList": "Pokaż {name} na liście",
         "TemperaturesInChart": "Temperatura [°C]",
         "Dataset": {
           "Temperature": "aktualną temperaturę",
@@ -588,7 +588,7 @@
         "EndstopInfo": "Naciśnij synchronizację w prawym narożniku żeby załadować aktualny status krańcówki."
       },
       "LogfilesPanel": {
-        "Logfiles": "Pliki dziennikowe"
+        "Logfiles": "Pliki logów"
       },
       "UpdatePanel": {
         "UpdateManager": "Menadżer aktualizacji",
@@ -790,9 +790,9 @@
         "NoAvailableMacros": "Brak dostępnych makr.",
         "UnknownGroup": "Nieznana grupa.",
         "ChangeMacroColor": "Zmień kolor przycisku.",
-        "ShowInStateStandby": "Pokaż/ukryj kiedy drukarka jest w stanie spoczynku.",
-        "ShowInStatePaused": "Pokaż/ukryj kiedy drukowanie jest zpauzowane.",
-        "ShowInStatePrinting": "Pokaż/ukryj kiedy drukarka drukuje.",
+        "ShowInStateStandby": "Pokaż/ukryj gdy drukarka jest w stanie spoczynku.",
+        "ShowInStatePaused": "Pokaż/ukryj gdy drukowanie jest zpauzowane.",
+        "ShowInStatePrinting": "Pokaż/ukryj gdy drukarka drukuje.",
         "DeleteMacroFromGroup": "Usuń makro z grupy.",
         "DeletedMacro": "Usunięto makro."
       },
