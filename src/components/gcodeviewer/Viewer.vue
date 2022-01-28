@@ -244,7 +244,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     @Ref('fileInput') fileInput!: HTMLInputElement
     //@Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLElement
 
-    $refs!: {
+    $refs_fault!: {
         viewerCanvasContainer: HTMLElement
     }
 

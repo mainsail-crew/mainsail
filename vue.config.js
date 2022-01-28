@@ -10,6 +10,7 @@ const version = JSON.parse(packageJson).version || 0
 module.exports = {
     productionSourceMap: false,
     transpileDependencies: [ 'vuetify' ],
+    lintOnSave: process.env.NODE_ENV !== 'production',
     pluginOptions: {
         i18n: {
             locale: 'en',

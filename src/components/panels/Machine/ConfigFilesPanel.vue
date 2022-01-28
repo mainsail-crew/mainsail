@@ -354,7 +354,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     formatDate = formatDate
 
-    $refs!: {
+    $refs_fault!: {
         fileUpload: HTMLInputElement,
         inputDialogCreateFileName: HTMLInputElement,
         inputDialogRenameFileName: HTMLInputElement,

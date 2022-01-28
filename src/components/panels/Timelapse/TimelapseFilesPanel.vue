@@ -277,7 +277,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     sortFiles = sortFiles
 
-    $refs!: {
+    $refs_fault!: {
         inputFieldRenameFile: any,
         inputFieldCreateDirectory: any,
         inputFieldRenameDirectory: any,

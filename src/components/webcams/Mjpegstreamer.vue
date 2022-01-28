@@ -46,7 +46,7 @@ export default class Mjpegstreamer extends Mixins(BaseMixin) {
 
     @Prop({ default: true }) showFps!: boolean
 
-    $refs!: {
+    $refs_fault!: {
         canvas: HTMLCanvasElement,
         image: HTMLImageElement,
     }

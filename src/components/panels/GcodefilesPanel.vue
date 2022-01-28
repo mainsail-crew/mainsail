@@ -452,7 +452,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     formatPrintTime = formatPrintTime
     sortFiles = sortFiles
 
-    $refs!: {
+    $refs_fault!: {
         fileUpload: HTMLInputElement,
         inputFieldRenameFile: HTMLInputElement,
         inputFieldCreateDirectory: HTMLInputElement,

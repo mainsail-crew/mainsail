@@ -98,11 +98,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
     private lastCommandNumber: number | null = null
     private items = []
 
-    $refs!: {
-        gcodeCommandField: VTextareaType,
-        console: ConsoleTable,
-        consoleScroll: any
-    }
+    // $refs_fault!: {
+    //     gcodeCommandField: VTextareaType,
+    //     console: ConsoleTable,
+    //     consoleScroll: any
+    // }
 
     get helplist(): CommandHelp[] {
         return this.$store.state.printer.helplist ?? []

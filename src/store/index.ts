@@ -19,8 +19,8 @@ Vue.use(Vuex)
 
 export const getDefaultState = (): RootState => {
     return {
-        packageVersion: process.env.PACKAGE_VERSION || '0.0.0',
-        debugMode: process.env.VUE_APP_DEBUG_MODE || false,
+        packageVersion: import.meta.env.PACKAGE_VERSION || '0.0.0',
+        debugMode: import.meta.env.VUE_APP_DEBUG_MODE || false,
         naviDrawer: null,
     }
 }

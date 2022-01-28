@@ -213,7 +213,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     private mainsailKeys: { name: string, label: string}[] = []
     private availableNamespaces: string[] = []
 
-    $refs!: {
+    $refs_fault!: {
         uploadBackupFile: HTMLInputElement
     }
 

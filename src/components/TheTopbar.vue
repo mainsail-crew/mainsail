@@ -171,9 +171,6 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    $refs!: {
-        fileUploadAndStart: HTMLFormElement
-    }
 
     get naviDrawer() {
         return this.$store.state.naviDrawer

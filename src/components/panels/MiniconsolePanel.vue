@@ -100,10 +100,10 @@ import Panel from '@/components/ui/Panel.vue'
     }
 })
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
-    $refs!: {
-        gcodeCommandField: VTextareaType,
-        console: ConsoleTable,
-        miniConsoleScroll: any
+    $refs_fault!: {
+        // gcodeCommandField: VTextareaType,
+        // console: ConsoleTable,
+        // miniConsoleScroll: any
     }
 
     private gcode = ''

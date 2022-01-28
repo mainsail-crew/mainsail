@@ -30,7 +30,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
     private codemirror: null | EditorView = null
     private cminstance: null | EditorView = null
 
-    $refs!: {
+    $refs_fault!: {
         codemirror: HTMLElement
     }
 

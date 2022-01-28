@@ -40,7 +40,7 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private request_time_smoothing = 0.1
     private currentFPS = 0
 
-    $refs!: {
+    $refs_fault!: {
         mjpegstreamerAdaptive: any
     }
 

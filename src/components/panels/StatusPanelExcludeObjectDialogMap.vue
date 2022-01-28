@@ -74,7 +74,7 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
 
     @Prop({ required: false, default: '' }) readonly hoverName!: string
 
-    $refs!: {
+    $refs_fault!: {
         tooltipObjectMap: HTMLDivElement
     }
 

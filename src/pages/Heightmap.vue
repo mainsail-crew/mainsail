@@ -216,7 +216,7 @@ interface HeightmapSerie {
 })
 export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
-    $refs!: {
+    $refs_fault!: {
         // eslint-disable-next-line
         heightmap: any,
         inputDialogRenameHeightmapName: HTMLInputElement,
