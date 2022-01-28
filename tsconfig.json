@@ -12,7 +12,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env",
+      "vite/client",
       "vuetify",
       "@intlify/vite-plugin-vue-i18n/client"
     ],

@@ -7,7 +7,7 @@
     "name": "Stefan Dej"
   },
   "scripts": {
-    "serve": "vite preview",
+    "serve": "vite dev",
     "build": "vite build  && npm run build.zip",
     "production": "vite build --mode=prod  && npm run build.zip",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore --fix",
@@ -74,6 +74,7 @@
     "typescript": "^4.5.5",
     "vite": "^2.7.13",
     "vite-plugin-components": "^0.13.3",
+    "vite-plugin-package-version": "^1.0.2",
     "vite-plugin-pwa": "^0.11.13",
     "vite-plugin-vue2": "^1.9.3",
     "vue-debounce-decorator": "^1.0.1",
