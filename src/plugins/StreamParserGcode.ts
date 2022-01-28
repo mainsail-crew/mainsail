@@ -8,9 +8,12 @@ export const gcode = {
 
         /* Klipper macro attributes */
         if (stream.pos > zeroPos && state.klipperMacro) {
-            if (stream.match(/^\s*[A-Z_]+/))
+            stream.eatSpace()
+            if (stream.match(/^".*"/)) {
+                return 'string'
+            } else if (stream.match(/^[A-Z_]+/))
                 return 'propertyName'
-            else if (stream.match(/^\s*[A-Za-z0-9_]+/))
+            else if (stream.match(/^[A-Za-z0-9_]+/))
                 return 'number'
             else if (stream.match(/^{.*}/))
                 return 'variable'
@@ -46,7 +49,7 @@ export const gcode = {
             return 'propertyName'
 
         /* Klipper macro names */
-        if (stream.pos == zeroPos && stream.match(/^[A-Z_]+/)) {
+        if (stream.pos == zeroPos && stream.match(/^\s*[A-Z_]+/)) {
             state.klipperMacro = true
             return 'name'
         }

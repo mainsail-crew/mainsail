@@ -96,12 +96,14 @@ export default class Codemirror extends Mixins(BaseMixin) {
                 }
             }),
             foldGutter(),
-            codeFolding()
         ]
 
-        if (['cfg', 'conf'].includes(this.fileExtension))
+        if (['cfg', 'conf'].includes(this.fileExtension)) {
+            extensions.push(codeFolding({
+
+            }))
             extensions.push(StreamLanguage.define(klipper_config))
-        else if (['gcode'].includes(this.fileExtension))
+        } else if (['gcode'].includes(this.fileExtension))
             extensions.push(StreamLanguage.define(gcode))
         else if (['json'].includes(this.fileExtension))
             extensions.push(json())
