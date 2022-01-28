@@ -40,10 +40,10 @@ import BaseMixin from '@/components/mixins/base'
 
 export default class Panel extends Mixins(BaseMixin) {
 
-    @Prop({ required: false, default: 'mdi-minus' }) readonly iconExpanded!: string | null
-    @Prop({ required: false, default: 'mdi-plus' }) readonly iconCollapsed!: string | null
-    @Prop({ required: true, default: '' }) readonly title!: string
-    @Prop({ required: true }) readonly subPanelClass!: string
+    @Prop({ required: false, default: 'mdi-minus' })  declare readonly iconExpanded: string | null
+    @Prop({ required: false, default: 'mdi-plus' })  declare readonly iconCollapsed: string | null
+    @Prop({ required: true, default: '' })  declare readonly title: string
+    @Prop({ required: true }) declare  readonly subPanelClass: string
 
     get expand() {
         return this.$store.getters['gui/getPanelExpand'](this.subPanelClass)

@@ -30,21 +30,21 @@ export default class Codemirror extends Mixins(BaseMixin) {
     private codemirror: null | EditorView = null
     private cminstance: null | EditorView = null
 
-    $refs_fault!: {
+    declare $refs: {
         codemirror: HTMLElement
     }
 
     @Prop({ required: false, default: '' })
-    readonly code!: string
+    declare readonly code: string
 
     @Prop({ required: false, default: '' })
-    value!: string
+   declare value: string
 
     @Prop({ required: false, default: 'codemirror' })
-    readonly name!: string
+   declare readonly name: string
 
     @Prop({ required: false, default: '' })
-    readonly fileExtension!: string
+   declare readonly fileExtension: string
 
     @Watch('value')
     valueChanged(newVal: string) {

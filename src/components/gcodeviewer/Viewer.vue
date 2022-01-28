@@ -240,11 +240,11 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    @Prop({type: String, default: '', required: false}) filename!: string
-    @Ref('fileInput') fileInput!: HTMLInputElement
-    @Ref('viewerCanvasContainer') viewerCanvasContainer!: HTMLElement
+    @Prop({type: String, default: '', required: false}) declare filename: string
+    @Ref('fileInput') declare fileInput: HTMLInputElement
+    @Ref('viewerCanvasContainer') declare viewerCanvasContainer: HTMLElement
 
-    $refs_fault!: {
+    declare $refs: {
         viewerCanvasContainer: HTMLElement
     }
 

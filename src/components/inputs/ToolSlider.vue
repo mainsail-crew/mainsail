@@ -79,19 +79,19 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     processedMax = 100
     dynamicStep = 50
 
-    @Prop({ type: Number, required: true }) readonly target!: number
-    @Prop({ type: String, required: true }) readonly command!: string
-    @Prop({ type: String, default: '' }) readonly attributeName!: string
-    @Prop({ type: String, default: '' }) readonly label!: string
-    @Prop({ type: String, default: '' }) readonly icon!: string 
-    @Prop({ type: String, default: '%' }) readonly unit!: string
-    @Prop({ type: Number, default: 1 }) readonly attributeScale!: number
-    @Prop({ type: Number, default: 0 }) readonly min!: number
-    @Prop({ type: Number, default: 100 }) readonly max!: number
-    @Prop({ type: Boolean, default: false }) readonly dynamicRange!: boolean
-    @Prop({ type: Number, default: 100 }) readonly defaultValue!: number
-    @Prop({ type: Number, default: 100 }) readonly step!: number
-    @Prop({ type: Number, default: 1 }) readonly multi!: number
+    @Prop({ type: Number, required: true }) declare readonly target: number
+    @Prop({ type: String, required: true }) declare readonly command: string
+    @Prop({ type: String, default: '' }) declare readonly attributeName: string
+    @Prop({ type: String, default: '' }) declare readonly label: string
+    @Prop({ type: String, default: '' }) declare readonly icon: string
+    @Prop({ type: String, default: '%' }) declare readonly unit: string
+    @Prop({ type: Number, default: 1 }) declare readonly attributeScale: number
+    @Prop({ type: Number, default: 0 }) declare readonly min: number
+    @Prop({ type: Number, default: 100 }) declare readonly max: number
+    @Prop({ type: Boolean, default: false }) declare readonly dynamicRange: boolean
+    @Prop({ type: Number, default: 100 })  declare readonly defaultValue: number
+    @Prop({ type: Number, default: 100 }) declare readonly step: number
+    @Prop({ type: Number, default: 1 }) declare readonly multi: number
 
     created() {
         this.value = this.target * this.multi

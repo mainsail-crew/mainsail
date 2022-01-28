@@ -37,7 +37,7 @@ import {GuiMacrosStateMacrogroupMacro} from '@/store/gui/macros/types'
 })
 export default class MacrogroupPanel extends Mixins(BaseMixin) {
 
-    @Prop({ required: true }) panelId!: string
+    @Prop({ required: true }) declare panelId: string
 
     get macrogroup() {
         return this.$store.getters['gui/macros/getMacrogroup'](this.panelId)

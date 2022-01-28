@@ -78,15 +78,15 @@ import {panelToolbarHeight} from '@/store/variables'
 export default class Panel extends Mixins(BaseMixin) {
     panelToolbarHeight = panelToolbarHeight
     
-    @Prop({ default: null }) readonly icon!: string | null
-    @Prop({ required: true, default: '' }) readonly title!: string
-    @Prop({ default: false }) readonly collapsible!: boolean
-    @Prop({ required: true }) readonly cardClass!: string
-    @Prop({ default: '' }) readonly toolbarColor!: string
-    @Prop({ default: '' }) readonly toolbarClass!: string
-    @Prop({ default: false }) readonly loading!: boolean
-    @Prop({ default: true }) readonly marginBottom!: boolean
-    @Prop({ default: false }) readonly hideButtonsOnCollapse!: boolean
+   @Prop({ default: null }) declare readonly icon: string | null
+   @Prop({ required: true, default: '' }) declare readonly title: string
+   @Prop({ default: false }) declare readonly collapsible: boolean
+   @Prop({ required: true }) declare readonly cardClass: string
+   @Prop({ default: '' }) declare readonly toolbarColor: string
+   @Prop({ default: '' })declare  readonly toolbarClass: string
+   @Prop({ default: false }) declare readonly loading: boolean
+   @Prop({ default: true }) declare readonly marginBottom: boolean
+   @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
 
     get expand() {
         return this.$store.getters['gui/getPanelExpand'](this.cardClass)

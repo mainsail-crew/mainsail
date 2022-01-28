@@ -297,7 +297,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
     boolShowObjects = false
 
-    $refs_fault!: {
+    declare $refs: {
         bigThumbnail: any
     }
 

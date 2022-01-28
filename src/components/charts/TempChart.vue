@@ -32,7 +32,7 @@ interface echartsTooltipObj {
 export default class TempChart extends Mixins(BaseMixin) {
     convertName = convertName
 
-    $refs_fault!: {
+    declare $refs: {
         tempchart: any
     }
 

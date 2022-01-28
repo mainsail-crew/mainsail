@@ -86,7 +86,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
     private activeTab = 'general'
 
-    $refs_fault!: {
+    declare $refs: {
         settingsScroll: any
     }
 

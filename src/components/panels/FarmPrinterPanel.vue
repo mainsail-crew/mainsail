@@ -136,8 +136,8 @@ import Panel from '@/components/ui/Panel.vue'
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     private imageHeight = 200;
 
-    @Prop({ type: Object, required: true }) printer!: FarmPrinterState
-    @Ref() readonly imageDiv!: Vue
+    @Prop({ type: Object, required: true }) declare printer: FarmPrinterState
+    @Ref() declare readonly imageDiv: Vue
 
     get printerUrl() {
         const thisUrl = window.location.href.split('/')

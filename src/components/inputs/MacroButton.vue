@@ -86,8 +86,8 @@ export default class MacroButton extends Mixins(BaseMixin) {
     private paramArray: string[] = []
     private params: params = {}
 
-    @Prop({ required: true }) readonly macro!: GuiMacrosStateMacrogroupMacro
-    @Prop({ default: 'primary' }) readonly color!: string
+    @Prop({ required: true }) declare readonly macro: GuiMacrosStateMacrogroupMacro
+    @Prop({ default: 'primary' }) declare readonly color: string
 
     get klipperMacro() {
         return this.$store.getters['printer/getMacro'](this.macro.name)

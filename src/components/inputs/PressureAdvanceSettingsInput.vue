@@ -61,18 +61,18 @@ export default class PressureAdvanceSettingsInput extends Mixins(BaseMixin) {
     private value: number = 0
     private error: boolean | undefined
 
-    @Prop({ type: String, required: true }) readonly label!: string
-    @Prop({ type: Number, required: false , default: 1 }) readonly step!: number
-    @Prop({ type: Boolean, required: false , default: false }) readonly hasSpinner!: number
-    @Prop({ type: Number, required: false , default: 1 }) readonly spinnerFactor!: number
-    @Prop({ type: Number, required: true , default: 0 }) readonly min!: number
-    @Prop({ type: Number, default: null }) readonly max!: number | null
-    @Prop({ type: Number, required: true , default: 0 }) readonly dec!: number
-    @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
-    @Prop({ type: Number, required: true, default: 0 }) readonly defaultValue!: number
-    @Prop({ type: String, required: true, default: 'extruder'}) readonly extruder!: string
-    @Prop({ type: String, required: true }) readonly attributeName!: string
-    @Prop({ type: String, required: true }) readonly unit!: string
+    @Prop({ type: String, required: true }) declare readonly label: string
+    @Prop({ type: Number, required: false , default: 1 }) declare readonly step: number
+    @Prop({ type: Boolean, required: false , default: false }) declare readonly hasSpinner: number
+    @Prop({ type: Number, required: false , default: 1 }) declare readonly spinnerFactor: number
+    @Prop({ type: Number, required: true , default: 0 }) declare readonly min: number
+    @Prop({ type: Number, default: null }) declare readonly max: number | null
+    @Prop({ type: Number, required: true , default: 0 }) declare readonly dec: number
+    @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
+    @Prop({ type: Number, required: true, default: 0 }) declare readonly defaultValue: number
+    @Prop({ type: String, required: true, default: 'extruder'}) declare readonly extruder: string
+    @Prop({ type: String, required: true }) declare readonly attributeName: string
+    @Prop({ type: String, required: true }) declare readonly unit: string
 
     @Watch('target')
     targetChanged(newVal: number): void {

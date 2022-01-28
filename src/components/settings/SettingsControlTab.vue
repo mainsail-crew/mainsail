@@ -214,7 +214,7 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 })
 export default class SettingsControlTab extends Mixins(BaseMixin) {
 
-    $refs_fault!: {
+    declare $refs: {
         formControlExtruder: HTMLFormElement
     }
 
