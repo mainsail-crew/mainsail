@@ -2,23 +2,24 @@
     <panel
         v-if="klipperState !== 'ready' && socketIsConnected"
         icon="mdi-alert-circle"
-        :title="$t('Panels.KlippyStatePanel.KlippyState')+': '+klipperState"
-        card-class="klippy-state-panel"
-    >
+        :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
+        card-class="klippy-state-panel">
         <template v-if="klippyIsConnected">
             <v-card-text class="py-1 mt-2" v-if="klippy_message !== null">
-                <pre style="white-space: pre-wrap;">{{ klippy_message }}</pre>
+                <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>
             </v-card-text>
             <v-card-text v-else class="text-center py-3">
-                <v-progress-circular
-                    indeterminate
-                    color="primary"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="primary"></v-progress-circular>
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
-                <v-btn small @click="restart" class="ml-2 error--text"><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn>
-                <v-btn small @click="firmwareRestart" class="ml-4 error--text"><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn>
+                <v-btn small @click="restart" class="ml-2 error--text"
+                    ><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn
+                >
+                <v-btn small @click="firmwareRestart" class="ml-4 error--text"
+                    ><v-icon class="mr-sm-2">mdi-restart</v-icon
+                    >{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn
+                >
             </v-card-actions>
         </template>
         <template v-else>
@@ -34,13 +35,13 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
 
 @Component({
-    components: {Panel, ConnectionStatus}
+    components: { Panel, ConnectionStatus },
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
     //private timer: number | null = null
@@ -50,11 +51,11 @@ export default class KlippyStatePanel extends Mixins(BaseMixin) {
     }
 
     restart() {
-        this.$socket.emit('printer.restart', { }, { loading: 'restart' })
+        this.$socket.emit('printer.restart', {}, { loading: 'restart' })
     }
 
     firmwareRestart() {
-        this.$socket.emit('printer.firmware_restart', { }, { loading: 'firmwareRestart' })
+        this.$socket.emit('printer.firmware_restart', {}, { loading: 'firmwareRestart' })
     }
 
     /*requestKlippyState() {

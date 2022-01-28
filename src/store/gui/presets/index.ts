@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gui/presets/actions'
 import { mutations } from '@/store/gui/presets/mutations'
 import { getters } from '@/store/gui/presets/getters'
-import {GuiPresetsState} from '@/store/gui/presets/types'
+import { GuiPresetsState } from '@/store/gui/presets/types'
 
 export const getDefaultState = (): GuiPresetsState => {
     return {
@@ -20,5 +20,5 @@ export const presets: Module<GuiPresetsState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

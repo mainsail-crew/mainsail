@@ -1,11 +1,11 @@
-import {Store} from 'vuex'
+import { Store } from 'vuex'
 import _Vue from 'vue'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export class WebSocketClient {
     url = ''
     instance: WebSocket | null = null
-    maxReconnects  = 5
+    maxReconnects = 5
     reconnectInterval = 1000
     reconnects = 0
     keepAliveTimeout = 1000
@@ -13,7 +13,7 @@ export class WebSocketClient {
     store: Store<RootState> | null = null
     waits: Wait[] = []
 
-    constructor (options: WebSocketPluginOptions) {
+    constructor(options: WebSocketPluginOptions) {
         this.url = options.url
         this.maxReconnects = options.maxReconnects || 5
         this.reconnectInterval = options.reconnectInterval || 1000
@@ -25,15 +25,17 @@ export class WebSocketClient {
     }
 
     // eslint-disable-next-line
-    passToStore (eventName: string, event: any): void {
-        if (!eventName.startsWith('socket/')) { return }
+    passToStore(eventName: string, event: any): void {
+        if (!eventName.startsWith('socket/')) {
+            return
+        }
 
         this.store?.dispatch(eventName, event)
     }
 
     async connect() {
         this.store?.dispatch('socket/setData', {
-            isConnecting: true
+            isConnecting: true,
         })
 
         if (this.instance) {
@@ -63,14 +65,14 @@ export class WebSocketClient {
             const data = JSON.parse(msg.data)
             if (this.store) {
                 const wait = this.getWaitById(data.id)
-                if (wait && wait.action !== ''){
+                if (wait && wait.action !== '') {
                     if (data.error?.message) {
                         if (data.error?.message !== 'Klippy Disconnected')
-                            window.console.error('Response Error: '+wait.action+' > '+data.error.message)
+                            window.console.error('Response Error: ' + wait.action + ' > ' + data.error.message)
                     } else if (wait.action) {
                         let result = data.result
                         if (result === 'ok') result = { result: result }
-                        if (typeof(result) === 'string') result = { result: result }
+                        if (typeof result === 'string') result = { result: result }
 
                         const preload = {}
                         if (wait.actionPayload) Object.assign(preload, wait.actionPayload)
@@ -104,7 +106,7 @@ export class WebSocketClient {
         }
     }
 
-    emit(method: string, params: Params, options: emitOptions = {}):void {
+    emit(method: string, params: Params, options: emitOptions = {}): void {
         if (this.instance?.readyState === WebSocket.OPEN) {
             const id = Math.floor(Math.random() * 10000) + 1
             this.waits.push({
@@ -123,7 +125,7 @@ export class WebSocketClient {
                 jsonrpc: '2.0',
                 method: method,
                 params: params,
-                id: id
+                id: id,
             })
 
             this.instance.send(msg)
@@ -147,7 +149,7 @@ export interface WebSocketPluginOptions {
 export interface WebSocketClient {
     connect(): void
     close(): void
-    emit(method: string, params: Params, emitOptions: emitOptions):void
+    emit(method: string, params: Params, emitOptions: emitOptions): void
 }
 
 export interface Wait {

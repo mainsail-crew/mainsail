@@ -1,7 +1,7 @@
-import {GuiMacrosState} from '@/store/gui/macros/types'
-import {GuiConsoleState} from '@/store/gui/console/types'
-import {GuiPresetsState} from '@/store/gui/presets/types'
-import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
+import { GuiMacrosState } from '@/store/gui/macros/types'
+import { GuiConsoleState } from '@/store/gui/console/types'
+import { GuiPresetsState } from '@/store/gui/presets/types'
+import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 
 export interface GuiState {
     general: {
@@ -47,16 +47,16 @@ export interface GuiState {
         confirmUnsavedChanges: boolean
     }
     gcodeViewer: {
-        extruderColors : string[]
-        gridColor : string
-        backgroundColor : string
-        colorMode : number
-        showAxes : boolean
-        minFeed : number
-        maxFeed : number
-        minFeedColor : string
-        maxFeedColor : string
-        progressColor : string
+        extruderColors: string[]
+        gridColor: string
+        backgroundColor: string
+        colorMode: number
+        showAxes: boolean
+        minFeed: number
+        maxFeed: number
+        minFeedColor: string
+        maxFeedColor: string
+        progressColor: string
         showCursor: boolean
         showTravelMoves: boolean
         showObjectSelection: boolean

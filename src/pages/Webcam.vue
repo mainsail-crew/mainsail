@@ -1,6 +1,4 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <div>
@@ -12,14 +10,11 @@
     </div>
 </template>
 <script lang="ts">
-
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 @Component({
-    components: {WebcamPanel}
+    components: { WebcamPanel },
 })
-export default class PageWebcam extends Mixins(BaseMixin) {
-
-}
+export default class PageWebcam extends Mixins(BaseMixin) {}
 </script>

@@ -1,13 +1,13 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <div>
         <v-card class="mb-3">
             <v-toolbar flat dense>
                 <v-toolbar-title>
-                    <span class="subheading align-baseline"><v-icon left>mdi-information</v-icon>{{ $t("Timelapse.Status")}}</span>
+                    <span class="subheading align-baseline"
+                        ><v-icon left>mdi-information</v-icon>{{ $t('Timelapse.Status') }}</span
+                    >
                 </v-toolbar-title>
             </v-toolbar>
             <v-row no-gutters>
@@ -16,15 +16,26 @@
                         <v-row>
                             <v-col>
                                 <vue-load-image>
-                                    <img slot="image" :src="frameUrl" :alt="$t('Timelapse.Preview')" class="w-100" :style="webcamStyle" />
-                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                    <img
+                                        slot="image"
+                                        :src="frameUrl"
+                                        :alt="$t('Timelapse.Preview')"
+                                        class="w-100"
+                                        :style="webcamStyle" />
+                                    <v-progress-circular
+                                        slot="preloader"
+                                        indeterminate
+                                        color="primary"></v-progress-circular>
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
                             </v-col>
                         </v-row>
                     </v-card-text>
                 </v-col>
-                <v-col class="col-12 col-sm-6 col-md-12 pt-3 pt-md-0 text--secondary" align-self="center" v-if="framesCount > 0">
+                <v-col
+                    class="col-12 col-sm-6 col-md-12 pt-3 pt-md-0 text--secondary"
+                    align-self="center"
+                    v-if="framesCount > 0">
                     <v-card-text :class="framesCount ? 'pt-0' : ''">
                         <template v-if="framesCount > 0">
                             <settings-row :title="$t('Timelapse.Frames')">
@@ -51,8 +62,20 @@
                             <v-divider class="mt-2 mb-4"></v-divider>
                             <v-row>
                                 <v-col class="text-center">
-                                    <v-btn text color="primary" :disabled="disableRenderButton" @click="boolDialogRendersettings = true">{{ $t('Timelapse.Render') }}</v-btn>
-                                    <v-btn text color="primary" @click="saveFrames" :loading="loadings.includes('timelapse_saveframes')">{{ $t('Timelapse.SaveFrames') }}</v-btn>
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        :disabled="disableRenderButton"
+                                        @click="boolDialogRendersettings = true"
+                                        >{{ $t('Timelapse.Render') }}</v-btn
+                                    >
+                                    <v-btn
+                                        text
+                                        color="primary"
+                                        @click="saveFrames"
+                                        :loading="loadings.includes('timelapse_saveframes')"
+                                        >{{ $t('Timelapse.SaveFrames') }}</v-btn
+                                    >
                                 </v-col>
                             </v-row>
                         </template>
@@ -65,8 +88,12 @@
                 </v-col>
             </v-row>
         </v-card>
-        <v-dialog v-model="boolDialogRendersettings" :max-width="700" :max-height="500" >
-            <panel :title="$t('Timelapse.RenderSettings')" icon="mdi-text-box-search-outline" card-class="timelapse-rendersettings-dialog" :margin-bottom="false">
+        <v-dialog v-model="boolDialogRendersettings" :max-width="700" :max-height="500">
+            <panel
+                :title="$t('Timelapse.RenderSettings')"
+                icon="mdi-text-box-search-outline"
+                card-class="timelapse-rendersettings-dialog"
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon @click="boolDialogRendersettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -80,8 +107,7 @@
                                 outlined
                                 dense
                                 hide-details
-                                attach
-                            ></v-select>
+                                attach></v-select>
                         </v-col>
                         <v-col class="col-4">
                             <template v-if="variable_fps">
@@ -92,8 +118,7 @@
                                     outlined
                                     dense
                                     hide-details
-                                    hide-spin-buttons
-                                ></v-text-field>
+                                    hide-spin-buttons></v-text-field>
                                 <v-text-field
                                     :label="$t('Timelapse.MaxFramerate')"
                                     v-model="variable_fps_max"
@@ -102,8 +127,7 @@
                                     dense
                                     hide-details
                                     hide-spin-buttons
-                                    class="mt-3"
-                                ></v-text-field>
+                                    class="mt-3"></v-text-field>
                                 <v-text-field
                                     :label="$t('Timelapse.Targetlength')"
                                     v-model="targetlength"
@@ -112,8 +136,7 @@
                                     dense
                                     hide-details
                                     hide-spin-buttons
-                                    class="mt-3"
-                                ></v-text-field>
+                                    class="mt-3"></v-text-field>
                             </template>
                             <template v-else>
                                 <v-text-field
@@ -123,8 +146,7 @@
                                     outlined
                                     dense
                                     hide-details
-                                    hide-spin-buttons
-                                ></v-text-field>
+                                    hide-spin-buttons></v-text-field>
                             </template>
                             <v-text-field
                                 :label="$t('Timelapse.DuplicateLastframe')"
@@ -134,8 +156,7 @@
                                 dense
                                 hide-details
                                 hide-spin-buttons
-                                class="mt-3"
-                            ></v-text-field>
+                                class="mt-3"></v-text-field>
                         </v-col>
                         <v-col class="col-4">
                             <template v-if="variable_fps">
@@ -147,8 +168,7 @@
                                     dense
                                     hide-details
                                     readonly
-                                    class="mb-3"
-                                ></v-text-field>
+                                    class="mb-3"></v-text-field>
                             </template>
                             <v-text-field
                                 :label="$t('Timelapse.EstimatedLength')"
@@ -156,8 +176,7 @@
                                 outlined
                                 dense
                                 hide-details
-                                readonly
-                            ></v-text-field>
+                                readonly></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -171,12 +190,12 @@
     </div>
 </template>
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 @Component({
-    components: {Panel, SettingsRow}
+    components: { Panel, SettingsRow },
 })
 export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     private boolDialogRendersettings = false
@@ -200,7 +219,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     set enabled(newVal) {
-        this.$socket.emit('machine.timelapse.post_settings', { enabled: newVal }, { action: 'server/timelapse/initSettings' })
+        this.$socket.emit(
+            'machine.timelapse.post_settings',
+            { enabled: newVal },
+            { action: 'server/timelapse/initSettings' }
+        )
     }
 
     get autorender() {
@@ -208,7 +231,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     set autorender(newVal) {
-        this.$socket.emit('machine.timelapse.post_settings', { autorender: newVal }, { action: 'server/timelapse/initSettings' })
+        this.$socket.emit(
+            'machine.timelapse.post_settings',
+            { autorender: newVal },
+            { action: 'server/timelapse/initSettings' }
+        )
     }
 
     get variable_fps() {
@@ -223,11 +250,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
         return [
             {
                 value: false,
-                text: this.$t('Timelapse.Fixed')
+                text: this.$t('Timelapse.Fixed'),
             },
             {
                 value: true,
-                text: this.$t('Timelapse.Variable')
+                text: this.$t('Timelapse.Variable'),
             },
         ]
     }
@@ -278,10 +305,11 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
         if (this.variable_fps) {
             seconds = Math.round((this.framesCount + this.duplicatelastframe) / this.variableTargetFps)
             if (seconds < this.targetlength) seconds = this.targetlength
-
         } else seconds = Math.round((this.framesCount + this.duplicatelastframe) / this.output_framerate)
 
-        return seconds > 60 ? Math.floor(seconds/60)+'m '+(seconds -  Math.floor(seconds/60) * 60)+'s' : seconds+'s'
+        return seconds > 60
+            ? Math.floor(seconds / 60) + 'm ' + (seconds - Math.floor(seconds / 60) * 60) + 's'
+            : seconds + 's'
     }
 
     get variableTargetFps() {
@@ -293,7 +321,7 @@ export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
     }
 
     get disableRenderButton() {
-        return ((this.$store.state.server.timelapse?.rendering.status ?? '') === 'running')
+        return (this.$store.state.server.timelapse?.rendering.status ?? '') === 'running'
     }
 
     get camId() {

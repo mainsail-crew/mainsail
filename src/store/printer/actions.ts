@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import {ActionTree} from 'vuex'
-import {PrinterState} from '@/store/printer/types'
-import {RootState} from '@/store/types'
+import { ActionTree } from 'vuex'
+import { PrinterState } from '@/store/printer/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<PrinterState, RootState> = {
     reset({ commit }) {
@@ -20,10 +20,14 @@ export const actions: ActionTree<PrinterState, RootState> = {
     },
 
     getInfo({ commit }, payload) {
-        commit('server/setData', {
-            klippy_state: payload.state,
-            klippy_message: payload.state_message,
-        }, { root: true })
+        commit(
+            'server/setData',
+            {
+                klippy_state: payload.state,
+                klippy_message: payload.state_message,
+            },
+            { root: true }
+        )
 
         commit('setData', {
             hostname: payload.hostname,
@@ -34,17 +38,16 @@ export const actions: ActionTree<PrinterState, RootState> = {
 
     initSubscripts(_, payload) {
         let subscripts = {}
-        const blocklist = [
-            'menu',
-        ]
+        const blocklist = ['menu']
 
         payload.objects.forEach((key: string) => {
             const nameSplit = key.split(' ')
 
-            if (!blocklist.includes(nameSplit[0])) subscripts = {...subscripts, [key]: null }
+            if (!blocklist.includes(nameSplit[0])) subscripts = { ...subscripts, [key]: null }
         })
 
-        if (subscripts !== {}) Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: 'printer/getInitData' })
+        if (subscripts !== {})
+            Vue.$socket.emit('printer.objects.subscribe', { objects: subscripts }, { action: 'printer/getInitData' })
         else Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
     },
 
@@ -58,9 +61,13 @@ export const actions: ActionTree<PrinterState, RootState> = {
         if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
 
-        const webhooks = Object.keys(payload).findIndex(element => element === 'webhooks')
+        const webhooks = Object.keys(payload).findIndex((element) => element === 'webhooks')
         if (webhooks !== -1) {
-            this.dispatch('server/getData', { klippy_state: payload['webhooks'].state, klippy_message: payload['webhooks'].state_message }, { root: true })
+            this.dispatch(
+                'server/getData',
+                { klippy_state: payload['webhooks'].state, klippy_message: payload['webhooks'].state_message },
+                { root: true }
+            )
             delete payload.webhooks
         }
 
@@ -87,5 +94,5 @@ export const actions: ActionTree<PrinterState, RootState> = {
         } else {
             Vue.$socket.emit('printer.gcode.script', { script: payload }, { loading: 'sendGcode' })
         }
-    }
+    },
 }

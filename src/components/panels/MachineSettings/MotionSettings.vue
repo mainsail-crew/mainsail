@@ -13,8 +13,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s"
-                    attribute-name="VELOCITY"
-                ></motion-settings-input>
+                    attribute-name="VELOCITY"></motion-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
@@ -27,8 +26,7 @@
                     :max="null"
                     :dec="1"
                     unit="mm/s"
-                    attribute-name="SQUARE_CORNER_VELOCITY"
-                ></motion-settings-input>
+                    attribute-name="SQUARE_CORNER_VELOCITY"></motion-settings-input>
             </v-col>
         </v-row>
         <v-row>
@@ -44,8 +42,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    attribute-name="ACCEL"
-                ></motion-settings-input>
+                    attribute-name="ACCEL"></motion-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
@@ -59,8 +56,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    attribute-name="ACCEL_TO_DECEL"
-                ></motion-settings-input>
+                    attribute-name="ACCEL_TO_DECEL"></motion-settings-input>
             </v-col>
         </v-row>
     </v-card-text>
@@ -73,10 +69,9 @@ import Panel from '@/components/ui/Panel.vue'
 import MotionSettingsInput from '@/components/inputs/MotionSettingsInput.vue'
 
 @Component({
-    components: {Panel, MotionSettingsInput}
+    components: { Panel, MotionSettingsInput },
 })
 export default class MotionSettings extends Mixins(BaseMixin) {
-    
     get current_velocity(): number {
         return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
     }
@@ -92,7 +87,7 @@ export default class MotionSettings extends Mixins(BaseMixin) {
     get current_square_corner_velocity(): number {
         return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
-    
+
     get max_velocity(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300)
     }
@@ -106,7 +101,10 @@ export default class MotionSettings extends Mixins(BaseMixin) {
     }
 
     get max_square_corner_velocity(): number {
-        return Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) / 10
+        return (
+            Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) /
+            10
+        )
     }
 }
 </script>

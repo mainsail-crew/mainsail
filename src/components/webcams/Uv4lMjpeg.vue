@@ -1,7 +1,7 @@
 <style scoped>
-    .webcamImage {
-        width: 100%;
-    }
+.webcamImage {
+    width: 100%;
+}
 </style>
 
 <template>
@@ -18,9 +18,9 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Prop} from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
+import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
@@ -41,7 +41,7 @@ export default class Uv4lMjpeg extends Mixins(BaseMixin) {
         let transforms = ''
         if ('flipX' in this.camSettings && this.camSettings.flipX) transforms += ' scaleX(-1)'
         if ('flipX' in this.camSettings && this.camSettings.flipY) transforms += ' scaleY(-1)'
-        if (transforms.trimLeft().length) return {transform: transforms.trimLeft()}
+        if (transforms.trimLeft().length) return { transform: transforms.trimLeft() }
 
         return ''
     }
