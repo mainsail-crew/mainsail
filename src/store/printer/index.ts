@@ -22,6 +22,6 @@ export const printer: Module<PrinterState, any> = {
     actions,
     mutations,
     modules: {
-        tempHistory
-    }
+        tempHistory,
+    },
 }

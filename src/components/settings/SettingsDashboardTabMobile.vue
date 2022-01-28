@@ -1,8 +1,8 @@
 <style scoped>
-    .ghost {
-        opacity: 0.5;
-        background: #c8ebfb;
-    }
+.ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
 </style>
 
 <template>
@@ -10,7 +10,7 @@
         <v-card-text>
             <v-row>
                 <v-col>
-                    <v-card class="mx-auto" max-width="300" tile >
+                    <v-card class="mx-auto" max-width="300" tile>
                         <v-list dense>
                             <v-list-item>
                                 <v-row>
@@ -25,9 +25,15 @@
                                     </v-col>
                                 </v-row>
                             </v-list-item>
-                            <draggable v-model="mobileLayout" :handle="isMobile ? '.handle' : ''" class="v-list-item-group" ghost-class="ghost" group="mobileViewport">
-                                <template v-for="(element) in mobileLayout">
-                                    <v-list-item :key="'item-mobile-'+element.name" link>
+                            <draggable
+                                v-model="mobileLayout"
+                                :handle="isMobile ? '.handle' : ''"
+                                class="v-list-item-group"
+                                ghost-class="ghost"
+                                group="mobileViewport"
+                            >
+                                <template v-for="element in mobileLayout">
+                                    <v-list-item :key="'item-mobile-' + element.name" link>
                                         <v-row>
                                             <v-col class="col-auto pr-0">
                                                 <v-icon v-if="isMobile" class="handle">mdi-arrow-up-down</v-icon>
@@ -37,8 +43,18 @@
                                                 {{ getPanelName(element.name) }}
                                             </v-col>
                                             <v-col class="col-auto pl-0">
-                                                <v-icon v-if="!element.visible" color="grey lighten-1" @click.stop="changeState(element.name,true)">mdi-checkbox-blank-outline</v-icon>
-                                                <v-icon v-else color="primary" @click.stop="changeState(element.name,false)">mdi-checkbox-marked</v-icon>
+                                                <v-icon
+                                                    v-if="!element.visible"
+                                                    color="grey lighten-1"
+                                                    @click.stop="changeState(element.name, true)"
+                                                    >mdi-checkbox-blank-outline</v-icon
+                                                >
+                                                <v-icon
+                                                    v-else
+                                                    color="primary"
+                                                    @click.stop="changeState(element.name, false)"
+                                                    >mdi-checkbox-marked</v-icon
+                                                >
                                             </v-col>
                                         </v-row>
                                     </v-list-item>
@@ -62,13 +78,12 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import DashboardMixin from '@/components/mixins/dashboard'
 import draggable from 'vuedraggable'
-import {capitalize, convertPanelnameToIcon} from '@/plugins/helpers'
-@Component( {
+import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
+@Component({
     components: {
-        draggable
-    }
-}
-)
+        draggable,
+    },
+})
 export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
@@ -83,14 +98,20 @@ export default class SettingsDashboardTabMobile extends Mixins(DashboardMixin) {
     set mobileLayout(newVal) {
         newVal = newVal.filter((element: any) => element !== undefined)
 
-        this.$store.dispatch('gui/saveSetting', {name: 'dashboard.mobileLayout', value: newVal })
+        this.$store.dispatch('gui/saveSetting', {
+            name: 'dashboard.mobileLayout',
+            value: newVal,
+        })
     }
 
     changeState(name: string, newVal: boolean) {
         const index = this.mobileLayout.findIndex((element: any) => element.name === name)
         if (index !== -1) {
             this.mobileLayout[index].visible = newVal
-            this.$store.dispatch('gui/saveSetting', {name: 'dashboard.mobileLayout', value: this.mobileLayout })
+            this.$store.dispatch('gui/saveSetting', {
+                name: 'dashboard.mobileLayout',
+                value: this.mobileLayout,
+            })
         }
     }
 

@@ -3,27 +3,25 @@
         ref="historyAllPrintStatus"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%;"
+        style="height: 250px; width: 100%"
         v-observe-visibility="visibilityChanged"
     ></ECharts>
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
-import {createComponent} from 'echarts-for-vue'
+import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ECharts} from 'echarts/core'
+import { ECharts } from 'echarts/core'
 
 @Component({
     components: {
         ECharts: createComponent({ echarts }),
-    }
+    },
 })
 export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
-
     $refs!: {
         historyAllPrintStatus: any
     }
@@ -41,26 +39,28 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
             trigger: 'item',
             borderWidth: 0,
         },
-        series: [{
-            type: 'pie',
-            data: [],
-            avoidLabelOverlap: false,
-            radius: ['35%', '60%'],
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }]
+        series: [
+            {
+                type: 'pie',
+                data: [],
+                avoidLabelOverlap: false,
+                radius: ['35%', '60%'],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                },
+            },
+        ],
     }
 
     get allPrintStatusArray() {
         return this.$store.getters['server/history/getAllPrintStatusArray']
     }
 
-    get chart (): ECharts | null {
+    get chart(): ECharts | null {
         const historyAllPrintStatus = this.$refs.historyAllPrintStatus
         return historyAllPrintStatus?.inst ?? null
     }
@@ -85,12 +85,12 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     allPrintStatusArrayChanged(newVal: any) {
         this.chart?.setOption({
             series: {
-                data: newVal
-            }
+                data: newVal,
+            },
         })
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
 

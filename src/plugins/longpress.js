@@ -8,7 +8,9 @@ Vue.directive('longpress', {
             const compName = vNode.context.name
             // pass warning to console
             let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
-            if (compName) { warn += ` Found in component '${compName}' ` }
+            if (compName) {
+                warn += ` Found in component '${compName}' `
+            }
 
             console.warn(warn)
         }
@@ -27,7 +29,7 @@ Vue.directive('longpress', {
         // Create timeout ( run function after 1s )
         let before = null
         let start = (e) => {
-            if ((e.type === 'click' && e.button !== 0)) {
+            if (e.type === 'click' && e.button !== 0) {
                 return
             }
 
@@ -35,7 +37,9 @@ Vue.directive('longpress', {
                 return
             }
 
-            document.querySelector('body').setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
+            document
+                .querySelector('body')
+                .setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
 
             setTimeout(() => {
                 document.querySelector('body').setAttribute('style', '')
@@ -60,7 +64,7 @@ Vue.directive('longpress', {
                         rotationAngle: e.touches[0].rotationAngle,
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
-                        preventDefault: () => e.preventDefault()
+                        preventDefault: () => e.preventDefault(),
                     })
                 }, debounceTime)
             }
@@ -94,5 +98,5 @@ Vue.directive('longpress', {
         el.addEventListener('touchcancel', cancel)
 
         document.addEventListener('scroll', cancel)
-    }
+    },
 })

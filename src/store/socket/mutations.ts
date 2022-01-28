@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
+import { MutationTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 
 export const mutations: MutationTree<SocketState> = {
@@ -8,13 +8,13 @@ export const mutations: MutationTree<SocketState> = {
         Object.assign(state, getDefaultState())
     },
 
-    setConnected (state) {
+    setConnected(state) {
         Vue.set(state, 'isConnected', true)
         Vue.set(state, 'isConnecting', false)
         Vue.set(state, 'connectingFailed', false)
     },
 
-    setDisconnected (state) {
+    setDisconnected(state) {
         Vue.set(state, 'isConnected', false)
         Vue.set(state, 'isConnecting', false)
         Vue.set(state, 'connectingFailed', true)
@@ -38,6 +38,6 @@ export const mutations: MutationTree<SocketState> = {
     },
 
     clearLoadings(state) {
-        if(state.loadings.length) state.loadings.splice(0, state.loadings.length)
-    }
+        if (state.loadings.length) state.loadings.splice(0, state.loadings.length)
+    },
 }

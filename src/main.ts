@@ -23,7 +23,7 @@ Vue.component('vue-load-image', VueLoadImage)
 //vue-toast-notification
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
-import {WebSocketPlugin} from '@/plugins/webSocketClient'
+import { WebSocketPlugin } from '@/plugins/webSocketClient'
 
 Vue.use(VueToast, {
     duration: 3000,
@@ -37,8 +37,8 @@ Vue.use(OverlayScrollbarsPlugin, {
     className: 'os-theme-light',
     scrollbars: {
         visibility: 'auto',
-        autoHide: 'scroll'
-    }
+        autoHide: 'scroll',
+    },
 })
 
 //vue-echarts-ts
@@ -48,8 +48,8 @@ Vue.use(plugin, { echarts })
 
 //load config.json and init vue
 fetch('/config.json')
-    .then(res => res.json())
-    .then(file => {
+    .then((res) => res.json())
+    .then((file) => {
         store.commit('socket/setData', file)
 
         const url = store.getters['socket/getWebsocketUrl']
@@ -65,16 +65,13 @@ fetch('/config.json')
             router,
             store,
             i18n,
-            render: h => h(App)
+            render: (h) => h(App),
         }).$mount('#app')
-
     })
     .catch((error) => {
         const p = document.createElement('p')
         const content = document.createTextNode('config.json not found or cannot be decoded!')
         p.appendChild(content)
-    document.getElementById('app')?.append(p)
-    window.console.error('Error:', error)
+        document.getElementById('app')?.append(p)
+        window.console.error('Error:', error)
     })
-
-

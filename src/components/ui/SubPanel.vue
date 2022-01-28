@@ -1,23 +1,20 @@
 <style lang="scss" scoped>
-    .btn-collapsible i::before {
-        transition: transform 500ms;
-    }
+.btn-collapsible i::before {
+    transition: transform 500ms;
+}
 
-    .icon-rotate-180:before {
-        transform: rotate(180deg);
-    }
+.icon-rotate-180:before {
+    transform: rotate(180deg);
+}
 </style>
 
 <template>
     <div>
         <v-card-actions>
-            <v-btn
-                @click="expand = !expand"
-                class="btn-collapsible"
-                plain
-                small
-            >
-                <v-icon small :class="(!expand ? 'icon-rotate-180' : '')">{{ expand ? iconExpanded : iconCollapsed }}</v-icon>
+            <v-btn @click="expand = !expand" class="btn-collapsible" plain small>
+                <v-icon small :class="!expand ? 'icon-rotate-180' : ''">{{
+                    expand ? iconExpanded : iconCollapsed
+                }}</v-icon>
                 <span class="pl-1">{{ title }}</span>
             </v-btn>
             <v-divider class="mx-1"></v-divider>
@@ -31,15 +28,12 @@
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
-import {Mixins, Prop} from 'vue-property-decorator'
+import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-
 export default class Panel extends Mixins(BaseMixin) {
-
     @Prop({ required: false, default: 'mdi-minus' }) readonly iconExpanded!: string | null
     @Prop({ required: false, default: 'mdi-plus' }) readonly iconCollapsed!: string | null
     @Prop({ required: true, default: '' }) readonly title!: string
@@ -50,7 +44,10 @@ export default class Panel extends Mixins(BaseMixin) {
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.subPanelClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', {
+            name: this.subPanelClass,
+            value: newVal,
+        })
     }
 }
 </script>

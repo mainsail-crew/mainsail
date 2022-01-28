@@ -1,9 +1,9 @@
 export interface ServerTimelapseState {
-    settings: ServerTimelapseSettingsState,
+    settings: ServerTimelapseSettingsState
     lastFrame: {
         count: number
         file: string
-    },
+    }
     rendering: {
         status: string
         progress: number
