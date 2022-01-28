@@ -7,9 +7,8 @@
     "name": "Stefan Dej"
   },
   "scripts": {
-    "serve": "vite dev",
+    "serve": "vite serve",
     "build": "vite build  && npm run build.zip",
-    "production": "vite build --mode=prod  && npm run build.zip",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore --fix",
     "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
     "i18n-extract": "vue-i18n-extract use-config"
