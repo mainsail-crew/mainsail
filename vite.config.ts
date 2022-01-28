@@ -44,7 +44,13 @@ export default defineConfig({
                 ]
             }
         }),
-    ],
+    ], css: {
+        preprocessorOptions: {
+            scss: {
+                quietDeps: true
+            },
+        }
+    },
     envPrefix: 'VUE_',
     resolve: {
         alias: {
