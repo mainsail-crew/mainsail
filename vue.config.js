@@ -18,6 +18,9 @@ module.exports = {
             enableInSFC: true
         }
     },
+    devServer: {
+        progress: false  // disable progress to reduce spam in the Docker log
+    },
     configureWebpack: {
         plugins: [
             new webpack.DefinePlugin({
