@@ -1,6 +1,6 @@
 {
   "name": "mainsail",
-  "version": "2.1.0",
+  "version": "2.2.0-alpha",
   "private": true,
   "decription": "a klipper web interface",
   "author": {
@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "@codemirror/basic-setup": "^0.19.0",
-    "@codemirror/language": "^0.19.7",
     "@codemirror/highlight": "^0.19.6",
     "@codemirror/lang-javascript": "^0.19.3",
     "@codemirror/lang-json": "^0.19.1",
+    "@codemirror/language": "^0.19.7",
     "@codemirror/legacy-modes": "^0.19.0",
     "@codemirror/search": "^0.19.4",
     "@codemirror/state": "^0.19.6",
@@ -59,8 +59,8 @@
     "@mdi/font": "^6.2.95",
     "@types/semver": "^7.3.8",
     "@types/uuid": "^8.3.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.5",
-    "@typescript-eslint/parser": "^4.29.3",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-eslint": "^4.5.13",
     "@vue/cli-plugin-pwa": "^4.5.13",
