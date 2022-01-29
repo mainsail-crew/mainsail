@@ -15,6 +15,7 @@ Mainsail makes Klipper more accessible by adding a lightweight, responsive web u
 
 ## Screenshots
 ![Dashboard](assets/img/screenshot.png)
+![Features](assets/img/features.png)
 
 ## Features 
 - Responsive web interface, optimized for desktops, tablets and mobile devices
