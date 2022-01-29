@@ -14,6 +14,18 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'klippy_connected', true)
     },
 
+    setKlippyState(state, payload) {
+        Vue.set(state, 'klippy_state', payload)
+    },
+
+    setKlippyStateTimer(state, payload) {
+        Vue.set(state, 'klippy_state_timer', payload)
+    },
+
+    setKlippyMessage(state, payload) {
+        Vue.set(state, 'klippy_message', payload)
+    },
+
     setKlippyDisconnected(state) {
         Vue.set(state, 'klippy_connected', false)
         Vue.set(state, 'klippy_state', 'disconnected')
@@ -23,6 +35,10 @@ export const mutations: MutationTree<ServerState> = {
     setKlippyShutdown(state) {
         Vue.set(state, 'klippy_state', 'shutdown')
         Vue.set(state, 'klippy_message', 'Shutdown...')
+    },
+
+    setKlippyConnectedTimer(state, timer) {
+        Vue.set(state, 'klippy_connected_timer', timer)
     },
 
     setProcStats(state, payload) {

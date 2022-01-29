@@ -2,8 +2,11 @@
 layout: default
 title: Prepare
 parent: Theming
+grand_parent: Features
 nav_order: 1
-permalink: /theming/prepare
+permalink: /features/theming/prepare
+redirect_from:
+  - /theming/prepare
 description: >-
   Create a basic folder structure to build your own theme.
 ---
@@ -18,7 +21,7 @@ You can use Mainsail's built-in file manager (`Settings > Machine`) to create th
 The dot in the folder name means that it is a hidden folder. You will need to activate "Show Hidden Files" in Mainsail's file manager.
 {: .info}
 
-![screenshot](../assets/img/customizing/screenshot-display-hidden-files.png)
+![screenshot](/assets/img/customizing/screenshot-display-hidden-files.png)
 
 ## Directory structure
 The below directory and file structure provides an overview of files you could include.  All listed files in the `.theme` folder are optional and will only be loaded if they are provided.
@@ -29,8 +32,8 @@ The below directory and file structure provides an overview of files you could i
 |-- klipper_config
 |   |-- .theme
 |   |   |-- sidebar-logo.svg|jpg|png|gif
-|   |   |-- sidebar-background.jpg|png|gif
-|   |   |-- main-background.jpg|png|gif
+|   |   |-- sidebar-background.svg|jpg|png|gif
+|   |   |-- main-background.svg|jpg|png|gif
 |   |   |-- favicon-16x16.png
 |   |   |-- favicon-32x32.png
 |   |   |-- custom.css
