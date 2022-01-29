@@ -18,6 +18,7 @@ Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.
 
 ## Screenshots
 ![screenshot-dashboard](docs/assets/img/screenshot.png)
+![Features](docs/assets/img/features.png)
 
 ## Features 
 - Responsive web interface, optimized for desktops, tablets and mobile devices
