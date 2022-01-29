@@ -2,8 +2,11 @@
 layout: default
 title: Backgrounds
 parent: Theming
+grand_parent: Features
 nav_order: 10
-permalink: /theming/backgrounds
+permalink: /features/theming/backgrounds
+redirect_from:
+  - /theming/backgrounds
 description: >-
   Place some background images to give Mainsail its own look with ease.
 ---
@@ -14,11 +17,11 @@ description: >-
 There are two background images that can be used in Mainsail.  The first is in the sidebar and the second is in the main section.
 
 
-![screenshot](../assets/img/customizing/sidebar-main.jpg){:width="50%"}
+![screenshot](/assets/img/customizing/sidebar-main.jpg){:width="50%"}
 
 You can upload a new background image using the file manager located in `Settings > Machine`.
 
-<!-- ![screenshot](../assets/img/customizing/screenshot-sidebar-background.png) -->
+<!-- ![screenshot](/assets/img/customizing/screenshot-sidebar-background.png) -->
 
 ## Sidebar background image
 Load the background image into your .theme folder and name it `sidebar-background.<extension>`.

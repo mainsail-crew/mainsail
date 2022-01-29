@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Console Shortcuts
-parent: Quicktips
+parent: Features
+nav_order: 50
 has_children: false
-permalink: /quicktips/console-shortcuts
+permalink: /features/console-shortcuts
+redirect_from:
+  - /quicktips/console-shortcuts
 description: >-
   Keyboard shortcuts are available for those who prefer shortcuts.
 ---
@@ -19,7 +22,7 @@ Issue a `HELP` command in the console to get a list of all available commands.
 
 You can start typing a command and then complete it with the Tab key. If there are several possibilities, a list of choices will be displayed.
 
-![](../assets/img/quicktips/console-shortcuts/tab_complete.gif)
+![](/assets/img/quicktips/console-shortcuts/tab_complete.gif)
 
 ## Scroll through commands
 

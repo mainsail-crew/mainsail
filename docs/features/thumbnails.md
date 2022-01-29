@@ -1,8 +1,12 @@
 ---
 layout: default
 title: Thumbnails
-parent: Quicktips
-permalink: /quicktips/thumbnails
+parent: Features
+nav_order: 10
+has_children: false
+permalink: /features/thumbnails
+redirect_from:
+  - /quicktips/thumbnails
 description: >-
   Mainsail can display thumbnails in the file browser and as previews in the print status.
 ---
@@ -11,7 +15,7 @@ description: >-
 {: .no_toc}
 {{ page.description }}
 
-![preview](../assets/img/additional/large-preview.png)
+![preview](/assets/img/additional/large-preview.png)
 
 <details open markdown="block">
   <summary>
@@ -27,7 +31,7 @@ description: >-
 In "Expert" mode PrusaSlicer has an option in the "Printer Settings" tab to activate previews.
 Under `General / Firmware`, enter `32x32,400x300` as "G-code thumbnails".
 
-![PrusaSlicer](../assets/img/additional/PrusaSlicer2.3.0-thumbnails.png)
+![PrusaSlicer](/assets/img/additional/PrusaSlicer2.3.0-thumbnails.png)
 
 <div class="youtube-container">
   <iframe type="text/html" src="https://www.youtube.com/embed/4nFqfq8kikU" frameborder="0"></iframe>

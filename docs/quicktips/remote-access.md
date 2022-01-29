@@ -2,6 +2,7 @@
 layout: default
 title: Remote Access
 parent: Quicktips
+nav_order: 20
 permalink: /quicktips/remote-access
 description: >-
   A guide to safe remote access.
@@ -33,7 +34,7 @@ What <b>not to do</b>:
 	<ul>
 		<li>Please do not open ports of Mainsail/Moonraker in your router to the rest of the world. There are plenty of reports of Octoprint installations being freely accessible on the Internet, with just as many reasons why this is not a good idea.</li>
 	</ul>
-	<a href="https://isc.sans.edu/forums/diary/3D+Printers+in+The+Wild+What+Can+Go+Wrong/24044/" target="_blank">https://isc.sans.edu/forums/diary/3D+Printers+in+The+Wild+What+Can+Go+Wrong/24044/</a>
+	<a href="https://isc.sans.edu/forums/diary/3D+Printers+in+The+Wild+What+Can+Go+Wrong/24044/" target="_blank">3D Printers in The Wild, What Can Go Wrong</a>
 </div>
 
 <div class="warning">

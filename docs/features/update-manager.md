@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Update Manager
-parent: Quicktips
+parent: Features
+nav_order: 20
 has_children: false
-permalink: /quicktips/update-manager
+permalink: /features/update-manager
+redirect_from:
+  - /quicktips/update-manager
 description: >-
   Perform updates of Mainsail, Klipper, Moonraker and your system from within Mainsail.
 ---
@@ -26,7 +29,7 @@ path: ~/mainsail
 
 Restart the Moonraker service and the Update Manager will appear in Mainsail's machine settings.
 
-![](../assets/img/quicktips/update-manager/update-manager.png)
+![](/assets/img/quicktips/update-manager/update-manager.png)
 
 
 You can find further information on this topic by visiting the [Moonraker documentation](https://github.com/Arksine/moonraker/blob/master/docs/configuration.md#update_manager){:target="_blank"}.

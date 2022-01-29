@@ -1,9 +1,12 @@
 ---
 layout: default
 title: Hide macros, outputs or fans
-parent: Quicktips
+parent: Features
+nav_order: 50
 has_children: false
-permalink: /quicktips/hide-gcode_macros
+permalink: /features/hide-gcode_macros
+redirect_from:
+  - /quicktips/hide-gcode_macros
 description: >-
   You can show and hide G-Code macros in the interface settings
 ---
@@ -27,7 +30,7 @@ gcode:
 
 `MY_AWESOME_GCODE` appears in your interface settings, `_MY_HELPER_CODE` does not.
 
-![](../assets/img/quicktips/hide-gcode_macros/my_awesome_macro.png)
+![](/assets/img/quicktips/hide-gcode_macros/my_awesome_macro.png)
 
 This also works for other configuration sections including **fans and outputs.**
 {: .info}

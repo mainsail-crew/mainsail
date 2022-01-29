@@ -2,6 +2,7 @@
 layout: default
 title: Slicer Upload
 parent: Quicktips
+nav_order: 10
 permalink: /quicktips/slicer-upload
 description: >-
   You can upload your sliced G-Code from within your slicer and have it start printing.

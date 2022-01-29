@@ -2,9 +2,12 @@
 layout: themes
 title: Community Themes
 parent: Theming
+grand_parent: Features
 nav_order: 100
 has_children: false
-permalink: /theming/themes
+permalink: /features/theming/themes
+redirect_from:
+  - /theming/themes
 description: >-
   A collection of community themes for Mainsail.
 ---
@@ -44,5 +47,3 @@ Go to `[Advanced] > [Theme installer]`, enter the desired theme <span class="key
 <noscript><img width="50%" id="img{{forloop.index}}" class="screenshot" src="https://raw.githubusercontent.com/{{ theme.author }}/{{ theme.repo }}/master/screenshot.png" loading="lazy" alt="no screenshot found"/></noscript>
   
 {% endfor %}
-
-
