@@ -29,7 +29,7 @@ path: ~/mainsail
 
 Restart the Moonraker service and the Update Manager will appear in Mainsail's machine settings.
 
-![](/assets/img/quicktips/update-manager/update-manager.png)
+![](img/update-manager.png)
 
 
 You can find further information on this topic by visiting the [Moonraker documentation](https://github.com/Arksine/moonraker/blob/master/docs/configuration.md#update_manager){:target="_blank"}.

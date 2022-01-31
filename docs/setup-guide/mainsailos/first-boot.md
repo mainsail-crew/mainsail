@@ -41,11 +41,11 @@ Mainsail will not work correctly until `mainsail.cfg` is included in Klipper's c
 [include mainsail.cfg]
 ```
 
-![screenshot-web-editor](../../../assets/img/setup/screenshot-web-editor-printer.png)        
+![screenshot-web-editor](img/screenshot-web-editor-printer.png)        
 
-![screenshot-web-editor-printercfg](../../../assets/img/setup/screenshot-printercfg-include-mainsail.png)
+![screenshot-web-editor-printercfg](img/screenshot-printercfg-include-mainsail.png)
 
-and click on  the`Save & Restart` button.
+and click on  the `Save & Restart` button.
 
 ## Updates
 
@@ -56,7 +56,7 @@ Klipper, Moonraker and Mainsail have fast development cycles and while we do our
 
 It is recommended that you enable and use the [built in update-manager](../../update/update-manager) to perform any system updates, then update Klipper, Moonraker, Mainsail as needed.
 
-![screenshot-update-manager](../../../assets/img/update/screenshot-update-manager-example-not-up-to-date.png)
+![screenshot-update-manager](../../update-guide/img/screenshot-update-manager-example-not-up-to-date.png)
 
 
 MainsailOS is now configured, and Klipper's configuration file, [printer.cfg], can be setup.

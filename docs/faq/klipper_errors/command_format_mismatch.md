@@ -15,7 +15,7 @@ description: >-
 
 You have updated Klipper and now you get this cryptic error message?
 
-![Command format mismatch](../../assets/img/faq/errors/mcu_error.png)
+![Command format mismatch](img/mcu_error.png)
 
 This is an error and needs to be fixed to make Mainsail and Klipper work again.
 {: .info}

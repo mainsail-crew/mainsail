@@ -17,11 +17,9 @@ description: >-
 There are two background images that can be used in Mainsail.  The first is in the sidebar and the second is in the main section.
 
 
-![screenshot](/assets/img/customizing/sidebar-main.jpg){:width="50%"}
+![screenshot](img/sidebar-main.jpg){:width="50%"}
 
 You can upload a new background image using the file manager located in `Settings > Machine`.
-
-<!-- ![screenshot](/assets/img/customizing/screenshot-sidebar-background.png) -->
 
 ## Sidebar background image
 Load the background image into your .theme folder and name it `sidebar-background.<extension>`.

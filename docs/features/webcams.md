@@ -75,9 +75,7 @@ camera_usb_options="-r 640x480 -f 10 -d /dev/v4l/by-id/<device long id>"
 The `device long id` should match the camera name from running `lsusb`.
 
 __Note__  
-If you are using a Raspberry Pi branded camera, set camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.
-
-{: .info}
+If you are using a Raspberry Pi branded camera, set camera="raspi" at the top of the file and you do not have to reference the cameras by device ID.{: .info}
 
 ## 3. Editing the second configuration file
 When using a second camera, you must add the port `mjpg_streamer` runs under and the device.

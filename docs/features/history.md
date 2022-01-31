@@ -16,7 +16,7 @@ description: >-
 {{ page.description }}  
 This includes print job status, duration, amount of filament used, and more.  You can also reprint a print job.
 
-![](../assets/img/quicktips/history/history.png){: style="width: 50%;"}
+![](img/history.png){: style="width: 50%;"}
 
 ## Enable print history tracking
 

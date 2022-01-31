@@ -25,11 +25,11 @@ Enable advanced or expert mode and change the options under `Printer Settings / 
 Enable advanced or expert mode and change the options under `Printer Settings / General` as shown in the screenshot below.
 For "API Key" you can type anything.
 
-![screenshot](../assets/img/additional/FileUpload-PrusaSlicer-2.2.0.png)
+![screenshot](img/FileUpload-PrusaSlicer-2.2.0.png)
 
 
 ### Cura with OctoPrint-Connect
 Install the OctoPrint-Connection plugin in Cura's Marketplace. In Cura go to `Settings > Printer > Manage Printers`
 and find the Button `Connect OctoPrint`. Add your printer and type anything in the `API Key` field.
 
-![screenshot](../assets/img/additional/FileUpload-Cura-4.8.png)
+![screenshot](img/FileUpload-Cura-4.8.png)

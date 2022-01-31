@@ -34,16 +34,16 @@ Raspberry Pi Imager appearance may vary depending on the host OS.
 
 *  When opening rpi-imager you will be presented with the following:
 
-![screenshot-imager-launched](../../assets/img/setup/rpi-imager-launched.png)
+![screenshot-imager-launched](img/rpi-imager-launched.png)
 
 * Select "CHOOSE OS", and a popup will open as illustrated below. Select "Use custom" and navigate to the MainsailOS zip you downloaded.
 
-![screenshot-imager-popup](../../assets/img/setup/rpi-os-popup.png)
-![screenshot-imager-os-selected](../../assets/img/setup/rpi-choosen-os.png)
+![screenshot-imager-popup](img/rpi-os-popup.png)
+![screenshot-imager-os-selected](img/rpi-choosen-os.png)
 
 * Click on "STORAGE" and select your desired SD card.
 
-![screenshot-imager-sd-card-selection](../../assets/img/setup/rpi-sdcard.png)
+![screenshot-imager-sd-card-selection](img/rpi-sdcard.png)
 
 * Hostname, wi-fi, language and numerous other settings can now be scrolled through and pre-configured in a hidden setup menu, opened by pressing:
 
@@ -53,17 +53,17 @@ CTRL+SHIFT+X
 As a bare minimumm setup SSH and a network connection (unless wired) at this point, especially if performing a 'headless' installation.
 {: .info}
 
-![screenshot-imager-rpi-preconfig1](../../assets/img/setup/rpi-setup-1.png)
+![screenshot-imager-rpi-preconfig1](img/rpi-setup-1.png)
 
-![screenshot-imager-rpi-preconfig2](../../assets/img/setup/rpi-setup-2.png)
+![screenshot-imager-rpi-preconfig2](img/rpi-setup-2.png)
 
 * With all desired options preconfigured, click on "WRITE" and accept the warning.
 
-![screenshot-imager-warning](../../assets/img/setup/rpi-warning.png)
+![screenshot-imager-warning](img/rpi-warning.png)
 
 * Imager will take some time to write the disc image to the SD card. When it's finished, click continue.
 
-![screenshot-imager-write-finished](../../assets/img/setup/rpi-finished.png)
+![screenshot-imager-write-finished](img/rpi-finished.png)
 
 Select the "CONTINUE" button and  unmount (safely remove) your newly flashed MainsailOS SD card.
 

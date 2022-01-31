@@ -21,7 +21,7 @@ You can use Mainsail's built-in file manager (`Settings > Machine`) to create th
 The dot in the folder name means that it is a hidden folder. You will need to activate "Show Hidden Files" in Mainsail's file manager.
 {: .info}
 
-![screenshot](/assets/img/customizing/screenshot-display-hidden-files.png)
+![screenshot](img/screenshot-display-hidden-files.png)
 
 ## Directory structure
 The below directory and file structure provides an overview of files you could include.  All listed files in the `.theme` folder are optional and will only be loaded if they are provided.
