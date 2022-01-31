@@ -30,7 +30,7 @@ gcode:
 
 `MY_AWESOME_GCODE` appears in your interface settings, `_MY_HELPER_CODE` does not.
 
-![](/assets/img/quicktips/hide-gcode_macros/my_awesome_macro.png)
+![Macros](img/my_awesome_macro.png)
 
 This also works for other configuration sections including **fans and outputs.**
 {: .info}

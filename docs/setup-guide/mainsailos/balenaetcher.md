@@ -37,29 +37,29 @@ balenaEtcher appearance may vary depending on the host OS.
 
 
 * When opening balenaEtcher you will be presented with the following:
-![screenshot-balena-launched](../../assets/img/setup/balena-main-screen.png)
+![screenshot-balena-launched](img/balena-main-screen.png)
 
 * Select the 'Flash from file' button ('Select image' on Windows) and navigate to the downloaded MainsailOS zip.
-![screenshot-balena-select-os](../../assets/img/setup/balena-select-os.png)
+![screenshot-balena-select-os](img/balena-select-os.png)
 
 * Select the 'Select target' button and choose the SD card you want to flash.
-![screenshot-balena-select-sd-card](../../assets/img/setup/balena-select-sd-card.png)
-![screenshot-balena-select-sd-card-choice](../../assets/img/setup/balena-select-sd-card-choice.png)
+![screenshot-balena-select-sd-card](img/balena-select-sd-card.png)
+![screenshot-balena-select-sd-card-choice](img/balena-select-sd-card-choice.png)
 
 * Return the the main screen, and select 'Flash'. Accept any warnings to continue.
 
 **FLASHING WILL DESTROY ALL DATA ON YOUR SD CARD AND CANNOT BE REVERSED**
 {: .alert}
 
-![screenshot-balena-flash](../../assets/img/setup/balena-etcher-flash.png)
+![screenshot-balena-flash](img/balena-etcher-flash.png)
 
 * balenaEtcher will now decompress (unzip) the MainsailOS archive, write the disc image to the card and verify the flash. 
-![screenshot-balena-unzip](../../assets/img/setup/balena-unzipping.png)
-![screenshot-balena-flash](../../assets/img/setup/balena-flashing.png)
-![screenshot-balena-verify](../../assets/img/setup/balena-etcher-validating.png)
+![screenshot-balena-unzip](img/balena-unzipping.png)
+![screenshot-balena-flash](img/balena-flashing.png)
+![screenshot-balena-verify](img/balena-etcher-validating.png)
 
 * balenaEtcher will confirm the flash is complete.
-![screenshot-balena-finished](../../assets/img/setup/balena-etcher-finished.png)
+![screenshot-balena-finished](img/balena-etcher-finished.png)
 
 # Enabling SSH
 You may need to safely remove (eject) the SD card and reinsert it for the /boot partition to show.
@@ -69,7 +69,7 @@ Before you move on, it is important to check SSH is enabled.
 
 This is done by creating an empty file with no extension named 'SSH', or 'SSH.txt' in the /boot partition of the SD card. MainsailOS includes this file. 
 
-![screenshot-balena-boot-partition](../../assets/img/setup/balena-etcher-boot-partition.png)
+![screenshot-balena-boot-partition](img/balena-etcher-boot-partition.png)
 
 If for some reason the file is not present, then on linux it can be created by navigating to the /boot partition and opening a terminal:
 

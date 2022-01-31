@@ -45,11 +45,11 @@ Holding shift while clicking the browser's refresh button (or pressing Control +
 
 The update order is top to bottom.
 
-![screenshot-updates-required](../assets/img/update/screenshot-update-manager-example-not-up-to-date.png)
+![screenshot-updates-required](img/screenshot-update-manager-example-not-up-to-date.png)
 
 To update a component, click the  'UPDATE' button next to the component you wish to update:
 
-![screenshot-update-button](../assets/img/update/screenshot-update-manager-button-rounded.png)
+![screenshot-update-button](img/screenshot-update-manager-button-rounded.png)
 
 A popover window will launch and the component will be updated. When the update is finished, you can close the window.
 

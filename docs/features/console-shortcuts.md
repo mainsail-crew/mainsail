@@ -22,7 +22,7 @@ Issue a `HELP` command in the console to get a list of all available commands.
 
 You can start typing a command and then complete it with the Tab key. If there are several possibilities, a list of choices will be displayed.
 
-![](/assets/img/quicktips/console-shortcuts/tab_complete.gif)
+![Autocomplete](img/tab_complete.gif)
 
 ## Scroll through commands
 
