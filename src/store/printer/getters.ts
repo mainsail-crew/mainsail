@@ -14,10 +14,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getPrintPercent: state => {
         if (
-			state.current_file?.filename &&
-			state.current_file?.gcode_start_byte &&
-			state.current_file?.gcode_end_byte &&
-			state.current_file.filename === state.print_stats.filename
+            state.current_file?.filename &&
+            state.current_file?.gcode_start_byte &&
+            state.current_file?.gcode_end_byte &&
+            state.current_file.filename === state.print_stats.filename
         ) {
             if (state.virtual_sdcard.file_position <= state.current_file.gcode_start_byte) return 0
             if (state.virtual_sdcard.file_position >= state.current_file.gcode_end_byte) return 1
@@ -324,7 +324,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 Object.keys(state[sensorName+' '+name]).forEach(key => {
                     if (key !== 'temperature') {
                         // eslint-disable-next-line
-						const tmp: any = {}
+                        const tmp: any = {}
                         tmp[key] = {}
                         tmp[key]['value'] = state[sensorName+' '+name][key].toFixed(1)
                         tmp[key]['bool'] = rootGetters['gui/getDatasetAdditionalSensorValue']({
@@ -363,8 +363,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         Object.keys(state.configfile?.config ?? {}).forEach(prop => {
             if (prop.startsWith('gcode_macro') &&
-				!prop.startsWith('gcode_macro _') &&
-				!Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')) {
+                !prop.startsWith('gcode_macro _') &&
+                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')) {
                 array.push({
                     'name': prop.replace('gcode_macro ', ''),
                     'description': state.configfile.config[prop].description ?? null,
@@ -501,8 +501,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
             if (
                 'sensor_type' in settings &&
-				sensorTypes.includes(settings.sensor_type) &&
-                caseKey in state 
+                sensorTypes.includes(settings.sensor_type) &&
+                caseKey in state
             ) {
                 const value = state[caseKey]
 
@@ -520,13 +520,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getMcuTempSensors: (state, getters) => {
         const checkObjects = ['temperature_sensor', 'temperature_fan']
         // eslint-disable-next-line
-		const output: { key: string, settings: any, object: any }[] = []
+        const output: { key: string, settings: any, object: any }[] = []
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
             const value = objects[key]
             const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
-            
+
             if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
                 output.push({
                     key: caseKey,
@@ -571,7 +571,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (state.configfile?.config) {
             Object.keys(state.configfile.config).filter((key) => key.startsWith('bed_mesh ')).forEach((key: string) => {
                 // eslint-disable-next-line
-				const value: any = state.configfile.settings[key.toLowerCase()]
+                const value: any = state.configfile.settings[key.toLowerCase()]
                 const nameSplit = key.split(' ')
 
                 let points: number[] = []
