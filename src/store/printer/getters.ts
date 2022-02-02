@@ -4,7 +4,7 @@ import {
     PrinterState, PrinterStateBedMesh,
     PrinterStateFan, PrinterStateFilamentSensors,
     PrinterStateHeater, PrinterStateTemperatureFan,
-    PrinterStateMiscellaneous,
+    PrinterStateMiscellaneous, PrinterStateExtruder,
     PrinterStateSensor, PrinterStateMacro,
 } from '@/store/printer/types'
 import {caseInsensitiveSort, formatFrequency, getMacroParams} from '@/plugins/helpers'
@@ -605,6 +605,33 @@ export const getters: GetterTree<PrinterState, RootState> = {
         }
 
         return caseInsensitiveSort(profiles, 'name')
+    },
+
+    getExtruders: (state) => {
+        const extruders: PrinterStateExtruder[] = []
+        if (state.configfile?.settings) {
+            Object.keys(state.configfile?.settings)
+                .filter(key => key.startsWith('extruder'))
+                .sort()
+                .forEach((key: string) => {
+                    const extruder = state.configfile?.settings[key]
+                    let minExtrudeTemp: number = extruder.min_extrude_temp
+
+                    if (Object.keys(extruder).includes('shared_heater')) {
+                        const sharedHeater: string = state.configfile?.settings[key].shared_heater
+                        minExtrudeTemp = state.configfile?.settings[sharedHeater].min_extrude_temp
+                    }
+
+                    extruders.push({
+                        name: key,
+                        filament_diameter: extruder.filament_diameter,
+                        nozzle_diameter: extruder.nozzle_diameter,
+                        min_extrude_temp: minExtrudeTemp,
+                        max_extrude_only_distance: extruder.max_extrude_only_distance
+                    })
+                })
+        }
+        return extruders
     },
 
     getExtrudePossible: state => {

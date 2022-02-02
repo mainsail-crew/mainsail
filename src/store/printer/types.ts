@@ -152,3 +152,11 @@ export interface PrinterStateKlipperConfig {
     // eslint-disable-next-line
     [key: string]: any
 }
+
+export interface PrinterStateExtruder {
+    name: string
+    filament_diameter: number
+    min_extrude_temp: number
+    nozzle_diameter: number
+    max_extrude_only_distance: number
+}
