@@ -37,5 +37,5 @@ We would like to thank the projects Mainsail is built on, especially [Klipper](h
 
 | project | license | link |
 |:--------|:-------:|:-----|
-{% for deps in site.data.licenses %}| **{{ deps[0] }}**<br>{{ deps[1].description }} | [{{ deps[1].licenses }}]({{ deps[1].licenseUrl }}){:target="_blank"} | [{{ deps[1].repository }}]({{ deps[1].repository }}){:target="_blank"} |
+{% for deps in site.data.licenses %}| **{{ deps[0] }}**<br>{{ deps[1].description }} | {{ deps[1].licenses }} | [{{ deps[1].repository }}]({{ deps[1].repository }}){:target="_blank"} |
 {% endfor %}

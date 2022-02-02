@@ -1,4 +1,74 @@
 {
+    "@codemirror/basic-setup": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/basic-setup",
+        "licenseUrl": "https://github.com/codemirror/basic-setup/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/highlight": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/highlight",
+        "licenseUrl": "https://github.com/codemirror/highlight/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/lang-javascript": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/lang-javascript",
+        "licenseUrl": "https://github.com/codemirror/lang-javascript/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/lang-json": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/lang-json",
+        "licenseUrl": "https://github.com/codemirror/lang-json/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/language": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/language",
+        "licenseUrl": "https://github.com/codemirror/language/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/legacy-modes": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/legacy-modes",
+        "licenseUrl": "https://github.com/codemirror/legacy-modes/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/search": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/search",
+        "licenseUrl": "https://github.com/codemirror/search/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/state": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/state",
+        "licenseUrl": "https://github.com/codemirror/state/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/stream-parser": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/stream-parser",
+        "licenseUrl": "https://github.com/codemirror/stream-parser/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@codemirror/view": {
+        "licenses": "MIT",
+        "repository": "https://github.com/codemirror/view",
+        "licenseUrl": "https://github.com/codemirror/view/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "@sindarius/gcodeviewer": {
+        "licenses": "LGPL-3.0-or-later",
+        "parents": "mainsail"
+    },
+    "@types/overlayscrollbars": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
     "axios": {
         "licenses": "MIT",
         "repository": "https://github.com/axios/axios",
@@ -9,6 +79,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/zloirock/core-js",
         "licenseUrl": "https://github.com/zloirock/core-js/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "echarts-for-vue": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/ambit-tsai/echarts-for-vue",
+        "licenseUrl": "https://github.com/ambit-tsai/echarts-for-vue/raw/master/LICENSE",
         "parents": "mainsail"
     },
     "echarts-gl": {
@@ -23,28 +99,16 @@
         "licenseUrl": "https://github.com/apache/echarts/raw/master/LICENSE",
         "parents": "mainsail"
     },
-    "monaco-editor-textmate": {
-        "licenses": "MIT",
-        "repository": "https://github.com/NeekSandhu/monaco-editor-textmate",
-        "licenseUrl": "https://github.com/NeekSandhu/monaco-editor-textmate/raw/master/LICENSE",
+    "joi": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/sideway/joi",
+        "licenseUrl": "https://github.com/sideway/joi/raw/master/LICENSE.md",
         "parents": "mainsail"
     },
-    "monaco-editor": {
+    "js-sha256": {
         "licenses": "MIT",
-        "repository": "https://github.com/Microsoft/monaco-editor",
-        "licenseUrl": "https://github.com/microsoft/monaco-editor/raw/main/LICENSE.md",
-        "parents": "mainsail"
-    },
-    "monaco-textmate": {
-        "licenses": "MIT",
-        "repository": "https://github.com/NeekSandhu/monaco-textmate",
-        "licenseUrl": "https://github.com/NeekSandhu/monaco-textmate/raw/master/LICENSE.md",
-        "parents": "mainsail"
-    },
-    "monaco-themes": {
-        "licenses": "MIT",
-        "repository": "https://github.com/brijeshb42/monaco-themes",
-        "licenseUrl": "https://github.com/brijeshb42/monaco-themes/raw/master/LICENSE",		
+        "repository": "https://github.com/emn178/js-sha256",
+        "licenseUrl": "https://github.com/emn178/js-sha256/raw/master/LICENSE.txt",
         "parents": "mainsail"
     },
     "object-assign-deep": {
@@ -53,22 +117,40 @@
         "licenseUrl": "https://github.com/saikojosh/Object-Assign-Deep",
         "parents": "mainsail"
     },
-    "onigasm": {
+    "overlayscrollbars-vue": {
         "licenses": "MIT",
-        "repository": "https://github.com/NeekSandhu/onigasm",
-        "licenseUrl": "https://github.com/NeekSandhu/onigasm/raw/master/LICENSE",
+        "repository": "https://github.com/KingSora/OverlayScrollbars",
+        "licenseUrl": "https://github.com/KingSora/OverlayScrollbars/raw/master/LICENSE",
         "parents": "mainsail"
     },
-    "plotly.js": {
+    "overlayscrollbars": {
         "licenses": "MIT",
-        "repository": "https://github.com/plotly/plotly.js",
-        "licenseUrl": "https://github.com/plotly/plotly.js/raw/master/LICENSE",
+        "repository": "https://github.com/KingSora/OverlayScrollbars",
+        "licenseUrl": "https://github.com/KingSora/OverlayScrollbars/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "sass-loader": {
+        "licenses": "MIT",
+        "repository": "https://github.com/webpack-contrib/sass-loader",
+        "licenseUrl": "https://github.com/webpack-contrib/sass-loader/raw/master/LICENSE",
         "parents": "mainsail"
     },
     "semver": {
         "licenses": "ISC",
         "repository": "https://github.com/npm/node-semver",
         "licenseUrl": "https://github.com/npm/node-semver/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "uuid": {
+        "licenses": "MIT",
+        "repository": "https://github.com/uuidjs/uuid",
+        "licenseUrl": "https://github.com/uuidjs/uuid/raw/master/LICENSE.md",
+        "parents": "mainsail"
+    },
+    "vue-class-component": {
+        "licenses": "MIT",
+        "repository": "https://github.com/vuejs/vue-class-component",
+        "licenseUrl": "https://github.com/vuejs/vue-class-component/raw/master/LICENSE",
         "parents": "mainsail"
     },
     "vue-context": {
@@ -85,8 +167,8 @@
     },
     "vue-headful": {
         "licenses": "MIT",
-        "repository": "https://github.com/troxler/vue-headful",
-        "licenseUrl": "https://github.com/troxler/vue-headful/raw/master/LICENSE",
+        "repository": "github:troxler/vue-headful",
+        "licenseUrl": "github:troxler/vue-headful",
         "parents": "mainsail"
     },
     "vue-i18n": {
@@ -107,10 +189,10 @@
         "licenseUrl": "https://github.com/Akryum/vue-observe-visibility",
         "parents": "mainsail"
     },
-    "vue-plotly": {
+    "vue-property-decorator": {
         "licenses": "MIT",
-        "repository": "https://github.com/David-Desmaisons/vue-plotly",
-        "licenseUrl": "https://github.com/David-Desmaisons/vue-plotly/raw/master/LICENSE",
+        "repository": "https://github.com/kaorun343/vue-property-decorator",
+        "licenseUrl": "https://github.com/kaorun343/vue-property-decorator/raw/master/LICENSE",
         "parents": "mainsail"
     },
     "vue-resource": {
@@ -135,6 +217,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/vuejs/vue",
         "licenseUrl": "https://github.com/vuejs/vue/raw/master/LICENSE",
+        "parents": "mainsail"
+    },
+    "vuedraggable": {
+        "licenses": "MIT",
+        "repository": "https://github.com/SortableJS/Vue.Draggable",
+        "licenseUrl": "https://github.com/SortableJS/Vue.Draggable/raw/master/LICENSE",
         "parents": "mainsail"
     },
     "vuetify": {
