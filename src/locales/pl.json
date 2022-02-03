@@ -263,7 +263,7 @@
       "LongestPrinttime": "Najdłuższy czas wydruku",
       "AvgPrinttime": "Średni czas druku", 
       "TotalFilamentUsed": "Łączne zużycie filamentu", 
-      "TotalJobs": "Wszystkich wydruków",
+      "TotalJobs": "Ilość wszystkich wydruków",
       "FilamentUsage": "Zużycie filamentu", 
       "PrinttimeAvg": "Średni czas wydruku", 
       "PrintHistory": "Historia wydruków", 
@@ -429,7 +429,7 @@
         "SetupConsole": "Konfiguracja konsoli",
         "HideTemperatures": "Ukryj temperatury",
         "HideTimelapse": "Ukryj timelapse",
-        "SendCode": "Wyślij kod..."
+        "SendCode": "Wpisz kod..."
       },
       "MinSettingsPanel": {
         "MissingConfiguration": "Brakująca konfiguracja",
@@ -638,7 +638,7 @@
         "Language": "Język",
         "CalcEstimateTime": "Szacowany czas ukończenia",
         "CalcEstimateTimeDescription": "Jeżeli wiele jest zaznaczonych , średnia zostanie wyliczona.",
-        "CalcEtaTime": "kalkulacja ETA",
+        "CalcEtaTime": "Kalkulacja ETA",
         "CalcEtaTimeDescription": "Jeżeli wiele jest zaznaczonych , średnia zostanie wyliczona.",
         "FactoryReset": "Ustawienia fabryczne",
         "FactoryDialog": "Proszę wybrać wszystkie sekcje które mają zostać zresetowane:",
@@ -845,10 +845,10 @@
         "Name": "Nazwa",
         "CustomGCode": "Własny G-Code",
         "PresetInfo": "Musisz co najmniej podać temperaturę , albo dodać G-Code.",
-        "StoreButton": "Zapisz preset",
-        "UpdateButton": "Zaktualizuj preset",
-        "EditCooldown": "Edytuj czas przerw",
-        "UpdateCooldown": "Aktualizuj czas przerw"
+        "StoreButton": "Zapisz",
+        "UpdateButton": "Zaktualizuj",
+        "EditCooldown": "Edytuj czas chłodzenia",
+        "UpdateCooldown": "Aktualizuj czas chłodzenia"
       },
       "RemotePrintersTab": {
         "RemotePrinters": "Drukarki",
