@@ -54,13 +54,20 @@
     transition: none !important;
 }
 
+.scrubber {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    z-index: 19 !important;
+}
 </style>
 
 <template>
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
             <template v-slot:buttons>
-                <v-btn 
+                <v-btn
                     :icon="$vuetify.breakpoint.xs"
                     :text="$vuetify.breakpoint.smAndUp"
                     tile
@@ -78,6 +85,31 @@
                 <v-row>
                     <v-col>
                         <div ref="viewerCanvasContainer"></div>
+                        <div class="scrubber" v-show="!tracking && scrubFileSize > 0">
+                                                <v-row dense>
+                                                    <v-col cols="9" md="7">
+                                                        <v-slider :hint="scrubPosition + '/' + scrubFileSize" :max="scrubFileSize" dense min="0" persistent-hint v-model="scrubPosition"></v-slider>
+                                                    </v-col>
+                                                    <v-col cols="3" md="2">
+                                                        <v-btn @click="scrubPlaying = !scrubPlaying">
+                                                            <v-icon v-if="scrubPlaying">mdi-stop</v-icon>
+                                                            <v-icon v-else>mdi-play</v-icon>
+                                                        </v-btn>
+                                                        <v-btn @click="fastForward">
+                                                            <v-icon>mdi-fast-forward</v-icon>
+                                                        </v-btn>
+                                                    </v-col>
+                                                    <v-col cols="12" md="2">
+                                                        <v-btn-toggle dense mandatory rounded v-model="scrubSpeed">
+                                                            <v-btn :value="1">1x</v-btn>
+                                                            <v-btn :value="2">2x</v-btn>
+                                                            <v-btn :value="5">5x</v-btn>
+                                                            <v-btn :value="10">10x</v-btn>
+                                                            <v-btn :value="20">20x</v-btn>
+                                                        </v-btn-toggle>
+                                                    </v-col>
+                                                </v-row>
+                            </div>
                     </v-col>
                     <v-col class="col-auto pr-6">
                         <v-slider
@@ -94,7 +126,7 @@
                 <v-row class="mt-0 d-flex align-top">
                     <v-col>
                         <v-row>
-                            <v-col order-md="2" class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4"> 
+                            <v-col order-md="2" class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4">
                                 <template v-if="loadedFile === null">
                                     <v-btn @click="loadCurrentFile" class="mr-3" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile">{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
                                     <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
@@ -145,6 +177,7 @@
                             </v-list>
                         </v-menu>
                 </v-row>
+
                 <input :accept="'.g,.gcode,.gc,.gco,.nc,.ngc,.tap'" @change="fileSelected" hidden multiple ref="fileInput" type="file" />
             </v-card-text>
         </panel>
@@ -192,6 +225,7 @@ import GCodeViewer from '@sindarius/gcodeviewer'
 import axios from 'axios'
 import {formatFilesize} from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import { Debounce } from 'vue-debounce-decorator'
 
 interface downloadSnackbar {
     status: boolean
@@ -227,6 +261,12 @@ export default class Viewer extends Mixins(BaseMixin) {
     private zSlicerHeight = 100
     private renderQuality = this.renderQualities[2]
 
+    private scrubPosition = 0
+    private scrubPlaying = false
+    private scrubSpeed = 1
+    private scrubInterval = -1
+    private scrubFileSize = 0
+
     private downloadSnackbar: downloadSnackbar = {
         status: false,
         filename: '',
@@ -261,8 +301,12 @@ export default class Viewer extends Mixins(BaseMixin) {
     async mounted() {
         this.loadedFile = this.$store.state.gcodeviewer?.loadedFileBackup ?? null
         viewer = this.$store.state.gcodeviewer?.viewerBackup ?? null
-
         await this.init()
+
+        if(this.loadedFile !== null){
+            this.scrubFileSize = viewer.fileSize
+
+        }
 
         window.addEventListener('resize', this.eventListenerResize)
     }
@@ -272,6 +316,11 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.gcodeProcessor.loadingProgressCallback = null
             this.$store.dispatch('gcodeviewer/setLoadedFileBackup', this.loadedFile)
             this.$store.dispatch('gcodeviewer/setViewerBackup', viewer)
+        }
+
+        this.scrubPlaying =false
+        if(this.scrubInterval != -1){
+            clearInterval(this.scrubInterval)
         }
 
         window.removeEventListener('resize', this.eventListenerResize)
@@ -385,7 +434,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             }
         }
     }
-    
+
     async cancelRendering() {
         if (viewer) {
             viewer.gcodeProcessor.cancelLoad = true
@@ -395,6 +444,8 @@ export default class Viewer extends Mixins(BaseMixin) {
 
     clearLoadedFile() {
         if (viewer) {
+            this.scrubPlaying = false
+            this.scrubFileSize = 0
             viewer.clearScene(true)
             this.loadedFile = null
             this.tracking = false
@@ -431,6 +482,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.buildObjects.loadObjectBoundaries(objects)
             viewer.buildObjects.showObjectSelection(this.showObjectSelection)
         }
+        this.scrubFileSize = viewer.fileSize
 
         viewer.gcodeProcessor.updateFilePosition(viewer.fileSize)
     }
@@ -490,6 +542,7 @@ export default class Viewer extends Mixins(BaseMixin) {
         await viewer.processFile(text)
         this.loadingPercent = 100
         this.finishLoad()
+        this.scrubFileSize = viewer.fileSize
     }
 
     cancelDownload() {
@@ -569,6 +622,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     async trackingChanged(newVal: boolean) {
         if (!viewer) return
         if (newVal) {
+            this.scrubPlaying = false
             //Set zSlider to max value
             this.zSlider = this.maxZSlider
             //Force renderers reload.
@@ -892,6 +946,46 @@ export default class Viewer extends Mixins(BaseMixin) {
     updateZSlider(newVal: any) {
         this.zSlider = newVal
     }
+
+    @Watch('scrubPlaying') scrubPlayingChanaged(to: boolean): void {
+        if (to) {
+            if (this.scrubInterval != -1) {
+                clearInterval(this.scrubInterval)
+            }
+            this.scrubPlaying = true
+            if (this.scrubPosition >= this.scrubFileSize) {
+                this.scrubPosition = 0
+            }
+
+            viewer.gcodeProcessor.updateFilePosition(this.scrubPosition - 30000)
+            this.scrubInterval = setInterval(() => {
+                this.scrubPosition += 100 * this.scrubSpeed
+                viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
+                if (this.tracking  || this.scrubPosition >= this.scrubFileSize) {
+                    this.scrubPlaying = false
+                }
+            }, 200)
+        } else {
+            if (this.scrubInterval > -1) {
+                clearInterval(this.scrubInterval)
+            }
+            this.scrubPlaying = false
+            this.scrubInterval = -1
+        }
+    }
+
+    @Debounce(200)
+    @Watch('scrubPosition') updateScrubPosition(to: number) : void {
+        if(!this.tracking){
+            viewer.gcodeProcessor.updateFilePosition(to)
+        }
+    }
+
+    fastForward() :void{
+        this.scrubPosition = this.scrubFileSize
+        viewer.gcodeProcessor.updateFilePosition(this.scrubPosition)
+    }
+
 }
 </script>
 
