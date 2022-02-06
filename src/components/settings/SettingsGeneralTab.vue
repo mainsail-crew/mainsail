@@ -294,8 +294,6 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
             })
         })
 
-      console.log(languages);
-
         return languages
     }
 

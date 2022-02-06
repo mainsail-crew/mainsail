@@ -6,7 +6,6 @@ import { getters } from '@/store/socket/getters'
 import {RootState} from '@/store/types'
 
 export const getDefaultState = (): SocketState => {
-    console.log(import.meta.env);
     return {
         remoteMode: import.meta.env.VUE_APP_REMOTE_MODE === true || (document.location.hostname === 'my.mainsail.xyz'),
         hostname: (import.meta.env.VUE_APP_HOSTNAME as string) || ((import.meta.env.VUE_APP_REMOTE_MODE === true || document.location.hostname === 'my.mainsail.xyz') ? '' : window.location.hostname),

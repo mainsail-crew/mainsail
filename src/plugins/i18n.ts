@@ -18,7 +18,7 @@ function loadLocaleMessages() {
 
     return messages
 }
-console.log(import.meta.env.VUE_APP_I18N_LOCALE);
+
 export default new VueI18n({
     locale: (import.meta.env.VUE_APP_I18N_LOCALE as string) || 'en',
     fallbackLocale: (import.meta.env.VUE_APP_I18N_FALLBACK_LOCALE as string) || 'en',
