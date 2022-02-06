@@ -19,7 +19,7 @@
     display: table;
     position: absolute;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100%; height: 100vh;
     z-index: 9999999999;
     background-color: rgba(0, 0, 0, 0.5);
     transition: visibility 175ms, opacity 175ms;
