@@ -623,7 +623,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     }
 
                     extruders.push({
-                        name: key,
+                        key: key,
+                        name: `Extruder ${(key == 'extruder') ? '0' : key.replace('extruder', '')}`,
                         filament_diameter: extruder.filament_diameter,
                         nozzle_diameter: extruder.nozzle_diameter,
                         min_extrude_temp: minExtrudeTemp,

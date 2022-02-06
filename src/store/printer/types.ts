@@ -154,6 +154,7 @@ export interface PrinterStateKlipperConfig {
 }
 
 export interface PrinterStateExtruder {
+    key: string
     name: string
     filament_diameter: number
     min_extrude_temp: number
