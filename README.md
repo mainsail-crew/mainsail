@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/img/logo.png" alt="Sublime's custom image"/>
+  <img src="https://raw.githubusercontent.com/mainsail-crew/docs/master/assets/img/logo.png" alt="Sublime's custom image"/>
 </p>
 
 # Mainsail
@@ -17,7 +17,8 @@ Mainsail is also available in remote mode on [http://my.mainsail.xyz](http://my.
 [Release Notes](https://github.com/mainsail-crew/mainsail/releases)
 
 ## Screenshots
-![screenshot-dashboard](docs/assets/img/screenshot.png)
+![screenshot-dashboard](https://raw.githubusercontent.com/mainsail-crew/docs/master/assets/img/screenshot.png)
+![Features](https://raw.githubusercontent.com/mainsail-crew/docs/master/assets/img/features.png)
 
 ## Features 
 - Responsive web interface, optimized for desktops, tablets and mobile devices
