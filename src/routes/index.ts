@@ -7,7 +7,7 @@ import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
-import {Component} from 'vue'
+import {AsyncComponent, Component} from 'vue'
 
 const routes: AppRoute[] = [
     {
@@ -111,7 +111,7 @@ export interface AppRoute {
     path: string,
     redirect?: string,
     icon?: string,
-    component: Component | null,
+    component: Component | AsyncComponent | null,
     alwaysShow: boolean,
     showInNavi: boolean,
     registeredDirectory?: string,
