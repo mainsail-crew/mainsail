@@ -2,7 +2,6 @@ import Dashboard from '../pages/Dashboard.vue'
 import Webcam from '../pages/Webcam.vue'
 import Farm from '../pages/Farm.vue'
 import Console from '../pages/Console.vue'
-import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Timelapse from '../pages/Timelapse.vue'
@@ -46,7 +45,7 @@ const routes: AppRoute[] = [
         title: 'Heightmap',
         path: '/heightmap',
         icon: 'grid',
-        component: Heightmap,
+        component: () => import('../pages/Heightmap.vue'),
         alwaysShow: false,
         showInNavi: true,
         klipperComponent: 'bed_mesh',
