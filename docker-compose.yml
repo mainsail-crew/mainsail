@@ -27,7 +27,7 @@ services:
       - ./src/:/home/node/mainsail/src
       - ./public/:/home/node/mainsail/public
       - ./vite.config.ts:/home/node/mainsail/vite.config.ts
-      - ./index/html:/home/node/mainsail/index.html
+      - ./index.html:/home/node/mainsail/index.html
     container_name: mainsail-stack-npm
     ports:
       - "8080:8080"
