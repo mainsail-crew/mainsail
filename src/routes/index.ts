@@ -8,7 +8,6 @@ import History from '../pages/History.vue'
 import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
 import {Component} from 'vue'
-import Viewer from '../pages/Viewer.vue'
 
 const routes: AppRoute[] = [
     {
@@ -65,7 +64,7 @@ const routes: AppRoute[] = [
         title: 'G-Code Viewer',
         path: '/viewer',
         icon: 'video-3d',
-        component: Viewer,
+        component: () => import('../pages/Viewer.vue'),
         alwaysShow: false,
         showInNavi: true,
     },

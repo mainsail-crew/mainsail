@@ -60,7 +60,7 @@
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
             <template v-slot:buttons>
-                <v-btn 
+                <v-btn
                     :icon="$vuetify.breakpoint.xs"
                     :text="$vuetify.breakpoint.smAndUp"
                     tile
@@ -94,7 +94,7 @@
                 <v-row class="mt-0 d-flex align-top">
                     <v-col>
                         <v-row>
-                            <v-col order-md="2" class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4"> 
+                            <v-col order-md="2" class="d-flex align-content-space-around justify-center flex-wrap flex-md-nowrap col-12 col-md-4">
                                 <template v-if="loadedFile === null">
                                     <v-btn @click="loadCurrentFile" class="mr-3" v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile">{{ $t("GCodeViewer.LoadCurrentFile")}}</v-btn>
                                     <v-btn @click="chooseFile">{{ $t("GCodeViewer.LoadLocal") }}</v-btn>
@@ -187,7 +187,6 @@
 <script lang="ts">
 import {Component, Mixins, Prop, Ref, Watch} from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-// @ts-ignore
 import GCodeViewer from '@sindarius/gcodeviewer'
 import axios from 'axios'
 import {formatFilesize} from '@/plugins/helpers'
@@ -385,7 +384,7 @@ export default class Viewer extends Mixins(BaseMixin) {
             }
         }
     }
-    
+
     async cancelRendering() {
         if (viewer) {
             viewer.gcodeProcessor.cancelLoad = true
