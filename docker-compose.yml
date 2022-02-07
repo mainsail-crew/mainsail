@@ -10,7 +10,7 @@ services:
       - ./docker/logs:/home/node/klipper_logs
       - ./docker/gcode:/home/node/gcode
       - ./docker/config/moonraker:/home/node/.moonraker_database
-    container_name: ${APP_NAME}-stack-api
+    container_name: mainsail-stack-api
     ports:
       - "7125:7125"
     networks:
@@ -22,7 +22,7 @@ services:
     image: mainsail-stack-npm/1
     volumes:
       - ./:/home/node/mainsail
-    container_name: ${APP_NAME}-stack-npm
+    container_name: mainsail-stack-npm
     ports:
       - "8080:8080"
     depends_on:
