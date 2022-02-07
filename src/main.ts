@@ -1,5 +1,5 @@
 
-import "regenerator-runtime"; // async polyfill used by the gcodeviewer
+import 'regenerator-runtime' // async polyfill used by the gcodeviewer
 
 import Vue from 'vue'
 import App from '@/App.vue'

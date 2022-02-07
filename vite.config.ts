@@ -2,9 +2,7 @@ import {createVuePlugin as vue} from 'vite-plugin-vue2'
 import loadVersion from 'vite-plugin-package-version'
 import {defineConfig} from 'vite'
 import Components from 'unplugin-vue-components/vite'
-import {
-    VuetifyResolver,
-} from 'unplugin-vue-components/resolvers'
+import {VuetifyResolver,} from 'unplugin-vue-components/resolvers'
 
 import path from 'path'
 
@@ -20,6 +18,7 @@ export default defineConfig({
         }),
     ], css: {
         preprocessorOptions: {
+            css: {charset: false},
             scss: {
                 quietDeps: true
             },

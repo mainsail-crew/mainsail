@@ -11,7 +11,7 @@ function loadLocaleMessages() {
         const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
 
         if (langKey && langKey.length > 1) {
-            messages[langKey] = JSON.parse(JSON.stringify(locales[file]));
+            messages[langKey] = JSON.parse(JSON.stringify(locales[file]))
         }
     }
 

@@ -88,28 +88,28 @@ export default class Panel extends Mixins(BaseMixin) {
    @Prop({ default: true }) declare readonly marginBottom: boolean
    @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
 
-    get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.cardClass)
-    }
+   get expand() {
+       return this.$store.getters['gui/getPanelExpand'](this.cardClass)
+   }
 
-    set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
-    }
+   set expand(newVal) {
+       this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+   }
 
-    get hasIconSlot() {
-        return !! this.$slots.icon
-    }
+   get hasIconSlot() {
+       return !! this.$slots.icon
+   }
 
-    get hasButtonsSlot() {
-        return !! this.$slots.buttons
-    }
+   get hasButtonsSlot() {
+       return !! this.$slots.buttons
+   }
 
-    get getToolbarClass() {
-        let output = this.toolbarClass
+   get getToolbarClass() {
+       let output = this.toolbarClass
 
-        if (this.collapsible) output += ' collapsible'
+       if (this.collapsible) output += ' collapsible'
 
-        return output
-    }
+       return output
+   }
 }
 </script>
