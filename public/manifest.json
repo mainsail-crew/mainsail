@@ -2,6 +2,8 @@
   "short_name": "Mainsail",
   "name": "Mainsail",
   "display": "standalone",
+  "scope" : "/",
+  "start_url" : "/",
   "theme_color": "#D51F26",
   "background_color": "#121212",
   "icons": [
@@ -9,13 +11,13 @@
       "src": "/img/icons/icon-196-maskable.png",
       "sizes": "196x196",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     },
     {
       "src": "/img/icons/icon-512-maskable.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any maskable"
     }
   ]
 }
