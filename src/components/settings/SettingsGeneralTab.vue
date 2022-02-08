@@ -213,7 +213,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     private mainsailKeys: { name: string, label: string}[] = []
     private availableNamespaces: string[] = []
 
-    $refs!: {
+    declare $refs: {
         uploadBackupFile: HTMLInputElement
     }
 
@@ -282,15 +282,14 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
     }
 
     get availableLanguages() {
-        // eslint-disable-next-line no-undef
-        const locales = require.context('@/locales', true, /[A-Za-z0-9-_,\s]+\.json$/i)
+        const locales = import.meta.globEager('../../locales/*.json')
         const languages: any = []
 
-        locales.keys().map((key: string) => {
-            const langKey = key.slice(2, key.lastIndexOf('.'))
+        Object.keys(locales).map((file: string) => {
+            const langKey = file.slice(file.lastIndexOf('.') - 2, file.lastIndexOf('.'))
 
             languages.push({
-                text: locales(key).title,
+                text: locales[file].title,
                 value: langKey
             })
         })

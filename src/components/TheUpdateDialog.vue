@@ -99,7 +99,7 @@ import BaseMixin from '@/components/mixins/base'
     }
 })
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
-    $refs!: {
+    declare $refs: {
         updaterLogScroll: any
         updaterLog: HTMLDivElement
     }

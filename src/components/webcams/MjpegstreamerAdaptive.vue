@@ -40,13 +40,13 @@ export default class MjpegstreamerAdaptive extends Mixins(BaseMixin) {
     private request_time_smoothing = 0.1
     private currentFPS = 0
 
-    $refs!: {
+    declare $refs: {
         mjpegstreamerAdaptive: any
     }
 
-    @Prop({ required: true }) camSettings: any
-    @Prop() printerUrl: string | undefined
-    @Prop({ default: true }) showFps!: boolean
+    @Prop({ required: true }) declare camSettings: any
+    @Prop() declare printerUrl: string | undefined
+    @Prop({ default: true }) declare showFps: boolean
 
     get webcamStyle() {
         let transforms = ''

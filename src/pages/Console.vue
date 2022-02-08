@@ -98,7 +98,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     private lastCommandNumber: number | null = null
     private items = []
 
-    $refs!: {
+    declare $refs: {
         gcodeCommandField: VTextareaType,
         console: ConsoleTable,
         consoleScroll: any

@@ -2,13 +2,11 @@ import Dashboard from '../pages/Dashboard.vue'
 import Webcam from '../pages/Webcam.vue'
 import Farm from '../pages/Farm.vue'
 import Console from '../pages/Console.vue'
-import Heightmap from '../pages/Heightmap.vue'
 import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
-import {Component} from 'vue'
-import Viewer from '../pages/Viewer.vue'
+import {AsyncComponent, Component} from 'vue'
 
 const routes: AppRoute[] = [
     {
@@ -47,7 +45,7 @@ const routes: AppRoute[] = [
         title: 'Heightmap',
         path: '/heightmap',
         icon: 'grid',
-        component: Heightmap,
+        component: () => import('../pages/Heightmap.vue'),
         alwaysShow: false,
         showInNavi: true,
         klipperComponent: 'bed_mesh',
@@ -65,7 +63,7 @@ const routes: AppRoute[] = [
         title: 'G-Code Viewer',
         path: '/viewer',
         icon: 'video-3d',
-        component: Viewer,
+        component: () => import('../pages/Viewer.vue'),
         alwaysShow: false,
         showInNavi: true,
     },
@@ -112,7 +110,7 @@ export interface AppRoute {
     path: string,
     redirect?: string,
     icon?: string,
-    component: Component | null,
+    component: Component | AsyncComponent | null,
     alwaysShow: boolean,
     showInNavi: boolean,
     registeredDirectory?: string,

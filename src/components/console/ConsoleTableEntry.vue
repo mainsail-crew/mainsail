@@ -39,7 +39,7 @@ import {ServerStateEvent} from '@/store/server/types'
 @Component
 export default class ConsoleTableEntry extends Vue {
     @Prop({ required: true })
-    readonly event!: ServerStateEvent
+    declare readonly event: ServerStateEvent
 
     get entryStyle() {
         return this.$store.state.gui.console.entryStyle ?? 'default'

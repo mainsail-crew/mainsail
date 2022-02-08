@@ -78,8 +78,8 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class ConnectionStatus extends Mixins(BaseMixin) {
-    @Prop({ default: false }) readonly moonraker: boolean | undefined
-    @Prop({ default: false }) readonly klipper: boolean | undefined
+    @Prop({ default: false }) declare readonly moonraker: boolean | undefined
+    @Prop({ default: false }) declare readonly klipper: boolean | undefined
 
     get colorMainsail() {
         return '200,200,200'

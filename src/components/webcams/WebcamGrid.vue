@@ -49,6 +49,6 @@ import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 })
 export default class WebcamGrid extends Mixins(BaseMixin) {
 
-    @Prop() readonly webcams!: GuiWebcamStateWebcam[]
+    @Prop() declare readonly webcams: GuiWebcamStateWebcam[]
 }
 </script>

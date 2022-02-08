@@ -44,13 +44,13 @@ import BaseMixin from '@/components/mixins/base'
 export default class ToolInput extends Mixins(BaseMixin) {
     private value: any = 0
 
-    @Prop({ type: String, required: true }) readonly name!: string
-    @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
-    @Prop({ type: Number, required: true }) readonly min_temp!: number
-    @Prop({ type: Number, required: true }) readonly max_temp!: number
-    @Prop({ type: String, required: true }) readonly command!: string
-    @Prop({ type: String, required: true }) readonly attributeName!: string
-    @Prop({ type: Array, default: [] }) items!: number[]
+    @Prop({ type: String, required: true }) declare readonly name: string
+    @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
+    @Prop({ type: Number, required: true }) declare readonly min_temp: number
+    @Prop({ type: Number, required: true }) declare readonly max_temp: number
+    @Prop({ type: String, required: true }) declare readonly command: string
+    @Prop({ type: String, required: true }) declare readonly attributeName: string
+    @Prop({ type: Array, default: [] }) declare items: number[]
 
     changeValue(newVal: any) {
         if (typeof newVal === 'object') {

@@ -214,7 +214,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
         unique: (value: string) => !this.existsWebcamName(value) || this.$t('Settings.WebcamsTab.NameAlreadyExists'),
     }
 
-    $refs!: {
+    declare $refs: {
         webcamForm: any
     }
 

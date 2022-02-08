@@ -89,7 +89,7 @@ import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
     }
 })
 export default class WebcamPanel extends Mixins(BaseMixin) {
-    @Prop({ default: 'dashboard' }) viewport?: string
+    @Prop({ default: 'dashboard' }) declare viewport?: string
 
     get webcams(): GuiWebcamStateWebcam[] {
         return this.$store.getters['gui/webcams/getWebcams']

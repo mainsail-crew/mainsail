@@ -26,9 +26,9 @@ import {GuiWebcamStateWebcam} from '@/store/gui/webcams/types'
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
     private isVisible = true
 
-    @Prop({ required: true }) readonly camSettings!: GuiWebcamStateWebcam
+    @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam
 
-    @Prop({ default: null }) readonly printerUrl!: string | null
+    @Prop({ default: null }) declare readonly printerUrl: string | null
 
     get url() {
         const baseUrl = this.camSettings.urlStream

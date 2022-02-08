@@ -31,10 +31,10 @@ import ConsoleTableEntry from '@/components/console/ConsoleTableEntry.vue'
 })
 export default class ConsoleTable extends Vue {
     @Prop({ required: true })
-    readonly events!: any[];
+   declare  readonly events: any[];
 
     @Prop({ required: false, default: false })
-    readonly isMini!: boolean;
+   declare  readonly isMini: boolean;
 
     commandClick(msg: string) {
         this.$emit('command-click', msg)

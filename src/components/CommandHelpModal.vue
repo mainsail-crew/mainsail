@@ -78,8 +78,8 @@ import Panel from '@/components/ui/Panel.vue'
 })
 
 export default class CommandHelpModal extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: false }) isMini!: boolean;
-    @Prop({ required: false, default: false }) inToolbar!: boolean;
+    @Prop({ required: false, default: false }) declare isMini: boolean;
+    @Prop({ required: false, default: false }) declare inToolbar: boolean;
 
     cmdListSearch = '';
     isOpen = false;

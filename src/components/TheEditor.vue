@@ -99,7 +99,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    refs!: {
+    declare $refs: {
         editor: any
     }
 
