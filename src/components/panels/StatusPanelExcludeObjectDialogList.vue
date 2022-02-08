@@ -26,7 +26,7 @@ import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class StatusPanelObjectsDialogList extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: '' }) readonly hoverName!: string
+    @Prop({ required: false, default: '' }) declare readonly hoverName: string
 
     get printing_objects() {
         return this.$store.state.printer.exclude_object?.objects ?? []

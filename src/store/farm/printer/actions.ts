@@ -180,7 +180,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             }
         })
 
-        if (subscripts !== {})
+        if (Object.keys(subscripts).length > 0)
             dispatch('sendObj', {
                 method: 'printer.objects.subscribe',
                 params: { objects: subscripts },

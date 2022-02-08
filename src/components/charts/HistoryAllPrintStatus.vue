@@ -24,7 +24,7 @@ import {ECharts} from 'echarts/core'
 })
 export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
 
-    $refs!: {
+    declare $refs: {
         historyAllPrintStatus: any
     }
 

@@ -48,9 +48,9 @@ import Panel from '@/components/ui/Panel.vue'
 export default class StatusPanelExcludeObjectDialog extends Mixins(BaseMixin) {
     private hoverName = ''
 
-    @Prop({ required: true }) readonly showDialog!: boolean
-    @Prop({ required: true }) readonly excludeObjectDialogBool!: boolean
-    @Prop({ required: true }) readonly excludeObjectDialogName!: string
+    @Prop({ required: true }) declare readonly showDialog: boolean
+    @Prop({ required: true }) declare readonly excludeObjectDialogBool: boolean
+    @Prop({ required: true }) declare readonly excludeObjectDialogName: string
 
     hideDialog() {
         this.$emit('update:showDialog', false )

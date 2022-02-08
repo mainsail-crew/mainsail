@@ -239,16 +239,16 @@
                 <v-card-text class="">
                     <v-row>
                         <v-col class="pb-0">
-                            <video :src="hostUrl+'server/files/'+videoDialogFilename" controls style="width: 100%;">
+                            <video :src="this.apiUrl+'/server/files/'+videoDialogFilename" controls style="width: 100%;">
                                 Sorry, your browser doesn't support embedded videos,
-                                but don't worry, you can <a :href="hostUrl+'server/files/'+videoDialogFilename">download it</a>
+                                but don't worry, you can <a :href="this.apiUrl+'/server/files/'+videoDialogFilename">download it</a>
                                 and watch it with your favorite video player!
                             </video>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn text color="primary" :href="hostUrl+'server/files/'+videoDialogFilename" target="_blank">{{ $t('Timelapse.Download') }}</v-btn>
+                            <v-btn text color="primary" :href="this.apiUrl+'/server/files/'+videoDialogFilename" target="_blank">{{ $t('Timelapse.Download') }}</v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -277,7 +277,7 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
     sortFiles = sortFiles
 
-    $refs!: {
+    declare $refs: {
         inputFieldRenameFile: any,
         inputFieldCreateDirectory: any,
         inputFieldRenameDirectory: any,

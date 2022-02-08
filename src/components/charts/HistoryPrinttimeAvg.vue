@@ -22,7 +22,7 @@ import {ECharts} from 'echarts/core'
     }
 })
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
-    $refs!: {
+    declare $refs: {
         historyPrinttimeAvg: any
     }
 

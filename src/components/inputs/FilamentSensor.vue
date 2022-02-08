@@ -30,9 +30,9 @@ import BaseMixin from '@/components/mixins/base'
 export default class FilamentSensor extends Mixins(BaseMixin) {
     convertName = convertName
 
-    @Prop({ type: String, required: true }) readonly name!: string
-    @Prop({ type: Boolean, required: true }) readonly enabled!: boolean
-    @Prop({ type: Boolean, required: true }) readonly filament_detected!: boolean
+    @Prop({ type: String, required: true }) declare readonly name: string
+    @Prop({ type: Boolean, required: true }) declare readonly enabled: boolean
+    @Prop({ type: Boolean, required: true }) declare readonly filament_detected: boolean
 
     get statusColor() {
         if (!this.enabled) return 'gray'

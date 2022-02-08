@@ -20,7 +20,7 @@ export default class MainsailLogo extends Mixins(BaseMixin) {
     private internalColor = defaultLogoColor
 
     @Prop({ required: false, default: '' })
-    readonly color!: string
+    declare readonly color: string
 
     @Watch('color')
     colorChanged(newVal: string) {
