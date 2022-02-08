@@ -1,5 +1,5 @@
 name: Build Size Report
-on: [ pull_request_target ]
+on: [ pull_request ]
 jobs:
   check:
     runs-on: ubuntu-latest
