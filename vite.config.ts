@@ -5,10 +5,12 @@ import Components from 'unplugin-vue-components/vite'
 import {VuetifyResolver,} from 'unplugin-vue-components/resolvers'
 
 import path from 'path'
+import buildVersion from './src/plugins/build-version';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
+        buildVersion(),
         vue(),
         loadVersion(),
         Components({
@@ -16,6 +18,7 @@ export default defineConfig({
                 VuetifyResolver(),
             ],
         }),
+
     ], css: {
         preprocessorOptions: {
             css: {charset: false},
