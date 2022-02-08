@@ -32,22 +32,22 @@ import BaseMixin from '../mixins/base'
 @Component
 export default class SettingsRow extends Mixins(BaseMixin) {
     @Prop({ required: false, default: false })
-    readonly loading!: boolean
+    declare readonly loading: boolean
 
     @Prop({ required: false, default: '' })
-    readonly icon!: string
+    declare readonly icon: string
 
     @Prop({ required: true })
-    readonly title!: string
+   declare  readonly title: string
 
     @Prop({ required: false })
-    readonly subTitle!: string
+   declare  readonly subTitle: string
 
     @Prop({ required: false, default: false })
-    readonly dynamicSlotWidth!: boolean
+    declare readonly dynamicSlotWidth: boolean
 
     @Prop({ required: false, default: false })
-    readonly mobileSecondRow!: boolean
+    declare readonly mobileSecondRow: boolean
 
     get firstColClasses() {
         const defaultClasses = ' d-flex justify-center'

@@ -171,7 +171,7 @@ export default class TheTopbar extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
-    $refs!: {
+    declare $refs: {
         fileUploadAndStart: HTMLFormElement
     }
 

@@ -17,11 +17,17 @@ services:
       - dev_net
   npm:
     build:
-      context: ./docker
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/Dockerfile
     image: mainsail-stack-npm/1
+    env_file:
+      - .env
     volumes:
-      - ./:/home/node/mainsail
+      # Do not bind '.' as volume.  As we want the node modules being installed in the container
+      - ./src/:/home/node/mainsail/src
+      - ./public/:/home/node/mainsail/public
+      - ./vite.config.ts:/home/node/mainsail/vite.config.ts
+      - ./index.html:/home/node/mainsail/index.html
     container_name: mainsail-stack-npm
     ports:
       - "8080:8080"

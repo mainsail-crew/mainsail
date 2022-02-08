@@ -80,15 +80,15 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     private min = 0
     private value = 0
 
-    @Prop({ type: Number, required: true }) target!: number
-    @Prop({ type: Number, default: 1 }) max!: number
-    @Prop({ type: String, default: '' }) name!: string
-    @Prop({ type: String, default: '' }) type!: string
-    @Prop({ type: Boolean, default: false }) controllable!: boolean
-    @Prop({ type: Boolean, default: false }) pwm!: boolean
-    @Prop({ type: [Number, Boolean], default: false }) rpm!: number | boolean
-    @Prop({ type: Number, default: 1 }) multi!: number
-    @Prop({ type: Number, default: 0 }) off_below!: number
+    @Prop({ type: Number, required: true }) declare target: number
+    @Prop({ type: Number, default: 1 }) declare max: number
+    @Prop({ type: String, default: '' }) declare name: string
+    @Prop({ type: String, default: '' }) declare type: string
+    @Prop({ type: Boolean, default: false }) declare controllable: boolean
+    @Prop({ type: Boolean, default: false }) declare pwm: boolean
+    @Prop({ type: [Number, Boolean], default: false }) declare rpm: number | boolean
+    @Prop({ type: Number, default: 1 }) declare multi: number
+    @Prop({ type: Number, default: 0 }) declare off_below: number
 
     @Watch('lockSliders', {immediate: true})
     lockSlidersChanged(){

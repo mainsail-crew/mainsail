@@ -72,9 +72,9 @@ export default class StatusPanelObjectsDialogMap extends Mixins(BaseMixin) {
     private coordinationCrossColor = '#888'
     private stripesOffset = 50
 
-    @Prop({ required: false, default: '' }) readonly hoverName!: string
+    @Prop({ required: false, default: '' }) declare readonly hoverName: string
 
-    $refs!: {
+    declare $refs: {
         tooltipObjectMap: HTMLDivElement
     }
 

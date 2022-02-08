@@ -54,7 +54,7 @@ export default class StatusPanelExcludeObject extends Mixins(BaseMixin) {
     boolShowExcludeObjectDialog = false
     excludeObjectDialogName = ''
 
-    @Prop({ required: true }) readonly showDialog!: boolean
+    @Prop({ required: true }) declare readonly showDialog: boolean
 
     get showDialogPass() {
         return this.showDialog

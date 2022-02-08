@@ -78,38 +78,38 @@ import {panelToolbarHeight} from '@/store/variables'
 export default class Panel extends Mixins(BaseMixin) {
     panelToolbarHeight = panelToolbarHeight
     
-    @Prop({ default: null }) readonly icon!: string | null
-    @Prop({ required: true, default: '' }) readonly title!: string
-    @Prop({ default: false }) readonly collapsible!: boolean
-    @Prop({ required: true }) readonly cardClass!: string
-    @Prop({ default: '' }) readonly toolbarColor!: string
-    @Prop({ default: '' }) readonly toolbarClass!: string
-    @Prop({ default: false }) readonly loading!: boolean
-    @Prop({ default: true }) readonly marginBottom!: boolean
-    @Prop({ default: false }) readonly hideButtonsOnCollapse!: boolean
+   @Prop({ default: null }) declare readonly icon: string | null
+   @Prop({ required: true, default: '' }) declare readonly title: string
+   @Prop({ default: false }) declare readonly collapsible: boolean
+   @Prop({ required: true }) declare readonly cardClass: string
+   @Prop({ default: '' }) declare readonly toolbarColor: string
+   @Prop({ default: '' })declare  readonly toolbarClass: string
+   @Prop({ default: false }) declare readonly loading: boolean
+   @Prop({ default: true }) declare readonly marginBottom: boolean
+   @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
 
-    get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.cardClass)
-    }
+   get expand() {
+       return this.$store.getters['gui/getPanelExpand'](this.cardClass)
+   }
 
-    set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
-    }
+   set expand(newVal) {
+       this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+   }
 
-    get hasIconSlot() {
-        return !! this.$slots.icon
-    }
+   get hasIconSlot() {
+       return !! this.$slots.icon
+   }
 
-    get hasButtonsSlot() {
-        return !! this.$slots.buttons
-    }
+   get hasButtonsSlot() {
+       return !! this.$slots.buttons
+   }
 
-    get getToolbarClass() {
-        let output = this.toolbarClass
+   get getToolbarClass() {
+       let output = this.toolbarClass
 
-        if (this.collapsible) output += ' collapsible'
+       if (this.collapsible) output += ' collapsible'
 
-        return output
-    }
+       return output
+   }
 }
 </script>
