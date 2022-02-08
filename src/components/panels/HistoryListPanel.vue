@@ -17,7 +17,6 @@
             <v-card-text>
                 <v-row>
                     <v-col class="col-4 d-flex align-center">
-
                         <v-text-field
                             v-model="search"
                             append-icon="mdi-magnify"
@@ -30,6 +29,9 @@
                         ></v-text-field>
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                        <template v-if="selectedJobs.length">
+                            <v-btn :title="$t('History.Delete')" color="warning" class="px-2 minwidth-0 ml-3" @click="deleteSelectedDialog = true"><v-icon>mdi-delete</v-icon></v-btn>
+                        </template>
                         <v-btn :title="$t('History.TitleRefreshHistory')" class="px-2 minwidth-0 ml-3" @click="refreshHistory"><v-icon>mdi-refresh</v-icon></v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template v-slot:activator="{ on, attrs }">
@@ -295,6 +297,21 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+        <v-dialog v-model="deleteSelectedDialog" max-width="400">
+            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length } )}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('History.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -322,10 +339,13 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         y: 0,
         item: {}
     }
+
     private detailsDialog = {
         item: {},
         boolShow: false,
     }
+
+    private deleteSelectedDialog = false
 
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []

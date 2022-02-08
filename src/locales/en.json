@@ -278,6 +278,7 @@
     "Empty": "empty",
     "Details": "Details",
     "Reprint": "Reprint",
+    "Cancel": "Cancel",
     "Delete": "Delete",
     "JobDetails": "Job Details",
     "Filename": "Filename",
@@ -304,7 +305,8 @@
     "SlicerVersion": "Slicer Version",
     "HistoryFilamentUsage": "Filament",
     "HistoryPrinttimeAVG": "Prints",
-    "ShowStatusName": "Show \"{name}\" ({count})"
+    "ShowStatusName": "Show \"{name}\" ({count})",
+    "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?"
   },
   "Timelapse": {
     "TimelapseFiles": "Timelapse Files",
