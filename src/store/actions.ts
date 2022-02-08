@@ -1,9 +1,8 @@
 import router from '@/plugins/router'
-import {ActionTree} from 'vuex'
-import {RootState} from './types'
+import { ActionTree } from 'vuex'
+import { RootState } from './types'
 
 export const actions: ActionTree<RootState, RootState> = {
-
     switchToDashboard() {
         router.push('/')
     },
@@ -17,7 +16,7 @@ export const actions: ActionTree<RootState, RootState> = {
         dispatch('server/reset')
         dispatch('socket/reset')
 
-        const printerSocket = getters['farm/'+payload.printer+'/getSocketData']
+        const printerSocket = getters['farm/' + payload.printer + '/getSocketData']
 
         dispatch('socket/setSocket', {
             hostname: printerSocket.hostname,

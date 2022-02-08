@@ -9,7 +9,7 @@
   "scripts": {
     "serve": "vite serve",
     "build": "vite build  && npm run build.zip",
-    "format": "prettier --write src",
+    "format": "prettier --write src vite.config.ts",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore src",
     "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore src --fix",
     "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
