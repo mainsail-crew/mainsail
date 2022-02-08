@@ -29,7 +29,7 @@ Vue.directive('longpress', {
         // Create timeout ( run function after 1s )
         const before: string | null = null
         const start = (e: TouchEvent) => {
-            if ((e.type === 'click')) {
+            if (e.type === 'click') {
                 return
             }
 
@@ -37,7 +37,9 @@ Vue.directive('longpress', {
                 return
             }
 
-            document.querySelector('body')?.setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
+            document
+                .querySelector('body')
+                ?.setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
 
             setTimeout(() => {
                 document.querySelector('body')?.setAttribute('style', '')
