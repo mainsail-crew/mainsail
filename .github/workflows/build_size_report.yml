@@ -1,8 +1,9 @@
-name: Output size check
+name: Build Size Report
 on: [ pull_request ]
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v2
       - uses: preactjs/compressed-size-action@v2
