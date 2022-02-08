@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import {version} from '../../package.json'
-import {PluginOption} from 'vite';
+import {PluginOption} from 'vite'
 
 /**
  * Custom build plugin to write the version in a deticated .version file after bundling
