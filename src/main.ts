@@ -15,9 +15,9 @@ Vue.config.productionTip = false
 import VueObserveVisibility from 'vue-observe-visibility'
 Vue.use(VueObserveVisibility)
 
-//vue-headful
-import vueHeadful from 'vue-headful'
-Vue.component('vue-headful', vueHeadful)
+//vue-meta
+import VueMeta from 'vue-meta'
+Vue.use(VueMeta)
 
 //vue-load-image
 import VueLoadImage from 'vue-load-image'
