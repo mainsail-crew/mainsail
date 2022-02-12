@@ -27,7 +27,6 @@
 
 <template>
     <v-app dark :style="cssVars">
-        <vue-headful :title="title" />
         <the-sidebar></the-sidebar>
         <the-topbar></the-topbar>
 
@@ -68,6 +67,13 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
         TheUpdateDialog,
         TheTopbar,
         TheSidebar,
+    },
+
+    metaInfo() {
+        const title = this.$store.getters['getTitle']
+        return {
+            titleTemplate: () => title,
+        }
     },
 })
 export default class App extends Mixins(BaseMixin) {
