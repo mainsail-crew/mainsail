@@ -287,7 +287,19 @@ export default class TempChart extends Mixins(BaseMixin) {
     tooltipFormater(datasets: any) {
         let output = ''
 
-        const mainDatasets = datasets.filter((dataset: any) => !dataset.seriesName.includes('-') && dataset.seriesName !== 'date')
+        const mainDatasets = datasets.filter((dataset: any) => {
+            if (dataset.seriesName === 'date') return false
+            if (dataset.seriesName.includes('-')) {
+                if (dataset.seriesName.lastIndexOf('-') > -1) {
+                    const suffix = dataset.seriesName.slice(dataset.seriesName.lastIndexOf('-') + 1)
+                    return !['target', 'power'].includes(suffix)
+                }
+
+                return true
+            }
+
+            return true
+        })
         if (datasets.length) {
             let outputTime = datasets[0]['axisValueLabel']
             outputTime = outputTime.substr(outputTime.indexOf(' '))
