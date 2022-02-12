@@ -33,12 +33,19 @@ export const actions: ActionTree<GuiWebcamState, RootState> = {
         })
     },
 
-    update({ commit, dispatch, state }, payload) {
+    update({ commit, dispatch, state, rootState }, payload) {
         commit('update', payload)
         dispatch('upload', {
             id: payload.id,
             value: state.webcams[payload.id]
         })
+
+        if (
+            rootState.server?.components.includes('timelapse') &&
+            rootState.server?.timelapse?.settings.camera === payload.id
+        ) {
+            dispatch('server/timelapse/saveSetting', { camera: payload.id }, { root: true })
+        }
     },
 
     delete({ commit }, payload) {
