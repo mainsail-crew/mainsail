@@ -1,22 +1,21 @@
-import {datasetTypes, datasetTypesInPercents} from '@/store/variables'
-import {GetterTree} from 'vuex'
+import { datasetTypes, datasetTypesInPercents } from '@/store/variables'
+import { GetterTree } from 'vuex'
 import {
     PrinterTempHistoryState,
     PrinterTempHistoryStateSerie,
-    PrinterTempHistoryStateSourceEntry
+    PrinterTempHistoryStateSourceEntry,
 } from '@/store/printer/tempHistory/types'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
+    getDatasetColor: (state) => (name: string) => {
+        const dataset = state.series.find((element) => element.name === name)
 
-    getDatasetColor: state => (name: string) => {
-        const dataset = state.series.find(element => element.name === name)
-
-        return (dataset && 'lineStyle' in dataset) ? dataset.lineStyle.color : null
+        return dataset && 'lineStyle' in dataset ? dataset.lineStyle.color : null
     },
 
-    getSeries: state => (name: string) => {
-        return state.series.find(element => element.name === name)
+    getSeries: (state) => (name: string) => {
+        return state.series.find((element) => element.name === name)
     },
 
     getSerieNames: (state) => (name: string) => {
@@ -26,9 +25,11 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
             output.push('temperature')
         }
 
-        state.series.filter((serie: PrinterTempHistoryStateSerie) => serie.name.startsWith(name+'-')).forEach((serie) => {
-            output.push(serie.name.substr(name.length + 1))
-        })
+        state.series
+            .filter((serie: PrinterTempHistoryStateSerie) => serie.name.startsWith(name + '-'))
+            .forEach((serie) => {
+                output.push(serie.name.substr(name.length + 1))
+            })
 
         return output
     },
@@ -36,31 +37,30 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
     getBoolDisplayPwmAxis: (state, getter) => {
         const legends = getter['getSelectedLegends']
 
-        return Object.keys(legends).find(key => {
-            return (
-                legends[key] === true && (
-                    key.endsWith('-power') ||
-                    key.endsWith('-speed')
-                )
-            )
-        }) !== undefined
+        return (
+            Object.keys(legends).find((key) => {
+                return legends[key] === true && (key.endsWith('-power') || key.endsWith('-speed'))
+            }) !== undefined
+        )
     },
 
-    getAvg: state => (name: string, serieName: string) => {
-        const key = serieName && serieName !== 'temperature' ? name+'-'+serieName : name
-        const maxTime = new Date().getTime() - (1000 * 60)
+    getAvg: (state) => (name: string, serieName: string) => {
+        const key = serieName && serieName !== 'temperature' ? name + '-' + serieName : name
+        const maxTime = new Date().getTime() - 1000 * 60
         let value = 0
         let counter = 0
 
-        state.source.filter(data => data.date > maxTime).forEach((item: PrinterTempHistoryStateSourceEntry) => {
-            if (key in item) {
-                value += item[key]
-                counter++
-            }
-        })
+        state.source
+            .filter((data) => data.date > maxTime)
+            .forEach((item: PrinterTempHistoryStateSourceEntry) => {
+                if (key in item) {
+                    value += item[key]
+                    counter++
+                }
+            })
 
         if (counter && datasetTypesInPercents.includes(serieName)) return (value / counter) * 100
-        else if (counter) return (value / counter)
+        else if (counter) return value / counter
 
         return 0
     },
@@ -88,8 +88,8 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 
                     datasetTypes.forEach((datasetType: string) => {
                         if (rootState?.printer && rootState?.printer[key] && datasetType in rootState?.printer[key]) {
-                            const tmpName = datasetType === 'temperature' ? name : name+'-'+datasetType
-                            selected[tmpName] = rootGetters['gui/getDatasetValue']({name: name, type: datasetType})
+                            const tmpName = datasetType === 'temperature' ? name : name + '-' + datasetType
+                            selected[tmpName] = rootGetters['gui/getDatasetValue']({ name: name, type: datasetType })
                         }
                     })
                 }

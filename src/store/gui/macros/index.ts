@@ -2,7 +2,7 @@ import { Module } from 'vuex'
 import { actions } from '@/store/gui/macros/actions'
 import { mutations } from '@/store/gui/macros/mutations'
 import { getters } from '@/store/gui/macros/getters'
-import {GuiMacrosState} from '@/store/gui/macros/types'
+import { GuiMacrosState } from '@/store/gui/macros/types'
 
 export const getDefaultState = (): GuiMacrosState => {
     return {
@@ -21,5 +21,5 @@ export const macros: Module<GuiMacrosState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

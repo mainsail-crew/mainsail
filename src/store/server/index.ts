@@ -24,7 +24,7 @@ export const getDefaultState = (): ServerState => {
         warnings: [],
         registered_directories: [],
         events: [],
-        config: { },
+        config: {},
         system_info: null,
         cpu_temp: 0,
         moonraker_stats: null,
@@ -34,7 +34,7 @@ export const getDefaultState = (): ServerState => {
         },
         dbNamespaces: [],
         websocket_count: 0,
-        moonraker_version: ''
+        moonraker_version: '',
     }
 }
 
@@ -54,5 +54,5 @@ export const server: Module<ServerState, any> = {
         history,
         timelapse,
         jobQueue,
-    }
+    },
 }

@@ -9,7 +9,7 @@ export const getDefaultState = (): PrinterTempHistoryState => {
         source: [],
         series: [],
         timeLastUpdate: null,
-        updateSourceInterval: null
+        updateSourceInterval: null,
     }
 }
 
