@@ -35,7 +35,9 @@
         <v-row>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
-                    :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength').toString()"
+                    :label="
+                        $t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength').toString()
+                    "
                     :target="current_unretract_extra_length"
                     :default-value="config_unretract_extra_length"
                     :hasSpinner="true"
@@ -74,10 +76,9 @@ import Panel from '@/components/ui/Panel.vue'
 import FirmwareRetractionSettingsInput from '@/components/inputs/FirmwareRetractionSettingsInput.vue'
 
 @Component({
-    components: {Panel, FirmwareRetractionSettingsInput}
+    components: { Panel, FirmwareRetractionSettingsInput },
 })
 export default class FirmwareRetractionSettings extends Mixins(BaseMixin) {
-
     get current_retract_length(): number {
         return Math.floor((this.$store.state.printer?.firmware_retraction?.retract_length ?? 0) * 100) / 100
     }
@@ -93,9 +94,13 @@ export default class FirmwareRetractionSettings extends Mixins(BaseMixin) {
     get current_unretract_speed(): number {
         return Math.trunc(this.$store.state.printer?.firmware_retraction?.unretract_speed ?? 10)
     }
-    
+
     get config_retract_length(): number {
-        return Math.floor((this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length ?? 0) * 100) / 100
+        return (
+            Math.floor(
+                (this.$store.state.printer?.configfile?.settings?.firmware_retraction?.retract_length ?? 0) * 100
+            ) / 100
+        )
     }
 
     get config_retract_speed(): number {
@@ -103,7 +108,12 @@ export default class FirmwareRetractionSettings extends Mixins(BaseMixin) {
     }
 
     get config_unretract_extra_length(): number {
-        return Math.floor((this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_extra_length ?? 0) * 100) / 100
+        return (
+            Math.floor(
+                (this.$store.state.printer?.configfile?.settings?.firmware_retraction?.unretract_extra_length ?? 0) *
+                    100
+            ) / 100
+        )
     }
 
     get config_unretract_speed(): number {

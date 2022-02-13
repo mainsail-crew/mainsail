@@ -1,6 +1,6 @@
 import { GetterTree } from 'vuex'
-import {GuiPresetsState, GuiPresetsStatePreset} from '@/store/gui/presets/types'
-import {caseInsensitiveSort} from '@/plugins/helpers'
+import { GuiPresetsState, GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { caseInsensitiveSort } from '@/plugins/helpers'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiPresetsState, any> = {
@@ -8,19 +8,19 @@ export const getters: GetterTree<GuiPresetsState, any> = {
         return state.cooldownGcode ?? 'TURN_OFF_HEATERS'
     },
 
-    getPresets:(state) => {
+    getPresets: (state) => {
         const presets: GuiPresetsStatePreset[] = []
 
         if ('presets' in state) {
             Object.keys(state.presets).forEach((id: string) => {
-                presets.push({...state.presets[id], id})
+                presets.push({ ...state.presets[id], id })
             })
         }
 
         return caseInsensitiveSort(presets, 'name')
     },
 
-    getPresetsFromHeater: state => (payload: { name: string }) => {
+    getPresetsFromHeater: (state) => (payload: { name: string }) => {
         interface preset {
             value: number
             text: string
@@ -30,7 +30,7 @@ export const getters: GetterTree<GuiPresetsState, any> = {
 
         output.push({
             value: 0,
-            text: '0 °C'
+            text: '0 °C',
         })
 
         if ('presets' in state) {
@@ -44,13 +44,13 @@ export const getters: GetterTree<GuiPresetsState, any> = {
                 ) {
                     output.push({
                         value: preset.values[payload.name].value,
-                        text: preset.values[payload.name].value + ' °C'
+                        text: preset.values[payload.name].value + ' °C',
                     })
                 }
             })
         }
 
-        return output.sort((a: preset,b: preset) => {
+        return output.sort((a: preset, b: preset) => {
             if (a.value > b.value) return -1
             if (a.value < b.value) return 1
 

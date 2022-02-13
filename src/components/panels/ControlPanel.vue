@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ControlPanelExtruder from '@/components/panels/ControlPanelExtruder.vue'
 import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossControl.vue'
@@ -48,7 +48,11 @@ import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
         Panel,
-        ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
+        ControlPanelCircleControl,
+        ControlPanelBarsControl,
+        ControlPanelCrossControl,
+        ControlPanelExtruder,
+    },
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
     get controlStyle() {

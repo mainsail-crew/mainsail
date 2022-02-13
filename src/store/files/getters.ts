@@ -1,17 +1,18 @@
 import { themeDir } from '@/store/variables'
-import {GetterTree} from 'vuex'
-import {FileState, FileStateFile} from '@/store/files/types'
+import { GetterTree } from 'vuex'
+import { FileState, FileStateFile } from '@/store/files/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<FileState, any> = {
-
     getDirectory: (state) => (requestedPath: string) => {
         if (requestedPath.startsWith('/')) requestedPath = requestedPath.substr(1)
         if (requestedPath.endsWith('/')) requestedPath = requestedPath.substr(0, requestedPath.length - 1)
 
-        const findDirectory = function(filetree: FileStateFile, pathArray: string[]): FileStateFile | null {
+        const findDirectory = function (filetree: FileStateFile, pathArray: string[]): FileStateFile | null {
             if (pathArray.length) {
-                const newFiletree = filetree?.childrens?.find((element: FileStateFile) => (element.isDirectory && element.filename === pathArray[0]))
+                const newFiletree = filetree?.childrens?.find(
+                    (element: FileStateFile) => element.isDirectory && element.filename === pathArray[0]
+                )
                 if (newFiletree) {
                     pathArray.shift()
                     return findDirectory(newFiletree, pathArray)
@@ -21,7 +22,7 @@ export const getters: GetterTree<FileState, any> = {
             return filetree
         }
 
-        return findDirectory({childrens: state.filetree} as FileStateFile, requestedPath.split('/'))
+        return findDirectory({ childrens: state.filetree } as FileStateFile, requestedPath.split('/'))
     },
 
     getFile: (state, getters) => (requestedFilename: string) => {
@@ -33,15 +34,15 @@ export const getters: GetterTree<FileState, any> = {
     },
 
     getThemeFileUrl: (state, getters, rootState, rootGetters) => (acceptName: string, acceptExtensions: string[]) => {
-        const directory = getters['getDirectory']('config/'+themeDir)
+        const directory = getters['getDirectory']('config/' + themeDir)
 
-        const file = directory?.childrens?.find((element: FileStateFile) =>
-            element.filename !== undefined && (
+        const file = directory?.childrens?.find(
+            (element: FileStateFile) =>
+                element.filename !== undefined &&
                 element.filename.substr(0, element.filename.lastIndexOf('.')) === acceptName &&
-				acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.')+1))
-            )
+                acceptExtensions.includes(element.filename.substr(element.filename.lastIndexOf('.') + 1))
         )
-        return (file) ? rootGetters['socket/getUrl']+'/server/files/config/'+themeDir+'/'+file.filename : null
+        return file ? rootGetters['socket/getUrl'] + '/server/files/config/' + themeDir + '/' + file.filename : null
     },
 
     getSidebarLogo: (state, getters) => {
@@ -91,7 +92,7 @@ export const getters: GetterTree<FileState, any> = {
         if (path.indexOf('/') === 0) path = path.substr(1)
         if (path.indexOf('/') !== -1) path = path.substr(0, path.indexOf('/'))
 
-        const dir = state.filetree.find(dir => dir.filename === path)
+        const dir = state.filetree.find((dir) => dir.filename === path)
         if (dir && 'disk_usage' in dir) return dir.disk_usage
 
         return null
@@ -100,8 +101,10 @@ export const getters: GetterTree<FileState, any> = {
     checkConfigFile: (state, getters) => (acceptName: string) => {
         const directory = getters['getDirectory']('config')
 
-        return directory?.childrens?.findIndex((element: FileStateFile) =>
-            element.filename !== undefined && element.filename === acceptName
-        ) !== -1
+        return (
+            directory?.childrens?.findIndex(
+                (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName
+            ) !== -1
+        )
     },
 }

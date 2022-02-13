@@ -1,11 +1,11 @@
-import {createVuePlugin as vue} from 'vite-plugin-vue2'
+import { createVuePlugin as vue } from 'vite-plugin-vue2'
 import loadVersion from 'vite-plugin-package-version'
-import {defineConfig} from 'vite'
+import { defineConfig } from 'vite'
 import Components from 'unplugin-vue-components/vite'
-import {VuetifyResolver,} from 'unplugin-vue-components/resolvers'
+import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
 
 import path from 'path'
-import buildVersion from './src/plugins/build-version';
+import buildVersion from './src/plugins/build-version'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,18 +14,16 @@ export default defineConfig({
         vue(),
         loadVersion(),
         Components({
-            resolvers: [
-                VuetifyResolver(),
-            ],
+            resolvers: [VuetifyResolver()],
         }),
-
-    ], css: {
+    ],
+    css: {
         preprocessorOptions: {
-            css: {charset: false},
+            css: { charset: false },
             scss: {
-                quietDeps: true
+                quietDeps: true,
             },
-        }
+        },
     },
     envPrefix: 'VUE_',
     resolve: {
@@ -35,6 +33,6 @@ export default defineConfig({
     },
 
     server: {
-        port: 8080
-    }
+        port: 8080,
+    },
 })

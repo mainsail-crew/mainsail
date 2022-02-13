@@ -10,18 +10,15 @@ export const getDefaultState = (): SocketState => {
     let hostname: string
     let port: number
 
-    if (
-        document.location.hostname === 'my.mainsail.xyz' ||
-        import.meta.env.VUE_APP_REMOTE_MODE
-    ) {
+    if (document.location.hostname === 'my.mainsail.xyz' || import.meta.env.VUE_APP_REMOTE_MODE) {
         remoteMode = true
         hostname = ''
         port = 7125
-    } else  {
+    } else {
         remoteMode = false
-        hostname = import.meta.env.VUE_APP_HOSTNAME as string || window.location.hostname
+        hostname = (import.meta.env.VUE_APP_HOSTNAME as string) || window.location.hostname
         const defaultPort = window.location.port || (window.location.protocol === 'https:' ? 443 : 80)
-        port  = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
+        port = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
     }
 
     return {

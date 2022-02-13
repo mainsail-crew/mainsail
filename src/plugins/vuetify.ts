@@ -14,8 +14,8 @@ export default new Vuetify({
         themes: {
             dark: {
                 panel: '#1e1e1e',
-                toolbar: '#272727'
-            }
+                toolbar: '#272727',
+            },
         },
         options: { customProperties: true },
     },
@@ -23,6 +23,6 @@ export default new Vuetify({
         iconfont: 'mdi',
     },
     breakpoint: {
-        mobileBreakpoint: 768
-    }
+        mobileBreakpoint: 768,
+    },
 })

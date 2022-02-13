@@ -1,13 +1,9 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <div>
         <v-snackbar v-model="boolShowDialogRunning" :timeout="-1" :value="true" fixed right bottom dark>
-            <div>
-                {{ $t('Timelapse.TimelapseRendering') }}...
-            </div>
+            <div>{{ $t('Timelapse.TimelapseRendering') }}...</div>
             <v-progress-linear class="mt-2" v-if="progress > 0" :value="progress" indeterminate></v-progress-linear>
             <v-progress-linear class="mt-2" v-if="progress === 0" indeterminate></v-progress-linear>
         </v-snackbar>
@@ -22,21 +18,19 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins} from 'vue-property-decorator'
+import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component({
-    components: {
-    }
+    components: {},
 })
 export default class TheTimelapseRenderingSnackbar extends Mixins(BaseMixin) {
-
     get boolShowDialogRunning() {
-        return (this.status === 'running')
+        return this.status === 'running'
     }
 
     get boolShowDialogSuccess() {
-        return (this.status === 'success')
+        return this.status === 'success'
     }
 
     set boolShowDialogSuccess(newVal) {

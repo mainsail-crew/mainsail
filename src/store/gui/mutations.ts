@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {GuiState} from '@/store/gui/types'
+import { MutationTree } from 'vuex'
+import { GuiState } from '@/store/gui/types'
 
 export const mutations: MutationTree<GuiState> = {
     reset(state) {
@@ -27,16 +27,12 @@ export const mutations: MutationTree<GuiState> = {
 
     saveSetting(state, payload) {
         // eslint-disable-next-line
-        const deepSet = (obj:any, is:string[] | string, value:any):any => {
-            if (is !== undefined && typeof is === 'string')
-                return deepSet(obj,is.split('.'), value)
-            else if (is.length==1 && value !== undefined)
-                return obj[is[0]] = value
-            else if (is.length==0)
-                return obj
-            else
-            if (!(is[0] in obj)) obj[is[0]] = {}
-            return deepSet(obj[is[0]],is.slice(1), value)
+        const deepSet = (obj: any, is: string[] | string, value: any): any => {
+            if (is !== undefined && typeof is === 'string') return deepSet(obj, is.split('.'), value)
+            else if (is.length == 1 && value !== undefined) return (obj[is[0]] = value)
+            else if (is.length == 0) return obj
+            else if (!(is[0] in obj)) obj[is[0]] = {}
+            return deepSet(obj[is[0]], is.slice(1), value)
         }
 
         deepSet(state, payload.name, payload.value)
@@ -51,7 +47,10 @@ export const mutations: MutationTree<GuiState> = {
 
     setGcodefilesMetadata(state, data) {
         if (data.value && state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
-            state.view.gcodefiles.hideMetadataColums.splice(state.view.gcodefiles.hideMetadataColums.indexOf(data.name), 1)
+            state.view.gcodefiles.hideMetadataColums.splice(
+                state.view.gcodefiles.hideMetadataColums.indexOf(data.name),
+                1
+            )
         } else if (!data.value && !state.view.gcodefiles.hideMetadataColums.includes(data.name)) {
             state.view.gcodefiles.hideMetadataColums.push(data.name)
         }
@@ -104,7 +103,7 @@ export const mutations: MutationTree<GuiState> = {
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },
 
-    addToLockedSliders(state, payload){
+    addToLockedSliders(state, payload) {
         const lockedSliders = [...state.view.lockedSliders]
         if (!lockedSliders.includes(payload.name)) {
             lockedSliders.push(payload.name)
@@ -113,7 +112,7 @@ export const mutations: MutationTree<GuiState> = {
         }
     },
 
-    removeFromLockedSliders(state, payload){
+    removeFromLockedSliders(state, payload) {
         const lockedSliders = [...state.view.lockedSliders]
         const index = lockedSliders.indexOf(payload.name)
         if (index > -1) {
