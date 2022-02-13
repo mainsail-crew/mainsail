@@ -23,7 +23,7 @@ export const getDefaultState = (): EditorState => {
         },
         cancelToken: null,
         loadedHash: '',
-        changed: false
+        changed: false,
     }
 }
 
@@ -35,5 +35,5 @@ export const editor: Module<EditorState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

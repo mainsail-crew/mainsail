@@ -1,6 +1,4 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <panel
@@ -24,7 +22,7 @@
                 :multi="parseInt(object.scale)"
             ></miscellaneous-slider>
         </div>
-        <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_'+index">
+        <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length"></v-divider>
             <filament-sensor
                 :name="sensor.name"
@@ -36,14 +34,13 @@
 </template>
 
 <script lang="ts">
-
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
 @Component({
-    components: {Panel, FilamentSensor, MiscellaneousSlider}
+    components: { Panel, FilamentSensor, MiscellaneousSlider },
 })
 export default class MiscellaneousPanel extends Mixins(BaseMixin) {
     get miscellaneous() {

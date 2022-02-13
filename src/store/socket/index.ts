@@ -18,11 +18,11 @@ export const getDefaultState = (): SocketState => {
         remoteMode = true
         hostname = ''
         port = 7125
-    } else  {
+    } else {
         remoteMode = false
-        hostname = import.meta.env.VUE_APP_HOSTNAME as string || window.location.hostname
+        hostname = (import.meta.env.VUE_APP_HOSTNAME as string) || window.location.hostname
         const defaultPort = window.location.port || (window.location.protocol === 'https:' ? 443 : 80)
-        port  = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
+        port = import.meta.env.VUE_APP_PORT ? Number(import.meta.env.VUE_APP_PORT) : Number(defaultPort)
     }
 
     return {

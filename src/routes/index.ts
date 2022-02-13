@@ -6,7 +6,7 @@ import Files from '../pages/Files.vue'
 import History from '../pages/History.vue'
 import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
-import {AsyncComponent, Component} from 'vue'
+import { AsyncComponent, Component } from 'vue'
 
 const routes: AppRoute[] = [
     {
@@ -39,7 +39,7 @@ const routes: AppRoute[] = [
         component: Console,
         alwaysShow: true,
         showInNavi: true,
-        klipperIsConnected: true
+        klipperIsConnected: true,
     },
     {
         title: 'Heightmap',
@@ -74,7 +74,7 @@ const routes: AppRoute[] = [
         component: History,
         alwaysShow: true,
         showInNavi: true,
-        moonrakerComponent: 'history'
+        moonrakerComponent: 'history',
     },
     {
         title: 'Timelapse',
@@ -83,7 +83,7 @@ const routes: AppRoute[] = [
         component: Timelapse,
         alwaysShow: true,
         showInNavi: true,
-        moonrakerComponent: 'timelapse'
+        moonrakerComponent: 'timelapse',
     },
     {
         title: 'Machine',
@@ -99,23 +99,23 @@ const routes: AppRoute[] = [
         alwaysShow: false,
         showInNavi: false,
         path: '/settings/machine',
-        redirect: '/config'
-    }
+        redirect: '/config',
+    },
 ]
 
 export default routes
 
 export interface AppRoute {
-    title: string | null,
-    path: string,
-    redirect?: string,
-    icon?: string,
-    component: Component | AsyncComponent | null,
-    alwaysShow: boolean,
-    showInNavi: boolean,
-    registeredDirectory?: string,
-    moonrakerComponent?: string,
-    klipperComponent?: string,
-    klipperIsConnected?: boolean,
+    title: string | null
+    path: string
+    redirect?: string
+    icon?: string
+    component: Component | AsyncComponent | null
+    alwaysShow: boolean
+    showInNavi: boolean
+    registeredDirectory?: string
+    moonrakerComponent?: string
+    klipperComponent?: string
+    klipperIsConnected?: boolean
     children?: AppRoute[]
 }

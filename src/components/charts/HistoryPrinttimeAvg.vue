@@ -3,23 +3,23 @@
         ref="historyPrinttimeAvg"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 175px; width: 100%;"
+        style="height: 175px; width: 100%"
         v-observe-visibility="visibilityChanged"
     ></ECharts>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {createComponent} from 'echarts-for-vue'
+import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {ECharts} from 'echarts/core'
+import { ECharts } from 'echarts/core'
 
 @Component({
     components: {
         ECharts: createComponent({ echarts }),
-    }
+    },
 })
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     declare $refs: {
@@ -82,22 +82,24 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
                 lineStyle: {
                     color: 'rgba(255, 255, 255, 0.12)',
                 },
-            }
+            },
         },
-        series: [{
-            type: 'bar',
-            data: [],
-            itemStyle: {
-                color: '#BDBDBD'
-            }
-        }]
+        series: [
+            {
+                type: 'bar',
+                data: [],
+                itemStyle: {
+                    color: '#BDBDBD',
+                },
+            },
+        ],
     }
 
     get printtimeAvgArray() {
         return this.$store.getters['server/history/getPrinttimeAvgArray']
     }
 
-    get chart (): ECharts | null {
+    get chart(): ECharts | null {
         const historyPrinttimeAvg = this.$refs.historyPrinttimeAvg
         return historyPrinttimeAvg?.inst ?? null
     }
@@ -122,18 +124,17 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     printtimeAvgArrayChanged(newVal: any) {
         this.chart?.setOption({
             series: {
-                data: newVal
-            }
+                data: newVal,
+            },
         })
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
 
     eventListenerResize() {
         this.chart?.resize()
     }
-
 }
 </script>
