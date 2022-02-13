@@ -1,7 +1,22 @@
 <style scoped>
-._fan-slider-subheader {
-    height: auto;
-}
+    ._fan-slider-subheader {
+        height: auto;
+    }
+
+    ._slider-input {
+        font-size: 0.875rem;
+        max-width: 4.5rem;
+        margin-left: 12px;
+    }
+
+    ._slider-input >>> .v-input__slot {
+        min-height: 1rem !important;
+    }
+
+    ._slider-input >>> .v-text-field__slot input {
+        padding: 4px 0 4px;
+    }
+
 </style>
 
 <template>
@@ -16,13 +31,13 @@
                         small
                         icon
                     >
-                        <v-icon small :color="isLocked ? 'red' : ''">
+                        <v-icon small :color="(isLocked ? 'red' : '')">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
                     <v-icon
                         small
-                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')"
+                        :class="'mr-2 '+(value >= off_below && value > 0 ? 'icon-rotate' : '')"
                         v-if="type !== 'output_pin'"
                     >
                         mdi-fan
@@ -32,17 +47,17 @@
                     <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">
                         {{ Math.round(rpm) }} RPM
                     </small>
-                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">
-                        {{ Math.round(parseFloat(value) * 100) }} %
+                    <span class="font-weight-bold" v-if="!controllable">
+                        {{ Math.round(parseFloat(value)*100) }} %
                     </span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
-                        {{ value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
+                        {{ value ? "mdi-toggle-switch" : "mdi-toggle-switch-off-outline" }}
                     </v-icon>
                 </v-subheader>
-                <v-card-text class="py-0" v-if="controllable && pwm">
+                <v-card-text class="py-0 pb-2 d-flex align-center" v-if="controllable && pwm">
                     <v-slider
                         v-model="value"
-                        v-touch="{ start: resetLockTimer }"
+                        v-touch="{start: resetLockTimer}"
                         :disabled="isLocked"
                         :min="0.0"
                         :max="1.0"
@@ -52,24 +67,39 @@
                         hide-details
                     >
                         <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
+                            <v-icon @click="decrement" :disabled="isLocked || value <= min">mdi-minus</v-icon>
                         </template>
 
                         <template v-slot:append>
-                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
+                            <v-icon @click="increment" :disabled="isLocked || value >= max">mdi-plus</v-icon>
                         </template>
                     </v-slider>
+                    <v-text-field
+                        v-if="controllable && pwm"
+                        class="_slider-input"
+                        v-model="numInput"
+                        @blur="numInput = Math.round(parseFloat(value)*100)"
+                        @keyup.enter="submitInput"
+                        :error="numInput / 100 > max || numInput / 100 < min"
+                        suffix="%"
+                        type="number"
+                        hide-spin-buttons
+                        hide-details
+                        outlined
+                        dense>
+                    </v-text-field>
                 </v-card-text>
             </v-col>
         </v-row>
     </v-container>
 </template>
 
+
 <script lang="ts">
-import { convertName } from '@/plugins/helpers'
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import {convertName} from '@/plugins/helpers'
+import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { Debounce } from 'vue-debounce-decorator'
+import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
@@ -78,6 +108,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     private isLocked = false
     private min = 0
     private value = 0
+    private numInput = 0
 
     @Prop({ type: Number, required: true }) declare target: number
     @Prop({ type: Number, default: 1 }) declare max: number
@@ -89,35 +120,35 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     @Prop({ type: Number, default: 1 }) declare multi: number
     @Prop({ type: Number, default: 0 }) declare off_below: number
 
-    @Watch('lockSliders', { immediate: true })
-    lockSlidersChanged() {
+    @Watch('lockSliders', {immediate: true})
+    lockSlidersChanged(): void {
         this.isLocked = this.lockSliders && this.isTouchDevice
     }
 
-    startLockTimer() {
+    startLockTimer(): void {
         let t = this.lockSlidersDelay
-        if (!this.isTouchDevice || !this.lockSliders || t <= 0) return
-        this.timeout = setTimeout(() => (this.isLocked = true), t * 1000)
+        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
+        this.timeout = setTimeout(() => this.isLocked = true, t * 1000)
     }
 
-    resetLockTimer() {
+    resetLockTimer(): void {
         clearTimeout(this.timeout)
     }
 
-    get lockSliders() {
+    get lockSliders(): boolean {
         return this.$store.state.gui.uiSettings.lockSlidersOnTouchDevices
     }
 
-    get lockSlidersDelay() {
+    get lockSlidersDelay(): number {
         return this.$store.state.gui.uiSettings.lockSlidersDelay
     }
 
     @Debounce(500)
-    changeSlider() {
+    changeSlider(): void {
         this.sendCmd()
     }
 
-    sendCmd() {
+    sendCmd(): void {
         let gcode = ''
 
         if (this.value < this.min) this.value = 0
@@ -125,43 +156,55 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
         const l_value = this.value * this.multi
 
-        if (this.type === 'fan') gcode = 'M106 S' + l_value.toFixed(0)
-        if (this.type === 'fan_generic') gcode = 'SET_FAN_SPEED FAN=' + this.name + ' SPEED=' + l_value
-        if (this.type === 'output_pin') gcode = 'SET_PIN PIN=' + this.name + ' VALUE=' + l_value.toFixed(2)
+        if (this.type === 'fan')            gcode = `M106 S${l_value.toFixed(0)}`
+        if (this.type === 'fan_generic')    gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${l_value}`
+        if (this.type === 'output_pin')     gcode = `SET_PIN PIN=${this.name} VALUE=${l_value.toFixed(2)}`
 
         if (gcode !== '') {
-            this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-            this.$socket.emit('printer.gcode.script', { script: gcode })
+            this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
+            this.$socket.emit('printer.gcode.script', {script: gcode})
         }
 
         this.startLockTimer()
+        console.log(l_value)
     }
 
-    switchOutputPin() {
+    switchOutputPin(): void {
         this.value = this.value ? 0 : 1
-        const gcode = 'SET_PIN PIN=' + this.name + ' VALUE=' + (this.value * this.multi).toFixed(2)
+        const gcode = `SET_PIN PIN=${this.name} VALUE=${(this.value*this.multi).toFixed(2)}`
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
-    decrement() {
+    decrement(): void {
         this.value = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
         this.sendCmd()
     }
 
-    increment() {
+    increment(): void {
         this.value = this.value < 1.0 ? Math.round((this.value + 0.01) * 100) / 100 : 1.0
         if (this.value < this.off_below) this.value = this.off_below
         this.sendCmd()
     }
 
-    mounted() {
+    mounted(): void {
         this.value = this.target
     }
 
     @Watch('target')
-    targetChanged(newVal: number) {
+    targetChanged(newVal: number): void {
         this.value = newVal / this.max
+    }
+
+    @Watch('value', { immediate: true })
+    valueChanged(newVal: number): void {
+        this.numInput = newVal * 100
+    }
+
+    submitInput(): void {
+        if (this.numInput / 100 > this.max) this.value = this.max
+        else this.value = this.numInput / 100
+        this.sendCmd()
     }
 }
 </script>
