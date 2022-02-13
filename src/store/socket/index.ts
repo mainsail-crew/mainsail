@@ -10,7 +10,11 @@ export const getDefaultState = (): SocketState => {
     let hostname: string
     let port: number
 
-    if (document.location.hostname === 'my.mainsail.xyz' || import.meta.env.VUE_APP_REMOTE_MODE) {
+    if (
+        document.location.hostname === 'my.mainsail.xyz' ||
+        String(import.meta.env.VUE_APP_REMOTE_MODE).toLowerCase() === 'true' ||
+        String(import.meta.env.VUE_APP_REMOTE_MODE) === '1'
+    ) {
         remoteMode = true
         hostname = ''
         port = 7125
