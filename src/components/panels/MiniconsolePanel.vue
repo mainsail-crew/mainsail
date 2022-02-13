@@ -1,12 +1,11 @@
 <style scoped lang="scss">
+.consoleTable {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
 
-    .consoleTable {
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .gcode-command-field {
-        font-family: 'Roboto Mono', monospace;
-    }
+.gcode-command-field {
+    font-family: 'Roboto Mono', monospace;
+}
 </style>
 
 <template>
@@ -19,25 +18,44 @@
         :hideButtonsOnCollapse="true"
     >
         <template v-slot:buttons>
-            <command-help-modal @onCommand="gcode = $event" :inToolbar="true" ></command-help-modal>
+            <command-help-modal @onCommand="gcode = $event" :inToolbar="true"></command-help-modal>
 
-            <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.MiniconsolePanel.SetupConsole')">
+            <v-menu
+                :offset-y="true"
+                :close-on-content-click="false"
+                :title="$t('Panels.MiniconsolePanel.SetupConsole')"
+            >
                 <template v-slot:activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
-                        <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Panels.MiniconsolePanel.HideTemperatures')"></v-checkbox>
+                        <v-checkbox
+                            class="mt-0"
+                            v-model="hideWaitTemperatures"
+                            hide-details
+                            :label="$t('Panels.MiniconsolePanel.HideTemperatures')"
+                        ></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
-                        <v-checkbox class="mt-0" v-model="hideTlCommands" hide-details :label="$t('Panels.MiniconsolePanel.HideTimelapse')"></v-checkbox>
+                        <v-checkbox
+                            class="mt-0"
+                            v-model="hideTlCommands"
+                            hide-details
+                            :label="$t('Panels.MiniconsolePanel.HideTimelapse')"
+                        ></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                        <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                        <v-checkbox
+                            class="mt-0"
+                            v-model="filter.bool"
+                            @change="toggleFilter(filter)"
+                            hide-details
+                            :label="filter.name"
+                        ></v-checkbox>
                     </v-list-item>
                 </v-list>
             </v-menu>
-
         </template>
         <div class="d-flex flex-column">
             <v-card-text :class="consoleDirection === 'table' ? 'order-1' : 'order-2'">
@@ -68,11 +86,16 @@
             <v-card-text :class="(consoleDirection === 'table' ? 'order-2' : 'order-1') + ' pa-0'">
                 <v-row>
                     <v-col>
-                        <overlay-scrollbars ref="miniConsoleScroll" :style="'height: '+consoleHeight+'px;'" :options="{ }">
-                            <console-table ref="console"
-                                           :events="events"
-                                           :is-mini="true"
-                                           @command-click="commandClick"
+                        <overlay-scrollbars
+                            ref="miniConsoleScroll"
+                            :style="'height: ' + consoleHeight + 'px;'"
+                            :options="{}"
+                        >
+                            <console-table
+                                ref="console"
+                                :events="events"
+                                :is-mini="true"
+                                @command-click="commandClick"
                             />
                             <v-divider></v-divider>
                         </overlay-scrollbars>
@@ -84,10 +107,10 @@
 </template>
 
 <script lang="ts">
-import { strLongestEqual, reverseString} from '@/plugins/helpers'
-import {Component, Mixins, Watch} from 'vue-property-decorator'
+import { strLongestEqual, reverseString } from '@/plugins/helpers'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {CommandHelp, VTextareaType} from '@/store/printer/types'
+import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -96,19 +119,19 @@ import Panel from '@/components/ui/Panel.vue'
     components: {
         Panel,
         ConsoleTable,
-        CommandHelpModal
-    }
+        CommandHelpModal,
+    },
 })
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
-    $refs!: {
-        gcodeCommandField: VTextareaType,
-        console: ConsoleTable,
+    declare $refs: {
+        gcodeCommandField: VTextareaType
+        console: ConsoleTable
         miniConsoleScroll: any
     }
 
     private gcode = ''
     private lastCommandNumber: number | null = null
-    private items = [];
+    private items = []
     private cmdListSearch: string | null = null
 
     get helplist(): CommandHelp[] {
@@ -127,10 +150,9 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table', 250)
     }
 
-
     @Watch('events')
     eventsChanged() {
-        if (this.consoleDirection === 'shell'){
+        if (this.consoleDirection === 'shell') {
             setTimeout(() => {
                 this.scrollToBottom()
             }, 50)
@@ -184,7 +206,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                     this.$refs.console.$el.scroll({
                         top: 0,
                         left: 0,
-                        behavior: 'smooth'
+                        behavior: 'smooth',
                     })
                 }, 20)
             }
@@ -204,10 +226,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     onKeyDown(): void {
-        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < this.lastCommands.length - 1) {
             this.lastCommandNumber++
             this.gcode = this.lastCommands[this.lastCommandNumber]
-        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === this.lastCommands.length - 1) {
             this.lastCommandNumber = null
             this.gcode = ''
         }
@@ -222,7 +244,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
             const len = sentence.length
             const pos = textarea.selectionStart
             const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos)
-            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER
+            const currentEndPos =
+                sentence.indexOf('\n', currentLinePos) > -1
+                    ? sentence.indexOf('\n', currentLinePos) - 1
+                    : Number.MAX_SAFE_INTEGER
             if (this.rows > 1) {
                 check = sentence.substr(currentLinePos, currentEndPos - currentLinePos)
             }
@@ -233,12 +258,15 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                 } else {
                     this.gcode = commands[0].command
                 }
-            } else if(commands?.length > 1) {
+            } else if (commands?.length > 1) {
                 let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
                 if (this.rows > 1) {
-                    this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
-                        return strLongestEqual(acc, val.command)
-                    }, commands[0].command))
+                    this.gcode = this.gcode.replace(
+                        check,
+                        commands.reduce((acc, val) => {
+                            return strLongestEqual(acc, val.command)
+                        }, commands[0].command)
+                    )
                 } else {
                     this.gcode = commands.reduce((acc, val) => {
                         return strLongestEqual(acc, val.command)
@@ -246,7 +274,15 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                 }
                 if (commands && commands.length) {
                     let output = ''
-                    commands.forEach(command => output += '<a class="command blue--text font-weight-bold">'+command.command+'</a>: '+command.description+'<br />')
+                    commands.forEach(
+                        (command) =>
+                            (output +=
+                                '<a class="command blue--text font-weight-bold">' +
+                                command.command +
+                                '</a>: ' +
+                                command.description +
+                                '<br />')
+                    )
 
                     this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })
                 }
@@ -256,7 +292,7 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
     }
 
     toggleFilter(filter: string) {
-        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+        this.$store.dispatch('gui/updateConsoleFilter', filter)
     }
 
     mounted() {

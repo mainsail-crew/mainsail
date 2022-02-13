@@ -4,7 +4,8 @@
 host: 0.0.0.0
 port: 7125
 enable_debug_logging: True
-config_path: /home/node/printer_config/
+config_path: /home/node/klipper_config/
+database_path: /home/node/.moonraker_database
 
 [authorization]
 enabled: True

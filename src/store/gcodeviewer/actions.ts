@@ -1,6 +1,6 @@
-import {ActionTree} from 'vuex'
-import {GcodeviewerState} from '@/store/gcodeviewer/types'
-import {RootState} from '@/store/types'
+import { ActionTree } from 'vuex'
+import { GcodeviewerState } from '@/store/gcodeviewer/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<GcodeviewerState, RootState> = {
     reset({ commit }) {
@@ -17,5 +17,5 @@ export const actions: ActionTree<GcodeviewerState, RootState> = {
 
     setLoadedFileBackup({ commit }, backup) {
         commit('setLoadedFileBackup', backup)
-    }
+    },
 }

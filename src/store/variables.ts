@@ -4,58 +4,27 @@ export const defaultPrimaryColor = '#2196f3'
 export const minKlipperVersion = 'v0.9.1-778'
 export const minMoonrakerVersion = 'v0.7.1-193'
 
-export const colorArray = [
-    '#F44336',
-    '#8e379d',
-    '#03DAC5',
-    '#3F51B5',
-    '#ffde03',
-    '#009688',
-    '#E91E63',
-]
+export const colorArray = ['#F44336', '#8e379d', '#03DAC5', '#3F51B5', '#ffde03', '#009688', '#E91E63']
 
 export const colorHeaterBed = '#2196F3'
 export const colorChamber = '#4CAF50'
 export const themeDir = '.theme'
 export const datasetInterval = 1000
-export const datasetTypes = [
-    'temperature',
-    'target',
-    'power',
-    'speed',
-]
+export const datasetTypes = ['temperature', 'target', 'power', 'speed']
 
-export const datasetTypesInPercents = [
-    'power',
-    'speed',
-]
+export const datasetTypesInPercents = ['power', 'speed']
 
-export const additionalSensors = [
-    'bme280',
-    'htu21d',
-]
+export const additionalSensors = ['bme280', 'htu21d']
 
 /*
  * List of valid gcode file extensions
  */
-export const validGcodeExtensions = [
-    '.gcode',
-    '.g',
-    '.gco',
-    '.ufp',
-    '.nc',
-]
+export const validGcodeExtensions = ['.gcode', '.g', '.gco', '.ufp', '.nc']
 
 /*
  * List of initable server components
  */
-export const initableServerComponents = [
-    'history',
-    'power',
-    'updateManager',
-    'timelapse',
-    'jobQueue',
-]
+export const initableServerComponents = ['history', 'power', 'updateManager', 'timelapse', 'jobQueue']
 
 /*
  * List of required klipper config modules
@@ -129,14 +98,10 @@ export const timelapseConsoleFilters = [
     '^TIMELAPSE_RENDER',
     '^_SET_TIMELAPSE_SETUP',
     '^HYPERLAPSE ACTION=',
-    '^SET_GCODE_VARIABLE MACRO=TIMELAPSE_'
+    '^SET_GCODE_VARIABLE MACRO=TIMELAPSE_',
 ]
 
 /*
  * List of hidden root directories in config files panel
  */
-export const hiddenRootDirectories = [
-    'gcodes',
-    'timelapse',
-    'timelapse_frames'
-]
+export const hiddenRootDirectories = ['gcodes', 'timelapse', 'timelapse_frames']

@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
@@ -88,7 +88,7 @@ import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatus from '@/components/charts/HistoryAllPrintStatus.vue'
 import {ServerHistoryStateJob} from '@/store/server/history/types'
 @Component({
-    components: {Panel,HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus}
+    components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     get selectedJobs() {
@@ -100,7 +100,9 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalPrintTime() {
-        return 'total_print_time' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_print_time : 0
+        return 'total_print_time' in this.$store.state.server.history.job_totals
+            ? this.$store.state.server.history.job_totals.total_print_time
+            : 0
     }
 
     get selectedPrintTime() {
@@ -114,7 +116,9 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get longestPrintTime() {
-        return 'longest_print' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.longest_print : 0
+        return 'longest_print' in this.$store.state.server.history.job_totals
+            ? this.$store.state.server.history.job_totals.longest_print
+            : 0
     }
 
     get selectedLongestPrintTime() {
@@ -128,7 +132,8 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get avgPrintTime() {
-        if (this.totalJobsCount > 0 && this.totalPrintTime > 0) return Math.round(this.totalPrintTime / this.totalJobsCount)
+        if (this.totalJobsCount > 0 && this.totalPrintTime > 0)
+            return Math.round(this.totalPrintTime / this.totalJobsCount)
 
         return 0
     }
@@ -140,7 +145,9 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalFilamentUsed() {
-        return 'total_filament_used' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_filament_used : 0
+        return 'total_filament_used' in this.$store.state.server.history.job_totals
+            ? this.$store.state.server.history.job_totals.total_filament_used
+            : 0
     }
 
     get selectedFilamentUsed() {
@@ -154,10 +161,12 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
     }
 
     get totalJobsCount() {
-        return 'total_jobs' in this.$store.state.server.history.job_totals ? this.$store.state.server.history.job_totals.total_jobs : 0
+        return 'total_jobs' in this.$store.state.server.history.job_totals
+            ? this.$store.state.server.history.job_totals.total_jobs
+            : 0
     }
 
-    get toggleChart () {
+    get toggleChart() {
         return this.$store.state.gui.view.history.toggleChartCol3
     }
 
@@ -171,13 +180,13 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
 
             const hours = Math.floor(totalSeconds / 3600)
             totalSeconds %= 3600
-            if (hours) output += ' '+hours+'h'
+            if (hours) output += ' ' + hours + 'h'
 
             const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' '+minutes+'m'
+            if (minutes) output += ' ' + minutes + 'm'
 
             const seconds = totalSeconds % 60
-            if (seconds) output += ' '+seconds.toFixed(0)+'s'
+            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
 
             return output
         }

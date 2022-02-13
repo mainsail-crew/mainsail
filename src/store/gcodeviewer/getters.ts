@@ -1,6 +1,4 @@
-import {GetterTree} from 'vuex'
-import {GcodeviewerState} from '@/store/gcodeviewer/types'
+import { GetterTree } from 'vuex'
+import { GcodeviewerState } from '@/store/gcodeviewer/types'
 
-export const getters: GetterTree<GcodeviewerState, any> = {
-
-}
+export const getters: GetterTree<GcodeviewerState, any> = {}

@@ -1,6 +1,4 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <panel
@@ -19,7 +17,8 @@
             :step="5"
             :dynamic-range="true"
             command="M220"
-            attribute-name="S">
+            attribute-name="S"
+        >
         </tool-slider>
         <template v-if="existsExtruder">
             <v-divider></v-divider>
@@ -31,14 +30,15 @@
                 :multi="100"
                 :step="1"
                 command="M221"
-                attribute-name="S">
+                attribute-name="S"
+            >
             </tool-slider>
         </template>
     </panel>
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
@@ -46,11 +46,10 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
 @Component({
     components: {
         Panel,
-        ToolSlider
-    }
+        ToolSlider,
+    },
 })
 export default class PrintsettingsPanel extends Mixins(BaseMixin) {
-
     get extrude_factor() {
         return this.$store.state.printer?.gcode_move?.extrude_factor ?? 1
     }

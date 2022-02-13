@@ -2,6 +2,13 @@
     "title": "Dansk",
     "App": {
         "Printers": "Printere",
+        "Titles": {
+            "Error": "Fejl",
+            "Pause": "Pause",
+            "Printing": "{percent}% printet",
+            "PrintingETA": "{percent}% printet - ETA {eta}",
+            "Complete": "Færdig - {filename}"
+        },
         "TopBar": {
             "SAVE_CONFIG": "GEM KONFIGURATION",
             "UploadPrint": "Upload & Print",
@@ -24,25 +31,25 @@
             "Shutdown": "Luk ned",
             "Cancel": "Annuller",
             "ConfirmationDialog": {
-              "Title": {
-                "KlipperRestart": "Genstart Klipper",
-                "KlipperFirmwareRestart": "Genstart Klipper firmware",
-                "ServiceStart": "Start service",
-                "ServiceRestart": "Genstart service",
-                "ServiceStop": "Stop service",
-                "HostReboot": "Genstart vært",
-                "HostShutdown": "Luk vært ned"
-              },
-              "Description": {
-                "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
-                "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
-                "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
-                "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
-                "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
-                "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
-              }
+                "Title": {
+                    "KlipperRestart": "Genstart Klipper",
+                    "KlipperFirmwareRestart": "Genstart Klipper firmware",
+                    "ServiceStart": "Start service",
+                    "ServiceRestart": "Genstart service",
+                    "ServiceStop": "Stop service",
+                    "HostReboot": "Genstart vært",
+                    "HostShutdown": "Luk vært ned"
+                },
+                "Description": {
+                    "KlipperStop": "Hvis du stopper Klipper nu, vil det igangværende print fejle.",
+                    "KlipperRestart": "Hvis du genstarter Klipper nu, vil det igangværende print fejle.",
+                    "KlipperFirmwareRestart": "Hvis du genstarter Klipper firmware nu, vil det igangværende print fejle.",
+                    "ServiceStart": "Hvis du starter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceRestart": "Hvis du genstarter denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "ServiceStop": "Hvis du stopper denne service nu, er der stor risiko for at dit igangværende print vil fejle.",
+                    "HostReboot": "Hvis du genstarter værten nu, vil det igangværende print fejle.",
+                    "HostShutdown": "Hvis du lukker værten ned nu, vil det igangværende print fejle."
+                }
             }
         },
         "UpdateDialog": {
@@ -180,7 +187,10 @@
         "LastModified": "Sidst ændret",
         "ObjectHeight": "Total højde",
         "LayerHeight": "Laghøjde",
+        "NozzleDiameter": "Nozzle diameter",
         "Filament": "Filament",
+        "FilamentName": "Filament navn",
+        "FilamentType": "Filament type",
         "FilamentUsage": "Filament forbrug",
         "FilamentWeight": "Filament vægt",
         "PrintTime": "Printtid",
@@ -221,7 +231,7 @@
         "Calibrate": "Kalibrer",
         "TitleCalibrate": "Kalibrer nyt Bed Mesh",
         "NoBedMeshHasBeenLoadedYet": "Intet Bed Mesh indlæst.",
-        "Probed": "Reel",
+        "Probed": "Målt",
         "Mesh": "Mesh",
         "Flat": "Fladt",
         "Wireframe": "Wireframe",
@@ -299,7 +309,7 @@
         "CreateNewDirectory": "Ny mappe",
         "RefreshCurrentDirectory": "Opdater mappe",
         "Empty": "Ingen færdige Timelapse filer fundet.",
-        "CurrentPath": "Du er her:",
+        "CurrentPath": "Du er her",
         "FreeDisk": "Ledig plads",
         "Used": "Brugt",
         "Free": "Ledig",
@@ -397,7 +407,6 @@
                 "Motion": "Bevægelse",
                 "Velocity": "Hastighed (Feedrate)",
                 "Acceleration": "Acceleration",
-                "Deceleration": "Deceleration",
                 "MaxAccelToDecel": "Maks. accel. til decel.",
                 "SquareCornerVelocity": "Hastighed for 90° hjørne"
             },
@@ -512,7 +521,9 @@
                 "Target": "Indstillet temperatur",
                 "Power": "PWM-power",
                 "Speed": "PWM-hastighed"
-            }
+            },
+            "TempTooLow": "Temperaturen er for lav for {name}! (min: {min})",
+            "TempTooHigh": "Temperaturen er for høj for {name}! (max: {max})"
         },
         "WebcamPanel": {
             "Headline": "Webcam",
@@ -541,7 +552,7 @@
             "SetupCurrentList": "Indstil visning",
             "HiddenFiles": "Skjulte filer",
             "HideBackupFiles": "Skjul backupfiler",
-            "CurrentPath": "Du er her:",
+            "CurrentPath": "Du er her",
             "Files": "Filer",
             "FreeDisk": "Ledig plads",
             "Used": "Brugt",
@@ -577,10 +588,10 @@
             "EndstopInfo": "Klik på \"Sync\"-knappen nederst til højre for at opdatere Endstop status."
         },
         "LogfilesPanel": {
-            "Logfiles": "Logfiles"
+            "Logfiles": "Logfiler"
         },
         "UpdatePanel": {
-            "UpdateManager": "Opdaterings Manager",
+            "UpdateManager": "Opdateringsmanager",
             "CheckForUpdates": "Tjek for opdateringer",
             "System": "System",
             "PackagesCanBeUpgraded": "Pakker kan opgraderes",
@@ -750,8 +761,8 @@
             "ResetLayout": "Nulstil layout"
         },
         "MacrosTab": {
-            "Macros": "Macroer",
-            "NOMacros": "Ingen macroer fundet...",
+            "Macros": "Makroer",
+            "NOMacros": "Ingen makroer fundet...",
             "General": "Generelt",
             "Management": "Håndtering",
             "Simple": "Simpel",
@@ -760,7 +771,7 @@
             "NoGroups": "Ingen grupper fundet...",
             "Macrogroups": "Grupper",
             "EditGroup": "Edit Gruppe",
-            "CountMacros": "Ingen Macroer tilføjet | {count} Macro | {count} Macroer",
+            "CountMacros": "Ingen Makroer tilføjet | {count} Makro | {count} Makroer",
             "Name": "Navn",
             "Color": "Farve",
             "CustomColor": "Brugerdefineret farve",
@@ -772,8 +783,8 @@
             "Error": "Fejl",
             "Custom": "Brugerdefineret",
             "AddGroup": "Tilføj gruppe",
-            "GroupMacros": "Gruppér macroer",
-            "AvailableMacros": "Tilgængelige macroer",
+            "GroupMacros": "Gruppér makroer",
+            "AvailableMacros": "Tilgængelige makroer",
             "Add": "Tilføj",
             "NoMacrosInGroup": "Ingen makroer i denne gruppe.",
             "NoAvailableMacros": "Ingen tilgængelige makroer.",
@@ -800,7 +811,11 @@
             "MoveDistancesXYInMm": "Distance XY i mm",
             "MoveDistancesZInMm": "Distance Z i mm",
             "MoveDistancesEInMm": "Distance E i mm",
-            "SpeedEInMms": "Hastighed E i mm/s"
+            "SpeedEInMms": "Hastighed E i mm/s",
+            "ValueGreaterThan": "Værdi større end",
+            "MinimumValues": "Minimumsværdier",
+            "MaximumValues": "Maksimumværdier",
+            "MaximumValuesVisibility": "Vis maksimumværdier"
         },
         "ConsoleTab": {
             "Console": "Terminal",

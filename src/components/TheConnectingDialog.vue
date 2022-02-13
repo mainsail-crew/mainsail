@@ -1,6 +1,4 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <v-dialog v-model="showDialog" persistent :width="400">
@@ -9,8 +7,12 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        <template v-if="connectingFailed">{{ $t("ConnectionDialog.Failed", {'host': formatHostname}) }}</template>
-                        <template v-else-if="isConnecting">{{ $t("ConnectionDialog.Connecting", {'host': formatHostname}) }}</template>
+                        <template v-if="connectingFailed">{{
+                            $t('ConnectionDialog.Failed', { host: formatHostname })
+                        }}</template>
+                        <template v-else-if="isConnecting">{{
+                            $t('ConnectionDialog.Connecting', { host: formatHostname })
+                        }}</template>
                         <template v-else>{{ formatHostname }}</template>
                     </span>
                 </v-toolbar-title>
@@ -20,10 +22,10 @@
             </v-card-text>
             <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
                 <connection-status :moonraker="false"></connection-status>
-                <p class="text-center mt-3">{{ $t("ConnectionDialog.CannotConnectTo", {'host': formatHostname}) }}</p>
+                <p class="text-center mt-3">{{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}</p>
                 <template v-if="counter > 2">
                     <v-divider class="my-3"></v-divider>
-                    <p>{{ $t("ConnectionDialog.CheckMoonrakerLog") }}</p>
+                    <p>{{ $t('ConnectionDialog.CheckMoonrakerLog') }}</p>
                     <ul>
                         <li>~/klipper_logs/moonraker.log</li>
                         <li>/tmp/moonraker.log</li>
@@ -31,7 +33,7 @@
                     <v-divider class="mt-4 mb-5"></v-divider>
                 </template>
                 <div class="text-center">
-                    <v-btn @click="reconnect" class="primary--text">{{ $t("ConnectionDialog.TryAgain") }}</v-btn>
+                    <v-btn @click="reconnect" class="primary--text">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
         </v-card>
@@ -39,7 +41,6 @@
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
@@ -48,9 +49,9 @@ import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
 @Component({
     components: {
         ConnectionStatus,
-    }
+    },
 })
-export default class TheUpdateDialog extends Mixins(BaseMixin) {
+export default class TheConnectingDialog extends Mixins(BaseMixin) {
     counter = 0
 
     get protocol() {
@@ -66,7 +67,7 @@ export default class TheUpdateDialog extends Mixins(BaseMixin) {
     }
 
     get formatHostname() {
-        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname+':'+this.port : this.hostname
+        return parseInt(this.port) !== 80 && this.port !== '' ? this.hostname + ':' + this.port : this.hostname
     }
 
     get isConnected() {

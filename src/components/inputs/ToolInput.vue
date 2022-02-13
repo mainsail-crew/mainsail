@@ -1,21 +1,25 @@
 <style scoped>
-    .tool-input {
-        min-width: 5rem;
-        margin-top: 0;
-        padding: 0;
-    }
+.tool-input {
+    min-width: 5rem;
+    margin-top: 0;
+    padding: 0;
+}
 
-    .tool-input .v-input__slot { margin-bottom: 0; }
-    .tool-input .v-text-field__details { display: none; }
+.tool-input .v-input__slot {
+    margin-bottom: 0;
+}
+.tool-input .v-text-field__details {
+    display: none;
+}
 
-    .tool-input input {
-        -moz-appearance: textfield;
-    }
-    .tool-input input::-webkit-outer-spin-button,
-    .tool-input input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+.tool-input input {
+    -moz-appearance: textfield;
+}
+.tool-input input::-webkit-outer-spin-button,
+.tool-input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 </style>
 
 <template>
@@ -37,20 +41,20 @@
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import {Mixins, Prop, Watch} from 'vue-property-decorator'
+import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class ToolInput extends Mixins(BaseMixin) {
     private value: any = 0
 
-    @Prop({ type: String, required: true }) readonly name!: string
-    @Prop({ type: Number, required: true, default: 0 }) readonly target!: number
-    @Prop({ type: Number, required: true }) readonly min_temp!: number
-    @Prop({ type: Number, required: true }) readonly max_temp!: number
-    @Prop({ type: String, required: true }) readonly command!: string
-    @Prop({ type: String, required: true }) readonly attributeName!: string
-    @Prop({ type: Array, default: [] }) items!: number[]
+    @Prop({ type: String, required: true }) declare readonly name: string
+    @Prop({ type: Number, required: true, default: 0 }) declare readonly target: number
+    @Prop({ type: Number, required: true }) declare readonly min_temp: number
+    @Prop({ type: Number, required: true }) declare readonly max_temp: number
+    @Prop({ type: String, required: true }) declare readonly command: string
+    @Prop({ type: String, required: true }) declare readonly attributeName: string
+    @Prop({ type: Array, default: [] }) declare items: number[]
 
     changeValue(newVal: any) {
         if (typeof newVal === 'object') {
@@ -71,12 +75,12 @@ export default class ToolInput extends Mixins(BaseMixin) {
 
         if (this.value > this.max_temp) {
             this.value = { value: this.target, text: this.target }
-            this.$toast.error(this.$t('Panels.ToolsPanel.TempTooHigh', { name: this.name, max: this.max_temp })+'')
+            this.$toast.error(this.$t('Panels.ToolsPanel.TempTooHigh', { name: this.name, max: this.max_temp }) + '')
         } else if (this.value < this.min_temp && this.value != 0) {
             this.value = { value: this.target, text: this.target }
-            this.$toast.error(this.$t('Panels.ToolsPanel.TempTooLow', { name: this.name, min: this.min_temp })+'')
+            this.$toast.error(this.$t('Panels.ToolsPanel.TempTooLow', { name: this.name, min: this.min_temp }) + '')
         } else if (this.target !== parseFloat(this.value)) {
-            const gcode = this.command+' '+this.attributeName+'='+this.name+' TARGET='+this.value
+            const gcode = this.command + ' ' + this.attributeName + '=' + this.name + ' TARGET=' + this.value
             this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
             this.$socket.emit('printer.gcode.script', { script: gcode })
         }
@@ -90,6 +94,5 @@ export default class ToolInput extends Mixins(BaseMixin) {
     targetChanged(newVal: number): void {
         this.value = newVal
     }
-
 }
 </script>

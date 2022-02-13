@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<ServerHistoryState, RootState> = {
     reset({ commit }) {
@@ -18,20 +18,22 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
     },
 
     getHistory({ commit, state }, payload) {
-        if (
-            'requestParams' in payload &&
-            'start' in payload.requestParams &&
-            payload.requestParams.start === 0
-        ) commit('resetJobs')
+        if ('requestParams' in payload && 'start' in payload.requestParams && payload.requestParams.start === 0)
+            commit('resetJobs')
 
         payload.jobs?.forEach((job: ServerHistoryStateJob) => {
-            if (state.jobs.findIndex(stateJob => stateJob.job_id === job.job_id) === -1) commit('addJob', job)
+            if (state.jobs.findIndex((stateJob) => stateJob.job_id === job.job_id) === -1) commit('addJob', job)
         })
 
-        if (
-            payload.requestParams?.limit > 0 &&
-            payload.jobs?.length === payload.requestParams.limit
-        ) Vue.$socket.emit('server.history.list', { start: payload.requestParams.start + payload.requestParams.limit, limit: payload.requestParams.limit }, { action: 'server/history/getHistory' })
+        if (payload.requestParams?.limit > 0 && payload.jobs?.length === payload.requestParams.limit)
+            Vue.$socket.emit(
+                'server.history.list',
+                {
+                    start: payload.requestParams.start + payload.requestParams.limit,
+                    limit: payload.requestParams.limit,
+                },
+                { action: 'server/history/getHistory' }
+            )
     },
 
     getChanged({ commit }, payload) {
@@ -47,6 +49,5 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
                 commit('destroyJob', jobId)
             })
         }
-    }
-
+    },
 }

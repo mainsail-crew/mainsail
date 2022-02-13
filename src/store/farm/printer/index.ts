@@ -1,9 +1,9 @@
-import {FarmPrinterState} from '@/store/farm/printer/types'
+import { FarmPrinterState } from '@/store/farm/printer/types'
 import { getDefaultState as getGuiDefaultState } from '@/store/gui/index'
 import { actions } from '@/store/farm/printer/actions'
 import { mutations } from '@/store/farm/printer/mutations'
 import { getters } from '@/store/farm/printer/getters'
-import {Module} from 'vuex'
+import { Module } from 'vuex'
 
 export const getDefaultState = (): FarmPrinterState => {
     return {
@@ -21,21 +21,22 @@ export const getDefaultState = (): FarmPrinterState => {
             reconnectInterval: 1000,
             wsData: [],
         },
+        server: {
+            klippy_connected: false,
+        },
         data: {
             gui: getGuiDefaultState(),
-            webcams: {}
+            webcams: {},
         },
-        settings: {
-
-        },
+        settings: {},
         databases: [],
         current_file: {
             isDirectory: false,
             filename: '',
             modified: new Date(),
-            permissions: ''
+            permissions: '',
         },
-        theme_files: []
+        theme_files: [],
     }
 }
 
@@ -50,5 +51,5 @@ export const printer: Module<FarmPrinterState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

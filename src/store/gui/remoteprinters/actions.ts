@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import {GuiRemoteprintersState} from '@/store/gui/remoteprinters/types'
+import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
 
 export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     reset({ commit, dispatch, state }) {
@@ -32,12 +32,16 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         Object.keys(payload).forEach((printerId: string) => {
             const printer = payload[printerId]
             commit('store', { id: printerId, values: printer })
-            dispatch('farm/registerPrinter', {
-                id: printerId,
-                hostname: printer.hostname ?? '',
-                port: printer.port ?? 7125,
-                settings: printer.settings ?? {}
-            }, { root: true })
+            dispatch(
+                'farm/registerPrinter',
+                {
+                    id: printerId,
+                    hostname: printer.hostname ?? '',
+                    port: printer.port ?? 7125,
+                    settings: printer.settings ?? {},
+                },
+                { root: true }
+            )
         })
     },
 
@@ -61,7 +65,11 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
                 settings: state.printers[id].settings ?? {},
             }
 
-            Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'remoteprinters.printers.'+id, value })
+            Vue.$socket.emit('server.database.post_item', {
+                namespace: 'mainsail',
+                key: 'remoteprinters.printers.' + id,
+                value,
+            })
         }
     },
 
@@ -69,11 +77,15 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         const id = uuidv4()
 
         commit('store', { id, values: payload.values })
-        dispatch('farm/registerPrinter', {
-            id,
-            hostname: payload.values.hostname ?? '',
-            port: payload.values.port ?? 7125
-        }, { root: true })
+        dispatch(
+            'farm/registerPrinter',
+            {
+                id,
+                hostname: payload.values.hostname ?? '',
+                port: payload.values.port ?? 7125,
+            },
+            { root: true }
+        )
 
         dispatch('upload', id)
     },
@@ -89,8 +101,8 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('update', {
             id: payload.id,
             values: {
-                settings: payload.values
-            }
+                settings: payload.values,
+            },
         })
         dispatch('upload', payload.id)
     },
@@ -99,6 +111,6 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('delete', id)
         dispatch('farm/unregisterPrinter', id, { root: true })
 
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers'+id })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers.' + id })
     },
 }

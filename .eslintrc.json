@@ -8,7 +8,8 @@
     "extends": [
         "plugin:vue/essential",
         "eslint:recommended",
-        "@vue/typescript"
+        "@vue/typescript",
+        "prettier"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -17,28 +18,9 @@
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
-        "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": [
         "vue"
-    ],
-    "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ]
-    }
+    ]
 }

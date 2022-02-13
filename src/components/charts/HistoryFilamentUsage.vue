@@ -3,27 +3,26 @@
         ref="historyFilamentUsage"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 175px; width: 100%;"
+        style="height: 175px; width: 100%"
         v-observe-visibility="visibilityChanged"
     ></ECharts>
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
-import {createComponent} from 'echarts-for-vue'
+import { createComponent } from 'echarts-for-vue'
 import * as echarts from 'echarts'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {ECharts} from 'echarts/core'
+import { ECharts } from 'echarts/core'
 
 @Component({
     components: {
         ECharts: createComponent({ echarts }),
-    }
+    },
 })
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
-    $refs!: {
+    declare $refs: {
         historyFilamentUsage: any
     }
 
@@ -46,20 +45,20 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
                     output = datasets[0]['marker']
                     const outputTime = datasets[0]['axisValueLabel']
                     const a = outputTime.split(/[^0-9]/)
-                    const outputTimeDate = new Date (a[0],a[1]-1, a[2])
+                    const outputTimeDate = new Date(a[0], a[1] - 1, a[2])
                     const outputValue = Math.round(datasets[0]['data'][1] * 10) / 10
 
-                    output += outputTimeDate.toLocaleDateString()+': '+outputValue+'m'
+                    output += outputTimeDate.toLocaleDateString() + ': ' + outputValue + 'm'
                 }
 
                 return output
-            }
+            },
         },
         xAxis: {
             type: 'time',
-            min: new Date().setHours(0,0,0) - 60*60*24*14*1000,
-            max: new Date().setHours(0,0,0),
-            minInterval: 60*60*24*1000,
+            min: new Date().setHours(0, 0, 0) - 60 * 60 * 24 * 14 * 1000,
+            max: new Date().setHours(0, 0, 0),
+            minInterval: 60 * 60 * 24 * 1000,
             splitLine: {
                 show: true,
                 lineStyle: {
@@ -100,21 +99,23 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
                 lineStyle: {
                     color: 'rgba(255, 255, 255, 0.12)',
                 },
-            }
+            },
         },
         color: ['#BDBDBD'],
-        series: [{
-            type: 'bar',
-            data: [],
-            showSymbol: false
-        }]
+        series: [
+            {
+                type: 'bar',
+                data: [],
+                showSymbol: false,
+            },
+        ],
     }
 
     get filamentUsageArray() {
         return this.$store.getters['server/history/getFilamentUsageArray']
     }
 
-    get chart (): ECharts | null {
+    get chart(): ECharts | null {
         const historyFilamentUsage = this.$refs.historyFilamentUsage
         return historyFilamentUsage?.inst ?? null
     }
@@ -139,12 +140,12 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     filamentUsageArrayChanged(newVal: any) {
         this.chart?.setOption({
             series: {
-                data: newVal
-            }
+                data: newVal,
+            },
         })
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
 

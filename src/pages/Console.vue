@@ -1,5 +1,4 @@
 <style scoped>
-
 .consoleScrollContainer {
     min-height: 200px;
     height: calc(var(--app-height) - 180px);
@@ -40,22 +39,43 @@
             </v-col>
 
             <v-col class="col-auto d-flex align-center">
-                <command-help-modal
-                    @onCommand="gcode = $event"
-                ></command-help-modal>
-                <v-menu offset-y :top="consoleDirection === 'shell'" :close-on-content-click="false" :title="$t('Console.SetupConsole')">
+                <command-help-modal @onCommand="gcode = $event"></command-help-modal>
+                <v-menu
+                    offset-y
+                    :top="consoleDirection === 'shell'"
+                    :close-on-content-click="false"
+                    :title="$t('Console.SetupConsole')"
+                >
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"><v-icon>mdi-filter</v-icon></v-btn>
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"
+                            ><v-icon>mdi-filter</v-icon></v-btn
+                        >
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">
-                            <v-checkbox class="mt-0" v-model="hideWaitTemperatures" hide-details :label="$t('Console.HideTemperatures')"></v-checkbox>
+                            <v-checkbox
+                                class="mt-0"
+                                v-model="hideWaitTemperatures"
+                                hide-details
+                                :label="$t('Console.HideTemperatures')"
+                            ></v-checkbox>
                         </v-list-item>
                         <v-list-item class="minHeight36" v-if="moonrakerComponents.includes('timelapse')">
-                            <v-checkbox class="mt-0" v-model="hideTlCommands" hide-details :label="$t('Console.HideTimelapse')"></v-checkbox>
+                            <v-checkbox
+                                class="mt-0"
+                                v-model="hideTlCommands"
+                                hide-details
+                                :label="$t('Console.HideTimelapse')"
+                            ></v-checkbox>
                         </v-list-item>
                         <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
-                            <v-checkbox class="mt-0" v-model="filter.bool" @change="toggleFilter(filter)" hide-details :label="filter.name"></v-checkbox>
+                            <v-checkbox
+                                class="mt-0"
+                                v-model="filter.bool"
+                                @change="toggleFilter(filter)"
+                                hide-details
+                                :label="filter.name"
+                            ></v-checkbox>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -66,10 +86,11 @@
                 <v-card>
                     <v-card-text class="pa-0">
                         <overlay-scrollbars ref="consoleScroll" class="consoleScrollContainer d-flex flex-column">
-                            <console-table ref="console"
-                                           :is-mini="false"
-                                           :events="events"
-                                           @command-click="commandClick"
+                            <console-table
+                                ref="console"
+                                :is-mini="false"
+                                :events="events"
+                                @command-click="commandClick"
                             />
                         </overlay-scrollbars>
                     </v-card-text>
@@ -80,27 +101,27 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Watch} from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
-import {CommandHelp, VTextareaType} from '@/store/printer/types'
-import {reverseString, strLongestEqual} from '@/plugins/helpers'
+import { CommandHelp, VTextareaType } from '@/store/printer/types'
+import { reverseString, strLongestEqual } from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 
 @Component({
     components: {
         CommandHelpModal,
         ConsoleTable,
-    }
+    },
 })
 export default class PageConsole extends Mixins(BaseMixin) {
     private gcode = ''
     private lastCommandNumber: number | null = null
     private items = []
 
-    $refs!: {
-        gcodeCommandField: VTextareaType,
-        console: ConsoleTable,
+    declare $refs: {
+        gcodeCommandField: VTextareaType
+        console: ConsoleTable
         consoleScroll: any
     }
 
@@ -172,7 +193,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
                     this.$refs.console.$el.scroll({
                         top: 0,
                         left: 0,
-                        behavior: 'smooth'
+                        behavior: 'smooth',
                     })
                 }, 20)
             }
@@ -190,10 +211,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     onKeyDown(): void {
-        if (this.lastCommandNumber !== null && this.lastCommandNumber < (this.lastCommands.length - 1)) {
+        if (this.lastCommandNumber !== null && this.lastCommandNumber < this.lastCommands.length - 1) {
             this.lastCommandNumber++
             this.gcode = this.lastCommands[this.lastCommandNumber]
-        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === (this.lastCommands.length - 1)) {
+        } else if (this.lastCommandNumber !== null && this.lastCommandNumber === this.lastCommands.length - 1) {
             this.lastCommandNumber = null
             this.gcode = ''
         }
@@ -208,7 +229,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
             const len = sentence.length
             const pos = textarea.selectionStart
             const currentLinePos = len - reverseString(sentence).indexOf('\n', len - pos)
-            const currentEndPos = sentence.indexOf('\n', currentLinePos) > -1 ? sentence.indexOf('\n', currentLinePos) - 1 : Number.MAX_SAFE_INTEGER
+            const currentEndPos =
+                sentence.indexOf('\n', currentLinePos) > -1
+                    ? sentence.indexOf('\n', currentLinePos) - 1
+                    : Number.MAX_SAFE_INTEGER
             if (this.rows > 1) {
                 check = sentence.substr(currentLinePos, currentEndPos - currentLinePos)
             }
@@ -219,12 +243,15 @@ export default class PageConsole extends Mixins(BaseMixin) {
                 } else {
                     this.gcode = commands[0].command
                 }
-            } else if(commands?.length > 1) {
+            } else if (commands?.length > 1) {
                 let commands = this.helplist.filter((element) => element.commandLow.startsWith(check.toLowerCase()))
                 if (this.rows > 1) {
-                    this.gcode = this.gcode.replace(check, commands.reduce((acc, val) => {
-                        return strLongestEqual(acc, val.command)
-                    }, commands[0].command))
+                    this.gcode = this.gcode.replace(
+                        check,
+                        commands.reduce((acc, val) => {
+                            return strLongestEqual(acc, val.command)
+                        }, commands[0].command)
+                    )
                 } else {
                     this.gcode = commands.reduce((acc, val) => {
                         return strLongestEqual(acc, val.command)
@@ -232,7 +259,15 @@ export default class PageConsole extends Mixins(BaseMixin) {
                 }
                 if (commands && commands.length) {
                     let output = ''
-                    commands.forEach(command => output += '<a class=\'command blue--text\'>'+command.command+'</a>: '+command.description+'<br />')
+                    commands.forEach(
+                        (command) =>
+                            (output +=
+                                "<a class='command blue--text'>" +
+                                command.command +
+                                '</a>: ' +
+                                command.description +
+                                '<br />')
+                    )
 
                     this.$store.dispatch('server/addEvent', { message: output, type: 'autocomplete' })
                 }
@@ -242,7 +277,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     toggleFilter(filter: string): void {
-        this.$store.dispatch('gui/updateConsoleFilter',  filter)
+        this.$store.dispatch('gui/updateConsoleFilter', filter)
     }
 
     mounted() {

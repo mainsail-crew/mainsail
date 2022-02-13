@@ -1,5 +1,5 @@
 export interface ServerPowerState {
-    devices: ServerPowerStateDevice[],
+    devices: ServerPowerStateDevice[]
 }
 
 export interface ServerPowerStateDevice {

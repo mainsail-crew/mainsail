@@ -6,14 +6,16 @@
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "vuetify"
+      "vite/client",
+      "vuetify",
+      "@intlify/vite-plugin-vue-i18n/client"
     ],
     "paths": {
       "@/*": [
