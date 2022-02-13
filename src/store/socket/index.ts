@@ -12,7 +12,8 @@ export const getDefaultState = (): SocketState => {
 
     if (
         document.location.hostname === 'my.mainsail.xyz' ||
-        import.meta.env.VUE_APP_REMOTE_MODE === 'true'
+        String(import.meta.env.VUE_APP_REMOTE_MODE).toLowerCase() === 'true' ||
+        String(import.meta.env.VUE_APP_REMOTE_MODE) === '1'
     ) {
         remoteMode = true
         hostname = ''
