@@ -45,14 +45,12 @@ import FirmwareRetractionSettings from '@/components/panels/MachineSettings/Firm
         SubPanel,
         MotionSettings,
         PressureAdvanceSettings,
-        FirmwareRetractionSettings
-    }
+        FirmwareRetractionSettings,
+    },
 })
 export default class MachineSettingsPanel extends Mixins(BaseMixin) {
-
     get existsFirmwareRetraction() {
         return this.$store.state.printer.configfile?.settings?.firmware_retraction ?? false
     }
-
 }
 </script>

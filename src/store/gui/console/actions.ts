@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import {GuiConsoleState} from '@/store/gui/console/types'
+import { GuiConsoleState } from '@/store/gui/console/types'
 
 export const actions: ActionTree<GuiConsoleState, RootState> = {
     reset({ commit }) {
@@ -10,14 +10,22 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
     },
 
     saveSetting({ dispatch }, payload) {
-        dispatch('gui/saveSetting', {
-            name: 'console.'+payload.name,
-            value: payload.value
-        }, { root: true })
+        dispatch(
+            'gui/saveSetting',
+            {
+                name: 'console.' + payload.name,
+                value: payload.value,
+            },
+            { root: true }
+        )
     },
 
     filterUpload(_, payload) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'console.consolefilters.'+payload.id, value: payload.value })
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'mainsail',
+            key: 'console.consolefilters.' + payload.id,
+            value: payload.value,
+        })
     },
 
     filterStore({ commit, dispatch, state }, payload) {
@@ -26,7 +34,7 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
         commit('filterStore', { id, values: payload.values })
         dispatch('filterUpload', {
             id,
-            value: state.consolefilters[id]
+            value: state.consolefilters[id],
         })
     },
 
@@ -34,12 +42,15 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
         commit('filterUpdate', payload)
         dispatch('filterUpload', {
             id: payload.id,
-            value: state.consolefilters[payload.id]
+            value: state.consolefilters[payload.id],
         })
     },
 
     filterDelete({ commit }, payload) {
         commit('filterDelete', payload)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'console.consolefilters.'+payload })
+        Vue.$socket.emit('server.database.delete_item', {
+            namespace: 'mainsail',
+            key: 'console.consolefilters.' + payload,
+        })
     },
 }

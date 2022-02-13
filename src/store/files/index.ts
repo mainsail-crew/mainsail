@@ -19,5 +19,5 @@ export const files: Module<FileState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

@@ -1,10 +1,6 @@
 <template>
     <div>
-        <panel
-            icon="mdi-tray-full"
-            :title="$t('JobQueue.JobQueue')"
-            card-class="jobqueue-panel"
-        >
+        <panel icon="mdi-tray-full" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
             <template v-slot:buttons>
                 <v-btn
                     color="success"
@@ -46,10 +42,10 @@
                 :footer-props="{
                     itemsPerPageText: $t('JobQueue.Jobs'),
                     itemsPerPageAllText: $t('JobQueue.AllJobs'),
-                    itemsPerPageOptions: [10,25,50,100,-1]
+                    itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
-                mobile-breakpoint="0">
-
+                mobile-breakpoint="0"
+            >
                 <template #no-data>
                     <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
                 </template>
@@ -61,13 +57,28 @@
                         @contextmenu="showContextMenu($event, item)"
                         class="file-list-cursor user-select-none"
                     >
-                        <td class="pr-0 text-center" style="width: 32px;">
+                        <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
-                                <v-tooltip v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)" top content-class="tooltip__content-opacity1">
+                                <v-tooltip
+                                    v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
+                                    top
+                                    content-class="tooltip__content-opacity1"
+                                >
                                     <template v-slot:activator="{ on, attrs }">
                                         <vue-load-image>
-                                            <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" v-bind="attrs" v-on="on" />
-                                            <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                            <img
+                                                slot="image"
+                                                :src="getSmallThumbnail(item)"
+                                                width="32"
+                                                height="32"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            />
+                                            <v-progress-circular
+                                                slot="preloader"
+                                                indeterminate
+                                                color="primary"
+                                            ></v-progress-circular>
                                             <v-icon slot="error">mdi-file</v-icon>
                                         </vue-load-image>
                                     </template>
@@ -77,7 +88,11 @@
                             <template v-else-if="getSmallThumbnail(item)">
                                 <vue-load-image>
                                     <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
-                                    <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                    <v-progress-circular
+                                        slot="preloader"
+                                        indeterminate
+                                        color="primary"
+                                    ></v-progress-circular>
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
                             </template>
@@ -107,15 +122,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ServerHistoryStateJob} from '@/store/server/history/types'
-import {formatFilesize, formatPrintTime} from '@/plugins/helpers'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import {ServerJobQueueStateJob} from '@/store/server/jobQueue/types'
-import {thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin} from '@/store/variables'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
 @Component({
-    components: {Panel}
+    components: { Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
@@ -125,7 +140,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
         touchTimer: undefined,
         x: 0,
         y: 0,
-        item: {}
+        item: {},
     }
 
     get jobs() {
@@ -154,27 +169,27 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
             const days = Math.floor(totalSeconds / (3600 * 24))
             if (days) {
-                totalSeconds %= (3600 * 24)
-                output += days+'d'
+                totalSeconds %= 3600 * 24
+                output += days + 'd'
             }
 
             const hours = Math.floor(totalSeconds / 3600)
             totalSeconds %= 3600
-            if (hours) output += ' '+hours+'h'
+            if (hours) output += ' ' + hours + 'h'
 
             const minutes = Math.floor(totalSeconds / 60)
-            if (minutes) output += ' '+minutes+'m'
+            if (minutes) output += ' ' + minutes + 'm'
 
             const seconds = totalSeconds % 60
-            if (seconds) output += ' '+seconds.toFixed(0)+'s'
+            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
 
             return output
         }
 
         return '--'
     }
-    
-    showContextMenu (e: any, item: ServerHistoryStateJob) {
+
+    showContextMenu(e: any, item: ServerHistoryStateJob) {
         if (!this.contextMenu.shown) {
             e?.preventDefault()
             this.contextMenu.shown = true
@@ -201,13 +216,28 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
 
     getSmallThumbnail(item: ServerJobQueueStateJob) {
         if (item?.metadata?.thumbnails?.length) {
-            const thumbnail = item?.metadata?.thumbnails.find((thumb: any) =>
-                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
-                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
+            const thumbnail = item?.metadata?.thumbnails.find(
+                (thumb: any) =>
+                    thumb.width >= thumbnailSmallMin &&
+                    thumb.width <= thumbnailSmallMax &&
+                    thumb.height >= thumbnailSmallMin &&
+                    thumb.height <= thumbnailSmallMax
             )
-            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
+            const path =
+                item.filename.lastIndexOf('/') !== -1
+                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
+                    : 'gcodes'
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail)
+                return (
+                    this.apiUrl +
+                    '/server/files/' +
+                    path +
+                    '/' +
+                    encodeURI(thumbnail.relative_path) +
+                    '?timestamp=' +
+                    item.metadata?.modified.getTime()
+                )
         }
 
         return ''
@@ -216,9 +246,21 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     getBigThumbnail(item: ServerJobQueueStateJob) {
         if (item?.metadata?.thumbnails?.length) {
             const thumbnail = item?.metadata?.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
-            const path = item.filename.lastIndexOf('/') !== -1 ? 'gcodes/'+item.filename.slice(0, item.filename.lastIndexOf('/')) : 'gcodes'
+            const path =
+                item.filename.lastIndexOf('/') !== -1
+                    ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
+                    : 'gcodes'
 
-            if (thumbnail && 'relative_path' in thumbnail) return this.apiUrl+'/server/files/'+path+'/'+encodeURI(thumbnail.relative_path)+'?timestamp='+item.metadata?.modified.getTime()
+            if (thumbnail && 'relative_path' in thumbnail)
+                return (
+                    this.apiUrl +
+                    '/server/files/' +
+                    path +
+                    '/' +
+                    encodeURI(thumbnail.relative_path) +
+                    '?timestamp=' +
+                    item.metadata?.modified.getTime()
+                )
         }
 
         return ''
@@ -227,14 +269,14 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     getDescription(item: ServerJobQueueStateJob) {
         let output = ''
 
-        output += this.$t('Files.Filament')+': '
+        output += this.$t('Files.Filament') + ': '
         if (item.metadata?.filament_total || item.metadata.filament_weight_total) {
-            if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed()+' mm'
+            if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed() + ' mm'
             if (item.metadata?.filament_total && item.metadata.filament_weight_total) output += ' / '
-            if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2)+' g'
+            if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', '+this.$t('Files.PrintTime')+': '
+        output += ', ' + this.$t('Files.PrintTime') + ': '
         if (item.metadata?.estimated_time) output += formatPrintTime(item.metadata.estimated_time)
         else output += '--'
 

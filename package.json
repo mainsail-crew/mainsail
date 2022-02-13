@@ -9,6 +9,8 @@
   "scripts": {
     "serve": "vite serve",
     "build": "vite build  && npm run build.zip",
+    "format": "prettier --write src vite.config.ts",
+    "format:check": "prettier --check src vite.config.ts",
     "lint": "eslint --ext .ts,.vue --ignore-path .gitignore src",
     "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore src --fix",
     "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
@@ -62,7 +64,9 @@
     "@vue/eslint-config-typescript": "^7.0.0",
     "autoprefixer": "^10.4.2",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-vue": "^6.2.2",
+    "prettier": "^2.5.1",
     "sass": "~1.32",
     "typescript": "^4.5.5",
     "unplugin-vue-components": "0.17.11",

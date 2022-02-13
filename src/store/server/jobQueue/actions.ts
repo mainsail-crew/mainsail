@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
-import {ServerJobQueueState} from '@/store/server/jobQueue/types'
+import { RootState } from '@/store/types'
+import { ServerJobQueueState } from '@/store/server/jobQueue/types'
 
 export const actions: ActionTree<ServerJobQueueState, RootState> = {
     reset({ commit }) {
@@ -9,7 +9,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     init() {
-        Vue.$socket.emit('server.job_queue.status', { }, { action: 'server/jobQueue/getStatus' })
+        Vue.$socket.emit('server.job_queue.status', {}, { action: 'server/jobQueue/getStatus' })
     },
 
     getEvent({ commit }, payload) {
@@ -35,11 +35,10 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     start(_) {
-        Vue.$socket.emit('server.job_queue.start', { }, { loading: 'startJobqueue' })
+        Vue.$socket.emit('server.job_queue.start', {}, { loading: 'startJobqueue' })
     },
 
     pause(_) {
-        Vue.$socket.emit('server.job_queue.pause', { }, { loading: 'pauseJobqueue' })
-    }
-
+        Vue.$socket.emit('server.job_queue.pause', {}, { loading: 'pauseJobqueue' })
+    },
 }
