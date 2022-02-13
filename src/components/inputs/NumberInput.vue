@@ -70,47 +70,47 @@ export default class NumberInput extends Mixins(BaseMixin) {
 
     // input field name and identifier
     @Prop({ type: String, required: true })
-    readonly label!: string
+    declare readonly label: string
 
     @Prop({ type: String, required: true })
-    readonly param!: string
+    declare readonly param: string
 
     // props defining incoming data
     @Prop({ type: Number, required: true, default: 0 })
-    readonly target!: number
+    declare readonly target: number
 
     @Prop({ type: Number, required: true, default: 0 })
-    readonly defaultValue!: number
+    declare readonly defaultValue: number
 
     // props for internal processing
     @Prop({ type: Number, required: true , default: 0 })
-    readonly min!: number
+    declare readonly min: number
 
     @Prop({ type: Number, default: null })
-    readonly max!: number | null
+    declare readonly max: number | null
 
     @Prop({ type: Number, required: true , default: 0 })
-    readonly dec!: number
+    declare readonly dec: number
 
     @Prop({ type: Number, required: false , default: 1 })
-    readonly step!: number
+    declare readonly step: number
 
     @Prop({ type: String, required: true })
-    readonly unit!: string
+    declare readonly unit: string
 
     // spinner related props
     @Prop({ type: Boolean, required: false , default: false })
-    readonly hasSpinner!: boolean
+    declare readonly hasSpinner: boolean
 
     @Prop({ type: Number, required: false , default: 1 })
-    readonly spinnerFactor!: number
+    declare readonly spinnerFactor: number
 
     // props for general internal behaviour
     @Prop({ type: Boolean, required: false , default: false })
-    readonly disabled!: boolean
+    declare readonly disabled: boolean
 
     @Prop({ type: Boolean, required: false , default: false })
-    readonly outputErrorMsg!: boolean
+    declare readonly outputErrorMsg: boolean
 
     created(): void {
         this.value = this.target
