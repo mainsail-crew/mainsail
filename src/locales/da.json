@@ -4,7 +4,7 @@
         "Printers": "Printere",
         "Titles": {
             "Error": "Fejl",
-            "Pause": "Pauset",
+            "Pause": "Pause",
             "Printing": "{percent}% printet",
             "PrintingETA": "{percent}% printet - ETA {eta}",
             "Complete": "Færdig - {filename}"
@@ -761,8 +761,8 @@
             "ResetLayout": "Nulstil layout"
         },
         "MacrosTab": {
-            "Macros": "Macroer",
-            "NOMacros": "Ingen macroer fundet...",
+            "Macros": "Makroer",
+            "NOMacros": "Ingen makroer fundet...",
             "General": "Generelt",
             "Management": "Håndtering",
             "Simple": "Simpel",
@@ -771,7 +771,7 @@
             "NoGroups": "Ingen grupper fundet...",
             "Macrogroups": "Grupper",
             "EditGroup": "Edit Gruppe",
-            "CountMacros": "Ingen Macroer tilføjet | {count} Macro | {count} Macroer",
+            "CountMacros": "Ingen Makroer tilføjet | {count} Makro | {count} Makroer",
             "Name": "Navn",
             "Color": "Farve",
             "CustomColor": "Brugerdefineret farve",
@@ -783,8 +783,8 @@
             "Error": "Fejl",
             "Custom": "Brugerdefineret",
             "AddGroup": "Tilføj gruppe",
-            "GroupMacros": "Gruppér macroer",
-            "AvailableMacros": "Tilgængelige macroer",
+            "GroupMacros": "Gruppér makroer",
+            "AvailableMacros": "Tilgængelige makroer",
             "Add": "Tilføj",
             "NoMacrosInGroup": "Ingen makroer i denne gruppe.",
             "NoAvailableMacros": "Ingen tilgængelige makroer.",
