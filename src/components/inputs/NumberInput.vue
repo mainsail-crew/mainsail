@@ -1,12 +1,12 @@
 <style scoped>
-    ._spin_button_group {
-        width: 24px;
-        margin: -6px -6px 0 -6px;
-    }
+._spin_button_group {
+    width: 24px;
+    margin: -6px -6px 0 -6px;
+}
 
-    .v-input--has-state {
-        margin-bottom: -18px !important;
-    }
+.v-input--has-state {
+    margin-bottom: -18px !important;
+}
 </style>
 
 <template>
@@ -37,17 +37,21 @@
                 <div class="_spin_button_group">
                     <v-btn
                         @click="incrementValue"
-                        :disabled="((value >= max) && max !== null) || error || disabled"
+                        :disabled="(value >= max && max !== null) || error || disabled"
                         class="mt-n3"
-                        icon plain small
+                        icon
+                        plain
+                        small
                     >
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn
                         @click="decrementValue"
-                        :disabled="(value <= min) || error || disabled"
+                        :disabled="value <= min || error || disabled"
                         class="mb-n3"
-                        icon plain small
+                        icon
+                        plain
+                        small
                     >
                         <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
@@ -83,33 +87,33 @@ export default class NumberInput extends Mixins(BaseMixin) {
     declare readonly defaultValue: number
 
     // props for internal processing
-    @Prop({ type: Number, required: true , default: 0 })
+    @Prop({ type: Number, required: true, default: 0 })
     declare readonly min: number
 
     @Prop({ type: Number, default: null })
     declare readonly max: number | null
 
-    @Prop({ type: Number, required: true , default: 0 })
+    @Prop({ type: Number, required: true, default: 0 })
     declare readonly dec: number
 
-    @Prop({ type: Number, required: false , default: 1 })
+    @Prop({ type: Number, required: false, default: 1 })
     declare readonly step: number
 
     @Prop({ type: String, required: true })
     declare readonly unit: string
 
     // spinner related props
-    @Prop({ type: Boolean, required: false , default: false })
+    @Prop({ type: Boolean, required: false, default: false })
     declare readonly hasSpinner: boolean
 
-    @Prop({ type: Number, required: false , default: 1 })
+    @Prop({ type: Number, required: false, default: 1 })
     declare readonly spinnerFactor: number
 
     // props for general internal behaviour
-    @Prop({ type: Boolean, required: false , default: false })
+    @Prop({ type: Boolean, required: false, default: false })
     declare readonly disabled: boolean
 
-    @Prop({ type: Boolean, required: false , default: false })
+    @Prop({ type: Boolean, required: false, default: false })
     declare readonly outputErrorMsg: boolean
 
     created(): void {
@@ -122,8 +126,8 @@ export default class NumberInput extends Mixins(BaseMixin) {
     }
 
     incrementValue(): void {
-        if (this.value + (this.step * this.spinnerFactor) < this.max! || this.max === null) {
-            this.value = Math.round((this.value + this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec)
+        if (this.value + this.step * this.spinnerFactor < this.max! || this.max === null) {
+            this.value = Math.round((this.value + this.step * this.spinnerFactor) * 10 ** this.dec) / 10 ** this.dec
         } else {
             this.value = this.max
         }
@@ -131,8 +135,8 @@ export default class NumberInput extends Mixins(BaseMixin) {
     }
 
     decrementValue(): void {
-        if (this.value - (this.step * this.spinnerFactor) > this.min) {
-            this.value = Math.round((this.value - this.step * this.spinnerFactor) * (10 ** this.dec)) / (10 ** this.dec)
+        if (this.value - this.step * this.spinnerFactor > this.min) {
+            this.value = Math.round((this.value - this.step * this.spinnerFactor) * 10 ** this.dec) / 10 ** this.dec
         } else {
             this.value = this.min
         }
@@ -144,7 +148,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
         this.submit()
     }
 
-    submit(): void{
+    submit(): void {
         if (this.invalidInput()) return
         this.$emit('target-changed', this.param, this.value)
         this.$emit('submit', this.param)
@@ -158,7 +162,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     }
 
     invalidInput(): boolean {
-        return (this.value.toString() === '' || (this.value < this.min) || ((this.value > this.max!) && this.max !== null))
+        return this.value.toString() === '' || this.value < this.min || (this.value > this.max! && this.max !== null)
     }
 
     inputErrors() {
@@ -168,7 +172,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
         if (this.value.toString() === '') {
             errors.push('Input must not be empty!')
         }
-        if (this.max === null && (this.value < this.min)) {
+        if (this.max === null && this.value < this.min) {
             errors.push(`Must be grater or equal than ${this.min}`)
         }
         if (this.max !== null && (this.value > this.max! || this.value < this.min)) {
