@@ -403,7 +403,7 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
         const response = await fetch(url)
         if (response) {
             const objects = await response.json()
-            this.availableNamespaces = [...objects.result?.namespaces] ?? []
+            this.availableNamespaces = [...(objects.result?.namespaces || {})] ?? []
         }
     }
 

@@ -74,7 +74,7 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
         layouts.forEach((layoutname: string) => {
             // @ts-ignore
-            const layoutArray = [...rootState.gui?.dashboard[layoutname]]
+            const layoutArray = rootState.gui ? [...rootState.gui.dashboard[layoutname]] : []
 
             const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_' + id)
             if (index !== -1) {
