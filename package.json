@@ -30,7 +30,7 @@
     "@sindarius/gcodeviewer": "^2.1.17",
     "@types/node": "^16.11.22",
     "@types/overlayscrollbars": "^1.12.1",
-    "axios": "^0.21.2",
+    "axios": "^0.26.0",
     "core-js": "^3.16.0",
     "echarts": "^5.2.2",
     "echarts-for-vue": "^1.4.1",
