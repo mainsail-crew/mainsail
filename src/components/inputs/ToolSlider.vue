@@ -101,7 +101,7 @@ import {Debounce} from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
-    private timeout: number | undefined
+    private declare timeout: ReturnType<typeof setTimeout>
     private isLocked = false
 
     private value = 0
