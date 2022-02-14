@@ -18,12 +18,12 @@ Vue.directive('longpress', {
         const debounceTime = Number(binding.arg ?? 1000)
 
         // Run Function
-        const handler = (e) => {
+        const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
             binding.value(e)
         }
 
         // Define variable
-        let pressTimer: number | null = null
+        let pressTimer: number | null = 'd'
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
