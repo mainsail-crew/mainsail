@@ -18,7 +18,7 @@ Vue.directive('longpress', {
         const debounceTime = Number(binding.arg ?? 1000)
 
         // Run Function
-        const handler = (e) => {
+        const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
             binding.value(e)
         }
 
