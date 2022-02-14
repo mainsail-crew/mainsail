@@ -20,11 +20,19 @@ export default class ControlMixin extends Vue {
     }
 
     get existsQGL() {
-        return 'quad_gantry_level' in this.$store.state.printer.configfile?.settings ?? false
+        if (!this.$store.state.printer.configfile.settings) {
+            return false
+        }
+
+        return 'quad_gantry_level' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get existsZtilt() {
-        return 'z_tilt' in this.$store.state.printer.configfile?.settings ?? false
+        if (!this.$store.state.printer.configfile.settings) {
+            return false
+        }
+
+        return 'z_tilt' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get colorQuadGantryLevel() {

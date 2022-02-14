@@ -82,12 +82,12 @@ export const getters: GetterTree<PrinterTempHistoryState, RootState> = {
 
         if (rootState.printer?.heaters?.available_sensors?.length) {
             rootState.printer?.heaters?.available_sensors.forEach((key: string) => {
-                if (rootState.printer && key in rootState?.printer) {
+                if (rootState.printer && key in rootState.printer) {
                     let name = key
                     if (key.includes(' ')) name = key.split(' ')[1]
 
                     datasetTypes.forEach((datasetType: string) => {
-                        if (rootState?.printer && rootState?.printer[key] && datasetType in rootState?.printer[key]) {
+                        if (rootState?.printer && rootState?.printer[key] && datasetType in rootState.printer[key]) {
                             const tmpName = datasetType === 'temperature' ? name : name + '-' + datasetType
                             selected[tmpName] = rootGetters['gui/getDatasetValue']({ name: name, type: datasetType })
                         }
