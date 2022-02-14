@@ -50,7 +50,7 @@
                     <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
                 </template>
 
-                <template #item="{ index, item }">
+                <template #item="{ item }">
                     <tr
                         :key="item.job_id"
                         v-longpress:600="(e) => showContextMenu(e, item)"
