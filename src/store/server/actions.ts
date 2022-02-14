@@ -75,14 +75,16 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('printer/init', null, { root: true })
     },
 
-    setKlippyDisconnected({ commit, dispatch, state }) {
-        commit('setKlippyDisconnected', null)
-        if (state.klippy_state_timer !== null) dispatch('stopKlippyStateInterval')
-        dispatch('startKlippyConnectedInterval')
+    async setKlippyDisconnected({ commit, dispatch, state }) {
+        await commit('setKlippyDisconnected', null)
+        if (state.klippy_state_timer !== null) await dispatch('stopKlippyStateInterval')
+        await dispatch('startKlippyConnectedInterval')
     },
 
-    setKlippyShutdown({ commit }) {
-        commit('setKlippyShutdown', null)
+    async setKlippyShutdown({ commit, dispatch, state }) {
+        await commit('setKlippyShutdown', null)
+        if (state.klippy_state_timer !== null) await dispatch('stopKlippyStateInterval')
+        await dispatch('startKlippyConnectedInterval')
     },
 
     startKlippyConnectedInterval({ commit, state }) {
