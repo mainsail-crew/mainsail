@@ -23,7 +23,7 @@ Vue.directive('longpress', {
         }
 
         // Define variable
-        let pressTimer: number | null = 'd'
+        let pressTimer: number | null = null
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
