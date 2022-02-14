@@ -1,22 +1,21 @@
 <style scoped>
-    ._tool-slider-subheader {
-        height: auto;
-    }
+._tool-slider-subheader {
+    height: auto;
+}
 
-    ._slider-input {
-        font-size: 0.875rem;
-        max-width: 4.5rem;
-        margin-left: 12px;
-    }
+._slider-input {
+    font-size: 0.875rem;
+    max-width: 4.5rem;
+    margin-left: 12px;
+}
 
-    ._slider-input >>> .v-input__slot {
-        min-height: 1rem !important;
-    }
+._slider-input >>> .v-input__slot {
+    min-height: 1rem !important;
+}
 
-    ._slider-input >>> .v-text-field__slot input {
-        padding: 4px 0 4px;
-    }
-
+._slider-input >>> .v-text-field__slot input {
+    padding: 4px 0 4px;
+}
 </style>
 
 <template>
@@ -24,14 +23,8 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
-                    <v-btn
-                        v-if="lockSliders && isTouchDevice"
-                        @click="isLocked = !isLocked"
-                        plain
-                        small
-                        icon
-                    >
-                        <v-icon small :color="(isLocked ? 'red' : '')">
+                    <v-btn v-if="lockSliders && isTouchDevice" @click="isLocked = !isLocked" plain small icon>
+                        <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
@@ -50,21 +43,19 @@
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <span v-if="!hasInputField" class="font-weight-bold">
-                        {{ value }} {{ unit }}
-                    </span>
+                    <span v-if="!hasInputField" class="font-weight-bold"> {{ value }} {{ unit }} </span>
                 </v-subheader>
                 <v-card-text class="py-0 pb-2 d-flex align-center">
                     <v-slider
                         v-model="value"
-                        v-touch="{start: resetLockTimer}"
+                        v-touch="{ start: resetLockTimer }"
                         :disabled="isLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
                         @change="changeSlider"
-                        hide-details>
-
+                        hide-details
+                    >
                         <template v-slot:prepend>
                             <v-icon @click="decrement" :disabled="isLocked || value <= min">mdi-minus</v-icon>
                         </template>
@@ -85,7 +76,8 @@
                         hide-spin-buttons
                         hide-details
                         outlined
-                        dense>
+                        dense
+                    >
                     </v-text-field>
                 </v-card-text>
             </v-col>
@@ -93,11 +85,10 @@
     </v-container>
 </template>
 
-
 <script lang="ts">
-import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {Debounce} from 'vue-debounce-decorator'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
@@ -121,29 +112,29 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     @Prop({ type: Number, default: 100 }) declare readonly max: number
     @Prop({ type: Boolean, required: false, default: false }) declare readonly hasInputField: boolean
     @Prop({ type: Boolean, default: false }) declare readonly dynamicRange: boolean
-    @Prop({ type: Number, default: 100 })  declare readonly defaultValue: number
+    @Prop({ type: Number, default: 100 }) declare readonly defaultValue: number
     @Prop({ type: Number, default: 100 }) declare readonly step: number
     @Prop({ type: Number, default: 1 }) declare readonly multi: number
 
     created(): void {
         this.value = this.target * this.multi
         this.startValue = this.target * this.multi
-        this.dynamicStep = Math.floor((this.max) / 2)
+        this.dynamicStep = Math.floor(this.max / 2)
 
         if (this.value >= this.processedMax) {
             this.processedMax = (Math.ceil(this.value / this.dynamicStep) + 1) * this.dynamicStep
         }
     }
 
-    @Watch('lockSliders', {immediate: true})
+    @Watch('lockSliders', { immediate: true })
     lockSlidersChanged(): void {
         this.isLocked = this.lockSliders && this.isTouchDevice
     }
 
     startLockTimer(): void {
         let t = this.lockSlidersDelay
-        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
-        this.timeout = setTimeout(() => this.isLocked = true, t * 1000)
+        if (!this.isTouchDevice || !this.lockSliders || t <= 0) return
+        this.timeout = setTimeout(() => (this.isLocked = true), t * 1000)
     }
 
     resetLockTimer(): void {
@@ -212,8 +203,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         const val = (Math.max(1, this.value) * this.attributeScale).toFixed(0)
         const gcode = `${this.command} ${this.attributeName}${val}`
 
-        this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
-        this.$socket.emit('printer.gcode.script', {script: gcode})
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
 
         this.startLockTimer()
     }
@@ -224,7 +215,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     increment(): void {
-        this.value = this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
+        this.value =
+            this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
         this.sendCmd()
     }
 }
