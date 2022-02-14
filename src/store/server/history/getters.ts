@@ -1,5 +1,9 @@
 import { GetterTree } from 'vuex'
-import { ServerHistoryState, ServerHistoryStateJob } from '@/store/server/history/types'
+import {
+    ServerHistoryState,
+    ServerHistoryStateAllPrintStatusEntry,
+    ServerHistoryStateJob
+} from '@/store/server/history/types'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
@@ -108,8 +112,8 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
         rootState.gui.view.history.selectedJobs.forEach((current: ServerHistoryStateJob) => {
-            const index = output.findIndex(element => element.name === current.status)
-            if (index !== -1) output[index].value +=1
+            const index = output.findIndex((element) => element.name === current.status)
+            if (index !== -1) output[index].value += 1
             else {
                 const itemStyle = {
                     opacity: 0.9,
@@ -120,17 +124,17 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 }
 
                 switch (current.status) {
-                case 'completed':
-                    itemStyle['color'] = '#BDBDBD'
-                    break
+                    case 'completed':
+                        itemStyle['color'] = '#BDBDBD'
+                        break
 
-                case 'in_progress':
-                    itemStyle['color'] = '#EEEEEE'
-                    break
+                    case 'in_progress':
+                        itemStyle['color'] = '#EEEEEE'
+                        break
 
-                case 'cancelled':
-                    itemStyle['color'] = '#616161'
-                    break
+                    case 'cancelled':
+                        itemStyle['color'] = '#616161'
+                        break
                 }
 
                 output.push({
@@ -139,8 +143,8 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
                     label: {
-                        color: '#fff'
-                    }
+                        color: '#fff',
+                    },
                 })
             }
         })
@@ -152,12 +156,19 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         // eslint-disable-next-line
         const output: any = []
         const startDate = new Date()
-        startDate.setTime(startDate.getTime() - 60*60*24*14*1000)
-        startDate.setHours(0,0,0,0)
+        startDate.setTime(startDate.getTime() - 60 * 60 * 24 * 14 * 1000)
+        startDate.setHours(0, 0, 0, 0)
 
-        let jobsFiltered = [...state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0)]
+        let jobsFiltered = [
+            ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0),
+        ]
         if (rootState.gui.view.history.selectedJobs.length)
-            jobsFiltered = [...rootState.gui.view.history.selectedJobs.filter((job: ServerHistoryStateJob) => new Date(job.start_time * 1000) >= startDate && job.filament_used > 0)]
+            jobsFiltered = [
+                ...rootState.gui.view.history.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.filament_used > 0
+                ),
+            ]
 
         for (let i = 0; i <= 14; i++) {
             const tmpDate = new Date()
@@ -182,12 +193,19 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     },
 
     getPrinttimeAvgArray(state, getters, rootState) {
-        const output = [0,0,0,0,0]
-        const startDate = new Date(new Date().getTime() - 60*60*24*14*1000)
+        const output = [0, 0, 0, 0, 0]
+        const startDate = new Date(new Date().getTime() - 60 * 60 * 24 * 14 * 1000)
 
-        let jobsFiltered = [...state.jobs.filter(job => new Date(job.start_time * 1000) >= startDate && job.status === 'completed')]
+        let jobsFiltered = [
+            ...state.jobs.filter((job) => new Date(job.start_time * 1000) >= startDate && job.status === 'completed'),
+        ]
         if (rootState.gui.view.history.selectedJobs.length)
-            jobsFiltered = [...rootState.gui.view.history.selectedJobs.filter((job: ServerHistoryStateJob) => new Date(job.start_time * 1000) >= startDate && job.status === 'completed')]
+            jobsFiltered = [
+                ...rootState.gui.view.history.selectedJobs.filter(
+                    (job: ServerHistoryStateJob) =>
+                        new Date(job.start_time * 1000) >= startDate && job.status === 'completed'
+                ),
+            ]
 
         if (jobsFiltered.length) {
             jobsFiltered.forEach((current) => {

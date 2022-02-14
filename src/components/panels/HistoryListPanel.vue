@@ -1,10 +1,9 @@
 <style lang="scss">
-    .history-jobs-table {
-
-        th.text-start {
-            padding-right: 0 !important;
-        }
+.history-jobs-table {
+    th.text-start {
+        padding-right: 0 !important;
     }
+}
 </style>
 
 <template>
@@ -30,7 +29,13 @@
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
                         <template v-if="selectedJobs.length">
-                            <v-btn :title="$t('History.Delete')" color="warning" class="px-2 minwidth-0 ml-3" @click="deleteSelectedDialog = true"><v-icon>mdi-delete</v-icon></v-btn>
+                            <v-btn
+                                :title="$t('History.Delete')"
+                                color="warning"
+                                class="px-2 minwidth-0 ml-3"
+                                @click="deleteSelectedDialog = true"
+                                ><v-icon>mdi-delete</v-icon></v-btn
+                            >
                         </template>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
@@ -108,7 +113,9 @@
                 show-select
             >
                 <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">{{ props.item[header.value] }}</td>
+                    <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">
+                        {{ props.item[header.value] }}
+                    </td>
                 </template>
 
                 <template slot="no-data">
@@ -418,7 +425,7 @@
                     <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length } )}}</p>
+                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -446,7 +453,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     private search = ''
     private sortBy = 'start_time'
     private sortDesc = true
-    private options = { }
+    private options = {}
     private contextMenu = {
         shown: false,
         touchTimer: undefined,

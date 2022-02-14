@@ -343,8 +343,11 @@
                     </tr>
                 </template>
             </v-data-table>
-            <div class="dragzone d-flex justify-center flex-column" :style="'visibility: ' + dropzone.visibility + '; opacity: ' + dropzone.hidden">
-                <div class="textnode">{{ $t('Files.DropFilesToAddGcode')}}</div>
+            <div
+                class="dragzone d-flex justify-center flex-column"
+                :style="'visibility: ' + dropzone.visibility + '; opacity: ' + dropzone.hidden"
+            >
+                <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
             </div>
         </panel>
         <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
