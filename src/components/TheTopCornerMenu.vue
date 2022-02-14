@@ -244,7 +244,7 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
             const actionUppercase = action.trim().charAt(0).toUpperCase() + action.trim().slice(1)
             let titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Service' + actionUppercase
             let descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Service' + actionUppercase
-            const buttonKey = 'App.TopCornerMenu.' + actionUppercase
+            let buttonKey = 'App.TopCornerMenu.' + actionUppercase
 
             if (serviceName === 'klipper' && ['stop', 'restart', 'firmwareRestart'].includes(action)) {
                 titleKey =
@@ -252,6 +252,8 @@ export default class TheTopCornerMenu extends Mixins(BaseMixin) {
                     (action !== 'stop' ? 'Klipper' : 'Service') +
                     actionUppercase
                 descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Klipper' + actionUppercase
+
+                if (action === 'firmwareRestart') buttonKey = 'App.TopCornerMenu.KlipperFirmwareRestart'
             } else if (serviceName === 'host') {
                 titleKey = 'App.TopCornerMenu.ConfirmationDialog.Title.Host' + actionUppercase
                 descriptionKey = 'App.TopCornerMenu.ConfirmationDialog.Description.Host' + actionUppercase
