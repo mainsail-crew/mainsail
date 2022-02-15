@@ -1,3 +1,11 @@
+<style lang="scss">
+.history-jobs-table {
+    th.text-start {
+        padding-right: 0 !important;
+    }
+}
+</style>
+
 <template>
     <div>
         <panel
@@ -20,6 +28,15 @@
                         ></v-text-field>
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
+                        <template v-if="selectedJobs.length">
+                            <v-btn
+                                :title="$t('History.Delete')"
+                                color="warning"
+                                class="px-2 minwidth-0 ml-3"
+                                @click="deleteSelectedDialog = true"
+                                ><v-icon>mdi-delete</v-icon></v-btn
+                            >
+                        </template>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
@@ -75,8 +92,9 @@
             </v-card-text>
             <v-divider class="mb-3"></v-divider>
             <v-data-table
+                v-model="selectedJobs"
                 :items="jobs"
-                class="files-table"
+                class="history-jobs-table"
                 :headers="filteredHeaders"
                 :options="options"
                 :custom-sort="sortFiles"
@@ -88,20 +106,23 @@
                     itemsPerPageAllText: $t('History.AllJobs'),
                     itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
-                item-key="name"
+                item-key="job_id"
                 :search="search"
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
+                show-select
             >
                 <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.text">{{ props.item[header.value] }}</td>
+                    <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">
+                        {{ props.item[header.value] }}
+                    </td>
                 </template>
 
-                <template #no-data>
+                <template slot="no-data">
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
-                <template #item="{ index, item }">
+                <template v-slot:item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
@@ -109,7 +130,15 @@
                         @click="clickRow(item)"
                         :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')"
                     >
-                        <td class="pr-0 text-center" style="width: 32px">
+                        <td class="pr-0">
+                            <v-simple-checkbox
+                                :value="isSelected"
+                                class="pa-0 mr-0"
+                                v-ripple
+                                @click.stop="select(!isSelected)"
+                            ></v-simple-checkbox>
+                        </td>
+                        <td class="px-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
                                 <v-icon class="text--disabled">mdi-file-cancel</v-icon>
                             </template>
@@ -390,6 +419,21 @@
                 </v-card-text>
             </panel>
         </v-dialog>
+        <v-dialog v-model="deleteSelectedDialog" max-width="400">
+            <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('History.Cancel') }}</v-btn>
+                    <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -406,12 +450,9 @@ import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/v
 export default class HistoryListPanel extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
 
-    private boolAllData = false
     private search = ''
     private sortBy = 'start_time'
     private sortDesc = true
-    private selected = []
-    private hideHeaderColums = []
     private options = {}
     private contextMenu = {
         shown: false,
@@ -420,13 +461,24 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         y: 0,
         item: {},
     }
+
     private detailsDialog = {
         item: {},
         boolShow: false,
     }
 
+    private deleteSelectedDialog = false
+
     get jobs() {
         return this.$store.getters['server/history/getFilterdJobList'] ?? []
+    }
+
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
+    }
+
+    set selectedJobs(newVal) {
+        this.$store.dispatch('gui/saveSettingWithoutUpload', { name: 'view.history.selectedJobs', value: newVal })
     }
 
     get headers() {
@@ -786,6 +838,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             { uid: item.job_id },
             { action: 'server/history/getDeletedJobs' }
         )
+    }
+
+    deleteSelectedJobs() {
+        this.selectedJobs.forEach((item: ServerHistoryStateJob) => {
+            this.$socket.emit(
+                'server.history.delete_job',
+                { uid: item.job_id },
+                { action: 'server/history/getDeletedJobs' }
+            )
+        })
+
+        this.selectedJobs = []
+        this.deleteSelectedDialog = false
     }
 
     getStatusIcon(status: string) {
