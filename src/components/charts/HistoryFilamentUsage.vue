@@ -1,26 +1,20 @@
 <template>
-    <ECharts
+    <e-chart
         ref="historyFilamentUsage"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
         style="height: 175px; width: 100%"
         v-observe-visibility="visibilityChanged"
-    ></ECharts>
+    ></e-chart>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { createComponent } from 'echarts-for-vue'
-import * as echarts from 'echarts'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import { ECharts } from 'echarts/core'
+import type { ECharts } from 'echarts/core'
 
-@Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    },
-})
+@Component({})
 export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     declare $refs: {
         historyFilamentUsage: any
