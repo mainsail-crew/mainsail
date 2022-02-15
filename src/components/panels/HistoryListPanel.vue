@@ -138,7 +138,7 @@
                                 @click.stop="select(!isSelected)"
                             ></v-simple-checkbox>
                         </td>
-                        <td class="pr-0 text-center" style="width: 32px">
+                        <td class="px-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
                                 <v-icon class="text--disabled">mdi-file-cancel</v-icon>
                             </template>
@@ -838,6 +838,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             { uid: item.job_id },
             { action: 'server/history/getDeletedJobs' }
         )
+    }
+
+    deleteSelectedJobs() {
+        this.selectedJobs.forEach((item: ServerHistoryStateJob) => {
+            this.$socket.emit(
+                'server.history.delete_job',
+                { uid: item.job_id },
+                { action: 'server/history/getDeletedJobs' }
+            )
+        })
+
+        this.selectedJobs = []
+        this.deleteSelectedDialog = false
     }
 
     getStatusIcon(status: string) {
