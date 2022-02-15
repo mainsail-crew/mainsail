@@ -51,9 +51,10 @@
                     >
                     <v-btn icon tile @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
-                <v-card-text class="pa-0" v-if="show">
+                <v-card-text class="pa-0">
                     <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
                         <codemirror-async
+                            v-if="show"
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
