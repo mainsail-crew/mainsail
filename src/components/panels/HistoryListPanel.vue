@@ -38,6 +38,12 @@
                             >
                         </template>
                         <v-btn
+                            :title="$t('History.TitleExportHistory')"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="exportHistory"
+                            ><v-icon>mdi-database-export-outline</v-icon></v-btn
+                        >
+                        <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshHistory"
@@ -851,6 +857,41 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
         this.selectedJobs = []
         this.deleteSelectedDialog = false
+    }
+
+    exportHistory() {
+        const content: string[][] = []
+
+        if (this.jobs.length) {
+            this.jobs.forEach((job: ServerHistoryStateJob) => {
+                const row: string[] = []
+
+                row.push(job.filename)
+                row.push(job.status)
+
+                this.tableFields.forEach((col) => {
+                    row.push(this.outputValue(col, job))
+                })
+
+                if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+                    let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
+                    if ('slicer_version' in job.metadata && job.metadata.slicer_version)
+                        slicerString += ' ' + job.metadata.slicer_version
+                    row.push(slicerString)
+                }
+
+                content.push(row)
+            })
+        }
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(';')).join('\n')
+        const link = document.createElement('a')
+        link.setAttribute('href', encodeURI(csvContent))
+        link.setAttribute('download', 'print_history.csv')
+        document.body.appendChild(link)
+
+        link.click()
+        link.remove()
     }
 
     getStatusIcon(status: string) {
