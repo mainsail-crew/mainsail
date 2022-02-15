@@ -3,6 +3,7 @@ import loadVersion from 'vite-plugin-package-version'
 import { defineConfig } from 'vite'
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
+import checker from 'vite-plugin-checker'
 
 import path from 'path'
 import buildVersion from './src/plugins/build-version'
@@ -13,6 +14,7 @@ export default defineConfig({
         buildVersion(),
         vue(),
         loadVersion(),
+        checker({ typescript: true }),
         Components({
             resolvers: [VuetifyResolver()],
         }),
