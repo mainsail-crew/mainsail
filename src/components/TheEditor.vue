@@ -51,14 +51,14 @@
                     >
                     <v-btn icon tile @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0" v-if="show">
                     <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
-                        <codemirror
+                        <codemirror-async
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
                             v-bind:file-extension="fileExtension"
-                        ></codemirror>
+                        ></codemirror-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
@@ -129,11 +129,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { formatFilesize } from '@/plugins/helpers'
-import Codemirror from '@/components/inputs/Codemirror.vue'
 import Panel from '@/components/ui/Panel.vue'
+import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 
 @Component({
-    components: { Panel, Codemirror },
+    components: { Panel, CodemirrorAsync },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
     private dialogConfirmChange = false
