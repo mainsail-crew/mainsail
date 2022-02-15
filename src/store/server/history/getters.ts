@@ -2,7 +2,7 @@ import { GetterTree } from 'vuex'
 import {
     ServerHistoryState,
     ServerHistoryStateAllPrintStatusEntry,
-    ServerHistoryStateJob
+    ServerHistoryStateJob,
 } from '@/store/server/history/types'
 
 // eslint-disable-next-line
