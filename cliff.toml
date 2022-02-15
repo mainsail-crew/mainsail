@@ -5,13 +5,13 @@
 header = """
 <!-- THIS FILE IS UPDATED AUTOMATICALLY, ANY CHANGES WILL BE OVERRIDDEN -->
 # Changelog
-All notable changes to this project will be documented in this file.\n
+All notable changes to Mainsail will be documented in this file.\n
 """
 # template for the changelog body
 # https://tera.netlify.app/docs/#introduction
 body = """
 {% if version %}\
-    ## {{ version | trim_start_matches(pat="v") }}
+    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mainsail-crew/mainsail/releases/tag/{{version}})
     ##### released: {{ timestamp | date(format="%A %d %B %Y") }}
 
 {% else %}\
