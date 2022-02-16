@@ -7,15 +7,15 @@
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
-                            <v-icon small left>mdi-pencil</v-icon> {{ $t('Settings.Edit') }}
+                            <v-icon small left>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small
                             outlined
                             @click="deleteWebcam(webcam.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error"
-                        >
+                            color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -45,8 +45,7 @@
                                                     color="transparent"
                                                     v-bind="attrs"
                                                     v-on="on"
-                                                    elevation="0"
-                                                >
+                                                    elevation="0">
                                                     <v-icon>{{ form.icon }}</v-icon>
                                                 </v-btn>
                                             </template>
@@ -55,8 +54,7 @@
                                                     v-for="icon of iconItems"
                                                     v-bind:key="icon.value"
                                                     link
-                                                    @click="setFormIcon(icon.value)"
-                                                >
+                                                    @click="setFormIcon(icon.value)">
                                                     <v-list-item-icon class="mr-0">
                                                         <v-icon small>{{ icon.value }}</v-icon>
                                                     </v-list-item-icon>
@@ -74,8 +72,7 @@
                                         :label="$t('Settings.WebcamsTab.Name')"
                                         hide-details="auto"
                                         :rules="[rules.required, rules.unique]"
-                                        dense
-                                    ></v-text-field>
+                                        dense></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -84,8 +81,9 @@
                                         v-model="form.urlStream"
                                         :label="$t('Settings.WebcamsTab.UrlStream')"
                                         hide-details="auto"
-                                        :rules="form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []"
-                                    ></v-text-field>
+                                        :rules="
+                                            form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []
+                                        "></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -94,8 +92,9 @@
                                         v-model="form.urlSnapshot"
                                         :label="$t('Settings.WebcamsTab.UrlSnapshot')"
                                         hide-details="auto"
-                                        :rules="form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []"
-                                    ></v-text-field>
+                                        :rules="
+                                            form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []
+                                        "></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -105,8 +104,7 @@
                                         :items="serviceItems"
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.Service')"
-                                        attach
-                                    ></v-select>
+                                        attach></v-select>
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
@@ -114,8 +112,7 @@
                                     <v-text-field
                                         v-model="form.targetFps"
                                         hide-details
-                                        :label="$t('Settings.WebcamsTab.TargetFPS')"
-                                    ></v-text-field>
+                                        :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -124,8 +121,7 @@
                                         v-model="form.flipX"
                                         hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipHorizontally')"
-                                    ></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.FlipHorizontally')"></v-checkbox>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -134,8 +130,7 @@
                                         v-model="form.flipY"
                                         hide-details
                                         class="mt-1"
-                                        :label="$t('Settings.WebcamsTab.FlipVertically')"
-                                    ></v-checkbox>
+                                        :label="$t('Settings.WebcamsTab.FlipVertically')"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-col>

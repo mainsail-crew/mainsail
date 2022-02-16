@@ -13,8 +13,7 @@
                     :max="null"
                     :dec="2"
                     unit="mm"
-                    attribute-name="RETRACT_LENGTH"
-                ></firmware-retraction-settings-input>
+                    attribute-name="RETRACT_LENGTH"></firmware-retraction-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
@@ -28,8 +27,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s"
-                    attribute-name="RETRACT_SPEED"
-                ></firmware-retraction-settings-input>
+                    attribute-name="RETRACT_SPEED"></firmware-retraction-settings-input>
             </v-col>
         </v-row>
         <v-row>
@@ -47,8 +45,7 @@
                     :max="null"
                     :dec="2"
                     unit="mm"
-                    attribute-name="UNRETRACT_EXTRA_LENGTH"
-                ></firmware-retraction-settings-input>
+                    attribute-name="UNRETRACT_EXTRA_LENGTH"></firmware-retraction-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <firmware-retraction-settings-input
@@ -62,8 +59,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s"
-                    attribute-name="UNRETRACT_SPEED"
-                ></firmware-retraction-settings-input>
+                    attribute-name="UNRETRACT_SPEED"></firmware-retraction-settings-input>
             </v-col>
         </v-row>
     </v-card-text>

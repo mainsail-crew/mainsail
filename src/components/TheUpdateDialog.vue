@@ -56,8 +56,7 @@
                                 :custom-sort="customSort"
                                 sort-by="date"
                                 :sort-desc="true"
-                                color="primary"
-                            >
+                                color="primary">
                                 <template #no-data>
                                     <div class="py-2">{{ $t('App.UpdateDialog.Empty') }}</div>
                                 </template>
@@ -78,9 +77,9 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text @click="close" :disabled="!complete" color="primary">{{
-                            $t('App.UpdateDialog.Close')
-                        }}</v-btn>
+                        <v-btn text @click="close" :disabled="!complete" color="primary">
+                            {{ $t('App.UpdateDialog.Close') }}
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>

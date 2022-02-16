@@ -9,8 +9,7 @@
             hide-overlay
             :transition="false"
             @close="close"
-            @keydown.esc="escClose"
-        >
+            @keydown.esc="escClose">
             <panel
                 card-class="editor-dialog"
                 :icon="isWriteable ? ' mdi-file-document-edit-outline' : 'mdi-file-document-outline'"
@@ -19,8 +18,7 @@
                     filename +
                     ' ' +
                     (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
-                "
-            >
+                ">
                 <template v-slot:buttons>
                     <v-btn
                         text
@@ -28,27 +26,29 @@
                         href="https://www.klipper3d.org/Config_Reference.html"
                         v-if="restartServiceName === 'klipper'"
                         target="_blank"
-                        class="d-none d-md-flex"
-                        ><v-icon small class="mr-1">mdi-help</v-icon>{{ $t('Editor.ConfigReference') }}</v-btn
-                    >
+                        class="d-none d-md-flex">
+                        <v-icon small class="mr-1">mdi-help</v-icon>
+                        {{ $t('Editor.ConfigReference') }}
+                    </v-btn>
                     <v-btn
                         v-if="isWriteable"
                         text
                         tile
                         :color="restartServiceName === null ? 'primary' : ''"
-                        @click="save(null)"
-                        ><v-icon small class="mr-1">mdi-content-save</v-icon
-                        ><span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span></v-btn
-                    >
+                        @click="save(null)">
+                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
+                    </v-btn>
                     <v-btn
                         v-if="restartServiceName !== null"
                         color="primary"
                         text
                         tile
                         @click="save(restartServiceName)"
-                        class="d-none d-sm-flex"
-                        ><v-icon small class="mr-1">mdi-restart</v-icon>{{ $t('Editor.SaveRestart') }}</v-btn
-                    >
+                        class="d-none d-sm-flex">
+                        <v-icon small class="mr-1">mdi-restart</v-icon>
+                        {{ $t('Editor.SaveRestart') }}
+                    </v-btn>
                     <v-btn icon tile @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pa-0">
@@ -58,27 +58,26 @@
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
-                            v-bind:file-extension="fileExtension"
-                        ></codemirror-async>
+                            v-bind:file-extension="fileExtension"></codemirror-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
         </v-dialog>
         <v-snackbar v-model="loaderBool" :timeout="-1" :value="true" fixed right bottom dark>
             <div>
-                {{ snackbarHeadline }}<br />
+                {{ snackbarHeadline }}
+                <br />
                 <strong>{{ filename }}</strong>
             </div>
             <template v-if="loaderProgress.total > 0">
-                <span class="mr-1"
-                    >({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})</span
-                >
-                {{ Math.round((100 * loaderProgress.loaded) / loaderProgress.total) }} % @
-                {{ loaderProgress.speed }}/s<br />
+                <span class="mr-1">
+                    ({{ formatFilesize(loaderProgress.loaded) }}/{{ formatFilesize(loaderProgress.total) }})
+                </span>
+                {{ Math.round((100 * loaderProgress.loaded) / loaderProgress.total) }} % @ {{ loaderProgress.speed }}/s
+                <br />
                 <v-progress-linear
                     class="mt-2"
-                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"
-                ></v-progress-linear>
+                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"></v-progress-linear>
             </template>
             <template v-else>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
@@ -94,8 +93,7 @@
                 card-class="editor-confirm-change-dialog"
                 icon="mdi-help-circle"
                 :title="$t('Editor.UnsavedChanges')"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

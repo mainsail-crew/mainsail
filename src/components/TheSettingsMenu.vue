@@ -9,16 +9,14 @@
             persistent
             :fullscreen="isMobile"
             @keydown.esc="showSettings = false"
-            scrollable
-        >
+            scrollable>
             <panel
                 :title="$t('Settings.InterfaceSettings')"
                 icon="mdi-cogs"
                 card-class="settings-menu-dialog"
                 :margin-bottom="false"
                 style="overflow: hidden"
-                :height="isMobile ? 0 : 548"
-            >
+                :height="isMobile ? 0 : 548">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -28,8 +26,7 @@
                             v-for="(tab, index) of tabTitles"
                             v-bind:key="index"
                             :href="'#' + tab.name"
-                            class="justify-start"
-                        >
+                            class="justify-start">
                             <v-icon left v-html="tab.icon"></v-icon>
                             {{ tab.title }}
                         </v-tab>
@@ -44,8 +41,7 @@
                                     v-bind:key="index"
                                     :href="'#' + tab.name"
                                     class="justify-start"
-                                    style="width: 200px"
-                                >
+                                    style="width: 200px">
                                     <v-icon left v-html="tab.icon"></v-icon>
                                     <span class="text-truncate">{{ tab.title }}</span>
                                 </v-tab>
@@ -56,8 +52,7 @@
                         <overlay-scrollbars
                             :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             ref="settingsScroll"
-                            :options="{ overflowBehavior: { x: 'hidden' } }"
-                        >
+                            :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop"></component>
                         </overlay-scrollbars>
                     </v-col>

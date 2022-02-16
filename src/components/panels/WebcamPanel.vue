@@ -6,8 +6,7 @@
         icon="mdi-webcam"
         :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="this.$route.fullPath !== '/cam'"
-        card-class="webcam-panel"
-    >
+        card-class="webcam-panel">
         <template v-slot:buttons v-if="webcams.length > 1">
             <v-menu :offset-y="true" title="Webcam">
                 <template v-slot:activator="{ on, attrs }">
@@ -30,8 +29,7 @@
                         v-for="webcam of webcams"
                         v-bind:key="webcam.id"
                         link
-                        @click="currentCamId = webcam.id"
-                    >
+                        @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>{{ webcam.icon }}</v-icon>
                         </v-list-item-icon>

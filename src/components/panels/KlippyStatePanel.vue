@@ -3,8 +3,7 @@
         v-if="klipperState !== 'ready' && socketIsConnected"
         icon="mdi-alert-circle"
         :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
-        card-class="klippy-state-panel"
-    >
+        card-class="klippy-state-panel">
         <template v-if="klippyIsConnected">
             <v-card-text class="py-1 mt-2" v-if="klippy_message !== null">
                 <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>
@@ -14,13 +13,14 @@
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
-                <v-btn small @click="restart" class="ml-2 error--text"
-                    ><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn
-                >
-                <v-btn small @click="firmwareRestart" class="ml-4 error--text"
-                    ><v-icon class="mr-sm-2">mdi-restart</v-icon
-                    >{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn
-                >
+                <v-btn small @click="restart" class="ml-2 error--text">
+                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    {{ $t('Panels.KlippyStatePanel.Restart') }}
+                </v-btn>
+                <v-btn small @click="firmwareRestart" class="ml-4 error--text">
+                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
+                </v-btn>
             </v-card-actions>
         </template>
         <template v-else>

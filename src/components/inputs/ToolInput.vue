@@ -34,9 +34,7 @@
         @keydown.tab="setTemps"
         @change="changeValue"
         @blur="onBlur"
-        hide-spin-buttons
-    >
-    </v-combobox>
+        hide-spin-buttons></v-combobox>
 </template>
 
 <script lang="ts">

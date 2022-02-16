@@ -16,8 +16,7 @@
             icon="mdi-information"
             :title="printerStateOutput"
             :collapsible="true"
-            card-class="status-panel"
-        >
+            card-class="status-panel">
             <template v-slot:icon>
                 <v-progress-circular
                     :rotate="-90"
@@ -26,9 +25,7 @@
                     :value="printPercent"
                     color="primary"
                     class="mr-3"
-                    v-if="['paused', 'printing'].includes(printer_state)"
-                >
-                </v-progress-circular>
+                    v-if="['paused', 'printing'].includes(printer_state)"></v-progress-circular>
             </template>
             <template v-slot:buttons>
                 <v-btn
@@ -38,8 +35,7 @@
                     @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
                     icon
-                    tile
-                >
+                    tile>
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
@@ -57,18 +53,16 @@
                         ref="bigThumbnail"
                         height="200"
                         @focus="focusBigThumbnail"
-                        @blur="blurBigThumbnail"
-                    >
+                        @blur="blurBigThumbnail">
                         <v-card-title
                             class="white--text py-2 px-2"
-                            style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)"
-                        >
+                            style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
                                 <v-col style="width: 100px">
-                                    <span class="subtitle-2 text-truncate px-0 text--disabled d-block"
-                                        ><v-icon small class="mr-2">mdi-file-outline</v-icon
-                                        >{{ current_filename }}</span
-                                    >
+                                    <span class="subtitle-2 text-truncate px-0 text--disabled d-block">
+                                        <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                        {{ current_filename }}
+                                    </span>
                                 </v-col>
                             </v-row>
                         </v-card-title>
@@ -76,21 +70,20 @@
                 </template>
                 <status-panel-exclude-object
                     :show-dialog.sync="boolShowObjects"
-                    @update:showDialog="updateShowDialog"
-                ></status-panel-exclude-object>
+                    @update:showDialog="updateShowDialog"></status-panel-exclude-object>
                 <template v-if="display_message || print_stats_message">
                     <v-container>
                         <v-row>
                             <v-col class="py-2">
-                                <span class="subtitle-2 d-block px-0 text--disabled"
-                                    ><v-icon class="mr-2" small>mdi-message-processing-outline</v-icon
-                                    >{{ print_stats_message ? print_stats_message : display_message }}</span
-                                >
+                                <span class="subtitle-2 d-block px-0 text--disabled">
+                                    <v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>
+                                    {{ print_stats_message ? print_stats_message : display_message }}
+                                </span>
                             </v-col>
                             <v-col class="col-auto py-2">
-                                <v-icon class="text--disabled cursor-pointer" @click="clearDisplayMessage" small
-                                    >mdi-close-circle</v-icon
-                                >
+                                <v-icon class="text--disabled cursor-pointer" @click="clearDisplayMessage" small>
+                                    mdi-close-circle
+                                </v-icon>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -101,11 +94,11 @@
                         <v-row>
                             <v-col
                                 :class="thumbnailSmall ? 'py-3' : 'py-2'"
-                                :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''"
-                            >
-                                <span class="subtitle-2 text-truncate d-block px-0 text--disabled"
-                                    ><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span
-                                >
+                                :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''">
+                                <span class="subtitle-2 text-truncate d-block px-0 text--disabled">
+                                    <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                    {{ current_filename }}
+                                </span>
                             </v-col>
                             <v-col class="pa-2 pl-0 col-auto" v-if="thumbnailSmall">
                                 <template v-if="thumbnailSmall && thumbnailBig">
@@ -118,13 +111,11 @@
                                                     width="32"
                                                     height="32"
                                                     v-bind="attrs"
-                                                    v-on="on"
-                                                />
+                                                    v-on="on" />
                                                 <v-progress-circular
                                                     slot="preloader"
                                                     indeterminate
-                                                    color="primary"
-                                                ></v-progress-circular>
+                                                    color="primary"></v-progress-circular>
                                                 <v-icon slot="error">mdi-file</v-icon>
                                             </vue-load-image>
                                         </template>
@@ -137,8 +128,7 @@
                                         <v-progress-circular
                                             slot="preloader"
                                             indeterminate
-                                            color="primary"
-                                        ></v-progress-circular>
+                                            color="primary"></v-progress-circular>
                                         <v-icon slot="error">mdi-file</v-icon>
                                     </vue-load-image>
                                 </template>
@@ -155,29 +145,28 @@
                                 ? 'pt-5 pb-2 mb-0'
                                 : 'py-5')
                         "
-                        align="center"
-                    >
+                        align="center">
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Position') }}</strong
-                            ><br />
+                            <strong>{{ $t('Panels.StatusPanel.Position') }}</strong>
+                            <br />
                             {{ coordinates }}
                         </v-col>
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.X') }}</strong
-                            ><br />
+                            <strong>{{ $t('Panels.StatusPanel.X') }}</strong>
+                            <br />
                             {{ positions.x }}
                         </v-col>
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Y') }}</strong
-                            ><br />
+                            <strong>{{ $t('Panels.StatusPanel.Y') }}</strong>
+                            <br />
                             {{ positions.y }}
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <div v-bind="attrs" v-on="on" class="text-center">
-                                        <strong>{{ $t('Panels.StatusPanel.Z') }}</strong
-                                        ><br />
+                                        <strong>{{ $t('Panels.StatusPanel.Z') }}</strong>
+                                        <br />
                                         {{ positions.z }}
                                     </div>
                                 </template>
@@ -195,20 +184,19 @@
                                     <v-tooltip top>
                                         <template v-slot:activator="{ on, attrs }">
                                             <div v-bind="attrs" v-on="on">
-                                                <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong
-                                                ><br />
+                                                <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong>
+                                                <br />
                                                 <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
                                             </div>
                                         </template>
-                                        <span
-                                            >{{ $t('Panels.StatusPanel.Requested') }}:
-                                            {{ requested_speed + ' mm/s' }}</span
-                                        >
+                                        <span>
+                                            {{ $t('Panels.StatusPanel.Requested') }}: {{ requested_speed + ' mm/s' }}
+                                        </span>
                                     </v-tooltip>
                                 </template>
                                 <template v-else>
-                                    <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong
-                                    ><br />
+                                    <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong>
+                                    <br />
                                     <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
                                 </template>
                             </v-col>
@@ -216,34 +204,36 @@
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on">
-                                            <strong>{{ $t('Panels.StatusPanel.Flow') }}</strong
-                                            ><br />
-                                            <span class="d-block text-center text-no-wrap">{{
-                                                live_flow + ' mm&sup3;/s'
-                                            }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Flow') }}</strong>
+                                            <br />
+                                            <span class="d-block text-center text-no-wrap">
+                                                {{ live_flow + ' mm&sup3;/s' }}
+                                            </span>
                                         </div>
                                     </template>
-                                    <span
-                                        >{{ $t('Panels.StatusPanel.Max') }}:
-                                        {{ maxFlow ? maxFlow + ' mm&sup3;/s' : '--' }}</span
-                                    >
+                                    <span>
+                                        {{ $t('Panels.StatusPanel.Max') }}:
+                                        {{ maxFlow ? maxFlow + ' mm&sup3;/s' : '--' }}
+                                    </span>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on">
-                                            <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong
-                                            ><br />
-                                            <span class="d-block text-center text-no-wrap">{{
-                                                filament_used >= 1000
-                                                    ? (filament_used / 1000).toFixed(2) + ' m'
-                                                    : filament_used.toFixed(2) + ' mm'
-                                            }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                            <br />
+                                            <span class="d-block text-center text-no-wrap">
+                                                {{
+                                                    filament_used >= 1000
+                                                        ? (filament_used / 1000).toFixed(2) + ' m'
+                                                        : filament_used.toFixed(2) + ' mm'
+                                                }}
+                                            </span>
                                         </div>
                                     </template>
-                                    <span v-if="'filament_total' in current_file"
-                                        >{{ (filament_used / 1000).toFixed(2) }} /
+                                    <span v-if="'filament_total' in current_file">
+                                        {{ (filament_used / 1000).toFixed(2) }} /
                                         {{ (current_file.filament_total / 1000).toFixed(2) }} m =
                                         {{ ((100 / current_file.filament_total) * filament_used).toFixed(0) }} %
                                     </span>
@@ -253,15 +243,14 @@
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t('Panels.StatusPanel.Layer') }}</strong
-                                            ><br />
+                                            <strong>{{ $t('Panels.StatusPanel.Layer') }}</strong>
+                                            <br />
                                             <span class="text-no-wrap">{{ current_layer }} of {{ max_layers }}</span>
                                         </div>
                                     </template>
-                                    <span v-if="'object_height' in current_file && current_file.object_height > 0"
-                                        >{{ $t('Panels.StatusPanel.ObjectHeight') }}:
-                                        {{ current_file.object_height }} mm</span
-                                    >
+                                    <span v-if="'object_height' in current_file && current_file.object_height > 0">
+                                        {{ $t('Panels.StatusPanel.ObjectHeight') }}: {{ current_file.object_height }} mm
+                                    </span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
@@ -273,42 +262,44 @@
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong
-                                            ><br />
-                                            <span class="text-no-wrap">{{
-                                                estimated_time_avg ? formatTime(estimated_time_avg) : '--'
-                                            }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong>
+                                            <br />
+                                            <span class="text-no-wrap">
+                                                {{ estimated_time_avg ? formatTime(estimated_time_avg) : '--' }}
+                                            </span>
                                         </div>
                                     </template>
                                     <div class="text-right">
                                         {{ $t('Panels.StatusPanel.File') }}:
-                                        {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}<br />
+                                        {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}
+                                        <br />
                                         {{ $t('Panels.StatusPanel.Filament') }}:
                                         {{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}
                                     </div>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong
-                                ><br />
-                                <span class="text-no-wrap">{{
-                                    estimated_time_slicer ? formatTime(estimated_time_slicer) : '--'
-                                }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
                                     <template v-slot:activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t('Panels.StatusPanel.Total') }}</strong
-                                            ><br />
-                                            <span class="text-no-wrap">{{
-                                                print_time_total ? formatTime(print_time_total) : '--'
-                                            }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
+                                            <br />
+                                            <span class="text-no-wrap">
+                                                {{ print_time_total ? formatTime(print_time_total) : '--' }}
+                                            </span>
                                         </div>
                                     </template>
                                     <div class="text-right">
                                         {{ $t('Panels.StatusPanel.Print') }}:
-                                        {{ print_time ? formatTime(print_time) : '--' }}<br />
+                                        {{ print_time ? formatTime(print_time) : '--' }}
+                                        <br />
                                         {{ $t('Panels.StatusPanel.Difference') }}:
                                         {{
                                             print_time && print_time_total
@@ -319,8 +310,8 @@
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.ETA') }}</strong
-                                ><br />
+                                <strong>{{ $t('Panels.StatusPanel.ETA') }}</strong>
+                                <br />
                                 <span class="text-no-wrap">{{ eta ? formatDateTime(eta) : '--' }}</span>
                             </v-col>
                         </v-row>
@@ -331,32 +322,38 @@
                     <v-container class="py-0">
                         <v-row class="text-center pt-5 pb-2 mb-0" align="center">
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong
-                                ><br />
-                                <span class="text-no-wrap">{{
-                                    filament_used >= 1000
-                                        ? (filament_used / 1000).toFixed(2) + ' m'
-                                        : filament_used.toFixed(2) + ' mm'
-                                }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{
+                                        filament_used >= 1000
+                                            ? (filament_used / 1000).toFixed(2) + ' m'
+                                            : filament_used.toFixed(2) + ' mm'
+                                    }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong
-                                ><br />
-                                <span class="text-no-wrap">{{
-                                    'estimated_time' in current_file ? formatTime(current_file.estimated_time) : '--'
-                                }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{
+                                        'estimated_time' in current_file
+                                            ? formatTime(current_file.estimated_time)
+                                            : '--'
+                                    }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.Print') }}</strong
-                                ><br />
+                                <strong>{{ $t('Panels.StatusPanel.Print') }}</strong>
+                                <br />
                                 <span class="text-no-wrap">{{ print_time ? formatTime(print_time) : '--' }}</span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t('Panels.StatusPanel.Total') }}</strong
-                                ><br />
-                                <span class="text-no-wrap">{{
-                                    print_time_total ? formatTime(print_time_total) : '--'
-                                }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{ print_time_total ? formatTime(print_time_total) : '--' }}
+                                </span>
                             </v-col>
                         </v-row>
                     </v-container>

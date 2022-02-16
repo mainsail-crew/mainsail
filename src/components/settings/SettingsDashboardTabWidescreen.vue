@@ -30,8 +30,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport"
-                            >
+                                group="widescreenViewport">
                                 <template v-for="element in widescreenLayout1">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>
@@ -46,15 +45,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState1(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState1(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState1(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState1(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>
@@ -71,8 +70,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport"
-                            >
+                                group="widescreenViewport">
                                 <template v-for="element in widescreenLayout2">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>
@@ -87,15 +85,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState2(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState2(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState2(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState2(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>
@@ -112,8 +110,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="widescreenViewport"
-                            >
+                                group="widescreenViewport">
                                 <template v-for="element in widescreenLayout3">
                                     <v-list-item :key="'item-widescreen-' + element.name" link>
                                         <v-row>
@@ -128,15 +125,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState3(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState3(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState3(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState3(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>

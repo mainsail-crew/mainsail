@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 services:
   api:
     build:
@@ -12,7 +12,7 @@ services:
       - ./docker/config/moonraker:/home/node/.moonraker_database
     container_name: mainsail-stack-api
     ports:
-      - "7125:7125"
+      - '7125:7125'
     networks:
       - dev_net
   npm:
@@ -30,7 +30,7 @@ services:
       - ./index.html:/home/node/mainsail/index.html
     container_name: mainsail-stack-npm
     ports:
-      - "8080:8080"
+      - '8080:8080'
     depends_on:
       - api
     networks:

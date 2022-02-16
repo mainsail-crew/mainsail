@@ -9,8 +9,7 @@
                     icon
                     tile
                     v-if="queueState === 'paused'"
-                    :disabled="!klipperReadyForGui"
-                >
+                    :disabled="!klipperReadyForGui">
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
@@ -24,8 +23,7 @@
                     :loading="loadings.includes('pauseJobqueue')"
                     icon
                     tile
-                    v-if="['ready', 'loading'].includes(queueState)"
-                >
+                    v-if="['ready', 'loading'].includes(queueState)">
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-pause</v-icon>
@@ -44,8 +42,7 @@
                     itemsPerPageAllText: $t('JobQueue.AllJobs'),
                     itemsPerPageOptions: [10, 25, 50, 100, -1],
                 }"
-                mobile-breakpoint="0"
-            >
+                mobile-breakpoint="0">
                 <template #no-data>
                     <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
                 </template>
@@ -55,15 +52,13 @@
                         :key="item.job_id"
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
-                        class="file-list-cursor user-select-none"
-                    >
+                        class="file-list-cursor user-select-none">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip
                                     v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
                                     top
-                                    content-class="tooltip__content-opacity1"
-                                >
+                                    content-class="tooltip__content-opacity1">
                                     <template v-slot:activator="{ on, attrs }">
                                         <vue-load-image>
                                             <img
@@ -72,13 +67,11 @@
                                                 width="32"
                                                 height="32"
                                                 v-bind="attrs"
-                                                v-on="on"
-                                            />
+                                                v-on="on" />
                                             <v-progress-circular
                                                 slot="preloader"
                                                 indeterminate
-                                                color="primary"
-                                            ></v-progress-circular>
+                                                color="primary"></v-progress-circular>
                                             <v-icon slot="error">mdi-file</v-icon>
                                         </vue-load-image>
                                     </template>
@@ -91,8 +84,7 @@
                                     <v-progress-circular
                                         slot="preloader"
                                         indeterminate
-                                        color="primary"
-                                    ></v-progress-circular>
+                                        color="primary"></v-progress-circular>
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
                             </template>
@@ -114,7 +106,8 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('JobQueue.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('JobQueue.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
