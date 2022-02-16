@@ -20,12 +20,17 @@ All notable changes to Mainsail will be documented in this file.
 ### Features
 
 - Add custom number input component (#638) ([fa20b19](fa20b19a5b0f58b8b826482e1384361f16379a44))
+- Multiselect in history jobs (#509) ([455a3aa](455a3aa19489cfbcbdf740077e3274153d6448c4))
 
 ### Localization
 
 - **da** | Update da.json (#596) ([a15cb3c](a15cb3cbeb02d9122b0fd50331c1559faddb4ba3))
 - **pl** | Bugfix 29/01/2022 (#598) ([e9157f1](e9157f14c6b1b467ecee770ae4f8e2f9bcbcfc4f))
 - **pl** | Update 03.02.2022 (#606) ([30abb68](30abb687a349123ab14156b2a102752be4aa17f9))
+
+### Performance
+
+- Load codemirror into a chunk for faster LCP (#641) ([6563b7c](6563b7ce4782b8c8cfd287d223634bfba46aefbf))
 
 ### Refactor
 
