@@ -13,8 +13,7 @@
                 v-bind:key="printer._namespace"
                 @click="changePrinter(printer)"
                 :disabled="!printer.socket.isConnected"
-                link
-            >
+                link>
                 <v-list-item-content>
                     <v-list-item-title>{{ getPrinterName(printer._namespace) }}</v-list-item-title>
                     <v-list-item-subtitle>{{ getPrinterDescription(printer) }}</v-list-item-subtitle>

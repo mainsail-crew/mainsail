@@ -5,8 +5,7 @@
         :title="$t('Panels.KlipperWarningsPanel.KlipperWarnings') + ' (' + warnings.length + ')'"
         :collapsible="true"
         card-class="klipper-warnings-panel"
-        toolbar-color="orange darken-2"
-    >
+        toolbar-color="orange darken-2">
         <v-card-text :class="index > 0 ? 'py-0' : 'pt-3 pb-0'" v-for="(warning, index) in warnings" v-bind:key="index">
             <v-divider class="my-2" v-if="index"></v-divider>
             <v-row>
@@ -31,18 +30,18 @@
                     <p class="orange--text mb-0" v-else>{{ warning.message }}</p>
                 </v-col>
                 <v-col class="col-auto d-flex align-center">
-                    <a :href="getDocsLink(warning)" target="_blank" class="text-decoration-none"
-                        ><v-icon>mdi-information</v-icon></a
-                    >
+                    <a :href="getDocsLink(warning)" target="_blank" class="text-decoration-none">
+                        <v-icon>mdi-information</v-icon>
+                    </a>
                 </v-col>
             </v-row>
         </v-card-text>
         <v-divider class="mt-3"></v-divider>
         <v-card-actions class="justify-start">
-            <v-btn small :href="apiUrl + '/server/files/klipper.log'" target="_blank" class="ml-2 primary--text"
-                ><v-icon class="mr-2" small>mdi-download</v-icon
-                >{{ $t('Panels.KlipperWarningsPanel.DownloadLog') }}</v-btn
-            >
+            <v-btn small :href="apiUrl + '/server/files/klipper.log'" target="_blank" class="ml-2 primary--text">
+                <v-icon class="mr-2" small>mdi-download</v-icon>
+                {{ $t('Panels.KlipperWarningsPanel.DownloadLog') }}
+            </v-btn>
         </v-card-actions>
     </panel>
 </template>

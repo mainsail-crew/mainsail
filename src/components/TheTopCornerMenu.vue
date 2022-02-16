@@ -14,14 +14,13 @@
             </template>
             <v-list dense>
                 <template v-if="klipperState !== 'disconnected'">
-                    <v-subheader class="" style="height: auto">{{
-                        $t('App.TopCornerMenu.KlipperControl')
-                    }}</v-subheader>
+                    <v-subheader class="" style="height: auto">
+                        {{ $t('App.TopCornerMenu.KlipperControl') }}
+                    </v-subheader>
                     <v-list-item
                         class="minheight30 pr-2"
                         link
-                        @click="checkDialog(klipperRestart, 'klipper', 'restart')"
-                    >
+                        @click="checkDialog(klipperRestart, 'klipper', 'restart')">
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -30,8 +29,7 @@
                     <v-list-item
                         class="minheight30 pr-2"
                         link
-                        @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')"
-                    >
+                        @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')">
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" small>mdi-restart</v-icon>
@@ -40,16 +38,16 @@
                 </template>
                 <template v-if="services.length">
                     <v-divider class="mt-0" v-if="klipperState !== 'disconnected'"></v-divider>
-                    <v-subheader class="pt-2" style="height: auto">{{
-                        $t('App.TopCornerMenu.ServiceControl')
-                    }}</v-subheader>
+                    <v-subheader class="pt-2" style="height: auto">
+                        {{ $t('App.TopCornerMenu.ServiceControl') }}
+                    </v-subheader>
                     <v-list-item class="minheight30 pr-2" v-for="service in services" v-bind:key="service">
                         <v-list-item-title>
                             <v-tooltip left>
                                 <template v-slot:activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">{{
-                                        service.charAt(0).toUpperCase() + service.slice(1)
-                                    }}</span>
+                                    <span v-bind="attrs" v-on="on">
+                                        {{ service.charAt(0).toUpperCase() + service.slice(1) }}
+                                    </span>
                                 </template>
                                 <span>{{ getServiceState(service) }} ({{ getServiceSubState(service) }})</span>
                             </v-tooltip>
@@ -59,28 +57,28 @@
                                 icon
                                 small
                                 v-if="getServiceState(service) === 'inactive'"
-                                @click="checkDialog(serviceStart, service, 'start')"
-                                ><v-icon small>mdi-play</v-icon></v-btn
-                            >
-                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service, 'restart')"
-                                ><v-icon small>mdi-restart</v-icon></v-btn
-                            >
+                                @click="checkDialog(serviceStart, service, 'start')">
+                                <v-icon small>mdi-play</v-icon>
+                            </v-btn>
+                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service, 'restart')">
+                                <v-icon small>mdi-restart</v-icon>
+                            </v-btn>
                             <v-btn
                                 icon
                                 small
                                 :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'"
                                 @click="checkDialog(serviceStop, service, 'stop')"
-                                :style="service === 'moonraker' ? 'visibility: hidden;' : ''"
-                                ><v-icon small>mdi-stop</v-icon></v-btn
-                            >
+                                :style="service === 'moonraker' ? 'visibility: hidden;' : ''">
+                                <v-icon small>mdi-stop</v-icon>
+                            </v-btn>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
                 <template v-if="powerDevices.length">
                     <v-divider class="mt-0"></v-divider>
-                    <v-subheader class="pt-2" style="height: auto">{{
-                        $t('App.TopCornerMenu.PowerDevices')
-                    }}</v-subheader>
+                    <v-subheader class="pt-2" style="height: auto">
+                        {{ $t('App.TopCornerMenu.PowerDevices') }}
+                    </v-subheader>
                     <v-list-item
                         v-for="(device, index) in powerDevices"
                         v-bind:key="index"
@@ -89,13 +87,12 @@
                         :disabled="
                             device.status === 'error' ||
                             (device.locked_while_printing && ['printing', 'paused'].includes(printer_state))
-                        "
-                    >
+                        ">
                         <v-list-item-title>{{ device.device }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'"
-                                >mdi-{{ device.status === 'on' ? 'toggle-switch' : 'toggle-switch-off' }}</v-icon
-                            >
+                            <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
+                                mdi-{{ device.status === 'on' ? 'toggle-switch' : 'toggle-switch-off' }}
+                            </v-icon>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
@@ -117,20 +114,22 @@
         </v-menu>
         <v-dialog v-model="dialogPowerDeviceChange.show" width="400" :fullscreen="isMobile">
             <v-card>
-                <v-card-title class="headline">{{
-                    this.dialogPowerDeviceChange.value === 'off'
-                        ? $t('PowerDeviceChangeDialog.TurnDeviceOn', { device: dialogPowerDeviceChange.device })
-                        : $t('PowerDeviceChangeDialog.TurnDeviceOff', { device: dialogPowerDeviceChange.device })
-                }}</v-card-title>
+                <v-card-title class="headline">
+                    {{
+                        this.dialogPowerDeviceChange.value === 'off'
+                            ? $t('PowerDeviceChangeDialog.TurnDeviceOn', { device: dialogPowerDeviceChange.device })
+                            : $t('PowerDeviceChangeDialog.TurnDeviceOff', { device: dialogPowerDeviceChange.device })
+                    }}
+                </v-card-title>
                 <v-card-text>{{ $t('PowerDeviceChangeDialog.AreYouSure') }}</v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="dialogPowerDeviceChange.show = false">{{
-                        $t('PowerDeviceChangeDialog.No')
-                    }}</v-btn>
-                    <v-btn color="green darken-1" text @click="powerDeviceToggle">{{
-                        $t('PowerDeviceChangeDialog.Yes')
-                    }}</v-btn>
+                    <v-btn color="red darken-1" text @click="dialogPowerDeviceChange.show = false">
+                        {{ $t('PowerDeviceChangeDialog.No') }}
+                    </v-btn>
+                    <v-btn color="green darken-1" text @click="powerDeviceToggle">
+                        {{ $t('PowerDeviceChangeDialog.Yes') }}
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -139,8 +138,7 @@
                 card-class="confirm-top-corner-menu-dialog"
                 icon="mdi-alert"
                 :title="dialogConfirmation.title"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogConfirmation.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

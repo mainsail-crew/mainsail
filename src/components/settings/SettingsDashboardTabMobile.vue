@@ -30,8 +30,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="mobileViewport"
-                            >
+                                group="mobileViewport">
                                 <template v-for="element in mobileLayout">
                                     <v-list-item :key="'item-mobile-' + element.name" link>
                                         <v-row>
@@ -46,15 +45,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>

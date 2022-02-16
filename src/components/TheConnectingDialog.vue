@@ -7,12 +7,12 @@
                 <v-toolbar-title>
                     <span class="subheading">
                         <v-icon class="mdi mdi-connection" left></v-icon>
-                        <template v-if="connectingFailed">{{
-                            $t('ConnectionDialog.Failed', { host: formatHostname })
-                        }}</template>
-                        <template v-else-if="isConnecting">{{
-                            $t('ConnectionDialog.Connecting', { host: formatHostname })
-                        }}</template>
+                        <template v-if="connectingFailed">
+                            {{ $t('ConnectionDialog.Failed', { host: formatHostname }) }}
+                        </template>
+                        <template v-else-if="isConnecting">
+                            {{ $t('ConnectionDialog.Connecting', { host: formatHostname }) }}
+                        </template>
                         <template v-else>{{ formatHostname }}</template>
                     </span>
                 </v-toolbar-title>

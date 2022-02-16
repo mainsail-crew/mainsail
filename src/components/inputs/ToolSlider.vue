@@ -24,12 +24,11 @@
                         x-small
                         icon
                         :disabled="isLocked"
-                        @click="resetSlider"
-                    >
+                        @click="resetSlider">
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold"> {{ value }} {{ unit }} </span>
+                    <span class="font-weight-bold">{{ value }} {{ unit }}</span>
                 </v-subheader>
                 <v-card-text class="py-0">
                     <v-slider
@@ -40,8 +39,7 @@
                         :max="processedMax"
                         :color="colorBar"
                         @change="changeSlider"
-                        hide-details
-                    >
+                        hide-details>
                         <template v-slot:prepend>
                             <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
                         </template>

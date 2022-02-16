@@ -36,8 +36,7 @@ svg {
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
             :viewBox="viewBox"
-            xml:space="preserve"
-        >
+            xml:space="preserve">
             <defs>
                 <marker id="arrowhead" markerWidth="5" markerHeight="4" refX="2" refY="2" orient="auto">
                     <polygon points="0 0, 5 2, 0 4" :fill="coordinationCrossColor" />
@@ -50,8 +49,7 @@ svg {
                 :y2="convertY(1)"
                 :stroke="coordinationCrossColor"
                 stroke-width="2"
-                marker-end="url(#arrowhead)"
-            />
+                marker-end="url(#arrowhead)" />
             <line
                 :x1="convertX(1)"
                 :y1="convertY(0)"
@@ -59,8 +57,7 @@ svg {
                 :y2="convertY(stepperYmax / 4)"
                 :stroke="coordinationCrossColor"
                 stroke-width="2"
-                marker-end="url(#arrowhead)"
-            />
+                marker-end="url(#arrowhead)" />
             <g>
                 <line
                     v-for="x in xStripes"
@@ -71,8 +68,7 @@ svg {
                     :y2="convertY(stepperYmax)"
                     :stroke="coordinationCrossColor"
                     :stroke-opacity="0.25"
-                    stroke-width="1"
-                />
+                    stroke-width="1" />
                 <line
                     v-for="y in yStripes"
                     v-bind:key="'yLines' + y"
@@ -82,8 +78,7 @@ svg {
                     :y2="convertY(y)"
                     :stroke="coordinationCrossColor"
                     :stroke-opacity="0.25"
-                    stroke-width="1"
-                />
+                    stroke-width="1" />
             </g>
 
             <g v-for="(object, index) in printing_objects" v-bind:key="index">
@@ -102,8 +97,7 @@ svg {
                     "
                     @mouseover="showObjectTooltip(object.name)"
                     @mouseout="hideObjectTooltip"
-                    @click="openExcludeObjectDialog(object.name)"
-                />
+                    @click="openExcludeObjectDialog(object.name)" />
             </g>
         </svg>
     </div>

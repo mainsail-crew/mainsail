@@ -31,8 +31,7 @@
             hide-spin-buttons
             hide-details="auto"
             outlined
-            dense
-        >
+            dense>
             <template v-if="hasSpinner" v-slot:append-outer>
                 <div class="_spin_button_group">
                     <v-btn
@@ -41,8 +40,7 @@
                         class="mt-n3"
                         icon
                         plain
-                        small
-                    >
+                        small>
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn
@@ -51,8 +49,7 @@
                         class="mb-n3"
                         icon
                         plain
-                        small
-                    >
+                        small>
                         <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
                 </div>

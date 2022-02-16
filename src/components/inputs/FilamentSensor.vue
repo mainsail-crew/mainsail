@@ -13,9 +13,9 @@
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>
-                    <v-icon @click="changeSensor">{{
-                        enabled ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'
-                    }}</v-icon>
+                    <v-icon @click="changeSensor">
+                        {{ enabled ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
+                    </v-icon>
                 </v-subheader>
             </v-col>
         </v-row>
