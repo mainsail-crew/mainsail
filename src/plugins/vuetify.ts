@@ -1,4 +1,3 @@
-import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import { Touch, Ripple } from 'vuetify/lib/directives'
@@ -19,7 +18,7 @@ export default new Vuetify({
         options: { customProperties: true },
     },
     icons: {
-        iconfont: 'mdi',
+        iconfont: 'mdiSvg',
     },
     breakpoint: {
         mobileBreakpoint: 768,

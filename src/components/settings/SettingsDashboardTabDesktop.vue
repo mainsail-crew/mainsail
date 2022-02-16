@@ -15,7 +15,7 @@
                             <v-list-item>
                                 <v-row>
                                     <v-col class="col-auto pr-0">
-                                        <v-icon>mdi-information</v-icon>
+                                        <v-icon>{{ mdiInformation }}</v-icon>
                                     </v-col>
                                     <v-col>
                                         {{ $t('Panels.StatusPanel.Headline') }}
@@ -47,13 +47,13 @@
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
                                                     @click.stop="changeState1(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
+                                                    >{{ mdiCheckboxBlankOutline }}</v-icon
                                                 >
                                                 <v-icon
                                                     v-else
                                                     color="primary"
                                                     @click.stop="changeState1(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
+                                                    >{{ mdiCheckboxMarked }}</v-icon
                                                 >
                                             </v-col>
                                         </v-row>
@@ -88,13 +88,13 @@
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
                                                     @click.stop="changeState2(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
+                                                    >{{ mdiCheckboxBlankOutline }}</v-icon
                                                 >
                                                 <v-icon
                                                     v-else
                                                     color="primary"
                                                     @click.stop="changeState2(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
+                                                    >{{ mdiCheckboxMarked }}</v-icon
                                                 >
                                             </v-col>
                                         </v-row>
@@ -120,6 +120,9 @@ import { Mixins } from 'vue-property-decorator'
 import draggable from 'vuedraggable'
 import { capitalize, convertPanelnameToIcon } from '@/plugins/helpers'
 import DashboardMixin from '@/components/mixins/dashboard'
+
+import { mdiInformation, mdiCheckboxMarked, mdiCheckboxBlankOutline } from '@mdi/js'
+
 @Component({
     components: {
         draggable,
@@ -128,6 +131,14 @@ import DashboardMixin from '@/components/mixins/dashboard'
 export default class SettingsDashboardTabDesktop extends Mixins(DashboardMixin) {
     capitalize = capitalize
     convertPanelnameToIcon = convertPanelnameToIcon
+
+    /**
+     * Icons
+     */
+
+    mdiInformation = mdiInformation
+    mdiCheckboxMarked = mdiCheckboxMarked
+    mdiCheckboxBlankOutline = mdiCheckboxBlankOutline
 
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')

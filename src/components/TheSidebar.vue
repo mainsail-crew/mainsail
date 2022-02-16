@@ -117,7 +117,7 @@
                                     v-on="on"
                                 >
                                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                        <v-icon>mdi-{{ category.icon }}</v-icon>
+                                        <v-icon>{{ category.icon }}</v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
                                         <v-list-item-title tile class="menu-item-title">{{
