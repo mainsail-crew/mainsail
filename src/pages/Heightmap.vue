@@ -414,8 +414,6 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private colorVisualMap = 'rgba(255,255,255,0.8)'
     private fontSizeVisualMap = 14
 
-    mounted() {}
-
     get chartOptions() {
         return {
             tooltip: {
