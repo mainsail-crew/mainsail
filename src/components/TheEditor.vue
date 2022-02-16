@@ -12,7 +12,7 @@
             @keydown.esc="escClose">
             <panel
                 card-class="editor-dialog"
-                :icon="isWriteable ? ' mdi-file-document-edit-outline' : 'mdi-file-document-outline'"
+                :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="
                     (filepath ? filepath.slice(1) + '/' : '') +
                     filename +
@@ -27,7 +27,7 @@
                         v-if="restartServiceName === 'klipper'"
                         target="_blank"
                         class="d-none d-md-flex">
-                        <v-icon small class="mr-1">mdi-help</v-icon>
+                        <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
                     <v-btn
@@ -36,7 +36,7 @@
                         tile
                         :color="restartServiceName === null ? 'primary' : ''"
                         @click="save(null)">
-                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
                         <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
                     </v-btn>
                     <v-btn
@@ -46,10 +46,12 @@
                         tile
                         @click="save(restartServiceName)"
                         class="d-none d-sm-flex">
-                        <v-icon small class="mr-1">mdi-restart</v-icon>
+                        <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn icon tile @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="close">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pa-0">
                     <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
@@ -84,18 +86,20 @@
             </template>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto" tile>
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
         <v-dialog v-model="dialogConfirmChange" persistent :width="600">
             <panel
                 card-class="editor-confirm-change-dialog"
-                icon="mdi-help-circle"
+                :icon="mdiHelpCircle"
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogConfirmChange = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>
@@ -130,6 +134,16 @@ import BaseMixin from '@/components/mixins/base'
 import { formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
+import {
+    mdiClose,
+    mdiCloseThick,
+    mdiContentSave,
+    mdiFileDocumentOutline,
+    mdiFileDocumentEditOutline,
+    mdiHelp,
+    mdiHelpCircle,
+    mdiRestart,
+} from '@mdi/js'
 
 @Component({
     components: { Panel, CodemirrorAsync },
@@ -138,6 +152,18 @@ export default class TheEditor extends Mixins(BaseMixin) {
     private dialogConfirmChange = false
 
     formatFilesize = formatFilesize
+
+    /**
+     * Icons
+     */
+    mdiCloseThick = mdiCloseThick
+    mdiHelp = mdiHelp
+    mdiContentSave = mdiContentSave
+    mdiRestart = mdiRestart
+    mdiClose = mdiClose
+    mdiHelpCircle = mdiHelpCircle
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
+    mdiFileDocumentOutline = mdiFileDocumentOutline
 
     declare $refs: {
         editor: any
