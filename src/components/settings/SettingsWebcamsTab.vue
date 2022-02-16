@@ -186,6 +186,16 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import Uv4lMjpeg from '@/components/webcams/Uv4lMjpeg.vue'
 import Ipstreamer from '@/components/webcams/Ipstreamer.vue'
+import {
+    mdiAlbum,
+    mdiCampfire,
+    mdiDoor,
+    mdiPrinter3d,
+    mdiPrinter3dNozzle,
+    mdiRadiatorDisabled,
+    mdiRaspberryPi,
+    mdiWebcam,
+} from '@mdi/js'
 
 interface webcamForm {
     bool: boolean
@@ -240,14 +250,14 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
 
     get iconItems() {
         return [
-            { value: 'mdi-printer-3d', text: this.$t('Settings.WebcamsTab.IconPrinter') },
-            { value: 'mdi-printer-3d-nozzle', text: this.$t('Settings.WebcamsTab.IconNozzle') },
-            { value: 'mdi-radiator-disabled', text: this.$t('Settings.WebcamsTab.IconBed') },
-            { value: 'mdi-webcam', text: this.$t('Settings.WebcamsTab.IconCam') },
-            { value: 'mdi-album', text: this.$t('Settings.WebcamsTab.IconFilament') },
-            { value: 'mdi-door', text: this.$t('Settings.WebcamsTab.IconDoor') },
-            { value: 'mdi-raspberry-pi', text: this.$t('Settings.WebcamsTab.IconMcu') },
-            { value: 'mdi-campfire', text: this.$t('Settings.WebcamsTab.IconHot') },
+            { value: mdiPrinter3d, text: this.$t('Settings.WebcamsTab.IconPrinter') },
+            { value: mdiPrinter3dNozzle, text: this.$t('Settings.WebcamsTab.IconNozzle') },
+            { value: mdiRadiatorDisabled, text: this.$t('Settings.WebcamsTab.IconBed') },
+            { value: mdiWebcam, text: this.$t('Settings.WebcamsTab.IconCam') },
+            { value: mdiAlbum, text: this.$t('Settings.WebcamsTab.IconFilament') },
+            { value: mdiDoor, text: this.$t('Settings.WebcamsTab.IconDoor') },
+            { value: mdiRaspberryPi, text: this.$t('Settings.WebcamsTab.IconMcu') },
+            { value: mdiCampfire, text: this.$t('Settings.WebcamsTab.IconHot') },
         ]
     }
 
@@ -336,7 +346,7 @@ export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
         this.form.bool = false
         this.form.id = null
         this.form.name = ''
-        this.form.icon = 'mdi-webcam'
+        this.form.icon = mdiWebcam
         this.form.service = 'mjpegstreamer-adaptive'
         this.form.targetFps = 15
         this.form.urlStream = '/webcam/?action=stream'

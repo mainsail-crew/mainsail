@@ -8,7 +8,7 @@
     <div>
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
-                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
+                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" :icon="mdiGrid">
                     <template v-slot:buttons-title>
                         <v-btn
                             text
@@ -39,7 +39,7 @@
                             :loading="loadings.includes('homeAll')"
                             :title="$t('Heightmap.TitleHomeAll')"
                             :ripple="true"
-                            ><v-icon>mdi-home</v-icon></v-btn
+                            ><v-icon>{{ mdiHome }}</v-icon></v-btn
                         >
                         <v-btn
                             text
@@ -72,9 +72,9 @@
                                 @click="homePrinter"
                                 :loading="loadings.includes('homeAll')"
                                 :title="$t('Heightmap.TitleHomeAll')"
-                                ><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small
-                                    >mdi-home</v-icon
-                                ></v-btn
+                                ><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>{{
+                                    mdiHome
+                                }}</v-icon></v-btn
                             >
                             <v-btn
                                 text
@@ -299,7 +299,7 @@
         <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel
                 :title="$t('Heightmap.RenameBedMeshProfile')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false"
             >
@@ -322,7 +322,7 @@
         <v-dialog v-model="calibrateDialog" persistent :max-width="400" @keydown.esc="calibrateDialog = false">
             <panel
                 :title="$t('Heightmap.BedMeshCalibrate')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false"
             >
@@ -339,7 +339,7 @@
         <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel
                 :title="$t('Heightmap.BedMeshRemove')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false"
             >
@@ -365,6 +365,7 @@ import * as echarts from 'echarts'
 import { ECharts } from 'echarts/core'
 import 'echarts-gl'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiGrid, mdiHome } from '@mdi/js'
 
 interface HeightmapSerie {
     type: string
@@ -392,6 +393,12 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         heightmap: any
         inputDialogRenameHeightmapName: HTMLInputElement
     }
+
+    /**
+     * Icons
+     */
+    mdiGrid = mdiGrid
+    mdiHome = mdiHome
 
     private renameDialog = false
     private removeDialogProfile = ''
