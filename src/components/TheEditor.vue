@@ -144,6 +144,7 @@ import {
     mdiHelpCircle,
     mdiRestart,
 } from '@mdi/js'
+import type Codemirror from '@/components/inputs/Codemirror.vue'
 
 @Component({
     components: { Panel, CodemirrorAsync },
@@ -166,7 +167,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFileDocumentOutline = mdiFileDocumentOutline
 
     declare $refs: {
-        editor: any
+        editor: Codemirror
     }
 
     get changed() {
