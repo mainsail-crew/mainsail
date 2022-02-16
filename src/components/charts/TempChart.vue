@@ -16,6 +16,7 @@ import BaseMixin from '../mixins/base'
 import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
 import type { ECharts } from 'echarts/core'
+import type { ECBasicOption } from 'echarts/types/dist/shared'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -32,8 +33,9 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     private isVisible = true
-    public chartOptions = {
+    public chartOptions: ECBasicOption = {
         darkMode: true,
+        renderer: 'svg',
         animation: false,
         tooltip: {
             animation: false,
@@ -193,8 +195,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        const tempchart = this.$refs.tempchart
-        return tempchart?.inst ?? null
+        return this.$refs.tempchart ?? null
     }
 
     get maxHistory() {
@@ -257,8 +258,6 @@ export default class TempChart extends Mixins(BaseMixin) {
                 false,
                 true
             )
-
-            console.log(newSource)
 
             //const t1 = performance.now()
             //window.console.debug('calc chart', (t1-t0).toFixed(), newSource.length, this.source.length)

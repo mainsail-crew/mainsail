@@ -109,12 +109,12 @@
                         <v-card-text class="py-0 px-0">
                             <v-row>
                                 <v-col class="">
-                                    <ECharts
+                                    <e-chart
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'svg' }"
                                         style="height: 400px; width: 100%; overflow: hidden"
-                                    ></ECharts>
+                                    ></e-chart>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -360,11 +360,10 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 
-import { createComponent } from 'echarts-for-vue'
-import * as echarts from 'echarts'
-import { ECharts } from 'echarts/core'
-import 'echarts-gl'
 import Panel from '@/components/ui/Panel.vue'
+
+import ECharts from 'vue-echarts'
+import 'echarts-gl'
 
 interface HeightmapSerie {
     type: string
@@ -383,7 +382,6 @@ interface HeightmapSerie {
 @Component({
     components: {
         Panel,
-        ECharts: createComponent({ echarts }),
     },
 })
 export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
@@ -415,6 +413,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     private colorVisualMap = 'rgba(255,255,255,0.8)'
     private fontSizeVisualMap = 14
+
+    mounted() {}
 
     get chartOptions() {
         return {
@@ -537,8 +537,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get chart(): ECharts | null {
-        const heightmap = this.$refs.heightmap
-        return heightmap?.inst ?? null
+        return this.$refs.heightmap ?? null
     }
 
     get profiles() {
