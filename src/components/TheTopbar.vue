@@ -32,8 +32,7 @@
                         :src="sidebarLogo"
                         style="height: 32px"
                         class="nav-logo ml-4 mr-1 d-none d-sm-flex"
-                        alt="Logo"
-                    />
+                        alt="Logo" />
                 </template>
                 <template v-else>
                     <mainsail-logo
@@ -42,8 +41,7 @@
                         class="nav-logo ml-4 mr-1 d-none d-sm-flex"
                         router
                         to="/"
-                        :ripple="false"
-                    ></mainsail-logo>
+                        :ripple="false"></mainsail-logo>
                 </template>
             </router-link>
             <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
@@ -55,8 +53,7 @@
                 ref="fileUploadAndStart"
                 :accept="validGcodeExtensions.join(', ')"
                 style="display: none"
-                @change="uploadAndStart"
-            />
+                @change="uploadAndStart" />
             <v-btn
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
@@ -66,10 +63,9 @@
                 v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
-                @click="saveConfig"
-            >
-                <v-icon class="d-md-none">mdi-content-save</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
+                @click="saveConfig">
+                <v-icon class="d-md-none">mdi-content-save</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
             <v-btn
                 tile
@@ -83,10 +79,9 @@
                     !boolHideUploadAndPrintButton
                 "
                 :loading="loadings.includes('btnUploadAndStart')"
-                @click="btnUploadAndStart"
-            >
-                <v-icon class="mr-md-2">mdi-file-upload</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
+                @click="btnUploadAndStart">
+                <v-icon class="mr-md-2">mdi-file-upload</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
             <v-btn
                 tile
@@ -96,18 +91,18 @@
                 class="button-min-width-auto px-3 emergency-button"
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
-                @click="btnEmergencyStop"
-            >
-                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
+                @click="btnEmergencyStop">
+                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
         <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
-            <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong
-            ><br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
+            <br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
+            <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
@@ -121,8 +116,7 @@
                 toolbar-color="error"
                 card-class="emergency-stop-dialog"
                 icon="mdi-alert-circle-outline"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

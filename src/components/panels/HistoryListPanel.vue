@@ -3,8 +3,7 @@
         <panel
             icon="mdi-file-document-multiple-outline"
             :title="$t('History.PrintHistory')"
-            card-class="history-list-panel"
-        >
+            card-class="history-list-panel">
             <v-card-text>
                 <v-row>
                     <v-col class="col-4 d-flex align-center">
@@ -16,33 +15,31 @@
                             outlined
                             clearable
                             hide-details
-                            dense
-                        ></v-text-field>
+                            dense></v-text-field>
                     </v-col>
                     <v-col class="offset-4 col-4 d-flex align-center justify-end">
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
-                            @click="refreshHistory"
-                            ><v-icon>mdi-refresh</v-icon></v-btn
-                        >
+                            @click="refreshHistory">
+                            <v-icon>mdi-refresh</v-icon>
+                        </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
                                     class="px-2 minwidth-0 ml-3"
                                     :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
-                                    v-on="on"
-                                    ><v-icon>mdi-cog</v-icon></v-btn
-                                >
+                                    v-on="on">
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
                             </template>
                             <v-list>
                                 <template v-if="allPrintStatusArray.length">
                                     <v-list-item
                                         class="minHeight36"
                                         v-for="status of allPrintStatusArray"
-                                        v-bind:key="status.key"
-                                    >
+                                        v-bind:key="status.key">
                                         <v-checkbox
                                             class="mt-0"
                                             hide-details
@@ -50,23 +47,20 @@
                                             @change="changeStatusVisible(status)"
                                             :label="
                                                 $t('History.ShowStatusName', { name: status.name, count: status.value })
-                                            "
-                                        ></v-checkbox>
+                                            "></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>
                                 </template>
                                 <v-list-item
                                     class="minHeight36"
                                     v-for="header of configHeaders"
-                                    v-bind:key="header.key"
-                                >
+                                    v-bind:key="header.key">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
                                         v-model="header.visible"
                                         @change="changeColumnVisible(header.value)"
-                                        :label="header.text"
-                                    ></v-checkbox>
+                                        :label="header.text"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -91,8 +85,7 @@
                 item-key="name"
                 :search="search"
                 :custom-filter="advancedSearch"
-                mobile-breakpoint="0"
-            >
+                mobile-breakpoint="0">
                 <template slot="items" slot-scope="props">
                     <td v-for="header in filteredHeaders" v-bind:key="header.text">{{ props.item[header.value] }}</td>
                 </template>
@@ -107,8 +100,7 @@
                         v-longpress:600="(e) => showContextMenu(e, item)"
                         @contextmenu="showContextMenu($event, item)"
                         @click="clickRow(item)"
-                        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')"
-                    >
+                        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
                                 <v-icon class="text--disabled">mdi-file-cancel</v-icon>
@@ -123,13 +115,11 @@
                                                 width="32"
                                                 height="32"
                                                 v-bind="attrs"
-                                                v-on="on"
-                                            />
+                                                v-on="on" />
                                             <v-progress-circular
                                                 slot="preloader"
                                                 indeterminate
-                                                color="primary"
-                                            ></v-progress-circular>
+                                                color="primary"></v-progress-circular>
                                             <v-icon slot="error">mdi-file</v-icon>
                                         </vue-load-image>
                                     </template>
@@ -142,8 +132,7 @@
                                     <v-progress-circular
                                         slot="preloader"
                                         indeterminate
-                                        color="primary"
-                                    ></v-progress-circular>
+                                        color="primary"></v-progress-circular>
                                     <v-icon slot="error">mdi-file</v-icon>
                                 </vue-load-image>
                             </template>
@@ -156,9 +145,9 @@
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">{{
-                                            getStatusIcon(item.status)
-                                        }}</v-icon>
+                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">
+                                            {{ getStatusIcon(item.status) }}
+                                        </v-icon>
                                     </span>
                                 </template>
                                 <span>{{ item.status.replace(/_/g, ' ') }}</span>
@@ -167,15 +156,15 @@
                         <td
                             v-for="col in tableFields"
                             v-bind:key="col.value"
-                            :class="col.outputType !== 'date' ? 'text-no-wrap' : ''"
-                        >
+                            :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
                         </td>
                         <td class=" " v-if="headers.find((header) => header.value === 'slicer').visible">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
-                            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version"
-                                ><br />{{ item.metadata.slicer_version }}</small
-                            >
+                            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
+                                <br />
+                                {{ item.metadata.slicer_version }}
+                            </small>
                         </td>
                     </tr>
                 </template>
@@ -184,17 +173,19 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-text-box-search</v-icon> {{ $t('History.Details') }}
+                    <v-icon class="mr-1">mdi-text-box-search</v-icon>
+                    {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item
                     @click="startPrint(contextMenu.item)"
                     v-if="contextMenu.item.exists"
-                    :disabled="printerIsPrinting || !klipperReadyForGui"
-                >
-                    <v-icon class="mr-1">mdi-printer</v-icon> {{ $t('History.Reprint') }}
+                    :disabled="printerIsPrinting || !klipperReadyForGui">
+                    <v-icon class="mr-1">mdi-printer</v-icon>
+                    {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('History.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -202,14 +193,12 @@
             v-model="detailsDialog.boolShow"
             :max-width="600"
             persistent
-            @keydown.esc="detailsDialog.boolShow = false"
-        >
+            @keydown.esc="detailsDialog.boolShow = false">
             <panel
                 :title="$t('History.JobDetails')"
                 icon="mdi-update"
                 card-class="history-detail-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -251,57 +240,51 @@
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'estimated_time' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedTime') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.metadata.estimated_time)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.print_duration > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.PrintDuration') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.print_duration)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.print_duration) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.total_duration > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.TotalDuration') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.total_duration)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.total_duration) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedFilamentWeight') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{
-                                        Math.round(detailsDialog.item.metadata.filament_weight_total * 100) / 100
-                                    }}
-                                    g</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ Math.round(detailsDialog.item.metadata.filament_weight_total * 100) / 100 }} g
+                                </v-col>
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'filament_total' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedFilament') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ Math.round(detailsDialog.item.metadata.filament_total) }} mm
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.filament_used > 0">
@@ -315,46 +298,42 @@
                             v-if="
                                 'metadata' in detailsDialog.item &&
                                 'first_layer_extr_temp' in detailsDialog.item.metadata
-                            "
-                        >
+                            ">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerExtTemp') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_extr_temp }} °C
+                                </v-col>
                             </v-row>
                         </template>
                         <template
                             v-if="
                                 'metadata' in detailsDialog.item &&
                                 'first_layer_bed_temp' in detailsDialog.item.metadata
-                            "
-                        >
+                            ">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerBedTemp') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_bed_temp }} °C
+                                </v-col>
                             </v-row>
                         </template>
                         <template
                             v-if="
                                 'metadata' in detailsDialog.item && 'first_layer_height' in detailsDialog.item.metadata
-                            "
-                        >
+                            ">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerHeight') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_height }} mm</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_height }} mm
+                                </v-col>
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'layer_height' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.LayerHeight') }}</v-col>
@@ -362,8 +341,7 @@
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'object_height' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.ObjectHeight') }}</v-col>
@@ -378,8 +356,7 @@
                             </v-row>
                         </template>
                         <template
-                            v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata"
-                        >
+                            v-if="'metadata' in detailsDialog.item && 'slicer_version' in detailsDialog.item.metadata">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.SlicerVersion') }}</v-col>

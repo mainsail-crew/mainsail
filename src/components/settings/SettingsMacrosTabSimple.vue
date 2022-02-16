@@ -9,8 +9,7 @@
                         :input-value="getMacroStatus(macro.name)"
                         @change="changeMacroStatus(macro.name)"
                         hide-details
-                        class="mt-0"
-                    ></v-switch>
+                        class="mt-0"></v-switch>
                 </settings-row>
             </div>
         </template>

@@ -14,15 +14,13 @@
                                 class="minwidth-0 px-5"
                                 small
                                 v-bind="attrs"
-                                v-on="on"
-                            ></v-btn>
+                                v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="backgroundColor"
                             @update:color="updateColorValue('backgroundColor', $event)"
                             hide-mode-switch
-                            mode="rgba"
-                        ></v-color-picker>
+                            mode="rgba"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -35,8 +33,7 @@
                             :value="gridColor"
                             @update:color="updateColorValue('gridColor', $event)"
                             hide-mode-switch
-                            mode="rgba"
-                        ></v-color-picker>
+                            mode="rgba"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -48,8 +45,7 @@
                             bottom
                             left
                             offset-y
-                            v-for="(extruderColor, index) in extruderColors"
-                        >
+                            v-for="(extruderColor, index) in extruderColors">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-col align="right" class="mt-1" cols="12">
                                     <span class="mr-2">{{ index }}</span>
@@ -58,16 +54,14 @@
                                         class="minwidth-0 px-5"
                                         small
                                         v-bind="attrs"
-                                        v-on="on"
-                                    ></v-btn>
+                                        v-on="on"></v-btn>
                                 </v-col>
                             </template>
                             <v-color-picker
                                 :value="extruderColors[index]"
                                 @update:color="colorsUpdated($event, index)"
                                 hide-mode-switch
-                                mode="rgba"
-                            ></v-color-picker>
+                                mode="rgba"></v-color-picker>
                         </v-menu>
                     </v-row>
                 </settings-row>
@@ -80,15 +74,13 @@
                                 class="minwidth-0 px-5 mr-3"
                                 small
                                 v-bind="attrs"
-                                v-on="on"
-                            ></v-btn>
+                                v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="minFeedColor"
                             @update:color="updateColorValue('minFeedColor', $event)"
                             hide-mode-switch
-                            mode="rgba"
-                        ></v-color-picker>
+                            mode="rgba"></v-color-picker>
                     </v-menu>
                     <v-text-field
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
@@ -99,8 +91,7 @@
                         suffix="mm/s"
                         type="number"
                         v-model="minFeed"
-                        hide-spin-buttons
-                    ></v-text-field>
+                        hide-spin-buttons></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
@@ -111,15 +102,13 @@
                                 class="minwidth-0 px-5 mr-3"
                                 small
                                 v-bind="attrs"
-                                v-on="on"
-                            ></v-btn>
+                                v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="maxFeedColor"
                             @update:color="updateColorValue('maxFeedColor', $event)"
                             hide-mode-switch
-                            mode="rgba"
-                        ></v-color-picker>
+                            mode="rgba"></v-color-picker>
                     </v-menu>
                     <v-text-field
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
@@ -130,8 +119,7 @@
                         suffix="mm/s"
                         type="number"
                         v-model="maxFeed"
-                        hide-spin-buttons
-                    ></v-text-field>
+                        hide-spin-buttons></v-text-field>
                 </settings-row>
             </v-card-text>
         </v-card>

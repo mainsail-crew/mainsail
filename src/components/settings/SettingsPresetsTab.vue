@@ -7,15 +7,15 @@
                     <v-divider class="my-2" v-if="key"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
-                            <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                            <v-icon left small>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small
                             outlined
                             @click="deletePreset(preset.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error"
-                        >
+                            color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -23,7 +23,8 @@
                 <v-divider class="my-2" v-if="presets.length"></v-divider>
                 <settings-row :title="$t('Settings.PresetsTab.Cooldown')">
                     <v-btn small outlined class="ml-3" @click="editCooldown">
-                        <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                        <v-icon left small>mdi-pencil</v-icon>
+                        {{ $t('Settings.Edit') }}
                     </v-btn>
                 </settings-row>
             </v-card-text>
@@ -33,9 +34,13 @@
         </v-card>
         <v-card flat v-else-if="form.bool">
             <v-form v-model="form.valid" @submit.prevent="savePreset">
-                <v-card-title>{{
-                    form.id === null ? $t('Settings.PresetsTab.CreateHeadline') : $t('Settings.PresetsTab.EditHeadline')
-                }}</v-card-title>
+                <v-card-title>
+                    {{
+                        form.id === null
+                            ? $t('Settings.PresetsTab.CreateHeadline')
+                            : $t('Settings.PresetsTab.EditHeadline')
+                    }}
+                </v-card-title>
                 <v-card-text>
                     <v-row class="mt-3" v-if="form.boolInvalidMin">
                         <v-col class="py-0">
@@ -48,8 +53,7 @@
                             hide-details="auto"
                             :rules="[rules.required, rules.unique]"
                             dense
-                            outlined
-                        ></v-text-field>
+                            outlined></v-text-field>
                     </settings-row>
                     <div v-for="heater of heaters" v-bind:key="heater.name">
                         <v-divider class="my-2"></v-divider>
@@ -57,8 +61,7 @@
                             <v-checkbox
                                 v-model="form.values[heater.name].bool"
                                 hide-details
-                                class="shrink mt-0"
-                            ></v-checkbox>
+                                class="shrink mt-0"></v-checkbox>
                             <v-text-field
                                 v-model="form.values[heater.name].value"
                                 hide-details="auto"
@@ -66,8 +69,7 @@
                                 suffix="°C"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-text-field>
+                                hide-spin-buttons></v-text-field>
                         </settings-row>
                     </div>
                     <div v-for="fan of temperatureFans" v-bind:key="'temperature_fan ' + fan.name">
@@ -76,8 +78,7 @@
                             <v-checkbox
                                 v-model="form.values['temperature_fan ' + fan.name].bool"
                                 hide-details
-                                class="shrink mt-0"
-                            ></v-checkbox>
+                                class="shrink mt-0"></v-checkbox>
                             <v-text-field
                                 v-model="form.values['temperature_fan ' + fan.name].value"
                                 hide-details="auto"
@@ -85,8 +86,7 @@
                                 suffix="°C"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-text-field>
+                                hide-spin-buttons></v-text-field>
                         </settings-row>
                     </div>
                     <v-divider class="my-2"></v-divider>

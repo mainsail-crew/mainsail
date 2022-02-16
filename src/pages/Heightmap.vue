@@ -16,9 +16,9 @@
                             color="primary"
                             class="ml-1 d-none d-sm-inline-flex rename-profile"
                             v-if="meshLoaded"
-                            @click="openRenameProfile()"
-                            >{{ bed_mesh.profile_name }}</v-btn
-                        >
+                            @click="openRenameProfile()">
+                            {{ bed_mesh.profile_name }}
+                        </v-btn>
                     </template>
                     <template v-slot:buttons>
                         <v-btn
@@ -27,9 +27,9 @@
                             color="primary"
                             class="d-sm-none"
                             v-if="meshLoaded"
-                            @click="openRenameProfile()"
-                            >{{ bed_mesh ? bed_mesh.profile_name : '' }}</v-btn
-                        >
+                            @click="openRenameProfile()">
+                            {{ bed_mesh ? bed_mesh.profile_name : '' }}
+                        </v-btn>
                         <v-btn
                             icon
                             tile
@@ -38,9 +38,9 @@
                             :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                             :loading="loadings.includes('homeAll')"
                             :title="$t('Heightmap.TitleHomeAll')"
-                            :ripple="true"
-                            ><v-icon>mdi-home</v-icon></v-btn
-                        >
+                            :ripple="true">
+                            <v-icon>mdi-home</v-icon>
+                        </v-btn>
                         <v-btn
                             text
                             tile
@@ -48,9 +48,9 @@
                             @click="clearBedMesh"
                             :loading="loadings.includes('bedMeshClear')"
                             v-if="meshLoaded"
-                            :title="$t('Heightmap.TitleClear')"
-                            >{{ $t('Heightmap.Clear') }}</v-btn
-                        >
+                            :title="$t('Heightmap.TitleClear')">
+                            {{ $t('Heightmap.Clear') }}
+                        </v-btn>
                         <v-btn
                             text
                             tile
@@ -58,9 +58,9 @@
                             @click="calibrateDialog = true"
                             :loading="loadings.includes('bedMeshCalibrate')"
                             :disabled="printerIsPrinting"
-                            :title="$t('Heightmap.TitleCalibrate')"
-                            >{{ $t('Heightmap.Calibrate') }}</v-btn
-                        >
+                            :title="$t('Heightmap.TitleCalibrate')">
+                            {{ $t('Heightmap.Calibrate') }}
+                        </v-btn>
                     </template>
                     <v-card-text class="d-sm-none text-center pb-0">
                         <v-item-group tile class="v-btn-toggle" name="controllers">
@@ -71,11 +71,11 @@
                                 :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                 @click="homePrinter"
                                 :loading="loadings.includes('homeAll')"
-                                :title="$t('Heightmap.TitleHomeAll')"
-                                ><v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small
-                                    >mdi-home</v-icon
-                                ></v-btn
-                            >
+                                :title="$t('Heightmap.TitleHomeAll')">
+                                <v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>
+                                    mdi-home
+                                </v-icon>
+                            </v-btn>
                             <v-btn
                                 text
                                 small
@@ -84,9 +84,9 @@
                                 @click="clearBedMesh"
                                 :loading="loadings.includes('bedMeshClear')"
                                 v-if="bed_mesh"
-                                :title="$t('Heightmap.TitleClear')"
-                                >{{ $t('Heightmap.Clear') }}</v-btn
-                            >
+                                :title="$t('Heightmap.TitleClear')">
+                                {{ $t('Heightmap.Clear') }}
+                            </v-btn>
                             <v-btn
                                 text
                                 small
@@ -95,9 +95,9 @@
                                 @click="calibrateDialog = true"
                                 :loading="loadings.includes('bedMeshCalibrate')"
                                 :disabled="printerIsPrinting"
-                                :title="$t('Heightmap.TitleCalibrate')"
-                                >{{ $t('Heightmap.Calibrate') }}</v-btn
-                            >
+                                :title="$t('Heightmap.TitleCalibrate')">
+                                {{ $t('Heightmap.Calibrate') }}
+                            </v-btn>
                         </v-item-group>
                     </v-card-text>
                     <template v-if="!meshLoaded">
@@ -113,39 +113,33 @@
                                         ref="heightmap"
                                         :option="chartOptions"
                                         :init-options="{ renderer: 'svg' }"
-                                        style="height: 400px; width: 100%; overflow: hidden"
-                                    ></e-chart>
+                                        style="height: 400px; width: 100%; overflow: hidden"></e-chart>
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col
-                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start"
-                                >
+                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start">
                                     <v-switch
                                         v-model="scaleVisualMap"
                                         :label="$t('Heightmap.Scale')"
-                                        class="mt-0 ml-5"
-                                    ></v-switch>
+                                        class="mt-0 ml-5"></v-switch>
                                 </v-col>
                                 <v-col class="d-flex justify-center pt-0 pb-6 pb-sm-3 pr-sm-16">
                                     <v-checkbox
                                         v-model="showProbed"
                                         :label="$t('Heightmap.Probed')"
                                         hide-details
-                                        class="mx-3 mt-0"
-                                    ></v-checkbox>
+                                        class="mx-3 mt-0"></v-checkbox>
                                     <v-checkbox
                                         v-model="showMesh"
                                         :label="$t('Heightmap.Mesh')"
                                         hide-details
-                                        class="mx-3 mt-0"
-                                    ></v-checkbox>
+                                        class="mx-3 mt-0"></v-checkbox>
                                     <v-checkbox
                                         v-model="showFlat"
                                         :label="$t('Heightmap.Flat')"
                                         hide-details
-                                        class="mx-3 mt-0"
-                                    ></v-checkbox>
+                                        class="mx-3 mt-0"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -156,8 +150,7 @@
                                     <v-checkbox
                                         v-model="wireframe"
                                         :label="$t('Heightmap.Wireframe')"
-                                        hide-details
-                                    ></v-checkbox>
+                                        hide-details></v-checkbox>
                                 </v-col>
                                 <v-col class="col-8">
                                     <v-slider
@@ -168,8 +161,7 @@
                                         :step="0.1"
                                         ticks="always"
                                         class="mt-4"
-                                        hide-details
-                                    ></v-slider>
+                                        hide-details></v-slider>
                                 </v-col>
                             </v-row>
                         </v-card-text>
@@ -183,8 +175,7 @@
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
                     :collapsible="true"
-                    class="mt-0"
-                >
+                    class="mt-0">
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
@@ -193,32 +184,32 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
-                            <v-col class="text-right"
-                                >{{ bed_mesh.probed_matrix[0].length }}x{{ bed_mesh.probed_matrix.length }}</v-col
-                            >
+                            <v-col class="text-right">
+                                {{ bed_mesh.probed_matrix[0].length }}x{{ bed_mesh.probed_matrix.length }}
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
-                            <v-col
-                                >{{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
-                                {{ bedMeshMaxPoint.positionY }}]</v-col
-                            >
+                            <v-col>
+                                {{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
+                                {{ bedMeshMaxPoint.positionY }}]
+                            </v-col>
                             <v-col class="text-right">{{ bedMeshMaxPoint.value }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
-                            <v-col
-                                >{{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
-                                {{ bedMeshMinPoint.positionY }}]</v-col
-                            >
+                            <v-col>
+                                {{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
+                                {{ bedMeshMinPoint.positionY }}]
+                            </v-col>
                             <v-col class="text-right">{{ bedMeshMinPoint.value }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
-                            <v-col class="text-right"
-                                >{{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value).toFixed(3) }} mm</v-col
-                            >
+                            <v-col class="text-right">
+                                {{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value).toFixed(3) }} mm
+                            </v-col>
                         </v-row>
                     </v-card-text>
                 </panel>
@@ -227,8 +218,7 @@
                     card-class="heightmap-profiles-panel"
                     icon="mdi-stack-overflow"
                     :collapsible="true"
-                    class="mt-6 mt-md-0"
-                >
+                    class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
                             <template v-slot:default>
@@ -238,20 +228,25 @@
                                             <span
                                                 @click="loadProfile(profile.name)"
                                                 :class="profile.is_active ? 'font-weight-bold' : ''"
-                                                style="cursor: pointer"
-                                                >{{ profile.name }}</span
-                                            ><small class="ml-2" v-if="'deleted' in profile.data"
-                                                >({{ $t('Heightmap.Deleted') }})</small
-                                            >
+                                                style="cursor: pointer">
+                                                {{ profile.name }}
+                                            </span>
+                                            <small class="ml-2" v-if="'deleted' in profile.data">
+                                                ({{ $t('Heightmap.Deleted') }})
+                                            </small>
                                         </td>
                                         <td>
                                             <v-tooltip top color="rgba(0,0,0,0.8)">
                                                 <template v-slot:activator="{ on, attrs }">
-                                                    <small v-bind="attrs" v-on="on">{{
-                                                        profile.variance.toFixed(3)
-                                                    }}</small>
+                                                    <small v-bind="attrs" v-on="on">
+                                                        {{ profile.variance.toFixed(3) }}
+                                                    </small>
                                                 </template>
-                                                <span>max: {{ profile.max }}<br />min: {{ profile.min }}</span>
+                                                <span>
+                                                    max: {{ profile.max }}
+                                                    <br />
+                                                    min: {{ profile.min }}
+                                                </span>
                                             </v-tooltip>
                                         </td>
                                         <td class="text-right">
@@ -260,17 +255,17 @@
                                                     class="minwidth-0"
                                                     @click="loadProfile(profile.name)"
                                                     :loading="loadings.includes('bedMeshLoad_' + profile.name)"
-                                                    :disabled="profile.is_active || 'deleted' in profile.data"
-                                                    ><v-icon small>mdi-view-grid-plus</v-icon></v-btn
-                                                >
+                                                    :disabled="profile.is_active || 'deleted' in profile.data">
+                                                    <v-icon small>mdi-view-grid-plus</v-icon>
+                                                </v-btn>
                                                 <v-btn
                                                     class="minwidth-0"
                                                     @click="openRemoveProfile(profile.name)"
                                                     :loading="loadings.includes('bedMeshRemove_' + profile.name)"
                                                     :disabled="'deleted' in profile.data"
-                                                    :title="$t('Heightmap.DeleteBedMeshProfile')"
-                                                    ><v-icon small>mdi-delete</v-icon></v-btn
-                                                >
+                                                    :title="$t('Heightmap.DeleteBedMeshProfile')">
+                                                    <v-icon small>mdi-delete</v-icon>
+                                                </v-btn>
                                             </v-btn-toggle>
                                         </td>
                                     </tr>
@@ -292,25 +287,23 @@
                 elevation="2"
                 class="mx-auto mt-6"
                 max-width="500"
-                icon="mdi-lock-outline"
-                >{{ $t('Heightmap.ErrorKlipperNotReady') }}</v-alert
-            >
+                icon="mdi-lock-outline">
+                {{ $t('Heightmap.ErrorKlipperNotReady') }}
+            </v-alert>
         </v-row>
         <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel
                 :title="$t('Heightmap.RenameBedMeshProfile')"
                 icon="mdi-grid"
                 card-class="heightmap-rename-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <v-card-text>
                     <v-text-field
                         :label="$t('Heightmap.Name')"
                         v-model="newName"
                         ref="inputDialogRenameHeightmapName"
                         @keyup.enter="renameProfile"
-                        required
-                    ></v-text-field>
+                        required></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -324,8 +317,7 @@
                 :title="$t('Heightmap.BedMeshCalibrate')"
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
                 </v-card-text>
@@ -341,8 +333,7 @@
                 :title="$t('Heightmap.BedMeshRemove')"
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <v-card-text>
                     <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile }) }}</p>
                 </v-card-text>

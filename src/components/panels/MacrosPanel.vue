@@ -4,8 +4,7 @@
         icon="mdi-code-tags"
         :title="$t('Panels.MacrosPanel.Headline')"
         :collapsible="true"
-        card-class="macros-panel"
-    >
+        card-class="macros-panel">
         <v-card-text class="py-2">
             <v-row>
                 <v-col class="text-center">
@@ -14,8 +13,7 @@
                         :key="'macro_' + index"
                         :macro="macro"
                         color="primary"
-                        class="mx-1 my-1"
-                    />
+                        class="mx-1 my-1" />
                 </v-col>
             </v-row>
         </v-card-text>

@@ -5,14 +5,14 @@
         :title="$t('Panels.MinSettingsPanel.MissingConfiguration')"
         :collapsible="true"
         card-class="min-settings-panel"
-        toolbar-color="orange darken-2"
-    >
+        toolbar-color="orange darken-2">
         <v-card-text>
             <v-row>
                 <v-col>
                     <ul class="">
                         <li v-for="module in missingConfigs" v-bind:key="module" class="orange--text">
-                            <code>{{ module }}</code> {{ $t('Panels.MinSettingsPanel.IsNotDefinedInConfig') }}
+                            <code>{{ module }}</code>
+                            {{ $t('Panels.MinSettingsPanel.IsNotDefinedInConfig') }}
                         </li>
                     </ul>
                 </v-col>
@@ -30,10 +30,10 @@
             <v-divider class="mb-2"></v-divider>
         </template>
         <v-card-actions class="justify-center pb-3">
-            <v-btn small href="https://docs.mainsail.xyz/necessary-configuration" target="_blank"
-                ><v-icon small class="mr-1">mdi-information</v-icon
-                >{{ $t('Panels.MinSettingsPanel.MoreInformation') }}</v-btn
-            >
+            <v-btn small href="https://docs.mainsail.xyz/necessary-configuration" target="_blank">
+                <v-icon small class="mr-1">mdi-information</v-icon>
+                {{ $t('Panels.MinSettingsPanel.MoreInformation') }}
+            </v-btn>
         </v-card-actions>
     </panel>
 </template>

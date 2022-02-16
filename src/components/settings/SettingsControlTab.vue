@@ -12,8 +12,7 @@
                             outlined
                             dense
                             hide-details
-                            attach
-                        ></v-select>
+                            attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
@@ -40,8 +39,7 @@
                             :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                             outlined
                             dense
-                            hide-spin-buttons
-                        ></v-text-field>
+                            hide-spin-buttons></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
@@ -54,8 +52,7 @@
                             :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                             outlined
                             dense
-                            hide-spin-buttons
-                        ></v-text-field>
+                            hide-spin-buttons></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="controlStyle === 'cross'">
@@ -77,8 +74,7 @@
                                 ]"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-combobox>
+                                hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
@@ -99,8 +95,7 @@
                                 ]"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-combobox>
+                                hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
@@ -119,8 +114,7 @@
                                 ]"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-combobox>
+                                hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
@@ -143,8 +137,7 @@
                                 ]"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-combobox>
+                                hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm')" :mobile-second-row="true">
@@ -165,8 +158,7 @@
                                 ]"
                                 dense
                                 outlined
-                                hide-spin-buttons
-                            ></v-combobox>
+                                hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
@@ -188,8 +180,7 @@
                             ]"
                             dense
                             outlined
-                            hide-spin-buttons
-                        ></v-combobox>
+                            hide-spin-buttons></v-combobox>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ControlTab.SpeedEInMms')" :mobile-second-row="true">
@@ -210,8 +201,7 @@
                             ]"
                             dense
                             outlined
-                            hide-spin-buttons
-                        ></v-combobox>
+                            hide-spin-buttons></v-combobox>
                     </settings-row>
                 </v-form>
             </v-card-text>

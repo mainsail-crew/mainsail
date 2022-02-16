@@ -18,9 +18,9 @@
             <v-tooltip right color="panel">
                 <template v-slot:activator="{ on, attrs }">
                     <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
-                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave"
-                        >mdi-help-circle-outline</v-icon
-                    >
+                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
+                        mdi-help-circle-outline
+                    </v-icon>
                 </template>
                 <span class="dark version-container">
                     <div><img height="12" src="/img/logo.svg" /></div>
@@ -44,8 +44,7 @@
                                 <v-img
                                     height="80"
                                     contain
-                                    src="https://docs.mainsail.xyz/assets/img/logo-mainsail.png"
-                                ></v-img>
+                                    src="https://docs.mainsail.xyz/assets/img/logo-mainsail.png"></v-img>
                             </v-col>
                         </v-row>
                         <v-row tag="data1" justify="center">

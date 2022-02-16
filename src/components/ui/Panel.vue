@@ -34,16 +34,14 @@
 <template>
     <v-card
         :class="'panel ' + cardClass + ' ' + (marginBottom ? 'mb-3 mb-md-6' : '') + ' ' + (!expand ? 'expanded' : '')"
-        :loading="loading"
-    >
+        :loading="loading">
         <v-toolbar
             flat
             dense
             :color="toolbarColor"
             :class="getToolbarClass"
             :height="panelToolbarHeight"
-            class="panel-toolbar"
-        >
+            class="panel-toolbar">
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
                 <slot name="icon" v-if="hasIconSlot"></slot>
