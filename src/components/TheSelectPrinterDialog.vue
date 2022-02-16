@@ -7,30 +7,29 @@
             icon="mdi-connection"
             :title="panelTitle"
             :margin-bottom="false"
-            toolbar-color="toolbar"
-        >
+            toolbar-color="toolbar">
             <template v-slot:buttons>
                 <template v-if="!isConnecting && !connectingFailed">
-                    <template v-if="dialogEditPrinter.bool"
-                        ><v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false"
-                            ><v-icon>mdi-close-thick</v-icon></v-btn
-                        ></template
-                    >
-                    <template v-else-if="dialogAddPrinter.bool"
-                        ><v-btn
+                    <template v-if="dialogEditPrinter.bool">
+                        <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
+                            <v-icon>mdi-close-thick</v-icon>
+                        </v-btn>
+                    </template>
+                    <template v-else-if="dialogAddPrinter.bool">
+                        <v-btn
                             icon
                             tile
                             class="minwidth-0"
                             v-if="dialogAddPrinter.bool"
-                            @click="dialogAddPrinter.bool = false"
-                            ><v-icon>mdi-close-thick</v-icon></v-btn
-                        ></template
-                    >
-                    <template v-else-if="printers.length > 0"
-                        ><v-btn icon tile class="minwidth-0" @click="checkPrinters" color="primary"
-                            ><v-icon>mdi-sync</v-icon></v-btn
-                        ></template
-                    >
+                            @click="dialogAddPrinter.bool = false">
+                            <v-icon>mdi-close-thick</v-icon>
+                        </v-btn>
+                    </template>
+                    <template v-else-if="printers.length > 0">
+                        <v-btn icon tile class="minwidth-0" @click="checkPrinters" color="primary">
+                            <v-icon>mdi-sync</v-icon>
+                        </v-btn>
+                    </template>
                 </template>
             </template>
             <template v-if="isConnecting">
@@ -48,9 +47,9 @@
                         }}
                     </p>
                     <div class="text-center">
-                        <v-btn text @click="switchToChangePrinter" color="white" class="mr-3">{{
-                            $t('SelectPrinterDialog.ChangePrinter')
-                        }}</v-btn>
+                        <v-btn text @click="switchToChangePrinter" color="white" class="mr-3">
+                            {{ $t('SelectPrinterDialog.ChangePrinter') }}
+                        </v-btn>
                         <v-btn text @click="reconnect" color="primary">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
                     </div>
                 </v-card-text>
@@ -70,8 +69,7 @@
                                 required
                                 outlined
                                 hide-details="auto"
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                         <v-col class="col-4">
                             <v-text-field
@@ -81,8 +79,7 @@
                                 hide-details="auto"
                                 required
                                 outlined
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -108,8 +105,7 @@
                                 required
                                 outlined
                                 dense
-                                hide-details="auto"
-                            ></v-text-field>
+                                hide-details="auto"></v-text-field>
                         </v-col>
                         <v-col class="col-4">
                             <v-text-field
@@ -119,8 +115,7 @@
                                 required
                                 outlined
                                 dense
-                                hide-details="auto"
-                            ></v-text-field>
+                                hide-details="auto"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -142,8 +137,7 @@
                                 <v-col
                                     class="rounded transition-swing toolbar py-2 px-2 mb-2 overflow-hidden"
                                     style="cursor: pointer"
-                                    @click="connect(printer)"
-                                >
+                                    @click="connect(printer)">
                                     <v-row align="center">
                                         <v-col class="col-auto pr-0">
                                             <v-progress-circular
@@ -151,28 +145,27 @@
                                                 color="primary"
                                                 v-if="printer.socket.isConnecting"
                                                 size="24"
-                                                width="2.5"
-                                            ></v-progress-circular>
+                                                width="2.5"></v-progress-circular>
                                             <v-icon
                                                 :color="printer.socket.isConnected ? 'green' : 'red'"
-                                                v-if="!printer.socket.isConnecting"
-                                                >mdi-{{
+                                                v-if="!printer.socket.isConnecting">
+                                                mdi-{{
                                                     printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel'
-                                                }}</v-icon
-                                            >
+                                                }}
+                                            </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col class="col-auto pa-0"
-                                            ><v-btn
+                                        <v-col class="col-auto pa-0">
+                                            <v-btn
                                                 tile
                                                 text
                                                 icon
                                                 large
                                                 class="mr-1"
-                                                v-on:click.stop.prevent="editPrinter(printer)"
-                                                ><v-icon small>mdi-pencil</v-icon></v-btn
-                                            ></v-col
-                                        >
+                                                v-on:click.stop.prevent="editPrinter(printer)">
+                                                <v-icon small>mdi-pencil</v-icon>
+                                            </v-btn>
+                                        </v-col>
                                     </v-row>
                                 </v-col>
                             </v-row>
@@ -188,17 +181,18 @@
                             </p>
                             <p class="text-center mb-0">
                                 {{ $t('SelectPrinterDialog.YouCanFindMore') }}
-                                <a href="https://docs.mainsail.xyz/remotemode" target="_blank"
-                                    >https://docs.mainsail.xyz/remotemode</a
-                                >.
+                                <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
+                                    https://docs.mainsail.xyz/remotemode
+                                </a>
+                                .
                             </p>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-center mt-0">
-                            <v-btn text color="primary" @click="dialogAddPrinter.bool = true">{{
-                                $t('SelectPrinterDialog.AddPrinter')
-                            }}</v-btn>
+                            <v-btn text color="primary" @click="dialogAddPrinter.bool = true">
+                                {{ $t('SelectPrinterDialog.AddPrinter') }}
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>

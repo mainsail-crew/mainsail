@@ -2,9 +2,9 @@
     <v-dialog transition="dialog-bottom-transition" max-width="600" scrollable v-model="isOpen" :fullscreen="isMobile">
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
-                <v-btn icon tile v-bind="attrs" v-on="on"
-                    ><v-icon small>{{ mdiHelp }}</v-icon></v-btn
-                >
+                <v-btn icon tile v-bind="attrs" v-on="on">
+                    <v-icon small>{{ mdiHelp }}</v-icon>
+                </v-btn>
             </template>
             <template v-else>
                 <v-btn
@@ -12,8 +12,7 @@
                     color="lightgray"
                     :small="isMini"
                     v-bind="attrs"
-                    v-on="on"
-                >
+                    v-on="on">
                     <v-icon>{{ mdiHelp }}</v-icon>
                 </v-btn>
             </template>
@@ -23,12 +22,11 @@
                 :title="$t('Console.CommandList')"
                 :icon="mdiHelp"
                 card-class="command-help-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="isOpen = false"
-                        ><v-icon>{{ mdiCloseThick }}</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="isOpen = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-title>
                     <v-row>
@@ -39,8 +37,7 @@
                                 outlined
                                 hide-details
                                 clearable
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-title>
@@ -54,20 +51,19 @@
                                         v-for="cmd of helplistFiltered"
                                         :key="cmd.commandLow"
                                         class="px-0"
-                                        two-line
-                                    >
+                                        two-line>
                                         <v-list-item-content class="px-0">
                                             <v-list-item-title
                                                 class="blue--text font-weight-bold cursor-pointer"
                                                 @click="
                                                     $emit('onCommand', cmd.command)
                                                     isOpen = false
-                                                "
-                                                >{{ cmd.command }}</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle class="text-wrap">{{
-                                                cmd.description
-                                            }}</v-list-item-subtitle>
+                                                ">
+                                                {{ cmd.command }}
+                                            </v-list-item-title>
+                                            <v-list-item-subtitle class="text-wrap">
+                                                {{ cmd.description }}
+                                            </v-list-item-subtitle>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-list>

@@ -6,8 +6,7 @@
         icon="mdi-code-tags"
         :title="macrogroup.name"
         :collapsible="true"
-        :card-class="'macrogroup_' + panelId + '_panel'"
-    >
+        :card-class="'macrogroup_' + panelId + '_panel'">
         <v-card-text class="py-2">
             <v-row>
                 <v-col class="text-center">
@@ -16,8 +15,7 @@
                         :key="'macroparam_' + index"
                         :macro="macro"
                         :color="getColor(macro)"
-                        class="mx-1 my-1"
-                    />
+                        class="mx-1 my-1" />
                 </v-col>
             </v-row>
         </v-card-text>

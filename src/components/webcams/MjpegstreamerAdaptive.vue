@@ -20,11 +20,10 @@
             width="600"
             height="400"
             :style="webcamStyle"
-            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"
-        ></canvas>
-        <span class="webcamFpsOutput" v-if="isLoaded && showFps"
-            >{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span
-        >
+            :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
+        <span class="webcamFpsOutput" v-if="isLoaded && showFps">
+            {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
+        </span>
     </div>
 </template>
 
