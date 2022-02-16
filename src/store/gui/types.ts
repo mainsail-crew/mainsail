@@ -2,6 +2,7 @@ import { GuiMacrosState } from '@/store/gui/macros/types'
 import { GuiConsoleState } from '@/store/gui/console/types'
 import { GuiPresetsState } from '@/store/gui/presets/types'
 import { GuiRemoteprintersState } from '@/store/gui/remoteprinters/types'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 
 export interface GuiState {
     general: {
@@ -118,6 +119,7 @@ export interface GuiState {
             toggleChartCol3: string
             hidePrintStatus: string[]
             hideColums: string[]
+            selectedJobs: ServerHistoryStateJob[]
         }
         jobqueue: {
             countPerPage: number

@@ -16,6 +16,7 @@ export default defineConfig({
         loadVersion(),
         checker({ typescript: true }),
         Components({
+            dts: true, // enabled by default if `typescript` is installed
             resolvers: [VuetifyResolver()],
         }),
     ],

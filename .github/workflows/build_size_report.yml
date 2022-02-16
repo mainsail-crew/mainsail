@@ -14,7 +14,7 @@ jobs:
       - uses: preactjs/compressed-size-action@v2
         with:
           strip-hash: "\\b\\w{8}\\."
-          pattern: './dist/**/*.{js,css,html,json}'
+          pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
           exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
       - uses: actions-ecosystem/action-remove-labels@v1
         with:

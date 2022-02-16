@@ -9,26 +9,50 @@
                 <v-col class="col-12 col-sm-6 col-md-4">
                     <v-simple-table>
                         <tbody>
-                            <tr>
-                                <td>{{ $t('History.TotalPrinttime') }}</td>
-                                <td class="text-right">{{ formatPrintTime(totalPrintTime) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.LongestPrinttime') }}</td>
-                                <td class="text-right">{{ formatPrintTime(longestPrintTime) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.AvgPrinttime') }}</td>
-                                <td class="text-right">{{ formatPrintTime(avgPrintTime) }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.TotalFilamentUsed') }}</td>
-                                <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $t('History.TotalJobs') }}</td>
-                                <td class="text-right">{{ totalJobsCount }}</td>
-                            </tr>
+                            <template v-if="existsSelectedJobs">
+                                <tr>
+                                    <td>{{ $t('History.SelectedPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.LongestPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedLongestPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.AvgPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(selectedAvgPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.SelectedFilamentUsed') }}</td>
+                                    <td class="text-right">{{ Math.round(selectedFilamentUsed / 100) / 10 }} m</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.SelectedJobs') }}</td>
+                                    <td class="text-right">{{ selectedJobs.length }}</td>
+                                </tr>
+                            </template>
+                            <template v-else>
+                                <tr>
+                                    <td>{{ $t('History.TotalPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(totalPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.LongestPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(longestPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.AvgPrinttime') }}</td>
+                                    <td class="text-right">{{ formatPrintTime(avgPrintTime) }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.TotalFilamentUsed') }}</td>
+                                    <td class="text-right">{{ Math.round(totalFilamentUsed / 100) / 10 }} m</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ $t('History.TotalJobs') }}</td>
+                                    <td class="text-right">{{ totalJobsCount }}</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </v-simple-table>
                 </v-col>
@@ -61,20 +85,49 @@ import Panel from '@/components/ui/Panel.vue'
 import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatus from '@/components/charts/HistoryAllPrintStatus.vue'
+import { ServerHistoryStateJob } from '@/store/server/history/types'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
+    }
+
+    get existsSelectedJobs() {
+        return this.selectedJobs.length > 0
+    }
+
     get totalPrintTime() {
         return 'total_print_time' in this.$store.state.server.history.job_totals
             ? this.$store.state.server.history.job_totals.total_print_time
             : 0
     }
 
+    get selectedPrintTime() {
+        let printtime = 0
+
+        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
+            printtime += job.print_duration
+        })
+
+        return printtime
+    }
+
     get longestPrintTime() {
         return 'longest_print' in this.$store.state.server.history.job_totals
             ? this.$store.state.server.history.job_totals.longest_print
             : 0
+    }
+
+    get selectedLongestPrintTime() {
+        let printtime = 0
+
+        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
+            if (job.print_duration > printtime) printtime = job.print_duration
+        })
+
+        return printtime
     }
 
     get avgPrintTime() {
@@ -84,10 +137,27 @@ export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
         return 0
     }
 
+    get selectedAvgPrintTime() {
+        if (this.selectedJobs.length > 0 && this.selectedPrintTime > 0)
+            return Math.round(this.selectedPrintTime / this.selectedJobs.length)
+
+        return 0
+    }
+
     get totalFilamentUsed() {
         return 'total_filament_used' in this.$store.state.server.history.job_totals
             ? this.$store.state.server.history.job_totals.total_filament_used
             : 0
+    }
+
+    get selectedFilamentUsed() {
+        let filamentUsed = 0
+
+        this.selectedJobs.forEach((job: ServerHistoryStateJob) => {
+            filamentUsed += job.filament_used
+        })
+
+        return filamentUsed
     }
 
     get totalJobsCount() {
