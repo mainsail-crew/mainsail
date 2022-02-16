@@ -7,7 +7,8 @@
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
-                            <v-icon small left>mdi-pencil</v-icon> {{ $t('Settings.Edit') }}
+                            <v-icon small left>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small

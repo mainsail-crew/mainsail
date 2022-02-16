@@ -15,7 +15,8 @@
                             "
                             :dynamicSlotWidth="true">
                             <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
-                                <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                                <v-icon left small>mdi-pencil</v-icon>
+                                {{ $t('Settings.Edit') }}
                             </v-btn>
                             <v-btn
                                 small
@@ -163,7 +164,8 @@
                                                             @click="changeColorMacroFromGroup(macro)"
                                                             class="ml-3 minwidth-0 px-2"
                                                             :color="macro.color">
-                                                            <v-icon small left>mdi-palette</v-icon> {{ macro.color }}
+                                                            <v-icon small left>mdi-palette</v-icon>
+                                                            {{ macro.color }}
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
@@ -272,7 +274,8 @@
                             v-bind:key="'availableMacro_macro_' + index"
                             :dynamicSlotWidth="true">
                             <v-btn small outlined class="ml-3" @click="addMacroToGroup(macro)">
-                                <v-icon left small>mdi-plus</v-icon> {{ $t('Settings.MacrosTab.Add') }}
+                                <v-icon left small>mdi-plus</v-icon>
+                                {{ $t('Settings.MacrosTab.Add') }}
                             </v-btn>
                         </settings-row>
                     </template>

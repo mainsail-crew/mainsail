@@ -45,9 +45,9 @@
                     :close-on-content-click="false"
                     :title="$t('Console.SetupConsole')">
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on"
-                            ><v-icon>mdi-filter</v-icon></v-btn
-                        >
+                        <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on">
+                            <v-icon>mdi-filter</v-icon>
+                        </v-btn>
                     </template>
                     <v-list>
                         <v-list-item class="minHeight36">

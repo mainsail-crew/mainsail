@@ -15,29 +15,29 @@
 
         <v-list min-width="300" max-width="600">
             <template v-if="currentFlags.length">
-                <v-subheader class="" style="height: auto">{{
-                    $t('App.ThrottledStates.HeadlineCurrentFlags')
-                }}</v-subheader>
+                <v-subheader class="" style="height: auto">
+                    {{ $t('App.ThrottledStates.HeadlineCurrentFlags') }}
+                </v-subheader>
                 <v-list-item v-for="flag in currentFlags" :key="flag" two-line>
                     <v-list-item-content class="py-0">
                         <v-list-item-title>{{ $t(`App.ThrottledStates.Title${convertName(flag)}`) }}</v-list-item-title>
-                        <v-list-item-subtitle class="text-wrap">{{
-                            $t(`App.ThrottledStates.Description${convertName(flag)}`)
-                        }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-wrap">
+                            {{ $t(`App.ThrottledStates.Description${convertName(flag)}`) }}
+                        </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </template>
             <template v-if="previouslyFlags.length">
                 <v-divider class="my-2" v-if="currentFlags.length"></v-divider>
-                <v-subheader class="" style="height: auto">{{
-                    $t('App.ThrottledStates.HeadlinePreviouslyFlags')
-                }}</v-subheader>
+                <v-subheader class="" style="height: auto">
+                    {{ $t('App.ThrottledStates.HeadlinePreviouslyFlags') }}
+                </v-subheader>
                 <v-list-item v-for="flag in previouslyFlags" :key="flag" two-line>
                     <v-list-item-content class="py-0">
                         <v-list-item-title>{{ $t(`App.ThrottledStates.Title${convertName(flag)}`) }}</v-list-item-title>
-                        <v-list-item-subtitle class="text-wrap">{{
-                            $t(`App.ThrottledStates.Description${convertName(flag)}`)
-                        }}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-wrap">
+                            {{ $t(`App.ThrottledStates.Description${convertName(flag)}`) }}
+                        </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </template>

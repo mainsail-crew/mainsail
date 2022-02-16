@@ -12,9 +12,9 @@
     <div>
         <v-card-actions>
             <v-btn @click="expand = !expand" class="btn-collapsible" plain small>
-                <v-icon small :class="!expand ? 'icon-rotate-180' : ''">{{
-                    expand ? iconExpanded : iconCollapsed
-                }}</v-icon>
+                <v-icon small :class="!expand ? 'icon-rotate-180' : ''">
+                    {{ expand ? iconExpanded : iconCollapsed }}
+                </v-icon>
                 <span class="pl-1">{{ title }}</span>
             </v-btn>
             <v-divider class="mx-1"></v-divider>

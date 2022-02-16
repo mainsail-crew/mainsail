@@ -74,26 +74,26 @@
                             @click="clickUploadButton"
                             :title="$t('Files.UploadNewGcode')"
                             class="primary--text px-2 minwidth-0 ml-3"
-                            :loading="loadings.includes('gcodeUpload')"
-                            ><v-icon>mdi-upload</v-icon></v-btn
-                        >
+                            :loading="loadings.includes('gcodeUpload')">
+                            <v-icon>mdi-upload</v-icon>
+                        </v-btn>
                         <v-btn
                             @click="createDirectory"
                             :title="$t('Files.CreateNewDirectory')"
-                            class="px-2 minwidth-0 ml-3"
-                            ><v-icon>mdi-folder-plus</v-icon></v-btn
-                        >
+                            class="px-2 minwidth-0 ml-3">
+                            <v-icon>mdi-folder-plus</v-icon>
+                        </v-btn>
                         <v-btn
                             @click="refreshFileList"
                             :title="$t('Files.RefreshCurrentDirectory')"
-                            class="px-2 minwidth-0 ml-3"
-                            ><v-icon>mdi-refresh</v-icon></v-btn
-                        >
+                            class="px-2 minwidth-0 ml-3">
+                            <v-icon>mdi-refresh</v-icon>
+                        </v-btn>
                         <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"
-                                    ><v-icon>mdi-cog</v-icon></v-btn
-                                >
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
                             </template>
                             <v-list>
                                 <v-list-item class="minHeight36">
@@ -130,21 +130,24 @@
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
-                        <span
-                            ><b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ this.currentPath !== 'gcodes' ? '/' + this.currentPath.substring(7) : '/' }}</span
-                        >
+                        <span>
+                            <b>{{ $t('Files.CurrentPath') }}:</b>
+                            {{ this.currentPath !== 'gcodes' ? '/' + this.currentPath.substring(7) : '/' }}
+                        </span>
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <b>{{ $t('Files.FreeDisk') }}:</b> {{ formatFilesize(disk_usage.free) }}
+                                        <b>{{ $t('Files.FreeDisk') }}:</b>
+                                        {{ formatFilesize(disk_usage.free) }}
                                     </span>
                                 </template>
                                 <span>
-                                    {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}<br />
-                                    {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}<br />
+                                    {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}
+                                    <br />
+                                    {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}
+                                    <br />
                                     {{ $t('Files.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
                                 </span>
                             </v-tooltip>
@@ -254,9 +257,9 @@
                             <v-tooltip top v-if="getJobStatus(item)">
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon small :color="getStatusColor(getJobStatus(item))">{{
-                                            getStatusIcon(getJobStatus(item))
-                                        }}</v-icon>
+                                        <v-icon small :color="getStatusColor(getJobStatus(item))">
+                                            {{ getStatusIcon(getJobStatus(item)) }}
+                                        </v-icon>
                                     </span>
                                 </template>
                                 <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
@@ -313,9 +316,9 @@
                         <td
                             class="text-no-wrap text-right"
                             v-if="headers.find((header) => header.value === 'slicer').visible">
-                            {{ item.slicer ? item.slicer : '--' }}<br /><small v-if="item.slicer_version">{{
-                                item.slicer_version
-                            }}</small>
+                            {{ item.slicer ? item.slicer : '--' }}
+                            <br />
+                            <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
                         </td>
                     </tr>
                 </template>
@@ -327,11 +330,13 @@
             </div>
         </panel>
         <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
-            <span v-if="uploadSnackbar.max > 1" class="mr-1"
-                >({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span
-            ><strong>{{ $t('Files.Uploading') + ' ' + uploadSnackbar.filename }}</strong
-            ><br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">
+                ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
+            </span>
+            <strong>{{ $t('Files.Uploading') + ' ' + uploadSnackbar.filename }}</strong>
+            <br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
+            <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
@@ -346,9 +351,9 @@
                     v-if="getBigThumbnail(dialogPrintFile.item)"
                     :src="getBigThumbnail(dialogPrintFile.item)"></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text class="pb-0">{{
-                    $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename })
-                }}</v-card-text>
+                <v-card-text class="pb-0">
+                    {{ $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename }) }}
+                </v-card-text>
                 <template v-if="moonrakerComponents.includes('timelapse')">
                     <v-divider class="mt-3 mb-2"></v-divider>
                     <v-card-text class="pb-0">
@@ -365,9 +370,9 @@
                         color="primary"
                         text
                         @click="startPrint(dialogPrintFile.item.filename)"
-                        :disabled="printerIsPrinting || !klipperReadyForGui"
-                        >{{ $t('Files.StartPrint') }}</v-btn
-                    >
+                        :disabled="printerIsPrinting || !klipperReadyForGui">
+                        {{ $t('Files.StartPrint') }}
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -377,13 +382,15 @@
                     @click="clickRow(contextMenu.item, true)"
                     :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-play</v-icon> {{ $t('Files.PrintStart') }}
+                    <v-icon class="mr-1">mdi-play</v-icon>
+                    {{ $t('Files.PrintStart') }}
                 </v-list-item>
                 <v-list-item
                     @click="addToQueue(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
                     :disabled="!isGcodeFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-playlist-plus</v-icon> {{ $t('Files.AddToQueue') }}
+                    <v-icon class="mr-1">mdi-playlist-plus</v-icon>
+                    {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
                     @click="preheat"
@@ -394,7 +401,8 @@
                         contextMenu.item.first_layer_bed_temp > 0
                     "
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)">
-                    <v-icon class="mr-1">mdi-fire</v-icon> {{ $t('Files.Preheat') }}
+                    <v-icon class="mr-1">mdi-fire</v-icon>
+                    {{ $t('Files.Preheat') }}
                 </v-list-item>
                 <v-list-item
                     @click="view3D(contextMenu.item)"
@@ -404,22 +412,28 @@
                     {{ $t('Files.View3D') }}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Files.Download') }}
+                    <v-icon class="mr-1">mdi-cloud-download</v-icon>
+                    {{ $t('Files.Download') }}
                 </v-list-item>
                 <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename') }}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    {{ $t('Files.Rename') }}
                 </v-list-item>
                 <v-list-item @click="editFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-pencil</v-icon> {{ $t('Files.EditFile') }}
+                    <v-icon class="mr-1">mdi-pencil</v-icon>
+                    {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Files.Rename') }}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    {{ $t('Files.Rename') }}
                 </v-list-item>
                 <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('Files.Delete') }}
                 </v-list-item>
                 <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Files.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('Files.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -429,9 +443,9 @@
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogCreateDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -475,9 +489,9 @@
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogRenameDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -500,9 +514,9 @@
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">

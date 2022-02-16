@@ -13,13 +13,14 @@
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
-                <v-btn small @click="restart" class="ml-2 error--text"
-                    ><v-icon class="mr-sm-2">mdi-restart</v-icon>{{ $t('Panels.KlippyStatePanel.Restart') }}</v-btn
-                >
-                <v-btn small @click="firmwareRestart" class="ml-4 error--text"
-                    ><v-icon class="mr-sm-2">mdi-restart</v-icon
-                    >{{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}</v-btn
-                >
+                <v-btn small @click="restart" class="ml-2 error--text">
+                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    {{ $t('Panels.KlippyStatePanel.Restart') }}
+                </v-btn>
+                <v-btn small @click="firmwareRestart" class="ml-4 error--text">
+                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
+                </v-btn>
             </v-card-actions>
         </template>
         <template v-else>

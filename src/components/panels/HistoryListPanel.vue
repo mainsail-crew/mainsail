@@ -31,25 +31,25 @@
                                 :title="$t('History.Delete')"
                                 color="warning"
                                 class="px-2 minwidth-0 ml-3"
-                                @click="deleteSelectedDialog = true"
-                                ><v-icon>mdi-delete</v-icon></v-btn
-                            >
+                                @click="deleteSelectedDialog = true">
+                                <v-icon>mdi-delete</v-icon>
+                            </v-btn>
                         </template>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
-                            @click="refreshHistory"
-                            ><v-icon>mdi-refresh</v-icon></v-btn
-                        >
+                            @click="refreshHistory">
+                            <v-icon>mdi-refresh</v-icon>
+                        </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
                                     class="px-2 minwidth-0 ml-3"
                                     :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
-                                    v-on="on"
-                                    ><v-icon>mdi-cog</v-icon></v-btn
-                                >
+                                    v-on="on">
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
                             </template>
                             <v-list>
                                 <template v-if="allPrintStatusArray.length">
@@ -173,9 +173,9 @@
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">{{
-                                            getStatusIcon(item.status)
-                                        }}</v-icon>
+                                        <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">
+                                            {{ getStatusIcon(item.status) }}
+                                        </v-icon>
                                     </span>
                                 </template>
                                 <span>{{ item.status.replace(/_/g, ' ') }}</span>
@@ -189,9 +189,10 @@
                         </td>
                         <td class=" " v-if="headers.find((header) => header.value === 'slicer').visible">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
-                            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version"
-                                ><br />{{ item.metadata.slicer_version }}</small
-                            >
+                            <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
+                                <br />
+                                {{ item.metadata.slicer_version }}
+                            </small>
                         </td>
                     </tr>
                 </template>
@@ -200,16 +201,19 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-text-box-search</v-icon> {{ $t('History.Details') }}
+                    <v-icon class="mr-1">mdi-text-box-search</v-icon>
+                    {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item
                     @click="startPrint(contextMenu.item)"
                     v-if="contextMenu.item.exists"
                     :disabled="printerIsPrinting || !klipperReadyForGui">
-                    <v-icon class="mr-1">mdi-printer</v-icon> {{ $t('History.Reprint') }}
+                    <v-icon class="mr-1">mdi-printer</v-icon>
+                    {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('History.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -268,27 +272,27 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedTime') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.metadata.estimated_time)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.metadata.estimated_time) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.print_duration > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.PrintDuration') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.print_duration)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.print_duration) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.total_duration > 0">
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.TotalDuration') }}</v-col>
-                                <v-col class="text-right">{{
-                                    formatPrintTime(detailsDialog.item.total_duration)
-                                }}</v-col>
+                                <v-col class="text-right">
+                                    {{ formatPrintTime(detailsDialog.item.total_duration) }}
+                                </v-col>
                             </v-row>
                         </template>
                         <template
@@ -296,12 +300,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedFilamentWeight') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{
-                                        Math.round(detailsDialog.item.metadata.filament_weight_total * 100) / 100
-                                    }}
-                                    g</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ Math.round(detailsDialog.item.metadata.filament_weight_total * 100) / 100 }} g
+                                </v-col>
                             </v-row>
                         </template>
                         <template
@@ -309,9 +310,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.EstimatedFilament') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ Math.round(detailsDialog.item.metadata.filament_total) }} mm</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ Math.round(detailsDialog.item.metadata.filament_total) }} mm
+                                </v-col>
                             </v-row>
                         </template>
                         <template v-if="detailsDialog.item.filament_used > 0">
@@ -329,9 +330,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerExtTemp') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_extr_temp }} °C</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_extr_temp }} °C
+                                </v-col>
                             </v-row>
                         </template>
                         <template
@@ -342,9 +343,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerBedTemp') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_bed_temp }} °C</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_bed_temp }} °C
+                                </v-col>
                             </v-row>
                         </template>
                         <template
@@ -354,9 +355,9 @@
                             <v-divider class="my-3"></v-divider>
                             <v-row>
                                 <v-col>{{ $t('History.FirstLayerHeight') }}</v-col>
-                                <v-col class="text-right"
-                                    >{{ detailsDialog.item.metadata.first_layer_height }} mm</v-col
-                                >
+                                <v-col class="text-right">
+                                    {{ detailsDialog.item.metadata.first_layer_height }} mm
+                                </v-col>
                             </v-row>
                         </template>
                         <template

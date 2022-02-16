@@ -106,7 +106,8 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('JobQueue.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('JobQueue.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>

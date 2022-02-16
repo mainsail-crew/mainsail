@@ -45,15 +45,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState1(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState1(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState1(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState1(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>
@@ -85,15 +85,15 @@
                                                 <v-icon
                                                     v-if="!element.visible"
                                                     color="grey lighten-1"
-                                                    @click.stop="changeState2(element.name, true)"
-                                                    >mdi-checkbox-blank-outline</v-icon
-                                                >
+                                                    @click.stop="changeState2(element.name, true)">
+                                                    mdi-checkbox-blank-outline
+                                                </v-icon>
                                                 <v-icon
                                                     v-else
                                                     color="primary"
-                                                    @click.stop="changeState2(element.name, false)"
-                                                    >mdi-checkbox-marked</v-icon
-                                                >
+                                                    @click.stop="changeState2(element.name, false)">
+                                                    mdi-checkbox-marked
+                                                </v-icon>
                                             </v-col>
                                         </v-row>
                                     </v-list-item>

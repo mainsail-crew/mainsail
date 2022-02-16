@@ -98,18 +98,18 @@
                                     <v-btn
                                         @click="loadCurrentFile"
                                         class="mr-3"
-                                        v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile"
-                                        >{{ $t('GCodeViewer.LoadCurrentFile') }}</v-btn
-                                    >
+                                        v-if="sdCardFilePath !== '' && sdCardFilePath !== loadedFile">
+                                        {{ $t('GCodeViewer.LoadCurrentFile') }}
+                                    </v-btn>
                                     <v-btn @click="chooseFile">{{ $t('GCodeViewer.LoadLocal') }}</v-btn>
                                 </template>
                                 <template v-else>
-                                    <v-btn @click="tracking = !tracking" class="mr-3" v-if="showTrackingButton"
-                                        ><v-icon
+                                    <v-btn @click="tracking = !tracking" class="mr-3" v-if="showTrackingButton">
+                                        <v-icon
                                             v-html="tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'"
-                                            class="mr-2"></v-icon
-                                        >{{ $t('GCodeViewer.Tracking') }}</v-btn
-                                    >
+                                            class="mr-2"></v-icon>
+                                        {{ $t('GCodeViewer.Tracking') }}
+                                    </v-btn>
                                     <v-btn @click="clearLoadedFile">{{ $t('GCodeViewer.ClearLoadedFile') }}</v-btn>
                                 </template>
                             </v-col>
@@ -142,9 +142,9 @@
                         :close-on-content-click="false"
                         :title="$t('Files.SetupCurrentList')">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on"
-                                ><v-icon>mdi-cog</v-icon></v-btn
-                            >
+                            <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on">
+                                <v-icon>mdi-cog</v-icon>
+                            </v-btn>
                         </template>
                         <v-list>
                             <v-list-item class="minHeight36">
@@ -220,7 +220,8 @@
         </panel>
         <v-snackbar v-model="loading" :timeout="-1" :value="true" fixed right bottom dark>
             <div>
-                {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%<br />
+                {{ $t('GCodeViewer.Rendering') }} - {{ loadingPercent }}%
+                <br />
                 <strong>{{ this.loadedFile }}</strong>
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
@@ -234,14 +235,16 @@
             <template v-if="downloadSnackbar.total > 0">
                 <div>
                     {{ $t('GCodeViewer.Downloading') }} - {{ Math.round(downloadSnackbar.percent) }} % @
-                    {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s<br />
+                    {{ formatFilesize(Math.round(downloadSnackbar.speed)) }}/s
+                    <br />
                     <strong>{{ downloadSnackbar.filename }}</strong>
                 </div>
                 <v-progress-linear class="mt-2" :value="downloadSnackbar.percent"></v-progress-linear>
             </template>
             <template v-else>
                 <div>
-                    {{ $t('GCodeViewer.Downloading') }}<br />
+                    {{ $t('GCodeViewer.Downloading') }}
+                    <br />
                     <strong>{{ downloadSnackbar.filename }}</strong>
                 </div>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>

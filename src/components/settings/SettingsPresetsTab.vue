@@ -7,7 +7,8 @@
                     <v-divider class="my-2" v-if="key"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
-                            <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                            <v-icon left small>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small
@@ -22,7 +23,8 @@
                 <v-divider class="my-2" v-if="presets.length"></v-divider>
                 <settings-row :title="$t('Settings.PresetsTab.Cooldown')">
                     <v-btn small outlined class="ml-3" @click="editCooldown">
-                        <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                        <v-icon left small>mdi-pencil</v-icon>
+                        {{ $t('Settings.Edit') }}
                     </v-btn>
                 </settings-row>
             </v-card-text>
@@ -32,9 +34,13 @@
         </v-card>
         <v-card flat v-else-if="form.bool">
             <v-form v-model="form.valid" @submit.prevent="savePreset">
-                <v-card-title>{{
-                    form.id === null ? $t('Settings.PresetsTab.CreateHeadline') : $t('Settings.PresetsTab.EditHeadline')
-                }}</v-card-title>
+                <v-card-title>
+                    {{
+                        form.id === null
+                            ? $t('Settings.PresetsTab.CreateHeadline')
+                            : $t('Settings.PresetsTab.EditHeadline')
+                    }}
+                </v-card-title>
                 <v-card-text>
                     <v-row class="mt-3" v-if="form.boolInvalidMin">
                         <v-col class="py-0">

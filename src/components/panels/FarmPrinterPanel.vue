@@ -110,10 +110,10 @@
                                     <h3 class="font-weight-regular">{{ printer_status }}</h3>
                                     <span
                                         class="subtitle-2 text-truncate px-0 text--disabled d-block"
-                                        v-if="printer_current_filename !== ''"
-                                        ><v-icon small class="mr-1">mdi-file-outline</v-icon
-                                        >{{ printer_current_filename }}</span
-                                    >
+                                        v-if="printer_current_filename !== ''">
+                                        <v-icon small class="mr-1">mdi-file-outline</v-icon>
+                                        {{ printer_current_filename }}
+                                    </span>
                                 </v-col>
                             </v-row>
                         </v-card-title>
@@ -133,11 +133,13 @@
                     </v-card-text>
                     <v-fade-transition>
                         <v-overlay v-if="hover" absolute :z-index="4">
-                            <v-btn color="primary" @click="clickPrinter">{{
-                                printer.socket.isConnected
-                                    ? $t('Panels.FarmPrinterPanel.SwitchToPrinter')
-                                    : $t('Panels.FarmPrinterPanel.ReconnectToPrinter')
-                            }}</v-btn>
+                            <v-btn color="primary" @click="clickPrinter">
+                                {{
+                                    printer.socket.isConnected
+                                        ? $t('Panels.FarmPrinterPanel.SwitchToPrinter')
+                                        : $t('Panels.FarmPrinterPanel.ReconnectToPrinter')
+                                }}
+                            </v-btn>
                         </v-overlay>
                     </v-fade-transition>
                 </div>

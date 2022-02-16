@@ -10,7 +10,8 @@
                         :loading="printer.socket.isConnecting"
                         :icon="printer.socket.isConnected ? 'mdi-checkbox-marked-circle' : 'mdi-cancel'">
                         <v-btn small outlined @click="editPrinter(printer)">
-                            <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                            <v-icon left small>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small
@@ -24,9 +25,9 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createPrinter">{{
-                    $t('Settings.RemotePrintersTab.AddPrinter')
-                }}</v-btn>
+                <v-btn text color="primary" @click="createPrinter">
+                    {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
+                </v-btn>
             </v-card-actions>
         </v-card>
         <v-card flat v-else>
@@ -64,12 +65,12 @@
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
-                <v-btn text color="primary" @click="storePrinter" v-if="form.id === null">{{
-                    $t('Settings.RemotePrintersTab.AddPrinter')
-                }}</v-btn>
-                <v-btn text color="primary" @click="updatePrinter" v-else>{{
-                    $t('Settings.RemotePrintersTab.UpdatePrinter')
-                }}</v-btn>
+                <v-btn text color="primary" @click="storePrinter" v-if="form.id === null">
+                    {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
+                </v-btn>
+                <v-btn text color="primary" @click="updatePrinter" v-else>
+                    {{ $t('Settings.RemotePrintersTab.UpdatePrinter') }}
+                </v-btn>
             </v-card-actions>
         </v-card>
     </div>

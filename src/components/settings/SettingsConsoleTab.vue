@@ -57,7 +57,8 @@
                             <v-icon small>mdi-{{ filter.bool ? 'filter' : 'filter-off' }}</v-icon>
                         </v-btn>
                         <v-btn small outlined class="ml-3" @click="editFilter(filter)">
-                            <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
+                            <v-icon left small>mdi-pencil</v-icon>
+                            {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
                             small
@@ -76,9 +77,13 @@
         </v-card>
         <v-card flat v-else>
             <v-form v-model="form.valid" @submit.prevent="saveFilter">
-                <v-card-title>{{
-                    form.id === null ? $t('Settings.ConsoleTab.CreateHeadline') : $t('Settings.ConsoleTab.EditHeadline')
-                }}</v-card-title>
+                <v-card-title>
+                    {{
+                        form.id === null
+                            ? $t('Settings.ConsoleTab.CreateHeadline')
+                            : $t('Settings.ConsoleTab.EditHeadline')
+                    }}
+                </v-card-title>
                 <v-card-text>
                     <settings-row :title="$t('Settings.ConsoleTab.Name')">
                         <v-text-field

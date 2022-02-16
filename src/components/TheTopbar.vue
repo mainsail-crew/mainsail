@@ -64,8 +64,8 @@
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
-                <v-icon class="d-md-none">mdi-content-save</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
+                <v-icon class="d-md-none">mdi-content-save</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
             <v-btn
                 tile
@@ -80,8 +80,8 @@
                 "
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
-                <v-icon class="mr-md-2">mdi-file-upload</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
+                <v-icon class="mr-md-2">mdi-file-upload</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
             <v-btn
                 tile
@@ -92,16 +92,17 @@
                 v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
-                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon
-                ><span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
+                <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon>
+                <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
         <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
-            <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong
-            ><br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
+            <br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
+            <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">

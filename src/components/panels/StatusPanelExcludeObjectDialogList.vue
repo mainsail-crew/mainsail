@@ -17,16 +17,16 @@
                     {{ object.name }}
                 </v-col>
                 <v-col class="col-auto py-2">
-                    <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">{{
-                        $t('Panels.StatusPanel.ExcludeObject.Excluded')
-                    }}</v-chip>
+                    <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">
+                        {{ $t('Panels.StatusPanel.ExcludeObject.Excluded') }}
+                    </v-chip>
                     <v-icon
                         class="text--disabled cursor-pointer"
                         @click="openExcludeObjectDialog(object.name)"
                         small
-                        v-else
-                        >mdi-close-circle</v-icon
-                    >
+                        v-else>
+                        mdi-close-circle
+                    </v-icon>
                 </v-col>
             </v-row>
             <v-divider v-bind:key="'divider_' + object.name"></v-divider>

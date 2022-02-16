@@ -111,8 +111,9 @@
                         v-model="gcode_verbose"
                         hide-details
                         class="mt-0"
-                        :disabled="blockedsettings.includes('gcode_verbose')"></v-switch> </settings-row
-                ><v-divider class="my-2"></v-divider>
+                        :disabled="blockedsettings.includes('gcode_verbose')"></v-switch>
+                </settings-row>
+                <v-divider class="my-2"></v-divider>
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.TimelapseTab.Parkhead') }}</h3>
                 <settings-row
                     :title="$t('Settings.TimelapseTab.Parkhead')"

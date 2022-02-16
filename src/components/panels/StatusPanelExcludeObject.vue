@@ -6,8 +6,8 @@
             <div class="d-flex flex-row flex-nowrap justify-space-between">
                 <div class="py-2" style="width: calc(100% - 25px)">
                     <span class="subtitle-2 d-block px-0 text--disabled text-truncate">
-                        <v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon
-                        >{{ current_object !== null ? current_object : '--' }}
+                        <v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>
+                        {{ current_object !== null ? current_object : '--' }}
                     </span>
                 </div>
                 <div class="py-2 pl-0">
@@ -15,9 +15,9 @@
                         class="text--disabled cursor-pointer"
                         @click="openCancelObjectDialog(current_object)"
                         small
-                        v-if="current_object !== null"
-                        >mdi-selection-remove</v-icon
-                    >
+                        v-if="current_object !== null">
+                        mdi-selection-remove
+                    </v-icon>
                 </div>
             </div>
         </v-container>
@@ -26,23 +26,23 @@
             <v-card>
                 <v-toolbar flat dense>
                     <v-toolbar-title>
-                        <span class="subheading"
-                            ><v-icon left>mdi-selection-remove</v-icon
-                            >{{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}</span
-                        >
+                        <span class="subheading">
+                            <v-icon left>mdi-selection-remove</v-icon>
+                            {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}
+                        </span>
                     </v-toolbar-title>
                 </v-toolbar>
-                <v-card-text class="mt-3">{{
-                    $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName })
-                }}</v-card-text>
+                <v-card-text class="mt-3">
+                    {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectText', { name: excludeObjectDialogName }) }}
+                </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="boolShowExcludeObjectDialog = false">{{
-                        $t('Panels.StatusPanel.ExcludeObject.Cancel')
-                    }}</v-btn>
-                    <v-btn color="primary" text @click="cancelObject">{{
-                        $t('Panels.StatusPanel.ExcludeObject.ExcludeObject')
-                    }}</v-btn>
+                    <v-btn text @click="boolShowExcludeObjectDialog = false">
+                        {{ $t('Panels.StatusPanel.ExcludeObject.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="cancelObject">
+                        {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObject') }}
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

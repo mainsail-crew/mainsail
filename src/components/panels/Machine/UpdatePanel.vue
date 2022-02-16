@@ -78,9 +78,9 @@ ul.commits {
                             :disabled="['printing', 'paused'].includes(printer_state)"
                             @click="btnSync"
                             v-bind="attrs"
-                            v-on="on"
-                            ><v-icon>mdi-refresh</v-icon></v-btn
-                        >
+                            v-on="on">
+                            <v-icon>mdi-refresh</v-icon>
+                        </v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
                 </v-tooltip>
@@ -91,15 +91,16 @@ ul.commits {
                         <v-divider class="my-0" v-if="index"></v-divider>
                         <v-row class="py-2">
                             <v-col class="pl-6">
-                                <strong>{{ 'name' in value ? value.name : key }}</strong
-                                ><br />
+                                <strong>{{ 'name' in value ? value.name : key }}</strong>
+                                <br />
                                 <span
                                     @click="openCommitsOverlay(key, value)"
-                                    :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"
-                                    ><v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1"
-                                        >mdi-information</v-icon
-                                    >{{ getVersionOutput(value) }}</span
-                                >
+                                    :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''">
+                                    <v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">
+                                        mdi-information
+                                    </v-icon>
+                                    {{ getVersionOutput(value) }}
+                                </span>
                             </v-col>
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
@@ -147,10 +148,10 @@ ul.commits {
                                         :color="getBtnColor(value)"
                                         @click="updateModule(key)"
                                         :disabled="getBtnDisabled(value)"
-                                        class="minwidth-0 px-2 text-uppercase"
-                                        ><v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon
-                                        >{{ getBtnText(value) }}</v-chip
-                                    >
+                                        class="minwidth-0 px-2 text-uppercase">
+                                        <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                        {{ getBtnText(value) }}
+                                    </v-chip>
                                 </template>
                             </v-col>
                         </v-row>
@@ -159,20 +160,20 @@ ul.commits {
                         <v-divider class="my-0 border-top-2"></v-divider>
                         <v-row class="pt-2">
                             <v-col class="col-auto pl-6 text-no-wrap">
-                                <strong>{{ $t('Machine.UpdatePanel.System') }}</strong
-                                ><br />
+                                <strong>{{ $t('Machine.UpdatePanel.System') }}</strong>
+                                <br />
                                 <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <span v-bind="attrs" v-on="on"
-                                            >{{ version_info.system.package_count }}
-                                            {{ $t('Machine.UpdatePanel.PackagesCanBeUpgraded') }}</span
-                                        >
+                                        <span v-bind="attrs" v-on="on">
+                                            {{ version_info.system.package_count }}
+                                            {{ $t('Machine.UpdatePanel.PackagesCanBeUpgraded') }}
+                                        </span>
                                     </template>
                                     <span>{{ version_info.system.package_list.join(', ') }}</span>
                                 </v-tooltip>
-                                <span v-if="version_info.system.package_count === 0">{{
-                                    $t('Machine.UpdatePanel.OSPackages')
-                                }}</span>
+                                <span v-if="version_info.system.package_count === 0">
+                                    {{ $t('Machine.UpdatePanel.OSPackages') }}
+                                </span>
                             </v-col>
                             <v-col class="pr-6 text-right" align-self="center">
                                 <v-chip
@@ -182,17 +183,16 @@ ul.commits {
                                     :color="version_info.system.package_count ? 'primary' : 'green'"
                                     :disabled="!version_info.system.package_count || printer_state === 'printing'"
                                     @click="updateSystem"
-                                    class="minwidth-0 px-2 text-uppercase"
-                                    ><v-icon small class="mr-1"
-                                        >mdi-{{
-                                            version_info.system.package_count ? 'progress-upload' : 'check'
-                                        }}</v-icon
-                                    >{{
+                                    class="minwidth-0 px-2 text-uppercase">
+                                    <v-icon small class="mr-1">
+                                        mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}
+                                    </v-icon>
+                                    {{
                                         version_info.system.package_count
                                             ? $t('Machine.UpdatePanel.Upgrade')
                                             : $t('Machine.UpdatePanel.UpToDate')
-                                    }}</v-chip
-                                >
+                                    }}
+                                </v-chip>
                             </v-col>
                         </v-row>
                     </template>
@@ -253,18 +253,16 @@ ul.commits {
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0">
-                                                                    {{ commit.subject
-                                                                    }}<v-chip
+                                                                    {{ commit.subject }}
+                                                                    <v-chip
                                                                         outlined
                                                                         label
                                                                         x-small
                                                                         class="ml-2 px-2"
                                                                         v-if="!openCommits.includes(commit.sha)"
-                                                                        @click="openCommits.push(commit.sha)"
-                                                                        ><v-icon small
-                                                                            >mdi-dots-horizontal</v-icon
-                                                                        ></v-chip
-                                                                    >
+                                                                        @click="openCommits.push(commit.sha)">
+                                                                        <v-icon small>mdi-dots-horizontal</v-icon>
+                                                                    </v-chip>
                                                                 </h4>
                                                                 <p
                                                                     v-if="openCommits.includes(commit.sha)"
@@ -273,9 +271,9 @@ ul.commits {
                                                                     v-html="commit.message"></p>
                                                                 <p class="caption mb-0">
                                                                     <span
-                                                                        class="font-weight-bold text-decoration-none white--text"
-                                                                        >{{ commit.author }}</span
-                                                                    >
+                                                                        class="font-weight-bold text-decoration-none white--text">
+                                                                        {{ commit.author }}
+                                                                    </span>
                                                                     <span>{{ convertCommitDate(commit.date) }}</span>
                                                                 </p>
                                                             </v-col>
@@ -292,9 +290,9 @@ ul.commits {
                                                                         '/commit/' +
                                                                         commit.sha
                                                                     "
-                                                                    target="_blank"
-                                                                    >{{ commit.sha.substr(0, 6) }}</v-chip
-                                                                >
+                                                                    target="_blank">
+                                                                    {{ commit.sha.substr(0, 6) }}
+                                                                </v-chip>
                                                             </v-col>
                                                         </v-row>
                                                     </li>

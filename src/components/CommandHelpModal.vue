@@ -54,12 +54,12 @@
                                                 @click="
                                                     $emit('onCommand', cmd.command)
                                                     isOpen = false
-                                                "
-                                                >{{ cmd.command }}</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle class="text-wrap">{{
-                                                cmd.description
-                                            }}</v-list-item-subtitle>
+                                                ">
+                                                {{ cmd.command }}
+                                            </v-list-item-title>
+                                            <v-list-item-subtitle class="text-wrap">
+                                                {{ cmd.description }}
+                                            </v-list-item-subtitle>
                                         </v-list-item-content>
                                     </v-list-item>
                                 </v-list>

@@ -114,9 +114,9 @@
                                 :color="colorQuadGantryLevel"
                                 height="30"
                                 :loading="loadings.includes('qgl')"
-                                @click="doQGL"
-                                >{{ $t('Panels.ControlPanel.QGL') }}</v-btn
-                            >
+                                @click="doQGL">
+                                {{ $t('Panels.ControlPanel.QGL') }}
+                            </v-btn>
                             <v-btn
                                 v-if="existsZtilt"
                                 class="btnMinWidthAuto flex-grow-1 px-0"
@@ -125,9 +125,9 @@
                                 :color="colorZTilt"
                                 height="30"
                                 :loading="loadings.includes('zTilt')"
-                                @click="doZtilt"
-                                >{{ $t('Panels.ControlPanel.ZTilt') }}</v-btn
-                            >
+                                @click="doZtilt">
+                                {{ $t('Panels.ControlPanel.ZTilt') }}
+                            </v-btn>
                         </v-col>
                     </v-row>
                     <v-row dense class="">
@@ -186,10 +186,11 @@
                     </v-btn>
                 </v-btn-toggle>
                 <div class="font-weight-bold warning rounded pa-2" v-else>
-                    {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}<br />
-                    <router-link style="color: white" to="/settings/interface">{{
-                        $t('Panels.ControlPanel.SettingsInterfaceControl')
-                    }}</router-link>
+                    {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}
+                    <br />
+                    <router-link style="color: white" to="/settings/interface">
+                        {{ $t('Panels.ControlPanel.SettingsInterfaceControl') }}
+                    </router-link>
                 </div>
             </v-col>
         </v-row>

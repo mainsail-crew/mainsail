@@ -9,7 +9,8 @@
         </v-snackbar>
         <v-snackbar v-model="boolShowDialogSuccess" :timeout="5000" :value="true" fixed right bottom dark>
             <div>
-                {{ $t('Timelapse.TimelapseRenderingSuccessful') }}<br />
+                {{ $t('Timelapse.TimelapseRenderingSuccessful') }}
+                <br />
                 <strong>{{ filename }}</strong>
             </div>
         </v-snackbar>

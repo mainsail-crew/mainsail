@@ -36,9 +36,9 @@
                         </v-btn>
                         <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on"
-                                    ><v-icon>mdi-cog</v-icon></v-btn
-                                >
+                                <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
+                                    <v-icon>mdi-cog</v-icon>
+                                </v-btn>
                             </template>
                             <v-list>
                                 <v-list-item class="minHeight36">
@@ -63,9 +63,10 @@
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
-                        <span
-                            ><b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b> {{ this.absolutePath }}</span
-                        >
+                        <span>
+                            <b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
+                            {{ this.absolutePath }}
+                        </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
                             <v-tooltip top>
@@ -76,10 +77,10 @@
                                     </span>
                                 </template>
                                 <span>
-                                    {{ $t('Machine.ConfigFilesPanel.Used') }}: {{ formatFilesize(disk_usage.used)
-                                    }}<br />
-                                    {{ $t('Machine.ConfigFilesPanel.Free') }}: {{ formatFilesize(disk_usage.free)
-                                    }}<br />
+                                    {{ $t('Machine.ConfigFilesPanel.Used') }}: {{ formatFilesize(disk_usage.used) }}
+                                    <br />
+                                    {{ $t('Machine.ConfigFilesPanel.Free') }}: {{ formatFilesize(disk_usage.free) }}
+                                    <br />
                                     {{ $t('Machine.ConfigFilesPanel.Total') }}: {{ formatFilesize(disk_usage.total) }}
                                 </span>
                             </v-tooltip>
@@ -159,27 +160,32 @@
                     }}
                 </v-list-item>
                 <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon> {{ $t('Machine.ConfigFilesPanel.Download') }}
+                    <v-icon class="mr-1">mdi-cloud-download</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Download') }}
                 </v-list-item>
                 <v-list-item
                     @click="renameFile(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     @click="renameDirectory(contextMenu.item)"
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon> {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     @click="removeFile"
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
                 <v-list-item
                     @click="deleteDirectory(contextMenu.item)"
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon class="mr-1">mdi-delete</v-icon> {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -237,12 +243,12 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateFile.show = false">{{
-                        $t('Machine.ConfigFilesPanel.Cancel')
-                    }}</v-btn>
-                    <v-btn color="primary" text @click="createFileAction">{{
-                        $t('Machine.ConfigFilesPanel.Create')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogCreateFile.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="createFileAction">
+                        {{ $t('Machine.ConfigFilesPanel.Create') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -264,12 +270,12 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameFile.show = false">{{
-                        $t('Machine.ConfigFilesPanel.Cancel')
-                    }}</v-btn>
-                    <v-btn color="primary" text @click="renameFileAction">{{
-                        $t('Machine.ConfigFilesPanel.Rename')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogRenameFile.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="renameFileAction">
+                        {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -279,9 +285,9 @@
                 card-class="maschine-configfiles-create-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogCreateDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -293,12 +299,12 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateDirectory.show = false">{{
-                        $t('Machine.ConfigFilesPanel.Cancel')
-                    }}</v-btn>
-                    <v-btn color="primary" text @click="createDirectoryAction">{{
-                        $t('Machine.ConfigFilesPanel.Create')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogCreateDirectory.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="createDirectoryAction">
+                        {{ $t('Machine.ConfigFilesPanel.Create') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -308,9 +314,9 @@
                 card-class="maschine-configfiles-rename-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogRenameDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -322,12 +328,12 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameDirectory.show = false">{{
-                        $t('Machine.ConfigFilesPanel.Cancel')
-                    }}</v-btn>
-                    <v-btn color="primary" text @click="renameDirectoryAction">{{
-                        $t('Machine.ConfigFilesPanel.Rename')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogRenameDirectory.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="primary" text @click="renameDirectoryAction">
+                        {{ $t('Machine.ConfigFilesPanel.Rename') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -337,9 +343,9 @@
                 card-class="maschine-configfiles-delete-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">
@@ -352,21 +358,23 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{
-                        $t('Machine.ConfigFilesPanel.Cancel')
-                    }}</v-btn>
-                    <v-btn color="error" text @click="deleteDirectoryAction">{{
-                        $t('Machine.ConfigFilesPanel.Delete')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">
+                        {{ $t('Machine.ConfigFilesPanel.Cancel') }}
+                    </v-btn>
+                    <v-btn color="error" text @click="deleteDirectoryAction">
+                        {{ $t('Machine.ConfigFilesPanel.Delete') }}
+                    </v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
         <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
-            <span v-if="uploadSnackbar.max > 1" class="mr-1"
-                >({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})</span
-            ><strong>{{ $t('Machine.ConfigFilesPanel.Uploading') }} {{ uploadSnackbar.filename }}</strong
-            ><br />
-            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s<br />
+            <span v-if="uploadSnackbar.max > 1" class="mr-1">
+                ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
+            </span>
+            <strong>{{ $t('Machine.ConfigFilesPanel.Uploading') }} {{ uploadSnackbar.filename }}</strong>
+            <br />
+            {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
+            <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template v-slot:action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">

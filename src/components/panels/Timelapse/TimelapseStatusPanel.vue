@@ -5,9 +5,10 @@
         <v-card class="mb-3">
             <v-toolbar flat dense>
                 <v-toolbar-title>
-                    <span class="subheading align-baseline"
-                        ><v-icon left>mdi-information</v-icon>{{ $t('Timelapse.Status') }}</span
-                    >
+                    <span class="subheading align-baseline">
+                        <v-icon left>mdi-information</v-icon>
+                        {{ $t('Timelapse.Status') }}
+                    </span>
                 </v-toolbar-title>
             </v-toolbar>
             <v-row no-gutters>
@@ -66,16 +67,16 @@
                                         text
                                         color="primary"
                                         :disabled="disableRenderButton"
-                                        @click="boolDialogRendersettings = true"
-                                        >{{ $t('Timelapse.Render') }}</v-btn
-                                    >
+                                        @click="boolDialogRendersettings = true">
+                                        {{ $t('Timelapse.Render') }}
+                                    </v-btn>
                                     <v-btn
                                         text
                                         color="primary"
                                         @click="saveFrames"
-                                        :loading="loadings.includes('timelapse_saveframes')"
-                                        >{{ $t('Timelapse.SaveFrames') }}</v-btn
-                                    >
+                                        :loading="loadings.includes('timelapse_saveframes')">
+                                        {{ $t('Timelapse.SaveFrames') }}
+                                    </v-btn>
                                 </v-col>
                             </v-row>
                         </template>

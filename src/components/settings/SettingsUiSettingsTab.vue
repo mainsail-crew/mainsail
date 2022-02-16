@@ -8,9 +8,9 @@
                         small
                         text
                         class="minwidth-0"
-                        @click="logoColor = defaultLogoColor"
-                        ><v-icon small>mdi-restart</v-icon></v-btn
-                    >
+                        @click="logoColor = defaultLogoColor">
+                        <v-icon small>mdi-restart</v-icon>
+                    </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" :color="logoColor" class="minwidth-0 px-5" small></v-btn>
@@ -29,9 +29,9 @@
                         small
                         text
                         class="minwidth-0"
-                        @click="primaryColor = defaultPrimaryColor"
-                        ><v-icon small>mdi-restart</v-icon></v-btn
-                    >
+                        @click="primaryColor = defaultPrimaryColor">
+                        <v-icon small>mdi-restart</v-icon>
+                    </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template v-slot:activator="{ on, attrs }">
                             <v-btn v-bind="attrs" v-on="on" :color="primaryColor" class="minwidth-0 px-5" small></v-btn>
@@ -53,9 +53,9 @@
                         small
                         color="primary"
                         href="https://docs.mainsail.xyz/quicktips/thumbnails"
-                        target="_blank"
-                        >{{ $t('Settings.UiSettingsTab.Guide') }}</v-btn
-                    >
+                        target="_blank">
+                        {{ $t('Settings.UiSettingsTab.Guide') }}
+                    </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row

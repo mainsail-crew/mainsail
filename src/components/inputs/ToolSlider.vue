@@ -28,7 +28,7 @@
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold"> {{ value }} {{ unit }} </span>
+                    <span class="font-weight-bold">{{ value }} {{ unit }}</span>
                 </v-subheader>
                 <v-card-text class="py-0">
                     <v-slider

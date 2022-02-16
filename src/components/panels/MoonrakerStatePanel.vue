@@ -29,10 +29,10 @@
         </v-card-text>
         <v-divider class="mt-3"></v-divider>
         <v-card-actions class="justify-start">
-            <v-btn small :href="apiUrl + '/server/files/moonraker.log'" target="_blank" class="ml-2 primary--text"
-                ><v-icon class="mr-2" small>mdi-download</v-icon
-                >{{ $t('Panels.MoonrakerStatePanel.DownloadLog') }}</v-btn
-            >
+            <v-btn small :href="apiUrl + '/server/files/moonraker.log'" target="_blank" class="ml-2 primary--text">
+                <v-icon class="mr-2" small>mdi-download</v-icon>
+                {{ $t('Panels.MoonrakerStatePanel.DownloadLog') }}
+            </v-btn>
         </v-card-actions>
     </panel>
 </template>

@@ -16,8 +16,7 @@
             :step="5"
             :dynamic-range="true"
             command="M220"
-            attribute-name="S">
-        </tool-slider>
+            attribute-name="S"></tool-slider>
         <template v-if="existsExtruder">
             <v-divider></v-divider>
             <tool-slider
@@ -28,8 +27,7 @@
                 :multi="100"
                 :step="1"
                 command="M221"
-                attribute-name="S">
-            </tool-slider>
+                attribute-name="S"></tool-slider>
         </template>
     </panel>
 </template>

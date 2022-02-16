@@ -8,8 +8,8 @@
                         @click="resetToActiveExtruder"
                         class="mr-2"
                         icon
-                        plain
-                        ><v-icon>mdi-restart</v-icon>
+                        plain>
+                        <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-select
                         v-model="selectedExtruder"

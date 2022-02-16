@@ -49,18 +49,18 @@
                         ref="uploadBackupFile"
                         class="d-none"
                         @change="uploadRestore" />
-                    <v-btn @click="backupDb" :loading="loadings.includes('backupDbButton')" small>{{
-                        $t('Settings.GeneralTab.Backup')
-                    }}</v-btn>
-                    <v-btn @click="restoreDb" small :loading="loadings.includes('restoreUploadButton')" class="ml-3">{{
-                        $t('Settings.GeneralTab.Restore')
-                    }}</v-btn>
+                    <v-btn @click="backupDb" :loading="loadings.includes('backupDbButton')" small>
+                        {{ $t('Settings.GeneralTab.Backup') }}
+                    </v-btn>
+                    <v-btn @click="restoreDb" small :loading="loadings.includes('restoreUploadButton')" class="ml-3">
+                        {{ $t('Settings.GeneralTab.Restore') }}
+                    </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
-                    <v-btn @click="resetMainsail" color="error" small>{{
-                        $t('Settings.GeneralTab.FactoryReset')
-                    }}</v-btn>
+                    <v-btn @click="resetMainsail" color="error" small>
+                        {{ $t('Settings.GeneralTab.FactoryReset') }}
+                    </v-btn>
                 </settings-row>
             </v-card-text>
         </v-card>

@@ -36,36 +36,39 @@
                             v-if="this.directoryPermissions.includes('w')"
                             @click="createDirectory"
                             :title="$t('Timelapse.CreateNewDirectory')"
-                            class="px-2 minwidth-0 ml-3"
-                            ><v-icon>mdi-folder-plus</v-icon></v-btn
-                        >
+                            class="px-2 minwidth-0 ml-3">
+                            <v-icon>mdi-folder-plus</v-icon>
+                        </v-btn>
                         <v-btn
                             @click="refreshFileList"
                             :title="$t('Timelapse.RefreshCurrentDirectory')"
-                            class="px-2 minwidth-0 ml-3"
-                            ><v-icon>mdi-refresh</v-icon></v-btn
-                        >
+                            class="px-2 minwidth-0 ml-3">
+                            <v-icon>mdi-refresh</v-icon>
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 py-2 d-flex align-center">
-                        <span
-                            ><b>{{ $t('Timelapse.CurrentPath') }}:</b>
-                            {{ this.currentPath !== 'timelapse' ? '/' + this.currentPath.substring(10) : '/' }}</span
-                        >
+                        <span>
+                            <b>{{ $t('Timelapse.CurrentPath') }}:</b>
+                            {{ this.currentPath !== 'timelapse' ? '/' + this.currentPath.substring(10) : '/' }}
+                        </span>
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
                                 <template v-slot:activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        <b>{{ $t('Timelapse.FreeDisk') }}:</b> {{ formatFilesize(disk_usage.free) }}
+                                        <b>{{ $t('Timelapse.FreeDisk') }}:</b>
+                                        {{ formatFilesize(disk_usage.free) }}
                                     </span>
                                 </template>
                                 <span>
-                                    {{ $t('Timelapse.Used') }}: {{ formatFilesize(this.disk_usage.used) }}<br />
-                                    {{ $t('Timelapse.Free') }}: {{ formatFilesize(this.disk_usage.free) }}<br />
+                                    {{ $t('Timelapse.Used') }}: {{ formatFilesize(this.disk_usage.used) }}
+                                    <br />
+                                    {{ $t('Timelapse.Free') }}: {{ formatFilesize(this.disk_usage.free) }}
+                                    <br />
                                     {{ $t('Timelapse.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
                                 </span>
                             </v-tooltip>
@@ -164,27 +167,32 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="downloadFile(contextMenu.item.filename)" v-if="!contextMenu.item.isDirectory">
-                    <v-icon left>mdi-cloud-download</v-icon> {{ $t('Timelapse.Download') }}
+                    <v-icon left>mdi-cloud-download</v-icon>
+                    {{ $t('Timelapse.Download') }}
                 </v-list-item>
                 <v-list-item
                     @click="renameDirectory(contextMenu.item)"
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon left>mdi-rename-box</v-icon> {{ $t('Timelapse.Rename') }}
+                    <v-icon left>mdi-rename-box</v-icon>
+                    {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     @click="renameFile(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon left>mdi-rename-box</v-icon> {{ $t('Timelapse.Rename') }}
+                    <v-icon left>mdi-rename-box</v-icon>
+                    {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     @click="removeFile"
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon left>mdi-delete</v-icon> {{ $t('Timelapse.Delete') }}
+                    <v-icon left>mdi-delete</v-icon>
+                    {{ $t('Timelapse.Delete') }}
                 </v-list-item>
                 <v-list-item
                     @click="deleteDirectory(contextMenu.item)"
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
-                    <v-icon left>mdi-delete</v-icon> {{ $t('Timelapse.Delete') }}
+                    <v-icon left>mdi-delete</v-icon>
+                    {{ $t('Timelapse.Delete') }}
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -217,9 +225,9 @@
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogCreateDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogCreateDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -232,9 +240,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogCreateDirectory.show = false">{{
-                        $t('Timelapse.Cancel')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogCreateDirectory.show = false">
+                        {{ $t('Timelapse.Cancel') }}
+                    </v-btn>
                     <v-btn color="primary" text @click="createDirectoryAction">{{ $t('Timelapse.Create') }}</v-btn>
                 </v-card-actions>
             </panel>
@@ -245,9 +253,9 @@
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogRenameDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogRenameDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -259,9 +267,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogRenameDirectory.show = false">{{
-                        $t('Timelapse.Cancel')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogRenameDirectory.show = false">
+                        {{ $t('Timelapse.Cancel') }}
+                    </v-btn>
                     <v-btn color="primary" text @click="renameDirectoryAction">{{ $t('Timelapse.Rename') }}</v-btn>
                 </v-card-actions>
             </panel>
@@ -272,9 +280,9 @@
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
                 <template v-slot:buttons>
-                    <v-btn icon tile @click="dialogDeleteDirectory.show = false"
-                        ><v-icon>mdi-close-thick</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="dialogDeleteDirectory.show = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">
@@ -283,9 +291,9 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">{{
-                        $t('Timelapse.Cancel')
-                    }}</v-btn>
+                    <v-btn color="" text @click="dialogDeleteDirectory.show = false">
+                        {{ $t('Timelapse.Cancel') }}
+                    </v-btn>
                     <v-btn color="error" text @click="deleteDirectoryAction">{{ $t('Timelapse.Delete') }}</v-btn>
                 </v-card-actions>
             </panel>
@@ -318,9 +326,9 @@
                                 text
                                 color="primary"
                                 :href="this.apiUrl + '/server/files/' + videoDialogFilename"
-                                target="_blank"
-                                >{{ $t('Timelapse.Download') }}</v-btn
-                            >
+                                target="_blank">
+                                {{ $t('Timelapse.Download') }}
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </v-card-text>

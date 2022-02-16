@@ -10,15 +10,15 @@
             card-class="zoffset-panel">
             <template v-slot:buttons>
                 <template v-if="z_gcode_offset !== 0">
-                    <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"
-                        ><v-icon>mdi-broom</v-icon></v-btn
-                    >
+                    <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')">
+                        <v-icon>mdi-broom</v-icon>
+                    </v-btn>
                     <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-btn text tile color="primary" v-bind="attrs" v-on="on" class="pa-1"
-                                ><span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span
-                                ><v-icon>mdi-menu-down</v-icon></v-btn
-                            >
+                            <v-btn text tile color="primary" v-bind="attrs" v-on="on" class="pa-1">
+                                <span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
+                                <v-icon>mdi-menu-down</v-icon>
+                            </v-btn>
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item link @click="saveZOffsetToEndstop">
@@ -45,18 +45,20 @@
                         class="px-2 minwidth-0"
                         color="primary ml-3"
                         v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop"
-                        @click="saveZOffsetToProbe"
-                        ><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t('Panels.ZoffsetPanel.Save') }}</v-btn
-                    >
+                        @click="saveZOffsetToProbe">
+                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        {{ $t('Panels.ZoffsetPanel.Save') }}
+                    </v-btn>
                     <v-btn
                         text
                         tile
                         class="px-2 minwidth-0"
                         color="primary ml-3"
                         v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop"
-                        @click="saveZOffsetToEndstop"
-                        ><v-icon small class="mr-1">mdi-content-save</v-icon>{{ $t('Panels.ZoffsetPanel.Save') }}</v-btn
-                    >
+                        @click="saveZOffsetToEndstop">
+                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        {{ $t('Panels.ZoffsetPanel.Save') }}
+                    </v-btn>
                 </template>
             </template>
             <v-card-text class="px-0 py-0">
@@ -78,38 +80,38 @@
                                     small
                                     @click="sendBabySteppingDownFine()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingDownFine')"
-                                    ><v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon> -0.01<span
-                                        class="d-sm-none d-md-inline"
-                                        >mm</span
-                                    ></v-btn
-                                >
+                                    :loading="loadings.includes('babySteppingDownFine')">
+                                    <v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon>
+                                    -0.01
+                                    <span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                                 <v-btn
                                     small
                                     @click="sendBabySteppingDown()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingDown')"
-                                    >-0.05<span class="d-sm-none d-md-inline">mm</span></v-btn
-                                >
+                                    :loading="loadings.includes('babySteppingDown')">
+                                    -0.05
+                                    <span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                             </v-btn-toggle>
                             <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-last">
                                 <v-btn
                                     small
                                     @click="sendBabySteppingUpFine()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingUpFine')"
-                                    ><v-icon small class="mr-2">mdi-arrow-expand-up</v-icon> +0.01<span
-                                        class="d-sm-none d-md-inline"
-                                        >mm</span
-                                    ></v-btn
-                                >
+                                    :loading="loadings.includes('babySteppingUpFine')">
+                                    <v-icon small class="mr-2">mdi-arrow-expand-up</v-icon>
+                                    +0.01
+                                    <span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                                 <v-btn
                                     small
                                     @click="sendBabySteppingUp()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingUp')"
-                                    >+0.05<span class="d-sm-none d-md-inline">mm</span></v-btn
-                                >
+                                    :loading="loadings.includes('babySteppingUp')">
+                                    +0.05
+                                    <span class="d-sm-none d-md-inline">mm</span>
+                                </v-btn>
                             </v-btn-toggle>
                         </v-col>
                     </v-row>
@@ -122,9 +124,9 @@
                 icon="mdi-information"
                 card-class="zoffset-saveinfo-dialog"
                 :margin-bottom="false">
-                <v-card-text class="mt-3" v-if="printerIsPrinting">{{
-                    $t('Panels.ZoffsetPanel.SaveInfoDescriptionPrint')
-                }}</v-card-text>
+                <v-card-text class="mt-3" v-if="printerIsPrinting">
+                    {{ $t('Panels.ZoffsetPanel.SaveInfoDescriptionPrint') }}
+                </v-card-text>
                 <v-card-text class="mt-3" v-else>{{ $t('Panels.ZoffsetPanel.SaveInfoDescription') }}</v-card-text>
                 <v-card-actions v-if="printerIsPrinting">
                     <v-spacer></v-spacer>

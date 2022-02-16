@@ -12,9 +12,10 @@
                             :href="this.apiUrl + '/server/files/klippy.log'"
                             @click="downloadLog"
                             block
-                            class="primary--text"
-                            ><v-icon class="mr-2">mdi-download</v-icon>Klipper</v-btn
-                        >
+                            class="primary--text">
+                            <v-icon class="mr-2">mdi-download</v-icon>
+                            Klipper
+                        </v-btn>
                     </v-col>
                     <v-col
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
@@ -22,9 +23,10 @@
                             :href="this.apiUrl + '/server/files/moonraker.log'"
                             @click="downloadLog"
                             block
-                            class="primary--text"
-                            ><v-icon class="mr-2">mdi-download</v-icon>Moonraker</v-btn
-                        >
+                            class="primary--text">
+                            <v-icon class="mr-2">mdi-download</v-icon>
+                            Moonraker
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-container>

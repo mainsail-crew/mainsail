@@ -76,7 +76,7 @@
                                 :ripple="false"></mainsail-logo>
                         </template>
                         <template v-if="navigationStyle !== 'iconsOnly'">
-                            <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span>
+                            <span class="text-h6 font-weight-regular text-truncate">{{ printerName }}</span>
                         </template>
                     </v-list-item>
                     <template v-if="countPrinters">
@@ -92,9 +92,9 @@
                                         <v-icon>mdi-view-dashboard-outline</v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
-                                        <v-list-item-title tile class="menu-item-title">{{
-                                            $t('App.Printers')
-                                        }}</v-list-item-title>
+                                        <v-list-item-title tile class="menu-item-title">
+                                            {{ $t('App.Printers') }}
+                                        </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </template>
@@ -115,9 +115,9 @@
                                         <v-icon>mdi-{{ category.icon }}</v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
-                                        <v-list-item-title tile class="menu-item-title">{{
-                                            $t(`Router.${category.title}`)
-                                        }}</v-list-item-title>
+                                        <v-list-item-title tile class="menu-item-title">
+                                            {{ $t(`Router.${category.title}`) }}
+                                        </v-list-item-title>
                                     </v-list-item-content>
                                 </v-list-item>
                             </template>

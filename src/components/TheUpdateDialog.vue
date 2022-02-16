@@ -77,9 +77,9 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text @click="close" :disabled="!complete" color="primary">{{
-                            $t('App.UpdateDialog.Close')
-                        }}</v-btn>
+                        <v-btn text @click="close" :disabled="!complete" color="primary">
+                            {{ $t('App.UpdateDialog.Close') }}
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-text>

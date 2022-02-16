@@ -18,9 +18,9 @@
             <v-tooltip right color="panel">
                 <template v-slot:activator="{ on, attrs }">
                     <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
-                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave"
-                        >mdi-help-circle-outline</v-icon
-                    >
+                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
+                        mdi-help-circle-outline
+                    </v-icon>
                 </template>
                 <span class="dark version-container">
                     <div><img height="12" src="/img/logo.svg" /></div>
