@@ -41,6 +41,7 @@ All notable changes to Mainsail will be documented in this file.
 ### Styling
 
 - Add prettier as default formatter (#614) ([04b6992](04b6992f3c202634948ee7c6afa9cd2c517f7af9))
+- Use prettier on other file formats as well (#648) ([615ee73](615ee73801588fdda28494e490a7525719a3d835))
 
 ## [2.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.1)
 ##### released: Friday 28 January 2022
