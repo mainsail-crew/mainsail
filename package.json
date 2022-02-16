@@ -10,7 +10,7 @@
         "serve": "vite serve",
         "build": "vite build  && npm run build.zip",
         "format": "npm run format:base -- --write",
-        "format:base": "prettier src vite.config.ts package.json public/manifest.json .eslintrc.json .github/**/*.yml index.html *.yml",
+        "format:base": "prettier src vite.config.ts package.json public/manifest.json .eslintrc.json .github/ index.html *.yml *.md",
         "format:check": "npm run format:base -- --check",
         "lint": "eslint --ext .ts,.vue --ignore-path .gitignore src",
         "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore src --fix",
