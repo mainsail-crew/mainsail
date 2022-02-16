@@ -44,8 +44,7 @@
                                 <v-img
                                     height="80"
                                     contain
-                                    src="https://docs.mainsail.xyz/assets/img/logo-mainsail.png"
-                                ></v-img>
+                                    src="https://docs.mainsail.xyz/assets/img/logo-mainsail.png"></v-img>
                             </v-col>
                         </v-row>
                         <v-row tag="data1" justify="center">

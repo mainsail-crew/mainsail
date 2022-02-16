@@ -7,8 +7,7 @@
                 :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
                 icon="mdi-selection-remove"
                 card-class="exclude-object-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -18,8 +17,7 @@
                             <status-panel-exclude-object-dialog-map
                                 :hover-name="hoverName"
                                 @update:name="updateExcludeObjectDialogName"
-                                @update:bool="updateExcludeObjectDialogBool"
-                            ></status-panel-exclude-object-dialog-map>
+                                @update:bool="updateExcludeObjectDialogBool"></status-panel-exclude-object-dialog-map>
                         </v-col>
                         <v-col class="col-12 col-sm-6 pt-0 pt-sm-3">
                             <status-panel-exclude-object-dialog-list
@@ -28,8 +26,7 @@
                                 @update:hoverName="updateHoverObjectDialogName"
                                 :exclude-object-dialog-bool.sync="excludeObjectDialogBool"
                                 @update:bool="updateExcludeObjectDialogBool"
-                                :hover-name="hoverName"
-                            ></status-panel-exclude-object-dialog-list>
+                                :hover-name="hoverName"></status-panel-exclude-object-dialog-list>
                         </v-col>
                     </v-row>
                 </v-container>

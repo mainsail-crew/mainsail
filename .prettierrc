@@ -3,6 +3,7 @@
 	"singleQuote": true,
 	"semi": false,
 	"printWidth": 120,
+	"bracketSameLine": true,
 	"overrides": [
 		{
 			"files": "*.yml",

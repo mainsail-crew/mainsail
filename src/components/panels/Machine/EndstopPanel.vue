@@ -3,8 +3,7 @@
         :title="$t('Machine.EndstopPanel.Endstops')"
         icon="mdi-arrow-expand-vertical"
         card-class="machine-endstop-panel"
-        :collapsible="true"
-    >
+        :collapsible="true">
         <v-card-text class="pb-0">
             <v-container px-0 py-0>
                 <template v-if="Object.keys(endstops).length">
@@ -18,8 +17,7 @@
                                 label
                                 class="float-right"
                                 :color="endstops[key] === 'open' ? 'green' : 'red'"
-                                text-color="white"
-                            >
+                                text-color="white">
                                 <template v-if="endstops[key] === 'open'">
                                     {{ $t('Machine.EndstopPanel.open') }}
                                 </template>

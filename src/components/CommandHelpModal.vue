@@ -10,8 +10,7 @@
                     color="lightgray"
                     :small="isMini"
                     v-bind="attrs"
-                    v-on="on"
-                >
+                    v-on="on">
                     <v-icon>mdi-help</v-icon>
                 </v-btn>
             </template>
@@ -21,8 +20,7 @@
                 :title="$t('Console.CommandList')"
                 icon="mdi-help"
                 card-class="command-help-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
@@ -35,8 +33,7 @@
                                 outlined
                                 hide-details
                                 clearable
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-title>
@@ -50,8 +47,7 @@
                                         v-for="cmd of helplistFiltered"
                                         :key="cmd.commandLow"
                                         class="px-0"
-                                        two-line
-                                    >
+                                        two-line>
                                         <v-list-item-content class="px-0">
                                             <v-list-item-title
                                                 class="blue--text font-weight-bold cursor-pointer"

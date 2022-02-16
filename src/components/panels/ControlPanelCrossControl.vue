@@ -27,8 +27,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('Y' + (reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-up</v-icon>
                         </v-btn>
                     </v-col>
@@ -39,8 +38,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('Z' + (reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-up</v-icon>
                         </v-btn>
                     </v-col>
@@ -53,8 +51,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('X' + (!reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-left</v-icon>
                         </v-btn>
                     </v-col>
@@ -64,8 +61,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('Y' + (!reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
                     </v-col>
@@ -76,8 +72,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('X' + (reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
                     </v-col>
@@ -87,8 +82,7 @@
                             :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
                             @click="
                                 doSendMove('Z' + (!reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
-                            "
-                        >
+                            ">
                             <v-icon>mdi-chevron-down</v-icon>
                         </v-btn>
                     </v-col>
@@ -104,8 +98,7 @@
                                 @click="doHome"
                                 height="30"
                                 :loading="loadings.includes('homeAll')"
-                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
-                            >
+                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'">
                                 <div class="d-flex align-center">
                                     <v-icon>mdi-home</v-icon>
                                     <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
@@ -145,8 +138,7 @@
                                 height="30"
                                 :loading="loadings.includes('homeX')"
                                 :color="homedAxes.includes('x') ? 'primary' : 'warning'"
-                                @click="doHomeX"
-                            >
+                                @click="doHomeX">
                                 {{ $t('Panels.ControlPanel.X') }}
                             </v-btn>
                         </v-col>
@@ -157,8 +149,7 @@
                                 height="30"
                                 :loading="loadings.includes('homeY')"
                                 :color="homedAxes.includes('y') ? 'primary' : 'warning'"
-                                @click="doHomeY"
-                            >
+                                @click="doHomeY">
                                 {{ $t('Panels.ControlPanel.Y') }}
                             </v-btn>
                         </v-col>
@@ -169,8 +160,7 @@
                                 height="30"
                                 :loading="loadings.includes('homeZ')"
                                 :color="homedAxes.includes('z') ? 'primary' : 'warning'"
-                                @click="doHomeZ"
-                            >
+                                @click="doHomeZ">
                                 {{ $t('Panels.ControlPanel.Z') }}
                             </v-btn>
                         </v-col>
@@ -186,14 +176,12 @@
                     no-gutters
                     style="flex-wrap: nowrap; width: 100%"
                     v-model="selectedCrossStep"
-                    :key="'all-steps-' + stepsReversed.join('_')"
-                >
+                    :key="'all-steps-' + stepsReversed.join('_')">
                     <v-btn
                         dense
                         class="btnMinWidthAuto flex-grow-1 px-0"
                         v-for="step of stepsReversed"
-                        :key="'step-' + step"
-                    >
+                        :key="'step-' + step">
                         <span class="body-2">{{ step }}</span>
                     </v-btn>
                 </v-btn-toggle>

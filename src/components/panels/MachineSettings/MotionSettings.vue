@@ -13,8 +13,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s"
-                    attribute-name="VELOCITY"
-                ></motion-settings-input>
+                    attribute-name="VELOCITY"></motion-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
@@ -27,8 +26,7 @@
                     :max="null"
                     :dec="1"
                     unit="mm/s"
-                    attribute-name="SQUARE_CORNER_VELOCITY"
-                ></motion-settings-input>
+                    attribute-name="SQUARE_CORNER_VELOCITY"></motion-settings-input>
             </v-col>
         </v-row>
         <v-row>
@@ -44,8 +42,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    attribute-name="ACCEL"
-                ></motion-settings-input>
+                    attribute-name="ACCEL"></motion-settings-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <motion-settings-input
@@ -59,8 +56,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    attribute-name="ACCEL_TO_DECEL"
-                ></motion-settings-input>
+                    attribute-name="ACCEL_TO_DECEL"></motion-settings-input>
             </v-col>
         </v-row>
     </v-card-text>

@@ -8,8 +8,7 @@
                     <settings-row
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
-                        :icon="printer.socket.isConnected ? 'mdi-checkbox-marked-circle' : 'mdi-cancel'"
-                    >
+                        :icon="printer.socket.isConnected ? 'mdi-checkbox-marked-circle' : 'mdi-cancel'">
                         <v-btn small outlined @click="editPrinter(printer)">
                             <v-icon left small>mdi-pencil</v-icon>{{ $t('Settings.Edit') }}
                         </v-btn>
@@ -18,8 +17,7 @@
                             outlined
                             @click="delPrinter(printer.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error"
-                        >
+                            color="error">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -51,8 +49,7 @@
                         hide-details="auto"
                         required
                         dense
-                        outlined
-                    ></v-text-field>
+                        outlined></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.RemotePrintersTab.Port')">
@@ -62,8 +59,7 @@
                         hide-details="auto"
                         required
                         dense
-                        outlined
-                    ></v-text-field>
+                        outlined></v-text-field>
                 </settings-row>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">

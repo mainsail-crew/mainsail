@@ -8,14 +8,12 @@
                 class="py-3 d-flex"
                 @click="mouseOverObject(object.name)"
                 @mouseover="mouseOverObject(object.name)"
-                @mouseleave="mouseOverObject('')"
-            >
+                @mouseleave="mouseOverObject('')">
                 <v-col
                     :class="
                         'py-2 subtitle-2 text-truncate ' +
                         (hoverName === object.name ? 'text--white' : 'text--disabled')
-                    "
-                >
+                    ">
                     {{ object.name }}
                 </v-col>
                 <v-col class="col-auto py-2">

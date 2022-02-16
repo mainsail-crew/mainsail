@@ -51,8 +51,7 @@
             :exclude-object-dialog-name.sync="excludeObjectDialogName"
             @update:name="updateExcludeObjectDialogName"
             :exclude-object-dialog-bool.sync="boolShowExcludeObjectDialog"
-            @update:bool="updateExcludeObjectDialogBool"
-        ></status-panel-exclude-object-dialog>
+            @update:bool="updateExcludeObjectDialogBool"></status-panel-exclude-object-dialog>
     </div>
 </template>
 

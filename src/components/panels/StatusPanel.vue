@@ -16,8 +16,7 @@
             icon="mdi-information"
             :title="printerStateOutput"
             :collapsible="true"
-            card-class="status-panel"
-        >
+            card-class="status-panel">
             <template v-slot:icon>
                 <v-progress-circular
                     :rotate="-90"
@@ -26,8 +25,7 @@
                     :value="printPercent"
                     color="primary"
                     class="mr-3"
-                    v-if="['paused', 'printing'].includes(printer_state)"
-                >
+                    v-if="['paused', 'printing'].includes(printer_state)">
                 </v-progress-circular>
             </template>
             <template v-slot:buttons>
@@ -38,8 +36,7 @@
                     @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
                     icon
-                    tile
-                >
+                    tile>
                     <v-tooltip top>
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
@@ -57,12 +54,10 @@
                         ref="bigThumbnail"
                         height="200"
                         @focus="focusBigThumbnail"
-                        @blur="blurBigThumbnail"
-                    >
+                        @blur="blurBigThumbnail">
                         <v-card-title
                             class="white--text py-2 px-2"
-                            style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)"
-                        >
+                            style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
                                 <v-col style="width: 100px">
                                     <span class="subtitle-2 text-truncate px-0 text--disabled d-block"
@@ -76,8 +71,7 @@
                 </template>
                 <status-panel-exclude-object
                     :show-dialog.sync="boolShowObjects"
-                    @update:showDialog="updateShowDialog"
-                ></status-panel-exclude-object>
+                    @update:showDialog="updateShowDialog"></status-panel-exclude-object>
                 <template v-if="display_message || print_stats_message">
                     <v-container>
                         <v-row>
@@ -101,8 +95,7 @@
                         <v-row>
                             <v-col
                                 :class="thumbnailSmall ? 'py-3' : 'py-2'"
-                                :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''"
-                            >
+                                :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''">
                                 <span class="subtitle-2 text-truncate d-block px-0 text--disabled"
                                     ><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span
                                 >
@@ -118,13 +111,11 @@
                                                     width="32"
                                                     height="32"
                                                     v-bind="attrs"
-                                                    v-on="on"
-                                                />
+                                                    v-on="on" />
                                                 <v-progress-circular
                                                     slot="preloader"
                                                     indeterminate
-                                                    color="primary"
-                                                ></v-progress-circular>
+                                                    color="primary"></v-progress-circular>
                                                 <v-icon slot="error">mdi-file</v-icon>
                                             </vue-load-image>
                                         </template>
@@ -137,8 +128,7 @@
                                         <v-progress-circular
                                             slot="preloader"
                                             indeterminate
-                                            color="primary"
-                                        ></v-progress-circular>
+                                            color="primary"></v-progress-circular>
                                         <v-icon slot="error">mdi-file</v-icon>
                                     </vue-load-image>
                                 </template>
@@ -155,8 +145,7 @@
                                 ? 'pt-5 pb-2 mb-0'
                                 : 'py-5')
                         "
-                        align="center"
-                    >
+                        align="center">
                         <v-col class="col-3 pa-0">
                             <strong>{{ $t('Panels.StatusPanel.Position') }}</strong
                             ><br />

@@ -51,8 +51,7 @@
         :temporary="boolNaviTemp"
         clipped
         app
-        :style="sidebarCssVars"
-    >
+        :style="sidebarCssVars">
         <overlay-scrollbars class="nav-scrollbar">
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
@@ -65,8 +64,7 @@
                         "
                         :style="'height: ' + topbarHeight + 'px'"
                         :ripple="false"
-                        v-if="isMobile"
-                    >
+                        v-if="isMobile">
                         <template v-if="sidebarLogo">
                             <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
                         </template>
@@ -75,8 +73,7 @@
                                 :color="logoColor"
                                 :style="logoCssVars"
                                 class="nav-logo"
-                                :ripple="false"
-                            ></mainsail-logo>
+                                :ripple="false"></mainsail-logo>
                         </template>
                         <template v-if="navigationStyle !== 'iconsOnly'">
                             <span class="text-h6 font-weight-regular text-truncate"> {{ printerName }} </span>
@@ -90,8 +87,7 @@
                                     to="/allPrinters"
                                     class="small-list-item mt-1"
                                     v-bind="attrs"
-                                    v-on="on"
-                                >
+                                    v-on="on">
                                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                                         <v-icon>mdi-view-dashboard-outline</v-icon>
                                     </v-list-item-icon>
@@ -114,8 +110,7 @@
                                     :to="category.path"
                                     class="small-list-item"
                                     v-bind="attrs"
-                                    v-on="on"
-                                >
+                                    v-on="on">
                                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
                                         <v-icon>mdi-{{ category.icon }}</v-icon>
                                     </v-list-item-icon>

@@ -7,8 +7,7 @@
             icon="mdi-connection"
             :title="panelTitle"
             :margin-bottom="false"
-            toolbar-color="toolbar"
-        >
+            toolbar-color="toolbar">
             <template v-slot:buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool"
@@ -70,8 +69,7 @@
                                 required
                                 outlined
                                 hide-details="auto"
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                         <v-col class="col-4">
                             <v-text-field
@@ -81,8 +79,7 @@
                                 hide-details="auto"
                                 required
                                 outlined
-                                dense
-                            ></v-text-field>
+                                dense></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -108,8 +105,7 @@
                                 required
                                 outlined
                                 dense
-                                hide-details="auto"
-                            ></v-text-field>
+                                hide-details="auto"></v-text-field>
                         </v-col>
                         <v-col class="col-4">
                             <v-text-field
@@ -119,8 +115,7 @@
                                 required
                                 outlined
                                 dense
-                                hide-details="auto"
-                            ></v-text-field>
+                                hide-details="auto"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -142,8 +137,7 @@
                                 <v-col
                                     class="rounded transition-swing toolbar py-2 px-2 mb-2 overflow-hidden"
                                     style="cursor: pointer"
-                                    @click="connect(printer)"
-                                >
+                                    @click="connect(printer)">
                                     <v-row align="center">
                                         <v-col class="col-auto pr-0">
                                             <v-progress-circular
@@ -151,8 +145,7 @@
                                                 color="primary"
                                                 v-if="printer.socket.isConnecting"
                                                 size="24"
-                                                width="2.5"
-                                            ></v-progress-circular>
+                                                width="2.5"></v-progress-circular>
                                             <v-icon
                                                 :color="printer.socket.isConnected ? 'green' : 'red'"
                                                 v-if="!printer.socket.isConnecting"

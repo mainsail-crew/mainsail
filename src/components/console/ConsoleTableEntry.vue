@@ -29,8 +29,7 @@
         <v-col
             :class="colorConsoleMessage(event) + ' ' + 'console-message'"
             v-html="event.formatMessage"
-            @click.capture="commandClick"
-        ></v-col>
+            @click.capture="commandClick"></v-col>
     </v-row>
 </template>
 

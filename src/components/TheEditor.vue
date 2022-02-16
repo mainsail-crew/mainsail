@@ -9,8 +9,7 @@
             hide-overlay
             :transition="false"
             @close="close"
-            @keydown.esc="escClose"
-        >
+            @keydown.esc="escClose">
             <panel
                 card-class="editor-dialog"
                 :icon="isWriteable ? ' mdi-file-document-edit-outline' : 'mdi-file-document-outline'"
@@ -19,8 +18,7 @@
                     filename +
                     ' ' +
                     (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
-                "
-            >
+                ">
                 <template v-slot:buttons>
                     <v-btn
                         text
@@ -58,8 +56,7 @@
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
-                            v-bind:file-extension="fileExtension"
-                        ></codemirror-async>
+                            v-bind:file-extension="fileExtension"></codemirror-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
@@ -77,8 +74,7 @@
                 {{ loaderProgress.speed }}/s<br />
                 <v-progress-linear
                     class="mt-2"
-                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"
-                ></v-progress-linear>
+                    :value="(100 * loaderProgress.loaded) / loaderProgress.total"></v-progress-linear>
             </template>
             <template v-else>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
@@ -94,8 +90,7 @@
                 card-class="editor-confirm-change-dialog"
                 icon="mdi-help-circle"
                 :title="$t('Editor.UnsavedChanges')"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <template v-slot:buttons>
                     <v-btn icon tile @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>

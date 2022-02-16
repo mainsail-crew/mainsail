@@ -30,8 +30,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="desktopViewport"
-                            >
+                                group="desktopViewport">
                                 <template v-for="element in desktopLayout1">
                                     <v-list-item :key="'item-desktop-' + element.name" link>
                                         <v-row>
@@ -71,8 +70,7 @@
                                 :handle="isMobile ? '.handle' : ''"
                                 class="v-list-item-group"
                                 ghost-class="ghost"
-                                group="desktopViewport"
-                            >
+                                group="desktopViewport">
                                 <template v-for="element in desktopLayout2">
                                     <v-list-item :key="'item-desktop-' + element.name" link>
                                         <v-row>

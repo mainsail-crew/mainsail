@@ -18,8 +18,7 @@
                         :value="active_extruder"
                         hide-details
                         outlined
-                        dense
-                    ></v-select>
+                        dense></v-select>
                 </div>
             </v-col>
             <v-col :class="this.all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
@@ -34,8 +33,7 @@
                     :step="0.001"
                     :dec="3"
                     unit="mm/s"
-                    attribute-name="ADVANCE"
-                ></pressure-advance-settings-input>
+                    attribute-name="ADVANCE"></pressure-advance-settings-input>
             </v-col>
             <v-col :class="this.all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <pressure-advance-settings-input
@@ -50,8 +48,7 @@
                     :spinnerFactor="10"
                     :dec="3"
                     unit="s"
-                    attribute-name="SMOOTH_TIME"
-                ></pressure-advance-settings-input>
+                    attribute-name="SMOOTH_TIME"></pressure-advance-settings-input>
             </v-col>
         </v-row>
     </v-card-text>

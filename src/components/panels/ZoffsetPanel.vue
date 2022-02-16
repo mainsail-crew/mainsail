@@ -7,8 +7,7 @@
             icon="mdi-arrow-collapse-vertical"
             :title="$t('Panels.ZoffsetPanel.Headline')"
             :collapsible="true"
-            card-class="zoffset-panel"
-        >
+            card-class="zoffset-panel">
             <template v-slot:buttons>
                 <template v-if="z_gcode_offset !== 0">
                     <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')"
@@ -74,8 +73,7 @@
                             <v-btn-toggle
                                 dense
                                 no-gutters
-                                class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-first"
-                            >
+                                class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-first">
                                 <v-btn
                                     small
                                     @click="sendBabySteppingDownFine()"
@@ -123,8 +121,7 @@
                 :title="$t('Panels.ZoffsetPanel.SaveInfoHeadline')"
                 icon="mdi-information"
                 card-class="zoffset-saveinfo-dialog"
-                :margin-bottom="false"
-            >
+                :margin-bottom="false">
                 <v-card-text class="mt-3" v-if="printerIsPrinting">{{
                     $t('Panels.ZoffsetPanel.SaveInfoDescriptionPrint')
                 }}</v-card-text>
