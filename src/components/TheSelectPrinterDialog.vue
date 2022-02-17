@@ -27,7 +27,7 @@
                     </template>
                     <template v-else-if="printers.length > 0">
                         <v-btn icon tile class="minwidth-0" @click="checkPrinters" color="primary">
-                            <v-icon>{{ mdiSync }}/v-icon>
+                            <v-icon>{{ mdiSync }}</v-icon>
                         </v-btn>
                     </template>
                 </template>
@@ -149,9 +149,7 @@
                                             <v-icon
                                                 :color="printer.socket.isConnected ? 'green' : 'red'"
                                                 v-if="!printer.socket.isConnecting">
-                                               {{
-                                                    printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel
-                                                }}
+                                                {{ printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel }}
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
