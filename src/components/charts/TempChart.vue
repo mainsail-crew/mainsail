@@ -1,10 +1,10 @@
 <template>
-    <ECharts
+    <e-chart
         ref="tempchart"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
         style="height: 250px; width: 100%"
-        v-observe-visibility="visibilityChanged"></ECharts>
+        v-observe-visibility="visibilityChanged"></e-chart>
 </template>
 
 <script lang="ts">
@@ -14,18 +14,15 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from '@/store/printer/tempHistory/types'
 
-import { createComponent } from 'echarts-for-vue'
-import * as echarts from 'echarts'
-import { ECharts } from 'echarts/core'
+import type { ECharts } from 'echarts/core'
+import type { ECBasicOption } from 'echarts/types/dist/shared'
 
 interface echartsTooltipObj {
     [key: string]: any
 }
 
 @Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    },
+    components: {},
 })
 export default class TempChart extends Mixins(BaseMixin) {
     convertName = convertName
@@ -35,8 +32,9 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     private isVisible = true
-    public chartOptions = {
+    public chartOptions: ECBasicOption = {
         darkMode: true,
+        renderer: 'svg',
         animation: false,
         tooltip: {
             animation: false,
@@ -196,8 +194,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        const tempchart = this.$refs.tempchart
-        return tempchart?.inst ?? null
+        return this.$refs.tempchart ?? null
     }
 
     get maxHistory() {
@@ -251,11 +248,15 @@ export default class TempChart extends Mixins(BaseMixin) {
                 return entry.date >= limitDate
             })
 
-            this.chart?.setOption({
-                dataset: {
-                    source: newSource,
+            this.chart?.setOption(
+                {
+                    dataset: {
+                        source: newSource,
+                    },
                 },
-            })
+                false,
+                true
+            )
 
             //const t1 = performance.now()
             //window.console.debug('calc chart', (t1-t0).toFixed(), newSource.length, this.source.length)
@@ -348,9 +349,13 @@ export default class TempChart extends Mixins(BaseMixin) {
     @Watch('series', { deep: true })
     seriesChanged(newVal: PrinterTempHistoryStateSerie[]) {
         if (this.chart && this.chart?.isDisposed() !== true) {
-            this.chart.setOption({
-                series: newVal,
-            })
+            this.chart.setOption(
+                {
+                    series: newVal,
+                },
+                false,
+                true
+            )
         }
     }
 
