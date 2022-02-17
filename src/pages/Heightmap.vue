@@ -359,9 +359,14 @@ import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { VisualMapComponent } from 'echarts/components'
 
-import 'echarts-gl'
+// @ts-ignore
+import { Grid3DComponent } from 'echarts-gl/components'
+//type definitions for echarts-gl do not exist
+// @ts-ignore
+import { SurfaceChart } from 'echarts-gl/charts'
+import type { ECharts } from 'echarts'
 
-use([CanvasRenderer, VisualMapComponent])
+use([CanvasRenderer, VisualMapComponent, Grid3DComponent, SurfaceChart])
 
 interface HeightmapSerie {
     type: string
