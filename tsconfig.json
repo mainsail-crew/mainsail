@@ -15,7 +15,8 @@
     "types": [
       "vite/client",
       "vuetify",
-      "@intlify/vite-plugin-vue-i18n/client"
+      "@intlify/vite-plugin-vue-i18n/client",
+      "vite-plugin-pwa/client"
     ],
     "paths": {
       "@/*": [
@@ -34,7 +35,8 @@
   },
   "include": [
     "components.d.ts",
-    "src/**/*.ts",
+    "src/main.ts",
+    "src/*/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",

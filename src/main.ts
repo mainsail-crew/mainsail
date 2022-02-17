@@ -8,6 +8,12 @@ import './plugins/longpress'
 import store from '@/store'
 import router from '@/plugins/router'
 
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+    onOfflineReady() {},
+})
+
 Vue.config.productionTip = false
 
 // vue-observe-visibility
