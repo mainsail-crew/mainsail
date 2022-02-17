@@ -6,7 +6,6 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container: cypress/browsers:node16.13.2-chrome97-ff96
-    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
