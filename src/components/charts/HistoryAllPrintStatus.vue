@@ -1,24 +1,20 @@
 <template>
-    <ECharts
+    <e-chart
         ref="historyAllPrintStatus"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
         style="height: 250px; width: 100%"
-        v-observe-visibility="visibilityChanged"></ECharts>
+        v-observe-visibility="visibilityChanged"></e-chart>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
-import { createComponent } from 'echarts-for-vue'
-import * as echarts from 'echarts'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { ECharts } from 'echarts/core'
+import type { ECharts } from 'echarts/core'
 
 @Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    },
+    components: {},
 })
 export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     declare $refs: {
