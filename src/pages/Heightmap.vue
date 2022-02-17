@@ -216,7 +216,7 @@
                 <panel
                     :title="$t('Heightmap.Profiles')"
                     card-class="heightmap-profiles-panel"
-                    :icon=":mdiStackOverflow"
+                    :icon="mdiStackOverflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
