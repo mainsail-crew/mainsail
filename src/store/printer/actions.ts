@@ -57,18 +57,23 @@ export const actions: ActionTree<PrinterState, RootState> = {
         Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
     },
 
-    getData({ commit }, payload) {
+    getData({ commit, state }, payload) {
         if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
 
-        const webhooks = Object.keys(payload).findIndex((element) => element === 'webhooks')
-        if (webhooks !== -1) {
+        if ('webhooks' in payload) {
             this.dispatch(
                 'server/getData',
-                { klippy_state: payload['webhooks'].state, klippy_message: payload['webhooks'].state_message },
+                { klippy_state: payload.webhooks.state, klippy_message: payload.webhooks.state_message },
                 { root: true }
             )
             delete payload.webhooks
+        }
+
+        if ('bed_mesh' in state && 'bed_mesh' in payload && 'profiles' in payload.bed_mesh) {
+            commit('setBedMeshProfiles', payload.bed_mesh.profiles)
+
+            delete payload.bed_mesh.profiles
         }
 
         commit('setData', payload)
