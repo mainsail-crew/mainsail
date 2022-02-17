@@ -31,9 +31,9 @@
                     hide-details
                     outlined
                     dense
-                    :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
+                    :prepend-icon="isTouchDevice ? mdiChevronDoubleRight : ''"
                     @click:prepend="getAutocomplete"
-                    append-icon="mdi-send"
+                    :append-icon="mdiSend"
                     @click:append="doSend"></v-textarea>
             </v-col>
 
@@ -101,6 +101,7 @@ import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import { reverseString, strLongestEqual } from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import { mdiChevronDoubleRight, mdiSend } from '@mdi/js'
 
 @Component({
     components: {
@@ -112,6 +113,12 @@ export default class PageConsole extends Mixins(BaseMixin) {
     private gcode = ''
     private lastCommandNumber: number | null = null
     private items = []
+
+    /**
+     * Icons
+     */
+    mdiChevronDoubleRight = mdiChevronDoubleRight
+    mdiSend = mdiSend
 
     declare $refs: {
         gcodeCommandField: VTextareaType

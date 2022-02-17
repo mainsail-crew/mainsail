@@ -173,7 +173,7 @@
                     :title="$t('Heightmap.CurrentMesh.Headline')"
                     v-if="meshLoaded"
                     card-class="heightmap-current-mesh-panel"
-                    icon="mdi-information"
+                    :icon="mdiInformation"
                     :collapsible="true"
                     class="mt-0">
                     <v-card-text class="py-3 px-0">
@@ -216,7 +216,7 @@
                 <panel
                     :title="$t('Heightmap.Profiles')"
                     card-class="heightmap-profiles-panel"
-                    icon="mdi-stack-overflow"
+                    :icon=":mdiStackOverflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
@@ -287,7 +287,7 @@
                 elevation="2"
                 class="mx-auto mt-6"
                 max-width="500"
-                icon="mdi-lock-outline">
+                :icon="mdiLockOutline">
                 {{ $t('Heightmap.ErrorKlipperNotReady') }}
             </v-alert>
         </v-row>
@@ -356,7 +356,7 @@ import * as echarts from 'echarts'
 import { ECharts } from 'echarts/core'
 import 'echarts-gl'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiGrid, mdiHome } from '@mdi/js'
+import { mdiGrid, mdiHome, mdiInformation, mdiLockOutline, mdiStackOverflow } from '@mdi/js'
 
 interface HeightmapSerie {
     type: string
@@ -390,6 +390,9 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
      */
     mdiGrid = mdiGrid
     mdiHome = mdiHome
+    mdiInformation = mdiInformation
+    mdiStackOverflow = mdiStackOverflow
+    mdiLockOutline = mdiLockOutline
 
     private renameDialog = false
     private removeDialogProfile = ''
