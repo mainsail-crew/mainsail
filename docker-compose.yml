@@ -1,13 +1,16 @@
 version: '3.8'
 services:
-  printer:
-    image: klipper-printer-simulavr
+  api:
+    build:
+      context: ./docker
+      dockerfile: api/Dockerfile
+    image: mainsail-stack-api/1
     volumes:
       - ./docker/config:/home/node/klipper_config
       - ./docker/logs:/home/node/klipper_logs
       - ./docker/gcode:/home/node/gcode
       - ./docker/config/moonraker:/home/node/.moonraker_database
-    container_name: mainsail-printer-simulated
+    container_name: mainsail-stack-api
     ports:
       - '7125:7125'
     networks:
