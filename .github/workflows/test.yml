@@ -1,6 +1,12 @@
 name: Cypress Tests
 
-on: [push]
+on:
+  # Triggers the workflow on push or pull request events but only for the develop branch
+  push:
+    branches: [develop]
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   cypress-run:
