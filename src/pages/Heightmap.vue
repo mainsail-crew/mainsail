@@ -112,7 +112,7 @@
                                     <e-chart
                                         ref="heightmap"
                                         :option="chartOptions"
-                                        :init-options="{ renderer: 'svg' }"
+                                        :init-options="{ renderer: 'canvas' }"
                                         style="height: 400px; width: 100%; overflow: hidden"></e-chart>
                                 </v-col>
                             </v-row>
@@ -353,8 +353,15 @@ import ControlMixin from '@/components/mixins/control'
 
 import Panel from '@/components/ui/Panel.vue'
 
-import ECharts from 'vue-echarts'
+import { use } from 'echarts/core'
+
+// import ECharts modules manually to reduce bundle size
+import { CanvasRenderer } from 'echarts/renderers'
+import { VisualMapComponent } from 'echarts/components'
+
 import 'echarts-gl'
+
+use([CanvasRenderer, VisualMapComponent])
 
 interface HeightmapSerie {
     type: string

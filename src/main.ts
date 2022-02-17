@@ -46,6 +46,7 @@ Vue.use(OverlayScrollbarsPlugin, {
 // Echarts
 import ECharts from 'vue-echarts'
 import { use } from 'echarts/core'
+
 // import ECharts modules manually to reduce bundle size
 import { SVGRenderer } from 'echarts/renderers'
 import { LineChart, BarChart, PieChart } from 'echarts/charts'
