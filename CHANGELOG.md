@@ -8,9 +8,7 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Release
 
-- Release v2.1.2 (#639)
-
- ([ebf7486](ebf74860f4d3119802590c6f6cffeb82e7af5a45))
+- Release v2.1.2 (#639) ([ebf7486](ebf74860f4d3119802590c6f6cffeb82e7af5a45))
 
 ## [2.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.1)
 ##### released: Friday 28 January 2022
