@@ -167,13 +167,16 @@ export default class NumberInput extends Mixins(BaseMixin) {
 
         const errors = []
         if (this.value.toString() === '') {
-            errors.push('Input must not be empty!')
+            // "Input must not be empty!"
+            errors.push(this.$t('App.NumberInput.NoEmptyAllowedError'))
         }
         if (this.max === null && this.value < this.min) {
-            errors.push(`Must be grater or equal than ${this.min}`)
+            // "Must be grater or equal than {min}!"
+            errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min }))
         }
         if (this.max !== null && (this.value > this.max! || this.value < this.min)) {
-            errors.push(`Must be between ${this.min} and ${this.max}`)
+            // "Must be between {min} and {max}!"
+            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min, max: this.max }))
         }
         return errors
     }
