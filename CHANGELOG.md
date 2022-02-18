@@ -2,6 +2,47 @@
 # Changelog
 All notable changes to Mainsail will be documented in this file.
 
+## [unreleased]
+
+### Bug Fixes
+
+- **env** | Parse environment variable as string (#632) ([d3172fa](d3172fa3537c6c2087bcfcc319dd164420b0e6e1))
+- Video and download link in timelapse video dialog (#611) ([5f0c4ba](5f0c4baacad69ef0a0f43a7b6a04839bded24fb0))
+- Console error regarding touch directive (#633) ([fc86125](fc86125ebd9cc32622ea324905a3fb906013efba))
+- Import bugfixes from release v2.1.2 (#639) ([7890d1e](7890d1e004f99b70ea9d2aa52152876fe6aad6f3))
+
+### Documentation
+
+- Split up quicktips (#584) ([4f9581f](4f9581f3a0481430e32b080a92a4512c4b74c8ec))
+- Cleanup assets folder (#601) ([c6432d5](c6432d5b3c5667ee8c12ca4ea595682f64fe4b0e))
+- Update credits (#602) ([02d5f6b](02d5f6b8c31c09fef08ffb109468cecb55e8208e))
+
+### Features
+
+- Add custom number input component (#638) ([fa20b19](fa20b19a5b0f58b8b826482e1384361f16379a44))
+- Multiselect in history jobs (#509) ([455a3aa](455a3aa19489cfbcbdf740077e3274153d6448c4))
+
+### Localization
+
+- **da** | Update da.json (#596) ([a15cb3c](a15cb3cbeb02d9122b0fd50331c1559faddb4ba3))
+- **pl** | Bugfix 29/01/2022 (#598) ([e9157f1](e9157f14c6b1b467ecee770ae4f8e2f9bcbcfc4f))
+- **pl** | Update 03.02.2022 (#606) ([30abb68](30abb687a349123ab14156b2a102752be4aa17f9))
+
+### Performance
+
+- Load codemirror into a chunk for faster LCP (#641) ([6563b7c](6563b7ce4782b8c8cfd287d223634bfba46aefbf))
+
+### Refactor
+
+- Migrate `longpress.js` to `longpress.ts` (#619) ([c589a49](c589a495a6ef55bfbb1a498a052ac9d2f56a2acf))
+- Replace 'vue-headful' with 'vue-meta' (#620) ([0cf8ba0](0cf8ba05be1a3e43201b94914ab150efe4562a8c))
+- Make sure that port '80' and '443' are correctly passed through (#631) ([fd22cc2](fd22cc297d0df7c3a5c82fc5a510b1cb682f88fd))
+
+### Styling
+
+- Add prettier as default formatter (#614) ([04b6992](04b6992f3c202634948ee7c6afa9cd2c517f7af9))
+- Use prettier on other file formats as well (#648) ([615ee73](615ee73801588fdda28494e490a7525719a3d835))
+
 ## [2.1.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.2)
 ##### released: Monday 14 February 2022
 
