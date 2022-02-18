@@ -13,6 +13,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
+      "cypress",
       "vite/client",
       "vuetify",
       "@intlify/vite-plugin-vue-i18n/client",
@@ -39,6 +40,7 @@
     "src/*/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
+    "cypress/**/*.ts",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],

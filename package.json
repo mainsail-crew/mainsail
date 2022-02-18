@@ -8,14 +8,17 @@
     },
     "scripts": {
         "serve": "vite serve",
-        "build": "vite build  && npm run build.zip",
+        "build": "vite build && npm run build.zip",
         "format": "npm run format:base -- --write",
         "format:base": "prettier .prettierrc src vite.config.ts package.json public/manifest.json .eslintrc.json .github/ index.html *.yml *.md",
         "format:check": "npm run format:base -- --check",
         "lint": "eslint --ext .ts,.vue --ignore-path .gitignore src",
         "lint:fix": "eslint --ext .ts,.vue --ignore-path .gitignore src --fix",
         "build.zip": "cd ./dist && zip -r mainsail.zip ./ && cd ..",
-        "i18n-extract": "vue-i18n-extract use-config"
+        "i18n-extract": "vue-i18n-extract use-config",
+        "start": "vite preview",
+        "test": "npm run build && cypress run",
+        "test:ui": "cypress open"
     },
     "dependencies": {
         "@codemirror/basic-setup": "^0.19.0",
@@ -64,6 +67,7 @@
         "@vue/composition-api": "^1.4.6",
         "@vue/eslint-config-typescript": "^10.0.0",
         "autoprefixer": "^10.4.2",
+        "cypress": "^9.5.0",
         "eslint": "^8.9.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-vue": "^8.4.1",
