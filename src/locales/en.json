@@ -247,7 +247,11 @@
         "DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
         "DeleteBedMeshProfile": "Delete Bed Mesh Profile",
         "DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",
+        "RemoveSaveDescription": "The bed_mesh profile has been registered as deleted. Click on SAVE_CONFIG to remove it from the printer.cfg and restart Klipper.",
         "Remove": "delete",
+        "Ok": "OK",
+        "SAVE_CONFIG": "SAVE_CONFIG",
+        "Later": "Later",
         "CurrentMesh": {
             "Headline": "Current Mesh",
             "Name": "Name",
