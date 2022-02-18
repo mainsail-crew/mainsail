@@ -1,11 +1,16 @@
-name: Changelog updater
+name: Update changelog
 
 on:
+  # Update the changelog after pushing a new tag
   push:
     tags:    
       - "*"
+  # Update the changelog everyday
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '1 0 * * *'
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Update the changelog by invoking this workflow manually
   workflow_dispatch:
 
 jobs:
