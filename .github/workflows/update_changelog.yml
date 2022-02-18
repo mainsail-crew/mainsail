@@ -18,18 +18,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Get latest tag
+        run: |
+          echo "::set-output name=TAG_NAME::$(git describe --tags $(git rev-list --tags --max-count=1))"
+        id: latest_tag
       - name: Generate a changelog
         uses: orhun/git-cliff-action@v1
         id: git-cliff
         with:
           config: cliff.toml
-          args: --verbose
+          args: v0.0.4..${{ steps.latest_tag.outputs.TAG_NAME }}
         env:
           OUTPUT: CHANGELOG.md
 
-      - name: Print the changelog
-        run: cat "${{ steps.git-cliff.outputs.changelog }}"
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "chore(changelog): update changelog"

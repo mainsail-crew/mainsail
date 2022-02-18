@@ -52,19 +52,22 @@ footer = """
 # allow only conventional commits
 # https://www.conventionalcommits.org
 conventional_commits = true
+filter_unconventional = false
 # regex for parsing and grouping commits
 commit_parsers = [
     { message = "^docs\\(changelog\\):", group = "Changelog", skip = true}, # Old redundant commits
-    { message = "^feat", group = "Features"},
-    { message = "^fix", group = "Bug Fixes"},
-    { message = "^docs", group = "Documentation"},
-    { message = "^perf", group = "Performance"},
-    { message = "^refactor", group = "Refactor"},
-    { message = "^style", group = "Styling"},
-    { message = "^test", group = "Testing"},
-    { message = "^locale", group = "Localization"},
-    { message = "^chore", group = "Miscellaneous Tasks", skip = true}, # chore tasks are not relevant for the changelog
+    { message = "^feat(\\(.*\\))?:", group = "Features"},
+    { message = "^feature(\\(.*\\))?:", group = "Features"},
+    { message = "^fix(\\(.*\\))?:", group = "Bug Fixes"},
+    { message = "^docs(\\(.*\\))?:", group = "Documentation"},
+    { message = "^perf(\\(.*\\))?:", group = "Performance"},
+    { message = "^refactor(\\(.*\\))?:", group = "Refactor"},
+    { message = "^style(\\(.*\\))?:", group = "Styling"},
+    { message = "^test(\\(.*\\))?:", group = "Testing"},
+    { message = "^locale(\\(.*\\))?:", group = "Localization"},
+    { message = "^chore(\\(.*\\))?:", group = "Miscellaneous Tasks", skip = true}, # chore tasks are not relevant for the changelog
     { body = ".*security", group = "Security"},
+    { message = "release v2.1.2", group = "Release"}, # workaround for v2.1.2 release
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true
