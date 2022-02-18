@@ -7,7 +7,7 @@ on:
 
   pull_request:
     branches: [develop]
-    
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -15,7 +15,6 @@ jobs:
   changelog:
     name: Generate changelog
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
