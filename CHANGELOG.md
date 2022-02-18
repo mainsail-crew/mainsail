@@ -18,8 +18,10 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Features
 
+- **pwa**: Add PWA support for https based instances (#654) | [db9b19e](db9b19ef0fabbb49ac7118c1353b0d74773b20f2)
 - Add custom number input component (#638) | [fa20b19](fa20b19a5b0f58b8b826482e1384361f16379a44)
 - Multiselect in history jobs (#509) | [455a3aa](455a3aa19489cfbcbdf740077e3274153d6448c4)
+- Display only existing/useable bed_mesh profiles (#660) | [82f756c](82f756c6ae6243591d84ec3c1f85973ed7133b05)
 
 ### Localization
 
@@ -30,6 +32,7 @@ All notable changes to Mainsail will be documented in this file.
 ### Performance
 
 - Load codemirror into a chunk for faster LCP (#641) | [6563b7c](6563b7ce4782b8c8cfd287d223634bfba46aefbf)
+- Replace echart library and load it modular (#645) | [fe92b97](fe92b97940a4508705aebf179ffb4e2453150558)
 
 ### Refactor
 
@@ -41,6 +44,10 @@ All notable changes to Mainsail will be documented in this file.
 
 - Add prettier as default formatter (#614) | [04b6992](04b6992f3c202634948ee7c6afa9cd2c517f7af9)
 - Use prettier on other file formats as well (#648) | [615ee73](615ee73801588fdda28494e490a7525719a3d835)
+
+### Testing
+
+- Add cypress for e2e testing (#655) | [cc1615a](cc1615acd4b841887b8220e2647a69cdb559c6b2)
 
 ## [2.1.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.2) - 2022-02-14
 ### Release
