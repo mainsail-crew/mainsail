@@ -11,8 +11,7 @@ All notable changes to Mainsail will be documented in this file.\n
 # https://tera.netlify.app/docs/#introduction
 body = """
 {% if version %}\
-    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mainsail-crew/mainsail/releases/tag/{{version}})
-    ##### released: {{ timestamp | date(format="%A %d %B %Y") }}
+    ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mainsail-crew/mainsail/releases/tag/{{version}}) - {{ timestamp | date(format="%Y-%m-%d") }}    
 \
 {% else %}\
     ## [unreleased]

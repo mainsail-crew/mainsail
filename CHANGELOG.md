@@ -42,14 +42,12 @@ All notable changes to Mainsail will be documented in this file.
 - Add prettier as default formatter (#614) | [04b6992](04b6992f3c202634948ee7c6afa9cd2c517f7af9)
 - Use prettier on other file formats as well (#648) | [615ee73](615ee73801588fdda28494e490a7525719a3d835)
 
-## [2.1.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.2)
-##### released: Monday 14 February 2022
+## [2.1.2](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.2) - 2022-02-14
 ### Release
 
 - Release v2.1.2 (#639) | [ebf7486](ebf74860f4d3119802590c6f6cffeb82e7af5a45)
 
-## [2.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.1)
-##### released: Friday 28 January 2022
+## [2.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.1) - 2022-01-28
 ### Bug Fixes
 
 - Read nozzle_diameter from klipper config in gcodeviewer (#558) | [8eb67ae](8eb67ae2b66c3960770ae45236f5107cbbefad4e)
@@ -77,8 +75,7 @@ All notable changes to Mainsail will be documented in this file.
 - **pl** | Additional fix for polish language (#592) | [1c4127a](1c4127acf2f9b9774511d55d3b12d413c71eef1c)
 - **zh** | Update zh.json (#557) | [b743467](b743467bca643e66642bdbec69d6c8942d624d08)
 
-## [2.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.0)
-##### released: Wednesday 19 January 2022
+## [2.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.0) - 2022-01-19
 ### Bug Fixes
 
 - **websocket** | Close websocket before connecting (#383) | [182d7f1](182d7f146ed55ede1b9874cf7f3ad2fe05b17266)
@@ -447,8 +444,7 @@ All notable changes to Mainsail will be documented in this file.
 - Change panel expansion indicator (#516) | [8acf2b3](8acf2b3b7e416b3de5f00961ef699752fbe4eba0)
 - Change default colors (#523) | [4ac9b56](4ac9b567755be1045c8150b137499ea5016861e8)
 
-## [2.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.1)
-##### released: Wednesday 08 September 2021
+## [2.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.1) - 2021-09-08
 ### Documentation
 
 - Update screenshot to v2.0.0 | [b8c93bd](b8c93bdb0f15bef589c1122ca8c427838b792563)
@@ -459,8 +455,7 @@ All notable changes to Mainsail will be documented in this file.
 - **console** | Autofocus input field after click on a command | [44c43a6](44c43a6fb5cad777b7ebd889d408547aa2142cfe)
 - Gcodeviewer (#322) | [673fd9f](673fd9f8798fbb9325c40a49547551ae5bc1c695)
 
-## [2.0.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.0)
-##### released: Thursday 26 August 2021
+## [2.0.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.0) - 2021-08-26
 ### Documentation
 
 - Add .svg as valid background extension (#285) | [e10fd11](e10fd11acd8b9faf9a3ac3fff485471cae9bc36c)
@@ -513,8 +508,7 @@ All notable changes to Mainsail will be documented in this file.
 - Update francais | [390a3ef](390a3ef571602abe02726dfb3b93129589698964)
 - Last fr fixes | [bfa4e25](bfa4e2524c9fc23128ebaecd0668e5b58ed62f5a)
 
-## [1.6.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.6.0)
-##### released: Tuesday 18 May 2021
+## [1.6.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.6.0) - 2021-05-18
 ### Documentation
 
 - A simple recommendation for remote access (#277) | [a0a3aa7](a0a3aa79ac894bee65b3c6941b75c1b09987ec56)
@@ -534,8 +528,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add filament_motion_sensors | [1919aa6](1919aa6921c56464bbf33c9d62e2ff026ff1632d)
 - Add UV4L-MJPEG webcam support | [97c06c3](97c06c30611b7105c31cfa7a00fee8644e3ff369)
 
-## [1.5.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.5.0)
-##### released: Tuesday 13 April 2021
+## [1.5.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.5.0) - 2021-04-13
 ### Documentation
 
 - Fix theme list | [133bd55](133bd5598b44484ed68df2949724015063e1968b)
@@ -566,8 +559,7 @@ All notable changes to Mainsail will be documented in this file.
 - Display full version number of up-to-date components in the update manager | [84130f2](84130f2891a564148ffcb6089f414b9cd20e736d)
 - Add state avg to heaters and temperature_fans in ToolsPanel.vue | [86d45b8](86d45b850716389d3ce4bcfd66fe99f4c16613d7)
 
-## [1.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.4.0)
-##### released: Tuesday 09 March 2021
+## [1.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.4.0) - 2021-03-09
 ### Features
 
 - Add tacho value to miscellaneous fans and temperature_fans | [3c7dc54](3c7dc54beac38f9e5b39d245337c1785271c37cf)
@@ -577,8 +569,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add .nc to valid gcode extensions | [fed5956](fed595650033cc03397eb79a2b65a0858c691835)
 - Add option to enable cancel_print button permanently | [0825d85](0825d8500095ac59db6385ff7b9cad4481a1d88b)
 
-## [1.3.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.3.0)
-##### released: Saturday 27 February 2021
+## [1.3.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.3.0) - 2021-02-27
 ### Documentation
 
 - Update manager config in manual setup | [5f06da4](5f06da45cfcd34c32eec977122e833e7265e8bbc)
@@ -594,8 +585,7 @@ All notable changes to Mainsail will be documented in this file.
 - Save last setting of ExtruderPanel.vue in .mainsail.json | [389c162](389c16287863044c8d4bdbe6b97da2b88a3fa8c8)
 - Commit dialog for upgradeable components | [f2ea6c0](f2ea6c039f42f6df3fb91a020b13203ff348a611)
 
-## [1.2.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.2.0)
-##### released: Tuesday 09 February 2021
+## [1.2.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.2.0) - 2021-02-09
 ### Features
 
 - Disable power devices with attribute "locked_while_printing" in moonraker while printing | [aeb6ae1](aeb6ae1ec97ef3c0899a857937d74f9f70ee5068)
@@ -608,8 +598,7 @@ All notable changes to Mainsail will be documented in this file.
 - Hide additional sensors | [fff66f0](fff66f0c3b1c67826b771184c3980d598b826e22)
 - Hide additional sensors in temp list | [91014a7](91014a734931d4521f6349cbb97efeaaf5ce54c1)
 
-## [1.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.1.0)
-##### released: Sunday 31 January 2021
+## [1.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.1.0) - 2021-01-31
 ### Features
 
 - Add autoscale tempchart | [8a85877](8a8587786addd1718a58cee26031866f5a9d2f40)
@@ -619,8 +608,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add hover marker in tempchart | [9090c60](9090c600382a97a0a2acc1d83725ae9131b526aa)
 - Add additional sensor support in temperature panel (bme280...) | [f958027](f95802767197613a05c6ea49eb83c8c2280ee052)
 
-## [1.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v1.0.1)
-##### released: Sunday 24 January 2021
+## [1.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v1.0.1) - 2021-01-24
 ### Features
 
 - **refresh-webcam** | Refresh webcam view on focus | [45198d7](45198d7d93c0c6894c432319c52aef6e8084a295)
@@ -628,8 +616,7 @@ All notable changes to Mainsail will be documented in this file.
 - Restart moonraker if you click SAVE & RESTART of moonraker.conf | [659504f](659504f77ecac18a43a7790bc352f93daf91392d)
 - Redesign MoonrakerFailedPluginsPanel.vue and MinSettingsPanel.vue | [25221ca](25221ca6cb9474927ae99636828999c4802f0cc3)
 
-## [1.0.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.0.0)
-##### released: Tuesday 19 January 2021
+## [1.0.0](https://github.com/mainsail-crew/mainsail/releases/tag/v1.0.0) - 2021-01-19
 ### Features
 
 - Add farm mode | [5831e43](5831e43fba34fb2318cf70335683bdd6a0292d26)
@@ -651,8 +638,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add custom gcode to presets | [7cda0f7](7cda0f7058692833a62007061523d1dca857d706)
 - Convert heater, fan & sensor names | [d767f50](d767f50bbbb03a3719e9820d543c6fbfad4d4a43)
 
-## [0.4.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.4.1)
-##### released: Thursday 31 December 2020
+## [0.4.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.4.1) - 2020-12-31
 ### Features
 
 - Add log during a update | [a8ea45d](a8ea45d53c41622791517556cf03a02da6a3fe6d)
@@ -661,8 +647,7 @@ All notable changes to Mainsail will be documented in this file.
 - Gcode files fileupload progress | [99f963d](99f963df26af04ba65cd1451e9be7538303a2c22)
 - Add multi file upload in gcode-files & config-files | [e44e3bc](e44e3bc540e8b48353437e7b6252af3b4bba6302)
 
-## [0.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.4.0)
-##### released: Sunday 27 December 2020
+## [0.4.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.4.0) - 2020-12-27
 ### Features
 
 - Console Dashboard -> input field | [1b632c2](1b632c2ccabbdd97f5398e71a436aeecd8de7620)
@@ -681,8 +666,7 @@ All notable changes to Mainsail will be documented in this file.
 - Restart services (moonraker, klipper) | [583aa2b](583aa2b64b0d275750f967a38293a444339683b3)
 - Update manager -> add loading to sync button | [5697792](569779250453d180df069de2c906ab42771ad703)
 
-## [0.3.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.3.0)
-##### released: Saturday 28 November 2020
+## [0.3.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.3.0) - 2020-11-28
 ### Features
 
 - Show/hide columns in G-Code-Files | [616f84e](616f84edbe7e94d00b646eb891fe8d3217c2757a)
@@ -695,20 +679,17 @@ All notable changes to Mainsail will be documented in this file.
 - Dynamic temperature-sensor icons + header minimize from temperature panel | [8f363ec](8f363ec1c1447a8965d9a170793a0b34b9cd14c7)
 - Redesign panel headers | [cb60251](cb602518f078bf0d90c09452f8014487b7b5b35f)
 
-## [0.2.6](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.6)
-##### released: Tuesday 27 October 2020
+## [0.2.6](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.6) - 2020-10-27
 ### Features
 
 - Modify dashboard console for more message space | [91f2e9b](91f2e9b6d8199ebc3d1df120bffcbe02a501828b)
 
-## [0.2.5](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.5)
-##### released: Saturday 24 October 2020
+## [0.2.5](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.5) - 2020-10-24
 ### Features
 
 - Rework the StatusPanel.vue | [f35cf70](f35cf70301f119e39d53b0649ff6a02dd6da2f41)
 
-## [0.2.3](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.3)
-##### released: Thursday 15 October 2020
+## [0.2.3](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.3) - 2020-10-15
 ### Features
 
 - Add "edit file" in context menu of configfiles | [5cbed10](5cbed10d441a78dc2a6a36218534cd5610d0a6a3)
@@ -722,34 +703,29 @@ All notable changes to Mainsail will be documented in this file.
 
 - Docs move upstreams and common vars to independent conf | [257b792](257b792aee9c2f29a6a04ab4a2730702b6f56c59)
 
-## [0.2.2](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.2)
-##### released: Thursday 03 September 2020
+## [0.2.2](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.2) - 2020-09-03
 ### Features
 
 - Switch to meta data notifiy | [8b8f3cf](8b8f3cf939fedba5389f3f103412c31d6a87ebd9)
 
-## [0.2.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.1)
-##### released: Tuesday 01 September 2020
+## [0.2.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.2.1) - 2020-09-01
 ### Features
 
 - Show gcode thumbnail in StatusPanel.vue while printing | [ad6ae11](ad6ae1128bd3d76702bd85d6ed865816443b958f)
 
-## [0.1.3](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.3)
-##### released: Friday 14 August 2020
+## [0.1.3](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.3) - 2020-08-14
 ### Features
 
 - Add config editor | [29d5b81](29d5b81b470f0f54bc98bfd051658d3a48df91ba)
 
-## [0.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.1)
-##### released: Saturday 01 August 2020
+## [0.1.1](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.1) - 2020-08-01
 ### Features
 
 - Fine babystepping (0.01 steps) | [37f1ffb](37f1ffb04b2da6c2a1bfcd1f63119610b42a791b)
 - Add Z_TILT in ControlPanel.vue | [75d6cce](75d6cce540441dc5aa5a73b3db8b5af4f1f6a262)
 - Rename "Host restart" to "Host reboot" | [6766a26](6766a266e80c2b2f330644c13df6b853a0a8976d)
 
-## [0.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.0)
-##### released: Sunday 26 July 2020
+## [0.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v0.1.0) - 2020-07-26
 ### Features
 
 - If Filament used > 1000mm -> convert to m | [b4ee662](b4ee662a4f280886961f17d3db507972d4a2247a)
@@ -762,8 +738,7 @@ All notable changes to Mainsail will be documented in this file.
 - Update package.json | [458a6e8](458a6e859217ecd8d20b458ff0e1fe023e6cb733)
 - Warning tool input if temp too high or too low | [be7abdf](be7abdf2542523d02331f174502b93121be7e682)
 
-## [0.0.12](https://github.com/mainsail-crew/mainsail/releases/tag/v0.0.12)
-##### released: Monday 11 May 2020
+## [0.0.12](https://github.com/mainsail-crew/mainsail/releases/tag/v0.0.12) - 2020-05-11
 ### Features
 
 - Temperature_sensor min/max temp by hover | [86595ab](86595ab70b69a1b8c8d2e5a6d6c4cfb706c584fe)
