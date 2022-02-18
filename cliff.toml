@@ -13,11 +13,11 @@ body = """
 {% if version %}\
     ## [{{ version | trim_start_matches(pat="v") }}](https://github.com/mainsail-crew/mainsail/releases/tag/{{version}})
     ##### released: {{ timestamp | date(format="%A %d %B %Y") }}
-
+\
 {% else %}\
     ## [unreleased]
 {% endif %}\
-{% for group, commits in commits | group_by(attribute="group") %}
+{% for group, commits in commits | group_by(attribute="group") %}\
     ### {{ group | upper_first }}
     {% for commit in commits
     | filter(attribute="scope")
@@ -39,8 +39,8 @@ body = """
 
         {% endif -%}
     {% endfor -%}
-    {% raw %}\n{% endraw %}\
-{% endfor %}\n
+    {% raw %}\n{% endraw %}
+{% endfor %}\n\
 """
 # remove the leading and trailing whitespaces from the template
 trim = true
