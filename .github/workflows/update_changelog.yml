@@ -1,10 +1,15 @@
 name: Changelog updater
 
-on: 
+on:
+  push:
+    tags:    
+      - "*"
 
   pull_request:
-    branches:
-      - '*'
+    branches: [develop]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   changelog:
@@ -31,13 +36,15 @@ jobs:
 
       - name: Generate the unreleased changelog
         uses: orhun/git-cliff-action@v1
-        id: git-cliff
+        id: git-cliff-unreleased
         with:
           config: cliff.toml
           args: --unreleased --prepend CHANGELOG.md
 
-      - name: Print the changelog
-        run: cat "${{ steps.git-cliff.outputs.changelog }}"
+
+      - name: show CHANGELOG
+        run: |
+          cat CHANGELOG.md
 
       # - uses: stefanzweifel/git-auto-commit-action@v4
       #   with:
