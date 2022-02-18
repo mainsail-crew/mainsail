@@ -5,7 +5,7 @@ All notable changes to Mainsail will be documented in this file.
 ## [unreleased]
 ### Bug Fixes
 
-- **env** | Parse environment variable as string (#632) | [d3172fa](d3172fa3537c6c2087bcfcc319dd164420b0e6e1)
+- **env**: Parse environment variable as string (#632) | [d3172fa](d3172fa3537c6c2087bcfcc319dd164420b0e6e1)
 - Video and download link in timelapse video dialog (#611) | [5f0c4ba](5f0c4baacad69ef0a0f43a7b6a04839bded24fb0)
 - Console error regarding touch directive (#633) | [fc86125](fc86125ebd9cc32622ea324905a3fb906013efba)
 - Import bugfixes from release v2.1.2 (#639) | [7890d1e](7890d1e004f99b70ea9d2aa52152876fe6aad6f3)
@@ -23,9 +23,9 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Localization
 
-- **da** | Update da.json (#596) | [a15cb3c](a15cb3cbeb02d9122b0fd50331c1559faddb4ba3)
-- **pl** | Bugfix 29/01/2022 (#598) | [e9157f1](e9157f14c6b1b467ecee770ae4f8e2f9bcbcfc4f)
-- **pl** | Update 03.02.2022 (#606) | [30abb68](30abb687a349123ab14156b2a102752be4aa17f9)
+- **da**: Update da.json (#596) | [a15cb3c](a15cb3cbeb02d9122b0fd50331c1559faddb4ba3)
+- **pl**: Bugfix 29/01/2022 (#598) | [e9157f1](e9157f14c6b1b467ecee770ae4f8e2f9bcbcfc4f)
+- **pl**: Update 03.02.2022 (#606) | [30abb68](30abb687a349123ab14156b2a102752be4aa17f9)
 
 ### Performance
 
@@ -68,17 +68,17 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Localization
 
-- **da** | Danish - minor updates, missing tags and removed "deceleration" (#578) | [0f0180b](0f0180bc50063ff80e41eddf02f64827ddd9e0a8)
-- **it** | IT translation update (#553) | [d569483](d5694835d0ea6954d1f64fe071455cc2400b84ef)
-- **pl** | Polish translation (#581) | [b944af5](b944af54486ee36ac58e4469d0b64ebc3e957739)
-- **pl** | Fix polish translation (#589) | [a121e56](a121e560859c862f36538c19930fb632519182aa)
-- **pl** | Additional fix for polish language (#592) | [1c4127a](1c4127acf2f9b9774511d55d3b12d413c71eef1c)
-- **zh** | Update zh.json (#557) | [b743467](b743467bca643e66642bdbec69d6c8942d624d08)
+- **da**: Danish - minor updates, missing tags and removed "deceleration" (#578) | [0f0180b](0f0180bc50063ff80e41eddf02f64827ddd9e0a8)
+- **it**: IT translation update (#553) | [d569483](d5694835d0ea6954d1f64fe071455cc2400b84ef)
+- **pl**: Polish translation (#581) | [b944af5](b944af54486ee36ac58e4469d0b64ebc3e957739)
+- **pl**: Fix polish translation (#589) | [a121e56](a121e560859c862f36538c19930fb632519182aa)
+- **pl**: Additional fix for polish language (#592) | [1c4127a](1c4127acf2f9b9774511d55d3b12d413c71eef1c)
+- **zh**: Update zh.json (#557) | [b743467](b743467bca643e66642bdbec69d6c8942d624d08)
 
 ## [2.1.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.1.0) - 2022-01-19
 ### Bug Fixes
 
-- **websocket** | Close websocket before connecting (#383) | [182d7f1](182d7f146ed55ede1b9874cf7f3ad2fe05b17266)
+- **websocket**: Close websocket before connecting (#383) | [182d7f1](182d7f146ed55ede1b9874cf7f3ad2fe05b17266)
 - Inconsistent spelling and typos (#379) | [62ccb1f](62ccb1f97de073bdae9b3fdf25870d28c37b855e)
 - Remove [display_status] from min settings, when [display] exists | [b99463e](b99463ee99c6ab4dc777b5481b81e47b5df6ffc7)
 - Load metadata of current print file of farm printers | [20a969e](20a969ebcdb7f8ad3db9f9e79250fa04d0950b22)
@@ -260,8 +260,8 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Features
 
-- **editor** | Add webcam.conf as webcamd config | [5efbd50](5efbd5002470a857c0a9ca6a41764f0b5a8f8656)
-- **panel** | Disable text select for panel headline | [f8842ff](f8842ff0705017a79789aacd39daf66bce080e69)
+- **editor**: Add webcam.conf as webcamd config | [5efbd50](5efbd5002470a857c0a9ca6a41764f0b5a8f8656)
+- **panel**: Disable text select for panel headline | [f8842ff](f8842ff0705017a79789aacd39daf66bce080e69)
 - Add backup and restore gcode viewer state | [542e094](542e09434856a670aadd818383b579b69ca926a7)
 - Add snackbar for display the rendering process and cancel it | [bb15bbe](bb15bbec083b4d7b03121b301f0a53cbae90d212)
 - Add snackbar for display the downloading gcode file and option to cancel it | [2c38aad](2c38aad7fde746fe81559bf6abba660a200f9d9c)
@@ -330,55 +330,55 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Localization
 
-- **IT** | Minor edits in italian (#415) | [41584b4](41584b47f75ae315c7e0dd250baba0d84f94339f)
-- **da** | Add DA language file | [a51d216](a51d2167d0211b08e46c83c9224e4a51c3dc4a71)
-- **da** | Update da.json (#491) | [9895622](9895622cfa4714a57ac463bcec442d6850c6c4a0)
-- **da** | Minor changes and spellchecking (#512) | [c831d33](c831d338732e666558ace810985641d7b0c8ce29)
-- **da** | Fix typo in locale file | [65cb342](65cb342cb8d198834530e237860498e8d4e3c49c)
-- **da** | Updated Danish translations (#527) | [649bbaa](649bbaa7dc6ad7804dd19db5351e979c7a50ef94)
-- **de** | Update de translation (#446) | [d92543e](d92543e1c385c1434ac7dea21bfed87a156e042d)
-- **de** | Remove all unused keys | [7b66065](7b66065e777f6ec25adccd25f5280b891d1dff6c)
-- **de** | Fix missing entry | [83e10bd](83e10bde0cf705d03db51ddfa7980e01131f4dfa)
-- **de** | Add temp too high/too low messages to locale file | [39dbebb](39dbebb2d207e12a5e8a64736c5982e6f454c544)
-- **en** | Update en translation (#447) | [869423f](869423f4c689678d1be12237522b5b281b5e160e)
-- **en** | Remove all unused keys | [1a6792b](1a6792b6b556c096c6df675153e02da7076ac781)
-- **es** | Update spanish translation (#443) | [8a87d8a](8a87d8a144a88dcf68595f7158a91f1a08a30c55)
-- **es** | Remove all unused keys | [85436a0](85436a0cd653e3db2b64114f561b4a7345a85ba6)
-- **es** | Fix some missing translates (#461) | [0bbab21](0bbab2182f5672ddaecf772fe0f162f48d499ec8)
-- **es** | Correcciones de la Beta6 (#492) | [c38716b](c38716ba2a2353b8b0977feb2f93cf8cf3ef1528)
-- **es** | Traslation Spanish RC1 (#528) | [4610eb7](4610eb70bca160ba43f91cddd88d59f7a2bfa4f8)
-- **fr** | Fix some typos | [fbc3afd](fbc3afd69ee5f3772f9e31d3b70519551a8b35de)
-- **fr** | Update fr locale | [ed82856](ed82856140e50bd04525d715ca993d90727430bf)
-- **fr** | Update beta2 fr translations | [5218b0b](5218b0baeaaa3dc033e0cd9bb70fc193a4886d29)
-- **fr** | Remove all unused keys | [b6527b4](b6527b471ae93c4fc717ee9bcdff626549c48587)
-- **fr** | Update FR language file | [b0e7e50](b0e7e503ed93e9f9f2d83709764e39a925920ad0)
-- **fr** | Update FR translation | [11f97d6](11f97d62890352610af1404690ad06f958527ab2)
-- **fr** | Update FR locale | [b7e94ba](b7e94ba25e6c15b91d46a2011a9551ccc937a5bb)
-- **hu** | Update translation file (#454) | [06cb14d](06cb14db469bd9917d24a99737740757afd359ee)
-- **hu** | Remove unused keys | [ea49345](ea493451380c41c3a35eda340382b1bbc0d7e3f9)
-- **hu** | Hu updated for the latest eng local (#517) | [5ed63ed](5ed63ed27f3ce5cace77f24872d0a1199f99c753)
-- **hu** | Hun update 20220110 as requested :) (#530) | [bd5723d](bd5723dda6da729d2cbc959043774b7db724828d)
-- **hu** | 2022 01 12 update (#531) | [9da5c35](9da5c356f7c074de20953d34b03ce5acc1efacd3)
-- **it** | IT Translation(beta) (#435) | [6912dc0](6912dc027eb21cb836665a04dbcd8b6a9a1aa4d2)
-- **it** | Remove all unused keys | [1187216](1187216d5b905919afc16768674f6e3804d65568)
-- **it** | Update translation file (#455) | [7005b87](7005b87870657e355b3684dccfa942b40ccdc5b6)
-- **it** | Remove unused keys | [ffa05ee](ffa05ee1d56f9879576c709d11b5217662597c97)
-- **it** | Update IT to beta6 (#483) | [e5b0ad2](e5b0ad292b7c02a72dcf91d25360390bd1064433)
-- **nl** | NL translations for 2.1-beta (#453) | [04ead52](04ead521b0ed3618ce22c1eaa4b546f93b504ea7)
-- **nl** | Remove unused keys | [a3a1288](a3a12882f89f41373e15e60179b7d91b9f08bd25)
-- **nl** | Add last 2.1-beta strings (#499) | [da72a4e](da72a4e2720c1568d33f7f820fce4d65c11a68f6)
-- **nl** | Update NL locale (#529) | [d94e9f1](d94e9f18f34e8e5106e2ca5aced09bd236c876e0)
-- **ru** | Update translation file (#458) | [f172420](f1724206f60f6dd86a18f82d563cfcb599f2d19a)
-- **ru** | Fix ru language file for the word "Flow" | [6c4bbdb](6c4bbdb5f9c97331d7b13048c21684f1c0e683f9)
-- **ru** | Remove unused keys | [d1905f1](d1905f100aaded98fa1e637327806a909442b0e0)
-- **ru** | Update RU v2.1 (#552) | [19496a1](19496a1f0ae49bf4588bec604fbb475d4a72cf4d)
-- **zh** | Mandarin Translation for V2 beta (#444) | [123426c](123426c6ecbb5a5dc89a91e92591307e3133c898)
-- **zh** | Fix syntax error in zh.json | [881ebbd](881ebbd49aa762a28eeec9e9ecc327c391ede4ee)
-- **zh** | Remove all unused keys | [69eb419](69eb41923d5c08906401b1c1d48b1eab1a8bf35f)
-- **zh** | Remove unused keys | [a54813a](a54813a1671b1c5dc6c1d4a21dcb94c6398717e6)
-- **zh-tw** | Add chinese traditional (#418) | [79b42aa](79b42aa588de3fce7d69815af426cbec680ad36c)
-- **zh-tw** | Remove all unused keys | [61bb2dc](61bb2dcac1d422ab8c32e6cb1acc0b8c70acf64b)
-- **zh-tw** | Remove unused keys | [95a13c9](95a13c9c44abc4cac1b6d703d5eba4669d2834d3)
+- **IT**: Minor edits in italian (#415) | [41584b4](41584b47f75ae315c7e0dd250baba0d84f94339f)
+- **da**: Add DA language file | [a51d216](a51d2167d0211b08e46c83c9224e4a51c3dc4a71)
+- **da**: Update da.json (#491) | [9895622](9895622cfa4714a57ac463bcec442d6850c6c4a0)
+- **da**: Minor changes and spellchecking (#512) | [c831d33](c831d338732e666558ace810985641d7b0c8ce29)
+- **da**: Fix typo in locale file | [65cb342](65cb342cb8d198834530e237860498e8d4e3c49c)
+- **da**: Updated Danish translations (#527) | [649bbaa](649bbaa7dc6ad7804dd19db5351e979c7a50ef94)
+- **de**: Update de translation (#446) | [d92543e](d92543e1c385c1434ac7dea21bfed87a156e042d)
+- **de**: Remove all unused keys | [7b66065](7b66065e777f6ec25adccd25f5280b891d1dff6c)
+- **de**: Fix missing entry | [83e10bd](83e10bde0cf705d03db51ddfa7980e01131f4dfa)
+- **de**: Add temp too high/too low messages to locale file | [39dbebb](39dbebb2d207e12a5e8a64736c5982e6f454c544)
+- **en**: Update en translation (#447) | [869423f](869423f4c689678d1be12237522b5b281b5e160e)
+- **en**: Remove all unused keys | [1a6792b](1a6792b6b556c096c6df675153e02da7076ac781)
+- **es**: Update spanish translation (#443) | [8a87d8a](8a87d8a144a88dcf68595f7158a91f1a08a30c55)
+- **es**: Remove all unused keys | [85436a0](85436a0cd653e3db2b64114f561b4a7345a85ba6)
+- **es**: Fix some missing translates (#461) | [0bbab21](0bbab2182f5672ddaecf772fe0f162f48d499ec8)
+- **es**: Correcciones de la Beta6 (#492) | [c38716b](c38716ba2a2353b8b0977feb2f93cf8cf3ef1528)
+- **es**: Traslation Spanish RC1 (#528) | [4610eb7](4610eb70bca160ba43f91cddd88d59f7a2bfa4f8)
+- **fr**: Fix some typos | [fbc3afd](fbc3afd69ee5f3772f9e31d3b70519551a8b35de)
+- **fr**: Update fr locale | [ed82856](ed82856140e50bd04525d715ca993d90727430bf)
+- **fr**: Update beta2 fr translations | [5218b0b](5218b0baeaaa3dc033e0cd9bb70fc193a4886d29)
+- **fr**: Remove all unused keys | [b6527b4](b6527b471ae93c4fc717ee9bcdff626549c48587)
+- **fr**: Update FR language file | [b0e7e50](b0e7e503ed93e9f9f2d83709764e39a925920ad0)
+- **fr**: Update FR translation | [11f97d6](11f97d62890352610af1404690ad06f958527ab2)
+- **fr**: Update FR locale | [b7e94ba](b7e94ba25e6c15b91d46a2011a9551ccc937a5bb)
+- **hu**: Update translation file (#454) | [06cb14d](06cb14db469bd9917d24a99737740757afd359ee)
+- **hu**: Remove unused keys | [ea49345](ea493451380c41c3a35eda340382b1bbc0d7e3f9)
+- **hu**: Hu updated for the latest eng local (#517) | [5ed63ed](5ed63ed27f3ce5cace77f24872d0a1199f99c753)
+- **hu**: Hun update 20220110 as requested :) (#530) | [bd5723d](bd5723dda6da729d2cbc959043774b7db724828d)
+- **hu**: 2022 01 12 update (#531) | [9da5c35](9da5c356f7c074de20953d34b03ce5acc1efacd3)
+- **it**: IT Translation(beta) (#435) | [6912dc0](6912dc027eb21cb836665a04dbcd8b6a9a1aa4d2)
+- **it**: Remove all unused keys | [1187216](1187216d5b905919afc16768674f6e3804d65568)
+- **it**: Update translation file (#455) | [7005b87](7005b87870657e355b3684dccfa942b40ccdc5b6)
+- **it**: Remove unused keys | [ffa05ee](ffa05ee1d56f9879576c709d11b5217662597c97)
+- **it**: Update IT to beta6 (#483) | [e5b0ad2](e5b0ad292b7c02a72dcf91d25360390bd1064433)
+- **nl**: NL translations for 2.1-beta (#453) | [04ead52](04ead521b0ed3618ce22c1eaa4b546f93b504ea7)
+- **nl**: Remove unused keys | [a3a1288](a3a12882f89f41373e15e60179b7d91b9f08bd25)
+- **nl**: Add last 2.1-beta strings (#499) | [da72a4e](da72a4e2720c1568d33f7f820fce4d65c11a68f6)
+- **nl**: Update NL locale (#529) | [d94e9f1](d94e9f18f34e8e5106e2ca5aced09bd236c876e0)
+- **ru**: Update translation file (#458) | [f172420](f1724206f60f6dd86a18f82d563cfcb599f2d19a)
+- **ru**: Fix ru language file for the word "Flow" | [6c4bbdb](6c4bbdb5f9c97331d7b13048c21684f1c0e683f9)
+- **ru**: Remove unused keys | [d1905f1](d1905f100aaded98fa1e637327806a909442b0e0)
+- **ru**: Update RU v2.1 (#552) | [19496a1](19496a1f0ae49bf4588bec604fbb475d4a72cf4d)
+- **zh**: Mandarin Translation for V2 beta (#444) | [123426c](123426c6ecbb5a5dc89a91e92591307e3133c898)
+- **zh**: Fix syntax error in zh.json | [881ebbd](881ebbd49aa762a28eeec9e9ecc327c391ede4ee)
+- **zh**: Remove all unused keys | [69eb419](69eb41923d5c08906401b1c1d48b1eab1a8bf35f)
+- **zh**: Remove unused keys | [a54813a](a54813a1671b1c5dc6c1d4a21dcb94c6398717e6)
+- **zh-tw**: Add chinese traditional (#418) | [79b42aa](79b42aa588de3fce7d69815af426cbec680ad36c)
+- **zh-tw**: Remove all unused keys | [61bb2dc](61bb2dcac1d422ab8c32e6cb1acc0b8c70acf64b)
+- **zh-tw**: Remove unused keys | [95a13c9](95a13c9c44abc4cac1b6d703d5eba4669d2834d3)
 - Update de translation (#482) | [d16f0e0](d16f0e0fdf35437154b7c2fbffccb808933adb1d)
 - Add KlipperStop to translate list | [f404895](f4048951268b6c8240948619dc0778ae6df3da7b)
 - Fix missing entry | [88ecdcc](88ecdcc3c6a06cdf1bb4beac2fe12cd8e13c24ce)
@@ -387,7 +387,7 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Refactor
 
-- **locale** | Update FR locale file | [fb714fc](fb714fc904e99729c7de77a4245c15a97803f867)
+- **locale**: Update FR locale file | [fb714fc](fb714fc904e99729c7de77a4245c15a97803f867)
 - Change toolbar buttons to text buttons in ToolsPanel.vue toolbar | [ebc61c4](ebc61c4e4b6af92fddbf94bbe4f730a4a29de945)
 - Change toolbar buttons to text buttons in WebcamPanel.vue | [2144888](2144888ef8e79fbf990b27dbff4bd72d6e27b9b2)
 - Change TheSettingsMenu.vue to panel component | [4803df5](4803df5d5d7deb57081f4e84d73baa039959cd07)
@@ -452,7 +452,7 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Features
 
-- **console** | Autofocus input field after click on a command | [44c43a6](44c43a6fb5cad777b7ebd889d408547aa2142cfe)
+- **console**: Autofocus input field after click on a command | [44c43a6](44c43a6fb5cad777b7ebd889d408547aa2142cfe)
 - Gcodeviewer (#322) | [673fd9f](673fd9f8798fbb9325c40a49547551ae5bc1c695)
 
 ## [2.0.0](https://github.com/mainsail-crew/mainsail/releases/tag/v2.0.0) - 2021-08-26
@@ -466,7 +466,7 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Features
 
-- **editor** | Add JSON syntax highlighting | [00caf8a](00caf8a655bc3ceccf4362d71fabeb92ec71ac1c)
+- **editor**: Add JSON syntax highlighting | [00caf8a](00caf8a655bc3ceccf4362d71fabeb92ec71ac1c)
 - Add SVG support for sidebar & main background | [9f2a541](9f2a54100b2c43f8c4a7f5f370e63029cdc37dc8)
 - Restart webcamd by webcam*.txt files | [dff099c](dff099c5aa84aba452a26d3d230f00940be1d3df)
 - Add logfile paths to "connection failed" dialog | [cc01035](cc010354ca62c2617abc03d8b60d2e8931e7a1ef)
@@ -495,16 +495,16 @@ All notable changes to Mainsail will be documented in this file.
 
 ### Localization
 
-- **fr** | Remove unused keys | [c7b70d2](c7b70d2cf40b8d1e763c160389b3c4cae886ce45)
-- **fr** | Fixed last missing translations | [b6703c8](b6703c84f103f9fedcff1d0569b516e6b93535ed)
-- **fr** | Fix one type in settings console tab | [3c7f9ae](3c7f9ae7ba963a42bd2d52c82a6445397910f061)
-- **hu** | Update hu json (#333) | [be0d143](be0d1433cd38022f91ce364cddb503db387711b0)
-- **hu** | Fix last words | [61c2f84](61c2f8426d2e7418cbae6c0117c416e9b72e8b13)
-- **it** | Remove unused keys | [9057248](90572482ce21d9a7c226c7174b46bc9fe3a9cc56)
-- **it** | Add translation | [6e63324](6e633241877694ea5bad55aa3ebccd7e3c8adcf9)
-- **nl** | Remove unused keys | [bcb541f](bcb541f470bc2f30e1f6cde0441855baf13e5db9)
-- **nl** | Fixed last missing translations | [d5218ca](d5218ca059b24badde010ea9b9d2b4bd18e4455a)
-- **zh** | Update chinese trans (#332) | [c41ea7a](c41ea7aebc29700ac0446f74922e3fad696e0f93)
+- **fr**: Remove unused keys | [c7b70d2](c7b70d2cf40b8d1e763c160389b3c4cae886ce45)
+- **fr**: Fixed last missing translations | [b6703c8](b6703c84f103f9fedcff1d0569b516e6b93535ed)
+- **fr**: Fix one type in settings console tab | [3c7f9ae](3c7f9ae7ba963a42bd2d52c82a6445397910f061)
+- **hu**: Update hu json (#333) | [be0d143](be0d1433cd38022f91ce364cddb503db387711b0)
+- **hu**: Fix last words | [61c2f84](61c2f8426d2e7418cbae6c0117c416e9b72e8b13)
+- **it**: Remove unused keys | [9057248](90572482ce21d9a7c226c7174b46bc9fe3a9cc56)
+- **it**: Add translation | [6e63324](6e633241877694ea5bad55aa3ebccd7e3c8adcf9)
+- **nl**: Remove unused keys | [bcb541f](bcb541f470bc2f30e1f6cde0441855baf13e5db9)
+- **nl**: Fixed last missing translations | [d5218ca](d5218ca059b24badde010ea9b9d2b4bd18e4455a)
+- **zh**: Update chinese trans (#332) | [c41ea7a](c41ea7aebc29700ac0446f74922e3fad696e0f93)
 - Update francais | [390a3ef](390a3ef571602abe02726dfb3b93129589698964)
 - Last fr fixes | [bfa4e25](bfa4e2524c9fc23128ebaecd0668e5b58ed62f5a)
 
@@ -611,7 +611,7 @@ All notable changes to Mainsail will be documented in this file.
 ## [1.0.1](https://github.com/mainsail-crew/mainsail/releases/tag/v1.0.1) - 2021-01-24
 ### Features
 
-- **refresh-webcam** | Refresh webcam view on focus | [45198d7](45198d7d93c0c6894c432319c52aef6e8084a295)
+- **refresh-webcam**: Refresh webcam view on focus | [45198d7](45198d7d93c0c6894c432319c52aef6e8084a295)
 - Add registered_directories in server init process | [35013e7](35013e755cfdfa114861c200f0300c19913e4b12)
 - Restart moonraker if you click SAVE & RESTART of moonraker.conf | [659504f](659504f77ecac18a43a7790bc352f93daf91392d)
 - Redesign MoonrakerFailedPluginsPanel.vue and MinSettingsPanel.vue | [25221ca](25221ca6cb9474927ae99636828999c4802f0cc3)
