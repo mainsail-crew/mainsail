@@ -42,7 +42,7 @@ export const actions: ActionTree<SocketState, RootState> = {
     onMessage({ commit, dispatch }, payload) {
         switch (payload.method) {
             case 'notify_status_update':
-                commit('printer/setData', payload.params[0], { root: true })
+                dispatch('printer/getData', payload.params[0], { root: true })
                 break
 
             case 'notify_gcode_response':
