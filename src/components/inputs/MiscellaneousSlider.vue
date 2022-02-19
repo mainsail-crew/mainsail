@@ -98,7 +98,7 @@ import { Debounce } from 'vue-debounce-decorator'
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     convertName = convertName
-    private timeout: number | undefined
+    private declare timeout: ReturnType<typeof setTimeout>
     private isLocked = false
     private min = 0
     private value = 0
