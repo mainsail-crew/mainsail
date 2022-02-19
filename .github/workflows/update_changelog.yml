@@ -3,12 +3,12 @@ name: Update changelog
 on:
   # Update the changelog after pushing a new tag
   push:
-    tags:    
-      - "*"
+    tags:
+      - '*'
   # Update the changelog everyday
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '1 0 * * *'
+    - cron: '1 0 * * *'
 
   # Update the changelog by invoking this workflow manually
   workflow_dispatch:
@@ -42,13 +42,12 @@ jobs:
           config: cliff.toml
           args: --unreleased --prepend CHANGELOG.md --strip footer
 
-
       - name: show CHANGELOG
         run: |
           cat CHANGELOG.md
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore(changelog): update changelog"
-          file_pattern: CHANGELOG.md 
+          commit_message: 'chore(changelog): update changelog'
+          file_pattern: CHANGELOG.md
           branch: develop
