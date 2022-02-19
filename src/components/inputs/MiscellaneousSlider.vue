@@ -3,6 +3,11 @@
     height: auto;
 }
 
+._error-message {
+    color: #ff5252;
+    font-size: 12px;
+}
+
 ._slider-input {
     font-size: 0.875rem;
     max-width: 4.5rem;
@@ -50,6 +55,10 @@
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
                         {{ value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
                     </v-icon>
+                    <!-- display error above input field instead below -->
+                    <div v-if="inputErrors().length > 0 && controllable && pwm" class="_error-message">
+                        {{ inputErrors()[0] }}
+                    </div>
                 </v-subheader>
                 <v-card-text class="py-0 pb-2 d-flex align-center" v-if="controllable && pwm">
                     <v-slider
@@ -75,8 +84,9 @@
                         class="_slider-input"
                         v-model="numInput"
                         @blur="numInput = Math.round(parseFloat(value) * 100)"
+                        @keydown="checkInvalidChars"
                         @keyup.enter="submitInput"
-                        :error="numInput / 100 > max || numInput / 100 < min"
+                        :error="invalidInput()"
                         suffix="%"
                         type="number"
                         hide-spin-buttons
@@ -92,14 +102,16 @@
 <script lang="ts">
 import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
 import { Debounce } from 'vue-debounce-decorator'
+import BaseMixin from '@/components/mixins/base'
 
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     convertName = convertName
     private declare timeout: ReturnType<typeof setTimeout>
-    private isLocked = false
+    private isLocked: boolean = false
+    private invalidChars: string[] = ['e', 'E', '+']
+
     private min = 0
     private value = 0
     private numInput = 0
@@ -195,7 +207,36 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         this.numInput = newVal * 100
     }
 
+    // input validation //
+    checkInvalidChars(event: any): void {
+        // add '-' to invalid characters if no negative input is allowed
+        if (this.min >= 0) this.invalidChars.push('-')
+        if (this.invalidChars.includes(event.key)) event.preventDefault()
+    }
+
+    invalidInput(): boolean {
+        return this.numInput.toString() == '' || this.numInput / 100 > this.max || this.numInput / 100 < this.min
+    }
+
+    inputErrors() {
+        const errors = []
+        if (this.numInput.toString() === '') {
+            // "Input must not be empty!"
+            errors.push(this.$t('App.NumberInput.NoEmptyAllowedError'))
+        }
+        if (this.numInput / 100 < this.min) {
+            // "Must be grater or equal than {min}!"
+            errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
+        }
+        if (this.numInput / 100 > this.max || this.numInput / 100 < this.min) {
+            // "Must be between {min} and {max}!"
+            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min * 100, max: this.max * 100 }))
+        }
+        return errors
+    }
+
     submitInput(): void {
+        if (this.invalidInput()) return
         if (this.numInput / 100 > this.max) this.value = this.max
         else this.value = this.numInput / 100
         this.sendCmd()
