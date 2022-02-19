@@ -79,6 +79,11 @@
             "DescriptionPreviouslyFrequencyCapped": "Die maximale ARM-Frequenz des rPi war seit dem letzten Einschalten mindestens einmal auf 1,2 GHz begrenzt.",
             "DescriptionPreviouslyThrottled": "rPI ARM-Kern(e) wurde(n) seit dem letzten Einschalten mindestens einmal gedrosselt.",
             "DescriptionPreviouslyTemperatureLimited": "Die Temperatur des rPi uC (nur 3A+/3B+) lag seit dem letzten Einschalten mindestens einmal über dem Soft-Limit (Standard 60C)."
+        },
+        "NumberInput":{
+            "NoEmptyAllowedError" : "Feld darf nicht leer sein!",
+            "GreaterOrEqualError" : "Muss größer oder gleich {min} sein!",
+            "MustBeBetweenError" : "Muss zwischen {min} und {max} liegen!"
         }
     },
     "EmergencyStopDialog": {
