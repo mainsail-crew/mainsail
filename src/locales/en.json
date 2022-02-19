@@ -80,10 +80,10 @@
             "DescriptionPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
             "DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
         },
-        "NumberInput":{
-            "NoEmptyAllowedError" : "Input must not be empty!",
-            "GreaterOrEqualError" : "Must be grater or equal than {min}!",
-            "MustBeBetweenError" : "Must be between {min} and {max}!"
+        "NumberInput": {
+            "NoEmptyAllowedError": "Input must not be empty!",
+            "GreaterOrEqualError": "Must be grater or equal than {min}!",
+            "MustBeBetweenError": "Must be between {min} and {max}!"
         }
     },
     "EmergencyStopDialog": {
