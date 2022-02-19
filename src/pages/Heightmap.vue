@@ -274,7 +274,7 @@
                         </v-simple-table>
                     </v-card-text>
                     <v-card-text v-else>
-                        <p>{{ $t('Heightmap.NoProfile') }}</p>
+                        <p class="mb-0">{{ $t('Heightmap.NoProfile') }}</p>
                     </v-card-text>
                 </panel>
             </v-col>
@@ -297,6 +297,11 @@
                 :icon="mdiGrid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="renameDialog = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
+                </template>
                 <v-card-text>
                     <v-text-field
                         :label="$t('Heightmap.Name')"
@@ -318,8 +323,13 @@
                 :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="calibrateDialog = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
+                </template>
                 <v-card-text>
-                    <p>{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
+                    <p class="mb-0">{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -332,15 +342,48 @@
             <panel
                 :title="$t('Heightmap.BedMeshRemove')"
                 :icon="mdiGrid"
-                card-class="heightmap-calibrate-dialog"
+                card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="removeDialog = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
+                </template>
                 <v-card-text>
-                    <p>{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile }) }}</p>
+                    <p class="mb-0">{{ $t('Heightmap.DoYouReallyWantToDelete', { name: removeDialogProfile }) }}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text @click="removeDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="error" text @click="removeProfile">{{ $t('Heightmap.Remove') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="saveConfigDialog" persistent :max-width="400" @keydown.esc="saveConfigDialog = false">
+            <panel
+                :title="$t('Heightmap.SAVE_CONFIG')"
+                icon="mdi-grid"
+                card-class="heightmap-remove-save-dialog"
+                :margin-bottom="false">
+                <template v-slot:buttons>
+                    <v-btn icon tile @click="saveConfigDialog = false">
+                        <v-icon>mdi-close-thick</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text>
+                    <p class="mb-0">{{ $t('Heightmap.RemoveSaveDescription') }}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <template v-if="printerIsPrinting">
+                        <v-btn text @click="saveConfigDialog = false">{{ $t('Heightmap.Ok') }}</v-btn>
+                    </template>
+                    <template v-else>
+                        <v-btn color="primary" text @click="saveConfig">
+                            {{ $t('Heightmap.SAVE_CONFIG') }}
+                        </v-btn>
+                        <v-btn text @click="saveConfigDialog = false">{{ $t('Heightmap.Later') }}</v-btn>
+                    </template>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -407,6 +450,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     private renameDialog = false
     private removeDialogProfile = ''
     private removeDialog = false
+    private saveConfigDialog = false
     private calibrateDialog = false
     private newName = ''
     private oldName = ''
@@ -1016,6 +1060,8 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             }
         )
         this.removeDialogProfile = ''
+
+        this.saveConfigDialog = true
     }
 
     homePrinter(): void {
@@ -1032,6 +1078,13 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.calibrateDialog = false
         this.$store.dispatch('server/addEvent', { message: 'BED_MESH_CALIBRATE', type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CALIBRATE' }, { loading: 'bedMeshCalibrate' })
+    }
+
+    saveConfig() {
+        const gcode = 'SAVE_CONFIG'
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'topbarSaveConfig' })
+        this.saveConfigDialog = false
     }
 
     beforeDestroy(): void {

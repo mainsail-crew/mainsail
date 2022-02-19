@@ -33,15 +33,18 @@ export const mutations: MutationTree<PrinterState> = {
                         currentState[key] !== null
                     ) {
                         setDataDeep(currentState[key], value)
-                    } else if (key === 'temperature') {
-                        const newValue = Math.round(value * 10) / 10
-                        if (currentState[key] !== newValue) Vue.set(currentState, key, newValue)
                     } else Vue.set(currentState, key, value)
                 })
             }
         }
 
         setDataDeep(state, payload)
+    },
+
+    setBedMeshProfiles(state, payload) {
+        if ('bed_mesh' in state) {
+            Vue.set(state.bed_mesh, 'profiles', payload)
+        }
     },
 
     setHelplist(state, payload) {

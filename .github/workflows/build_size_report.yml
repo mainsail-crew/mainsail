@@ -1,7 +1,7 @@
 name: Build Size Report
 on:
   pull_request_target:
-    types: [labeled]
+    types: [labeled, synchronize, reopened]
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -16,6 +16,3 @@ jobs:
           strip-hash: "\\b\\w{8}\\."
           pattern: './dist/**/*.{js,css,html,json,woff2,svg,png}'
           exclude: '{./dist/manifest.json,./dist/build.zip,**/*.map,**/node_modules/**}'
-      - uses: actions-ecosystem/action-remove-labels@v1
-        with:
-          labels: analyze # analyze complete, remote the label afterwards

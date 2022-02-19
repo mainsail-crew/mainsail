@@ -555,42 +555,28 @@ export const getters: GetterTree<PrinterState, RootState> = {
         let currentProfile = ''
         if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
 
-        if (state.configfile?.config) {
-            Object.keys(state.configfile.config)
-                .filter((key) => key.startsWith('bed_mesh '))
-                .forEach((key: string) => {
-                    // eslint-disable-next-line
-                    const value: any = state.configfile.settings[key.toLowerCase()]
-                    const nameSplit = key.split(' ')
+        if (state.bed_mesh && 'profiles' in state.bed_mesh) {
+            Object.keys(state.bed_mesh?.profiles).forEach((key) => {
+                const value: any = state.bed_mesh.profiles[key]
 
-                    let points: number[] = []
-                    if (typeof value.points === 'string') {
-                        value.points.split('\n').forEach((row: string) => {
-                            if (row !== '') {
-                                row.split(', ').forEach((col: string) => {
-                                    points.push(parseFloat(col))
-                                })
-                            }
-                        })
-                    } else {
-                        value.points.forEach((row: number[]) => {
-                            points = points.concat(row)
-                        })
-                    }
-
-                    const min = Math.min(...points)
-                    const max = Math.max(...points)
-
-                    profiles.push({
-                        name: nameSplit[1],
-                        data: value,
-                        points: points,
-                        min: min,
-                        max: max,
-                        variance: Math.abs(min - max),
-                        is_active: currentProfile === nameSplit[1],
-                    })
+                let points: number[] = []
+                value.points.forEach((row: number[]) => {
+                    points = points.concat(row)
                 })
+
+                const min = Math.min(...points)
+                const max = Math.max(...points)
+
+                profiles.push({
+                    name: key,
+                    data: { ...value.mesh_params, points: value.points },
+                    points: points,
+                    min: min,
+                    max: max,
+                    variance: Math.abs(min - max),
+                    is_active: currentProfile === key,
+                })
+            })
         }
 
         return caseInsensitiveSort(profiles, 'name')

@@ -79,6 +79,11 @@
             "DescriptionPreviouslyFrequencyCapped": "rPi ARM max frequency was at least once limited to 1.2 GHz since last power-on.",
             "DescriptionPreviouslyThrottled": "rPI ARM core(s) where throttled down at least once since last power-on.",
             "DescriptionPreviouslyTemperatureLimited": "rPi uC (3A+/3B+ only) temperature was at least once above the soft limit (default 60C) since last power-on."
+        },
+        "NumberInput": {
+            "NoEmptyAllowedError": "Input must not be empty!",
+            "GreaterOrEqualError": "Must be grater or equal than {min}!",
+            "MustBeBetweenError": "Must be between {min} and {max}!"
         }
     },
     "EmergencyStopDialog": {
@@ -247,7 +252,11 @@
         "DoYouReallyWantToCalibrate": "Do you really want to start the bed calibration?",
         "DeleteBedMeshProfile": "Delete Bed Mesh Profile",
         "DoYouReallyWantToDelete": "Do you really want to delete the profile \"{name}\"?",
+        "RemoveSaveDescription": "The bed_mesh profile has been registered as deleted. Click on SAVE_CONFIG to remove it from the printer.cfg and restart Klipper.",
         "Remove": "delete",
+        "Ok": "OK",
+        "SAVE_CONFIG": "SAVE_CONFIG",
+        "Later": "Later",
         "CurrentMesh": {
             "Headline": "Current Mesh",
             "Name": "Name",
