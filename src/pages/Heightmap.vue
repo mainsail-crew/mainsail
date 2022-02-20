@@ -187,7 +187,7 @@
             </v-col>
             <v-col class="col-12 col-md-4">
                 <panel
-                    v-if="meshLoaded"
+                    v-if="currentProfile !== null"
                     :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
@@ -199,7 +199,7 @@
                             <v-col class="text-right">
                                 <span class="currentMeshName font-weight-bold" @click="openRenameProfile()">
                                     <v-icon left small color="primary">mdi-pencil</v-icon>
-                                    {{ bed_mesh.profile_name }}
+                                    {{ currentProfileName }}
                                 </span>
                             </v-col>
                         </v-row>
@@ -207,7 +207,7 @@
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
                             <v-col class="text-right">
-                                {{ bed_mesh.probed_matrix[0].length }}x{{ bed_mesh.probed_matrix.length }}
+                                {{ currentProfile.data.x_count }}x{{ currentProfile.data.y_count }}
                             </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
@@ -216,7 +216,7 @@
                                 {{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
                                 {{ bedMeshMaxPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMaxPoint.value.toFixed(3) }} mm</v-col>
+                            <v-col class="text-right">{{ currentProfile.max.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
@@ -224,14 +224,12 @@
                                 {{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
                                 {{ bedMeshMinPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMinPoint.value.toFixed(3) }} mm</v-col>
+                            <v-col class="text-right">{{ currentProfile.min.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
-                            <v-col class="text-right">
-                                {{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value).toFixed(3) }} mm
-                            </v-col>
+                            <v-col class="text-right">{{ currentProfile.variance.toFixed(3) }} mm</v-col>
                         </v-row>
                     </v-card-text>
                 </panel>
@@ -443,6 +441,7 @@ import { Grid3DComponent } from 'echarts-gl/components'
 // @ts-ignore
 import { SurfaceChart } from 'echarts-gl/charts'
 import type { ECharts } from 'echarts'
+import { PrinterStateBedMesh } from '@/store/printer/types'
 
 use([CanvasRenderer, VisualMapComponent, Grid3DComponent, SurfaceChart])
 
@@ -635,6 +634,14 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         return this.$store.state.printer.bed_mesh ?? null
     }
 
+    get currentProfileName() {
+        return this.bed_mesh.profile_name ?? ''
+    }
+
+    get currentProfile() {
+        return this.profiles.find((profile: PrinterStateBedMesh) => profile.name === this.currentProfileName)
+    }
+
     @Watch('bed_mesh', { deep: true })
     bed_meshChanged() {
         this.chart?.setOption(this.chartOptions)
@@ -726,12 +733,9 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         let min = 0
         let max = 0
 
-        if (this.bed_mesh) {
-            const points = []
-            for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
-
-            min = Math.min(min, ...points)
-            max = Math.max(max, ...points)
+        if (this.currentProfile) {
+            min = this.currentProfile.min
+            max = this.currentProfile.max
         }
 
         return [min, max]
