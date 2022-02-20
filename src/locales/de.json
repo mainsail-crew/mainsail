@@ -251,7 +251,7 @@
         "BedMeshCalibrate": "Bed Mesh Kalibrierung",
         "DeleteBedMeshProfile": "Lösche Bed Mesh",
         "DoYouReallyWantToDelete": "Möchtest du das Profil \"{name}\" wirklich löschen?",
-        "RemoveSaveDescription": "Das Löschen des Höhenprofil wurde registriert. Mit einem Klick auf SAVE_CONFIG wird es aus der printer.cfg gelöscht und Klipper anschließend neu gestartet.",
+        "RemoveSaveDescription": "Das Löschen des Höhenprofils wurde registriert. Mit einem Klick auf SAVE_CONFIG wird es aus der printer.cfg gelöscht und Klipper anschließend neu gestartet.",
         "Remove": "löschen",
         "Ok": "Ok",
         "Later": "später",
