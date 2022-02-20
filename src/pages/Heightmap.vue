@@ -15,6 +15,31 @@
 .currentMeshName:hover .v-icon {
     opacity: 1;
 }
+
+.rowProfile {
+}
+
+.rowProfile .colActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rowProfile .colName,
+.rowProfile .colVariance {
+    line-height: 48px;
+}
+
+.rowProfile .colName span.current {
+    font-weight: bold;
+    color: var(--v-primary-base);
+}
+
+.rowProfile .colActions .v-btn {
+    height: 48px;
+    width: 48px;
+}
 </style>
 
 <template>
@@ -217,59 +242,63 @@
                     icon="mdi-stack-overflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
-                    <v-card-text v-if="profiles.length" class="py-0 px-0">
-                        <v-simple-table>
-                            <template #default>
-                                <tbody>
-                                    <tr v-for="(profile, index) in profiles" :key="index">
-                                        <td>
-                                            <span
-                                                :class="profile.is_active ? 'font-weight-bold' : ''"
-                                                style="cursor: pointer"
-                                                @click="loadProfile(profile.name)">
-                                                {{ profile.name }}
-                                            </span>
-                                            <small v-if="'deleted' in profile.data" class="ml-2">
-                                                ({{ $t('Heightmap.Deleted') }})
+                    <v-card-text v-if="profiles.length" class="px-0 py-3">
+                        <template v-for="(profile, index) in profiles">
+                            <v-divider v-if="index" :key="'deliver_' + index" class="my-3"></v-divider>
+                            <v-row :key="index" class="rowProfile">
+                                <v-col class="pl-6 py-0 colName">
+                                    <span
+                                        :class="profile.is_active ? 'current' : ''"
+                                        style="cursor: pointer"
+                                        @click="profile.is_active ? (renameDialog = true) : loadProfile(profile.name)">
+                                        {{ profile.name }}
+                                    </span>
+                                </v-col>
+                                <v-col class="text-center py-0 colVariance">
+                                    <v-tooltip top color="rgba(0,0,0,0.8)">
+                                        <template #activator="{ on, attrs }">
+                                            <small v-bind="attrs" v-on="on">
+                                                {{ profile.variance.toFixed(3) }}
                                             </small>
-                                        </td>
-                                        <td>
-                                            <v-tooltip top color="rgba(0,0,0,0.8)">
-                                                <template #activator="{ on, attrs }">
-                                                    <small v-bind="attrs" v-on="on">
-                                                        {{ profile.variance.toFixed(3) }}
-                                                    </small>
-                                                </template>
-                                                <span>
-                                                    max: {{ profile.max }}
-                                                    <br />
-                                                    min: {{ profile.min }}
-                                                </span>
-                                            </v-tooltip>
-                                        </td>
-                                        <td class="text-right">
-                                            <v-btn-toggle dense no-gutters>
-                                                <v-btn
-                                                    class="minwidth-0"
-                                                    :loading="loadings.includes('bedMeshLoad_' + profile.name)"
-                                                    :disabled="profile.is_active || 'deleted' in profile.data"
-                                                    @click="loadProfile(profile.name)">
-                                                    <v-icon small>mdi-view-grid-plus</v-icon>
-                                                </v-btn>
-                                                <v-btn
-                                                    class="minwidth-0"
-                                                    :loading="loadings.includes('bedMeshRemove_' + profile.name)"
-                                                    :disabled="'deleted' in profile.data"
-                                                    :title="$t('Heightmap.DeleteBedMeshProfile')"
-                                                    @click="openRemoveProfile(profile.name)">
-                                                    <v-icon small>mdi-delete</v-icon>
-                                                </v-btn>
-                                            </v-btn-toggle>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
+                                        </template>
+                                        <span>
+                                            max: {{ profile.max }}
+                                            <br />
+                                            min: {{ profile.min }}
+                                        </span>
+                                    </v-tooltip>
+                                </v-col>
+                                <v-col class="py-0 colActions">
+                                    <v-btn
+                                        v-if="!profile.is_active"
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshLoad_' + profile.name)"
+                                        @click="loadProfile(profile.name)">
+                                        <v-icon>mdi-progress-upload</v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        v-else
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshLoad_' + profile.name)"
+                                        @click="renameDialog = true">
+                                        <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshRemove_' + profile.name)"
+                                        :title="$t('Heightmap.DeleteBedMeshProfile')"
+                                        @click="openRemoveProfile(profile.name)">
+                                        <v-icon>mdi-delete</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </template>
                     </v-card-text>
                     <v-card-text v-else>
                         <p class="mb-0">{{ $t('Heightmap.NoProfile') }}</p>
