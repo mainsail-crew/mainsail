@@ -58,7 +58,7 @@
                             :loading="loadings.includes('bedMeshCalibrate')"
                             :disabled="printerIsPrinting"
                             :title="$t('Heightmap.TitleCalibrate')"
-                            @click="calibrateDialog = true">
+                            @click="openCalibrateMesh">
                             {{ $t('Heightmap.Calibrate') }}
                         </v-btn>
                     </template>
@@ -317,23 +317,32 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
-        <v-dialog v-model="calibrateDialog" persistent :max-width="400" @keydown.esc="calibrateDialog = false">
+        <v-dialog
+            v-model="calibrateDialog.boolShow"
+            persistent
+            :max-width="400"
+            @keydown.esc="calibrateDialog.boolShow = false">
             <panel
                 :title="$t('Heightmap.BedMeshCalibrate')"
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="calibrateDialog = false">
+                    <v-btn icon tile @click="calibrateDialog.boolShow = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
-                    <p class="mb-0">{{ $t('Heightmap.DoYouReallyWantToCalibrate') }}</p>
+                    <v-text-field
+                        v-model="calibrateDialog.name"
+                        ref="inputFieldCalibrateBedMeshName"
+                        :label="$t('Heightmap.Name')"
+                        @keyup.enter="calibrateMesh"
+                        required></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="calibrateDialog = false">{{ $t('Heightmap.Abort') }}</v-btn>
+                    <v-btn text @click="calibrateDialog.boolShow = false">{{ $t('Heightmap.Abort') }}</v-btn>
                     <v-btn color="primary" text @click="calibrateMesh">{{ $t('Heightmap.Calibrate') }}</v-btn>
                 </v-card-actions>
             </panel>
@@ -435,13 +444,20 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         // eslint-disable-next-line
         heightmap: any
         inputDialogRenameHeightmapName: HTMLInputElement
+        inputFieldCalibrateBedMeshName: HTMLInputElement
     }
 
     private renameDialog = false
     private removeDialogProfile = ''
     private removeDialog = false
     private saveConfigDialog = false
-    private calibrateDialog = false
+    private calibrateDialog: {
+        boolShow: boolean
+        name: string
+    } = {
+        boolShow: false,
+        name: 'default',
+    }
     private newName = ''
     private oldName = ''
 
@@ -1064,10 +1080,20 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CLEAR' }, { loading: 'bedMeshClear' })
     }
 
+    openCalibrateMesh() {
+        this.calibrateDialog.name = 'default'
+        this.calibrateDialog.boolShow = true
+
+        setTimeout(() => {
+            this.$refs.inputFieldCalibrateBedMeshName?.focus()
+        }, 200)
+    }
+
     calibrateMesh(): void {
-        this.calibrateDialog = false
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_CALIBRATE', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CALIBRATE' }, { loading: 'bedMeshCalibrate' })
+        this.calibrateDialog.boolShow = false
+        const gcode = 'BED_MESH_CALIBRATE PROFILE="' + this.calibrateDialog.name + '"'
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshCalibrate' })
     }
 
     saveConfig() {
