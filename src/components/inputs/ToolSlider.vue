@@ -9,7 +9,7 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
-                    <v-btn v-if="lockSliders && isTouchDevice" @click="isLocked = !isLocked" plain small icon>
+                    <v-btn v-if="lockSliders && isTouchDevice" plain small icon @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
@@ -38,14 +38,14 @@
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
-                        @change="changeSlider"
-                        hide-details>
-                        <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
+                        hide-details
+                        @change="changeSlider">
+                        <template #prepend>
+                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
                         </template>
 
-                        <template v-slot:append>
-                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
+                        <template #append>
+                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>

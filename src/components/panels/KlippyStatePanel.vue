@@ -5,7 +5,7 @@
         :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
         card-class="klippy-state-panel">
         <template v-if="klippyIsConnected">
-            <v-card-text class="py-1 mt-2" v-if="klippy_message !== null">
+            <v-card-text v-if="klippy_message !== null" class="py-1 mt-2">
                 <pre style="white-space: pre-wrap">{{ klippy_message }}</pre>
             </v-card-text>
             <v-card-text v-else class="text-center py-3">
@@ -13,11 +13,11 @@
             </v-card-text>
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
-                <v-btn small @click="restart" class="ml-2 error--text">
+                <v-btn small class="ml-2 error--text" @click="restart">
                     <v-icon class="mr-sm-2">mdi-restart</v-icon>
                     {{ $t('Panels.KlippyStatePanel.Restart') }}
                 </v-btn>
-                <v-btn small @click="firmwareRestart" class="ml-4 error--text">
+                <v-btn small class="ml-4 error--text" @click="firmwareRestart">
                     <v-icon class="mr-sm-2">mdi-restart</v-icon>
                     {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                 </v-btn>

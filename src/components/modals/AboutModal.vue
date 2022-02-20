@@ -13,12 +13,12 @@
 </style>
 
 <template>
-    <v-dialog transition="dialog-bottom-transition" max-width="600" scrollable v-model="isOpen">
-        <template v-slot:activator="{ an }">
+    <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" scrollable>
+        <template #activator="{ an }">
             <v-tooltip right color="panel">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
-                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
+                    <v-icon v-bind="attrs" v-on="an" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
                         mdi-help-circle-outline
                     </v-icon>
                 </template>
@@ -32,9 +32,9 @@
                 </span>
             </v-tooltip>
         </template>
-        <template v-slot:default>
+        <template #default>
             <panel title="About" :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>

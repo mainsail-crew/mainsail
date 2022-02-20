@@ -10,7 +10,7 @@
             <v-row>
                 <v-col>
                     <ul class="">
-                        <li v-for="module in missingConfigs" v-bind:key="module" class="orange--text">
+                        <li v-for="module in missingConfigs" :key="module" class="orange--text">
                             <code>{{ module }}</code>
                             {{ $t('Panels.MinSettingsPanel.IsNotDefinedInConfig') }}
                         </li>

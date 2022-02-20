@@ -26,7 +26,7 @@ Vue.use(VueMeta)
 
 //vue-load-image
 import VueLoadImage from 'vue-load-image'
-Vue.component('vue-load-image', VueLoadImage)
+Vue.component('VueLoadImage', VueLoadImage)
 
 //vue-toast-notification
 import VueToast from 'vue-toast-notification'
@@ -59,7 +59,7 @@ import { LineChart, BarChart, PieChart } from 'echarts/charts'
 import { GridComponent, LegendComponent, TooltipComponent, DatasetComponent } from 'echarts/components'
 
 use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetComponent, GridComponent, TooltipComponent])
-Vue.component('e-chart', ECharts)
+Vue.component('EChart', ECharts)
 
 //load config.json and init vue
 fetch('/config.json')

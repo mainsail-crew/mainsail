@@ -34,27 +34,27 @@
                     </v-card-text>
                 </v-col>
                 <v-col
+                    v-if="framesCount > 0"
                     class="col-12 col-sm-6 col-md-12 pt-3 pt-md-0 text--secondary"
-                    align-self="center"
-                    v-if="framesCount > 0">
+                    align-self="center">
                     <v-card-text :class="framesCount ? 'pt-0' : ''">
                         <template v-if="framesCount > 0">
                             <settings-row :title="$t('Timelapse.Frames')">
                                 {{ framesCount }}
                             </settings-row>
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamicSlotWidth="true">
+                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamic-slot-width="true">
                                 {{ estimatedVideoLength }}
                             </settings-row>
                         </template>
                         <template v-if="['printing', 'paused'].includes(printer_state)">
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
+                            <settings-row :title="$t('Timelapse.Enabled')" :dynamic-slot-width="true">
                                 <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                             </settings-row>
                             <template v-if="enabled">
-                                <v-divider class="my-2" v-if="framesCount > 0"></v-divider>
-                                <settings-row :title="$t('Timelapse.Autorender')" :dynamicSlotWidth="true">
+                                <v-divider v-if="framesCount > 0" class="my-2"></v-divider>
+                                <settings-row :title="$t('Timelapse.Autorender')" :dynamic-slot-width="true">
                                     <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
                                 </settings-row>
                             </template>
@@ -73,8 +73,8 @@
                                     <v-btn
                                         text
                                         color="primary"
-                                        @click="saveFrames"
-                                        :loading="loadings.includes('timelapse_saveframes')">
+                                        :loading="loadings.includes('timelapse_saveframes')"
+                                        @click="saveFrames">
                                         {{ $t('Timelapse.SaveFrames') }}
                                     </v-btn>
                                 </v-col>
@@ -82,7 +82,7 @@
                         </template>
                     </v-card-text>
                 </v-col>
-                <v-col class="col-12 text--secondary" align-self="center" v-else>
+                <v-col v-else class="col-12 text--secondary" align-self="center">
                     <v-card-text class="pt-0 pt-md-3">
                         <p class="text-center my-0 font-italic">{{ $t('Timelapse.NoActiveTimelapse') }}</p>
                     </v-card-text>
@@ -95,16 +95,16 @@
                 icon="mdi-text-box-search-outline"
                 card-class="timelapse-rendersettings-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon @click="boolDialogRendersettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="">
                     <v-row>
                         <v-col class="col-4">
                             <v-select
+                                v-model="variable_fps"
                                 :label="$t('Timelapse.Type')"
                                 :items="framerateTypeOptions"
-                                v-model="variable_fps"
                                 outlined
                                 dense
                                 hide-details
@@ -113,16 +113,16 @@
                         <v-col class="col-4">
                             <template v-if="variable_fps">
                                 <v-text-field
-                                    :label="$t('Timelapse.MinFramerate')"
                                     v-model="variable_fps_min"
+                                    :label="$t('Timelapse.MinFramerate')"
                                     type="number"
                                     outlined
                                     dense
                                     hide-details
                                     hide-spin-buttons></v-text-field>
                                 <v-text-field
-                                    :label="$t('Timelapse.MaxFramerate')"
                                     v-model="variable_fps_max"
+                                    :label="$t('Timelapse.MaxFramerate')"
                                     type="number"
                                     outlined
                                     dense
@@ -130,8 +130,8 @@
                                     hide-spin-buttons
                                     class="mt-3"></v-text-field>
                                 <v-text-field
-                                    :label="$t('Timelapse.Targetlength')"
                                     v-model="targetlength"
+                                    :label="$t('Timelapse.Targetlength')"
                                     type="number"
                                     outlined
                                     dense
@@ -141,8 +141,8 @@
                             </template>
                             <template v-else>
                                 <v-text-field
-                                    :label="$t('Timelapse.Framerate')"
                                     v-model="output_framerate"
+                                    :label="$t('Timelapse.Framerate')"
                                     type="number"
                                     outlined
                                     dense
@@ -150,8 +150,8 @@
                                     hide-spin-buttons></v-text-field>
                             </template>
                             <v-text-field
-                                :label="$t('Timelapse.DuplicateLastframe')"
                                 v-model="duplicatelastframe"
+                                :label="$t('Timelapse.DuplicateLastframe')"
                                 type="number"
                                 outlined
                                 dense
@@ -162,8 +162,8 @@
                         <v-col class="col-4">
                             <template v-if="variable_fps">
                                 <v-text-field
-                                    :label="$t('Timelapse.TargetFps')"
                                     v-model="variableTargetFps"
+                                    :label="$t('Timelapse.TargetFps')"
                                     type="number"
                                     outlined
                                     dense
@@ -172,8 +172,8 @@
                                     class="mb-3"></v-text-field>
                             </template>
                             <v-text-field
-                                :label="$t('Timelapse.EstimatedLength')"
                                 v-model="estimatedVideoLength"
+                                :label="$t('Timelapse.EstimatedLength')"
                                 outlined
                                 dense
                                 hide-details

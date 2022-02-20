@@ -11,7 +11,7 @@
 <template>
     <div>
         <v-card-actions>
-            <v-btn @click="expand = !expand" class="btn-collapsible" plain small>
+            <v-btn class="btn-collapsible" plain small @click="expand = !expand">
                 <v-icon small :class="!expand ? 'icon-rotate-180' : ''">
                     {{ expand ? iconExpanded : iconCollapsed }}
                 </v-icon>

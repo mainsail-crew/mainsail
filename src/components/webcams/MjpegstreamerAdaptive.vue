@@ -12,7 +12,7 @@
 
 <template>
     <div v-observe-visibility="visibilityChanged" style="position: relative">
-        <div class="text-center py-5" v-if="!isLoaded">
+        <div v-if="!isLoaded" class="text-center py-5">
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
         <canvas
@@ -21,7 +21,7 @@
             height="400"
             :style="webcamStyle"
             :class="'webcamImage ' + (isLoaded ? '' : 'hiddenWebcam')"></canvas>
-        <span class="webcamFpsOutput" v-if="isLoaded && showFps">
+        <span v-if="isLoaded && showFps" class="webcamFpsOutput">
             {{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}
         </span>
     </div>

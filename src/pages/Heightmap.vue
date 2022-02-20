@@ -9,24 +9,24 @@
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
-                    <template v-slot:buttons-title>
+                    <template #buttons-title>
                         <v-btn
+                            v-if="meshLoaded"
                             text
                             tile
                             color="primary"
                             class="ml-1 d-none d-sm-inline-flex rename-profile"
-                            v-if="meshLoaded"
                             @click="openRenameProfile()">
                             {{ bed_mesh.profile_name }}
                         </v-btn>
                     </template>
-                    <template v-slot:buttons>
+                    <template #buttons>
                         <v-btn
+                            v-if="meshLoaded"
                             text
                             tile
                             color="primary"
                             class="d-sm-none"
-                            v-if="meshLoaded"
                             @click="openRenameProfile()">
                             {{ bed_mesh ? bed_mesh.profile_name : '' }}
                         </v-btn>
@@ -34,31 +34,31 @@
                             icon
                             tile
                             class="d-none d-sm-flex"
-                            @click="homePrinter"
                             :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                             :loading="loadings.includes('homeAll')"
                             :title="$t('Heightmap.TitleHomeAll')"
-                            :ripple="true">
+                            :ripple="true"
+                            @click="homePrinter">
                             <v-icon>mdi-home</v-icon>
                         </v-btn>
                         <v-btn
+                            v-if="meshLoaded"
                             text
                             tile
                             class="d-none d-sm-flex"
-                            @click="clearBedMesh"
                             :loading="loadings.includes('bedMeshClear')"
-                            v-if="meshLoaded"
-                            :title="$t('Heightmap.TitleClear')">
+                            :title="$t('Heightmap.TitleClear')"
+                            @click="clearBedMesh">
                             {{ $t('Heightmap.Clear') }}
                         </v-btn>
                         <v-btn
                             text
                             tile
                             class="d-none d-sm-flex"
-                            @click="calibrateDialog = true"
                             :loading="loadings.includes('bedMeshCalibrate')"
                             :disabled="printerIsPrinting"
-                            :title="$t('Heightmap.TitleCalibrate')">
+                            :title="$t('Heightmap.TitleCalibrate')"
+                            @click="calibrateDialog = true">
                             {{ $t('Heightmap.Calibrate') }}
                         </v-btn>
                     </template>
@@ -69,22 +69,22 @@
                                 small
                                 class="px-2 minwidth-0"
                                 :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
-                                @click="homePrinter"
                                 :loading="loadings.includes('homeAll')"
-                                :title="$t('Heightmap.TitleHomeAll')">
+                                :title="$t('Heightmap.TitleHomeAll')"
+                                @click="homePrinter">
                                 <v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>
                                     mdi-home
                                 </v-icon>
                             </v-btn>
                             <v-btn
+                                v-if="bed_mesh"
                                 text
                                 small
                                 class="px-2 minwidth-0"
                                 color="primary"
-                                @click="clearBedMesh"
                                 :loading="loadings.includes('bedMeshClear')"
-                                v-if="bed_mesh"
-                                :title="$t('Heightmap.TitleClear')">
+                                :title="$t('Heightmap.TitleClear')"
+                                @click="clearBedMesh">
                                 {{ $t('Heightmap.Clear') }}
                             </v-btn>
                             <v-btn
@@ -92,10 +92,10 @@
                                 small
                                 class="px-2 minwidth-0"
                                 color="primary"
-                                @click="calibrateDialog = true"
                                 :loading="loadings.includes('bedMeshCalibrate')"
                                 :disabled="printerIsPrinting"
-                                :title="$t('Heightmap.TitleCalibrate')">
+                                :title="$t('Heightmap.TitleCalibrate')"
+                                @click="calibrateDialog = true">
                                 {{ $t('Heightmap.Calibrate') }}
                             </v-btn>
                         </v-item-group>
@@ -154,10 +154,10 @@
                                 </v-col>
                                 <v-col class="col-8">
                                     <v-slider
+                                        v-model="heightmapScale"
                                         :label="$t('Heightmap.Scale')"
                                         :min="heightmapRangeLimit[0]"
                                         :max="heightmapRangeLimit[1]"
-                                        v-model="heightmapScale"
                                         :step="0.1"
                                         ticks="always"
                                         class="mt-4"
@@ -170,8 +170,8 @@
             </v-col>
             <v-col class="col-12 col-md-4">
                 <panel
-                    :title="$t('Heightmap.CurrentMesh.Headline')"
                     v-if="meshLoaded"
+                    :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
                     :collapsible="true"
@@ -219,25 +219,25 @@
                     icon="mdi-stack-overflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
-                    <v-card-text class="py-0 px-0" v-if="profiles.length">
+                    <v-card-text v-if="profiles.length" class="py-0 px-0">
                         <v-simple-table>
-                            <template v-slot:default>
+                            <template #default>
                                 <tbody>
                                     <tr v-for="(profile, index) in profiles" :key="index">
                                         <td>
                                             <span
-                                                @click="loadProfile(profile.name)"
                                                 :class="profile.is_active ? 'font-weight-bold' : ''"
-                                                style="cursor: pointer">
+                                                style="cursor: pointer"
+                                                @click="loadProfile(profile.name)">
                                                 {{ profile.name }}
                                             </span>
-                                            <small class="ml-2" v-if="'deleted' in profile.data">
+                                            <small v-if="'deleted' in profile.data" class="ml-2">
                                                 ({{ $t('Heightmap.Deleted') }})
                                             </small>
                                         </td>
                                         <td>
                                             <v-tooltip top color="rgba(0,0,0,0.8)">
-                                                <template v-slot:activator="{ on, attrs }">
+                                                <template #activator="{ on, attrs }">
                                                     <small v-bind="attrs" v-on="on">
                                                         {{ profile.variance.toFixed(3) }}
                                                     </small>
@@ -253,17 +253,17 @@
                                             <v-btn-toggle dense no-gutters>
                                                 <v-btn
                                                     class="minwidth-0"
-                                                    @click="loadProfile(profile.name)"
                                                     :loading="loadings.includes('bedMeshLoad_' + profile.name)"
-                                                    :disabled="profile.is_active || 'deleted' in profile.data">
+                                                    :disabled="profile.is_active || 'deleted' in profile.data"
+                                                    @click="loadProfile(profile.name)">
                                                     <v-icon small>mdi-view-grid-plus</v-icon>
                                                 </v-btn>
                                                 <v-btn
                                                     class="minwidth-0"
-                                                    @click="openRemoveProfile(profile.name)"
                                                     :loading="loadings.includes('bedMeshRemove_' + profile.name)"
                                                     :disabled="'deleted' in profile.data"
-                                                    :title="$t('Heightmap.DeleteBedMeshProfile')">
+                                                    :title="$t('Heightmap.DeleteBedMeshProfile')"
+                                                    @click="openRemoveProfile(profile.name)">
                                                     <v-icon small>mdi-delete</v-icon>
                                                 </v-btn>
                                             </v-btn-toggle>
@@ -297,18 +297,18 @@
                 icon="mdi-grid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="renameDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
-                        :label="$t('Heightmap.Name')"
-                        v-model="newName"
                         ref="inputDialogRenameHeightmapName"
-                        @keyup.enter="renameProfile"
-                        required></v-text-field>
+                        v-model="newName"
+                        :label="$t('Heightmap.Name')"
+                        required
+                        @keyup.enter="renameProfile"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -323,7 +323,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="calibrateDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -344,7 +344,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="removeDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -365,7 +365,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="saveConfigDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>

@@ -10,7 +10,7 @@
         <template v-else>
             <console-table-entry
                 v-for="(event, index) of events"
-                v-bind:key="index"
+                :key="index"
                 class="consoleTableRow"
                 :event="event"
                 @command-click="commandClick"></console-table-entry>
