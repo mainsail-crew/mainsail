@@ -1032,10 +1032,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     loadProfile(name: string): void {
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE LOAD=' + name, type: 'command' })
+        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE LOAD="' + name + '"', type: 'command' })
         this.$socket.emit(
             'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE LOAD=' + name },
+            { script: 'BED_MESH_PROFILE LOAD="' + name + '"' },
             { loading: 'bedMeshLoad_' + name }
         )
     }
@@ -1053,17 +1053,23 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     renameProfile(): void {
         this.renameDialog = false
 
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE=' + this.newName, type: 'command' })
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE=' + this.oldName, type: 'command' })
+        this.$store.dispatch('server/addEvent', {
+            message: 'BED_MESH_PROFILE SAVE="' + this.newName + '"',
+            type: 'command',
+        })
+        this.$store.dispatch('server/addEvent', {
+            message: 'BED_MESH_PROFILE REMOVE="' + this.oldName + '"',
+            type: 'command',
+        })
 
         this.$socket.emit(
             'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE SAVE=' + this.newName },
+            { script: 'BED_MESH_PROFILE SAVE="' + this.newName + '"' },
             { loading: 'bedMeshRename' }
         )
         this.$socket.emit(
             'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE REMOVE=' + this.oldName },
+            { script: 'BED_MESH_PROFILE REMOVE="' + this.oldName + '"' },
             { loading: 'bedMeshRename' }
         )
 
@@ -1079,12 +1085,12 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     removeProfile(): void {
         this.removeDialog = false
         this.$store.dispatch('server/addEvent', {
-            message: 'BED_MESH_PROFILE REMOVE=' + this.removeDialogProfile,
+            message: 'BED_MESH_PROFILE REMOVE="' + this.removeDialogProfile + '"',
             type: 'command',
         })
         this.$socket.emit(
             'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE REMOVE=' + this.removeDialogProfile },
+            { script: 'BED_MESH_PROFILE REMOVE="' + this.removeDialogProfile + '"' },
             {
                 action: 'printer/removeBedMeshProfile',
                 actionPayload: { name: this.removeDialogProfile },
