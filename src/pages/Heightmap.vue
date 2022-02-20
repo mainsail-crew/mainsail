@@ -217,7 +217,7 @@
                                 {{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
                                 {{ bedMeshMaxPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMaxPoint.value }} mm</v-col>
+                            <v-col class="text-right">{{ bedMeshMaxPoint.value.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
@@ -225,7 +225,7 @@
                                 {{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
                                 {{ bedMeshMinPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMinPoint.value }} mm</v-col>
+                            <v-col class="text-right">{{ bedMeshMinPoint.value.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
@@ -963,7 +963,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             col,
             positionX,
             positionY,
-            value: Math.round(max * 1000) / 1000,
+            value: max,
         }
     }
 
@@ -1001,7 +1001,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             col,
             positionX,
             positionY,
-            value: Math.round(min * 1000) / 1000,
+            value: min,
         }
     }
 
