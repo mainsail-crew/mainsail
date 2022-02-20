@@ -187,7 +187,7 @@
             </v-col>
             <v-col class="col-12 col-md-4">
                 <panel
-                    v-if="currentProfile !== null"
+                    v-if="currentProfile"
                     :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
@@ -204,7 +204,7 @@
                             </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
-                        <v-row class="px-3">
+                        <v-row v-if="'data' in currentProfile" class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
                             <v-col class="text-right">
                                 {{ currentProfile.data.x_count }}x{{ currentProfile.data.y_count }}
@@ -635,7 +635,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     get currentProfileName() {
-        return this.bed_mesh.profile_name ?? ''
+        return this.bed_mesh?.profile_name ?? ''
     }
 
     get currentProfile() {
