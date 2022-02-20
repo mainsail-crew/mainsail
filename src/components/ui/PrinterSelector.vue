@@ -8,12 +8,12 @@
 
         <v-list dense>
             <v-list-item
-                two-line
                 v-for="printer in printers"
                 :key="printer._namespace"
-                @click="changePrinter(printer)"
+                two-line
                 :disabled="!printer.socket.isConnected"
-                link>
+                link
+                @click="changePrinter(printer)">
                 <v-list-item-content>
                     <v-list-item-title>{{ getPrinterName(printer._namespace) }}</v-list-item-title>
                     <v-list-item-subtitle>{{ getPrinterDescription(printer) }}</v-list-item-subtitle>

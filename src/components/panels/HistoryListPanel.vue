@@ -54,30 +54,30 @@
                             <v-list>
                                 <template v-if="allPrintStatusArray.length">
                                     <v-list-item
-                                        class="minHeight36"
                                         v-for="status of allPrintStatusArray"
-                                        :key="status.key">
+                                        :key="status.key"
+                                        class="minHeight36">
                                         <v-checkbox
                                             class="mt-0"
                                             hide-details
                                             :input-value="status.showInTable"
-                                            @change="changeStatusVisible(status)"
                                             :label="
                                                 $t('History.ShowStatusName', { name: status.name, count: status.value })
-                                            "></v-checkbox>
+                                            "
+                                            @change="changeStatusVisible(status)"></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>
                                 </template>
                                 <v-list-item
-                                    class="minHeight36"
                                     v-for="header of configHeaders"
-                                    :key="header.key">
+                                    :key="header.key"
+                                    class="minHeight36">
                                     <v-checkbox
+                                        v-model="header.visible"
                                         class="mt-0"
                                         hide-details
-                                        v-model="header.visible"
-                                        @change="changeColumnVisible(header.value)"
-                                        :label="header.text"></v-checkbox>
+                                        :label="header.text"
+                                        @change="changeColumnVisible(header.value)"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -119,14 +119,14 @@
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
+                        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')"
                         @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
-                        :class="'file-list-cursor user-select-none ' + (item.exists ? '' : 'text--disabled')">
+                        @click="clickRow(item)">
                         <td class="pr-0">
                             <v-simple-checkbox
+                                v-ripple
                                 :value="isSelected"
                                 class="pa-0 mr-0"
-                                v-ripple
                                 @click.stop="select(!isSelected)"></v-simple-checkbox>
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
@@ -187,7 +187,7 @@
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
                         </td>
-                        <td class=" " v-if="headers.find((header) => header.value === 'slicer').visible">
+                        <td v-if="headers.find((header) => header.value === 'slicer').visible" class=" ">
                             {{ 'slicer' in item.metadata && item.metadata.slicer ? item.metadata.slicer : '--' }}
                             <small v-if="'slicer_version' in item.metadata && item.metadata.slicer_version">
                                 <br />
@@ -205,9 +205,9 @@
                     {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item
-                    @click="startPrint(contextMenu.item)"
                     v-if="contextMenu.item.exists"
-                    :disabled="printerIsPrinting || !klipperReadyForGui">
+                    :disabled="printerIsPrinting || !klipperReadyForGui"
+                    @click="startPrint(contextMenu.item)">
                     <v-icon class="mr-1">mdi-printer</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>

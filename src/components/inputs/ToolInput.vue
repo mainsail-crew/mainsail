@@ -24,17 +24,17 @@
 
 <template>
     <v-combobox
+        v-model="value"
         dense
         hide-details
-        v-model="value"
         :items="items"
         item-text="value"
         type="number"
+        hide-spin-buttons
         @keyup.enter="setTemps"
         @keydown.tab="setTemps"
         @change="changeValue"
-        @blur="onBlur"
-        hide-spin-buttons></v-combobox>
+        @blur="onBlur"></v-combobox>
 </template>
 
 <script lang="ts">

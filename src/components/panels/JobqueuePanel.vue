@@ -3,13 +3,13 @@
         <panel icon="mdi-tray-full" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
             <template #buttons>
                 <v-btn
+                    v-if="queueState === 'paused'"
                     color="success"
-                    @click="startJobqueue"
                     :loading="loadings.includes('startJobqueue')"
                     icon
                     tile
-                    v-if="queueState === 'paused'"
-                    :disabled="!klipperReadyForGui">
+                    :disabled="!klipperReadyForGui"
+                    @click="startJobqueue">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
@@ -18,12 +18,12 @@
                     </v-tooltip>
                 </v-btn>
                 <v-btn
+                    v-if="['ready', 'loading'].includes(queueState)"
                     color="warning"
-                    @click="pauseJobqueue"
                     :loading="loadings.includes('pauseJobqueue')"
                     icon
                     tile
-                    v-if="['ready', 'loading'].includes(queueState)">
+                    @click="pauseJobqueue">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-pause</v-icon>
@@ -51,8 +51,8 @@
                     <tr
                         :key="item.job_id"
                         v-longpress:600="(e) => showContextMenu(e, item)"
-                        @contextmenu="showContextMenu($event, item)"
-                        class="file-list-cursor user-select-none">
+                        class="file-list-cursor user-select-none"
+                        @contextmenu="showContextMenu($event, item)">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip

@@ -23,7 +23,7 @@
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
-                    <v-btn small :color="color" v-bind="attrs" v-on="on" class="minwidth-0 px-1 btnMacroMenu">
+                    <v-btn small :color="color" v-bind="attrs" class="minwidth-0 px-1 btnMacroMenu" v-on="on">
                         <v-icon>mdi-menu-down</v-icon>
                     </v-btn>
                 </template>
@@ -32,8 +32,8 @@
                         <v-row v-for="(name, key) in paramArray" :key="'param_' + key" class="my-2">
                             <v-col class="py-0">
                                 <v-text-field
-                                    :label="name"
                                     v-model="params[name].value"
+                                    :label="name"
                                     :placeholder="params[name].default"
                                     :persistent-placeholder="true"
                                     hide-details

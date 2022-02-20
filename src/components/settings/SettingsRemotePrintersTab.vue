@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-card flat v-if="!form.bool">
+        <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</h3>
                 <div v-for="(printer, index) in printers" :key="printer.id">
-                    <v-divider class="my-2" v-if="index"></v-divider>
+                    <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
@@ -16,9 +16,9 @@
                         <v-btn
                             small
                             outlined
-                            @click="delPrinter(printer.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                            @click="delPrinter(printer.id)">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -30,7 +30,7 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <v-card flat v-else>
+        <v-card v-else flat>
             <v-card-title>
                 {{
                     form.id !== null
@@ -65,10 +65,10 @@
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
                 <v-btn text @click="form.bool = false">{{ $t('Settings.Cancel') }}</v-btn>
-                <v-btn text color="primary" @click="storePrinter" v-if="form.id === null">
+                <v-btn v-if="form.id === null" text color="primary" @click="storePrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
-                <v-btn text color="primary" @click="updatePrinter" v-else>
+                <v-btn v-else text color="primary" @click="updatePrinter">
                     {{ $t('Settings.RemotePrintersTab.UpdatePrinter') }}
                 </v-btn>
             </v-card-actions>

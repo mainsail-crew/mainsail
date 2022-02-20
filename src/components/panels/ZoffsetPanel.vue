@@ -10,12 +10,12 @@
             card-class="zoffset-panel">
             <template #buttons>
                 <template v-if="z_gcode_offset !== 0">
-                    <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')">
+                    <v-btn icon tile :loading="loadings.includes('babySteppingClear')" @click="clearZOffset()">
                         <v-icon>mdi-broom</v-icon>
                     </v-btn>
-                    <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
+                    <v-menu v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop" offset-y left>
                         <template #activator="{ on, attrs }">
-                            <v-btn text tile color="primary" v-bind="attrs" v-on="on" class="pa-1">
+                            <v-btn text tile color="primary" v-bind="attrs" class="pa-1" v-on="on">
                                 <span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
                                 <v-icon>mdi-menu-down</v-icon>
                             </v-btn>
@@ -40,21 +40,21 @@
                         </v-list>
                     </v-menu>
                     <v-btn
+                        v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop"
                         text
                         tile
                         class="px-2 minwidth-0"
                         color="primary ml-3"
-                        v-else-if="existZOffsetApplyProbe && !existZOffsetApplyEndstop"
                         @click="saveZOffsetToProbe">
                         <v-icon small class="mr-1">mdi-content-save</v-icon>
                         {{ $t('Panels.ZoffsetPanel.Save') }}
                     </v-btn>
                     <v-btn
+                        v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop"
                         text
                         tile
                         class="px-2 minwidth-0"
                         color="primary ml-3"
-                        v-else-if="!existZOffsetApplyProbe && existZOffsetApplyEndstop"
                         @click="saveZOffsetToEndstop">
                         <v-icon small class="mr-1">mdi-content-save</v-icon>
                         {{ $t('Panels.ZoffsetPanel.Save') }}
@@ -78,18 +78,18 @@
                                 class="mx-2 mt-3 mt-sm-0 order-last flex-nowrap order-sm-first">
                                 <v-btn
                                     small
-                                    @click="sendBabySteppingDownFine()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingDownFine')">
+                                    :loading="loadings.includes('babySteppingDownFine')"
+                                    @click="sendBabySteppingDownFine()">
                                     <v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon>
                                     -0.01
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
                                 <v-btn
                                     small
-                                    @click="sendBabySteppingDown()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingDown')">
+                                    :loading="loadings.includes('babySteppingDown')"
+                                    @click="sendBabySteppingDown()">
                                     -0.05
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
@@ -97,18 +97,18 @@
                             <v-btn-toggle dense no-gutters class="mx-2 order-first flex-nowrap order-sm-last">
                                 <v-btn
                                     small
-                                    @click="sendBabySteppingUpFine()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingUpFine')">
+                                    :loading="loadings.includes('babySteppingUpFine')"
+                                    @click="sendBabySteppingUpFine()">
                                     <v-icon small class="mr-2">mdi-arrow-expand-up</v-icon>
                                     +0.01
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
                                 <v-btn
                                     small
-                                    @click="sendBabySteppingUp()"
                                     class=""
-                                    :loading="loadings.includes('babySteppingUp')">
+                                    :loading="loadings.includes('babySteppingUp')"
+                                    @click="sendBabySteppingUp()">
                                     +0.05
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
@@ -124,10 +124,10 @@
                 icon="mdi-information"
                 card-class="zoffset-saveinfo-dialog"
                 :margin-bottom="false">
-                <v-card-text class="mt-3" v-if="printerIsPrinting">
+                <v-card-text v-if="printerIsPrinting" class="mt-3">
                     {{ $t('Panels.ZoffsetPanel.SaveInfoDescriptionPrint') }}
                 </v-card-text>
-                <v-card-text class="mt-3" v-else>{{ $t('Panels.ZoffsetPanel.SaveInfoDescription') }}</v-card-text>
+                <v-card-text v-else class="mt-3">{{ $t('Panels.ZoffsetPanel.SaveInfoDescription') }}</v-card-text>
                 <v-card-actions v-if="printerIsPrinting">
                     <v-spacer></v-spacer>
                     <v-btn text @click="saveOffsetDialog = false">{{ $t('Panels.ZoffsetPanel.Ok') }}</v-btn>

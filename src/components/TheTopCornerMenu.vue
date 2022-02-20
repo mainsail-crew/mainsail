@@ -6,7 +6,7 @@
 
 <template>
     <div>
-        <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
+        <v-menu v-model="showMenu" bottom left :offset-y="true" :close-on-content-click="false">
             <template #activator="{ on, attrs }">
                 <v-btn icon tile v-bind="attrs" v-on="on">
                     <v-icon>mdi-power-standby</v-icon>
@@ -37,11 +37,11 @@
                     </v-list-item>
                 </template>
                 <template v-if="services.length">
-                    <v-divider class="mt-0" v-if="klipperState !== 'disconnected'"></v-divider>
+                    <v-divider v-if="klipperState !== 'disconnected'" class="mt-0"></v-divider>
                     <v-subheader class="pt-2" style="height: auto">
                         {{ $t('App.TopCornerMenu.ServiceControl') }}
                     </v-subheader>
-                    <v-list-item class="minheight30 pr-2" v-for="service in services" :key="service">
+                    <v-list-item v-for="service in services" :key="service" class="minheight30 pr-2">
                         <v-list-item-title>
                             <v-tooltip left>
                                 <template #activator="{ on, attrs }">
@@ -54,21 +54,21 @@
                         </v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-btn
+                                v-if="getServiceState(service) === 'inactive'"
                                 icon
                                 small
-                                v-if="getServiceState(service) === 'inactive'"
                                 @click="checkDialog(serviceStart, service, 'start')">
                                 <v-icon small>mdi-play</v-icon>
                             </v-btn>
-                            <v-btn icon small v-else @click="checkDialog(serviceRestart, service, 'restart')">
+                            <v-btn v-else icon small @click="checkDialog(serviceRestart, service, 'restart')">
                                 <v-icon small>mdi-restart</v-icon>
                             </v-btn>
                             <v-btn
                                 icon
                                 small
                                 :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'"
-                                @click="checkDialog(serviceStop, service, 'stop')"
-                                :style="service === 'moonraker' ? 'visibility: hidden;' : ''">
+                                :style="service === 'moonraker' ? 'visibility: hidden;' : ''"
+                                @click="checkDialog(serviceStop, service, 'stop')">
                                 <v-icon small>mdi-stop</v-icon>
                             </v-btn>
                         </v-list-item-action>
@@ -83,11 +83,11 @@
                         v-for="(device, index) in powerDevices"
                         :key="index"
                         class="minheight30 pr-2"
-                        @click="changeSwitch(device, device.status)"
                         :disabled="
                             device.status === 'error' ||
                             (device.locked_while_printing && ['printing', 'paused'].includes(printer_state))
-                        ">
+                        "
+                        @click="changeSwitch(device, device.status)">
                         <v-list-item-title>{{ device.device }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
@@ -116,7 +116,7 @@
             <v-card>
                 <v-card-title class="headline">
                     {{
-                        this.dialogPowerDeviceChange.value === 'off'
+                        dialogPowerDeviceChange.value === 'off'
                             ? $t('PowerDeviceChangeDialog.TurnDeviceOn', { device: dialogPowerDeviceChange.device })
                             : $t('PowerDeviceChangeDialog.TurnDeviceOff', { device: dialogPowerDeviceChange.device })
                     }}

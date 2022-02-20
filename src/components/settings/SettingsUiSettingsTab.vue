@@ -13,7 +13,7 @@
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" :color="logoColor" class="minwidth-0 px-5" small></v-btn>
+                            <v-btn v-bind="attrs" :color="logoColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -34,7 +34,7 @@
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" :color="primaryColor" class="minwidth-0 px-5" small></v-btn>
+                            <v-btn v-bind="attrs" :color="primaryColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -97,10 +97,10 @@
                         :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription')"
                         :dynamic-slot-width="true">
                         <v-text-field
+                            v-model="lockSlidersDelay"
                             class="mt-0"
                             prepend-icon="mdi-timer-outline"
                             :style="isMobile ? { 'max-width': '140px' } : {}"
-                            v-model="lockSlidersDelay"
                             label="Timeout"
                             type="number"
                             :rules="[(t) => t >= 0]"

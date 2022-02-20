@@ -33,16 +33,16 @@
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
                         <v-btn
-                            v-if="this.directoryPermissions.includes('w')"
-                            @click="createDirectory"
+                            v-if="directoryPermissions.includes('w')"
                             :title="$t('Timelapse.CreateNewDirectory')"
-                            class="px-2 minwidth-0 ml-3">
+                            class="px-2 minwidth-0 ml-3"
+                            @click="createDirectory">
                             <v-icon>mdi-folder-plus</v-icon>
                         </v-btn>
                         <v-btn
-                            @click="refreshFileList"
                             :title="$t('Timelapse.RefreshCurrentDirectory')"
-                            class="px-2 minwidth-0 ml-3">
+                            class="px-2 minwidth-0 ml-3"
+                            @click="refreshFileList">
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
                     </v-col>
@@ -53,10 +53,10 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b>{{ $t('Timelapse.CurrentPath') }}:</b>
-                            {{ this.currentPath !== 'timelapse' ? '/' + this.currentPath.substring(10) : '/' }}
+                            {{ currentPath !== 'timelapse' ? '/' + currentPath.substring(10) : '/' }}
                         </span>
                         <v-spacer></v-spacer>
-                        <template v-if="this.disk_usage !== null">
+                        <template v-if="disk_usage !== null">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
@@ -65,11 +65,11 @@
                                     </span>
                                 </template>
                                 <span>
-                                    {{ $t('Timelapse.Used') }}: {{ formatFilesize(this.disk_usage.used) }}
+                                    {{ $t('Timelapse.Used') }}: {{ formatFilesize(disk_usage.used) }}
                                     <br />
-                                    {{ $t('Timelapse.Free') }}: {{ formatFilesize(this.disk_usage.free) }}
+                                    {{ $t('Timelapse.Free') }}: {{ formatFilesize(disk_usage.free) }}
                                     <br />
-                                    {{ $t('Timelapse.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
+                                    {{ $t('Timelapse.Total') }}: {{ formatFilesize(disk_usage.total) }}
                                 </span>
                             </v-tooltip>
                         </template>
@@ -102,7 +102,7 @@
                     <div class="text-center font-italic">{{ $t('Timelapse.Empty') }}</div>
                 </template>
 
-                <template slot="body.prepend" v-if="currentPath !== 'timelapse'">
+                <template v-if="currentPath !== 'timelapse'" slot="body.prepend">
                     <tr class="file-list-cursor" @click="clickRowGoBack">
                         <td class="pr-0 text-center" style="width: 32px"><v-icon>mdi-folder-upload</v-icon></td>
                         <td class=" " :colspan="headers.length">..</td>
@@ -113,9 +113,9 @@
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
+                        class="file-list-cursor user-select-none"
                         @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
-                        class="file-list-cursor user-select-none">
+                        @click="clickRow(item)">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
                                 <v-icon>mdi-folder</v-icon>
@@ -153,11 +153,11 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'size').visible">
+                            v-if="headers.find((header) => header.value === 'size').visible"
+                            class="text-no-wrap text-right">
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
-                        <td class="text-right" v-if="headers.find((header) => header.value === 'modified').visible">
+                        <td v-if="headers.find((header) => header.value === 'modified').visible" class="text-right">
                             {{ formatDate(item.modified) }}
                         </td>
                     </tr>
@@ -166,31 +166,31 @@
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="downloadFile(contextMenu.item.filename)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile(contextMenu.item.filename)">
                     <v-icon left>mdi-cloud-download</v-icon>
                     {{ $t('Timelapse.Download') }}
                 </v-list-item>
                 <v-list-item
-                    @click="renameDirectory(contextMenu.item)"
-                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="renameDirectory(contextMenu.item)">
                     <v-icon left>mdi-rename-box</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
-                    @click="renameFile(contextMenu.item)"
-                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="renameFile(contextMenu.item)">
                     <v-icon left>mdi-rename-box</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
-                    @click="removeFile"
-                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="removeFile">
                     <v-icon left>mdi-delete</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
                 <v-list-item
-                    @click="deleteDirectory(contextMenu.item)"
-                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="deleteDirectory(contextMenu.item)">
                     <v-icon left>mdi-delete</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
@@ -206,11 +206,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
+                        ref="inputFieldRenameFile"
                         v-model="dialogRenameFile.newName"
                         :label="$t('Timelapse.Name')"
-                        ref="inputFieldRenameFile"
-                        @keypress.enter="renameFileAction"
-                        required></v-text-field>
+                        required
+                        @keypress.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -231,12 +231,12 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="dialogCreateDirectory.name"
                         ref="inputFieldCreateDirectory"
-                        @keypress.enter="createDirectoryAction"
+                        v-model="dialogCreateDirectory.name"
                         :label="$t('Timelapse.Name')"
                         :rules="input_rules"
-                        required></v-text-field>
+                        required
+                        @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -259,11 +259,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="dialogRenameDirectory.newName"
                         ref="inputFieldRenameDirectory"
+                        v-model="dialogRenameDirectory.newName"
                         :label="$t('Timelapse.Name')"
-                        @keyup.enter="renameDirectoryAction"
-                        required></v-text-field>
+                        required
+                        @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -311,11 +311,11 @@
                     <v-row>
                         <v-col class="pb-0">
                             <video
-                                :src="this.apiUrl + '/server/files/' + videoDialogFilename"
+                                :src="apiUrl + '/server/files/' + videoDialogFilename"
                                 controls
                                 style="width: 100%">
                                 Sorry, your browser doesn't support embedded videos, but don't worry, you can
-                                <a :href="this.apiUrl + '/server/files/' + videoDialogFilename">download it</a>
+                                <a :href="apiUrl + '/server/files/' + videoDialogFilename">download it</a>
                                 and watch it with your favorite video player!
                             </video>
                         </v-col>
@@ -325,7 +325,7 @@
                             <v-btn
                                 text
                                 color="primary"
-                                :href="this.apiUrl + '/server/files/' + videoDialogFilename"
+                                :href="apiUrl + '/server/files/' + videoDialogFilename"
                                 target="_blank">
                                 {{ $t('Timelapse.Download') }}
                             </v-btn>

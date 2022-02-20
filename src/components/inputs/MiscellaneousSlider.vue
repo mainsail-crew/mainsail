@@ -10,19 +10,19 @@
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
                     <v-btn
-                        v-if="lockSliders && this.isTouchDevice && pwm"
-                        @click="isLocked = !isLocked"
+                        v-if="lockSliders && isTouchDevice && pwm"
                         plain
                         small
-                        icon>
+                        icon
+                        @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
                     <v-icon
+                        v-if="type !== 'output_pin'"
                         small
-                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')"
-                        v-if="type !== 'output_pin'">
+                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')">
                         mdi-fan
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
@@ -30,14 +30,14 @@
                     <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">
                         {{ Math.round(rpm) }} RPM
                     </small>
-                    <span class="font-weight-bold" v-if="!controllable || (controllable && pwm)">
+                    <span v-if="!controllable || (controllable && pwm)" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
                         {{ value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
                     </v-icon>
                 </v-subheader>
-                <v-card-text class="py-0" v-if="controllable && pwm">
+                <v-card-text v-if="controllable && pwm" class="py-0">
                     <v-slider
                         v-model="value"
                         v-touch="{ start: resetLockTimer }"
@@ -46,14 +46,14 @@
                         :max="1.0"
                         :step="0.01"
                         :color="value < off_below && value > 0 ? 'red' : undefined"
-                        @change="changeSlider"
-                        hide-details>
+                        hide-details
+                        @change="changeSlider">
                         <template #prepend>
-                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
+                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
                         </template>
 
                         <template #append>
-                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
+                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>

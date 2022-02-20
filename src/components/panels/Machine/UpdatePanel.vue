@@ -61,8 +61,8 @@ ul.commits {
 <template>
     <div>
         <panel
-            :title="$t('Machine.UpdatePanel.UpdateManager')"
             v-if="enableUpdateManager"
+            :title="$t('Machine.UpdatePanel.UpdateManager')"
             icon="mdi-update"
             card-class="machine-update-panel"
             :collapsible="true">
@@ -76,8 +76,8 @@ ul.commits {
                             :ripple="true"
                             :loading="loadings.includes('loadingBtnSyncUpdateManager')"
                             :disabled="['printing', 'paused'].includes(printer_state)"
-                            @click="btnSync"
                             v-bind="attrs"
+                            @click="btnSync"
                             v-on="on">
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
@@ -88,14 +88,14 @@ ul.commits {
             <v-card-text class="px-0 py-0">
                 <v-container py-0 px-0>
                     <div v-for="(value, key, index) of updateableSoftwares" :key="key">
-                        <v-divider class="my-0" v-if="index"></v-divider>
+                        <v-divider v-if="index" class="my-0"></v-divider>
                         <v-row class="py-2">
                             <v-col class="pl-6">
                                 <strong>{{ 'name' in value ? value.name : key }}</strong>
                                 <br />
                                 <span
-                                    @click="openCommitsOverlay(key, value)"
-                                    :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''">
+                                    :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"
+                                    @click="openCommitsOverlay(key, value)">
                                     <v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">
                                         mdi-information
                                     </v-icon>
@@ -146,9 +146,9 @@ ul.commits {
                                         label
                                         outlined
                                         :color="getBtnColor(value)"
-                                        @click="updateModule(key)"
                                         :disabled="getBtnDisabled(value)"
-                                        class="minwidth-0 px-2 text-uppercase">
+                                        class="minwidth-0 px-2 text-uppercase"
+                                        @click="updateModule(key)">
                                         <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
                                         {{ getBtnText(value) }}
                                     </v-chip>
@@ -162,7 +162,7 @@ ul.commits {
                             <v-col class="col-auto pl-6 text-no-wrap">
                                 <strong>{{ $t('Machine.UpdatePanel.System') }}</strong>
                                 <br />
-                                <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
+                                <v-tooltip v-if="version_info.system.package_count > 0" top :max-width="300">
                                     <template #activator="{ on, attrs }">
                                         <span v-bind="attrs" v-on="on">
                                             {{ version_info.system.package_count }}
@@ -182,8 +182,8 @@ ul.commits {
                                     outlined
                                     :color="version_info.system.package_count ? 'primary' : 'green'"
                                     :disabled="!version_info.system.package_count || printer_state === 'printing'"
-                                    @click="updateSystem"
-                                    class="minwidth-0 px-2 text-uppercase">
+                                    class="minwidth-0 px-2 text-uppercase"
+                                    @click="updateSystem">
                                     <v-icon small class="mr-1">
                                         mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}
                                     </v-icon>
@@ -204,8 +204,8 @@ ul.commits {
                                     text
                                     color="primary"
                                     small
-                                    @click="updateAll"
-                                    :disabled="['printing', 'paused'].includes(this.printer_state)">
+                                    :disabled="['printing', 'paused'].includes(printer_state)"
+                                    @click="updateAll">
                                     <v-icon left>mdi-progress-upload</v-icon>
                                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                                 </v-btn>
@@ -230,9 +230,9 @@ ul.commits {
                             <v-col class="pt-3 pl-0">
                                 <v-timeline class="groupedCommits" align-top dense>
                                     <v-timeline-item
-                                        small
                                         v-for="group of commitsOverlay.groupedCommits"
-                                        :key="group.date.getTime()">
+                                        :key="group.date.getTime()"
+                                        small>
                                         <v-row class="pt-0">
                                             <v-col class="pr-12">
                                                 <h3 class="caption">
@@ -247,19 +247,19 @@ ul.commits {
                                                 </h3>
                                                 <ul class="commits mt-3 pl-0">
                                                     <li
-                                                        class="commit px-3 py-2"
                                                         v-for="commit of group.commits"
-                                                        :key="commit.sha">
+                                                        :key="commit.sha"
+                                                        class="commit px-3 py-2">
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0">
                                                                     {{ commit.subject }}
                                                                     <v-chip
+                                                                        v-if="!openCommits.includes(commit.sha)"
                                                                         outlined
                                                                         label
                                                                         x-small
                                                                         class="ml-2 px-2"
-                                                                        v-if="!openCommits.includes(commit.sha)"
                                                                         @click="openCommits.push(commit.sha)">
                                                                         <v-icon small>mdi-dots-horizontal</v-icon>
                                                                     </v-chip>

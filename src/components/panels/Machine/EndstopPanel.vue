@@ -53,7 +53,7 @@
         </v-card-text>
         <v-card-actions class="pt-3">
             <v-spacer></v-spacer>
-            <v-btn icon @click="syncEndstops" :loading="loadings.includes('queryEndstops')">
+            <v-btn icon :loading="loadings.includes('queryEndstops')" @click="syncEndstops">
                 <v-icon>mdi-sync</v-icon>
             </v-btn>
         </v-card-actions>

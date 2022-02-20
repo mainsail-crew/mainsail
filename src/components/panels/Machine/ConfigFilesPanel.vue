@@ -16,17 +16,17 @@
                             outlined
                             hide-details
                             dense
-                            @change="changeRoot"
-                            attach></v-select>
+                            attach
+                            @change="changeRoot"></v-select>
                     </v-col>
                     <v-col class="col col-lg-auto pl-lg-0 text-right">
-                        <input type="file" ref="fileUpload" style="display: none" multiple @change="uploadFile" />
+                        <input ref="fileUpload" type="file" style="display: none" multiple @change="uploadFile" />
                         <v-btn
                             v-for="button in filteredToolbarButtons"
                             :key="button.loadingName"
                             class="px-2 minwidth-0 ml-3"
-                            @click="button.click"
-                            :loading="button.loadingName !== null && loadings.includes(button.loadingName)">
+                            :loading="button.loadingName !== null && loadings.includes(button.loadingName)"
+                            @click="button.click">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
@@ -43,16 +43,16 @@
                             <v-list>
                                 <v-list-item class="minHeight36">
                                     <v-checkbox
+                                        v-model="showHiddenFiles"
                                         class="mt-0"
                                         hide-details
-                                        v-model="showHiddenFiles"
                                         :label="$t('Machine.ConfigFilesPanel.HiddenFiles')"></v-checkbox>
                                 </v-list-item>
                                 <v-list-item class="minHeight36">
                                     <v-checkbox
+                                        v-model="hideBackupFiles"
                                         class="mt-0"
                                         hide-details
-                                        v-model="hideBackupFiles"
                                         :label="$t('Machine.ConfigFilesPanel.HideBackupFiles')"></v-checkbox>
                                 </v-list-item>
                             </v-list>
@@ -65,7 +65,7 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b>{{ $t('Machine.ConfigFilesPanel.CurrentPath') }}:</b>
-                            {{ this.absolutePath }}
+                            {{ absolutePath }}
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -110,7 +110,7 @@
                     <div class="text-center">{{ $t('Machine.ConfigFilesPanel.Empty') }}</div>
                 </template>
 
-                <template slot="body.prepend" v-if="currentPath !== ''">
+                <template v-if="currentPath !== ''" slot="body.prepend">
                     <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack"
@@ -126,11 +126,11 @@
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
-                        @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
                         class="file-list-cursor user-select-none"
                         :data-name="item.filename"
                         draggable="true"
+                        @contextmenu="showContextMenu($event, item)"
+                        @click="clickRow(item)"
                         @drag="dragFile($event, item)"
                         @dragend="dragendFile($event)"
                         @dragover="dragOverFilelist($event, item)"
@@ -151,7 +151,7 @@
         </panel>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
-                <v-list-item @click="clickRow(contextMenu.item, true)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="clickRow(contextMenu.item, true)">
                     <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon>
                     {{
                         contextMenu.item.permissions.includes('w')
@@ -159,31 +159,31 @@
                             : $t('Machine.ConfigFilesPanel.ShowFile')
                     }}
                 </v-list-item>
-                <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Download') }}
                 </v-list-item>
                 <v-list-item
-                    @click="renameFile(contextMenu.item)"
-                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="renameFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-rename-box</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
-                    @click="renameDirectory(contextMenu.item)"
-                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="renameDirectory(contextMenu.item)">
                     <v-icon class="mr-1">mdi-rename-box</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
-                    @click="removeFile"
-                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="removeFile">
                     <v-icon class="mr-1">mdi-delete</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
                 <v-list-item
-                    @click="deleteDirectory(contextMenu.item)"
-                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')">
+                    v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
+                    @click="deleteDirectory(contextMenu.item)">
                     <v-icon class="mr-1">mdi-delete</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
@@ -193,12 +193,12 @@
             v-model="dialogImage.show"
             hide-overlay
             fullscreen
+            class="fill-height"
             @keydown.esc="
                 dialogImage.show = false
                 dialogImage.item.url = null
                 dialogImage.item.svg = null
-            "
-            class="fill-height">
+            ">
             <panel
                 :title="dialogImage.item.name"
                 card-class="maschine-configfiles-imageviewer-dialog"
@@ -235,11 +235,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        :label="$t('Machine.ConfigFilesPanel.Name')"
-                        v-model="dialogCreateFile.name"
                         ref="inputDialogCreateFileName"
-                        @keyup.enter="createFileAction"
-                        required></v-text-field>
+                        v-model="dialogCreateFile.name"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        @keyup.enter="createFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -262,11 +262,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        :label="$t('Machine.ConfigFilesPanel.Name')"
-                        v-model="dialogRenameFile.newName"
                         ref="inputDialogRenameFileName"
-                        @keyup.enter="renameFileAction"
-                        required></v-text-field>
+                        v-model="dialogRenameFile.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -291,11 +291,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        :label="$t('Machine.ConfigFilesPanel.Name')"
-                        v-model="dialogCreateDirectory.name"
                         ref="inputDialogCreateDirectoryName"
-                        @keyup.enter="createDirectoryAction"
-                        required></v-text-field>
+                        v-model="dialogCreateDirectory.name"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        @keyup.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -320,11 +320,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        :label="$t('Machine.ConfigFilesPanel.Name')"
-                        v-model="dialogRenameDirectory.newName"
                         ref="inputDialogRenameDirectoryName"
-                        @keyup.enter="renameDirectoryAction"
-                        required></v-text-field>
+                        v-model="dialogRenameDirectory.newName"
+                        :label="$t('Machine.ConfigFilesPanel.Name')"
+                        required
+                        @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -377,7 +377,7 @@
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template #action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
             </template>

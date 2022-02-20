@@ -10,8 +10,6 @@
         <v-text-field
             v-model="value"
             class="d-flex align-center"
-            @click:append="resetLimit"
-            @blur="value = target"
             :label="label"
             :suffix="unit"
             :append-icon="value !== defaultValue ? 'mdi-restart' : ''"
@@ -21,22 +19,24 @@
             :max="max"
             :dec="dec"
             type="number"
+            @click:append="resetLimit"
             hide-spin-buttons
+            @blur="value = target"
             hide-details
             outlined
             dense>
             <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
-                        @click="increment"
                         :disabled="(value >= max && max !== null) || error"
                         class="mt-n3"
                         icon
                         plain
-                        small>
+                        small
+                        @click="increment">
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
-                    <v-btn @click="decrement" :disabled="value <= min || error" class="mb-n3" icon plain small>
+                    <v-btn :disabled="value <= min || error" class="mb-n3" icon plain small @click="decrement">
                         <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
                 </div>

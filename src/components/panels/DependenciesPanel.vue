@@ -7,10 +7,10 @@
         card-class="dependencies-panel"
         toolbar-color="orange darken-2">
         <v-card-text
-            :class="index > 0 ? 'py-0' : 'pt-3 pb-0'"
             v-for="(dependency, index) in dependencies"
-            :key="index">
-            <v-divider class="my-2" v-if="index"></v-divider>
+            :key="index"
+            :class="index > 0 ? 'py-0' : 'pt-3 pb-0'">
+            <v-divider v-if="index" class="my-2"></v-divider>
             <v-row>
                 <v-col>
                     <p class="mb-0 orange--text">

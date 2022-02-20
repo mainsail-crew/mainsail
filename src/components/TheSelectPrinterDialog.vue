@@ -17,16 +17,16 @@
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
                         <v-btn
+                            v-if="dialogAddPrinter.bool"
                             icon
                             tile
                             class="minwidth-0"
-                            v-if="dialogAddPrinter.bool"
                             @click="dialogAddPrinter.bool = false">
                             <v-icon>mdi-close-thick</v-icon>
                         </v-btn>
                     </template>
                     <template v-else-if="printers.length > 0">
-                        <v-btn icon tile class="minwidth-0" @click="checkPrinters" color="primary">
+                        <v-btn icon tile class="minwidth-0" color="primary" @click="checkPrinters">
                             <v-icon>mdi-sync</v-icon>
                         </v-btn>
                     </template>
@@ -47,10 +47,10 @@
                         }}
                     </p>
                     <div class="text-center">
-                        <v-btn text @click="switchToChangePrinter" color="white" class="mr-3">
+                        <v-btn text color="white" class="mr-3" @click="switchToChangePrinter">
                             {{ $t('SelectPrinterDialog.ChangePrinter') }}
                         </v-btn>
-                        <v-btn text @click="reconnect" color="primary">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
+                        <v-btn text color="primary" @click="reconnect">{{ $t('SelectPrinterDialog.TryAgain') }}</v-btn>
                     </div>
                 </v-card-text>
             </template>
@@ -141,14 +141,14 @@
                                     <v-row align="center">
                                         <v-col class="col-auto pr-0">
                                             <v-progress-circular
+                                                v-if="printer.socket.isConnecting"
                                                 indeterminate
                                                 color="primary"
-                                                v-if="printer.socket.isConnecting"
                                                 size="24"
                                                 width="2.5"></v-progress-circular>
                                             <v-icon
-                                                :color="printer.socket.isConnected ? 'green' : 'red'"
-                                                v-if="!printer.socket.isConnecting">
+                                                v-if="!printer.socket.isConnecting"
+                                                :color="printer.socket.isConnected ? 'green' : 'red'">
                                                 mdi-{{
                                                     printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel'
                                                 }}
@@ -173,7 +173,7 @@
                     </v-row>
                     <v-row v-if="showCorsInfo">
                         <v-col>
-                            <p class="text-center" v-if="this.printers.length === 0">
+                            <p v-if="printers.length === 0" class="text-center">
                                 {{ $t('SelectPrinterDialog.Hello') }}
                             </p>
                             <p class="text-center">

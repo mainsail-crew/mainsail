@@ -6,11 +6,11 @@
         :collapsible="true"
         card-class="klipper-warnings-panel"
         toolbar-color="orange darken-2">
-        <v-card-text :class="index > 0 ? 'py-0' : 'pt-3 pb-0'" v-for="(warning, index) in warnings" :key="index">
-            <v-divider class="my-2" v-if="index"></v-divider>
+        <v-card-text v-for="(warning, index) in warnings" :key="index" :class="index > 0 ? 'py-0' : 'pt-3 pb-0'">
+            <v-divider v-if="index" class="my-2"></v-divider>
             <v-row>
                 <v-col>
-                    <p class="orange--text mb-0" v-if="warning.type === 'deprecated_option'">
+                    <p v-if="warning.type === 'deprecated_option'" class="orange--text mb-0">
                         {{
                             $t('Panels.KlipperWarningsPanel.DeprecatedOption', {
                                 section: warning.section,
@@ -18,7 +18,7 @@
                             })
                         }}
                     </p>
-                    <p class="orange--text mb-0" v-else-if="warning.type === 'deprecated_value'">
+                    <p v-else-if="warning.type === 'deprecated_value'" class="orange--text mb-0">
                         {{
                             $t('Panels.KlipperWarningsPanel.DeprecatedValue', {
                                 section: warning.section,
@@ -27,7 +27,7 @@
                             })
                         }}
                     </p>
-                    <p class="orange--text mb-0" v-else>{{ warning.message }}</p>
+                    <p v-else class="orange--text mb-0">{{ warning.message }}</p>
                 </v-col>
                 <v-col class="col-auto d-flex align-center">
                     <a :href="getDocsLink(warning)" target="_blank" class="text-decoration-none">

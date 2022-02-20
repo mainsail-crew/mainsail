@@ -1,5 +1,5 @@
 <template>
-    <v-dialog transition="dialog-bottom-transition" max-width="600" scrollable v-model="isOpen" :fullscreen="isMobile">
+    <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" scrollable :fullscreen="isMobile">
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
                 <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>

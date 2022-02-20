@@ -3,7 +3,7 @@
         <v-card flat>
             <v-card-text>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ShowAxes')">
-                    <v-switch class="mt-0" hide-details v-model="showAxes"></v-switch>
+                    <v-switch v-model="showAxes" class="mt-0" hide-details></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
@@ -18,9 +18,9 @@
                         </template>
                         <v-color-picker
                             :value="backgroundColor"
-                            @update:color="updateColorValue('backgroundColor', $event)"
                             hide-mode-switch
-                            mode="rgba"></v-color-picker>
+                            mode="rgba"
+                            @update:color="updateColorValue('backgroundColor', $event)"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -31,21 +31,21 @@
                         </template>
                         <v-color-picker
                             :value="gridColor"
-                            @update:color="updateColorValue('gridColor', $event)"
                             hide-mode-switch
-                            mode="rgba"></v-color-picker>
+                            mode="rgba"
+                            @update:color="updateColorValue('gridColor', $event)"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.ExtruderColor')">
                     <v-row no-gutters>
                         <v-menu
-                            :close-on-content-click="false"
+                            v-for="(extruderColor, index) in extruderColors"
                             :key="index"
+                            :close-on-content-click="false"
                             bottom
                             left
-                            offset-y
-                            v-for="(extruderColor, index) in extruderColors">
+                            offset-y>
                             <template #activator="{ on, attrs }">
                                 <v-col align="right" class="mt-1" cols="12">
                                     <span class="mr-2">{{ index }}</span>
@@ -59,9 +59,9 @@
                             </template>
                             <v-color-picker
                                 :value="extruderColors[index]"
-                                @update:color="colorsUpdated($event, index)"
                                 hide-mode-switch
-                                mode="rgba"></v-color-picker>
+                                mode="rgba"
+                                @update:color="colorsUpdated($event, index)"></v-color-picker>
                         </v-menu>
                     </v-row>
                 </settings-row>
@@ -78,20 +78,20 @@
                         </template>
                         <v-color-picker
                             :value="minFeedColor"
-                            @update:color="updateColorValue('minFeedColor', $event)"
                             hide-mode-switch
-                            mode="rgba"></v-color-picker>
+                            mode="rgba"
+                            @update:color="updateColorValue('minFeedColor', $event)"></v-color-picker>
                     </v-menu>
                     <v-text-field
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
-                        @blur="feedBlur"
                         dense
+                        v-model="minFeed"
                         hide-details="auto"
                         outlined
                         suffix="mm/s"
                         type="number"
-                        v-model="minFeed"
-                        hide-spin-buttons></v-text-field>
+                        hide-spin-buttons
+                        @blur="feedBlur"></v-text-field>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
@@ -106,20 +106,20 @@
                         </template>
                         <v-color-picker
                             :value="maxFeedColor"
-                            @update:color="updateColorValue('maxFeedColor', $event)"
                             hide-mode-switch
-                            mode="rgba"></v-color-picker>
+                            mode="rgba"
+                            @update:color="updateColorValue('maxFeedColor', $event)"></v-color-picker>
                     </v-menu>
                     <v-text-field
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
-                        @blur="feedBlur"
                         dense
+                        v-model="maxFeed"
                         hide-details="auto"
                         outlined
                         suffix="mm/s"
                         type="number"
-                        v-model="maxFeed"
-                        hide-spin-buttons></v-text-field>
+                        hide-spin-buttons
+                        @blur="feedBlur"></v-text-field>
                 </settings-row>
             </v-card-text>
         </v-card>

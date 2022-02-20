@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card flat v-if="!form.bool">
+        <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
                 <div v-for="webcam in webcams" :key="webcam.id">
@@ -13,9 +13,9 @@
                         <v-btn
                             small
                             outlined
-                            @click="deleteWebcam(webcam.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                            @click="deleteWebcam(webcam.id)">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -25,8 +25,8 @@
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
-        <v-card flat v-else>
-            <v-form v-model="form.valid" ref="webcamForm" @submit.prevent="saveWebcam">
+        <v-card v-else flat>
+            <v-form ref="webcamForm" v-model="form.valid" @submit.prevent="saveWebcam">
                 <v-card-title>
                     {{
                         form.id === null ? $t('Settings.WebcamsTab.CreateWebcam') : $t('Settings.WebcamsTab.EditWebcam')
@@ -44,8 +44,8 @@
                                                     class="px-2 minwidth-0"
                                                     color="transparent"
                                                     v-bind="attrs"
-                                                    v-on="on"
-                                                    elevation="0">
+                                                    elevation="0"
+                                                    v-on="on">
                                                     <v-icon>{{ form.icon }}</v-icon>
                                                 </v-btn>
                                             </template>

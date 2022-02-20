@@ -95,10 +95,10 @@
                             <v-btn
                                 class="w-100"
                                 tile
-                                @click="doHome"
                                 height="30"
                                 :loading="loadings.includes('homeAll')"
-                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'">
+                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                @click="doHome">
                                 <div class="d-flex align-center">
                                     <v-icon>mdi-home</v-icon>
                                     <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
@@ -172,20 +172,20 @@
             <v-col class="col-12">
                 <v-btn-toggle
                     v-if="stepsReversed.length > 0"
+                    :key="'all-steps-' + stepsReversed.join('_')"
+                    v-model="selectedCrossStep"
                     dense
                     no-gutters
-                    style="flex-wrap: nowrap; width: 100%"
-                    v-model="selectedCrossStep"
-                    :key="'all-steps-' + stepsReversed.join('_')">
+                    style="flex-wrap: nowrap; width: 100%">
                     <v-btn
-                        dense
-                        class="btnMinWidthAuto flex-grow-1 px-0"
                         v-for="step of stepsReversed"
-                        :key="'step-' + step">
+                        :key="'step-' + step"
+                        dense
+                        class="btnMinWidthAuto flex-grow-1 px-0">
                         <span class="body-2">{{ step }}</span>
                     </v-btn>
                 </v-btn-toggle>
-                <div class="font-weight-bold warning rounded pa-2" v-else>
+                <div v-else class="font-weight-bold warning rounded pa-2">
                     {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}
                     <br />
                     <router-link style="color: white" to="/settings/interface">

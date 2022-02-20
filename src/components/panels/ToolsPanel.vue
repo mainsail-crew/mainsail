@@ -29,16 +29,16 @@
         :collapsible="true"
         card-class="tools-panel">
         <template #buttons>
-            <v-menu :offset-y="true" title="Preheat" v-if="presets.length">
+            <v-menu v-if="presets.length" :offset-y="true" title="Preheat">
                 <template #activator="{ on, attrs }">
                     <v-btn
                         text
                         tile
                         color="primary"
                         v-bind="attrs"
-                        v-on="on"
                         :disabled="['printing', 'paused'].includes(printer_state)"
-                        class="pa-1">
+                        class="pa-1"
+                        v-on="on">
                         <span class="d-none ml-1 d-md-block">{{ $t('Panels.ToolsPanel.Presets') }}</span>
                         <v-icon class="d-md-none">mdi-fire</v-icon>
                         <v-icon>mdi-menu-down</v-icon>
@@ -69,12 +69,12 @@
                 </v-list>
             </v-menu>
             <v-btn
+                v-if="presets.length === 0"
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 tile
-                @click="cooldown()"
-                v-if="presets.length === 0"
-                color="primary">
+                color="primary"
+                @click="cooldown()">
                 <v-icon small>mdi-snowflake</v-icon>
                 <span class="d-none ml-1 d-md-inline">{{ $t('Panels.ToolsPanel.Cooldown') }}</span>
             </v-btn>
@@ -85,15 +85,15 @@
                 <v-list>
                     <v-list-item class="minHeight36">
                         <v-checkbox
-                            class="mt-0"
                             v-model="boolTempchart"
+                            class="mt-0"
                             hide-details
                             :label="$t('Panels.ToolsPanel.ShowChart')"></v-checkbox>
                     </v-list-item>
                     <v-list-item class="minHeight36">
                         <v-checkbox
-                            class="mt-0"
                             v-model="autoscaleTempchart"
+                            class="mt-0"
                             hide-details
                             :label="$t('Panels.ToolsPanel.AutoscaleChart')"></v-checkbox>
                     </v-list-item>
@@ -107,8 +107,8 @@
                         {{ $t('Panels.ToolsPanel.Name') }}
                     </v-col>
                     <v-col
-                        class="py-2 text-center flex-grow-0 font-weight-bold d-none d-md-block"
                         v-if="boolTempchart"
+                        class="py-2 text-center flex-grow-0 font-weight-bold d-none d-md-block"
                         style="min-width: 75px">
                         {{ $t('Panels.ToolsPanel.Color') }}
                     </v-col>
@@ -130,8 +130,8 @@
                             </span>
                         </v-col>
                         <v-col
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
+                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             style="min-width: 75px">
                             <div
                                 :style="'background-color: ' + heater.chartColor + 'cc;'"
@@ -182,8 +182,8 @@
                             <span style="cursor: pointer" @click="openHeater(fan)">{{ convertName(fan.name) }}</span>
                         </v-col>
                         <v-col
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
+                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             style="min-width: 75px">
                             <div
                                 :style="'background-color: ' + fan.chartColor + 'cc;'"
@@ -256,8 +256,8 @@
                             </span>
                         </v-col>
                         <v-col
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             v-if="boolTempchart"
+                            class="py-2 flex-grow-0 text-center d-none d-md-block"
                             style="min-width: 75px">
                             <div
                                 :style="'background-color: ' + sensor.chartColor + 'CC;'"
@@ -287,7 +287,7 @@
                         <v-col class="text-center py-2 pr-8 vertical_align_center"><span>&nbsp;</span></v-col>
                     </v-row>
                 </div>
-                <v-divider class="my-2" v-if="boolTempchart"></v-divider>
+                <v-divider v-if="boolTempchart" class="my-2"></v-divider>
                 <v-row v-if="boolTempchart">
                     <v-col class="py-0 px-3">
                         <temp-chart></temp-chart>
@@ -339,8 +339,8 @@
                                 hide-mode-switch
                                 mode="hexa"
                                 :value="editHeater.color"
-                                @update:color="setChartColor"
-                                class="mx-auto"></v-color-picker>
+                                class="mx-auto"
+                                @update:color="setChartColor"></v-color-picker>
                         </v-col>
                     </v-row>
                 </v-card-text>

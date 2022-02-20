@@ -3,13 +3,13 @@
         <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
         <template v-if="macros.length">
             <div v-for="(macro, index) in macros" :key="index">
-                <v-divider class="my-2" v-if="index"></v-divider>
+                <v-divider v-if="index" class="my-2"></v-divider>
                 <settings-row :title="macro.name" :sub-title="macro.description" :dynamic-slot-width="true">
                     <v-switch
                         :input-value="getMacroStatus(macro.name)"
-                        @change="changeMacroStatus(macro.name)"
                         hide-details
-                        class="mt-0"></v-switch>
+                        class="mt-0"
+                        @change="changeMacroStatus(macro.name)"></v-switch>
                 </settings-row>
             </div>
         </template>

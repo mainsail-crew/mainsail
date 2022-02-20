@@ -13,12 +13,12 @@
 </style>
 
 <template>
-    <v-dialog transition="dialog-bottom-transition" max-width="600" scrollable v-model="isOpen">
+    <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" scrollable>
         <template #activator="{ an }">
             <v-tooltip right color="panel">
                 <template #activator="{ on, attrs }">
                     <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
-                    <v-icon v-on="an" v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
+                    <v-icon v-bind="attrs" v-on="an" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
                         mdi-help-circle-outline
                     </v-icon>
                 </template>

@@ -13,7 +13,7 @@
             :collapsible="true">
             <v-card-text class="px-0 py-2">
                 <div v-for="(mcu, index) of mcus" :key="mcu.name">
-                    <v-divider class="my-2" v-if="index"></v-divider>
+                    <v-divider v-if="index" class="my-2"></v-divider>
                     <v-row class="py-0">
                         <v-col class="pl-6">
                             <strong style="cursor: pointer" @click="openMcuDetails(mcu)">{{ mcu.name }}</strong>
@@ -62,7 +62,7 @@
                     </v-row>
                 </div>
                 <div v-if="hostStats">
-                    <v-divider class="my-2" v-if="mcus.length"></v-divider>
+                    <v-divider v-if="mcus.length" class="my-2"></v-divider>
                     <v-row class="py-0">
                         <v-col class="pl-6">
                             <strong style="cursor: pointer" @click="hostDetailsDialog.bool = true">Host</strong>
@@ -150,7 +150,7 @@
                                 </v-col>
                             </v-row>
                             <div v-for="(value, key, index) in mcuDetailsDialog.mcu.mcu_constants" :key="key">
-                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-divider v-if="index" class="my-3"></v-divider>
                                 <v-row>
                                     <v-col>{{ key }}</v-col>
                                     <v-col class="text-right">{{ value }}</v-col>
@@ -164,7 +164,7 @@
                                 </v-col>
                             </v-row>
                             <div v-for="(value, key, index) in mcuDetailsDialog.mcu.last_stats" :key="key">
-                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-divider v-if="index" class="my-3"></v-divider>
                                 <v-row>
                                     <v-col>{{ key }}</v-col>
                                     <v-col class="text-right">{{ value }}</v-col>
@@ -187,15 +187,15 @@
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
                         <template v-if="Object.keys(systemInfo).length">
-                            <div v-for="(infoGroup, key, index) of systemInfo" :key="key">
-                                <template v-if="key !== 'available_services'">
-                                    <v-row :class="index ? 'mt-5' : ''">
+                            <div v-for="(infoGroup, groupKey, groupIndex) of systemInfo" :key="groupKey">
+                                <template v-if="groupKey !== 'available_services'">
+                                    <v-row :class="groupIndex ? 'mt-5' : ''">
                                         <v-col>
-                                            <span class="headline">{{ key }}</span>
+                                            <span class="headline">{{ groupKey }}</span>
                                         </v-col>
                                     </v-row>
                                     <div v-for="(value, key, index) in infoGroup" :key="key">
-                                        <v-divider class="my-3" v-if="index"></v-divider>
+                                        <v-divider v-if="index" class="my-3"></v-divider>
                                         <v-row>
                                             <v-col>{{ key }}</v-col>
                                             <v-col class="text-right">{{ value }}</v-col>

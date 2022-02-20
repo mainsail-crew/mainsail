@@ -2,11 +2,11 @@
 
 <template>
     <v-menu
+        v-if="throttledStateFlags.length"
+        v-model="showMenu"
         bottom
         :offset-y="true"
-        :close-on-content-click="false"
-        v-model="showMenu"
-        v-if="throttledStateFlags.length">
+        :close-on-content-click="false">
         <template #activator="{ on, attrs }">
             <v-btn :color="currentFlags.length ? 'error' : 'warning'" icon tile class="mr-3" v-bind="attrs" v-on="on">
                 <v-icon>mdi-raspberry-pi</v-icon>
@@ -28,7 +28,7 @@
                 </v-list-item>
             </template>
             <template v-if="previouslyFlags.length">
-                <v-divider class="my-2" v-if="currentFlags.length"></v-divider>
+                <v-divider v-if="currentFlags.length" class="my-2"></v-divider>
                 <v-subheader class="" style="height: auto">
                     {{ $t('App.ThrottledStates.HeadlinePreviouslyFlags') }}
                 </v-subheader>

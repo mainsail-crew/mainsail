@@ -19,23 +19,23 @@
             card-class="status-panel">
             <template #icon>
                 <v-progress-circular
+                    v-if="['paused', 'printing'].includes(printer_state)"
                     :rotate="-90"
                     :size="30"
                     :width="5"
                     :value="printPercent"
                     color="primary"
-                    class="mr-3"
-                    v-if="['paused', 'printing'].includes(printer_state)"></v-progress-circular>
+                    class="mr-3"></v-progress-circular>
             </template>
             <template #buttons>
                 <v-btn
                     v-for="button in filteredToolbarButtons"
                     :key="button.loadingName"
                     :color="button.color"
-                    @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
                     icon
-                    tile>
+                    tile
+                    @click="button.click">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
@@ -47,10 +47,10 @@
             <v-card-text class="px-0 py-0 content">
                 <template v-if="boolBigThumbnail">
                     <v-img
+                        ref="bigThumbnail"
                         :src="thumbnailBig"
                         tabindex="-1"
                         class="d-flex align-end statusPanel-big-thumbnail"
-                        ref="bigThumbnail"
                         height="200"
                         @focus="focusBigThumbnail"
                         @blur="blurBigThumbnail">
@@ -81,7 +81,7 @@
                                 </span>
                             </v-col>
                             <v-col class="col-auto py-2">
-                                <v-icon class="text--disabled cursor-pointer" @click="clearDisplayMessage" small>
+                                <v-icon class="text--disabled cursor-pointer" small @click="clearDisplayMessage">
                                     mdi-close-circle
                                 </v-icon>
                             </v-col>
@@ -100,7 +100,7 @@
                                     {{ current_filename }}
                                 </span>
                             </v-col>
-                            <v-col class="pa-2 pl-0 col-auto" v-if="thumbnailSmall">
+                            <v-col v-if="thumbnailSmall" class="pa-2 pl-0 col-auto">
                                 <template v-if="thumbnailSmall && thumbnailBig">
                                     <v-tooltip top content-class="tooltip__content-opacity1">
                                         <template #activator="{ on, attrs }">
@@ -164,7 +164,7 @@
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
-                                    <div v-bind="attrs" v-on="on" class="text-center">
+                                    <div v-bind="attrs" class="text-center" v-on="on">
                                         <strong>{{ $t('Panels.StatusPanel.Z') }}</strong>
                                         <br />
                                         {{ positions.z }}
@@ -242,7 +242,7 @@
                             <v-col class="col-3 pa-0 text-center">
                                 <v-tooltip top>
                                     <template #activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
                                             <strong>{{ $t('Panels.StatusPanel.Layer') }}</strong>
                                             <br />
                                             <span class="text-no-wrap">{{ current_layer }} of {{ max_layers }}</span>
@@ -261,7 +261,7 @@
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
                                     <template #activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
                                             <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong>
                                             <br />
                                             <span class="text-no-wrap">
@@ -288,7 +288,7 @@
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
                                     <template #activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
                                             <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
                                             <br />
                                             <span class="text-no-wrap">
