@@ -20,10 +20,7 @@
             </v-row>
         </v-card-text>
         <v-divider v-if="failedComponents.length || warnings.length"></v-divider>
-        <v-card-text
-            v-for="(warning, index) in warnings"
-            :key="warning"
-            :class="index > 0 ? 'py-0' : 'pt-3 pb-0'">
+        <v-card-text v-for="(warning, index) in warnings" :key="warning" :class="index > 0 ? 'py-0' : 'pt-3 pb-0'">
             <v-divider v-if="index" class="my-2"></v-divider>
             <p class="orange--text mb-0">{{ warning }}</p>
         </v-card-text>

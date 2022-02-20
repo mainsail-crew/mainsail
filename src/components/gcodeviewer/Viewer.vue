@@ -107,7 +107,9 @@
                                     <v-btn v-if="showTrackingButton" class="mr-3" @click="tracking = !tracking">
                                         <v-icon
                                             class="mr-2"
-                                            v-html="tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'"></v-icon>
+                                            v-html="
+                                                tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'
+                                            "></v-icon>
                                         {{ $t('GCodeViewer.Tracking') }}
                                     </v-btn>
                                     <v-btn @click="clearLoadedFile">{{ $t('GCodeViewer.ClearLoadedFile') }}</v-btn>

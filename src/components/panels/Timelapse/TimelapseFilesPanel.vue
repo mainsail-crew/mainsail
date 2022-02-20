@@ -310,10 +310,7 @@
                 <v-card-text class="">
                     <v-row>
                         <v-col class="pb-0">
-                            <video
-                                :src="apiUrl + '/server/files/' + videoDialogFilename"
-                                controls
-                                style="width: 100%">
+                            <video :src="apiUrl + '/server/files/' + videoDialogFilename" controls style="width: 100%">
                                 Sorry, your browser doesn't support embedded videos, but don't worry, you can
                                 <a :href="apiUrl + '/server/files/' + videoDialogFilename">download it</a>
                                 and watch it with your favorite video player!

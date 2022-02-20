@@ -111,10 +111,7 @@
                                         :label="$t('Files.PrintedFiles')"></v-checkbox>
                                 </v-list-item>
                                 <v-divider></v-divider>
-                                <v-list-item
-                                    v-for="header of configHeaders"
-                                    :key="header.key"
-                                    class="minHeight36">
+                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
                                     <v-checkbox
                                         v-model="header.visible"
                                         class="mt-0"

@@ -9,12 +9,7 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-btn
-                        v-if="lockSliders && isTouchDevice && pwm"
-                        plain
-                        small
-                        icon
-                        @click="isLocked = !isLocked">
+                    <v-btn v-if="lockSliders && isTouchDevice && pwm" plain small icon @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
