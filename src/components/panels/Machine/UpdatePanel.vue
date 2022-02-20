@@ -66,9 +66,9 @@ ul.commits {
             icon="mdi-update"
             card-class="machine-update-panel"
             :collapsible="true">
-            <template v-slot:buttons>
+            <template #buttons>
                 <v-tooltip top>
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn
                             icon
                             tile
@@ -87,7 +87,7 @@ ul.commits {
             </template>
             <v-card-text class="px-0 py-0">
                 <v-container py-0 px-0>
-                    <div v-for="(value, key, index) of updateableSoftwares" v-bind:key="key">
+                    <div v-for="(value, key, index) of updateableSoftwares" :key="key">
                         <v-divider class="my-0" v-if="index"></v-divider>
                         <v-row class="py-2">
                             <v-col class="pl-6">
@@ -105,7 +105,7 @@ ul.commits {
                             <v-col class="col-auto pr-6 text-right" align-self="center">
                                 <template v-if="getRecoveryOptions(value)">
                                     <v-menu :offset-y="true" title="Webcam">
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <v-chip
                                                 small
                                                 label
@@ -163,7 +163,7 @@ ul.commits {
                                 <strong>{{ $t('Machine.UpdatePanel.System') }}</strong>
                                 <br />
                                 <v-tooltip top v-if="version_info.system.package_count > 0" :max-width="300">
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <span v-bind="attrs" v-on="on">
                                             {{ version_info.system.package_count }}
                                             {{ $t('Machine.UpdatePanel.PackagesCanBeUpgraded') }}
@@ -221,7 +221,7 @@ ul.commits {
                 icon="mdi-update"
                 :margin-bottom="false"
                 card-class="machine-update-commits-dialog">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
@@ -232,7 +232,7 @@ ul.commits {
                                     <v-timeline-item
                                         small
                                         v-for="group of commitsOverlay.groupedCommits"
-                                        v-bind:key="group.date.getTime()">
+                                        :key="group.date.getTime()">
                                         <v-row class="pt-0">
                                             <v-col class="pr-12">
                                                 <h3 class="caption">
@@ -249,7 +249,7 @@ ul.commits {
                                                     <li
                                                         class="commit px-3 py-2"
                                                         v-for="commit of group.commits"
-                                                        v-bind:key="commit.sha">
+                                                        :key="commit.sha">
                                                         <v-row>
                                                             <v-col>
                                                                 <h4 class="subtitle-2 text--white mb-0">

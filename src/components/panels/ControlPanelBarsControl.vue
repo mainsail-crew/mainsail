@@ -48,7 +48,7 @@
                         @click="doSendMove('X-' + steps, feedrateXY)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsorted"
-                        v-bind:key="'x-' + steps">
+                        :key="'x-' + steps">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
@@ -62,7 +62,7 @@
                         @click="doSendMove('X+' + steps, feedrateXY)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsortedReverse"
-                        v-bind:key="'x+' + steps">
+                        :key="'x+' + steps">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>
@@ -75,7 +75,7 @@
                         @click="doSendMove('Y-' + steps, feedrateXY)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsorted"
-                        v-bind:key="'y-' + steps">
+                        :key="'y-' + steps">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
@@ -89,7 +89,7 @@
                         @click="doSendMove('Y+' + steps, feedrateXY)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsortedReverse"
-                        v-bind:key="'y+' + steps">
+                        :key="'y+' + steps">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>
@@ -102,7 +102,7 @@
                         @click="doSendMove('Z-' + steps, feedrateZ)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsZsorted"
-                        v-bind:key="'z-' + steps">
+                        :key="'z-' + steps">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
@@ -116,7 +116,7 @@
                         @click="doSendMove('Z+' + steps, feedrateZ)"
                         class="btnMinWidthAuto col"
                         v-for="steps of stepsZsortedReverse"
-                        v-bind:key="'z+' + steps">
+                        :key="'z+' + steps">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>

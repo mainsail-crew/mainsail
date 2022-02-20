@@ -58,7 +58,7 @@
 <template>
     <div>
         <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
-            <template v-slot:buttons>
+            <template #buttons>
                 <v-btn
                     :icon="$vuetify.breakpoint.xs"
                     :text="$vuetify.breakpoint.smAndUp"
@@ -141,7 +141,7 @@
                         top
                         :close-on-content-click="false"
                         :title="$t('Files.SetupCurrentList')">
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on">
                                 <v-icon>mdi-cog</v-icon>
                             </v-btn>
@@ -225,7 +225,7 @@
                 <strong>{{ this.loadedFile }}</strong>
             </div>
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
+            <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelRendering()">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
@@ -249,7 +249,7 @@
                 </div>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
-            <template v-slot:action="{ attrs }">
+            <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>

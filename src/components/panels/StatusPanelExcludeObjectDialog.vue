@@ -8,7 +8,7 @@
                 icon="mdi-selection-remove"
                 card-class="exclude-object-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-container>

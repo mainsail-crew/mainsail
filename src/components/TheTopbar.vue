@@ -104,7 +104,7 @@
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
+            <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
@@ -117,7 +117,7 @@
                 card-class="emergency-stop-dialog"
                 icon="mdi-alert-circle-outline"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>

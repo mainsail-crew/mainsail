@@ -7,7 +7,7 @@
         :close-on-content-click="false"
         v-model="showMenu"
         v-if="throttledStateFlags.length">
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-btn :color="currentFlags.length ? 'error' : 'warning'" icon tile class="mr-3" v-bind="attrs" v-on="on">
                 <v-icon>mdi-raspberry-pi</v-icon>
             </v-btn>

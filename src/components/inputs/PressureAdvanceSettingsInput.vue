@@ -6,7 +6,7 @@
 </style>
 
 <template>
-    <form v-on:submit.prevent="sendCmd">
+    <form @submit.prevent="sendCmd">
         <v-text-field
             v-model="value"
             class="d-flex align-center"
@@ -25,7 +25,7 @@
             hide-details
             outlined
             dense>
-            <template v-if="hasSpinner" v-slot:append-outer>
+            <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
                         @click="increment"

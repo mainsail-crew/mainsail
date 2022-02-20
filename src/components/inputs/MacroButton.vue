@@ -22,7 +22,7 @@
         </v-btn>
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <v-btn small :color="color" v-bind="attrs" v-on="on" class="minwidth-0 px-1 btnMacroMenu">
                         <v-icon>mdi-menu-down</v-icon>
                     </v-btn>

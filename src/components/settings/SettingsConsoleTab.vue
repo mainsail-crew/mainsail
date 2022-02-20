@@ -45,7 +45,7 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <div v-for="(filter, index) in consoleFilters" v-bind:key="index">
+                <div v-for="(filter, index) in consoleFilters" :key="index">
                     <v-divider class="my-2" v-if="index"></v-divider>
                     <settings-row :title="filter.name">
                         <v-btn

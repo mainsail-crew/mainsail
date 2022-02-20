@@ -1,7 +1,7 @@
 <template>
     <div>
         <panel icon="mdi-tray-full" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
-            <template v-slot:buttons>
+            <template #buttons>
                 <v-btn
                     color="success"
                     @click="startJobqueue"
@@ -11,7 +11,7 @@
                     v-if="queueState === 'paused'"
                     :disabled="!klipperReadyForGui">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Start') }}</span>
@@ -25,7 +25,7 @@
                     tile
                     v-if="['ready', 'loading'].includes(queueState)">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">mdi-pause</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Pause') }}</span>
@@ -59,7 +59,7 @@
                                     v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
                                     top
                                     content-class="tooltip__content-opacity1">
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <vue-load-image>
                                             <img
                                                 slot="image"

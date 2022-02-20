@@ -12,7 +12,7 @@
             card-class="machine-systemload-panel"
             :collapsible="true">
             <v-card-text class="px-0 py-2">
-                <div v-for="(mcu, index) of mcus" v-bind:key="mcu.name">
+                <div v-for="(mcu, index) of mcus" :key="mcu.name">
                     <v-divider class="my-2" v-if="index"></v-divider>
                     <v-row class="py-0">
                         <v-col class="pl-6">
@@ -34,7 +34,7 @@
                                         mcu.tempSensor.measured_max_temp !== null
                                     ">
                                     <v-tooltip top>
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <span v-bind="attrs" v-on="on">
                                                 Temp: {{ mcu.tempSensor.temperature + '°C' }}
                                             </span>
@@ -67,7 +67,7 @@
                         <v-col class="pl-6">
                             <strong style="cursor: pointer" @click="hostDetailsDialog.bool = true">Host</strong>
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <small v-if="hostStats.cpuName" class="ml-2" v-bind="attrs" v-on="on">
                                         ({{ hostStats.cpuName }})
                                     </small>
@@ -103,7 +103,7 @@
                                         hostStats.tempSensor.measured_max_temp !== null
                                     ">
                                     <v-tooltip top>
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <span v-bind="attrs" v-on="on">
                                                 Temp: {{ hostStats.tempSensor.temperature + '°C' }}
                                             </span>
@@ -138,7 +138,7 @@
                 icon="mdi-text-box-search-outline"
                 card-class="machine-systemload-mcu-details-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
@@ -181,13 +181,13 @@
                 icon="mdi-text-box-search-outline"
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
                         <template v-if="Object.keys(systemInfo).length">
-                            <div v-for="(infoGroup, key, index) of systemInfo" v-bind:key="key">
+                            <div v-for="(infoGroup, key, index) of systemInfo" :key="key">
                                 <template v-if="key !== 'available_services'">
                                     <v-row :class="index ? 'mt-5' : ''">
                                         <v-col>

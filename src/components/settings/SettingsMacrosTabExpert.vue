@@ -4,7 +4,7 @@
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.Macrogroups') }}</h3>
                 <template v-if="groups.length">
-                    <div v-for="(group, index) in groups" v-bind:key="index">
+                    <div v-for="(group, index) in groups" :key="index">
                         <v-divider class="my-2" v-if="index"></v-divider>
                         <settings-row
                             :title="group.name !== '' ? group.name : '<' + $t('Settings.MacrosTab.UnknownGroup') + '>'"
@@ -13,7 +13,7 @@
                                     count: 'macros' in group ? group.macros.length : 0,
                                 })
                             "
-                            :dynamicSlotWidth="true">
+                            :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
                                 <v-icon left small>mdi-pencil</v-icon>
                                 {{ $t('Settings.Edit') }}
@@ -68,7 +68,7 @@
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
                         <v-menu bottom left offset-y :close-on-content-click="false">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-btn
                                     v-bind="attrs"
                                     v-on="on"
@@ -87,7 +87,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.MacrosTab.Status')">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
@@ -102,7 +102,7 @@
                         <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
@@ -117,7 +117,7 @@
                         <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
@@ -142,7 +142,7 @@
                         group="macros"
                         @change="updateMacroOrder">
                         <template v-for="(macro, index) in editGroupMacros">
-                            <div v-bind:key="macro.name">
+                            <div :key="macro.name">
                                 <v-row>
                                     <v-col class="col-auto pr-0 d-flex">
                                         <v-icon class="handle">mdi-arrow-up-down</v-icon>
@@ -151,11 +151,11 @@
                                         <settings-row
                                             :title="macro.name"
                                             :sub-title="getMacroDescription(macro.name)"
-                                            v-bind:key="'groupMacro_macro_' + index"
-                                            :dynamicSlotWidth="true">
+                                            :key="'groupMacro_macro_' + index"
+                                            :dynamic-slot-width="true">
                                             <template v-if="existsMacro(macro.name)">
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
@@ -171,7 +171,7 @@
                                                     <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
@@ -192,7 +192,7 @@
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
@@ -213,7 +213,7 @@
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
@@ -235,7 +235,7 @@
                                                 </v-tooltip>
                                             </template>
                                             <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
+                                                <template #activator="{ on, attrs }">
                                                     <v-btn
                                                         small
                                                         outlined
@@ -267,12 +267,12 @@
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
                 <template v-if="availableMacros.length">
                     <template v-for="(macro, index) in availableMacros">
-                        <v-divider class="my-2" v-if="index" v-bind:key="'availableMacro_deliver_' + index"></v-divider>
+                        <v-divider class="my-2" v-if="index" :key="'availableMacro_deliver_' + index"></v-divider>
                         <settings-row
                             :title="macro.name"
                             :sub-title="macro.description"
-                            v-bind:key="'availableMacro_macro_' + index"
-                            :dynamicSlotWidth="true">
+                            :key="'availableMacro_macro_' + index"
+                            :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="addMacroToGroup(macro)">
                                 <v-icon left small>mdi-plus</v-icon>
                                 {{ $t('Settings.MacrosTab.Add') }}

@@ -12,7 +12,7 @@
                     <p class="orange--text">{{ $t('Panels.MoonrakerStatePanel.MoonrakerErrorInfo') }}</p>
                     <p class="mb-2 orange--text">{{ $t('Panels.MoonrakerStatePanel.FollowingPluginHasAnError') }}</p>
                     <ul class="mt-0 pt-0">
-                        <li v-for="component in failedComponents" v-bind:key="component" class="orange--text">
+                        <li v-for="component in failedComponents" :key="component" class="orange--text">
                             <code>{{ component }}</code>
                         </li>
                     </ul>
@@ -23,7 +23,7 @@
         <v-card-text
             :class="index > 0 ? 'py-0' : 'pt-3 pb-0'"
             v-for="(warning, index) in warnings"
-            v-bind:key="warning">
+            :key="warning">
             <v-divider class="my-2" v-if="index"></v-divider>
             <p class="orange--text mb-0">{{ warning }}</p>
         </v-card-text>

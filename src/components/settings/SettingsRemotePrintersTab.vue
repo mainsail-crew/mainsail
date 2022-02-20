@@ -3,7 +3,7 @@
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.RemotePrintersTab.RemotePrinters') }}</h3>
-                <div v-for="(printer, index) in printers" v-bind:key="printer.id">
+                <div v-for="(printer, index) in printers" :key="printer.id">
                     <v-divider class="my-2" v-if="index"></v-divider>
                     <settings-row
                         :title="formatPrinterName(printer)"

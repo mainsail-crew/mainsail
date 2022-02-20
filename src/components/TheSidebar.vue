@@ -81,7 +81,7 @@
                     </v-list-item>
                     <template v-if="countPrinters">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-list-item
                                     router
                                     to="/allPrinters"
@@ -104,7 +104,7 @@
                     </template>
                     <div v-for="(category, index) in naviPoints" :key="index">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-list-item
                                     router
                                     :to="category.path"
@@ -127,7 +127,7 @@
                 </v-list-item-group>
             </v-list>
         </overlay-scrollbars>
-        <template v-slot:append>
+        <template #append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
                     <about-modal></about-modal>

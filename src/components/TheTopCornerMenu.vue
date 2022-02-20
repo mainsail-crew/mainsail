@@ -7,7 +7,7 @@
 <template>
     <div>
         <v-menu bottom left :offset-y="true" :close-on-content-click="false" v-model="showMenu">
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
                 <v-btn icon tile v-bind="attrs" v-on="on">
                     <v-icon>mdi-power-standby</v-icon>
                 </v-btn>
@@ -41,10 +41,10 @@
                     <v-subheader class="pt-2" style="height: auto">
                         {{ $t('App.TopCornerMenu.ServiceControl') }}
                     </v-subheader>
-                    <v-list-item class="minheight30 pr-2" v-for="service in services" v-bind:key="service">
+                    <v-list-item class="minheight30 pr-2" v-for="service in services" :key="service">
                         <v-list-item-title>
                             <v-tooltip left>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         {{ service.charAt(0).toUpperCase() + service.slice(1) }}
                                     </span>
@@ -81,7 +81,7 @@
                     </v-subheader>
                     <v-list-item
                         v-for="(device, index) in powerDevices"
-                        v-bind:key="index"
+                        :key="index"
                         class="minheight30 pr-2"
                         @click="changeSwitch(device, device.status)"
                         :disabled="
@@ -139,7 +139,7 @@
                 icon="mdi-alert"
                 :title="dialogConfirmation.title"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogConfirmation.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-3">

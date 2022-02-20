@@ -44,7 +44,7 @@
                     :top="consoleDirection === 'shell'"
                     :close-on-content-click="false"
                     :title="$t('Console.SetupConsole')">
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                         <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on">
                             <v-icon>mdi-filter</v-icon>
                         </v-btn>
@@ -64,7 +64,7 @@
                                 hide-details
                                 :label="$t('Console.HideTimelapse')"></v-checkbox>
                         </v-list-item>
-                        <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                        <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" :key="index">
                             <v-checkbox
                                 class="mt-0"
                                 v-model="filter.bool"

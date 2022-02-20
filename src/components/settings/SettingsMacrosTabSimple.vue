@@ -2,9 +2,9 @@
     <v-card-text>
         <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.Macros') }}</h3>
         <template v-if="macros.length">
-            <div v-for="(macro, index) in macros" v-bind:key="index">
+            <div v-for="(macro, index) in macros" :key="index">
                 <v-divider class="my-2" v-if="index"></v-divider>
-                <settings-row :title="macro.name" :sub-title="macro.description" :dynamicSlotWidth="true">
+                <settings-row :title="macro.name" :sub-title="macro.description" :dynamic-slot-width="true">
                     <v-switch
                         :input-value="getMacroStatus(macro.name)"
                         @change="changeMacroStatus(macro.name)"

@@ -42,7 +42,7 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamic-slot-width="true">
                     <input
                         type="file"
                         :accept="['.json']"
@@ -57,7 +57,7 @@
                     </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
                     <v-btn @click="resetMainsail" color="error" small>
                         {{ $t('Settings.GeneralTab.FactoryReset') }}
                     </v-btn>
@@ -70,7 +70,7 @@
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogBackupMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -119,7 +119,7 @@
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogResetMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -183,7 +183,7 @@
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRestoreMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>

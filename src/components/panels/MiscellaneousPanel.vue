@@ -7,7 +7,7 @@
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
         card-class="miscellaneous-panel">
-        <div v-for="(object, index) of miscellaneous" v-bind:key="index">
+        <div v-for="(object, index) of miscellaneous" :key="index">
             <v-divider v-if="index"></v-divider>
             <miscellaneous-slider
                 :name="object.name"
@@ -20,7 +20,7 @@
                 :max="object.max_power"
                 :multi="parseInt(object.scale)"></miscellaneous-slider>
         </div>
-        <div v-for="(sensor, index) of filamentSensors" v-bind:key="'sensor_' + index">
+        <div v-for="(sensor, index) of filamentSensors" :key="'sensor_' + index">
             <v-divider v-if="index || miscellaneous.length"></v-divider>
             <filament-sensor
                 :name="sensor.name"

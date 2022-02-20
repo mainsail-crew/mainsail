@@ -7,7 +7,7 @@
         <v-card-text class="pb-0">
             <v-container px-0 py-0>
                 <template v-if="Object.keys(endstops).length">
-                    <v-row v-for="key of Object.keys(endstops)" v-bind:key="key">
+                    <v-row v-for="key of Object.keys(endstops)" :key="key">
                         <v-col class="py-1">
                             <label class="mt-1 d-inline-block">
                                 {{ $t('Machine.EndstopPanel.Endstop') }}

@@ -43,18 +43,18 @@
                                 {{ framesCount }}
                             </settings-row>
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamicSlotWidth="true">
+                            <settings-row :title="$t('Timelapse.EstimatedLength')" :dynamic-slot-width="true">
                                 {{ estimatedVideoLength }}
                             </settings-row>
                         </template>
                         <template v-if="['printing', 'paused'].includes(printer_state)">
                             <v-divider class="my-2"></v-divider>
-                            <settings-row :title="$t('Timelapse.Enabled')" :dynamicSlotWidth="true">
+                            <settings-row :title="$t('Timelapse.Enabled')" :dynamic-slot-width="true">
                                 <v-switch v-model="enabled" hide-details class="mt-0"></v-switch>
                             </settings-row>
                             <template v-if="enabled">
                                 <v-divider class="my-2" v-if="framesCount > 0"></v-divider>
-                                <settings-row :title="$t('Timelapse.Autorender')" :dynamicSlotWidth="true">
+                                <settings-row :title="$t('Timelapse.Autorender')" :dynamic-slot-width="true">
                                     <v-switch v-model="autorender" hide-details class="mt-0"></v-switch>
                                 </settings-row>
                             </template>
@@ -95,7 +95,7 @@
                 icon="mdi-text-box-search-outline"
                 card-class="timelapse-rendersettings-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon @click="boolDialogRendersettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="">

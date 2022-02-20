@@ -3,7 +3,7 @@
         <v-card flat v-if="!form.bool">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
-                <div v-for="webcam in webcams" v-bind:key="webcam.id">
+                <div v-for="webcam in webcams" :key="webcam.id">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
@@ -39,7 +39,7 @@
                                 <v-col class="col-2">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Icon">
-                                            <template v-slot:activator="{ on, attrs }">
+                                            <template #activator="{ on, attrs }">
                                                 <v-btn
                                                     class="px-2 minwidth-0"
                                                     color="transparent"
@@ -52,7 +52,7 @@
                                             <v-list dense class="py-0">
                                                 <v-list-item
                                                     v-for="icon of iconItems"
-                                                    v-bind:key="icon.value"
+                                                    :key="icon.value"
                                                     link
                                                     @click="setFormIcon(icon.value)">
                                                     <v-list-item-icon class="mr-0">

@@ -90,7 +90,7 @@
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
                         <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
                                     <v-icon>mdi-cog</v-icon>
                                 </v-btn>
@@ -114,7 +114,7 @@
                                 <v-list-item
                                     class="minHeight36"
                                     v-for="header of configHeaders"
-                                    v-bind:key="header.key">
+                                    :key="header.key">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
@@ -137,7 +137,7 @@
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <b>{{ $t('Files.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
@@ -175,7 +175,7 @@
                 mobile-breakpoint="0"
                 @current-items="refreshMetadata">
                 <template slot="items">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.value">{{ header.text }}</td>
+                    <td v-for="header in filteredHeaders" :key="header.value">{{ header.text }}</td>
                 </template>
 
                 <template #no-data>
@@ -218,7 +218,7 @@
                                         v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
                                         top
                                         content-class="tooltip__content-opacity1">
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img
                                                     slot="image"
@@ -255,7 +255,7 @@
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-center">
                             <v-tooltip top v-if="getJobStatus(item)">
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <v-icon small :color="getStatusColor(getJobStatus(item))">
                                             {{ getStatusIcon(getJobStatus(item)) }}
@@ -338,7 +338,7 @@
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
+            <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
@@ -442,7 +442,7 @@
                 :title="$t('Files.NewDirectory')"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -465,7 +465,7 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -488,7 +488,7 @@
                 :title="$t('Files.RenameDirectory')"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -513,7 +513,7 @@
                 :title="$t('Files.DeleteDirectory')"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>

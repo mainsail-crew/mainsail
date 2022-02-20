@@ -8,7 +8,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.BackgroundColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 :color="backgroundColor"
                                 class="minwidth-0 px-5"
@@ -26,7 +26,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.GridColor')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn :color="gridColor" class="minwidth-0 px-5" small v-bind="attrs" v-on="on"></v-btn>
                         </template>
                         <v-color-picker
@@ -46,7 +46,7 @@
                             left
                             offset-y
                             v-for="(extruderColor, index) in extruderColors">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-col align="right" class="mt-1" cols="12">
                                     <span class="mr-2">{{ index }}</span>
                                     <v-btn
@@ -68,7 +68,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MinFeed')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 :color="minFeedColor"
                                 class="minwidth-0 px-5 mr-3"
@@ -96,7 +96,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.GCodeViewerTab.MaxFeed')">
                     <v-menu :close-on-content-click="false" bottom left offset-y>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 :color="maxFeedColor"
                                 class="minwidth-0 px-5 mr-3"

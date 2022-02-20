@@ -4,7 +4,7 @@
     <div>
         <template v-for="object in printing_objects">
             <v-row
-                v-bind:key="'div_' + object.name"
+                :key="'div_' + object.name"
                 class="py-3 d-flex"
                 @click="mouseOverObject(object.name)"
                 @mouseover="mouseOverObject(object.name)"
@@ -29,7 +29,7 @@
                     </v-icon>
                 </v-col>
             </v-row>
-            <v-divider v-bind:key="'divider_' + object.name"></v-divider>
+            <v-divider :key="'divider_' + object.name"></v-divider>
         </template>
     </div>
 </template>

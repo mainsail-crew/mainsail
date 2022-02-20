@@ -42,7 +42,7 @@
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-btn
                                     class="px-2 minwidth-0 ml-3"
                                     :title="$t('History.TitleSettings')"
@@ -56,7 +56,7 @@
                                     <v-list-item
                                         class="minHeight36"
                                         v-for="status of allPrintStatusArray"
-                                        v-bind:key="status.key">
+                                        :key="status.key">
                                         <v-checkbox
                                             class="mt-0"
                                             hide-details
@@ -71,7 +71,7 @@
                                 <v-list-item
                                     class="minHeight36"
                                     v-for="header of configHeaders"
-                                    v-bind:key="header.key">
+                                    :key="header.key">
                                     <v-checkbox
                                         class="mt-0"
                                         hide-details
@@ -106,7 +106,7 @@
                 mobile-breakpoint="0"
                 show-select>
                 <template slot="items" slot-scope="props">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.text" class="text-no-wrap">
+                    <td v-for="header in filteredHeaders" :key="header.text" class="text-no-wrap">
                         {{ props.item[header.value] }}
                     </td>
                 </template>
@@ -115,7 +115,7 @@
                     <div class="text-center">{{ $t('History.Empty') }}</div>
                 </template>
 
-                <template v-slot:item="{ index, item, isSelected, select }">
+                <template #item="{ index, item, isSelected, select }">
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
@@ -135,7 +135,7 @@
                             </template>
                             <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <vue-load-image>
                                             <img
                                                 slot="image"
@@ -171,7 +171,7 @@
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-center">
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <v-icon small :color="getStatusColor(item.status)" :disabled="!item.exists">
                                             {{ getStatusIcon(item.status) }}
@@ -183,7 +183,7 @@
                         </td>
                         <td
                             v-for="col in tableFields"
-                            v-bind:key="col.value"
+                            :key="col.value"
                             :class="col.outputType !== 'date' ? 'text-no-wrap' : ''">
                             {{ outputValue(col, item) }}
                         </td>
@@ -227,7 +227,7 @@
                 icon="mdi-update"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="px-0">
@@ -397,7 +397,7 @@
         </v-dialog>
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>

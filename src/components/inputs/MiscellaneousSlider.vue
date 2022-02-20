@@ -48,11 +48,11 @@
                         :color="value < off_below && value > 0 ? 'red' : undefined"
                         @change="changeSlider"
                         hide-details>
-                        <template v-slot:prepend>
+                        <template #prepend>
                             <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
                         </template>
 
-                        <template v-slot:append>
+                        <template #append>
                             <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
                         </template>
                     </v-slider>

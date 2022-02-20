@@ -3,7 +3,7 @@
         <v-card flat v-if="!form.bool && !cooldownForm.bool">
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.PresetsTab.PreheatPresets') }}</h3>
-                <div v-for="(preset, key) in presets" v-bind:key="preset.index">
+                <div v-for="(preset, key) in presets" :key="preset.index">
                     <v-divider class="my-2" v-if="key"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
@@ -55,7 +55,7 @@
                             dense
                             outlined></v-text-field>
                     </settings-row>
-                    <div v-for="heater of heaters" v-bind:key="heater.name">
+                    <div v-for="heater of heaters" :key="heater.name">
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="convertName(heater.name)">
                             <v-checkbox
@@ -72,7 +72,7 @@
                                 hide-spin-buttons></v-text-field>
                         </settings-row>
                     </div>
-                    <div v-for="fan of temperatureFans" v-bind:key="'temperature_fan ' + fan.name">
+                    <div v-for="fan of temperatureFans" :key="'temperature_fan ' + fan.name">
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="convertName(fan.name)">
                             <v-checkbox

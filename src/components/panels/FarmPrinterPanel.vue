@@ -38,9 +38,9 @@
         "
         :loading="printer.socket.isConnecting"
         :toolbar-color="isCurrentPrinter ? 'primary' : ''">
-        <template v-slot:buttons>
+        <template #buttons>
             <v-menu :offset-y="true" title="Webcam" v-if="showWebcamSwitch">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
                         <v-icon small>mdi-webcam</v-icon>
                         <v-icon small>mdi-menu-down</v-icon>
@@ -57,7 +57,7 @@
                     </v-list-item>
                     <v-list-item
                         v-for="webcam of printer_webcams"
-                        v-bind:key="webcam.index"
+                        :key="webcam.index"
                         link
                         @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">
@@ -71,7 +71,7 @@
             </v-menu>
         </template>
         <v-hover>
-            <template v-slot:default="{ hover }">
+            <template #default="{ hover }">
                 <div>
                     <v-img :height="imageHeight" :src="printer_image" class="d-flex align-end" ref="imageDiv">
                         <div
@@ -124,7 +124,7 @@
                                 <v-col
                                     :class="object.name === 'ETA' ? 'col-auto' : 'col' + ' px-2'"
                                     v-for="object in printer_preview"
-                                    v-bind:key="object.name">
+                                    :key="object.name">
                                     <strong class="d-block text-center">{{ object.name }}</strong>
                                     <span class="d-block text-center">{{ object.value }}</span>
                                 </v-col>

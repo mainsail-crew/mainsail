@@ -58,7 +58,7 @@
                         <v-spacer></v-spacer>
                         <template v-if="this.disk_usage !== null">
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <b>{{ $t('Timelapse.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
@@ -95,7 +95,7 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0">
                 <template slot="items">
-                    <td v-for="header in headers" v-bind:key="header.value">{{ header.text }}</td>
+                    <td v-for="header in headers" :key="header.value">{{ header.text }}</td>
                 </template>
 
                 <template #no-data>
@@ -128,7 +128,7 @@
                                     v-if="!item.isDirectory && getThumbnail(item)"
                                     top
                                     content-class="tooltip__content-opacity1">
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <vue-load-image>
                                             <img
                                                 slot="image"
@@ -201,7 +201,7 @@
                 :title="$t('Timelapse.RenameFile')"
                 card-class="gcode-files-rename-file-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -224,7 +224,7 @@
                 :title="$t('Timelapse.NewDirectory')"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -252,7 +252,7 @@
                 :title="$t('Timelapse.RenameDirectory')"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -279,7 +279,7 @@
                 :title="$t('Timelapse.DeleteDirectory')"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -304,7 +304,7 @@
                 icon="mdi-file-video"
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="boolVideoDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="">

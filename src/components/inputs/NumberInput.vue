@@ -10,7 +10,7 @@
 </style>
 
 <template>
-    <form v-on:submit.prevent="submit">
+    <form @submit.prevent="submit">
         <v-text-field
             v-model.number="value"
             class="d-flex align-top"
@@ -32,7 +32,7 @@
             hide-details="auto"
             outlined
             dense>
-            <template v-if="hasSpinner" v-slot:append-outer>
+            <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
                         @click="incrementValue"

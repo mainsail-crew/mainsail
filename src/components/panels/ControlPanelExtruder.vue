@@ -35,7 +35,7 @@
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
                     <v-btn
                         v-for="amount in feedamountsSorted"
-                        v-bind:key="amount"
+                        :key="amount"
                         @click="setFeedAmount(amount)"
                         dense
                         :class="
@@ -51,8 +51,8 @@
                     {{ $t('Panels.ControlPanel.FeedrateIn') }} [mm/s]
                 </span>
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
-                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate" color="panel">
-                        <template v-slot:activator="{ on, attrs }">
+                    <v-tooltip top v-for="rate in feedratesSorted" :key="rate" color="panel">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 v-bind="attrs"
                                 v-on="on"
@@ -75,7 +75,7 @@
         <v-row class="">
             <v-col class="col text-center pt-0">
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <div v-on="on" class="d-inline-block">
                             <v-btn
                                 small
@@ -91,7 +91,7 @@
                     <span>{{ $t('Panels.ControlPanel.HotendTooCold') }} {{ minExtrudeTemp }} °C</span>
                 </v-tooltip>
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
+                    <template #activator="{ on }">
                         <div v-on="on" class="d-inline-block">
                             <v-btn
                                 small

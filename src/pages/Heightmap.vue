@@ -9,7 +9,7 @@
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
-                    <template v-slot:buttons-title>
+                    <template #buttons-title>
                         <v-btn
                             text
                             tile
@@ -20,7 +20,7 @@
                             {{ bed_mesh.profile_name }}
                         </v-btn>
                     </template>
-                    <template v-slot:buttons>
+                    <template #buttons>
                         <v-btn
                             text
                             tile
@@ -221,7 +221,7 @@
                     class="mt-6 mt-md-0">
                     <v-card-text class="py-0 px-0" v-if="profiles.length">
                         <v-simple-table>
-                            <template v-slot:default>
+                            <template #default>
                                 <tbody>
                                     <tr v-for="(profile, index) in profiles" :key="index">
                                         <td>
@@ -237,7 +237,7 @@
                                         </td>
                                         <td>
                                             <v-tooltip top color="rgba(0,0,0,0.8)">
-                                                <template v-slot:activator="{ on, attrs }">
+                                                <template #activator="{ on, attrs }">
                                                     <small v-bind="attrs" v-on="on">
                                                         {{ profile.variance.toFixed(3) }}
                                                     </small>
@@ -297,7 +297,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="renameDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -323,7 +323,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="calibrateDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -344,7 +344,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="removeDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
@@ -365,7 +365,7 @@
                 icon="mdi-grid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="saveConfigDialog = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>

@@ -19,7 +19,7 @@
                     ' ' +
                     (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
                 ">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn
                         text
                         tile
@@ -58,7 +58,7 @@
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
-                            v-bind:file-extension="fileExtension"></codemirror-async>
+                            :file-extension="fileExtension"></codemirror-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
@@ -82,7 +82,7 @@
             <template v-else>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
-            <template v-slot:action="{ attrs }">
+            <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto" tile>
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
@@ -94,7 +94,7 @@
                 icon="mdi-help-circle"
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-3">

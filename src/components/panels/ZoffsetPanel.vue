@@ -8,13 +8,13 @@
             :title="$t('Panels.ZoffsetPanel.Headline')"
             :collapsible="true"
             card-class="zoffset-panel">
-            <template v-slot:buttons>
+            <template #buttons>
                 <template v-if="z_gcode_offset !== 0">
                     <v-btn icon tile @click="clearZOffset()" :loading="loadings.includes('babySteppingClear')">
                         <v-icon>mdi-broom</v-icon>
                     </v-btn>
                     <v-menu offset-y left v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop">
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn text tile color="primary" v-bind="attrs" v-on="on" class="pa-1">
                                 <span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
                                 <v-icon>mdi-menu-down</v-icon>

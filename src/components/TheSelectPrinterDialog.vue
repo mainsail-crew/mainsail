@@ -8,7 +8,7 @@
             :title="panelTitle"
             :margin-bottom="false"
             toolbar-color="toolbar">
-            <template v-slot:buttons>
+            <template #buttons>
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
                         <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
@@ -133,7 +133,7 @@
                 <v-card-text class="mt-3">
                     <v-row v-if="printers.length">
                         <v-col class="px-6">
-                            <v-row v-for="(printer, index) in printers" v-bind:key="index">
+                            <v-row v-for="(printer, index) in printers" :key="index">
                                 <v-col
                                     class="rounded transition-swing toolbar py-2 px-2 mb-2 overflow-hidden"
                                     style="cursor: pointer"
@@ -162,7 +162,7 @@
                                                 icon
                                                 large
                                                 class="mr-1"
-                                                v-on:click.stop.prevent="editPrinter(printer)">
+                                                @click.stop.prevent="editPrinter(printer)">
                                                 <v-icon small>mdi-pencil</v-icon>
                                             </v-btn>
                                         </v-col>

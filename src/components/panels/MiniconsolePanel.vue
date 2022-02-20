@@ -15,15 +15,15 @@
         :title="$t('Panels.MiniconsolePanel.Headline')"
         :collapsible="true"
         card-class="miniconsole-panel"
-        :hideButtonsOnCollapse="true">
-        <template v-slot:buttons>
-            <command-help-modal @onCommand="gcode = $event" :inToolbar="true"></command-help-modal>
+        :hide-buttons-on-collapse="true">
+        <template #buttons>
+            <command-help-modal @onCommand="gcode = $event" :in-toolbar="true"></command-help-modal>
 
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
                 </template>
                 <v-list>
@@ -41,7 +41,7 @@
                             hide-details
                             :label="$t('Panels.MiniconsolePanel.HideTimelapse')"></v-checkbox>
                     </v-list-item>
-                    <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" v-bind:key="index">
+                    <v-list-item class="minHeight36" v-for="(filter, index) in customFilters" :key="index">
                         <v-checkbox
                             class="mt-0"
                             v-model="filter.bool"

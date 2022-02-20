@@ -7,9 +7,9 @@
         :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="this.$route.fullPath !== '/cam'"
         card-class="webcam-panel">
-        <template v-slot:buttons v-if="webcams.length > 1">
+        <template #buttons v-if="webcams.length > 1">
             <v-menu :offset-y="true" title="Webcam">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon small v-if="'icon' in currentCam" class="mr-2">{{ currentCam.icon }}</v-icon>
                         <span class="d-none d-md-block">{{ 'name' in currentCam ? currentCam.name : 'unknown' }}</span>
@@ -27,7 +27,7 @@
                     </v-list-item>
                     <v-list-item
                         v-for="webcam of webcams"
-                        v-bind:key="webcam.id"
+                        :key="webcam.id"
                         link
                         @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">

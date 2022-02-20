@@ -21,7 +21,7 @@
                 icon="mdi-help"
                 card-class="command-help-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-title>

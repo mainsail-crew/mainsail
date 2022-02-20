@@ -12,7 +12,7 @@
                 </v-toolbar-title>
             </v-toolbar>
 
-            <div v-for="(device, index) in devices" v-bind:key="index">
+            <div v-for="(device, index) in devices" :key="index">
                 <v-divider class="mt-0" v-if="index > 0"></v-divider>
                 <v-card-text class="py-2">
                     <v-row>
