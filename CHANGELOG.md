@@ -22,6 +22,7 @@ All notable changes to Mainsail will be documented in this file.
 - Add custom number input component (#638) | [fa20b19](fa20b19a5b0f58b8b826482e1384361f16379a44)
 - Multiselect in history jobs (#509) | [455a3aa](455a3aa19489cfbcbdf740077e3274153d6448c4)
 - Display only existing/useable bed_mesh profiles (#660) | [82f756c](82f756c6ae6243591d84ec3c1f85973ed7133b05)
+- Add localization options to NumberInput.vue (#661) | [a0d4c66](a0d4c66d6c8b7ce09afca5db0a819e74cfec8904)
 
 ### Localization
 
@@ -44,6 +45,7 @@ All notable changes to Mainsail will be documented in this file.
 
 - Add prettier as default formatter (#614) | [04b6992](04b6992f3c202634948ee7c6afa9cd2c517f7af9)
 - Use prettier on other file formats as well (#648) | [615ee73](615ee73801588fdda28494e490a7525719a3d835)
+- Improve prettier integration (#662) | [72e0ca8](72e0ca8e837697b8947a7358dbc5eaa58477df5b)
 
 ### Testing
 
