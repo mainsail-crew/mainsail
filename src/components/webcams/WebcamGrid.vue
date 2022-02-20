@@ -1,7 +1,7 @@
 <style></style>
 
 <template>
-    <v-container fluid class="pb-4" v-if="webcams">
+    <v-container v-if="webcams" fluid class="pb-4">
         <v-row dense>
             <v-col v-for="webcam in webcams" :key="webcam.id" cols="6">
                 <template v-if="webcam.service === 'mjpegstreamer'">

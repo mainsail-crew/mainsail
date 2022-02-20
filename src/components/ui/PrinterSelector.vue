@@ -2,18 +2,18 @@
 
 <template>
     <v-menu bottom :offset-x="true">
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
             <v-icon class="nav-arrow right" v-bind="attrs" v-on="on">mdi-chevron-down</v-icon>
         </template>
 
         <v-list dense>
             <v-list-item
-                two-line
                 v-for="printer in printers"
-                v-bind:key="printer._namespace"
-                @click="changePrinter(printer)"
+                :key="printer._namespace"
+                two-line
                 :disabled="!printer.socket.isConnected"
-                link>
+                link
+                @click="changePrinter(printer)">
                 <v-list-item-content>
                     <v-list-item-title>{{ getPrinterName(printer._namespace) }}</v-list-item-title>
                     <v-list-item-subtitle>{{ getPrinterDescription(printer) }}</v-list-item-subtitle>

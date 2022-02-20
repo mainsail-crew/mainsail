@@ -8,6 +8,12 @@ import './plugins/longpress'
 import store from '@/store'
 import router from '@/plugins/router'
 
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+    onOfflineReady() {},
+})
+
 Vue.config.productionTip = false
 
 // vue-observe-visibility
@@ -20,7 +26,7 @@ Vue.use(VueMeta)
 
 //vue-load-image
 import VueLoadImage from 'vue-load-image'
-Vue.component('vue-load-image', VueLoadImage)
+Vue.component('VueLoadImage', VueLoadImage)
 
 //vue-toast-notification
 import VueToast from 'vue-toast-notification'
@@ -43,10 +49,17 @@ Vue.use(OverlayScrollbarsPlugin, {
     },
 })
 
-//vue-echarts-ts
-import { plugin } from 'echarts-for-vue'
-import * as echarts from 'echarts/core'
-Vue.use(plugin, { echarts })
+// Echarts
+import ECharts from 'vue-echarts'
+import { use } from 'echarts/core'
+
+// import ECharts modules manually to reduce bundle size
+import { SVGRenderer } from 'echarts/renderers'
+import { LineChart, BarChart, PieChart } from 'echarts/charts'
+import { GridComponent, LegendComponent, TooltipComponent, DatasetComponent } from 'echarts/components'
+
+use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetComponent, GridComponent, TooltipComponent])
+Vue.component('EChart', ECharts)
 
 //load config.json and init vue
 fetch('/config.json')

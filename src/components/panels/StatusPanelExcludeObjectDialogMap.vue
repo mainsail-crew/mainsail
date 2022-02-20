@@ -61,7 +61,7 @@ svg {
             <g>
                 <line
                     v-for="x in xStripes"
-                    v-bind:key="'xLines' + x"
+                    :key="'xLines' + x"
                     :x1="convertX(x)"
                     :x2="convertX(x)"
                     :y1="convertY(stepperYmin)"
@@ -71,7 +71,7 @@ svg {
                     stroke-width="1" />
                 <line
                     v-for="y in yStripes"
-                    v-bind:key="'yLines' + y"
+                    :key="'yLines' + y"
                     :x1="convertX(stepperXmin)"
                     :x2="convertX(stepperXmax)"
                     :y1="convertY(y)"
@@ -81,7 +81,7 @@ svg {
                     stroke-width="1" />
             </g>
 
-            <g v-for="(object, index) in printing_objects" v-bind:key="index">
+            <g v-for="(object, index) in printing_objects" :key="index">
                 <polygon
                     :points="object.polygon.map((point) => convertX(point[0]) + ',' + convertY(point[1])).join(' ')"
                     style="cursor: pointer"

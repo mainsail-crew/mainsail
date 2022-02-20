@@ -43,8 +43,9 @@
             <v-card-text class="px-3">
                 <v-row>
                     <v-col class="py-6 px-0">
-                        <overlay-scrollbars class="updaterLogScroll" ref="updaterLogScroll">
+                        <overlay-scrollbars ref="updaterLogScroll" class="updaterLogScroll">
                             <v-data-table
+                                ref="updaterLog"
                                 :headers="headers"
                                 :items="messages"
                                 item-key="date"
@@ -52,7 +53,6 @@
                                 hide-default-header
                                 disable-pagination
                                 class="updaterLog"
-                                ref="updaterLog"
                                 :custom-sort="customSort"
                                 sort-by="date"
                                 :sort-desc="true"
@@ -77,7 +77,7 @@
                 </v-row>
                 <v-row>
                     <v-col class="text-center pt-5">
-                        <v-btn text @click="close" :disabled="!complete" color="primary">
+                        <v-btn text :disabled="!complete" color="primary" @click="close">
                             {{ $t('App.UpdateDialog.Close') }}
                         </v-btn>
                     </v-col>

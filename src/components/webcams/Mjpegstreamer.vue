@@ -17,7 +17,7 @@
 <template>
     <div v-observe-visibility="visibilityChanged" style="position: relative">
         <img ref="image" class="webcamImage" :style="webcamStyle" />
-        <span class="webcamFpsOutput" v-if="showFps">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
+        <span v-if="showFps" class="webcamFpsOutput">{{ $t('Panels.WebcamPanel.FPS') }}: {{ fpsOutput }}</span>
     </div>
 </template>
 
