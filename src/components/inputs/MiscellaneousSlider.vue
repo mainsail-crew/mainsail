@@ -3,14 +3,35 @@
     height: auto;
 }
 
+._lock-button {
+    margin-left: -6px;
+}
+
 ._error-message {
     color: #ff5252;
     font-size: 12px;
+    padding: 0 16px 2px 0;
+}
+
+.fade-enter-active {
+    animation: slide-in 0.15s reverse;
+    opacity: 1;
+}
+
+.fade-leave-active {
+    animation: slide-in 0.15s;
+    opacity: 1;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateY(-5px);
+    }
 }
 
 ._slider-input {
     font-size: 0.875rem;
-    max-width: 4.5rem;
+    max-width: 5.4rem;
     margin-left: 12px;
 }
 
@@ -28,16 +49,6 @@
         <v-row>
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
-                    <v-btn
-                        v-if="lockSliders && this.isTouchDevice && pwm"
-                        @click="isLocked = !isLocked"
-                        plain
-                        small
-                        icon>
-                        <v-icon small :color="isLocked ? 'red' : ''">
-                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
-                        </v-icon>
-                    </v-btn>
                     <v-icon
                         small
                         :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')"
@@ -55,12 +66,42 @@
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
                         {{ value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
                     </v-icon>
-                    <!-- display error above input field instead below -->
-                    <div v-if="inputErrors().length > 0 && controllable && pwm" class="_error-message">
+                    <v-text-field
+                        v-if="controllable && pwm"
+                        class="_slider-input pt-1"
+                        v-model="numInput"
+                        @blur="numInput = Math.round(parseFloat(value) * 100)"
+                        @focus="$event.target.select()"
+                        @keydown="checkInvalidChars"
+                        @keyup.enter="submitInput"
+                        :error="invalidInput()"
+                        suffix="%"
+                        type="number"
+                        hide-spin-buttons
+                        hide-details
+                        outlined
+                        dense></v-text-field>
+                </v-subheader>
+                <!-- display errors -->
+                <transition name="fade">
+                    <div
+                        v-show="inputErrors().length > 0 && controllable && pwm"
+                        class="_error-message d-flex justify-end">
                         {{ inputErrors()[0] }}
                     </div>
-                </v-subheader>
+                </transition>
                 <v-card-text class="py-0 pb-2 d-flex align-center" v-if="controllable && pwm">
+                    <v-btn
+                        class="_lock-button"
+                        v-if="lockSliders && this.isTouchDevice && pwm"
+                        @click="isLocked = !isLocked"
+                        plain
+                        small
+                        icon>
+                        <v-icon small :color="isLocked ? 'red' : ''">
+                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                        </v-icon>
+                    </v-btn>
                     <v-slider
                         v-model="value"
                         v-touch="{ start: resetLockTimer }"
@@ -79,20 +120,6 @@
                             <v-icon @click="increment" :disabled="isLocked || value >= max">mdi-plus</v-icon>
                         </template>
                     </v-slider>
-                    <v-text-field
-                        v-if="controllable && pwm"
-                        class="_slider-input"
-                        v-model="numInput"
-                        @blur="numInput = Math.round(parseFloat(value) * 100)"
-                        @keydown="checkInvalidChars"
-                        @keyup.enter="submitInput"
-                        :error="invalidInput()"
-                        suffix="%"
-                        type="number"
-                        hide-spin-buttons
-                        hide-details
-                        outlined
-                        dense></v-text-field>
                 </v-card-text>
             </v-col>
         </v-row>
@@ -172,7 +199,6 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         }
 
         this.startLockTimer()
-        console.log(l_value)
     }
 
     switchOutputPin(): void {
