@@ -2,7 +2,7 @@
 
 <template>
     <div>
-        <v-card flat v-if="!form.bool">
+        <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <settings-row :title="$t('Settings.ConsoleTab.Direction')">
                     <v-select
@@ -27,12 +27,12 @@
                 <settings-row :title="$t('Settings.ConsoleTab.Height')">
                     <v-slider
                         v-model="consoleHeightTmp"
-                        @change="updateConsoleHeight"
                         hide-details
                         :min="200"
                         :max="900"
                         :step="10"
-                        :label="consoleHeightTmp + 'px'"></v-slider>
+                        :label="consoleHeightTmp + 'px'"
+                        @change="updateConsoleHeight"></v-slider>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.ConsoleTab.HideTemperatures')" :dynamic-slot-width="true">
@@ -45,8 +45,8 @@
                     </settings-row>
                 </template>
                 <v-divider class="my-2"></v-divider>
-                <div v-for="(filter, index) in consoleFilters" v-bind:key="index">
-                    <v-divider class="my-2" v-if="index"></v-divider>
+                <div v-for="(filter, index) in consoleFilters" :key="index">
+                    <v-divider v-if="index" class="my-2"></v-divider>
                     <settings-row :title="filter.name">
                         <v-btn
                             small
@@ -63,9 +63,9 @@
                         <v-btn
                             small
                             outlined
-                            @click="deleteFilter(filter.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                            @click="deleteFilter(filter.id)">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -75,7 +75,7 @@
                 <v-btn text color="primary" @click="createFilter">{{ $t('Settings.ConsoleTab.AddFilter') }}</v-btn>
             </v-card-actions>
         </v-card>
-        <v-card flat v-else>
+        <v-card v-else flat>
             <v-form v-model="form.valid" @submit.prevent="saveFilter">
                 <v-card-title>
                     {{
@@ -95,7 +95,7 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ConsoleTab.Regex')">
-                        <v-textarea outlined v-model="form.regex" hide-details="auto"></v-textarea>
+                        <v-textarea v-model="form.regex" outlined hide-details="auto"></v-textarea>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">

@@ -64,33 +64,33 @@
                             style="max-width: 300px"></v-text-field>
                         <v-spacer></v-spacer>
                         <input
-                            type="file"
                             ref="fileUpload"
+                            type="file"
                             :accept="validGcodeExtensions.join(', ')"
                             style="display: none"
                             multiple
                             @change="uploadFile" />
                         <v-btn
-                            @click="clickUploadButton"
                             :title="$t('Files.UploadNewGcode')"
                             class="primary--text px-2 minwidth-0 ml-3"
-                            :loading="loadings.includes('gcodeUpload')">
+                            :loading="loadings.includes('gcodeUpload')"
+                            @click="clickUploadButton">
                             <v-icon>mdi-upload</v-icon>
                         </v-btn>
                         <v-btn
-                            @click="createDirectory"
                             :title="$t('Files.CreateNewDirectory')"
-                            class="px-2 minwidth-0 ml-3">
+                            class="px-2 minwidth-0 ml-3"
+                            @click="createDirectory">
                             <v-icon>mdi-folder-plus</v-icon>
                         </v-btn>
                         <v-btn
-                            @click="refreshFileList"
                             :title="$t('Files.RefreshCurrentDirectory')"
-                            class="px-2 minwidth-0 ml-3">
+                            class="px-2 minwidth-0 ml-3"
+                            @click="refreshFileList">
                             <v-icon>mdi-refresh</v-icon>
                         </v-btn>
                         <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
                                     <v-icon>mdi-cog</v-icon>
                                 </v-btn>
@@ -98,29 +98,26 @@
                             <v-list>
                                 <v-list-item class="minHeight36">
                                     <v-checkbox
+                                        v-model="showHiddenFiles"
                                         class="mt-0"
                                         hide-details
-                                        v-model="showHiddenFiles"
                                         :label="$t('Files.HiddenFiles')"></v-checkbox>
                                 </v-list-item>
                                 <v-list-item class="minHeight36">
                                     <v-checkbox
+                                        v-model="showPrintedFiles"
                                         class="mt-0"
                                         hide-details
-                                        v-model="showPrintedFiles"
                                         :label="$t('Files.PrintedFiles')"></v-checkbox>
                                 </v-list-item>
                                 <v-divider></v-divider>
-                                <v-list-item
-                                    class="minHeight36"
-                                    v-for="header of configHeaders"
-                                    v-bind:key="header.key">
+                                <v-list-item v-for="header of configHeaders" :key="header.key" class="minHeight36">
                                     <v-checkbox
+                                        v-model="header.visible"
                                         class="mt-0"
                                         hide-details
-                                        v-model="header.visible"
-                                        @change="changeMetadataVisible(header.value)"
-                                        :label="header.text"></v-checkbox>
+                                        :label="header.text"
+                                        @change="changeMetadataVisible(header.value)"></v-checkbox>
                                 </v-list-item>
                             </v-list>
                         </v-menu>
@@ -132,23 +129,23 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ this.currentPath !== 'gcodes' ? '/' + this.currentPath.substring(7) : '/' }}
+                            {{ currentPath !== 'gcodes' ? '/' + currentPath.substring(7) : '/' }}
                         </span>
                         <v-spacer></v-spacer>
-                        <template v-if="this.disk_usage !== null">
+                        <template v-if="disk_usage !== null">
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <b>{{ $t('Files.FreeDisk') }}:</b>
                                         {{ formatFilesize(disk_usage.free) }}
                                     </span>
                                 </template>
                                 <span>
-                                    {{ $t('Files.Used') }}: {{ formatFilesize(this.disk_usage.used) }}
+                                    {{ $t('Files.Used') }}: {{ formatFilesize(disk_usage.used) }}
                                     <br />
-                                    {{ $t('Files.Free') }}: {{ formatFilesize(this.disk_usage.free) }}
+                                    {{ $t('Files.Free') }}: {{ formatFilesize(disk_usage.free) }}
                                     <br />
-                                    {{ $t('Files.Total') }}: {{ formatFilesize(this.disk_usage.total) }}
+                                    {{ $t('Files.Total') }}: {{ formatFilesize(disk_usage.total) }}
                                 </span>
                             </v-tooltip>
                         </template>
@@ -175,14 +172,14 @@
                 mobile-breakpoint="0"
                 @current-items="refreshMetadata">
                 <template slot="items">
-                    <td v-for="header in filteredHeaders" v-bind:key="header.value">{{ header.text }}</td>
+                    <td v-for="header in filteredHeaders" :key="header.value">{{ header.text }}</td>
                 </template>
 
                 <template #no-data>
                     <div class="text-center">{{ $t('Files.Empty') }}</div>
                 </template>
 
-                <template slot="body.prepend" v-if="currentPath !== 'gcodes'">
+                <template v-if="currentPath !== 'gcodes'" slot="body.prepend">
                     <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack"
@@ -198,16 +195,16 @@
                     <tr
                         :key="`${index} ${item.filename}`"
                         v-longpress:600="(e) => showContextMenu(e, item)"
-                        @contextmenu="showContextMenu($event, item)"
-                        @click="clickRow(item)"
                         class="file-list-cursor user-select-none"
                         draggable="true"
+                        :data-name="item.filename"
+                        @contextmenu="showContextMenu($event, item)"
+                        @click="clickRow(item)"
                         @drag="dragFile($event, item)"
                         @dragend="dragendFile($event)"
                         @dragover="dragOverFilelist($event, item)"
                         @dragleave="dragLeaveFilelist"
-                        @drop.prevent.stop="dragDropFilelist($event, item)"
-                        :data-name="item.filename">
+                        @drop.prevent.stop="dragDropFilelist($event, item)">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
                                 <v-icon>mdi-folder</v-icon>
@@ -218,7 +215,7 @@
                                         v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
                                         top
                                         content-class="tooltip__content-opacity1">
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img
                                                     slot="image"
@@ -254,8 +251,8 @@
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-center">
-                            <v-tooltip top v-if="getJobStatus(item)">
-                                <template v-slot:activator="{ on, attrs }">
+                            <v-tooltip v-if="getJobStatus(item)" top>
+                                <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
                                         <v-icon small :color="getStatusColor(getJobStatus(item))">
                                             {{ getStatusIcon(getJobStatus(item)) }}
@@ -266,56 +263,56 @@
                             </v-tooltip>
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'size').visible">
+                            v-if="headers.find((header) => header.value === 'size').visible"
+                            class="text-no-wrap text-right">
                             {{ item.isDirectory ? '--' : formatFilesize(item.size) }}
                         </td>
-                        <td class="text-right" v-if="headers.find((header) => header.value === 'modified').visible">
+                        <td v-if="headers.find((header) => header.value === 'modified').visible" class="text-right">
                             {{ formatDate(item.modified) }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'object_height').visible">
+                            v-if="headers.find((header) => header.value === 'object_height').visible"
+                            class="text-no-wrap text-right">
                             {{ item.object_height ? item.object_height.toFixed(2) + ' mm' : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'layer_height').visible">
+                            v-if="headers.find((header) => header.value === 'layer_height').visible"
+                            class="text-no-wrap text-right">
                             {{ item.layer_height ? item.layer_height.toFixed(2) + ' mm' : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'nozzle_diameter').visible">
+                            v-if="headers.find((header) => header.value === 'nozzle_diameter').visible"
+                            class="text-no-wrap text-right">
                             {{ item.nozzle_diameter ? item.nozzle_diameter.toFixed(2) + ' mm' : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'filament_name').visible">
+                            v-if="headers.find((header) => header.value === 'filament_name').visible"
+                            class="text-no-wrap text-right">
                             {{ item.filament_name ? item.filament_name : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'filament_type').visible">
+                            v-if="headers.find((header) => header.value === 'filament_type').visible"
+                            class="text-no-wrap text-right">
                             {{ item.filament_type ? item.filament_type : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'filament_total').visible">
+                            v-if="headers.find((header) => header.value === 'filament_total').visible"
+                            class="text-no-wrap text-right">
                             {{ item.filament_total ? item.filament_total.toFixed() + ' mm' : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'filament_weight_total').visible">
+                            v-if="headers.find((header) => header.value === 'filament_weight_total').visible"
+                            class="text-no-wrap text-right">
                             {{ item.filament_weight_total ? item.filament_weight_total.toFixed(2) + ' g' : '--' }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'estimated_time').visible">
+                            v-if="headers.find((header) => header.value === 'estimated_time').visible"
+                            class="text-no-wrap text-right">
                             {{ formatPrintTime(item.estimated_time) }}
                         </td>
                         <td
-                            class="text-no-wrap text-right"
-                            v-if="headers.find((header) => header.value === 'slicer').visible">
+                            v-if="headers.find((header) => header.value === 'slicer').visible"
+                            class="text-no-wrap text-right">
                             {{ item.slicer ? item.slicer : '--' }}
                             <br />
                             <small v-if="item.slicer_version">{{ item.slicer_version }}</small>
@@ -329,7 +326,7 @@
                 <div class="textnode">{{ $t('Files.DropFilesToAddGcode') }}</div>
             </div>
         </panel>
-        <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
             <span v-if="uploadSnackbar.max > 1" class="mr-1">
                 ({{ uploadSnackbar.number }}/{{ uploadSnackbar.max }})
             </span>
@@ -338,8 +335,8 @@
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
+            <template #action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
             </template>
@@ -347,8 +344,8 @@
         <v-dialog v-model="dialogPrintFile.show" :max-width="getThumbnailWidth(dialogPrintFile.item)">
             <v-card>
                 <v-img
-                    contain
                     v-if="getBigThumbnail(dialogPrintFile.item)"
+                    contain
                     :src="getBigThumbnail(dialogPrintFile.item)"></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
                 <v-card-text class="pb-0">
@@ -369,8 +366,8 @@
                     <v-btn
                         color="primary"
                         text
-                        @click="startPrint(dialogPrintFile.item.filename)"
-                        :disabled="printerIsPrinting || !klipperReadyForGui">
+                        :disabled="printerIsPrinting || !klipperReadyForGui"
+                        @click="startPrint(dialogPrintFile.item.filename)">
                         {{ $t('Files.StartPrint') }}
                     </v-btn>
                 </v-card-actions>
@@ -379,59 +376,59 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item
-                    @click="clickRow(contextMenu.item, true)"
+                    v-if="!contextMenu.item.isDirectory"
                     :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)"
-                    v-if="!contextMenu.item.isDirectory">
+                    @click="clickRow(contextMenu.item, true)">
                     <v-icon class="mr-1">mdi-play</v-icon>
                     {{ $t('Files.PrintStart') }}
                 </v-list-item>
                 <v-list-item
-                    @click="addToQueue(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
-                    :disabled="!isGcodeFile(contextMenu.item)">
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="addToQueue(contextMenu.item)">
                     <v-icon class="mr-1">mdi-playlist-plus</v-icon>
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
-                    @click="preheat"
                     v-if="
                         'first_layer_extr_temp' in contextMenu.item &&
                         contextMenu.item.first_layer_extr_temp > 0 &&
                         'first_layer_bed_temp' in contextMenu.item &&
                         contextMenu.item.first_layer_bed_temp > 0
                     "
-                    :disabled="['error', 'printing', 'paused'].includes(printer_state)">
+                    :disabled="['error', 'printing', 'paused'].includes(printer_state)"
+                    @click="preheat">
                     <v-icon class="mr-1">mdi-fire</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
                 <v-list-item
-                    @click="view3D(contextMenu.item)"
                     v-if="!contextMenu.item.isDirectory"
-                    :disabled="!isGcodeFile(contextMenu.item)">
+                    :disabled="!isGcodeFile(contextMenu.item)"
+                    @click="view3D(contextMenu.item)">
                     <v-icon class="mr-1">mdi-video-3d</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
-                <v-list-item @click="downloadFile" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
                     <v-icon class="mr-1">mdi-cloud-download</v-icon>
                     {{ $t('Files.Download') }}
                 </v-list-item>
-                <v-list-item @click="renameDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
+                <v-list-item v-if="contextMenu.item.isDirectory" @click="renameDirectory(contextMenu.item)">
                     <v-icon class="mr-1">mdi-rename-box</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
-                <v-list-item @click="editFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="editFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-pencil</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
-                <v-list-item @click="renameFile(contextMenu.item)" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
                     <v-icon class="mr-1">mdi-rename-box</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
-                <v-list-item @click="removeFile" v-if="!contextMenu.item.isDirectory">
+                <v-list-item v-if="!contextMenu.item.isDirectory" @click="removeFile">
                     <v-icon class="mr-1">mdi-delete</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
-                <v-list-item @click="deleteDirectory(contextMenu.item)" v-if="contextMenu.item.isDirectory">
+                <v-list-item v-if="contextMenu.item.isDirectory" @click="deleteDirectory(contextMenu.item)">
                     <v-icon class="mr-1">mdi-delete</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
@@ -442,19 +439,19 @@
                 :title="$t('Files.NewDirectory')"
                 card-class="gcode-files-new-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="dialogCreateDirectory.name"
                         ref="inputFieldCreateDirectory"
-                        @keypress.enter="createDirectoryAction"
+                        v-model="dialogCreateDirectory.name"
                         :label="$t('Files.Name')"
                         :rules="input_rules"
-                        required></v-text-field>
+                        required
+                        @keypress.enter="createDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -465,16 +462,16 @@
         </v-dialog>
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="dialogRenameFile.newName"
                         ref="inputFieldRenameFile"
-                        @keyup.enter="renameFileAction"
+                        v-model="dialogRenameFile.newName"
                         :label="$t('Files.Name')"
-                        required></v-text-field>
+                        required
+                        @keyup.enter="renameFileAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -488,18 +485,18 @@
                 :title="$t('Files.RenameDirectory')"
                 card-class="gcode-files-rename-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="dialogRenameDirectory.newName"
                         ref="inputFieldRenameDirectory"
+                        v-model="dialogRenameDirectory.newName"
                         :label="$t('Files.Name')"
-                        @keyup.enter="renameDirectoryAction"
-                        required></v-text-field>
+                        required
+                        @keyup.enter="renameDirectoryAction"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -513,7 +510,7 @@
                 :title="$t('Files.DeleteDirectory')"
                 card-class="gcode-files-delete-directory-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
                         <v-icon>mdi-close-thick</v-icon>
                     </v-btn>

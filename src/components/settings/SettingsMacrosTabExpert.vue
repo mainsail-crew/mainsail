@@ -4,8 +4,8 @@
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.MacrosTab.Macrogroups') }}</h3>
                 <template v-if="groups.length">
-                    <div v-for="(group, index) in groups" v-bind:key="index">
-                        <v-divider class="my-2" v-if="index"></v-divider>
+                    <div v-for="(group, index) in groups" :key="index">
+                        <v-divider v-if="index" class="my-2"></v-divider>
                         <settings-row
                             :title="group.name !== '' ? group.name : '<' + $t('Settings.MacrosTab.UnknownGroup') + '>'"
                             :sub-title="
@@ -13,7 +13,7 @@
                                     count: 'macros' in group ? group.macros.length : 0,
                                 })
                             "
-                            :dynamicSlotWidth="true">
+                            :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
                                 <v-icon left small>mdi-pencil</v-icon>
                                 {{ $t('Settings.Edit') }}
@@ -21,9 +21,9 @@
                             <v-btn
                                 small
                                 outlined
-                                @click="deleteMacrogroup(group.id)"
                                 class="ml-3 minwidth-0 px-2"
-                                color="error">
+                                color="error"
+                                @click="deleteMacrogroup(group.id)">
                                 <v-icon small>mdi-delete</v-icon>
                             </v-btn>
                         </settings-row>
@@ -58,23 +58,23 @@
                     <v-select
                         v-model="editGroup.color"
                         :items="groupColors"
-                        @change="updateGroupOptionColor"
                         outlined
                         dense
                         hide-details
-                        attach></v-select>
+                        attach
+                        @change="updateGroupOptionColor"></v-select>
                 </settings-row>
                 <template v-if="editGroup.color === 'custom'">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.MacrosTab.CustomColor')">
                         <v-menu bottom left offset-y :close-on-content-click="false">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-btn
                                     v-bind="attrs"
-                                    v-on="on"
                                     :color="editGroup.colorCustom"
                                     class="minwidth-0 px-5"
-                                    small></v-btn>
+                                    small
+                                    v-on="on"></v-btn>
                             </template>
                             <v-color-picker
                                 :value="editGroup.colorCustom"
@@ -87,45 +87,45 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.MacrosTab.Status')">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
                                 v-bind="attrs"
-                                v-on="on"
-                                @click="updateGroupOptionShowInStandby(!editGroup.showInStandby)"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInStandby ? '' : 'secondary'">
+                                :color="editGroup.showInStandby ? '' : 'secondary'"
+                                v-on="on"
+                                @click="updateGroupOptionShowInStandby(!editGroup.showInStandby)">
                                 <v-icon small>mdi-sleep</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
                                 v-bind="attrs"
-                                v-on="on"
-                                @click="updateGroupOptionShowInPause(!editGroup.showInPause)"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInPause ? '' : 'secondary'">
+                                :color="editGroup.showInPause ? '' : 'secondary'"
+                                v-on="on"
+                                @click="updateGroupOptionShowInPause(!editGroup.showInPause)">
                                 <v-icon small>mdi-pause</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
                     </v-tooltip>
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 small
                                 outlined
                                 v-bind="attrs"
-                                v-on="on"
-                                @click="updateGroupOptionShowInPrinting(!editGroup.showInPrinting)"
                                 class="ml-3 minwidth-0 px-2"
-                                :color="editGroup.showInPrinting ? '' : 'secondary'">
+                                :color="editGroup.showInPrinting ? '' : 'secondary'"
+                                v-on="on"
+                                @click="updateGroupOptionShowInPrinting(!editGroup.showInPrinting)">
                                 <v-icon small>mdi-printer-3d-nozzle</v-icon>
                             </v-btn>
                         </template>
@@ -142,28 +142,28 @@
                         group="macros"
                         @change="updateMacroOrder">
                         <template v-for="(macro, index) in editGroupMacros">
-                            <div v-bind:key="macro.name">
+                            <div :key="macro.name">
                                 <v-row>
                                     <v-col class="col-auto pr-0 d-flex">
                                         <v-icon class="handle">mdi-arrow-up-down</v-icon>
                                     </v-col>
                                     <v-col>
                                         <settings-row
+                                            :key="'groupMacro_macro_' + index"
                                             :title="macro.name"
                                             :sub-title="getMacroDescription(macro.name)"
-                                            v-bind:key="'groupMacro_macro_' + index"
-                                            :dynamicSlotWidth="true">
+                                            :dynamic-slot-width="true">
                                             <template v-if="existsMacro(macro.name)">
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
                                                             v-bind="attrs"
-                                                            v-on="on"
-                                                            @click="changeColorMacroFromGroup(macro)"
                                                             class="ml-3 minwidth-0 px-2"
-                                                            :color="macro.color">
+                                                            :color="macro.color"
+                                                            v-on="on"
+                                                            @click="changeColorMacroFromGroup(macro)">
                                                             <v-icon small left>mdi-palette</v-icon>
                                                             {{ macro.color }}
                                                         </v-btn>
@@ -171,11 +171,13 @@
                                                     <span>{{ $t('Settings.MacrosTab.ChangeMacroColor') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
                                                             v-bind="attrs"
+                                                            class="ml-3 minwidth-0 px-2"
+                                                            :color="macro.showInStandby ? '' : 'secondary'"
                                                             v-on="on"
                                                             @click="
                                                                 updateMacroFromGroup(
@@ -183,20 +185,20 @@
                                                                     'showInStandby',
                                                                     !macro.showInStandby
                                                                 )
-                                                            "
-                                                            class="ml-3 minwidth-0 px-2"
-                                                            :color="macro.showInStandby ? '' : 'secondary'">
+                                                            ">
                                                             <v-icon small>mdi-sleep</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
                                                             v-bind="attrs"
+                                                            class="ml-3 minwidth-0 px-2"
+                                                            :color="macro.showInPause ? '' : 'secondary'"
                                                             v-on="on"
                                                             @click="
                                                                 updateMacroFromGroup(
@@ -204,20 +206,20 @@
                                                                     'showInPause',
                                                                     !macro.showInPause
                                                                 )
-                                                            "
-                                                            class="ml-3 minwidth-0 px-2"
-                                                            :color="macro.showInPause ? '' : 'secondary'">
+                                                            ">
                                                             <v-icon small>mdi-pause</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
                                                 </v-tooltip>
                                                 <v-tooltip top>
-                                                    <template v-slot:activator="{ on, attrs }">
+                                                    <template #activator="{ on, attrs }">
                                                         <v-btn
                                                             small
                                                             outlined
                                                             v-bind="attrs"
+                                                            class="ml-3 minwidth-0 px-2"
+                                                            :color="macro.showInPrinting ? '' : 'secondary'"
                                                             v-on="on"
                                                             @click="
                                                                 updateMacroFromGroup(
@@ -225,9 +227,7 @@
                                                                     'showInPrinting',
                                                                     !macro.showInPrinting
                                                                 )
-                                                            "
-                                                            class="ml-3 minwidth-0 px-2"
-                                                            :color="macro.showInPrinting ? '' : 'secondary'">
+                                                            ">
                                                             <v-icon small>mdi-printer-3d-nozzle</v-icon>
                                                         </v-btn>
                                                     </template>
@@ -235,15 +235,15 @@
                                                 </v-tooltip>
                                             </template>
                                             <v-tooltip top>
-                                                <template v-slot:activator="{ on, attrs }">
+                                                <template #activator="{ on, attrs }">
                                                     <v-btn
                                                         small
                                                         outlined
                                                         v-bind="attrs"
-                                                        v-on="on"
-                                                        @click="removeMacroFromGroup(macro)"
                                                         class="ml-3 minwidth-0 px-2"
-                                                        color="error">
+                                                        color="error"
+                                                        v-on="on"
+                                                        @click="removeMacroFromGroup(macro)">
                                                         <v-icon small>mdi-delete</v-icon>
                                                     </v-btn>
                                                 </template>
@@ -267,12 +267,12 @@
                 <h3 class="text-h5 mt-6 mb-3">{{ $t('Settings.MacrosTab.AvailableMacros') }}</h3>
                 <template v-if="availableMacros.length">
                     <template v-for="(macro, index) in availableMacros">
-                        <v-divider class="my-2" v-if="index" v-bind:key="'availableMacro_deliver_' + index"></v-divider>
+                        <v-divider v-if="index" :key="'availableMacro_deliver_' + index" class="my-2"></v-divider>
                         <settings-row
+                            :key="'availableMacro_macro_' + index"
                             :title="macro.name"
                             :sub-title="macro.description"
-                            v-bind:key="'availableMacro_macro_' + index"
-                            :dynamicSlotWidth="true">
+                            :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="addMacroToGroup(macro)">
                                 <v-icon left small>mdi-plus</v-icon>
                                 {{ $t('Settings.MacrosTab.Add') }}

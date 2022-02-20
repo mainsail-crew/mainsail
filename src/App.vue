@@ -32,7 +32,7 @@
 
         <v-main id="content" :style="mainStyle">
             <overlay-scrollbars class="main-content-scrollbar">
-                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <router-view></router-view>
                 </v-container>
             </overlay-scrollbars>

@@ -35,13 +35,13 @@
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
                     <v-btn
                         v-for="amount in feedamountsSorted"
-                        v-bind:key="amount"
-                        @click="setFeedAmount(amount)"
+                        :key="amount"
                         dense
                         :class="
                             (amount === currentFeedAmount ? 'v-btn--active' : '') +
                             ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'
-                        ">
+                        "
+                        @click="setFeedAmount(amount)">
                         {{ amount }}
                     </v-btn>
                 </v-btn-toggle>
@@ -51,17 +51,17 @@
                     {{ $t('Panels.ControlPanel.FeedrateIn') }} [mm/s]
                 </span>
                 <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
-                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate" color="panel">
-                        <template v-slot:activator="{ on, attrs }">
+                    <v-tooltip v-for="rate in feedratesSorted" :key="rate" top color="panel">
+                        <template #activator="{ on, attrs }">
                             <v-btn
                                 v-bind="attrs"
-                                v-on="on"
-                                @click="setFeedrate(rate)"
                                 dense
                                 :class="
                                     (rate === currentFeedRate ? 'v-btn--active' : '') +
                                     ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'
-                                ">
+                                "
+                                v-on="on"
+                                @click="setFeedrate(rate)">
                                 {{ rate }}
                             </v-btn>
                         </template>
@@ -75,14 +75,14 @@
         <v-row class="">
             <v-col class="col text-center pt-0">
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
-                        <div v-on="on" class="d-inline-block">
+                    <template #activator="{ on }">
+                        <div class="d-inline-block" v-on="on">
                             <v-btn
                                 small
-                                @click="sendRetract()"
                                 class="mx-3"
                                 :loading="loadings.includes('btnRetract')"
-                                :disabled="!boolExtrudePossible">
+                                :disabled="!boolExtrudePossible"
+                                @click="sendRetract()">
                                 <v-icon small class="mr-1">mdi-arrow-up-bold</v-icon>
                                 {{ $t('Panels.ControlPanel.Retract') }}
                             </v-btn>
@@ -91,14 +91,14 @@
                     <span>{{ $t('Panels.ControlPanel.HotendTooCold') }} {{ minExtrudeTemp }} °C</span>
                 </v-tooltip>
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
-                        <div v-on="on" class="d-inline-block">
+                    <template #activator="{ on }">
+                        <div class="d-inline-block" v-on="on">
                             <v-btn
                                 small
-                                @click="sendDetract()"
                                 class="mx-3"
                                 :loading="loadings.includes('btnDetract')"
-                                :disabled="!boolExtrudePossible">
+                                :disabled="!boolExtrudePossible"
+                                @click="sendDetract()">
                                 <v-icon small class="mr-1">mdi-arrow-down-bold</v-icon>
                                 {{ $t('Panels.ControlPanel.Extrude') }}
                             </v-btn>

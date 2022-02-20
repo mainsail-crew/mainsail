@@ -1,10 +1,10 @@
 <template>
     <e-chart
         ref="historyPrinttimeAvg"
+        v-observe-visibility="visibilityChanged"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 175px; width: 100%"
-        v-observe-visibility="visibilityChanged"></e-chart>
+        style="height: 175px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">

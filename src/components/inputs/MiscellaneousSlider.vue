@@ -50,9 +50,9 @@
             <v-col :class="pwm ? 'pb-1' : 'pb-3'">
                 <v-subheader class="_fan-slider-subheader">
                     <v-icon
+                        v-if="type !== 'output_pin'"
                         small
-                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')"
-                        v-if="type !== 'output_pin'">
+                        :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')">
                         mdi-fan
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
@@ -60,7 +60,7 @@
                     <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">
                         {{ Math.round(rpm) }} RPM
                     </small>
-                    <span class="font-weight-bold" v-if="!controllable">
+                    <span v-if="!controllable" class="font-weight-bold">
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
@@ -90,10 +90,10 @@
                         {{ inputErrors()[0] }}
                     </div>
                 </transition>
-                <v-card-text class="py-0 pb-2 d-flex align-center" v-if="controllable && pwm">
+                <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
                     <v-btn
                         class="_lock-button"
-                        v-if="lockSliders && this.isTouchDevice && pwm"
+                        v-if="lockSliders && isTouchDevice && pwm"
                         @click="isLocked = !isLocked"
                         plain
                         small
@@ -110,14 +110,14 @@
                         :max="1.0"
                         :step="0.01"
                         :color="value < off_below && value > 0 ? 'red' : undefined"
-                        @change="changeSlider"
-                        hide-details>
-                        <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="isLocked || value <= min">mdi-minus</v-icon>
+                        hide-details
+                        @change="changeSlider">
+                        <template #prepend>
+                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
                         </template>
 
-                        <template v-slot:append>
-                            <v-icon @click="increment" :disabled="isLocked || value >= max">mdi-plus</v-icon>
+                        <template #append>
+                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>

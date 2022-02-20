@@ -113,14 +113,14 @@
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
-                        @change="changeSlider"
-                        hide-details>
-                        <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="isLocked || value <= min">mdi-minus</v-icon>
+                        hide-details
+                        @change="changeSlider">
+                        <template #prepend>
+                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
                         </template>
 
-                        <template v-slot:append>
-                            <v-icon @click="increment" :disabled="isLocked || value >= processedMax">mdi-plus</v-icon>
+                        <template #append>
+                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>

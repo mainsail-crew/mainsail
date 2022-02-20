@@ -43,10 +43,10 @@
 </style>
 <template>
     <v-navigation-drawer
+        :key="navigationStyle"
         v-model="naviDrawer"
         :src="sidebarBackground"
         :mini-variant="navigationStyle === 'iconsOnly'"
-        :key="navigationStyle"
         :width="navigationWidth"
         :temporary="boolNaviTemp"
         clipped
@@ -56,6 +56,7 @@
             <v-list class="pr-0 pt-0 ml-0">
                 <v-list-item-group active-class="active-nav-item">
                     <v-list-item
+                        v-if="isMobile"
                         router
                         to="/"
                         :class="
@@ -63,8 +64,7 @@
                             (navigationStyle === 'iconsOnly' ? 'pa-0 justify-center' : '')
                         "
                         :style="'height: ' + topbarHeight + 'px'"
-                        :ripple="false"
-                        v-if="isMobile">
+                        :ripple="false">
                         <template v-if="sidebarLogo">
                             <img :src="sidebarLogo" :style="logoCssVars" class="nav-logo" alt="Logo" />
                         </template>
@@ -81,7 +81,7 @@
                     </v-list-item>
                     <template v-if="countPrinters">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-list-item
                                     router
                                     to="/allPrinters"
@@ -104,7 +104,7 @@
                     </template>
                     <div v-for="(category, index) in naviPoints" :key="index">
                         <v-tooltip right :open-delay="500" :disabled="navigationStyle !== 'iconsOnly'">
-                            <template v-slot:activator="{ on, attrs }">
+                            <template #activator="{ on, attrs }">
                                 <v-list-item
                                     router
                                     :to="category.path"
@@ -127,7 +127,7 @@
                 </v-list-item-group>
             </v-list>
         </overlay-scrollbars>
-        <template v-slot:append>
+        <template #append>
             <v-list-item class="small-list-item mb-2">
                 <v-list-item-icon class="menu-item-icon">
                     <about-modal></about-modal>
