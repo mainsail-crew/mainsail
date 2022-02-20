@@ -15,6 +15,31 @@
 .currentMeshName:hover .v-icon {
     opacity: 1;
 }
+
+.rowProfile {
+}
+
+.rowProfile .colActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.rowProfile .colName,
+.rowProfile .colVariance {
+    line-height: 48px;
+}
+
+.rowProfile .colName span.current {
+    font-weight: bold;
+    color: var(--v-primary-base);
+}
+
+.rowProfile .colActions .v-btn {
+    height: 48px;
+    width: 48px;
+}
 </style>
 
 <template>
@@ -111,13 +136,13 @@
                             </v-row>
                             <v-row>
                                 <v-col
-                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start">
+                                    class="col-12 col-sm-auto pt-0 pb-0 pl-lg-6 d-flex justify-center justify-sm-start">
                                     <v-switch
                                         v-model="scaleVisualMap"
-                                        :label="$t('Heightmap.Scale')"
+                                        :label="$t('Heightmap.ScaleGradient')"
                                         class="mt-0 ml-5"></v-switch>
                                 </v-col>
-                                <v-col class="d-flex justify-center pt-0 pb-6 pb-sm-3 pr-sm-16">
+                                <v-col class="d-flex justify-center pt-0 pb-6 pb-lg-3">
                                     <v-checkbox
                                         v-model="showProbed"
                                         :label="$t('Heightmap.Probed')"
@@ -133,22 +158,21 @@
                                         :label="$t('Heightmap.Flat')"
                                         hide-details
                                         class="mx-3 mt-0"></v-checkbox>
+                                    <v-checkbox
+                                        v-model="wireframe"
+                                        :label="$t('Heightmap.Wireframe')"
+                                        hide-details
+                                        class="mx-3 mt-0"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text class="pt-0 pb-3">
                             <v-row>
-                                <v-col class="col-4">
-                                    <v-checkbox
-                                        v-model="wireframe"
-                                        :label="$t('Heightmap.Wireframe')"
-                                        hide-details></v-checkbox>
-                                </v-col>
-                                <v-col class="col-8">
+                                <v-col>
                                     <v-slider
                                         v-model="heightmapScale"
-                                        :label="$t('Heightmap.Scale')"
+                                        :label="$t('Heightmap.ScaleZMax')"
                                         :min="heightmapRangeLimit[0]"
                                         :max="heightmapRangeLimit[1]"
                                         :step="0.1"
@@ -163,7 +187,7 @@
             </v-col>
             <v-col class="col-12 col-md-4">
                 <panel
-                    v-if="meshLoaded"
+                    v-if="currentProfile"
                     :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
                     icon="mdi-information"
@@ -175,15 +199,15 @@
                             <v-col class="text-right">
                                 <span class="currentMeshName font-weight-bold" @click="openRenameProfile()">
                                     <v-icon left small color="primary">mdi-pencil</v-icon>
-                                    {{ bed_mesh.profile_name }}
+                                    {{ currentProfileName }}
                                 </span>
                             </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
-                        <v-row class="px-3">
+                        <v-row v-if="'data' in currentProfile" class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Size') }}</v-col>
                             <v-col class="text-right">
-                                {{ bed_mesh.probed_matrix[0].length }}x{{ bed_mesh.probed_matrix.length }}
+                                {{ currentProfile.data.x_count }}x{{ currentProfile.data.y_count }}
                             </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
@@ -192,7 +216,7 @@
                                 {{ $t('Heightmap.CurrentMesh.Max') }} [{{ bedMeshMaxPoint.positionX }},
                                 {{ bedMeshMaxPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMaxPoint.value }} mm</v-col>
+                            <v-col class="text-right">{{ currentProfile.max.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
@@ -200,14 +224,12 @@
                                 {{ $t('Heightmap.CurrentMesh.Min') }} [{{ bedMeshMinPoint.positionX }},
                                 {{ bedMeshMinPoint.positionY }}]
                             </v-col>
-                            <v-col class="text-right">{{ bedMeshMinPoint.value }} mm</v-col>
+                            <v-col class="text-right">{{ currentProfile.min.toFixed(3) }} mm</v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Variance') }}</v-col>
-                            <v-col class="text-right">
-                                {{ Math.abs(bedMeshMinPoint.value - bedMeshMaxPoint.value).toFixed(3) }} mm
-                            </v-col>
+                            <v-col class="text-right">{{ currentProfile.variance.toFixed(3) }} mm</v-col>
                         </v-row>
                     </v-card-text>
                 </panel>
@@ -217,59 +239,63 @@
                     icon="mdi-stack-overflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
-                    <v-card-text v-if="profiles.length" class="py-0 px-0">
-                        <v-simple-table>
-                            <template #default>
-                                <tbody>
-                                    <tr v-for="(profile, index) in profiles" :key="index">
-                                        <td>
-                                            <span
-                                                :class="profile.is_active ? 'font-weight-bold' : ''"
-                                                style="cursor: pointer"
-                                                @click="loadProfile(profile.name)">
-                                                {{ profile.name }}
-                                            </span>
-                                            <small v-if="'deleted' in profile.data" class="ml-2">
-                                                ({{ $t('Heightmap.Deleted') }})
+                    <v-card-text v-if="profiles.length" class="px-0 py-3">
+                        <template v-for="(profile, index) in profiles">
+                            <v-divider v-if="index" :key="'deliver_' + index" class="my-3"></v-divider>
+                            <v-row :key="index" class="rowProfile">
+                                <v-col class="pl-6 py-0 colName">
+                                    <span
+                                        :class="profile.is_active ? 'current' : ''"
+                                        style="cursor: pointer"
+                                        @click="profile.is_active ? openRenameProfile() : loadProfile(profile.name)">
+                                        {{ profile.name }}
+                                    </span>
+                                </v-col>
+                                <v-col class="text-center py-0 colVariance">
+                                    <v-tooltip top color="rgba(0,0,0,0.8)">
+                                        <template #activator="{ on, attrs }">
+                                            <small v-bind="attrs" v-on="on">
+                                                {{ profile.variance.toFixed(3) }}
                                             </small>
-                                        </td>
-                                        <td>
-                                            <v-tooltip top color="rgba(0,0,0,0.8)">
-                                                <template #activator="{ on, attrs }">
-                                                    <small v-bind="attrs" v-on="on">
-                                                        {{ profile.variance.toFixed(3) }}
-                                                    </small>
-                                                </template>
-                                                <span>
-                                                    max: {{ profile.max }}
-                                                    <br />
-                                                    min: {{ profile.min }}
-                                                </span>
-                                            </v-tooltip>
-                                        </td>
-                                        <td class="text-right">
-                                            <v-btn-toggle dense no-gutters>
-                                                <v-btn
-                                                    class="minwidth-0"
-                                                    :loading="loadings.includes('bedMeshLoad_' + profile.name)"
-                                                    :disabled="profile.is_active || 'deleted' in profile.data"
-                                                    @click="loadProfile(profile.name)">
-                                                    <v-icon small>mdi-view-grid-plus</v-icon>
-                                                </v-btn>
-                                                <v-btn
-                                                    class="minwidth-0"
-                                                    :loading="loadings.includes('bedMeshRemove_' + profile.name)"
-                                                    :disabled="'deleted' in profile.data"
-                                                    :title="$t('Heightmap.DeleteBedMeshProfile')"
-                                                    @click="openRemoveProfile(profile.name)">
-                                                    <v-icon small>mdi-delete</v-icon>
-                                                </v-btn>
-                                            </v-btn-toggle>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </template>
-                        </v-simple-table>
+                                        </template>
+                                        <span>
+                                            max: {{ profile.max }}
+                                            <br />
+                                            min: {{ profile.min }}
+                                        </span>
+                                    </v-tooltip>
+                                </v-col>
+                                <v-col class="py-0 colActions">
+                                    <v-btn
+                                        v-if="!profile.is_active"
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshLoad_' + profile.name)"
+                                        @click="loadProfile(profile.name)">
+                                        <v-icon>mdi-progress-upload</v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        v-else
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshLoad_' + profile.name)"
+                                        @click="openRenameProfile">
+                                        <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
+                                    <v-btn
+                                        text
+                                        tile
+                                        class="px-2 minwidth-0"
+                                        :loading="loadings.includes('bedMeshRemove_' + profile.name)"
+                                        :title="$t('Heightmap.DeleteBedMeshProfile')"
+                                        @click="openRemoveProfile(profile.name)">
+                                        <v-icon>mdi-delete</v-icon>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                        </template>
                     </v-card-text>
                     <v-card-text v-else>
                         <p class="mb-0">{{ $t('Heightmap.NoProfile') }}</p>
@@ -415,6 +441,7 @@ import { Grid3DComponent } from 'echarts-gl/components'
 // @ts-ignore
 import { SurfaceChart } from 'echarts-gl/charts'
 import type { ECharts } from 'echarts'
+import { PrinterStateBedMesh } from '@/store/printer/types'
 
 use([CanvasRenderer, VisualMapComponent, Grid3DComponent, SurfaceChart])
 
@@ -607,6 +634,14 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         return this.$store.state.printer.bed_mesh ?? null
     }
 
+    get currentProfileName() {
+        return this.bed_mesh?.profile_name ?? ''
+    }
+
+    get currentProfile() {
+        return this.profiles.find((profile: PrinterStateBedMesh) => profile.name === this.currentProfileName)
+    }
+
     @Watch('bed_mesh', { deep: true })
     bed_meshChanged() {
         this.chart?.setOption(this.chartOptions)
@@ -698,12 +733,9 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         let min = 0
         let max = 0
 
-        if (this.bed_mesh) {
-            const points = []
-            for (const row of this.bed_mesh.probed_matrix) for (const col of row) points.push(col)
-
-            min = Math.min(min, ...points)
-            max = Math.max(max, ...points)
+        if (this.currentProfile) {
+            min = this.currentProfile.min
+            max = this.currentProfile.max
         }
 
         return [min, max]
@@ -713,7 +745,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 0.5)
+        const maxRange = Math.max(minRange, 1)
 
         return [minRange, maxRange]
     }
@@ -934,7 +966,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             col,
             positionX,
             positionY,
-            value: Math.round(max * 1000) / 1000,
+            value: max,
         }
     }
 
@@ -972,7 +1004,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
             col,
             positionX,
             positionY,
-            value: Math.round(min * 1000) / 1000,
+            value: min,
         }
     }
 
@@ -1004,12 +1036,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     loadProfile(name: string): void {
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE LOAD=' + name, type: 'command' })
-        this.$socket.emit(
-            'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE LOAD=' + name },
-            { loading: 'bedMeshLoad_' + name }
-        )
+        const gcode = 'BED_MESH_PROFILE LOAD="' + name + '"'
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshLoad_' + name })
     }
 
     openRenameProfile(): void {
@@ -1024,20 +1054,20 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     renameProfile(): void {
         this.renameDialog = false
+        const gcodeNew = 'BED_MESH_PROFILE SAVE="' + this.newName + '"'
+        const gcodeOld = 'BED_MESH_PROFILE REMOVE="' + this.oldName + '"'
 
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE SAVE=' + this.newName, type: 'command' })
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_PROFILE REMOVE=' + this.oldName, type: 'command' })
+        this.$store.dispatch('server/addEvent', {
+            message: gcodeNew,
+            type: 'command',
+        })
+        this.$store.dispatch('server/addEvent', {
+            message: gcodeOld,
+            type: 'command',
+        })
 
-        this.$socket.emit(
-            'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE SAVE=' + this.newName },
-            { loading: 'bedMeshRename' }
-        )
-        this.$socket.emit(
-            'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE REMOVE=' + this.oldName },
-            { loading: 'bedMeshRename' }
-        )
+        this.$socket.emit('printer.gcode.script', { script: gcodeNew }, { loading: 'bedMeshRename' })
+        this.$socket.emit('printer.gcode.script', { script: gcodeOld }, { loading: 'bedMeshRename' })
 
         this.newName = ''
         this.oldName = ''
@@ -1050,13 +1080,15 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
 
     removeProfile(): void {
         this.removeDialog = false
+        const gcode = 'BED_MESH_PROFILE REMOVE="' + this.removeDialogProfile + '"'
+
         this.$store.dispatch('server/addEvent', {
-            message: 'BED_MESH_PROFILE REMOVE=' + this.removeDialogProfile,
+            message: gcode,
             type: 'command',
         })
         this.$socket.emit(
             'printer.gcode.script',
-            { script: 'BED_MESH_PROFILE REMOVE=' + this.removeDialogProfile },
+            { script: gcode },
             {
                 action: 'printer/removeBedMeshProfile',
                 actionPayload: { name: this.removeDialogProfile },
@@ -1069,13 +1101,17 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     }
 
     homePrinter(): void {
-        this.$store.dispatch('server/addEvent', { message: 'G28', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'G28' }, { loading: 'homeAll' })
+        const gcode = 'G28'
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'homeAll' })
     }
 
     clearBedMesh(): void {
-        this.$store.dispatch('server/addEvent', { message: 'BED_MESH_CLEAR', type: 'command' })
-        this.$socket.emit('printer.gcode.script', { script: 'BED_MESH_CLEAR' }, { loading: 'bedMeshClear' })
+        const gcode = 'BED_MESH_CLEAR'
+
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'bedMeshClear' })
     }
 
     openCalibrateMesh() {
