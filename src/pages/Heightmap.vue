@@ -2,6 +2,19 @@
 .rename-profile {
     text-transform: none;
 }
+
+.currentMeshName {
+    cursor: pointer;
+    color: var(--v-primary-base);
+}
+
+.currentMeshName .v-icon {
+    opacity: 0;
+}
+
+.currentMeshName:hover .v-icon {
+    opacity: 1;
+}
 </style>
 
 <template>
@@ -9,27 +22,7 @@
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
                 <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
-                    <template #buttons-title>
-                        <v-btn
-                            v-if="meshLoaded"
-                            text
-                            tile
-                            color="primary"
-                            class="ml-1 d-none d-sm-inline-flex rename-profile"
-                            @click="openRenameProfile()">
-                            {{ bed_mesh.profile_name }}
-                        </v-btn>
-                    </template>
                     <template #buttons>
-                        <v-btn
-                            v-if="meshLoaded"
-                            text
-                            tile
-                            color="primary"
-                            class="d-sm-none"
-                            @click="openRenameProfile()">
-                            {{ bed_mesh ? bed_mesh.profile_name : '' }}
-                        </v-btn>
                         <v-btn
                             icon
                             tile
@@ -179,7 +172,12 @@
                     <v-card-text class="py-3 px-0">
                         <v-row class="px-3">
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
-                            <v-col class="text-right">{{ bed_mesh.profile_name }}</v-col>
+                            <v-col class="text-right">
+                                <span class="currentMeshName font-weight-bold" @click="openRenameProfile()">
+                                    <v-icon left small color="primary">mdi-pencil</v-icon>
+                                    {{ bed_mesh.profile_name }}
+                                </span>
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row class="px-3">
