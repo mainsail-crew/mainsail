@@ -136,13 +136,13 @@
                             </v-row>
                             <v-row>
                                 <v-col
-                                    class="col-12 col-sm-auto pt-0 pb-0 pl-sm-6 d-flex justify-center justify-sm-start">
+                                    class="col-12 col-sm-auto pt-0 pb-0 pl-lg-6 d-flex justify-center justify-sm-start">
                                     <v-switch
                                         v-model="scaleVisualMap"
-                                        :label="$t('Heightmap.Scale')"
+                                        :label="$t('Heightmap.ScaleGradient')"
                                         class="mt-0 ml-5"></v-switch>
                                 </v-col>
-                                <v-col class="d-flex justify-center pt-0 pb-6 pb-sm-3 pr-sm-16">
+                                <v-col class="d-flex justify-center pt-0 pb-6 pb-lg-3">
                                     <v-checkbox
                                         v-model="showProbed"
                                         :label="$t('Heightmap.Probed')"
@@ -158,22 +158,21 @@
                                         :label="$t('Heightmap.Flat')"
                                         hide-details
                                         class="mx-3 mt-0"></v-checkbox>
+                                    <v-checkbox
+                                        v-model="wireframe"
+                                        :label="$t('Heightmap.Wireframe')"
+                                        hide-details
+                                        class="mx-3 mt-0"></v-checkbox>
                                 </v-col>
                             </v-row>
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text class="pt-0 pb-3">
                             <v-row>
-                                <v-col class="col-4">
-                                    <v-checkbox
-                                        v-model="wireframe"
-                                        :label="$t('Heightmap.Wireframe')"
-                                        hide-details></v-checkbox>
-                                </v-col>
-                                <v-col class="col-8">
+                                <v-col>
                                     <v-slider
                                         v-model="heightmapScale"
-                                        :label="$t('Heightmap.Scale')"
+                                        :label="$t('Heightmap.ScaleZMax')"
                                         :min="heightmapRangeLimit[0]"
                                         :max="heightmapRangeLimit[1]"
                                         :step="0.1"
@@ -742,7 +741,7 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         const [min, max] = this.heightmapLimit
 
         const minRange = Math.round(Math.max(Math.abs(min), Math.abs(max)) * 10) / 10
-        const maxRange = Math.max(minRange, 0.5)
+        const maxRange = Math.max(minRange, 1)
 
         return [minRange, maxRange]
     }
