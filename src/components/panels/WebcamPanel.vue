@@ -5,13 +5,13 @@
         v-if="socketIsConnected"
         icon="mdi-webcam"
         :title="$t('Panels.WebcamPanel.Headline')"
-        :collapsible="this.$route.fullPath !== '/cam'"
+        :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel">
-        <template v-slot:buttons v-if="webcams.length > 1">
+        <template v-if="webcams.length > 1" #buttons>
             <v-menu :offset-y="true" title="Webcam">
-                <template v-slot:activator="{ on, attrs }">
+                <template #activator="{ on, attrs }">
                     <v-btn text tile v-bind="attrs" v-on="on">
-                        <v-icon small v-if="'icon' in currentCam" class="mr-2">{{ currentCam.icon }}</v-icon>
+                        <v-icon v-if="'icon' in currentCam" small class="mr-2">{{ currentCam.icon }}</v-icon>
                         <span class="d-none d-md-block">{{ 'name' in currentCam ? currentCam.name : 'unknown' }}</span>
                         <v-icon small>mdi-menu-down</v-icon>
                     </v-btn>
@@ -25,11 +25,7 @@
                             <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-item
-                        v-for="webcam of webcams"
-                        v-bind:key="webcam.id"
-                        link
-                        @click="currentCamId = webcam.id">
+                    <v-list-item v-for="webcam of webcams" :key="webcam.id" link @click="currentCamId = webcam.id">
                         <v-list-item-icon class="mr-0">
                             <v-icon small>{{ webcam.icon }}</v-icon>
                         </v-list-item-icon>
@@ -43,20 +39,20 @@
         <v-card-text class="px-0 py-0 content d-inline-block">
             <v-row>
                 <v-col class="pb-0" style="position: relative">
-                    <template v-if="this.currentCam.service === 'grid'">
-                        <webcam-grid :webcams="this.webcams"></webcam-grid>
+                    <template v-if="currentCam.service === 'grid'">
+                        <webcam-grid :webcams="webcams"></webcam-grid>
                     </template>
-                    <template v-else-if="this.currentCam.service === 'mjpegstreamer'">
-                        <webcam-mjpegstreamer :cam-settings="this.currentCam"></webcam-mjpegstreamer>
+                    <template v-else-if="currentCam.service === 'mjpegstreamer'">
+                        <webcam-mjpegstreamer :cam-settings="currentCam"></webcam-mjpegstreamer>
                     </template>
-                    <template v-else-if="this.currentCam.service === 'mjpegstreamer-adaptive'">
-                        <webcam-mjpegstreamer-adaptive :cam-settings="this.currentCam"></webcam-mjpegstreamer-adaptive>
+                    <template v-else-if="currentCam.service === 'mjpegstreamer-adaptive'">
+                        <webcam-mjpegstreamer-adaptive :cam-settings="currentCam"></webcam-mjpegstreamer-adaptive>
                     </template>
-                    <template v-else-if="this.currentCam.service === 'uv4l-mjpeg'">
-                        <webcam-uv4l-mjpeg :cam-settings="this.currentCam"></webcam-uv4l-mjpeg>
+                    <template v-else-if="currentCam.service === 'uv4l-mjpeg'">
+                        <webcam-uv4l-mjpeg :cam-settings="currentCam"></webcam-uv4l-mjpeg>
                     </template>
-                    <template v-else-if="this.currentCam.service === 'ipstream'">
-                        <webcam-ipstreamer :cam-settings="this.currentCam"></webcam-ipstreamer>
+                    <template v-else-if="currentCam.service === 'ipstream'">
+                        <webcam-ipstreamer :cam-settings="currentCam"></webcam-ipstreamer>
                     </template>
                     <template v-else>
                         <p class="text-center py-3 font-italic">{{ $t('Panels.WebcamPanel.UnknownWebcamService') }}</p>

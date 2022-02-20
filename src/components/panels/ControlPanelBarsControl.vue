@@ -15,28 +15,28 @@
             <v-col class="col-12 pb-0 text-center">
                 <v-btn
                     small
-                    @click="doHome"
                     :loading="loadings.includes('homeAll')"
-                    :color="homedAxes.includes('xyz') ? 'primary' : 'warning'">
+                    :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                    @click="doHome">
                     <v-icon class="mr-1">mdi-home</v-icon>
                     {{ $t('Panels.ControlPanel.ALL') }}
                 </v-btn>
                 <v-btn
+                    v-if="existsQGL"
                     small
-                    @click="doQGL"
                     :loading="loadings.includes('qgl')"
                     :color="colorQuadGantryLevel"
                     class="ml-2"
-                    v-if="existsQGL">
+                    @click="doQGL">
                     {{ $t('Panels.ControlPanel.QGL') }}
                 </v-btn>
                 <v-btn
+                    v-if="existsZtilt"
                     small
-                    @click="doZtilt"
                     :loading="loadings.includes('zTilt')"
                     :color="colorZTilt"
                     class="ml-2"
-                    v-if="existsZtilt">
+                    @click="doZtilt">
                     {{ $t('Panels.ControlPanel.ZTilt') }}
                 </v-btn>
             </v-col>
@@ -45,24 +45,24 @@
             <v-col class="text-center">
                 <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
                     <v-btn
-                        @click="doSendMove('X-' + steps, feedrateXY)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsorted"
-                        v-bind:key="'x-' + steps">
+                        :key="'x-' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('X-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
-                        @click="doHomeX"
                         :color="homedAxes.includes('x') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeX')"
-                        class="font-weight-bold btnHomeAxis">
+                        class="font-weight-bold btnHomeAxis"
+                        @click="doHomeX">
                         {{ $t('Panels.ControlPanel.X') }}
                     </v-btn>
                     <v-btn
-                        @click="doSendMove('X+' + steps, feedrateXY)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsortedReverse"
-                        v-bind:key="'x+' + steps">
+                        :key="'x+' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('X+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>
@@ -72,24 +72,24 @@
             <v-col class="text-center">
                 <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
                     <v-btn
-                        @click="doSendMove('Y-' + steps, feedrateXY)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsorted"
-                        v-bind:key="'y-' + steps">
+                        :key="'y-' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('Y-' + steps, feedrateXY)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
-                        @click="doHomeY"
                         :color="homedAxes.includes('y') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeY')"
-                        class="font-weight-bold btnHomeAxis">
+                        class="font-weight-bold btnHomeAxis"
+                        @click="doHomeY">
                         {{ $t('Panels.ControlPanel.Y') }}
                     </v-btn>
                     <v-btn
-                        @click="doSendMove('Y+' + steps, feedrateXY)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsXYsortedReverse"
-                        v-bind:key="'y+' + steps">
+                        :key="'y+' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('Y+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>
@@ -99,24 +99,24 @@
             <v-col class="text-center">
                 <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
                     <v-btn
-                        @click="doSendMove('Z-' + steps, feedrateZ)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsZsorted"
-                        v-bind:key="'z-' + steps">
+                        :key="'z-' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('Z-' + steps, feedrateZ)">
                         <span class="body-2">–{{ steps }}</span>
                     </v-btn>
                     <v-btn
-                        @click="doHomeZ"
                         :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                         :loading="loadings.includes('homeZ')"
-                        class="font-weight-bold btnHomeAxis">
+                        class="font-weight-bold btnHomeAxis"
+                        @click="doHomeZ">
                         {{ $t('Panels.ControlPanel.Z') }}
                     </v-btn>
                     <v-btn
-                        @click="doSendMove('Z+' + steps, feedrateZ)"
-                        class="btnMinWidthAuto col"
                         v-for="steps of stepsZsortedReverse"
-                        v-bind:key="'z+' + steps">
+                        :key="'z+' + steps"
+                        class="btnMinWidthAuto col"
+                        @click="doSendMove('Z+' + steps, feedrateZ)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
                 </v-btn-toggle>

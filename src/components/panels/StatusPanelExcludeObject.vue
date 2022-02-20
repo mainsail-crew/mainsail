@@ -12,10 +12,10 @@
                 </div>
                 <div class="py-2 pl-0">
                     <v-icon
+                        v-if="current_object !== null"
                         class="text--disabled cursor-pointer"
-                        @click="openCancelObjectDialog(current_object)"
                         small
-                        v-if="current_object !== null">
+                        @click="openCancelObjectDialog(current_object)">
                         mdi-selection-remove
                     </v-icon>
                 </div>
@@ -49,8 +49,8 @@
         <status-panel-exclude-object-dialog
             :show-dialog.sync="showDialogPass"
             :exclude-object-dialog-name.sync="excludeObjectDialogName"
-            @update:name="updateExcludeObjectDialogName"
             :exclude-object-dialog-bool.sync="boolShowExcludeObjectDialog"
+            @update:name="updateExcludeObjectDialogName"
             @update:bool="updateExcludeObjectDialogBool"></status-panel-exclude-object-dialog>
     </div>
 </template>

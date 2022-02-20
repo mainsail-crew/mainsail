@@ -1,0 +1,53 @@
+name: Update changelog
+
+on:
+  # Update the changelog after pushing a new tag
+  push:
+    tags:
+      - '*'
+  # Update the changelog everyday
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: '1 0 * * *'
+
+  # Update the changelog by invoking this workflow manually
+  workflow_dispatch:
+
+jobs:
+  changelog:
+    name: Generate changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get latest tag
+        run: |
+          echo "::set-output name=TAG_NAME::$(git describe --tags $(git rev-list --tags --max-count=1))"
+        id: latest_tag
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: v0.0.4..${{ steps.latest_tag.outputs.TAG_NAME }} --strip header
+        env:
+          OUTPUT: CHANGELOG.md
+
+      - name: Generate the unreleased changelog
+        uses: orhun/git-cliff-action@v1
+        id: git-cliff-unreleased
+        with:
+          config: cliff.toml
+          args: --unreleased --prepend CHANGELOG.md --strip footer
+
+      - name: show CHANGELOG
+        run: |
+          cat CHANGELOG.md
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore(changelog): update changelog'
+          file_pattern: CHANGELOG.md
+          branch: develop

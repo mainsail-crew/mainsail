@@ -12,8 +12,8 @@
                         <v-icon small>mdi-restart</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" :color="logoColor" class="minwidth-0 px-5" small></v-btn>
+                        <template #activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" :color="logoColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="logoColor"
@@ -33,8 +33,8 @@
                         <v-icon small>mdi-restart</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" :color="primaryColor" class="minwidth-0 px-5" small></v-btn>
+                        <template #activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" :color="primaryColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="primaryColor"
@@ -47,7 +47,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.GcodeThumbnails')"
                     :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-btn
                         outlined
                         small
@@ -61,7 +61,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.BoolBigThumbnail')"
                     :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -72,21 +72,21 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT')"
                     :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayZOffset')"
                     :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.LockSliders')"
                     :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="lockSliders" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -95,12 +95,12 @@
                         v-show="lockSliders"
                         :title="$t('Settings.UiSettingsTab.LockSlidersDelay')"
                         :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription')"
-                        :dynamicSlotWidth="true">
+                        :dynamic-slot-width="true">
                         <v-text-field
+                            v-model="lockSlidersDelay"
                             class="mt-0"
                             prepend-icon="mdi-timer-outline"
                             :style="isMobile ? { 'max-width': '140px' } : {}"
-                            v-model="lockSlidersDelay"
                             label="Timeout"
                             type="number"
                             :rules="[(t) => t >= 0]"
@@ -117,14 +117,14 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop')"
                     :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange')"
                     :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -144,7 +144,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton')"
                     :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
                 </settings-row>
             </v-card-text>

@@ -10,13 +10,10 @@
 </style>
 
 <template>
-    <form v-on:submit.prevent="submit">
+    <form @submit.prevent="submit">
         <v-text-field
             v-model.number="value"
             class="d-flex align-top"
-            @blur="value = target"
-            @click:append="resetToDefault"
-            @keydown="checkInvalidChars"
             :label="label"
             :suffix="unit"
             :append-icon="target !== defaultValue ? 'mdi-restart' : ''"
@@ -25,31 +22,34 @@
             :disabled="disabled"
             :step="step"
             :min="min"
+            @blur="value = target"
             :max="max"
+            @click:append="resetToDefault"
             :dec="dec"
+            @keydown="checkInvalidChars"
             type="number"
             hide-spin-buttons
             hide-details="auto"
             outlined
             dense>
-            <template v-if="hasSpinner" v-slot:append-outer>
+            <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
-                        @click="incrementValue"
                         :disabled="(value >= max && max !== null) || error || disabled"
                         class="mt-n3"
                         icon
                         plain
-                        small>
+                        small
+                        @click="incrementValue">
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn
-                        @click="decrementValue"
                         :disabled="value <= min || error || disabled"
                         class="mb-n3"
                         icon
                         plain
-                        small>
+                        small
+                        @click="decrementValue">
                         <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
                 </div>
@@ -167,13 +167,16 @@ export default class NumberInput extends Mixins(BaseMixin) {
 
         const errors = []
         if (this.value.toString() === '') {
-            errors.push('Input must not be empty!')
+            // "Input must not be empty!"
+            errors.push(this.$t('App.NumberInput.NoEmptyAllowedError'))
         }
         if (this.max === null && this.value < this.min) {
-            errors.push(`Must be grater or equal than ${this.min}`)
+            // "Must be grater or equal than {min}!"
+            errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min }))
         }
         if (this.max !== null && (this.value > this.max! || this.value < this.min)) {
-            errors.push(`Must be between ${this.min} and ${this.max}`)
+            // "Must be between {min} and {max}!"
+            errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min, max: this.max }))
         }
         return errors
     }
