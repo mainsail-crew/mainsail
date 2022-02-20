@@ -249,7 +249,7 @@
                                     <span
                                         :class="profile.is_active ? 'current' : ''"
                                         style="cursor: pointer"
-                                        @click="profile.is_active ? (renameDialog = true) : loadProfile(profile.name)">
+                                        @click="profile.is_active ? openRenameProfile() : loadProfile(profile.name)">
                                         {{ profile.name }}
                                     </span>
                                 </v-col>
@@ -283,7 +283,7 @@
                                         tile
                                         class="px-2 minwidth-0"
                                         :loading="loadings.includes('bedMeshLoad_' + profile.name)"
-                                        @click="renameDialog = true">
+                                        @click="openRenameProfile">
                                         <v-icon>mdi-pencil</v-icon>
                                     </v-btn>
                                     <v-btn
