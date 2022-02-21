@@ -1,9 +1,9 @@
-import {ActionTree} from 'vuex'
-import {FarmPrinterState} from '@/store/farm/printer/types'
-import {RootState} from '@/store/types'
+import { ActionTree } from 'vuex'
+import { FarmPrinterState } from '@/store/farm/printer/types'
+import { RootState } from '@/store/types'
 
 export const actions: ActionTree<FarmPrinterState, RootState> = {
-    reset({commit}) {
+    reset({ commit }) {
         commit('reset')
     },
 
@@ -16,7 +16,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 instance: socket,
                 reconnects: 0,
                 isConnecting: false,
-                isConnected: true
+                isConnected: true,
             })
 
             dispatch('sendObj', {
@@ -38,7 +38,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 commit('setSocketData', {
                     isConnecting: false,
                     isConnected: false,
-                    reconnects: 0
+                    reconnects: 0,
                 })
             }
         }
@@ -50,22 +50,21 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         socket.onmessage = (msg) => {
             const data = JSON.parse(msg.data)
             if (data && data.method) {
-
                 switch (data.method) {
-                case 'notify_status_update':
-                    dispatch('getData', data.params[0])
-                    break
+                    case 'notify_status_update':
+                        dispatch('getData', data.params[0])
+                        break
 
-                case 'notify_klippy_disconnected':
-                    dispatch('disconnectKlippy')
-                    break
+                    case 'notify_klippy_disconnected':
+                        dispatch('disconnectKlippy')
+                        break
 
-                case 'notify_klippy_ready':
-                    dispatch('connectKlippy')
-                    break
+                    case 'notify_klippy_ready':
+                        dispatch('connectKlippy')
+                        break
                 }
             } else if ('result' in data) {
-                const requestIndex = state.socket.wsData.findIndex(item => item.id === data.id)
+                const requestIndex = state.socket.wsData.findIndex((item) => item.id === data.id)
 
                 if (
                     requestIndex !== -1 &&
@@ -74,7 +73,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 ) {
                     let result = data.result
                     if (result === 'ok') result = { result: result }
-                    if (typeof(result) === 'string') result = { result: result }
+                    if (typeof result === 'string') result = { result: result }
 
                     const preload = {}
                     const wsData = state.socket.wsData[requestIndex]
@@ -91,11 +90,11 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
     },
 
     reconnect({ state, dispatch }) {
-        if(state.socket.instance) state.socket.instance.close()
+        if (state.socket.instance) state.socket.instance.close()
         dispatch('connect')
     },
 
-    sendObj ({ state, commit }, payload) {
+    sendObj({ state, commit }, payload) {
         if (state.socket.instance && state.socket.instance.readyState === WebSocket.OPEN) {
             const id = Math.floor(Math.random() * 10000) + 1
 
@@ -106,12 +105,14 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
                 actionPreload: payload.actionPreload || null,
             })
 
-            state.socket.instance.send(JSON.stringify({
-                jsonrpc: '2.0',
-                method: payload.method,
-                params: payload.params || {},
-                id: id
-            }))
+            state.socket.instance.send(
+                JSON.stringify({
+                    jsonrpc: '2.0',
+                    method: payload.method,
+                    params: payload.params || {},
+                    id: id,
+                })
+            )
         }
     },
 
@@ -142,12 +143,12 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
         dispatch('sendObj', {
             method: 'server.files.list',
             action: 'getConfigDir',
-            params: { root: 'config'}
+            params: { root: 'config' },
         })
 
         dispatch('sendObj', {
             method: 'server.database.list',
-            action: 'getDatabases'
+            action: 'getDatabases',
         })
     },
 
@@ -164,7 +165,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             'temperature_fan',
             'temperature_sensor',
             'idle_timeout',
-            'toolhead'
+            'toolhead',
         ]
 
         let subscripts = {}
@@ -172,41 +173,42 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             const splits = object.split(' ')
             const objectName = splits[0]
 
-            if (
-                allowed.includes(objectName) ||
-				objectName.startsWith('extruder')
-            ) {
-                subscripts = {...subscripts, [object]: null }
+            if (allowed.includes(objectName) || objectName.startsWith('extruder')) {
+                subscripts = { ...subscripts, [object]: null }
             }
         })
 
-        if (subscripts !== {})
+        if (Object.keys(subscripts).length > 0)
             dispatch('sendObj', {
                 method: 'printer.objects.subscribe',
                 params: { objects: subscripts },
-                action: 'getData'
+                action: 'getData',
             })
     },
 
     getData({ commit, dispatch, state }, payload) {
-        const data = ('status' in payload) ? {...payload.status} : {...payload}
+        const data = 'status' in payload ? { ...payload.status } : { ...payload }
         commit('setData', data)
 
         if ('print_stats' in data && 'filename' in data.print_stats) {
             dispatch('sendObj', {
                 method: 'server.files.metadata',
                 params: { filename: data.print_stats?.filename },
-                action: 'getMetadataCurrentFile'
+                action: 'getMetadataCurrentFile',
             })
         }
     },
 
     setSettings({ commit, dispatch, state }, payload) {
         commit('setSettings', payload)
-        dispatch('gui/remoteprinters/updateSettings', {
-            id: state._namespace,
-            values: state.settings
-        }, { root: true })
+        dispatch(
+            'gui/remoteprinters/updateSettings',
+            {
+                id: state._namespace,
+                values: state.settings,
+            },
+            { root: true }
+        )
     },
 
     getMetadataCurrentFile({ commit }, payload) {
@@ -224,7 +226,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             dispatch('sendObj', {
                 method: 'server.database.get_item',
                 params: { namespace: 'mainsail' },
-                action: 'getMainsailData'
+                action: 'getMainsailData',
             })
         }
 
@@ -232,7 +234,7 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
             dispatch('sendObj', {
                 method: 'server.database.get_item',
                 params: { namespace: 'webcams' },
-                action: 'getWebcamsData'
+                action: 'getWebcamsData',
             })
         }
     },
@@ -243,5 +245,5 @@ export const actions: ActionTree<FarmPrinterState, RootState> = {
 
     getWebcamsData({ commit }, payload) {
         commit('setWebcamsData', payload.value)
-    }
+    },
 }

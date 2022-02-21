@@ -4,9 +4,9 @@ export interface ServerUpdateMangerState {
         [key: string]: any
     }
     updateResponse: {
-        application: string,
-        complete: boolean,
-        messages: ServerUpdateMangerStateMessages[],
+        application: string
+        complete: boolean
+        messages: ServerUpdateMangerStateMessages[]
     }
 }
 

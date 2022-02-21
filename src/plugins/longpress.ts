@@ -5,29 +5,31 @@ Vue.directive('longpress', {
         // Make sure expression provided is a function
         if (typeof binding.value !== 'function') {
             // Fetch name of component
-            const compName = vNode.context.name
+            const compName = vNode.context?.$options.name
             // pass warning to console
             let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
-            if (compName) { warn += ` Found in component '${compName}' ` }
+            if (compName) {
+                warn += ` Found in component '${compName}' `
+            }
 
             console.warn(warn)
         }
 
-        const debounceTime = parseInt(binding.arg ?? 1000)
+        const debounceTime = Number(binding.arg ?? 1000)
 
         // Run Function
-        const handler = (e) => {
+        const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
             binding.value(e)
         }
 
         // Define variable
-        let pressTimer = null
+        let pressTimer: number | null = null
 
         // Define funtion handlers
         // Create timeout ( run function after 1s )
-        let before = null
-        let start = (e) => {
-            if ((e.type === 'click' && e.button !== 0)) {
+        const before: string | null = null
+        const start = (e: TouchEvent) => {
+            if (e.type === 'click') {
                 return
             }
 
@@ -35,14 +37,16 @@ Vue.directive('longpress', {
                 return
             }
 
-            document.querySelector('body').setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
+            document
+                .querySelector('body')
+                ?.setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
 
             setTimeout(() => {
-                document.querySelector('body').setAttribute('style', '')
+                document.querySelector('body')?.setAttribute('style', '')
             }, debounceTime + 200)
 
             if (pressTimer === null) {
-                pressTimer = setTimeout(() => {
+                pressTimer = window.setTimeout(() => {
                     e.preventDefault()
                     e.stopPropagation()
                     e.stopImmediatePropagation()
@@ -60,7 +64,7 @@ Vue.directive('longpress', {
                         rotationAngle: e.touches[0].rotationAngle,
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
-                        preventDefault: () => e.preventDefault()
+                        preventDefault: () => e.preventDefault(),
                     })
                 }, debounceTime)
             }
@@ -68,13 +72,13 @@ Vue.directive('longpress', {
         }
 
         // Cancel Timeout
-        let cancel = () => {
+        const cancel = () => {
             // Check if timer has a value or not
             if (pressTimer !== null) {
                 clearTimeout(pressTimer)
                 pressTimer = null
                 if (before) {
-                    document.querySelector('body').setAttribute('style', before)
+                    document.querySelector('body')?.setAttribute('style', before)
                 }
                 /*console.log(e.type);
                 if (e.type === "touchend" && vNode.data.on.click) {
@@ -94,5 +98,5 @@ Vue.directive('longpress', {
         el.addEventListener('touchcancel', cancel)
 
         document.addEventListener('scroll', cancel)
-    }
+    },
 })

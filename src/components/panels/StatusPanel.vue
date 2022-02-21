@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
-    .statusPanel-big-thumbnail {
-        transition: height 0.25s ease-out;
-    }
+.statusPanel-big-thumbnail {
+    transition: height 0.25s ease-out;
+}
 </style>
 
 <template>
@@ -16,32 +16,28 @@
             icon="mdi-information"
             :title="printerStateOutput"
             :collapsible="true"
-            card-class="status-panel"
-        >
-            <template v-slot:icon>
+            card-class="status-panel">
+            <template #icon>
                 <v-progress-circular
+                    v-if="['paused', 'printing'].includes(printer_state)"
                     :rotate="-90"
                     :size="30"
                     :width="5"
                     :value="printPercent"
                     color="primary"
-                    class="mr-3"
-                    v-if="['paused', 'printing'].includes(printer_state)"
-                >
-                </v-progress-circular>
+                    class="mr-3"></v-progress-circular>
             </template>
-            <template v-slot:buttons >
+            <template #buttons>
                 <v-btn
                     v-for="button in filteredToolbarButtons"
-                    v-bind:key="button.loadingName"
+                    :key="button.loadingName"
                     :color="button.color"
-                    @click="button.click"
                     :loading="loadings.includes(button.loadingName)"
                     icon
                     tile
-                >
+                    @click="button.click">
                     <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
+                        <template #activator="{ on, attrs }">
                             <v-icon v-bind="attrs" v-on="on">{{ button.icon }}</v-icon>
                         </template>
                         <span>{{ button.text }}</span>
@@ -51,18 +47,22 @@
             <v-card-text class="px-0 py-0 content">
                 <template v-if="boolBigThumbnail">
                     <v-img
+                        ref="bigThumbnail"
                         :src="thumbnailBig"
                         tabindex="-1"
                         class="d-flex align-end statusPanel-big-thumbnail"
-                        ref="bigThumbnail"
                         height="200"
                         @focus="focusBigThumbnail"
-                        @blur="blurBigThumbnail"
-                    >
-                        <v-card-title class="white--text py-2 px-2" style="background-color: rgba(0,0,0,0.3); backdrop-filter: blur(3px);">
+                        @blur="blurBigThumbnail">
+                        <v-card-title
+                            class="white--text py-2 px-2"
+                            style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(3px)">
                             <v-row>
                                 <v-col style="width: 100px">
-                                    <span class="subtitle-2 text-truncate px-0 text--disabled d-block"><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span>
+                                    <span class="subtitle-2 text-truncate px-0 text--disabled d-block">
+                                        <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                        {{ current_filename }}
+                                    </span>
                                 </v-col>
                             </v-row>
                         </v-card-title>
@@ -70,34 +70,52 @@
                 </template>
                 <status-panel-exclude-object
                     :show-dialog.sync="boolShowObjects"
-                    @update:showDialog="updateShowDialog"
-                ></status-panel-exclude-object>
+                    @update:showDialog="updateShowDialog"></status-panel-exclude-object>
                 <template v-if="display_message || print_stats_message">
                     <v-container>
                         <v-row>
                             <v-col class="py-2">
-                                <span class="subtitle-2 d-block px-0 text--disabled"><v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>{{ print_stats_message ? print_stats_message : display_message }}</span>
+                                <span class="subtitle-2 d-block px-0 text--disabled">
+                                    <v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>
+                                    {{ print_stats_message ? print_stats_message : display_message }}
+                                </span>
                             </v-col>
                             <v-col class="col-auto py-2">
-                                <v-icon class="text--disabled cursor-pointer" @click="clearDisplayMessage" small>mdi-close-circle</v-icon>
+                                <v-icon class="text--disabled cursor-pointer" small @click="clearDisplayMessage">
+                                    mdi-close-circle
+                                </v-icon>
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-divider class="mt-0 mb-0" ></v-divider>
+                    <v-divider class="mt-0 mb-0"></v-divider>
                 </template>
                 <template v-if="current_filename && !boolBigThumbnail">
                     <v-container>
                         <v-row>
-                            <v-col :class="thumbnailSmall ? 'py-3' : 'py-2'" :style="(thumbnailSmall ? 'width: calc(100% - 40px);' : '')">
-                                <span class="subtitle-2 text-truncate d-block px-0 text--disabled"><v-icon small class="mr-2">mdi-file-outline</v-icon>{{ current_filename }}</span>
+                            <v-col
+                                :class="thumbnailSmall ? 'py-3' : 'py-2'"
+                                :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''">
+                                <span class="subtitle-2 text-truncate d-block px-0 text--disabled">
+                                    <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                    {{ current_filename }}
+                                </span>
                             </v-col>
-                            <v-col class="pa-2 pl-0 col-auto" v-if="thumbnailSmall">
+                            <v-col v-if="thumbnailSmall" class="pa-2 pl-0 col-auto">
                                 <template v-if="thumbnailSmall && thumbnailBig">
                                     <v-tooltip top content-class="tooltip__content-opacity1">
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <vue-load-image class="d-flex">
-                                                <img slot="image" :src="thumbnailSmall" width="32" height="32" v-bind="attrs" v-on="on" />
-                                                <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                                <img
+                                                    slot="image"
+                                                    :src="thumbnailSmall"
+                                                    width="32"
+                                                    height="32"
+                                                    v-bind="attrs"
+                                                    v-on="on" />
+                                                <v-progress-circular
+                                                    slot="preloader"
+                                                    indeterminate
+                                                    color="primary"></v-progress-circular>
                                                 <v-icon slot="error">mdi-file</v-icon>
                                             </vue-load-image>
                                         </template>
@@ -107,34 +125,48 @@
                                 <template v-else-if="thumbnailSmall">
                                     <vue-load-image>
                                         <img slot="image" :src="thumbnailSmall" width="32" height="32" />
-                                        <v-progress-circular slot="preloader" indeterminate color="primary"></v-progress-circular>
+                                        <v-progress-circular
+                                            slot="preloader"
+                                            indeterminate
+                                            color="primary"></v-progress-circular>
                                         <v-icon slot="error">mdi-file</v-icon>
                                     </vue-load-image>
                                 </template>
                             </v-col>
                         </v-row>
                     </v-container>
-                    <v-divider class="mt-0 mb-0" ></v-divider>
+                    <v-divider class="mt-0 mb-0"></v-divider>
                 </template>
                 <v-container class="py-0">
-                    <v-row :class="'text-center '+(!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state) ? 'pt-5 pb-2 mb-0' : 'py-5')" align="center">
+                    <v-row
+                        :class="
+                            'text-center ' +
+                            (!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state)
+                                ? 'pt-5 pb-2 mb-0'
+                                : 'py-5')
+                        "
+                        align="center">
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.Position") }}</strong><br />
+                            <strong>{{ $t('Panels.StatusPanel.Position') }}</strong>
+                            <br />
                             {{ coordinates }}
                         </v-col>
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.X") }}</strong><br />
+                            <strong>{{ $t('Panels.StatusPanel.X') }}</strong>
+                            <br />
                             {{ positions.x }}
                         </v-col>
                         <v-col class="col-3 pa-0">
-                            <strong>{{ $t("Panels.StatusPanel.Y") }}</strong><br />
+                            <strong>{{ $t('Panels.StatusPanel.Y') }}</strong>
+                            <br />
                             {{ positions.y }}
                         </v-col>
                         <v-col class="col-3 pa-0">
                             <v-tooltip top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <div v-bind="attrs" v-on="on" class="text-center">
-                                        <strong>{{ $t("Panels.StatusPanel.Z") }}</strong><br />
+                                <template #activator="{ on, attrs }">
+                                    <div v-bind="attrs" class="text-center" v-on="on">
+                                        <strong>{{ $t('Panels.StatusPanel.Z') }}</strong>
+                                        <br />
                                         {{ positions.z }}
                                     </div>
                                 </template>
@@ -150,51 +182,75 @@
                             <v-col class="col-3 pa-0">
                                 <template v-if="live_velocity !== null">
                                     <v-tooltip top>
-                                        <template v-slot:activator="{ on, attrs }">
+                                        <template #activator="{ on, attrs }">
                                             <div v-bind="attrs" v-on="on">
-                                                <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                                <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong>
+                                                <br />
                                                 <span class="text-no-wrap">{{ live_velocity }} mm/s</span>
                                             </div>
                                         </template>
-                                        <span>{{ $t("Panels.StatusPanel.Requested") }}: {{ requested_speed+" mm/s" }}</span>
+                                        <span>
+                                            {{ $t('Panels.StatusPanel.Requested') }}: {{ requested_speed + ' mm/s' }}
+                                        </span>
                                     </v-tooltip>
                                 </template>
                                 <template v-else>
-                                    <strong>{{ $t("Panels.StatusPanel.Speed") }}</strong><br />
+                                    <strong>{{ $t('Panels.StatusPanel.Speed') }}</strong>
+                                    <br />
                                     <span class="text-no-wrap">{{ requested_speed }} mm/s</span>
                                 </template>
                             </v-col>
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on">
-                                            <strong>{{ $t("Panels.StatusPanel.Flow") }}</strong><br />
-                                            <span class="d-block text-center text-no-wrap">{{ live_flow+" mm&sup3;/s" }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Flow') }}</strong>
+                                            <br />
+                                            <span class="d-block text-center text-no-wrap">
+                                                {{ live_flow + ' mm&sup3;/s' }}
+                                            </span>
                                         </div>
                                     </template>
-                                    <span>{{ $t("Panels.StatusPanel.Max") }}: {{ maxFlow ? maxFlow+" mm&sup3;/s" : "--" }}</span>
+                                    <span>
+                                        {{ $t('Panels.StatusPanel.Max') }}:
+                                        {{ maxFlow ? maxFlow + ' mm&sup3;/s' : '--' }}
+                                    </span>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
+                                    <template #activator="{ on, attrs }">
                                         <div v-bind="attrs" v-on="on">
-                                            <strong>{{ $t("Panels.StatusPanel.Filament") }}</strong><br />
-                                            <span class="d-block text-center text-no-wrap">{{ filament_used >= 1000 ? (filament_used / 1000).toFixed(2)+" m" : filament_used.toFixed(2)+" mm" }}</span>
+                                            <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                            <br />
+                                            <span class="d-block text-center text-no-wrap">
+                                                {{
+                                                    filament_used >= 1000
+                                                        ? (filament_used / 1000).toFixed(2) + ' m'
+                                                        : filament_used.toFixed(2) + ' mm'
+                                                }}
+                                            </span>
                                         </div>
                                     </template>
-                                    <span v-if="'filament_total' in current_file">{{ (filament_used / 1000).toFixed(2) }} / {{ (current_file.filament_total / 1000).toFixed(2) }} m = {{ ( 100 / current_file.filament_total * filament_used).toFixed(0) }} % </span>
+                                    <span v-if="'filament_total' in current_file">
+                                        {{ (filament_used / 1000).toFixed(2) }} /
+                                        {{ (current_file.filament_total / 1000).toFixed(2) }} m =
+                                        {{ ((100 / current_file.filament_total) * filament_used).toFixed(0) }} %
+                                    </span>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0 text-center">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t("Panels.StatusPanel.Layer") }}</strong><br />
+                                    <template #activator="{ on, attrs }">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
+                                            <strong>{{ $t('Panels.StatusPanel.Layer') }}</strong>
+                                            <br />
                                             <span class="text-no-wrap">{{ current_layer }} of {{ max_layers }}</span>
                                         </div>
                                     </template>
-                                    <span v-if="'object_height' in current_file && current_file.object_height > 0">{{ $t("Panels.StatusPanel.ObjectHeight") }}: {{ current_file.object_height }} mm</span>
+                                    <span v-if="'object_height' in current_file && current_file.object_height > 0">
+                                        {{ $t('Panels.StatusPanel.ObjectHeight') }}: {{ current_file.object_height }} mm
+                                    </span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
@@ -204,38 +260,58 @@
                         <v-row class="text-center pt-5 pb-2 mb-0" align="center">
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t("Panels.StatusPanel.Estimate") }}</strong><br />
-                                            <span class="text-no-wrap">{{ estimated_time_avg ? formatTime(estimated_time_avg) : '--' }}</span>
+                                    <template #activator="{ on, attrs }">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
+                                            <strong>{{ $t('Panels.StatusPanel.Estimate') }}</strong>
+                                            <br />
+                                            <span class="text-no-wrap">
+                                                {{ estimated_time_avg ? formatTime(estimated_time_avg) : '--' }}
+                                            </span>
                                         </div>
                                     </template>
                                     <div class="text-right">
-                                        {{ $t("Panels.StatusPanel.File") }}: {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}<br />
-                                        {{ $t("Panels.StatusPanel.Filament") }}: {{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}
+                                        {{ $t('Panels.StatusPanel.File') }}:
+                                        {{ estimated_time_file ? formatTime(estimated_time_file) : '--' }}
+                                        <br />
+                                        {{ $t('Panels.StatusPanel.Filament') }}:
+                                        {{ estimated_time_filament ? formatTime(estimated_time_filament) : '--' }}
                                     </div>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong><br />
-                                <span class="text-no-wrap">{{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{ estimated_time_slicer ? formatTime(estimated_time_slicer) : '--' }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
                                 <v-tooltip top>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <div v-bind="attrs" v-on="on" class="text-center">
-                                            <strong>{{ $t("Panels.StatusPanel.Total") }}</strong><br />
-                                            <span class="text-no-wrap">{{ print_time_total ? formatTime(print_time_total) : '--' }}</span>
+                                    <template #activator="{ on, attrs }">
+                                        <div v-bind="attrs" class="text-center" v-on="on">
+                                            <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
+                                            <br />
+                                            <span class="text-no-wrap">
+                                                {{ print_time_total ? formatTime(print_time_total) : '--' }}
+                                            </span>
                                         </div>
                                     </template>
                                     <div class="text-right">
-                                        {{ $t("Panels.StatusPanel.Print") }}: {{ print_time ? formatTime(print_time) : '--' }}<br />
-                                        {{ $t("Panels.StatusPanel.Difference") }}: {{ print_time && print_time_total ? formatTime(print_time_total - print_time) : '--' }}
+                                        {{ $t('Panels.StatusPanel.Print') }}:
+                                        {{ print_time ? formatTime(print_time) : '--' }}
+                                        <br />
+                                        {{ $t('Panels.StatusPanel.Difference') }}:
+                                        {{
+                                            print_time && print_time_total
+                                                ? formatTime(print_time_total - print_time)
+                                                : '--'
+                                        }}
                                     </div>
                                 </v-tooltip>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.ETA") }}</strong><br />
+                                <strong>{{ $t('Panels.StatusPanel.ETA') }}</strong>
+                                <br />
                                 <span class="text-no-wrap">{{ eta ? formatDateTime(eta) : '--' }}</span>
                             </v-col>
                         </v-row>
@@ -246,20 +322,38 @@
                     <v-container class="py-0">
                         <v-row class="text-center pt-5 pb-2 mb-0" align="center">
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.Filament") }}</strong><br />
-                                <span class="text-no-wrap">{{ filament_used >= 1000 ? (filament_used / 1000).toFixed(2)+" m" : filament_used.toFixed(2)+" mm" }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Filament') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{
+                                        filament_used >= 1000
+                                            ? (filament_used / 1000).toFixed(2) + ' m'
+                                            : filament_used.toFixed(2) + ' mm'
+                                    }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.Slicer") }}</strong><br />
-                                <span class="text-no-wrap">{{ 'estimated_time' in current_file ? formatTime(current_file.estimated_time) : '--' }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Slicer') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{
+                                        'estimated_time' in current_file
+                                            ? formatTime(current_file.estimated_time)
+                                            : '--'
+                                    }}
+                                </span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.Print") }}</strong><br />
+                                <strong>{{ $t('Panels.StatusPanel.Print') }}</strong>
+                                <br />
                                 <span class="text-no-wrap">{{ print_time ? formatTime(print_time) : '--' }}</span>
                             </v-col>
                             <v-col class="col-3 pa-0">
-                                <strong>{{ $t("Panels.StatusPanel.Total") }}</strong><br />
-                                <span class="text-no-wrap">{{ print_time_total ? formatTime(print_time_total) : '--' }}</span>
+                                <strong>{{ $t('Panels.StatusPanel.Total') }}</strong>
+                                <br />
+                                <span class="text-no-wrap">
+                                    {{ print_time_total ? formatTime(print_time_total) : '--' }}
+                                </span>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -291,13 +385,13 @@ import Panel from '@/components/ui/Panel.vue'
         MoonrakerStatePanel,
         Panel,
         StatusPanelExcludeObject,
-    }
+    },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
     maxFlow = 0
     boolShowObjects = false
 
-    $refs!: {
+    declare $refs: {
         bigThumbnail: any
     }
 
@@ -318,7 +412,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get coordinates() {
-        return this.positions.coordinates ? this.$t('Panels.StatusPanel.Absolute') : this.$t('Panels.StatusPanel.Relative')
+        return this.positions.coordinates
+            ? this.$t('Panels.StatusPanel.Absolute')
+            : this.$t('Panels.StatusPanel.Relative')
     }
 
     get filament_used() {
@@ -345,13 +441,12 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         if (this.printer_state !== '') {
             const idle_timeout_state = this.$store.state.printer.idle_timeout?.state
 
-            if (
-                this.printer_state === 'standby' &&
-                idle_timeout_state === 'Printing'
-            ) return 'Busy'
+            if (this.printer_state === 'standby' && idle_timeout_state === 'Printing') return 'Busy'
 
             if (this.printer_state !== '' && ['paused', 'printing'].includes(this.printer_state)) {
-                return this.printPercent+'% '+this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
+                return (
+                    this.printPercent + '% ' + this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
+                )
             }
 
             return this.printer_state.charAt(0).toUpperCase() + this.printer_state.slice(1)
@@ -368,43 +463,48 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 icon: 'mdi-pause',
                 loadingName: 'statusPrintPause',
                 status: ['printing'],
-                click: this.btnPauseJob
-            }, {
+                click: this.btnPauseJob,
+            },
+            {
                 text: this.$t('Panels.StatusPanel.ResumePrint'),
                 color: 'success',
                 icon: 'mdi-play',
                 loadingName: 'statusPrintResume',
                 status: ['paused'],
-                click: this.btnResumeJob
-            }, {
+                click: this.btnResumeJob,
+            },
+            {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),
                 color: 'error',
                 icon: 'mdi-stop',
                 loadingName: 'statusPrintCancel',
                 status: this.$store.state.gui.uiSettings.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
-                click: this.btnCancelJob
-            }, {
+                click: this.btnCancelJob,
+            },
+            {
                 text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
                 color: 'warning',
                 icon: 'mdi-selection-remove',
                 loadingName: '',
                 status: this.printing_objects.length ? ['paused', 'printing'] : [],
-                click: this.btnExcludeObject
-            }, {
+                click: this.btnExcludeObject,
+            },
+            {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
                 color: 'primary',
                 icon: 'mdi-broom',
                 loadingName: 'statusPrintClear',
                 status: ['error', 'complete', 'cancelled'],
-                click: this.btnClearJob
-            }, {
+                click: this.btnClearJob,
+            },
+            {
                 text: this.$t('Panels.StatusPanel.ReprintJob'),
                 color: 'primary',
                 icon: 'mdi-printer',
                 loadingName: 'statusPrintReprint',
                 status: ['error', 'complete', 'cancelled'],
-                click: this.btnReprintJob
-            }
+                click: this.btnReprintJob,
+            },
         ]
     }
 
@@ -439,7 +539,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         const speed_factor = this.$store.state.printer.gcode_move?.speed_factor ?? 0
         const max_velocity = this.$store.state.printer.toolhead?.max_velocity ?? 0
 
-        const speed = requested_speed / 60 * speed_factor
+        const speed = (requested_speed / 60) * speed_factor
         if (speed > max_velocity) return max_velocity
 
         return speed.toFixed(0)
@@ -451,7 +551,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             'layer_height' in this.current_file &&
             'object_height' in this.current_file
         ) {
-            const max = Math.ceil((this.current_file.object_height - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
+            const max = Math.ceil(
+                (this.current_file.object_height - this.current_file.first_layer_height) /
+                    this.current_file.layer_height +
+                    1
+            )
             return max > 0 ? max : 0
         }
 
@@ -459,13 +563,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get current_layer() {
-        if (
-            this.print_time > 0 &&
-            'first_layer_height' in this.current_file &&
-            'layer_height' in this.current_file
-        ) {
-            let current_layer = Math.ceil((this.positions.gcode_z - this.current_file.first_layer_height) / this.current_file.layer_height + 1)
-            current_layer = (current_layer <= this.max_layers) ? current_layer : this.max_layers
+        if (this.print_time > 0 && 'first_layer_height' in this.current_file && 'layer_height' in this.current_file) {
+            let current_layer = Math.ceil(
+                (this.positions.gcode_z - this.current_file.first_layer_height) / this.current_file.layer_height + 1
+            )
+            current_layer = current_layer <= this.max_layers ? current_layer : this.max_layers
 
             return current_layer > 0 ? current_layer : 0
         }
@@ -498,23 +600,25 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get thumbnailSmall() {
-        if (
-            'thumbnails' in this.current_file &&
-            this.current_file.thumbnails.length
-        ) {
-            const thumbnail = this.current_file.thumbnails.find((thumb: any) =>
-                thumb.width >= thumbnailSmallMin && thumb.width <= thumbnailSmallMax &&
-                thumb.height >= thumbnailSmallMin && thumb.height <= thumbnailSmallMax
+        if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
+            const thumbnail = this.current_file.thumbnails.find(
+                (thumb: any) =>
+                    thumb.width >= thumbnailSmallMin &&
+                    thumb.width <= thumbnailSmallMax &&
+                    thumb.height >= thumbnailSmallMin &&
+                    thumb.height <= thumbnailSmallMax
             )
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 let relative_url = ''
                 if (this.current_file.filename.lastIndexOf('/') !== -1) {
-                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/') + 1)
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(
+                        relative_url + thumbnail.relative_path
+                    )}?timestamp=${this.current_file.modified}`
                 }
             }
         }
@@ -523,20 +627,19 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get thumbnailBig() {
-        if (
-            'thumbnails' in this.current_file &&
-            this.current_file.thumbnails.length
-        ) {
+        if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
             const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) {
                 let relative_url = ''
                 if (this.current_file.filename.lastIndexOf('/') !== -1) {
-                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/')+1)
+                    relative_url = this.current_file.filename.substr(0, this.current_file.filename.lastIndexOf('/') + 1)
                 }
 
                 if (thumbnail && 'relative_path' in thumbnail) {
-                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(relative_url+thumbnail.relative_path)}?timestamp=${this.current_file.modified}`
+                    return `${this.apiUrl}/server/files/gcodes/${encodeURI(
+                        relative_url + thumbnail.relative_path
+                    )}?timestamp=${this.current_file.modified}`
                 }
             }
         }
@@ -545,10 +648,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get thumbnailBigHeight() {
-        if (
-            'thumbnails' in this.current_file &&
-            this.current_file.thumbnails.length
-        ) {
+        if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
             const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'height' in thumbnail) {
@@ -560,10 +660,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     get thumbnailBigWidth() {
-        if (
-            'thumbnails' in this.current_file &&
-            this.current_file.thumbnails.length
-        ) {
+        if ('thumbnails' in this.current_file && this.current_file.thumbnails.length) {
             const thumbnail = this.current_file.thumbnails.find((thumb: any) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'width' in thumbnail) {
@@ -589,11 +686,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     btnPauseJob() {
-        this.$socket.emit('printer.print.pause', { }, { loading: 'statusPrintPause' })
+        this.$socket.emit('printer.print.pause', {}, { loading: 'statusPrintPause' })
     }
 
     btnResumeJob() {
-        this.$socket.emit('printer.print.resume', { }, { loading: 'statusPrintResume' })
+        this.$socket.emit('printer.print.resume', {}, { loading: 'statusPrintResume' })
     }
 
     btnExcludeObject() {
@@ -601,11 +698,11 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     btnCancelJob() {
-        this.$socket.emit('printer.print.cancel', { }, { loading: 'statusPrintCancel' })
+        this.$socket.emit('printer.print.cancel', {}, { loading: 'statusPrintCancel' })
     }
 
     btnClearJob() {
-        this.$socket.emit('printer.gcode.script', {script: 'SDCARD_RESET_FILE'}, { loading: 'statusPrintClear' })
+        this.$socket.emit('printer.gcode.script', { script: 'SDCARD_RESET_FILE' }, { loading: 'statusPrintClear' })
     }
 
     btnReprintJob() {
@@ -613,7 +710,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     clearDisplayMessage() {
-        this.$socket.emit('printer.gcode.script', {script: 'M117'})
+        this.$socket.emit('printer.gcode.script', { script: 'M117' })
     }
 
     formatTime(seconds: number) {
@@ -622,16 +719,16 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         let m = ('0' + Math.floor(seconds / 60)).slice(-2)
         let s = ('0' + (seconds % 60).toFixed(0)).slice(-2)
 
-        return h+':'+m+':'+s
+        return h + ':' + m + ':' + s
     }
 
     formatDateTime(msec: number) {
         const date = new Date(msec)
-        const h = date.getHours() >= 10 ? date.getHours() : '0'+date.getHours()
-        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0'+date.getMinutes()
+        const h = date.getHours() >= 10 ? date.getHours() : '0' + date.getHours()
+        const m = date.getMinutes() >= 10 ? date.getMinutes() : '0' + date.getMinutes()
 
         const diff = msec - new Date().getTime()
-        return h+':'+m+((diff > 60*60*24*1000) ? '+'+Math.round(diff / (60*60*24*1000)) : '')
+        return h + ':' + m + (diff > 60 * 60 * 24 * 1000 ? '+' + Math.round(diff / (60 * 60 * 24 * 1000)) : '')
     }
 
     @Watch('live_flow')
@@ -645,7 +742,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             const thumbnailWidth = this.thumbnailBigWidth
             const factor = clientWidth / thumbnailWidth
 
-            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed()+'px'
+            this.$refs.bigThumbnail.$el.style.height = (this.thumbnailBigHeight * factor).toFixed() + 'px'
         }
     }
 
@@ -656,7 +753,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
     }
 
     onResize() {
-        const isFocused = (document.activeElement === this.$refs.bigThumbnail?.$el)
+        const isFocused = document.activeElement === this.$refs.bigThumbnail?.$el
         if (isFocused) this.focusBigThumbnail()
     }
 

@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
 **Describe the bug:**\
@@ -18,5 +17,6 @@ If applicable, add screenshots to help explain your problem.
 
 **Logfiles:**\
 Please upload your Logfiles here or upload them to [pastebin.com](http://pastebin.com) and paste your log links here.
+
 - klippy.log
 - moonraker.log

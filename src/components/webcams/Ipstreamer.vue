@@ -1,16 +1,15 @@
 <style scoped>
-    .webcamImage {
-        width: 100%;
-    }
+.webcamImage {
+    width: 100%;
+}
 </style>
 
 <template>
-    <video :src="url" autoplay :style="webcamStyle" class="webcamImage" v-observe-visibility="visibilityChanged" />
+    <video v-observe-visibility="visibilityChanged" :src="url" autoplay :style="webcamStyle" class="webcamImage" />
 </template>
 
 <script lang="ts">
-
-import {Component, Mixins, Prop} from 'vue-property-decorator'
+import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
@@ -38,7 +37,7 @@ export default class Ipstreamer extends Mixins(BaseMixin) {
         return ''
     }
 
-    visibilityChanged(isVisible:boolean) {
+    visibilityChanged(isVisible: boolean) {
         this.isVisible = isVisible
     }
 }
