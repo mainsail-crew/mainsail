@@ -23,6 +23,8 @@ All notable changes to Mainsail will be documented in this file.
 - Multiselect in history jobs (#509) | [455a3aa](455a3aa19489cfbcbdf740077e3274153d6448c4)
 - Display only existing/useable bed_mesh profiles (#660) | [82f756c](82f756c6ae6243591d84ec3c1f85973ed7133b05)
 - Add localization options to NumberInput.vue (#661) | [a0d4c66](a0d4c66d6c8b7ce09afca5db0a819e74cfec8904)
+- Add profile name field to calibrate bed_mesh dialog (#664) | [f974372](f974372cbebde56733947b20d155b6d93413ed63)
+- Rework heightmap page (#667) | [96b212e](96b212e8dc86f58fef6edd02ff10fe7fe36da573)
 
 ### Localization
 
@@ -40,6 +42,7 @@ All notable changes to Mainsail will be documented in this file.
 - Migrate `longpress.js` to `longpress.ts` (#619) | [c589a49](c589a495a6ef55bfbb1a498a052ac9d2f56a2acf)
 - Replace 'vue-headful' with 'vue-meta' (#620) | [0cf8ba0](0cf8ba05be1a3e43201b94914ab150efe4562a8c)
 - Make sure that port '80' and '443' are correctly passed through (#631) | [fd22cc2](fd22cc297d0df7c3a5c82fc5a510b1cb682f88fd)
+- Move rename button in heightmap (#665) | [d30ad58](d30ad5858ad89d0de0e3a2640ad7dbacb76fe9a4)
 
 ### Styling
 
