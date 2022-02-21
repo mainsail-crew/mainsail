@@ -10,7 +10,7 @@
 ._error-message {
     color: #ff5252;
     font-size: 12px;
-    padding: 0 16px 2px 0;
+    padding: 4px 16px 2px 0;
 }
 
 .fade-enter-active {
