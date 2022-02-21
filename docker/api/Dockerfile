@@ -38,7 +38,8 @@ RUN /home/node/klipper/scripts/install-debian.sh
 WORKDIR /home/node
 RUN git clone https://github.com/Arksine/moonraker
 WORKDIR /home/node/moonraker
-RUN sed -E 's/check_klipper\(\)/check_klipper() { return 0; }\nold()/' /home/node/moonraker/scripts/install-moonraker.sh > /home/node/moonraker/scripts/install-moonraker2.sh
+#RUN sed -E 's/check_klipper\(\)/check_klipper() { return 0; }\nold()/' /home/node/moonraker/scripts/install-moonraker.sh > /home/node/moonraker/scripts/install-moonraker2.sh
+RUN head -n -3 /home/node/moonraker/scripts/install-moonraker.sh > /home/node/moonraker/scripts/install-moonraker2.sh
 RUN chmod +x /home/node/moonraker/scripts/install-moonraker2.sh
 RUN /home/node/moonraker/scripts/install-moonraker2.sh
 
