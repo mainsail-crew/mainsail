@@ -7,6 +7,11 @@
     margin-left: -6px;
 }
 
+._rpm {
+    padding-top: 0.2rem !important;
+    margin: 0 !important;
+}
+
 ._error-message {
     color: #ff5252;
     font-size: 12px;
@@ -57,7 +62,10 @@
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
-                    <small v-if="rpm || rpm === 0" :class="'mr-3 ' + (rpm === 0 && value > 0 ? 'red--text' : '')">
+                    <small
+                        v-if="rpm || rpm === 0"
+                        :class="`mr-3 ${controllable && pwm ? '_rpm' : ''}
+                                ${rpm === 0 && value > 0 ? 'red--text' : ''}`">
                         {{ Math.round(rpm) }} RPM
                     </small>
                     <span v-if="!controllable" class="font-weight-bold">
