@@ -19,7 +19,7 @@
         "start": "vite preview",
         "test": "npm run build && cypress run",
         "test:ui": "cypress open",
-        "changelog": "git cliff v0.0.4..$(git describe --tags $(git rev-list --tags --max-count=1)) --strip header --output CHANGELOG.md && git cliff --unreleased --prepend CHANGELOG.md --strip footer"
+        "changelog": "git cliff v0.0.4..$(git describe --tags $(git rev-list --tags --max-count=1)) --output CHANGELOG.md"
     },
     "dependencies": {
         "@codemirror/basic-setup": "^0.19.0",
