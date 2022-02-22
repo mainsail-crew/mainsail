@@ -17,8 +17,8 @@
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
         <template #buttons>
+            <v-btn icon tile @click="clearConsole"><v-icon small>mdi-trash-can</v-icon></v-btn>
             <command-help-modal :in-toolbar="true" @onCommand="gcode = $event"></command-help-modal>
-
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
@@ -149,6 +149,10 @@ export default class MiniconsolePanel extends Mixins(BaseMixin) {
                 this.scrollToBottom()
             }, 50)
         }
+    }
+
+    clearConsole() {
+        this.$store.dispatch('gui/console/clear')
     }
 
     get hideWaitTemperatures(): boolean {

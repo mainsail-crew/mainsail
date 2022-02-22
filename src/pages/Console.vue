@@ -38,6 +38,9 @@
             </v-col>
 
             <v-col class="col-auto d-flex align-center">
+                <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
+                    <v-icon>mdi-trash-can</v-icon>
+                </v-btn>
                 <command-help-modal @onCommand="gcode = $event"></command-help-modal>
                 <v-menu
                     offset-y
@@ -146,6 +149,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     set hideWaitTemperatures(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+    }
+
+    clearConsole() {
+        this.$store.dispatch('gui/console/clear')
     }
 
     get hideTlCommands(): boolean {

@@ -64,6 +64,10 @@ export const mutations: MutationTree<ServerState> = {
         })
     },
 
+    setConsoleClearedThisSession(state) {
+        Vue.set(state, 'console_cleared_this_session', true)
+    },
+
     clearGcodeStore(state) {
         Vue.set(state, 'events', [])
     },
