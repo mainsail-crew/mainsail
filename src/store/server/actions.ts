@@ -63,10 +63,6 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setSystemInfo', payload.system_info)
     },
 
-    clearConsole({ commit }, payload) {
-        commit('setSystemInfo', payload.system_info)
-    },
-
     initProcStats({ commit }, payload) {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
     },
