@@ -238,7 +238,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     @Watch('value', { immediate: true })
     valueChanged(newVal: number): void {
-        this.numInput = newVal * 100
+        this.numInput = Math.round(newVal * 100)
     }
 
     // input validation //
