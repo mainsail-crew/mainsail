@@ -36,4 +36,8 @@ export const getters: GetterTree<GuiConsoleState, any> = {
 
         return output
     },
+
+    getConsoleClearedSince: (state, getters, rootState) => {
+        return state.cleared_since
+    },
 }

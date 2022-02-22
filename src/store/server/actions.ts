@@ -158,6 +158,24 @@ export const actions: ActionTree<ServerState, RootState> = {
             }
         })
 
+        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
+
+        events = events.filter((event) => {
+            if (!cleared_since) {
+                return true
+            }
+
+            if (event.time && event.time * 1000 < cleared_since) {
+                return false
+            }
+
+            if (event.date && new Date(event.date).valueOf() < cleared_since) {
+                return false
+            }
+
+            return true
+        })
+
         commit('setGcodeStore', events)
     },
 
