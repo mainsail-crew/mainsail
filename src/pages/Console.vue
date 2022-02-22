@@ -132,11 +132,7 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters['server/getConsoleEvents'](
-            this.consoleDirection === 'table',
-            500,
-            this.$store.state.gui.console.cleared_since
-        )
+        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table')
     }
 
     @Watch('events')

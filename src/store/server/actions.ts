@@ -144,7 +144,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setData', payload)
     },
 
-    getGcodeStore({ commit, rootGetters }, payload) {
+    getGcodeStore({ state, commit, rootGetters }, payload) {
         commit('clearGcodeStore')
 
         let events: ServerStateEvent[] = payload.gcode_store
@@ -156,6 +156,26 @@ export const actions: ActionTree<ServerState, RootState> = {
             } catch {
                 window.console.error("Custom console filter '" + filter + "' doesn't work")
             }
+        })
+
+        const cleared_since = rootGetters['gui/console/getConsoleClearedSince']
+
+        events = events.filter((event) => {
+            if (!cleared_since) {
+                return true
+            }
+
+            console.log(event, event.time, cleared_since)
+
+            if (event.time && event.time * 1000 < cleared_since) {
+                return false
+            }
+
+            if (event.date && new Date(event.date).valueOf() < cleared_since) {
+                return false
+            }
+
+            return true
         })
 
         commit('setGcodeStore', events)

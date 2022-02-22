@@ -1,6 +1,7 @@
 import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { RootState } from './types'
+import Vue from 'vue'
 
 export const actions: ActionTree<RootState, RootState> = {
     switchToDashboard() {

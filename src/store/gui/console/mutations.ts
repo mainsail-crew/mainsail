@@ -10,6 +10,7 @@ export const mutations: MutationTree<GuiConsoleState> = {
 
     clear(state, payload) {
         Vue.set(state, 'cleared_since', payload.cleared_since)
+        Vue.set(state, 'cleared_this_session', true)
     },
 
     filterStore(state, payload) {

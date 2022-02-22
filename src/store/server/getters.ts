@@ -6,14 +6,10 @@ import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/help
 export const getters: GetterTree<ServerState, any> = {
     getConsoleEvents:
         (state) =>
-        (reverse = true, limit = 500, cleared_since: undefined | number = undefined) => {
-            let events = [...state.events].slice(limit * -1) ?? []
+        (reverse = true, limit = 500) => {
+            const events = [...state.events].slice(limit * -1) ?? []
 
-            events = events.filter(
-                (event: ServerStateEvent) => !cleared_since || new Date(event.date).valueOf() > cleared_since
-            )
-
-            if (events.length < 20) {
+            if (events.length < 20 && !state.console_cleared_this_session) {
                 const date = events.length ? events[0].date : new Date()
                 let message = ''
 

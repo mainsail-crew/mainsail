@@ -20,6 +20,9 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
         commit('clear', {
             cleared_since,
         })
+
+        commit('server/clearGcodeStore', {}, { root: true })
+        commit('server/setConsoleClearedThisSession', {}, { root: true })
     },
 
     saveSetting({ dispatch }, payload) {
