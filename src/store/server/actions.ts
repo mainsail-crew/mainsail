@@ -144,7 +144,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         commit('setData', payload)
     },
 
-    getGcodeStore({ state, commit, rootGetters }, payload) {
+    getGcodeStore({ commit, rootGetters }, payload) {
         commit('clearGcodeStore')
 
         let events: ServerStateEvent[] = payload.gcode_store
