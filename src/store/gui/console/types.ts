@@ -1,6 +1,5 @@
 export interface GuiConsoleState {
     cleared_since?: number
-    cleared_this_session?: boolean
     hideWaitTemperatures: boolean
     hideTlCommands: boolean
     direction: 'table' | 'shell'

@@ -165,8 +165,6 @@ export const actions: ActionTree<ServerState, RootState> = {
                 return true
             }
 
-            console.log(event, event.time, cleared_since)
-
             if (event.time && event.time * 1000 < cleared_since) {
                 return false
             }
