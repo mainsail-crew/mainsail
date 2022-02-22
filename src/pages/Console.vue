@@ -38,6 +38,9 @@
             </v-col>
 
             <v-col class="col-auto d-flex align-center">
+                <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
+                    <v-icon>mdi-trash-can</v-icon>
+                </v-btn>
                 <command-help-modal @onCommand="gcode = $event"></command-help-modal>
                 <v-menu
                     offset-y
@@ -101,6 +104,7 @@ import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import { reverseString, strLongestEqual } from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
+import { ServerStateEvent } from '@/store/server/types'
 
 @Component({
     components: {
@@ -128,7 +132,11 @@ export default class PageConsole extends Mixins(BaseMixin) {
     }
 
     get events() {
-        return this.$store.getters['server/getConsoleEvents'](this.consoleDirection === 'table')
+        return this.$store.getters['server/getConsoleEvents'](
+            this.consoleDirection === 'table',
+            500,
+            this.$store.state.gui.console.cleared_since
+        )
     }
 
     @Watch('events')
@@ -146,6 +154,10 @@ export default class PageConsole extends Mixins(BaseMixin) {
 
     set hideWaitTemperatures(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'console.hideWaitTemperatures', value: newVal })
+    }
+
+    clearConsole() {
+        this.$store.dispatch('gui/console/clear')
     }
 
     get hideTlCommands(): boolean {
