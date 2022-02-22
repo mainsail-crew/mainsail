@@ -20,8 +20,6 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     image: mainsail-stack-npm/1
-    env_file:
-      - .env
     volumes:
       # Do not bind '.' as volume.  As we want the node modules being installed in the container
       - ./src/:/home/node/mainsail/src
