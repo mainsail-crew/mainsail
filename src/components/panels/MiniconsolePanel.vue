@@ -106,7 +106,6 @@ import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { ServerStateEvent } from '@/store/server/types'
 
 @Component({
     components: {

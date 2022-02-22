@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { ServerState, ServerStateEvent } from '@/store/server/types'
+import { ServerState } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/helpers'
 
 // eslint-disable-next-line

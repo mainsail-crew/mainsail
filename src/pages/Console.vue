@@ -104,7 +104,6 @@ import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import { reverseString, strLongestEqual } from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
-import { ServerStateEvent } from '@/store/server/types'
 
 @Component({
     components: {
