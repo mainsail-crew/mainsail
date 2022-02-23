@@ -88,8 +88,8 @@
                         </template>
                     </v-text-field>
                 </v-subheader>
-                <!-- display errors-->
                 <transition name="fade">
+                    <!-- display errors-->
                     <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
                         {{ errors()[0] }}
                     </div>
@@ -116,11 +116,13 @@
                         hide-details
                         @change="changeSlider">
                         <template #prepend>
-                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
+                            <v-icon :disabled="isLocked || value <= min" @click="decrement">mdi-minus</v-icon>
                         </template>
 
                         <template #append>
-                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
+                            <v-icon :disabled="isLocked || (value >= max && !dynamicRange)" @click="increment">
+                                mdi-plus
+                            </v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
