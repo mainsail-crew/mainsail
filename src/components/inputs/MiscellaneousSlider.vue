@@ -12,7 +12,7 @@
     margin: 0 !important;
 }
 
-._error-message {
+._error-msg {
     color: #ff5252;
     font-size: 12px;
     padding: 4px 16px 2px 0;
@@ -77,12 +77,12 @@
                     <v-text-field
                         v-if="controllable && pwm"
                         class="_slider-input pt-1"
-                        v-model="numInput"
-                        @blur="numInput = Math.round(parseFloat(value) * 100)"
+                        v-model="inputValue"
+                        @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
                         @focus="$event.target.select()"
                         @keydown="checkInvalidChars"
                         @keyup.enter="submitInput"
-                        :error="invalidInput()"
+                        :error="errors().length > 0"
                         suffix="%"
                         type="number"
                         hide-spin-buttons
@@ -90,12 +90,10 @@
                         outlined
                         dense></v-text-field>
                 </v-subheader>
-                <!-- display errors -->
                 <transition name="fade">
-                    <div
-                        v-show="inputErrors().length > 0 && controllable && pwm"
-                        class="_error-message d-flex justify-end">
-                        {{ inputErrors()[0] }}
+                    <!-- display errors -->
+                    <div v-show="errors().length > 0 && controllable && pwm" class="_error-msg d-flex justify-end">
+                        {{ errors()[0] }}
                     </div>
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
@@ -111,21 +109,21 @@
                         </v-icon>
                     </v-btn>
                     <v-slider
-                        v-model="value"
+                        v-model="sliderValue"
                         v-touch="{ start: resetLockTimer }"
                         :disabled="isLocked"
                         :min="0.0"
                         :max="1.0"
                         :step="0.01"
-                        :color="value < off_below && value > 0 ? 'red' : undefined"
+                        :color="sliderValue < off_below && sliderValue > 0 ? 'red' : undefined"
                         hide-details
-                        @change="changeSlider">
+                        @change="changeSliderValue">
                         <template #prepend>
-                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue <= min" @click="decrement">mdi-minus</v-icon>
                         </template>
 
                         <template #append>
-                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue >= max" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -149,7 +147,8 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     private min = 0
     private value = 0
-    private numInput = 0
+    private inputValue = 0
+    private sliderValue = 0
 
     @Prop({ type: Number, required: true }) declare target: number
     @Prop({ type: Number, default: 1 }) declare max: number
@@ -185,18 +184,27 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     @Debounce(500)
-    changeSlider(): void {
+    changeSliderValue(): void {
+        if (this.value === this.sliderValue) return
+        /**
+         * snap slider handle to 0 if dragging from above 'off_below' to below 'off_below'
+         * snap slider handle to 'off_below' if dragging from 0 to below 'off_below'
+         */
+        if (this.sliderValue < this.value && this.sliderValue < this.off_below) {
+            this.sliderValue = 0
+        } else if (this.sliderValue > this.value && this.sliderValue < this.off_below) {
+            this.sliderValue = this.off_below
+        }
+        this.value = this.sliderValue
         this.sendCmd()
     }
 
     sendCmd(): void {
-        let gcode = ''
-
-        if (this.value < this.min) this.value = 0
         if (this.target === this.value) return
 
+        let gcode = ''
+        if (this.value < this.min) this.value = 0
         const l_value = this.value * this.multi
-
         if (this.type === 'fan') gcode = `M106 S${l_value.toFixed(0)}`
         if (this.type === 'fan_generic') gcode = `SET_FAN_SPEED FAN=${this.name} SPEED=${l_value}`
         if (this.type === 'output_pin') gcode = `SET_PIN PIN=${this.name} VALUE=${l_value.toFixed(2)}`
@@ -218,6 +226,7 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
 
     decrement(): void {
         this.value = this.value > 0 ? Math.round((this.value - 0.01) * 100) / 100 : 0
+        if (this.value < this.off_below) this.value = 0
         this.sendCmd()
     }
 
@@ -236,9 +245,14 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         this.value = newVal / this.max
     }
 
-    @Watch('value', { immediate: true })
+    @Watch('value')
     valueChanged(newVal: number): void {
-        this.numInput = Math.round(newVal * 100)
+        this.sliderValue = newVal
+    }
+
+    @Watch('sliderValue', { immediate: true })
+    sliderValueChanged(newVal: number): void {
+        this.inputValue = Math.round(newVal * 100)
     }
 
     // input validation //
@@ -248,21 +262,18 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.invalidChars.includes(event.key)) event.preventDefault()
     }
 
-    invalidInput(): boolean {
-        return this.numInput.toString() == '' || this.numInput / 100 > this.max || this.numInput / 100 < this.min
-    }
-
-    inputErrors() {
+    errors() {
         const errors = []
-        if (this.numInput.toString() === '') {
+        const input = this.inputValue / 100
+        if (this.inputValue.toString() === '') {
             // "Input must not be empty!"
             errors.push(this.$t('App.NumberInput.NoEmptyAllowedError'))
         }
-        if (this.numInput / 100 < this.min) {
+        if (input < this.min) {
             // "Must be grater or equal than {min}!"
             errors.push(this.$t('App.NumberInput.GreaterOrEqualError', { min: this.min * 100 }))
         }
-        if (this.numInput / 100 > this.max || this.numInput / 100 < this.min) {
+        if (input > this.max || input < this.min) {
             // "Must be between {min} and {max}!"
             errors.push(this.$t('App.NumberInput.MustBeBetweenError', { min: this.min * 100, max: this.max * 100 }))
         }
@@ -270,9 +281,16 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
     }
 
     submitInput(): void {
-        if (this.invalidInput()) return
-        if (this.numInput / 100 > this.max) this.value = this.max
-        else this.value = this.numInput / 100
+        if (this.errors().length > 0) return
+
+        const input = this.inputValue / 100
+        if (input > this.max) {
+            this.value = this.max
+        } else if (input < this.off_below) {
+            this.value = 0
+            this.inputValue = 0
+        } else this.value = input
+
         this.sendCmd()
     }
 }
