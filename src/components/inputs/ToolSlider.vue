@@ -7,7 +7,7 @@
     margin-left: -6px;
 }
 
-._error-message {
+._error-msg {
     color: #ff5252;
     font-size: 12px;
     padding: 4px 16px 2px 0;
@@ -71,7 +71,7 @@
                     <v-text-field
                         v-if="hasInputField"
                         v-model="numInput"
-                        :error="invalidInput()"
+                        :error="errors().length > 0"
                         :suffix="unit"
                         type="number"
                         hide-spin-buttons
@@ -90,8 +90,8 @@
                 </v-subheader>
                 <!-- display errors-->
                 <transition name="fade">
-                    <div v-show="inputErrors().length > 0" class="_error-message d-flex justify-end">
-                        {{ inputErrors()[0] }}
+                    <div v-show="errors().length > 0" class="_error-msg d-flex justify-end">
+                        {{ errors()[0] }}
                     </div>
                 </transition>
                 <v-card-text class="py-0 pb-2 d-flex align-center">
@@ -236,15 +236,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         if (this.invalidChars.includes(event.key)) event.preventDefault()
     }
 
-    invalidInput(): boolean {
-        return (
-            this.numInput.toString() == '' ||
-            (!this.dynamicRange && this.numInput) > this.max ||
-            this.numInput < this.min
-        )
-    }
-
-    inputErrors() {
+    errors() {
         const errors = []
         if (this.numInput.toString() === '') {
             // "Input must not be empty!"
@@ -262,7 +254,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     submitInput(): void {
-        if (this.invalidInput()) return
+        if (this.errors().length > 0) return
         if (!this.dynamicRange && this.numInput > this.max) this.value = this.max
         else this.value = this.numInput
         this.sendCmd()
