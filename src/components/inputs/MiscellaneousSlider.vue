@@ -76,19 +76,19 @@
                     </v-icon>
                     <v-text-field
                         v-if="controllable && pwm"
-                        class="_slider-input pt-1"
                         v-model="inputValue"
-                        @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
-                        @focus="$event.target.select()"
-                        @keydown="checkInvalidChars"
-                        @keyup.enter="submitInput"
                         :error="errors().length > 0"
                         suffix="%"
                         type="number"
                         hide-spin-buttons
                         hide-details
                         outlined
-                        dense></v-text-field>
+                        dense
+                        class="_slider-input pt-1"
+                        @blur="inputValue = Math.round(parseFloat(sliderValue) * 100)"
+                        @focus="$event.target.select()"
+                        @keydown="checkInvalidChars"
+                        @keyup.enter="submitInput"></v-text-field>
                 </v-subheader>
                 <transition name="fade">
                     <!-- display errors -->
@@ -98,12 +98,12 @@
                 </transition>
                 <v-card-text v-if="controllable && pwm" class="py-0 pb-2 d-flex align-center">
                     <v-btn
-                        class="_lock-button"
                         v-if="lockSliders && isTouchDevice && pwm"
-                        @click="isLocked = !isLocked"
                         plain
                         small
-                        icon>
+                        icon
+                        class="_lock-button"
+                        @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>

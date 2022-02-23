@@ -53,15 +53,15 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
-                    <v-icon small :class="'mr-2'">
+                    <v-icon small class="mr-2">
                         {{ icon }}
                     </v-icon>
                     <span>{{ label }}</span>
                     <v-btn
                         v-if="value !== defaultValue && !hasInputField"
-                        class="ml-2"
                         x-small
                         icon
+                        class="ml-2"
                         :disabled="isLocked"
                         @click="resetSlider">
                         <v-icon>mdi-restart</v-icon>
@@ -70,19 +70,19 @@
                     <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
                     <v-text-field
                         v-if="hasInputField"
-                        class="_slider-input d-flex align-center pt-1"
                         v-model="numInput"
-                        @blur="numInput = value"
-                        @focus="$event.target.select()"
-                        @keydown="checkInvalidChars"
-                        @keyup.enter="submitInput"
                         :error="invalidInput()"
                         :suffix="unit"
                         type="number"
                         hide-spin-buttons
                         hide-details
                         outlined
-                        dense>
+                        dense
+                        class="_slider-input d-flex align-center pt-1"
+                        @blur="numInput = value"
+                        @focus="$event.target.select()"
+                        @keydown="checkInvalidChars"
+                        @keyup.enter="submitInput">
                         <template #append v-if="value !== defaultValue || value !== numInput">
                             <v-icon small @click="resetSlider">mdi-restart</v-icon>
                         </template>
@@ -96,12 +96,12 @@
                 </transition>
                 <v-card-text class="py-0 pb-2 d-flex align-center">
                     <v-btn
-                        class="_lock-button"
                         v-if="lockSliders && isTouchDevice"
-                        @click="isLocked = !isLocked"
                         plain
                         small
-                        icon>
+                        icon
+                        class="_lock-button"
+                        @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
