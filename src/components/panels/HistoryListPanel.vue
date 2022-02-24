@@ -38,9 +38,9 @@
                         <v-btn
                             :title="$t('History.TitleExportHistory')"
                             class="px-2 minwidth-0 ml-3"
-                            @click="exportHistory"
-                            ><v-icon>mdi-database-export-outline</v-icon></v-btn
-                        >
+                            @click="exportHistory">
+                            <v-icon>mdi-database-export-outline</v-icon>
+                        </v-btn>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
@@ -835,6 +835,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     exportHistory() {
         const content: string[][] = []
 
+        const row: string[] = []
+
+        row.push('filename')
+        row.push('status')
+        this.tableFields.forEach((col) => {
+            row.push(col.value)
+        })
+
+        content.push(row)
+
         if (this.jobs.length) {
             this.jobs.forEach((job: ServerHistoryStateJob) => {
                 const row: string[] = []
@@ -843,7 +853,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 row.push(job.status)
 
                 this.tableFields.forEach((col) => {
-                    row.push(this.outputValue(col, job))
+                    row.push(this.outputValue(col, job, false))
                 })
 
                 if (this.headers.find((header) => header.value === 'slicer')?.visible) {
@@ -875,11 +885,25 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
-    outputValue(col: any, item: any) {
+    outputValue(col: any, item: any, format: boolean = true) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
 
-        if (value > 0) {
+        if (!format) {
+            switch (col.outputType) {
+                case 'date':
+                    return this.formatDate(value)
+
+                case 'time':
+                    return value.toFixed()
+
+                case 'length':
+                    return value.toFixed()
+
+                default:
+                    return value
+            }
+        } else if (value > 0) {
             switch (col.outputType) {
                 case 'filesize':
                     return formatFilesize(value)
