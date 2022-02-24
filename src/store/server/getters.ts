@@ -9,7 +9,7 @@ export const getters: GetterTree<ServerState, any> = {
         (reverse = true, limit = 500) => {
             const events = [...state.events].slice(limit * -1) ?? []
 
-            if (events.length < 20) {
+            if (events.length < 20 && !state.console_cleared_this_session) {
                 const date = events.length ? events[0].date : new Date()
                 let message = ''
 
