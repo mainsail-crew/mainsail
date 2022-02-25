@@ -653,6 +653,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
     }
 
+    get currentLanguage() {
+        return this.$store.state.gui.general?.language ?? 'en'
+    }
+
     refreshHistory() {
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
@@ -869,7 +873,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(';')).join('\n')
+        const separator = ['de'].includes(this.currentLanguage) ? ';' : ','
+        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(separator)).join('\n')
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
