@@ -14,7 +14,7 @@ export const getDefaultState = (): ServerHistoryState => {
             total_filament_used: 0,
             longest_job: 0,
             longest_print: 0,
-        }
+        },
     }
 }
 
@@ -27,5 +27,5 @@ export const history: Module<ServerHistoryState, any> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 }

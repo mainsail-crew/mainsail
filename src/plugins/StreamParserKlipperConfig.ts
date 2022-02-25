@@ -146,10 +146,9 @@ export const klipper_config: StreamParser<any> = {
         }
     },
     languageData: {
-        commentTokens: {line: '#'}
-    }
+        commentTokens: { line: '#' },
+    },
 }
-
 
 interface StreamParserKlipperConfigState {
     block: boolean,

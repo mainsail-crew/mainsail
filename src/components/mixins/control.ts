@@ -3,7 +3,6 @@ import Component from 'vue-class-component'
 
 @Component
 export default class ControlMixin extends Vue {
-
     get absolute_coordinates() {
         return this.$store.state.printer?.gcode_move?.absolute_coordinates ?? true
     }
@@ -21,11 +20,19 @@ export default class ControlMixin extends Vue {
     }
 
     get existsQGL() {
-        return 'quad_gantry_level' in this.$store.state.printer.configfile?.settings ?? false
+        if (!this.$store.state.printer.configfile.settings) {
+            return false
+        }
+
+        return 'quad_gantry_level' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get existsZtilt() {
-        return 'z_tilt' in this.$store.state.printer.configfile?.settings ?? false
+        if (!this.$store.state.printer.configfile.settings) {
+            return false
+        }
+
+        return 'z_tilt' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get colorQuadGantryLevel() {
@@ -71,8 +78,7 @@ export default class ControlMixin extends Vue {
     }
 
     doSendMove(gcode: string, feedrate: number) {
-        gcode = 'G91' + '\n' +
-            'G1 ' + gcode + ' F'+feedrate*60
+        gcode = 'G91' + '\n' + 'G1 ' + gcode + ' F' + feedrate * 60
 
         if (this.absolute_coordinates) gcode += '\nG90'
 

@@ -1,7 +1,7 @@
-import {StringStream} from '@codemirror/stream-parser'
+import { StringStream } from '@codemirror/stream-parser'
 
 export const gcode = {
-    token: function(stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
+    token: function (stream: StringStream, state: StreamParserGcodeState, zeroPos = 0): string | null {
         const ch = stream.peek()
 
         if (stream.pos === zeroPos && state.klipperMacro) state.klipperMacro = false
@@ -57,14 +57,14 @@ export const gcode = {
         stream.next()
         return null
     },
-    startState: function(): StreamParserGcodeState {
+    startState: function (): StreamParserGcodeState {
         return {
             klipperMacro: false,
         }
     },
     languageData: {
-        commentTokens: {line: ';'}
-    }
+        commentTokens: { line: ';' },
+    },
 }
 
 interface StreamParserGcodeState {

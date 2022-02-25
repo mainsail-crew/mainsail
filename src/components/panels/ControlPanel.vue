@@ -26,8 +26,7 @@
         icon="mdi-gamepad"
         :title="$t('Panels.ControlPanel.Headline')"
         :collapsible="true"
-        card-class="control-panel"
-    >
+        card-class="control-panel">
         <v-container>
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>
@@ -38,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ControlPanelExtruder from '@/components/panels/ControlPanelExtruder.vue'
 import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossControl.vue'
@@ -48,7 +47,11 @@ import Panel from '@/components/ui/Panel.vue'
 @Component({
     components: {
         Panel,
-        ControlPanelCircleControl, ControlPanelBarsControl, ControlPanelCrossControl, ControlPanelExtruder}
+        ControlPanelCircleControl,
+        ControlPanelBarsControl,
+        ControlPanelCrossControl,
+        ControlPanelExtruder,
+    },
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
     get controlStyle() {

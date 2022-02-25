@@ -1,7 +1,6 @@
 <style>
-    .vue-codemirror .cm-editor {
-
-    }
+.vue-codemirror .cm-editor {
+}
 </style>
 
 <template>
@@ -13,11 +12,11 @@
 <script lang="ts">
 // Inspired by these repo: https://github.com/surmon-china/vue-codemirror
 
-import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
-import {basicSetup, EditorState} from '@codemirror/basic-setup'
-import {mainsailTheme} from '@/plugins/codemirrorTheme'
-import {StreamLanguage} from '@codemirror/stream-parser'
+import { basicSetup, EditorState } from '@codemirror/basic-setup'
+import { mainsailTheme } from '@/plugins/codemirrorTheme'
+import { StreamLanguage } from '@codemirror/stream-parser'
 import { klipper_config } from '@/plugins/StreamParserKlipperConfig'
 import { gcode } from '@/plugins/StreamParserGcode'
 import {EditorView, keymap} from '@codemirror/view'
@@ -39,13 +38,13 @@ export default class Codemirror extends Mixins(BaseMixin) {
     declare readonly code: string
 
     @Prop({ required: false, default: '' })
-   declare value: string
+    declare value: string
 
     @Prop({ required: false, default: 'codemirror' })
-   declare readonly name: string
+    declare readonly name: string
 
     @Prop({ required: false, default: '' })
-   declare readonly fileExtension: string
+    declare readonly fileExtension: string
 
     @Watch('value')
     valueChanged(newVal: string) {
@@ -89,7 +88,7 @@ export default class Codemirror extends Mixins(BaseMixin) {
             basicSetup,
             mainsailTheme,
             keymap.of([indentWithTab]),
-            EditorView.updateListener.of(update => {
+            EditorView.updateListener.of((update) => {
                 this.content = update.state?.doc.toString()
                 if (this.$emit) {
                     this.$emit('input', this.content)

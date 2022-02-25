@@ -1,7 +1,7 @@
 <style scoped>
-    ._tool-slider-subheader {
-        height: auto;
-    }
+._tool-slider-subheader {
+    height: auto;
+}
 </style>
 
 <template>
@@ -9,14 +9,8 @@
         <v-row>
             <v-col class="pb-1 pt-3">
                 <v-subheader class="_tool-slider-subheader">
-                    <v-btn
-                        v-if="lockSliders && isTouchDevice"
-                        @click="isLocked = !isLocked"
-                        plain
-                        small
-                        icon
-                    >
-                        <v-icon small :color="(isLocked ? 'red' : '')">
+                    <v-btn v-if="lockSliders && isTouchDevice" plain small icon @click="isLocked = !isLocked">
+                        <v-icon small :color="isLocked ? 'red' : ''">
                             {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
                         </v-icon>
                     </v-btn>
@@ -30,32 +24,28 @@
                         x-small
                         icon
                         :disabled="isLocked"
-                        @click="resetSlider"
-                    >
+                        @click="resetSlider">
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <span class="font-weight-bold">
-                        {{ value }} {{ unit }}
-                    </span>
+                    <span class="font-weight-bold">{{ value }} {{ unit }}</span>
                 </v-subheader>
                 <v-card-text class="py-0">
                     <v-slider
                         v-model="value"
-                        v-touch="{start: resetLockTimer}"
+                        v-touch="{ start: resetLockTimer }"
                         :disabled="isLocked"
                         :min="min"
                         :max="processedMax"
                         :color="colorBar"
-                        @change="changeSlider"
-                        hide-details>
-
-                        <template v-slot:prepend>
-                            <v-icon @click="decrement" :disabled="isLocked">mdi-minus</v-icon>
+                        hide-details
+                        @change="changeSlider">
+                        <template #prepend>
+                            <v-icon :disabled="isLocked" @click="decrement">mdi-minus</v-icon>
                         </template>
 
-                        <template v-slot:append>
-                            <v-icon @click="increment" :disabled="isLocked">mdi-plus</v-icon>
+                        <template #append>
+                            <v-icon :disabled="isLocked" @click="increment">mdi-plus</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -64,11 +54,10 @@
     </v-container>
 </template>
 
-
 <script lang="ts">
-import {Component, Mixins, Prop, Watch} from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {Debounce} from 'vue-debounce-decorator'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
@@ -89,7 +78,7 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     @Prop({ type: Number, default: 0 }) declare readonly min: number
     @Prop({ type: Number, default: 100 }) declare readonly max: number
     @Prop({ type: Boolean, default: false }) declare readonly dynamicRange: boolean
-    @Prop({ type: Number, default: 100 })  declare readonly defaultValue: number
+    @Prop({ type: Number, default: 100 }) declare readonly defaultValue: number
     @Prop({ type: Number, default: 100 }) declare readonly step: number
     @Prop({ type: Number, default: 1 }) declare readonly multi: number
 
@@ -103,15 +92,15 @@ export default class ToolSlider extends Mixins(BaseMixin) {
         }
     }
 
-    @Watch('lockSliders', {immediate: true})
-    lockSlidersChanged(){
+    @Watch('lockSliders', { immediate: true })
+    lockSlidersChanged() {
         this.isLocked = this.lockSliders && this.isTouchDevice
     }
 
     startLockTimer() {
         let t = this.lockSlidersDelay
-        if (!this.isTouchDevice || !this.lockSliders || (t <= 0)) return
-        this.timeout = setTimeout(() => this.isLocked = true, t * 1000)
+        if (!this.isTouchDevice || !this.lockSliders || t <= 0) return
+        this.timeout = setTimeout(() => (this.isLocked = true), t * 1000)
     }
 
     resetLockTimer() {
@@ -166,9 +155,10 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     sendCmd() {
-        const gcode = this.command + ' ' + this.attributeName + (Math.max(1, this.value) * this.attributeScale).toFixed(0)
-        this.$store.dispatch('server/addEvent', {message: gcode, type: 'command'})
-        this.$socket.emit('printer.gcode.script', {script: gcode})
+        const gcode =
+            this.command + ' ' + this.attributeName + (Math.max(1, this.value) * this.attributeScale).toFixed(0)
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode })
 
         this.startLockTimer()
     }
@@ -179,7 +169,8 @@ export default class ToolSlider extends Mixins(BaseMixin) {
     }
 
     increment() {
-        this.value = this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
+        this.value =
+            this.value < this.processedMax || this.dynamicRange ? Math.round(this.value + this.step) : this.processedMax
         this.sendCmd()
     }
 }
