@@ -873,7 +873,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const separator = ['de'].includes(this.currentLanguage) ? ';' : ','
+        const separator = ['en', 'zh', 'zh-tw'].includes(this.currentLanguage) ? ',' : ';'
         const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(separator)).join('\n')
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
