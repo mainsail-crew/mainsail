@@ -897,7 +897,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
-        if (escapeChar !== null && typeof value === 'string') value = value.replaceAll(escapeChar, '')
+        if (escapeChar !== null && typeof value === 'string') value = '"' + value + '"'
 
         if (!format) {
             switch (col.outputType) {
