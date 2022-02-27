@@ -858,7 +858,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             this.jobs.forEach((job: ServerHistoryStateJob) => {
                 const row: string[] = []
 
-                row.push(job.filename)
+                let filename = job.filename
+                if (filename.includes(csvSeperator)) filename = '"' + filename + '"'
+                row.push(filename)
                 row.push(job.status)
 
                 this.tableFields.forEach((col) => {
@@ -897,7 +899,6 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
-        if (escapeChar !== null && typeof value === 'string') value = '"' + value + '"'
 
         if (!format) {
             switch (col.outputType) {
@@ -908,7 +909,18 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return value.toFixed()
 
                 default:
-                    return typeof value === 'number' ? value.toLocaleString() : value
+                    switch (typeof value) {
+                        case 'number':
+                            return value.toLocaleString()
+
+                        case 'string':
+                            if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
+
+                            return value
+
+                        default:
+                            return value
+                    }
             }
         } else if (value > 0) {
             switch (col.outputType) {
