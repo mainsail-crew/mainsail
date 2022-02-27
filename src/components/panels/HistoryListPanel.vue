@@ -839,8 +839,11 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     }
 
     exportHistory() {
-        const content: string[][] = []
+        const checkString = parseFloat('1.23').toLocaleString()
+        const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
+        const csvSeperator = decimalSeparator === ',' ? ';' : ','
 
+        const content: string[][] = []
         const row: string[] = []
 
         row.push('filename')
@@ -859,7 +862,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 row.push(job.status)
 
                 this.tableFields.forEach((col) => {
-                    row.push(this.outputValue(col, job, false))
+                    row.push(this.outputValue(col, job, false, csvSeperator))
                 })
 
                 if (this.headers.find((header) => header.value === 'slicer')?.visible) {
@@ -873,8 +876,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
             })
         }
 
-        const separator = ['en', 'zh', 'zh-tw'].includes(this.currentLanguage) ? ',' : ';'
-        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(separator)).join('\n')
+        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
         const link = document.createElement('a')
         link.setAttribute('href', encodeURI(csvContent))
         link.setAttribute('download', 'print_history.csv')
@@ -892,9 +894,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
-    outputValue(col: any, item: any, format: boolean = true) {
+    outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
+        if (escapeChar !== null && typeof value === 'string') value = value.replaceAll(escapeChar, '')
 
         if (!format) {
             switch (col.outputType) {
@@ -904,11 +907,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                 case 'time':
                     return value.toFixed()
 
-                case 'length':
-                    return value.toFixed()
-
                 default:
-                    return value
+                    return typeof value === 'number' ? value.toLocaleString() : value
             }
         } else if (value > 0) {
             switch (col.outputType) {
