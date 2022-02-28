@@ -79,6 +79,7 @@
                                                     <v-icon>{{ form.icon }}</v-icon>
                                                     <v-icon
                                                         :class="!selectIcon ? '' : '_rotate-180'"
+                                                        :color="!selectIcon ? '' : 'primary'"
                                                         class="pl-1 mr-n2">
                                                         mdi-menu-down
                                                     </v-icon>
