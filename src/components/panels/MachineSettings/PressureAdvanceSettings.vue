@@ -1,10 +1,10 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col v-if="all_extruders.length > 1" class="col-12 col-xl-4">
+            <v-col v-if="allExtruders.length > 1" class="col-12 col-xl-4">
                 <div class="d-flex align-center">
                     <v-btn
-                        v-if="selectedExtruder !== active_extruder"
+                        v-if="selectedExtruder !== activeExtruder"
                         icon
                         plain
                         class="mr-2"
@@ -14,19 +14,19 @@
                     <v-select
                         v-model="selectedExtruder"
                         :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Extruder').toString()"
-                        :items="all_extruders"
-                        :value="active_extruder"
+                        :items="allExtruders"
+                        :value="activeExtruder"
                         hide-details
                         outlined
                         dense></v-select>
                 </div>
             </v-col>
-            <v-col :class="all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
+            <v-col :class="allExtruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
-                    param="advance"
-                    :target="current_pressure_advance"
-                    :default-value="default_pressure_advance"
+                    param="ADVANCE"
+                    :target="pressureAdvance"
+                    :default-value="defaultPressureAdvance"
                     :extruder="selectedExtruder"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -35,15 +35,14 @@
                     :step="0.001"
                     :dec="3"
                     unit="mm/s"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
-            <v-col :class="all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
+            <v-col :class="allExtruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
-                    param="smoothTime"
-                    :target="current_smooth_time"
-                    :default-value="default_smooth_time"
+                    param="SMOOTH_TIME"
+                    :target="smoothTime"
+                    :default-value="defaultSmoothTime"
                     :extruder="selectedExtruder"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -53,8 +52,7 @@
                     :step="0.001"
                     :dec="3"
                     unit="s"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
         </v-row>
     </v-card-text>
@@ -74,14 +72,11 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
     private extruders: string[] = []
     private selectedExtruder = ''
 
-    private declare advance: number
-    private declare smoothTime: number
-
     resetToActiveExtruder(): void {
         this.selectedExtruder = this.$store.state.printer.toolhead?.extruder
     }
 
-    get all_extruders(): string[] {
+    get allExtruders(): string[] {
         Object.keys(this.$store.state.printer).forEach((e) => {
             if (e.startsWith('extruder') && !this.extruders.includes(e)) this.extruders.push(e)
         })
@@ -90,24 +85,20 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
         return this.extruders
     }
 
-    get active_extruder(): string {
+    get activeExtruder(): string {
         this.resetToActiveExtruder()
         return this.$store.state.printer.toolhead?.extruder
     }
 
-    get current_pressure_advance(): number {
-        this.advance =
-            Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000) / 1000
-        return this.advance
+    get pressureAdvance(): number {
+        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000) / 1000
     }
 
-    get current_smooth_time(): number {
-        this.smoothTime =
-            Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.smooth_time ?? 0.04) * 1000) / 1000
-        return this.smoothTime
+    get smoothTime(): number {
+        return Math.floor((this.$store.state.printer?.[this.selectedExtruder]?.smooth_time ?? 0.04) * 1000) / 1000
     }
 
-    get default_pressure_advance(): number {
+    get defaultPressureAdvance(): number {
         return (
             Math.floor(
                 (this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.pressure_advance ?? 0) * 1000
@@ -115,7 +106,7 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
         )
     }
 
-    get default_smooth_time(): number {
+    get defaultSmoothTime(): number {
         return (
             Math.floor(
                 (this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]
@@ -124,26 +115,9 @@ export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
         )
     }
 
-    updateValue(param: string, newVal: number) {
-        const params = ['advance', 'smoothTime']
-        if (!params.includes(param)) return
-
-        switch (param) {
-            case 'advance':
-                this.advance = newVal
-                break
-            case 'smoothTime':
-                this.smoothTime = newVal
-                break
-        }
-    }
-
     @Debounce(500)
-    sendCmd(): void {
-        let gcode = `SET_PRESSURE_ADVANCE`
-        gcode += ` EXTRUDER=${this.selectedExtruder}`
-        gcode += ` ADVANCE=${this.advance}`
-        gcode += ` SMOOTH_TIME=${this.smoothTime}`
+    sendCmd(params: { name: string; value: number }): void {
+        const gcode = `SET_PRESSURE_ADVANCE EXTRUDER=${this.selectedExtruder} ${params.name}=${params.value}`
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })

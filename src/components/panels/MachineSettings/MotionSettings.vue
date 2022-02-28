@@ -6,7 +6,7 @@
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
                     param="VELOCITY"
                     :target="velocity"
-                    :default-value="max_velocity"
+                    :default-value="defaultVelocity"
                     :output-error-msg="true"
                     :has-spinner="true"
                     :spinner-factor="5"
@@ -22,7 +22,7 @@
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
                     param="SQUARE_CORNER_VELOCITY"
                     :target="squareCornerVelocity"
-                    :default-value="max_square_corner_velocity"
+                    :default-value="defaultSquareCornerVelocity"
                     :output-error-msg="true"
                     :has-spinner="true"
                     :step="0.1"
@@ -39,7 +39,7 @@
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
                     param="ACCEL"
                     :target="accel"
-                    :default-value="max_accel"
+                    :default-value="defaultAccel"
                     :output-error-msg="true"
                     :has-spinner="true"
                     :spinner-factor="100"
@@ -55,7 +55,7 @@
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
                     param="ACCEL_TO_DECEL"
                     :target="accelToDecel"
-                    :default-value="max_accel_to_decel"
+                    :default-value="defaultAccelToDecel"
                     :output-error-msg="true"
                     :has-spinner="true"
                     :spinner-factor="100"
@@ -97,19 +97,19 @@ export default class MotionSettings extends Mixins(BaseMixin) {
         return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
 
-    get max_velocity(): number {
+    get defaultVelocity(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_velocity ?? 300)
     }
 
-    get max_accel(): number {
+    get defaultAccel(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel ?? 3000)
     }
 
-    get max_accel_to_decel(): number {
+    get defaultAccelToDecel(): number {
         return Math.trunc(this.$store.state.printer?.configfile?.settings?.printer?.max_accel_to_decel ?? 1500)
     }
 
-    get max_square_corner_velocity(): number {
+    get defaultSquareCornerVelocity(): number {
         return (
             Math.floor((this.$store.state.printer?.configfile?.settings?.printer?.square_corner_velocity ?? 8) * 10) /
             10
