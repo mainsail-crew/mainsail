@@ -4,8 +4,8 @@
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
-                    param="velocity"
-                    :target="current_velocity"
+                    param="VELOCITY"
+                    :target="velocity"
                     :default-value="max_velocity"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -15,14 +15,13 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
-                    param="squareCornerVelocity"
-                    :target="current_square_corner_velocity"
+                    param="SQUARE_CORNER_VELOCITY"
+                    :target="squareCornerVelocity"
                     :default-value="max_square_corner_velocity"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -31,16 +30,15 @@
                     :max="null"
                     :dec="1"
                     unit="mm/s"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
         </v-row>
         <v-row>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
-                    param="acceleration"
-                    :target="current_accel"
+                    param="ACCEL"
+                    :target="accel"
                     :default-value="max_accel"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -50,14 +48,13 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
-                    param="accelToDecel"
-                    :target="current_accel_to_decel"
+                    param="ACCEL_TO_DECEL"
+                    :target="accelToDecel"
                     :default-value="max_accel_to_decel"
                     :output-error-msg="true"
                     :has-spinner="true"
@@ -67,8 +64,7 @@
                     :max="null"
                     :dec="0"
                     unit="mm/s²"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"></number-input>
+                    @submit="sendCmd"></number-input>
             </v-col>
         </v-row>
     </v-card-text>
@@ -85,30 +81,20 @@ import NumberInput from '@/components/inputs/NumberInput.vue'
     components: { Panel, NumberInput },
 })
 export default class MotionSettings extends Mixins(BaseMixin) {
-    private declare velocity: number
-    private declare acceleration: number
-    private declare accelToDecel: number
-    private declare squareCornerVelocity: number
-
-    get current_velocity(): number {
-        this.velocity = Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
-        return this.velocity
+    get velocity(): number {
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_velocity ?? 300)
     }
 
-    get current_accel(): number {
-        this.acceleration = Math.trunc(this.$store.state.printer?.toolhead?.max_accel ?? 3000)
-        return this.acceleration
+    get accel(): number {
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel ?? 3000)
     }
 
-    get current_accel_to_decel(): number {
-        this.accelToDecel = Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? 1500)
-        return this.accelToDecel
+    get accelToDecel(): number {
+        return Math.trunc(this.$store.state.printer?.toolhead?.max_accel_to_decel ?? this.accel / 2)
     }
 
-    get current_square_corner_velocity(): number {
-        this.squareCornerVelocity =
-            Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
-        return this.squareCornerVelocity
+    get squareCornerVelocity(): number {
+        return Math.floor((this.$store.state.printer?.toolhead?.square_corner_velocity ?? 8) * 10) / 10
     }
 
     get max_velocity(): number {
@@ -130,33 +116,9 @@ export default class MotionSettings extends Mixins(BaseMixin) {
         )
     }
 
-    updateValue(param: string, newVal: number) {
-        const params = ['velocity', 'acceleration', 'accelToDecel', 'squareCornerVelocity']
-        if (!params.includes(param)) return
-
-        switch (param) {
-            case 'velocity':
-                this.velocity = newVal
-                break
-            case 'acceleration':
-                this.acceleration = newVal
-                break
-            case 'accelToDecel':
-                this.accelToDecel = newVal
-                break
-            case 'squareCornerVelocity':
-                this.squareCornerVelocity = newVal
-                break
-        }
-    }
-
     @Debounce(500)
-    sendCmd(): void {
-        let gcode = `SET_VELOCITY_LIMIT`
-        gcode += ` VELOCITY=${this.velocity}`
-        gcode += ` ACCEL=${this.acceleration}`
-        gcode += ` ACCEL_TO_DECEL=${this.accelToDecel}`
-        gcode += ` SQUARE_CORNER_VELOCITY=${this.squareCornerVelocity}`
+    sendCmd(params: { name: string; value: number }): void {
+        const gcode = `SET_VELOCITY_LIMIT ${params.name}=${params.value}`
 
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
