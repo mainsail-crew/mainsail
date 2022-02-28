@@ -1,8 +1,10 @@
-<style lang="scss">
-.history-jobs-table {
-    th.text-start {
-        padding-right: 0 !important;
-    }
+<style>
+.history-jobs-table th {
+    white-space: nowrap;
+}
+
+.history-jobs-table th.text-start {
+    padding-right: 0 !important;
 }
 </style>
 
@@ -35,6 +37,12 @@
                                 <v-icon>mdi-delete</v-icon>
                             </v-btn>
                         </template>
+                        <v-btn
+                            :title="$t('History.TitleExportHistory')"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="exportHistory">
+                            <v-icon>mdi-database-export-outline</v-icon>
+                        </v-btn>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
@@ -645,6 +653,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
     }
 
+    get currentLanguage() {
+        return this.$store.state.gui.general?.language ?? 'en'
+    }
+
     refreshHistory() {
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
@@ -826,6 +838,56 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.deleteSelectedDialog = false
     }
 
+    exportHistory() {
+        const checkString = parseFloat('1.23').toLocaleString()
+        const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
+        const csvSeperator = decimalSeparator === ',' ? ';' : ','
+
+        const content: string[][] = []
+        const row: string[] = []
+
+        row.push('filename')
+        row.push('status')
+        this.tableFields.forEach((col) => {
+            row.push(col.value)
+        })
+
+        content.push(row)
+
+        if (this.jobs.length) {
+            this.jobs.forEach((job: ServerHistoryStateJob) => {
+                const row: string[] = []
+
+                let filename = job.filename
+                if (filename.includes(csvSeperator)) filename = '"' + filename + '"'
+                row.push(filename)
+                row.push(job.status)
+
+                this.tableFields.forEach((col) => {
+                    row.push(this.outputValue(col, job, false, csvSeperator))
+                })
+
+                if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+                    let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
+                    if ('slicer_version' in job.metadata && job.metadata.slicer_version)
+                        slicerString += ' ' + job.metadata.slicer_version
+                    row.push(slicerString)
+                }
+
+                content.push(row)
+            })
+        }
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        const link = document.createElement('a')
+        link.setAttribute('href', encodeURI(csvContent))
+        link.setAttribute('download', 'print_history.csv')
+        document.body.appendChild(link)
+
+        link.click()
+        link.remove()
+    }
+
     getStatusIcon(status: string) {
         return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
     }
@@ -834,11 +896,33 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
-    outputValue(col: any, item: any) {
+    outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
 
-        if (value > 0) {
+        if (!format) {
+            switch (col.outputType) {
+                case 'date':
+                    return this.formatDate(value)
+
+                case 'time':
+                    return value.toFixed()
+
+                default:
+                    switch (typeof value) {
+                        case 'number':
+                            return value.toLocaleString()
+
+                        case 'string':
+                            if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
+
+                            return value
+
+                        default:
+                            return value
+                    }
+            }
+        } else if (value > 0) {
             switch (col.outputType) {
                 case 'filesize':
                     return formatFilesize(value)
