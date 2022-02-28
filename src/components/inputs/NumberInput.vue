@@ -77,20 +77,20 @@ export default class NumberInput extends Mixins(BaseMixin) {
     declare readonly param: string
 
     // props defining incoming data
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly target: number
 
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly defaultValue: number
 
     // props for internal processing
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly min: number
 
     @Prop({ type: Number, default: null })
     declare readonly max: number | null
 
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly dec: number
 
     @Prop({ type: Number, required: false, default: 1 })
@@ -147,8 +147,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
 
     submit(): void {
         if (this.invalidInput()) return
-        this.$emit('target-changed', this.param, this.value)
-        this.$emit('submit', this.param)
+        this.$emit('submit', { name: this.param, value: this.value })
     }
 
     // input validation //
