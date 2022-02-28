@@ -107,10 +107,16 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         dispatch('upload', payload.id)
     },
 
-    delete({ commit, dispatch }, id) {
+    delete({ commit, dispatch, rootState }, id) {
         commit('delete', id)
         dispatch('farm/unregisterPrinter', id, { root: true })
 
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'remoteprinters.printers.' + id })
+        if (rootState.socket?.remoteMode) dispatch('upload')
+        else {
+            Vue.$socket.emit('server.database.delete_item', {
+                namespace: 'mainsail',
+                key: 'remoteprinters.printers.' + id,
+            })
+        }
     },
 }
