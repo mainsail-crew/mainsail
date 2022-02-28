@@ -5,10 +5,6 @@ on:
   push:
     tags:
       - '*'
-  # Update the changelog everyday
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron: '1 0 * * *'
 
   # Update the changelog by invoking this workflow manually
   workflow_dispatch:
@@ -31,16 +27,9 @@ jobs:
         id: git-cliff
         with:
           config: cliff.toml
-          args: v0.0.4..${{ steps.latest_tag.outputs.TAG_NAME }} --strip header
+          args: v0.0.4..${{ steps.latest_tag.outputs.TAG_NAME }}
         env:
           OUTPUT: CHANGELOG.md
-
-      - name: Generate the unreleased changelog
-        uses: orhun/git-cliff-action@v1
-        id: git-cliff-unreleased
-        with:
-          config: cliff.toml
-          args: --unreleased --prepend CHANGELOG.md --strip footer
 
       - name: show CHANGELOG
         run: |
