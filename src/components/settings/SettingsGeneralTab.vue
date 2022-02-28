@@ -42,23 +42,23 @@
                         attach></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamicSlotWidth="true">
+                <settings-row :title="$t('Settings.GeneralTab.MoonrakerDb')" :dynamic-slot-width="true">
                     <input
+                        ref="uploadBackupFile"
                         type="file"
                         :accept="['.json']"
-                        ref="uploadBackupFile"
                         class="d-none"
                         @change="uploadRestore" />
-                    <v-btn @click="backupDb" :loading="loadings.includes('backupDbButton')" small>
+                    <v-btn :loading="loadings.includes('backupDbButton')" small @click="backupDb">
                         {{ $t('Settings.GeneralTab.Backup') }}
                     </v-btn>
-                    <v-btn @click="restoreDb" small :loading="loadings.includes('restoreUploadButton')" class="ml-3">
+                    <v-btn small :loading="loadings.includes('restoreUploadButton')" class="ml-3" @click="restoreDb">
                         {{ $t('Settings.GeneralTab.Restore') }}
                     </v-btn>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
-                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamicSlotWidth="true">
-                    <v-btn @click="resetMainsail" color="error" small>
+                <settings-row :title="$t('Settings.GeneralTab.FactoryReset')" :dynamic-slot-width="true">
+                    <v-btn color="error" small @click="resetMainsail">
                         {{ $t('Settings.GeneralTab.FactoryReset') }}
                     </v-btn>
                 </settings-row>
@@ -70,7 +70,7 @@
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogBackupMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -83,21 +83,21 @@
                         <v-col class="pl-6">
                             <template v-for="db in mainsailKeys">
                                 <v-checkbox
+                                    :key="db.name"
                                     :label="db.label"
                                     hide-details
                                     class="mt-0"
-                                    :key="db.name"
                                     @change="changeNamespace(db.name)"></v-checkbox>
                             </template>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
                                 v-if="availableNamespaces.includes('timelapse')"
+                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('timelapse')"></v-checkbox>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
                                 v-if="availableNamespaces.includes('webcams')"
+                                :label="$t('Settings.GeneralTab.DbWebcams')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('webcams')"></v-checkbox>
@@ -105,7 +105,7 @@
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn color="red" @click="backupMainsail" :loading="loadings.includes('backupMainsail')">
+                            <v-btn color="red" :loading="loadings.includes('backupMainsail')" @click="backupMainsail">
                                 {{ $t('Settings.GeneralTab.Backup') }}
                             </v-btn>
                         </v-col>
@@ -119,7 +119,7 @@
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogResetMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -132,33 +132,33 @@
                         <v-col class="pl-6">
                             <template v-for="db in mainsailKeys">
                                 <v-checkbox
+                                    :key="db.name"
                                     :label="db.label"
                                     hide-details
                                     class="mt-0"
-                                    :key="db.name"
                                     @change="changeNamespace(db.name)"></v-checkbox>
                             </template>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
                                 v-if="availableNamespaces.includes('timelapse')"
+                                :label="$t('Settings.GeneralTab.DbTimelapseSettings')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('timelapse')"></v-checkbox>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbWebcams')"
                                 v-if="availableNamespaces.includes('webcams')"
+                                :label="$t('Settings.GeneralTab.DbWebcams')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('webcams')"></v-checkbox>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbHistoryJobs')"
                                 v-if="moonrakerComponents.includes('history')"
+                                :label="$t('Settings.GeneralTab.DbHistoryJobs')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('history_jobs')"></v-checkbox>
                             <v-checkbox
-                                :label="$t('Settings.GeneralTab.DbHistoryTotals')"
                                 v-if="moonrakerComponents.includes('history')"
+                                :label="$t('Settings.GeneralTab.DbHistoryTotals')"
                                 hide-details
                                 class="mt-0"
                                 @change="changeNamespace('history_totals')"></v-checkbox>
@@ -168,8 +168,8 @@
                         <v-col class="text-center">
                             <v-btn
                                 color="red"
-                                @click="resetMainsailAction"
-                                :loading="loadings.includes('resetMainsail')">
+                                :loading="loadings.includes('resetMainsail')"
+                                @click="resetMainsailAction">
                                 {{ $t('Settings.GeneralTab.Reset') }}
                             </v-btn>
                         </v-col>
@@ -183,7 +183,7 @@
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
                 icon="mdi-help-circle">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogRestoreMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>
@@ -196,17 +196,17 @@
                         <v-col class="pl-6">
                             <template v-for="db in restoreableNamespaces">
                                 <v-checkbox
+                                    :key="db.name"
                                     :label="db.label"
                                     hide-details
                                     class="mt-0"
-                                    :key="db.name"
                                     @change="changeNamespace(db.name)"></v-checkbox>
                             </template>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col class="text-center">
-                            <v-btn color="red" @click="restoreDbAction" :loading="loadings.includes('restoreMainsail')">
+                            <v-btn color="red" :loading="loadings.includes('restoreMainsail')" @click="restoreDbAction">
                                 {{ $t('Settings.GeneralTab.Restore') }}
                             </v-btn>
                         </v-col>

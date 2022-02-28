@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-card flat v-if="!form.bool && !cooldownForm.bool">
+        <v-card v-if="!form.bool && !cooldownForm.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.PresetsTab.PreheatPresets') }}</h3>
-                <div v-for="(preset, key) in presets" v-bind:key="preset.index">
-                    <v-divider class="my-2" v-if="key"></v-divider>
+                <div v-for="(preset, key) in presets" :key="preset.index">
+                    <v-divider v-if="key" class="my-2"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
                             <v-icon left small>mdi-pencil</v-icon>
@@ -13,14 +13,14 @@
                         <v-btn
                             small
                             outlined
-                            @click="deletePreset(preset.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                            @click="deletePreset(preset.id)">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
-                <v-divider class="my-2" v-if="presets.length"></v-divider>
+                <v-divider v-if="presets.length" class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.PresetsTab.Cooldown')">
                     <v-btn small outlined class="ml-3" @click="editCooldown">
                         <v-icon left small>mdi-pencil</v-icon>
@@ -32,7 +32,7 @@
                 <v-btn text color="primary" @click="createPreset">{{ $t('Settings.PresetsTab.AddPreset') }}</v-btn>
             </v-card-actions>
         </v-card>
-        <v-card flat v-else-if="form.bool">
+        <v-card v-else-if="form.bool" flat>
             <v-form v-model="form.valid" @submit.prevent="savePreset">
                 <v-card-title>
                     {{
@@ -42,7 +42,7 @@
                     }}
                 </v-card-title>
                 <v-card-text>
-                    <v-row class="mt-3" v-if="form.boolInvalidMin">
+                    <v-row v-if="form.boolInvalidMin" class="mt-3">
                         <v-col class="py-0">
                             <v-alert dense text type="error">{{ $t('Settings.PresetsTab.PresetInfo') }}</v-alert>
                         </v-col>
@@ -55,7 +55,7 @@
                             dense
                             outlined></v-text-field>
                     </settings-row>
-                    <div v-for="heater of heaters" v-bind:key="heater.name">
+                    <div v-for="heater of heaters" :key="heater.name">
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="convertName(heater.name)">
                             <v-checkbox
@@ -72,7 +72,7 @@
                                 hide-spin-buttons></v-text-field>
                         </settings-row>
                     </div>
-                    <div v-for="fan of temperatureFans" v-bind:key="'temperature_fan ' + fan.name">
+                    <div v-for="fan of temperatureFans" :key="'temperature_fan ' + fan.name">
                         <v-divider class="my-2"></v-divider>
                         <settings-row :title="convertName(fan.name)">
                             <v-checkbox
@@ -91,7 +91,7 @@
                     </div>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.PresetsTab.CustomGCode')">
-                        <v-textarea outlined v-model="form.gcode" hide-details></v-textarea>
+                        <v-textarea v-model="form.gcode" outlined hide-details></v-textarea>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
@@ -108,12 +108,12 @@
                 </v-card-actions>
             </v-form>
         </v-card>
-        <v-card flat v-else-if="cooldownForm.bool">
+        <v-card v-else-if="cooldownForm.bool" flat>
             <v-form v-model="cooldownForm.valid" @submit.prevent="saveCooldown">
                 <v-card-title>{{ $t('Settings.PresetsTab.EditCooldown') }}</v-card-title>
                 <v-card-text>
                     <settings-row :title="$t('Settings.PresetsTab.CustomGCode')">
-                        <v-textarea outlined v-model="cooldownForm.gcode" hide-details></v-textarea>
+                        <v-textarea v-model="cooldownForm.gcode" outlined hide-details></v-textarea>
                     </settings-row>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">

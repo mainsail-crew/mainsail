@@ -16,15 +16,15 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
-                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement')" :dynamic-slot-width="true">
                             <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement')" :dynamic-slot-width="true">
                             <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamicSlotWidth="true">
+                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement')" :dynamic-slot-width="true">
                             <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -32,27 +32,27 @@
                     <settings-row :title="$t('Settings.ControlTab.SpeedXY')">
                         <v-text-field
                             v-model="feedrateXY"
-                            @blur="blurFeedrateXY"
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
                             :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                             outlined
                             dense
-                            hide-spin-buttons></v-text-field>
+                            hide-spin-buttons
+                            @blur="blurFeedrateXY"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="$t('Settings.ControlTab.SpeedZ')">
                         <v-text-field
                             v-model="feedrateZ"
-                            @blur="blurFeedrateZ"
                             type="number"
                             suffix="mm/s"
                             hide-details="auto"
                             :rules="[(v) => v > 0 || $t('Settings.ControlTab.ValueGreaterThan', { value: '0' })]"
                             outlined
                             dense
-                            hide-spin-buttons></v-text-field>
+                            hide-spin-buttons
+                            @blur="blurFeedrateZ"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="controlStyle === 'cross'">

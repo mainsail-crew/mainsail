@@ -1,14 +1,14 @@
 <template>
     <v-card-text>
         <v-row>
-            <v-col v-if="this.all_extruders.length > 1" class="col-12 col-xl-4">
+            <v-col v-if="all_extruders.length > 1" class="col-12 col-xl-4">
                 <div class="d-flex align-center">
                     <v-btn
-                        v-if="this.selectedExtruder !== this.active_extruder"
-                        @click="resetToActiveExtruder"
-                        class="mr-2"
+                        v-if="selectedExtruder !== active_extruder"
                         icon
-                        plain>
+                        plain
+                        class="mr-2"
+                        @click="resetToActiveExtruder">
                         <v-icon>mdi-restart</v-icon>
                     </v-btn>
                     <v-select
@@ -21,40 +21,40 @@
                         dense></v-select>
                 </div>
             </v-col>
-            <v-col :class="this.all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
+            <v-col :class="all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.Advance').toString()"
                     param="advance"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_pressure_advance"
                     :default-value="default_pressure_advance"
                     :extruder="selectedExtruder"
                     :output-error-msg="true"
-                    :hasSpinner="true"
+                    :has-spinner="true"
                     :min="0"
                     :max="null"
                     :step="0.001"
                     :dec="3"
-                    unit="mm/s"></number-input>
+                    unit="mm/s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
-            <v-col :class="this.all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
+            <v-col :class="all_extruders.length > 1 ? 'col-12 col-md-6 col-xl-4' : 'col-12 col-md-6'">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.SmoothTime').toString()"
                     param="smoothTime"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_smooth_time"
                     :default-value="default_smooth_time"
                     :extruder="selectedExtruder"
                     :output-error-msg="true"
-                    :hasSpinner="true"
+                    :has-spinner="true"
+                    :spinner-factor="10"
                     :min="0"
                     :max="0.2"
                     :step="0.001"
-                    :spinnerFactor="10"
                     :dec="3"
-                    unit="s"></number-input>
+                    unit="s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
         </v-row>
     </v-card-text>

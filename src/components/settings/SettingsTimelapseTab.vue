@@ -6,7 +6,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.Enabled')"
                     :sub-title="$t('Settings.TimelapseTab.EnabledDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="enabled"
                         hide-details
@@ -17,7 +17,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.Autorender')"
                     :sub-title="$t('Settings.TimelapseTab.AutorenderDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="autorender"
                         hide-details
@@ -70,7 +70,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.PreviewImage')"
                     :sub-title="$t('Settings.TimelapseTab.PreviewImageDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="previewimage"
                         hide-details
@@ -81,7 +81,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.SaveFrames')"
                     :sub-title="$t('Settings.TimelapseTab.SaveFramesDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="saveframes"
                         hide-details
@@ -106,7 +106,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.GcodeVerbose')"
                     :sub-title="$t('Settings.TimelapseTab.GcodeVerboseDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="gcode_verbose"
                         hide-details
@@ -118,7 +118,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.Parkhead')"
                     :sub-title="$t('Settings.TimelapseTab.ParkheadDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="parkhead"
                         hide-details
@@ -201,7 +201,7 @@
                     <settings-row
                         :title="$t('Settings.TimelapseTab.FwRetract')"
                         :sub-title="$t('Settings.TimelapseTab.FwRetractDescription')"
-                        :dynamicSlotWidth="true">
+                        :dynamic-slot-width="true">
                         <v-switch
                             v-model="fw_retract"
                             hide-details
@@ -286,7 +286,7 @@
                 <settings-row
                     :title="$t('Settings.TimelapseTab.VariableFps')"
                     :sub-title="$t('Settings.TimelapseTab.VariableFpsDescription')"
-                    :dynamicSlotWidth="true">
+                    :dynamic-slot-width="true">
                     <v-switch
                         v-model="variable_fps"
                         hide-details

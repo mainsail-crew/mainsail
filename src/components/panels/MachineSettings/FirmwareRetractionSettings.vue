@@ -5,35 +5,35 @@
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractLength').toString()"
                     param="retractLength"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_retract_length"
                     :default-value="config_retract_length"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="10"
+                    :has-spinner="true"
+                    :spinner-factor="10"
                     :step="0.01"
                     :min="0"
                     :max="null"
                     :dec="2"
-                    unit="mm"></number-input>
+                    unit="mm"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.RetractSpeed').toString()"
                     param="retractSpeed"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_retract_speed"
                     :default-value="config_retract_speed"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="5"
+                    :has-spinner="true"
+                    :spinner-factor="5"
                     :step="1"
                     :min="1"
                     :max="null"
                     :dec="0"
-                    unit="mm/s"></number-input>
+                    unit="mm/s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
         </v-row>
         <v-row>
@@ -43,35 +43,35 @@
                         $t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractExtraLength').toString()
                     "
                     param="unretractExtraLength"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_unretract_extra_length"
                     :default-value="config_unretract_extra_length"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="10"
+                    :has-spinner="true"
+                    :spinner-factor="10"
                     :step="0.01"
                     :min="0"
                     :max="null"
                     :dec="2"
-                    unit="mm"></number-input>
+                    unit="mm"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.FirmwareRetractionSettings.UnretractSpeed').toString()"
                     param="unretractSpeed"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_unretract_speed"
                     :default-value="config_unretract_speed"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="5"
+                    :has-spinner="true"
+                    :spinner-factor="5"
                     :step="1"
                     :min="1"
                     :max="null"
                     :dec="0"
-                    unit="mm/s"></number-input>
+                    unit="mm/s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
         </v-row>
     </v-card-text>

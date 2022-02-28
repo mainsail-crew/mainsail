@@ -80,10 +80,10 @@
             "DescriptionPreviouslyThrottled": "rPI ARM-Kern(e) wurde(n) seit dem letzten Einschalten mindestens einmal gedrosselt.",
             "DescriptionPreviouslyTemperatureLimited": "Die Temperatur des rPi uC (nur 3A+/3B+) lag seit dem letzten Einschalten mindestens einmal über dem Soft-Limit (Standard 60C)."
         },
-        "NumberInput":{
-            "NoEmptyAllowedError" : "Feld darf nicht leer sein!",
-            "GreaterOrEqualError" : "Muss größer oder gleich {min} sein!",
-            "MustBeBetweenError" : "Muss zwischen {min} und {max} liegen!"
+        "NumberInput": {
+            "NoEmptyAllowedError": "Feld darf nicht leer sein!",
+            "GreaterOrEqualError": "Muss größer oder gleich {min} sein!",
+            "MustBeBetweenError": "Muss zwischen {min} und {max} liegen!"
         }
     },
     "EmergencyStopDialog": {
@@ -240,19 +240,22 @@
         "Mesh": "Mesh",
         "Flat": "Flach",
         "Wireframe": "Drahtgitter",
-        "Scale": "Maßstab",
+        "ScaleGradient": "Farbverlauf skalieren",
+        "ScaleZMax": "Skaliere z-max.",
         "Profiles": "Profile",
-        "Deleted": "gelöscht",
         "RenameBedMeshProfile": "Bed Mesh umbenennen",
         "Name": "Name",
         "Abort": "abbruch",
         "Rename": "umbenennen",
         "BedMeshRemove": "Bed Mesh entfernen",
         "BedMeshCalibrate": "Bed Mesh Kalibrierung",
-        "DoYouReallyWantToCalibrate": "Möchtest du wirklich die Kalibrierung starten?",
         "DeleteBedMeshProfile": "Lösche Bed Mesh",
         "DoYouReallyWantToDelete": "Möchtest du das Profil \"{name}\" wirklich löschen?",
+        "RemoveSaveDescription": "Das Löschen des Höhenprofils wurde registriert. Mit einem Klick auf SAVE_CONFIG wird es aus der printer.cfg gelöscht und Klipper neu gestartet.",
         "Remove": "löschen",
+        "Ok": "Ok",
+        "Later": "später",
+        "SAVE_CONFIG": "SAVE_CONFIG",
         "CurrentMesh": {
             "Headline": "Aktuelles Mesh",
             "Name": "Name",

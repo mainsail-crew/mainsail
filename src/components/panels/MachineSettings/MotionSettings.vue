@@ -5,34 +5,34 @@
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Velocity').toString()"
                     param="velocity"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_velocity"
                     :default-value="max_velocity"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="5"
+                    :has-spinner="true"
+                    :spinner-factor="5"
                     :step="1"
                     :min="1"
                     :max="null"
                     :dec="0"
-                    unit="mm/s"></number-input>
+                    unit="mm/s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.SquareCornerVelocity').toString()"
                     param="squareCornerVelocity"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_square_corner_velocity"
                     :default-value="max_square_corner_velocity"
                     :output-error-msg="true"
-                    :hasSpinner="true"
+                    :has-spinner="true"
                     :step="0.1"
                     :min="0.1"
                     :max="null"
                     :dec="1"
-                    unit="mm/s"></number-input>
+                    unit="mm/s"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
         </v-row>
         <v-row>
@@ -40,35 +40,35 @@
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.Acceleration').toString()"
                     param="acceleration"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_accel"
                     :default-value="max_accel"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="100"
+                    :has-spinner="true"
+                    :spinner-factor="100"
                     :step="1"
                     :min="1"
                     :max="null"
                     :dec="0"
-                    unit="mm/s²"></number-input>
+                    unit="mm/s²"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
             <v-col class="col-12 col-md-6">
                 <number-input
                     :label="$t('Panels.MachineSettingsPanel.MotionSettings.MaxAccelToDecel').toString()"
                     param="accelToDecel"
-                    @submit="sendCmd"
-                    @target-changed="updateValue"
                     :target="current_accel_to_decel"
                     :default-value="max_accel_to_decel"
                     :output-error-msg="true"
-                    :hasSpinner="true"
-                    :spinnerFactor="100"
+                    :has-spinner="true"
+                    :spinner-factor="100"
                     :step="1"
                     :min="1"
                     :max="null"
                     :dec="0"
-                    unit="mm/s²"></number-input>
+                    unit="mm/s²"
+                    @submit="sendCmd"
+                    @target-changed="updateValue"></number-input>
             </v-col>
         </v-row>
     </v-card-text>

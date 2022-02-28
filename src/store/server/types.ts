@@ -40,6 +40,8 @@ export interface ServerState {
     websocket_count: number
     moonraker_version: string
 
+    console_cleared_this_session?: boolean
+
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState
     history?: ServerHistoryState
@@ -48,6 +50,7 @@ export interface ServerState {
 
 export interface ServerStateEvent {
     date: Date
+    time?: number
     formatTime: string
     type: string
     message: string
