@@ -79,7 +79,8 @@ export default class MacroButton extends Mixins(BaseMixin) {
     private paramArray: string[] = []
     private params: params = {}
 
-    @Prop({ required: true }) declare readonly macro: GuiMacrosStateMacrogroupMacro
+    @Prop({ required: true })
+    declare readonly macro: GuiMacrosStateMacrogroupMacro
     @Prop({ default: 'primary' }) declare readonly color: string
 
     get klipperMacro() {
@@ -110,15 +111,23 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     doSendMacro(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', {
+            message: gcode,
+            type: 'command',
+        })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
     }
 
     sendWithParams() {
         let params: string[] = []
         this.paramArray.forEach((paramname: string) => {
-            if (this.params[paramname].value !== null && this.params[paramname].value !== '')
-                params.push(paramname + '=' + this.params[paramname].value)
+            if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
+                let tmp: string = paramname
+                if (paramname.length === 1) tmp += this.params[paramname].value
+                else tmp += '=' + this.params[paramname].value
+
+                params.push(tmp)
+            }
         })
 
         const gcode = this.macro.name + ' ' + params.join(' ')
