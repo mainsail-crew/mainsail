@@ -587,7 +587,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         const extruders: PrinterStateExtruder[] = []
         if (state.configfile?.settings) {
             Object.keys(state.configfile?.settings)
-                .filter(key => key.startsWith('extruder'))
+                .filter((key) => key.startsWith('extruder'))
                 .sort()
                 .forEach((key: string) => {
                     const extruder = state.configfile?.settings[key]
@@ -600,11 +600,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
                     extruders.push({
                         key: key,
-                        name: `Extruder ${(key == 'extruder') ? '0' : key.replace('extruder', '')}`,
+                        name: `Extruder ${key == 'extruder' ? '0' : key.replace('extruder', '')}`,
                         filament_diameter: extruder.filament_diameter,
                         nozzle_diameter: extruder.nozzle_diameter,
                         min_extrude_temp: minExtrudeTemp,
-                        max_extrude_only_distance: extruder.max_extrude_only_distance
+                        max_extrude_only_distance: extruder.max_extrude_only_distance,
                     })
                 })
         }

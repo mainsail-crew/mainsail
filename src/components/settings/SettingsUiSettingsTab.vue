@@ -130,8 +130,7 @@
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.NavigationStyle').toString()"
-                    :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription').toString()"
-                >
+                    :sub-title="$t('Settings.UiSettingsTab.NavigationStyleDescription').toString()">
                     <v-select
                         v-model="navigationStyleSetting"
                         :items="navigationStyles"
@@ -139,8 +138,7 @@
                         hide-details
                         outlined
                         attach
-                        dense
-                    ></v-select>
+                        dense></v-select>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row

@@ -17,15 +17,21 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
-                        <settings-row :title="$t('Settings.ControlTab.InvertXMovement').toString()" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertXMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseX" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertYMovement').toString()" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertYMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseY" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.InvertZMovement').toString()" :dynamic-slot-width="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.InvertZMovement').toString()"
+                            :dynamic-slot-width="true">
                             <v-switch v-model="reverseZ" hide-details class="mt-0"></v-switch>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
@@ -57,7 +63,9 @@
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
                     <template v-if="controlStyle === 'cross'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsAll"
                                 hide-selected
@@ -80,7 +88,9 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else-if="controlStyle === 'circle'">
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleXY"
                                 hide-selected
@@ -99,7 +109,9 @@
                                 hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsCircleZ"
                                 hide-selected
@@ -120,7 +132,9 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <template v-else>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsXY"
                                 hide-selected
@@ -141,7 +155,9 @@
                                 hide-spin-buttons></v-combobox>
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
-                        <settings-row :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()" :mobile-second-row="true">
+                        <settings-row
+                            :title="$t('Settings.ControlTab.MoveDistancesZInMm').toString()"
+                            :mobile-second-row="true">
                             <v-combobox
                                 v-model="stepsZ"
                                 hide-selected
@@ -164,7 +180,9 @@
                         <v-divider class="my-2"></v-divider>
                     </template>
                     <v-card-title class="mx-n4">Extruder Controls</v-card-title>
-                    <settings-row :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()" :mobile-second-row="true">
+                    <settings-row
+                        :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
+                        :mobile-second-row="true">
                         <v-combobox
                             v-model="feedamountsE"
                             hide-selected
