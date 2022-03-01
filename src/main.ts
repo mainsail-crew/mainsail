@@ -10,6 +10,7 @@ import router from '@/plugins/router'
 
 import { registerSW } from 'virtual:pwa-register'
 
+// noinspection JSUnusedGlobalSymbols
 const updateSW = registerSW({
     onOfflineReady() {},
 })
@@ -62,31 +63,31 @@ use([SVGRenderer, LineChart, BarChart, LegendComponent, PieChart, DatasetCompone
 Vue.component('EChart', ECharts)
 
 //load config.json and init vue
-fetch('/config.json')
-    .then((res) => res.json())
-    .then((file) => {
-        store.commit('socket/setData', file)
+try {
+    const result = await fetch('/config.json')
+    const file = await result.json()
 
-        const url = store.getters['socket/getWebsocketUrl']
-        Vue.use(WebSocketPlugin, {
-            url: url,
-            store: store,
-        })
+    store.commit('socket/setData', file)
 
-        if (!store?.state?.socket?.remoteMode) Vue.$socket.connect()
-
-        new Vue({
-            vuetify,
-            router,
-            store,
-            i18n,
-            render: (h) => h(App),
-        }).$mount('#app')
+    const url = store.getters['socket/getWebsocketUrl']
+    Vue.use(WebSocketPlugin, {
+        url: url,
+        store: store,
     })
-    .catch((error) => {
-        const p = document.createElement('p')
-        const content = document.createTextNode('config.json not found or cannot be decoded!')
-        p.appendChild(content)
-        document.getElementById('app')?.append(p)
-        window.console.error('Error:', error)
-    })
+
+    if (!store?.state?.socket?.remoteMode) Vue.$socket.connect()
+
+    new Vue({
+        vuetify,
+        router,
+        store,
+        i18n,
+        render: (h) => h(App),
+    }).$mount('#app')
+} catch (error) {
+    const p = document.createElement('p')
+    const content = document.createTextNode('config.json not found or cannot be decoded!')
+    p.appendChild(content)
+    document.getElementById('app')?.append(p)
+    window.console.error('Error:', error)
+}
