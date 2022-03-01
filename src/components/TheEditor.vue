@@ -98,7 +98,8 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogConfirmChange = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>

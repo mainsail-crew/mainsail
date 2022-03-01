@@ -25,7 +25,8 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="isOpen = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-title>
                     <v-row>

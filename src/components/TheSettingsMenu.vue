@@ -19,7 +19,8 @@
                 :height="isMobile ? 0 : 548">
                 <template #buttons>
                     <v-btn icon tile @click="showSettings = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
