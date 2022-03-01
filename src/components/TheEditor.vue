@@ -3,8 +3,8 @@
 <template>
     <div>
         <v-dialog
-            persistent
             v-model="show"
+            persistent
             fullscreen
             hide-overlay
             :transition="false"
@@ -19,12 +19,12 @@
                     ' ' +
                     (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
                 ">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn
+                        v-if="restartServiceName === 'klipper'"
                         text
                         tile
                         href="https://www.klipper3d.org/Config_Reference.html"
-                        v-if="restartServiceName === 'klipper'"
                         target="_blank"
                         class="d-none d-md-flex">
                         <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
@@ -44,8 +44,8 @@
                         color="primary"
                         text
                         tile
-                        @click="save(restartServiceName)"
-                        class="d-none d-sm-flex">
+                        class="d-none d-sm-flex"
+                        @click="save(restartServiceName)">
                         <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
@@ -60,7 +60,7 @@
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
-                            v-bind:file-extension="fileExtension"></codemirror-async>
+                            :file-extension="fileExtension"></codemirror-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
@@ -84,8 +84,8 @@
             <template v-else>
                 <v-progress-linear class="mt-2" indeterminate></v-progress-linear>
             </template>
-            <template v-slot:action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" @click="cancelDownload" style="min-width: auto" tile>
+            <template #action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
                     <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
@@ -96,10 +96,9 @@
                 :icon="mdiHelpCircle"
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="dialogConfirmChange = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>

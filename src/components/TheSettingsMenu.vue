@@ -8,8 +8,8 @@
             width="900"
             persistent
             :fullscreen="isMobile"
-            @keydown.esc="showSettings = false"
-            scrollable>
+            scrollable
+            @keydown.esc="showSettings = false">
             <panel
                 :title="$t('Settings.InterfaceSettings')"
                 :icon="mdiCogs"
@@ -17,16 +17,15 @@
                 :margin-bottom="false"
                 style="overflow: hidden"
                 :height="isMobile ? 0 : 548">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="showSettings = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
                         <v-tab
                             v-for="(tab, index) of tabTitles"
-                            v-bind:key="index"
+                            :key="index"
                             :href="'#' + tab.name"
                             class="justify-start">
                             <v-icon left v-html="tab.icon"></v-icon>
@@ -35,12 +34,12 @@
                     </v-tabs>
                 </template>
                 <v-row class="flex-row flex-nowrap">
-                    <v-col class="col-auto pr-0" v-if="!isMobile">
-                        <overlay-scrollbars class="settings-tabs-bar height500" ref="settingsTabsScroll">
+                    <v-col v-if="!isMobile" class="col-auto pr-0">
+                        <overlay-scrollbars ref="settingsTabsScroll" class="settings-tabs-bar height500">
                             <v-tabs v-model="activeTab" :vertical="true">
                                 <v-tab
                                     v-for="(tab, index) of tabTitles"
-                                    v-bind:key="index"
+                                    :key="index"
                                     :href="'#' + tab.name"
                                     class="justify-start"
                                     style="width: 200px">
@@ -52,8 +51,8 @@
                     </v-col>
                     <v-col :class="isMobile ? '' : 'pl-0'" :style="isMobile ? '' : 'min-width: 500px;'">
                         <overlay-scrollbars
-                            :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             ref="settingsScroll"
+                            :class="'settings-tabs ' + (isMobile ? '' : 'height500')"
                             :options="{ overflowBehavior: { x: 'hidden' } }">
                             <component :is="'settings-' + activeTab + '-tab'" @scrollToTop="scrollToTop"></component>
                         </overlay-scrollbars>

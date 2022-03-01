@@ -49,18 +49,18 @@
             <v-spacer></v-spacer>
             <the-throttled-states></the-throttled-states>
             <input
-                type="file"
                 ref="fileUploadAndStart"
+                type="file"
                 :accept="validGcodeExtensions.join(', ')"
                 style="display: none"
                 @change="uploadAndStart" />
             <v-btn
+                v-if="klippyIsConnected && saveConfigPending"
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="primary"
                 class="button-min-width-auto px-3 d-none d-sm-flex save-config-button"
-                v-if="klippyIsConnected && saveConfigPending"
                 :disabled="printerIsPrinting"
                 :loading="loadings.includes('topbarSaveConfig')"
                 @click="saveConfig">
@@ -68,28 +68,28 @@
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.SAVE_CONFIG') }}</span>
             </v-btn>
             <v-btn
-                tile
-                :icon="$vuetify.breakpoint.smAndDown"
-                :text="$vuetify.breakpoint.mdAndUp"
-                color="primary"
-                class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
                 v-if="
                     klippyIsConnected &&
                     ['standby', 'complete', 'cancelled'].includes(printer_state) &&
                     !boolHideUploadAndPrintButton
                 "
+                tile
+                :icon="$vuetify.breakpoint.smAndDown"
+                :text="$vuetify.breakpoint.mdAndUp"
+                color="primary"
+                class="button-min-width-auto px-3 d-none d-sm-flex upload-and-start-button"
                 :loading="loadings.includes('btnUploadAndStart')"
                 @click="btnUploadAndStart">
                 <v-icon class="mr-md-2">mdi-file-upload</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.UploadPrint') }}</span>
             </v-btn>
             <v-btn
+                v-if="klippyIsConnected"
                 tile
                 :icon="$vuetify.breakpoint.smAndDown"
                 :text="$vuetify.breakpoint.mdAndUp"
                 color="error"
                 class="button-min-width-auto px-3 emergency-button"
-                v-if="klippyIsConnected"
                 :loading="loadings.includes('topbarEmergencyStop')"
                 @click="btnEmergencyStop">
                 <v-icon class="mr-md-2">mdi-alert-circle-outline</v-icon>
@@ -98,14 +98,14 @@
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
-        <v-snackbar :timeout="-1" :value="true" fixed right bottom dark v-model="uploadSnackbar.status">
+        <v-snackbar v-model="uploadSnackbar.status" :timeout="-1" :value="true" fixed right bottom dark>
             <strong>{{ $t('App.TopBar.Uploading') }} {{ uploadSnackbar.filename }}</strong>
             <br />
             {{ Math.round(uploadSnackbar.percent) }} % @ {{ formatFilesize(Math.round(uploadSnackbar.speed)) }}/s
             <br />
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
-            <template v-slot:action="{ attrs }">
-                <v-btn color="red" text v-bind="attrs" @click="cancelUpload" style="min-width: auto">
+            <template #action="{ attrs }">
+                <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
                     <v-icon class="0">mdi-close</v-icon>
                 </v-btn>
             </template>
@@ -117,7 +117,7 @@
                 card-class="emergency-stop-dialog"
                 icon="mdi-alert-circle-outline"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="showEmergencyStopDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
                 </template>
                 <v-card-text>{{ $t('EmergencyStopDialog.AreYouSure') }}</v-card-text>

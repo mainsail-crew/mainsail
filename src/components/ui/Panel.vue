@@ -44,17 +44,17 @@
             class="panel-toolbar">
             <slot name="buttons-left"></slot>
             <v-toolbar-title class="d-flex align-center">
-                <slot name="icon" v-if="hasIconSlot"></slot>
-                <v-icon left v-if="icon !== null && !hasIconSlot">{{ icon }}</v-icon>
-                <span class="subheading" v-if="title">{{ title }}</span>
+                <slot v-if="hasIconSlot" name="icon"></slot>
+                <v-icon v-if="icon !== null && !hasIconSlot" left>{{ icon }}</v-icon>
+                <span v-if="title" class="subheading">{{ title }}</span>
             </v-toolbar-title>
             <slot name="buttons-title"></slot>
             <v-spacer></v-spacer>
             <v-toolbar-items v-show="hasButtonsSlot || collapsible">
-                <div class="d-flex align-center" v-if="expand || !hideButtonsOnCollapse">
+                <div v-if="expand || !hideButtonsOnCollapse" class="d-flex align-center">
                     <slot name="buttons"></slot>
                 </div>
-                <v-btn v-if="collapsible" @click="expand = !expand" icon class="btn-collapsible" :ripple="true">
+                <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
                     <v-icon :class="expand ? '' : 'icon-rotate-90'">mdi-chevron-down</v-icon>
                 </v-btn>
             </v-toolbar-items>

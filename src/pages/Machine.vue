@@ -9,7 +9,7 @@
                 <system-panel></system-panel>
                 <update-panel></update-panel>
                 <v-row>
-                    <v-col class="col-md-6 pb-0 pb-md-3" v-if="klipperState === 'ready'">
+                    <v-col v-if="klipperState === 'ready'" class="col-md-6 pb-0 pb-md-3">
                         <endstop-panel></endstop-panel>
                     </v-col>
                     <v-col :class="klipperState !== 'ready' ? 'col-md-12' : 'col-md-6 pl-0 pl-md-3'">

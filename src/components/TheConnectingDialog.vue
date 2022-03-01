@@ -17,10 +17,10 @@
                     </span>
                 </v-toolbar-title>
             </v-toolbar>
-            <v-card-text class="pt-5" v-if="isConnecting">
+            <v-card-text v-if="isConnecting" class="pt-5">
                 <v-progress-linear color="white" indeterminate></v-progress-linear>
             </v-card-text>
-            <v-card-text class="pt-5" v-if="!isConnecting && connectingFailed">
+            <v-card-text v-if="!isConnecting && connectingFailed" class="pt-5">
                 <connection-status :moonraker="false"></connection-status>
                 <p class="text-center mt-3">{{ $t('ConnectionDialog.CannotConnectTo', { host: formatHostname }) }}</p>
                 <template v-if="counter > 2">
@@ -33,7 +33,7 @@
                     <v-divider class="mt-4 mb-5"></v-divider>
                 </template>
                 <div class="text-center">
-                    <v-btn @click="reconnect" class="primary--text">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
+                    <v-btn class="primary--text" @click="reconnect">{{ $t('ConnectionDialog.TryAgain') }}</v-btn>
                 </div>
             </v-card-text>
         </v-card>

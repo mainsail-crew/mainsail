@@ -10,13 +10,10 @@
 </style>
 
 <template>
-    <form v-on:submit.prevent="submit">
+    <form @submit.prevent="submit">
         <v-text-field
             v-model.number="value"
             class="d-flex align-top"
-            @blur="value = target"
-            @click:append="resetToDefault"
-            @keydown="checkInvalidChars"
             :label="label"
             :suffix="unit"
             :append-icon="target !== defaultValue ? 'mdi-restart' : ''"
@@ -25,31 +22,34 @@
             :disabled="disabled"
             :step="step"
             :min="min"
+            @blur="value = target"
             :max="max"
+            @click:append="resetToDefault"
             :dec="dec"
+            @keydown="checkInvalidChars"
             type="number"
             hide-spin-buttons
             hide-details="auto"
             outlined
             dense>
-            <template v-if="hasSpinner" v-slot:append-outer>
+            <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn
-                        @click="incrementValue"
                         :disabled="(value >= max && max !== null) || error || disabled"
                         class="mt-n3"
                         icon
                         plain
-                        small>
+                        small
+                        @click="incrementValue">
                         <v-icon>mdi-chevron-up</v-icon>
                     </v-btn>
                     <v-btn
-                        @click="decrementValue"
                         :disabled="value <= min || error || disabled"
                         class="mb-n3"
                         icon
                         plain
-                        small>
+                        small
+                        @click="decrementValue">
                         <v-icon>mdi-chevron-down</v-icon>
                     </v-btn>
                 </div>
@@ -77,20 +77,20 @@ export default class NumberInput extends Mixins(BaseMixin) {
     declare readonly param: string
 
     // props defining incoming data
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly target: number
 
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly defaultValue: number
 
     // props for internal processing
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly min: number
 
     @Prop({ type: Number, default: null })
     declare readonly max: number | null
 
-    @Prop({ type: Number, required: true, default: 0 })
+    @Prop({ type: Number, required: true })
     declare readonly dec: number
 
     @Prop({ type: Number, required: false, default: 1 })
@@ -147,8 +147,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
 
     submit(): void {
         if (this.invalidInput()) return
-        this.$emit('target-changed', this.param, this.value)
-        this.$emit('submit', this.param)
+        this.$emit('submit', { name: this.param, value: this.value })
     }
 
     // input validation //

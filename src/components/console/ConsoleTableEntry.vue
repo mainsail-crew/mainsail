@@ -28,8 +28,8 @@
         <v-col class="col-auto pr-0 text--disabled console-time">{{ event.formatTime }}</v-col>
         <v-col
             :class="colorConsoleMessage(event) + ' ' + 'console-message'"
-            v-html="event.formatMessage"
-            @click.capture="commandClick"></v-col>
+            @click.capture="commandClick"
+            v-html="event.formatMessage"></v-col>
     </v-row>
 </template>
 

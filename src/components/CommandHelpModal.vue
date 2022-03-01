@@ -1,5 +1,5 @@
 <template>
-    <v-dialog transition="dialog-bottom-transition" max-width="600" scrollable v-model="isOpen" :fullscreen="isMobile">
+    <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" scrollable :fullscreen="isMobile">
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
                 <v-btn icon tile v-bind="attrs" v-on="on">
@@ -23,10 +23,9 @@
                 :icon="mdiHelp"
                 card-class="command-help-dialog"
                 :margin-bottom="false">
-                <template v-slot:buttons>
+                <template #buttons>
                     <v-btn icon tile @click="isOpen = false">
-                        <v-icon>{{ mdiCloseThick }}</v-icon>
-                    </v-btn>
+                        <v-icon>{{ mdiCloseThick }}</v-icon></v-btn>
                 </template>
                 <v-card-title>
                     <v-row>

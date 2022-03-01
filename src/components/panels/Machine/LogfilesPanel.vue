@@ -9,10 +9,10 @@
                 <v-row>
                     <v-col :class="'col-12' + (klipperState !== 'ready' ? 'col-md-6' : 'col-md-12') + ''">
                         <v-btn
-                            :href="this.apiUrl + '/server/files/klippy.log'"
-                            @click="downloadLog"
+                            :href="apiUrl + '/server/files/klippy.log'"
                             block
-                            class="primary--text">
+                            class="primary--text"
+                            @click="downloadLog">
                             <v-icon class="mr-2">mdi-download</v-icon>
                             Klipper
                         </v-btn>
@@ -20,10 +20,10 @@
                     <v-col
                         :class="'col-12 pt-0 ' + (klipperState !== 'ready' ? 'col-md-6 mt-md-3 ' : 'col-md-12') + ''">
                         <v-btn
-                            :href="this.apiUrl + '/server/files/moonraker.log'"
-                            @click="downloadLog"
+                            :href="apiUrl + '/server/files/moonraker.log'"
                             block
-                            class="primary--text">
+                            class="primary--text"
+                            @click="downloadLog">
                             <v-icon class="mr-2">mdi-download</v-icon>
                             Moonraker
                         </v-btn>

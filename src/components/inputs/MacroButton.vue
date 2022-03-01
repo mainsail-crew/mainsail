@@ -22,8 +22,8 @@
         </v-btn>
         <template v-if="paramArray.length">
             <v-menu offset-y :close-on-content-click="false">
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn small :color="color" v-bind="attrs" v-on="on" class="minwidth-0 px-1 btnMacroMenu">
+                <template #activator="{ on, attrs }">
+                    <v-btn small :color="color" v-bind="attrs" class="minwidth-0 px-1 btnMacroMenu" v-on="on">
                         <v-icon>mdi-menu-down</v-icon>
                     </v-btn>
                 </template>
@@ -32,8 +32,8 @@
                         <v-row v-for="(name, key) in paramArray" :key="'param_' + key" class="my-2">
                             <v-col class="py-0">
                                 <v-text-field
-                                    :label="name"
                                     v-model="params[name].value"
+                                    :label="name"
                                     :placeholder="params[name].default"
                                     :persistent-placeholder="true"
                                     hide-details
@@ -79,7 +79,8 @@ export default class MacroButton extends Mixins(BaseMixin) {
     private paramArray: string[] = []
     private params: params = {}
 
-    @Prop({ required: true }) declare readonly macro: GuiMacrosStateMacrogroupMacro
+    @Prop({ required: true })
+    declare readonly macro: GuiMacrosStateMacrogroupMacro
     @Prop({ default: 'primary' }) declare readonly color: string
 
     get klipperMacro() {
@@ -110,15 +111,23 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     doSendMacro(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', {
+            message: gcode,
+            type: 'command',
+        })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
     }
 
     sendWithParams() {
         let params: string[] = []
         this.paramArray.forEach((paramname: string) => {
-            if (this.params[paramname].value !== null && this.params[paramname].value !== '')
-                params.push(paramname + '=' + this.params[paramname].value)
+            if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
+                let tmp: string = paramname
+                if (paramname.length === 1) tmp += this.params[paramname].value
+                else tmp += '=' + this.params[paramname].value
+
+                params.push(tmp)
+            }
         })
 
         const gcode = this.macro.name + ' ' + params.join(' ')

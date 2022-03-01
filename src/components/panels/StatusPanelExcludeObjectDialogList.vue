@@ -4,7 +4,7 @@
     <div>
         <template v-for="object in printing_objects">
             <v-row
-                v-bind:key="'div_' + object.name"
+                :key="'div_' + object.name"
                 class="py-3 d-flex"
                 @click="mouseOverObject(object.name)"
                 @mouseover="mouseOverObject(object.name)"
@@ -17,19 +17,19 @@
                     {{ object.name }}
                 </v-col>
                 <v-col class="col-auto py-2">
-                    <v-chip pill small class="text--disabled" v-if="excluded_objects.includes(object.name)">
+                    <v-chip v-if="excluded_objects.includes(object.name)" pill small class="text--disabled">
                         {{ $t('Panels.StatusPanel.ExcludeObject.Excluded') }}
                     </v-chip>
                     <v-icon
+                        v-else
                         class="text--disabled cursor-pointer"
-                        @click="openExcludeObjectDialog(object.name)"
                         small
-                        v-else>
+                        @click="openExcludeObjectDialog(object.name)">
                         mdi-close-circle
                     </v-icon>
                 </v-col>
             </v-row>
-            <v-divider v-bind:key="'divider_' + object.name"></v-divider>
+            <v-divider :key="'divider_' + object.name"></v-divider>
         </template>
     </div>
 </template>

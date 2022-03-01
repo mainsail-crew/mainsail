@@ -9,6 +9,22 @@ export const actions: ActionTree<GuiConsoleState, RootState> = {
         commit('reset')
     },
 
+    clear({ commit }) {
+        const cleared_since = new Date().valueOf()
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'mainsail',
+            key: 'console.cleared_since',
+            value: cleared_since,
+        })
+
+        commit('clear', {
+            cleared_since,
+        })
+
+        commit('server/clearGcodeStore', {}, { root: true })
+        commit('server/setConsoleClearedThisSession', {}, { root: true })
+    },
+
     saveSetting({ dispatch }, payload) {
         dispatch(
             'gui/saveSetting',

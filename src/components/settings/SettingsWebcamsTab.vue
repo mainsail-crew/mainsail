@@ -1,9 +1,36 @@
+<style lang="scss" scoped>
+._transition i::before {
+    transition: transform 500ms;
+}
+._rotate-180:before {
+    transform: rotate(180deg);
+}
+
+.v-item-group {
+    button:hover::before,
+    button:focus::before {
+        opacity: 0 !important;
+    }
+    ._menu-button {
+        height: 40px;
+        width: 62px;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    }
+    ._menu-button:hover {
+        border-color: rgba(255, 255, 255, 1) !important;
+    }
+    ._menu-button:focus {
+        border: 2px solid var(--color-primary) !important;
+    }
+}
+</style>
+
 <template>
     <div>
-        <v-card flat v-if="!form.bool">
+        <v-card v-if="!form.bool" flat>
             <v-card-text>
                 <h3 class="text-h5 mb-3">{{ $t('Settings.WebcamsTab.Webcams') }}</h3>
-                <div v-for="webcam in webcams" v-bind:key="webcam.id">
+                <div v-for="webcam in webcams" :key="webcam.id">
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
@@ -13,9 +40,9 @@
                         <v-btn
                             small
                             outlined
-                            @click="deleteWebcam(webcam.id)"
                             class="ml-3 minwidth-0 px-2"
-                            color="error">
+                            color="error"
+                            @click="deleteWebcam(webcam.id)">
                             <v-icon small>mdi-delete</v-icon>
                         </v-btn>
                     </settings-row>
@@ -25,8 +52,8 @@
                 <v-btn text color="primary" @click="createWebcam">{{ $t('Settings.WebcamsTab.AddWebcam') }}</v-btn>
             </v-card-actions>
         </v-card>
-        <v-card flat v-else>
-            <v-form v-model="form.valid" ref="webcamForm" @submit.prevent="saveWebcam">
+        <v-card v-else flat>
+            <v-form ref="webcamForm" v-model="form.valid" @submit.prevent="saveWebcam">
                 <v-card-title>
                     {{
                         form.id === null ? $t('Settings.WebcamsTab.CreateWebcam') : $t('Settings.WebcamsTab.EditWebcam')
@@ -36,23 +63,32 @@
                     <v-row>
                         <v-col class="col-12 col-sm-6">
                             <v-row>
-                                <v-col class="col-2">
+                                <v-col class="d-flex align-center">
                                     <v-item-group>
                                         <v-menu :offset-y="true" title="Icon">
-                                            <template v-slot:activator="{ on, attrs }">
+                                            <template #activator="{ on, attrs }">
                                                 <v-btn
-                                                    class="px-2 minwidth-0"
+                                                    class="px-2 mr-2 _transition _menu-button"
                                                     color="transparent"
                                                     v-bind="attrs"
+                                                    elevation="0"
                                                     v-on="on"
-                                                    elevation="0">
+                                                    :ripple="false"
+                                                    @blur="selectIcon = !selectIcon"
+                                                    @focus="selectIcon = !selectIcon">
                                                     <v-icon>{{ form.icon }}</v-icon>
+                                                    <v-icon
+                                                        :class="!selectIcon ? '' : '_rotate-180'"
+                                                        :color="!selectIcon ? '' : 'primary'"
+                                                        class="pl-1 mr-n2">
+                                                        mdi-menu-down
+                                                    </v-icon>
                                                 </v-btn>
                                             </template>
                                             <v-list dense class="py-0">
                                                 <v-list-item
                                                     v-for="icon of iconItems"
-                                                    v-bind:key="icon.value"
+                                                    :key="icon.value"
                                                     link
                                                     @click="setFormIcon(icon.value)">
                                                     <v-list-item-icon class="mr-0">
@@ -65,52 +101,59 @@
                                             </v-list>
                                         </v-menu>
                                     </v-item-group>
-                                </v-col>
-                                <v-col class="col-10">
                                     <v-text-field
                                         v-model="form.name"
                                         :label="$t('Settings.WebcamsTab.Name')"
                                         hide-details="auto"
+                                        outlined
                                         :rules="[rules.required, rules.unique]"
                                         dense></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="py-1">
+                                <v-col class="py-2">
                                     <v-text-field
                                         v-model="form.urlStream"
                                         :label="$t('Settings.WebcamsTab.UrlStream')"
                                         hide-details="auto"
+                                        outlined
+                                        dense
                                         :rules="
                                             form.service !== 'mjpegstreamer-adaptive' ? [rules.required] : []
                                         "></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="py-1">
+                                <v-col class="py-2">
                                     <v-text-field
                                         v-model="form.urlSnapshot"
                                         :label="$t('Settings.WebcamsTab.UrlSnapshot')"
                                         hide-details="auto"
+                                        outlined
+                                        dense
                                         :rules="
                                             form.service === 'mjpegstreamer-adaptive' ? [rules.required] : []
                                         "></v-text-field>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col class="py-1">
+                                <v-col class="py-2">
                                     <v-select
                                         v-model="form.service"
                                         :items="serviceItems"
                                         hide-details
+                                        outlined
+                                        dense
                                         :label="$t('Settings.WebcamsTab.Service')"
                                         attach></v-select>
                                 </v-col>
                             </v-row>
                             <v-row v-if="form.service === 'mjpegstreamer-adaptive'">
-                                <v-col class="py-1">
+                                <v-col class="py-2">
                                     <v-text-field
                                         v-model="form.targetFps"
+                                        outlined
+                                        dense
                                         hide-details
                                         :label="$t('Settings.WebcamsTab.TargetFPS')"></v-text-field>
                                 </v-col>
@@ -216,6 +259,8 @@ interface webcamForm {
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
+    private selectIcon: boolean = false
+
     private form: webcamForm = {
         bool: false,
         id: null,
