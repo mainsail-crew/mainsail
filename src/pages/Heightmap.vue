@@ -358,11 +358,11 @@
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="calibrateDialog.name"
                         ref="inputFieldCalibrateBedMeshName"
+                        v-model="calibrateDialog.name"
                         :label="$t('Heightmap.Name')"
-                        @keyup.enter="calibrateMesh"
-                        required></v-text-field>
+                        required
+                        @keyup.enter="calibrateMesh"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>

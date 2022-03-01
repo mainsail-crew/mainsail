@@ -22,16 +22,16 @@
             :disabled="disabled"
             :step="step"
             :min="min"
-            @blur="value = target"
             :max="max"
-            @click:append="resetToDefault"
             :dec="dec"
-            @keydown="checkInvalidChars"
             type="number"
             hide-spin-buttons
             hide-details="auto"
             outlined
-            dense>
+            dense
+            @blur="value = target"
+            @click:append="resetToDefault"
+            @keydown="checkInvalidChars">
             <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
                     <v-btn

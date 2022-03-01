@@ -72,8 +72,8 @@
                                                     color="transparent"
                                                     v-bind="attrs"
                                                     elevation="0"
-                                                    v-on="on"
                                                     :ripple="false"
+                                                    v-on="on"
                                                     @blur="selectIcon = !selectIcon"
                                                     @focus="selectIcon = !selectIcon">
                                                     <v-icon>{{ form.icon }}</v-icon>

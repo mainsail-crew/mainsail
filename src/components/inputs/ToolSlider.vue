@@ -83,7 +83,7 @@
                         @focus="$event.target.select()"
                         @keydown="checkInvalidChars"
                         @keyup.enter="submitInput">
-                        <template #append v-if="value !== defaultValue || value !== numInput">
+                        <template v-if="value !== defaultValue || value !== numInput" #append>
                             <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
                         </template>
                     </v-text-field>
