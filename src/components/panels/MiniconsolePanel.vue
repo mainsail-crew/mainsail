@@ -11,20 +11,24 @@
 <template>
     <panel
         v-if="socketIsConnected && klipperState !== 'disconnected'"
-        icon="mdi-console-line"
+        :icon="mdiConsoleLine"
         :title="$t('Panels.MiniconsolePanel.Headline')"
         :collapsible="true"
         card-class="miniconsole-panel"
         :hide-buttons-on-collapse="true">
         <template #buttons>
-            <v-btn icon tile @click="clearConsole"><v-icon small>mdi-trash-can</v-icon></v-btn>
+            <v-btn icon tile @click="clearConsole">
+                <v-icon small>{{ mdiTrashCan }}</v-icon>
+            </v-btn>
             <command-help-modal :in-toolbar="true" @onCommand="gcode = $event"></command-help-modal>
             <v-menu
                 :offset-y="true"
                 :close-on-content-click="false"
                 :title="$t('Panels.MiniconsolePanel.SetupConsole')">
                 <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-filter</v-icon></v-btn>
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon small>{{ mdiFilter }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
@@ -68,8 +72,8 @@
                     hide-details
                     outlined
                     dense
-                    :prepend-icon="isTouchDevice ? 'mdi-chevron-double-right' : ''"
-                    append-icon="mdi-send"
+                    :prepend-icon="isTouchDevice ? mdiChevronDoubleRight : ''"
+                    :append-icon="mdiSend"
                     @keydown.enter.prevent.stop="doSend"
                     @keyup.up="onKeyUp"
                     @keyup.down="onKeyDown"
@@ -104,8 +108,9 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import ConsoleTable from '@/components/console/ConsoleTable.vue'
-import CommandHelpModal from '@/components/CommandHelpModal.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiChevronDoubleRight, mdiConsoleLine, mdiFilter, mdiSend, mdiTrashCan } from '@mdi/js'
+import CommandHelpModal from '@/components/CommandHelpModal.vue'
 
 @Component({
     components: {
@@ -115,6 +120,12 @@ import Panel from '@/components/ui/Panel.vue'
     },
 })
 export default class MiniconsolePanel extends Mixins(BaseMixin) {
+    mdiTrashCan = mdiTrashCan
+    mdiConsoleLine = mdiConsoleLine
+    mdiFilter = mdiFilter
+    mdiSend = mdiSend
+    mdiChevronDoubleRight = mdiChevronDoubleRight
+
     declare $refs: {
         gcodeCommandField: VTextareaType
         console: ConsoleTable
