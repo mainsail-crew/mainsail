@@ -6,7 +6,7 @@
             <div class="d-flex flex-row flex-nowrap justify-space-between">
                 <div class="py-2" style="width: calc(100% - 25px)">
                     <span class="subtitle-2 d-block px-0 text--disabled text-truncate">
-                        <v-icon class="mr-2" small>mdi-printer-3d-nozzle</v-icon>
+                        <v-icon class="mr-2" small>{{ mdiPrinter3dNozzle }}</v-icon>
                         {{ current_object !== null ? current_object : '--' }}
                     </span>
                 </div>
@@ -16,7 +16,7 @@
                         class="text--disabled cursor-pointer"
                         small
                         @click="openCancelObjectDialog(current_object)">
-                        mdi-selection-remove
+                        {{ mdiSelectionRemove }}
                     </v-icon>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <v-toolbar flat dense>
                     <v-toolbar-title>
                         <span class="subheading">
-                            <v-icon left>mdi-selection-remove</v-icon>
+                            <v-icon left>{{ mdiSelectionRemove }}</v-icon>
                             {{ $t('Panels.StatusPanel.ExcludeObject.ExcludeObjectHeadline') }}
                         </span>
                     </v-toolbar-title>
@@ -60,10 +60,14 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import StatusPanelExcludeObjectDialog from '@/components/panels/StatusPanelExcludeObjectDialog.vue'
+import { mdiPrinter3dNozzle, mdiSelectionRemove } from '@mdi/js'
 @Component({
     components: { StatusPanelExcludeObjectDialog },
 })
 export default class StatusPanelExcludeObject extends Mixins(BaseMixin) {
+    mdiPrinter3dNozzle = mdiPrinter3dNozzle
+    mdiSelectionRemove = mdiSelectionRemove
+
     boolShowExcludeObjectDialog = false
     excludeObjectDialogName = ''
 

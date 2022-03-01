@@ -34,7 +34,7 @@
                     <v-divider class="my-2"></v-divider>
                     <settings-row :title="webcam.name" :icon="webcam.icon" :sub-title="getSubtitle(webcam)">
                         <v-btn small outlined @click="editWebcam(webcam)">
-                            <v-icon small left>mdi-pencil</v-icon>
+                            <v-icon small left>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
@@ -43,7 +43,7 @@
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deleteWebcam(webcam.id)">
-                            <v-icon small>mdi-delete</v-icon>
+                            <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
@@ -81,7 +81,7 @@
                                                         :class="!selectIcon ? '' : '_rotate-180'"
                                                         :color="!selectIcon ? '' : 'primary'"
                                                         class="pl-1 mr-n2">
-                                                        mdi-menu-down
+                                                        {{ mdiMenuDown }}
                                                     </v-icon>
                                                 </v-btn>
                                             </template>
@@ -228,6 +228,9 @@ import {
     mdiAlbum,
     mdiCampfire,
     mdiDoor,
+    mdiMenuDown,
+    mdiDelete,
+    mdiPencil,
     mdiPrinter3d,
     mdiPrinter3dNozzle,
     mdiRadiatorDisabled,
@@ -259,6 +262,10 @@ interface webcamForm {
     },
 })
 export default class SettingsWebcamsTab extends Mixins(BaseMixin) {
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+    mdiMenuDown = mdiMenuDown
+
     private selectIcon: boolean = false
 
     private form: webcamForm = {

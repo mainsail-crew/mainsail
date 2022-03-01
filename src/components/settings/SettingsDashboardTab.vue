@@ -8,26 +8,26 @@
                     <v-btn-toggle v-model="viewport" class="mx-auto">
                         <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
-                            <v-icon right class="hidden-sm-and-down">mdi-cellphone</v-icon>
-                            <v-icon class="hidden-md-and-up">mdi-cellphone</v-icon>
+                            <v-icon right class="hidden-sm-and-down">{{ mdiCellphone }}</v-icon>
+                            <v-icon class="hidden-md-and-up">{{ mdiCellphone }}</v-icon>
                         </v-btn>
 
                         <v-btn value="tablet">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Tablet') }}</span>
-                            <v-icon right class="hidden-sm-and-down">mdi-tablet</v-icon>
-                            <v-icon class="hidden-md-and-up">mdi-tablet</v-icon>
+                            <v-icon right class="hidden-sm-and-down">{{ mdiTablet }}</v-icon>
+                            <v-icon class="hidden-md-and-up">{{ mdiTablet }}</v-icon>
                         </v-btn>
 
                         <v-btn value="desktop">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Desktop') }}</span>
-                            <v-icon right class="hidden-sm-and-down">mdi-monitor-dashboard</v-icon>
-                            <v-icon class="hidden-md-and-up">mdi-monitor-dashboard</v-icon>
+                            <v-icon right class="hidden-sm-and-down">{{ mdiMonitorDashboard }}</v-icon>
+                            <v-icon class="hidden-md-and-up">{{ mdiMonitorDashboard }}</v-icon>
                         </v-btn>
 
                         <v-btn value="widescreen">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Widescreen') }}</span>
-                            <v-icon right class="hidden-sm-and-down">mdi-monitor-screenshot</v-icon>
-                            <v-icon class="hidden-md-and-up">mdi-monitor-screenshot</v-icon>
+                            <v-icon right class="hidden-sm-and-down">{{ mdiMonitorScreenshot }}</v-icon>
+                            <v-icon class="hidden-md-and-up">{{ mdiMonitorScreenshot }}</v-icon>
                         </v-btn>
                     </v-btn-toggle>
                 </v-col>
@@ -50,6 +50,7 @@ import SettingsDashboardTabMobile from '@/components/settings/SettingsDashboardT
 import SettingsDashboardTabTablet from '@/components/settings/SettingsDashboardTabTablet.vue'
 import SettingsDashboardTabDesktop from '@/components/settings/SettingsDashboardTabDesktop.vue'
 import SettingsDashboardTabWidescreen from '@/components/settings/SettingsDashboardTabWidescreen.vue'
+import { mdiCellphone, mdiMonitorScreenshot, mdiMonitorDashboard, mdiTablet } from '@mdi/js'
 
 @Component({
     components: {
@@ -61,6 +62,11 @@ import SettingsDashboardTabWidescreen from '@/components/settings/SettingsDashbo
     },
 })
 export default class SettingsDashboardTab extends Mixins(BaseMixin) {
+    mdiCellphone = mdiCellphone
+    mdiTablet = mdiTablet
+    mdiMonitorDashboard = mdiMonitorDashboard
+    mdiMonitorScreenshot = mdiMonitorScreenshot
+
     private viewport = 'desktop'
 
     mounted() {

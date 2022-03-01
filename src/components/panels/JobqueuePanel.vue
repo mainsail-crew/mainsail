@@ -1,6 +1,6 @@
 <template>
     <div>
-        <panel icon="mdi-tray-full" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
+        <panel :icon="mdiTrayFull" :title="$t('JobQueue.JobQueue')" card-class="jobqueue-panel">
             <template #buttons>
                 <v-btn
                     v-if="queueState === 'paused'"
@@ -122,7 +122,7 @@ import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
-import { mdiPlay, mdiPause, mdiFile, mdiDelete } from '@mdi/js'
+import { mdiPlay, mdiPause, mdiFile, mdiDelete, mdiTrayFull } from '@mdi/js'
 @Component({
     components: { Panel },
 })
@@ -131,6 +131,7 @@ export default class JobqueuePanel extends Mixins(BaseMixin) {
     mdiPause = mdiPause
     mdiFile = mdiFile
     mdiDelete = mdiDelete
+    mdiTrayFull = mdiTrayFull
 
     formatFilesize = formatFilesize
 

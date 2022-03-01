@@ -4,26 +4,26 @@
     <div>
         <panel
             v-if="displayPanel"
-            icon="mdi-arrow-collapse-vertical"
+            :icon="mdiArrowCollapseVertical"
             :title="$t('Panels.ZoffsetPanel.Headline')"
             :collapsible="true"
             card-class="zoffset-panel">
             <template #buttons>
                 <template v-if="z_gcode_offset !== 0">
                     <v-btn icon tile :loading="loadings.includes('babySteppingClear')" @click="clearZOffset()">
-                        <v-icon>mdi-broom</v-icon>
+                        <v-icon>{{ mdiBroom }}</v-icon>
                     </v-btn>
                     <v-menu v-if="existZOffsetApplyProbe && existZOffsetApplyEndstop" offset-y left>
                         <template #activator="{ on, attrs }">
                             <v-btn text tile color="primary" v-bind="attrs" class="pa-1" v-on="on">
                                 <span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
-                                <v-icon>mdi-menu-down</v-icon>
+                                <v-icon>{{ mdiMenuDown }}</v-icon>
                             </v-btn>
                         </template>
                         <v-list dense class="py-0">
                             <v-list-item link @click="saveZOffsetToEndstop">
                                 <v-list-item-icon class="mr-0">
-                                    <v-icon small>mdi-electric-switch</v-icon>
+                                    <v-icon small>{{ mdiElectricSwitch }}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     <v-list-item-title>{{ $t('Panels.ZoffsetPanel.ToEndstop') }}</v-list-item-title>
@@ -31,7 +31,7 @@
                             </v-list-item>
                             <v-list-item link @click="saveZOffsetToProbe">
                                 <v-list-item-icon class="mr-0">
-                                    <v-icon small>mdi-elevator</v-icon>
+                                    <v-icon small>{{ mdiElevator }}</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-content>
                                     <v-list-item-title>{{ $t('Panels.ZoffsetPanel.ToProbe') }}</v-list-item-title>
@@ -46,7 +46,7 @@
                         class="px-2 minwidth-0"
                         color="primary ml-3"
                         @click="saveZOffsetToProbe">
-                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
                         {{ $t('Panels.ZoffsetPanel.Save') }}
                     </v-btn>
                     <v-btn
@@ -56,7 +56,7 @@
                         class="px-2 minwidth-0"
                         color="primary ml-3"
                         @click="saveZOffsetToEndstop">
-                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
                         {{ $t('Panels.ZoffsetPanel.Save') }}
                     </v-btn>
                 </template>
@@ -81,7 +81,7 @@
                                     class=""
                                     :loading="loadings.includes('babySteppingDownFine')"
                                     @click="sendBabySteppingDownFine()">
-                                    <v-icon small class="mr-2">mdi-arrow-collapse-down</v-icon>
+                                    <v-icon small class="mr-2">{{ mdiArrowCollapseDown }}</v-icon>
                                     -0.01
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
@@ -100,7 +100,7 @@
                                     class=""
                                     :loading="loadings.includes('babySteppingUpFine')"
                                     @click="sendBabySteppingUpFine()">
-                                    <v-icon small class="mr-2">mdi-arrow-expand-up</v-icon>
+                                    <v-icon small class="mr-2">{{ mdiArrowExpandUp }}</v-icon>
                                     +0.01
                                     <span class="d-sm-none d-md-inline">mm</span>
                                 </v-btn>
@@ -121,7 +121,7 @@
         <v-dialog v-model="saveOffsetDialog" max-width="290">
             <panel
                 :title="$t('Panels.ZoffsetPanel.SaveInfoHeadline')"
-                icon="mdi-information"
+                :icon="mdiInformation"
                 card-class="zoffset-saveinfo-dialog"
                 :margin-bottom="false">
                 <v-card-text v-if="printerIsPrinting" class="mt-3">
@@ -147,10 +147,31 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import { CommandHelp } from '@/store/printer/types'
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiBroom,
+    mdiMenuDown,
+    mdiElectricSwitch,
+    mdiElevator,
+    mdiContentSave,
+    mdiArrowCollapseVertical,
+    mdiArrowCollapseDown,
+    mdiArrowExpandUp,
+    mdiInformation,
+} from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class ZoffsetPanel extends Mixins(BaseMixin) {
+    mdiBroom = mdiBroom
+    mdiMenuDown = mdiMenuDown
+    mdiElectricSwitch = mdiElectricSwitch
+    mdiElevator = mdiElevator
+    mdiContentSave = mdiContentSave
+    mdiArrowCollapseVertical = mdiArrowCollapseVertical
+    mdiArrowCollapseDown = mdiArrowCollapseDown
+    mdiArrowExpandUp = mdiArrowExpandUp
+    mdiInformation = mdiInformation
+
     private saveOffsetDialog = false
 
     get displayPanel() {

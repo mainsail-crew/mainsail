@@ -3,13 +3,13 @@
 <template>
     <panel
         v-if="klipperReadyForGui && ['printing', 'paused'].includes(printer_state)"
-        icon="mdi-printer-3d"
+        :icon="mdiPrinter3d"
         :title="$t('Panels.PrintsettingsPanel.Headline').toString()"
         :collapsible="true"
         card-class="printsettings-panel">
         <tool-slider
             :label="$t('Panels.PrintsettingsPanel.SpeedFactor').toString()"
-            icon="mdi-speedometer"
+            :icon="mdiSpeedometer"
             :target="speed_factor"
             :min="1"
             :max="200"
@@ -23,7 +23,7 @@
             <v-divider></v-divider>
             <tool-slider
                 :label="$t('Panels.PrintsettingsPanel.ExtrusionFactor').toString()"
-                icon="mdi-printer-3d-nozzle-outline"
+                :icon="mdiPrinter3dNozzleOutline"
                 :target="extrude_factor"
                 :min="1"
                 :max="200"
@@ -41,6 +41,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
+import { mdiPrinter3d, mdiPrinter3dNozzleOutline, mdiSpeedometer } from '@mdi/js'
 
 @Component({
     components: {
@@ -49,6 +50,10 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
     },
 })
 export default class PrintsettingsPanel extends Mixins(BaseMixin) {
+    mdiPrinter3d = mdiPrinter3d
+    mdiSpeedometer = mdiSpeedometer
+    mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
+
     get extrude_factor() {
         return this.$store.state.printer?.gcode_move?.extrude_factor ?? 1
     }

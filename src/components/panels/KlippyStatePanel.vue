@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperState !== 'ready' && socketIsConnected"
-        icon="mdi-alert-circle"
+        :icon="mdiAlertCircle"
         :title="$t('Panels.KlippyStatePanel.KlippyState') + ': ' + klipperState"
         card-class="klippy-state-panel">
         <template v-if="klippyIsConnected">
@@ -40,7 +40,7 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiRestart } from '@mdi/js'
+import { mdiAlertCircle, mdiRestart } from '@mdi/js'
 
 @Component({
     components: { Panel, ConnectionStatus },
@@ -48,6 +48,7 @@ import { mdiRestart } from '@mdi/js'
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
     //private timer: number | null = null
 
+    mdiAlertCircle = mdiAlertCircle
     mdiRestart = mdiRestart
 
     get klippy_message() {

@@ -150,7 +150,7 @@
                                 </v-tooltip>
                             </template>
                             <template v-else>
-                                <v-icon>mdi-file</v-icon>
+                                <v-icon>{{ mdiFile }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -169,31 +169,31 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile(contextMenu.item.filename)">
-                    <v-icon left>mdi-cloud-download</v-icon>
+                    <v-icon left>{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Timelapse.Download') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
-                    <v-icon left>mdi-rename-box</v-icon>
+                    <v-icon left>{{ mdiRenameBox }}</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameFile(contextMenu.item)">
-                    <v-icon left>mdi-rename-box</v-icon>
+                    <v-icon left>{{ mdiRenameBox }}</v-icon>
                     {{ $t('Timelapse.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="removeFile">
-                    <v-icon left>mdi-delete</v-icon>
+                    <v-icon left>{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="deleteDirectory(contextMenu.item)">
-                    <v-icon left>mdi-delete</v-icon>
+                    <v-icon left>{{ mdiDelete }}</v-icon>
                     {{ $t('Timelapse.Delete') }}
                 </v-list-item>
             </v-list>
@@ -356,6 +356,9 @@ import {
     mdiFile,
     mdiFolderZipOutline,
     mdiRefresh,
+    mdiCloudDownload,
+    mdiRenameBox,
+    mdiDelete,
 } from '@mdi/js'
 
 interface dialogRenameObject {
@@ -382,6 +385,9 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     mdiFolder = mdiFolder
     mdiFolderZipOutline = mdiFolderZipOutline
     mdiFile = mdiFile
+    mdiCloudDownload = mdiCloudDownload
+    mdiRenameBox = mdiRenameBox
+    mdiDelete = mdiDelete
 
     declare $refs: {
         inputFieldRenameFile: any
