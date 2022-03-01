@@ -298,7 +298,7 @@
         <v-dialog v-model="editHeater.bool" persistent :width="400">
             <panel
                 :title="convertName(editHeater.name)"
-                :icon="'mdi-' + editHeater.icon"
+                :icon="editHeater.icon"
                 card-class="tools-edit-heater-dialog"
                 :margin-bottom="false">
                 <template #buttons>

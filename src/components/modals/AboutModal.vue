@@ -17,7 +17,6 @@
         <template #activator="{ an }">
             <v-tooltip right color="panel">
                 <template #activator="{ on, attrs }">
-                    <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
                     <v-icon v-bind="attrs" v-on="an" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
                         {{ mdiHelpCircleOutline }}
                     </v-icon>

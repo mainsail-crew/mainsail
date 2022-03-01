@@ -62,7 +62,7 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { mdiRestart } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiRestart } from '@mdi/js'
 
 @Component
 export default class NumberInput extends Mixins(BaseMixin) {

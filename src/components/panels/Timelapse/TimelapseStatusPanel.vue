@@ -6,7 +6,7 @@
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading align-baseline">
-                        <v-icon left>mdi-information</v-icon>
+                        <v-icon left>{{ mdiInformation }}</v-icon>
                         {{ $t('Timelapse.Status') }}
                     </span>
                 </v-toolbar-title>
@@ -27,7 +27,7 @@
                                         slot="preloader"
                                         indeterminate
                                         color="primary"></v-progress-circular>
-                                    <v-icon slot="error">mdi-file</v-icon>
+                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
                                 </vue-load-image>
                             </v-col>
                         </v-row>
@@ -92,7 +92,7 @@
         <v-dialog v-model="boolDialogRendersettings" :max-width="700" :max-height="500">
             <panel
                 :title="$t('Timelapse.RenderSettings')"
-                icon="mdi-text-box-search-outline"
+                :icon="mdiTextBoxSearchOutline"
                 card-class="timelapse-rendersettings-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -197,10 +197,15 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiFile, mdiInformation, mdiTextBoxSearchOutline } from '@mdi/js'
 @Component({
     components: { Panel, SettingsRow },
 })
 export default class TimelapseStatusPanel extends Mixins(BaseMixin) {
+    mdiInformation = mdiInformation
+    mdiFile = mdiFile
+    mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
+
     private boolDialogRendersettings = false
 
     get frameUrl() {

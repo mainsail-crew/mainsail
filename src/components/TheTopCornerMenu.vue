@@ -9,7 +9,7 @@
         <v-menu v-model="showMenu" bottom left :offset-y="true" :close-on-content-click="false">
             <template #activator="{ on, attrs }">
                 <v-btn icon tile v-bind="attrs" v-on="on">
-                    <v-icon>mdi-power-standby</v-icon>
+                    <v-icon>{{ mdiPowerStandby }}</v-icon>
                 </v-btn>
             </template>
             <v-list dense>
@@ -23,7 +23,7 @@
                         @click="checkDialog(klipperRestart, 'klipper', 'restart')">
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>mdi-restart</v-icon>
+                            <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
                         </v-list-item-action>
                     </v-list-item>
                     <v-list-item
@@ -32,7 +32,7 @@
                         @click="checkDialog(klipperFirmwareRestart, 'klipper', 'firmwareRestart')">
                         <v-list-item-title>{{ $t('App.TopCornerMenu.KlipperFirmwareRestart') }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                            <v-icon class="mr-2" small>mdi-restart</v-icon>
+                            <v-icon class="mr-2" small>{{ mdiRestart }}</v-icon>
                         </v-list-item-action>
                     </v-list-item>
                 </template>
@@ -58,10 +58,10 @@
                                 icon
                                 small
                                 @click="checkDialog(serviceStart, service, 'start')">
-                                <v-icon small>mdi-play</v-icon>
+                                <v-icon small>{{ mdiPlay }}</v-icon>
                             </v-btn>
                             <v-btn v-else icon small @click="checkDialog(serviceRestart, service, 'restart')">
-                                <v-icon small>mdi-restart</v-icon>
+                                <v-icon small>{{ mdiRestart }}</v-icon>
                             </v-btn>
                             <v-btn
                                 icon
@@ -69,7 +69,7 @@
                                 :disabled="getServiceState(service) === 'inactive' || service === 'moonraker'"
                                 :style="service === 'moonraker' ? 'visibility: hidden;' : ''"
                                 @click="checkDialog(serviceStop, service, 'stop')">
-                                <v-icon small>mdi-stop</v-icon>
+                                <v-icon small>{{ mdiStop }}</v-icon>
                             </v-btn>
                         </v-list-item-action>
                     </v-list-item>
@@ -91,7 +91,7 @@
                         <v-list-item-title>{{ device.device }}</v-list-item-title>
                         <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
                             <v-icon class="mr-2" :color="device.status === 'on' ? '' : 'grey darken-2'">
-                                mdi-{{ device.status === 'on' ? 'toggle-switch' : 'toggle-switch-off' }}
+                                {{ device.status === 'on' ? mdiToggleSwitch : mdiToggleSwitchOff }}
                             </v-icon>
                         </v-list-item-action>
                     </v-list-item>
@@ -101,13 +101,13 @@
                 <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostReboot, 'host', 'reboot')">
                     <v-list-item-title>{{ $t('App.TopCornerMenu.Reboot') }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                        <v-icon class="mr-2" small>mdi-power</v-icon>
+                        <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
                     </v-list-item-action>
                 </v-list-item>
                 <v-list-item class="minheight30 pr-2" link @click="checkDialog(hostShutdown, 'host', 'shutdown')">
                     <v-list-item-title>{{ $t('App.TopCornerMenu.Shutdown') }}</v-list-item-title>
                     <v-list-item-action class="my-0 d-flex flex-row" style="min-width: auto">
-                        <v-icon class="mr-2" small>mdi-power</v-icon>
+                        <v-icon class="mr-2" small>{{ mdiPower }}</v-icon>
                     </v-list-item-action>
                 </v-list-item>
             </v-list>
@@ -136,7 +136,7 @@
         <v-dialog v-model="dialogConfirmation.show" width="400" :fullscreen="isMobile">
             <panel
                 card-class="confirm-top-corner-menu-dialog"
-                icon="mdi-alert"
+                :icon="mdiAlert"
                 :title="dialogConfirmation.title"
                 :margin-bottom="false">
                 <template #buttons>
@@ -171,6 +171,17 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { ServerPowerStateDevice } from '@/store/server/power/types'
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiAlert,
+    mdiCloseThick,
+    mdiPowerStandby,
+    mdiRestart,
+    mdiPlay,
+    mdiPower,
+    mdiStop,
+    mdiToggleSwitch,
+    mdiToggleSwitchOff,
+} from '@mdi/js'
 
 interface dialogPowerDeviceChange {
     show: boolean
@@ -191,6 +202,16 @@ interface dialogConfirmation {
     components: { Panel },
 })
 export default class TheTopCornerMenu extends Mixins(BaseMixin) {
+    mdiAlert = mdiAlert
+    mdiCloseThick = mdiCloseThick
+    mdiPowerStandby = mdiPowerStandby
+    mdiRestart = mdiRestart
+    mdiPlay = mdiPlay
+    mdiPower = mdiPower
+    mdiStop = mdiStop
+    mdiToggleSwitch = mdiToggleSwitch
+    mdiToggleSwitchOff = mdiToggleSwitchOff
+
     showMenu = false
     dialogPowerDeviceChange: dialogPowerDeviceChange = {
         show: false,

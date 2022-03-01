@@ -16,14 +16,14 @@
     <div>
         <panel
             :title="$t('Timelapse.TimelapseFiles')"
-            icon="mdi-file-document-multiple-outline"
+            :icon="mdiFileDocumentMultipleOutline"
             card-class="timelapse-files-panel">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
                         <v-text-field
                             v-model="search"
-                            append-icon="mdi-magnify"
+                            :append-icon="mdiMagnify"
                             :label="$t('Timelapse.Search')"
                             single-line
                             outlined
@@ -37,13 +37,13 @@
                             :title="$t('Timelapse.CreateNewDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="createDirectory">
-                            <v-icon>mdi-folder-plus</v-icon>
+                            <v-icon>{{ mdiFolderPlus }}</v-icon>
                         </v-btn>
                         <v-btn
                             :title="$t('Timelapse.RefreshCurrentDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshFileList">
-                            <v-icon>mdi-refresh</v-icon>
+                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -104,7 +104,9 @@
 
                 <template v-if="currentPath !== 'timelapse'" slot="body.prepend">
                     <tr class="file-list-cursor" @click="clickRowGoBack">
-                        <td class="pr-0 text-center" style="width: 32px"><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px">
+                            <v-icon>{{ mdiFolderUpload }}</v-icon>
+                        </td>
                         <td class=" " :colspan="headers.length">..</td>
                     </tr>
                 </template>
@@ -118,10 +120,10 @@
                         @click="clickRow(item)">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
-                                <v-icon>mdi-folder</v-icon>
+                                <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
                             <template v-else-if="item.filename.endsWith('zip')">
-                                <v-icon>mdi-folder-zip-outline</v-icon>
+                                <v-icon>{{ mdiFolderZipOutline }}</v-icon>
                             </template>
                             <template v-else-if="getThumbnail(item)">
                                 <v-tooltip
@@ -141,7 +143,7 @@
                                                 slot="preloader"
                                                 indeterminate
                                                 color="primary"></v-progress-circular>
-                                            <v-icon slot="error">mdi-file</v-icon>
+                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getThumbnail(item)" :alt="item.filename" width="250" /></span>
@@ -303,7 +305,7 @@
         <v-dialog v-model="boolVideoDialog" :max-width="700">
             <panel
                 :title="$t('Timelapse.Video')"
-                icon="mdi-file-video"
+                :icon="mdiFileVideo"
                 card-class="timelapse-video-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -343,6 +345,18 @@ import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, formatDate, sortFiles } from '@/plugins/helpers'
 import { FileStateFile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiFolderPlus,
+    mdiCloseThick,
+    mdiFileDocumentMultipleOutline,
+    mdiFileVideo,
+    mdiFolder,
+    mdiFolderUpload,
+    mdiMagnify,
+    mdiFile,
+    mdiFolderZipOutline,
+    mdiRefresh,
+} from '@mdi/js'
 
 interface dialogRenameObject {
     show: boolean
@@ -357,6 +371,17 @@ export default class TimelapseFilesPanel extends Mixins(BaseMixin) {
     formatDate = formatDate
     formatFilesize = formatFilesize
     sortFiles = sortFiles
+
+    mdiFileVideo = mdiFileVideo
+    mdiCloseThick = mdiCloseThick
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiMagnify = mdiMagnify
+    mdiFolderPlus = mdiFolderPlus
+    mdiRefresh = mdiRefresh
+    mdiFolderUpload = mdiFolderUpload
+    mdiFolder = mdiFolder
+    mdiFolderZipOutline = mdiFolderZipOutline
+    mdiFile = mdiFile
 
     declare $refs: {
         inputFieldRenameFile: any

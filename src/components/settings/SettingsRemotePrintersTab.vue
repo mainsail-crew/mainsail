@@ -8,7 +8,7 @@
                     <settings-row
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
-                        :icon="printer.socket.isConnected ? 'mdi-checkbox-marked-circle' : 'mdi-cancel'">
+                        :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
                         <v-btn small outlined @click="editPrinter(printer)">
                             <v-icon left small>mdi-pencil</v-icon>
                             {{ $t('Settings.Edit') }}
@@ -81,6 +81,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { mdiCancel, mdiCheckboxMarkedCircle } from '@mdi/js'
 
 interface printerForm {
     bool: boolean
@@ -94,6 +95,9 @@ interface printerForm {
     components: { SettingsRow },
 })
 export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
+    mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
+    mdiCancel = mdiCancel
+
     private form: printerForm = {
         bool: false,
         hostname: '',

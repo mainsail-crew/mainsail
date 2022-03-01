@@ -13,7 +13,7 @@
         <klipper-warnings-panel></klipper-warnings-panel>
         <panel
             v-if="klipperState === 'ready'"
-            icon="mdi-information"
+            :icon="mdiInformation"
             :title="printerStateOutput"
             :collapsible="true"
             card-class="status-panel">
@@ -375,6 +375,7 @@ import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiBroom, mdiInformation, mdiPause, mdiPlay, mdiPrinter, mdiSelectionRemove, mdiStop } from '@mdi/js'
 
 @Component({
     components: {
@@ -388,6 +389,8 @@ import Panel from '@/components/ui/Panel.vue'
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
+    mdiInformation = mdiInformation
+
     maxFlow = 0
     boolShowObjects = false
 
@@ -460,7 +463,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.PausePrint'),
                 color: 'warning',
-                icon: 'mdi-pause',
+                icon: mdiPause,
                 loadingName: 'statusPrintPause',
                 status: ['printing'],
                 click: this.btnPauseJob,
@@ -468,7 +471,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ResumePrint'),
                 color: 'success',
-                icon: 'mdi-play',
+                icon: mdiPlay,
                 loadingName: 'statusPrintResume',
                 status: ['paused'],
                 click: this.btnResumeJob,
@@ -476,7 +479,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),
                 color: 'error',
-                icon: 'mdi-stop',
+                icon: mdiStop,
                 loadingName: 'statusPrintCancel',
                 status: this.$store.state.gui.uiSettings.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
                 click: this.btnCancelJob,
@@ -484,7 +487,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
                 color: 'warning',
-                icon: 'mdi-selection-remove',
+                icon: mdiSelectionRemove,
                 loadingName: '',
                 status: this.printing_objects.length ? ['paused', 'printing'] : [],
                 click: this.btnExcludeObject,
@@ -492,15 +495,16 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
                 color: 'primary',
-                icon: 'mdi-broom',
+                icon: mdiBroom,
                 loadingName: 'statusPrintClear',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnClearJob,
+                s,
             },
             {
                 text: this.$t('Panels.StatusPanel.ReprintJob'),
                 color: 'primary',
-                icon: 'mdi-printer',
+                icon: mdiPrinter,
                 loadingName: 'statusPrintReprint',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnReprintJob,

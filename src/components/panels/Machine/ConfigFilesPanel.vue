@@ -5,7 +5,7 @@
         <panel
             :title="$t('Machine.ConfigFilesPanel.ConfigFiles')"
             card-class="machine-configfiles-panel"
-            icon="mdi-information">
+            :icon="mdiInformation">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 col-lg pr-lg-0">
@@ -397,6 +397,7 @@ import { FileStateFile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
 import { hiddenRootDirectories } from '@/store/variables'
+import { mdiFilePlus, mdiFileUpload, mdiFolderPlus, mdiInformation, mdiRefresh } from '@mdi/js'
 
 interface contextMenu {
     shown: boolean
@@ -451,6 +452,8 @@ interface draggingFile {
     components: { Panel },
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin) {
+    mdiInformation = mdiInformation
+
     sortFiles = sortFiles
     formatFilesize = formatFilesize
     formatDate = formatDate
@@ -553,7 +556,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.UploadFile'),
                 color: 'grey darken-3',
-                icon: 'mdi-file-upload',
+                icon: mdiFileUpload,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.uploadFileButton,
@@ -561,7 +564,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateFile'),
                 color: 'grey darken-3',
-                icon: 'mdi-file-plus',
+                icon: mdiFilePlus,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createFile,
@@ -569,7 +572,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateDirectory'),
                 color: 'grey darken-3',
-                icon: 'mdi-folder-plus',
+                icon: mdiFolderPlus,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createDirecotry,
@@ -577,7 +580,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
                 color: 'grey darken-3',
-                icon: 'mdi-refresh',
+                icon: mdiRefresh,
                 loadingName: null,
                 onlyWriteable: false,
                 click: this.refreshFileList,

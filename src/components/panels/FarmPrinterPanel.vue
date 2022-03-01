@@ -30,7 +30,7 @@
 
 <template>
     <panel
-        icon="mdi-printer-3d"
+        :icon="mdiPrinter3d"
         :title="printer_name"
         :card-class="
             'farmprinter-panel ' +
@@ -156,6 +156,7 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiPrinter3d } from '@mdi/js'
 
 @Component({
     components: {
@@ -166,6 +167,8 @@ import Panel from '@/components/ui/Panel.vue'
     },
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
+    mdiPrinter3d = mdiPrinter3d
+
     private imageHeight = 200
 
     @Prop({ type: Object, required: true }) declare printer: FarmPrinterState

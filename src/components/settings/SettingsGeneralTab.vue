@@ -69,7 +69,7 @@
                 :title="$t('Settings.GeneralTab.Backup')"
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
                     <v-btn icon tile @click="dialogBackupMainsail = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -120,7 +120,7 @@
                 :title="$t('Settings.GeneralTab.FactoryReset')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
                     <v-btn icon tile @click="dialogResetMainsail = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -186,7 +186,7 @@
                 :title="$t('Settings.GeneralTab.Restore')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRestoreMainsail = false">
                         <v-icon>{{ mdiCloseThick }}</v-icon>
@@ -230,11 +230,15 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
+import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 
 @Component({
     components: { Panel, SettingsRow },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin) {
+    mdiHelpCircle = mdiHelpCircle
+    mdiCloseThick = mdiCloseThick
+
     private dialogBackupMainsail = false
     private dialogResetMainsail = false
     private dialogRestoreMainsail = false
