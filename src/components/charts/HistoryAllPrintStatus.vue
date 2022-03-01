@@ -1,29 +1,22 @@
 <template>
-    <ECharts
+    <e-chart
         ref="historyAllPrintStatus"
+        v-observe-visibility="visibilityChanged"
         :option="chartOptions"
         :init-options="{ renderer: 'svg' }"
-        style="height: 250px; width: 100%;"
-        v-observe-visibility="visibilityChanged"
-    ></ECharts>
+        style="height: 250px; width: 100%"></e-chart>
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
-import {createComponent} from 'echarts-for-vue'
-import * as echarts from 'echarts'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import {ECharts} from 'echarts/core'
+import type { ECharts } from 'echarts/core'
 
 @Component({
-    components: {
-        ECharts: createComponent({ echarts }),
-    }
+    components: {},
 })
 export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
-
     declare $refs: {
         historyAllPrintStatus: any
     }
@@ -41,32 +34,46 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
             trigger: 'item',
             borderWidth: 0,
         },
-        series: [{
-            type: 'pie',
-            data: [],
-            avoidLabelOverlap: false,
-            radius: ['35%', '60%'],
-            emphasis: {
-                itemStyle: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }]
+        series: [
+            {
+                type: 'pie',
+                data: [],
+                avoidLabelOverlap: false,
+                radius: ['35%', '60%'],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    },
+                },
+            },
+        ],
+    }
+
+    get selectedJobs() {
+        return this.$store.state.gui.view.history.selectedJobs ?? []
     }
 
     get allPrintStatusArray() {
         return this.$store.getters['server/history/getAllPrintStatusArray']
     }
 
-    get chart (): ECharts | null {
+    get selectedPrintStatusArray() {
+        return this.$store.getters['server/history/getSelectedPrintStatusArray']
+    }
+
+    get printStatusArray() {
+        return this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
+    }
+
+    get chart(): ECharts | null {
         const historyAllPrintStatus = this.$refs.historyAllPrintStatus
         return historyAllPrintStatus?.inst ?? null
     }
 
     mounted() {
-        this.chartOptions.series[0].data = this.allPrintStatusArray
+        this.chartOptions.series[0].data = this.printStatusArray
         this.chart?.setOption(this.chartOptions)
 
         window.addEventListener('resize', this.eventListenerResize)
@@ -81,16 +88,16 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         if (this.chart) this.chart.dispose()
     }
 
-    @Watch('allPrintStatusArray')
-    allPrintStatusArrayChanged(newVal: any) {
+    @Watch('printStatusArray')
+    printStatusArrayChanged(newVal: any) {
         this.chart?.setOption({
             series: {
-                data: newVal
-            }
+                data: newVal,
+            },
         })
     }
 
-    visibilityChanged (isVisible: boolean) {
+    visibilityChanged(isVisible: boolean) {
         if (isVisible) this.chart?.resize()
     }
 

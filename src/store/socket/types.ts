@@ -4,8 +4,8 @@ export interface SocketState {
     port: number
     protocol: string
     reconnectInterval: number
-    isConnected: boolean,
-    isConnecting: boolean,
-    connectingFailed: boolean,
+    isConnected: boolean
+    isConnecting: boolean
+    connectingFailed: boolean
     loadings: string[]
 }

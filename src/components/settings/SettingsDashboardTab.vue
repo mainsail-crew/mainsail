@@ -1,6 +1,4 @@
-<style scoped>
-
-</style>
+<style scoped></style>
 
 <template>
     <v-card flat>
@@ -36,7 +34,7 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <component :is="'settings-dashboard-tab-'+viewport"></component>
+                    <component :is="'settings-dashboard-tab-' + viewport"></component>
                 </v-col>
             </v-row>
         </v-card-text>
@@ -53,16 +51,15 @@ import SettingsDashboardTabTablet from '@/components/settings/SettingsDashboardT
 import SettingsDashboardTabDesktop from '@/components/settings/SettingsDashboardTabDesktop.vue'
 import SettingsDashboardTabWidescreen from '@/components/settings/SettingsDashboardTabWidescreen.vue'
 
-@Component( {
+@Component({
     components: {
         draggable,
         SettingsDashboardTabMobile,
         SettingsDashboardTabTablet,
         SettingsDashboardTabDesktop,
-        SettingsDashboardTabWidescreen
-    }
-}
-)
+        SettingsDashboardTabWidescreen,
+    },
+})
 export default class SettingsDashboardTab extends Mixins(BaseMixin) {
     private viewport = 'desktop'
 

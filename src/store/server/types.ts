@@ -9,15 +9,15 @@ export interface ServerState {
     klippy_state: string
     klippy_state_timer: number | null
     klippy_message: string
-    components: string[],
-    failed_components: string[],
-    warnings: string[],
-    registered_directories: string[],
-    events: ServerStateEvent[],
+    components: string[]
+    failed_components: string[]
+    warnings: string[]
+    registered_directories: string[]
+    events: ServerStateEvent[]
     config: {
         // eslint-disable-next-line
         [key: string]: any
-    },
+    }
     system_info: {
         available_services: string[]
         cpu_info: ServerStateCpuInfo
@@ -26,19 +26,21 @@ export interface ServerState {
         service_state: ServerStateServiceStates
     } | null
     moonraker_stats: {
-        cpu_usage: number,
+        cpu_usage: number
         mem_units: string
         memory: number
         time: number
     } | null
-    cpu_temp: number,
+    cpu_temp: number
     throttled_state: {
         bits: number
         flags: string[]
-    },
+    }
     dbNamespaces: string[]
     websocket_count: number
     moonraker_version: string
+
+    console_cleared_this_session?: boolean
 
     power?: ServerPowerState
     updateManager?: ServerUpdateMangerState
@@ -48,6 +50,7 @@ export interface ServerState {
 
 export interface ServerStateEvent {
     date: Date
+    time?: number
     formatTime: string
     type: string
     message: string

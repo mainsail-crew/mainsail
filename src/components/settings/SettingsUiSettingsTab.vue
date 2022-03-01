@@ -5,78 +5,55 @@
                 <settings-row :title="$t('Settings.UiSettingsTab.Logo').toString()">
                     <v-btn
                         v-if="logoColor.toLowerCase() !== defaultLogoColor.toLowerCase()"
-                        @click="logoColor = defaultLogoColor"
-                        class="minwidth-0"
                         small
                         text
-                    >
+                        class="minwidth-0"
+                        @click="logoColor = defaultLogoColor">
                         <v-icon small>mdi-restart</v-icon>
                     </v-btn>
-                    <v-menu
-                        :close-on-content-click="false"
-                        bottom
-                        left
-                        offset-y
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="minwidth-0 px-5"
-                                :color="logoColor"
-                                v-bind="attrs"
-                                v-on="on"
-                                small
-                            ></v-btn>
+                    <v-menu bottom left offset-y :close-on-content-click="false">
+                        <template #activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" :color="logoColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
                             :value="logoColor"
                             hide-mode-switch
                             mode="rgba"
-                            @update:color="updateLogoColor"
-                        ></v-color-picker>
+                            @update:color="updateLogoColor"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.UiSettingsTab.Primary').toString()">
                     <v-btn
                         v-if="primaryColor.toLowerCase() !== defaultPrimaryColor.toLowerCase()"
-                        @click="primaryColor = defaultPrimaryColor"
-                        class="minwidth-0"
                         small
                         text
-                    >
+                        class="minwidth-0"
+                        @click="primaryColor = defaultPrimaryColor">
                         <v-icon small>mdi-restart</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="minwidth-0 px-5"
-                                :color="primaryColor"
-                                v-bind="attrs"
-                                v-on="on"
-                                small
-                            ></v-btn>
+                        <template #activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" :color="primaryColor" class="minwidth-0 px-5" small v-on="on"></v-btn>
                         </template>
                         <v-color-picker
-                            @update:color="updatePrimaryColor"
                             :value="primaryColor"
                             hide-mode-switch
                             mode="rgba"
-                        ></v-color-picker>
+                            @update:color="updatePrimaryColor"></v-color-picker>
                     </v-menu>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.GcodeThumbnails').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.GcodeThumbnailsDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-btn
-                        href="https://docs.mainsail.xyz/quicktips/thumbnails"
-                        target="_blank"
-                        color="primary"
                         outlined
                         small
-                    >
+                        color="primary"
+                        href="https://docs.mainsail.xyz/quicktips/thumbnails"
+                        target="_blank">
                         {{ $t('Settings.UiSettingsTab.Guide') }}
                     </v-btn>
                 </settings-row>
@@ -84,8 +61,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.BoolBigThumbnail').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.BoolBigThumbnailDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="boolBigThumbnail" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -96,25 +72,22 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINT').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.DisplayCANCEL_PRINTDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="displayCancelPrint" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.DisplayZOffset').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.LockSliders').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
-                        <v-switch v-model="lockSliders" hide-details class="mt-0"></v-switch>
+                    :dynamic-slot-width="true">
+                    <v-switch v-model="lockSliders" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <v-expand-transition>
@@ -122,40 +95,36 @@
                         v-show="lockSliders"
                         :title="$t('Settings.UiSettingsTab.LockSlidersDelay').toString()"
                         :sub-title="$t('Settings.UiSettingsTab.LockSlidersDelayDescription').toString()"
-                        :dynamicSlotWidth="true"
-                    >
-                            <v-text-field
-                                class="mt-0"
-                                prepend-icon="mdi-timer-outline"
-                                :style="isMobile ? { 'max-width': '140px' } : {}"
-                                v-model="lockSlidersDelay"
-                                label="Timeout"
-                                type="number"
-                                :rules="[t => t >= 0]"
-                                min="0"
-                                step="0.5"
-                                suffix="s"
-                                hide-details
-                                outlined
-                                dense
-                                hide-spin-buttons
-                            ></v-text-field>
+                        :dynamic-slot-width="true">
+                        <v-text-field
+                            v-model="lockSlidersDelay"
+                            class="mt-0"
+                            prepend-icon="mdi-timer-outline"
+                            :style="isMobile ? { 'max-width': '140px' } : {}"
+                            label="Timeout"
+                            type="number"
+                            :rules="[(t) => t >= 0]"
+                            min="0"
+                            step="0.5"
+                            suffix="s"
+                            hide-details
+                            outlined
+                            dense
+                            hide-spin-buttons></v-text-field>
                     </settings-row>
                 </v-expand-transition>
-                <v-divider  v-show="lockSliders" class="my-2"></v-divider>
+                <v-divider v-show="lockSliders" class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStop').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.ConfirmOnEmergencyStopDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnEmergencyStop" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChange').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.ConfirmOnPowerDeviceChangeDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="confirmOnPowerDeviceChange" hide-details class="mt-0"></v-switch>
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
@@ -177,8 +146,7 @@
                 <settings-row
                     :title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButton').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.BoolHideUploadAndPrintButtonDescription').toString()"
-                    :dynamicSlotWidth="true"
-                >
+                    :dynamic-slot-width="true">
                     <v-switch v-model="boolHideUploadAndPrintButton" hide-details class="mt-0"></v-switch>
                 </settings-row>
             </v-card-text>
@@ -187,18 +155,16 @@
 </template>
 
 <script lang="ts">
-
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
-import {defaultLogoColor, defaultPrimaryColor} from '@/store/variables'
-import {Debounce} from 'vue-debounce-decorator'
+import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
+import { Debounce } from 'vue-debounce-decorator'
 
 @Component({
-    components: {SettingsRow}
+    components: { SettingsRow },
 })
-
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
@@ -208,7 +174,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set logoColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.logo', value: newVal})
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.logo', value: newVal })
     }
 
     get primaryColor() {
@@ -216,7 +182,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set primaryColor(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.primary', value: newVal})
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.primary', value: newVal })
     }
 
     get boolBigThumbnail() {
@@ -224,7 +190,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set boolBigThumbnail(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.boolBigThumbnail', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolBigThumbnail', value: newVal })
     }
 
     get boolWebcamInNavigation() {
@@ -240,7 +206,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set displayCancelPrint(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.displayCancelPrint', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
     }
 
     get displayZOffsetStandby() {
@@ -248,7 +214,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.displayZOffsetStandby', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayZOffsetStandby', value: newVal })
     }
 
     get confirmOnEmergencyStop() {
@@ -256,7 +222,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set confirmOnEmergencyStop(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnEmergencyStop', value: newVal })
     }
 
     get confirmOnPowerDeviceChange() {
@@ -264,7 +230,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set confirmOnPowerDeviceChange(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.confirmOnPowerDeviceChange', value: newVal })
     }
 
     get lockSliders() {
@@ -272,7 +238,7 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set lockSliders(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.lockSlidersOnTouchDevices', value: newVal})
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersOnTouchDevices', value: newVal })
     }
 
     get lockSlidersDelay() {
@@ -280,7 +246,9 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set lockSlidersDelay(newVal) {
-        (newVal >= 0) ? this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.lockSlidersDelay', value: newVal}) : {}
+        newVal >= 0
+            ? this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.lockSlidersDelay', value: newVal })
+            : {}
     }
 
     get boolWideNavDrawer() {
@@ -292,19 +260,19 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set navigationStyleSetting(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.navigationStyle', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.navigationStyle', value: newVal })
     }
 
     get navigationStyles() {
         return [
             {
                 text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsOnly'),
-                value: 'iconsOnly'
+                value: 'iconsOnly',
             },
             {
                 text: this.$t('Settings.UiSettingsTab.NavigationStyleIconsAndText'),
-                value: 'iconsAndText'
-            }
+                value: 'iconsAndText',
+            },
         ]
     }
 
@@ -313,14 +281,12 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
     }
 
     set boolHideUploadAndPrintButton(newVal) {
-        this.$store.dispatch('gui/saveSetting', {name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
+        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.boolHideUploadAndPrintButton', value: newVal })
     }
 
     clearColorObject(color: any): string {
-        if (typeof color === 'object' && 'hex' in color)
-            color = color.hex
-        if (color.length > 7)
-            color = color.substr(0, 7)
+        if (typeof color === 'object' && 'hex' in color) color = color.hex
+        if (color.length > 7) color = color.substr(0, 7)
         return color
     }
 

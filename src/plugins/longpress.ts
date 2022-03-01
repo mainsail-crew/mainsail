@@ -8,7 +8,9 @@ Vue.directive('longpress', {
             const compName = vNode.context?.$options.name
             // pass warning to console
             let warn = `[longpress:] provided expression '${binding.expression}' is not a function, but has to be`
-            if (compName) { warn += ` Found in component '${compName}' ` }
+            if (compName) {
+                warn += ` Found in component '${compName}' `
+            }
 
             console.warn(warn)
         }
@@ -16,7 +18,7 @@ Vue.directive('longpress', {
         const debounceTime = Number(binding.arg ?? 1000)
 
         // Run Function
-        const handler = (e) => {
+        const handler = (e: Partial<Touch> & { preventDefault: TouchEvent['preventDefault'] }) => {
             binding.value(e)
         }
 
@@ -27,7 +29,7 @@ Vue.directive('longpress', {
         // Create timeout ( run function after 1s )
         const before: string | null = null
         const start = (e: TouchEvent) => {
-            if ((e.type === 'click')) {
+            if (e.type === 'click') {
                 return
             }
 
@@ -35,7 +37,9 @@ Vue.directive('longpress', {
                 return
             }
 
-            document.querySelector('body')?.setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
+            document
+                .querySelector('body')
+                ?.setAttribute('style', 'user-select: none; -webkit-user-select: none; -moz-user-select: none;')
 
             setTimeout(() => {
                 document.querySelector('body')?.setAttribute('style', '')
@@ -60,7 +64,7 @@ Vue.directive('longpress', {
                         rotationAngle: e.touches[0].rotationAngle,
                         screenX: e.touches[0].screenX,
                         screenY: e.touches[0].screenY,
-                        preventDefault: () => e.preventDefault()
+                        preventDefault: () => e.preventDefault(),
                     })
                 }, debounceTime)
             }
@@ -94,5 +98,5 @@ Vue.directive('longpress', {
         el.addEventListener('touchcancel', cancel)
 
         document.addEventListener('scroll', cancel)
-    }
+    },
 })

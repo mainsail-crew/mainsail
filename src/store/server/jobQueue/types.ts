@@ -1,5 +1,5 @@
 export interface ServerJobQueueState {
-    queued_jobs: ServerJobQueueStateJob[],
+    queued_jobs: ServerJobQueueStateJob[]
     queue_state: string
 }
 

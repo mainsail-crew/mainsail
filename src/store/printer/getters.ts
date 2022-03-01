@@ -1,18 +1,22 @@
-import {additionalSensors, checkKlipperConfigModules} from '@/store/variables'
+import { additionalSensors, checkKlipperConfigModules } from '@/store/variables'
 import { GetterTree } from 'vuex'
 import {
-    PrinterState, PrinterStateBedMesh,
-    PrinterStateFan, PrinterStateFilamentSensors,
-    PrinterStateHeater, PrinterStateTemperatureFan,
-    PrinterStateMiscellaneous, PrinterStateExtruder,
-    PrinterStateSensor, PrinterStateMacro,
+    PrinterState,
+    PrinterStateBedMesh,
+    PrinterStateExtruder,
+    PrinterStateFan,
+    PrinterStateFilamentSensors,
+    PrinterStateHeater,
+    PrinterStateTemperatureFan,
+    PrinterStateMiscellaneous,
+    PrinterStateSensor,
+    PrinterStateMacro,
 } from '@/store/printer/types'
-import {caseInsensitiveSort, formatFrequency, getMacroParams} from '@/plugins/helpers'
-import {RootState} from '@/store/types'
+import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
+import { RootState } from '@/store/types'
 
 export const getters: GetterTree<PrinterState, RootState> = {
-
-    getPrintPercent: state => {
+    getPrintPercent: (state) => {
         if (
             state.current_file?.filename &&
             state.current_file?.gcode_start_byte &&
@@ -25,15 +29,15 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const currentPosition = state.virtual_sdcard.file_position - state.current_file.gcode_start_byte
             const maxPosition = state.current_file.gcode_end_byte - state.current_file.gcode_start_byte
 
-            if (currentPosition > 0 && maxPosition > 0) return 1 / maxPosition * currentPosition
+            if (currentPosition > 0 && maxPosition > 0) return (1 / maxPosition) * currentPosition
         }
 
         return state.virtual_sdcard?.progress ?? 0
     },
 
     getPositions: (state) => {
-        const position = state.motion_report?.live_position ?? state.toolhead?.position ?? [0,0,0]
-        const gcode_position = state.gcode_move?.gcode_position ?? [0,0,0]
+        const position = state.motion_report?.live_position ?? state.toolhead?.position ?? [0, 0, 0]
+        const gcode_position = state.gcode_move?.gcode_position ?? [0, 0, 0]
         const absolute = state.gcode_move?.absolute_coordinates ?? true
 
         return {
@@ -62,10 +66,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     !(hiddenMacros.indexOf(prop.replace('gcode_macro ', '').toLowerCase()) > -1)
                 ) {
                     array.push({
-                        'name': prop.replace('gcode_macro ', ''),
-                        'description': state.configfile.config[prop].description ?? null,
-                        'prop': state.configfile.config[prop],
-                        'params': getMacroParams(state.configfile.config[prop])
+                        name: prop.replace('gcode_macro ', ''),
+                        description: state.configfile.config[prop].description ?? null,
+                        prop: state.configfile.config[prop],
+                        params: getMacroParams(state.configfile.config[prop]),
                     })
                 }
             })
@@ -91,12 +95,16 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     let color = colorOff
                     if (value.target) color = colorHot
 
-                    if(nameSplit[0].startsWith('extruder')) {
-                        const min_extrude_temp = key in state.configfile.config && 'min_extrude_temp' in state.configfile.config[key] ? parseFloat(state.configfile.config[key].min_extrude_temp) : 170
+                    if (nameSplit[0].startsWith('extruder')) {
+                        const min_extrude_temp =
+                            key in state.configfile.config && 'min_extrude_temp' in state.configfile.config[key]
+                                ? parseFloat(state.configfile.config[key].min_extrude_temp)
+                                : 170
                         if (value.temperature >= min_extrude_temp) icon = 'printer-3d-nozzle'
                     } else if (nameSplit[0] === 'heater_bed') {
                         icon = 'radiator-disabled'
-                        if (value.temperature > 50 || (value.target && value.temperature > value.target-5)) icon = 'radiator'
+                        if (value.temperature > 50 || (value.target && value.temperature > value.target - 5))
+                            icon = 'radiator'
                     } else if (nameSplit[0].startsWith('heater_generic')) icon = 'fire'
 
                     if (!name.startsWith('_')) {
@@ -185,24 +193,15 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(sensors, 'name')
     },
 
-    getPartFanSpeed: state => {
+    getPartFanSpeed: (state) => {
         return 'fan' in state ? state.fan.speed : 0
     },
 
-    getFans: state => {
+    getFans: (state) => {
         const fans: PrinterStateFan[] = []
-        const supportedFans = [
-            'temperature_fan',
-            'controller_fan',
-            'heater_fan',
-            'fan_generic',
-            'fan',
-        ]
+        const supportedFans = ['temperature_fan', 'controller_fan', 'heater_fan', 'fan_generic', 'fan']
 
-        const controllableFans = [
-            'fan_generic',
-            'fan',
-        ]
+        const controllableFans = ['fan_generic', 'fan']
 
         for (const [key, value] of Object.entries(state)) {
             const nameSplit = key.split(' ')
@@ -233,20 +232,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
         })
     },
 
-    getMiscellaneous: state => {
+    getMiscellaneous: (state) => {
         const output: PrinterStateMiscellaneous[] = []
-        const supportedObjects = [
-            'controller_fan',
-            'heater_fan',
-            'fan_generic',
-            'fan',
-            'output_pin'
-        ]
+        const supportedObjects = ['controller_fan', 'heater_fan', 'fan_generic', 'fan', 'output_pin']
 
-        const controllableFans = [
-            'fan_generic',
-            'fan',
-        ]
+        const controllableFans = ['fan_generic', 'fan']
 
         for (const [key, value] of Object.entries(state)) {
             const nameSplit = key.split(' ')
@@ -256,7 +246,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 if (!name.startsWith('_')) {
                     let controllable = controllableFans.includes(nameSplit[0].toLowerCase())
                     const settings = state.configfile?.settings[key.toLowerCase()] ?? {}
-                    const power = 'speed' in value ? value.speed : ('value' in value ? value.value : 0)
+                    const power = 'speed' in value ? value.speed : 'value' in value ? value.value : 0
                     const rpm = 'rpm' in value ? value.rpm : false
                     let pwm = controllable
                     let scale = 1
@@ -281,15 +271,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
                         object: value,
                         config: settings,
                         off_below: undefined,
-                        max_power: undefined
+                        max_power: undefined,
                     }
 
                     if ('settings' in state.configfile && key.toLowerCase() in state.configfile.settings) {
-                        if ('off_below' in settings)
-                            tmp.off_below = settings?.off_below ?? 0
+                        if ('off_below' in settings) tmp.off_below = settings?.off_below ?? 0
 
-                        if ('max_power' in settings)
-                            tmp.max_power = settings?.max_power ?? 1
+                        if ('max_power' in settings) tmp.max_power = settings?.max_power ?? 1
                     }
 
                     output.push(tmp)
@@ -319,30 +307,30 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
     getAdditionSensors: (state, getters, rootState, rootGetters) => (name: string) => {
         let additionValues = {}
-        additionalSensors.forEach(sensorName => {
-            if (sensorName+' '+name in state) {
-                Object.keys(state[sensorName+' '+name]).forEach(key => {
+        additionalSensors.forEach((sensorName) => {
+            if (sensorName + ' ' + name in state) {
+                Object.keys(state[sensorName + ' ' + name]).forEach((key) => {
                     if (key !== 'temperature') {
                         // eslint-disable-next-line
                         const tmp: any = {}
                         tmp[key] = {}
-                        tmp[key]['value'] = state[sensorName+' '+name][key].toFixed(1)
+                        tmp[key]['value'] = state[sensorName + ' ' + name][key].toFixed(1)
                         tmp[key]['bool'] = rootGetters['gui/getDatasetAdditionalSensorValue']({
                             name: name,
-                            sensor: key
+                            sensor: key,
                         })
 
-                        switch(key) {
-                        case 'pressure':
-                            tmp[key]['unit'] = 'hPa'
-                            break
+                        switch (key) {
+                            case 'pressure':
+                                tmp[key]['unit'] = 'hPa'
+                                break
 
-                        case 'humidity':
-                            tmp[key]['unit'] = '%'
-                            break
+                            case 'humidity':
+                                tmp[key]['unit'] = '%'
+                                break
 
-                        default:
-                            tmp[key]['unit'] = ''
+                            default:
+                                tmp[key]['unit'] = ''
                         }
 
                         additionValues = Object.assign(additionValues, tmp)
@@ -354,22 +342,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return additionValues
     },
 
-    getAvailableSensors: state => {
+    getAvailableSensors: (state) => {
         return state.heaters?.available_sensors ?? []
     },
 
-    getAllMacros: state => {
+    getAllMacros: (state) => {
         const array: PrinterStateMacro[] = []
 
-        Object.keys(state.configfile?.config ?? {}).forEach(prop => {
-            if (prop.startsWith('gcode_macro') &&
+        Object.keys(state.configfile?.config ?? {}).forEach((prop) => {
+            if (
+                prop.startsWith('gcode_macro') &&
                 !prop.startsWith('gcode_macro _') &&
-                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')) {
+                !Object.hasOwnProperty.call(state.configfile.config[prop], 'rename_existing')
+            ) {
                 array.push({
-                    'name': prop.replace('gcode_macro ', ''),
-                    'description': state.configfile.config[prop].description ?? null,
-                    'prop': state.configfile.config[prop],
-                    'params': getMacroParams(state.configfile.config[prop])
+                    name: prop.replace('gcode_macro ', ''),
+                    description: state.configfile.config[prop].description ?? null,
+                    prop: state.configfile.config[prop],
+                    params: getMacroParams(state.configfile.config[prop]),
                 })
             }
         })
@@ -378,21 +368,21 @@ export const getters: GetterTree<PrinterState, RootState> = {
     },
 
     getMacro: (state) => (name: string) => {
-        if ('gcode_macro '+name in state.configfile.config) {
-            const config = state.configfile.config['gcode_macro '+name]
+        if ('gcode_macro ' + name in state.configfile.config) {
+            const config = state.configfile.config['gcode_macro ' + name]
 
             return {
                 name,
                 description: config.description ?? null,
                 prop: config,
-                params: getMacroParams(config)
+                params: getMacroParams(config),
             }
         }
 
         return null
     },
 
-    getFilamentSensors: state => {
+    getFilamentSensors: (state) => {
         const sensorObjectNames = ['filament_switch_sensor', 'filament_motion_sensor']
         const sensors: PrinterStateFilamentSensors[] = []
 
@@ -440,7 +430,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
                 let load = 0
                 if (mcu.last_stats?.mcu_task_avg && mcu.last_stats?.mcu_task_stddev) {
-                    load = mcu.last_stats.mcu_task_avg + 3 * mcu.last_stats?.mcu_task_stddev / 0.0025
+                    load = mcu.last_stats.mcu_task_avg + (3 * mcu.last_stats?.mcu_task_stddev) / 0.0025
                 }
 
                 let loadProgressColor = 'primary'
@@ -459,7 +449,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     load: load.toFixed(2),
                     loadPercent: load < 1 ? Math.round(load * 100) : 100,
                     loadProgressColor: loadProgressColor,
-                    tempSensor: getters.getMcuTempSensor(key)
+                    tempSensor: getters.getMcuTempSensor(key),
                 })
             }
         })
@@ -493,23 +483,20 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getHostTempSensor: (state, getters) => {
         const sensorTypes = ['rpi_temperature', 'temperature_host']
         const checkObjects = ['temperature_sensor', 'temperature_fan']
-        let output: null | { temperature: number, measured_min_temp: number, measured_max_temp: number } = null
+        let output: null | { temperature: number; measured_min_temp: number; measured_max_temp: number } = null
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
             const settings = objects[key]
-            const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
-            if (
-                'sensor_type' in settings &&
-                sensorTypes.includes(settings.sensor_type) &&
-                caseKey in state
-            ) {
+            const caseKey: string =
+                Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
+            if ('sensor_type' in settings && sensorTypes.includes(settings.sensor_type) && caseKey in state) {
                 const value = state[caseKey]
 
                 output = {
                     temperature: value.temperature?.toFixed(0),
                     measured_min_temp: value.measured_min_temp?.toFixed(1),
-                    measured_max_temp: value.measured_max_temp?.toFixed(1)
+                    measured_max_temp: value.measured_max_temp?.toFixed(1),
                 }
             }
         })
@@ -520,18 +507,19 @@ export const getters: GetterTree<PrinterState, RootState> = {
     getMcuTempSensors: (state, getters) => {
         const checkObjects = ['temperature_sensor', 'temperature_fan']
         // eslint-disable-next-line
-        const output: { key: string, settings: any, object: any }[] = []
+        const output: { key: string; settings: any; object: any }[] = []
 
         const objects = getters.getPrinterConfigObjects(checkObjects)
         Object.keys(objects).forEach((key) => {
             const value = objects[key]
-            const caseKey: string = Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
+            const caseKey: string =
+                Object.keys(state).find((state_key: string) => state_key.toLowerCase() === key.toLowerCase()) || ''
 
             if ('sensor_type' in value && value.sensor_type === 'temperature_mcu' && 'sensor_mcu' in value) {
                 output.push({
                     key: caseKey,
                     settings: value,
-                    object: caseKey in state ? state[caseKey] : {}
+                    object: caseKey in state ? state[caseKey] : {},
                 })
             }
         })
@@ -550,12 +538,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         const sensors = getters.getMcuTempSensors
         // eslint-disable-next-line
-        sensors.forEach((sensor: { key: string, settings: any, object: any }) => {
+        sensors.forEach((sensor: { key: string; settings: any; object: any }) => {
             if (sensor.settings?.sensor_mcu === mcuName && sensor.object?.temperature) {
                 output = {
                     temperature: sensor.object.temperature.toFixed(0),
                     measured_min_temp: sensor.object.measured_min_temp?.toFixed(1) ?? null,
-                    measured_max_temp: sensor.object.measured_max_temp?.toFixed(1) ?? null
+                    measured_max_temp: sensor.object.measured_max_temp?.toFixed(1) ?? null,
                 }
             }
         })
@@ -568,38 +556,26 @@ export const getters: GetterTree<PrinterState, RootState> = {
         let currentProfile = ''
         if (state.bed_mesh) currentProfile = state.bed_mesh.profile_name
 
-        if (state.configfile?.config) {
-            Object.keys(state.configfile.config).filter((key) => key.startsWith('bed_mesh ')).forEach((key: string) => {
-                // eslint-disable-next-line
-                const value: any = state.configfile.settings[key.toLowerCase()]
-                const nameSplit = key.split(' ')
+        if (state.bed_mesh && 'profiles' in state.bed_mesh) {
+            Object.keys(state.bed_mesh?.profiles).forEach((key) => {
+                const value: any = state.bed_mesh.profiles[key]
 
                 let points: number[] = []
-                if (typeof value.points === 'string') {
-                    value.points.split('\n').forEach((row: string) => {
-                        if (row !== '') {
-                            row.split(', ').forEach((col: string) => {
-                                points.push(parseFloat(col))
-                            })
-                        }
-                    })
-                } else {
-                    value.points.forEach((row: number[]) => {
-                        points = points.concat(row)
-                    })
-                }
+                value.points.forEach((row: number[]) => {
+                    points = points.concat(row)
+                })
 
                 const min = Math.min(...points)
                 const max = Math.max(...points)
 
                 profiles.push({
-                    name: nameSplit[1],
-                    data: value,
+                    name: key,
+                    data: { ...value.mesh_params, points: value.points },
                     points: points,
                     min: min,
                     max: max,
                     variance: Math.abs(min - max),
-                    is_active: (currentProfile === nameSplit[1]),
+                    is_active: currentProfile === key,
                 })
             })
         }
@@ -635,31 +611,33 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return extruders
     },
 
-    getExtrudePossible: state => {
+    getExtrudePossible: (state) => {
         const extruderName = state.toolhead?.extruder ?? 'extruder'
 
         return state[extruderName]?.can_extrude ?? false
     },
 
-    getBedMeshProfileName: state => {
+    getBedMeshProfileName: (state) => {
         if ('bed_mesh' in state && 'profile_name' in state.bed_mesh) return state.bed_mesh.profile_name
 
         return ''
     },
 
-    getMaxTemp: state => {
+    getMaxTemp: (state) => {
         let maxtemp = 0
 
         state.heaters?.available_sensors?.forEach((sensorName: string) => {
             const settings = state.configfile?.settings[sensorName]
             if (
-                settings && 'max_temp' in settings &&
+                settings &&
+                'max_temp' in settings &&
                 Math.round(settings.max_temp) > maxtemp &&
                 Math.round(settings.max_temp) < 10000
-            ) maxtemp = Math.round(settings.max_temp)
+            )
+                maxtemp = Math.round(settings.max_temp)
         })
 
-        return (maxtemp > 0 ? maxtemp + 10 : 300)
+        return maxtemp > 0 ? maxtemp + 10 : 300
     },
 
     existPrinterConfig: (state) => {
@@ -672,7 +650,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (!state.configfile.config) return false
 
         const configObjects = Object.keys(state.configfile.config)
-        return (configObjects.findIndex((module) => module.toLowerCase() === configName.toLowerCase()) !== -1)
+        return configObjects.findIndex((module) => module.toLowerCase() === configName.toLowerCase()) !== -1
     },
 
     checkNecessaryConfig: (state, getters) => {
@@ -695,7 +673,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
             state.print_stats.print_duration > 0 &&
             getters.getPrintPercent > 0
         ) {
-            return (state.print_stats.print_duration / getters.getPrintPercent - state.print_stats.print_duration).toFixed(0)
+            return (
+                state.print_stats.print_duration / getters.getPrintPercent -
+                state.print_stats.print_duration
+            ).toFixed(0)
         }
 
         return 0
@@ -712,7 +693,11 @@ export const getters: GetterTree<PrinterState, RootState> = {
             state.current_file.filament_total > 0 &&
             state.current_file.filament_total > state.print_stats.filament_used
         ) {
-            return (state.print_stats.print_duration / (state.print_stats.filament_used / state.current_file.filament_total) - state.print_stats.print_duration).toFixed(0)
+            return (
+                state.print_stats.print_duration /
+                    (state.print_stats.filament_used / state.current_file.filament_total) -
+                state.print_stats.print_duration
+            ).toFixed(0)
         }
 
         return 0
@@ -750,7 +735,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             timeCount++
         }
 
-        if (time && timeCount) return (time / timeCount)
+        if (time && timeCount) return time / timeCount
 
         return 0
     },
@@ -780,5 +765,5 @@ export const getters: GetterTree<PrinterState, RootState> = {
         if (time && timeCount) return Date.now() + (time / timeCount) * 1000
 
         return 0
-    }
+    },
 }
