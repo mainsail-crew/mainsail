@@ -1,0 +1,87 @@
+name: Bug report
+description: Create a report to help us improve
+labels: ['⚡ Type: Bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for choosing Mainsail!
+
+        Important info: This form is ONLY for reporting bugs with Mainsail!
+        If you have a feature request, please use the following form: [Feature request]()
+        If you need general support, please visit us on [Discord](https://discord.gg/mainsail)
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      description: >-
+        Which browser did you use when the issue occured?
+      multiple: false
+      options:
+        - label: Chrome
+        - label: Firefox
+        - label: Safari
+        - label: Other (Please tell us below)
+      validations:
+        required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Device
+      description: >-
+        What kind of device did you use when the issue occured?
+      multiple: false
+      options:
+        - label: Desktop PC
+        - label: Mobile device (Phone, Tablet or similar)
+      validations:
+        required: true
+  - type: checkboxes
+    id: os
+    attributes:
+      label: Operating System
+      description: >-
+        Which operating system runs on the device?
+      options:
+        - label: Windows
+        - label: iOS
+        - label: Linux
+        - label: Android
+        - label: Other (Please tell us below)
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: >-
+        A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: What did you expect to happen instead?
+      description: >-
+        A clear and concise description of what you expected to happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: repro-steps
+    attributes:
+      label: How to reproduce this bug?
+      description: >-
+        A clear description with precise steps to reproduce this bug.
+      placeholder: |
+        1) Do this
+        2) Do that
+        3) Poof, bug appeared!
+    validations:
+      required: true
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: |
+        If you have any additional information for us, use the field below.
+
+        Please note, you can attach screenshots or screen recordings here, by
+        dragging and dropping files in the field below.
