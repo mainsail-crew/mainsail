@@ -42,14 +42,14 @@
             <v-menu v-if="showWebcamSwitch" :offset-y="true" title="Webcam">
                 <template #activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
-                        <v-icon small>mdi-webcam</v-icon>
-                        <v-icon small>mdi-menu-down</v-icon>
+                        <v-icon small>{{ mdiWebcam }}</v-icon>
+                        <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item link @click="currentCamId = 'off'">
                         <v-list-item-icon class="mr-0">
-                            <v-icon small>mdi-webcam-off</v-icon>
+                            <v-icon small>{{ mdiWebcamOff }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>{{ $t('Panels.FarmPrinterPanel.WebcamOff') }}</v-list-item-title>
@@ -111,7 +111,7 @@
                                     <span
                                         v-if="printer_current_filename !== ''"
                                         class="subtitle-2 text-truncate px-0 text--disabled d-block">
-                                        <v-icon small class="mr-1">mdi-file-outline</v-icon>
+                                        <v-icon small class="mr-1">{{ mdiFileOutline }}</v-icon>
                                         {{ printer_current_filename }}
                                     </span>
                                 </v-col>
@@ -156,7 +156,7 @@ import Mjpegstreamer from '@/components/webcams/Mjpegstreamer.vue'
 import MjpegstreamerAdaptive from '@/components/webcams/MjpegstreamerAdaptive.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 import Panel from '@/components/ui/Panel.vue'
-import { mdiPrinter3d } from '@mdi/js'
+import { mdiPrinter3d, mdiWebcam, mdiMenuDown, mdiWebcamOff, mdiFileOutline } from '@mdi/js'
 
 @Component({
     components: {
@@ -168,6 +168,10 @@ import { mdiPrinter3d } from '@mdi/js'
 })
 export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     mdiPrinter3d = mdiPrinter3d
+    mdiWebcam = mdiWebcam
+    mdiMenuDown = mdiMenuDown
+    mdiWebcamOff = mdiWebcamOff
+    mdiFileOutline = mdiFileOutline
 
     private imageHeight = 200
 

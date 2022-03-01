@@ -13,7 +13,7 @@
                     <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">{{ currentCam.icon }}</v-icon>
                         <span class="d-none d-md-block">{{ 'name' in currentCam ? currentCam.name : 'unknown' }}</span>
-                        <v-icon small>mdiMenuDown</v-icon>
+                        <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">

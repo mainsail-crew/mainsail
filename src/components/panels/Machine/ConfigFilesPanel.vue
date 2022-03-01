@@ -37,7 +37,7 @@
                         <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
                             <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>mdi-cog</v-icon>
+                                    <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -117,7 +117,9 @@
                         @dragover="dragOverFilelist($event, { isDirectory: true, filename: '..' })"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
-                        <td class="pr-0 text-center" style="width: 32px"><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px">
+                            <v-icon>{{ mdiFolderUpload }}</v-icon>
+                        </td>
                         <td class=" " colspan="4">..</td>
                     </tr>
                 </template>
@@ -137,8 +139,8 @@
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
                         <td class="pr-0 text-center" style="width: 32px">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory">mdi-file</v-icon>
+                            <v-icon v-if="item.isDirectory">{{ mdiFolder }}</v-icon>
+                            <v-icon v-if="!item.isDirectory">{{ mdiFile }}</v-icon>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right">
@@ -152,7 +154,7 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="clickRow(contextMenu.item, true)">
-                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon>
+                    <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{
                         contextMenu.item.permissions.includes('w')
                             ? $t('Machine.ConfigFilesPanel.EditFile')
@@ -160,31 +162,31 @@
                     }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon>
+                    <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Download') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="removeFile">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="deleteDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
             </v-list>
@@ -382,7 +384,7 @@
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
@@ -397,7 +399,20 @@ import { FileStateFile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
 import { hiddenRootDirectories } from '@/store/variables'
-import { mdiFilePlus, mdiFileUpload, mdiFolderPlus, mdiInformation, mdiRefresh } from '@mdi/js'
+import {
+    mdiFilePlus,
+    mdiFileUpload,
+    mdiFolderPlus,
+    mdiInformation,
+    mdiRefresh,
+    mdiCog,
+    mdiFolderUpload,
+    mdiFileDocumentEditOutline,
+    mdiCloudDownload,
+    mdiRenameBox,
+    mdiDelete,
+    mdiCloseThick,
+} from '@mdi/js'
 
 interface contextMenu {
     shown: boolean
@@ -453,6 +468,13 @@ interface draggingFile {
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
+    mdiCog = mdiCog
+    mdiFolderUpload = mdiFolderUpload
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
+    mdiCloudDownload = mdiCloudDownload
+    mdiRenameBox = mdiRenameBox
+    mdiDelete = mdiDelete
+    mdiCloseThick = mdiCloseThick
 
     sortFiles = sortFiles
     formatFilesize = formatFilesize

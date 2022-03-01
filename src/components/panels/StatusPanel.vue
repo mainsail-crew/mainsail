@@ -499,7 +499,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
                 loadingName: 'statusPrintClear',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnClearJob,
-                s,
             },
             {
                 text: this.$t('Panels.StatusPanel.ReprintJob'),

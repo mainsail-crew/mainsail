@@ -14,11 +14,11 @@
             <v-divider class="mt-2"></v-divider>
             <v-card-actions class="justify-start">
                 <v-btn small class="ml-2 error--text" @click="restart">
-                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.Restart') }}
                 </v-btn>
                 <v-btn small class="ml-4 error--text" @click="firmwareRestart">
-                    <v-icon class="mr-sm-2">mdi-restart</v-icon>
+                    <v-icon class="mr-sm-2">{{ mdiRestart }}</v-icon>
                     {{ $t('Panels.KlippyStatePanel.FirmwareRestart') }}
                 </v-btn>
             </v-card-actions>
@@ -40,12 +40,15 @@ import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ConnectionStatus from '../ui/ConnectionStatus.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiRestart } from '@mdi/js'
 
 @Component({
     components: { Panel, ConnectionStatus },
 })
 export default class KlippyStatePanel extends Mixins(BaseMixin) {
     //private timer: number | null = null
+
+    mdiRestart = mdiRestart
 
     get klippy_message() {
         return this.$store.state.server.klippy_message ?? null

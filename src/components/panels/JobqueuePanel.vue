@@ -12,7 +12,7 @@
                     @click="startJobqueue">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on">mdi-play</v-icon>
+                            <v-icon v-bind="attrs" v-on="on">{{ mdiPlay }}</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Start') }}</span>
                     </v-tooltip>
@@ -26,7 +26,7 @@
                     @click="pauseJobqueue">
                     <v-tooltip top>
                         <template #activator="{ on, attrs }">
-                            <v-icon v-bind="attrs" v-on="on">mdi-pause</v-icon>
+                            <v-icon v-bind="attrs" v-on="on">{{ mdiPause }}</v-icon>
                         </template>
                         <span>{{ $t('JobQueue.Pause') }}</span>
                     </v-tooltip>
@@ -72,7 +72,7 @@
                                                 slot="preloader"
                                                 indeterminate
                                                 color="primary"></v-progress-circular>
-                                            <v-icon slot="error">mdi-file</v-icon>
+                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getBigThumbnail(item)" width="250" /></span>
@@ -85,11 +85,11 @@
                                         slot="preloader"
                                         indeterminate
                                         color="primary"></v-progress-circular>
-                                    <v-icon slot="error">mdi-file</v-icon>
+                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon>mdi-file</v-icon>
+                                <v-icon>{{ mdiFile }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">
@@ -106,7 +106,7 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('JobQueue.Delete') }}
                 </v-list-item>
             </v-list>
@@ -122,10 +122,16 @@ import { formatFilesize, formatPrintTime } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import { mdiPlay, mdiPause, mdiFile, mdiDelete } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class JobqueuePanel extends Mixins(BaseMixin) {
+    mdiPlay = mdiPlay
+    mdiPause = mdiPause
+    mdiFile = mdiFile
+    mdiDelete = mdiDelete
+
     formatFilesize = formatFilesize
 
     private contextMenu = {
