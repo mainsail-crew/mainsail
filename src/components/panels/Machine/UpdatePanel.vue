@@ -63,7 +63,7 @@ ul.commits {
         <panel
             v-if="enableUpdateManager"
             :title="$t('Machine.UpdatePanel.UpdateManager')"
-            icon="mdi-update"
+            :icon="mdiUpdate"
             card-class="machine-update-panel"
             :collapsible="true">
             <template #buttons>
@@ -79,7 +79,7 @@ ul.commits {
                             v-bind="attrs"
                             @click="btnSync"
                             v-on="on">
-                            <v-icon>mdi-refresh</v-icon>
+                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                     </template>
                     <span>{{ $t('Machine.UpdatePanel.CheckForUpdates') }}</span>
@@ -97,7 +97,7 @@ ul.commits {
                                     :class="getVersionClickable(value) ? 'primary--text cursor--pointer' : ''"
                                     @click="openCommitsOverlay(key, value)">
                                     <v-icon v-if="getVersionClickable(value)" small color="primary" class="mr-1">
-                                        mdi-information
+                                        {{ mdiInformation }}
                                     </v-icon>
                                     {{ getVersionOutput(value) }}
                                 </span>
@@ -115,15 +115,15 @@ ul.commits {
                                                 class="minwidth-0 px-2 text-uppercase"
                                                 v-bind="attrs"
                                                 v-on="on">
-                                                <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                                <v-icon small class="mr-1">{{ getBtnIcon(value) }}</v-icon>
                                                 {{ getBtnText(value) }}
-                                                <v-icon small>mdi-menu-down</v-icon>
+                                                <v-icon small>{{ mdiMenuDown }}</v-icon>
                                             </v-chip>
                                         </template>
                                         <v-list dense class="py-0">
                                             <v-list-item @click="recovery(key, false)">
                                                 <v-list-item-icon class="mr-0">
-                                                    <v-icon small>mdi-reload</v-icon>
+                                                    <v-icon small>{{ mdiReload }}</v-icon>
                                                 </v-list-item-icon>
                                                 <v-list-item-content>
                                                     <v-list-item-title>Soft Recovery</v-list-item-title>
@@ -131,7 +131,7 @@ ul.commits {
                                             </v-list-item>
                                             <v-list-item @click="recovery(key, true)">
                                                 <v-list-item-icon class="mr-0">
-                                                    <v-icon small>mdi-reload</v-icon>
+                                                    <v-icon small>{{ mdiReload }}</v-icon>
                                                 </v-list-item-icon>
                                                 <v-list-item-content>
                                                     <v-list-item-title>Hard Recovery</v-list-item-title>
@@ -149,7 +149,7 @@ ul.commits {
                                         :disabled="getBtnDisabled(value)"
                                         class="minwidth-0 px-2 text-uppercase"
                                         @click="updateModule(key)">
-                                        <v-icon small class="mr-1">mdi-{{ getBtnIcon(value) }}</v-icon>
+                                        <v-icon small class="mr-1">{{ getBtnIcon(value) }}</v-icon>
                                         {{ getBtnText(value) }}
                                     </v-chip>
                                 </template>
@@ -185,7 +185,7 @@ ul.commits {
                                     class="minwidth-0 px-2 text-uppercase"
                                     @click="updateSystem">
                                     <v-icon small class="mr-1">
-                                        mdi-{{ version_info.system.package_count ? 'progress-upload' : 'check' }}
+                                        {{ version_info.system.package_count ? mdiProgressUpload : mdiCheck }}
                                     </v-icon>
                                     {{
                                         version_info.system.package_count
@@ -206,7 +206,7 @@ ul.commits {
                                     small
                                     :disabled="['printing', 'paused'].includes(printer_state)"
                                     @click="updateAll">
-                                    <v-icon left>mdi-progress-upload</v-icon>
+                                    <v-icon left>{{ mdiProgressUpload }}</v-icon>
                                     {{ $t('Machine.UpdatePanel.UpdateAll') }}
                                 </v-btn>
                             </v-col>
@@ -218,7 +218,7 @@ ul.commits {
         <v-dialog v-model="commitsOverlay.bool" persistent max-width="800">
             <panel
                 :title="$t('Machine.UpdatePanel.Commits')"
-                icon="mdi-update"
+                :icon="mdiUpdate"
                 :margin-bottom="false"
                 card-class="machine-update-commits-dialog">
                 <template #buttons>
@@ -263,7 +263,7 @@ ul.commits {
                                                                         x-small
                                                                         class="ml-2 px-2"
                                                                         @click="openCommits.push(commit.sha)">
-                                                                        <v-icon small>mdi-dots-horizontal</v-icon>
+                                                                        <v-icon small>{{ mdiDotsHorizontal }}</v-icon>
                                                                     </v-chip>
                                                                 </h4>
                                                                 <p
@@ -320,6 +320,19 @@ import Panel from '@/components/ui/Panel.vue'
 import { ServerUpdateMangerStateVersionInfoGitRepoCommits } from '@/store/server/updateManager/types'
 import VueI18n from 'vue-i18n'
 import DateTimeFormatOptions = VueI18n.DateTimeFormatOptions
+import {
+    mdiRefresh,
+    mdiAlertCircle,
+    mdiCheck,
+    mdiHelpCircleOutline,
+    mdiInformation,
+    mdiMenuDown,
+    mdiProgressUpload,
+    mdiReload,
+    mdiDotsHorizontal,
+    mdiCloseThick,
+    mdiUpdate,
+} from '@mdi/js'
 
 interface groupedCommit {
     date: Date
@@ -339,6 +352,16 @@ interface commitsOverlay {
     components: { Panel },
 })
 export default class UpdatePanel extends Mixins(BaseMixin) {
+    mdiCheck = mdiCheck
+    mdiRefresh = mdiRefresh
+    mdiInformation = mdiInformation
+    mdiMenuDown = mdiMenuDown
+    mdiReload = mdiReload
+    mdiProgressUpload = mdiProgressUpload
+    mdiCloseThick = mdiCloseThick
+    mdiDotsHorizontal = mdiDotsHorizontal
+    mdiUpdate = mdiUpdate
+
     private openCommits: string[] = []
 
     private dateOptions: DateTimeFormatOptions = {
@@ -464,9 +487,9 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
     getBtnIcon(object: any) {
         if (typeof object === 'object' && object !== false) {
             if ('debug_enabled' in object && !object.debug_enabled && 'detached' in object && object.detached)
-                return 'alert-circle'
-            if ('is_valid' in object && !object.is_valid) return 'alert-circle'
-            if ('is_dirty' in object && object.is_dirty) return 'alert-circle'
+                return mdiAlertCircle
+            if ('is_valid' in object && !object.is_valid) return mdiAlertCircle
+            if ('is_dirty' in object && object.is_dirty) return mdiAlertCircle
 
             if (
                 'version' in object &&
@@ -475,18 +498,18 @@ export default class UpdatePanel extends Mixins(BaseMixin) {
                 semver.valid(object.version) &&
                 semver.gt(object.remote_version, object.version)
             )
-                return 'progress-upload'
+                return mdiProgressUpload
 
-            if ((object.commits_behind ?? []).length) return 'progress-upload'
+            if ((object.commits_behind ?? []).length) return mdiProgressUpload
 
             if (
                 'version' in object &&
                 'remote_version' in object &&
                 (object.version === '?' || object.remote_version === '?')
             )
-                return 'help-circle-outline'
+                return mdiHelpCircleOutline
 
-            return 'check'
+            return mdiCheck
         }
 
         return 'ERROR'

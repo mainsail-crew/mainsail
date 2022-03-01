@@ -55,7 +55,7 @@
                     <slot name="buttons"></slot>
                 </div>
                 <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
-                    <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}}</v-icon>
+                    <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
