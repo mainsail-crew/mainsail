@@ -139,7 +139,9 @@
                 card-class="machine-systemload-mcu-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="mcuDetailsDialog.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -182,7 +184,9 @@
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hostDetailsDialog.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">

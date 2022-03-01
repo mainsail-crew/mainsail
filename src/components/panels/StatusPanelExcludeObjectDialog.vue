@@ -9,7 +9,9 @@
                 card-class="exclude-object-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hideDialog">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-container>
                     <v-row>

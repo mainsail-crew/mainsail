@@ -4,7 +4,7 @@
     <v-dialog v-model="showDialog" persistent :width="400">
         <panel
             card-class="select-printer-dialog"
-            icon="mdi-connection"
+            :icon="mdiConnection"
             :title="panelTitle"
             :margin-bottom="false"
             toolbar-color="toolbar">
@@ -205,7 +205,15 @@ import BaseMixin from './mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
-import { mdiCancel, mdiCheckboxMarkedCircle, mdiCloseThick, mdiDelete, mdiPencil, mdiSync } from '@mdi/js'
+import {
+    mdiCancel,
+    mdiCheckboxMarkedCircle,
+    mdiCloseThick,
+    mdiConnection,
+    mdiDelete,
+    mdiPencil,
+    mdiSync,
+} from '@mdi/js'
 
 @Component({
     components: { Panel },
@@ -226,6 +234,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     /**
      * Icons
      */
+    mdiConnection = mdiConnection
     mdiCloseThick = mdiCloseThick
     mdiSync = mdiSync
     mdiDelete = mdiDelete

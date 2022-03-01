@@ -198,7 +198,7 @@
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
                             <v-col class="text-right">
                                 <span class="currentMeshName font-weight-bold" @click="openRenameProfile()">
-                                    <v-icon left small color="primary">mdi-pencil</v-icon>
+                                    <v-icon left small color="primary">{{ mdiPencil }}</v-icon>
                                     {{ currentProfileName }}
                                 </span>
                             </v-col>
@@ -273,7 +273,7 @@
                                         class="px-2 minwidth-0"
                                         :loading="loadings.includes('bedMeshLoad_' + profile.name)"
                                         @click="loadProfile(profile.name)">
-                                        <v-icon>mdi-progress-upload</v-icon>
+                                        <v-icon>{{ mdiProgressUpload }}</v-icon>
                                     </v-btn>
                                     <v-btn
                                         v-else
@@ -282,7 +282,7 @@
                                         class="px-2 minwidth-0"
                                         :loading="loadings.includes('bedMeshLoad_' + profile.name)"
                                         @click="openRenameProfile">
-                                        <v-icon>mdi-pencil</v-icon>
+                                        <v-icon>{{ mdiPencil }}</v-icon>
                                     </v-btn>
                                     <v-btn
                                         text
@@ -291,7 +291,7 @@
                                         :loading="loadings.includes('bedMeshRemove_' + profile.name)"
                                         :title="$t('Heightmap.DeleteBedMeshProfile')"
                                         @click="openRemoveProfile(profile.name)">
-                                        <v-icon>mdi-delete</v-icon>
+                                        <v-icon>{{ mdiDelete }}</v-icon>
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -323,7 +323,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="renameDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -353,7 +353,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="calibrateDialog.boolShow = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -379,7 +379,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="removeDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -395,12 +395,12 @@
         <v-dialog v-model="saveConfigDialog" persistent :max-width="400" @keydown.esc="saveConfigDialog = false">
             <panel
                 :title="$t('Heightmap.SAVE_CONFIG')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="saveConfigDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -428,7 +428,17 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 
 import Panel from '@/components/ui/Panel.vue'
-import { mdiGrid, mdiHome, mdiInformation, mdiLockOutline, mdiStackOverflow } from '@mdi/js'
+import {
+    mdiCloseThick,
+    mdiDelete,
+    mdiGrid,
+    mdiHome,
+    mdiInformation,
+    mdiLockOutline,
+    mdiProgressUpload,
+    mdiPencil,
+    mdiStackOverflow,
+} from '@mdi/js'
 
 import { use } from 'echarts/core'
 
@@ -481,6 +491,10 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
     mdiInformation = mdiInformation
     mdiStackOverflow = mdiStackOverflow
     mdiLockOutline = mdiLockOutline
+    mdiCloseThick = mdiCloseThick
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+    mdiProgressUpload = mdiProgressUpload
 
     private renameDialog = false
     private removeDialogProfile = ''

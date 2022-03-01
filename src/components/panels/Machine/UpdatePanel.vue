@@ -222,7 +222,9 @@ ul.commits {
                 :margin-bottom="false"
                 card-class="machine-update-commits-dialog">
                 <template #buttons>
-                    <v-btn icon tile @click="commitsOverlay.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="commitsOverlay.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="py-0 px-0">
                     <overlay-scrollbars style="max-height: 400px" :options="{ overflowBehavior: { x: 'hidden' } }">

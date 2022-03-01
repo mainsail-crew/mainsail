@@ -302,7 +302,9 @@
                 card-class="tools-edit-heater-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="editHeater.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-6">
                     <v-row v-for="dataset in editHeater.chartSeries" :key="dataset">

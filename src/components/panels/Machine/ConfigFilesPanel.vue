@@ -212,7 +212,7 @@
                             dialogImage.item.url = null
                             dialogImage.item.svg = null
                         ">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <div class="d-flex justify-center" style="max-height: calc(var(--app-height) - 64px); overflow: auto">
@@ -231,7 +231,9 @@
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogCreateFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -258,7 +260,9 @@
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -286,7 +290,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -315,7 +319,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -344,7 +348,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>

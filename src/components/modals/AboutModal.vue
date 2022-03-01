@@ -19,13 +19,15 @@
                 <template #activator="{ on, attrs }">
                     <!-- <v-icon v-bind="attrs" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave" @click.stop="isOpen = true">mdi-help-circle-outline</v-icon> -->
                     <v-icon v-bind="attrs" v-on="an" @mouseenter="on.mouseenter" @mouseleave="on.mouseleave">
-                        mdi-help-circle-outline
+                        {{ mdiHelpCircleOutline }}
                     </v-icon>
                 </template>
                 <span class="dark version-container">
                     <div><img height="12" src="/img/logo.svg" /></div>
                     <div>v{{ mainsailVersion }}</div>
-                    <div><v-icon small class="moonraker-logo">mdi-moon-waning-crescent</v-icon></div>
+                    <div>
+                        <v-icon small class="moonraker-logo">{{ mdiMoonWaningCrescent }}</v-icon>
+                    </div>
                     <div>{{ moonrakerVersion }}</div>
                     <div><img height="12" src="/img/klipper.svg" class="klipper-logo" /></div>
                     <div>{{ klipperVersion }}</div>
@@ -35,7 +37,9 @@
         <template #default>
             <panel title="About" :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="isOpen = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-container fliud class="align-self-start">
@@ -63,11 +67,16 @@ import BaseMixin from '../mixins/base'
 import { Mixins } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiCloseThick, mdiHelpCircleOutline, mdiMoonWaningCrescent } from '@mdi/js'
 
 @Component({
     components: { Panel },
 })
 export default class AboutModal extends Mixins(BaseMixin) {
+    mdiHelpCircleOutline = mdiHelpCircleOutline
+    mdiCloseThick = mdiCloseThick
+    mdiMoonWaningCrescent = mdiMoonWaningCrescent
+
     private isOpen = false
 
     get mainsailVersion(): string {

@@ -96,7 +96,9 @@
                 card-class="timelapse-rendersettings-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon @click="boolDialogRendersettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon @click="boolDialogRendersettings = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="">
                     <v-row>

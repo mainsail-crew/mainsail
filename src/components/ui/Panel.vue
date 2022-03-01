@@ -55,7 +55,7 @@
                     <slot name="buttons"></slot>
                 </div>
                 <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
-                    <v-icon :class="expand ? '' : 'icon-rotate-90'">mdi-chevron-down</v-icon>
+                    <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}}</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
@@ -72,9 +72,11 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
+import { mdiChevronDown } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
+    mdiChevronDown = mdiChevronDown
     panelToolbarHeight = panelToolbarHeight
 
     @Prop({ default: null }) declare readonly icon: string | null

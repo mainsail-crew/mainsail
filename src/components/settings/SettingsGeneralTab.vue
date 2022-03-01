@@ -71,7 +71,9 @@
                 :margin-bottom="false"
                 icon="mdi-help-circle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogBackupMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogBackupMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -120,7 +122,9 @@
                 :margin-bottom="false"
                 icon="mdi-help-circle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogResetMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogResetMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -184,7 +188,9 @@
                 :margin-bottom="false"
                 icon="mdi-help-circle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRestoreMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRestoreMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>

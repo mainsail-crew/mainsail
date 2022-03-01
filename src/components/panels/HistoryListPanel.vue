@@ -233,7 +233,9 @@
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="detailsDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -403,7 +405,9 @@
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="deleteSelectedDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>

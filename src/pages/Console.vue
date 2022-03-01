@@ -39,7 +39,7 @@
 
             <v-col class="col-auto d-flex align-center">
                 <v-btn class="mr-3 px-2 minwidth-0" color="lightgray" @click="clearConsole">
-                    <v-icon>mdi-trash-can</v-icon>
+                    <v-icon>{{ mdiTrashCan }}</v-icon>
                 </v-btn>
                 <command-help-modal @onCommand="gcode = $event"></command-help-modal>
                 <v-menu
@@ -49,7 +49,7 @@
                     :title="$t('Console.SetupConsole')">
                     <template #activator="{ on, attrs }">
                         <v-btn class="ml-3 px-2 minwidth-0" color="lightgray" v-bind="attrs" v-on="on">
-                            <v-icon>mdi-filter</v-icon>
+                            <v-icon>{{ mdiFilter }}</v-icon>
                         </v-btn>
                     </template>
                     <v-list>
@@ -104,7 +104,7 @@ import ConsoleTable from '@/components/console/ConsoleTable.vue'
 import { CommandHelp, VTextareaType } from '@/store/printer/types'
 import { reverseString, strLongestEqual } from '@/plugins/helpers'
 import CommandHelpModal from '@/components/CommandHelpModal.vue'
-import { mdiChevronDoubleRight, mdiSend } from '@mdi/js'
+import { mdiChevronDoubleRight, mdiFilter, mdiSend, mdiTrashCan } from '@mdi/js'
 
 @Component({
     components: {
@@ -122,6 +122,8 @@ export default class PageConsole extends Mixins(BaseMixin) {
      */
     mdiChevronDoubleRight = mdiChevronDoubleRight
     mdiSend = mdiSend
+    mdiFilter = mdiFilter
+    mdiTrashCan = mdiTrashCan
 
     declare $refs: {
         gcodeCommandField: VTextareaType
