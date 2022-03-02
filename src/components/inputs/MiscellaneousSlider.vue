@@ -284,11 +284,10 @@ export default class MiscellaneousSlider extends Mixins(BaseMixin) {
         if (this.errors().length > 0) return
 
         const input = this.inputValue / 100
-        if (input > this.max) {
-            this.value = this.max
-        } else if (input < this.off_below) {
+        if (this.value === 0 && input < this.off_below) {
+            this.value = this.off_below
+        } else if (this.value >= this.off_below && input < this.off_below) {
             this.value = 0
-            this.inputValue = 0
         } else this.value = input
 
         this.sendCmd()
