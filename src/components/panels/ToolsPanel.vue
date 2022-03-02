@@ -24,7 +24,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui"
-        icon="mdi-thermometer-lines"
+        :icon="mdiThermometerLines"
         :title="$t('Panels.ToolsPanel.Headline')"
         :collapsible="true"
         card-class="tools-panel">
@@ -40,14 +40,14 @@
                         class="pa-1"
                         v-on="on">
                         <span class="d-none ml-1 d-md-block">{{ $t('Panels.ToolsPanel.Presets') }}</span>
-                        <v-icon class="d-md-none">mdi-fire</v-icon>
-                        <v-icon>mdi-menu-down</v-icon>
+                        <v-icon class="d-md-none">{{ mdiFire }}</v-icon>
+                        <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" :key="preset.index" link @click="preheat(preset)">
                         <v-list-item-icon class="mr-0">
-                            <v-icon small>mdi-fire</v-icon>
+                            <v-icon small>{{ mdiFire }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title v-text="preset.name"></v-list-item-title>
@@ -58,7 +58,7 @@
                 <v-list dense class="py-0">
                     <v-list-item link @click="cooldown()">
                         <v-list-item-icon class="mr-0">
-                            <v-icon small color="primary">mdi-snowflake</v-icon>
+                            <v-icon small color="primary">{{ mdiSnowflake }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title class="primary--text">
@@ -75,12 +75,14 @@
                 tile
                 color="primary"
                 @click="cooldown()">
-                <v-icon small>mdi-snowflake</v-icon>
+                <v-icon small>{{ mdiSnowflake }}</v-icon>
                 <span class="d-none ml-1 d-md-inline">{{ $t('Panels.ToolsPanel.Cooldown') }}</span>
             </v-btn>
             <v-menu :offset-y="true" :close-on-content-click="false" :title="$t('Panels.ToolsPanel.SetupTemperatures')">
                 <template #activator="{ on, attrs }">
-                    <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-cog</v-icon></v-btn>
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon small>{{ mdiCog }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-list>
                     <v-list-item class="minHeight36">
@@ -122,7 +124,7 @@
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
                         <v-col class="pl-8 pr-0 flex-grow-0 py-2 colHeaterIcons">
-                            <v-icon :color="heater.iconColor">mdi-{{ heater.icon }}</v-icon>
+                            <v-icon :color="heater.iconColor">{{ heater.icon }}</v-icon>
                         </v-col>
                         <v-col class="py-2 font-weight-bold">
                             <span style="cursor: pointer" @click="openHeater(heater)">
@@ -175,7 +177,7 @@
                             <v-icon
                                 :color="fan.target ? 'grey lighten-5' : 'grey darken-2'"
                                 :class="fan.speed ? ' icon-rotate' : ''">
-                                mdi-fan
+                                {{ mdiFan }}
                             </v-icon>
                         </v-col>
                         <v-col class="py-2 font-weight-bold">
@@ -247,7 +249,7 @@
                                     sensor.max_temp +
                                     '°'
                                 ">
-                                mdi-{{ sensor.icon }}
+                                {{ sensor.icon }}
                             </v-icon>
                         </v-col>
                         <v-col class="py-2 font-weight-bold">
@@ -298,11 +300,13 @@
         <v-dialog v-model="editHeater.bool" persistent :width="400">
             <panel
                 :title="convertName(editHeater.name)"
-                :icon="'mdi-' + editHeater.icon"
+                :icon="editHeater.icon"
                 card-class="tools-edit-heater-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="editHeater.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="editHeater.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-6">
                     <v-row v-for="dataset in editHeater.chartSeries" :key="dataset">
@@ -361,11 +365,19 @@ import { PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan } fr
 import { Debounce } from 'vue-debounce-decorator'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
 
 @Component({
     components: { Panel, TempChart, ToolInput },
 })
 export default class ToolsPanel extends Mixins(BaseMixin) {
+    mdiFan = mdiFan
+    mdiSnowflake = mdiSnowflake
+    mdiCog = mdiCog
+    mdiFire = mdiFire
+    mdiMenuDown = mdiMenuDown
+    mdiThermometerLines = mdiThermometerLines
+
     convertName = convertName
     datasetTypes = datasetTypes
 

@@ -1,7 +1,7 @@
 <template>
     <panel
         :title="$t('Machine.LogfilesPanel.Logfiles')"
-        icon="mdi-file-document-edit"
+        :icon="mdiFileDocumentEdit"
         card-class="machine-logfiles-panel"
         :collapsible="true">
         <v-card-text :class="'text-center text-lg-left py-0'">
@@ -13,7 +13,7 @@
                             block
                             class="primary--text"
                             @click="downloadLog">
-                            <v-icon class="mr-2">mdi-download</v-icon>
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
                             Klipper
                         </v-btn>
                     </v-col>
@@ -24,7 +24,7 @@
                             block
                             class="primary--text"
                             @click="downloadLog">
-                            <v-icon class="mr-2">mdi-download</v-icon>
+                            <v-icon class="mr-2">{{ mdiDownload }}</v-icon>
                             Moonraker
                         </v-btn>
                     </v-col>
@@ -38,10 +38,14 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiDownload, mdiFileDocumentEdit } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class LogfilesPanel extends Mixins(BaseMixin) {
+    mdiFileDocumentEdit = mdiFileDocumentEdit
+    mdiDownload = mdiDownload
+
     downloadLog(event: any) {
         event.preventDefault()
         let href = ''

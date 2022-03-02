@@ -16,6 +16,7 @@ import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from
 
 import type { ECharts } from 'echarts/core'
 import type { ECBasicOption } from 'echarts/types/dist/shared'
+import { mdiClock } from '@mdi/js'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -311,7 +312,9 @@ export default class TempChart extends Mixins(BaseMixin) {
             output +=
                 '<div class="row">' +
                 '<div class="col py-1" style=\'border-bottom: 1px solid rgba(255, 255, 255, 0.24);\'>' +
-                "<span class='v-icon mdi mdi-clock theme-dark' style='font-size: 14px; margin-right: 5px;'></span>" +
+                "<span class='v-icon mdi theme-dark' style='font-size: 14px; margin-right: 5px;'>" +
+                mdiClock +
+                '</span>' +
                 "<span class='font-weight-bold'>" +
                 outputTime +
                 '</span>' +

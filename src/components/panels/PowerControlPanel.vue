@@ -6,7 +6,7 @@
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-power" left></v-icon>
+                        <v-icon left>{{ mdiPower }}</v-icon>
                         {{ $t('Panels.PowerControlPanel.PowerControl') }}
                     </span>
                 </v-toolbar-title>
@@ -48,9 +48,16 @@
 <script>
 import { mapState } from 'vuex'
 import Vue from 'vue'
+import { mdiPower } from '@mdi/js'
 
 export default {
     components: {},
+
+    data: function () {
+        return {
+            mdiPower: mdiPower,
+        }
+    },
 
     computed: {
         ...mapState({

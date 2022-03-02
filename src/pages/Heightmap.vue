@@ -46,7 +46,7 @@
     <div>
         <v-row v-if="klipperReadyForGui">
             <v-col class="col-12 col-md-8 pb-0">
-                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" icon="mdi-grid">
+                <panel card-class="heightmap-map-panel" :title="$t('Heightmap.Heightmap')" :icon="mdiGrid">
                     <template #buttons>
                         <v-btn
                             icon
@@ -57,7 +57,7 @@
                             :title="$t('Heightmap.TitleHomeAll')"
                             :ripple="true"
                             @click="homePrinter">
-                            <v-icon>mdi-home</v-icon>
+                            <v-icon>{{ mdiHome }}</v-icon>
                         </v-btn>
                         <v-btn
                             v-if="meshLoaded"
@@ -91,7 +91,7 @@
                                 :title="$t('Heightmap.TitleHomeAll')"
                                 @click="homePrinter">
                                 <v-icon :color="homedAxes.includes('xyz') ? 'primary' : 'warning'" small>
-                                    mdi-home
+                                    {{ mdiHome }}
                                 </v-icon>
                             </v-btn>
                             <v-btn
@@ -190,7 +190,7 @@
                     v-if="currentProfile"
                     :title="$t('Heightmap.CurrentMesh.Headline')"
                     card-class="heightmap-current-mesh-panel"
-                    icon="mdi-information"
+                    :icon="mdiInformation"
                     :collapsible="true"
                     class="mt-0">
                     <v-card-text class="py-3 px-0">
@@ -198,7 +198,7 @@
                             <v-col>{{ $t('Heightmap.CurrentMesh.Name') }}</v-col>
                             <v-col class="text-right">
                                 <span class="currentMeshName font-weight-bold" @click="openRenameProfile()">
-                                    <v-icon left small color="primary">mdi-pencil</v-icon>
+                                    <v-icon left small color="primary">{{ mdiPencil }}</v-icon>
                                     {{ currentProfileName }}
                                 </span>
                             </v-col>
@@ -236,7 +236,7 @@
                 <panel
                     :title="$t('Heightmap.Profiles')"
                     card-class="heightmap-profiles-panel"
-                    icon="mdi-stack-overflow"
+                    :icon="mdiStackOverflow"
                     :collapsible="true"
                     class="mt-6 mt-md-0">
                     <v-card-text v-if="profiles.length" class="px-0 py-3">
@@ -273,7 +273,7 @@
                                         class="px-2 minwidth-0"
                                         :loading="loadings.includes('bedMeshLoad_' + profile.name)"
                                         @click="loadProfile(profile.name)">
-                                        <v-icon>mdi-progress-upload</v-icon>
+                                        <v-icon>{{ mdiProgressUpload }}</v-icon>
                                     </v-btn>
                                     <v-btn
                                         v-else
@@ -282,7 +282,7 @@
                                         class="px-2 minwidth-0"
                                         :loading="loadings.includes('bedMeshLoad_' + profile.name)"
                                         @click="openRenameProfile">
-                                        <v-icon>mdi-pencil</v-icon>
+                                        <v-icon>{{ mdiPencil }}</v-icon>
                                     </v-btn>
                                     <v-btn
                                         text
@@ -291,7 +291,7 @@
                                         :loading="loadings.includes('bedMeshRemove_' + profile.name)"
                                         :title="$t('Heightmap.DeleteBedMeshProfile')"
                                         @click="openRemoveProfile(profile.name)">
-                                        <v-icon>mdi-delete</v-icon>
+                                        <v-icon>{{ mdiDelete }}</v-icon>
                                     </v-btn>
                                 </v-col>
                             </v-row>
@@ -311,19 +311,19 @@
                 elevation="2"
                 class="mx-auto mt-6"
                 max-width="500"
-                icon="mdi-lock-outline">
+                :icon="mdiLockOutline">
                 {{ $t('Heightmap.ErrorKlipperNotReady') }}
             </v-alert>
         </v-row>
         <v-dialog v-model="renameDialog" persistent :max-width="400" @keydown.esc="renameDialog = false">
             <panel
                 :title="$t('Heightmap.RenameBedMeshProfile')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-rename-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="renameDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -348,21 +348,21 @@
             @keydown.esc="calibrateDialog.boolShow = false">
             <panel
                 :title="$t('Heightmap.BedMeshCalibrate')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-calibrate-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="calibrateDialog.boolShow = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
-                        v-model="calibrateDialog.name"
                         ref="inputFieldCalibrateBedMeshName"
+                        v-model="calibrateDialog.name"
                         :label="$t('Heightmap.Name')"
-                        @keyup.enter="calibrateMesh"
-                        required></v-text-field>
+                        required
+                        @keyup.enter="calibrateMesh"></v-text-field>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -374,12 +374,12 @@
         <v-dialog v-model="removeDialog" persistent :max-width="400" @keydown.esc="removeDialog = false">
             <panel
                 :title="$t('Heightmap.BedMeshRemove')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-remove-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="removeDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -395,12 +395,12 @@
         <v-dialog v-model="saveConfigDialog" persistent :max-width="400" @keydown.esc="saveConfigDialog = false">
             <panel
                 :title="$t('Heightmap.SAVE_CONFIG')"
-                icon="mdi-grid"
+                :icon="mdiGrid"
                 card-class="heightmap-remove-save-dialog"
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="saveConfigDialog = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -428,6 +428,17 @@ import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiCloseThick,
+    mdiDelete,
+    mdiGrid,
+    mdiHome,
+    mdiInformation,
+    mdiLockOutline,
+    mdiProgressUpload,
+    mdiPencil,
+    mdiStackOverflow,
+} from '@mdi/js'
 
 import { use } from 'echarts/core'
 
@@ -471,6 +482,19 @@ export default class PageHeightmap extends Mixins(BaseMixin, ControlMixin) {
         inputDialogRenameHeightmapName: HTMLInputElement
         inputFieldCalibrateBedMeshName: HTMLInputElement
     }
+
+    /**
+     * Icons
+     */
+    mdiGrid = mdiGrid
+    mdiHome = mdiHome
+    mdiInformation = mdiInformation
+    mdiStackOverflow = mdiStackOverflow
+    mdiLockOutline = mdiLockOutline
+    mdiCloseThick = mdiCloseThick
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+    mdiProgressUpload = mdiProgressUpload
 
     private renameDialog = false
     private removeDialogProfile = ''

@@ -9,12 +9,12 @@
         <v-row>
             <v-col class="pb-3">
                 <v-subheader class="_filamentRunout-subheader">
-                    <v-icon small class="mr-2">mdi-printer-3d-nozzle-alert</v-icon>
+                    <v-icon small class="mr-2">{{ mdiPrinter3dNozzleAlert }}</v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
                     <small :class="'mr-3 ' + statusColor + '--text'">{{ statusText }}</small>
                     <v-icon @click="changeSensor">
-                        {{ enabled ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
+                        {{ enabled ? mdiToggleSwitch : mdiToggleSwitchOffOutline }}
                     </v-icon>
                 </v-subheader>
             </v-col>
@@ -26,9 +26,18 @@
 import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiPrinter3dNozzleAlert, mdiToggleSwitch, mdiToggleSwitchOffOutline } from '@mdi/js'
 
 @Component
 export default class FilamentSensor extends Mixins(BaseMixin) {
+    /**
+     * Icons
+     */
+
+    mdiToggleSwitch = mdiToggleSwitch
+    mdiToggleSwitchOffOutline = mdiToggleSwitchOffOutline
+    mdiPrinter3dNozzleAlert = mdiPrinter3dNozzleAlert
+
     convertName = convertName
 
     @Prop({ type: String, required: true }) declare readonly name: string

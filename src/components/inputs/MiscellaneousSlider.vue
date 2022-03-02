@@ -58,7 +58,7 @@
                         v-if="type !== 'output_pin'"
                         small
                         :class="'mr-2 ' + (value >= off_below && value > 0 ? 'icon-rotate' : '')">
-                        mdi-fan
+                        {{ mdiFan }}
                     </v-icon>
                     <span>{{ convertName(name) }}</span>
                     <v-spacer></v-spacer>
@@ -72,7 +72,7 @@
                         {{ Math.round(parseFloat(value) * 100) }} %
                     </span>
                     <v-icon v-if="controllable && !pwm" @click="switchOutputPin">
-                        {{ value ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline' }}
+                        {{ value ? mdiToggleSwitch : mdiToggleSwitchOffOutline }}
                     </v-icon>
                     <v-text-field
                         v-if="controllable && pwm"
@@ -105,7 +105,7 @@
                         class="_lock-button"
                         @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
-                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                            {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
                         </v-icon>
                     </v-btn>
                     <v-slider
@@ -119,11 +119,13 @@
                         hide-details
                         @change="changeSliderValue">
                         <template #prepend>
-                            <v-icon :disabled="isLocked || sliderValue <= min" @click="decrement">mdi-minus</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue <= min" @click="decrement">
+                                {{ mdiMinus }}
+                            </v-icon>
                         </template>
 
                         <template #append>
-                            <v-icon :disabled="isLocked || sliderValue >= max" @click="increment">mdi-plus</v-icon>
+                            <v-icon :disabled="isLocked || sliderValue >= max" @click="increment">{{ mdiPlus }}</v-icon>
                         </template>
                     </v-slider>
                 </v-card-text>
@@ -137,9 +139,26 @@ import { convertName } from '@/plugins/helpers'
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
+import {
+    mdiFan,
+    mdiLockOpenVariantOutline,
+    mdiLockOutline,
+    mdiMinus,
+    mdiPlus,
+    mdiToggleSwitch,
+    mdiToggleSwitchOffOutline,
+} from '@mdi/js'
 
 @Component
 export default class MiscellaneousSlider extends Mixins(BaseMixin) {
+    mdiFan = mdiFan
+    mdiToggleSwitch = mdiToggleSwitch
+    mdiToggleSwitchOffOutline = mdiToggleSwitchOffOutline
+    mdiLockOutline = mdiLockOutline
+    mdiLockOpenVariantOutline = mdiLockOpenVariantOutline
+    mdiMinus = mdiMinus
+    mdiPlus = mdiPlus
+
     convertName = convertName
     private declare timeout: ReturnType<typeof setTimeout>
     private isLocked: boolean = false

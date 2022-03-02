@@ -24,7 +24,7 @@
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon left>mdi-update</v-icon>
+                        <v-icon left>{{ mdiUpdate }}</v-icon>
                         <template v-if="application.substr(0, 8) === 'recover_' && !complete">
                             {{ $t('App.UpdateDialog.Recovering', { software: application.substr(8) }) }}
                         </template>
@@ -91,11 +91,14 @@
 import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiUpdate } from '@mdi/js'
 
 @Component({
     components: {},
 })
 export default class TheUpdateDialog extends Mixins(BaseMixin) {
+    mdiUpdate = mdiUpdate
+
     declare $refs: {
         updaterLogScroll: any
         updaterLog: HTMLDivElement

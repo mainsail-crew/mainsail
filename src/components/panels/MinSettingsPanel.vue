@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperState === 'ready' && existsPrinterConfig && missingConfigs.length"
-        icon="mdi-alert-circle"
+        :icon="mdiAlertCircle"
         :title="$t('Panels.MinSettingsPanel.MissingConfiguration')"
         :collapsible="true"
         card-class="min-settings-panel"
@@ -31,7 +31,7 @@
         </template>
         <v-card-actions class="justify-center pb-3">
             <v-btn small href="https://docs.mainsail.xyz/necessary-configuration" target="_blank">
-                <v-icon small class="mr-1">mdi-information</v-icon>
+                <v-icon small class="mr-1">{{ mdiInformation }}</v-icon>
                 {{ $t('Panels.MinSettingsPanel.MoreInformation') }}
             </v-btn>
         </v-card-actions>
@@ -43,10 +43,14 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiInformation, mdiAlertCircle } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class MinSettingsPanel extends Mixins(BaseMixin) {
+    mdiAlertCircle = mdiAlertCircle
+    mdiInformation = mdiInformation
+
     get existsPrinterConfig() {
         return this.$store.getters['printer/existPrinterConfig'] ?? false
     }

@@ -11,7 +11,7 @@
 <template>
     <div>
         <panel
-            icon="mdi-file-document-multiple-outline"
+            :icon="mdiFileDocumentMultipleOutline"
             :title="$t('History.PrintHistory')"
             card-class="history-list-panel">
             <v-card-text>
@@ -19,7 +19,7 @@
                     <v-col class="col-4 d-flex align-center">
                         <v-text-field
                             v-model="search"
-                            append-icon="mdi-magnify"
+                            :append-icon="mdiMagnify"
                             :label="$t('History.Search')"
                             single-line
                             outlined
@@ -34,20 +34,20 @@
                                 color="warning"
                                 class="px-2 minwidth-0 ml-3"
                                 @click="deleteSelectedDialog = true">
-                                <v-icon>mdi-delete</v-icon>
+                                <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
                         <v-btn
                             :title="$t('History.TitleExportHistory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="exportHistory">
-                            <v-icon>mdi-database-export-outline</v-icon>
+                            <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
                         </v-btn>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshHistory">
-                            <v-icon>mdi-refresh</v-icon>
+                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template #activator="{ on, attrs }">
@@ -56,7 +56,7 @@
                                     :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
                                     v-on="on">
-                                    <v-icon>mdi-cog</v-icon>
+                                    <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -136,7 +136,7 @@
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
-                                <v-icon class="text--disabled">mdi-file-cancel</v-icon>
+                                <v-icon class="text--disabled">{{ mdiFile }}-cancel</v-icon>
                             </template>
                             <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip top>
@@ -153,7 +153,7 @@
                                                 slot="preloader"
                                                 indeterminate
                                                 color="primary"></v-progress-circular>
-                                            <v-icon slot="error">mdi-file</v-icon>
+                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getBigThumbnail(item)" width="250" /></span>
@@ -166,11 +166,11 @@
                                         slot="preloader"
                                         indeterminate
                                         color="primary"></v-progress-circular>
-                                    <v-icon slot="error">mdi-file</v-icon>
+                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon>mdi-file</v-icon>
+                                <v-icon>{{ mdiFile }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
@@ -206,18 +206,18 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-text-box-search</v-icon>
+                    <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.exists"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
                     @click="startPrint(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-printer</v-icon>
+                    <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
@@ -229,11 +229,13 @@
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
                 :title="$t('History.JobDetails')"
-                icon="mdi-update"
+                :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="detailsDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -403,7 +405,9 @@
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="deleteSelectedDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
@@ -425,10 +429,35 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import {
+    mdiDatabaseExportOutline,
+    mdiDelete,
+    mdiRefresh,
+    mdiCog,
+    mdiPrinter,
+    mdiTextBoxSearch,
+    mdiFile,
+    mdiFileDocumentMultipleOutline,
+    mdiMagnify,
+    mdiCloseThick,
+    mdiUpdate,
+} from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
+    mdiDatabaseExportOutline = mdiDatabaseExportOutline
+    mdiDelete = mdiDelete
+    mdiRefresh = mdiRefresh
+    mdiCog = mdiCog
+    mdiPrinter = mdiPrinter
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiTextBoxSearch = mdiTextBoxSearch
+    mdiFile = mdiFile
+    mdiMagnify = mdiMagnify
+    mdiUpdate = mdiUpdate
+    mdiCloseThick = mdiCloseThick
+
     formatFilesize = formatFilesize
 
     private search = ''

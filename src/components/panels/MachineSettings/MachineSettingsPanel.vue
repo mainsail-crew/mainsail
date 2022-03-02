@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui"
-        icon="mdi-engine"
+        :icon="mdiEngine"
         :title="$t('Panels.MachineSettingsPanel.Headline').toString()"
         :collapsible="true"
         card-class="machine-settings-panel">
@@ -34,6 +34,7 @@ import SubPanel from '@/components/ui/SubPanel.vue'
 import MotionSettings from '@/components/panels/MachineSettings/MotionSettings.vue'
 import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
 import FirmwareRetractionSettings from '@/components/panels/MachineSettings/FirmwareRetractionSettings.vue'
+import { mdiEngine } from '@mdi/js'
 
 @Component({
     components: {
@@ -45,6 +46,11 @@ import FirmwareRetractionSettings from '@/components/panels/MachineSettings/Firm
     },
 })
 export default class MachineSettingsPanel extends Mixins(BaseMixin) {
+    /**
+     * Icons
+     */
+    mdiEngine = mdiEngine
+
     get existsFirmwareRetraction() {
         return this.$store.state.printer.configfile?.settings?.firmware_retraction ?? false
     }

@@ -1,7 +1,7 @@
 <template>
     <panel
         :title="$t('Machine.EndstopPanel.Endstops')"
-        icon="mdi-arrow-expand-vertical"
+        :icon="mdiArrowExpandVertical"
         card-class="machine-endstop-panel"
         :collapsible="true">
         <v-card-text class="pb-0">
@@ -54,7 +54,7 @@
         <v-card-actions class="pt-3">
             <v-spacer></v-spacer>
             <v-btn icon :loading="loadings.includes('queryEndstops')" @click="syncEndstops">
-                <v-icon>mdi-sync</v-icon>
+                <v-icon>{{ mdiSync }}</v-icon>
             </v-btn>
         </v-card-actions>
     </panel>
@@ -64,10 +64,14 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiArrowExpandVertical, mdiSync } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class EndstopPanel extends Mixins(BaseMixin) {
+    mdiArrowExpandVertical = mdiArrowExpandVertical
+    mdiSync = mdiSync
+
     public sortEndstops: any = {}
 
     get endstops() {

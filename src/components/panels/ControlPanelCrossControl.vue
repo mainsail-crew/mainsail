@@ -28,7 +28,7 @@
                             @click="
                                 doSendMove('Y' + (reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
                             ">
-                            <v-icon>mdi-chevron-up</v-icon>
+                            <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3"></v-col>
@@ -39,7 +39,7 @@
                             @click="
                                 doSendMove('Z' + (reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
                             ">
-                            <v-icon>mdi-chevron-up</v-icon>
+                            <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -52,7 +52,7 @@
                             @click="
                                 doSendMove('X' + (!reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
                             ">
-                            <v-icon>mdi-chevron-left</v-icon>
+                            <v-icon>{{ mdiChevronLeft }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
@@ -62,7 +62,7 @@
                             @click="
                                 doSendMove('Y' + (!reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
                             ">
-                            <v-icon>mdi-chevron-down</v-icon>
+                            <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3" class="p-rel">
@@ -73,7 +73,7 @@
                             @click="
                                 doSendMove('X' + (reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
                             ">
-                            <v-icon>mdi-chevron-right</v-icon>
+                            <v-icon>{{ mdiChevronRight }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
@@ -83,7 +83,7 @@
                             @click="
                                 doSendMove('Z' + (!reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
                             ">
-                            <v-icon>mdi-chevron-down</v-icon>
+                            <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
@@ -100,7 +100,7 @@
                                 :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                 @click="doHome">
                                 <div class="d-flex align-center">
-                                    <v-icon>mdi-home</v-icon>
+                                    <v-icon>{{ mdiHome }}</v-icon>
                                     <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
                                 </div>
                             </v-btn>
@@ -201,10 +201,17 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiHome } from '@mdi/js'
 
 @Component
 export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {
     private homeCols = 6
+
+    mdiChevronUp = mdiChevronUp
+    mdiChevronLeft = mdiChevronLeft
+    mdiChevronRight = mdiChevronRight
+    mdiChevronDown = mdiChevronDown
+    mdiHome = mdiHome
 
     get selectedCrossStep() {
         return this.$store.state.gui.control.selectedCrossStep

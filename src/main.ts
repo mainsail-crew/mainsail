@@ -10,6 +10,7 @@ import router from '@/plugins/router'
 
 import { registerSW } from 'virtual:pwa-register'
 
+// noinspection JSUnusedGlobalSymbols
 const updateSW = registerSW({
     onOfflineReady() {},
 })
