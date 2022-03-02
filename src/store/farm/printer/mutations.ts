@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {FarmPrinterState} from '@/store/farm/printer/types'
+import { MutationTree } from 'vuex'
+import { FarmPrinterState } from '@/store/farm/printer/types'
 
 export const mutations: MutationTree<FarmPrinterState> = {
     reset(state) {
@@ -12,7 +12,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
         Object.assign(state.data, getDefaultState().data)
     },
 
-    setSocketData (state, payload) {
+    setSocketData(state, payload) {
         if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
         if ('_namespace' in payload) {
@@ -29,10 +29,10 @@ export const mutations: MutationTree<FarmPrinterState> = {
         if ('requestParams' in payload) delete payload.requestParams
 
         Object.entries(payload).forEach(([key, value]) => {
-            if (typeof (value) === 'object') {
+            if (typeof value === 'object') {
                 Vue.set(state.data, key, {
                     ...state.data[key],
-                    ...value
+                    ...value,
                 })
             } else Vue.set(state.data, key, value)
         })
@@ -41,7 +41,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
     setSettings(state, payload) {
         Vue.set(state, 'settings', {
             ...state.settings,
-            ...payload
+            ...payload,
         })
     },
 
@@ -70,7 +70,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
 
     setConfigDir(state, payload) {
         // eslint-disable-next-line
-		Object.values(payload).forEach((file: any) => {
+        Object.values(payload).forEach((file: any) => {
             if (file.path?.startsWith('.theme/')) {
                 state.theme_files.push(file.path)
             }
@@ -83,7 +83,7 @@ export const mutations: MutationTree<FarmPrinterState> = {
 
     setMainsailData(state, payload) {
         // eslint-disable-next-line
-		const setDataDeep = (currentState: any, payload: any) => {
+        const setDataDeep = (currentState: any, payload: any) => {
             Object.entries(payload).forEach(([key, value]) => {
                 if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
                     setDataDeep(currentState[key], value)

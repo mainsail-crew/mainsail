@@ -29,19 +29,45 @@
         </v-row>
         <v-row class="">
             <v-col class="col col-md-6 pt-2">
-                <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedAmountIn") }} [mm]</span>
-                <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-btn v-for="amount in feedamountsSorted" v-bind:key="amount" @click="setFeedAmount(amount)" dense :class="(amount === currentFeedAmount ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ amount }}</v-btn>
+                <span class="text--disabled" style="font-size: 0.9em">
+                    {{ $t('Panels.ControlPanel.FeedAmountIn') }} [mm]
+                </span>
+                <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
+                    <v-btn
+                        v-for="amount in feedamountsSorted"
+                        :key="amount"
+                        dense
+                        :class="
+                            (amount === currentFeedAmount ? 'v-btn--active' : '') +
+                            ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'
+                        "
+                        @click="setFeedAmount(amount)">
+                        {{ amount }}
+                    </v-btn>
                 </v-btn-toggle>
             </v-col>
             <v-col class="col col-md-6 pt-2">
-                <span class="text--disabled" style="font-size: .9em">{{ $t("Panels.ControlPanel.FeedrateIn") }} [mm/s]</span>
-                <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%;" >
-                    <v-tooltip top v-for="rate in feedratesSorted" v-bind:key="rate" color="panel">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" @click="setFeedrate(rate)" dense :class="(rate === currentFeedRate ? 'v-btn--active' : '') + ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'">{{ rate }}</v-btn>
+                <span class="text--disabled" style="font-size: 0.9em">
+                    {{ $t('Panels.ControlPanel.FeedrateIn') }} [mm/s]
+                </span>
+                <v-btn-toggle class="mt-1" dense no-gutters style="flex-wrap: nowrap; width: 100%">
+                    <v-tooltip v-for="rate in feedratesSorted" :key="rate" top color="panel">
+                        <template #activator="{ on, attrs }">
+                            <v-btn
+                                v-bind="attrs"
+                                dense
+                                :class="
+                                    (rate === currentFeedRate ? 'v-btn--active' : '') +
+                                    ' btnMinWidthAuto flex-grow-1 px-0 _btnFeedrate'
+                                "
+                                v-on="on"
+                                @click="setFeedrate(rate)">
+                                {{ rate }}
+                            </v-btn>
                         </template>
-                        <span v-if="filamentDiameter">{{ Math.round(Math.pow(filamentDiameter / 2, 2) * Math.PI * rate * 10) / 10 }} mm&sup3;/s</span>
+                        <span v-if="filamentDiameter">
+                            {{ Math.round(Math.pow(filamentDiameter / 2, 2) * Math.PI * rate * 10) / 10 }} mm&sup3;/s
+                        </span>
                     </v-tooltip>
                 </v-btn-toggle>
             </v-col>
@@ -49,24 +75,36 @@
         <v-row class="">
             <v-col class="col text-center pt-0">
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
-                        <div v-on="on" class="d-inline-block">
-                            <v-btn small @click="sendRetract()" class="mx-3" :loading="loadings.includes('btnRetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}</v-btn>
+                    <template #activator="{ on }">
+                        <div class="d-inline-block" v-on="on">
+                            <v-btn
+                                small
+                                class="mx-3"
+                                :loading="loadings.includes('btnRetract')"
+                                :disabled="!boolExtrudePossible"
+                                @click="sendRetract()">
+                                <v-icon small class="mr-1">mdi-arrow-up-bold</v-icon>
+                                {{ $t('Panels.ControlPanel.Retract') }}
+                            </v-btn>
                         </div>
                     </template>
-                    <span>
-                        {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
-                    </span>
+                    <span>{{ $t('Panels.ControlPanel.HotendTooCold') }} {{ minExtrudeTemp }} °C</span>
                 </v-tooltip>
                 <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                    <template v-slot:activator="{ on }">
-                        <div v-on="on" class="d-inline-block">
-                            <v-btn small @click="sendDetract()" class="mx-3" :loading="loadings.includes('btnDetract')" :disabled="!boolExtrudePossible"><v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}</v-btn>
+                    <template #activator="{ on }">
+                        <div class="d-inline-block" v-on="on">
+                            <v-btn
+                                small
+                                class="mx-3"
+                                :loading="loadings.includes('btnDetract')"
+                                :disabled="!boolExtrudePossible"
+                                @click="sendDetract()">
+                                <v-icon small class="mr-1">mdi-arrow-down-bold</v-icon>
+                                {{ $t('Panels.ControlPanel.Extrude') }}
+                            </v-btn>
                         </div>
                     </template>
-                    <span>
-                        {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
-                    </span>
+                    <span>{{ $t('Panels.ControlPanel.HotendTooCold') }} {{ minExtrudeTemp }} °C</span>
                 </v-tooltip>
             </v-col>
         </v-row>
@@ -74,12 +112,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 
 @Component
 export default class ControlPanelExtruder extends Mixins(BaseMixin) {
-
     get filamentDiameter() {
         return this.$store.state.printer.configfile?.settings?.extruder?.filament_diameter ?? 1.75
     }
@@ -93,11 +130,15 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     get feedamountsSorted() {
-        return [...this.feedamounts].sort((a,b) => { return b-a })
+        return [...this.feedamounts].sort((a, b) => {
+            return b - a
+        })
     }
 
-    get feedratesSorted () {
-        return [...this.feedrates].sort((a,b) => { return b-a })
+    get feedratesSorted() {
+        return [...this.feedrates].sort((a, b) => {
+            return b - a
+        })
     }
 
     get currentFeedAmount() {
@@ -138,13 +179,13 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     sendRetract() {
-        const gcode = 'M83\nG1 E-'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
+        const gcode = 'M83\nG1 E-' + this.currentFeedAmount + ' F' + this.currentFeedRate * 60
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
     sendDetract() {
-        const gcode = 'M83\nG1 E'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
+        const gcode = 'M83\nG1 E' + this.currentFeedAmount + ' F' + this.currentFeedRate * 60
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
     }

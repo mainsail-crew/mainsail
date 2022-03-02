@@ -1,28 +1,28 @@
 <style>
-    @import './assets/styles/fonts.css';
-    @import './assets/styles/toastr.css';
-    @import './assets/styles/page.scss';
-    @import './assets/styles/sidebar.scss';
-    @import './assets/styles/utils.scss';
-    @import './assets/styles/updateManager.scss';
+@import './assets/styles/fonts.css';
+@import './assets/styles/toastr.css';
+@import './assets/styles/page.scss';
+@import './assets/styles/sidebar.scss';
+@import './assets/styles/utils.scss';
+@import './assets/styles/updateManager.scss';
 
-    :root {
-        --app-height: 100%;
-    }
+:root {
+    --app-height: 100%;
+}
 
-    #content {
-        background-attachment: fixed;
-        background-size: cover;
-        background-repeat: no-repeat;
-    }
+#content {
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
 
-    .v-btn:not(.v-btn--outlined).primary {
-        color: var(--v-btn-text-primary)
-    }
+.v-btn:not(.v-btn--outlined).primary {
+    color: var(--v-btn-text-primary);
+}
 
-    .main-content-scrollbar {
-        height: calc(var(--app-height) - 48px);
-    }
+.main-content-scrollbar {
+    height: calc(var(--app-height) - 48px);
+}
 </style>
 
 <template>
@@ -32,7 +32,7 @@
 
         <v-main id="content" :style="mainStyle">
             <overlay-scrollbars class="main-content-scrollbar">
-                <v-container fluid id="page-container" class="container px-3 px-sm-6 py-sm-6 mx-auto">
+                <v-container id="page-container" fluid class="container px-3 px-sm-6 py-sm-6 mx-auto">
                     <router-view></router-view>
                 </v-container>
             </overlay-scrollbars>
@@ -50,12 +50,12 @@ import Component from 'vue-class-component'
 import TheSidebar from '@/components/TheSidebar.vue'
 import BaseMixin from '@/components/mixins/base'
 import TheTopbar from '@/components/TheTopbar.vue'
-import {Mixins, Watch} from 'vue-property-decorator'
+import { Mixins, Watch } from 'vue-property-decorator'
 import TheUpdateDialog from '@/components/TheUpdateDialog.vue'
 import TheConnectingDialog from '@/components/TheConnectingDialog.vue'
 import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
-import {panelToolbarHeight, topbarHeight, navigationItemHeight} from '@/store/variables'
+import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
 
 @Component({
@@ -68,13 +68,12 @@ import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSna
         TheTopbar,
         TheSidebar,
     },
-
-    metaInfo(){
+    metaInfo() {
         const title = this.$store.getters['getTitle']
         return {
-            titleTemplate: () => title
+            titleTemplate: () => title,
         }
-    }
+    },
 })
 export default class App extends Mixins(BaseMixin) {
     panelToolbarHeight = panelToolbarHeight
@@ -97,13 +96,13 @@ export default class App extends Mixins(BaseMixin) {
         let style = ''
 
         if (this.mainBackground !== null) {
-            style = 'background-image: url('+this.mainBackground+');'
+            style = 'background-image: url(' + this.mainBackground + ');'
         }
 
         return style
     }
 
-    get customStylesheet () {
+    get customStylesheet() {
         return this.$store.getters['files/getCustomStylesheet']
     }
 
@@ -153,7 +152,7 @@ export default class App extends Mixins(BaseMixin) {
             '--panel-toolbar-icon-btn-width': panelToolbarHeight + 'px',
             '--panel-toolbar-text-btn-height': panelToolbarHeight + 'px',
             '--topbar-icon-btn-width': topbarHeight + 'px',
-            '--sidebar-menu-item-height': navigationItemHeight + 'px'
+            '--sidebar-menu-item-height': navigationItemHeight + 'px',
         }
     }
 
@@ -183,7 +182,8 @@ export default class App extends Mixins(BaseMixin) {
 
     @Watch('current_file')
     current_fileChanged(newVal: string): void {
-        if (newVal !== '') this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
+        if (newVal !== '')
+            this.$socket.emit('server.files.metadata', { filename: newVal }, { action: 'files/getMetadataCurrentFile' })
     }
 
     @Watch('primaryColor')
@@ -194,8 +194,8 @@ export default class App extends Mixins(BaseMixin) {
     }
 
     drawFavicon(val: number): void {
-        const favicon16: HTMLLinkElement | null = document.querySelector('link[rel*=\'icon\'][sizes=\'16x16\']')
-        const favicon32: HTMLLinkElement | null = document.querySelector('link[rel*=\'icon\'][sizes=\'32x32\']')
+        const favicon16: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='16x16']")
+        const favicon32: HTMLLinkElement | null = document.querySelector("link[rel*='icon'][sizes='32x32']")
 
         if (favicon16 && favicon32) {
             if (this.printerIsPrinting) {
@@ -224,10 +224,10 @@ export default class App extends Mixins(BaseMixin) {
                     let startAngle = 1.5 * Math.PI
                     let endAngle = 0
                     let unitValue = (Math.PI - 0.5 * Math.PI) / 25
-                    if (val >= 0 && val <= 25) endAngle = startAngle + (val * unitValue)
-                    else if (val > 25 && val <= 50) endAngle = startAngle + (val * unitValue)
-                    else if (val > 50 && val <= 75) endAngle = startAngle + (val * unitValue)
-                    else if (val > 75 && val <= 100) endAngle = startAngle + (val * unitValue)
+                    if (val >= 0 && val <= 25) endAngle = startAngle + val * unitValue
+                    else if (val > 25 && val <= 50) endAngle = startAngle + val * unitValue
+                    else if (val > 50 && val <= 75) endAngle = startAngle + val * unitValue
+                    else if (val > 75 && val <= 100) endAngle = startAngle + val * unitValue
 
                     context.beginPath()
                     context.moveTo(centerX, centerY)
@@ -244,15 +244,23 @@ export default class App extends Mixins(BaseMixin) {
                 favicon16.href = favicon16Path
                 favicon32.href = favicon32Path
             } else {
-                const favicon = 'data:image/svg+xml;base64,' + btoa(
-                    '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
-                        '<g>' +
-                            '<path style="fill:'+this.logoColor+';" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>' +
-                            '<path style="fill:'+this.logoColor+';" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>' +
-                            '<path style="fill:'+this.logoColor+';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
-                        '</g>' +
-                    '</svg>'
-                )
+                const favicon =
+                    'data:image/svg+xml;base64,' +
+                    btoa(
+                        '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 599.38 523.11" xml:space="preserve">' +
+                            '<g>' +
+                            '<path style="fill:' +
+                            this.logoColor +
+                            ';" d="M382.29,142.98L132.98,522.82L0,522.68L344.3,0l0,0C352.18,49.06,365.2,97.68,382.29,142.98"/>' +
+                            '<path style="fill:' +
+                            this.logoColor +
+                            ';" d="M413.28,213.54L208.5,522.92l132.94,0.19l135.03-206.33l0,0C452.69,284.29,431.53,249.77,413.28,213.54 L413.28,213.54"/>' +
+                            '<path style="fill:' +
+                            this.logoColor +
+                            ';" d="M599.38,447.69l-49.25,75.42L417,522.82l101.6-153.67l0,0C543.48,397.35,570.49,423.61,599.38,447.69 L599.38,447.69z"/>' +
+                            '</g>' +
+                            '</svg>'
+                    )
 
                 favicon16.href = favicon
                 favicon32.href = favicon
@@ -283,7 +291,7 @@ export default class App extends Mixins(BaseMixin) {
     appHeight() {
         this.$nextTick(() => {
             const doc = document.documentElement
-            doc.style.setProperty('--app-height', window.innerHeight+'px')
+            doc.style.setProperty('--app-height', window.innerHeight + 'px')
         })
     }
 
