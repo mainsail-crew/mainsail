@@ -34,7 +34,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master') }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=edge,branch=develop
             type=ref,event=tag
 
