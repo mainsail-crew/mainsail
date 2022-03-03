@@ -365,7 +365,7 @@ import { PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan } fr
 import { Debounce } from 'vue-debounce-decorator'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
-import { mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
+import { mdiCloseThick, mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
 
 @Component({
     components: { Panel, TempChart, ToolInput },
@@ -373,6 +373,7 @@ import { mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines
 export default class ToolsPanel extends Mixins(BaseMixin) {
     mdiFan = mdiFan
     mdiSnowflake = mdiSnowflake
+    mdiCloseThick = mdiCloseThick
     mdiCog = mdiCog
     mdiFire = mdiFire
     mdiMenuDown = mdiMenuDown
