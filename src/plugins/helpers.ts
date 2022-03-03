@@ -1,5 +1,17 @@
 import { FileStateFile } from '@/store/files/types'
 import { PrinterStateMacroParams } from '@/store/printer/types'
+import {
+    mdiArrowCollapseVertical,
+    mdiCodeTags,
+    mdiConsoleLine,
+    mdiDipSwitch,
+    mdiEngine,
+    mdiGamepad,
+    mdiInformation,
+    mdiPrinter3d,
+    mdiThermometerLines,
+    mdiWebcam,
+} from '@mdi/js'
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
     if (folder !== undefined && folder !== null && dirArray.length) {
@@ -34,30 +46,30 @@ export const capitalize = (str: string): string => {
 }
 
 export const convertPanelnameToIcon = (name: string): string => {
-    if (name.startsWith('macrogroup_')) return 'mdi-code-tags'
+    if (name.startsWith('macrogroup_')) return mdiCodeTags
 
     switch (name) {
         case 'webcam':
-            return 'mdi-webcam'
+            return mdiWebcam
         case 'zoffset':
-            return 'mdi-arrow-collapse-vertical'
+            return mdiArrowCollapseVertical
         case 'control':
-            return 'mdi-gamepad'
+            return mdiGamepad
         case 'macros':
-            return 'mdi-code-tags'
+            return mdiCodeTags
         case 'printsettings':
-            return 'mdi-printer-3d'
+            return mdiPrinter3d
         case 'miscellaneous':
-            return 'mdi-dip-switch'
+            return mdiDipSwitch
         case 'tools':
-            return 'mdi-thermometer-lines'
+            return mdiThermometerLines
         case 'miniconsole':
-            return 'mdi-console-line'
+            return mdiConsoleLine
         case 'machine-settings':
-            return 'mdi-engine'
+            return mdiEngine
 
         default:
-            return 'mdi-information'
+            return mdiInformation
     }
 }
 

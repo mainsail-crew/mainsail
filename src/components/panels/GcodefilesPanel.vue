@@ -48,13 +48,13 @@
 
 <template>
     <div @dragover="dragOverUpload" @dragleave="dragLeaveUpload" @drop.prevent.stop="dragDropUpload">
-        <panel :title="$t('Files.GCodeFiles')" icon="mdi-file-document-multiple-outline" card-class="gcode-files-panel">
+        <panel :title="$t('Files.GCodeFiles')" :icon="mdiFileDocumentMultipleOutline" card-class="gcode-files-panel">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 d-flex align-center">
                         <v-text-field
                             v-model="search"
-                            append-icon="mdi-magnify"
+                            :append-icon="mdiMagnify"
                             :label="$t('Files.Search')"
                             single-line
                             outlined
@@ -75,24 +75,24 @@
                             class="primary--text px-2 minwidth-0 ml-3"
                             :loading="loadings.includes('gcodeUpload')"
                             @click="clickUploadButton">
-                            <v-icon>mdi-upload</v-icon>
+                            <v-icon>{{ mdiUpload }}</v-icon>
                         </v-btn>
                         <v-btn
                             :title="$t('Files.CreateNewDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="createDirectory">
-                            <v-icon>mdi-folder-plus</v-icon>
+                            <v-icon>{{ mdiFolderPlus }}</v-icon>
                         </v-btn>
                         <v-btn
                             :title="$t('Files.RefreshCurrentDirectory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshFileList">
-                            <v-icon>mdi-refresh</v-icon>
+                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                         <v-menu offset-y left :close-on-content-click="false" :title="$t('Files.SetupCurrentList')">
                             <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>mdi-cog</v-icon>
+                                    <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -186,7 +186,9 @@
                         @dragover="dragOverFilelist($event, { isDirectory: true, filename: '..' })"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
-                        <td class="pr-0 text-center" style="width: 32px"><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px">
+                            <v-icon>{{ mdiFolderUpload }}</v-icon>
+                        </td>
                         <td class=" " :colspan="filteredHeaders.length">..</td>
                     </tr>
                 </template>
@@ -207,7 +209,7 @@
                         @drop.prevent.stop="dragDropFilelist($event, item)">
                         <td class="pr-0 text-center" style="width: 32px">
                             <template v-if="item.isDirectory">
-                                <v-icon>mdi-folder</v-icon>
+                                <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
                             <template v-else>
                                 <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
@@ -228,7 +230,7 @@
                                                     slot="preloader"
                                                     indeterminate
                                                     color="primary"></v-progress-circular>
-                                                <v-icon slot="error">mdi-file</v-icon>
+                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
                                             </vue-load-image>
                                         </template>
                                         <span><img :src="getBigThumbnail(item)" width="250" /></span>
@@ -241,11 +243,11 @@
                                             slot="preloader"
                                             indeterminate
                                             color="primary"></v-progress-circular>
-                                        <v-icon slot="error">mdi-file</v-icon>
+                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
                                     </vue-load-image>
                                 </template>
                                 <template v-else>
-                                    <v-icon>mdi-file</v-icon>
+                                    <v-icon>{{ mdiFile }}</v-icon>
                                 </template>
                             </template>
                         </td>
@@ -337,7 +339,7 @@
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
@@ -379,14 +381,14 @@
                     v-if="!contextMenu.item.isDirectory"
                     :disabled="printerIsPrinting || !klipperReadyForGui || !isGcodeFile(contextMenu.item)"
                     @click="clickRow(contextMenu.item, true)">
-                    <v-icon class="mr-1">mdi-play</v-icon>
+                    <v-icon class="mr-1">{{ mdiPlay }}</v-icon>
                     {{ $t('Files.PrintStart') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && moonrakerComponents.includes('job_queue')"
                     :disabled="!isGcodeFile(contextMenu.item)"
                     @click="addToQueue(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-playlist-plus</v-icon>
+                    <v-icon class="mr-1">{{ mdiPlaylistPlus }}</v-icon>
                     {{ $t('Files.AddToQueue') }}
                 </v-list-item>
                 <v-list-item
@@ -398,38 +400,38 @@
                     "
                     :disabled="['error', 'printing', 'paused'].includes(printer_state)"
                     @click="preheat">
-                    <v-icon class="mr-1">mdi-fire</v-icon>
+                    <v-icon class="mr-1">{{ mdiFire }}</v-icon>
                     {{ $t('Files.Preheat') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory"
                     :disabled="!isGcodeFile(contextMenu.item)"
                     @click="view3D(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-video-3d</v-icon>
+                    <v-icon class="mr-1">{{ mdiVideo3d }}</v-icon>
                     {{ $t('Files.View3D') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon>
+                    <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Files.Download') }}
                 </v-list-item>
                 <v-list-item v-if="contextMenu.item.isDirectory" @click="renameDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="editFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-pencil</v-icon>
+                    <v-icon class="mr-1">{{ mdiPencil }}</v-icon>
                     {{ $t('Files.EditFile') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="renameFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Files.Rename') }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="removeFile">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
                 <v-list-item v-if="contextMenu.item.isDirectory" @click="deleteDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Files.Delete') }}
                 </v-list-item>
             </v-list>
@@ -441,7 +443,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -463,7 +465,9 @@
         <v-dialog v-model="dialogRenameFile.show" :max-width="400">
             <panel :title="$t('Files.RenameFile')" card-class="gcode-files-rename-file-dialog" :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -487,7 +491,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -512,7 +516,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -539,6 +543,25 @@ import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugin
 import { FileStateFile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+import {
+    mdiFileDocumentMultipleOutline,
+    mdiMagnify,
+    mdiUpload,
+    mdiFolderPlus,
+    mdiRefresh,
+    mdiCog,
+    mdiFolderUpload,
+    mdiFolder,
+    mdiPlay,
+    mdiPlaylistPlus,
+    mdiFire,
+    mdiVideo3d,
+    mdiCloudDownload,
+    mdiRenameBox,
+    mdiPencil,
+    mdiDelete,
+    mdiCloseThick,
+} from '@mdi/js'
 
 interface draggingFile {
     status: boolean
@@ -575,6 +598,24 @@ interface dialogRenameObject {
     components: { Panel, SettingsRow },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiMagnify = mdiMagnify
+    mdiUpload = mdiUpload
+    mdiFolderPlus = mdiFolderPlus
+    mdiRefresh = mdiRefresh
+    mdiCog = mdiCog
+    mdiFolderUpload = mdiFolderUpload
+    mdiFolder = mdiFolder
+    mdiPlay = mdiPlay
+    mdiPlaylistPlus = mdiPlaylistPlus
+    mdiFire = mdiFire
+    mdiVideo3d = mdiVideo3d
+    mdiCloudDownload = mdiCloudDownload
+    mdiRenameBox = mdiRenameBox
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+    mdiCloseThick = mdiCloseThick
+
     validGcodeExtensions = validGcodeExtensions
     formatDate = formatDate
     formatFilesize = formatFilesize

@@ -9,7 +9,7 @@
         :close-on-content-click="false">
         <template #activator="{ on, attrs }">
             <v-btn :color="currentFlags.length ? 'error' : 'warning'" icon tile class="mr-3" v-bind="attrs" v-on="on">
-                <v-icon>mdi-raspberry-pi</v-icon>
+                <v-icon>{{ mdiRaspberryPi }}</v-icon>
             </v-btn>
         </template>
 
@@ -49,8 +49,12 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from './mixins/base'
 
+import { mdiRaspberryPi } from '@mdi/js'
+
 @Component
 export default class TheThrottledStates extends Mixins(BaseMixin) {
+    mdiRaspberryPi = mdiRaspberryPi
+
     private showMenu = false
 
     get throttledStateFlags() {

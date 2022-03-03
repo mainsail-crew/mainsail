@@ -54,10 +54,10 @@
                             class="minwidth-0 px-2"
                             :color="filter.bool ? 'white' : 'grey'"
                             @click="toggleFilter(filter)">
-                            <v-icon small>mdi-{{ filter.bool ? 'filter' : 'filter-off' }}</v-icon>
+                            <v-icon small>{{ filter.bool ? mdiFilter : mdiFilterOff }}</v-icon>
                         </v-btn>
                         <v-btn small outlined class="ml-3" @click="editFilter(filter)">
-                            <v-icon left small>mdi-pencil</v-icon>
+                            <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
@@ -66,7 +66,7 @@
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deleteFilter(filter.id)">
-                            <v-icon small>mdi-delete</v-icon>
+                            <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
@@ -120,6 +120,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
+import { mdiFilter, mdiPencil, mdiFilterOff, mdiDelete } from '@mdi/js'
 
 interface consoleForm {
     bool: boolean
@@ -133,6 +134,11 @@ interface consoleForm {
     components: { SettingsRow },
 })
 export default class SettingsConsoleTab extends Mixins(BaseMixin) {
+    mdiFilter = mdiFilter
+    mdiFilterOff = mdiFilterOff
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+
     private form: consoleForm = {
         bool: false,
         valid: false,

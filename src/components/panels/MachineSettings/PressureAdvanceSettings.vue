@@ -9,7 +9,7 @@
                         plain
                         class="mr-2"
                         @click="resetToActiveExtruder">
-                        <v-icon>mdi-restart</v-icon>
+                        <v-icon>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-select
                         v-model="selectedExtruder"
@@ -64,11 +64,14 @@ import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import NumberInput from '@/components/inputs/NumberInput.vue'
 import { Debounce } from 'vue-debounce-decorator'
+import { mdiRestart } from '@mdi/js'
 
 @Component({
     components: { Panel, NumberInput },
 })
 export default class PressureAdvanceSettings extends Mixins(BaseMixin) {
+    mdiRestart = mdiRestart
+
     private extruders: string[] = []
     private selectedExtruder = ''
 

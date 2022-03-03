@@ -13,7 +13,7 @@
         <klipper-warnings-panel></klipper-warnings-panel>
         <panel
             v-if="klipperState === 'ready'"
-            icon="mdi-information"
+            :icon="mdiInformation"
             :title="printerStateOutput"
             :collapsible="true"
             card-class="status-panel">
@@ -60,7 +60,7 @@
                             <v-row>
                                 <v-col style="width: 100px">
                                     <span class="subtitle-2 text-truncate px-0 text--disabled d-block">
-                                        <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                        <v-icon small class="mr-2">{{ mdiFileOutline }}</v-icon>
                                         {{ current_filename }}
                                     </span>
                                 </v-col>
@@ -76,13 +76,13 @@
                         <v-row>
                             <v-col class="py-2">
                                 <span class="subtitle-2 d-block px-0 text--disabled">
-                                    <v-icon class="mr-2" small>mdi-message-processing-outline</v-icon>
+                                    <v-icon class="mr-2" small>{{ mdiMessageProcessingOutline }}</v-icon>
                                     {{ print_stats_message ? print_stats_message : display_message }}
                                 </span>
                             </v-col>
                             <v-col class="col-auto py-2">
                                 <v-icon class="text--disabled cursor-pointer" small @click="clearDisplayMessage">
-                                    mdi-close-circle
+                                    {{ mdiCloseCircle }}
                                 </v-icon>
                             </v-col>
                         </v-row>
@@ -96,7 +96,7 @@
                                 :class="thumbnailSmall ? 'py-3' : 'py-2'"
                                 :style="thumbnailSmall ? 'width: calc(100% - 40px);' : ''">
                                 <span class="subtitle-2 text-truncate d-block px-0 text--disabled">
-                                    <v-icon small class="mr-2">mdi-file-outline</v-icon>
+                                    <v-icon small class="mr-2">{{ mdiFileOutline }}</v-icon>
                                     {{ current_filename }}
                                 </span>
                             </v-col>
@@ -116,7 +116,7 @@
                                                     slot="preloader"
                                                     indeterminate
                                                     color="primary"></v-progress-circular>
-                                                <v-icon slot="error">mdi-file</v-icon>
+                                                <v-icon slot="error">{{ mdiFile }}</v-icon>
                                             </vue-load-image>
                                         </template>
                                         <span><img :src="thumbnailBig" width="250" /></span>
@@ -129,7 +129,7 @@
                                             slot="preloader"
                                             indeterminate
                                             color="primary"></v-progress-circular>
-                                        <v-icon slot="error">mdi-file</v-icon>
+                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
                                     </vue-load-image>
                                 </template>
                             </v-col>
@@ -375,6 +375,19 @@ import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiCloseCircle,
+    mdiBroom,
+    mdiFileOutline,
+    mdiInformation,
+    mdiPause,
+    mdiPlay,
+    mdiPrinter,
+    mdiSelectionRemove,
+    mdiStop,
+    mdiMessageProcessingOutline,
+    mdiFile,
+} from '@mdi/js'
 
 @Component({
     components: {
@@ -388,6 +401,12 @@ import Panel from '@/components/ui/Panel.vue'
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
+    mdiInformation = mdiInformation
+    mdiFileOutline = mdiFileOutline
+    mdiFile = mdiFile
+    mdiCloseCircle = mdiCloseCircle
+    mdiMessageProcessingOutline = mdiMessageProcessingOutline
+
     maxFlow = 0
     boolShowObjects = false
 
@@ -460,7 +479,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.PausePrint'),
                 color: 'warning',
-                icon: 'mdi-pause',
+                icon: mdiPause,
                 loadingName: 'statusPrintPause',
                 status: ['printing'],
                 click: this.btnPauseJob,
@@ -468,7 +487,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ResumePrint'),
                 color: 'success',
-                icon: 'mdi-play',
+                icon: mdiPlay,
                 loadingName: 'statusPrintResume',
                 status: ['paused'],
                 click: this.btnResumeJob,
@@ -476,7 +495,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.CancelPrint'),
                 color: 'error',
-                icon: 'mdi-stop',
+                icon: mdiStop,
                 loadingName: 'statusPrintCancel',
                 status: this.$store.state.gui.uiSettings.displayCancelPrint ? ['paused', 'printing'] : ['paused'],
                 click: this.btnCancelJob,
@@ -484,7 +503,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ExcludeObject.ExcludeObject'),
                 color: 'warning',
-                icon: 'mdi-selection-remove',
+                icon: mdiSelectionRemove,
                 loadingName: '',
                 status: this.printing_objects.length ? ['paused', 'printing'] : [],
                 click: this.btnExcludeObject,
@@ -492,7 +511,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ClearPrintStats'),
                 color: 'primary',
-                icon: 'mdi-broom',
+                icon: mdiBroom,
                 loadingName: 'statusPrintClear',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnClearJob,
@@ -500,7 +519,7 @@ export default class StatusPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Panels.StatusPanel.ReprintJob'),
                 color: 'primary',
-                icon: 'mdi-printer',
+                icon: mdiPrinter,
                 loadingName: 'statusPrintReprint',
                 status: ['error', 'complete', 'cancelled'],
                 click: this.btnReprintJob,

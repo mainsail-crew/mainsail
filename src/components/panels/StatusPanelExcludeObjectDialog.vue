@@ -5,11 +5,13 @@
         <v-dialog v-model="showDialog" width="900" persistent :fullscreen="isMobile">
             <panel
                 :title="$t('Panels.StatusPanel.ExcludeObject.ExcludeObject')"
-                icon="mdi-selection-remove"
+                :icon="mdiSelectionRemove"
                 card-class="exclude-object-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hideDialog"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hideDialog">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-container>
                     <v-row>
@@ -42,11 +44,15 @@ import BaseMixin from '@/components/mixins/base'
 import StatusPanelExcludeObjectDialogMap from '@/components/panels/StatusPanelExcludeObjectDialogMap.vue'
 import StatusPanelExcludeObjectDialogList from '@/components/panels/StatusPanelExcludeObjectDialogList.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiCloseThick, mdiSelectionRemove } from '@mdi/js'
 @Component({
     components: { Panel, StatusPanelExcludeObjectDialogList, StatusPanelExcludeObjectDialogMap },
 })
 export default class StatusPanelExcludeObjectDialog extends Mixins(BaseMixin) {
     private hoverName = ''
+
+    mdiSelectionRemove = mdiSelectionRemove
+    mdiCloseThick = mdiCloseThick
 
     @Prop({ required: true }) declare readonly showDialog: boolean
     @Prop({ required: true }) declare readonly excludeObjectDialogBool: boolean

@@ -25,7 +25,7 @@
                         class="text--disabled cursor-pointer"
                         small
                         @click="openExcludeObjectDialog(object.name)">
-                        mdi-close-circle
+                        {{ mdiCloseCircle }}
                     </v-icon>
                 </v-col>
             </v-row>
@@ -38,9 +38,12 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiCloseCircle } from '@mdi/js'
 
 @Component
 export default class StatusPanelObjectsDialogList extends Mixins(BaseMixin) {
+    mdiCloseCircle = mdiCloseCircle
+
     @Prop({ required: false, default: '' }) declare readonly hoverName: string
 
     get printing_objects() {

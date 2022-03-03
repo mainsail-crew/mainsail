@@ -83,7 +83,7 @@
                                 :loading="loadings.includes('btnRetract')"
                                 :disabled="!boolExtrudePossible"
                                 @click="sendRetract()">
-                                <v-icon small class="mr-1">mdi-arrow-up-bold</v-icon>
+                                <v-icon small class="mr-1">{{ mdiArrowUpBold }}</v-icon>
                                 {{ $t('Panels.ControlPanel.Retract') }}
                             </v-btn>
                         </div>
@@ -99,7 +99,7 @@
                                 :loading="loadings.includes('btnDetract')"
                                 :disabled="!boolExtrudePossible"
                                 @click="sendDetract()">
-                                <v-icon small class="mr-1">mdi-arrow-down-bold</v-icon>
+                                <v-icon small class="mr-1">{{ mdiArrowDownBold }}</v-icon>
                                 {{ $t('Panels.ControlPanel.Extrude') }}
                             </v-btn>
                         </div>
@@ -112,11 +112,15 @@
 </template>
 
 <script lang="ts">
+import { mdiArrowDownBold, mdiArrowUpBold } from '@mdi/js'
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 
 @Component
 export default class ControlPanelExtruder extends Mixins(BaseMixin) {
+    mdiArrowUpBold = mdiArrowUpBold
+    mdiArrowDownBold = mdiArrowDownBold
+
     get filamentDiameter() {
         return this.$store.state.printer.configfile?.settings?.extruder?.filament_diameter ?? 1.75
     }

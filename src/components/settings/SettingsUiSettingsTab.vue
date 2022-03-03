@@ -9,7 +9,7 @@
                         text
                         class="minwidth-0"
                         @click="logoColor = defaultLogoColor">
-                        <v-icon small>mdi-restart</v-icon>
+                        <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
@@ -30,7 +30,7 @@
                         text
                         class="minwidth-0"
                         @click="primaryColor = defaultPrimaryColor">
-                        <v-icon small>mdi-restart</v-icon>
+                        <v-icon small>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-menu bottom left offset-y :close-on-content-click="false">
                         <template #activator="{ on, attrs }">
@@ -99,7 +99,7 @@
                         <v-text-field
                             v-model="lockSlidersDelay"
                             class="mt-0"
-                            prepend-icon="mdi-timer-outline"
+                            :prepend-icon="mdiTimerOutline"
                             :style="isMobile ? { 'max-width': '140px' } : {}"
                             label="Timeout"
                             type="number"
@@ -159,11 +159,15 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { defaultLogoColor, defaultPrimaryColor } from '@/store/variables'
 import { Debounce } from 'vue-debounce-decorator'
+import { mdiRestart, mdiTimerOutline } from '@mdi/js'
 
 @Component({
     components: { SettingsRow },
 })
 export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
+    mdiRestart = mdiRestart
+    mdiTimerOutline = mdiTimerOutline
+
     private defaultLogoColor = defaultLogoColor
     private defaultPrimaryColor = defaultPrimaryColor
 

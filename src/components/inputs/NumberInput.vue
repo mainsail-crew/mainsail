@@ -15,6 +15,7 @@
             v-model.number="value"
             :label="label"
             :suffix="unit"
+            :append-icon="target !== defaultValue ? mdiRestart : ''"
             :error="invalidInput()"
             :error-messages="inputErrors()"
             :disabled="disabled"
@@ -42,7 +43,7 @@
                         plain
                         small
                         @click="incrementValue">
-                        <v-icon>mdi-chevron-up</v-icon>
+                        <v-icon>{{ mdiChevronUp }}</v-icon>
                     </v-btn>
                     <v-btn
                         :disabled="value <= min || error || disabled"
@@ -51,7 +52,7 @@
                         plain
                         small
                         @click="decrementValue">
-                        <v-icon>mdi-chevron-down</v-icon>
+                        <v-icon>{{ mdiChevronDown }}</v-icon>
                     </v-btn>
                 </div>
             </template>
@@ -63,9 +64,14 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiChevronDown, mdiChevronUp, mdiRestart } from '@mdi/js'
 
 @Component
 export default class NumberInput extends Mixins(BaseMixin) {
+    mdiRestart = mdiRestart
+    mdiChevronUp = mdiChevronUp
+    mdiChevronDown = mdiChevronDown
+
     private value: number = 0
     private error: boolean = false
     private invalidChars: string[] = ['e', 'E', '+']

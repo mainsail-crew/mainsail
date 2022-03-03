@@ -23,14 +23,15 @@
 <template>
     <panel
         v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)"
-        icon="mdi-gamepad"
-        :title="'Toolhead Controls'"
+        :icon="mdiGamepad"
+        :title="$t('Panels.ControlPanel.Headline')"
         :collapsible="true"
         card-class="control-panel">
         <v-container>
             <control-panel-cross-control v-if="controlStyle === 'cross'"></control-panel-cross-control>
             <control-panel-circle-control v-else-if="controlStyle === 'circle'"></control-panel-circle-control>
             <control-panel-bars-control v-else></control-panel-bars-control>
+            <control-panel-extruder v-if="existsExtruder"></control-panel-extruder>
         </v-container>
     </panel>
 </template>
@@ -43,6 +44,7 @@ import ControlPanelCrossControl from '@/components/panels/ControlPanelCrossContr
 import ControlPanelBarsControl from '@/components/panels/ControlPanelBarsControl.vue'
 import ControlPanelCircleControl from '@/components/panels/ControlPanelCircleControl.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiGamepad } from '@mdi/js'
 @Component({
     components: {
         Panel,
@@ -53,12 +55,18 @@ import Panel from '@/components/ui/Panel.vue'
     },
 })
 export default class ControlPanel extends Mixins(BaseMixin) {
+    mdiGamepad = mdiGamepad
+
     get controlStyle() {
         return this.$store.state.gui.control.style ?? 'bars'
     }
 
     get existsExtruder() {
         return 'extruder' in this.$store.state.printer
+    }
+
+    get boolExtrudePossible() {
+        return this.$store.getters['printer/getExtrudePossible']
     }
 }
 </script>

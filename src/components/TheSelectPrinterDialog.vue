@@ -4,7 +4,7 @@
     <v-dialog v-model="showDialog" persistent :width="400">
         <panel
             card-class="select-printer-dialog"
-            icon="mdi-connection"
+            :icon="mdiConnection"
             :title="panelTitle"
             :margin-bottom="false"
             toolbar-color="toolbar">
@@ -12,7 +12,7 @@
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
                         <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
-                            <v-icon>mdi-close-thick</v-icon>
+                            <v-icon>{{ mdiCloseThick }}</v-icon>
                         </v-btn>
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
@@ -22,12 +22,12 @@
                             tile
                             class="minwidth-0"
                             @click="dialogAddPrinter.bool = false">
-                            <v-icon>mdi-close-thick</v-icon>
+                            <v-icon>{{ mdiCloseThick }}</v-icon>
                         </v-btn>
                     </template>
                     <template v-else-if="printers.length > 0">
                         <v-btn icon tile class="minwidth-0" color="primary" @click="checkPrinters">
-                            <v-icon>mdi-sync</v-icon>
+                            <v-icon>{{ mdiSync }}</v-icon>
                         </v-btn>
                     </template>
                 </template>
@@ -121,7 +121,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
-                        <v-icon small>mdi-delete</v-icon>
+                        <v-icon small>{{ mdiDelete }}</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" text @click="updatePrinter">
@@ -149,9 +149,7 @@
                                             <v-icon
                                                 v-if="!printer.socket.isConnecting"
                                                 :color="printer.socket.isConnected ? 'green' : 'red'">
-                                                mdi-{{
-                                                    printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel'
-                                                }}
+                                                {{ printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel }}
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
@@ -163,7 +161,7 @@
                                                 large
                                                 class="mr-1"
                                                 @click.stop.prevent="editPrinter(printer)">
-                                                <v-icon small>mdi-pencil</v-icon>
+                                                <v-icon small>{{ mdiPencil }}</v-icon>
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -207,6 +205,15 @@ import BaseMixin from './mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import {
+    mdiCancel,
+    mdiCheckboxMarkedCircle,
+    mdiCloseThick,
+    mdiConnection,
+    mdiDelete,
+    mdiPencil,
+    mdiSync,
+} from '@mdi/js'
 
 @Component({
     components: { Panel },
@@ -223,6 +230,17 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         hostname: '',
         port: 0,
     }
+
+    /**
+     * Icons
+     */
+    mdiConnection = mdiConnection
+    mdiCloseThick = mdiCloseThick
+    mdiSync = mdiSync
+    mdiDelete = mdiDelete
+    mdiPencil = mdiPencil
+    mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
+    mdiCancel = mdiCancel
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []

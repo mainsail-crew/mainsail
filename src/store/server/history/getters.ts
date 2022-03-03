@@ -4,6 +4,13 @@ import {
     ServerHistoryStateAllPrintStatusEntry,
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
+import {
+    mdiAlertCircleOutline,
+    mdiAlertOutline,
+    mdiCheckboxMarkedCircleOutline,
+    mdiCloseCircleOutline,
+    mdiProgressClock,
+} from '@mdi/js'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
@@ -259,14 +266,14 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     getPrintStatusChipIcon: () => (status: string) => {
         switch (status) {
             case 'in_progress':
-                return 'mdi-progress-clock'
+                return mdiProgressClock
             case 'completed':
-                return 'mdi-checkbox-marked-circle-outline'
+                return mdiCheckboxMarkedCircleOutline
             case 'cancelled':
-                return 'mdi-close-circle-outline'
+                return mdiCloseCircleOutline
 
             default:
-                return 'mdi-alert-outline'
+                return mdiAlertOutline
         }
     },
 

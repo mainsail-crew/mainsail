@@ -15,7 +15,7 @@
                             "
                             :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="editMacrogroup(group)">
-                                <v-icon left small>mdi-pencil</v-icon>
+                                <v-icon left small>{{ mdiPencil }}</v-icon>
                                 {{ $t('Settings.Edit') }}
                             </v-btn>
                             <v-btn
@@ -24,7 +24,7 @@
                                 class="ml-3 minwidth-0 px-2"
                                 color="error"
                                 @click="deleteMacrogroup(group.id)">
-                                <v-icon small>mdi-delete</v-icon>
+                                <v-icon small>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </settings-row>
                     </div>
@@ -96,7 +96,7 @@
                                 :color="editGroup.showInStandby ? '' : 'secondary'"
                                 v-on="on"
                                 @click="updateGroupOptionShowInStandby(!editGroup.showInStandby)">
-                                <v-icon small>mdi-sleep</v-icon>
+                                <v-icon small>{{ mdiSleep }}</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
@@ -111,7 +111,7 @@
                                 :color="editGroup.showInPause ? '' : 'secondary'"
                                 v-on="on"
                                 @click="updateGroupOptionShowInPause(!editGroup.showInPause)">
-                                <v-icon small>mdi-pause</v-icon>
+                                <v-icon small>{{ mdiPause }}</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
@@ -126,7 +126,7 @@
                                 :color="editGroup.showInPrinting ? '' : 'secondary'"
                                 v-on="on"
                                 @click="updateGroupOptionShowInPrinting(!editGroup.showInPrinting)">
-                                <v-icon small>mdi-printer-3d-nozzle</v-icon>
+                                <v-icon small>{{ mdiPrinter3dNozzle }}</v-icon>
                             </v-btn>
                         </template>
                         <span>{{ $t('Settings.MacrosTab.ShowInStatePrinting') }}</span>
@@ -145,7 +145,7 @@
                             <div :key="macro.name">
                                 <v-row>
                                     <v-col class="col-auto pr-0 d-flex">
-                                        <v-icon class="handle">mdi-arrow-up-down</v-icon>
+                                        <v-icon class="handle">{{ mdiArrowUpDown }}</v-icon>
                                     </v-col>
                                     <v-col>
                                         <settings-row
@@ -164,7 +164,7 @@
                                                             :color="macro.color"
                                                             v-on="on"
                                                             @click="changeColorMacroFromGroup(macro)">
-                                                            <v-icon small left>mdi-palette</v-icon>
+                                                            <v-icon small left>{{ mdiPalette }}</v-icon>
                                                             {{ macro.color }}
                                                         </v-btn>
                                                     </template>
@@ -186,7 +186,7 @@
                                                                     !macro.showInStandby
                                                                 )
                                                             ">
-                                                            <v-icon small>mdi-sleep</v-icon>
+                                                            <v-icon small>{{ mdiSleep }}</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStateStandby') }}</span>
@@ -207,7 +207,7 @@
                                                                     !macro.showInPause
                                                                 )
                                                             ">
-                                                            <v-icon small>mdi-pause</v-icon>
+                                                            <v-icon small>{{ mdiPause }}</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStatePaused') }}</span>
@@ -228,7 +228,7 @@
                                                                     !macro.showInPrinting
                                                                 )
                                                             ">
-                                                            <v-icon small>mdi-printer-3d-nozzle</v-icon>
+                                                            <v-icon small>{{ mdiPrinter3dNozzle }}</v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t('Settings.MacrosTab.ShowInStatePrinting') }}</span>
@@ -244,7 +244,7 @@
                                                         color="error"
                                                         v-on="on"
                                                         @click="removeMacroFromGroup(macro)">
-                                                        <v-icon small>mdi-delete</v-icon>
+                                                        <v-icon small>{{ mdiDelete }}</v-icon>
                                                     </v-btn>
                                                 </template>
                                                 <span>{{ $t('Settings.MacrosTab.DeleteMacroFromGroup') }}</span>
@@ -274,7 +274,7 @@
                             :sub-title="macro.description"
                             :dynamic-slot-width="true">
                             <v-btn small outlined class="ml-3" @click="addMacroToGroup(macro)">
-                                <v-icon left small>mdi-plus</v-icon>
+                                <v-icon left small>{{ mdiPlus }}</v-icon>
                                 {{ $t('Settings.MacrosTab.Add') }}
                             </v-btn>
                         </settings-row>
@@ -303,11 +303,33 @@ import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { Debounce } from 'vue-debounce-decorator'
 import { PrinterStateMacro } from '@/store/printer/types'
 import { GuiMacrosStateMacrogroup, GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
+import {
+    mdiDelete,
+    mdiSleep,
+    mdiPause,
+    mdiPrinter3dNozzle,
+    mdiPlus,
+    mdiArrowUpDown,
+    mdiPalette,
+    mdiPencil,
+} from '@mdi/js'
 
 @Component({
     components: { SettingsRow, draggable },
 })
 export default class SettingsMacrosTabExpert extends Mixins(BaseMixin) {
+    /**
+Icons
+*/
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+    mdiSleep = mdiSleep
+    mdiPause = mdiPause
+    mdiPrinter3dNozzle = mdiPrinter3dNozzle
+    mdiPlus = mdiPlus
+    mdiArrowUpDown = mdiArrowUpDown
+    mdiPalette = mdiPalette
+
     private rules = {
         required: (value: string) => value !== '' || 'required',
         groupUnique: (value: string) => !this.existsGroupName(value) || 'Name already exists',

@@ -1,7 +1,7 @@
 {
     "title": "繁體中文",
     "App": {
-        "Printers": "印表機組",
+        "Printers": "列印機組",
         "TopBar": {
             "SAVE_CONFIG": "保存配置",
             "UploadPrint": "上傳並列印",
@@ -74,11 +74,11 @@
         "ConnectionFailed": "連接失敗",
         "CannotConnectTo": "不能連接到 {host}.",
         "TryAgain": "重試",
-        "SelectPrinter": "選擇印表機",
-        "AddPrinter": "新增印表機",
-        "EditPrinter": "編輯印表機",
-        "UpdatePrinter": "更新印表機",
-        "ChangePrinter": "改變印表機",
+        "SelectPrinter": "選擇列印機",
+        "AddPrinter": "新增列印機",
+        "EditPrinter": "編輯列印機",
+        "UpdatePrinter": "更新列印機",
+        "ChangePrinter": "改變列印機",
         "HostnameRequired": "主機名必填",
         "HostnameInvalid": "無效的 主機名/IP",
         "PortRequired": "通訊埠必填",
@@ -88,7 +88,7 @@
     },
     "Router": {
         "Dashboard": "儀表板",
-        "Printers": "印表機",
+        "Printers": "列印機",
         "Webcam": "網絡攝影機",
         "Console": "控制台",
         "Heightmap": "高度圖",
@@ -334,7 +334,7 @@
         },
         "FarmPrinterPanel": {
             "WebcamOff": "關閉",
-            "SwitchToPrinter": "切換到印表機",
+            "SwitchToPrinter": "切換到列印機",
             "ReconnectToPrinter": "重新連線"
         },
         "KlippyStatePanel": {
@@ -350,6 +350,29 @@
             "DeprecatedOption": "{section}' 中的部分選項 '{option}' 已棄用，將在未來版本中刪除。",
             "DeprecatedValue": "不推薦使用'{section}' 部分的選項'{option}' 中的值'{value}'，並將在未來版本中刪除。"
         },
+        "MachineSettingsPanel": {
+            "Headline": "機器設定",
+            "MotionSettings": {
+                "Motion": "運動",
+                "Velocity": "速度",
+                "Acceleration": "加速度",
+                "MaxAccelToDecel": "最大加速，到减速.",
+                "SquareCornerVelocity": "直角拐角速度"
+            },
+            "PressureAdvanceSettings": {
+                "PressureAdvance": "壓力推進控制",
+                "Extruder": "擠出機",
+                "Advance": "推進",
+                "SmoothTime": "平滑時間"
+            },
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "韌體回抽",
+                "RetractLength": "回抽長度",
+                "RetractSpeed": "回抽速度",
+                "UnretractExtraLength": "退料長度",
+                "UnretractSpeed": "退料速度"
+            }
+        },
         "MiniconsolePanel": {
             "Headline": "控制台",
             "SetupConsole": "設定控制台",
@@ -364,7 +387,7 @@
         },
         "PrintsettingsPanel": {
             "Headline": "列印設定",
-            "SpeedFactor": "速度因素",
+            "SpeedFactor": "速度係數",
             "ExtrusionFactor": "擠出係數"
         },
         "MiscellaneousPanel": {
@@ -407,13 +430,13 @@
             "Filament": "耗材",
             "Layer": "層",
             "ObjectHeight": "物體高度",
-            "Estimate": "估計",
+            "Estimate": "預計",
             "File": "檔案",
             "Print": "列印",
             "Difference": "差異",
             "Total": "總共: ",
             "Slicer": "切片",
-            "ETA": "ETA",
+            "ETA": "預計完成時間",
             "Unknown": "Unknown",
             "ExcludeObject": {
                 "ExcludeObject": "排除物件",
@@ -554,18 +577,27 @@
         "Edit": "編輯",
         "GeneralTab": {
             "General": "通用",
-            "PrinterName": "印表機名稱",
+            "PrinterName": "列印機名稱",
             "Language": "語言",
             "CalcEstimateTime": "預計時間計算",
             "CalcEstimateTimeDescription": "如果選擇多個，將計算平均值",
-            "CalcEtaTime": "預計到達時間",
+            "CalcEtaTime": "預計完成時間",
             "CalcEtaTimeDescription": "如果選擇多個，將計算平均值",
             "FactoryReset": "恢復設定",
             "FactoryDialog": "請選擇您要重置的所有部分：",
             "Reset": "重置",
+            "DbConsoleHistory": "控制台歷史",
+            "DbView": "瀏覽設定",
             "DbHistoryJobs": "歷史工作",
             "DbHistoryTotals": "歷史總計",
-            "DbWebcams": "網路攝影機"
+            "DbWebcams": "網路攝影機",
+            "DbTimelapseSettings": "時間格式設定",
+            "MoonrakerDb": "Moonraker DB",
+            "Backup": "備份",
+            "BackupDialog": "請選擇所有你想要備份的部分:",
+            "Restore": "復原",
+            "CannotReadJson": "不可讀取備份文件",
+            "RestoreDialog": "請選擇所有你想要復原的部分:"
         },
         "WebcamsTab": {
             "Webcams": "網絡攝影機",
@@ -574,7 +606,7 @@
             "EditWebcam": "編輯攝影機",
             "SaveWebcam": "儲存攝影機",
             "UpdateWebcam": "更新攝影機",
-            "IconPrinter": "印表機",
+            "IconPrinter": "列印機",
             "IconNozzle": "噴嘴",
             "IconBed": "床",
             "IconCam": "攝影機",
@@ -692,9 +724,9 @@
             "NoAvailableMacros": "沒有可用的巨集",
             "UnknownGroup": "未知組",
             "ChangeMacroColor": "改變按鈕的顏色。",
-            "ShowInStateStandby": "如果印表機處於待機狀態，則顯示/隱藏。",
-            "ShowInStatePaused": "如果印表機暫停則顯示/隱藏。",
-            "ShowInStatePrinting": "顯示/隱藏印表機是否正在列印。",
+            "ShowInStateStandby": "如果列印機處於待機狀態，則顯示/隱藏。",
+            "ShowInStatePaused": "如果列印機暫停則顯示/隱藏。",
+            "ShowInStatePrinting": "顯示/隱藏列印機是否正在列印。",
             "DeleteMacroFromGroup": "從組中刪除巨集。",
             "DeletedMacro": "刪除巨集"
         },
@@ -748,10 +780,10 @@
             "UpdateCooldown": "更新冷卻"
         },
         "RemotePrintersTab": {
-            "RemotePrinters": "印表機",
-            "AddPrinter": "新增印表機",
-            "EditPrinter": "編輯印表機",
-            "UpdatePrinter": "更新印表機",
+            "RemotePrinters": "列印機",
+            "AddPrinter": "新增列印機",
+            "EditPrinter": "編輯列印機",
+            "UpdatePrinter": "更新列印機",
             "Hostname": "主機名",
             "Port": "通訊埠"
         },

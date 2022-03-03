@@ -14,6 +14,17 @@ import {
 } from '@/store/printer/types'
 import { caseInsensitiveSort, formatFrequency, getMacroParams } from '@/plugins/helpers'
 import { RootState } from '@/store/types'
+import {
+    mdiFan,
+    mdiFire,
+    mdiPrinter3dNozzle,
+    mdiPrinter3dNozzleAlert,
+    mdiRadiator,
+    mdiRadiatorDisabled,
+    mdiThermometer,
+    mdiThermometerHigh,
+    mdiThermometerLow,
+} from '@mdi/js'
 
 export const getters: GetterTree<PrinterState, RootState> = {
     getPrintPercent: (state) => {
@@ -91,7 +102,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
                     if (nameSplit.length > 1 && nameSplit[0] === 'heater_generic') name = nameSplit[1]
 
-                    let icon = 'printer-3d-nozzle-alert'
+                    let icon = mdiPrinter3dNozzleAlert
                     let color = colorOff
                     if (value.target) color = colorHot
 
@@ -100,12 +111,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
                             key in state.configfile.config && 'min_extrude_temp' in state.configfile.config[key]
                                 ? parseFloat(state.configfile.config[key].min_extrude_temp)
                                 : 170
-                        if (value.temperature >= min_extrude_temp) icon = 'printer-3d-nozzle'
+                        if (value.temperature >= min_extrude_temp) icon = mdiPrinter3dNozzle
                     } else if (nameSplit[0] === 'heater_bed') {
-                        icon = 'radiator-disabled'
+                        icon = mdiRadiatorDisabled
                         if (value.temperature > 50 || (value.target && value.temperature > value.target - 5))
-                            icon = 'radiator'
-                    } else if (nameSplit[0].startsWith('heater_generic')) icon = 'fire'
+                            icon = mdiRadiator
+                    } else if (nameSplit[0].startsWith('heater_generic')) icon = mdiFire
 
                     if (!name.startsWith('_')) {
                         heaters.push({
@@ -141,7 +152,7 @@ export const getters: GetterTree<PrinterState, RootState> = {
             if (nameSplit[0] === 'temperature_fan' && !nameSplit[1].startsWith('_')) {
                 fans.push({
                     name: nameSplit[1],
-                    icon: 'fan',
+                    icon: mdiFan,
                     target: Math.round(value.target * 10) / 10,
                     temperature: Math.round(value.temperature * 10) / 10,
                     additionSensors: getters.getAdditionSensors(nameSplit[1]),
@@ -167,13 +178,13 @@ export const getters: GetterTree<PrinterState, RootState> = {
             const nameSplit = key.split(' ')
 
             if (nameSplit[0] === 'temperature_sensor' && !nameSplit[1].startsWith('_')) {
-                let icon = 'thermometer'
+                let icon = mdiThermometer
                 const min_temp = state.configfile?.settings[key]?.min_temp ?? 0
                 const max_temp = state.configfile?.settings[key]?.max_temp ?? 210
                 const split = (max_temp - min_temp) / 3
 
-                if (value.temperature <= min_temp + split) icon = 'thermometer-low'
-                if (value.temperature >= max_temp - split) icon = 'thermometer-high'
+                if (value.temperature <= min_temp + split) icon = mdiThermometerLow
+                if (value.temperature >= max_temp - split) icon = mdiThermometerHigh
 
                 sensors.push({
                     name: nameSplit[1],

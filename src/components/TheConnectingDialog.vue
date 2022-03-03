@@ -6,7 +6,7 @@
             <v-toolbar flat dense>
                 <v-toolbar-title>
                     <span class="subheading">
-                        <v-icon class="mdi mdi-connection" left></v-icon>
+                        <v-icon left>{{ mdiConnection }}</v-icon>
                         <template v-if="connectingFailed">
                             {{ $t('ConnectionDialog.Failed', { host: formatHostname }) }}
                         </template>
@@ -45,6 +45,7 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
+import { mdiConnection } from '@mdi/js'
 
 @Component({
     components: {
@@ -52,6 +53,8 @@ import ConnectionStatus from '@/components/ui/ConnectionStatus.vue'
     },
 })
 export default class TheConnectingDialog extends Mixins(BaseMixin) {
+    mdiConnection = mdiConnection
+
     counter = 0
 
     get protocol() {

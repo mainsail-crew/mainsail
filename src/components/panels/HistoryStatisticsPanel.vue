@@ -1,6 +1,6 @@
 <template>
     <panel
-        icon="mdi-chart-areaspline"
+        :icon="mdiChartAreaspline"
         :title="$t('History.Statistics')"
         card-class="history-statistics-panel"
         :collapsible="true">
@@ -86,10 +86,13 @@ import HistoryFilamentUsage from '@/components/charts/HistoryFilamentUsage.vue'
 import HistoryPrinttimeAvg from '@/components/charts/HistoryPrinttimeAvg.vue'
 import HistoryAllPrintStatus from '@/components/charts/HistoryAllPrintStatus.vue'
 import { ServerHistoryStateJob } from '@/store/server/history/types'
+import { mdiChartAreaspline } from '@mdi/js'
 @Component({
     components: { Panel, HistoryFilamentUsage, HistoryPrinttimeAvg, HistoryAllPrintStatus },
 })
 export default class HistoryStatisticsPanel extends Mixins(BaseMixin) {
+    mdiChartAreaspline = mdiChartAreaspline
+
     get selectedJobs() {
         return this.$store.state.gui.view.history.selectedJobs ?? []
     }

@@ -8,7 +8,7 @@
     <div v-if="klipperReadyForGui">
         <panel
             :title="$t('Machine.SystemPanel.SystemLoad')"
-            icon="mdi-memory"
+            :icon="mdiMemory"
             card-class="machine-systemload-panel"
             :collapsible="true">
             <v-card-text class="px-0 py-2">
@@ -135,11 +135,13 @@
         <v-dialog v-model="mcuDetailsDialog.bool" :max-width="400" :max-height="500" scrollable>
             <panel
                 :title="mcuDetailsDialog.headline"
-                icon="mdi-text-box-search-outline"
+                :icon="mdiTextBoxSearchOutline"
                 card-class="machine-systemload-mcu-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="mcuDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="mcuDetailsDialog.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -178,11 +180,13 @@
         <v-dialog v-model="hostDetailsDialog.bool" :max-width="600" :max-height="500" scrollable>
             <panel
                 :title="$t('Machine.SystemPanel.HostDetails')"
-                icon="mdi-text-box-search-outline"
+                :icon="mdiTextBoxSearchOutline"
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hostDetailsDialog.bool = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hostDetailsDialog.bool = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -221,10 +225,15 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { caseInsensitiveSort } from '@/plugins/helpers'
+import { mdiCloseThick, mdiMemory, mdiTextBoxSearchOutline } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class SystemPanel extends Mixins(BaseMixin) {
+    mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
+    mdiCloseThick = mdiCloseThick
+    mdiMemory = mdiMemory
+
     private mcuDetailsDialog: { bool: boolean; headline: string; mcu: any } = {
         bool: false,
         headline: '',

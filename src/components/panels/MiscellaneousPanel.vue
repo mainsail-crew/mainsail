@@ -3,7 +3,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)"
-        icon="mdi-dip-switch"
+        :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
         card-class="miscellaneous-panel">
@@ -36,10 +36,13 @@ import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiDipSwitch } from '@mdi/js'
 @Component({
     components: { Panel, FilamentSensor, MiscellaneousSlider },
 })
 export default class MiscellaneousPanel extends Mixins(BaseMixin) {
+    mdiDipSwitch = mdiDipSwitch
+
     get miscellaneous() {
         return this.$store.getters['printer/getMiscellaneous'] ?? []
     }

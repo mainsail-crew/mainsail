@@ -64,7 +64,7 @@
                         class="ml-2"
                         :disabled="isLocked"
                         @click="resetSlider">
-                        <v-icon>mdi-restart</v-icon>
+                        <v-icon>{{ mdiRestart }}</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <span v-if="!hasInputField" class="font-weight-bold">{{ value }} {{ unit }}</span>
@@ -83,8 +83,8 @@
                         @focus="$event.target.select()"
                         @keydown="checkInvalidChars"
                         @keyup.enter="submitInput">
-                        <template #append v-if="value !== defaultValue || value !== numInput">
-                            <v-icon small @click="resetSlider">mdi-restart</v-icon>
+                        <template v-if="value !== defaultValue || value !== numInput" #append>
+                            <v-icon small @click="resetSlider">{{ mdiRestart }}</v-icon>
                         </template>
                     </v-text-field>
                 </v-subheader>
@@ -103,7 +103,7 @@
                         class="_lock-button"
                         @click="isLocked = !isLocked">
                         <v-icon small :color="isLocked ? 'red' : ''">
-                            {{ isLocked ? 'mdi-lock-outline' : 'mdi-lock-open-variant-outline' }}
+                            {{ isLocked ? mdiLockOutline : mdiLockOpenVariantOutline }}
                         </v-icon>
                     </v-btn>
                     <v-slider
@@ -116,12 +116,12 @@
                         hide-details
                         @change="changeSlider">
                         <template #prepend>
-                            <v-icon :disabled="isLocked || value <= min" @click="decrement">mdi-minus</v-icon>
+                            <v-icon :disabled="isLocked || value <= min" @click="decrement">{{ mdiMinus }}</v-icon>
                         </template>
 
                         <template #append>
                             <v-icon :disabled="isLocked || (value >= max && !dynamicRange)" @click="increment">
-                                mdi-plus
+                                {{ mdiPlus }}
                             </v-icon>
                         </template>
                     </v-slider>
@@ -135,9 +135,16 @@
 import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { Debounce } from 'vue-debounce-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiLockOpenVariantOutline, mdiLockOutline, mdiMinus, mdiPlus, mdiRestart } from '@mdi/js'
 
 @Component
 export default class ToolSlider extends Mixins(BaseMixin) {
+    mdiRestart = mdiRestart
+    mdiLockOutline = mdiLockOutline
+    mdiLockOpenVariantOutline = mdiLockOpenVariantOutline
+    mdiMinus = mdiMinus
+    mdiPlus = mdiPlus
+
     private declare timeout: ReturnType<typeof setTimeout>
     private isLocked: boolean = false
     private invalidChars: string[] = ['e', 'E', '+']
