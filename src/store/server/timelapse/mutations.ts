@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {ServerTimelapseState} from '@/store/server/timelapse/types'
+import { MutationTree } from 'vuex'
+import { ServerTimelapseState } from '@/store/server/timelapse/types'
 
 export const mutations: MutationTree<ServerTimelapseState> = {
     reset(state) {
@@ -24,7 +24,7 @@ export const mutations: MutationTree<ServerTimelapseState> = {
         Vue.set(state, 'rendering', {
             status: payload.status,
             progress: payload.progress ?? 0,
-            filename: payload.filename ?? ''
+            filename: payload.filename ?? '',
         })
     },
 
@@ -32,7 +32,7 @@ export const mutations: MutationTree<ServerTimelapseState> = {
         Vue.set(state, 'rendering', {
             status: '',
             progress: 0,
-            filename: ''
+            filename: '',
         })
-    }
+    },
 }

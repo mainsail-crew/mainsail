@@ -1,40 +1,39 @@
-import {GetterTree} from 'vuex'
-import {ServerState, ServerStateNetworkInterface} from '@/store/server/types'
-import {formatConsoleMessage, formatFilesize, formatTime} from '@/plugins/helpers'
+import { GetterTree } from 'vuex'
+import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
+import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/helpers'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerState, any> = {
+    getConsoleEvents:
+        (state) =>
+        (reverse = true, limit = 500) => {
+            const events = [...state.events].slice(limit * -1) ?? []
 
-    getConsoleEvents: (state) => (reverse = true, limit = 500) => {
-        const events = [...state.events].slice(limit * -1) ?? []
+            if (events.length < 20 && !state.console_cleared_this_session) {
+                const date = events.length ? events[0].date : new Date()
+                let message = ''
 
-        if (events.length < 20) {
-            const date = events.length ? events[0].date : new Date()
-            let message = ''
+                message += '- Type <a class="command text--blue">HELP</a> to get a list of available commands.\n'
+                message += '- Click on the "?" button to get a searchable list.\n'
+                message += '- Commands in the console are clickable and will be placed into the input field.\n'
+                message +=
+                    '- Use the tab key to complete your inputs. If there are several options, a list is displayed.\n'
+                message += '- Use the ⇵ arrow keys to navigate through the previous entries.\n'
 
-            message += '- Type <a class="command text--blue">HELP</a> to get a list of available commands.\n'
-            message += '- Click on the "?" button to get a searchable list.\n'
-            message += '- Commands in the console are clickable and will be placed into the input field.\n'
-            message += '- Use the tab key to complete your inputs. If there are several options, a list is displayed.\n'
-            message += '- Use the ⇵ arrow keys to navigate through the previous entries.\n'
+                events.unshift({
+                    date: date,
+                    formatTime: formatTime(date),
+                    message: message,
+                    formatMessage: formatConsoleMessage(message),
+                    type: 'response',
+                })
+            }
 
-            events.unshift({
-                date: date,
-                formatTime: formatTime(date),
-                message: message,
-                formatMessage: formatConsoleMessage(message),
-                type: 'response',
-            })
-        }
-
-        return (reverse) ? events.reverse() : events
-    },
+            return reverse ? events.reverse() : events
+        },
 
     getConfig: (state) => (section: string, attribute: string) => {
-        if (
-            section in state.config &&
-            attribute in state.config[section]
-        ) return state.config[section][attribute]
+        if (section in state.config && attribute in state.config[section]) return state.config[section][attribute]
 
         return null
     },
@@ -59,7 +58,7 @@ export const getters: GetterTree<ServerState, any> = {
             memTotal: string
             tempSensor: {
                 temperature: number
-                measured_min_temp: number | null,
+                measured_min_temp: number | null
                 measured_max_temp: number | null
             }
         }
@@ -75,7 +74,7 @@ export const getters: GetterTree<ServerState, any> = {
 
             const cpuCors = state.system_info?.cpu_info?.cpu_count ?? 1
             const load = Math.round((rootState.printer.system_stats?.sysload ?? 0) * 100) / 100
-            const loadPercent = Math.round(load / cpuCors * 100)
+            const loadPercent = Math.round((load / cpuCors) * 100)
 
             let loadProgressColor = 'primary'
             if (loadPercent > 95) loadProgressColor = 'error'
@@ -96,7 +95,7 @@ export const getters: GetterTree<ServerState, any> = {
                 tempSensor = {
                     temperature: state.cpu_temp?.toFixed(0),
                     measured_min_temp: null,
-                    measured_max_temp: null
+                    measured_max_temp: null,
                 }
             }
 

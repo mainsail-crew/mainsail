@@ -5,9 +5,9 @@ import {
     ApiGetDirectoryReturnDir,
     ApiGetDirectoryReturnFile,
     FileState,
-    FileStateFile
+    FileStateFile,
 } from '@/store/files/types'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 import i18n from '@/plugins/i18n'
 
 export const actions: ActionTree<FileState, RootState> = {
@@ -20,7 +20,7 @@ export const actions: ActionTree<FileState, RootState> = {
             if (state.filetree.findIndex((tmp: FileStateFile) => tmp.filename === dirname) === -1) {
                 commit('createRootDir', {
                     name: dirname,
-                    permissions: 'r'
+                    permissions: 'r',
                 })
                 Vue.$socket.emit('server.files.get_directory', { path: dirname }, { action: 'files/getDirectory' })
             }
@@ -32,24 +32,33 @@ export const actions: ActionTree<FileState, RootState> = {
         const root = pathArray.length ? pathArray[0] : payload.requestParams.path
 
         const slashIndex = payload.requestParams.path.indexOf('/')
-        const path = slashIndex > 1 ? payload.requestParams.path.substr( slashIndex+ 1) : ''
-        const directory = getters['getDirectory'](root+'/'+path)
+        const path = slashIndex > 1 ? payload.requestParams.path.substr(slashIndex + 1) : ''
+        const directory = getters['getDirectory'](root + '/' + path)
 
         if (directory?.childrens?.length) {
             directory?.childrens.forEach((item: FileStateFile) => {
-                if (item?.isDirectory && payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) < 0) {
+                if (
+                    item?.isDirectory &&
+                    payload.dirs?.findIndex((element: ApiGetDirectoryReturnDir) => element.dirname === item.filename) <
+                        0
+                ) {
                     commit('setDeleteDir', {
                         item: {
-                            path: path.length ? path+'/'+item.filename : item.filename,
-                            root: root
-                        }
+                            path: path.length ? path + '/' + item.filename : item.filename,
+                            root: root,
+                        },
                     })
-                } else if (!item?.isDirectory && payload.files?.findIndex((element: ApiGetDirectoryReturnFile) => element.filename === item.filename) < 0) {
+                } else if (
+                    !item?.isDirectory &&
+                    payload.files?.findIndex(
+                        (element: ApiGetDirectoryReturnFile) => element.filename === item.filename
+                    ) < 0
+                ) {
                     commit('setDeleteFile', {
                         item: {
-                            path: path.length ? path+'/'+item.filename : item.filename,
-                            root: root
-                        }
+                            path: path.length ? path + '/' + item.filename : item.filename,
+                            root: root,
+                        },
                     })
                 }
             })
@@ -57,46 +66,57 @@ export const actions: ActionTree<FileState, RootState> = {
 
         if (payload.dirs?.length) {
             payload.dirs.forEach((dir: ApiGetDirectoryReturnDir) => {
-                if (directory?.childrens?.findIndex((element: FileStateFile) => (element.isDirectory && element.filename === dir.dirname)) === -1) {
+                if (
+                    directory?.childrens?.findIndex(
+                        (element: FileStateFile) => element.isDirectory && element.filename === dir.dirname
+                    ) === -1
+                ) {
                     commit('setCreateDir', {
                         item: {
-                            path: path.length ? path+'/'+dir.dirname : dir.dirname,
+                            path: path.length ? path + '/' + dir.dirname : dir.dirname,
                             root: root,
                             permissions: dir.permissions,
-                            modified: dir.modified * 1000
-                        }
+                            modified: dir.modified * 1000,
+                        },
                     })
 
-                    Vue.$socket.emit('server.files.get_directory', { path: payload.requestParams.path+'/'+dir.dirname }, { action: 'files/getDirectory' })
+                    Vue.$socket.emit(
+                        'server.files.get_directory',
+                        { path: payload.requestParams.path + '/' + dir.dirname },
+                        { action: 'files/getDirectory' }
+                    )
                 }
             })
         }
 
         if (payload.files?.length) {
             payload.files.forEach((file: ApiGetDirectoryReturnFile) => {
-                const existingFile = directory?.childrens?.find((element: FileStateFile) => (!element.isDirectory && element.filename === file.filename))
+                const existingFile = directory?.childrens?.find(
+                    (element: FileStateFile) => !element.isDirectory && element.filename === file.filename
+                )
 
-                if (existingFile && (
-                    existingFile.size !== file.size ||
-					existingFile.modified.getTime() !== new Date(file.modified*1000).getTime()
-                )) {
+                if (
+                    existingFile &&
+                    (existingFile.size !== file.size ||
+                        existingFile.modified.getTime() !== new Date(file.modified * 1000).getTime())
+                ) {
                     commit('setModifyFile', {
                         item: {
-                            path: path.length ? path+'/'+file.filename : file.filename,
+                            path: path.length ? path + '/' + file.filename : file.filename,
                             root: root,
                             modified: file.modified,
                             size: file.size,
-                        }
+                        },
                     })
                 } else if (!existingFile) {
                     commit('setCreateFile', {
                         item: {
-                            path: path.length ? path+'/'+file.filename : file.filename,
+                            path: path.length ? path + '/' + file.filename : file.filename,
                             root: root,
                             permissions: file.permissions,
                             modified: file.modified,
                             size: file.size,
-                        }
+                        },
                     })
                 }
             })
@@ -104,7 +124,8 @@ export const actions: ActionTree<FileState, RootState> = {
 
         if (payload?.root_info?.name) {
             const rootState = state.filetree.find((dir: FileStateFile) => dir.filename === payload?.root_info?.name)
-            if (rootState && rootState.permissions !== payload.root_info?.permissions) commit('setRootPermissions', payload.root_info)
+            if (rootState && rootState.permissions !== payload.root_info?.permissions)
+                commit('setRootPermissions', payload.root_info)
         }
 
         if (payload.requestParams?.path && payload.disk_usage) {
@@ -138,46 +159,45 @@ export const actions: ActionTree<FileState, RootState> = {
     },
 
     filelist_changed({ commit, dispatch }, payload) {
-        switch(payload.action) {
-        case 'create_file':
-            commit('setCreateFile', payload)
-            break
-
-        case 'move_file':
-            if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
+        switch (payload.action) {
+            case 'create_file':
                 commit('setCreateFile', payload)
-            else
-                commit('setMoveFile', payload)
-            break
+                break
 
-        case 'delete_file':
-            commit('setDeleteFile', payload)
-            break
+            case 'move_file':
+                if (payload.source_item?.path === 'printer_autosave.cfg' && payload.source_item?.root === 'config')
+                    commit('setCreateFile', payload)
+                else commit('setMoveFile', payload)
+                break
 
-        case 'modify_file':
-            commit('setModifyFile', payload)
-            break
+            case 'delete_file':
+                commit('setDeleteFile', payload)
+                break
 
-        case 'create_dir':
-            commit('setCreateDir', payload)
-            break
+            case 'modify_file':
+                commit('setModifyFile', payload)
+                break
 
-        case 'move_dir':
-            commit('setMoveDir', payload)
-            break
+            case 'create_dir':
+                commit('setCreateDir', payload)
+                break
 
-        case 'delete_dir':
-            commit('setDeleteDir', payload)
-            break
+            case 'move_dir':
+                commit('setMoveDir', payload)
+                break
 
-        case 'root_update':
-            dispatch('server/addRootDirectory', payload, { root: true })
-            commit('setRootUpdate', payload)
-            break
+            case 'delete_dir':
+                commit('setDeleteDir', payload)
+                break
 
-        default:
-            window.console.error('Unknown filelist_changed action: '+payload.action)
-            break
+            case 'root_update':
+                dispatch('server/addRootDirectory', payload, { root: true })
+                commit('setRootUpdate', payload)
+                break
+
+            default:
+                window.console.error('Unknown filelist_changed action: ' + payload.action)
+                break
         }
     },
 
@@ -185,13 +205,14 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.error) {
             Vue.$toast.error(payload.error.message)
         } else {
-            const filename = payload.requestParams.dest.substr(payload.requestParams.dest.lastIndexOf('/')).replace('/', '')
+            const filename = payload.requestParams.dest
+                .substr(payload.requestParams.dest.lastIndexOf('/'))
+                .replace('/', '')
             const sourceDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
             const destDir = payload.requestParams.dest.substr(0, payload.requestParams.dest.lastIndexOf('/'))
 
-
-            if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', {filename}))
-            else Vue.$toast.success(<string>i18n.t('Files.SuccessfullyMoved', {filename}))
+            if (sourceDir === destDir) Vue.$toast.success(<string>i18n.t('Files.SuccessfullyRenamed', { filename }))
+            else Vue.$toast.success(<string>i18n.t('Files.SuccessfullyMoved', { filename }))
         }
     },
 
@@ -199,9 +220,9 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.error) {
             Vue.$toast.error(payload.error.message)
         } else {
-            const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/')+1)
+            const newPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyCreated', {filename: newPath}))
+            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyCreated', { filename: newPath }))
         }
     },
 
@@ -209,9 +230,9 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.error) {
             Vue.$toast.error(payload.error.message)
         } else {
-            const delPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/')+1)
+            const delPath = payload.requestParams.path.substr(payload.requestParams.path.lastIndexOf('/') + 1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', {filename: delPath}))
+            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
     },
 
@@ -219,9 +240,11 @@ export const actions: ActionTree<FileState, RootState> = {
         if (payload.error) {
             Vue.$toast.error(payload.error.message)
         } else {
-            const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/')+1)
+            const delPath = payload.item.path.substr(payload.item.path.lastIndexOf('/') + 1)
+            const fileExtension = payload.item.path.substr(payload.item.path.lastIndexOf('.') + 1)
 
-            Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', {filename: delPath}))
+            if (!(payload.item.root === 'timelapse' && fileExtension === 'jpg'))
+                Vue.$toast.success(<string>i18n.t('Files.SuccessfullyDeleted', { filename: delPath }))
         }
     },
 }

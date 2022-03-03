@@ -15,14 +15,16 @@ import { jobQueue } from '@/store/server/jobQueue'
 export const getDefaultState = (): ServerState => {
     return {
         klippy_connected: false,
+        klippy_connected_timer: null,
         klippy_state: '',
+        klippy_state_timer: null,
         klippy_message: '',
         components: [],
         failed_components: [],
         warnings: [],
         registered_directories: [],
         events: [],
-        config: { },
+        config: {},
         system_info: null,
         cpu_temp: 0,
         moonraker_stats: null,
@@ -34,7 +36,7 @@ export const getDefaultState = (): ServerState => {
         system_cpu_usage: {},
         dbNamespaces: [],
         websocket_count: 0,
-        moonraker_version: ''
+        moonraker_version: '',
     }
 }
 
@@ -54,5 +56,5 @@ export const server: Module<ServerState, any> = {
         history,
         timelapse,
         jobQueue,
-    }
+    },
 }

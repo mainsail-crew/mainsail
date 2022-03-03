@@ -1,5 +1,5 @@
 export interface ServerHistoryState {
-    jobs: ServerHistoryStateJob[],
+    jobs: ServerHistoryStateJob[]
     job_totals: {
         total_jobs: number
         total_time: number
@@ -15,11 +15,27 @@ export interface ServerHistoryStateJob {
     exists: boolean
     end_time: number
     filament_used: number
-    filename:string
+    filename: string
     // eslint-disable-next-line
     metadata: any
     print_duration: number
     status: string
     start_time: number
     total_duration: number
+}
+
+export interface ServerHistoryStateAllPrintStatusEntry {
+    name: string
+    value: number
+    showInTable: boolean
+    itemStyle: {
+        opacity: number
+        color: string
+        borderColor: string
+        borderWidth: number
+        borderRadius: number
+    }
+    label: {
+        color: string
+    }
 }

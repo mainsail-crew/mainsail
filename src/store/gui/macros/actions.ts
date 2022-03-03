@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
-import {RootState} from '@/store/types'
+import { RootState } from '@/store/types'
 import { v4 as uuidv4 } from 'uuid'
 import Vue from 'vue'
-import {GuiMacrosState} from '@/store/gui/macros/types'
+import { GuiMacrosState } from '@/store/gui/macros/types'
 
 export const actions: ActionTree<GuiMacrosState, RootState> = {
     reset({ commit }) {
@@ -10,14 +10,22 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
     },
 
     saveSetting({ dispatch }, payload) {
-        dispatch('gui/saveSetting', {
-            name: 'macros.'+payload.name,
-            value: payload.value
-        }, { root: true })
+        dispatch(
+            'gui/saveSetting',
+            {
+                name: 'macros.' + payload.name,
+                value: payload.value,
+            },
+            { root: true }
+        )
     },
 
     groupUpload({ state }, id) {
-        Vue.$socket.emit('server.database.post_item', { namespace: 'mainsail', key: 'macros.macrogroups.'+id, value: state.macrogroups[id] })
+        Vue.$socket.emit('server.database.post_item', {
+            namespace: 'mainsail',
+            key: 'macros.macrogroups.' + id,
+            value: state.macrogroups[id],
+        })
     },
 
     async groupStore({ commit, dispatch, state }, payload) {
@@ -51,23 +59,35 @@ export const actions: ActionTree<GuiMacrosState, RootState> = {
 
     groupDelete({ commit, dispatch, rootState }, id) {
         commit('groupDelete', id)
-        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.'+id })
+        Vue.$socket.emit('server.database.delete_item', { namespace: 'mainsail', key: 'macros.macrogroups.' + id })
 
-        const layouts = ['mobileLayout', 'tabletLayout1', 'tabletLayout2', 'desktopLayout1', 'desktopLayout2',
-            'widescreenLayout1', 'widescreenLayout2', 'widescreenLayout3']
+        const layouts = [
+            'mobileLayout',
+            'tabletLayout1',
+            'tabletLayout2',
+            'desktopLayout1',
+            'desktopLayout2',
+            'widescreenLayout1',
+            'widescreenLayout2',
+            'widescreenLayout3',
+        ]
 
         layouts.forEach((layoutname: string) => {
             // @ts-ignore
-            const layoutArray = [...rootState.gui?.dashboard[layoutname]]
+            const layoutArray = rootState.gui ? [...rootState.gui.dashboard[layoutname]] : []
 
-            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_'+id)
+            const index = layoutArray.findIndex((layoutPos: any) => layoutPos.name === 'macrogroup_' + id)
             if (index !== -1) {
                 commit('gui/deleteFromDashboardLayout', { layoutname, index }, { root: true })
-                dispatch('gui/updateSettings', {
-                    keyName: 'dashboard.'+layoutname,
-                    // @ts-ignore
-                    newVal: rootState.gui?.dashboard[layoutname]
-                }, { root: true })
+                dispatch(
+                    'gui/updateSettings',
+                    {
+                        keyName: 'dashboard.' + layoutname,
+                        // @ts-ignore
+                        newVal: rootState.gui?.dashboard[layoutname],
+                    },
+                    { root: true }
+                )
             }
         })
     },

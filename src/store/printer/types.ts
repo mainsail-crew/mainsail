@@ -1,4 +1,4 @@
-import {PrinterTempHistoryState} from '@/store/printer/tempHistory/types'
+import { PrinterTempHistoryState } from '@/store/printer/tempHistory/types'
 
 export interface VTextareaType extends HTMLInputElement {
     $refs: {
@@ -7,13 +7,13 @@ export interface VTextareaType extends HTMLInputElement {
 }
 
 export interface CommandHelp {
-    command: string,
-    commandLow: string,
+    command: string
+    commandLow: string
     description?: string | Record<string, unknown>
 }
 
 export interface ConsoleCommandHelp {
-    command: CommandHelp | null,
+    command: CommandHelp | null
     original: string
 }
 
@@ -93,7 +93,7 @@ export interface PrinterStateMiscellaneous {
     rpm: number
     scale: number
     // eslint-disable-next-line
-    object: any,
+    object: any
     // eslint-disable-next-line
     config: any
     off_below?: number
@@ -130,7 +130,7 @@ export interface PrinterStateBedMesh {
 }
 
 export interface PrinterStateMacroParam {
-    type: 'int' | 'double' | 'string' | null,
+    type: 'int' | 'double' | 'string' | null
     default: string | null
 }
 
@@ -144,7 +144,7 @@ export interface PrinterStateMacro {
     prop: {
         // eslint-disable-next-line
         [key: string]: any
-    },
+    }
     params: PrinterStateMacroParams
 }
 
