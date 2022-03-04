@@ -55,79 +55,83 @@
                 </v-card-text>
             </template>
             <template v-else-if="!isConnecting && dialogAddPrinter.bool">
-                <v-card-text>
-                    <v-row>
-                        <v-col class="col-8">
-                            <v-text-field
-                                v-model="dialogAddPrinter.hostname"
-                                :rules="[
-                                    (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                    (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                    (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                ]"
-                                label="Hostname/IP"
-                                required
-                                outlined
-                                hide-details="auto"
-                                dense></v-text-field>
-                        </v-col>
-                        <v-col class="col-4">
-                            <v-text-field
-                                v-model="dialogAddPrinter.port"
-                                :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
-                                label="Port"
-                                hide-details="auto"
-                                required
-                                outlined
-                                dense></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text class="middle" @click="addPrinter">
-                        {{ $t('SelectPrinterDialog.AddPrinter') }}
-                    </v-btn>
-                </v-card-actions>
+                <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
+                    <v-card-text>
+                        <v-row>
+                            <v-col class="col-8">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.hostname"
+                                    :rules="[
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    ]"
+                                    :label="$t('SelectPrinterDialog.HostnameIp')"
+                                    required
+                                    outlined
+                                    hide-details="auto"
+                                    dense></v-text-field>
+                            </v-col>
+                            <v-col class="col-4">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.port"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :label="$t('SelectPrinterDialog.Port')"
+                                    hide-details="auto"
+                                    required
+                                    outlined
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
+                            {{ $t('SelectPrinterDialog.AddPrinter') }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-form>
             </template>
             <template v-else-if="!isConnecting && dialogEditPrinter.bool">
-                <v-card-text>
-                    <v-row>
-                        <v-col class="col-8">
-                            <v-text-field
-                                v-model="dialogEditPrinter.hostname"
-                                :rules="[
-                                    (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                    (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                    (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                ]"
-                                label="Hostname/IP"
-                                required
-                                outlined
-                                dense
-                                hide-details="auto"></v-text-field>
-                        </v-col>
-                        <v-col class="col-4">
-                            <v-text-field
-                                v-model="dialogEditPrinter.port"
-                                :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
-                                label="Port"
-                                required
-                                outlined
-                                dense
-                                hide-details="auto"></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
-                        <v-icon small>{{ mdiDelete }}</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="updatePrinter">
-                        {{ $t('SelectPrinterDialog.UpdatePrinter') }}
-                    </v-btn>
-                </v-card-actions>
+                <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
+                    <v-card-text>
+                        <v-row>
+                            <v-col class="col-8">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.hostname"
+                                    :rules="[
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    ]"
+                                    :label="$t('SelectPrinterDialog.HostnameIp')"
+                                    required
+                                    outlined
+                                    dense
+                                    hide-details="auto"></v-text-field>
+                            </v-col>
+                            <v-col class="col-4">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.port"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :label="$t('SelectPrinterDialog.Port')"
+                                    required
+                                    outlined
+                                    dense
+                                    hide-details="auto"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
+                            <v-icon small>{{ mdiDelete }}</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
+                            {{ $t('SelectPrinterDialog.UpdatePrinter') }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-form>
             </template>
             <template v-else>
                 <v-card-text class="mt-3">
@@ -219,11 +223,13 @@ import {
     components: { Panel },
 })
 export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
+    private addPrinterValid = false
     private dialogAddPrinter = {
         bool: false,
         hostname: '',
         port: 7125,
     }
+    private editPrinterValid = false
     private dialogEditPrinter = {
         bool: false,
         id: '',
