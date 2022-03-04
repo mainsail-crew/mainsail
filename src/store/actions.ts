@@ -30,7 +30,7 @@ export const actions: ActionTree<RootState, RootState> = {
     },
 
     /**
-     * This funciton will parse the config.json content and config mainsail
+     * This function will parse the config.json content and config mainsail
      * @param commit - vuex commit
      * @param dispatch - vuex dispatch
      * @param payload - content of config.json as a object
