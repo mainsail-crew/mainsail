@@ -1,9 +1,10 @@
 <style lang="scss" scoped>
-.btn-collapsible i::before {
+.btn-collapsible > * {
+    will-change: transform;
     transition: transform 500ms;
 }
 
-.icon-rotate-180:before {
+.icon-rotate-180 {
     transform: rotate(180deg);
 }
 </style>

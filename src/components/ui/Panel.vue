@@ -4,10 +4,11 @@
     border-bottom-right-radius: 4px;
 }
 
-.btn-collapsible i::before {
+.btn-collapsible > * {
+    will-change: transform;
     transition: transform 500ms;
 }
-.icon-rotate-90:before {
+.icon-rotate-90 {
     transform: rotate(90deg);
 }
 </style>
@@ -72,10 +73,11 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
-import { mdiChevronDown } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
+    mdiChevronUp = mdiChevronUp
     mdiChevronDown = mdiChevronDown
     panelToolbarHeight = panelToolbarHeight
 
