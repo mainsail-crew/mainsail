@@ -3,7 +3,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)"
-        icon="mdiDipSwitch"
+        :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
         card-class="miscellaneous-panel">
