@@ -61,7 +61,7 @@ export const mutations: MutationTree<GuiState> = {
     },
 
     setCurrentWebcam(state, payload) {
-        Vue.set(state.view.webcam.currentCam, payload.viewport, payload.value)
+        Vue.set(state.view.webcam.currentCam, payload.page, payload.value)
     },
 
     setHistoryColumns(state, data) {
