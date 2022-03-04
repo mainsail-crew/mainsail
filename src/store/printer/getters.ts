@@ -612,10 +612,10 @@ export const getters: GetterTree<PrinterState, RootState> = {
                     extruders.push({
                         key: key,
                         name: `Extruder ${key == 'extruder' ? '0' : key.replace('extruder', '')}`,
-                        filament_diameter: extruder.filament_diameter,
-                        nozzle_diameter: extruder.nozzle_diameter,
-                        min_extrude_temp: minExtrudeTemp,
-                        max_extrude_only_distance: extruder.max_extrude_only_distance,
+                        filamentDiameter: extruder.filament_diameter,
+                        nozzleDiameter: extruder.nozzle_diameter,
+                        minExtrudeTemp: minExtrudeTemp,
+                        maxExtrudeOnlyDistance: extruder.max_extrude_only_distance,
                     })
                 })
         }

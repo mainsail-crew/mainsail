@@ -156,8 +156,8 @@ export interface PrinterStateKlipperConfig {
 export interface PrinterStateExtruder {
     key: string
     name: string
-    filament_diameter: number
-    min_extrude_temp: number
-    nozzle_diameter: number
-    max_extrude_only_distance: number
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
 }
