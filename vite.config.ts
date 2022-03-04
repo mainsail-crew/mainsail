@@ -67,6 +67,11 @@ export default defineConfig({
             },
         },
     },
+
+    build: {
+        target: 'safari12',
+    },
+
     envPrefix: 'VUE_',
     resolve: {
         alias: {
