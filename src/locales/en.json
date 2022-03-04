@@ -116,6 +116,8 @@
         "EditPrinter": "Edit Printer",
         "UpdatePrinter": "Update Printer",
         "ChangePrinter": "Change Printer",
+        "HostnameIp": "Hostname/IP",
+        "Port": "Port",
         "HostnameRequired": "Hostname is required",
         "HostnameInvalid": "invalid Hostname/IP",
         "PortRequired": "Port is required",
