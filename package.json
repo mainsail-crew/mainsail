@@ -99,7 +99,7 @@
         "not op_mini all",
         "last 10 chrome major versions",
         "last 5 firefox major versions",
-        "safari 10",
+        "safari 12",
         "last 2 opera major versions",
         "last 2 edge major versions"
     ],

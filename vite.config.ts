@@ -2,7 +2,6 @@ import { createVuePlugin as vue } from 'vite-plugin-vue2'
 import loadVersion from 'vite-plugin-package-version'
 import { defineConfig } from 'vite'
 
-import legacy from '@vitejs/plugin-legacy'
 import Components from 'unplugin-vue-components/vite'
 import { VuetifyResolver } from 'unplugin-vue-components/resolvers'
 import checker from 'vite-plugin-checker'
@@ -50,7 +49,6 @@ const PWAConfig: Partial<VitePWAOptions> = {
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        legacy(),
         VitePWA(PWAConfig),
         buildVersion(),
         vue(),
