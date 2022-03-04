@@ -10,4 +10,8 @@ export const mutations: MutationTree<RootState> = {
     setRemoteMode(state, payload) {
         Vue.set(state, 'remoteMode', payload)
     },
+
+    setConfigInstances(state, payload) {
+        Vue.set(state, 'configInstances', payload)
+    },
 }

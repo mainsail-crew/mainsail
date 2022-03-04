@@ -9,6 +9,7 @@ export interface RootState {
     debugMode: boolean
     naviDrawer: boolean | null
     remoteMode: boolean
+    configInstances: ConfigJsonInstance[]
 
     socket?: SocketState
     gui?: GuiState

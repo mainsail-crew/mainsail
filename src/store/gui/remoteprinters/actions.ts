@@ -13,8 +13,9 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('reset')
     },
 
-    initFromLocalstorage({ dispatch }) {
-        const value = JSON.parse(localStorage.getItem('printers') ?? '{}')
+    initFromLocalstorage({ dispatch, rootState }) {
+        let value = rootState.configInstances ?? []
+        if (value.length === 0) value = JSON.parse(localStorage.getItem('printers') ?? '{}')
         if (Array.isArray(value)) {
             const printers: any = {}
 

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import { actions } from '@/store/actions'
 import { mutations } from '@/store/mutations'
 import { getters } from '@/store/getters'
-import { RootState } from './types'
+import { ConfigJsonInstance, RootState } from './types'
 
 // load modules
 import { socket } from '@/store/socket'
@@ -32,6 +32,7 @@ export const getDefaultState = (): RootState => {
         debugMode: (import.meta.env.VUE_APP_DEBUG_MODE as boolean) || false,
         naviDrawer: null,
         remoteMode,
+        configInstances: [],
     }
 }
 

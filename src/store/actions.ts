@@ -39,6 +39,10 @@ export const actions: ActionTree<RootState, RootState> = {
         const remoteMode = 'remoteMode' in payload ? payload.remoteMode : false
         if (remoteMode) {
             commit('setRemoteMode', true)
+
+            if ('instances' in payload && Array.isArray(payload.instances) && payload.instances.length) {
+                commit('setConfigInstances', payload.instances)
+            }
         }
     },
 }
