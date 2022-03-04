@@ -389,6 +389,9 @@
             "Extrude": "Extrude",
             "HotendTooCold": "Hotend temp. lower than"
         },
+        "ToolheadControlPanel": {
+            "Headline": "Toolhead Controls"
+        },
         "ExtruderControlPanel": {
             "Headline": "Extruder Controls",
             "FilamentLength": "Filament Length",
