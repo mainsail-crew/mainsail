@@ -15,7 +15,6 @@
             v-model.number="value"
             :label="label"
             :suffix="unit"
-            :append-icon="target !== defaultValue ? mdiRestart : ''"
             :error="invalidInput()"
             :error-messages="inputErrors()"
             :disabled="disabled"
@@ -32,7 +31,7 @@
             @blur="value = target"
             @keydown="checkInvalidChars">
             <template v-if="defaultValue" #append>
-                <v-icon @click="resetToDefault">{{ value !== defaultValue ? 'mdi-restart' : '' }}</v-icon>
+                <v-icon @click="resetToDefault">{{ value !== defaultValue ? mdiRestart : '' }}</v-icon>
             </template>
             <template v-if="hasSpinner" #append-outer>
                 <div class="_spin_button_group">
