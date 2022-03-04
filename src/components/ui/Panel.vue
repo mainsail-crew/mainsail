@@ -92,11 +92,11 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
 
     get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.cardClass)
+        return this.$store.getters['gui/getPanelExpand'](this.cardClass, this.viewport)
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal, viewport: this.viewport })
     }
 
     get hasIconSlot() {

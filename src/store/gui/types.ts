@@ -33,7 +33,9 @@ export interface GuiState {
         }
     }
     dashboard: {
-        nonExpandPanels: string[]
+        nonExpandPanels: {
+            [index: string]: string[]
+        }
         mobileLayout: GuiStateLayoutoption[]
         tabletLayout1: GuiStateLayoutoption[]
         tabletLayout2: GuiStateLayoutoption[]

@@ -61,6 +61,13 @@ export default class BaseMixin extends Vue {
         return this.$vuetify.breakpoint.xl
     }
 
+    get viewport() {
+        if (this.isMobile) return 'mobile'
+        else if (this.isTablet) return 'tablet'
+        else if (this.isDesktop) return 'desktop'
+        else return 'widescreen'
+    }
+
     get isTouchDevice() {
         // ignore if browser reports maxTouchPoints === 256, can happen on Windows 10
         return 'ontouchstart' in window || (navigator.maxTouchPoints > 0 && navigator.maxTouchPoints !== 256)

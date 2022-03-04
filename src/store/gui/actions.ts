@@ -50,6 +50,20 @@ export const actions: ActionTree<GuiState, RootState> = {
             delete payload.value.presets
         }
 
+        //update nonExpandPanels from V2.1.x to V2.2.0
+        if (
+            'dashboard' in payload.value &&
+            'nonExpandPanels' in payload.value.dashboard &&
+            Array.isArray(payload.value.dashboard.nonExpandPanels)
+        ) {
+            await fetch(mainsailUrl + '&key=dashboard.nonExpandPanels', { method: 'DELETE' })
+            dispatch('saveSetting', {
+                name: 'dashboard.nonExpandPanels.widescreen',
+                value: payload.value.dashboard.nonExpandPanels,
+            })
+            delete payload.value.dashboard.nonExpandPanels
+        }
+
         commit('setData', payload.value)
     },
 
@@ -352,12 +366,12 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     saveExpandPanel({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('addClosePanel', { name: payload.name })
-        else commit('removeClosePanel', { name: payload.name })
+        if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
+        else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
 
         dispatch('updateSettings', {
-            keyName: 'dashboard.nonExpandPanels',
-            newVal: state.dashboard.nonExpandPanels,
+            keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
+            newVal: state.dashboard.nonExpandPanels[payload.viewport],
         })
     },
 
