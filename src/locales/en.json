@@ -389,6 +389,15 @@
             "Extrude": "Extrude",
             "HotendTooCold": "Hotend temp. lower than"
         },
+        "ExtruderControlPanel": {
+            "Headline": "Extruder Controls",
+            "FilamentLength": "Filament Length",
+            "ExtrusionFeedrate": "Extrusion Feedrate",
+            "HotendTempLessThan": "Hotend temp. <",
+            "Retract": "Retract",
+            "Extrude": "Extrude",
+            "EstimatedExtrusion": "Estimated Extrusion:"
+        },
         "MacrosPanel": {
             "Headline": "Macros",
             "Send": "send"
