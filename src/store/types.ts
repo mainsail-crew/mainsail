@@ -8,6 +8,7 @@ export interface RootState {
     packageVersion: string
     debugMode: boolean
     naviDrawer: boolean | null
+    remoteMode: boolean
 
     socket?: SocketState
     gui?: GuiState
@@ -20,4 +21,14 @@ export interface RootStateDependency {
     serviceName: string
     installedVersion: string
     neededVersion: string
+}
+
+export interface ConfigJson {
+    remoteMode?: boolean
+    instances?: ConfigJsonInstance[]
+}
+
+export interface ConfigJsonInstance {
+    hostname: string
+    port?: number
 }

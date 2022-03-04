@@ -6,4 +6,8 @@ export const mutations: MutationTree<RootState> = {
     setNaviDrawer(state, payload) {
         Vue.set(state, 'naviDrawer', payload)
     },
+
+    setRemoteMode(state, payload) {
+        Vue.set(state, 'remoteMode', payload)
+    },
 }
