@@ -48,6 +48,8 @@ export interface GuiState {
     editor: {
         escToClose: boolean
         confirmUnsavedChanges: boolean
+        klipperRestartMethod: 'FIRMWARE_RESTART' | 'RESTART'
+        moonrakerRestartInstance: string | null
     }
     gcodeViewer: {
         extruderColors: string[]
