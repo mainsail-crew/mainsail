@@ -84,10 +84,6 @@ export default class App extends Mixins(BaseMixin) {
         return this.$store.getters['getTitle']
     }
 
-    get remoteMode(): boolean {
-        return this.$store.state.socket.remoteMode ?? false
-    }
-
     get mainBackground(): string {
         return this.$store.getters['files/getMainBackground']
     }

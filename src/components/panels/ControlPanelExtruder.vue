@@ -166,7 +166,7 @@ export default class ControlPanelExtruder extends Mixins(BaseMixin) {
     }
 
     get minExtrudeTemp() {
-        return this.$store.state.printer.configfile.settings.extruder.min_extrude_temp
+        return this.$store.state.printer.configfile?.settings?.extruder?.min_extrude_temp ?? 170
     }
 
     doSend(gcode: string) {

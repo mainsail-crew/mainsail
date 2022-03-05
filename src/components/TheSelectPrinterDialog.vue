@@ -157,7 +157,7 @@
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col class="col-auto pa-0">
+                                        <v-col v-if="canAddPrinters" class="col-auto pa-0">
                                             <v-btn
                                                 tile
                                                 text
@@ -190,7 +190,7 @@
                             </p>
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="canAddPrinters">
                         <v-col class="text-center mt-0">
                             <v-btn text color="primary" @click="createPrinter">
                                 {{ $t('SelectPrinterDialog.AddPrinter') }}
@@ -250,6 +250,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
+    }
+
+    get canAddPrinters() {
+        return this.$store.state.configInstances.length === 0
     }
 
     get protocol() {

@@ -102,23 +102,4 @@ export const mutations: MutationTree<GuiState> = {
         layoutArray.splice(payload.index, 1)
         Vue.set(state.dashboard, payload.layoutname, layoutArray)
     },
-
-    addToLockedSliders(state, payload) {
-        const lockedSliders = [...state.view.lockedSliders]
-        if (!lockedSliders.includes(payload.name)) {
-            lockedSliders.push(payload.name)
-
-            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
-        }
-    },
-
-    removeFromLockedSliders(state, payload) {
-        const lockedSliders = [...state.view.lockedSliders]
-        const index = lockedSliders.indexOf(payload.name)
-        if (index > -1) {
-            lockedSliders.splice(index, 1)
-
-            Vue.set(state.dashboard, 'lockedSliders', lockedSliders)
-        }
-    },
 }
