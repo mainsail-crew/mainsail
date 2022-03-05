@@ -183,6 +183,7 @@
                             </p>
                             <p class="text-center mb-0">
                                 {{ $t('SelectPrinterDialog.YouCanFindMore') }}
+                                <br />
                                 <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
                                     https://docs.mainsail.xyz/remotemode
                                 </a>
@@ -192,7 +193,7 @@
                     </v-row>
                     <v-row v-if="canAddPrinters">
                         <v-col class="text-center mt-0">
-                            <v-btn text color="primary" @click="dialogAddPrinter.bool = true">
+                            <v-btn text color="primary" @click="createPrinter">
                                 {{ $t('SelectPrinterDialog.AddPrinter') }}
                             </v-btn>
                         </v-col>
@@ -260,6 +261,10 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         return this.$store.state.socket.protocol
     }
 
+    get defaultMoonrakerPort() {
+        return this.protocol === 'wss' ? 7130 : 7125
+    }
+
     get hostname() {
         return this.$store.state.socket.hostname
     }
@@ -289,7 +294,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get currentUrl() {
-        let output = 'http://' + window.location.hostname
+        let output = document.location.protocol + '//' + window.location.hostname
         if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':' + window.location.port
 
         return output
@@ -318,6 +323,12 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     getPrinterName(namespace: string) {
         return this.$store.getters['farm/getPrinterName'](namespace)
+    }
+
+    createPrinter() {
+        this.dialogAddPrinter.hostname = ''
+        this.dialogAddPrinter.port = this.defaultMoonrakerPort
+        this.dialogAddPrinter.bool = true
     }
 
     addPrinter() {

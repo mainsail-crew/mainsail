@@ -122,7 +122,7 @@
         "HostnameInvalid": "invalid Hostname/IP",
         "PortRequired": "Port is required",
         "Hello": "Hello and welcome to the remote mode of Mainsail!",
-        "RememberToAdd": "Please remember to add {cors} in moonraker.conf within 'cors_domains'.",
+        "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
         "YouCanFindMore": "You can find more details at"
     },
     "Router": {
