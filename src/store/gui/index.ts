@@ -42,7 +42,12 @@ export const getDefaultState = (): GuiState => {
             },
         },
         dashboard: {
-            nonExpandPanels: [],
+            nonExpandPanels: {
+                mobile: [],
+                tablet: [],
+                desktop: [],
+                widescreen: [],
+            },
             mobileLayout: [
                 { name: 'webcam', visible: false },
                 { name: 'zoffset', visible: true },

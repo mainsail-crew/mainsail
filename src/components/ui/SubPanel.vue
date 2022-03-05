@@ -42,11 +42,15 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly subPanelClass: string
 
     get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass)
+        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass, this.viewport)
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.subPanelClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', {
+            name: this.subPanelClass,
+            value: newVal,
+            viewport: this.viewport,
+        })
     }
 }
 </script>
