@@ -183,6 +183,7 @@
                             </p>
                             <p class="text-center mb-0">
                                 {{ $t('SelectPrinterDialog.YouCanFindMore') }}
+                                <br />
                                 <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
                                     https://docs.mainsail.xyz/remotemode
                                 </a>
@@ -293,7 +294,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get currentUrl() {
-        let output = 'http://' + window.location.hostname
+        let output = document.location.protocol + '//' + window.location.hostname
         if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':' + window.location.port
 
         return output
