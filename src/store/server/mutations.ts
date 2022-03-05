@@ -46,6 +46,10 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'moonraker_stats', payload.moonraker_stats)
     },
 
+    setConnectionId(state, payload) {
+        Vue.set(state, 'connection_id', payload)
+    },
+
     setData(state, payload) {
         if ('requestParams' in payload) delete payload.requestParams
 
