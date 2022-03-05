@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 import { RootState } from '@/store/types'
+import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {

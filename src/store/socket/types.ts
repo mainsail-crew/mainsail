@@ -1,5 +1,4 @@
 export interface SocketState {
-    remoteMode: boolean
     hostname: string
     port: number
     protocol: string
