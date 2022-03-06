@@ -21,23 +21,27 @@
             "TitleTemperatureLimitActive": "Limite Di Temperatura Attivo",
             "TitleUnderVoltageDetected": "Sottotensione Rilevata"
         },
-        "Titles": {
-            "Complete": "Completo - {filename}",
-            "Error": "ERRORE",
-            "Pause": "Pausa Stampa",
-            "Printing": "{percent}% Stampando - {filename}",
-            "PrintingETA": "{percent}% Stampando - ETA: {eta} - {filename}"
-        },
         "TopBar": {
             "CannotUploadTheFile": "Impossibile caricare il file!",
             "EmergencyStop": "Arresto di emergenza",
             "SAVE_CONFIG": "SALVA CONFIG",
-            "Uploading": "Caricamento",
             "UploadOfFileSuccessful": "Caricamento di {file} riuscito!",
-            "UploadPrint": "Carica e stampa"
+            "UploadPrint": "Carica e stampa",
+            "Uploading": "Caricamento"
         },
         "TopCornerMenu": {
+            "HostControl": "Controllo dell'host",
+            "KlipperControl": "Controllo di Klipper",
+            "KlipperFirmwareRestart": "Riavvia firmware",
+            "KlipperRestart": "Riavvia",
+            "PowerDevices": "Dispositivi",
+            "Reboot": "Riavvio",
+            "Shutdown": "Arresta",
+            "ServiceControl": "Controllo Servizi",
             "Cancel": "Cancella",
+            "Restart": "Riavvia",
+            "Start": "Avvia",
+            "Stop": "Ferma",
             "ConfirmationDialog": {
                 "Description": {
                     "HostReboot": "Se riavvii l'host ora, la stampa corrente fallirà.",
@@ -58,18 +62,7 @@
                     "ServiceStart": "Avvia servizio",
                     "ServiceStop": "Ferma servizio"
                 }
-            },
-            "HostControl": "Controllo dell'host",
-            "KlipperControl": "Controllo di Klipper",
-            "KlipperFirmwareRestart": "Riavvia firmware",
-            "KlipperRestart": "Riavvia",
-            "PowerDevices": "Dispositivi",
-            "Reboot": "Riavvio",
-            "Restart": "Riavvia",
-            "ServiceControl": "Controllo Servizi",
-            "Shutdown": "Arresta",
-            "Start": "Avvia",
-            "Stop": "Ferma"
+            }
         },
         "UpdateDialog": {
             "Close": "Chiudi",
@@ -78,6 +71,13 @@
             "RecoveringDone": "Recupero {software} completato!",
             "Updating": "Aggiornamento {software} in corso...",
             "UpdatingDone": "Aggiornamento {software} completato!"
+        },
+        "Titles": {
+            "Error": "ERRORE",
+            "Complete": "Completo - {filename}",
+            "Pause": "Pausa Stampa",
+            "Printing": "{percent}% Stampando - {filename}",
+            "PrintingETA": "{percent}% Stampando - ETA: {eta} - {filename}"
         }
     },
     "ConnectionDialog": {
@@ -91,34 +91,27 @@
         "CommandList": "Elenco dei comandi",
         "Empty": "Vuoto",
         "HideTemperatures": "Nascondi temperature",
-        "HideTimelapse": "Nascondi Timelapse",
         "SendCode": "Invia codice...",
-        "SetupConsole": "Impostazione Console"
+        "SetupConsole": "Impostazione Console",
+        "HideTimelapse": "Nascondi Timelapse"
     },
     "Editor": {
-        "Cancel": "Cancella",
         "ConfigReference": "Configurazione di Riferimento",
-        "DontSave": "Non salvare",
         "Downloading": "Scaricando",
         "FailedSave": " Impossibile caricare {filename} !",
-        "FileReadOnly": "read-only",
         "Minimap": "Mostra minimappa",
         "SaveClose": "Salva e Chiudi",
         "SaveRestart": "Salva e Riavvia",
         "SuccessfullySaved": "{filename} salvato con successo.",
+        "Uploading": "Caricamento",
+        "Cancel": "Cancella",
+        "DontSave": "Non salvare",
         "UnsavedChanges": "Modifiche non salvate",
         "UnsavedChangesMessage": "Vuoi salvare le modifiche apportate a {filename}?",
         "UnsavedChangesSubMessage": "Le tue modifiche andranno perse se non le salvi. Puoi disabilitare questo messaggio nelle impostazioni dell'editor.",
-        "Uploading": "Caricamento"
-    },
-    "EmergencyStopDialog": {
-        "AreYouSure": "Sei sicuro?",
-        "EmergencyStop": "Arresto di emergenza",
-        "No": "No",
-        "Yes": "Si"
+        "FileReadOnly": "read-only"
     },
     "Files": {
-        "AddToQueue": "Aggiungi alla coda",
         "AllFiles": "Tutto",
         "Cancel": "Annulla",
         "Create": "Crea",
@@ -127,15 +120,12 @@
         "Delete": "Elimina",
         "DeleteDirectory": "Elimina Directory ",
         "DeleteDirectoryQuestion": "Vuoi davvero eliminare la directory \"{name}\" con tutto il suo contenuto?",
+        "DoYouWantToStartFilename": "Vuoi avviare {filename}?",
         "Download": "Scarica",
         "Downloading": "Scaricando",
-        "DoYouWantToStartFilename": "Vuoi avviare {filename}?",
         "DropFilesToAddGcode": "Trascina i file per aggiungere gcode.",
         "EditFile": "Modifica file",
         "Empty": "Vuoto",
-        "Filament": "Filamento",
-        "FilamentName": "Nome Filamento",
-        "FilamentType": "Tipo Filamento",
         "FilamentUsage": "Utilizzo del filamento",
         "FilamentWeight": "Peso del Filamento",
         "Files": "File",
@@ -148,12 +138,11 @@
         "LayerHeight": "Altezza del Layer",
         "Name": "Nome",
         "NewDirectory": "Nuova Directory",
-        "NozzleDiameter": "Diametro Ugello",
         "ObjectHeight": "Altezza dell'oggetto",
         "Preheat": "Preriscaldare",
-        "PrintedFiles": "File Stampati",
         "PrintStart": "Inizio Stampa",
         "PrintTime": "Tempo di Stampa",
+        "PrintedFiles": "File Stampati",
         "RefreshCurrentDirectory": "Aggiorna la Directory corrente",
         "Rename": "Rinomina",
         "RenameDirectory": "Rinomina la Directory",
@@ -162,58 +151,29 @@
         "SetupCurrentList": "Imposta l'elenco corrente",
         "Slicer": "Slicer",
         "StartJob": "Inizia il processo",
-        "StartPrint": "Avvia stampa",
         "SuccessfullyCreated": "Creato {filename} con successo.",
         "SuccessfullyDeleted": "Eliminato {filename} con successo.",
         "SuccessfullyMoved": "Spostato {filename} con successo.",
         "SuccessfullyRenamed": "Rinominato {filename} con successo.",
         "SuccessfullyUploaded": "Caricamento di {filename} riuscito!",
         "Total": "Totale",
-        "Uploading": "Caricamento",
         "UploadNewGcode": "Carica nuovo Gcode",
+        "Uploading": "Caricamento",
         "Used": "Utilizzato",
+        "AddToQueue": "Aggiungi alla coda",
+        "Filament": "Filamento",
+        "StartPrint": "Avvia stampa",
         "View3D": "Vedi 3D",
-        "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!"
-    },
-    "GCodeViewer": {
-        "ClearLoadedFile": "Rimuovi",
-        "ColorMode": "A colori",
-        "Downloading": "Scaricando",
-        "ForceLineRendering": "Forza Line Rendering",
-        "HDRendering": "Rendering HD (Round Extrusions)",
-        "High": "Alto",
-        "LoadCurrentFile": "File attuale",
-        "LoadLocal": "File locale",
-        "Low": "Basso",
-        "Max": "Massimo",
-        "Medium": "Medio",
-        "ReloadRequired": "Ricarica necessaria",
-        "Rendering": "Rendering",
-        "RenderQuality": "Qualità di render",
-        "ShowObjectSelection": "Mostra Selezione Oggetti",
-        "ShowToolhead": "Mostra Toolhead",
-        "ShowTravelMoves": "Mostra spostamenti",
-        "SpecularLighting": "Illuminazione Speculare",
-        "Title": "Visualizzatore G-Code",
-        "Tracking": "Tracciamento",
-        "Transparency": "Trasparenza",
-        "Ultra": "Ultra",
-        "VoxelMode": "Modalità Voxel (ASMBL)"
+        "WrongFileUploaded": "Il caricamento è stato rifiutato per {filename}. Formato file sbagliato!",
+        "FilamentName": "Nome Filamento",
+        "FilamentType": "Tipo Filamento",
+        "NozzleDiameter": "Diametro Ugello"
     },
     "Heightmap": {
         "Abort": "interrompi",
         "BedMeshCalibrate": "Calibrazione \"Bed Mesh\"",
-        "BedMeshRemove": "Rimuovi Bed Mesh",
         "Calibrate": "calibra",
         "Clear": "cancella",
-        "CurrentMesh": {
-            "Headline": "Mesh Attuale",
-            "Max": "Max",
-            "Min": "Min",
-            "Name": "Nome",
-            "Size": "Grandezza",
-            "Variance": "Variazione "
-        },
         "DeleteBedMeshProfile": "Elimina il Profilo \"Bed Mesh\"",
         "Deleted": "cancellato",
         "DoYouReallyWantToCalibrate": "Vuoi davvero avviare la calibrazione del piano?",
@@ -234,7 +194,16 @@
         "TitleCalibrate": "Calibra nuovo \"Bed Mesh\"",
         "TitleClear": "Cancella \"Bed Mesh\"",
         "TitleHomeAll": "Home - Tutti gli assi",
-        "Wireframe": "Wireframe"
+        "Wireframe": "Wireframe",
+        "BedMeshRemove": "Rimuovi Bed Mesh",
+        "CurrentMesh": {
+            "Headline": "Mesh Attuale",
+            "Max": "Max",
+            "Min": "Min",
+            "Name": "Nome",
+            "Size": "Grandezza",
+            "Variance": "Variazione "
+        }
     },
     "History": {
         "AllJobs": "Tutto",
@@ -282,15 +251,6 @@
         "TotalPrinttime": "Tempo di Stampa Totale",
         "TotalTime": "Tempo Totale"
     },
-    "JobQueue": {
-        "AllJobs": "Tutti i lavori",
-        "Delete": "Cancella",
-        "Empty": "Vuoto",
-        "JobQueue": "Coda dei lavori",
-        "Jobs": "Lavori",
-        "Pause": "Pausa",
-        "Start": "Avvia"
-    },
     "Machine": {
         "ConfigFilesPanel": {
             "AllFiles": "Tutti",
@@ -311,7 +271,6 @@
             "Free": "Libero",
             "FreeDisk": "Disco libero",
             "HiddenFiles": "File nascosti",
-            "HideBackupFiles": "Nascondi file di backup",
             "LastModified": "Ultima modifica",
             "Name": "Nome",
             "RefreshDirectory": "Aggiorna Directory",
@@ -323,14 +282,15 @@
             "Total": "Totale",
             "UploadFile": "Carica un File",
             "Uploading": "Caricamento",
-            "Used": "Usato"
+            "Used": "Usato",
+            "HideBackupFiles": "Nascondi file di backup"
         },
         "EndstopPanel": {
             "Endstop": "Endstop",
             "EndstopInfo": "Premere il pulsante in basso a destra per caricare lo stato attuale degli endstop.",
             "Endstops": "Endstops",
-            "open": "APERTO",
-            "TRIGGERED": "ATTIVATO"
+            "TRIGGERED": "ATTIVATO",
+            "open": "APERTO"
         },
         "LogfilesPanel": {
             "Logfiles": "File di registro"
@@ -338,7 +298,6 @@
         "SystemPanel": {
             "Awake": "Sveglio",
             "Constants": "Costanti",
-            "Distro": "Distro",
             "Frequency": "Freq",
             "HostDetails": "Dettagli dell'Host",
             "LastStats": "Ultime statistiche",
@@ -346,17 +305,12 @@
             "Memory": "Memoria",
             "Os": "SO",
             "SystemLoad": "Carichi di Sistema",
-            "Version": "Versione"
+            "Version": "Versione",
+            "Distro": "Distro"
         },
         "UpdatePanel": {
             "CheckForUpdates": "Verifica aggiornamenti",
             "Commits": "Commits",
-            "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available",
-            "CommitsOnDate": "Commits on {date}",
-            "CommittedDaysAgo": "committed {days} days ago",
-            "CommittedHoursAgo": "committed {hours} hours ago",
-            "CommittedOnDate": "committed on {date}",
-            "CommittedYesterday": "committed yesterday",
             "Detached": "detached",
             "Dirty": "dirty",
             "ERROR": "ERRORE",
@@ -365,11 +319,17 @@
             "PackagesCanBeUpgraded": "i pacchetti possono essere aggiornati",
             "System": "Sistema",
             "Unknown": "sconosciuto",
+            "UpToDate": "aggiornato",
             "Update": "aggiorna",
-            "UpdateAll": "Aggiorna tutti i componenti",
             "UpdateManager": "Gestore Aggiornamenti",
             "Upgrade": "aggiornamento",
-            "UpToDate": "aggiornato"
+            "CommitsOnDate": "Commits on {date}",
+            "CommittedDaysAgo": "committed {days} days ago",
+            "CommittedHoursAgo": "committed {hours} hours ago",
+            "CommittedOnDate": "committed on {date}",
+            "CommittedYesterday": "committed yesterday",
+            "UpdateAll": "Aggiorna tutti i componenti",
+            "CommitsAvailabe": "no commits available | {count} commit available | {count} commits available"
         }
     },
     "Panels": {
@@ -380,7 +340,6 @@
             "FeedAmountIn": "Quantità di alimentazione in",
             "FeedrateIn": "Velocità di avanzamento",
             "Headline": "Controlli",
-            "HotendTooCold": "Temp. hotend più bassa di",
             "InvertX": "Inverti X",
             "InvertY": "Inverti Y",
             "InvertZ": "Inverti Z",
@@ -392,22 +351,13 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z",
-            "ZTilt": "Inclinazione Z"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Dipendenze",
-            "DependencyDescription": "L'attuale versione di {name} non supporta tutte le features di Mainsail. Aggiorna {name} almeno alla versione {neededVersion}."
+            "ZTilt": "Inclinazione Z",
+            "HotendTooCold": "Temp. hotend più bassa di"
         },
         "FarmPrinterPanel": {
-            "ReconnectToPrinter": "Riconnetti",
             "SwitchToPrinter": "Passa alla Stampante",
-            "WebcamOff": "Spenta"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
-            "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura.",
-            "DownloadLog": "scarica log",
-            "KlipperWarnings": "Avvisi di Klipper"
+            "WebcamOff": "Spenta",
+            "ReconnectToPrinter": "Riconnetti"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Riavvio Firmware",
@@ -416,46 +366,22 @@
             "MoonrakerCannotConnect": "Moonraker non riesce a connettersi a Klipper!",
             "Restart": "Riavvia"
         },
-        "MachineSettingsPanel": {
-            "FirmwareRetractionSettings": {
-                "FirmwareRetraction": "Retrazione Firmware",
-                "RetractLength": "Lunghezza Retrazione",
-                "RetractSpeed": "Velocità Retrazione",
-                "UnretractExtraLength": "Lunghezza Extra Ri-estrusione",
-                "UnretractSpeed": "Velocità Ri-estrusione"
-            },
-            "Headline": "Impostazioni Macchina",
-            "MotionSettings": {
-                "Acceleration": "Accelerazione",
-                "Deceleration": "Decelerazione",
-                "MaxAccelToDecel": "Max Accel. a Decel.",
-                "Motion": "Movimento",
-                "SquareCornerVelocity": "Velocità Angolo Retto",
-                "Velocity": "Velocità"
-            },
-            "PressureAdvanceSettings": {
-                "Advance": "Advance",
-                "Extruder": "Estrusore",
-                "PressureAdvance": "Pressure Advance",
-                "SmoothTime": "Smooth Time"
-            }
-        },
         "MacrosPanel": {
             "Headline": "Macro",
             "Send": "invia"
-        },
-        "MiniconsolePanel": {
-            "Headline": "Console",
-            "HideTemperatures": "Nascondi Temperature",
-            "HideTimelapse": "Nascondi Timelapse",
-            "SendCode": "Invia codice...",
-            "SetupConsole": "Impostazioni Console"
         },
         "MinSettingsPanel": {
             "IncludeMainsailCfg": "Assicurati di includere il file mainsail.cfg nel file printer.cfg.",
             "IsNotDefinedInConfig": "non è definito nella configurazione",
             "MissingConfiguration": "Configurazione mancante",
             "MoreInformation": "maggiori informazioni"
+        },
+        "MiniconsolePanel": {
+            "Headline": "Console",
+            "HideTemperatures": "Nascondi Temperature",
+            "SendCode": "Invia codice...",
+            "SetupConsole": "Impostazioni Console",
+            "HideTimelapse": "Nascondi Timelapse"
         },
         "MiscellaneousPanel": {
             "Headline": "Miscellanea",
@@ -488,15 +414,8 @@
             "CancelPrint": "Annulla stampa",
             "ClearPrintStats": "Cancella statistiche di stampa",
             "Difference": "Differenza",
-            "Estimate": "Stima",
             "ETA": "Tempo stimato di fine stampa",
-            "ExcludeObject": {
-                "Cancel": "cancella",
-                "Excluded": "Escluso",
-                "ExcludeObject": "Escludi Oggetto",
-                "ExcludeObjectHeadline": "Escludi Oggetto",
-                "ExcludeObjectText": "Vuoi veramente escludere \"{name}\"?"
-            },
+            "Estimate": "Stima",
             "Filament": "Filamento",
             "File": "File",
             "Flow": "Flusso",
@@ -517,7 +436,14 @@
             "Unknown": "Sconosciuto",
             "X": "X",
             "Y": "Y",
-            "Z": "Z"
+            "Z": "Z",
+            "ExcludeObject": {
+                "Cancel": "cancella",
+                "ExcludeObject": "Escludi Oggetto",
+                "ExcludeObjectHeadline": "Escludi Oggetto",
+                "ExcludeObjectText": "Vuoi veramente escludere \"{name}\"?",
+                "Excluded": "Escluso"
+            }
         },
         "ToolsPanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",
@@ -559,33 +485,60 @@
             "Headline": "Z-Offset",
             "Later": "Dopo",
             "Ok": "OK",
-            "Save": "Salva",
             "SAVE_CONFIG": "SAVE_CONFIG",
+            "Save": "Salva",
             "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su SAVE_CONFIG per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
             "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su SAVE_CONFIG nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
             "SaveInfoHeadline": "Informazione",
             "ToEndstop": "all'Endstop",
             "ToProbe": "alla Sonda"
+        },
+        "DependenciesPanel": {
+            "Dependency": "Dipendenze",
+            "DependencyDescription": "L'attuale versione di {name} non supporta tutte le features di Mainsail. Aggiorna {name} almeno alla versione {neededVersion}."
+        },
+        "KlipperWarningsPanel": {
+            "DeprecatedOption": "L'opzione '{option}' nella sezione '{section}' è obsoleta e sarà rimossa in una versione futura.",
+            "DeprecatedValue": "Il valore '{value}' in '{option}' nella sezione '{section}' è obsoleto e sarà rimosso in una versione futura.",
+            "DownloadLog": "scarica log",
+            "KlipperWarnings": "Avvisi di Klipper"
+        },
+        "MachineSettingsPanel": {
+            "Headline": "Impostazioni Macchina",
+            "FirmwareRetractionSettings": {
+                "FirmwareRetraction": "Retrazione Firmware",
+                "RetractLength": "Lunghezza Retrazione",
+                "RetractSpeed": "Velocità Retrazione",
+                "UnretractSpeed": "Velocità Ri-estrusione",
+                "UnretractExtraLength": "Lunghezza Extra Ri-estrusione"
+            },
+            "MotionSettings": {
+                "Acceleration": "Accelerazione",
+                "Deceleration": "Decelerazione",
+                "Motion": "Movimento",
+                "SquareCornerVelocity": "Velocità Angolo Retto",
+                "Velocity": "Velocità",
+                "MaxAccelToDecel": "Max Accel. a Decel."
+            },
+            "PressureAdvanceSettings": {
+                "Advance": "Advance",
+                "Extruder": "Estrusore",
+                "PressureAdvance": "Pressure Advance",
+                "SmoothTime": "Smooth Time"
+            }
         }
-    },
-    "PowerDeviceChangeDialog": {
-        "AreYouSure": "Sei sicuro?",
-        "No": "No",
-        "TurnDeviceOff": "Spegni {device}",
-        "TurnDeviceOn": "Accendi {device}",
-        "Yes": "Si"
     },
     "Router": {
         "Console": "Console",
         "Dashboard": "Cruscotto",
         "G-Code Files": "File G-Code",
-        "G-Code Viewer": "Visualizzatore G-Code",
         "Heightmap": "Mappa dell'altezza",
         "History": "Cronologia",
         "Machine": "Macchina",
         "Printers": "Stampanti",
-        "Timelapse": "Timelapse",
-        "Webcam": "Webcam"
+        "Webcam": "Webcam",
+        "G-Code Viewer": "Visualizzatore G-Code",
+        "Timelapse": "Timelapse"
     },
     "SelectPrinterDialog": {
         "AddPrinter": "Aggiungi Stampante",
@@ -606,7 +559,6 @@
     },
     "Settings": {
         "Cancel": "Annulla",
-        "Close": "Chiudi",
         "ConsoleTab": {
             "AddFilter": "aggiungi filtro",
             "Console": "Console",
@@ -615,28 +567,22 @@
             "DirectionShell": "Ultima voce in basso",
             "DirectionTable": "Ultima voce in alto",
             "EditHeadline": "Modifica filtro",
-            "EntryStyle": "Entry-Design",
-            "EntryStyleCompact": "compatto",
-            "EntryStyleDefault": "default",
             "Height": "Altezza",
             "HideTemperatures": "Nascondi temperature",
-            "HideTimelapse": "Nascondi Timelapse",
             "Name": "Nome",
             "Regex": "Regex",
             "StoreButton": "Memorizza filtro",
-            "UpdateButton": "Aggiorna filtro"
+            "UpdateButton": "Aggiorna filtro",
+            "EntryStyle": "Entry-Design",
+            "EntryStyleCompact": "compatto",
+            "EntryStyleDefault": "default",
+            "HideTimelapse": "Nascondi Timelapse"
         },
         "ControlTab": {
-            "Bars": "Barre",
-            "Circle": "Cerchio",
             "Control": "Controllo",
-            "Cross": "Croce",
             "InvertXMovement": "Inverti il movimento per l'asse X",
             "InvertYMovement": "Inverti il movimento per l'asse Y",
             "InvertZMovement": "Inverti il movimento per l'asse Z",
-            "MaximumValues": "Valori massimi: {maximum}",
-            "MaximumValuesVisibility": "Il massimo dei valori {maximum} è raccomandato per la migliore visibilità",
-            "MinimumValues": "Valori minimi: {minimum}",
             "MoveDistancesEInMm": "Muovi E in mm",
             "MoveDistancesInMm": "Muovi in mm",
             "MoveDistancesXYInMm": "Muovi XY in mm",
@@ -644,8 +590,14 @@
             "SpeedEInMms": "Velocità E in mm/s",
             "SpeedXY": "Velocità XY",
             "SpeedZ": "Velocità Z",
+            "Bars": "Barre",
+            "Circle": "Cerchio",
+            "Cross": "Croce",
             "Style": "Stile",
-            "ValueGreaterThan": "Il valore deve essere più grande di {value}"
+            "MaximumValues": "Valori massimi: {maximum}",
+            "MinimumValues": "Valori minimi: {minimum}",
+            "ValueGreaterThan": "Il valore deve essere più grande di {value}",
+            "MaximumValuesVisibility": "Il massimo dei valori {maximum} è raccomandato per la migliore visibilità"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
@@ -656,48 +608,34 @@
             "Widescreen": "Schermo intero"
         },
         "Edit": "Modifica",
-        "EditorTab": {
-            "ConfirmUnsavedChanges": "Chiedi di salvare o disdire modifiche non salvate",
-            "ConfirmUnsavedChangesDescription": "Se abilitato, l'editor necessita di una conferma per salvare o disdire le modifiche apportate. Se disabilitato, le modifiche saranno disdette silenziosamente.",
-            "Editor": "Editor",
-            "UseEscToClose": "Usa ESC per chiudere l'editor",
-            "UseEscToCloseDescription": "Permette a ESC di chiudere l'editor"
-        },
-        "GCodeViewerTab": {
-            "BackgroundColor": "Colore Background",
-            "ExtruderColor": "Colori Estrusore",
-            "GCodeViewer": "Visualizzatore G-Code",
-            "GridColor": "Colore Griglia",
-            "MaxFeed": "Max Feed Rate",
-            "MinFeed": "Min Feed Rate",
-            "ShowAxes": "Mostra Assi"
-        },
         "GeneralTab": {
-            "Backup": "Backup",
-            "BackupDialog": "Selezione tutte le sezioni per cui vuoi creare un backup:",
+            "FactoryReset": "Reset di fabbrica",
+            "General": "Generale",
+            "Language": "Lingua",
+            "PrinterName": "Nome della stampante",
             "CalcEstimateTime": "Calcolo tempo stimato",
             "CalcEstimateTimeDescription": "Se più di uno è selezionato, sarà calcolata la media",
             "CalcEtaTime": "Calcolo ETA",
             "CalcEtaTimeDescription": "Se più di uno è selezionato, sarà calcolata la media",
-            "CannotReadJson": "Impossibile leggere il file di backup.",
-            "DbConsoleHistory": "Cronologia Console",
             "DbHistoryJobs": "Cronologia Lavori",
             "DbHistoryTotals": "Cronologia Totali",
-            "DbTimelapseSettings": "Impostazioni Timelapse",
-            "DbView": "Vedi Impostazioni ",
             "DbWebcams": "Webcam",
             "FactoryDialog": "Seleziona tutte le sezioni che vuoi reimpostare:",
-            "FactoryReset": "Reset di fabbrica",
-            "General": "Generale",
-            "Language": "Lingua",
-            "MoonrakerDb": "Moonraker DB",
-            "PrinterName": "Nome della stampante",
             "Reset": "reimposta",
+            "DbTimelapseSettings": "Impostazioni Timelapse",
+            "Backup": "Backup",
+            "BackupDialog": "Selezione tutte le sezioni per cui vuoi creare un backup:",
+            "CannotReadJson": "Impossibile leggere il file di backup.",
+            "DbConsoleHistory": "Cronologia Console",
+            "DbView": "Vedi Impostazioni ",
+            "MoonrakerDb": "Moonraker DB",
             "Restore": "Ripristina",
             "RestoreDialog": "Seleziona tutte le sezioni che vuoi ripristinare:"
         },
         "InterfaceSettings": "Impostazioni dell'Interfaccia",
         "MacrosTab": {
+            "Macros": "Macro",
+            "NOMacros": "Nessuna macro trovata...",
             "Add": "aggiungi",
             "AddGroup": "aggiungi Gruppo",
             "AvailableMacros": "Macro Disponibili",
@@ -706,21 +644,18 @@
             "CountMacros": "nessuna Macro aggiunta | {count} Macro | {count} Macros",
             "Custom": "pers.",
             "CustomColor": "Colore Pers.",
-            "DeletedMacro": "Macro eliminata",
             "DeleteMacroFromGroup": "Elimina macro dal gruppo.",
+            "DeletedMacro": "Macro eliminata",
             "EditGroup": "Modifica Gruppo",
             "Error": "errore",
             "Expert": "Esperto",
             "General": "Generale",
-            "Group": "Gruppo",
             "GroupMacros": "Raggruppa Macro",
             "Macrogroups": "Gruppi ",
-            "Macros": "Macro",
             "Management": "Gestione",
             "Name": "Nome",
             "NoAvailableMacros": "Nessuna macro disponibile.",
             "NoGroups": "Nessun gruppo trovato...",
-            "NOMacros": "Nessuna macro trovata...",
             "NoMacrosInGroup": "Nessuna macro in questo gruppo.",
             "Primary": "Primario",
             "Secondary": "Secondario",
@@ -731,7 +666,8 @@
             "Status": "Stato",
             "Success": "successo",
             "UnknownGroup": "Gruppo Sconosciuto",
-            "Warning": "attenzione"
+            "Warning": "attenzione",
+            "Group": "Gruppo"
         },
         "PresetsTab": {
             "AddPreset": "aggiungi preset",
@@ -755,6 +691,23 @@
             "RemotePrinters": "Stampanti Remote",
             "UpdatePrinter": "Aggiorna Stampante"
         },
+        "Close": "Chiudi",
+        "EditorTab": {
+            "ConfirmUnsavedChanges": "Chiedi di salvare o disdire modifiche non salvate",
+            "ConfirmUnsavedChangesDescription": "Se abilitato, l'editor necessita di una conferma per salvare o disdire le modifiche apportate. Se disabilitato, le modifiche saranno disdette silenziosamente.",
+            "Editor": "Editor",
+            "UseEscToClose": "Usa ESC per chiudere l'editor",
+            "UseEscToCloseDescription": "Permette a ESC di chiudere l'editor"
+        },
+        "GCodeViewerTab": {
+            "BackgroundColor": "Colore Background",
+            "ExtruderColor": "Colori Estrusore",
+            "GCodeViewer": "Visualizzatore G-Code",
+            "GridColor": "Colore Griglia",
+            "MaxFeed": "Max Feed Rate",
+            "MinFeed": "Min Feed Rate",
+            "ShowAxes": "Mostra Assi"
+        },
         "TimelapseTab": {
             "Autorender": "Autorender",
             "AutorenderDescription": "Se abilitato, il timelapse sarà automaticamente processato alla fine della stampa.",
@@ -762,14 +715,12 @@
             "CameraDescription": "Selezione quale videocamera sarà usata",
             "ConstantRateFactor": "Constant Rate Factor",
             "ConstantRateFactorDescription": "Questo configura la qualità vs grandezza del video. Il raggio della scala del CRF è 0-51, dove 0 è lossless, 23 è il default e 51 è la qualità peggiore possibile. Un valore più basso porta generalmente ad una qualità maggiore e un raggio consigliato è di 17-28. Considera 17 o 18 come visualmente lossless.",
-            "duplicatelastframe": "duplicaultimoframe",
-            "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
             "Enabled": "Abilitato",
             "EnabledDescription": "Se disabilitato, le macro gcode sono ignorate e autorender è ignorato.",
+            "UnretractDistance": "Distanza Ri-estrusione",
+            "UnretractSpeed": "Velocità Ri-estrusione",
             "Extraoutputparams": "Parametrioutputextra",
             "ExtraoutputparamsDescription": "Definisce output aggiuntivi a FFMPEG. Nota: Specificare qualsiasi cosa qui disabiliterà l'impostazione di rotazione",
-            "FwRetract": "Retrazione FW",
-            "FwRetractDescription": "Usa la retrazione firmware nella macro timelapse",
             "GcodeVerbose": "VerbosoGcode",
             "GcodeVerboseDescription": "Se abilitato, le Macro Gcode scriveranno informazioni alla Console",
             "General": "Generale",
@@ -783,8 +734,6 @@
             "ParkheadDescription": "Se abilitato, la testa di stampa sarà parcheggiata prima di catturare un frame.",
             "Parkpos": "Posizione parcheggio",
             "ParkposDescription": "Seleziona la posizione di parcheggio",
-            "ParkTime": "Tempo Parcheggio",
-            "ParkTimeDescription": "Aggiungi tempo extra durante il parcheggio.",
             "Pixelformat": "Pixelformat",
             "PixelformatDescription": "Definisce un pixelformat del video di output",
             "PosDZ": "Posizione Z",
@@ -799,11 +748,8 @@
             "RetractDistance": "Distanza Retrazione",
             "RetractDistanceDescription": "tset",
             "RetractSpeed": "Velocità Retrazione",
-            "RetractSpeedDescription": "Velocità alla quale l'estrusore retrae il filamento.",
             "SaveFrames": "Salva Frame",
             "SaveFramesDescription": "Salva i Frame in un file zip per rendering esterno",
-            "StreamDelayCompensation": "Compensazione Ritardo Stream",
-            "StreamDelayCompensationDescription": "Ritarda cattura frame",
             "Targetlength": "Lunghezza target",
             "TargetlengthDescription": "La lunghezza target quando Fps variabile è abilitato",
             "TimeFormatCode": "Codice Formato Ora ",
@@ -811,14 +757,21 @@
             "Timelapse": "Timelapse",
             "TravelSpeed": "Velocità Spostamento",
             "TravelSpeedDescription": "Velocità spostamento verso la posizione di parcheggio e ripresa",
-            "UnretractDistance": "Distanza Ri-estrusione",
-            "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
-            "UnretractSpeed": "Velocità Ri-estrusione",
-            "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione.",
             "VariableFps": "FPS Variabili",
             "VariableFpsDescription": "Se abilitato, il framerate del video di output sarà calcolato in base alla lunghezza target",
             "VariableFpsMax": "FPS Variabili max",
-            "VariableFpsMin": "FPS Variabili min"
+            "VariableFpsMin": "FPS Variabili min",
+            "duplicatelastframe": "duplicaultimoframe",
+            "duplicatelastframeDescription": "Duplica l'ultimo frame alla fine del video",
+            "RetractSpeedDescription": "Velocità alla quale l'estrusore retrae il filamento.",
+            "UnretractDistanceDescription": "La lunghezza di filamento che l'estrusore ri-estrude dopo una retrazione.",
+            "UnretractSpeedDescription": "Velocità alla quale l'estrusore ri-estrude dopo una retrazione.",
+            "ParkTime": "Tempo Parcheggio",
+            "ParkTimeDescription": "Aggiungi tempo extra durante il parcheggio.",
+            "StreamDelayCompensation": "Compensazione Ritardo Stream",
+            "StreamDelayCompensationDescription": "Ritarda cattura frame",
+            "FwRetract": "Retrazione FW",
+            "FwRetractDescription": "Usa la retrazione firmware nella macro timelapse"
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Grande anteprima",
@@ -879,6 +832,54 @@
             "Webcams": "Webcam"
         }
     },
+    "title": "Italiano",
+    "EmergencyStopDialog": {
+        "AreYouSure": "Sei sicuro?",
+        "EmergencyStop": "Arresto di emergenza",
+        "No": "No",
+        "Yes": "Si"
+    },
+    "GCodeViewer": {
+        "ClearLoadedFile": "Rimuovi",
+        "ColorMode": "A colori",
+        "Downloading": "Scaricando",
+        "ForceLineRendering": "Forza Line Rendering",
+        "HDRendering": "Rendering HD (Round Extrusions)",
+        "High": "Alto",
+        "LoadCurrentFile": "File attuale",
+        "LoadLocal": "File locale",
+        "Low": "Basso",
+        "Max": "Massimo",
+        "Medium": "Medio",
+        "ReloadRequired": "Ricarica necessaria",
+        "RenderQuality": "Qualità di render",
+        "Rendering": "Rendering",
+        "ShowObjectSelection": "Mostra Selezione Oggetti",
+        "ShowToolhead": "Mostra Toolhead",
+        "ShowTravelMoves": "Mostra spostamenti",
+        "SpecularLighting": "Illuminazione Speculare",
+        "Title": "Visualizzatore G-Code",
+        "Tracking": "Tracciamento",
+        "Transparency": "Trasparenza",
+        "Ultra": "Ultra",
+        "VoxelMode": "Modalità Voxel (ASMBL)"
+    },
+    "JobQueue": {
+        "AllJobs": "Tutti i lavori",
+        "Delete": "Cancella",
+        "Empty": "Vuoto",
+        "JobQueue": "Coda dei lavori",
+        "Jobs": "Lavori",
+        "Pause": "Pausa",
+        "Start": "Avvia"
+    },
+    "PowerDeviceChangeDialog": {
+        "AreYouSure": "Sei sicuro?",
+        "No": "No",
+        "TurnDeviceOff": "Spegni {device}",
+        "TurnDeviceOn": "Accendi {device}",
+        "Yes": "Si"
+    },
     "Timelapse": {
         "AllFiles": "Tutti",
         "Autorender": "Autorender",
@@ -928,6 +929,5 @@
         "Used": "Usato",
         "Variable": "Variabile",
         "Video": "Video"
-    },
-    "title": "Italiano"
+    }
 }
