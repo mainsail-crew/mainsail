@@ -1,9 +1,10 @@
 <style lang="scss" scoped>
-.btn-collapsible i::before {
+.btn-collapsible > * {
+    will-change: transform;
     transition: transform 500ms;
 }
 
-.icon-rotate-180:before {
+.icon-rotate-180 {
     transform: rotate(180deg);
 }
 </style>
@@ -41,11 +42,15 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ required: true }) declare readonly subPanelClass: string
 
     get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass)
+        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass, this.viewport)
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.subPanelClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', {
+            name: this.subPanelClass,
+            value: newVal,
+            viewport: this.viewport,
+        })
     }
 }
 </script>

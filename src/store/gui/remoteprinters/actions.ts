@@ -13,8 +13,9 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('reset')
     },
 
-    initFromLocalstorage({ dispatch }) {
-        const value = JSON.parse(localStorage.getItem('printers') ?? '{}')
+    initFromLocalstorage({ dispatch, rootState }) {
+        let value = rootState.configInstances ?? []
+        if (value.length === 0) value = JSON.parse(localStorage.getItem('printers') ?? '{}')
         if (Array.isArray(value)) {
             const printers: any = {}
 
@@ -46,7 +47,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
     },
 
     upload({ state, rootState }, id) {
-        if (rootState.socket?.remoteMode) {
+        if (rootState.remoteMode) {
             const printers: any[] = []
 
             Object.keys(state.printers).forEach((id: string) => {
@@ -111,7 +112,7 @@ export const actions: ActionTree<GuiRemoteprintersState, RootState> = {
         commit('delete', id)
         dispatch('farm/unregisterPrinter', id, { root: true })
 
-        if (rootState.socket?.remoteMode) dispatch('upload')
+        if (rootState.remoteMode) dispatch('upload')
         else {
             Vue.$socket.emit('server.database.delete_item', {
                 namespace: 'mainsail',

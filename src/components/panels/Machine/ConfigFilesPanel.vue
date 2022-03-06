@@ -405,8 +405,11 @@ import {
     mdiFolderPlus,
     mdiInformation,
     mdiRefresh,
+    mdiClose,
     mdiCog,
+    mdiFolder,
     mdiFolderUpload,
+    mdiFile,
     mdiFileDocumentEditOutline,
     mdiCloudDownload,
     mdiRenameBox,
@@ -468,9 +471,12 @@ interface draggingFile {
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin) {
     mdiInformation = mdiInformation
+    mdiClose = mdiClose
     mdiCog = mdiCog
+    mdiFolder = mdiFolder
     mdiFolderUpload = mdiFolderUpload
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
+    mdiFile = mdiFile
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
     mdiDelete = mdiDelete
