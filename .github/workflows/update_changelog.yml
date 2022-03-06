@@ -4,7 +4,7 @@ on:
   # Update the changelog after pushing a new tag
   push:
     tags:
-      - "*"
+      - '*'
 
   # Update the changelog by invoking this workflow manually
   workflow_dispatch:
@@ -37,6 +37,6 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore(changelog): update changelog"
+          commit_message: 'chore(changelog): update changelog'
           file_pattern: CHANGELOG.md
           branch: develop
