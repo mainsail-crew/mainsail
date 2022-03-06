@@ -5,8 +5,7 @@
         "es6": true,
         "node": true
     },
-    "extends": [
-        "plugin:vue/recommended",
+    "extends": [ "plugin:jsonc/base","plugin:vue/recommended",
         "eslint:recommended",
         "@vue/typescript",
         "prettier"
@@ -29,9 +28,10 @@
     ],
     "overrides": [
         {
-            "files": "src/locales/**/*.json",
+            "files": "src/locales/*.json",
+           "parser": "jsonc-eslint-parser",
             "rules": {
-                "sort-keys": 0
+                "jsonc/sort-keys": ["error", "asc", {"caseSensitive": false, "natural": false}]
             }
         }
     ]
