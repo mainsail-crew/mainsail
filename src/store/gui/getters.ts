@@ -26,9 +26,11 @@ export const getters: GetterTree<GuiState, any> = {
     },
 
     getPanelExpand: (state) => (name: string, viewport: string) => {
-        if (!(viewport in state.dashboard.nonExpandPanels)) return true
+        if ('dashboard' in state && viewport in state.dashboard.nonExpandPanels) {
+            return !state.dashboard.nonExpandPanels[viewport].includes(name) ?? true
+        }
 
-        return !state.dashboard.nonExpandPanels[viewport].includes(name) ?? true
+        return true
     },
 
     getPanels: (state, getters, rootState) => (viewport: string) => {
