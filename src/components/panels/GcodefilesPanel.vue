@@ -561,6 +561,7 @@ import {
     mdiPencil,
     mdiDelete,
     mdiCloseThick,
+    mdiClose,
 } from '@mdi/js'
 
 interface draggingFile {
@@ -609,6 +610,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiPlay = mdiPlay
     mdiPlaylistPlus = mdiPlaylistPlus
     mdiFire = mdiFire
+    mdiClose = mdiClose
     mdiVideo3d = mdiVideo3d
     mdiCloudDownload = mdiCloudDownload
     mdiRenameBox = mdiRenameBox
