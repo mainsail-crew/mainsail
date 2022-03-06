@@ -1,5 +1,4 @@
 export interface SocketState {
-    remoteMode: boolean
     hostname: string
     port: number
     protocol: string
@@ -8,4 +7,5 @@ export interface SocketState {
     isConnecting: boolean
     connectingFailed: boolean
     loadings: string[]
+    connection_id: number | null
 }
