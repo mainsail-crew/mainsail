@@ -149,7 +149,11 @@
         "UnsavedChangesSubMessage": "Deine Änderungen werden verloren gehen wenn du sie nicht speicherst. Du kannst diese Meldung in den Editor-Einstellungen deaktivieren.",
         "DontSave": "Nicht speichern",
         "Cancel": "Abbrechen",
-        "FileReadOnly": "schreibgeschützt"
+        "FileReadOnly": "schreibgeschützt",
+        "KlipperRestartMethod": "Klipper Neustartmethode",
+        "KlipperRestartMethodDescription": "Wählen der Neustartmethode die bei 'Speichern & Neustarten' verwendet wird, wenn Klipper-Konfigurationsdateien bearbeitet werden.",
+        "MoonrakerRestartInstance": "Moonraker Neustartinstanz",
+        "MoonrakerRestartInstanceDescription": "Wählen der Moonraker-Instanz die bei 'Speichern & Neustarten' neu gestartet wird, wenn Moonraker-Konfigurationsdateien bearbeitet werden."
     },
     "Files": {
         "GCodeFiles": "G-Code Dateien",

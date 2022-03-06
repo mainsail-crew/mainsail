@@ -116,11 +116,13 @@
         "EditPrinter": "Edit Printer",
         "UpdatePrinter": "Update Printer",
         "ChangePrinter": "Change Printer",
+        "HostnameIp": "Hostname/IP",
+        "Port": "Port",
         "HostnameRequired": "Hostname is required",
         "HostnameInvalid": "invalid Hostname/IP",
         "PortRequired": "Port is required",
         "Hello": "Hello and welcome to the remote mode of Mainsail!",
-        "RememberToAdd": "Please remember to add {cors} in moonraker.conf within 'cors_domains'.",
+        "RememberToAdd": "Please remember to add '{cors}' in moonraker.conf within 'cors_domains'.",
         "YouCanFindMore": "You can find more details at"
     },
     "Router": {
@@ -917,7 +919,11 @@
             "UseEscToClose": "Use ESC to close editor",
             "UseEscToCloseDescription": "Allows the ESC key to close the editor",
             "ConfirmUnsavedChanges": "Prompt to save or discard unsaved changes",
-            "ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded."
+            "ConfirmUnsavedChangesDescription": "If enabled, the editor requires a confirmation to either save or discard the changes made. If disabled, changes are silently discarded.",
+            "KlipperRestartMethod": "Klipper restart method",
+            "KlipperRestartMethodDescription": "Select which restart method will be used on 'Save & Restart' when editing Klipper config files.",
+            "MoonrakerRestartInstance": "Moonraker restart instance",
+            "MoonrakerRestartInstanceDescription": "Select which Moonraker service will restart on 'Save & Restart' when editing Moonraker config files."
         }
     },
     "GCodeViewer": {
