@@ -5,16 +5,34 @@
         "es6": true,
         "node": true
     },
-    "extends": ["plugin:vue/recommended", "eslint:recommended", "@vue/typescript", "prettier"],
+    "extends": [
+        "plugin:vue/recommended",
+        "eslint:recommended",
+        "@vue/typescript",
+        "prettier"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
-    "rules": { "vue/no-v-html": 0, "vue/component-tags-order": 0 },
+    "rules": {
+        "vue/no-v-html": 0,
+        "vue/component-tags-order": 0
+    },
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "sourceType": "module"
     },
-    "plugins": ["vue"]
+    "plugins": [
+        "vue"
+    ],
+    "overrides": [
+        {
+            "files": "src/locales/**/*.json",
+            "rules": {
+                "sort-keys": 0
+            }
+        }
+    ]
 }
