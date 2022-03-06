@@ -24,6 +24,10 @@ export interface ServerState {
         distribution: ServerStateDistribution
         sd_info: ServerStateSdInfo
         service_state: ServerStateServiceStates
+        python: {
+            version: string[]
+            version_string: string
+        }
     } | null
     moonraker_stats: {
         cpu_usage: number
@@ -35,13 +39,13 @@ export interface ServerState {
     throttled_state: {
         bits: number
         flags: string[]
-    },
+    }
     network_stats: {
         [name: string]: ServerStateNetworkInterface
-    },
+    }
     system_cpu_usage: {
         [name: string]: number
-    },
+    }
     dbNamespaces: string[]
     websocket_count: number
     moonraker_version: string

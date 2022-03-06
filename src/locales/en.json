@@ -352,12 +352,14 @@
         "SystemPanel": {
             "Awake": "Awake",
             "Constants": "Constants",
+            "Cpu": "CPU",
             "Distro": "Distro",
             "Frequency": "Freq",
             "HostDetails": "Host details",
             "LastStats": "Last stats",
             "Load": "Load",
             "Memory": "Mem",
+            "Network": "Network",
             "Os": "OS",
             "SystemLoad": "System Loads",
             "Version": "Version"

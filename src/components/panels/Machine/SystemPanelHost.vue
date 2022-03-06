@@ -6,7 +6,7 @@
 
 <template v-if="hostStats">
     <div>
-        <v-row class="py-0">
+        <v-row class="py-0 pr-4">
             <v-col class="pl-6">
                 <strong style="cursor: pointer" @click="hostDetailsDialog = true">Host</strong>
                 <v-tooltip top>
@@ -32,20 +32,11 @@
                     <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span>
                     <br />
                 </span>
-                <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }}</span>
-                <span v-if="cpuUsage">, {{ $t('Machine.SystemPanel.CPU') }}: {{ cpuUsage }}%</span>
+                <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }},</span>
                 <span v-if="hostStats.memoryFormat">
-                    , {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }}
-                </span>
-                <span v-if="disk_usage.total > 0">
-                    , {{ $t('Machine.SystemPanel.Disk') }}: {{ formatFilesize(disk_usage.used) }} /
-                    {{ formatFilesize(disk_usage.total) }}
-                </span>
-                <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
-                    , {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s
+                    {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }},
                 </span>
                 <template v-if="hostStats.tempSensor">
-                    <span>,</span>
                     <template
                         v-if="
                             hostStats.tempSensor.measured_min_temp !== null &&
@@ -66,8 +57,22 @@
                     </template>
                     <template v-else>Temp: {{ hostStats.tempSensor.temperature + '°C' }}</template>
                 </template>
+                <template v-if="networkInterfaces">
+                    <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
+                        <br />
+                        {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
+                        {{ formatFilesize(interfaceStats.rx_bytes) }}, Tx:
+                        {{ formatFilesize(interfaceStats.tx_bytes) }}
+                    </span>
+                </template>
             </v-col>
-            <v-col class="px-6 col-auto d-flex justify-end align-center">
+            <v-col v-if="cpuUsage !== null" class="px-2 col-auto d-flex flex-column justify-center align-center">
+                <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
+                    {{ cpuUsage }}
+                </v-progress-circular>
+                <span class="mt-2">{{ $t('Machine.SystemPanel.Cpu') }}</span>
+            </v-col>
+            <v-col v-else class="px-2 col-auto d-flex flex-column justify-center align-center">
                 <v-progress-circular
                     :rotate="-90"
                     :size="55"
@@ -76,6 +81,20 @@
                     :color="hostStats.loadProgressColor">
                     {{ hostStats.loadPercent }}
                 </v-progress-circular>
+                <span class="mt-2">{{ $t('Machine.SystemPanel.Load') }}</span>
+            </v-col>
+            <v-col
+                v-if="hostStats.memUsage !== null"
+                class="px-2 col-auto d-flex flex-column justify-center align-center">
+                <v-progress-circular
+                    :rotate="-90"
+                    :size="55"
+                    :width="7"
+                    :value="hostStats.memUsage"
+                    :color="hostStats.memUsageColor">
+                    {{ hostStats.memUsage }}
+                </v-progress-circular>
+                <span class="mt-2">{{ $t('Machine.SystemPanel.Memory') }}</span>
             </v-col>
         </v-row>
         <v-dialog v-model="hostDetailsDialog" :max-width="600" :max-height="500" scrollable>
@@ -85,7 +104,9 @@
                 card-class="machine-systemload-host-details-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="hostDetailsDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="hostDetailsDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-5 px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -124,13 +145,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { formatFilesize } from '@/plugins/helpers'
-import { mdiTextBoxSearchOutline } from '@mdi/js'
+import { mdiTextBoxSearchOutline, mdiCloseThick } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class SystemPanelHost extends Mixins(BaseMixin) {
     formatFilesize = formatFilesize
-
+    mdiCloseThick = mdiCloseThick
     mdiTextBoxSearchOutline = mdiTextBoxSearchOutline
 
     private hostDetailsDialog = false
@@ -153,6 +174,14 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
 
     get cpuUsage() {
         return this.$store.getters['server/getCpuUsage'] ?? null
+    }
+
+    get cpuUsageColor() {
+        let color = 'primary'
+        if (this.cpuUsage > 95) color = 'error'
+        else if (this.cpuUsage > 80) color = 'warning'
+
+        return color
     }
 
     get networkInterfaces() {
