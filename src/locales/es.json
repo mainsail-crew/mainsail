@@ -37,9 +37,9 @@
             "CannotUploadTheFile": "¡No se pudo subir el Archivo!",
             "EmergencyStop": "Parada de emergencia",
             "SAVE_CONFIG": "GUARDAR CONFIG.",
+            "Uploading": "Cargando",
             "UploadOfFileSuccessful": "¡{file} cargado con éxito!",
-            "UploadPrint": "Cargar e imprimir",
-            "Uploading": "Cargando"
+            "UploadPrint": "Cargar e imprimir"
         },
         "TopCornerMenu": {
             "Cancel": "Cancelar",
@@ -132,9 +132,9 @@
         "Delete": "Borrar",
         "DeleteDirectory": "Borrar directorio",
         "DeleteDirectoryQuestion": "¿Realmente quiere borrar la carpeta \"{name}\" con todo su contenido?",
-        "DoYouWantToStartFilename": "¿Quiere iniciar {filename}?",
         "Download": "Descargar",
         "Downloading": "Descargando",
+        "DoYouWantToStartFilename": "¿Quiere iniciar {filename}?",
         "DropFilesToAddGcode": "Arrastre y suelte archivos para agregar G-code.",
         "EditFile": "Editar archivo",
         "Empty": "Vacío",
@@ -156,9 +156,9 @@
         "NozzleDiameter": "Diámetro de la boquilla",
         "ObjectHeight": "Altura del objeto",
         "Preheat": "Precalentar",
+        "PrintedFiles": "Archivos impresos",
         "PrintStart": "Iniciar impresión",
         "PrintTime": "Tiempo de impresión",
-        "PrintedFiles": "Archivos impresos",
         "RefreshCurrentDirectory": "Actualizar directorio actual",
         "Rename": "Renombrar",
         "RenameDirectory": "Renombrar directorio",
@@ -174,8 +174,8 @@
         "SuccessfullyRenamed": "{filename} renombrado con éxito.",
         "SuccessfullyUploaded": "{filename} subido con éxito!",
         "Total": "Total",
-        "UploadNewGcode": "Cargar nuevo G-Code",
         "Uploading": "Cargando",
+        "UploadNewGcode": "Cargar nuevo G-Code",
         "Used": "Usado",
         "View3D": "Vista 3D",
         "WrongFileUploaded": "Carga denegada para {filename}. ¡Formato de archivo erróneo!"
@@ -193,8 +193,8 @@
         "Max": "Máximo",
         "Medium": "Medio",
         "ReloadRequired": "Recarga requerida",
-        "RenderQuality": "Calidad de render",
         "Rendering": "Renderizando",
+        "RenderQuality": "Calidad de render",
         "ShowObjectSelection": "Mostrar selección de objeto",
         "ShowToolhead": "Mostrar cabezal",
         "ShowTravelMoves": "Mostrar desplazamientos",
@@ -346,8 +346,8 @@
             "Endstop": "Fin de carrera",
             "EndstopInfo": "Presione el botón Sincronizar en la parte inferior derecha para cargar el estado actual de los fines de carrera.",
             "Endstops": "Fines de carrera",
-            "TRIGGERED": "ACTIVADO",
-            "open": "ABIERTO"
+            "open": "ABIERTO",
+            "TRIGGERED": "ACTIVADO"
         },
         "LogfilesPanel": {
             "Logfiles": "Archivos de registro"
@@ -382,11 +382,11 @@
             "PackagesCanBeUpgraded": "paquete/s puede/n actualizarse",
             "System": "Sistema",
             "Unknown": "Desconocido",
-            "UpToDate": "Al día",
             "Update": "Actualizar",
             "UpdateAll": "Actualizar todo",
             "UpdateManager": "Gestor de actualizaciones",
-            "Upgrade": "Actualizar"
+            "Upgrade": "Actualizar",
+            "UpToDate": "Al día"
         }
     },
     "Panels": {
@@ -460,18 +460,18 @@
             "Headline": "Macros",
             "Send": "Enviar"
         },
-        "MinSettingsPanel": {
-            "IncludeMainsailCfg": "Asegúrese de incluir mainsail.cfg en su archivo printer.cfg.",
-            "IsNotDefinedInConfig": "no está definida en la configuración.",
-            "MissingConfiguration": "Configuración no encontrada",
-            "MoreInformation": "más información"
-        },
         "MiniconsolePanel": {
             "Headline": "Consola",
             "HideTemperatures": "Ocultar temperaturas",
             "HideTimelapse": "Ocultar timelapse",
             "SendCode": "Enviar código...",
             "SetupConsole": "Configurar consola"
+        },
+        "MinSettingsPanel": {
+            "IncludeMainsailCfg": "Asegúrese de incluir mainsail.cfg en su archivo printer.cfg.",
+            "IsNotDefinedInConfig": "no está definida en la configuración.",
+            "MissingConfiguration": "Configuración no encontrada",
+            "MoreInformation": "más información"
         },
         "MiscellaneousPanel": {
             "Headline": "Varios",
@@ -503,14 +503,14 @@
             "CancelPrint": "Cancelar impresión",
             "ClearPrintStats": "Limpiar estadísticas de impresión",
             "Difference": "Diferencia",
-            "ETA": "ETA",
             "Estimate": "Estimación",
+            "ETA": "ETA",
             "ExcludeObject": {
                 "Cancel": "Cancelar",
+                "Excluded": "Excluido",
                 "ExcludeObject": "Excluir objeto",
                 "ExcludeObjectHeadline": "Excluir objeto",
-                "ExcludeObjectText": "¿Realmente quiere excluir a \"{name}\"?",
-                "Excluded": "Excluido"
+                "ExcludeObjectText": "¿Realmente quiere excluir a \"{name}\"?"
             },
             "Filament": "Filamento",
             "File": "Archivo",
@@ -557,9 +557,9 @@
             "ShowNameInList": "Mostrar {name} en el listado",
             "State": "Estado",
             "Target": "Objetivo",
+            "TemperaturesInChart": "Temperatura [°C]",
             "TempTooHigh": "¡Temperatura muy alta para {name}! (max: {max})",
-            "TempTooLow": "¡Temperatura muy baja para {name}! (min: {min})",
-            "TemperaturesInChart": "Temperatura [°C]"
+            "TempTooLow": "¡Temperatura muy baja para {name}! (min: {min})"
         },
         "WebcamPanel": {
             "All": "Todos",
@@ -573,8 +573,8 @@
             "Headline": "Z-Offset",
             "Later": "Más tarde",
             "Ok": "OK",
-            "SAVE_CONFIG": "SAVEE_CONFIG",
             "Save": "Guardar",
+            "SAVE_CONFIG": "SAVEE_CONFIG",
             "SaveInfoDescription": "El nuervo Z-Offset fue calculado y registrado. Haga click en SAVE_CONFIG para guardar el nuevo Z-Offset en su archivo printer.cfg y reiniciar Klipper.",
             "SaveInfoDescriptionPrint": "El nuevo Z-Offset fue calculado y registrado. Después de imprimir, haga click en SAVE_CONFIG en la barra superior para guardarlo en printer.cfg y reiniciar Klipper.",
             "SaveInfoHeadline": "Información",
@@ -720,8 +720,8 @@
             "CountMacros": "No se agregaron macros | {count} Macro | {count} Macros",
             "Custom": "Personalizado",
             "CustomColor": "Color personalizado",
-            "DeleteMacroFromGroup": "Eliminar macro del grupo",
             "DeletedMacro": "Macro eliminada",
+            "DeleteMacroFromGroup": "Eliminar macro del grupo",
             "EditGroup": "Editar grupo",
             "Error": "Error",
             "Expert": "Experto",
@@ -731,10 +731,10 @@
             "Macrogroups": "Grupos",
             "Macros": "Macros",
             "Management": "Gestión",
-            "NOMacros": "No se encontraron macros...",
             "Name": "Nombre",
             "NoAvailableMacros": "No hay macros disponibles.",
             "NoGroups": "No se encontraron grupos...",
+            "NOMacros": "No se encontraron macros...",
             "NoMacrosInGroup": "No hay Macros en este grupo.",
             "Primary": "Primario",
             "Secondary": "Secundario",
@@ -776,6 +776,8 @@
             "CameraDescription": "Elija qué cámara será utilizada.",
             "ConstantRateFactor": "Factor de tasa constante",
             "ConstantRateFactorDescription": "Configura la calidad vs. el tamaño del archivo del video renderizado. El rango de la escala de FTC es de 0-51, donde 0 es sin pérdidas, 23 es predeterminado y 51 es la peor calidad posible. Un valor más bajo generalmente conduce a una mayor calidad y un rango subjetivamente sensato es 17-28. Considere que 17 o 18 no tienen pérdida visual. ",
+            "duplicatelastframe": "Duplicar último cuadro",
+            "duplicatelastframeDescription": "Duplica el ultimo cuadro al final de video.",
             "Enabled": "Activado",
             "EnabledDescription": "Si está desactivado, las macros de G-code son ignoradas y el autorrender es salteado.",
             "Extraoutputparams": "Parámetros adicionales",
@@ -791,12 +793,12 @@
             "ModeDescription": "Elija en modo entre LayerMacro e Hyperlape (basado en tiempo).",
             "OutputFramerate": "Framerate",
             "OutputFramerateDescription": "Define los cuadros por segundo del video. Nota: Puede ser ignorado si variable_fps está activado.",
-            "ParkTime": "Park time",
-            "ParkTimeDescription": "Agregue tiempo de inactividad adicional al apartar el cabezal.",
             "Parkhead": "Apartar cabezal",
             "ParkheadDescription": "Si está activado, el cabezal será apartado antes de tomar la foto para el Timelapse.",
             "Parkpos": "Posición donde apartar",
             "ParkposDescription": "Seleccione la posición donde apartar el cabezal.",
+            "ParkTime": "Park time",
+            "ParkTimeDescription": "Agregue tiempo de inactividad adicional al apartar el cabezal.",
             "Pixelformat": "Formato de pixel",
             "PixelformatDescription": "Define el formato de pixeles del video.",
             "PosDZ": "Posición Z",
@@ -832,9 +834,7 @@
             "VariableFpsMax": "FPS Variable máximo",
             "VariableFpsMaxDescription": "",
             "VariableFpsMin": "FPS Variable mínimo",
-            "VariableFpsMinDescription": "",
-            "duplicatelastframe": "Duplicar último cuadro",
-            "duplicatelastframeDescription": "Duplica el ultimo cuadro al final de video."
+            "VariableFpsMinDescription": ""
         },
         "UiSettingsTab": {
             "BoolBigThumbnail": "Miniatura grande",
