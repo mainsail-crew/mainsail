@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
-import {MutationTree} from 'vuex'
-import {ServerState, ServerStateNetworkInterface} from '@/store/server/types'
-import {formatConsoleMessage, formatTime} from '@/plugins/helpers'
-import {maxEventHistory} from '@/store/variables'
+import { MutationTree } from 'vuex'
+import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
+import { formatConsoleMessage, formatTime } from '@/plugins/helpers'
+import { maxEventHistory } from '@/store/variables'
 
 export const mutations: MutationTree<ServerState> = {
     reset(state) {
