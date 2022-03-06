@@ -5,11 +5,7 @@
         "es6": true,
         "node": true
     },
-    "extends": [ "plugin:jsonc/base","plugin:vue/recommended",
-        "eslint:recommended",
-        "@vue/typescript",
-        "prettier"
-    ],
+    "extends": ["plugin:jsonc/base", "plugin:vue/recommended", "eslint:recommended", "@vue/typescript", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -23,15 +19,13 @@
         "parser": "@typescript-eslint/parser",
         "sourceType": "module"
     },
-    "plugins": [
-        "vue"
-    ],
+    "plugins": ["vue"],
     "overrides": [
         {
             "files": "src/locales/*.json",
-           "parser": "jsonc-eslint-parser",
+            "parser": "jsonc-eslint-parser",
             "rules": {
-                "jsonc/sort-keys": ["error", "asc", {"caseSensitive": false, "natural": false}]
+                "jsonc/sort-keys": ["error", "asc", { "caseSensitive": false, "natural": false }]
             }
         }
     ]
