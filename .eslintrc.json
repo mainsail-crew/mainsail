@@ -14,7 +14,7 @@
         "vue/no-v-html": 0,
         "vue/component-tags-order": 0
     },
-    "parser": "vue-eslint-parser",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "sourceType": "module"
@@ -25,8 +25,13 @@
             "files": "src/locales/*.json",
             "parser": "jsonc-eslint-parser",
             "rules": {
+                "jsonc/no-dupe-keys": "error",
                 "jsonc/sort-keys": ["error", "asc", { "caseSensitive": false, "natural": false }]
             }
+        },
+        {
+            "files": "src/**/*.vue",
+            "parser": "vue-eslint-parser"
         }
     ]
 }
