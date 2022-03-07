@@ -66,8 +66,8 @@ Vue.component('EChart', ECharts)
 //load config.json and init vue
 fetch('/config.json')
     .then((res) => res.json())
-    .then((file) => {
-        store.commit('socket/setData', file)
+    .then(async (file) => {
+        await store.dispatch('importConfigJson', file)
 
         const url = store.getters['socket/getWebsocketUrl']
         Vue.use(WebSocketPlugin, {
@@ -75,7 +75,7 @@ fetch('/config.json')
             store: store,
         })
 
-        if (!store?.state?.socket?.remoteMode) Vue.$socket.connect()
+        if (!store?.state?.remoteMode) Vue.$socket.connect()
 
         new Vue({
             vuetify,

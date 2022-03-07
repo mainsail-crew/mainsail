@@ -20,7 +20,7 @@ export default class ControlMixin extends Vue {
     }
 
     get existsQGL() {
-        if (!this.$store.state.printer.configfile.settings) {
+        if (!this.$store.state.printer.configfile?.settings) {
             return false
         }
 
@@ -28,7 +28,7 @@ export default class ControlMixin extends Vue {
     }
 
     get existsZtilt() {
-        if (!this.$store.state.printer.configfile.settings) {
+        if (!this.$store.state.printer.configfile?.settings) {
             return false
         }
 
