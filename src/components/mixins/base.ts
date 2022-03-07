@@ -12,7 +12,7 @@ export default class BaseMixin extends Vue {
     }
 
     get remoteMode() {
-        return this.$store.state.socket.remoteMode
+        return this.$store.state.remoteMode
     }
 
     get socketIsConnected(): boolean {
@@ -59,6 +59,13 @@ export default class BaseMixin extends Vue {
 
     get isWidescreen() {
         return this.$vuetify.breakpoint.xl
+    }
+
+    get viewport() {
+        if (this.isMobile) return 'mobile'
+        else if (this.isTablet) return 'tablet'
+        else if (this.isDesktop) return 'desktop'
+        else return 'widescreen'
     }
 
     get isTouchDevice() {

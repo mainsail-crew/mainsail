@@ -9,7 +9,7 @@
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
                         :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
-                        <v-btn small outlined @click="editPrinter(printer)">
+                        <v-btn small outlined :disabled="!canAddPrinters" @click="editPrinter(printer)">
                             <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
@@ -18,6 +18,7 @@
                             outlined
                             class="ml-3 minwidth-0 px-2"
                             color="error"
+                            :disabled="!canAddPrinters"
                             @click="delPrinter(printer.id)">
                             <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
@@ -25,7 +26,7 @@
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createPrinter">
+                <v-btn text color="primary" :disabled="!canAddPrinters" @click="createPrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
             </v-card-actions>
@@ -110,6 +111,10 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
+    }
+
+    get canAddPrinters() {
+        return this.$store.state.configInstances.length === 0
     }
 
     get protocol() {
