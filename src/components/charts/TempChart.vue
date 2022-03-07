@@ -199,7 +199,7 @@ export default class TempChart extends Mixins(BaseMixin) {
     }
 
     get maxHistory() {
-        return this.$store.getters['server/getConfig']('server', 'temperature_store_size') ?? 1200
+        return this.$store.getters['printer/tempHistory/getTemperatureStoreSize']
     }
 
     get series() {
