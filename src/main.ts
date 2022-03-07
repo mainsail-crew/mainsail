@@ -51,7 +51,6 @@ Vue.use(OverlayScrollbarsPlugin, {
 })
 
 // Directives
-
 import './directives/longpress'
 import './directives/responsive-class'
 
