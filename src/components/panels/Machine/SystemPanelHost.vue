@@ -61,12 +61,25 @@
                         <template v-else>Temp: {{ hostStats.tempSensor.temperature + '°C' }}</template>
                     </template>
                     <template v-if="networkInterfaces">
-                        <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
-                            <br />
-                            {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
+                        <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
+                            <v-tooltip top>
+                                <template #activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">{{ interfaceName }}:</span>
+                                </template>
+                                <span>
+                                    MAC: {{ interfaceStats.details.mac_address }}
+                                    <br />
+                                    <div
+                                        v-for="ip_address in interfaceStats.details.ip_addresses"
+                                        :key="ip_address.family">
+                                        {{ ip_address.family }}: {{ ip_address.address }}
+                                    </div>
+                                </span>
+                            </v-tooltip>
+                            {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
                             {{ formatFilesize(interfaceStats.rx_bytes) }}, Tx:
                             {{ formatFilesize(interfaceStats.tx_bytes) }}
-                        </span>
+                        </div>
                     </template>
                 </div>
             </v-col>
