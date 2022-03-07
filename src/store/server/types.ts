@@ -28,6 +28,9 @@ export interface ServerState {
             version: string[]
             version_string: string
         }
+        network: {
+            [key: string]: ServerStateNetwork
+        }
     } | null
     moonraker_stats: {
         cpu_usage: number
@@ -118,8 +121,20 @@ export interface ServerStateServiceState {
     sub_state: string
 }
 
+export interface ServerStateNetwork {
+    mac_address: string
+    ip_addresses: ServerStateNetworkIpaddresses[]
+}
+
+export interface ServerStateNetworkIpaddresses {
+    family: 'ipv4' | 'ipv6'
+    address: string
+    is_link_local: boolean
+}
+
 export interface ServerStateNetworkInterface {
     bandwidth: number
     rx_bytes: number
     tx_bytes: number
+    details?: ServerStateNetwork
 }

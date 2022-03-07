@@ -150,7 +150,10 @@ export const getters: GetterTree<ServerState, any> = {
 
         Object.keys(state.network_stats).forEach((interfaceName: string) => {
             if (interfaceName !== 'lo') {
-                interfaces[interfaceName] = { ...state.network_stats[interfaceName] }
+                if (state.system_info?.network && interfaceName in state.system_info.network) {
+                    interfaces[interfaceName] = { ...state.network_stats[interfaceName] }
+                    interfaces[interfaceName].details = { ...state.system_info.network[interfaceName] }
+                }
             }
         })
 
