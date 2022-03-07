@@ -9,62 +9,66 @@
         <v-row class="py-0 pr-4">
             <v-col class="pl-6">
                 <strong style="cursor: pointer" @click="hostDetailsDialog = true">Host</strong>
-                <v-tooltip top>
-                    <template #activator="{ on, attrs }">
-                        <small v-if="hostStats.cpuName" class="ml-2" v-bind="attrs" v-on="on">
-                            ({{ hostStats.cpuName }})
-                        </small>
-                    </template>
-                    <span v-if="hostStats.cpuDesc">{{ hostStats.cpuDesc }}</span>
-                </v-tooltip>
+                <template v-if="hostStats.cpuDesc">
+                    <v-tooltip top>
+                        <template #activator="{ on, attrs }">
+                            <small v-if="hostStats.cpuName" class="ml-2" v-bind="attrs" v-on="on">
+                                ({{ hostStats.cpuName }})
+                            </small>
+                        </template>
+                        <span>{{ hostStats.cpuDesc }}</span>
+                    </v-tooltip>
+                </template>
                 <br />
-                <span v-if="hostStats.version">
-                    {{ $t('Machine.SystemPanel.Version') }}: {{ hostStats.version }}
-                    <br />
-                </span>
-                <span v-if="hostStats.os">
-                    {{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}
-                    <br />
-                </span>
-                <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">
-                    {{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }}
-                    {{ hostStats.release_info.version_id }}
-                    <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span>
-                    <br />
-                </span>
-                <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }},</span>
-                <span v-if="hostStats.memoryFormat">
-                    {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }},
-                </span>
-                <template v-if="hostStats.tempSensor">
-                    <template
-                        v-if="
-                            hostStats.tempSensor.measured_min_temp !== null &&
-                            hostStats.tempSensor.measured_max_temp !== null
-                        ">
-                        <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <span v-bind="attrs" v-on="on">
-                                    Temp: {{ hostStats.tempSensor.temperature + '°C' }}
-                                </span>
-                            </template>
-                            <span>
-                                max: {{ hostStats.tempSensor.measured_max_temp }}°C
-                                <br />
-                                min: {{ hostStats.tempSensor.measured_min_temp }}°C
-                            </span>
-                        </v-tooltip>
-                    </template>
-                    <template v-else>Temp: {{ hostStats.tempSensor.temperature + '°C' }}</template>
-                </template>
-                <template v-if="networkInterfaces">
-                    <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
+                <div class="text-body-2">
+                    <span v-if="hostStats.version">
+                        {{ $t('Machine.SystemPanel.Version') }}: {{ hostStats.version }}
                         <br />
-                        {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
-                        {{ formatFilesize(interfaceStats.rx_bytes) }}, Tx:
-                        {{ formatFilesize(interfaceStats.tx_bytes) }}
                     </span>
-                </template>
+                    <span v-if="hostStats.os">
+                        {{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}
+                        <br />
+                    </span>
+                    <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">
+                        {{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }}
+                        {{ hostStats.release_info.version_id }}
+                        <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span>
+                        <br />
+                    </span>
+                    <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }},</span>
+                    <span v-if="hostStats.memoryFormat">
+                        {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }},
+                    </span>
+                    <template v-if="hostStats.tempSensor">
+                        <template
+                            v-if="
+                                hostStats.tempSensor.measured_min_temp !== null &&
+                                hostStats.tempSensor.measured_max_temp !== null
+                            ">
+                            <v-tooltip top>
+                                <template #activator="{ on, attrs }">
+                                    <span v-bind="attrs" v-on="on">
+                                        Temp: {{ hostStats.tempSensor.temperature + '°C' }}
+                                    </span>
+                                </template>
+                                <span>
+                                    max: {{ hostStats.tempSensor.measured_max_temp }}°C
+                                    <br />
+                                    min: {{ hostStats.tempSensor.measured_min_temp }}°C
+                                </span>
+                            </v-tooltip>
+                        </template>
+                        <template v-else>Temp: {{ hostStats.tempSensor.temperature + '°C' }}</template>
+                    </template>
+                    <template v-if="networkInterfaces">
+                        <span v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
+                            <br />
+                            {{ interfaceName }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
+                            {{ formatFilesize(interfaceStats.rx_bytes) }}, Tx:
+                            {{ formatFilesize(interfaceStats.tx_bytes) }}
+                        </span>
+                    </template>
+                </div>
             </v-col>
             <v-col v-if="cpuUsage !== null" class="px-2 col-auto d-flex flex-column justify-center align-center">
                 <v-progress-circular :rotate="-90" :size="55" :width="7" :value="cpuUsage" :color="cpuUsageColor">
