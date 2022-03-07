@@ -1,11 +1,11 @@
 import 'core-js/stable' // polyfills for older browsers
 import 'regenerator-runtime' // async polyfill used by the gcodeviewer
+import 'resize-observer-polyfill' // polyfill needed by the responsive class detection
 
 import Vue from 'vue'
 import App from '@/App.vue'
 import vuetify from '@/plugins/vuetify'
 import i18n from '@/plugins/i18n'
-import './plugins/longpress'
 import store from '@/store'
 import router from '@/plugins/router'
 
@@ -50,6 +50,10 @@ Vue.use(OverlayScrollbarsPlugin, {
         autoHide: 'scroll',
     },
 })
+
+// Directives
+import './directives/longpress'
+import './directives/responsive-class'
 
 // Echarts
 import ECharts from 'vue-echarts'

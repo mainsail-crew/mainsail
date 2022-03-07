@@ -11,6 +11,7 @@
         "allowSyntheticDefaultImports": true,
         "experimentalDecorators": true,
         "sourceMap": true,
+        "skipLibCheck": true,
         "baseUrl": ".",
         "types": [
             "cypress",
