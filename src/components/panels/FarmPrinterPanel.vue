@@ -213,6 +213,8 @@ export default class FarmPrinterPanel extends Mixins(BaseMixin) {
     }
 
     get printer_image() {
+        if (this.currentWebcam) return '/img/sidebar-background.svg'
+
         return this.$store.getters['farm/' + this.printer._namespace + '/getImage']
     }
 
