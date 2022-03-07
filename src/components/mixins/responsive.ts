@@ -4,8 +4,6 @@ import { Prop } from 'vue-property-decorator'
 import throttle from 'lodash.throttle'
 
 export type ResponsiveElement = {
-    width: number
-    height: number
     is: {
         [key: string]: boolean
     }
@@ -14,14 +12,12 @@ export type ResponsiveElement = {
 @Component
 export default class ResponsiveMixin extends BaseMixin {
     @Prop() protected declare breakpoints: {
-        [key: string]: (el: ResponsiveElement) => boolean
+        [key: string]: (el: DOMRect) => boolean
     }
 
     observer?: ResizeObserver
 
     el: ResponsiveElement = {
-        width: 0,
-        height: 0,
         is: {},
     }
 
@@ -46,15 +42,7 @@ export default class ResponsiveMixin extends BaseMixin {
         const cr = entries[0].contentRect
         const conds = this.breakpoints
         for (const breakpoint in conds) {
-            this.$set(
-                this.el.is,
-                breakpoint,
-                conds[breakpoint]({
-                    ...this.el,
-                    width: cr.width,
-                    height: cr.height,
-                })
-            )
+            this.$set(this.el.is, breakpoint, conds[breakpoint](cr))
         }
     }
 }
