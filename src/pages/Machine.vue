@@ -29,10 +29,8 @@ import LogfilesPanel from '@/components/panels/Machine/LogfilesPanel.vue'
 import EndstopPanel from '@/components/panels/Machine/EndstopPanel.vue'
 import ConfigFilesPanel from '@/components/panels/Machine/ConfigFilesPanel.vue'
 import SystemPanel from '@/components/panels/Machine/SystemPanel.vue'
-import DiskPanel from '@/components/panels/Machine/DiskPanel.vue'
 @Component({
     components: {
-        DiskPanel,
         SystemPanel,
         ConfigFilesPanel,
         EndstopPanel,
