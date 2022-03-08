@@ -1,313 +1,461 @@
 <style lang="scss" scoped>
-._button-group {
+._btn-group {
     border-radius: 4px;
     display: inline-flex;
-    margin-top: 14px;
+    flex-wrap: nowrap;
     max-width: 100%;
-}
-
-._button-group > .v-btn {
-    border-radius: 0;
-    border-color: rgba(255, 255, 255, 0.12);
-    border-style: solid;
-    border-width: thin;
-    box-shadow: none;
-    height: 30px;
-    opacity: 0.8;
-    padding: 0 12px;
-    min-width: auto !important;
-}
-
-._button-group > .v-btn:first-child {
-    border-top-left-radius: inherit;
-    border-bottom-left-radius: inherit;
-}
-
-._button-group > .v-btn:last-child {
-    border-top-right-radius: inherit;
-    border-bottom-right-radius: inherit;
-}
-
-._button-group > .v-btn:not(:first-child) {
-  border-left-width: 0;
-}
-
-._spin_button_group {
-        width: 24px;
-        margin: -6px -6px 0 -6px;
-    }
-
-.btnHomeAxis {
-    width: 36px;
-    min-width: 36px !important;
-}
-
-.steps {
+    min-width: 100%;
     width: 100%;
-    > div {
-        width: 100%;
-        display: flex;
-        > button {
-            flex-grow: 1;
-        }
+
+    .v-btn {
+        border-radius: 0;
+        border-color: rgba(255, 255, 255, 0.12);
+        border-style: solid;
+        border-width: thin;
+        box-shadow: none;
+        height: 28px;
+        opacity: 0.8;
+        min-width: auto !important;
     }
+
+    .v-btn:first-child {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .v-btn:last-child {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+
+    .v-btn:not(:first-child) {
+        border-left-width: 0;
+    }
+}
+
+._btn-qs {
+    font-size: 0.8rem !important;
+    max-height: 24px;
+}
+
+._btn-extruder-cmd {
+    min-width: 130px !important;
+}
+
+._btn-load-cmd {
+    min-width: 100px !important;
 }
 </style>
 
 <template>
     <panel
-        v-if="klipperReadyForGui && all_extruders.length > 0"
-        icon="mdi-printer-3d-nozzle"
-        :title="'Extruder Controls'"
+        v-if="klipperReadyForGui && extruders.length"
+        :icon="mdiPrinter3dNozzle"
+        :title="$t('Panels.ExtruderControlPanel.Headline').toString()"
         :collapsible="true"
-        card-class="extruder-control-panel"
-    >
+        card-class="extruder-control-panel">
+        <!-- PANEL-HEADER 3-DOT-MENU -->
+        <template #buttons>
+            <v-menu v-if="filamentChangeMacros" left :offset-y="true" class="pa-0">
+                <template #activator="{ on, attrs }">
+                    <v-btn icon tile v-bind="attrs" v-on="on">
+                        <v-icon>{{ mdiDotsVertical }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-list dense>
+                    <v-list-item>
+                        <!-- FILAMENT UNLOAD -->
+                        <v-tooltip top :disabled="extrudePossible" color="error">
+                            <template #activator="{ on }">
+                                <div v-on="on">
+                                    <v-btn
+                                        :loading="loadings.includes('btnUnloadFilament')"
+                                        :disabled="!extrudePossible || !standby"
+                                        small
+                                        class="_btn-load-cmd"
+                                        @click="sendUnloadFilament()">
+                                        <span class="d-flex align-center">
+                                            <v-icon small style="transform: rotate(270deg)" class="mr-1">
+                                                {{ mdiLocationExit }}
+                                            </v-icon>
+                                            Unload
+                                        </span>
+                                    </v-btn>
+                                </div>
+                            </template>
+                            <span>
+                                {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                {{ minExtrudeTemp }} °C
+                            </span>
+                        </v-tooltip>
+                    </v-list-item>
+                    <v-list-item>
+                        <!-- FILAMENT LOAD -->
+                        <v-tooltip top :disabled="extrudePossible" color="error">
+                            <template #activator="{ on }">
+                                <div v-on="on">
+                                    <v-btn
+                                        :loading="loadings.includes('btnLoadFilament')"
+                                        :disabled="!extrudePossible || !standby"
+                                        small
+                                        class="_btn-load-cmd"
+                                        @click="sendLoadFilament()">
+                                        <span class="d-flex align-center">
+                                            <v-icon small style="transform: rotate(90deg)" class="mr-1">
+                                                {{ mdiLocationEnter }}
+                                            </v-icon>
+                                            Load
+                                        </span>
+                                    </v-btn>
+                                </div>
+                            </template>
+                            <span>
+                                {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                {{ minExtrudeTemp }} °C
+                            </span>
+                        </v-tooltip>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </template>
+        <!-- TOOL SELECTOR BUTTONS -->
+        <v-container v-if="extruders.length > 1">
+            <v-item-group class="_btn-group py-0 px-1">
+                <v-btn
+                    v-for="extruder in extruders"
+                    :key="extruder.key"
+                    :class="extruder.key === activeExtruder ? 'primary--text' : {}"
+                    :value="extruder.key"
+                    :disabled="!standby"
+                    dense
+                    class="flex-grow-1 px-0"
+                    @click="activateExtruder(extruder.key)">
+                    {{
+                        toolchangeMacros.length === extruders.length
+                            ? toolchangeMacros[extruders.indexOf(extruder)]
+                            : extruder.name
+                    }}
+                </v-btn>
+            </v-item-group>
+        </v-container>
+        <!-- EXTRUSION FACTOR SLIDER -->
         <v-container>
-            <v-row class="pt-2" v-if="this.all_extruders.length > 1">
+            <v-row class="d-flex align-center">
+                <tool-slider
+                    :label="$t('Panels.PrintsettingsPanel.ExtrusionFactor').toString()"
+                    :icon="mdiPrinter3dNozzleOutline"
+                    :target="extrudeFactor"
+                    :min="1"
+                    :max="200"
+                    :multi="100"
+                    :step="1"
+                    :has-input-field="true"
+                    command="M221"
+                    attribute-name="S"
+                    class="pt-0"></tool-slider>
+            </v-row>
+        </v-container>
+        <v-divider></v-divider>
+        <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
+        <v-container>
+            <v-row class="pt-2 px-1">
                 <v-col>
-                    <div class="d-flex align-center pb-4">
-                        <v-select
-                            v-model="selectedExtruder"
-                            :label="'Extruder'"
-                            :items="all_extruders"
-                            :value="active_extruder"
-                            hide-details
-                            outlined
+                    <number-input
+                        :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
+                        param="feedamount"
+                        :target="feedamount"
+                        :disabled="!standby"
+                        :output-error-msg="true"
+                        :has-spinner="true"
+                        :spinner-factor="100"
+                        :step="0.01"
+                        :min="0.01"
+                        :max="maxExtrudeOnlyDistance"
+                        :dec="2"
+                        unit="mm"
+                        @submit="setFeedamount"></number-input>
+                    <v-item-group class="_btn-group pt-3">
+                        <v-btn
+                            v-for="value in feedamountsSorted"
+                            :key="value"
+                            :disabled="!standby"
                             dense
-                        ></v-select>
+                            class="_btn-qs flex-grow-1 px-0"
+                            @click="setFeedamount({ value })">
+                            {{ value }}
+                        </v-btn>
+                    </v-item-group>
+                </v-col>
+                <v-col>
+                    <number-input
+                        :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate').toString()"
+                        param="feedrate"
+                        :target="feedrate"
+                        :disabled="!standby"
+                        :has-spinner="true"
+                        :output-error-msg="true"
+                        :spinner-factor="100"
+                        :step="0.01"
+                        :min="0.01"
+                        :max="null"
+                        :dec="2"
+                        type="number"
+                        unit="mm/s"
+                        @submit="setFeedrate"></number-input>
+                    <v-item-group class="_btn-group pt-3">
+                        <v-btn
+                            v-for="value in feedratesSorted"
+                            :key="value"
+                            :disabled="!standby"
+                            dense
+                            class="_btn-qs flex-grow-1 px-0"
+                            @click="setFeedrate({ value })">
+                            {{ value }}
+                        </v-btn>
+                    </v-item-group>
+                </v-col>
+            </v-row>
+            <!-- EXTRUDE AND RETRACT BUTTON -->
+            <v-row class="justify-space-between" :class="!showEstimatedExtrusion ? 'pb-1' : ''">
+                <v-col class="pa-0">
+                    <div class="d-flex justify-space-around">
+                        <div class="d-flex align-center">
+                            <!-- RETRACT -->
+                            <v-tooltip top :disabled="extrudePossible" color="error">
+                                <template #activator="{ on }">
+                                    <div class="pt-1 pb-2 px-3" v-on="on">
+                                        <v-btn
+                                            :loading="loadings.includes('btnRetract')"
+                                            :disabled="!extrudePossible || !standby"
+                                            small
+                                            class="_btn-extruder-cmd"
+                                            @click="sendRetract()">
+                                            <v-icon small class="mr-1">{{ mdiArrowUpBold }}</v-icon>
+                                            {{ $t('Panels.ExtruderControlPanel.Retract') }}
+                                        </v-btn>
+                                    </div>
+                                </template>
+                                <span v-show="!extrudePossible">
+                                    {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                    {{ minExtrudeTemp }} °C
+                                </span>
+                            </v-tooltip>
+                            <!-- EXTRUDE  -->
+                            <v-tooltip top :disabled="extrudePossible" color="error">
+                                <template #activator="{ on }">
+                                    <div class="pt-1 pb-2 px-3" v-on="on">
+                                        <v-btn
+                                            :loading="loadings.includes('btnDetract')"
+                                            :disabled="!extrudePossible || !standby"
+                                            small
+                                            class="_btn-extruder-cmd"
+                                            @click="sendExtrude()">
+                                            <v-icon small class="mr-1">{{ mdiArrowDownBold }}</v-icon>
+                                            {{ $t('Panels.ExtruderControlPanel.Extrude') }}
+                                        </v-btn>
+                                    </div>
+                                </template>
+                                <span>
+                                    {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                    {{ minExtrudeTemp }} °C
+                                </span>
+                            </v-tooltip>
+                        </div>
                     </div>
-                    <v-divider></v-divider>
                 </v-col>
             </v-row>
-
-            <v-row>
-                <v-col class="col col-md-6 pt-2">
-                    <v-text-field
-                        v-model="currentFeedAmount"
-                        label="Feed Length"
-                        suffix="mm"
-                        type="number"
-                        hide-spin-buttons
-                        hide-details
-                        outlined
-                        dense
-                    >
-                        <template v-slot:append-outer>
-                            <div class="_spin_button_group">
-                                <v-btn
-                                    class="mt-n3"
-                                    icon plain small
-                                >
-                                    <v-icon>mdi-chevron-up</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    class="mb-n3"
-                                    icon plain small
-                                >
-                                    <v-icon>mdi-chevron-down</v-icon>
-                                </v-btn>
-                            </div>
-                        </template>
-                    </v-text-field>
-                    <v-item-group class="_button-group" style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn
-                            v-for="amount in feedamountsSorted"
-                            @click="currentFeedAmount = amount"
-                            :key="amount"
-                            dense
-                            class="flex-grow-1 px-0"
-                        >
-                            {{ amount }}
-                        </v-btn>
-                    </v-item-group>
-                </v-col>
-                <v-col class="col col-md-6 pt-2">
-                    <v-text-field
-                        v-model="currentFeedRate"
-                        label="Extrusion Feedrate"
-                        suffix="mm/s"
-                        type="number"
-                        hide-spin-buttons
-                        hide-details
-                        outlined
-                        dense
-                    >
-                        <template v-slot:append-outer>
-                            <div class="_spin_button_group">
-                                <v-btn
-                                    class="mt-n3"
-                                    icon plain small
-                                >
-                                    <v-icon>mdi-chevron-up</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    class="mb-n3"
-                                    icon plain small
-                                >
-                                    <v-icon>mdi-chevron-down</v-icon>
-                                </v-btn>
-                            </div>
-                        </template>
-                    </v-text-field>
-                    <v-item-group class="_button-group" style="flex-wrap: nowrap; width: 100%;" >
-                        <v-btn
-                            v-for="rate in feedratesSorted"
-                            :key="rate"
-                            @click="currentFeedRate = rate"
-                            dense
-                            class="flex-grow-1 px-0"
-                        >
-                            {{ rate }}
-                        </v-btn>
-                    </v-item-group>
-                </v-col>
-            </v-row>
-
-            <v-row class="mt-n4 mb-1" style="height: 24px;">
-                <v-col class="text--disabled text-center">
-                    <span v-if="filamentDiameter && nozzleDiameter" style="font-size: .9em;">
-                        Expected extrusion: ~ {{ Math.round(currentFeedAmount * (filamentDiameter / nozzleDiameter)) }} mm @ {{ Math.round(Math.pow(filamentDiameter / 2, 2) * Math.PI * currentFeedRate * 10) / 10 }} mm&sup3;/s
-                    </span>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col class="col text-center">
-                    <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                        <template v-slot:activator="{ on }">
-                            <div v-on="on" class="d-inline-block">
-                                <v-btn
-                                    :loading="loadings.includes('btnRetract')"
-                                    :disabled="!boolExtrudePossible"
-                                    @click="sendRetract()"
-                                    class="mx-3"
-                                    small
-                                >
-                                    <v-icon small class="mr-1">mdi-arrow-up-bold</v-icon> {{ $t('Panels.ControlPanel.Retract') }}
-                                </v-btn>
-                            </div>
-                        </template>
-                        <span>
-                            {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
-                        </span>
-                    </v-tooltip>
-                    <v-tooltip top :disabled="boolExtrudePossible" color="panel">
-                        <template v-slot:activator="{ on }">
-                            <div v-on="on" class="d-inline-block">
-                                <v-btn
-                                    :loading="loadings.includes('btnDetract')"
-                                    :disabled="!boolExtrudePossible"
-                                    @click="sendExtrude()"
-                                    class="mx-3"
-                                    small
-                                >
-                                    <v-icon small class="mr-1">mdi-arrow-down-bold</v-icon> {{ $t('Panels.ControlPanel.Extrude') }}
-                                </v-btn>
-                            </div>
-                        </template>
-                        <span>
-                            {{ $t("Panels.ControlPanel.HotendTooCold") }} {{ minExtrudeTemp }} °C
-                        </span>
-                    </v-tooltip>
-                </v-col>
-            </v-row>
+        </v-container>
+        <!-- EXTRUSION ESTIMATION NOTE -->
+        <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-2">
+            <div
+                v-if="filamentDiameter && nozzleDiameter"
+                style="font-size: 0.8em"
+                class="text--disabled text-caption font-weight-light d-flex justify-center">
+                {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
+                {{ volumetricFlow }} mm³/s
+            </div>
         </v-container>
     </panel>
 </template>
 
 <script lang="ts">
-import {Component, Mixins} from 'vue-property-decorator'
+import {
+    mdiArrowDownBold,
+    mdiArrowUpBold,
+    mdiPrinter3dNozzle,
+    mdiPrinter3dNozzleOutline,
+    mdiLocationEnter,
+    mdiLocationExit,
+    mdiDotsVertical,
+} from '@mdi/js'
+import { Component, Mixins } from 'vue-property-decorator'
+import { PrinterStateExtruder } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import NumberInput from '@/components/inputs/NumberInput.vue'
+import Responsive from '@/components/ui/Responsive.vue'
+import ToolSlider from '@/components/inputs/ToolSlider.vue'
 
-@Component({components: {Panel}})
+@Component({
+    components: {
+        Panel,
+        NumberInput,
+        Responsive,
+        ToolSlider,
+    },
+})
 export default class ExtruderControlPanel extends Mixins(BaseMixin) {
-    private extruders: string[] = []
-    private selectedExtruder = ''
+    mdiArrowUpBold = mdiArrowUpBold
+    mdiArrowDownBold = mdiArrowDownBold
+    mdiPrinter3dNozzle = mdiPrinter3dNozzle
+    mdiPrinter3dNozzleOutline = mdiPrinter3dNozzleOutline
+    mdiLocationEnter = mdiLocationEnter
+    mdiLocationExit = mdiLocationExit
+    mdiDotsVertical = mdiDotsVertical
 
-    resetToActiveExtruder(): void {
-        this.selectedExtruder = this.$store.state.printer.toolhead?.extruder
+    get standby(): boolean {
+        return ['standby'].includes(this.printer_state)
     }
 
-    get all_extruders(): string[] {
-        Object.keys(this.$store.state.printer).forEach((e) => {
-            if (e.startsWith('extruder') && !this.extruders.includes(e)) this.extruders.push(e)
+    get toolchangeMacros(): string[] {
+        let tools: string[] = []
+        for (let i = 0; i < this.extruders.length; i++) {
+            this.$store.getters['printer/getMacros'].forEach((m: any) => {
+                if (`T${i}`.includes(m.name.toUpperCase())) tools.push(`T${i}`)
+            })
+        }
+        return tools
+    }
+
+    get filamentChangeMacros(): boolean {
+        let macros: string[] = []
+        this.$store.getters['printer/getMacros'].forEach((m: any) => {
+            if (m.name.toUpperCase().startsWith('LOAD_FILAMENT')) macros.push(m.name)
+            if (m.name.toUpperCase().startsWith('UNLOAD_FILAMENT')) macros.push(m.name)
         })
-        this.extruders.length === 1 ? this.resetToActiveExtruder() : {}
-
-        return this.extruders
+        return macros.length === 2
     }
 
-    get active_extruder(): string {
-        this.resetToActiveExtruder()
+    get extruders(): PrinterStateExtruder[] {
+        return this.$store.getters['printer/getExtruders']
+    }
+
+    get activeExtruder(): string {
         return this.$store.state.printer.toolhead?.extruder
     }
 
-    get filamentDiameter() {
-        return this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.filament_diameter ?? 1.75
+    get filamentDiameter(): number {
+        return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.filament_diameter ?? 1.75
     }
 
-    get nozzleDiameter() {
-        return this.$store.state.printer.configfile?.settings?.[this.selectedExtruder]?.nozzle_diameter ?? 0.4
+    get nozzleDiameter(): number {
+        return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.nozzle_diameter ?? 0.4
     }
 
-    get feedamounts() {
+    get feedamounts(): number[] {
         return this.$store.state.gui.control.extruder?.feedamounts ?? []
     }
 
-    get feedrates() {
+    get feedrates(): number[] {
         return this.$store.state.gui.control.extruder?.feedrates ?? []
     }
 
-    get feedamountsSorted() {
-        return [...this.feedamounts].sort((a,b) => { return b-a })
+    get feedamountsSorted(): number[] {
+        return [...this.feedamounts].sort((a, b) => {
+            return b - a
+        })
     }
 
-    get feedratesSorted () {
-        return [...this.feedrates].sort((a,b) => { return b-a })
+    get feedratesSorted(): number[] {
+        return [...this.feedrates].sort((a, b) => {
+            return b - a
+        })
     }
 
-    get currentFeedAmount() {
+    get feedamount(): number {
         return parseFloat(this.$store.state.gui.control.extruder.feedamount)
     }
 
-    set currentFeedAmount(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamount', value: newVal })
+    setFeedamount(params: { value: number }): void {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedamount', value: params.value })
     }
 
-    get currentFeedRate() {
+    get feedrate(): number {
         return parseFloat(this.$store.state.gui.control.extruder.feedrate)
     }
 
-    set currentFeedRate(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrate', value: newVal })
+    setFeedrate(params: { value: number }): void {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrate', value: params.value })
     }
 
-    get boolExtrudePossible() {
+    get extrudePossible(): boolean {
         return this.$store.getters['printer/getExtrudePossible']
     }
 
-    get minExtrudeTemp() {
-        return this.$store.state.printer.configfile.settings.extruder.min_extrude_temp
+    get minExtrudeTemp(): number {
+        return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.min_extrude_temp ?? 170
     }
 
-    doSend(gcode: string) {
+    get maxExtrudeOnlyDistance(): number {
+        return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.max_extrude_only_distance ?? 50
+    }
+
+    get extrudedLength(): number {
+        return Math.round(this.feedamount * (this.filamentDiameter / this.nozzleDiameter))
+    }
+
+    get volumetricFlow(): number {
+        return Math.round(Math.pow(this.filamentDiameter / 2, 2) * Math.PI * this.feedrate * 10) / 10
+    }
+
+    get extrudeFactor() {
+        return this.$store.state.printer?.gcode_move?.extrude_factor ?? 1
+    }
+
+    get showEstimatedExtrusion() {
+        return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo
+    }
+
+    activateExtruder(extruder: string): void {
+        /**
+         * If toolchange macros in the form of T{n} are found, use those
+         * otherwise use the regular 'ACTIVATE_EXTRUDER' Klipper command
+         */
+        let gcode: string
+        if (this.toolchangeMacros.length === this.extruders.length) {
+            gcode = `T${this.extruders.findIndex((ex: any) => ex.key === extruder)}`
+        } else {
+            gcode = `ACTIVATE_EXTRUDER EXTRUDER=${extruder}`
+        }
+
         this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: gcode })
     }
 
-    sendRetract() {
-        const gcode = 'M83\nG1 E-'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
+    sendRetract(): void {
+        const gcode = `M83\nG1 E-${this.feedamount} F${this.feedrate * 60}`
         console.log(gcode)
-        //this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        //this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
+        // this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        // this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnRetract' })
     }
 
-    sendExtrude() {
-        const gcode = 'M83\nG1 E'+this.currentFeedAmount+' F'+(this.currentFeedRate * 60)
+    sendExtrude(): void {
+        const gcode = `M83\nG1 E${this.feedamount} F${this.feedrate * 60}`
         console.log(gcode)
-        //this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
-        //this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
+        // this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        // this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnDetract' })
+    }
+
+    sendUnloadFilament(): void {
+        const gcode = 'UNLOAD_FILAMENT'
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnUnloadFilament' })
+    }
+
+    sendLoadFilament(): void {
+        const gcode = 'LOAD_FILAMENT'
+        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'btnLoadFilament' })
     }
 }
 </script>
