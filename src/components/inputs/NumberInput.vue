@@ -29,6 +29,7 @@
             dense
             class="d-flex align-top"
             @blur="value = target"
+            @focus="$event.target.select()"
             @keydown="checkInvalidChars">
             <template v-if="defaultValue" #append>
                 <v-icon @click="resetToDefault">{{ value !== defaultValue ? mdiRestart : '' }}</v-icon>
