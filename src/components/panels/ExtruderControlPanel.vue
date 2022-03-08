@@ -342,7 +342,7 @@ import {
     mdiLocationExit,
     mdiDotsVertical,
 } from '@mdi/js'
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { PrinterStateExtruder } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
@@ -468,6 +468,18 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
 
     get showEstimatedExtrusion() {
         return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo
+    }
+
+    @Watch('maxExtrudeOnlyDistance', { immediate: true })
+    onMaxExtrudeOnlyDistanceChange(): void {
+        /**
+         * If, while switching from ex. A to ex. B, the feedamount
+         * from ex. A exceeds the maxExtrudeOnlyDistance of ex. B,
+         * set the feedamount to maxExtrudeOnlyDistance of ex. B
+         */
+        if (this.feedamount > this.maxExtrudeOnlyDistance) {
+            this.setFeedamount({ value: this.maxExtrudeOnlyDistance })
+        }
     }
 
     activateExtruder(extruder: string): void {
