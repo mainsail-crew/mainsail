@@ -5,7 +5,7 @@
   </a>
 </p>
 <p align="center">
-  >Make Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
+  Make Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
 </p>
 <p align="center">
     <a aria-label="Downloads" href="https://github.com/mainsail-crew/mainsail/releases">
