@@ -36,9 +36,10 @@ export const getDefaultState = (): GuiState => {
             reverseZ: false,
             extruder: {
                 feedamount: 25,
-                feedamounts: [50, 25, 10, 5, 1],
+                feedamounts: [50, 10, 5, 1],
                 feedrate: 5,
-                feedrates: [15, 10, 5, 2, 1],
+                feedrates: [10, 5, 2, 1],
+                showEstimatedExtrusionInfo: true,
             },
         },
         dashboard: {

@@ -656,6 +656,8 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
+            "EstimatedExtrusionInfo": "Estimated Extrusion Info",
+            "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
             "InvertXMovement": "Invert X movement",
             "InvertYMovement": "Invert Y movement",
             "InvertZMovement": "Invert Z movement",

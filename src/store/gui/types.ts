@@ -30,6 +30,7 @@ export interface GuiState {
             feedamounts: number[]
             feedrate: number
             feedrates: number[]
+            showEstimatedExtrusionInfo: boolean
         }
     }
     dashboard: {

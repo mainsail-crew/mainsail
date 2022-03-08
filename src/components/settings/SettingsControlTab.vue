@@ -5,7 +5,8 @@
         <v-card flat>
             <v-card-text>
                 <v-form ref="formControlExtruder">
-                    <v-card-title class="mx-n4">Toolhead Controls</v-card-title>
+                    <!-- TOOLHEAD CONTROL SETTINGS -->
+                    <v-card-title class="mx-n4">{{ $t('Panels.ToolheadControlPanel.Headline') }}</v-card-title>
                     <settings-row :title="$t('Settings.ControlTab.Style').toString()">
                         <v-select
                             v-model="controlStyle"
@@ -179,7 +180,8 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
-                    <v-card-title class="mx-n4">Extruder Controls</v-card-title>
+                    <!-- EXTRUDER CONTROL SETTINGS -->
+                    <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
                     <settings-row
                         :title="$t('Settings.ControlTab.MoveDistancesEInMm').toString()"
                         :mobile-second-row="true">
@@ -222,6 +224,12 @@
                             dense
                             outlined
                             hide-spin-buttons></v-combobox>
+                    </settings-row>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.EstimatedExtrusionInfo').toString()"
+                        :sub-title="$t('Settings.ControlTab.EstimatedExtrusionInfoDescription').toString()"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="showEstimatedExtrusionInfo" hide-details class="mt-0"></v-switch>
                     </settings-row>
                 </v-form>
             </v-card-text>
@@ -409,6 +417,14 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
         const rates = absRates.filter(this.onlyUnique)
 
         this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.feedrates', value: rates })
+    }
+
+    get showEstimatedExtrusionInfo() {
+        return this.$store.state.gui.control.extruder.showEstimatedExtrusionInfo
+    }
+
+    set showEstimatedExtrusionInfo(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.extruder.showEstimatedExtrusionInfo', value: newVal })
     }
 
     blurFeedrateXY() {
