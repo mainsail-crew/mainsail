@@ -39,11 +39,15 @@
 }
 
 ._btn-extruder-cmd {
-    min-width: 130px !important;
+    min-width: 135px !important;
 }
 
 ._btn-load-cmd {
     min-width: 100px !important;
+}
+
+._hidden {
+    display: none !important;
 }
 </style>
 
@@ -158,72 +162,73 @@
         <v-divider></v-divider>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
         <v-container>
-            <v-row class="pt-2 px-1">
-                <v-col>
-                    <number-input
-                        :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
-                        param="feedamount"
-                        :target="feedamount"
-                        :disabled="!standby"
-                        :output-error-msg="true"
-                        :has-spinner="true"
-                        :spinner-factor="100"
-                        :step="0.01"
-                        :min="0.01"
-                        :max="maxExtrudeOnlyDistance"
-                        :dec="2"
-                        unit="mm"
-                        @submit="setFeedamount"></number-input>
-                    <v-item-group class="_btn-group pt-3">
-                        <v-btn
-                            v-for="value in feedamountsSorted"
-                            :key="value"
-                            :disabled="!standby"
-                            dense
-                            class="_btn-qs flex-grow-1 px-0"
-                            @click="setFeedamount({ value })">
-                            {{ value }}
-                        </v-btn>
-                    </v-item-group>
-                </v-col>
-                <v-col>
-                    <number-input
-                        :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate').toString()"
-                        param="feedrate"
-                        :target="feedrate"
-                        :disabled="!standby"
-                        :has-spinner="true"
-                        :output-error-msg="true"
-                        :spinner-factor="100"
-                        :step="0.01"
-                        :min="0.01"
-                        :max="null"
-                        :dec="2"
-                        type="number"
-                        unit="mm/s"
-                        @submit="setFeedrate"></number-input>
-                    <v-item-group class="_btn-group pt-3">
-                        <v-btn
-                            v-for="value in feedratesSorted"
-                            :key="value"
-                            :disabled="!standby"
-                            dense
-                            class="_btn-qs flex-grow-1 px-0"
-                            @click="setFeedrate({ value })">
-                            {{ value }}
-                        </v-btn>
-                    </v-item-group>
-                </v-col>
-            </v-row>
-            <!-- EXTRUDE AND RETRACT BUTTON -->
-            <v-row class="justify-space-between" :class="!showEstimatedExtrusion ? 'pb-1' : ''">
-                <v-col class="pa-0">
-                    <div class="d-flex justify-space-around">
-                        <div class="d-flex align-center">
+            <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
+                <template #default="{ el }">
+                    <v-row class="pt-1 px-1">
+                        <v-col>
+                            <number-input
+                                :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
+                                param="feedamount"
+                                :target="feedamount"
+                                :disabled="!standby"
+                                :output-error-msg="true"
+                                :has-spinner="true"
+                                :spinner-factor="100"
+                                :step="0.01"
+                                :min="0.01"
+                                :max="maxExtrudeOnlyDistance"
+                                :dec="2"
+                                unit="mm"
+                                :submit-on-blur="true"
+                                @submit="setFeedamount"></number-input>
+                            <v-item-group class="_btn-group pt-3">
+                                <v-btn
+                                    v-for="value in feedamountsSorted"
+                                    :key="value"
+                                    :disabled="!standby"
+                                    dense
+                                    class="_btn-qs flex-grow-1 px-0"
+                                    @click="setFeedamount({ value })">
+                                    {{ value }}
+                                </v-btn>
+                            </v-item-group>
+                        </v-col>
+                        <v-col>
+                            <number-input
+                                :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate').toString()"
+                                param="feedrate"
+                                :target="feedrate"
+                                :disabled="!standby"
+                                :has-spinner="true"
+                                :output-error-msg="true"
+                                :spinner-factor="100"
+                                :step="0.01"
+                                :min="0.01"
+                                :max="null"
+                                :dec="2"
+                                type="number"
+                                unit="mm/s"
+                                @submit="setFeedrate"></number-input>
+                            <v-item-group class="_btn-group pt-3">
+                                <v-btn
+                                    v-for="value in feedratesSorted"
+                                    :key="value"
+                                    :disabled="!standby"
+                                    dense
+                                    class="_btn-qs flex-grow-1 px-0"
+                                    @click="setFeedrate({ value })">
+                                    {{ value }}
+                                </v-btn>
+                            </v-item-group>
+                        </v-col>
+                        <!-- EXTRUDE AND RETRACT BUTTON LARGE SIZED PANEL -->
+                        <v-col
+                            class="col-3 d-flex align-center flex-column justify-center"
+                            :class="{ _hidden: !el.is.large }">
                             <!-- RETRACT -->
-                            <v-tooltip top :disabled="extrudePossible" color="error">
+                            <v-tooltip left :disabled="extrudePossible" color="secondary">
                                 <template #activator="{ on }">
-                                    <div class="pt-1 pb-2 px-3" v-on="on">
+                                    <div class="mb-4" v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnRetract')"
                                             :disabled="!extrudePossible || !standby"
@@ -235,15 +240,15 @@
                                         </v-btn>
                                     </div>
                                 </template>
-                                <span v-show="!extrudePossible">
+                                <span>
                                     {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
                                     {{ minExtrudeTemp }} °C
                                 </span>
                             </v-tooltip>
                             <!-- EXTRUDE  -->
-                            <v-tooltip top :disabled="extrudePossible" color="error">
+                            <v-tooltip left :disabled="extrudePossible" color="secondary">
                                 <template #activator="{ on }">
-                                    <div class="pt-1 pb-2 px-3" v-on="on">
+                                    <div v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnDetract')"
                                             :disabled="!extrudePossible || !standby"
@@ -260,10 +265,59 @@
                                     {{ minExtrudeTemp }} °C
                                 </span>
                             </v-tooltip>
-                        </div>
-                    </div>
-                </v-col>
-            </v-row>
+                        </v-col>
+                    </v-row>
+                    <!-- EXTRUDE AND RETRACT BUTTON SMALL AND MEDIUM SIZED PANEL -->
+                    <v-row :class="{ _hidden: el.is.large, 'pb-1': !showEstimatedExtrusion }">
+                        <v-col class="pa-0">
+                            <div class="d-flex justify-space-around">
+                                <div class="d-flex align-center">
+                                    <!-- RETRACT -->
+                                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                                        <template #activator="{ on }">
+                                            <div class="pt-1 pb-2 px-3" v-on="on">
+                                                <v-btn
+                                                    :loading="loadings.includes('btnRetract')"
+                                                    :disabled="!extrudePossible || !standby"
+                                                    small
+                                                    class="_btn-extruder-cmd"
+                                                    @click="sendRetract()">
+                                                    <v-icon small class="mr-1">{{ mdiArrowUpBold }}</v-icon>
+                                                    {{ $t('Panels.ExtruderControlPanel.Retract') }}
+                                                </v-btn>
+                                            </div>
+                                        </template>
+                                        <span v-show="!extrudePossible">
+                                            {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                            {{ minExtrudeTemp }} °C
+                                        </span>
+                                    </v-tooltip>
+                                    <!-- EXTRUDE  -->
+                                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                                        <template #activator="{ on }">
+                                            <div class="pt-1 pb-2 px-3" v-on="on">
+                                                <v-btn
+                                                    :loading="loadings.includes('btnDetract')"
+                                                    :disabled="!extrudePossible || !standby"
+                                                    small
+                                                    class="_btn-extruder-cmd"
+                                                    @click="sendExtrude()">
+                                                    <v-icon small class="mr-1">{{ mdiArrowDownBold }}</v-icon>
+                                                    {{ $t('Panels.ExtruderControlPanel.Extrude') }}
+                                                </v-btn>
+                                            </div>
+                                        </template>
+                                        <span>
+                                            {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
+                                            {{ minExtrudeTemp }} °C
+                                        </span>
+                                    </v-tooltip>
+                                </div>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </template>
+            </responsive>
         </v-container>
         <!-- EXTRUSION ESTIMATION NOTE -->
         <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-2">
