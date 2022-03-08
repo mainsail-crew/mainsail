@@ -5,7 +5,7 @@
   </a>
 </p>
 <p align="center">
-  Make Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
+  Makes Klipper more accessible by adding a lightweight, responsive web user interface, centred around an intuitive and consistent design philosophy.
 </p>
 <p align="center">
     <a aria-label="Downloads" href="https://github.com/mainsail-crew/mainsail/releases">
@@ -61,9 +61,9 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **Printer farm** | _Supports multiple 3D printers_
 - **Localization** | _Choose between 12 different languages_
 - **File Manager** | _Delete, rename and upload your gcode and config files_
-- **File Editor** | _Edit your config and gcode right in the browser with syntax highlighting_
+- **File Editor** | _Edit syntax highlighted config and gcode right in the browser_
 - **Print History** | _See your previous prints and their status_
-- **Statistics** | _View the time your printer has printed, number of jobs that succeeded and failed_
+- **Statistics** | _View the time your printer has printed and number of jobs that succeeded or failed_
 - **Job Queue** | _Queue multiple jobs and add them directly from your slicer_
 - **Temperature Presets** | _Manage different temperature presets for easy preheating_
 - **Bed Mesh visualisation** | _View your bed using a 3D mesh graph_
@@ -72,7 +72,7 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **Timelapse integration** | _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
 - **Power control** | _Control power devices such as relays, TPLink and Tasmota devices, and more_
 - **Powerful Macro-Management** | _Manage your macros on micro level_
-- **Configurable dashboard** | _Create a dashboard that fits your liking_
+- **Configurable dashboard** | _Create a dashboard that fits your likings_
 - **Theming support** | _Customizable user interface including logos, backgrounds, and custom CSS_
 - **Exclude objects** | _Exclude parts of your print <sub>(not officially supported by Klipper yet)</sub>_
 
@@ -93,11 +93,8 @@ every day. To motivate him (☕🍺😜) there are several ways to support him:
 
 ## Credit, sources and inspiration
 
-- [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer
-  firmware [Klipper](https://github.com/KevinOConnor/klipper)
-- [Eric Callahan (arksine)](https://github.com/Arksine)
-  for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mainsail would not be
-  possible.
+- [Kevin O'Connor](https://github.com/KevinOConnor) for the awesome 3D printer firmware [Klipper](https://github.com/KevinOConnor/klipper)
+- [Eric Callahan (arksine)](https://github.com/Arksine) for [Moonraker (Klipper API)](https://github.com/Arksine/moonraker). Without Moonraker, Mainsail would not be possible.
 - [lixxbox](https://github.com/lixxbox) for the Mainsail logo & Docs
 - [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
 - [Vuetify](https://vuetifyjs.com/): Material Design Component Framework for Vue.js
