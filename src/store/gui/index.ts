@@ -65,6 +65,7 @@ export const getDefaultState = (): GuiState => {
                 { name: 'webcam', visible: true },
                 { name: 'zoffset', visible: true },
                 { name: 'control', visible: true },
+                { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
                 { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },

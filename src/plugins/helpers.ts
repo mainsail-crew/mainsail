@@ -9,6 +9,7 @@ import {
     mdiGamepad,
     mdiInformation,
     mdiPrinter3d,
+    mdiPrinter3dNozzle,
     mdiThermometerLines,
     mdiWebcam,
 } from '@mdi/js'
@@ -67,6 +68,8 @@ export const convertPanelnameToIcon = (name: string): string => {
             return mdiConsoleLine
         case 'machine-settings':
             return mdiEngine
+        case 'extruder-control':
+            return mdiPrinter3dNozzle
 
         default:
             return mdiInformation
