@@ -74,7 +74,7 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **Powerful Macro-Management** | _Manage your macros on micro level_
 - **Configurable dashboard** | _Create a dashboard that fits your likings_
 - **Theming support** | _Customizable user interface including logos, backgrounds, and custom CSS_
-- **Exclude objects** | _Exclude parts of your print <sub>(not officially supported by Klipper yet)</sub>_
+- **Exclude objects** | _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
 
 ## Help and Support
 
