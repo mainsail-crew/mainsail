@@ -414,7 +414,7 @@
             "Headline": "Extruder-Steuerung",
             "FilamentLength": "Filamentlänge",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
-            "HotendTempLessThan": "Hotend Temp. <",
+            "ExtruderTempTooLow": "Extruder Temp. <",
             "Retract": "Rückzug",
             "Extrude": "Extrudieren",
             "EstimatedExtrusion": "Geschätzte Extrusion:"
