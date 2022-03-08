@@ -57,24 +57,24 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 
 ## Features
 
-- **Responsive web interface:** _Optimized for desktops, tablets and mobile devices_
-- **Printer farm** | _Supports multiple 3D printers_
+- **Responsive Web Interface:** _Optimized for desktops, tablets and mobile devices_
+- **Printer Farm** | _Supports multiple 3D printers_
 - **Localization** | _Choose between 12 different languages_
-- **File manager** | _Delete, rename and upload your gcode and config files_
-- **File editor** | _Edit syntax highlighted config and gcode right in the browser_
-- **Print history** | _See your previous prints and their status_
+- **File Manager** | _Delete, rename and upload your gcode and config files_
+- **File Editor** | _Edit syntax highlighted config and gcode right in the browser_
+- **Print History** | _See your previous prints and their status_
 - **Statistics** | _View the time your printer has printed and number of jobs that succeeded or failed_
-- **Job queue** | _Queue multiple jobs and add them directly from your slicer_
-- **Temperature presets** | _Manage different temperature presets for easy preheating_
-- **Bed Mesh visualisation** | _View your bed using a 3D mesh graph_
-- **G-Code viewer** | _View a 3D render of your print and follow the progress_
-- **Multi-webcam support** | _Add multiple angles of your print_
-- **Timelapse integration** | _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
-- **Power control** | _Control power devices such as relays, TPLink and Tasmota devices, and more_
+- **Job Queue** | _Queue multiple jobs and add them directly from your slicer_
+- **Temperature Presets** | _Manage different temperature presets for easy preheating_
+- **Bed Mesh Visualisation** | _View your bed using a 3D mesh graph_
+- **G-Code Viewer** | _View a 3D render of your print and follow the progress_
+- **Multi-Webcam Support** | _Add multiple angles of your print_
+- **Timelapse Integration** | _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
+- **Power Control** | _Control power devices such as relays, TPLink and Tasmota devices, and more_
 - **Powerful Macro-Management** | _Manage your macros on micro level_
-- **Configurable dashboard** | _Create a dashboard that fits your likings_
-- **Theming support** | _Customizable user interface including logos, backgrounds, and custom CSS_
-- **Exclude objects** | _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
+- **Configurable Dashboard** | _Create a dashboard that fits your likings_
+- **Theming Support** | _Customizable user interface including logos, backgrounds, and custom CSS_
+- **Exclude Objects** | _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
 
 ## Help and Support
 
