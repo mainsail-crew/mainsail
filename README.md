@@ -58,23 +58,24 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 ## Features
 
 - **Responsive Web Interface:** _Optimized for desktops, tablets and mobile devices_
-- **Printer Farm** | _Supports multiple 3D printers_
-- **Localization** | _Choose between 12 different languages_
-- **File Manager** | _Delete, rename and upload your G-Code and config files_
-- **File Editor** | _Edit G-Code and config files with syntax highlighting in your browser_
-- **Print History** | _See your previous prints and their status_
-- **Statistics** | _View how much time your printer has been in use and the number of jobs that have succeeded or failed_
-- **Job Queue** | _Queue multiple jobs and add them directly from your slicer_
-- **Temperature Presets** | _Manage different temperature presets for easy preheating_
-- **Bed Mesh Visualisation** | _View your bed using a 3D mesh graph_
-- **G-Code Viewer** | _View a 3D render of your print and follow the progress_
-- **Multi-Webcam Support** | _View and record from different angles with multiple webcams_
-- **Timelapse Integration** | _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
-- **Power Control** | _Control power devices such as relays, TP-Link and Tasmota devices, and more_
-- **Powerful Macro-Management** | _Manage your macros on a micro level_
-- **Configurable Dashboard** | _Create your own personal dashboard_
-- **Theming Support** | _Customizable user interface including logos, backgrounds, and custom CSS_
-- **Exclude Objects** | _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
+- **Printer Farm:** _Supports multiple 3D printers_
+- **[Localization](https://docs.mainsail.xyz/features/localization):** _Choose between 12 different languages_
+- **File Manager:** _Delete, rename and upload your G-Code and config files_
+- **File Editor:** _Edit G-Code and config files with syntax highlighting in your browser_
+- **[Print History](https://docs.mainsail.xyz/features/history):** _See your previous prints and their status_
+- **[Statistics](https://docs.mainsail.xyz/features/history):** _View how much time your printer has been in use and the number of jobs that have succeeded or failed_
+- **Job Queue:** _Queue multiple jobs and add them directly from your slicer_
+- **[Temperature Presets](https://docs.mainsail.xyz/features/presets):** _Manage different temperature presets for easy preheating_
+- **[Bed Mesh Visualisation](https://docs.mainsail.xyz/features/bedmesh):** _View your bed using a 3D mesh graph_
+- **G-Code Viewer:** _View a 3D render of your print and follow the progress_
+- **Multi-Webcam Support:** _View and record from different angles with multiple webcams_
+- **Timelapse Integration:** _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
+- **Power Control:** _Control power devices such as relays, TP-Link and Tasmota devices, and more_
+- **Powerful Macro-Management:** _Manage your macros on a micro level_
+- **[Configurable Dashboard](https://docs.mainsail.xyz/features/dashboard-organisation):** _Create your own personal dashboard_
+- **[Theming Support](https://docs.mainsail.xyz/features/theming/):** _Customizable user interface including logos, backgrounds, and custom CSS_
+- **[Additional Sensors](https://docs.mainsail.xyz/quicktips/additional-sensors):** _Add extra sensors to the temperature graph_
+- **Exclude Objects:** _Exclude parts of your print <sup>(not officially supported by Klipper yet)</sup>_
 
 ## Help and Support
 
