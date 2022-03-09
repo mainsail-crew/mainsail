@@ -11,15 +11,15 @@
 
 <template>
     <div>
-        <v-card-actions>
-            <v-btn class="btn-collapsible" plain small @click="expand = !expand">
+        <div class="px-4 d-flex align-center">
+            <v-btn class="px-0 btn-collapsible" plain small :ripple="false" @click="expand = !expand">
                 <v-icon small :class="!expand ? 'icon-rotate-180' : ''">
                     {{ expand ? iconExpanded : iconCollapsed }}
                 </v-icon>
                 <span class="pl-1">{{ title }}</span>
             </v-btn>
-            <v-divider class="mx-1"></v-divider>
-        </v-card-actions>
+            <v-divider class="ml-3"></v-divider>
+        </div>
         <v-expand-transition>
             <div v-show="expand">
                 <slot></slot>
