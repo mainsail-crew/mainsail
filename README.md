@@ -60,7 +60,7 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **Responsive Web Interface:** _Optimized for desktops, tablets and mobile devices_
 - **Printer Farm** | _Supports multiple 3D printers_
 - **Localization** | _Choose between 12 different languages_
-- **File Manager** | _Delete, rename and upload your gcode and config files_
+- **File Manager** | _Delete, rename and upload your G-Code and config files_
 - **File Editor** | _Edit G-Code and config files with syntax highlighting in your browser_
 - **Print History** | _See your previous prints and their status_
 - **Statistics** | _View how much time your printer has been in use and the number of jobs that have succeeded or failed_
