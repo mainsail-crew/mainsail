@@ -142,6 +142,13 @@
                 </v-btn>
             </v-item-group>
         </v-container>
+        <!-- PRESSURE ADVANCE SETTINGS -->
+        <sub-panel
+            :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
+            sub-panel-class="pressure-advance-settings-subpanel">
+            <pressure-advance-settings></pressure-advance-settings>
+            <v-divider class="pb-2"></v-divider>
+        </sub-panel>
         <!-- EXTRUSION FACTOR SLIDER -->
         <v-container>
             <v-row class="d-flex align-center">
@@ -345,16 +352,20 @@ import {
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import { PrinterStateExtruder } from '@/store/printer/types'
 import BaseMixin from '../mixins/base'
-import Panel from '@/components/ui/Panel.vue'
 import NumberInput from '@/components/inputs/NumberInput.vue'
+import Panel from '@/components/ui/Panel.vue'
+import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
 import Responsive from '@/components/ui/Responsive.vue'
+import SubPanel from '@/components/ui/SubPanel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 
 @Component({
     components: {
         Panel,
+        PressureAdvanceSettings,
         NumberInput,
         Responsive,
+        SubPanel,
         ToolSlider,
     },
 })
