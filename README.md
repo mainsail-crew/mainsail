@@ -68,7 +68,7 @@ You can find the latest release notes [here](https://github.com/mainsail-crew/ma
 - **[Temperature Presets](https://docs.mainsail.xyz/features/presets):** _Manage different temperature presets for easy preheating_
 - **[Bed Mesh Visualisation](https://docs.mainsail.xyz/features/bedmesh):** _View your bed using a 3D mesh graph_
 - **G-Code Viewer:** _View a 3D render of your print and follow the progress_
-- **Multi-Webcam Support:** _View and record from different angles with multiple webcams_
+- **Multi-Webcam Support:** _View your print from different angles with multiple webcams_
 - **Timelapse Integration:** _Automatically record a timelapse of your print using [moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse)_
 - **Power Control:** _Control power devices such as relays, TP-Link and Tasmota devices, and more_
 - **Powerful Macro-Management:** _Manage your macros on a micro level_
