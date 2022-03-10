@@ -142,13 +142,6 @@
                 </v-btn>
             </v-item-group>
         </v-container>
-        <!-- PRESSURE ADVANCE SETTINGS -->
-        <sub-panel
-            :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
-            sub-panel-class="pressure-advance-settings-subpanel">
-            <pressure-advance-settings></pressure-advance-settings>
-            <v-divider class="pb-2"></v-divider>
-        </sub-panel>
         <!-- EXTRUSION FACTOR SLIDER -->
         <v-container>
             <v-row class="d-flex align-center">
@@ -166,7 +159,14 @@
                     class="pt-0"></tool-slider>
             </v-row>
         </v-container>
-        <v-divider></v-divider>
+        <!-- PRESSURE ADVANCE SETTINGS -->
+        <sub-panel
+            :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
+            sub-panel-class="pressure-advance-settings-subpanel"
+            :class="extruders.length === 1 ? 'pt-2' : ''">
+            <pressure-advance-settings></pressure-advance-settings>
+            <v-divider class="pb-2"></v-divider>
+        </sub-panel>
         <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
         <v-container>
             <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
