@@ -602,19 +602,12 @@ export const getters: GetterTree<PrinterState, RootState> = {
                 .sort()
                 .forEach((key: string) => {
                     const extruder = state.configfile?.settings[key]
-                    let minExtrudeTemp: number = extruder.min_extrude_temp
-
-                    if (Object.keys(extruder).includes('shared_heater')) {
-                        const sharedHeater: string = state.configfile?.settings[key].shared_heater
-                        minExtrudeTemp = state.configfile?.settings[sharedHeater].min_extrude_temp
-                    }
-
                     extruders.push({
                         key: key,
                         name: `Extruder ${key == 'extruder' ? '0' : key.replace('extruder', '')}`,
                         filamentDiameter: extruder.filament_diameter,
                         nozzleDiameter: extruder.nozzle_diameter,
-                        minExtrudeTemp: minExtrudeTemp,
+                        minExtrudeTemp: extruder.min_extrude_temp,
                         maxExtrudeOnlyDistance: extruder.max_extrude_only_distance,
                     })
                 })
