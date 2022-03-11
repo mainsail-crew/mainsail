@@ -376,17 +376,12 @@
         "ControlPanel": {
             "ALL": "WSZYSTKIE",
             "AlternateControls": "Alternatywne sterowanie",
-            "Extrude": "Wytłocz",
-            "FeedAmountIn": "Ilość filamentu",
-            "FeedrateIn": "Tempo podawania",
             "Headline": "Sterowanie drukarką",
-            "HotendTooCold": "Temperatura hotendu mniejsza niż",
             "InvertX": "Odwróć oś X",
             "InvertY": "Odwróć oś Y",
             "InvertZ": "Odwróć oś Z",
             "PleaseConfigureSteps": "Proszę skonfigurować kroki",
             "QGL": "QGL",
-            "Retract": "Retrakcja",
             "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
             "SetupControls": "Konfiguracja sterowania",
             "X": "X",
@@ -397,6 +392,10 @@
         "DependenciesPanel": {
             "Dependency": "Zależność | Zależności",
             "DependencyDescription": "Twoja aktualna {name} wersja nie wspiera wszystkich funkcji Mainsaila. Zaktualizuj {name} do wersji co najmniej {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "Extrude": "Wytłocz",
+            "Retract": "Retrakcja"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Ponownie połącz",

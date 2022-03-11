@@ -390,17 +390,12 @@
         "ControlPanel": {
             "ALL": "ALL",
             "AlternateControls": "Alternate controls",
-            "Extrude": "Extrude",
-            "FeedAmountIn": "Feed amount in",
-            "FeedrateIn": "Feedrate in",
             "Headline": "Controls",
-            "HotendTooCold": "Hotend temp. lower than",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",
             "PleaseConfigureSteps": "Please configure steps",
             "QGL": "QGL",
-            "Retract": "Retract",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SetupControls": "Setup Controls",
             "X": "X",
@@ -408,18 +403,18 @@
             "Z": "Z",
             "ZTilt": "Z Tilt"
         },
-        "ExtruderControlPanel": {
-            "Headline": "Extruder Controls",
-            "FilamentLength": "Filament Length",
-            "ExtrusionFeedrate": "Extrusion Feedrate",
-            "ExtruderTempTooLow": "Extruder temp. <",
-            "Retract": "Retract",
-            "Extrude": "Extrude",
-            "EstimatedExtrusion": "Estimated Extrusion:"
-        },
         "DependenciesPanel": {
             "Dependency": "Dependency | Dependencies",
             "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
+        },
+        "ExtruderControlPanel": {
+            "EstimatedExtrusion": "Estimated Extrusion:",
+            "Extrude": "Extrude",
+            "ExtruderTempTooLow": "Extruder temp. <",
+            "ExtrusionFeedrate": "Extrusion Feedrate",
+            "FilamentLength": "Filament Length",
+            "Headline": "Extruder Controls",
+            "Retract": "Retract"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",

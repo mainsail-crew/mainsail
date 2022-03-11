@@ -388,17 +388,12 @@
         "ControlPanel": {
             "ALL": "ALLE",
             "AlternateControls": "Steuerkreuz",
-            "Extrude": "Extrudieren",
-            "FeedAmountIn": "Vorschub in",
-            "FeedrateIn": "Geschwindigkeit in",
             "Headline": "Steuerung",
-            "HotendTooCold": "Hotend-Temp. niedriger als",
             "InvertX": "X invertieren",
             "InvertY": "Y invertieren",
             "InvertZ": "Z invertieren",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
             "QGL": "QGL",
-            "Retract": "Rückzug",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SetupControls": "Setup-Steuerelemente",
             "X": "X",
@@ -411,13 +406,13 @@
             "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}."
         },
         "ExtruderControlPanel": {
-            "Headline": "Extruder-Steuerung",
-            "FilamentLength": "Filamentlänge",
-            "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
-            "ExtruderTempTooLow": "Extruder Temp. <",
-            "Retract": "Rückzug",
+            "EstimatedExtrusion": "Geschätzte Extrusion:",
             "Extrude": "Extrudieren",
-            "EstimatedExtrusion": "Geschätzte Extrusion:"
+            "ExtruderTempTooLow": "Extruder Temp. <",
+            "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
+            "FilamentLength": "Filamentlänge",
+            "Headline": "Extruder-Steuerung",
+            "Retract": "Rückzug"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Neu verbinden",
