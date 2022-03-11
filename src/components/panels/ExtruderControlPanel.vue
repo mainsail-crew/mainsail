@@ -74,7 +74,7 @@
                                 <div v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnUnloadFilament')"
-                                        :disabled="!extrudePossible || !standby"
+                                        :disabled="!extrudePossible || isPrinting"
                                         small
                                         class="_btn-load-cmd"
                                         @click="sendUnloadFilament()">
@@ -100,7 +100,7 @@
                                 <div v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnLoadFilament')"
-                                        :disabled="!extrudePossible || !standby"
+                                        :disabled="!extrudePossible || isPrinting"
                                         small
                                         class="_btn-load-cmd"
                                         @click="sendLoadFilament()">
@@ -130,7 +130,7 @@
                     :key="extruder.key"
                     :class="extruder.key === activeExtruder ? 'primary--text' : {}"
                     :value="extruder.key"
-                    :disabled="!standby"
+                    :disabled="isPrinting"
                     dense
                     class="flex-grow-1 px-0"
                     @click="activateExtruder(extruder.key)">
@@ -177,7 +177,7 @@
                                 :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
                                 param="feedamount"
                                 :target="feedamount"
-                                :disabled="!standby"
+                                :disabled="isPrinting"
                                 :output-error-msg="true"
                                 :has-spinner="true"
                                 :spinner-factor="100"
@@ -192,7 +192,7 @@
                                 <v-btn
                                     v-for="value in feedamountsSorted"
                                     :key="value"
-                                    :disabled="!standby"
+                                    :disabled="isPrinting"
                                     dense
                                     class="_btn-qs flex-grow-1 px-0"
                                     @click="setFeedamount({ value })">
@@ -205,7 +205,7 @@
                                 :label="$t('Panels.ExtruderControlPanel.ExtrusionFeedrate').toString()"
                                 param="feedrate"
                                 :target="feedrate"
-                                :disabled="!standby"
+                                :disabled="isPrinting"
                                 :has-spinner="true"
                                 :output-error-msg="true"
                                 :spinner-factor="100"
@@ -220,7 +220,7 @@
                                 <v-btn
                                     v-for="value in feedratesSorted"
                                     :key="value"
-                                    :disabled="!standby"
+                                    :disabled="isPrinting"
                                     dense
                                     class="_btn-qs flex-grow-1 px-0"
                                     @click="setFeedrate({ value })">
@@ -238,7 +238,7 @@
                                     <div class="mb-4" v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnRetract')"
-                                            :disabled="!extrudePossible || !standby"
+                                            :disabled="!extrudePossible || isPrinting"
                                             small
                                             class="_btn-extruder-cmd"
                                             @click="sendRetract()">
@@ -258,7 +258,7 @@
                                     <div v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnDetract')"
-                                            :disabled="!extrudePossible || !standby"
+                                            :disabled="!extrudePossible || isPrinting"
                                             small
                                             class="_btn-extruder-cmd"
                                             @click="sendExtrude()">
@@ -285,7 +285,7 @@
                                             <div class="pt-1 pb-2 px-3" v-on="on">
                                                 <v-btn
                                                     :loading="loadings.includes('btnRetract')"
-                                                    :disabled="!extrudePossible || !standby"
+                                                    :disabled="!extrudePossible || isPrinting"
                                                     small
                                                     class="_btn-extruder-cmd"
                                                     @click="sendRetract()">
@@ -305,7 +305,7 @@
                                             <div class="pt-1 pb-2 px-3" v-on="on">
                                                 <v-btn
                                                     :loading="loadings.includes('btnDetract')"
-                                                    :disabled="!extrudePossible || !standby"
+                                                    :disabled="!extrudePossible || isPrinting"
                                                     small
                                                     class="_btn-extruder-cmd"
                                                     @click="sendExtrude()">
@@ -378,8 +378,8 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
     mdiLocationExit = mdiLocationExit
     mdiDotsVertical = mdiDotsVertical
 
-    get standby(): boolean {
-        return ['standby'].includes(this.printer_state)
+    get isPrinting(): boolean {
+        return ['printing'].includes(this.printer_state)
     }
 
     get toolchangeMacros(): string[] {
