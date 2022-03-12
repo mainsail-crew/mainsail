@@ -373,22 +373,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "TUTTI",
-            "AlternateControls": "Controlli Alternativi",
-            "Headline": "Controlli",
-            "InvertX": "Inverti X",
-            "InvertY": "Inverti Y",
-            "InvertZ": "Inverti Z",
-            "PleaseConfigureSteps": "Configura gli step",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
-            "SetupControls": "Controlli Installazione",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Inclinazione Z"
-        },
         "DependenciesPanel": {
             "Dependency": "Dipendenze",
             "DependencyDescription": "L'attuale versione di {name} non supporta tutte le features di Mainsail. Aggiorna {name} almeno alla versione {neededVersion}."
@@ -464,6 +448,22 @@
                 "Disabled": "disabilitato",
                 "Empty": "Vuoto"
             }
+        },
+        "ToolheadControlPanel": {
+            "ALL": "TUTTI",
+            "AlternateControls": "Controlli Alternativi",
+            "Headline": "Controlli",
+            "InvertX": "Inverti X",
+            "InvertY": "Inverti Y",
+            "InvertZ": "Inverti Z",
+            "PleaseConfigureSteps": "Configura gli step",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
+            "SetupControls": "Controlli Installazione",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Inclinazione Z"
         },
         "MoonrakerFailedComponentsPanel": {},
         "MoonrakerStatePanel": {

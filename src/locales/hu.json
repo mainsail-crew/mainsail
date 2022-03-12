@@ -373,22 +373,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "MIND",
-            "AlternateControls": "Vezérlési alternatívák",
-            "Headline": "Vezérlések",
-            "InvertX": "X invertálása",
-            "InvertY": "Y invertálása",
-            "InvertZ": "Z invertálása",
-            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
-            "SetupControls": "Beállítás vezérlései",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z dőlésszög"
-        },
         "DependenciesPanel": {
             "Dependency": "Függőség | Függőségek",
             "DependencyDescription": "A jelenlegi verzió {name} nem támogatja a Mainsail minden funkcióját. Frissítsd a {name} verziót legalább erre: {neededVersion}."
@@ -463,6 +447,22 @@
                 "Disabled": "letiltott",
                 "Empty": "Üres"
             }
+        },
+        "ToolheadControlPanel": {
+            "ALL": "MIND",
+            "AlternateControls": "Vezérlési alternatívák",
+            "Headline": "Vezérlések",
+            "InvertX": "X invertálása",
+            "InvertY": "Y invertálása",
+            "InvertZ": "Z invertálása",
+            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
+            "SetupControls": "Beállítás vezérlései",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z dőlésszög"
         },
         "MoonrakerStatePanel": {
             "DownloadLog": "Letöltési log",

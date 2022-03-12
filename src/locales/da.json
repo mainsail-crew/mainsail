@@ -373,22 +373,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "Alle",
-            "AlternateControls": "Alternative kontroller",
-            "Headline": "Kontrolpanel",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
-            "PleaseConfigureSteps": "Konfigurer steps",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Afhængighed | Afhængigheder",
             "DependencyDescription": "Din nuværende version af {name} understøtter ikke alle funktioner i Mainsail. Opdater {name} til mindst version {neededVersion}."
@@ -464,6 +448,22 @@
                 "Disabled": "Deaktiveret",
                 "Empty": "Tom"
             }
+        },
+        "ToolheadControlPanel": {
+            "ALL": "Alle",
+            "AlternateControls": "Alternative kontroller",
+            "Headline": "Kontrolpanel",
+            "InvertX": "Invertér X",
+            "InvertY": "Invertér Y",
+            "InvertZ": "Invertér Z",
+            "PleaseConfigureSteps": "Konfigurer steps",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
+            "SetupControls": "Kontrolindstillinger",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "MoonrakerStatePanel": {
             "DownloadLog": "Download log",

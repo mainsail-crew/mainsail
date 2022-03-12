@@ -373,25 +373,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Альтернативный контроль",
-            "Controls": "Контроль",
-            "Headline": "Управление",
-            "Home": "Home",
-            "InvertX": "X инвертировать",
-            "InvertY": "Y инвертировать",
-            "InvertZ": "Z инвертировать",
-            "Macros": "Макрос",
-            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
-            "SetupControls": "Установить контроль",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Зависимость | Зависимости",
             "DependencyDescription": "Ваша текущая версия {name} не поддерживает все функции Mainsail. Обновите {name} по крайней мере до версии {neededVersion}."
@@ -476,6 +457,25 @@
                 "Empty": "Пустой"
             },
             "SpeedFactor": "Коэффициент скорости"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "ALL",
+            "AlternateControls": "Альтернативный контроль",
+            "Controls": "Контроль",
+            "Headline": "Управление",
+            "Home": "Home",
+            "InvertX": "X инвертировать",
+            "InvertY": "Y инвертировать",
+            "InvertZ": "Z инвертировать",
+            "Macros": "Макрос",
+            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
+            "SetupControls": "Установить контроль",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "MoonrakerFailedComponentsPanel": {
             "DownloadLog": "Скачать протокол",

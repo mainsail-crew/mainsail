@@ -373,22 +373,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "所有",
-            "AlternateControls": "翻转控制",
-            "Headline": "控制",
-            "InvertX": "翻转 X",
-            "InvertY": "翻转 Y",
-            "InvertZ": "翻转 Z",
-            "PleaseConfigureSteps": "请设置步",
-            "QGL": "四点调平",
-            "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "设置",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z 抬升"
-        },
         "DependenciesPanel": {
             "Dependency": "依赖",
             "DependencyDescription": "你当前 {name} 版本并不支持所有 Mainsail 的特性. 跟新 {name} 到至少 {neededVersion}版本."
@@ -463,6 +447,22 @@
                 "Disabled": "禁止",
                 "Empty": "空"
             }
+        },
+        "ToolheadControlPanel": {
+            "ALL": "所有",
+            "AlternateControls": "翻转控制",
+            "Headline": "控制",
+            "InvertX": "翻转 X",
+            "InvertY": "翻转 Y",
+            "InvertZ": "翻转 Z",
+            "PleaseConfigureSteps": "请设置步",
+            "QGL": "四点调平",
+            "SettingsInterfaceControl": "设置 > 界面 > 控制",
+            "SetupControls": "设置",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z 抬升"
         },
         "MoonrakerStatePanel": {
             "DownloadLog": "下载日志",

@@ -387,22 +387,6 @@
         }
     },
     "Panels": {
-        "ControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Alternate controls",
-            "Headline": "Controls",
-            "InvertX": "Invert X",
-            "InvertY": "Invert Y",
-            "InvertZ": "Invert Z",
-            "PleaseConfigureSteps": "Please configure steps",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Settings > Interface > Control",
-            "SetupControls": "Setup Controls",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "DependenciesPanel": {
             "Dependency": "Dependency | Dependencies",
             "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
@@ -483,6 +467,22 @@
                 "Empty": "Empty"
             }
         },
+        "ToolheadControlPanel": {
+            "Headline": "Toolhead Controls",
+            "ALL": "ALL",
+            "AlternateControls": "Alternate controls",
+            "InvertX": "Invert X",
+            "InvertY": "Invert Y",
+            "InvertZ": "Invert Z",
+            "PleaseConfigureSteps": "Please configure steps",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Settings > Interface > Control",
+            "SetupControls": "Setup Controls",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
+        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Download Log",
             "FollowingPluginHasAnError": "Following plugin has an error:",
@@ -535,9 +535,6 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
-        },
-        "ToolheadControlPanel": {
-            "Headline": "Toolhead Controls"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Autoscale Chart",
