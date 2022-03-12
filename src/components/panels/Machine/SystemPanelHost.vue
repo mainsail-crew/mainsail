@@ -53,13 +53,21 @@
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
-                                        Temp: {{ hostStats.tempSensor.temperature + '°C' }}
+                                        {{ $t('Machine.SystemPanel.Temp', { temp: hostStats.tempSensor.temperature }) }}
                                     </span>
                                 </template>
                                 <span>
-                                    max: {{ hostStats.tempSensor.measured_max_temp }}°C
+                                    {{
+                                        $t('Machine.SystemPanel.TempMax', {
+                                            temp: hostStats.tempSensor.measured_max_temp,
+                                        })
+                                    }}
                                     <br />
-                                    min: {{ hostStats.tempSensor.measured_min_temp }}°C
+                                    {{
+                                        $t('Machine.SystemPanel.TempMin', {
+                                            temp: hostStats.tempSensor.measured_min_temp,
+                                        })
+                                    }}
                                 </span>
                             </v-tooltip>
                         </template>
@@ -68,10 +76,21 @@
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
                             {{ interfaceName }}{{ getIpAddress(interfaceStats.details.ip_addresses) }}:
-                            {{ $t('Machine.SystemPanel.Bandwidth') }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s,
-                            {{ $t('Machine.SystemPanel.Received') }}: {{ formatFilesize(interfaceStats.rx_bytes) }},
-                            {{ $t('Machine.SystemPanel.Transmitted') }}:
-                            {{ formatFilesize(interfaceStats.tx_bytes) }}
+                            {{
+                                $t('Machine.SystemPanel.Bandwidth', {
+                                    bandwidth: formatFilesize(interfaceStats.bandwidth),
+                                })
+                            }},
+                            {{
+                                $t('Machine.SystemPanel.Received', {
+                                    received: formatFilesize(interfaceStats.rx_bytes),
+                                })
+                            }},
+                            {{
+                                $t('Machine.SystemPanel.Transmitted', {
+                                    transmitted: formatFilesize(interfaceStats.tx_bytes),
+                                })
+                            }}
                         </div>
                     </template>
                 </div>

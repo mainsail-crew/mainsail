@@ -351,7 +351,7 @@
         },
         "SystemPanel": {
             "Awake": "Awake",
-            "Bandwidth": "Bandwidth",
+            "Bandwidth": "Bandwidth: {bandwidth}/s",
             "Constants": "Constants",
             "Cpu": "CPU",
             "Distro": "Distro",
@@ -363,9 +363,12 @@
             "Network": "Network",
             "NoMoreInfos": "No more Infos",
             "Os": "OS",
-            "Received": "Received",
+            "Received": "Received: {received}",
             "SystemLoad": "System Loads",
-            "Transmitted": "Transmitted",
+            "Temp": "Temp: {temp}°C",
+            "TempMax": "max: {temp}°C",
+            "TempMin": "min: {temp}°C",
+            "Transmitted": "Transmitted: {transmitted}",
             "Version": "Version"
         },
         "UpdatePanel": {
