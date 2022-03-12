@@ -67,22 +67,10 @@
                     </template>
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">{{ interfaceName }}:</span>
-                                </template>
-                                <span>
-                                    MAC: {{ interfaceStats.details.mac_address }}
-                                    <br />
-                                    <div
-                                        v-for="ip_address in interfaceStats.details.ip_addresses"
-                                        :key="ip_address.family">
-                                        {{ ip_address.family }}: {{ ip_address.address }}
-                                    </div>
-                                </span>
-                            </v-tooltip>
-                            {{ formatFilesize(interfaceStats.bandwidth) }}/s, Rx:
-                            {{ formatFilesize(interfaceStats.rx_bytes) }}, Tx:
+                            {{ interfaceName }}{{ getIpAddress(interfaceStats.details.ip_addresses) }}:
+                            {{ $t('Machine.SystemPanel.Bandwidth') }}: {{ formatFilesize(interfaceStats.bandwidth) }}/s,
+                            {{ $t('Machine.SystemPanel.Received') }}: {{ formatFilesize(interfaceStats.rx_bytes) }},
+                            {{ $t('Machine.SystemPanel.Transmitted') }}:
                             {{ formatFilesize(interfaceStats.tx_bytes) }}
                         </div>
                     </template>
@@ -152,7 +140,9 @@
                         </template>
                         <template v-else>
                             <v-row class="mt-5">
-                                <v-col><p>No more Infos</p></v-col>
+                                <v-col>
+                                    <p>{{ $t('Machine.SystemPanel.NoMoreInfos') }}</p>
+                                </v-col>
                             </v-row>
                         </template>
                     </overlay-scrollbars>
@@ -208,6 +198,16 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
 
     get networkInterfaces() {
         return this.$store.getters['server/getNetworkInterfaces'] ?? null
+    }
+
+    getIpAddress(ip_addresses: { family: string; address: string }[]) {
+        const ipv4 = ip_addresses.find((address) => address.family === 'ipv4')
+        if (ipv4) return ` (${ipv4.address})`
+
+        const ipv6 = ip_addresses.find((address) => address.family === 'ipv6')
+        if (ipv6) return ` (${ipv6.address})`
+
+        return null
     }
 }
 </script>

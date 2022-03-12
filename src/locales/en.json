@@ -351,6 +351,7 @@
         },
         "SystemPanel": {
             "Awake": "Awake",
+            "Bandwidth": "Bandwidth",
             "Constants": "Constants",
             "Cpu": "CPU",
             "Distro": "Distro",
@@ -360,8 +361,11 @@
             "Load": "Load",
             "Memory": "Mem",
             "Network": "Network",
+            "NoMoreInfos": "No more Infos",
             "Os": "OS",
+            "Received": "Received",
             "SystemLoad": "System Loads",
+            "Transmitted": "Transmitted",
             "Version": "Version"
         },
         "UpdatePanel": {
