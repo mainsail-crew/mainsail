@@ -6,32 +6,59 @@
                 <small v-if="mcu.chip" class="ml-2">({{ mcu.chip }})</small>
                 <br />
                 <div class="text-body-2">
-                    {{ $t('Machine.SystemPanel.Version') }}: {{ mcu.version }}
-                    <br />
-                    {{ $t('Machine.SystemPanel.Load') }}: {{ mcu.load }}, {{ $t('Machine.SystemPanel.Awake') }}:
-                    {{ mcu.awake }}
-                    <span v-if="mcu.freq !== null">
-                        , {{ $t('Machine.SystemPanel.Frequency') }}: {{ mcu.freqFormat }}
-                    </span>
-                    <template v-if="mcu.tempSensor">
-                        <span>,</span>
-                        <template
-                            v-if="
-                                mcu.tempSensor.measured_min_temp !== null && mcu.tempSensor.measured_max_temp !== null
-                            ">
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">Temp: {{ mcu.tempSensor.temperature + '°C' }}</span>
-                                </template>
-                                <span>
-                                    max: {{ mcu.tempSensor.measured_max_temp }}°C
-                                    <br />
-                                    min: {{ mcu.tempSensor.measured_min_temp }}°C
-                                </span>
-                            </v-tooltip>
+                    <div class="text-no-wrap">
+                        {{ $t('Machine.SystemPanel.Values.Version', { version: mcu.version }) }}
+                    </div>
+                    <div>
+                        <span class="text-no-wrap">
+                            {{ $t('Machine.SystemPanel.Values.Load', { load: mcu.load }) }},
+                        </span>
+                        <span class="text-no-wrap">
+                            {{ $t('Machine.SystemPanel.Values.Awake', { awake: mcu.awake }) }},
+                        </span>
+                        <span v-if="mcu.freq !== null" class="text-no-wrap">
+                            {{ $t('Machine.SystemPanel.Values.Frequency', { frequency: mcu.freqFormat }) }},
+                        </span>
+                        <template v-if="mcu.tempSensor">
+                            <template
+                                v-if="
+                                    mcu.tempSensor.measured_min_temp !== null &&
+                                    mcu.tempSensor.measured_max_temp !== null
+                                ">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <span v-bind="attrs" v-on="on">
+                                            {{
+                                                $t('Machine.SystemPanel.Values.Temp', {
+                                                    temp: mcu.tempSensor.temperature,
+                                                })
+                                            }}
+                                        </span>
+                                    </template>
+                                    <span>
+                                        {{
+                                            $t('Machine.SystemPanel.Values.TempMax', {
+                                                temp: mcu.tempSensor.measured_max_temp,
+                                            })
+                                        }}
+                                        <br />
+                                        {{
+                                            $t('Machine.SystemPanel.Values.TempMin', {
+                                                temp: mcu.tempSensor.measured_min_temp,
+                                            })
+                                        }}
+                                    </span>
+                                </v-tooltip>
+                            </template>
+                            <span v-else class="text-no-wrap">
+                                {{
+                                    $t('Machine.SystemPanel.Values.Temp', {
+                                        temp: mcu.tempSensor.temperature,
+                                    })
+                                }}
+                            </span>
                         </template>
-                        <template v-else>Temp: {{ mcu.tempSensor.temperature + '°C' }}</template>
-                    </template>
+                    </div>
                 </div>
             </v-col>
             <v-col class="px-2 col-auto d-flex justify-center align-center">
@@ -65,7 +92,7 @@
                                 </v-col>
                             </v-row>
                             <div v-for="(value, key, index) in mcu.mcu_constants" :key="key">
-                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-divider v-if="index" class="my-3"></v-divider>
                                 <v-row>
                                     <v-col>{{ key }}</v-col>
                                     <v-col class="text-right">{{ value }}</v-col>
@@ -79,7 +106,7 @@
                                 </v-col>
                             </v-row>
                             <div v-for="(value, key, index) in mcu.last_stats" :key="key">
-                                <v-divider class="my-3" v-if="index"></v-divider>
+                                <v-divider v-if="index" class="my-3"></v-divider>
                                 <v-row>
                                     <v-col>{{ key }}</v-col>
                                     <v-col class="text-right">{{ value }}</v-col>

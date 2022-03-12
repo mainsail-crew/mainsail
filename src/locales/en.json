@@ -350,10 +350,8 @@
             "Logfiles": "Logfiles"
         },
         "SystemPanel": {
-            "Awake": "Awake",
             "Constants": "Constants",
             "Cpu": "CPU",
-            "Frequency": "Freq",
             "HostDetails": "Host details",
             "LastStats": "Last stats",
             "Load": "Load",
@@ -362,8 +360,10 @@
             "NoMoreInfos": "No more Infos",
             "SystemLoad": "System Loads",
             "Values": {
+              "Awake": "Awake: {awake}",
               "Bandwidth": "Bandwidth: {bandwidth}/s",
               "Distro": "Distro: {name} {version_id}",
+              "Frequency": "Freq: {frequency}",
               "Load": "Load: {load}",
               "Memory": "Mem: {memory}",
               "Received": "Received: {received}",
