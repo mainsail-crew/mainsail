@@ -45,45 +45,53 @@
                         </template>
                     </div>
                     <div>
-                        {{ $t('Machine.SystemPanel.Values.Load', { load: hostStats.load }) }},
-                        <span v-if="hostStats.memoryFormat" class="text-no-wrap">
+                        <span class="text-no-wrap">
+                            {{ $t('Machine.SystemPanel.Values.Load', { load: hostStats.load }) }},
+                        </span>
+                        <span v-if="hostStats.memoryFormat" class="d-inline-block text-no-wrap">
                             {{ $t('Machine.SystemPanel.Values.Memory', { memory: hostStats.memoryFormat }) }},
                         </span>
-                        <template v-if="hostStats.tempSensor">
-                            <template
-                                v-if="
-                                    hostStats.tempSensor.measured_min_temp !== null &&
-                                    hostStats.tempSensor.measured_max_temp !== null
-                                ">
-                                <v-tooltip top>
-                                    <template #activator="{ on, attrs }">
-                                        <span class="text-no-wrap" v-bind="attrs" v-on="on">
+                        <span class="text-no-wrap">
+                            <template v-if="hostStats.tempSensor">
+                                <template
+                                    v-if="
+                                        hostStats.tempSensor.measured_min_temp !== null &&
+                                        hostStats.tempSensor.measured_max_temp !== null
+                                    ">
+                                    <v-tooltip top>
+                                        <template #activator="{ on, attrs }">
+                                            <span v-bind="attrs" v-on="on">
+                                                {{
+                                                    $t('Machine.SystemPanel.Values.Temp', {
+                                                        temp: hostStats.tempSensor.temperature,
+                                                    })
+                                                }}
+                                            </span>
+                                        </template>
+                                        <span>
                                             {{
-                                                $t('Machine.SystemPanel.Values.Temp', {
-                                                    temp: hostStats.tempSensor.temperature,
+                                                $t('Machine.SystemPanel.Values.TempMax', {
+                                                    temp: hostStats.tempSensor.measured_max_temp,
+                                                })
+                                            }}
+                                            <br />
+                                            {{
+                                                $t('Machine.SystemPanel.Values.TempMin', {
+                                                    temp: hostStats.tempSensor.measured_min_temp,
                                                 })
                                             }}
                                         </span>
-                                    </template>
-                                    <span>
-                                        {{
-                                            $t('Machine.SystemPanel.Values.TempMax', {
-                                                temp: hostStats.tempSensor.measured_max_temp,
-                                            })
-                                        }}
-                                        <br />
-                                        {{
-                                            $t('Machine.SystemPanel.Values.TempMin', {
-                                                temp: hostStats.tempSensor.measured_min_temp,
-                                            })
-                                        }}
-                                    </span>
-                                </v-tooltip>
+                                    </v-tooltip>
+                                </template>
+                                <span v-else>
+                                    {{
+                                        $t('Machine.SystemPanel.Values.Temp', {
+                                            temp: hostStats.tempSensor.temperature,
+                                        })
+                                    }}
+                                </span>
                             </template>
-                            <span v-else class="text-no-wrap">
-                                {{ $t('Machine.SystemPanel.Values.Temp', { temp: hostStats.tempSensor.temperature }) }}
-                            </span>
-                        </template>
+                        </span>
                     </div>
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
