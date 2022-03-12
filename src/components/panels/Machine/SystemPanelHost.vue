@@ -21,76 +21,98 @@
                 </template>
                 <br />
                 <div class="text-body-2">
-                    <span v-if="hostStats.version">
-                        {{ $t('Machine.SystemPanel.Version') }}: {{ hostStats.version }}
-                        <br />
-                    </span>
-                    <span v-if="hostStats.os">
-                        {{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}
-                        <br />
-                    </span>
-                    <span
+                    <div v-if="hostStats.version">
+                        {{ $t('Machine.SystemPanel.Values.Version', { version: hostStats.version }) }}
+                    </div>
+                    <div v-if="hostStats.os" class="text-no-wrap">
+                        {{ $t('Machine.SystemPanel.Values.Os', { os: hostStats.os }) }}
+                    </div>
+                    <div
                         v-if="
                             hostStats.release_info &&
                             'name' in hostStats.release_info &&
                             hostStats.release_info.name !== '0.'
-                        ">
-                        {{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }}
-                        {{ hostStats.release_info.version_id }}
-                        <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span>
-                        <br />
-                    </span>
-                    <span>{{ $t('Machine.SystemPanel.Load') }}: {{ hostStats.load }},</span>
-                    <span v-if="hostStats.memoryFormat">
-                        {{ $t('Machine.SystemPanel.Memory') }}: {{ hostStats.memoryFormat }},
-                    </span>
-                    <template v-if="hostStats.tempSensor">
-                        <template
-                            v-if="
-                                hostStats.tempSensor.measured_min_temp !== null &&
-                                hostStats.tempSensor.measured_max_temp !== null
-                            ">
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <span v-bind="attrs" v-on="on">
-                                        {{ $t('Machine.SystemPanel.Temp', { temp: hostStats.tempSensor.temperature }) }}
-                                    </span>
-                                </template>
-                                <span>
-                                    {{
-                                        $t('Machine.SystemPanel.TempMax', {
-                                            temp: hostStats.tempSensor.measured_max_temp,
-                                        })
-                                    }}
-                                    <br />
-                                    {{
-                                        $t('Machine.SystemPanel.TempMin', {
-                                            temp: hostStats.tempSensor.measured_min_temp,
-                                        })
-                                    }}
-                                </span>
-                            </v-tooltip>
+                        "
+                        class="text-no-wrap">
+                        {{
+                            $t('Machine.SystemPanel.Values.Distro', {
+                                name: hostStats.release_info.name,
+                                version_id: hostStats.release_info.version_id,
+                            })
+                        }}
+                        <template v-if="hostStats.release_info.codename">
+                            ({{ hostStats.release_info.codename }})
                         </template>
-                        <template v-else>Temp: {{ hostStats.tempSensor.temperature + '°C' }}</template>
-                    </template>
+                    </div>
+                    <div>
+                        {{ $t('Machine.SystemPanel.Values.Load', { load: hostStats.load }) }},
+                        <span v-if="hostStats.memoryFormat" class="text-no-wrap">
+                            {{ $t('Machine.SystemPanel.Values.Memory', { memory: hostStats.memoryFormat }) }},
+                        </span>
+                        <template v-if="hostStats.tempSensor">
+                            <template
+                                v-if="
+                                    hostStats.tempSensor.measured_min_temp !== null &&
+                                    hostStats.tempSensor.measured_max_temp !== null
+                                ">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <span class="text-no-wrap" v-bind="attrs" v-on="on">
+                                            {{
+                                                $t('Machine.SystemPanel.Values.Temp', {
+                                                    temp: hostStats.tempSensor.temperature,
+                                                })
+                                            }}
+                                        </span>
+                                    </template>
+                                    <span>
+                                        {{
+                                            $t('Machine.SystemPanel.Values.TempMax', {
+                                                temp: hostStats.tempSensor.measured_max_temp,
+                                            })
+                                        }}
+                                        <br />
+                                        {{
+                                            $t('Machine.SystemPanel.Values.TempMin', {
+                                                temp: hostStats.tempSensor.measured_min_temp,
+                                            })
+                                        }}
+                                    </span>
+                                </v-tooltip>
+                            </template>
+                            <span v-else class="text-no-wrap">
+                                {{ $t('Machine.SystemPanel.Values.Temp', { temp: hostStats.tempSensor.temperature }) }}
+                            </span>
+                        </template>
+                    </div>
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
-                            {{ interfaceName }}{{ getIpAddress(interfaceStats.details.ip_addresses) }}:
-                            {{
-                                $t('Machine.SystemPanel.Bandwidth', {
-                                    bandwidth: formatFilesize(interfaceStats.bandwidth),
-                                })
-                            }},
-                            {{
-                                $t('Machine.SystemPanel.Received', {
-                                    received: formatFilesize(interfaceStats.rx_bytes),
-                                })
-                            }},
-                            {{
-                                $t('Machine.SystemPanel.Transmitted', {
-                                    transmitted: formatFilesize(interfaceStats.tx_bytes),
-                                })
-                            }}
+                            <span class="text-no-wrap">
+                                {{ interfaceName }}{{ getIpAddress(interfaceStats.details.ip_addresses) }}:
+                            </span>
+                            <span class="text-no-wrap">
+                                {{
+                                    $t('Machine.SystemPanel.Values.Bandwidth', {
+                                        bandwidth: formatFilesize(interfaceStats.bandwidth),
+                                    })
+                                }}
+                            </span>
+                            ,
+                            <span class="text-no-wrap">
+                                {{
+                                    $t('Machine.SystemPanel.Values.Received', {
+                                        received: formatFilesize(interfaceStats.rx_bytes),
+                                    })
+                                }}
+                            </span>
+                            ,
+                            <span class="text-no-wrap">
+                                {{
+                                    $t('Machine.SystemPanel.Values.Transmitted', {
+                                        transmitted: formatFilesize(interfaceStats.tx_bytes),
+                                    })
+                                }}
+                            </span>
                         </div>
                     </template>
                 </div>
