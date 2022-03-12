@@ -19,7 +19,7 @@
                     :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                     @click="doHome">
                     <v-icon class="mr-1">{{ mdiHome }}</v-icon>
-                    {{ $t('Panels.ControlPanel.ALL') }}
+                    {{ $t('Panels.ToolheadControlPanel.ALL') }}
                 </v-btn>
                 <v-btn
                     v-if="existsQGL"
@@ -28,7 +28,7 @@
                     :color="colorQuadGantryLevel"
                     class="ml-2"
                     @click="doQGL">
-                    {{ $t('Panels.ControlPanel.QGL') }}
+                    {{ $t('Panels.ToolheadControlPanel.QGL') }}
                 </v-btn>
                 <v-btn
                     v-if="existsZtilt"
@@ -37,7 +37,7 @@
                     :color="colorZTilt"
                     class="ml-2"
                     @click="doZtilt">
-                    {{ $t('Panels.ControlPanel.ZTilt') }}
+                    {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                 </v-btn>
             </v-col>
         </v-row>
@@ -56,7 +56,7 @@
                         :loading="loadings.includes('homeX')"
                         class="font-weight-bold btnHomeAxis"
                         @click="doHomeX">
-                        {{ $t('Panels.ControlPanel.X') }}
+                        {{ $t('Panels.ToolheadControlPanel.X') }}
                     </v-btn>
                     <v-btn
                         v-for="steps of stepsXYsortedReverse"
@@ -83,7 +83,7 @@
                         :loading="loadings.includes('homeY')"
                         class="font-weight-bold btnHomeAxis"
                         @click="doHomeY">
-                        {{ $t('Panels.ControlPanel.Y') }}
+                        {{ $t('Panels.ToolheadControlPanel.Y') }}
                     </v-btn>
                     <v-btn
                         v-for="steps of stepsXYsortedReverse"
@@ -110,7 +110,7 @@
                         :loading="loadings.includes('homeZ')"
                         class="font-weight-bold btnHomeAxis"
                         @click="doHomeZ">
-                        {{ $t('Panels.ControlPanel.Z') }}
+                        {{ $t('Panels.ToolheadControlPanel.Z') }}
                     </v-btn>
                     <v-btn
                         v-for="steps of stepsZsortedReverse"
@@ -127,11 +127,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { mdiHome } from '@mdi/js'
+
 @Component
-export default class ControlPanelBarsControl extends Mixins(BaseMixin, ControlMixin) {
+export default class BarsControl extends Mixins(BaseMixin, ControlMixin) {
     mdiHome = mdiHome
 
     get stepsXYsorted() {

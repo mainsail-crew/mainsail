@@ -101,7 +101,7 @@
                                 @click="doHome">
                                 <div class="d-flex align-center">
                                     <v-icon>{{ mdiHome }}</v-icon>
-                                    <span class="ml-1">{{ $t('Panels.ControlPanel.ALL') }}</span>
+                                    <span class="ml-1">{{ $t('Panels.ToolheadControlPanel.ALL') }}</span>
                                 </div>
                             </v-btn>
                         </v-col>
@@ -115,7 +115,7 @@
                                 height="30"
                                 :loading="loadings.includes('qgl')"
                                 @click="doQGL">
-                                {{ $t('Panels.ControlPanel.QGL') }}
+                                {{ $t('Panels.ToolheadControlPanel.QGL') }}
                             </v-btn>
                             <v-btn
                                 v-if="existsZtilt"
@@ -126,7 +126,7 @@
                                 height="30"
                                 :loading="loadings.includes('zTilt')"
                                 @click="doZtilt">
-                                {{ $t('Panels.ControlPanel.ZTilt') }}
+                                {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -139,7 +139,7 @@
                                 :loading="loadings.includes('homeX')"
                                 :color="homedAxes.includes('x') ? 'primary' : 'warning'"
                                 @click="doHomeX">
-                                {{ $t('Panels.ControlPanel.X') }}
+                                {{ $t('Panels.ToolheadControlPanel.X') }}
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
@@ -150,7 +150,7 @@
                                 :loading="loadings.includes('homeY')"
                                 :color="homedAxes.includes('y') ? 'primary' : 'warning'"
                                 @click="doHomeY">
-                                {{ $t('Panels.ControlPanel.Y') }}
+                                {{ $t('Panels.ToolheadControlPanel.Y') }}
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
@@ -161,7 +161,7 @@
                                 :loading="loadings.includes('homeZ')"
                                 :color="homedAxes.includes('z') ? 'primary' : 'warning'"
                                 @click="doHomeZ">
-                                {{ $t('Panels.ControlPanel.Z') }}
+                                {{ $t('Panels.ToolheadControlPanel.Z') }}
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -186,10 +186,10 @@
                     </v-btn>
                 </v-btn-toggle>
                 <div v-else class="font-weight-bold warning rounded pa-2">
-                    {{ $t('Panels.ControlPanel.PleaseConfigureSteps') }}
+                    {{ $t('Panels.ToolheadControlPanel.PleaseConfigureSteps') }}
                     <br />
                     <router-link style="color: white" to="/settings/interface">
-                        {{ $t('Panels.ControlPanel.SettingsInterfaceControl') }}
+                        {{ $t('Panels.ToolheadControlPanel.SettingsInterfaceControl') }}
                     </router-link>
                 </div>
             </v-col>
@@ -199,12 +199,12 @@
 
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
-import BaseMixin from '../mixins/base'
+import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiHome } from '@mdi/js'
 
 @Component
-export default class ControlPanelCrossControl extends Mixins(BaseMixin, ControlMixin) {
+export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     private homeCols = 6
 
     mdiChevronUp = mdiChevronUp
