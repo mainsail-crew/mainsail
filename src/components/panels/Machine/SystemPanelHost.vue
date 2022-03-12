@@ -24,7 +24,7 @@
                     <div v-if="hostStats.version">
                         {{ $t('Machine.SystemPanel.Values.Version', { version: hostStats.version }) }}
                     </div>
-                    <div v-if="hostStats.os" class="text-no-wrap">
+                    <div v-if="hostStats.os">
                         {{ $t('Machine.SystemPanel.Values.Os', { os: hostStats.os }) }}
                     </div>
                     <div
