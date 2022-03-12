@@ -29,7 +29,12 @@
                         {{ $t('Machine.SystemPanel.Os') }}: {{ hostStats.os }}
                         <br />
                     </span>
-                    <span v-if="hostStats.release_info && hostStats.release_info.name !== '0.'">
+                    <span
+                        v-if="
+                            hostStats.release_info &&
+                            'name' in hostStats.release_info &&
+                            hostStats.release_info.name !== '0.'
+                        ">
                         {{ $t('Machine.SystemPanel.Distro') }}: {{ hostStats.release_info.name }}
                         {{ hostStats.release_info.version_id }}
                         <span v-if="hostStats.release_info.codename">({{ hostStats.release_info.codename }})</span>
