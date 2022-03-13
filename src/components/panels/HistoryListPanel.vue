@@ -188,7 +188,13 @@
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ item.status.replace(/_/g, ' ') }}</span>
+                                <span>
+                                    {{
+                                        $te(`History.StatusValues.${item.status}`, 'en')
+                                            ? $t(`History.StatusValues.${item.status}`)
+                                            : item.status.replace(/_/g, ' ')
+                                    }}
+                                </span>
                             </v-tooltip>
                         </td>
                         <td
