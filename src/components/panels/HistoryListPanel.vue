@@ -209,6 +209,10 @@
                     <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
                 </v-list-item>
+                <v-list-item @click="createNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
+                    {{ $t('History.AddNote') }}
+                </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.exists"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
@@ -441,6 +445,7 @@ import {
     mdiMagnify,
     mdiCloseThick,
     mdiUpdate,
+    mdiNotebookPlus,
 } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -457,6 +462,7 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiMagnify = mdiMagnify
     mdiUpdate = mdiUpdate
     mdiCloseThick = mdiCloseThick
+    mdiNotebookPlus = mdiNotebookPlus
 
     formatFilesize = formatFilesize
 
