@@ -287,6 +287,15 @@
         "StartTime": "Start Time",
         "Statistics": "Statistics",
         "Status": "Status",
+        "StatusValues": {
+            "cancelled": "Cancelled",
+            "completed": "Completed",
+            "error": "Error",
+            "in_progress": "In progress",
+            "klippy_disconnect": "Klippy disconnect",
+            "klippy_shutdown": "Klippy shutdown",
+            "server_exit": "Server exit"
+        },
         "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Refresh History",
         "TitleSettings": "Settings",
