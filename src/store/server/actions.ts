@@ -85,6 +85,13 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
     },
 
+    updateProcStats({ commit }, payload) {
+        if ('cpu_temp' in payload) commit('setCpuTemp', payload.cpu_temp)
+        if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
+        if ('network' in payload) commit('setNetworkStats', payload.network)
+        if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
+    },
+
     setKlippyReady({ dispatch, state }) {
         if (state.klippy_connected_timer !== null) dispatch('stopKlippyConnectedInterval')
         if (state.klippy_state_timer !== null) dispatch('stopKlippyStateInterval')

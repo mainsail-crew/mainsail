@@ -282,7 +282,6 @@
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
         "SelectedPrinttime": "Selected Printtime",
-        "ShowStatusName": "Show \"{name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Start Time",
@@ -361,17 +360,29 @@
             "Logfiles": "Logfiles"
         },
         "SystemPanel": {
-            "Awake": "Awake",
             "Constants": "Constants",
-            "Distro": "Distro",
-            "Frequency": "Freq",
+            "Cpu": "CPU",
             "HostDetails": "Host details",
             "LastStats": "Last stats",
             "Load": "Load",
-            "Memory": "Mem",
-            "Os": "OS",
+            "Memory": "MEM",
+            "NoMoreInfos": "No more Infos",
             "SystemLoad": "System Loads",
-            "Version": "Version"
+            "Values": {
+                "Awake": "Awake: {awake}",
+                "Bandwidth": "Bandwidth: {bandwidth}/s",
+                "Distro": "Distro: {name} {version_id}",
+                "Frequency": "Freq: {frequency}",
+                "Load": "Load: {load}",
+                "Memory": "Mem: {memory}",
+                "Os": "OS: {os}",
+                "Received": "Received: {received}",
+                "Temp": "Temp: {temp}°C",
+                "TempMax": "max: {temp}°C",
+                "TempMin": "min: {temp}°C",
+                "Transmitted": "Transmitted: {transmitted}",
+                "Version": "Version: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "Check for updates",
