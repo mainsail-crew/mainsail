@@ -169,7 +169,8 @@
                         v-for="step of stepsReversed"
                         :key="`step-${step}`"
                         dense
-                        class="btnMinWidthAuto flex-grow-1 px-0">
+                        class="btnMinWidthAuto flex-grow-1 px-0"
+                        style="height: 28px">
                         <span class="body-2">{{ step }}</span>
                     </v-btn>
                 </v-btn-toggle>
