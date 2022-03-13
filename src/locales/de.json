@@ -363,17 +363,29 @@
             "Logfiles": "Logdateien"
         },
         "SystemPanel": {
-            "Awake": "Wach",
             "Constants": "Konstanten",
-            "Distro": "Distribution",
-            "Frequency": "Freq",
+            "Cpu": "CPU",
             "HostDetails": "Host-Details",
             "LastStats": "Letzte Statistik",
             "Load": "Auslastung",
-            "Memory": "Mem",
-            "Os": "OS",
+            "Memory": "MEM",
+            "NoMoreInfos": "Keine weiteren Informationen",
             "SystemLoad": "Systemauslastung",
-            "Version": "Version"
+            "Values": {
+              "Awake": "Wach: {awake}",
+              "Bandwidth": "Bandbreite: {bandwidth}/s",
+              "Distro": "Distribution: {name} {version_id}",
+              "Frequency": "Freq: {frequency}",
+              "Load": "Auslastung: {load}",
+              "Memory": "Mem: {memory}",
+              "Os": "OS: {os}",
+              "Received": "Empfangen: {received}",
+              "Temp": "Temp: {temp}°C",
+              "TempMax": "max: {temp}°C",
+              "TempMin": "min: {temp}°C",
+              "Transmitted": "Versendet: {transmitted}",
+              "Version": "Version: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "auf aktualisierungen prüfen",
