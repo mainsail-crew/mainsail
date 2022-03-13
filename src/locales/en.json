@@ -281,7 +281,6 @@
         "SelectedFilamentUsed": "Selected Filament Used",
         "SelectedJobs": "Selected Jobs",
         "SelectedPrinttime": "Selected Printtime",
-        "ShowStatusName": "Show \"{name}\" ({count})",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Start Time",
@@ -366,7 +365,6 @@
             "LastStats": "Last stats",
             "Load": "Load",
             "Memory": "MEM",
-            "Network": "Network",
             "NoMoreInfos": "No more Infos",
             "SystemLoad": "System Loads",
             "Values": {
