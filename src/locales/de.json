@@ -372,19 +372,19 @@
             "NoMoreInfos": "Keine weiteren Informationen",
             "SystemLoad": "Systemauslastung",
             "Values": {
-              "Awake": "Wach: {awake}",
-              "Bandwidth": "Bandbreite: {bandwidth}/s",
-              "Distro": "Distribution: {name} {version_id}",
-              "Frequency": "Freq: {frequency}",
-              "Load": "Auslastung: {load}",
-              "Memory": "Mem: {memory}",
-              "Os": "OS: {os}",
-              "Received": "Empfangen: {received}",
-              "Temp": "Temp: {temp}°C",
-              "TempMax": "max: {temp}°C",
-              "TempMin": "min: {temp}°C",
-              "Transmitted": "Versendet: {transmitted}",
-              "Version": "Version: {version}"
+                "Awake": "Wach: {awake}",
+                "Bandwidth": "Bandbreite: {bandwidth}/s",
+                "Distro": "Distribution: {name} {version_id}",
+                "Frequency": "Freq: {frequency}",
+                "Load": "Auslastung: {load}",
+                "Memory": "Mem: {memory}",
+                "Os": "OS: {os}",
+                "Received": "Empfangen: {received}",
+                "Temp": "Temp: {temp}°C",
+                "TempMax": "max: {temp}°C",
+                "TempMin": "min: {temp}°C",
+                "Transmitted": "Versendet: {transmitted}",
+                "Version": "Version: {version}"
             }
         },
         "UpdatePanel": {
