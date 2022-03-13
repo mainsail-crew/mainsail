@@ -12,6 +12,8 @@ import Component from 'vue-class-component'
 import { Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import type { ECharts } from 'echarts/core'
+import { ECBasicOption } from 'echarts/types/dist/shared'
+import { ServerHistoryStateAllPrintStatusEntry } from '@/store/server/history/types'
 
 @Component({
     components: {},
@@ -21,7 +23,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
         historyAllPrintStatus: any
     }
 
-    private chartOptions: any = {
+    private chartOptions: ECBasicOption = {
         darkMode: true,
         animation: false,
         grid: {
@@ -64,7 +66,16 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     get printStatusArray() {
-        return this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
+        const output: ServerHistoryStateAllPrintStatusEntry[] = []
+        const orgArray = this.selectedJobs.length ? this.selectedPrintStatusArray : this.allPrintStatusArray
+
+        orgArray.forEach((status: ServerHistoryStateAllPrintStatusEntry) => {
+            const tmp = { ...status }
+            tmp.name = status.displayName
+            output.push(tmp)
+        })
+
+        return output
     }
 
     get chart(): ECharts | null {
