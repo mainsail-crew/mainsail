@@ -2,17 +2,6 @@
 .btnMinWidthAuto {
     min-width: auto !important;
 }
-
-.steps {
-    width: 100%;
-    > div {
-        width: 100%;
-        display: flex;
-        > button {
-            flex-grow: 1;
-        }
-    }
-}
 </style>
 
 <template>
@@ -172,14 +161,13 @@
             <v-col class="col-12">
                 <v-btn-toggle
                     v-if="stepsReversed.length > 0"
-                    :key="'all-steps-' + stepsReversed.join('_')"
+                    :key="`all-steps-${stepsReversed.join('_')}`"
                     v-model="selectedCrossStep"
                     dense
-                    no-gutters
                     style="flex-wrap: nowrap; width: 100%">
                     <v-btn
                         v-for="step of stepsReversed"
-                        :key="'step-' + step"
+                        :key="`step-${step}`"
                         dense
                         class="btnMinWidthAuto flex-grow-1 px-0">
                         <span class="body-2">{{ step }}</span>
