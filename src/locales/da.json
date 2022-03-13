@@ -449,22 +449,6 @@
                 "Empty": "Tom"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "Alle",
-            "AlternateControls": "Alternative kontroller",
-            "Headline": "Kontrolpanel",
-            "InvertX": "Invertér X",
-            "InvertY": "Invertér Y",
-            "InvertZ": "Invertér Z",
-            "PleaseConfigureSteps": "Konfigurer steps",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
-            "SetupControls": "Kontrolindstillinger",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Download log",
             "FollowingPluginHasAnError": "Følgende plugin har en fejl:",
@@ -476,11 +460,6 @@
             "Off": "Sluk",
             "On": "Tænd",
             "PowerControl": "Strømstyring"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Ekstrudering",
-            "Headline": "Print indstillinger",
-            "SpeedFactor": "Hastighed"
         },
         "StatusPanel": {
             "Absolute": "Absolut",
@@ -517,6 +496,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "Alle",
+            "AlternateControls": "Alternative kontroller",
+            "Headline": "Kontrolpanel",
+            "InvertX": "Invertér X",
+            "InvertY": "Invertér Y",
+            "InvertZ": "Invertér Z",
+            "PleaseConfigureSteps": "Konfigurer steps",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Indstillinger > Interface > Control",
+            "SetupControls": "Kontrolindstillinger",
+            "SpeedFactor": "Hastighed",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Autoskalér diagram",

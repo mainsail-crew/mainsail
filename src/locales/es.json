@@ -465,22 +465,6 @@
                 "Empty": "Vacío"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "TODO",
-            "AlternateControls": "Alternar controles",
-            "Headline": "Controles",
-            "InvertX": "Invertir X",
-            "InvertY": "Invertir Y",
-            "InvertZ": "Invertir Z",
-            "PleaseConfigureSteps": "Por favor configure los pasos",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Configuración > Interfaz > Control",
-            "SetupControls": "Configurar controles",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Descargar registro",
             "FollowingPluginHasAnError": "El siguiente plugin tiene un error:",
@@ -492,11 +476,6 @@
             "Off": "Apagado",
             "On": "Encendido",
             "PowerControl": "Control de energía"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Factor de extrusión",
-            "Headline": "Configuración de impresión",
-            "SpeedFactor": "Factor de velocidad"
         },
         "StatusPanel": {
             "Absolute": "absoluta",
@@ -533,6 +512,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "TODO",
+            "AlternateControls": "Alternar controles",
+            "Headline": "Controles",
+            "InvertX": "Invertir X",
+            "InvertY": "Invertir Y",
+            "InvertZ": "Invertir Z",
+            "PleaseConfigureSteps": "Por favor configure los pasos",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Configuración > Interfaz > Control",
+            "SetupControls": "Configurar controles",
+            "SpeedFactor": "Factor de velocidad",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Autoescalar gráfico",

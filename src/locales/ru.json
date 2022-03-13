@@ -458,25 +458,6 @@
             },
             "SpeedFactor": "Коэффициент скорости"
         },
-        "ToolheadControlPanel": {
-            "ALL": "ALL",
-            "AlternateControls": "Альтернативный контроль",
-            "Controls": "Контроль",
-            "Headline": "Управление",
-            "Home": "Home",
-            "InvertX": "X инвертировать",
-            "InvertY": "Y инвертировать",
-            "InvertZ": "Z инвертировать",
-            "Macros": "Макрос",
-            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
-            "SetupControls": "Установить контроль",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "MoonrakerFailedComponentsPanel": {
             "DownloadLog": "Скачать протокол",
             "FollowingPluginHasAnError": "Следующий плагин имеет ошибку:",
@@ -494,11 +475,6 @@
             "Off": "Офф",
             "On": "На сайте",
             "PowerControl": "Переключатель питания"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Коэффициент экструзии",
-            "Headline": "Настройки печати",
-            "SpeedFactor": "Коэффициент скорости"
         },
         "StatusPanel": {
             "Absolute": "Абсолютно",
@@ -535,6 +511,26 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "ALL",
+            "AlternateControls": "Альтернативный контроль",
+            "Controls": "Контроль",
+            "Headline": "Управление",
+            "Home": "Home",
+            "InvertX": "X инвертировать",
+            "InvertY": "Y инвертировать",
+            "InvertZ": "Z инвертировать",
+            "Macros": "Макрос",
+            "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Настройки > интерфейс > управление",
+            "SetupControls": "Установить контроль",
+            "SpeedFactor": "Коэффициент скорости",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Автомасштабируемая диаграмма",

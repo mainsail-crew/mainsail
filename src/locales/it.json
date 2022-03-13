@@ -449,22 +449,6 @@
                 "Empty": "Vuoto"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "TUTTI",
-            "AlternateControls": "Controlli Alternativi",
-            "Headline": "Controlli",
-            "InvertX": "Inverti X",
-            "InvertY": "Inverti Y",
-            "InvertZ": "Inverti Z",
-            "PleaseConfigureSteps": "Configura gli step",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
-            "SetupControls": "Controlli Installazione",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Inclinazione Z"
-        },
         "MoonrakerFailedComponentsPanel": {},
         "MoonrakerStatePanel": {
             "DownloadLog": "Scarica il Registro",
@@ -477,11 +461,6 @@
             "Off": "Spento",
             "On": "Acceso",
             "PowerControl": "Controllo Alimentazione"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Fattore di estrusione",
-            "Headline": "Impostazioni di Stampa",
-            "SpeedFactor": "Fattore di velocità"
         },
         "StatusPanel": {
             "Absolute": "assoluto",
@@ -518,6 +497,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "TUTTI",
+            "AlternateControls": "Controlli Alternativi",
+            "Headline": "Controlli",
+            "InvertX": "Inverti X",
+            "InvertY": "Inverti Y",
+            "InvertZ": "Inverti Z",
+            "PleaseConfigureSteps": "Configura gli step",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
+            "SetupControls": "Controlli Installazione",
+            "SpeedFactor": "Fattore di velocità",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Inclinazione Z"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Scala automaticamente il Grafico",

@@ -451,22 +451,6 @@
                 "Empty": "vide"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "Tous",
-            "AlternateControls": "Commandes en croix",
-            "Headline": "Contrôles",
-            "InvertX": "Inversion X",
-            "InvertY": "Inversion Y",
-            "InvertZ": "Inversion Z",
-            "PleaseConfigureSteps": "Configurez Pas",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
-            "SetupControls": "Réglages",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Téléchargement log",
             "FollowingPluginHasAnError": "Le Plug-in suivant a une erreur:",
@@ -478,11 +462,6 @@
             "Off": "Arrêt",
             "On": "Marche",
             "PowerControl": "Alimentation"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Facteur d'extrusion",
-            "Headline": "Réglages d'impression",
-            "SpeedFactor": "Facteur de vitesse"
         },
         "StatusPanel": {
             "Absolute": "absolue",
@@ -519,6 +498,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "Tous",
+            "AlternateControls": "Commandes en croix",
+            "Headline": "Contrôles",
+            "InvertX": "Inversion X",
+            "InvertY": "Inversion Y",
+            "InvertZ": "Inversion Z",
+            "PleaseConfigureSteps": "Configurez Pas",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Réglages > Interface > Contrôle",
+            "SetupControls": "Réglages",
+            "SpeedFactor": "Facteur de vitesse",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Echelle automatique",

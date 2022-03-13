@@ -464,22 +464,6 @@
                 "Empty": "Leer"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "ALLE",
-            "AlternateControls": "Steuerkreuz",
-            "Headline": "Werkzeugkopf-Steuerung",
-            "InvertX": "X invertieren",
-            "InvertY": "Y invertieren",
-            "InvertZ": "Z invertieren",
-            "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
-            "SetupControls": "Setup-Steuerelemente",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z Tilt"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Log herunterladen",
             "FollowingPluginHasAnError": "Das folgende Plugin hat einen Fehler:",
@@ -491,11 +475,6 @@
             "Off": "Aus",
             "On": "An",
             "PowerControl": "Stromversorgung"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrusionsfaktor",
-            "Headline": "Druckeinstellungen",
-            "SpeedFactor": "Geschwindigkeitsfaktor"
         },
         "StatusPanel": {
             "Absolute": "absolut",
@@ -532,6 +511,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "ALLE",
+            "AlternateControls": "Steuerkreuz",
+            "Headline": "Werkzeugkopf-Steuerung",
+            "InvertX": "X invertieren",
+            "InvertY": "Y invertieren",
+            "InvertZ": "Z invertieren",
+            "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
+            "SetupControls": "Setup-Steuerelemente",
+            "SpeedFactor": "Geschwindigkeitsfaktor",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Autoskalierung",

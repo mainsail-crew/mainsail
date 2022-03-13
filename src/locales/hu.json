@@ -448,22 +448,6 @@
                 "Empty": "Üres"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "MIND",
-            "AlternateControls": "Vezérlési alternatívák",
-            "Headline": "Vezérlések",
-            "InvertX": "X invertálása",
-            "InvertY": "Y invertálása",
-            "InvertZ": "Z invertálása",
-            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
-            "SetupControls": "Beállítás vezérlései",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z dőlésszög"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "Letöltési log",
             "FollowingPluginHasAnError": "A következő bővítmény hibás:",
@@ -475,11 +459,6 @@
             "Off": "KI",
             "On": "BE",
             "PowerControl": "Tápellátás vezérlés"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "Extrudálási szorzó",
-            "Headline": "Nyomtatási beállítások",
-            "SpeedFactor": "Sebességállítás"
         },
         "StatusPanel": {
             "Absolute": "abszolút",
@@ -516,6 +495,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "MIND",
+            "AlternateControls": "Vezérlési alternatívák",
+            "Headline": "Vezérlések",
+            "InvertX": "X invertálása",
+            "InvertY": "Y invertálása",
+            "InvertZ": "Z invertálása",
+            "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
+            "SetupControls": "Beállítás vezérlései",
+            "SpeedFactor": "Sebességállítás",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z dőlésszög"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Grafikon automatikus méretezése",

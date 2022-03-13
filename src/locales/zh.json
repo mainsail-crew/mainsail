@@ -448,22 +448,6 @@
                 "Empty": "空"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "所有",
-            "AlternateControls": "翻转控制",
-            "Headline": "控制",
-            "InvertX": "翻转 X",
-            "InvertY": "翻转 Y",
-            "InvertZ": "翻转 Z",
-            "PleaseConfigureSteps": "请设置步",
-            "QGL": "四点调平",
-            "SettingsInterfaceControl": "设置 > 界面 > 控制",
-            "SetupControls": "设置",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z 抬升"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "下载日志",
             "FollowingPluginHasAnError": "下面的插件有一个错误:",
@@ -475,11 +459,6 @@
             "Off": "关闭",
             "On": "打开",
             "PowerControl": "电源控制"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "挤出因子",
-            "Headline": "打印机设置",
-            "SpeedFactor": "速度因子"
         },
         "StatusPanel": {
             "Absolute": "绝对",
@@ -516,6 +495,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "所有",
+            "AlternateControls": "翻转控制",
+            "Headline": "控制",
+            "InvertX": "翻转 X",
+            "InvertY": "翻转 Y",
+            "InvertZ": "翻转 Z",
+            "PleaseConfigureSteps": "请设置步",
+            "QGL": "四点调平",
+            "SettingsInterfaceControl": "设置 > 界面 > 控制",
+            "SetupControls": "设置",
+            "SpeedFactor": "速度因子",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z 抬升"
         },
         "ToolsPanel": {
             "AutoscaleChart": "自动缩放图表",

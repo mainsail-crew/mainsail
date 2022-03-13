@@ -26,7 +26,7 @@
         <!-- SPEED FACTOR STYLE -->
         <v-divider></v-divider>
         <tool-slider
-            :label="$t('Panels.PrintsettingsPanel.SpeedFactor').toString()"
+            :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
             :icon="mdiSpeedometer"
             :target="speed_factor"
             :min="1"

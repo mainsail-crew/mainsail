@@ -396,22 +396,6 @@
                 "Empty": "空的"
             }
         },
-        "ToolheadControlPanel": {
-            "ALL": "所有",
-            "AlternateControls": "備用控制",
-            "Headline": "控制",
-            "InvertX": "翻轉 X",
-            "InvertY": "翻轉 Y",
-            "InvertZ": "翻轉 Z",
-            "PleaseConfigureSteps": "請設定步進",
-            "QGL": "QGL",
-            "SettingsInterfaceControl": "設定 > 界面 > 控制",
-            "SetupControls": "設定控制",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
-            "ZTilt": "Z 傾斜"
-        },
         "MoonrakerStatePanel": {
             "DownloadLog": "下載日誌",
             "FollowingPluginHasAnError": "下面的外掛程式有一個錯誤:",
@@ -423,11 +407,6 @@
             "Off": "關",
             "On": "開",
             "PowerControl": "電源管理"
-        },
-        "PrintsettingsPanel": {
-            "ExtrusionFactor": "擠出係數",
-            "Headline": "列印設定",
-            "SpeedFactor": "速度係數"
         },
         "StatusPanel": {
             "Absolute": "絕對",
@@ -464,6 +443,23 @@
             "X": "X",
             "Y": "Y",
             "Z": "Z"
+        },
+        "ToolheadControlPanel": {
+            "ALL": "所有",
+            "AlternateControls": "備用控制",
+            "Headline": "控制",
+            "InvertX": "翻轉 X",
+            "InvertY": "翻轉 Y",
+            "InvertZ": "翻轉 Z",
+            "PleaseConfigureSteps": "請設定步進",
+            "QGL": "QGL",
+            "SettingsInterfaceControl": "設定 > 界面 > 控制",
+            "SetupControls": "設定控制",
+            "SpeedFactor": "速度係數",
+            "X": "X",
+            "Y": "Y",
+            "Z": "Z",
+            "ZTilt": "Z 傾斜"
         },
         "ToolsPanel": {
             "AutoscaleChart": "自動縮放圖表",
