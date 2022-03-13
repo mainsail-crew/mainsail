@@ -11,6 +11,7 @@ import {
     mdiCloseCircleOutline,
     mdiProgressClock,
 } from '@mdi/js'
+import i18n from '@/plugins/i18n'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
@@ -75,7 +76,10 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
         state.jobs.forEach((current) => {
-            const index = output.findIndex((element) => element.name === current.status)
+            const name = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                : current.status
+            const index = output.findIndex((element) => element.name === name)
             if (index !== -1) output[index].value += 1
             else {
                 const itemStyle = {
@@ -101,7 +105,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 }
 
                 output.push({
-                    name: current.status,
+                    name,
                     value: 1,
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
@@ -119,7 +123,10 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
         rootState.gui.view.history.selectedJobs.forEach((current: ServerHistoryStateJob) => {
-            const index = output.findIndex((element) => element.name === current.status)
+            const name = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                : current.status
+            const index = output.findIndex((element) => element.name === name)
             if (index !== -1) output[index].value += 1
             else {
                 const itemStyle = {
@@ -145,7 +152,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 }
 
                 output.push({
-                    name: current.status,
+                    name,
                     value: 1,
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
