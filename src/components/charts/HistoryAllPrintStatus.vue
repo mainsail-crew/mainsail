@@ -68,8 +68,7 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        const historyAllPrintStatus = this.$refs.historyAllPrintStatus
-        return historyAllPrintStatus?.inst ?? null
+        return this.$refs.historyAllPrintStatus ?? null
     }
 
     mounted() {
@@ -90,11 +89,15 @@ export default class HistoryAllPrintStatus extends Mixins(BaseMixin) {
 
     @Watch('printStatusArray')
     printStatusArrayChanged(newVal: any) {
-        this.chart?.setOption({
-            series: {
-                data: newVal,
+        this.chart?.setOption(
+            {
+                series: {
+                    data: newVal,
+                },
             },
-        })
+            false,
+            true
+        )
     }
 
     visibilityChanged(isVisible: boolean) {
