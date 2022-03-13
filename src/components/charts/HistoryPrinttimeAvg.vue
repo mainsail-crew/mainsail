@@ -95,8 +95,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        const historyPrinttimeAvg = this.$refs.historyPrinttimeAvg
-        return historyPrinttimeAvg?.inst ?? null
+        return this.$refs.historyPrinttimeAvg ?? null
     }
 
     mounted() {
@@ -117,11 +116,15 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
 
     @Watch('printtimeAvgArray')
     printtimeAvgArrayChanged(newVal: any) {
-        this.chart?.setOption({
-            series: {
-                data: newVal,
+        this.chart?.setOption(
+            {
+                series: {
+                    data: newVal,
+                },
             },
-        })
+            false,
+            true
+        )
     }
 
     visibilityChanged(isVisible: boolean) {
