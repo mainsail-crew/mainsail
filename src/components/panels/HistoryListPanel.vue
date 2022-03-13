@@ -265,7 +265,13 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.Status') }}</v-col>
-                            <v-col class="text-right">{{ detailsDialog.item.status }}</v-col>
+                            <v-col class="text-right">
+                                {{
+                                    $te(`History.StatusValues.${detailsDialog.item.status}`, 'en')
+                                        ? $t(`History.StatusValues.${detailsDialog.item.status}`)
+                                        : detailsDialog.item.status
+                                }}
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row>
