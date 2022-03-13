@@ -246,7 +246,7 @@
     },
     "History": {
         "AllJobs": "All",
-        "AvgPrinttime": "Avg. Printtime",
+        "AvgPrinttime": "Printtime - Ø",
         "Cancel": "Cancel",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
