@@ -344,6 +344,7 @@
             "Rename": "Umbenennen",
             "RenameDirectory": "Verzeichnis umbenennen",
             "RenameFile": "Datei umbenennen",
+            "Root": "Stammverzeichnis",
             "SetupCurrentList": "Einstellungen",
             "ShowFile": "Zeige Dateien",
             "Total": "Gesamt",
@@ -709,6 +710,11 @@
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "DbWebcams": "Webcams",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "Datei",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",
