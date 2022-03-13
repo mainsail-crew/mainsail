@@ -164,6 +164,7 @@
                     :key="`all-steps-${stepsReversed.join('_')}`"
                     v-model="selectedCrossStep"
                     dense
+                    mandatory
                     style="flex-wrap: nowrap; width: 100%">
                     <v-btn
                         v-for="step of stepsReversed"
