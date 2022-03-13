@@ -60,7 +60,7 @@
         card-class="extruder-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu v-if="filamentChangeMacros" left :offset-y="true" class="pa-0">
+            <v-menu v-if="filamentChangeMacros" left :offset-y="true" :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
