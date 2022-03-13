@@ -69,14 +69,7 @@
                                             class="mt-0"
                                             hide-details
                                             :input-value="status.showInTable"
-                                            :label="
-                                                $t('History.ShowStatusName', {
-                                                    name: $te(`History.StatusValues.${status.name}`, 'en')
-                                                        ? $t(`History.StatusValues.${status.name}`)
-                                                        : status.name,
-                                                    count: status.value,
-                                                })
-                                            "
+                                            :label="`${status.displayName} (${status.value})`"
                                             @change="changeStatusVisible(status)"></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>

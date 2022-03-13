@@ -76,12 +76,13 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
         state.jobs.forEach((current) => {
-            const name = i18n.te(`History.StatusValues.${current.status}`, 'en')
-                ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                : current.status
-            const index = output.findIndex((element) => element.name === name)
+            const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) output[index].value += 1
             else {
+                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                    : current.status
+
                 const itemStyle = {
                     opacity: 0.9,
                     color: '#424242',
@@ -105,9 +106,10 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 }
 
                 output.push({
-                    name,
+                    name: current.status,
+                    displayName,
                     value: 1,
-                    itemStyle: itemStyle,
+                    itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
                     label: {
                         color: '#fff',
@@ -123,12 +125,12 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         const output: ServerHistoryStateAllPrintStatusEntry[] = []
 
         rootState.gui.view.history.selectedJobs.forEach((current: ServerHistoryStateJob) => {
-            const name = i18n.te(`History.StatusValues.${current.status}`, 'en')
-                ? i18n.t(`History.StatusValues.${current.status}`).toString()
-                : current.status
-            const index = output.findIndex((element) => element.name === name)
+            const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) output[index].value += 1
             else {
+                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                    : current.status
                 const itemStyle = {
                     opacity: 0.9,
                     color: '#424242',
@@ -152,7 +154,8 @@ export const getters: GetterTree<ServerHistoryState, any> = {
                 }
 
                 output.push({
-                    name,
+                    name: current.status,
+                    displayName,
                     value: 1,
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
