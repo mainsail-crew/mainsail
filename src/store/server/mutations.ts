@@ -79,9 +79,7 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setConfig(state, payload) {
-        Object.entries(payload.config).forEach(([key, value]) => {
-            Vue.set(state.config, key, value)
-        })
+        Vue.set(state, 'config', payload)
     },
 
     setConsoleClearedThisSession(state) {

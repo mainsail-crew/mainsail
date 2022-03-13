@@ -26,6 +26,7 @@ export interface ServerHistoryStateJob {
 
 export interface ServerHistoryStateAllPrintStatusEntry {
     name: string
+    displayName: string
     value: number
     showInTable: boolean
     itemStyle: {

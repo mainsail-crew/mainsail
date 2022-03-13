@@ -69,9 +69,7 @@
                                             class="mt-0"
                                             hide-details
                                             :input-value="status.showInTable"
-                                            :label="
-                                                $t('History.ShowStatusName', { name: status.name, count: status.value })
-                                            "
+                                            :label="`${status.displayName} (${status.value})`"
                                             @change="changeStatusVisible(status)"></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>
@@ -183,7 +181,13 @@
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ item.status.replace(/_/g, ' ') }}</span>
+                                <span>
+                                    {{
+                                        $te(`History.StatusValues.${item.status}`, 'en')
+                                            ? $t(`History.StatusValues.${item.status}`)
+                                            : item.status.replace(/_/g, ' ')
+                                    }}
+                                </span>
                             </v-tooltip>
                         </td>
                         <td
@@ -260,7 +264,13 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.Status') }}</v-col>
-                            <v-col class="text-right">{{ detailsDialog.item.status }}</v-col>
+                            <v-col class="text-right">
+                                {{
+                                    $te(`History.StatusValues.${detailsDialog.item.status}`, 'en')
+                                        ? $t(`History.StatusValues.${detailsDialog.item.status}`)
+                                        : detailsDialog.item.status
+                                }}
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row>

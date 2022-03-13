@@ -27,7 +27,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
         const now = new Date()
         const allSensors = rootGetters['printer/getAvailableSensors'] ?? []
-        const maxHistory = rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200
+        const maxHistory = rootGetters['printer/tempHistory/getTemperatureStoreSize']
 
         if (payload !== undefined) {
             if ('requestParams' in payload) delete payload.requestParams
@@ -267,7 +267,7 @@ export const actions: ActionTree<PrinterTempHistoryState, RootState> = {
 
             await commit('addToSource', {
                 data: data,
-                maxHistory: rootGetters['server/getConfig']('server', 'temperature_store_size') || 1200,
+                maxHistory: rootGetters['printer/tempHistory/getTemperatureStoreSize'],
             })
         }
 

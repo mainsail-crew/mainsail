@@ -246,7 +246,7 @@
     },
     "History": {
         "AllJobs": "All",
-        "AvgPrinttime": "Avg. Printtime",
+        "AvgPrinttime": "Printtime - Ø",
         "Cancel": "Cancel",
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
@@ -275,7 +275,7 @@
         "PrintDuration": "Print Time",
         "PrintHistory": "Print History",
         "PrintTime": "Print Time",
-        "PrinttimeAvg": "Printtime AVG",
+        "PrinttimeAvg": "Printtime - Ø",
         "Reprint": "Reprint",
         "Search": "search",
         "SelectedFilamentUsed": "Selected Filament Used",
@@ -287,6 +287,15 @@
         "StartTime": "Start Time",
         "Statistics": "Statistics",
         "Status": "Status",
+        "StatusValues": {
+            "cancelled": "Cancelled",
+            "completed": "Completed",
+            "error": "Error",
+            "in_progress": "In progress",
+            "klippy_disconnect": "Klippy disconnect",
+            "klippy_shutdown": "Klippy shutdown",
+            "server_exit": "Server exit"
+        },
         "TitleExportHistory": "Export History",
         "TitleRefreshHistory": "Refresh History",
         "TitleSettings": "Settings",
@@ -332,6 +341,7 @@
             "Rename": "Rename",
             "RenameDirectory": "Rename Directory",
             "RenameFile": "Rename File",
+            "Root": "Root",
             "SetupCurrentList": "Setup current list",
             "ShowFile": "Show file",
             "Total": "Total",
@@ -716,6 +726,11 @@
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
             "DbWebcams": "Webcams",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "File",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Please select all the sections you want to reset:",
             "FactoryReset": "Factory reset",
             "General": "General",
