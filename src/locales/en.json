@@ -703,6 +703,11 @@
             "DbTimelapseSettings": "Timelapse Settings",
             "DbView": "View Settings",
             "DbWebcams": "Webcams",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "File",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Please select all the sections you want to reset:",
             "FactoryReset": "Factory reset",
             "General": "General",
