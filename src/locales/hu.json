@@ -395,6 +395,7 @@
         },
         "ExtruderControlPanel": {
             "Extrude": "Extrudálás",
+            "ExtrusionFactor": "Extrudálási szorzó",
             "Retract": "Visszahúzás"
         },
         "FarmPrinterPanel": {

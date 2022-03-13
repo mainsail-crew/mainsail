@@ -395,6 +395,7 @@
         },
         "ExtruderControlPanel": {
             "Extrude": "挤出",
+            "ExtrusionFactor": "挤出因子",
             "Retract": "回抽"
         },
         "FarmPrinterPanel": {

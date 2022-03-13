@@ -411,6 +411,7 @@
             "EstimatedExtrusion": "Estimated Extrusion:",
             "Extrude": "Extrude",
             "ExtruderTempTooLow": "Extruder temp. <",
+            "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
             "Headline": "Extruder Controls",

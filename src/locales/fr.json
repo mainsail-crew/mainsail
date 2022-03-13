@@ -396,6 +396,7 @@
         },
         "ExtruderControlPanel": {
             "Extrude": "Extrusion",
+            "ExtrusionFactor": "Facteur d'extrusion",
             "ExtrusionFeedrate": "Vitesse d'extrusion",
             "Headline": "Contrôles d'Extrudeur",
             "Retract": "Rétractation"

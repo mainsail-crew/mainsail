@@ -398,6 +398,7 @@
         },
         "ExtruderControlPanel": {
             "Extrude": "Экструдировать",
+            "ExtrusionFactor": "Коэффициент экструзии",
             "Retract": "Въехать"
         },
         "FarmPrinterPanel": {

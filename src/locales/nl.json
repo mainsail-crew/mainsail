@@ -399,6 +399,7 @@
         },
         "ExtruderControlPanel": {
             "Extrude": "Extrude",
+            "ExtrusionFactor": "Extrusie factor",
             "Retract": "Retract"
         },
         "FarmPrinterPanel": {

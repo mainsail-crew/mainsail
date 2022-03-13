@@ -146,7 +146,7 @@
         <v-container>
             <v-row class="d-flex align-center">
                 <tool-slider
-                    :label="$t('Panels.PrintsettingsPanel.ExtrusionFactor').toString()"
+                    :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()"
                     :icon="mdiPrinter3dNozzleOutline"
                     :target="extrudeFactor"
                     :min="1"
