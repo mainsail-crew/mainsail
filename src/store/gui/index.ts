@@ -55,7 +55,6 @@ export const getDefaultState = (): GuiState => {
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
-                { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
                 { name: 'tools', visible: true },
@@ -67,7 +66,6 @@ export const getDefaultState = (): GuiState => {
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
-                { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
             ],
@@ -81,7 +79,6 @@ export const getDefaultState = (): GuiState => {
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
-                { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
                 { name: 'miscellaneous', visible: true },
             ],
@@ -98,7 +95,6 @@ export const getDefaultState = (): GuiState => {
             ],
             widescreenLayout2: [
                 { name: 'tools', visible: true },
-                { name: 'printsettings', visible: true },
                 { name: 'machine-settings', visible: true },
             ],
             widescreenLayout3: [

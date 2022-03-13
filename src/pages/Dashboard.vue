@@ -92,7 +92,6 @@ import MiniconsolePanel from '@/components/panels/MiniconsolePanel.vue'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MiscellaneousPanel from '@/components/panels/MiscellaneousPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
-import PrintsettingsPanel from '@/components/panels/PrintsettingsPanel.vue'
 import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolheadControlPanel from '@/components/panels/ToolheadControlPanel.vue'
 import ToolsPanel from '@/components/panels/ToolsPanel.vue'
@@ -110,7 +109,6 @@ import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
         MinSettingsPanel,
         MiscellaneousPanel,
         MoonrakerStatePanel,
-        PrintsettingsPanel,
         StatusPanel,
         ToolheadControlPanel,
         ToolsPanel,

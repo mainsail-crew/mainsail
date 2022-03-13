@@ -54,12 +54,10 @@ export const convertPanelnameToIcon = (name: string): string => {
             return mdiWebcam
         case 'zoffset':
             return mdiArrowCollapseVertical
-        case 'control':
+        case 'toolhead-control':
             return mdiGamepad
         case 'macros':
             return mdiCodeTags
-        case 'printsettings':
-            return mdiPrinter3d
         case 'miscellaneous':
             return mdiDipSwitch
         case 'tools':

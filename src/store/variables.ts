@@ -75,7 +75,6 @@ export const allDashboardPanels = [
     'machine-settings',
     'miniconsole',
     'miscellaneous',
-    'printsettings',
     'tools',
     'webcam',
     'zoffset',
