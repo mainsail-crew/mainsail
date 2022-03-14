@@ -103,7 +103,7 @@ export default class NumberInput extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: false, default: 1 })
     declare readonly step: number
 
-    @Prop({ type: String, required: true })
+    @Prop({ type: String, required: false })
     declare readonly unit: string
 
     // spinner related props
