@@ -433,6 +433,35 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
+            <panel
+                :title="$t('History.CreateNote')"
+                :icon="mdiNotebookPlus"
+                card-class="history-note-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="noteDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text class="pb-0">
+                    <v-row>
+                        <v-col>
+                            <v-textarea
+                                v-model="noteDialog.note"
+                                outlined
+                                hide-details
+                                :label="$t('History.Note')"></v-textarea>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="noteDialog.boolShow = false">{{ $t('History.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="storeNote">{{ $t('History.Save') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -490,6 +519,12 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     private detailsDialog = {
         item: {},
+        boolShow: false,
+    }
+
+    private noteDialog: { item: ServerHistoryStateJob | null; note: string; boolShow: boolean } = {
+        item: null,
+        note: '',
         boolShow: false,
     }
 
@@ -990,6 +1025,19 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return value
             }
         } else return '--'
+    }
+
+    createNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = item.note ?? ''
+        this.noteDialog.boolShow = true
+    }
+
+    storeNote() {
+        this.$store.dispatch('server/history/saveHistoryNote', {
+            job_id: this.noteDialog.item?.job_id,
+            note: this.noteDialog.note,
+        })
     }
 }
 </script>
