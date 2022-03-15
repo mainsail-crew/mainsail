@@ -46,8 +46,8 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
             )
     },
 
-    initHistoryNotes(_, payload) {
-        window.console.log('initHistoryNotes', payload)
+    initHistoryNotes({ commit }, payload) {
+        commit('setHistoryNotes', payload)
     },
 
     getChanged({ commit }, payload) {

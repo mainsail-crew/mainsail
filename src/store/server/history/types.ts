@@ -8,6 +8,9 @@ export interface ServerHistoryState {
         longest_job: number
         longest_print: number
     }
+    notes: {
+        [key: string]: ServerHistoryStateJobNote
+    }
 }
 
 export interface ServerHistoryStateJob {
@@ -40,4 +43,8 @@ export interface ServerHistoryStateAllPrintStatusEntry {
     label: {
         color: string
     }
+}
+
+export interface ServerHistoryStateJobNote {
+    text: string
 }

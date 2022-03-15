@@ -16,6 +16,10 @@ export const mutations: MutationTree<ServerHistoryState> = {
         Vue.set(state, 'job_totals', payload)
     },
 
+    setHistoryNotes(state, payload) {
+        Vue.set(state, 'notes', payload)
+    },
+
     addJob(state, payload) {
         state.jobs.push(payload)
     },
