@@ -73,11 +73,16 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
         }
     },
 
-    saveHistoryNote(_, payload: { job_id: string; note: string }) {
+    saveHistoryNote({ commit }, payload: { job_id: string; note: string }) {
         Vue.$socket.emit('server.database.post_item', {
             namespace: 'history_notes',
             key: payload.job_id,
             value: { text: payload.note },
+        })
+
+        commit('setHistoryNotes', {
+            job_id: payload.job_id,
+            text: payload.note,
         })
     },
 }

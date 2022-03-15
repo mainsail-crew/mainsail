@@ -172,7 +172,10 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-center">
+                        <td class="text-right text-no-wrap">
+                            <template v-if="'note' in item && item.note">
+                                <v-icon small class="mr-2">{{ mdiNotebook }}</v-icon>
+                            </template>
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
@@ -213,7 +216,13 @@
                     <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
                 </v-list-item>
-                <v-list-item @click="createNote(contextMenu.item)">
+                <v-list-item
+                    v-if="'note' in contextMenu.item && contextMenu.item.note"
+                    @click="editNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
+                    {{ $t('History.EditNote') }}
+                </v-list-item>
+                <v-list-item v-else @click="createNote(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
                     {{ $t('History.AddNote') }}
                 </v-list-item>
@@ -435,8 +444,8 @@
         </v-dialog>
         <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
             <panel
-                :title="$t('History.CreateNote')"
-                :icon="mdiNotebookPlus"
+                :title="noteDialog.type === 'create' ? $t('History.CreateNote') : $t('History.EditNote')"
+                :icon="noteDialog.type === 'create' ? mdiNotebookPlus : mdiNotebookEdit"
                 card-class="history-note-dialog"
                 :margin-bottom="false">
                 <template #buttons>
@@ -458,7 +467,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="noteDialog.boolShow = false">{{ $t('History.Cancel') }}</v-btn>
-                    <v-btn color="primary" text @click="storeNote">{{ $t('History.Save') }}</v-btn>
+                    <v-btn color="primary" text @click="saveNote">{{ $t('History.Save') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -484,7 +493,9 @@ import {
     mdiMagnify,
     mdiCloseThick,
     mdiUpdate,
+    mdiNotebookEdit,
     mdiNotebookPlus,
+    mdiNotebook,
 } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -502,6 +513,8 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiUpdate = mdiUpdate
     mdiCloseThick = mdiCloseThick
     mdiNotebookPlus = mdiNotebookPlus
+    mdiNotebookEdit = mdiNotebookEdit
+    mdiNotebook = mdiNotebook
 
     formatFilesize = formatFilesize
 
@@ -522,10 +535,16 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         boolShow: false,
     }
 
-    private noteDialog: { item: ServerHistoryStateJob | null; note: string; boolShow: boolean } = {
+    private noteDialog: {
+        item: ServerHistoryStateJob | null
+        note: string
+        boolShow: boolean
+        type: 'create' | 'edit'
+    } = {
         item: null,
         note: '',
         boolShow: false,
+        type: 'create',
     }
 
     private deleteSelectedDialog = false
@@ -1029,15 +1048,25 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
 
     createNote(item: ServerHistoryStateJob) {
         this.noteDialog.item = item
-        this.noteDialog.note = item.note ?? ''
+        this.noteDialog.note = ''
+        this.noteDialog.type = 'create'
         this.noteDialog.boolShow = true
     }
 
-    storeNote() {
+    editNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = item.note ?? ''
+        this.noteDialog.type = 'edit'
+        this.noteDialog.boolShow = true
+    }
+
+    saveNote() {
         this.$store.dispatch('server/history/saveHistoryNote', {
             job_id: this.noteDialog.item?.job_id,
             note: this.noteDialog.note,
         })
+
+        this.noteDialog.boolShow = false
     }
 }
 </script>

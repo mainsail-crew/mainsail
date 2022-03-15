@@ -253,6 +253,7 @@
         "Delete": "Delete",
         "DeleteSelectedQuestion": "Do you really want to delete {count} selected jobs?",
         "Details": "Details",
+        "EditNote": "Edit Note",
         "Empty": "empty",
         "EndTime": "End Time",
         "EstimatedFilament": "Estimated Filament",
