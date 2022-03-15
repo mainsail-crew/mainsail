@@ -46,8 +46,16 @@ export const actions: ActionTree<ServerHistoryState, RootState> = {
             )
     },
 
-    initHistoryNotes({ commit }, payload) {
-        commit('setHistoryNotes', payload)
+    initHistoryNotes({ commit, state }, payload) {
+        const job_ids = Object.keys(payload.value)
+
+        job_ids.forEach((job_id: string) => {
+            const noteObject: { text: string } = payload.value[job_id]
+            commit('setHistoryNotes', {
+                job_id,
+                text: noteObject.text,
+            })
+        })
     },
 
     getChanged({ commit }, payload) {

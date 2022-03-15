@@ -15,7 +15,6 @@ export const getDefaultState = (): ServerHistoryState => {
             longest_job: 0,
             longest_print: 0,
         },
-        notes: {},
     }
 }
 
