@@ -145,7 +145,6 @@ import {
     mdiRestart,
 } from '@mdi/js'
 import type Codemirror from '@/components/inputs/Codemirror.vue'
-import watch from '@vue/composition-api'
 
 @Component({
     components: { Panel, CodemirrorAsync },
