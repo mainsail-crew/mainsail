@@ -52,6 +52,7 @@
                             icon
                             tile
                             class="d-none d-sm-flex"
+                            :disabled="printerIsPrinting"
                             :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                             :loading="loadings.includes('homeAll')"
                             :title="$t('Heightmap.TitleHomeAll')"
@@ -86,6 +87,7 @@
                                 text
                                 small
                                 class="px-2 minwidth-0"
+                                :disabled="printerIsPrinting"
                                 :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                 :loading="loadings.includes('homeAll')"
                                 :title="$t('Heightmap.TitleHomeAll')"
