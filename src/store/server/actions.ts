@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
@@ -210,7 +211,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    addEvent({ commit, rootGetters }, payload) {
+    async addEvent({ commit, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -238,12 +239,20 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
 
-            commit('addEvent', {
+            await commit('addEvent', {
                 date: new Date(),
                 message: message,
                 formatMessage: formatMessage,
                 type: type,
             })
+
+            if (
+                ['error', 'response'].includes(type) &&
+                !['/', '/console'].includes(router.currentRoute.path) &&
+                message.startsWith('!! ')
+            ) {
+                Vue.$toast.error(formatMessage)
+            }
         }
     },
 
