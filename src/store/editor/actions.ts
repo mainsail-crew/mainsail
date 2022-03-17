@@ -69,9 +69,6 @@ export const actions: ActionTree<EditorState, RootState> = {
                     filepath: payload.path,
                     file,
                 })
-
-                if (rootState.gui?.editor.confirmUnsavedChanges)
-                    window.addEventListener('beforeunload', windowBeforeUnloadFunction)
             })
             .finally(() => {
                 setTimeout(() => {
