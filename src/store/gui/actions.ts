@@ -129,6 +129,8 @@ export const actions: ActionTree<GuiState, RootState> = {
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 
+        window.console.log(payload)
+
         Vue.$socket.emit('server.database.post_item', {
             namespace: 'mainsail',
             key: payload.name,
@@ -407,7 +409,8 @@ export const actions: ActionTree<GuiState, RootState> = {
             const value = payload[key]
             const oldValue = key in klipperCache ? klipperCache[key] : null
 
-            if (value !== oldValue) dispatch('saveSetting', { name: `gcodeviewer.klipperCache.${key}`, value })
+            if (JSON.stringify(value) !== JSON.stringify(oldValue))
+                dispatch('saveSetting', { name: `gcodeViewer.klipperCache.${key}`, value })
         })
     },
 }
