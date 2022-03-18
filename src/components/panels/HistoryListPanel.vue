@@ -174,7 +174,14 @@
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-right text-no-wrap">
                             <template v-if="'note' in item && item.note">
-                                <v-icon small class="mr-2">{{ mdiNotebook }}</v-icon>
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
+                                            {{ mdiNotebook }}
+                                        </v-icon>
+                                    </template>
+                                    <span v-html="item.note.replaceAll('\n', '<br />')"></span>
+                                </v-tooltip>
                             </template>
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
