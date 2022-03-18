@@ -938,7 +938,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     get kinematics() {
         return (
             this.$store.state.printer.configfile?.settings?.printer?.kinematics ??
-            this.$store.state.gui?.gcodeviewer?.klipperCache?.kinematics ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.kinematics ??
             ''
         )
     }
@@ -946,7 +946,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     get bedMaxSize() {
         return (
             this.$store.state.printer.toolhead?.axis_maximum ??
-            this.$store.state.gui?.gcodeviewer?.klipperCache?.axis_maximum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_maximum ??
             null
         )
     }
@@ -954,7 +954,7 @@ export default class Viewer extends Mixins(BaseMixin) {
     get bedMinSize() {
         return (
             this.$store.state.printer.toolhead?.axis_minimum ??
-            this.$store.state.gui?.gcodeviewer?.klipperCache?.axis_minimum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_minimum ??
             null
         )
     }
