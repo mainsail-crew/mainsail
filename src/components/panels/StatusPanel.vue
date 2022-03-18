@@ -373,7 +373,7 @@ import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
-import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
+import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseCircle,

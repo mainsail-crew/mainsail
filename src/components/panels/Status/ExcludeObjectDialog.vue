@@ -41,8 +41,8 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import StatusPanelExcludeObjectDialogMap from '@/components/panels/StatusPanelExcludeObjectDialogMap.vue'
-import StatusPanelExcludeObjectDialogList from '@/components/panels/StatusPanelExcludeObjectDialogList.vue'
+import StatusPanelExcludeObjectDialogMap from '@/components/panels/Status/ExcludeObjectDialogMap.vue'
+import StatusPanelExcludeObjectDialogList from '@/components/panels/Status/ExcludeObjectDialogList.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiCloseThick, mdiSelectionRemove } from '@mdi/js'
 @Component({
