@@ -544,6 +544,7 @@ import { FileStateFile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {
+    mdiFile,
     mdiFileDocumentMultipleOutline,
     mdiMagnify,
     mdiUpload,
@@ -599,6 +600,7 @@ interface dialogRenameObject {
     components: { Panel, SettingsRow },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
+    mdiFile = mdiFile
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
     mdiMagnify = mdiMagnify
     mdiUpload = mdiUpload

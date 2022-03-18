@@ -532,6 +532,10 @@
             },
             "Filament": "Filament",
             "File": "File",
+            "Files": {
+                "Jobqueue": "Jobqueue ({count})",
+                "JobqueueMoreFiles": "no more jobs | one more job | {count} more jobs"
+            },
             "Flow": "Flow",
             "Headline": "Status",
             "Layer": "Layer",

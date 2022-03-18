@@ -358,6 +358,10 @@
                         </v-row>
                     </v-container>
                 </template>
+                <template v-if="['complete', 'standby'].includes(printer_state)">
+                    <v-divider class="my-0"></v-divider>
+                    <status-panel-files></status-panel-files>
+                </template>
             </v-card-text>
         </panel>
     </div>
@@ -374,6 +378,7 @@ import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/Status/ExcludeObject.vue'
+import StatusPanelFiles from '@/components/panels/Status/Files.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
     mdiCloseCircle,
@@ -398,6 +403,7 @@ import {
         MoonrakerStatePanel,
         Panel,
         StatusPanelExcludeObject,
+        StatusPanelFiles,
     },
 })
 export default class StatusPanel extends Mixins(BaseMixin) {
