@@ -8,21 +8,15 @@ export const getters: GetterTree<ServerJobQueueState, any> = {
     getJobs: (state, getters, rootState, rootGetters) => {
         const jobs: ServerJobQueueStateJob[] = []
 
-        if (state.queued_jobs) {
-            state.queued_jobs.forEach((queuedJob) => {
-                const job = { ...queuedJob }
-                const file = rootGetters['files/getFile']('gcodes/' + job.filename)
-                if (!file?.metadataPulled)
-                    Vue.$socket.emit(
-                        'server.files.metadata',
-                        { filename: job.filename },
-                        { action: 'files/getMetadata' }
-                    )
-                job['metadata'] = file
+        state.queued_jobs.forEach((queuedJob) => {
+            const job = { ...queuedJob }
+            const file = rootGetters['files/getFile']('gcodes/' + job.filename)
+            if (!file?.metadataPulled)
+                Vue.$socket.emit('server.files.metadata', { filename: job.filename }, { action: 'files/getMetadata' })
+            job['metadata'] = file
 
-                jobs.push(job)
-            })
-        }
+            jobs.push(job)
+        })
 
         return jobs
     },

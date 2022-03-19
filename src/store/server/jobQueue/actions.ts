@@ -13,7 +13,7 @@ export const actions: ActionTree<ServerJobQueueState, RootState> = {
     },
 
     getEvent({ commit }, payload) {
-        if ('updated_queue' in payload) commit('setQueuedJobs', payload.updated_queue)
+        if ('updated_queue' in payload && payload.updated_queue !== null) commit('setQueuedJobs', payload.updated_queue)
         if ('queue_state' in payload) commit('setQueueState', payload.queue_state)
     },
 
