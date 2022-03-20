@@ -22,7 +22,7 @@
                                 top
                                 content-class="tooltip__content-opacity1">
                                 <template #activator="{ on, attrs }">
-                                    <vue-load-image>
+                                    <vue-load-image class="d-flex">
                                         <img
                                             slot="image"
                                             :src="getSmallThumbnail(item)"
@@ -55,11 +55,22 @@
                         </template>
                     </td>
                     <td class="pr-2">
-                        {{ item.filename }}
-                        <template v-if="existMetadata(item)">
-                            <br />
+                        <div class="d-block text-wrap">{{ item.filename }}</div>
+                        <div v-if="existMetadata(item)">
                             <small>{{ getDescription(item) }}</small>
-                        </template>
+                        </div>
+                    </td>
+                    <td>
+                        <v-tooltip v-if="getJobStatus(item)" top>
+                            <template #activator="{ on, attrs }">
+                                <span v-bind="attrs" v-on="on">
+                                    <v-icon small :color="getStatusColor(getJobStatus(item))">
+                                        {{ getStatusIcon(getJobStatus(item)) }}
+                                    </v-icon>
+                                </span>
+                            </template>
+                            <span>{{ getJobStatus(item).replace(/_/g, ' ') }}</span>
+                        </v-tooltip>
                     </td>
                 </tr>
             </template>
@@ -176,6 +187,18 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
         }
 
         return '--'
+    }
+
+    getJobStatus(item: FileStateFile) {
+        return this.$store.getters['server/history/getPrintStatus'](item.job_id)
+    }
+
+    getStatusIcon(status: string) {
+        return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
+    }
+
+    getStatusColor(status: string) {
+        return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 }
 </script>
