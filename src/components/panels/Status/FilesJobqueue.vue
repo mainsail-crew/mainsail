@@ -10,7 +10,7 @@
             mobile-breakpoint="0"
             @current-items="setFirst">
             <template #no-data>
-                <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
+                <div class="text-center">{{ $t('Panels.StatusPanel.Files.EmptyJobqueue') }}</div>
             </template>
 
             <template #item="{ item }">
@@ -152,14 +152,14 @@ export default class StatusPanelFilesJobqueue extends Mixins(BaseMixin) {
     getDescription(item: ServerJobQueueStateJob) {
         let output = ''
 
-        output += this.$t('Files.Filament') + ': '
+        output += this.$t('Panels.StatusPanel.Files.Filament') + ': '
         if (item.metadata?.filament_total || item.metadata.filament_weight_total) {
             if (item.metadata?.filament_total) output += item.metadata.filament_total.toFixed() + ' mm'
             if (item.metadata?.filament_total && item.metadata.filament_weight_total) output += ' / '
             if (item.metadata?.filament_weight_total) output += item.metadata.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', ' + this.$t('Files.PrintTime') + ': '
+        output += ', ' + this.$t('Panels.StatusPanel.Files.PrintTime') + ': '
         if (item.metadata?.estimated_time) output += this.formatPrintTime(item.metadata.estimated_time)
         else output += '--'
 

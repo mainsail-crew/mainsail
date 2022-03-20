@@ -5,12 +5,12 @@
         <v-data-table
             :items="gcodeFiles"
             hide-default-footer
-            class="dashboard-jobqueue-table"
+            class="dashboard-gcodes-table"
             sort-by="time_added"
             mobile-breakpoint="0"
             @current-items="setFirst">
             <template #no-data>
-                <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
+                <div class="text-center">{{ $t('Panels.StatusPanel.Files.EmptyGcodes') }}</div>
             </template>
 
             <template #item="{ item }">
@@ -153,14 +153,14 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
     getDescription(item: FileStateFile) {
         let output = ''
 
-        output += this.$t('Files.Filament') + ': '
+        output += this.$t('Panels.StatusPanel.Files.Filament') + ': '
         if (item.filament_total || item.filament_weight_total) {
             if (item.filament_total) output += item.filament_total.toFixed() + ' mm'
             if (item.filament_total && item.filament_weight_total) output += ' / '
             if (item.filament_weight_total) output += item.filament_weight_total.toFixed(2) + ' g'
         } else output += '--'
 
-        output += ', ' + this.$t('Files.PrintTime') + ': '
+        output += ', ' + this.$t('Panels.StatusPanel.Files.PrintTime') + ': '
         if (item.estimated_time) output += this.formatPrintTime(item.estimated_time)
         else output += '--'
 
