@@ -1,6 +1,6 @@
 <template>
     <panel
-        v-if="klipperReadyForGui && ['standby', 'paused', 'complete', 'cancelled', 'error'].includes(printer_state)"
+        v-if="klipperReadyForGui"
         :icon="mdiGamepad"
         :title="$t('Panels.ToolheadControlPanel.Headline').toString()"
         :collapsible="true"
@@ -14,12 +14,15 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item>Fancy button goes in here!</v-list-item>
-                    <v-list-item>And here too!</v-list-item>
+                    <v-list-item>
+                        <v-checkbox v-model="displayGCodeZ" label="Display G-Code Z-Position"></v-checkbox>
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </template>
-        <!-- AXIS CONTROL STYLE -->
+        <!-- MOVE TO INPUTS -->
+        <move-to-control :display-g-code-z="displayGCodeZ" class="pb-0"></move-to-control>
+        <!-- AXIS CONTROL -->
         <v-container>
             <component :is="`${controlStyle}-control`"></component>
         </v-container>
@@ -28,7 +31,7 @@
         <tool-slider
             :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
             :icon="mdiSpeedometer"
-            :target="speed_factor"
+            :target="speedFactor"
             :min="1"
             :max="200"
             :multi="100"
@@ -46,6 +49,7 @@ import BarsControl from '@/components/panels/ToolheadControls/BarsControl.vue'
 import BaseMixin from '../mixins/base'
 import CircleControl from '@/components/panels/ToolheadControls/CircleControl.vue'
 import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
+import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import { mdiDotsVertical, mdiGamepad, mdiSpeedometer } from '@mdi/js'
@@ -55,6 +59,7 @@ import { mdiDotsVertical, mdiGamepad, mdiSpeedometer } from '@mdi/js'
         BarsControl,
         CircleControl,
         CrossControl,
+        MoveToControl,
         Panel,
         ToolSlider,
     },
@@ -68,8 +73,16 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin) {
         return this.$store.state.gui.control.style ?? 'bars'
     }
 
-    get speed_factor() {
+    get speedFactor() {
         return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
+    }
+
+    get displayGCodeZ(): boolean {
+        return this.$store.state.gui.control.boolGcodeZ ?? false
+    }
+
+    set displayGCodeZ(newVal: boolean) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.boolGcodeZ', value: newVal })
     }
 }
 </script>

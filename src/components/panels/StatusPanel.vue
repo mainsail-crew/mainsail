@@ -137,44 +137,6 @@
                     </v-container>
                     <v-divider class="mt-0 mb-0"></v-divider>
                 </template>
-                <v-container class="py-0">
-                    <v-row
-                        :class="
-                            'text-center ' +
-                            (!['printing', 'paused', 'error', 'complete', 'cancelled'].includes(printer_state)
-                                ? 'pt-5 pb-2 mb-0'
-                                : 'py-5')
-                        "
-                        align="center">
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Position') }}</strong>
-                            <br />
-                            {{ coordinates }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.X') }}</strong>
-                            <br />
-                            {{ positions.x }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <strong>{{ $t('Panels.StatusPanel.Y') }}</strong>
-                            <br />
-                            {{ positions.y }}
-                        </v-col>
-                        <v-col class="col-3 pa-0">
-                            <v-tooltip top>
-                                <template #activator="{ on, attrs }">
-                                    <div v-bind="attrs" class="text-center" v-on="on">
-                                        <strong>{{ $t('Panels.StatusPanel.Z') }}</strong>
-                                        <br />
-                                        {{ positions.z }}
-                                    </div>
-                                </template>
-                                <span>G-Code: {{ positions.gcode_z }}mm</span>
-                            </v-tooltip>
-                        </v-col>
-                    </v-row>
-                </v-container>
                 <template v-if="['printing', 'paused', 'error', 'cancelled'].includes(printer_state)">
                     <v-divider class="my-0"></v-divider>
                     <v-container class="py-0">
@@ -428,12 +390,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get positions() {
         return this.$store.getters['printer/getPositions']
-    }
-
-    get coordinates() {
-        return this.positions.coordinates
-            ? this.$t('Panels.StatusPanel.Absolute')
-            : this.$t('Panels.StatusPanel.Relative')
     }
 
     get filament_used() {

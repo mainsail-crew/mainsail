@@ -2,21 +2,23 @@
 .btnMinWidthAuto {
     min-width: auto !important;
 }
+.ml-05 {
+    margin-left: 2px;
+}
 </style>
 
 <template>
     <div>
         <v-row>
+            <!-- DIRECTION BUTTONS -->
             <v-col :cols="homeCols">
                 <v-row dense class="mb-1">
                     <v-col cols="3"></v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('Y' + (reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            ">
+                            :disabled="!yAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveY">
                             <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -24,10 +26,8 @@
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('Z' + (reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
-                            ">
+                            :disabled="!zAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveZ">
                             <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -37,20 +37,16 @@
                         <v-btn
                             class="btnMinWidthAuto fill-width p-abs"
                             style="top: -50%; width: calc(100% - 8px)"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('X' + (!reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            ">
+                            :disabled="!xAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveX">
                             <v-icon>{{ mdiChevronLeft }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('Y' + (!reverseY ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            ">
+                            :disabled="!yAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveY">
                             <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -58,35 +54,32 @@
                         <v-btn
                             class="btnMinWidthAuto fill-width p-abs"
                             style="top: -50%; width: calc(100% - 8px)"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('X' + (reverseX ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateXY)
-                            ">
+                            :disabled="!xAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveX">
                             <v-icon>{{ mdiChevronRight }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="
-                                doSendMove('Z' + (!reverseZ ? '-' : '+') + stepsReversed[selectedCrossStep], feedrateZ)
-                            ">
+                            :disabled="!zAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
+                            @click="moveZ">
                             <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
             </v-col>
+            <!-- HOME / 5th ACTION BUTTONS -->
             <v-col :cols="homeCols" class="d-flex align-center">
                 <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
-                    <v-row dense class="" style="margin-bottom: -2px !important">
-                        <v-col :cols="existsQGL || existsZtilt ? 6 : 12">
+                    <v-row dense style="margin-bottom: -2px !important">
+                        <v-col>
                             <v-btn
-                                class="w-100"
-                                tile
-                                height="30"
-                                :loading="loadings.includes('homeAll')"
                                 :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                :loading="loadings.includes('homeAll')"
+                                height="30"
+                                tile
+                                class="w-100"
                                 @click="doHome">
                                 <div class="d-flex align-center">
                                     <v-icon>{{ mdiHome }}</v-icon>
@@ -94,26 +87,36 @@
                                 </div>
                             </v-btn>
                         </v-col>
-                        <v-col v-if="existsQGL || existsZtilt" cols="6" class="d-flex">
+                        <v-col class="d-flex">
+                            <v-btn
+                                v-if="!existsQGL && !existsZtilt"
+                                :color="homedAxes !== '' ? 'primary' : 'warning'"
+                                height="30"
+                                dense
+                                tile
+                                class="flex-grow-1 px-0"
+                                @click="doSend('M84')">
+                                <v-icon>{{ mdiEngineOff }}</v-icon>
+                            </v-btn>
                             <v-btn
                                 v-if="existsQGL"
-                                class="btnMinWidthAuto flex-grow-1 px-0"
-                                tile
-                                dense
                                 :color="colorQuadGantryLevel"
-                                height="30"
                                 :loading="loadings.includes('qgl')"
+                                height="30"
+                                dense
+                                tile
+                                class="btnMinWidthAuto flex-grow-1 px-0"
                                 @click="doQGL">
                                 {{ $t('Panels.ToolheadControlPanel.QGL') }}
                             </v-btn>
                             <v-btn
                                 v-if="existsZtilt"
-                                class="btnMinWidthAuto flex-grow-1 px-0"
-                                tile
-                                dense
+                                :loading="loadings.includes('zTilt')"
                                 :color="colorZTilt"
                                 height="30"
-                                :loading="loadings.includes('zTilt')"
+                                dense
+                                tile
+                                class="btnMinWidthAuto flex-grow-1 px-0"
                                 @click="doZtilt">
                                 {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
                             </v-btn>
@@ -157,6 +160,7 @@
                 </div>
             </v-col>
         </v-row>
+        <!-- STEP SIZE BUTTON GROUP -->
         <v-row no-gutters class="mt-3">
             <v-col class="col-12">
                 <v-btn-toggle
@@ -191,7 +195,7 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
-import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiHome } from '@mdi/js'
+import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiEngineOff, mdiHome } from '@mdi/js'
 
 @Component
 export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
@@ -201,6 +205,7 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     mdiChevronLeft = mdiChevronLeft
     mdiChevronRight = mdiChevronRight
     mdiChevronDown = mdiChevronDown
+    mdiEngineOff = mdiEngineOff
     mdiHome = mdiHome
 
     get selectedCrossStep() {
@@ -229,6 +234,39 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     get stepsReversed() {
         return Array.from(new Set([...(this.stepsAll ?? [])])).sort((a, b) => a - b)
+    }
+
+    /**
+     * Axes home states
+     */
+    get xAxisHomed(): boolean {
+        return this.$store.state.printer.toolhead?.homed_axes.includes('x') ?? false
+    }
+
+    get yAxisHomed(): boolean {
+        return this.$store.state.printer.toolhead?.homed_axes.includes('y') ?? false
+    }
+
+    get zAxisHomed(): boolean {
+        return this.$store.state.printer.toolhead?.homed_axes.includes('z') ?? false
+    }
+
+    /**
+     * Axes move commands
+     */
+    moveX() {
+        const gcode = `X${this.reverseX ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
+        this.doSendMove(gcode, this.feedrateXY)
+    }
+
+    moveY() {
+        const gcode = `Y${this.reverseY ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
+        this.doSendMove(gcode, this.feedrateXY)
+    }
+
+    moveZ() {
+        const gcode = `Z${this.reverseZ ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
+        this.doSendMove(gcode, this.feedrateZ)
     }
 
     onResize() {
