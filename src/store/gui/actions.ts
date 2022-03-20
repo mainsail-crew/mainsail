@@ -129,7 +129,6 @@ export const actions: ActionTree<GuiState, RootState> = {
     saveSetting({ commit }, payload) {
         commit('saveSetting', payload)
 
-        window.console.log(payload)
 
         Vue.$socket.emit('server.database.post_item', {
             namespace: 'mainsail',
