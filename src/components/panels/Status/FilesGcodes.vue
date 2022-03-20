@@ -14,7 +14,7 @@
             </template>
 
             <template #item="{ item }">
-                <tr :key="item.filename">
+                <tr :key="item.filename" class="cursor-pointer" @click="showDialog(item)">
                     <td class="pr-0 text-center" style="width: 32px">
                         <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                             <v-tooltip
@@ -75,6 +75,11 @@
                 </tr>
             </template>
         </v-data-table>
+        <start-print-dialog
+            :bool="showDialogBool"
+            :file="dialogFile"
+            :current-path="currentPath"
+            @closeDialog="closeDialog"></start-print-dialog>
     </v-card>
 </template>
 
@@ -85,11 +90,24 @@ import BaseMixin from '@/components/mixins/base'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
 import { mdiFile } from '@mdi/js'
 import { FileStateFile } from '@/store/files/types'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
+
 @Component({
-    components: {},
+    components: {
+        StartPrintDialog,
+    },
 })
 export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
     mdiFile = mdiFile
+
+    private showDialogBool = false
+    private dialogFile: FileStateFile = {
+        isDirectory: false,
+        filename: '',
+        modified: new Date(),
+        permissions: '',
+    }
+    private currentPath = ''
 
     get gcodeFiles() {
         let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
@@ -199,6 +217,22 @@ export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
 
     getStatusColor(status: string) {
         return this.$store.getters['server/history/getPrintStatusChipColor'](status)
+    }
+
+    showDialog(file: FileStateFile) {
+        this.currentPath =
+            file.filename.lastIndexOf('/') >= 0
+                ? 'gcodes/' + file.filename.slice(0, file.filename.lastIndexOf('/'))
+                : 'gcodes'
+        this.dialogFile = { ...file }
+        if (file.filename.lastIndexOf('/') >= 0) {
+            this.dialogFile.filename = file.filename.slice(file.filename.lastIndexOf('/') + 1)
+        }
+        this.showDialogBool = true
+    }
+
+    closeDialog() {
+        this.showDialogBool = false
     }
 }
 </script>

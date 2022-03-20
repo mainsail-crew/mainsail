@@ -140,7 +140,7 @@ export const getters: GetterTree<FileState, any> = {
     },
 
     getSmallThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
-        if (item.thumbnails?.length) {
+        if ('thumbnails' in item && item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find(
                 (thumb) =>
                     thumb.width >= thumbnailSmallMin &&
@@ -160,7 +160,7 @@ export const getters: GetterTree<FileState, any> = {
     },
 
     getBigThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
-        if (item.thumbnails?.length) {
+        if ('thumbnails' in item && item.thumbnails?.length) {
             const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
 
             if (thumbnail && 'relative_path' in thumbnail) {
