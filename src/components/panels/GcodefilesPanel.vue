@@ -343,38 +343,11 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-dialog v-model="dialogPrintFile.show" :max-width="getThumbnailWidth(dialogPrintFile.item)">
-            <v-card>
-                <v-img
-                    v-if="getBigThumbnail(dialogPrintFile.item)"
-                    contain
-                    :src="getBigThumbnail(dialogPrintFile.item)"></v-img>
-                <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
-                <v-card-text class="pb-0">
-                    {{ $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename }) }}
-                </v-card-text>
-                <template v-if="moonrakerComponents.includes('timelapse')">
-                    <v-divider class="mt-3 mb-2"></v-divider>
-                    <v-card-text class="pb-0">
-                        <settings-row title="Timelapse">
-                            <v-switch v-model="timelapseEnabled" hide-details class="mt-0"></v-switch>
-                        </settings-row>
-                    </v-card-text>
-                    <v-divider class="mt-2 mb-0"></v-divider>
-                </template>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="" text @click="dialogPrintFile.show = false">{{ $t('Files.Cancel') }}</v-btn>
-                    <v-btn
-                        color="primary"
-                        text
-                        :disabled="printerIsPrinting || !klipperReadyForGui"
-                        @click="startPrint(dialogPrintFile.item.filename)">
-                        {{ $t('Files.StartPrint') }}
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <start-print-dialog
+            :bool="dialogPrintFile.show"
+            :file="dialogPrintFile.item"
+            :current-path="currentPath"
+            @closeDialog="closeStartPrint"></start-print-dialog>
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item
@@ -538,7 +511,7 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
-import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensions } from '@/store/variables'
+import { validGcodeExtensions } from '@/store/variables'
 import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
 import { FileStateFile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
@@ -564,6 +537,7 @@ import {
     mdiCloseThick,
     mdiClose,
 } from '@mdi/js'
+import StartPrintDialog from '@/components/dialogs/StartPrintDialog.vue'
 
 interface draggingFile {
     status: boolean
@@ -597,7 +571,7 @@ interface dialogRenameObject {
 }
 
 @Component({
-    components: { Panel, SettingsRow },
+    components: { StartPrintDialog, Panel, SettingsRow },
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiFile = mdiFile
@@ -914,18 +888,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.gcodefiles.countPerPage', value: newVal })
     }
 
-    get timelapseEnabled() {
-        return this.$store.state.server.timelapse?.settings?.enabled ?? false
-    }
-
-    set timelapseEnabled(newVal) {
-        this.$socket.emit(
-            'machine.timelapse.post_settings',
-            { enabled: newVal },
-            { action: 'server/timelapse/initSettings' }
-        )
-    }
-
     getJobStatus(item: FileStateFile) {
         return this.$store.getters['server/history/getPrintStatus'](item.job_id)
     }
@@ -1164,16 +1126,6 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         return this.$store.getters['files/getBigThumbnail'](item, this.currentPath)
     }
 
-    getThumbnailWidth(item: FileStateFile) {
-        if (this.getBigThumbnail(item)) {
-            const thumbnail = item?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail) return thumbnail.width
-        }
-
-        return 400
-    }
-
     clickRow(item: FileStateFile, force = false) {
         if (!this.contextMenu.shown || force) {
             if (force) this.contextMenu.shown = false
@@ -1334,10 +1286,8 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         )
     }
 
-    startPrint(filename = '') {
-        filename = (this.currentPath + '/' + filename).substring(7)
+    closeStartPrint() {
         this.dialogPrintFile.show = false
-        this.$socket.emit('printer.print.start', { filename: filename }, { action: 'switchToDashboard' })
     }
 
     dragFile(e: Event, item: FileStateFile) {

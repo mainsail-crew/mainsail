@@ -100,6 +100,15 @@
         "SendCode": "Send code...",
         "SetupConsole": "Setup Console"
     },
+    "Dialogs": {
+        "StartPrint": {
+            "Cancel": "Cancel",
+            "DoYouWantToStartFilename": "Do you want to start {filename}?",
+            "Headline": "Start Job",
+            "Print": "print",
+            "Timelapse": "Timelapse"
+        }
+    },
     "Editor": {
         "Cancel": "Cancel",
         "ConfigReference": "Config Reference",
@@ -134,7 +143,6 @@
         "DeleteDirectoryQuestion": "Do you really want to delete the \"{name}\" directory with all its contents?",
         "Download": "Download",
         "Downloading": "Downloading",
-        "DoYouWantToStartFilename": "Do you want to start {filename}?",
         "DropFilesToAddGcode": "Drag & Drop files to add G-Code.",
         "EditFile": "Edit File",
         "Empty": "Empty",
