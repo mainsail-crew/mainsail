@@ -1157,37 +1157,11 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     getSmallThumbnail(item: FileStateFile) {
-        if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find(
-                (thumb) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
-
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
-
-        return ''
+        return this.$store.getters['files/getSmallThumbnail'](item, this.currentPath)
     }
 
     getBigThumbnail(item: FileStateFile) {
-        if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
-
-        return ''
+        return this.$store.getters['files/getBigThumbnail'](item, this.currentPath)
     }
 
     getThumbnailWidth(item: FileStateFile) {

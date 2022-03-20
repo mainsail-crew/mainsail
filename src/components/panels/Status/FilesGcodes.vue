@@ -2,7 +2,68 @@
 
 <template>
     <v-card flat>
-        <v-card-text>G-Codes</v-card-text>
+        <v-data-table
+            :items="gcodeFiles"
+            hide-default-footer
+            class="dashboard-jobqueue-table"
+            sort-by="time_added"
+            mobile-breakpoint="0"
+            @current-items="setFirst">
+            <template #no-data>
+                <div class="text-center">{{ $t('JobQueue.Empty') }}</div>
+            </template>
+
+            <template #item="{ item }">
+                <tr :key="item.filename">
+                    <td class="pr-0 text-center" style="width: 32px">
+                        <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                            <v-tooltip
+                                v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
+                                top
+                                content-class="tooltip__content-opacity1">
+                                <template #activator="{ on, attrs }">
+                                    <vue-load-image>
+                                        <img
+                                            slot="image"
+                                            :src="getSmallThumbnail(item)"
+                                            width="32"
+                                            height="32"
+                                            v-bind="attrs"
+                                            v-on="on" />
+                                        <v-progress-circular
+                                            slot="preloader"
+                                            indeterminate
+                                            color="primary"></v-progress-circular>
+                                        <v-icon slot="error">{{ mdiFile }}</v-icon>
+                                    </vue-load-image>
+                                </template>
+                                <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                            </v-tooltip>
+                        </template>
+                        <template v-else-if="getSmallThumbnail(item)">
+                            <vue-load-image>
+                                <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                <v-progress-circular
+                                    slot="preloader"
+                                    indeterminate
+                                    color="primary"></v-progress-circular>
+                                <v-icon slot="error">{{ mdiFile }}</v-icon>
+                            </vue-load-image>
+                        </template>
+                        <template v-else>
+                            <v-icon>{{ mdiFile }}</v-icon>
+                        </template>
+                    </td>
+                    <td class="pr-2">
+                        {{ item.filename }}
+                        <template v-if="existMetadata(item)">
+                            <br />
+                            <small>{{ getDescription(item) }}</small>
+                        </template>
+                    </td>
+                </tr>
+            </template>
+        </v-data-table>
     </v-card>
 </template>
 
@@ -10,8 +71,111 @@
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
+import { mdiFile } from '@mdi/js'
+import { FileStateFile } from '@/store/files/types'
 @Component({
     components: {},
 })
-export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {}
+export default class StatusPanelFilesGcodes extends Mixins(BaseMixin) {
+    mdiFile = mdiFile
+
+    get gcodeFiles() {
+        let gcodes = this.$store.getters['files/getAllGcodes'] ?? []
+        gcodes = gcodes
+            .slice()
+            .sort((a: FileStateFile, b: FileStateFile) => {
+                return b.modified.getTime() - a.modified.getTime()
+            })
+            .slice(0, 5)
+
+        const requestItems = gcodes.filter((file: FileStateFile) => !file.metadataRequested && !file.metadataPulled)
+        requestItems.forEach((file: FileStateFile) => {
+            this.$store.dispatch('files/requestMetadata', {
+                filename: 'gcodes/' + file.filename,
+            })
+        })
+
+        return gcodes
+    }
+
+    getSmallThumbnail(item: ServerJobQueueStateJob) {
+        const tmp = { ...item }
+        const currentPath =
+            item.filename.lastIndexOf('/') >= 0
+                ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
+                : 'gcodes'
+        tmp.filename = item.filename.slice(item.filename.lastIndexOf('/'))
+
+        return this.$store.getters['files/getSmallThumbnail'](item, currentPath)
+    }
+
+    getBigThumbnail(item: ServerJobQueueStateJob) {
+        const tmp = { ...item }
+        const currentPath =
+            item.filename.lastIndexOf('/') >= 0
+                ? 'gcodes/' + item.filename.slice(0, item.filename.lastIndexOf('/'))
+                : 'gcodes'
+        tmp.filename = item.filename.slice(item.filename.lastIndexOf('/'))
+
+        return this.$store.getters['files/getBigThumbnail'](item, currentPath)
+    }
+
+    getDescription(item: FileStateFile) {
+        let output = ''
+
+        output += this.$t('Files.Filament') + ': '
+        if (item.filament_total || item.filament_weight_total) {
+            if (item.filament_total) output += item.filament_total.toFixed() + ' mm'
+            if (item.filament_total && item.filament_weight_total) output += ' / '
+            if (item.filament_weight_total) output += item.filament_weight_total.toFixed(2) + ' g'
+        } else output += '--'
+
+        output += ', ' + this.$t('Files.PrintTime') + ': '
+        if (item.estimated_time) output += this.formatPrintTime(item.estimated_time)
+        else output += '--'
+
+        return output
+    }
+
+    existMetadata(item: FileStateFile) {
+        return item?.metadataPulled
+    }
+
+    setFirst(currItems: ServerJobQueueStateJob[]) {
+        // first check that actually exists values
+        if (currItems.length) {
+            // toggle all to false
+            currItems.forEach((x: ServerJobQueueStateJob) => (x.isFirst = false))
+            // just set first to true
+            currItems[0].isFirst = true
+        }
+    }
+
+    formatPrintTime(totalSeconds: number) {
+        if (totalSeconds) {
+            let output = ''
+
+            const days = Math.floor(totalSeconds / (3600 * 24))
+            if (days) {
+                totalSeconds %= 3600 * 24
+                output += days + 'd'
+            }
+
+            const hours = Math.floor(totalSeconds / 3600)
+            totalSeconds %= 3600
+            if (hours) output += ' ' + hours + 'h'
+
+            const minutes = Math.floor(totalSeconds / 60)
+            if (minutes) output += ' ' + minutes + 'm'
+
+            const seconds = totalSeconds % 60
+            if (seconds) output += ' ' + seconds.toFixed(0) + 's'
+
+            return output
+        }
+
+        return '--'
+    }
+}
 </script>

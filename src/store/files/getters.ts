@@ -1,4 +1,10 @@
-import { themeDir, thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import {
+    themeDir,
+    thumbnailBigMin,
+    thumbnailSmallMax,
+    thumbnailSmallMin,
+    validGcodeExtensions,
+} from '@/store/variables'
 import { GetterTree } from 'vuex'
 import { FileState, FileStateFile } from '@/store/files/types'
 import { ServerJobQueueStateJob } from '@/store/server/jobQueue/types'
@@ -107,5 +113,63 @@ export const getters: GetterTree<FileState, any> = {
                 (element: FileStateFile) => element.filename !== undefined && element.filename === acceptName
             ) !== -1
         )
+    },
+
+    getAllGcodes: (state, getters) => {
+        const output: FileStateFile[] = []
+        const rootGcodes = getters.getDirectory('gcodes')
+
+        const searchGcodes = (directory: FileStateFile, currentPath: string) => {
+            if (directory.isDirectory && directory.childrens?.length) {
+                directory.childrens?.forEach((file) => {
+                    if (!file.isDirectory) {
+                        const extension = file.filename.slice(file.filename.lastIndexOf('.'))
+                        if (validGcodeExtensions.includes(extension)) {
+                            const tmp = { ...file }
+                            tmp.filename = currentPath + file.filename
+                            output.push(tmp)
+                        }
+                    } else searchGcodes(file, currentPath + file.filename + '/')
+                })
+            }
+        }
+
+        searchGcodes(rootGcodes, '')
+
+        return output
+    },
+
+    getSmallThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
+        if (item.thumbnails?.length) {
+            const thumbnail = item.thumbnails.find(
+                (thumb) =>
+                    thumb.width >= thumbnailSmallMin &&
+                    thumb.width <= thumbnailSmallMax &&
+                    thumb.height >= thumbnailSmallMin &&
+                    thumb.height <= thumbnailSmallMax
+            )
+
+            if (thumbnail && 'relative_path' in thumbnail) {
+                return `${rootGetters['socket/getUrl']}/server/files/${currentPath}/${encodeURI(
+                    thumbnail.relative_path
+                )}?timestamp=${item.modified.getTime()}`
+            }
+        }
+
+        return ''
+    },
+
+    getBigThumbnail: (state, getters, rootState, rootGetters) => (item: FileStateFile, currentPath: string) => {
+        if (item.thumbnails?.length) {
+            const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
+
+            if (thumbnail && 'relative_path' in thumbnail) {
+                return `${rootGetters['socket/getUrl']}/server/files/${encodeURI(currentPath)}/${encodeURI(
+                    thumbnail.relative_path
+                )}?timestamp=${item.modified.getTime()}`
+            }
+        }
+
+        return ''
     },
 }
