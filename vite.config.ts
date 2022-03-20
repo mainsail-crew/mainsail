@@ -22,8 +22,8 @@ const PWAConfig: Partial<VitePWAOptions> = {
         background_color: '#121212',
         icons: [
             {
-                src: '/img/icons/icon-196-maskable.png',
-                sizes: '196x196',
+                src: '/img/icons/icon-192-maskable.png',
+                sizes: '192x192',
                 type: 'image/png',
             },
             {
