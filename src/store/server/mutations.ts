@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { ServerState } from '@/store/server/types'
+import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatTime } from '@/plugins/helpers'
 import { maxEventHistory } from '@/store/variables'
 
@@ -37,6 +37,22 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'klippy_message', 'Shutdown...')
     },
 
+    setCpuTemp(state, payload) {
+        Vue.set(state, 'cpu_temp', payload)
+    },
+
+    setMoonrakerStats(state, payload) {
+        Vue.set(state, 'moonraker_stats', payload)
+    },
+
+    setNetworkStats(state, payload) {
+        Vue.set(state, 'network_stats', payload)
+    },
+
+    setCpuStats(state, payload) {
+        Vue.set(state, 'system_cpu_usage', payload)
+    },
+
     setKlippyConnectedTimer(state, timer) {
         Vue.set(state, 'klippy_connected_timer', timer)
     },
@@ -63,9 +79,7 @@ export const mutations: MutationTree<ServerState> = {
     },
 
     setConfig(state, payload) {
-        Object.entries(payload.config).forEach(([key, value]) => {
-            Vue.set(state.config, key, value)
-        })
+        Vue.set(state, 'config', payload)
     },
 
     setConsoleClearedThisSession(state) {

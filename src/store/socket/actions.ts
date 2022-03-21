@@ -67,7 +67,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_proc_stat_update':
-                commit('server/setProcStats', payload.params[0], { root: true })
+                dispatch('server/updateProcStats', payload.params[0], { root: true })
                 break
 
             case 'notify_cpu_throttled':

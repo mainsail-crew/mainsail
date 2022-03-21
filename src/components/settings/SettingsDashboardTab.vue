@@ -5,7 +5,7 @@
         <v-card-text>
             <v-row>
                 <v-col class="text-center">
-                    <v-btn-toggle v-model="viewport" class="mx-auto">
+                    <v-btn-toggle v-model="currentViewport" class="mx-auto">
                         <v-btn value="mobile">
                             <span class="hidden-sm-and-down">{{ $t('Settings.DashboardTab.Mobile') }}</span>
                             <v-icon right class="hidden-sm-and-down">{{ mdiCellphone }}</v-icon>
@@ -67,14 +67,14 @@ export default class SettingsDashboardTab extends Mixins(BaseMixin) {
     mdiMonitorDashboard = mdiMonitorDashboard
     mdiMonitorScreenshot = mdiMonitorScreenshot
 
-    private viewport = 'desktop'
+    private currentViewport = 'desktop'
 
     mounted() {
-        if (this.isMobile) this.viewport = 'mobile'
-        else if (this.isTablet) this.viewport = 'tablet'
-        else if (this.isDesktop) this.viewport = 'desktop'
-        else if (this.isWidescreen) this.viewport = 'widescreen'
-        else this.viewport = 'desktop'
+        if (this.isMobile) this.currentViewport = 'mobile'
+        else if (this.isTablet) this.currentViewport = 'tablet'
+        else if (this.isDesktop) this.currentViewport = 'desktop'
+        else if (this.isWidescreen) this.currentViewport = 'widescreen'
+        else this.currentViewport = 'desktop'
     }
 }
 </script>
