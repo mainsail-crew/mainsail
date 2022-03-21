@@ -46,24 +46,6 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return state.virtual_sdcard?.progress ?? 0
     },
 
-    getPositions: (state) => {
-        const position = state.motion_report?.live_position ?? state.toolhead?.position ?? [0, 0, 0]
-        const gcode_position = state.gcode_move?.gcode_position ?? [0, 0, 0]
-        const absolute = state.gcode_move?.absolute_coordinates ?? true
-
-        console.log(state.gcode_move?.gcode_position)
-        console.log(state.motion_report?.live_position)
-        console.log(state.toolhead?.position)
-
-        return {
-            absolute: absolute,
-            x: position[0]?.toFixed(2) ?? '--',
-            y: position[1]?.toFixed(2) ?? '--',
-            z: position[2]?.toFixed(2) ?? '--',
-            gcode_z: gcode_position[2]?.toFixed(2) ?? '--',
-        }
-    },
-
     getMacros: (state, getters, rootState) => {
         const array: PrinterStateMacro[] = []
         const hiddenMacros: string[] = []

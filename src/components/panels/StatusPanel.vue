@@ -138,7 +138,6 @@
                     <v-divider class="mt-0 mb-0"></v-divider>
                 </template>
                 <template v-if="['printing', 'paused', 'error', 'cancelled'].includes(printer_state)">
-                    <v-divider class="my-0"></v-divider>
                     <v-container class="py-0">
                         <v-row class="text-center py-5" align="center">
                             <v-col class="col-3 pa-0">
@@ -388,10 +387,6 @@ export default class StatusPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.print_stats?.message ?? ''
     }
 
-    get positions() {
-        return this.$store.getters['printer/getPositions']
-    }
-
     get filament_used() {
         return this.$store.state.printer.print_stats?.filament_used ?? 0
     }
@@ -539,8 +534,9 @@ export default class StatusPanel extends Mixins(BaseMixin) {
 
     get current_layer() {
         if (this.print_time > 0 && 'first_layer_height' in this.current_file && 'layer_height' in this.current_file) {
+            const gcodePositionZ = this.$store.state.printer.gcode_move?.gcode_position[2] ?? 0
             let current_layer = Math.ceil(
-                (this.positions.gcode_z - this.current_file.first_layer_height) / this.current_file.layer_height + 1
+                (gcodePositionZ - this.current_file.first_layer_height) / this.current_file.layer_height + 1
             )
             current_layer = current_layer <= this.max_layers ? current_layer : this.max_layers
 
