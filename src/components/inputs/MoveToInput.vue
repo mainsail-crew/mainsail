@@ -1,7 +1,13 @@
+<style lang="scss">
+label {
+    font-size: 14px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+</style>
+
 <template>
     <v-text-field
         v-model="position"
-        :label="label"
         :suffix="suffix"
         :disabled="disabled"
         :readonly="readonly"
@@ -16,7 +22,11 @@
         @change="validate"
         @keyup="validate"
         @blur="onBlur"
-        @focus="!readonly ? $event.target.select() : {}"></v-text-field>
+        @focus="!readonly ? $event.target.select() : {}">
+        <template #label>
+            <span>{{ label }}</span>
+        </template>
+    </v-text-field>
 </template>
 
 <script lang="ts">

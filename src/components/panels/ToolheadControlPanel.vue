@@ -14,14 +14,11 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item>
-                        <v-checkbox v-model="displayGCodeZ" label="Display G-Code Z-Position"></v-checkbox>
-                    </v-list-item>
+                    <v-list-item></v-list-item>
                 </v-list>
             </v-menu>
         </template>
-        <!-- MOVE TO INPUTS -->
-        <move-to-control :display-g-code-z="displayGCodeZ" class="pb-0"></move-to-control>
+        <move-to-control class="py-0 pt-3"></move-to-control>
         <!-- AXIS CONTROL -->
         <v-container>
             <component :is="`${controlStyle}-control`"></component>
@@ -75,14 +72,6 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin) {
 
     get speedFactor() {
         return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
-    }
-
-    get displayGCodeZ(): boolean {
-        return this.$store.state.gui.control.boolGcodeZ ?? false
-    }
-
-    set displayGCodeZ(newVal: boolean) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.boolGcodeZ', value: newVal })
     }
 }
 </script>

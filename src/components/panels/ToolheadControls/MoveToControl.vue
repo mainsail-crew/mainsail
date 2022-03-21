@@ -8,40 +8,67 @@
 <template>
     <v-container>
         <v-form @keyup.native.enter="sendCmd">
+            <v-row v-show="parseFloat(homingOrigin.x) !== 0 && parseFloat(homingOrigin.y) !== 0" dense>
+                <v-col cols="12" class="pt-0 text-center text--disabled text-caption font-weight-light">
+                    <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+                </v-col>
+            </v-row>
             <v-row dense>
                 <v-col>
                     <move-to-input
                         v-model="input.x.pos"
+                        :label="`[ ${livePositions.x} ]`"
                         :suffix="'X'"
                         :position-max="stepperXmax"
                         :position-min="stepperXmin"
-                        :current-pos="positions.x"
-                        :readonly="printerIsPrinting"
+                        :current-pos="gcodePositions.x"
+                        :readonly="['printing'].includes(printer_state)"
                         :disabled="!xAxisHomed"
                         @validate="validate"></move-to-input>
+                    <div
+                        v-show="parseFloat(homingOrigin.x) !== 0"
+                        class="text-center text--disabled text-caption font-weight-light">
+                        X-Offset: {{ homingOrigin.x }}
+                    </div>
+                    <div
+                        v-show="parseFloat(homingOrigin.x) === 0 && parseFloat(homingOrigin.y) === 0"
+                        class="text-center text--disabled text-caption font-weight-light">
+                        <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+                    </div>
                 </v-col>
                 <v-col>
                     <move-to-input
                         v-model="input.y.pos"
+                        :label="`[ ${livePositions.y} ]`"
                         :suffix="'Y'"
                         :position-max="stepperYmax"
                         :position-min="stepperYmin"
-                        :current-pos="positions.y"
-                        :readonly="printerIsPrinting"
+                        :current-pos="gcodePositions.y"
+                        :readonly="['printing'].includes(printer_state)"
                         :disabled="!yAxisHomed"
                         @validate="validate"></move-to-input>
+                    <div
+                        v-show="parseFloat(homingOrigin.y) !== 0"
+                        class="text-center text--disabled text-caption font-weight-light">
+                        Y-Offset: {{ homingOrigin.y }}
+                    </div>
                 </v-col>
                 <v-col>
                     <move-to-input
                         v-model="input.z.pos"
-                        :label="displayGCodeZ ? `( ${positions.gcode_z} )` : ''"
+                        :label="`[ ${livePositions.z} ]`"
                         :suffix="'Z'"
                         :position-max="stepperZmax"
                         :position-min="stepperZmin"
-                        :current-pos="positions.z"
-                        :readonly="printerIsPrinting"
+                        :current-pos="gcodePositions.z"
+                        :readonly="['printing'].includes(printer_state)"
                         :disabled="!zAxisHomed"
                         @validate="validate"></move-to-input>
+                    <div
+                        v-show="parseFloat(homingOrigin.z) !== 0"
+                        class="text-center text--disabled text-caption font-weight-light">
+                        Z-Offset: {{ homingOrigin.z }}
+                    </div>
                 </v-col>
             </v-row>
         </v-form>
@@ -49,7 +76,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import MoveToInput from '@/components/inputs/MoveToInput.vue'
@@ -58,9 +85,6 @@ import MoveToInput from '@/components/inputs/MoveToInput.vue'
     components: { MoveToInput },
 })
 export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
-    @Prop({ type: Boolean, required: false, default: false })
-    declare readonly displayGCodeZ: boolean
-
     input: { [index: string]: any } = {
         x: { pos: '', valid: true },
         y: { pos: '', valid: true },
@@ -68,34 +92,28 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     }
 
     created(): void {
-        // console.log(this.$store.state.printer.toolhead)
-        this.input.x.pos = this.positions.x
-        this.input.y.pos = this.positions.y
-        this.input.z.pos = this.positions.z
+        this.input.x.pos = this.gcodePositions.x
+        this.input.y.pos = this.gcodePositions.y
+        this.input.z.pos = this.gcodePositions.z
     }
 
     validate(event: { axis: string; valid: boolean }): void {
         this.input[event.axis].valid = event.valid
     }
 
-    @Watch('positions.x', { immediate: true })
+    @Watch('gcodePositions.x', { immediate: true })
     updatePositionX(newVal: string): void {
         this.input.x.pos = newVal
     }
 
-    @Watch('positions.y', { immediate: true })
+    @Watch('gcodePositions.y', { immediate: true })
     updatePositionY(newVal: string): void {
         this.input.y.pos = newVal
     }
 
-    @Watch('positions.z', { immediate: true })
+    @Watch('gcodePositions.z', { immediate: true })
     updatePositionZ(newVal: string): void {
         this.input.z.pos = newVal
-    }
-
-    @Watch('displayGCodeZ', { immediate: true })
-    updatePositionGCodeZ(): void {
-        console.log(this.displayGCodeZ)
     }
 
     /**
@@ -143,24 +161,45 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     /**
      * Axes positions and positioning mode (G90 / G91)
      */
-    get positions() {
-        return this.$store.getters['printer/getPositions']
+    get displayPositionAbsolute() {
+        return this.positionAbsolute ? this.$t('Panels.StatusPanel.Absolute') : this.$t('Panels.StatusPanel.Relative')
     }
 
     get positionAbsolute(): boolean {
-        return this.positions.absolute
+        return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
     }
 
-    // get coordinates() {
-    //     return this.positions.coordinates
-    //         ? this.$t('Panels.StatusPanel.Absolute')
-    //         : this.$t('Panels.StatusPanel.Relative')
-    // }
+    get homingOrigin() {
+        const offset = this.$store.state.printer?.gcode_move?.homing_origin ?? [0, 0, 0]
+        return {
+            x: offset[0]?.toFixed(2) ?? 0,
+            y: offset[1]?.toFixed(2) ?? 0,
+            z: offset[2]?.toFixed(3) ?? 0,
+        }
+    }
+
+    get livePositions() {
+        const pos = this.$store.state.printer.motion_report?.live_position ?? [0, 0, 0]
+        return {
+            x: pos[0]?.toFixed(2) ?? '--',
+            y: pos[1]?.toFixed(2) ?? '--',
+            z: pos[2]?.toFixed(3) ?? '--',
+        }
+    }
+
+    get gcodePositions() {
+        const pos = this.$store.state.printer.gcode_move?.gcode_position ?? [0, 0, 0]
+        return {
+            x: pos[0]?.toFixed(2) ?? '--',
+            y: pos[1]?.toFixed(2) ?? '--',
+            z: pos[2]?.toFixed(3) ?? '--',
+        }
+    }
 
     sendCmd(): void {
-        const xPos = this.input.x.pos !== this.positions.x ? ` X${this.input.x.pos}` : ''
-        const yPos = this.input.y.pos !== this.positions.y ? ` Y${this.input.y.pos}` : ''
-        const zPos = this.input.z.pos !== this.positions.z ? ` Z${this.input.z.pos}` : ''
+        const xPos = this.input.x.pos !== this.gcodePositions.x ? ` X${this.input.x.pos}` : ''
+        const yPos = this.input.y.pos !== this.gcodePositions.y ? ` Y${this.input.y.pos}` : ''
+        const zPos = this.input.z.pos !== this.gcodePositions.z ? ` Z${this.input.z.pos}` : ''
 
         let gcode = ''
         if (!this.positionAbsolute) {

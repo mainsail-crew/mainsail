@@ -11,14 +11,19 @@
     <div>
         <v-row>
             <!-- DIRECTION BUTTONS -->
-            <v-col :cols="homeCols">
+            <v-col>
                 <v-row dense class="mb-1">
                     <v-col cols="3"></v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="!yAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveY">
+                            :disabled="
+                                !yAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`Y${reverseY ? '-' : '+'}${stepSize}`, feedrateXY)">
                             <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -26,8 +31,13 @@
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="!zAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveZ">
+                            :disabled="
+                                !zAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`Z${reverseZ ? '-' : '+'}${stepSize}`, feedrateZ)">
                             <v-icon>{{ mdiChevronUp }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -37,16 +47,26 @@
                         <v-btn
                             class="btnMinWidthAuto fill-width p-abs"
                             style="top: -50%; width: calc(100% - 8px)"
-                            :disabled="!xAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveX">
+                            :disabled="
+                                !xAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`X${!reverseX ? '-' : '+'}${stepSize}`, feedrateXY)">
                             <v-icon>{{ mdiChevronLeft }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="!yAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveY">
+                            :disabled="
+                                !yAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`Y${!reverseY ? '-' : '+'}${stepSize}`, feedrateXY)">
                             <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
@@ -54,29 +74,40 @@
                         <v-btn
                             class="btnMinWidthAuto fill-width p-abs"
                             style="top: -50%; width: calc(100% - 8px)"
-                            :disabled="!xAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveX">
+                            :disabled="
+                                !xAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`X${reverseX ? '-' : '+'}${stepSize}`, feedrateXY)">
                             <v-icon>{{ mdiChevronRight }}</v-icon>
                         </v-btn>
                     </v-col>
                     <v-col cols="3">
                         <v-btn
                             class="btnMinWidthAuto fill-width"
-                            :disabled="!zAxisHomed || selectedCrossStep === null || selectedCrossStep === undefined"
-                            @click="moveZ">
+                            :disabled="
+                                !zAxisHomed ||
+                                selectedCrossStep === null ||
+                                selectedCrossStep === undefined ||
+                                ['printing'].includes(printer_state)
+                            "
+                            @click="doSendMove(`Z${!reverseZ ? '-' : '+'}${stepSize}`, feedrateZ)">
                             <v-icon>{{ mdiChevronDown }}</v-icon>
                         </v-btn>
                     </v-col>
                 </v-row>
             </v-col>
             <!-- HOME / 5th ACTION BUTTONS -->
-            <v-col :cols="homeCols" class="d-flex align-center">
+            <v-col class="d-flex align-center">
                 <div class="flex-grow-1" style="border-radius: 4px; overflow: hidden">
                     <v-row dense style="margin-bottom: -2px !important">
-                        <v-col>
+                        <v-col cols="6">
                             <v-btn
-                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeAll')"
+                                :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                                 height="30"
                                 tile
                                 class="w-100"
@@ -87,9 +118,10 @@
                                 </div>
                             </v-btn>
                         </v-col>
-                        <v-col class="d-flex">
+                        <v-col cols="6" class="d-flex">
                             <v-btn
                                 v-if="!existsQGL && !existsZtilt"
+                                :disabled="['printing'].includes(printer_state)"
                                 :color="homedAxes !== '' ? 'primary' : 'warning'"
                                 height="30"
                                 dense
@@ -100,8 +132,9 @@
                             </v-btn>
                             <v-btn
                                 v-if="existsQGL"
-                                :color="colorQuadGantryLevel"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('qgl')"
+                                :color="colorQuadGantryLevel"
                                 height="30"
                                 dense
                                 tile
@@ -111,6 +144,7 @@
                             </v-btn>
                             <v-btn
                                 v-if="existsZtilt"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('zTilt')"
                                 :color="colorZTilt"
                                 height="30"
@@ -122,36 +156,39 @@
                             </v-btn>
                         </v-col>
                     </v-row>
-                    <v-row dense class="">
+                    <v-row dense>
                         <v-col cols="4" class="flex-grow-1">
                             <v-btn
-                                class="btnMinWidthAuto w-100"
-                                tile
-                                height="30"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeX')"
                                 :color="homedAxes.includes('x') ? 'primary' : 'warning'"
+                                tile
+                                height="30"
+                                class="btnMinWidthAuto w-100"
                                 @click="doHomeX">
                                 {{ $t('Panels.ToolheadControlPanel.X') }}
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
                             <v-btn
-                                class="btnMinWidthAuto w-100"
-                                tile
-                                height="30"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeY')"
                                 :color="homedAxes.includes('y') ? 'primary' : 'warning'"
+                                tile
+                                height="30"
+                                class="btnMinWidthAuto w-100"
                                 @click="doHomeY">
                                 {{ $t('Panels.ToolheadControlPanel.Y') }}
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
                             <v-btn
-                                class="btnMinWidthAuto w-100"
-                                tile
-                                height="30"
+                                :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeZ')"
                                 :color="homedAxes.includes('z') ? 'primary' : 'warning'"
+                                tile
+                                height="30"
+                                class="btnMinWidthAuto w-100"
                                 @click="doHomeZ">
                                 {{ $t('Panels.ToolheadControlPanel.Z') }}
                             </v-btn>
@@ -162,7 +199,7 @@
         </v-row>
         <!-- STEP SIZE BUTTON GROUP -->
         <v-row no-gutters class="mt-3">
-            <v-col class="col-12">
+            <v-col>
                 <v-btn-toggle
                     v-if="stepsReversed.length > 0"
                     :key="`all-steps-${stepsReversed.join('_')}`"
@@ -173,6 +210,7 @@
                     <v-btn
                         v-for="step of stepsReversed"
                         :key="`step-${step}`"
+                        :disabled="['printing'].includes(printer_state)"
                         dense
                         class="btnMinWidthAuto flex-grow-1 px-0"
                         style="height: 28px">
@@ -199,8 +237,6 @@ import { mdiChevronUp, mdiChevronLeft, mdiChevronRight, mdiChevronDown, mdiEngin
 
 @Component
 export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
-    private homeCols = 6
-
     mdiChevronUp = mdiChevronUp
     mdiChevronLeft = mdiChevronLeft
     mdiChevronRight = mdiChevronRight
@@ -208,6 +244,11 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     mdiEngineOff = mdiEngineOff
     mdiHome = mdiHome
 
+    private stepSize = this.stepsReversed[this.selectedCrossStep]
+
+    /**
+     * Step size selection
+     */
     get selectedCrossStep() {
         return this.$store.state.gui.control.selectedCrossStep
     }
@@ -216,6 +257,9 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.selectedCrossStep', value: newVal })
     }
 
+    /**
+     * Axes reverse states
+     */
     get reverseX() {
         return this.$store.state.gui.control.reverseX
     }
@@ -249,42 +293,6 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     get zAxisHomed(): boolean {
         return this.$store.state.printer.toolhead?.homed_axes.includes('z') ?? false
-    }
-
-    /**
-     * Axes move commands
-     */
-    moveX() {
-        const gcode = `X${this.reverseX ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
-        this.doSendMove(gcode, this.feedrateXY)
-    }
-
-    moveY() {
-        const gcode = `Y${this.reverseY ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
-        this.doSendMove(gcode, this.feedrateXY)
-    }
-
-    moveZ() {
-        const gcode = `Z${this.reverseZ ? '-' : '+'}${this.stepsReversed[this.selectedCrossStep]}`
-        this.doSendMove(gcode, this.feedrateZ)
-    }
-
-    onResize() {
-        this.homeCols = window.screen.width < 360 ? 12 : 6
-    }
-
-    created() {
-        window.addEventListener('resize', this.onResize)
-    }
-
-    mounted() {
-        if (window.screen.width < 330) {
-            this.homeCols = 12
-        }
-    }
-
-    destroyed() {
-        window.removeEventListener('resize', this.onResize)
     }
 }
 </script>
