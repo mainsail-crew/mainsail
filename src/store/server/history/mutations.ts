@@ -16,6 +16,11 @@ export const mutations: MutationTree<ServerHistoryState> = {
         Vue.set(state, 'job_totals', payload)
     },
 
+    setHistoryNotes(state, payload) {
+        const job = state.jobs.find((job) => job.job_id === payload.job_id)
+        if (job) Vue.set(job, 'note', payload.text)
+    },
+
     addJob(state, payload) {
         state.jobs.push(payload)
     },
@@ -29,8 +34,6 @@ export const mutations: MutationTree<ServerHistoryState> = {
 
     destroyJob(state, payload) {
         const index = state.jobs.findIndex((job) => job.job_id === payload)
-        if (index !== -1) {
-            state.jobs.splice(index, 1)
-        }
+        if (index !== -1) state.jobs.splice(index, 1)
     },
 }

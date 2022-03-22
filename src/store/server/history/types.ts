@@ -18,6 +18,7 @@ export interface ServerHistoryStateJob {
     filename: string
     // eslint-disable-next-line
     metadata: any
+    note?: string
     print_duration: number
     status: string
     start_time: number
