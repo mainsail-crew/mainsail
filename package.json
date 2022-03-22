@@ -100,9 +100,9 @@
         "> 1%",
         "not dead",
         "not op_mini all",
-        "last 2 chrome major versions",
-        "last 2 firefox major versions",
-        "last 2 safari major versions",
+        "last 10 chrome major versions",
+        "last 5 firefox major versions",
+        "safari 12",
         "last 2 opera major versions",
         "last 2 edge major versions"
     ],

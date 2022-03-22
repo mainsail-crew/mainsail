@@ -1,3 +1,4 @@
+import 'core-js/stable' // polyfills for older browsers
 import 'regenerator-runtime' // async polyfill used by the gcodeviewer
 import 'resize-observer-polyfill' // polyfill needed by the responsive class detection
 
