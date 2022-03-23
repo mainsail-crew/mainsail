@@ -8,6 +8,7 @@ label {
 <template>
     <v-text-field
         v-model="position"
+        :label="`[ ${label} ]`"
         :suffix="suffix"
         :disabled="disabled"
         :readonly="readonly"
@@ -22,11 +23,7 @@ label {
         @change="validate"
         @keyup="validate"
         @blur="onBlur"
-        @focus="!readonly ? $event.target.select() : {}">
-        <template #label>
-            <span>{{ label }}</span>
-        </template>
-    </v-text-field>
+        @focus="!readonly ? $event.target.select() : {}"></v-text-field>
 </template>
 
 <script lang="ts">
