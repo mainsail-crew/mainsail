@@ -545,6 +545,7 @@ import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {
     mdiFileDocumentMultipleOutline,
+    mdiFile,
     mdiMagnify,
     mdiUpload,
     mdiFolderPlus,
@@ -600,6 +601,7 @@ interface dialogRenameObject {
 })
 export default class GcodefilesPanel extends Mixins(BaseMixin) {
     mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiFile = mdiFile
     mdiMagnify = mdiMagnify
     mdiUpload = mdiUpload
     mdiFolderPlus = mdiFolderPlus
