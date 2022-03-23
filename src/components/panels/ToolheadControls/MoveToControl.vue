@@ -1,10 +1,3 @@
-<style scoped lang="scss">
-//._coord-input {
-//    max-width: 110px !important;
-//    text-align: right;
-//}
-</style>
-
 <template>
     <v-container>
         <v-form @keyup.native.enter="sendCmd">
@@ -17,7 +10,7 @@
                 <v-col>
                     <move-to-input
                         v-model="input.x.pos"
-                        :label="`[ ${livePositions.x} ]`"
+                        :label="livePositions.x"
                         :suffix="'X'"
                         :position-max="stepperXmax"
                         :position-min="stepperXmin"
@@ -39,7 +32,7 @@
                 <v-col>
                     <move-to-input
                         v-model="input.y.pos"
-                        :label="`[ ${livePositions.y} ]`"
+                        :label="livePositions.y"
                         :suffix="'Y'"
                         :position-max="stepperYmax"
                         :position-min="stepperYmin"
@@ -56,7 +49,7 @@
                 <v-col>
                     <move-to-input
                         v-model="input.z.pos"
-                        :label="`[ ${livePositions.z} ]`"
+                        :label="livePositions.z"
                         :suffix="'Z'"
                         :position-max="stepperZmax"
                         :position-min="stepperZmin"
@@ -89,12 +82,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
         x: { pos: '', valid: true },
         y: { pos: '', valid: true },
         z: { pos: '', valid: true },
-    }
-
-    created(): void {
-        this.input.x.pos = this.gcodePositions.x
-        this.input.y.pos = this.gcodePositions.y
-        this.input.z.pos = this.gcodePositions.z
     }
 
     validate(event: { axis: string; valid: boolean }): void {

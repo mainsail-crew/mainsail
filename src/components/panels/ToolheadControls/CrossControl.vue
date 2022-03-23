@@ -2,9 +2,6 @@
 .btnMinWidthAuto {
     min-width: auto !important;
 }
-.ml-05 {
-    margin-left: 2px;
-}
 </style>
 
 <template>
@@ -156,6 +153,7 @@
                             </v-btn>
                         </v-col>
                     </v-row>
+                    <!-- X/Y/Z HOME BUTTONS -->
                     <v-row dense>
                         <v-col cols="4" class="flex-grow-1">
                             <v-btn
