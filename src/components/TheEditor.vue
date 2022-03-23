@@ -55,12 +55,12 @@
                 </template>
                 <v-card-text class="pa-0">
                     <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
-                        <codemirror-async
+                        <monaco-async
                             v-if="show"
                             ref="editor"
                             v-model="sourcecode"
                             :name="filename"
-                            :file-extension="fileExtension"></codemirror-async>
+                            :file-extension="fileExtension"></monaco-async>
                     </overlay-scrollbars>
                 </v-card-text>
             </panel>
@@ -133,7 +133,7 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
-import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
+import MonacoAsync from '@/components/inputs/MonacoAsync'
 import {
     mdiClose,
     mdiCloseThick,
@@ -144,10 +144,9 @@ import {
     mdiHelpCircle,
     mdiRestart,
 } from '@mdi/js'
-import type Codemirror from '@/components/inputs/Codemirror.vue'
 
 @Component({
-    components: { Panel, CodemirrorAsync },
+    components: { Panel, MonacoAsync },
 })
 export default class TheEditor extends Mixins(BaseMixin) {
     private dialogConfirmChange = false
@@ -166,9 +165,6 @@ export default class TheEditor extends Mixins(BaseMixin) {
     mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
     mdiFileDocumentOutline = mdiFileDocumentOutline
 
-    declare $refs: {
-        editor: Codemirror
-    }
 
     get changed() {
         return this.$store.state.editor.changed ?? false

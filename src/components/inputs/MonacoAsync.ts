@@ -4,7 +4,7 @@ import Vue from 'vue'
  * Load code mirror into a chunk
  */
 export default Vue.component(
-    'CodemirrorAsync',
+    'MonacoAsync',
     // A dynamic import returns a Promise.
-    () => import('@/components/inputs/Codemirror.vue')
+    () => import('@/components/inputs/Monaco.vue')
 )
