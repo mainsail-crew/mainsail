@@ -23,6 +23,7 @@ export const getDefaultState = (): GuiState => {
         },
         control: {
             style: 'bars',
+            actionButton: null,
             feedrateXY: 100,
             stepsXY: [100, 10, 1],
             feedrateZ: 25,

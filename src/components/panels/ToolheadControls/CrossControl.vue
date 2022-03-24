@@ -244,10 +244,6 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     private stepSize = this.stepsReversed[this.selectedCrossStep]
 
-    created() {
-        console.log(this.$store.state.gui.control.actionButton)
-    }
-
     get actionButton(): string {
         return this.$store.state.gui.control.actionButton
     }

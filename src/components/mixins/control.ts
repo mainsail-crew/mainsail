@@ -24,8 +24,7 @@ export default class ControlMixin extends Vue {
             return false
         }
 
-        // return 'quad_gantry_level' in this.$store.state.printer.configfile.settings ?? false
-        return true
+        return 'quad_gantry_level' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get existsZtilt() {
@@ -33,8 +32,7 @@ export default class ControlMixin extends Vue {
             return false
         }
 
-        // return 'z_tilt' in this.$store.state.printer.configfile.settings ?? false
-        return true
+        return 'z_tilt' in this.$store.state.printer.configfile.settings ?? false
     }
 
     get colorQuadGantryLevel() {

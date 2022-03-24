@@ -287,13 +287,21 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
     }
 
     set controlStyle(newVal) {
-        if (newVal === 'circle' || newVal === 'cross') {
-            this.actionButton = 'm84'
-            if (this.existsZtilt) this.actionButton = 'qgl'
-            if (this.existsQGL) this.actionButton = 'qgl'
-        }
-
         this.$store.dispatch('gui/saveSetting', { name: 'control.style', value: newVal })
+
+        /**
+         * Initialize action button with priority qgl > ztilt > m84
+         */
+        if ((newVal === 'circle' || newVal === 'cross') && this.actionButton === null) {
+            if (this.existsQGL) {
+                this.actionButton = 'qgl'
+                return
+            } else if (this.existsZtilt) {
+                this.actionButton = 'ztilt'
+                return
+            }
+            this.actionButton = 'm84'
+        }
     }
 
     get actionOptions() {
@@ -323,7 +331,6 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
     }
 
     set actionButton(newVal) {
-        console.log('dispatch: ' + newVal)
         this.$store.dispatch('gui/saveSetting', { name: 'control.actionButton', value: newVal })
     }
 

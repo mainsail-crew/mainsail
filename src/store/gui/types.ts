@@ -14,6 +14,7 @@ export interface GuiState {
     console?: GuiConsoleState
     control: {
         style: 'bars' | 'circle' | 'cross'
+        actionButton: null | 'm84' | 'qgl' | 'ztilt'
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number
