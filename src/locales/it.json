@@ -463,7 +463,6 @@
             "PowerControl": "Controllo Alimentazione"
         },
         "StatusPanel": {
-            "Absolute": "assoluto",
             "CancelPrint": "Annulla stampa",
             "ClearPrintStats": "Cancella statistiche di stampa",
             "Difference": "Differenza",
@@ -486,31 +485,26 @@
             "PausePrint": "Metti in Pausa la stampa",
             "Position": "Posizione",
             "Print": "Stampa",
-            "Relative": "relativo",
             "ReprintJob": "Ristampa il processo",
             "Requested": "Richiesto",
             "ResumePrint": "Riprendi stampa",
             "Slicer": "Slicer",
             "Speed": "Velocità",
             "Total": "Totale",
-            "Unknown": "Sconosciuto",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Sconosciuto"
         },
         "ToolheadControlPanel": {
+            "Absolute": "assoluto",
             "ALL": "TUTTI",
             "InvertX": "Inverti X",
             "InvertY": "Inverti Y",
             "InvertZ": "Inverti Z",
             "PleaseConfigureSteps": "Configura gli step",
             "QGL": "QGL",
+            "Relative": "relativo",
             "SettingsInterfaceControl": "Impostazioni> Interfaccia> Controllo",
             "SetupControls": "Controlli Installazione",
             "SpeedFactor": "Fattore di velocità",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Inclinazione Z"
         },
         "ToolsPanel": {

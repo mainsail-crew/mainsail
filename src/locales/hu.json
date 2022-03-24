@@ -461,7 +461,6 @@
             "PowerControl": "Tápellátás vezérlés"
         },
         "StatusPanel": {
-            "Absolute": "abszolút",
             "CancelPrint": "Nyomtatás megszakítása",
             "ClearPrintStats": "Nyomt. statisztikák törlése",
             "Difference": "Különbség",
@@ -484,31 +483,26 @@
             "PausePrint": "Nyomtatás szüneteltetése",
             "Position": "Pozíció",
             "Print": "Nyomtatás",
-            "Relative": "relatív",
             "ReprintJob": "Munka újranyomtatása",
             "Requested": "Kért",
             "ResumePrint": "Nyomtatás folytatása",
             "Slicer": "Slicer",
             "Speed": "Sebesség",
             "Total": "Összesen",
-            "Unknown": "Ismeretlen",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ismeretlen"
         },
         "ToolheadControlPanel": {
+            "Absolute": "abszolút",
             "ALL": "MIND",
             "InvertX": "X invertálása",
             "InvertY": "Y invertálása",
             "InvertZ": "Z invertálása",
             "PleaseConfigureSteps": "Kérlek állítsd be a step értékét",
             "QGL": "QGL",
+            "Relative": "relatív",
             "SettingsInterfaceControl": "Beállítások > Kezelőfelület > Vezérlés",
             "SetupControls": "Beállítás vezérlései",
             "SpeedFactor": "Sebességállítás",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z dőlésszög"
         },
         "ToolsPanel": {

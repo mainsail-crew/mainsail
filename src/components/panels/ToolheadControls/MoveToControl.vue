@@ -149,7 +149,9 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
      * Axes positions and positioning mode (G90 / G91)
      */
     get displayPositionAbsolute() {
-        return this.positionAbsolute ? this.$t('Panels.StatusPanel.Absolute') : this.$t('Panels.StatusPanel.Relative')
+        return this.positionAbsolute
+            ? this.$t('Panels.ToolheadControlPanel.Absolute')
+            : this.$t('Panels.ToolheadControlPanel.Relative')
     }
 
     get positionAbsolute(): boolean {

@@ -480,7 +480,6 @@
             "PowerControl": "Power Control"
         },
         "StatusPanel": {
-            "Absolute": "absolute",
             "CancelPrint": "Cancel print",
             "ClearPrintStats": "Clear print stats",
             "Difference": "Difference",
@@ -503,19 +502,16 @@
             "PausePrint": "Pause print",
             "Position": "Position",
             "Print": "Print",
-            "Relative": "relative",
             "ReprintJob": "Reprint job",
             "Requested": "Requested",
             "ResumePrint": "Resume print",
             "Slicer": "Slicer",
             "Speed": "Speed",
             "Total": "Total",
-            "Unknown": "Unknown",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unknown"
         },
         "ToolheadControlPanel": {
+            "Absolute": "absolute",
             "ALL": "ALL",
             "Headline": "Toolhead",
             "InvertX": "Invert X",
@@ -524,12 +520,10 @@
             "MotorsOff": "Motors Off",
             "PleaseConfigureSteps": "Please configure steps",
             "QGL": "QGL",
+            "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SetupControls": "Setup Controls",
             "SpeedFactor": "Speed factor",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {

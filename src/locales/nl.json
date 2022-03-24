@@ -477,7 +477,6 @@
             "PowerControl": "Power Control"
         },
         "StatusPanel": {
-            "Absolute": "absoluut",
             "CancelPrint": "Annuleer print",
             "ClearPrintStats": "Wis print statistieken",
             "Difference": "Verschil",
@@ -500,19 +499,16 @@
             "PausePrint": "Pauzeer print",
             "Position": "Positie",
             "Print": "Print",
-            "Relative": "relatief",
             "ReprintJob": "Herprint job",
             "Requested": "Aangevraagd",
             "ResumePrint": "Hervat print",
             "Slicer": "Slicer",
             "Speed": "Snelheid",
             "Total": "Totaal",
-            "Unknown": "Onbekend",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Onbekend"
         },
         "ToolheadControlPanel": {
+            "Absolute": "absoluut",
             "ALL": "ALLES",
             "Controls": "Bediening",
             "Home": "Home",
@@ -523,12 +519,10 @@
             "Macros": "Macros",
             "PleaseConfigureSteps": "Configureer steps",
             "QGL": "QGL",
+            "Relative": "relatief",
             "SettingsInterfaceControl": "Instllingen > Interface > Bediening",
             "SetupControls": "Bewerk Bediening",
             "SpeedFactor": "Snelheid factor",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {

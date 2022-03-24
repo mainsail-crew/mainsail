@@ -462,7 +462,6 @@
             "PowerControl": "Strømstyring"
         },
         "StatusPanel": {
-            "Absolute": "Absolut",
             "CancelPrint": "Afbryd print",
             "ClearPrintStats": "Slet printstatistik",
             "Difference": "Opvarmning",
@@ -485,19 +484,16 @@
             "PausePrint": "Pause print",
             "Position": "Position",
             "Print": "Reel printtid",
-            "Relative": "Relativ",
             "ReprintJob": "Print job igen",
             "Requested": "Anmodet",
             "ResumePrint": "Genoptag print",
             "Slicer": "Slicer",
             "Speed": "Hastighed",
             "Total": "Total",
-            "Unknown": "Ukendt",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Ukendt"
         },
         "ToolheadControlPanel": {
+            "Absolute": "absolut",
             "ALL": "Alle",
             "Headline": "Kontrolpanel",
             "InvertX": "Invertér X",
@@ -505,12 +501,10 @@
             "InvertZ": "Invertér Z",
             "PleaseConfigureSteps": "Konfigurer steps",
             "QGL": "QGL",
+            "Relative": "relativ",
             "SettingsInterfaceControl": "Indstillinger > Interface > Control",
             "SetupControls": "Kontrolindstillinger",
             "SpeedFactor": "Hastighed",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {

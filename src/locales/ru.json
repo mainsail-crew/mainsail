@@ -477,7 +477,6 @@
             "PowerControl": "Переключатель питания"
         },
         "StatusPanel": {
-            "Absolute": "Абсолютно",
             "CancelPrint": "Отменить давление",
             "ClearPrintStats": "Удаление статистики печати",
             "Difference": "Разница",
@@ -500,19 +499,16 @@
             "PausePrint": "Давление прерывания",
             "Position": "Позиция",
             "Print": "Печать",
-            "Relative": "Инкрементальный",
             "ReprintJob": "Повторять давление",
             "Requested": "Запрошено",
             "ResumePrint": "Возобновить печать",
             "Slicer": "Slicer",
             "Speed": "Скорость",
             "Total": "Всего",
-            "Unknown": "Неизвестный",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Неизвестный"
         },
         "ToolheadControlPanel": {
+            "Absolute": "Абсолютно",
             "ALL": "ALL",
             "Controls": "Контроль",
             "Home": "Home",
@@ -522,12 +518,10 @@
             "Macros": "Макрос",
             "PleaseConfigureSteps": "Пожалуйста, настройте расстояние вращения",
             "QGL": "QGL",
+            "Relative": "Инкрементальный",
             "SettingsInterfaceControl": "Настройки > интерфейс > управление",
             "SetupControls": "Установить контроль",
             "SpeedFactor": "Коэффициент скорости",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {

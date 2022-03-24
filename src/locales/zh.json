@@ -461,7 +461,6 @@
             "PowerControl": "电源控制"
         },
         "StatusPanel": {
-            "Absolute": "绝对",
             "CancelPrint": "终止打印",
             "ClearPrintStats": "清除打印提醒",
             "Difference": "不同",
@@ -484,31 +483,26 @@
             "PausePrint": "暂停打印",
             "Position": "位置",
             "Print": "打印",
-            "Relative": "相对",
             "ReprintJob": "再次打印",
             "Requested": "已发送请求",
             "ResumePrint": "继续打印",
             "Slicer": "切片",
             "Speed": "速度",
             "Total": "总",
-            "Unknown": "未知",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "未知"
         },
         "ToolheadControlPanel": {
+            "Absolute": "绝对",
             "ALL": "所有",
             "InvertX": "翻转 X",
             "InvertY": "翻转 Y",
             "InvertZ": "翻转 Z",
             "PleaseConfigureSteps": "请设置步",
             "QGL": "四点调平",
+            "Relative": "相对",
             "SettingsInterfaceControl": "设置 > 界面 > 控制",
             "SetupControls": "设置",
             "SpeedFactor": "速度因子",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z 抬升"
         },
         "ToolsPanel": {

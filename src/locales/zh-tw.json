@@ -409,7 +409,6 @@
             "PowerControl": "電源管理"
         },
         "StatusPanel": {
-            "Absolute": "絕對",
             "CancelPrint": "取消列印",
             "ClearPrintStats": "清除列印統計數據",
             "Difference": "差異",
@@ -432,31 +431,26 @@
             "PausePrint": "暫停列印",
             "Position": "位置",
             "Print": "列印",
-            "Relative": "相對的",
             "ReprintJob": "繼續列印",
             "Requested": "請求",
             "ResumePrint": "繼續列印",
             "Slicer": "切片",
             "Speed": "速度",
             "Total": "總共: ",
-            "Unknown": "Unknown",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Unknown"
         },
         "ToolheadControlPanel": {
+            "Absolute": "絕對",
             "ALL": "所有",
             "InvertX": "翻轉 X",
             "InvertY": "翻轉 Y",
             "InvertZ": "翻轉 Z",
             "PleaseConfigureSteps": "請設定步進",
             "QGL": "QGL",
+            "Relative": "相對的",
             "SettingsInterfaceControl": "設定 > 界面 > 控制",
             "SetupControls": "設定控制",
             "SpeedFactor": "速度係數",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Z 傾斜"
         },
         "ToolsPanel": {

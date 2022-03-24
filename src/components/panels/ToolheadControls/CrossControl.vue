@@ -111,7 +111,7 @@
                                 @click="doHome">
                                 <div class="d-flex align-center">
                                     <v-icon>{{ mdiHome }}</v-icon>
-                                    <span class="ml-1">{{ $t('Panels.ToolheadControlPanel.ALL') }}</span>
+                                    <span>{{ $t('Panels.ToolheadControlPanel.ALL') }}</span>
                                 </div>
                             </v-btn>
                         </v-col>
@@ -164,7 +164,7 @@
                                 height="30"
                                 class="btnMinWidthAuto w-100"
                                 @click="doHomeX">
-                                {{ $t('Panels.ToolheadControlPanel.X') }}
+                                X
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
@@ -176,7 +176,7 @@
                                 height="30"
                                 class="btnMinWidthAuto w-100"
                                 @click="doHomeY">
-                                {{ $t('Panels.ToolheadControlPanel.Y') }}
+                                Y
                             </v-btn>
                         </v-col>
                         <v-col cols="4" class="flex-grow-1">
@@ -188,7 +188,7 @@
                                 height="30"
                                 class="btnMinWidthAuto w-100"
                                 @click="doHomeZ">
-                                {{ $t('Panels.ToolheadControlPanel.Z') }}
+                                Z
                             </v-btn>
                         </v-col>
                     </v-row>

@@ -461,7 +461,6 @@
             "PowerControl": "Kontrola zasilania"
         },
         "StatusPanel": {
-            "Absolute": "absolutna",
             "CancelPrint": "Anuluj wydruk",
             "ClearPrintStats": "Wyczyść statystyki drukarki",
             "Difference": "Różnica",
@@ -484,19 +483,16 @@
             "PausePrint": "Pauza wydruku",
             "Position": "Pozycja",
             "Print": "Drukuj",
-            "Relative": "względna",
             "ReprintJob": "Ponownie wydrukuj",
             "Requested": "Wymagane",
             "ResumePrint": "Wznowienie wydruku",
             "Slicer": "Slicer",
             "Speed": "Prędkość",
             "Total": "Całkowicie",
-            "Unknown": "Nieznany",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z"
+            "Unknown": "Nieznany"
         },
         "ToolheadControlPanel": {
+            "Absolute": "absolutna",
             "ALL": "WSZYSTKIE",
             "Headline": "Sterowanie drukarką",
             "InvertX": "Odwróć oś X",
@@ -504,12 +500,10 @@
             "InvertZ": "Odwróć oś Z",
             "PleaseConfigureSteps": "Proszę skonfigurować kroki",
             "QGL": "QGL",
+            "Relative": "względna",
             "SettingsInterfaceControl": "Ustawienia > Interfejs > Konfiguracja",
             "SetupControls": "Konfiguracja sterowania",
             "SpeedFactor": "Wartość prędkości",
-            "X": "X",
-            "Y": "Y",
-            "Z": "Z",
             "ZTilt": "Nachylenie osi Z"
         },
         "ToolsPanel": {
