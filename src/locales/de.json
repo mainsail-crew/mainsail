@@ -497,7 +497,6 @@
             "Max": "max",
             "ObjectHeight": "Objekthöhe",
             "PausePrint": "Druck pausieren",
-            "Position": "Position",
             "Print": "Druck",
             "ReprintJob": "Auftrag erneut drucken",
             "Requested": "Angefordert",
@@ -515,11 +514,15 @@
             "InvertY": "Y invertieren",
             "InvertZ": "Z invertieren",
             "PleaseConfigureSteps": "Bitte Schritte konfigurieren",
+            "Position": "Position",
             "QGL": "QGL",
             "Relative": "relativ",
             "SettingsInterfaceControl": "Einstellungen > Interface > Steuerung",
             "SetupControls": "Setup-Steuerelemente",
             "SpeedFactor": "Geschwindigkeitsfaktor",
+            "XOffset": "X-Versatz",
+            "YOffset": "Y-Versatz",
+            "ZOffset": "Z-Versatz",
             "ZTilt": "Z Tilt"
         },
         "ToolsPanel": {

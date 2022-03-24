@@ -2,7 +2,7 @@
     <v-container>
         <v-row v-show="parseFloat(homingOrigin.x) !== 0 && parseFloat(homingOrigin.y) !== 0" dense>
             <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
-                <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+                <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
             </v-col>
         </v-row>
         <v-form class="pt-1" @keyup.native.enter="sendCmd">
@@ -21,12 +21,12 @@
                     <div
                         v-show="parseFloat(homingOrigin.x) !== 0"
                         class="text-center text--disabled text-caption font-weight-light">
-                        X-Offset: {{ homingOrigin.x }}
+                        <span>{{ $t('Panels.ToolheadControlPanel.XOffset') }}: {{ homingOrigin.x }}</span>
                     </div>
                     <div
                         v-show="parseFloat(homingOrigin.x) === 0 && parseFloat(homingOrigin.y) === 0"
                         class="text-center text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
-                        <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+                        <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </div>
                 </v-col>
                 <v-col class="col-4">
@@ -43,7 +43,7 @@
                     <div
                         v-show="parseFloat(homingOrigin.y) !== 0"
                         class="text-center text--disabled text-caption font-weight-light">
-                        Y-Offset: {{ homingOrigin.y }}
+                        <span>{{ $t('Panels.ToolheadControlPanel.YOffset') }}: {{ homingOrigin.y }}</span>
                     </div>
                 </v-col>
                 <v-col class="col-4">
@@ -60,7 +60,7 @@
                     <div
                         v-show="parseFloat(homingOrigin.z) !== 0"
                         class="text-center text--disabled text-caption font-weight-light">
-                        Z-Offset: {{ homingOrigin.z }}
+                        <span>{{ $t('Panels.ToolheadControlPanel.ZOffset') }}: {{ homingOrigin.z }}</span>
                     </div>
                 </v-col>
             </v-row>
