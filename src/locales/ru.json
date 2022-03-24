@@ -514,9 +514,7 @@
         },
         "ToolheadControlPanel": {
             "ALL": "ALL",
-            "AlternateControls": "Альтернативный контроль",
             "Controls": "Контроль",
-            "Headline": "Управление",
             "Home": "Home",
             "InvertX": "X инвертировать",
             "InvertY": "Y инвертировать",

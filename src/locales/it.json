@@ -500,8 +500,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "TUTTI",
-            "AlternateControls": "Controlli Alternativi",
-            "Headline": "Controlli",
             "InvertX": "Inverti X",
             "InvertY": "Inverti Y",
             "InvertZ": "Inverti Z",

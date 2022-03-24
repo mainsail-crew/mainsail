@@ -501,8 +501,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "Tous",
-            "AlternateControls": "Commandes en croix",
-            "Headline": "Contrôles",
             "InvertX": "Inversion X",
             "InvertY": "Inversion Y",
             "InvertZ": "Inversion Z",

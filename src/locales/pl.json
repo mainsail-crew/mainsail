@@ -498,7 +498,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "WSZYSTKIE",
-            "AlternateControls": "Alternatywne sterowanie",
             "Headline": "Sterowanie drukarką",
             "InvertX": "Odwróć oś X",
             "InvertY": "Odwróć oś Y",

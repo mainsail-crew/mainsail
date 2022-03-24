@@ -517,8 +517,7 @@
         },
         "ToolheadControlPanel": {
             "ALL": "ALL",
-            "AlternateControls": "Alternate controls",
-            "Headline": "Toolhead Controls",
+            "Headline": "Toolhead",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",

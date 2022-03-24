@@ -498,8 +498,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "所有",
-            "AlternateControls": "翻转控制",
-            "Headline": "控制",
             "InvertX": "翻转 X",
             "InvertY": "翻转 Y",
             "InvertZ": "翻转 Z",

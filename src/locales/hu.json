@@ -498,8 +498,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "MIND",
-            "AlternateControls": "Vezérlési alternatívák",
-            "Headline": "Vezérlések",
             "InvertX": "X invertálása",
             "InvertY": "Y invertálása",
             "InvertZ": "Z invertálása",

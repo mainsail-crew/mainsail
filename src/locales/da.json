@@ -499,7 +499,6 @@
         },
         "ToolheadControlPanel": {
             "ALL": "Alle",
-            "AlternateControls": "Alternative kontroller",
             "Headline": "Kontrolpanel",
             "InvertX": "Invertér X",
             "InvertY": "Invertér Y",

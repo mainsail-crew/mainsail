@@ -514,8 +514,7 @@
         },
         "ToolheadControlPanel": {
             "ALL": "ALLE",
-            "AlternateControls": "Steuerkreuz",
-            "Headline": "Werkzeugkopf-Steuerung",
+            "Headline": "Werkzeugkopf",
             "InvertX": "X invertieren",
             "InvertY": "Y invertieren",
             "InvertZ": "Z invertieren",
