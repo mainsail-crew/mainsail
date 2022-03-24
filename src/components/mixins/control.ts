@@ -62,6 +62,11 @@ export default class ControlMixin extends Vue {
         this.$socket.emit('printer.gcode.script', { script: 'G28 Y' }, { loading: 'homeY' })
     }
 
+    doHomeXY() {
+        this.$store.dispatch('server/addEvent', { message: 'G28 X Y', type: 'command' })
+        this.$socket.emit('printer.gcode.script', { script: 'G28 X Y' }, { loading: 'homeXY' })
+    }
+
     doHomeZ() {
         this.$store.dispatch('server/addEvent', { message: 'G28 Z', type: 'command' })
         this.$socket.emit('printer.gcode.script', { script: 'G28 Z' }, { loading: 'homeZ' })

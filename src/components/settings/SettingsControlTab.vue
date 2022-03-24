@@ -31,6 +31,12 @@
                     <v-divider
                         v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1"
                         class="my-2"></v-divider>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.EnableXYHoming').toString()"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="enableXYHoming" hide-details class="mt-0"></v-switch>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
                         <settings-row
                             :title="$t('Settings.ControlTab.InvertXMovement').toString()"
@@ -332,6 +338,14 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set actionButton(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.actionButton', value: newVal })
+    }
+
+    get enableXYHoming(): boolean {
+        return this.$store.state.gui.control.enableXYHoming ?? false
+    }
+
+    set enableXYHoming(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.enableXYHoming', value: newVal })
     }
 
     get reverseX() {
