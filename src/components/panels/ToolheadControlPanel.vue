@@ -14,7 +14,11 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item></v-list-item>
+                    <v-list-item><v-btn small>Motors off</v-btn></v-list-item>
+                    <v-list-item><v-btn small>Z Tilt Adjust</v-btn></v-list-item>
+                    <v-list-item><v-btn small>Quad Gantry Level</v-btn></v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item><v-checkbox label="Enable XY homing" dense hide-details></v-checkbox></v-list-item>
                 </v-list>
             </v-menu>
         </template>

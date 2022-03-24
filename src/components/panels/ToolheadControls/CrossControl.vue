@@ -117,18 +117,7 @@
                         </v-col>
                         <v-col cols="6" class="d-flex">
                             <v-btn
-                                v-if="!existsQGL && !existsZtilt"
-                                :disabled="['printing'].includes(printer_state)"
-                                :color="homedAxes !== '' ? 'primary' : 'warning'"
-                                height="30"
-                                dense
-                                tile
-                                class="flex-grow-1 px-0"
-                                @click="doSend('M84')">
-                                <v-icon>{{ mdiEngineOff }}</v-icon>
-                            </v-btn>
-                            <v-btn
-                                v-if="existsQGL"
+                                v-if="existsQGL && actionButton === 'qgl'"
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('qgl')"
                                 :color="colorQuadGantryLevel"
@@ -140,7 +129,7 @@
                                 {{ $t('Panels.ToolheadControlPanel.QGL') }}
                             </v-btn>
                             <v-btn
-                                v-if="existsZtilt"
+                                v-else-if="existsZtilt && actionButton === 'ztilt'"
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('zTilt')"
                                 :color="colorZTilt"
@@ -150,6 +139,17 @@
                                 class="btnMinWidthAuto flex-grow-1 px-0"
                                 @click="doZtilt">
                                 {{ $t('Panels.ToolheadControlPanel.ZTilt') }}
+                            </v-btn>
+                            <v-btn
+                                v-else
+                                :disabled="['printing'].includes(printer_state)"
+                                :color="homedAxes !== '' ? 'primary' : 'warning'"
+                                height="30"
+                                dense
+                                tile
+                                class="flex-grow-1 px-0"
+                                @click="doSend('M84')">
+                                <v-icon>{{ mdiEngineOff }}</v-icon>
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -243,6 +243,14 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
     mdiHome = mdiHome
 
     private stepSize = this.stepsReversed[this.selectedCrossStep]
+
+    created() {
+        console.log(this.$store.state.gui.control.actionButton)
+    }
+
+    get actionButton(): string {
+        return this.$store.state.gui.control.actionButton
+    }
 
     /**
      * Step size selection

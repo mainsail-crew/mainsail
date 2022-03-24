@@ -17,6 +17,20 @@
                             attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
+                    <settings-row
+                        v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1"
+                        :title="'Overwrite action button'">
+                        <v-select
+                            v-model="actionButton"
+                            :items="actionOptions"
+                            outlined
+                            dense
+                            hide-details
+                            attach></v-select>
+                    </settings-row>
+                    <v-divider
+                        v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1"
+                        class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
                         <settings-row
                             :title="$t('Settings.ControlTab.InvertXMovement').toString()"
@@ -240,11 +254,13 @@
 <script lang="ts">
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
+
 @Component({
     components: { SettingsRow },
 })
-export default class SettingsControlTab extends Mixins(BaseMixin) {
+export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) {
     declare $refs: {
         formControlExtruder: HTMLFormElement
     }
@@ -271,7 +287,44 @@ export default class SettingsControlTab extends Mixins(BaseMixin) {
     }
 
     set controlStyle(newVal) {
+        if (newVal === 'circle' || newVal === 'cross') {
+            this.actionButton = 'm84'
+            if (this.existsZtilt) this.actionButton = 'qgl'
+            if (this.existsQGL) this.actionButton = 'qgl'
+        }
+
         this.$store.dispatch('gui/saveSetting', { name: 'control.style', value: newVal })
+    }
+
+    get actionOptions() {
+        let actions = [
+            {
+                text: this.$t('Panels.ToolheadControlPanel.MotorsOff'),
+                value: 'm84',
+            },
+        ]
+        if (this.existsQGL) {
+            actions.push({
+                text: this.$t('Panels.ToolheadControlPanel.QGL'),
+                value: 'qgl',
+            })
+        }
+        if (this.existsZtilt) {
+            actions.push({
+                text: this.$t('Panels.ToolheadControlPanel.ZTilt'),
+                value: 'ztilt',
+            })
+        }
+        return actions
+    }
+
+    get actionButton() {
+        return this.$store.state.gui.control.actionButton
+    }
+
+    set actionButton(newVal) {
+        console.log('dispatch: ' + newVal)
+        this.$store.dispatch('gui/saveSetting', { name: 'control.actionButton', value: newVal })
     }
 
     get reverseX() {

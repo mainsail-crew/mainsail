@@ -521,6 +521,7 @@
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
             "InvertZ": "Invert Z",
+            "MotorsOff": "Motors Off",
             "PleaseConfigureSteps": "Please configure steps",
             "QGL": "QGL",
             "SettingsInterfaceControl": "Settings > Interface > Control",
