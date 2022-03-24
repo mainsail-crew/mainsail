@@ -14,11 +14,18 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item><v-btn small>Motors off</v-btn></v-list-item>
-                    <v-list-item><v-btn small>Z Tilt Adjust</v-btn></v-list-item>
-                    <v-list-item><v-btn small>Quad Gantry Level</v-btn></v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item><v-checkbox label="Enable XY homing" dense hide-details></v-checkbox></v-list-item>
+                    <v-list-item v-if="actionButton !== 'm84'">
+                        <v-btn small>
+                            <v-icon left small>{{ mdiEngineOff }}</v-icon>
+                            Motors off
+                        </v-btn>
+                    </v-list-item>
+                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt'">
+                        <v-btn small>Z Tilt Adjust</v-btn>
+                    </v-list-item>
+                    <v-list-item v-if="existsQGL && actionButton !== 'qgl'">
+                        <v-btn small>Quad Gantry Level</v-btn>
+                    </v-list-item>
                 </v-list>
             </v-menu>
         </template>
@@ -49,11 +56,12 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BarsControl from '@/components/panels/ToolheadControls/BarsControl.vue'
 import BaseMixin from '../mixins/base'
 import CircleControl from '@/components/panels/ToolheadControls/CircleControl.vue'
+import ControlMixin from '@/components/mixins/control'
 import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
-import { mdiDotsVertical, mdiGamepad, mdiSpeedometer } from '@mdi/js'
+import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer } from '@mdi/js'
 
 @Component({
     components: {
@@ -65,16 +73,21 @@ import { mdiDotsVertical, mdiGamepad, mdiSpeedometer } from '@mdi/js'
         ToolSlider,
     },
 })
-export default class ToolheadControlPanel extends Mixins(BaseMixin) {
+export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
     mdiDotsVertical = mdiDotsVertical
+    mdiEngineOff = mdiEngineOff
     mdiGamepad = mdiGamepad
     mdiSpeedometer = mdiSpeedometer
 
-    get controlStyle() {
+    get controlStyle(): string {
         return this.$store.state.gui.control.style ?? 'bars'
     }
 
-    get speedFactor() {
+    get actionButton(): string {
+        return this.$store.state.gui.control.actionButton
+    }
+
+    get speedFactor(): number {
         return this.$store.state.printer?.gcode_move?.speed_factor ?? 1
     }
 }

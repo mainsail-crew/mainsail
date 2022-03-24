@@ -155,7 +155,7 @@
                     </v-row>
                     <!-- X/Y/Z HOME BUTTONS -->
                     <v-row dense>
-                        <v-col cols="4" class="flex-grow-1">
+                        <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
                             <v-btn
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeX')"
@@ -167,7 +167,7 @@
                                 X
                             </v-btn>
                         </v-col>
-                        <v-col cols="4" class="flex-grow-1">
+                        <v-col v-if="!enableXYHoming" cols="4" class="flex-grow-1">
                             <v-btn
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeY')"
@@ -179,7 +179,19 @@
                                 Y
                             </v-btn>
                         </v-col>
-                        <v-col cols="4" class="flex-grow-1">
+                        <v-col v-else cols="6" class="flex-grow-1">
+                            <v-btn
+                                :disabled="['printing'].includes(printer_state)"
+                                :loading="loadings.includes('homeY')"
+                                :color="homedAxes.includes('xy') ? 'primary' : 'warning'"
+                                tile
+                                height="30"
+                                class="btnMinWidthAuto w-100"
+                                @click="doHomeXY">
+                                XY
+                            </v-btn>
+                        </v-col>
+                        <v-col :class="enableXYHoming ? 'col-6' : 'col-4'" class="flex-grow-1">
                             <v-btn
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('homeZ')"
@@ -246,6 +258,10 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     get actionButton(): string {
         return this.$store.state.gui.control.actionButton
+    }
+
+    get enableXYHoming(): boolean {
+        return this.$store.state.gui.control.enableXYHoming
     }
 
     /**
