@@ -1,13 +1,13 @@
 <template>
     <v-container>
-        <v-form @keyup.native.enter="sendCmd">
-            <v-row v-show="parseFloat(homingOrigin.x) !== 0 && parseFloat(homingOrigin.y) !== 0" dense>
-                <v-col cols="12" class="pt-0 text-center text--disabled text-caption font-weight-light">
-                    <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
-                </v-col>
-            </v-row>
+        <v-row v-show="parseFloat(homingOrigin.x) !== 0 && parseFloat(homingOrigin.y) !== 0" dense>
+            <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
+                <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
+            </v-col>
+        </v-row>
+        <v-form class="pt-1" @keyup.native.enter="sendCmd">
             <v-row dense>
-                <v-col>
+                <v-col class="col-4">
                     <move-to-input
                         v-model="input.x.pos"
                         :label="livePositions.x"
@@ -25,11 +25,11 @@
                     </div>
                     <div
                         v-show="parseFloat(homingOrigin.x) === 0 && parseFloat(homingOrigin.y) === 0"
-                        class="text-center text--disabled text-caption font-weight-light">
+                        class="text-center text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
                         <span>{{ $t('Panels.StatusPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </div>
                 </v-col>
-                <v-col>
+                <v-col class="col-4">
                     <move-to-input
                         v-model="input.y.pos"
                         :label="livePositions.y"
@@ -46,7 +46,7 @@
                         Y-Offset: {{ homingOrigin.y }}
                     </div>
                 </v-col>
-                <v-col>
+                <v-col class="col-4">
                     <move-to-input
                         v-model="input.z.pos"
                         :label="livePositions.z"
