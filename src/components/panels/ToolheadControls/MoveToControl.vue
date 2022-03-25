@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-row v-show="parseFloat(homingOrigin.x) !== 0 && parseFloat(homingOrigin.y) !== 0" dense>
+        <v-row v-if="parseFloat(homingOrigin.x) !== 0 || parseFloat(homingOrigin.y) !== 0" dense>
             <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
                 <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
             </v-col>
@@ -19,13 +19,13 @@
                         :disabled="!xAxisHomed"
                         @validate="validate"></move-to-input>
                     <div
-                        v-show="parseFloat(homingOrigin.x) !== 0"
-                        class="text-center text--disabled text-caption font-weight-light">
+                        v-if="parseFloat(homingOrigin.x) !== 0"
+                        class="pl-3 text--disabled text-caption font-weight-light">
                         <span>{{ $t('Panels.ToolheadControlPanel.XOffset') }}: {{ homingOrigin.x }}</span>
                     </div>
                     <div
-                        v-show="parseFloat(homingOrigin.x) === 0 && parseFloat(homingOrigin.y) === 0"
-                        class="text-center text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
+                        v-else
+                        class="pl-3 text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
                         <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </div>
                 </v-col>
@@ -42,7 +42,7 @@
                         @validate="validate"></move-to-input>
                     <div
                         v-show="parseFloat(homingOrigin.y) !== 0"
-                        class="text-center text--disabled text-caption font-weight-light">
+                        class="pl-3 text--disabled text-caption font-weight-light">
                         <span>{{ $t('Panels.ToolheadControlPanel.YOffset') }}: {{ homingOrigin.y }}</span>
                     </div>
                 </v-col>
@@ -59,7 +59,7 @@
                         @validate="validate"></move-to-input>
                     <div
                         v-show="parseFloat(homingOrigin.z) !== 0"
-                        class="text-center text--disabled text-caption font-weight-light">
+                        class="pl-3 text--disabled text-caption font-weight-light">
                         <span>{{ $t('Panels.ToolheadControlPanel.ZOffset') }}: {{ homingOrigin.z }}</span>
                     </div>
                 </v-col>
