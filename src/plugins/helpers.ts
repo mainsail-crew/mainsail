@@ -13,6 +13,25 @@ import {
     mdiThermometerLines,
     mdiWebcam,
 } from '@mdi/js'
+import Vue from 'vue'
+
+export const setDataDeep = (currentState: any, payload: any) => {
+    if (payload !== null && typeof payload === 'object') {
+        Object.keys(payload).forEach((key: string) => {
+            const value = payload[key]
+
+            if (
+                typeof value === 'object' &&
+                !Array.isArray(value) &&
+                key in currentState &&
+                value !== null &&
+                currentState[key] !== null
+            ) {
+                setDataDeep(currentState[key], value)
+            } else Vue.set(currentState, key, value)
+        })
+    }
+}
 
 export const findDirectory = (folder: FileStateFile[], dirArray: string[]): FileStateFile[] | null => {
     if (folder !== undefined && folder !== null && dirArray.length) {

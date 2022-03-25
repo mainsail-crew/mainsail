@@ -756,4 +756,16 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         return 0
     },
+
+    existsQGL: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'quad_gantry_level' in state.configfile.settings
+    },
+
+    existsZtilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'z_tilt' in state.configfile.settings
+    },
 }

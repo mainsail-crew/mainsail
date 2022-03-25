@@ -236,6 +236,9 @@
                 </div>
             </v-col>
         </v-row>
+        <v-row>
+            <v-col>{{ actionButton }}</v-col>
+        </v-row>
     </div>
 </template>
 
@@ -256,12 +259,10 @@ export default class CrossControl extends Mixins(BaseMixin, ControlMixin) {
 
     private stepSize = this.stepsReversed[this.selectedCrossStep]
 
-    get actionButton(): string {
-        return this.$store.state.gui.control.actionButton
-    }
+    get actionButton(): string | null {
+        const value = this.$store.state.gui.control.actionButton
 
-    get enableXYHoming(): boolean {
-        return this.$store.state.gui.control.enableXYHoming
+        return value ?? this.defaultActionButton
     }
 
     /**

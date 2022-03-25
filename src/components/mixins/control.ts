@@ -11,6 +11,10 @@ export default class ControlMixin extends Vue {
         return this.$store.state.printer?.toolhead?.homed_axes ?? ''
     }
 
+    get enableXYHoming(): boolean {
+        return this.$store.state.gui.control.enableXYHoming
+    }
+
     get feedrateXY() {
         return this.$store.state.gui.control?.feedrateXY ?? 100
     }
@@ -20,19 +24,11 @@ export default class ControlMixin extends Vue {
     }
 
     get existsQGL() {
-        if (!this.$store.state.printer.configfile?.settings) {
-            return false
-        }
-
-        return 'quad_gantry_level' in this.$store.state.printer.configfile.settings
+        return this.$store.getters['printer/existsQGL']
     }
 
     get existsZtilt() {
-        if (!this.$store.state.printer.configfile?.settings) {
-            return false
-        }
-
-        return 'z_tilt' in this.$store.state.printer.configfile.settings
+        return this.$store.getters['printer/existsZtilt']
     }
 
     get colorQuadGantryLevel() {
@@ -45,6 +41,10 @@ export default class ControlMixin extends Vue {
         const status = this.$store.state.printer.z_tilt?.applied ?? true
 
         return status ? 'primary' : 'warning'
+    }
+
+    get defaultActionButton() {
+        return this.$store.getters['gui/getDefaultControlActionButton']
     }
 
     doHome() {

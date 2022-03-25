@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
 import { FarmPrinterState } from '@/store/farm/printer/types'
+import { setDataDeep } from '@/plugins/helpers'
 
 export const mutations: MutationTree<FarmPrinterState> = {
     reset(state) {
@@ -82,17 +83,6 @@ export const mutations: MutationTree<FarmPrinterState> = {
     },
 
     setMainsailData(state, payload) {
-        // eslint-disable-next-line
-        const setDataDeep = (currentState: any, payload: any) => {
-            Object.entries(payload).forEach(([key, value]) => {
-                if (typeof value === 'object' && !Array.isArray(value) && key in currentState) {
-                    setDataDeep(currentState[key], value)
-                } else if (key in currentState) {
-                    Vue.set(currentState, key, value)
-                }
-            })
-        }
-
         setDataDeep(state.data.gui, payload)
     },
 

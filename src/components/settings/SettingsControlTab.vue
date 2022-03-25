@@ -313,6 +313,10 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
     get actionOptions() {
         let actions = [
             {
+                text: this.$t('Panels.ToolheadControlPanel.Default', { name: this.defaultActionButtonText }),
+                value: null,
+            },
+            {
                 text: this.$t('Panels.ToolheadControlPanel.MotorsOff'),
                 value: 'm84',
             },
@@ -338,6 +342,23 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set actionButton(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.actionButton', value: newVal })
+    }
+
+    get defaultActionButton() {
+        return this.$store.getters['printer/getDefaultControlActionButton']
+    }
+
+    get defaultActionButtonText() {
+        switch (this.defaultActionButton) {
+            case 'qgl':
+                return this.$t('Panels.ToolheadControlPanel.QGL')
+
+            case 'ztilt':
+                return this.$t('Panels.ToolheadControlPanel.ZTilt')
+
+            default:
+                return this.$t('Panels.ToolheadControlPanel.MotorsOff')
+        }
     }
 
     get enableXYHoming(): boolean {

@@ -512,6 +512,7 @@
         "ToolheadControlPanel": {
             "Absolute": "absolute",
             "ALL": "ALL",
+            "Default": "Default ({name})",
             "Headline": "Toolhead",
             "InvertX": "Invert X",
             "InvertY": "Invert Y",
