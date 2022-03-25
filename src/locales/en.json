@@ -524,11 +524,11 @@
             "Relative": "relative",
             "SettingsInterfaceControl": "Settings > Interface > Control",
             "SetupControls": "Setup Controls",
+            "SpeedFactor": "Speed factor",
             "XOffset": "X-Offset",
             "YOffset": "Y-Offset",
             "ZOffset": "Z-Offset",
-            "SpeedFactor": "Speed factor",
-            "ZTilt": "Z Tilt"
+            "ZTilt": "Z-Tilt"
         },
         "ToolsPanel": {
             "AutoscaleChart": "Autoscale Chart",
@@ -565,14 +565,15 @@
             "UrlNotAvailable": "URL not available"
         },
         "ZoffsetPanel": {
+            "Clear": "Clear",
             "CurrentOffset": "current offset",
             "Headline": "Z-Offset",
             "Later": "Later",
             "Ok": "OK",
             "Save": "Save",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "The new z-offset has been calculated and registered. Click on SAVE_CONFIG to store the new z-offset in your printer.cfg and restart Klipper.",
-            "SaveInfoDescriptionPrint": "The new Z offset has been calculated and registered. After printing, click on SAVE_CONFIG in the top bar to store it in printer.cfg and restart Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "The new Z-Offset has been calculated and registered. Click on \"SAVE CONFIG\" to save it to the printer.cfg and restart Klipper.",
+            "SaveInfoDescriptionPrint": "The new Z-Offset has been calculated and registered. After printing, click on \"SAVE CONFIG\" in the top bar to save it to the printer.cfg and restart Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "to Endstop",
             "ToProbe": "to Probe"
@@ -643,6 +644,8 @@
             "Circle": "Circle",
             "Control": "Control",
             "Cross": "Cross",
+            "DisplayZOffset": "Always display Z-Offset-Controls",
+            "DisplayZOffsetDescription": "If disabled, the controls will appear only if a print has started.",
             "EnableXYHoming": "Enable XY homing",
             "EstimatedExtrusionInfo": "Estimated Extrusion Info",
             "EstimatedExtrusionInfoDescription": "Show / Hide info for estimated extrusions based on extrusion amount and feedrate",
@@ -660,7 +663,8 @@
             "SpeedXY": "Speed XY",
             "SpeedZ": "Speed Z",
             "Style": "Style",
-            "ValueGreaterThan": "Value has to be greater than {value}"
+            "ValueGreaterThan": "Value has to be greater than {value}",
+            "ZOffsetIncrements": "Z-Offset increments"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
@@ -852,8 +856,6 @@
             "ConfirmOnPowerDeviceChangeDescription": "Show a confirmation dialog on Device Power changes",
             "DisplayCANCEL_PRINT": "Display CANCEL_PRINT",
             "DisplayCANCEL_PRINTDescription": "Shows the CANCEL_PRINT button permanently - no second layer confirmation needed.",
-            "DisplayZOffset": "Show Z-Offset-Panel",
-            "DisplayZOffsetDescription": "Otherwise, the panel will appear only after a print has started.",
             "GcodeThumbnails": "G-Code thumbnails",
             "GcodeThumbnailsDescription": "Click on the button to get to the instructions.",
             "Guide": "Guide",

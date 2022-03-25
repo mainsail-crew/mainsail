@@ -566,19 +566,15 @@
             "UrlNotAvailable": "URL недоступен",
             "Webcam": "Веб-камера"
         },
-        "ZOffsetPanel": {
-            "CurrentOffset": "Смещение тока: ",
-            "ZBabyStepping": "Z Смещение"
-        },
         "ZoffsetPanel": {
             "CurrentOffset": "Текущее смещение",
             "Headline": "Z-смещение",
             "Later": "Позже",
             "Ok": "OK",
             "Save": "Сохранить",
-            "SAVE_CONFIG": "СОХРАНИТЬ_КОНФИГ",
-            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите SAVE_CONFIG, чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
-            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на SAVE_CONFIG в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Новое z-смещение было рассчитано и зарегистрировано. Нажмите \"SAVE CONFIG\", чтобы сохранить новое z-смещение в файле printer.cfg, и перезапустите Klipper.",
+            "SaveInfoDescriptionPrint": "Новое смещение по Z было рассчитано и зарегистрировано. После печати нажмите на \"SAVE CONFIG\" в верхней панели, чтобы сохранить его в файле printer.cfg, и перезапустите Klipper.",
             "SaveInfoHeadline": "Информация",
             "ToEndstop": "до конечной остановки",
             "ToProbe": "к зонду"

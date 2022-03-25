@@ -541,16 +541,15 @@
             "UnknownWebcamService": "Servizio Webcam Sconosciuto",
             "UrlNotAvailable": "URL non disponibile"
         },
-        "ZOffsetPanel": {},
         "ZoffsetPanel": {
             "CurrentOffset": "offset corrente",
             "Headline": "Z-Offset",
             "Later": "Dopo",
             "Ok": "OK",
             "Save": "Salva",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su SAVE_CONFIG per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
-            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su SAVE_CONFIG nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Il nuovo z-offset è stato calcolato e registrato. Fai clic su \"SAVE CONFIG\" per memorizzare il nuovo z-offset nel tuo printer.cfg e riavviare Klipper.",
+            "SaveInfoDescriptionPrint": "Il nuovo Z offset è stato calcolato e registrato. Dopo la stampa, fai clic su \"SAVE CONFIG\" nella barra in alto per salvarlo in printer.cfg e riavviare Klipper.",
             "SaveInfoHeadline": "Informazione",
             "ToEndstop": "all'Endstop",
             "ToProbe": "alla Sonda"

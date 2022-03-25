@@ -25,9 +25,11 @@ export const getDefaultState = (): GuiState => {
             style: 'bars',
             actionButton: null,
             enableXYHoming: false,
+            displayZOffsetStandby: false,
             feedrateXY: 100,
             stepsXY: [100, 10, 1],
             feedrateZ: 25,
+            offsetsZ: [0.005, 0.01, 0.025, 0.05],
             stepsZ: [25, 1, 0.1],
             stepsAll: [0.1, 1, 10, 25, 50, 100],
             stepsCircleXY: [1, 10, 50, 100],
@@ -53,7 +55,6 @@ export const getDefaultState = (): GuiState => {
             },
             mobileLayout: [
                 { name: 'webcam', visible: false },
-                { name: 'zoffset', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -64,7 +65,6 @@ export const getDefaultState = (): GuiState => {
             ],
             tabletLayout1: [
                 { name: 'webcam', visible: true },
-                { name: 'zoffset', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -77,7 +77,6 @@ export const getDefaultState = (): GuiState => {
             ],
             desktopLayout1: [
                 { name: 'webcam', visible: true },
-                { name: 'zoffset', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -89,7 +88,6 @@ export const getDefaultState = (): GuiState => {
                 { name: 'miniconsole', visible: true },
             ],
             widescreenLayout1: [
-                { name: 'zoffset', visible: true },
                 { name: 'toolhead-control', visible: true },
                 { name: 'extruder-control', visible: true },
                 { name: 'macros', visible: true },
@@ -136,7 +134,6 @@ export const getDefaultState = (): GuiState => {
             logo: defaultLogoColor,
             primary: defaultPrimaryColor,
             displayCancelPrint: false,
-            displayZOffsetStandby: false,
             lockSlidersOnTouchDevices: true,
             lockSlidersDelay: 1.5,
             confirmOnEmergencyStop: false,

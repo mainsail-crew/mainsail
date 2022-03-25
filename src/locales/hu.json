@@ -545,9 +545,9 @@
             "Later": "Később",
             "Ok": "OK",
             "Save": "Mentés",
-            "SAVE_CONFIG": "BÁLLÍTÁS MENTÉSE",
-            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a BÁLLÍTÁS MENTÉSE gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
-            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a BÁLLÍTÁS MENTÉSE-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
+            "SaveConfig": "BÁLLÍTÁS MENTÉSE",
+            "SaveInfoDescription": "Új Z-eltolás kiszámítva és regisztrálva. Kattints a \"BÁLLÍTÁS MENTÉSE\" gombra az új Z-eltolás eltárolásához a printer.cfg-be és indítsd újra a Klippert.",
+            "SaveInfoDescriptionPrint": "Új Z-eltolás kiszámítva és regisztrálva. Nyomtatás után kattints a \"BÁLLÍTÁS MENTÉSE\"-re a felső sávban, a printer.cfg-be eltárolásához  és a Klipper újraindításához.",
             "SaveInfoHeadline": "Információ",
             "ToEndstop": "a végállásig",
             "ToProbe": "szondáig"

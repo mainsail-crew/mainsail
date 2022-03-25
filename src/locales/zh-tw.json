@@ -491,7 +491,7 @@
             "Later": "最後的",
             "Ok": "好",
             "Save": "儲存",
-            "SAVE_CONFIG": "儲存配置",
+            "SaveConfig": "儲存配置",
             "SaveInfoDescription": "已經計算生成新的Z偏移. 點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoDescriptionPrint": "已經計算生成新的Z偏移. 列印後點擊 儲存配置 儲存到 printer.cfg 中並重啟 Klipper.",
             "SaveInfoHeadline": "資訊",

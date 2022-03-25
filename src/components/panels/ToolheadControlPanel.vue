@@ -7,33 +7,38 @@
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
         <template #buttons>
-            <v-menu left :offset-y="true" :close-on-content-click="false" class="pa-0">
+            <v-menu left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
                         <v-icon>{{ mdiDotsVertical }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item v-if="actionButton !== 'm84'">
+                    <v-list-item v-if="actionButton !== 'm84' && actionButton !== null">
                         <v-btn small>
                             <v-icon left small>{{ mdiEngineOff }}</v-icon>
-                            Motors off
+                            {{ $t('Panels.ToolheadControlPanel.MotorsOff') }}
                         </v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt'">
-                        <v-btn small>Z Tilt Adjust</v-btn>
+                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt' && actionButton !== null">
+                        <v-btn small>{{ $t('Panels.ToolheadControlPanel.ZTilt') }}</v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsQGL && actionButton !== 'qgl'">
-                        <v-btn small>Quad Gantry Level</v-btn>
+                    <v-list-item v-if="existsQGL && actionButton !== 'qgl' && actionButton !== null">
+                        <v-btn small>{{ $t('Panels.ToolheadControlPanel.QGL') }}</v-btn>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </template>
+        <!-- MOVE TO CONTROL -->
         <move-to-control class="py-0 pt-3"></move-to-control>
         <!-- AXIS CONTROL -->
         <v-container>
             <component :is="`${controlStyle}-control`"></component>
         </v-container>
+        <!-- Z-OFFSET CONTROL -->
+        <v-divider v-if="displayZOffsetStandby || ['printing', 'paused'].includes(printer_state)"></v-divider>
+        <zoffset-control
+            v-if="displayZOffsetStandby || ['printing', 'paused'].includes(printer_state)"></zoffset-control>
         <!-- SPEED FACTOR STYLE -->
         <v-divider></v-divider>
         <tool-slider
@@ -61,6 +66,7 @@ import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
+import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer } from '@mdi/js'
 
 @Component({
@@ -71,6 +77,7 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer } from '@mdi/
         MoveToControl,
         Panel,
         ToolSlider,
+        ZoffsetControl,
     },
 })
 export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin) {
@@ -84,7 +91,12 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get actionButton(): string {
+        console.log(this.$store.state.gui.control.actionButton)
         return this.$store.state.gui.control.actionButton
+    }
+
+    get displayZOffsetStandby() {
+        return this.$store.state.gui.control.displayZOffsetStandby
     }
 
     get speedFactor(): number {

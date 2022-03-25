@@ -77,13 +77,6 @@
                 </settings-row>
                 <v-divider class="my-2"></v-divider>
                 <settings-row
-                    :title="$t('Settings.UiSettingsTab.DisplayZOffset').toString()"
-                    :sub-title="$t('Settings.UiSettingsTab.DisplayZOffsetDescription').toString()"
-                    :dynamic-slot-width="true">
-                    <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
-                </settings-row>
-                <v-divider class="my-2"></v-divider>
-                <settings-row
                     :title="$t('Settings.UiSettingsTab.LockSliders').toString()"
                     :sub-title="$t('Settings.UiSettingsTab.LockSlidersDescription').toString()"
                     :dynamic-slot-width="true">
@@ -209,14 +202,6 @@ export default class SettingsUiSettingsTab extends Mixins(BaseMixin) {
 
     set displayCancelPrint(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayCancelPrint', value: newVal })
-    }
-
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.uiSettings.displayZOffsetStandby
-    }
-
-    set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'uiSettings.displayZOffsetStandby', value: newVal })
     }
 
     get confirmOnEmergencyStop() {

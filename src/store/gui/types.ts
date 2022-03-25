@@ -16,9 +16,11 @@ export interface GuiState {
         style: 'bars' | 'circle' | 'cross'
         actionButton: null | 'm84' | 'qgl' | 'ztilt'
         enableXYHoming: boolean
+        displayZOffsetStandby: boolean
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number
+        offsetsZ: number[]
         stepsZ: number[]
         stepsAll: number[]
         stepsCircleXY: number[]
@@ -83,7 +85,6 @@ export interface GuiState {
         logo: string
         primary: string
         displayCancelPrint: boolean
-        displayZOffsetStandby: boolean
         lockSlidersOnTouchDevices: boolean
         lockSlidersDelay: number
         confirmOnEmergencyStop: boolean

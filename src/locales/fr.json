@@ -548,9 +548,9 @@
             "Later": "Plus tard",
             "Ok": "Ok",
             "Save": "Sauvegarder",
-            "SAVE_CONFIG": "SAVE_CONFIG",
-            "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur SAVE_CONFIG afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
-            "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur SAVE_CONFIG dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+            "SaveConfig": "SAVE CONFIG",
+            "SaveInfoDescription": "Le nouvel offset Z a été calculé et enregistré. Cliquez sur \"SAVE CONFIG\" afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
+            "SaveInfoDescriptionPrint": "Le nouvel offset Z a été calculé et enregistré. Après l'impression cliquez sur \"SAVE CONFIG\" dans la barre du haut afin de sauvegarder les valeurs dans \"printer.cfg\" et redémarrez Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "jusqu'au fin de course",
             "ToProbe": "jusqu'à la sonde"

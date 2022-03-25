@@ -77,7 +77,6 @@ export const allDashboardPanels = [
     'miscellaneous',
     'tools',
     'webcam',
-    'zoffset',
 ]
 
 export const thumbnailSmallMin = 32

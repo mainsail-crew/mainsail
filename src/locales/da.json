@@ -547,9 +547,9 @@
             "Later": "Senere",
             "Ok": "OK",
             "Save": "Gem",
-            "SAVE_CONFIG": "GEM KONFIGURATION",
-            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
-            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på GEM KONFIGURATION i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveConfig": "GEM KONFIGURATION",
+            "SaveInfoDescription": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
+            "SaveInfoDescriptionPrint": "Det nye z-offset er blevet beregnet og registreret. Klik på \"GEM KONFIGURATION\" i topbaren efter endt print for at gemme det nye z-offset i CONFIG og genstarte Klipper.",
             "SaveInfoHeadline": "Information",
             "ToEndstop": "Til Endstop",
             "ToProbe": "Til Probe"

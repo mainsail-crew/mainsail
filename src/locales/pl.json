@@ -546,9 +546,9 @@
             "Later": "Później",
             "Ok": "Okej",
             "Save": "Zapisz",
-            "SAVE_CONFIG": "ZAPISZ_KONFIGURACJĘ",
-            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na ZAPISZ_KONFIGURACJĘ aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
-            "SaveInfoDescriptionPrint": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Po wydrukowaniu , kliknij na ZAPISZ_KONFIGURACJĘ aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveConfig": "ZAPISZ KONFIGURACJĘ",
+            "SaveInfoDescription": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
+            "SaveInfoDescriptionPrint": "Nowe przesunięcie osi z zostało przeliczone i zarejestrowane. Po wydrukowaniu , kliknij na \"ZAPISZ KONFIGURACJĘ\" aby zapisać nowe przesunięcie w drukarka.cfg i uruchom ponownie Klippera.",
             "SaveInfoHeadline": "Informacja",
             "ToEndstop": "Do krańcówki",
             "ToProbe": "Do sondy"

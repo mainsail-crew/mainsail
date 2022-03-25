@@ -37,6 +37,13 @@
                         <v-switch v-model="enableXYHoming" hide-details class="mt-0"></v-switch>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.DisplayZOffset').toString()"
+                        :sub-title="$t('Settings.ControlTab.DisplayZOffsetDescription').toString()"
+                        :dynamic-slot-width="true">
+                        <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
                         <settings-row
                             :title="$t('Settings.ControlTab.InvertXMovement').toString()"
@@ -200,6 +207,29 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
+                    <settings-row
+                        :title="$t('Settings.ControlTab.ZOffsetIncrements').toString()"
+                        :mobile-second-row="true">
+                        <v-combobox
+                            v-model="offsetsZ"
+                            hide-selected
+                            hide-details="auto"
+                            multiple
+                            small-chips
+                            :deletable-chips="true"
+                            append-icon=""
+                            type="number"
+                            :rules="[
+                                (v) => v.length > 0 || $t('Settings.ControlTab.MinimumValues', { minimum: '1' }),
+                                (v) =>
+                                    v.length <= 4 ||
+                                    $t('Settings.ControlTab.MaximumValuesVisibility', { maximum: '4' }),
+                            ]"
+                            dense
+                            outlined
+                            hide-spin-buttons />
+                    </settings-row>
+                    <v-divider class="my-2"></v-divider>
                     <!-- EXTRUDER CONTROL SETTINGS -->
                     <v-card-title class="mx-n4">{{ $t('Panels.ExtruderControlPanel.Headline') }}</v-card-title>
                     <settings-row
@@ -369,6 +399,14 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
         this.$store.dispatch('gui/saveSetting', { name: 'control.enableXYHoming', value: newVal })
     }
 
+    get displayZOffsetStandby() {
+        return this.$store.state.gui.uiSettings.displayZOffsetStandby
+    }
+
+    set displayZOffsetStandby(newVal) {
+        this.$store.dispatch('gui/saveSetting', { name: 'control.displayZOffsetStandby', value: newVal })
+    }
+
     get reverseX() {
         return this.$store.state.gui.control.reverseX
     }
@@ -407,6 +445,20 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set feedrateZ(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.feedrateZ', value: newVal })
+    }
+
+    get offsetsZ() {
+        const steps = this.$store.state.gui.control.offsetsZ
+        return steps.sort(function (a: number, b: number) {
+            return a - b
+        })
+    }
+
+    set offsetsZ(steps) {
+        // Use a set to prevent adding duplicate entries.
+        const absSteps = new Set()
+        for (const value of steps) absSteps.add(Math.abs(value))
+        this.$store.dispatch('gui/saveSetting', { name: 'control.offsetsZ', value: Array.from(absSteps) })
     }
 
     get stepsAll() {
