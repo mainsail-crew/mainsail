@@ -2,7 +2,6 @@
 svg {
     max-height: 300px;
     user-select: none;
-    user-drag: none;
     filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
 }
 
@@ -16,12 +15,12 @@ svg a.step {
 }
 
 svg a.step:hover {
-    fill: #697180 !important;
+    fill: hsl(215, 0%, 50%) !important;
     transition: fill 100ms ease-in;
 }
 
 svg a.step:active {
-    fill: #858c98 !important;
+    fill: hsl(215, 0%, 70%) !important;
 }
 
 svg a.step.inner {
@@ -41,7 +40,6 @@ svg g#stepsZ,
 svg g#stepsXY {
     pointer-events: none;
     user-select: none;
-    user-drag: none;
     font-family: 'Roboto-Regular', 'Roboto', sans-serif;
     font-size: 3px;
     fill: white;
@@ -59,41 +57,49 @@ svg g#home_buttons text {
     fill: black;
 }
 
-svg g.home_button {
+svg g.home_button,
+svg a#home_all_center {
     fill: var(--color-warning);
     transition: opacity 250ms;
 }
 
-svg a#tilt_adjust {
+svg a#tilt_adjust,
+svg a#stepper_off {
     transition: opacity 250ms;
 }
 
-svg a#tilt_adjust.warning {
+svg a#tilt_adjust.warning,
+svg a#stepper_off.warning {
     fill: var(--color-warning);
 }
 
-svg a#tilt_adjust.primary {
+svg a#tilt_adjust.primary,
+svg a#stepper_off.primary {
     fill: var(--color-primary);
 }
 
-svg g.home_button.homed {
+svg g.home_button.homed,
+svg a#home_all_center.homed {
     fill: var(--color-primary);
 }
 
 svg g.home_button:hover,
-svg a#tilt_adjust:hover {
+svg a#home_all_center:hover,
+svg a#tilt_adjust:hover,
+svg a#stepper_off:hover {
     opacity: 0.8;
 }
 
 svg a#tilt_adjust text,
 svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon,
 svg g#home_buttons .home-icon {
     pointer-events: none;
     user-select: none;
-    user-drag: none;
 }
 
-svg a#tilt_adjust #tilt_icon {
+svg a#tilt_adjust #tilt_icon,
+svg a#stepper_off #stepper_off_icon {
     fill: #000;
 }
 </style>
@@ -106,11 +112,8 @@ svg a#tilt_adjust #tilt_icon {
                     width="100%"
                     height="100%"
                     viewBox="0 0 78 62"
-                    version="1.1"
                     xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
                     xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
                     style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2">
                     <g id="ArtBoard1" transform="matrix(1.24239,0,0,1,0,0)">
                         <rect x="0" y="0" width="62" height="62" style="fill: none" />
@@ -176,14 +179,35 @@ svg a#tilt_adjust #tilt_icon {
                                     <g
                                         id="icon1"
                                         class="home-icon"
-                                        serif:id="icon"
+                                        transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
+                                        <path :d="homeIcon" style="fill-rule: nonzero" />
+                                    </g>
+                                </g>
+                            </a>
+                            <!-- HOME XY BUTTON -->
+                            <a v-if="enableXYHoming" @click="doHomeXY">
+                                <g
+                                    id="home_xy"
+                                    transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
+                                    <g
+                                        id="home_button_xy"
+                                        :class="'home_button' + (homedAxes.includes('xy') ? ' homed' : '')"
+                                        transform="matrix(0.68689,0.68689,-0.68689,0.68689,3.87132,0.962447)">
+                                        <path :d="pathHomeButtonBottom" />
+                                    </g>
+                                    <g transform="matrix(0.654426,0,0,0.654426,0.298666,4.01315)">
+                                        <text x="2.3px" y="6.089px">XY</text>
+                                    </g>
+                                    <g
+                                        id="icon2"
+                                        class="home-icon"
                                         transform="matrix(0.147059,0,0,0.147059,2.10662,2.08254)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
                                 </g>
                             </a>
                             <!-- HOME ALL BUTTON -->
-                            <a @click="doHome">
+                            <a v-if="!enableXYHoming" @click="doHome">
                                 <g
                                     id="home_all"
                                     transform="matrix(-0.707107,-0.707107,0.707107,-0.707107,4.05689,63.3555)">
@@ -194,12 +218,22 @@ svg a#tilt_adjust #tilt_icon {
                                         <path :d="pathHomeButtonBottom" />
                                     </g>
                                     <g
-                                        id="icon2"
+                                        id="icon3"
                                         class="home-icon"
-                                        serif:id="icon"
                                         transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)">
                                         <path :d="homeIcon" style="fill-rule: nonzero" />
                                     </g>
+                                </g>
+                            </a>
+                            <a v-if="enableXYHoming" @click="doHome">
+                                <g
+                                    id="home_all_center"
+                                    :class="'home_button' + (homedAxes.includes('xyz') ? ' homed' : '')">
+                                    <circle id="home_button_all_center" cx="31" cy="31" r="5" />
+                                </g>
+                                <g id="icon4" class="home-icon" transform="scale(0.3) translate(91.25,91.25)">
+                                    <!-- transform="matrix(0.29377,0,0,0.29377,0.346087,1.64241)"-->
+                                    <path :d="homeIcon" style="fill-rule: nonzero" />
                                 </g>
                             </a>
                         </g>
@@ -432,10 +466,7 @@ svg a#tilt_adjust #tilt_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g
-                                    id="Bottom1"
-                                    serif:id="Bottom"
-                                    transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
+                                <g id="Bottom1" transform="matrix(6.12323e-17,1,-1,6.12323e-17,61.9767,-1.77705e-14)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -485,10 +516,7 @@ svg a#tilt_adjust #tilt_icon {
                                         </g>
                                     </a>
                                 </g>
-                                <g
-                                    id="Top1"
-                                    serif:id="Top"
-                                    transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
+                                <g id="Top1" transform="matrix(6.12323e-17,-1,1,6.12323e-17,7.10543e-15,61.9767)">
                                     <a
                                         class="step inner"
                                         @click="
@@ -565,7 +593,19 @@ svg a#tilt_adjust #tilt_icon {
                         </g>
                     </g>
                     <a
-                        v-if="existsQGL || existsZtilt"
+                        v-if="existsQGL && actionButton === 'qgl'"
+                        id="tilt_adjust"
+                        :class="colorSpecialButton"
+                        @click="clickSpecialButton">
+                        <circle id="tilt_button" cx="70.92" cy="31" r="5" />
+                        <text x="66.776px" y="32.066px">QGL</text>
+                        <g id="tilt_icon">
+                            <path :d="zTiltIcon1" />
+                            <path :d="zTiltIcon2" />
+                        </g>
+                    </a>
+                    <a
+                        v-else-if="existsZtilt && actionButton === 'ztilt'"
                         id="tilt_adjust"
                         :class="colorSpecialButton"
                         @click="clickSpecialButton">
@@ -574,6 +614,12 @@ svg a#tilt_adjust #tilt_icon {
                         <g id="tilt_icon">
                             <path :d="zTiltIcon1" />
                             <path :d="zTiltIcon2" />
+                        </g>
+                    </a>
+                    <a v-else id="stepper_off" :class="homedAxes !== '' ? 'primary' : 'warning'" @click="doSend('M84')">
+                        <circle id="tilt_button" cx="70.92" cy="31" r="5" />
+                        <g id="stepper_off_icon" transform="scale(0.3) translate(224,91)">
+                            <path :d="engineOffIcon" />
                         </g>
                     </a>
                 </svg>
@@ -625,6 +671,19 @@ export default class CircleControl extends Mixins(BaseMixin, ControlMixin) {
     zTiltIcon1 = 'M74.189,31.503L67.751,30.009L67.638,30.496L74.076,31.99L74.189,31.503Z'
     zTiltIcon2 =
         'M74.361,32.85L74.034,32.676L74.939,32.188L75.039,33.211L74.745,33.055C74.386,33.724 73.858,34.288 73.213,34.69L72.983,34.321C73.563,33.959 74.038,33.452 74.361,32.85ZM67.193,28.75C67.586,28.1 68.142,27.564 68.807,27.196L69.018,27.576C68.42,27.907 67.919,28.389 67.565,28.974L67.883,29.165L66.954,29.605L66.907,28.578L67.193,28.75Z'
+    /**
+     * SVG path for engine off icon
+     */
+    engineOffIcon =
+        'M3.78 2.5L21.5 20.22l-1.27 1.28L18 19.27V20h-8l-2-2H5v-3H3v3H1v-8h2v3h2v-3l1.87-1.86L2.5 3.77L3.78 2.5M20 9v3h-2V8h-6V6h3V4H7.82l15 15H23V9h-3Z'
+
+    get actionButton(): string {
+        return this.$store.state.gui.control.actionButton
+    }
+
+    get enableXYHoming(): boolean {
+        return this.$store.state.gui.control.enableXYHoming
+    }
 
     get reverseX() {
         return this.$store.state.gui.control.reverseX
