@@ -236,9 +236,6 @@
                 </div>
             </v-col>
         </v-row>
-        <v-row>
-            <v-col>{{ actionButton }}</v-col>
-        </v-row>
     </div>
 </template>
 
