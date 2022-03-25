@@ -597,7 +597,7 @@ svg a#stepper_off #stepper_off_icon {
                         id="tilt_adjust"
                         :class="colorSpecialButton"
                         @click="clickSpecialButton">
-                        <circle id="tilt_button" cx="70.92" cy="31" r="5" />
+                        <circle id="qgl_button" cx="70.92" cy="31" r="5" />
                         <text x="66.776px" y="32.066px">QGL</text>
                         <g id="tilt_icon">
                             <path :d="zTiltIcon1" />
@@ -617,7 +617,7 @@ svg a#stepper_off #stepper_off_icon {
                         </g>
                     </a>
                     <a v-else id="stepper_off" :class="homedAxes !== '' ? 'primary' : 'warning'" @click="doSend('M84')">
-                        <circle id="tilt_button" cx="70.92" cy="31" r="5" />
+                        <circle id="stepper_off_button" cx="70.92" cy="31" r="5" />
                         <g id="stepper_off_icon" transform="scale(0.3) translate(224,91)">
                             <path :d="engineOffIcon" />
                         </g>
