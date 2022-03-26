@@ -17,20 +17,18 @@
                             attach></v-select>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row
-                        v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1"
-                        :title="'Overwrite action button'">
-                        <v-select
-                            v-model="actionButton"
-                            :items="actionOptions"
-                            outlined
-                            dense
-                            hide-details
-                            attach></v-select>
-                    </settings-row>
-                    <v-divider
-                        v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1"
-                        class="my-2"></v-divider>
+                    <template v-if="['circle', 'cross'].includes(controlStyle) && actionOptions.length > 1">
+                        <settings-row :title="'Overwrite action button'">
+                            <v-select
+                                v-model="actionButton"
+                                :items="actionOptions"
+                                outlined
+                                dense
+                                hide-details
+                                attach></v-select>
+                        </settings-row>
+                        <v-divider class="my-2"></v-divider>
+                    </template>
                     <settings-row
                         :title="$t('Settings.ControlTab.EnableXYHoming').toString()"
                         :dynamic-slot-width="true">
@@ -90,6 +88,7 @@
                             @blur="blurFeedrateZ"></v-text-field>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
+                    <!-- CONTROL STYLE CROSS SPECIFICS -->
                     <template v-if="controlStyle === 'cross'">
                         <settings-row
                             :title="$t('Settings.ControlTab.MoveDistancesInMm').toString()"
@@ -115,6 +114,7 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
+                    <!-- CONTROL STYLE CIRCLE SPECIFICS -->
                     <template v-else-if="controlStyle === 'circle'">
                         <settings-row
                             :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
@@ -159,6 +159,7 @@
                         </settings-row>
                         <v-divider class="my-2"></v-divider>
                     </template>
+                    <!-- CONTROL STYLE BARS SPECIFICS -->
                     <template v-else>
                         <settings-row
                             :title="$t('Settings.ControlTab.MoveDistancesXYInMm').toString()"
