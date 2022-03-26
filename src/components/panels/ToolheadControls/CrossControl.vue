@@ -117,7 +117,7 @@
                         </v-col>
                         <v-col cols="6" class="d-flex">
                             <v-btn
-                                v-if="existsQGL && actionButton === 'qgl'"
+                                v-if="actionButton === 'qgl'"
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('qgl')"
                                 :color="colorQuadGantryLevel"
@@ -129,7 +129,7 @@
                                 {{ $t('Panels.ToolheadControlPanel.QGL') }}
                             </v-btn>
                             <v-btn
-                                v-else-if="existsZtilt && actionButton === 'ztilt'"
+                                v-else-if="actionButton === 'ztilt'"
                                 :disabled="['printing'].includes(printer_state)"
                                 :loading="loadings.includes('zTilt')"
                                 :color="colorZTilt"

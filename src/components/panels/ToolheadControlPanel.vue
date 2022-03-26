@@ -15,16 +15,16 @@
                 </template>
                 <v-list dense>
                     <v-list-item v-if="actionButton !== 'm84' && actionButton !== null">
-                        <v-btn small>
+                        <v-btn small style="width: 100%">
                             <v-icon left small>{{ mdiEngineOff }}</v-icon>
                             {{ $t('Panels.ToolheadControlPanel.MotorsOff') }}
                         </v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsZtilt && actionButton !== 'ztilt' && actionButton !== null">
-                        <v-btn small>{{ $t('Panels.ToolheadControlPanel.ZTilt') }}</v-btn>
+                        <v-btn small style="width: 100%">{{ $t('Panels.ToolheadControlPanel.ZTilt') }}</v-btn>
                     </v-list-item>
                     <v-list-item v-if="existsQGL && actionButton !== 'qgl' && actionButton !== null">
-                        <v-btn small>{{ $t('Panels.ToolheadControlPanel.QGL') }}</v-btn>
+                        <v-btn small style="width: 100%">{{ $t('Panels.ToolheadControlPanel.QGL') }}</v-btn>
                     </v-list-item>
                 </v-list>
             </v-menu>
