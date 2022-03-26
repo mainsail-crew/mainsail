@@ -97,6 +97,7 @@ import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolsPanel from '@/components/panels/ToolsPanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
+import _ from 'lodash'
 
 @Component({
     components: {
@@ -117,10 +118,23 @@ import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
     },
 })
 export default class PageDashboard extends Mixins(DashboardMixin) {
+    get allComponents() {
+        const output: string[] = []
+        const components = Object.keys(this.$options.components)
+
+        components?.forEach((component) => {
+            if (component.endsWith('Panel')) output.push(_.kebabCase(component))
+        })
+
+        return output
+    }
+
     get mobileLayout() {
         let panels = this.$store.getters['gui/getPanels']('mobileLayout')
         panels = panels.concat(this.missingPanelsMobile)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -128,14 +142,18 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get tabletLayout1() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout1')
         panels = panels.concat(this.missingPanelsTablet)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get tabletLayout2() {
         let panels = this.$store.getters['gui/getPanels']('tabletLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -143,14 +161,18 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get desktopLayout1() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout1')
         panels = panels.concat(this.missingPanelsDesktop)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get desktopLayout2() {
         let panels = this.$store.getters['gui/getPanels']('desktopLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
@@ -158,21 +180,27 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
     get widescreenLayout1() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout1')
         panels = panels.concat(this.missingPanelsWidescreen)
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get widescreenLayout2() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout2')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
 
     get widescreenLayout3() {
         let panels = this.$store.getters['gui/getPanels']('widescreenLayout3')
-        panels = panels.filter((element: any) => element.visible)
+        panels = panels.filter(
+            (element: any) => element.visible && this.allComponents.includes(this.extractPanelName(element.name))
+        )
 
         return panels
     }
