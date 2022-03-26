@@ -329,31 +329,33 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
     get actionOptions() {
         let actions = [
             {
-                text: this.$t('Panels.ToolheadControlPanel.Default', { name: this.defaultActionButtonText }),
-                value: null,
-            },
-            {
-                text: this.$t('Panels.ToolheadControlPanel.MotorsOff'),
+                text: this.$t('Settings.ControlTab.MotorsOff', {
+                    isDefault: this.defaultActionButton === 'm84' ? this.$t('Settings.ControlTab.IsDefault') : '',
+                }),
                 value: 'm84',
             },
         ]
         if (this.existsQGL) {
             actions.push({
-                text: this.$t('Panels.ToolheadControlPanel.QGL'),
+                text: this.$t('Settings.ControlTab.QuadGantryLevel', {
+                    isDefault: this.defaultActionButton === 'qgl' ? this.$t('Settings.ControlTab.IsDefault') : '',
+                }),
                 value: 'qgl',
             })
         }
         if (this.existsZtilt) {
             actions.push({
-                text: this.$t('Panels.ToolheadControlPanel.ZTilt'),
+                text: this.$t('Settings.ControlTab.ZTiltAdjust', {
+                    isDefault: this.defaultActionButton === 'ztilt' ? this.$t('Settings.ControlTab.IsDefault') : '',
+                }),
                 value: 'ztilt',
             })
         }
         return actions
     }
 
-    get actionButton() {
-        return this.$store.state.gui.control.actionButton
+    get actionButton(): string {
+        return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
     }
 
     set actionButton(newVal) {
@@ -362,19 +364,6 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     get defaultActionButton() {
         return this.$store.getters['gui/getDefaultControlActionButton']
-    }
-
-    get defaultActionButtonText() {
-        switch (this.defaultActionButton) {
-            case 'qgl':
-                return this.$t('Panels.ToolheadControlPanel.QGL')
-
-            case 'ztilt':
-                return this.$t('Panels.ToolheadControlPanel.ZTilt')
-
-            default:
-                return this.$t('Panels.ToolheadControlPanel.MotorsOff')
-        }
     }
 
     get enableXYHoming(): boolean {

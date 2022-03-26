@@ -14,17 +14,21 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item v-if="actionButton !== 'm84' && actionButton !== null">
-                        <v-btn small style="width: 100%">
+                    <v-list-item v-if="actionButton !== 'm84'">
+                        <v-btn small style="width: 100%" @click="doSend('M84')">
                             <v-icon left small>{{ mdiEngineOff }}</v-icon>
-                            {{ $t('Panels.ToolheadControlPanel.MotorsOff') }}
+                            {{ $t('Settings.ControlTab.MotorsOff', { isDefault: '' }) }}
                         </v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt' && actionButton !== null">
-                        <v-btn small style="width: 100%">{{ $t('Panels.ToolheadControlPanel.ZTilt') }}</v-btn>
+                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt'">
+                        <v-btn small style="width: 100%" @click="doZtilt">
+                            {{ $t('Settings.ControlTab.ZTiltAlign', { isDefault: '' }) }}
+                        </v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsQGL && actionButton !== 'qgl' && actionButton !== null">
-                        <v-btn small style="width: 100%">{{ $t('Panels.ToolheadControlPanel.QGL') }}</v-btn>
+                    <v-list-item v-if="existsQGL && actionButton !== 'qgl'">
+                        <v-btn small style="width: 100%" @click="doQGL">
+                            {{ $t('Settings.ControlTab.QuadGantryLevel', { isDefault: '' }) }}
+                        </v-btn>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -91,8 +95,7 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
     }
 
     get actionButton(): string {
-        console.log(this.$store.state.gui.control.actionButton)
-        return this.$store.state.gui.control.actionButton
+        return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
     }
 
     get displayZOffsetStandby() {
