@@ -13,7 +13,13 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
     },
 
     getList({ commit }, payload) {
-        if ('entries' in payload) commit('setEntries', payload.entries)
+        if ('entries' in payload) {
+            const entries = payload.entries.map((entry: any) => {
+                return { ...entry, date: new Date(entry.date * 1000) }
+            })
+
+            commit('setEntries', entries)
+        }
         if ('feeds' in payload) commit('setFeeds', payload.feeds)
     },
 }

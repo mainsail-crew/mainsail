@@ -1,5 +1,8 @@
 {
     "App": {
+        "Announcements": {
+            "Announcement": "Announcement"
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",
             "MustBeBetweenError": "Must be between {min} and {max}!",
