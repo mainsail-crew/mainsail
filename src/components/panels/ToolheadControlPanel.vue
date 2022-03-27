@@ -6,7 +6,7 @@
         :collapsible="true"
         card-class="toolhead-control-panel">
         <!-- PANEL-HEADER 3-DOT-MENU -->
-        <template #buttons>
+        <template v-if="controlStyle !== 'bars' && (existsZtilt || existsQGL)" #buttons>
             <v-menu left offset-y :close-on-content-click="false" class="pa-0">
                 <template #activator="{ on, attrs }">
                     <v-btn icon tile v-bind="attrs" v-on="on">
@@ -14,18 +14,18 @@
                     </v-btn>
                 </template>
                 <v-list dense>
-                    <v-list-item v-if="actionButton !== 'm84'">
+                    <v-list-item v-if="controlStyle !== 'bars' && actionButton !== 'm84'">
                         <v-btn small style="width: 100%" @click="doSend('M84')">
                             <v-icon left small>{{ mdiEngineOff }}</v-icon>
                             {{ $t('Settings.ControlTab.MotorsOff', { isDefault: '' }) }}
                         </v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsZtilt && actionButton !== 'ztilt'">
+                    <v-list-item v-if="controlStyle !== 'bars' && existsZtilt && actionButton !== 'ztilt'">
                         <v-btn small style="width: 100%" @click="doZtilt">
-                            {{ $t('Settings.ControlTab.ZTiltAlign', { isDefault: '' }) }}
+                            {{ $t('Settings.ControlTab.ZTiltAdjust', { isDefault: '' }) }}
                         </v-btn>
                     </v-list-item>
-                    <v-list-item v-if="existsQGL && actionButton !== 'qgl'">
+                    <v-list-item v-if="controlStyle !== 'bars' && existsQGL && actionButton !== 'qgl'">
                         <v-btn small style="width: 100%" @click="doQGL">
                             {{ $t('Settings.ControlTab.QuadGantryLevel', { isDefault: '' }) }}
                         </v-btn>
