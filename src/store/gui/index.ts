@@ -25,7 +25,6 @@ export const getDefaultState = (): GuiState => {
             style: 'bars',
             actionButton: null,
             enableXYHoming: false,
-            displayZOffsetStandby: false,
             feedrateXY: 100,
             stepsXY: [100, 10, 1],
             feedrateZ: 25,

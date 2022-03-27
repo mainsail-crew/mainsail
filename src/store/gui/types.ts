@@ -16,7 +16,6 @@ export interface GuiState {
         style: 'bars' | 'circle' | 'cross'
         actionButton: null | 'm84' | 'qgl' | 'ztilt'
         enableXYHoming: boolean
-        displayZOffsetStandby: boolean
         feedrateXY: number
         stepsXY: number[]
         feedrateZ: number

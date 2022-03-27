@@ -154,10 +154,6 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
 
     private saveOffsetDialog = false
 
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.uiSettings.displayZOffsetStandby ?? false
-    }
-
     get homing_origin() {
         return this.$store.state.printer?.gcode_move?.homing_origin ?? []
     }

@@ -35,13 +35,6 @@
                         <v-switch v-model="enableXYHoming" hide-details class="mt-0"></v-switch>
                     </settings-row>
                     <v-divider class="my-2"></v-divider>
-                    <settings-row
-                        :title="$t('Settings.ControlTab.DisplayZOffset').toString()"
-                        :sub-title="$t('Settings.ControlTab.DisplayZOffsetDescription').toString()"
-                        :dynamic-slot-width="true">
-                        <v-switch v-model="displayZOffsetStandby" hide-details class="mt-0"></v-switch>
-                    </settings-row>
-                    <v-divider class="my-2"></v-divider>
                     <template v-if="['circle', 'cross'].includes(controlStyle)">
                         <settings-row
                             :title="$t('Settings.ControlTab.InvertXMovement').toString()"
@@ -373,14 +366,6 @@ export default class SettingsControlTab extends Mixins(BaseMixin, ControlMixin) 
 
     set enableXYHoming(newVal) {
         this.$store.dispatch('gui/saveSetting', { name: 'control.enableXYHoming', value: newVal })
-    }
-
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.uiSettings.displayZOffsetStandby
-    }
-
-    set displayZOffsetStandby(newVal) {
-        this.$store.dispatch('gui/saveSetting', { name: 'control.displayZOffsetStandby', value: newVal })
     }
 
     get reverseX() {
