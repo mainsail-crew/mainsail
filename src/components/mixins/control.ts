@@ -31,6 +31,22 @@ export default class ControlMixin extends Vue {
         return this.$store.getters['printer/existsZtilt']
     }
 
+    get existsBedTilt() {
+        return this.$store.getters['printer/existsBedTilt']
+    }
+
+    get existsBedScrews() {
+        return this.$store.getters['printer/existsBedScrews']
+    }
+
+    get existsDeltaCalibrate() {
+        return this.$store.getters['printer/existsDeltaCalibrate']
+    }
+
+    get existsScrewsTilt() {
+        return this.$store.getters['printer/existsScrewsTilt']
+    }
+
     get colorQuadGantryLevel() {
         const status = this.$store.state.printer.quad_gantry_level?.applied ?? true
 

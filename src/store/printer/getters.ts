@@ -768,4 +768,28 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
         return 'z_tilt' in state.configfile.settings
     },
+
+    existsBedTilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'bed_tilt' in state.configfile.settings
+    },
+
+    existsBedScrews: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'bed_screws' in state.configfile.settings
+    },
+
+    existsDeltaCalibrate: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'delta_calibrate' in state.configfile.settings
+    },
+
+    existsScrewsTilt: (state) => {
+        if (!state.configfile?.settings) return false
+
+        return 'screws_tilt_adjust' in state.configfile.settings
+    },
 }
