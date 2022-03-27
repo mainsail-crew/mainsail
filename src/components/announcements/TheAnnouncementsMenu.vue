@@ -30,8 +30,8 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" class="mr-2" @click="dismissAll">
-                        <v-icon left>{{ mdiNotificationClearAll }}</v-icon>
-                        Close all
+                        <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
+                        Dismiss all
                     </v-btn>
                 </v-card-actions>
             </template>
@@ -48,7 +48,7 @@
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
 import AnnouncementMenuEntry from '@/components/announcements/AnnouncementMenuEntry.vue'
-import { mdiBellOutline, mdiNotificationClearAll } from '@mdi/js'
+import { mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 
 @Component({
@@ -56,7 +56,7 @@ import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/type
 })
 export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     mdiBellOutline = mdiBellOutline
-    mdiNotificationClearAll = mdiNotificationClearAll
+    mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
     get announcements() {
         return this.$store.getters['server/announcements/getAll']
