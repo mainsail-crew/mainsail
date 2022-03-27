@@ -4,13 +4,14 @@
             <v-col class="grow">
                 <div class="announcement-menu-entry__headline mb-1 text-subtitle-1">
                     <a :class="`text-decoration-none ${alertColor}--text`" :href="entry.url" target="_blank">
+                        <v-icon :color="alertColor" small class="pb-1">{{ mdiLinkVariant }}</v-icon>
                         {{ entry.title }}
                     </a>
                 </div>
                 <p class="text-body-2 mb-0 text--disabled" v-html="formatedText"></p>
             </v-col>
             <v-col class="shrink pl-0 pt-2 pr-2 d-flex flex-column align-self-stretch justify-space-between">
-                <v-btn icon :color="alertColor" @click="close">
+                <v-btn icon plain :color="alertColor" @click="close">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
                 <v-menu offset-y :close-on-content-click="false">
@@ -36,7 +37,7 @@
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
-import { mdiClose, mdiAlarmSnooze } from '@mdi/js'
+import { mdiClose, mdiAlarmSnooze, mdiLinkVariant } from '@mdi/js'
 
 @Component({
     components: {},
@@ -44,6 +45,7 @@ import { mdiClose, mdiAlarmSnooze } from '@mdi/js'
 export default class AnnouncementMenuEntry extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiAlarmSnooze = mdiAlarmSnooze
+    mdiLinkVariant = mdiLinkVariant
 
     @Prop({ required: true })
     declare readonly entry: ServerAnnouncementsStateEntry
