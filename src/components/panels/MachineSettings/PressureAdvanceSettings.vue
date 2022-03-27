@@ -1,5 +1,5 @@
 <template>
-    <v-card-text>
+    <v-container>
         <responsive
             :breakpoints="{
                 small: (el) => el.width <= 300,
@@ -58,7 +58,7 @@
                 </v-row>
             </template>
         </responsive>
-    </v-card-text>
+    </v-container>
 </template>
 
 <script lang="ts">

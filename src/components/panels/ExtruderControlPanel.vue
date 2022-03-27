@@ -122,56 +122,53 @@
                 </v-list>
             </v-menu>
         </template>
-        <!-- TOOL SELECTOR BUTTONS -->
-        <v-container v-if="extruders.length > 1">
-            <v-item-group class="_btn-group py-0 px-1">
-                <v-btn
-                    v-for="extruder in extruders"
-                    :key="extruder.key"
-                    :class="extruder.key === activeExtruder ? 'primary--text' : {}"
-                    :value="extruder.key"
-                    :disabled="isPrinting"
-                    dense
-                    class="flex-grow-1 px-0"
-                    @click="activateExtruder(extruder.key)">
-                    {{
-                        toolchangeMacros.length === extruders.length
-                            ? toolchangeMacros[extruders.indexOf(extruder)]
-                            : extruder.name
-                    }}
-                </v-btn>
-            </v-item-group>
-        </v-container>
-        <!-- EXTRUSION FACTOR SLIDER -->
-        <v-container>
-            <v-row class="d-flex align-center">
-                <tool-slider
-                    :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()"
-                    :icon="mdiPrinter3dNozzleOutline"
-                    :target="extrudeFactor"
-                    :min="1"
-                    :max="200"
-                    :multi="100"
-                    :step="1"
-                    :has-input-field="true"
-                    command="M221"
-                    attribute-name="S"
-                    class="pt-0"></tool-slider>
-            </v-row>
-        </v-container>
-        <!-- PRESSURE ADVANCE SETTINGS -->
-        <sub-panel
-            :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
-            sub-panel-class="pressure-advance-settings-subpanel"
-            :class="extruders.length === 1 ? 'pt-2' : ''">
-            <pressure-advance-settings></pressure-advance-settings>
-            <v-divider class="pb-2"></v-divider>
-        </sub-panel>
-        <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
-        <v-container>
-            <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
-                <template #default="{ el }">
-                    <v-row class="pt-1 px-1">
+        <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
+            <template #default="{ el }">
+                <!-- TOOL SELECTOR BUTTONS -->
+                <v-container v-if="extruders.length > 1">
+                    <v-item-group class="_btn-group py-0">
+                        <v-btn
+                            v-for="extruder in extruders"
+                            :key="extruder.key"
+                            :class="extruder.key === activeExtruder ? 'primary--text' : {}"
+                            :value="extruder.key"
+                            :disabled="isPrinting"
+                            dense
+                            class="flex-grow-1 px-0"
+                            @click="activateExtruder(extruder.key)">
+                            {{
+                                toolchangeMacros.length === extruders.length
+                                    ? toolchangeMacros[extruders.indexOf(extruder)]
+                                    : extruder.name
+                            }}
+                        </v-btn>
+                    </v-item-group>
+                </v-container>
+                <!-- EXTRUSION FACTOR SLIDER -->
+                <v-container>
+                    <tool-slider
+                        :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()"
+                        :icon="mdiPrinter3dNozzleOutline"
+                        :target="extrudeFactor"
+                        :min="1"
+                        :max="200"
+                        :multi="100"
+                        :step="1"
+                        :has-input-field="true"
+                        command="M221"
+                        attribute-name="S"></tool-slider>
+                </v-container>
+                <!-- PRESSURE ADVANCE SETTINGS -->
+                <sub-panel
+                    :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
+                    sub-panel-class="pressure-advance-settings-subpanel"
+                    :class="extruders.length === 1 ? 'pt-2' : ''">
+                    <pressure-advance-settings></pressure-advance-settings>
+                    <v-divider class="pb-1"></v-divider>
+                </sub-panel>
+                <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
+                <v-container>
+                    <v-row>
                         <v-col>
                             <number-input
                                 :label="$t('Panels.ExtruderControlPanel.FilamentLength').toString()"
@@ -357,19 +354,19 @@
                             </div>
                         </v-col>
                     </v-row>
-                </template>
-            </responsive>
-        </v-container>
-        <!-- EXTRUSION ESTIMATION NOTE -->
-        <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-2">
-            <div
-                v-if="filamentDiameter && nozzleDiameter"
-                style="font-size: 0.8em"
-                class="text--disabled text-caption font-weight-light d-flex justify-center">
-                {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
-                {{ volumetricFlow }} mm³/s
-            </div>
-        </v-container>
+                </v-container>
+                <!-- EXTRUSION ESTIMATION NOTE -->
+                <v-container v-if="showEstimatedExtrusion" class="pa-0 ma-0 pb-2">
+                    <div
+                        v-if="filamentDiameter && nozzleDiameter"
+                        style="font-size: 0.8em"
+                        class="text--disabled text-caption font-weight-light d-flex justify-center">
+                        {{ $t('Panels.ExtruderControlPanel.EstimatedExtrusion') }} ~ {{ extrudedLength }} mm @
+                        {{ volumetricFlow }} mm³/s
+                    </div>
+                </v-container>
+            </template>
+        </responsive>
     </panel>
 </template>
 
