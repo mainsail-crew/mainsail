@@ -179,13 +179,11 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
     }
 
     get existZOffsetApplyProbe() {
-        // return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_probe') !== -1
-        return true
+        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_probe') !== -1
     }
 
     get existZOffsetApplyEndstop() {
-        // return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
-        return true
+        return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
     }
 
     sendBabyStepDown(offset: number): void {
