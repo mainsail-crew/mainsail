@@ -8,7 +8,7 @@ export interface ServerAnnouncementsStateEntry {
     url: string
     title: string
     description: string
-    priority: 'normal' | 'critical'
+    priority: 'normal' | 'high'
     date: Date
     dismissed: boolean
     date_dismissed: Date | null

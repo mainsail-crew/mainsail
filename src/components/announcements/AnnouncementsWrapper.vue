@@ -13,20 +13,7 @@ import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/type
 })
 export default class AnnouncementsWrapper extends Mixins(BaseMixin) {
     get criticalAnnouncement() {
-        let entries = this.$store.state.server?.announcements?.entries ?? []
-
-        entries = entries
-            .filter((entry: ServerAnnouncementsStateEntry) => {
-                if (entry.priority === 'normal') return false
-
-                return !entry.dismissed
-            })
-            .sort(
-                (a: ServerAnnouncementsStateEntry, b: ServerAnnouncementsStateEntry) =>
-                    b.date.getTime() - a.date.getTime()
-            )
-
-        return entries.length > 0 ? entries.shift() : null
+        return this.$store.getters['server/announcements/getFirstCritical']
     }
 }
 </script>
