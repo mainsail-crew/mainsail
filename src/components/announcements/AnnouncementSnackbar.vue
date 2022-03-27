@@ -1,5 +1,48 @@
 <template>
-    <v-snackbar
+    <v-alert color="orange" class="announcement-snackbar__alert" :max-width="400">
+        <v-row align="start">
+            <v-col class="grow">
+                <a
+                    class="announcement-snackbar__headline d-block white--text text-subtitle-1 text-decoration-none mb-1"
+                    :href="entry.url"
+                    target="_blank">
+                    {{ entry.title }}
+                </a>
+                <p class="text-body-2 mb-0 white--text" v-html="formatedText"></p>
+            </v-col>
+            <v-col class="shrink pl-0 pt-2 pr-2">
+                <v-btn icon color="white">
+                    <v-icon>{{ mdiClose }}</v-icon>
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-divider color="white" class="mt-3 mb-1"></v-divider>
+        <v-row>
+            <v-col>
+                <v-menu offset-y>
+                    <template #activator="{ on, attrs }">
+                        <v-btn text v-bind="attrs" v-on="on">{{ $t('App.Announcements.Later') }}</v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item link>
+                            <v-list-item-title @click="dismiss(60 * 60)">
+                                {{ $t('App.Announcements.OneHour') }}
+                            </v-list-item-title>
+                        </v-list-item>
+                        <v-list-item link>
+                            <v-list-item-title @click="dismiss(60 * 60 * 24)">
+                                {{ $t('App.Announcements.Tomorrow') }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-col>
+            <v-col class="text-right">
+                <v-btn text target="_blank" :href="entry.url">{{ $t('App.Announcements.More') }}</v-btn>
+            </v-col>
+        </v-row>
+    </v-alert>
+    <!--    <v-snackbar
         class="announcement__snackbar"
         :value="showSnackbar"
         :multi-line="true"
@@ -46,7 +89,7 @@
             </v-menu>
             <v-btn text color="primary" target="_blank" :href="entry.url">{{ $t('App.Announcements.More') }}</v-btn>
         </template>
-    </v-snackbar>
+    </v-snackbar>-->
 </template>
 
 <script lang="ts">
@@ -80,8 +123,10 @@ export default class AnnouncementSnackbar extends Mixins(BaseMixin) {
 </script>
 
 <style scoped>
-.announcement__snackbar {
-    top: 50px;
+.announcement-snackbar__alert {
+    position: fixed;
+    top: 60px;
+    right: 20px;
 }
 
 .announcement__close-button {

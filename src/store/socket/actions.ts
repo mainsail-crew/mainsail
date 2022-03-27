@@ -111,7 +111,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_announcement_update':
-                dispatch('server/announcements/getUpdate', payload.params[0], { root: true })
+                dispatch('server/announcements/getList', payload.params[0], { root: true })
                 break
 
             case 'notify_announcement_dismissed':

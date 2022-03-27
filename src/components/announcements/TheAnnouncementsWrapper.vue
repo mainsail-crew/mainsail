@@ -12,7 +12,9 @@ import AnnouncementSnackbar from '@/components/announcements/AnnouncementSnackba
 })
 export default class TheAnnouncementsWrapper extends Mixins(BaseMixin) {
     get criticalAnnouncement() {
-        return this.$store.getters['server/announcements/getFirstCritical']
+        //return this.$store.getters['server/announcements/getFirstCritical']
+
+        return null
     }
 }
 </script>

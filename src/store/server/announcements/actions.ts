@@ -27,15 +27,19 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
         if ('feeds' in payload) commit('setFeeds', payload.feeds)
     },
 
-    getUpdate({ dispatch }, payload) {
-        dispatch('getList', { entries: payload })
-    },
-
     getDismissed({ commit }, payload) {
         commit('setDismissed', { entry_id: payload.entry_id, status: true })
     },
 
     getWaked({ commit }, payload) {
         commit('setDismissed', { entry_id: payload.entry_id, status: false })
+    },
+
+    close(_, payload) {
+        Vue.$socket.emit('server.announcements.dismiss', { entry_id: payload.entry_id })
+    },
+
+    dismiss(_, payload) {
+        Vue.$socket.emit('server.announcements.dismiss', { entry_id: payload.entry_id, wake_time: payload.time })
     },
 }
