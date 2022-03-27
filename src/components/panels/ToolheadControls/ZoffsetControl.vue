@@ -7,13 +7,13 @@
 <template>
     <v-container>
         <v-row>
-            <v-col class="v-subheader text--secondary">
+            <v-col class="v-subheader text--secondary pr-0">
                 <v-icon small class="mr-2">
                     {{ mdiArrowCollapseVertical }}
                 </v-icon>
                 <span>{{ $t('Panels.ZoffsetPanel.Headline') }}</span>
             </v-col>
-            <v-col class="v-subheader justify-end">
+            <v-col class="v-subheader justify-end pl-0">
                 <div class="d-flex align-center">
                     <v-btn
                         v-if="z_gcode_offset !== 0"
@@ -69,7 +69,7 @@
         </v-row>
         <v-row dense>
             <v-col>
-                <v-btn-toggle dense no-gutters>
+                <v-btn-toggle>
                     <v-btn
                         v-for="(offset, index) in offsetsZ"
                         :key="`offsetsUp-${index}`"
@@ -79,12 +79,12 @@
                         <v-icon v-if="index === 0" small class="mr-2">
                             {{ mdiArrowExpandUp }}
                         </v-icon>
-                        +{{ offset }}
+                        &plus;{{ offset }}
                     </v-btn>
                 </v-btn-toggle>
             </v-col>
             <v-col>
-                <v-btn-toggle dense no-gutters>
+                <v-btn-toggle>
                     <v-btn
                         v-for="(offset, index) in offsetsZ"
                         :key="`offsetsDown-${index}`"
@@ -92,7 +92,7 @@
                         class="flex-grow-1"
                         @click="sendBabyStepDown(offset)">
                         <v-icon v-if="index === 0" small class="mr-2">{{ mdiArrowCollapseDown }}</v-icon>
-                        -{{ offset }}
+                        &minus;{{ offset }}
                     </v-btn>
                 </v-btn-toggle>
             </v-col>
