@@ -15,11 +15,27 @@ export const actions: ActionTree<ServerAnnouncementsState, RootState> = {
     getList({ commit }, payload) {
         if ('entries' in payload) {
             const entries = payload.entries.map((entry: any) => {
-                return { ...entry, date: new Date(entry.date * 1000) }
+                const date = new Date(entry.date * 1000)
+                const date_dismissed = payload.date_dismissed ? new Date(entry.date_dismissed * 1000) : null
+                const dismiss_wake = payload.dismiss_wake ? new Date(entry.dismiss_wake * 1000) : null
+
+                return { ...entry, date, date_dismissed, dismiss_wake }
             })
 
             commit('setEntries', entries)
         }
         if ('feeds' in payload) commit('setFeeds', payload.feeds)
+    },
+
+    getUpdate({ dispatch }, payload) {
+        dispatch('getList', { entries: payload })
+    },
+
+    getDismissed({ commit }, payload) {
+        commit('setDismissed', { entry_id: payload.entry_id, status: true })
+    },
+
+    getWaked({ commit }, payload) {
+        commit('setDismissed', { entry_id: payload.entry_id, status: false })
     },
 }

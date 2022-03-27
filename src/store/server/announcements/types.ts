@@ -11,6 +11,8 @@ export interface ServerAnnouncementsStateEntry {
     priority: 'normal' | 'critical'
     date: Date
     dismissed: boolean
+    date_dismissed: Date | null
+    dismiss_wake: Date | null
     source: string
     feed: string
 }
