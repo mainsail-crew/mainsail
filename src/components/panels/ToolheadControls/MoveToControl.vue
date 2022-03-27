@@ -1,70 +1,79 @@
 <template>
     <v-container>
-        <v-row v-if="parseFloat(homingOrigin.x) !== 0 || parseFloat(homingOrigin.y) !== 0" dense>
-            <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
-                <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
-            </v-col>
-        </v-row>
-        <v-form class="pt-1" @keyup.native.enter="sendCmd">
-            <v-row dense>
-                <v-col class="col-4">
-                    <move-to-input
-                        v-model="input.x.pos"
-                        :label="livePositions.x"
-                        :suffix="'X'"
-                        :position-max="stepperXmax"
-                        :position-min="stepperXmin"
-                        :current-pos="gcodePositions.x"
-                        :readonly="['printing'].includes(printer_state)"
-                        :disabled="!xAxisHomed"
-                        @validate="validate"></move-to-input>
-                    <div
-                        v-if="parseFloat(homingOrigin.x) !== 0"
-                        class="pl-3 text--disabled text-caption font-weight-light">
-                        <span>{{ $t('Panels.ToolheadControlPanel.XOffset') }}: {{ homingOrigin.x }}</span>
-                    </div>
-                    <div
-                        v-else
-                        class="pl-3 text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width <= 320,
+            }">
+            <template #default="{ el }">
+                <v-row v-if="parseFloat(homingOrigin.x) !== 0 || parseFloat(homingOrigin.y) !== 0 || el.is.small" dense>
+                    <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
                         <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
-                    </div>
-                </v-col>
-                <v-col class="col-4">
-                    <move-to-input
-                        v-model="input.y.pos"
-                        :label="livePositions.y"
-                        :suffix="'Y'"
-                        :position-max="stepperYmax"
-                        :position-min="stepperYmin"
-                        :current-pos="gcodePositions.y"
-                        :readonly="['printing'].includes(printer_state)"
-                        :disabled="!yAxisHomed"
-                        @validate="validate"></move-to-input>
-                    <div
-                        v-show="parseFloat(homingOrigin.y) !== 0"
-                        class="pl-3 text--disabled text-caption font-weight-light">
-                        <span>{{ $t('Panels.ToolheadControlPanel.YOffset') }}: {{ homingOrigin.y }}</span>
-                    </div>
-                </v-col>
-                <v-col class="col-4">
-                    <move-to-input
-                        v-model="input.z.pos"
-                        :label="livePositions.z"
-                        :suffix="'Z'"
-                        :position-max="stepperZmax"
-                        :position-min="stepperZmin"
-                        :current-pos="gcodePositions.z"
-                        :readonly="['printing'].includes(printer_state)"
-                        :disabled="!zAxisHomed"
-                        @validate="validate"></move-to-input>
-                    <div
-                        v-show="parseFloat(homingOrigin.z) !== 0"
-                        class="pl-3 text--disabled text-caption font-weight-light">
-                        <span>{{ $t('Panels.ToolheadControlPanel.ZOffset') }}: {{ homingOrigin.z }}</span>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-form>
+                    </v-col>
+                </v-row>
+                <v-form class="pt-1" @keyup.native.enter="sendCmd">
+                    <v-row dense>
+                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                            <move-to-input
+                                v-model="input.x.pos"
+                                :label="livePositions.x"
+                                :suffix="'X'"
+                                :position-max="stepperXmax"
+                                :position-min="stepperXmin"
+                                :current-pos="gcodePositions.x"
+                                :readonly="['printing'].includes(printer_state)"
+                                :disabled="!xAxisHomed"
+                                @validate="validate"></move-to-input>
+                            <div
+                                v-if="parseFloat(homingOrigin.x) !== 0"
+                                class="pl-3 text--disabled text-caption font-weight-light">
+                                <span>{{ $t('Panels.ToolheadControlPanel.XOffset') }}: {{ homingOrigin.x }}</span>
+                            </div>
+                            <div
+                                v-else-if="!el.is.small"
+                                class="pl-3 text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
+                                <span>
+                                    {{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}
+                                </span>
+                            </div>
+                        </v-col>
+                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                            <move-to-input
+                                v-model="input.y.pos"
+                                :label="livePositions.y"
+                                :suffix="'Y'"
+                                :position-max="stepperYmax"
+                                :position-min="stepperYmin"
+                                :current-pos="gcodePositions.y"
+                                :readonly="['printing'].includes(printer_state)"
+                                :disabled="!yAxisHomed"
+                                @validate="validate"></move-to-input>
+                            <div
+                                v-show="parseFloat(homingOrigin.y) !== 0"
+                                class="pl-3 text--disabled text-caption font-weight-light">
+                                <span>{{ $t('Panels.ToolheadControlPanel.YOffset') }}: {{ homingOrigin.y }}</span>
+                            </div>
+                        </v-col>
+                        <v-col :class="el.is.small ? 'col-12' : 'col-4'">
+                            <move-to-input
+                                v-model="input.z.pos"
+                                :label="livePositions.z"
+                                :suffix="'Z'"
+                                :position-max="stepperZmax"
+                                :position-min="stepperZmin"
+                                :current-pos="gcodePositions.z"
+                                :readonly="['printing'].includes(printer_state)"
+                                :disabled="!zAxisHomed"
+                                @validate="validate"></move-to-input>
+                            <div
+                                v-show="parseFloat(homingOrigin.z) !== 0"
+                                class="pl-3 text--disabled text-caption font-weight-light">
+                                <span>{{ $t('Panels.ToolheadControlPanel.ZOffset') }}: {{ homingOrigin.z }}</span>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </template>
+        </responsive>
     </v-container>
 </template>
 
@@ -73,9 +82,10 @@ import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import ControlMixin from '@/components/mixins/control'
 import MoveToInput from '@/components/inputs/MoveToInput.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 
 @Component({
-    components: { MoveToInput },
+    components: { MoveToInput, Responsive },
 })
 export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
     input: { [index: string]: any } = {
