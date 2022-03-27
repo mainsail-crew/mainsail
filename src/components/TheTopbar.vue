@@ -95,7 +95,7 @@
                 <v-icon class="mr-md-2">{{ mdiAlertCircleOutline }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
-            <the-announcements-menu></the-announcements-menu>
+            <the-announcements-menu v-if="moonrakerComponents.includes('announcements')"></the-announcements-menu>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
