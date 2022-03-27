@@ -936,7 +936,27 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get kinematics() {
-        return this.$store.state.printer.configfile?.settings?.printer?.kinematics ?? ''
+        return (
+            this.$store.state.printer.configfile?.settings?.printer?.kinematics ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.kinematics ??
+            ''
+        )
+    }
+
+    get bedMaxSize() {
+        return (
+            this.$store.state.printer.toolhead?.axis_maximum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_maximum ??
+            null
+        )
+    }
+
+    get bedMinSize() {
+        return (
+            this.$store.state.printer.toolhead?.axis_minimum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_minimum ??
+            null
+        )
     }
 
     @Watch('kinematics')
@@ -946,10 +966,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    get bedMinSize() {
-        return this.$store.state.printer.toolhead?.axis_minimum ?? null
-    }
-
     @Watch('bedMinSize', { deep: true })
     bedMinSizeChanged(newVal: number[] | null) {
         if (viewer && newVal) {
@@ -957,10 +973,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.bed.buildVolume['y'].min = newVal[1]
             viewer.bed.buildVolume['z'].min = newVal[2]
         }
-    }
-
-    get bedMaxSize() {
-        return this.$store.state.printer.toolhead?.axis_maximum ?? null
     }
 
     @Watch('bedMaxSize', { deep: true })

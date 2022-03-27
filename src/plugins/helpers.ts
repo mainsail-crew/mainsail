@@ -266,3 +266,8 @@ export function getMacroParams(macro: { gcode: string }): PrinterStateMacroParam
 
     return ret
 }
+
+export function windowBeforeUnloadFunction(e: BeforeUnloadEvent) {
+    e.preventDefault()
+    e.returnValue = ''
+}

@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { ServerState } from '@/store/server/types'
+import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/helpers'
 
 // eslint-disable-next-line
@@ -43,6 +43,7 @@ export const getters: GetterTree<ServerState, any> = {
             cpuName: string | null
             cpuDesc: string | null
             version: string | null
+            pythonVersion: string | null
             os: string | null
             release_info?: {
                 name: string
@@ -56,6 +57,8 @@ export const getters: GetterTree<ServerState, any> = {
             memUsed: string
             memAvail: string
             memTotal: string
+            memUsage: null | number
+            memUsageColor: string
             tempSensor: {
                 temperature: number
                 measured_min_temp: number | null
@@ -72,6 +75,12 @@ export const getters: GetterTree<ServerState, any> = {
                 version = rootState.printer?.software_version.split('-').slice(0, 4).join('-')
             }
 
+            let pythonVersion: null | string = null
+            if (state.system_info?.python?.version_string) {
+                const firstSpace = state.system_info?.python?.version_string.indexOf(' ')
+                pythonVersion = state.system_info?.python?.version_string.slice(0, firstSpace + 1)
+            }
+
             const cpuCors = state.system_info?.cpu_info?.cpu_count ?? 1
             const load = Math.round((rootState.printer.system_stats?.sysload ?? 0) * 100) / 100
             const loadPercent = Math.round((load / cpuCors) * 100)
@@ -81,14 +90,20 @@ export const getters: GetterTree<ServerState, any> = {
             else if (loadPercent > 80) loadProgressColor = 'warning'
 
             let memoryFormat: null | string = null
+            let memUsage: null | number = null
             const memAvail = (rootState.printer.system_stats?.memavail ?? 0) * 1024
             const memTotal = (state.system_info?.cpu_info?.total_memory ?? 0) * 1024
 
             if (memAvail > 0 && memTotal > 0) {
                 memoryFormat = formatFilesize(memTotal - memAvail) + ' / ' + formatFilesize(memTotal)
+                memUsage = Math.round(((memTotal - memAvail) / memTotal) * 100)
             } else if (memTotal) {
                 memoryFormat = formatFilesize(memTotal)
             }
+
+            let memUsageColor = 'primary'
+            if (memUsage && memUsage > 95) memUsageColor = 'error'
+            else if (memUsage && memUsage > 80) memUsageColor = 'warning'
 
             let tempSensor = rootGetters['printer/getHostTempSensor']
             if (tempSensor === null) {
@@ -103,6 +118,7 @@ export const getters: GetterTree<ServerState, any> = {
                 cpuName: state.system_info?.cpu_info?.processor ?? null,
                 cpuDesc: state.system_info?.cpu_info?.cpu_desc ?? null,
                 version,
+                pythonVersion,
                 os: state.system_info?.distribution?.name ?? null,
                 release_info: state.system_info?.distribution?.release_info ?? null,
                 load,
@@ -112,10 +128,35 @@ export const getters: GetterTree<ServerState, any> = {
                 memUsed: formatFilesize(memTotal - memAvail),
                 memAvail: formatFilesize(memAvail),
                 memTotal: formatFilesize(memTotal),
+                memUsage,
+                memUsageColor,
                 tempSensor,
             }
         }
 
         return output
+    },
+
+    getCpuUsage: (state) => {
+        if ('cpu' in state.system_cpu_usage) {
+            return Math.round(state.system_cpu_usage.cpu)
+        }
+
+        return null
+    },
+
+    getNetworkInterfaces: (state) => {
+        const interfaces: { [key: string]: ServerStateNetworkInterface } = {}
+
+        Object.keys(state.network_stats).forEach((interfaceName: string) => {
+            if (interfaceName !== 'lo') {
+                if (state.system_info?.network && interfaceName in state.system_info.network) {
+                    interfaces[interfaceName] = { ...state.network_stats[interfaceName] }
+                    interfaces[interfaceName].details = { ...state.system_info.network[interfaceName] }
+                }
+            }
+        })
+
+        return interfaces
     },
 }
