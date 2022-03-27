@@ -125,7 +125,7 @@
         <responsive :breakpoints="{ large: (el) => el.width >= 640 }">
             <template #default="{ el }">
                 <!-- TOOL SELECTOR BUTTONS -->
-                <v-container v-if="extruders.length > 1">
+                <v-container v-if="extruders.length > 1" class="pb-1">
                     <v-item-group class="_btn-group py-0">
                         <v-btn
                             v-for="extruder in extruders"
@@ -145,7 +145,7 @@
                     </v-item-group>
                 </v-container>
                 <!-- EXTRUSION FACTOR SLIDER -->
-                <v-container>
+                <v-container class="pb-1">
                     <tool-slider
                         :label="$t('Panels.ExtruderControlPanel.ExtrusionFactor').toString()"
                         :icon="mdiPrinter3dNozzleOutline"
