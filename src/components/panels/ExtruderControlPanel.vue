@@ -233,12 +233,12 @@
                             class="col-3 d-flex align-center flex-column justify-center"
                             :class="{ _hidden: !el.is.large }">
                             <!-- RETRACT -->
-                            <v-tooltip left :disabled="extrudePossible" color="secondary">
+                            <v-tooltip left :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
                                 <template #activator="{ on }">
                                     <div class="mb-4" v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnRetract')"
-                                            :disabled="!extrudePossible || isPrinting"
+                                            :disabled="!extrudePossible || tooLargeExtrusion || isPrinting"
                                             small
                                             class="_btn-extruder-cmd"
                                             @click="sendRetract()">
@@ -247,18 +247,26 @@
                                         </v-btn>
                                     </div>
                                 </template>
-                                <span>
+                                <span v-show="!extrudePossible">
                                     {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
                                     {{ minExtrudeTemp }} °C
                                 </span>
+                                <span v-show="tooLargeExtrusion">
+                                    {{ $t('Panels.ExtruderControlPanel.TooLargeExtrusion') }}
+                                    <br />
+                                    {{ $t('Panels.ExtruderControlPanel.Requested') }}:
+                                    {{ feedamount * extrudeFactor }} mm
+                                    <br />
+                                    {{ $t('Panels.ExtruderControlPanel.Allowed') }}: {{ maxExtrudeOnlyDistance }} mm
+                                </span>
                             </v-tooltip>
                             <!-- EXTRUDE  -->
-                            <v-tooltip left :disabled="extrudePossible" color="secondary">
+                            <v-tooltip left :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
                                 <template #activator="{ on }">
                                     <div v-on="on">
                                         <v-btn
                                             :loading="loadings.includes('btnDetract')"
-                                            :disabled="!extrudePossible || isPrinting"
+                                            :disabled="!extrudePossible || tooLargeExtrusion || isPrinting"
                                             small
                                             class="_btn-extruder-cmd"
                                             @click="sendExtrude()">
@@ -267,9 +275,17 @@
                                         </v-btn>
                                     </div>
                                 </template>
-                                <span>
+                                <span v-show="!extrudePossible">
                                     {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
                                     {{ minExtrudeTemp }} °C
+                                </span>
+                                <span v-show="tooLargeExtrusion">
+                                    {{ $t('Panels.ExtruderControlPanel.TooLargeExtrusion') }}
+                                    <br />
+                                    {{ $t('Panels.ExtruderControlPanel.Requested') }}:
+                                    {{ feedamount * extrudeFactor }} mm
+                                    <br />
+                                    {{ $t('Panels.ExtruderControlPanel.Allowed') }}: {{ maxExtrudeOnlyDistance }} mm
                                 </span>
                             </v-tooltip>
                         </v-col>
@@ -280,12 +296,12 @@
                             <div class="d-flex justify-space-around">
                                 <div class="d-flex align-center">
                                     <!-- RETRACT -->
-                                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                                    <v-tooltip top :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
                                         <template #activator="{ on }">
                                             <div class="pt-1 pb-2 px-3" v-on="on">
                                                 <v-btn
                                                     :loading="loadings.includes('btnRetract')"
-                                                    :disabled="!extrudePossible || isPrinting"
+                                                    :disabled="!extrudePossible || tooLargeExtrusion || isPrinting"
                                                     small
                                                     class="_btn-extruder-cmd"
                                                     @click="sendRetract()">
@@ -298,14 +314,23 @@
                                             {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
                                             {{ minExtrudeTemp }} °C
                                         </span>
+                                        <span v-show="tooLargeExtrusion">
+                                            {{ $t('Panels.ExtruderControlPanel.TooLargeExtrusion') }}
+                                            <br />
+                                            {{ $t('Panels.ExtruderControlPanel.Requested') }}:
+                                            {{ feedamount * extrudeFactor }} mm
+                                            <br />
+                                            {{ $t('Panels.ExtruderControlPanel.Allowed') }}:
+                                            {{ maxExtrudeOnlyDistance }} mm
+                                        </span>
                                     </v-tooltip>
                                     <!-- EXTRUDE  -->
-                                    <v-tooltip top :disabled="extrudePossible" color="secondary">
+                                    <v-tooltip top :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
                                         <template #activator="{ on }">
                                             <div class="pt-1 pb-2 px-3" v-on="on">
                                                 <v-btn
                                                     :loading="loadings.includes('btnDetract')"
-                                                    :disabled="!extrudePossible || isPrinting"
+                                                    :disabled="!extrudePossible || tooLargeExtrusion || isPrinting"
                                                     small
                                                     class="_btn-extruder-cmd"
                                                     @click="sendExtrude()">
@@ -314,9 +339,18 @@
                                                 </v-btn>
                                             </div>
                                         </template>
-                                        <span>
+                                        <span v-show="!extrudePossible">
                                             {{ $t('Panels.ExtruderControlPanel.ExtruderTempTooLow') }}
                                             {{ minExtrudeTemp }} °C
+                                        </span>
+                                        <span v-show="tooLargeExtrusion">
+                                            {{ $t('Panels.ExtruderControlPanel.TooLargeExtrusion') }}
+                                            <br />
+                                            {{ $t('Panels.ExtruderControlPanel.Requested') }}:
+                                            {{ feedamount * extrudeFactor }} mm
+                                            <br />
+                                            {{ $t('Panels.ExtruderControlPanel.Allowed') }}:
+                                            {{ maxExtrudeOnlyDistance }} mm
                                         </span>
                                     </v-tooltip>
                                 </div>
@@ -465,8 +499,12 @@ export default class ExtruderControlPanel extends Mixins(BaseMixin) {
         return this.$store.state.printer.configfile?.settings?.[this.activeExtruder]?.max_extrude_only_distance ?? 50
     }
 
+    get tooLargeExtrusion(): boolean {
+        return this.feedamount * this.extrudeFactor > this.maxExtrudeOnlyDistance
+    }
+
     get extrudedLength(): number {
-        return Math.round(this.feedamount * (this.filamentDiameter / this.nozzleDiameter))
+        return Math.round(this.feedamount * this.extrudeFactor * (this.filamentDiameter / this.nozzleDiameter))
     }
 
     get volumetricFlow(): number {

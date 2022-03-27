@@ -415,7 +415,10 @@
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
             "Headline": "Extruder",
-            "Retract": "Retract"
+            "Retract": "Retract",
+            "TooLargeExtrusion": "Extrusion too large!",
+            "Requested": "Requested",
+            "Allowed": "Allowed"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",
