@@ -42,7 +42,7 @@
         <the-update-dialog></the-update-dialog>
         <the-editor></the-editor>
         <the-timelapse-rendering-snackbar></the-timelapse-rendering-snackbar>
-        <announcements-wrapper></announcements-wrapper>
+        <the-announcements-wrapper></the-announcements-wrapper>
     </v-app>
 </template>
 
@@ -58,7 +58,7 @@ import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import TheEditor from '@/components/TheEditor.vue'
 import { panelToolbarHeight, topbarHeight, navigationItemHeight } from '@/store/variables'
 import TheTimelapseRenderingSnackbar from '@/components/TheTimelapseRenderingSnackbar.vue'
-import AnnouncementsWrapper from '@/components/announcements/AnnouncementsWrapper.vue'
+import TheAnnouncementsWrapper from '@/components/announcements/TheAnnouncementsWrapper.vue'
 
 @Component({
     components: {
@@ -69,7 +69,7 @@ import AnnouncementsWrapper from '@/components/announcements/AnnouncementsWrappe
         TheUpdateDialog,
         TheTopbar,
         TheSidebar,
-        AnnouncementsWrapper,
+        TheAnnouncementsWrapper,
     },
     metaInfo() {
         const title = this.$store.getters['getTitle']
