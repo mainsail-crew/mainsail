@@ -171,3 +171,12 @@ export interface PrinterStateMcu {
         measured_max_temp: number | null
     }
 }
+
+export interface PrinterStateExtruder {
+    key: string
+    name: string
+    filamentDiameter: number
+    minExtrudeTemp: number
+    nozzleDiameter: number
+    maxExtrudeOnlyDistance: number
+}
