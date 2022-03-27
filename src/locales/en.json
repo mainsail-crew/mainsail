@@ -414,7 +414,7 @@
             "ExtrusionFactor": "Extrusion factor",
             "ExtrusionFeedrate": "Extrusion Feedrate",
             "FilamentLength": "Filament Length",
-            "Headline": "Extruder Controls",
+            "Headline": "Extruder",
             "Retract": "Retract"
         },
         "FarmPrinterPanel": {

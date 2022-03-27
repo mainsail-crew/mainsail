@@ -411,7 +411,7 @@
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
-            "Headline": "Extruder-Steuerung",
+            "Headline": "Extruder",
             "Retract": "Rückzug"
         },
         "FarmPrinterPanel": {
