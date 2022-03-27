@@ -36,7 +36,7 @@
                         text
                         small
                         plain
-                        class="pl-2 pr-0"
+                        class="px-2"
                         @click="saveZOffset">
                         <v-icon small>{{ mdiContentSave }}</v-icon>
                         <span class="ml-1">{{ $t('Panels.ZoffsetPanel.Save') }}</span>
