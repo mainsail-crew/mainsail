@@ -91,30 +91,49 @@
                 </v-list>
             </v-menu>
         </template>
-        <!-- MOVE TO CONTROL -->
-        <move-to-control class="py-0 pt-3"></move-to-control>
-        <!-- AXIS CONTROL -->
-        <v-container>
-            <component :is="`${controlStyle}-control`"></component>
-        </v-container>
-        <!-- Z-OFFSET CONTROL -->
-        <v-divider v-if="displayZOffsetStandby || ['printing', 'paused'].includes(printer_state)"></v-divider>
-        <zoffset-control
-            v-if="displayZOffsetStandby || ['printing', 'paused'].includes(printer_state)"></zoffset-control>
-        <!-- SPEED FACTOR STYLE -->
-        <v-divider></v-divider>
-        <tool-slider
-            :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-            :icon="mdiSpeedometer"
-            :target="speedFactor"
-            :min="1"
-            :max="200"
-            :multi="100"
-            :step="5"
-            :dynamic-range="true"
-            :has-input-field="true"
-            command="M220"
-            attribute-name="S"></tool-slider>
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width <= 300,
+                medium: (el) => el.width > 300 && el.width <= 500,
+                large: (el) => el.width > 685,
+                circleLarge: (el) => el.width > 645 && controlStyle === 'circle',
+            }">
+            <template #default="{ el }">
+                <!-- TODO achieve full responsiveness -->
+                <!-- MOVE TO CONTROL -->
+                <move-to-control class="py-0 pt-3"></move-to-control>
+                <!-- AXIS CONTROL -->
+                <v-container>
+                    <component :is="`${controlStyle}-control`"></component>
+                </v-container>
+                <!-- Z-OFFSET CONTROL -->
+                <v-divider></v-divider>
+                <zoffset-control></zoffset-control>
+                <!-- SPEED FACTOR STYLE -->
+                <v-divider></v-divider>
+                <tool-slider
+                    :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
+                    :icon="mdiSpeedometer"
+                    :target="speedFactor"
+                    :min="1"
+                    :max="200"
+                    :multi="100"
+                    :step="5"
+                    :dynamic-range="true"
+                    :has-input-field="true"
+                    command="M220"
+                    attribute-name="S"></tool-slider>
+                <div class="text-center">
+                    <v-divider></v-divider>
+                    <span>
+                        {{ `small: ${el.is.small} ` }}
+                        {{ ` medium: ${el.is.medium} ` }}
+                        {{ ` large: ${el.is.large}` }}
+                        {{ ` clarge: ${el.is.circleLarge}` }}
+                    </span>
+                </div>
+            </template>
+        </responsive>
     </panel>
 </template>
 
@@ -127,6 +146,7 @@ import ControlMixin from '@/components/mixins/control'
 import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
@@ -138,6 +158,7 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown,
         CrossControl,
         MoveToControl,
         Panel,
+        Responsive,
         ToolSlider,
         ZoffsetControl,
     },
@@ -156,10 +177,6 @@ export default class ToolheadControlPanel extends Mixins(BaseMixin, ControlMixin
 
     get actionButton(): string {
         return this.$store.state.gui.control.actionButton ?? this.defaultActionButton
-    }
-
-    get displayZOffsetStandby() {
-        return this.$store.state.gui.control.displayZOffsetStandby
     }
 
     get speedFactor(): number {
