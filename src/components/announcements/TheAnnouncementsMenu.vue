@@ -6,11 +6,15 @@
         :close-on-click="true"
         :close-on-content-click="false"
         origin="center center"
-        transition="scale-transition">
+        transition="slide-y-transition">
         <template #activator="{ on, attrs }">
             <v-btn icon tile class="minwidth-0" v-bind="attrs" v-on="on">
-                <v-badge :content="announcements.length" :value="announcements.length > 0" :color="colorBadge" overlap>
-                    <v-icon>{{ mdiBellOutline }}</v-icon>
+                <v-badge
+                    :content="announcements.length <= 9 ? announcements.length : '9+'"
+                    :value="announcements.length > 0"
+                    :color="colorBadge"
+                    overlap>
+                    <v-icon>{{ attrs['aria-expanded'] === 'false' ? mdiBellOutline : mdiBell }}</v-icon>
                 </v-badge>
             </v-btn>
         </template>
@@ -48,13 +52,14 @@
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
 import AnnouncementMenuEntry from '@/components/announcements/AnnouncementMenuEntry.vue'
-import { mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
+import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
 import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 
 @Component({
     components: { AnnouncementMenuEntry },
 })
 export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
+    mdiBell = mdiBell
     mdiBellOutline = mdiBellOutline
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
@@ -67,7 +72,7 @@ export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     }
 
     get colorBadge() {
-        return this.existsCriticalAnnouncements ? 'error' : 'primary'
+        return this.existsCriticalAnnouncements ? 'warning' : 'primary'
     }
 
     dismissAll() {
