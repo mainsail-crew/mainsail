@@ -2,8 +2,8 @@
     <v-container>
         <responsive
             :breakpoints="{
-                small: (el) => el.width <= 300,
-                medium: (el) => el.width > 300 && el.width <= 500,
+                small: (el) => el.width <= 350,
+                medium: (el) => el.width > 350 && el.width <= 500,
             }">
             <template #default="{ el }">
                 <v-row>
