@@ -4,6 +4,14 @@ import {
     ServerHistoryStateAllPrintStatusEntry,
     ServerHistoryStateJob,
 } from '@/store/server/history/types'
+import {
+    mdiAlertCircleOutline,
+    mdiAlertOutline,
+    mdiCheckboxMarkedCircleOutline,
+    mdiCloseCircleOutline,
+    mdiProgressClock,
+} from '@mdi/js'
+import i18n from '@/plugins/i18n'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerHistoryState, any> = {
@@ -71,6 +79,10 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) output[index].value += 1
             else {
+                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                    : current.status
+
                 const itemStyle = {
                     opacity: 0.9,
                     color: '#424242',
@@ -95,8 +107,9 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 
                 output.push({
                     name: current.status,
+                    displayName,
                     value: 1,
-                    itemStyle: itemStyle,
+                    itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
                     label: {
                         color: '#fff',
@@ -115,6 +128,9 @@ export const getters: GetterTree<ServerHistoryState, any> = {
             const index = output.findIndex((element) => element.name === current.status)
             if (index !== -1) output[index].value += 1
             else {
+                const displayName = i18n.te(`History.StatusValues.${current.status}`, 'en')
+                    ? i18n.t(`History.StatusValues.${current.status}`).toString()
+                    : current.status
                 const itemStyle = {
                     opacity: 0.9,
                     color: '#424242',
@@ -139,6 +155,7 @@ export const getters: GetterTree<ServerHistoryState, any> = {
 
                 output.push({
                     name: current.status,
+                    displayName,
                     value: 1,
                     itemStyle: itemStyle,
                     showInTable: !rootState.gui?.view.history.hidePrintStatus.includes(current.status),
@@ -259,14 +276,14 @@ export const getters: GetterTree<ServerHistoryState, any> = {
     getPrintStatusChipIcon: () => (status: string) => {
         switch (status) {
             case 'in_progress':
-                return 'mdi-progress-clock'
+                return mdiProgressClock
             case 'completed':
-                return 'mdi-checkbox-marked-circle-outline'
+                return mdiCheckboxMarkedCircleOutline
             case 'cancelled':
-                return 'mdi-close-circle-outline'
+                return mdiCloseCircleOutline
 
             default:
-                return 'mdi-alert-outline'
+                return mdiAlertOutline
         }
     },
 

@@ -69,9 +69,11 @@
                 :title="$t('Settings.GeneralTab.Backup')"
                 card-class="mainsail-backup-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogBackupMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogBackupMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -118,9 +120,11 @@
                 :title="$t('Settings.GeneralTab.FactoryReset')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogResetMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogResetMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -182,9 +186,11 @@
                 :title="$t('Settings.GeneralTab.Restore')"
                 card-class="factory-reset-dialog"
                 :margin-bottom="false"
-                icon="mdi-help-circle">
+                :icon="mdiHelpCircle">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRestoreMainsail = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRestoreMainsail = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-row>
@@ -224,11 +230,15 @@ import BaseMixin from '@/components/mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import Panel from '@/components/ui/Panel.vue'
 import Vue from 'vue'
+import { mdiCloseThick, mdiHelpCircle } from '@mdi/js'
 
 @Component({
     components: { Panel, SettingsRow },
 })
 export default class SettingsGeneralTab extends Mixins(BaseMixin) {
+    mdiHelpCircle = mdiHelpCircle
+    mdiCloseThick = mdiCloseThick
+
     private dialogBackupMainsail = false
     private dialogResetMainsail = false
     private dialogRestoreMainsail = false
@@ -340,8 +350,8 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     get calcEstimateItems() {
         return [
-            { value: 'file', text: 'File' },
-            { value: 'filament', text: 'Filament' },
+            { value: 'file', text: this.$t('Settings.GeneralTab.EstimateValues.File') },
+            { value: 'filament', text: this.$t('Settings.GeneralTab.EstimateValues.Filament') },
         ]
     }
 
@@ -355,9 +365,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     get calcEtaTimeItems() {
         return [
-            { value: 'file', text: 'File' },
-            { value: 'filament', text: 'Filament' },
-            { value: 'slicer', text: 'Slicer' },
+            { value: 'file', text: this.$t('Settings.GeneralTab.EstimateValues.File') },
+            { value: 'filament', text: this.$t('Settings.GeneralTab.EstimateValues.Filament') },
+            { value: 'slicer', text: this.$t('Settings.GeneralTab.EstimateValues.Slicer') },
         ]
     }
 

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { ActionTree } from 'vuex'
 import { SocketState } from '@/store/socket/types'
 import { RootState } from '@/store/types'
+import { v4 as uuidv4 } from 'uuid'
 
 export const actions: ActionTree<SocketState, RootState> = {
     reset({ commit }) {
@@ -66,7 +67,7 @@ export const actions: ActionTree<SocketState, RootState> = {
                 break
 
             case 'notify_proc_stat_update':
-                commit('server/setProcStats', payload.params[0], { root: true })
+                dispatch('server/updateProcStats', payload.params[0], { root: true })
                 break
 
             case 'notify_cpu_throttled':

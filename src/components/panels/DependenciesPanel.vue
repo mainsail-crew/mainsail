@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="socketIsConnected && dependencies.length"
-        icon="mdi-alert-circle"
+        :icon="mdiAlertCircle"
         :title="$tc('Panels.DependenciesPanel.Dependency', dependencies.length) + ' (' + dependencies.length + ')'"
         :collapsible="true"
         card-class="dependencies-panel"
@@ -31,10 +31,12 @@ import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiAlertCircle } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class DependenciesPanel extends Mixins(BaseMixin) {
+    mdiAlertCircle = mdiAlertCircle
     get dependencies() {
         return this.$store.getters['getDependencies'] ?? []
     }

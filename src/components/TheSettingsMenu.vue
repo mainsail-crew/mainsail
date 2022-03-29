@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-btn icon tile @click="showSettings = true">
-            <v-icon>mdi-cogs</v-icon>
+            <v-icon>{{ mdiCogs }}</v-icon>
         </v-btn>
         <v-dialog
             v-model="showSettings"
@@ -12,13 +12,15 @@
             @keydown.esc="showSettings = false">
             <panel
                 :title="$t('Settings.InterfaceSettings')"
-                icon="mdi-cogs"
+                :icon="mdiCogs"
                 card-class="settings-menu-dialog"
                 :margin-bottom="false"
                 style="overflow: hidden"
                 :height="isMobile ? 0 : 548">
                 <template #buttons>
-                    <v-btn icon tile @click="showSettings = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="showSettings = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <template v-if="isMobile">
                     <v-tabs v-model="activeTab" :center-active="true" :show-arrows="true">
@@ -80,6 +82,22 @@ import SettingsEditorTab from '@/components/settings/SettingsEditorTab.vue'
 import SettingsTimelapseTab from '@/components/settings/SettingsTimelapseTab.vue'
 
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiCloseThick,
+    mdiCodeTags,
+    mdiCog,
+    mdiCogs,
+    mdiConsoleLine,
+    mdiFileDocumentEditOutline,
+    mdiFire,
+    mdiMonitorDashboard,
+    mdiPalette,
+    mdiPrinter3d,
+    mdiTimelapse,
+    mdiTune,
+    mdiVideo3d,
+    mdiWebcam,
+} from '@mdi/js'
 @Component({
     components: {
         Panel,
@@ -101,6 +119,12 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     private showSettings = false
     private activeTab = 'general'
 
+    /**
+     * Icons
+     */
+    mdiCloseThick = mdiCloseThick
+    mdiCogs = mdiCogs
+
     declare $refs: {
         settingsScroll: any
     }
@@ -108,57 +132,57 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
     get tabTitles() {
         const tabs = [
             {
-                icon: 'mdi-cog',
+                icon: mdiCog,
                 name: 'general',
                 title: this.$t('Settings.GeneralTab.General'),
             },
             {
-                icon: 'mdi-palette',
+                icon: mdiPalette,
                 name: 'ui-settings',
                 title: this.$t('Settings.UiSettingsTab.UiSettings'),
             },
             {
-                icon: 'mdi-monitor-dashboard',
+                icon: mdiMonitorDashboard,
                 name: 'dashboard',
                 title: this.$t('Settings.DashboardTab.Dashboard'),
             },
             {
-                icon: 'mdi-webcam',
+                icon: mdiWebcam,
                 name: 'webcams',
                 title: this.$t('Settings.WebcamsTab.Webcams'),
             },
             {
-                icon: 'mdi-code-tags',
+                icon: mdiCodeTags,
                 name: 'macros',
                 title: this.$t('Settings.MacrosTab.Macros'),
             },
             {
-                icon: 'mdi-tune',
+                icon: mdiTune,
                 name: 'control',
                 title: this.$t('Settings.ControlTab.Control'),
             },
             {
-                icon: 'mdi-console-line',
+                icon: mdiConsoleLine,
                 name: 'console',
                 title: this.$t('Settings.ConsoleTab.Console'),
             },
             {
-                icon: 'mdi-fire',
+                icon: mdiFire,
                 name: 'presets',
                 title: this.$t('Settings.PresetsTab.PreheatPresets'),
             },
             {
-                icon: 'mdi-printer-3d',
+                icon: mdiPrinter3d,
                 name: 'remote-printers',
                 title: this.$t('Settings.RemotePrintersTab.RemotePrinters'),
             },
             {
-                icon: 'mdi-video-3d',
+                icon: mdiVideo3d,
                 name: 'g-code-viewer',
                 title: this.$t('Settings.GCodeViewerTab.GCodeViewer'),
             },
             {
-                icon: 'mdi-file-document-edit-outline',
+                icon: mdiFileDocumentEditOutline,
                 name: 'editor',
                 title: this.$t('Settings.EditorTab.Editor'),
             },
@@ -166,7 +190,7 @@ export default class TheSettingsMenu extends Mixins(BaseMixin) {
 
         if (this.moonrakerComponents.includes('timelapse')) {
             tabs.push({
-                icon: 'mdi-timelapse',
+                icon: mdiTimelapse,
                 name: 'timelapse',
                 title: this.$t('Settings.TimelapseTab.Timelapse'),
             })

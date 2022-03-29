@@ -24,7 +24,7 @@
             <v-menu offset-y :close-on-content-click="false">
                 <template #activator="{ on, attrs }">
                     <v-btn small :color="color" v-bind="attrs" class="minwidth-0 px-1 btnMacroMenu" v-on="on">
-                        <v-icon>mdi-menu-down</v-icon>
+                        <v-icon>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card max-width="200">
@@ -40,7 +40,7 @@
                                     outlined
                                     dense
                                     clearable
-                                    clear-icon="mdi-refresh"
+                                    :clear-icon="mdiRefresh"
                                     @keyup.enter="sendWithParams"></v-text-field>
                             </v-col>
                         </v-row>
@@ -63,6 +63,7 @@ import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiMacrosStateMacrogroupMacro } from '@/store/gui/macros/types'
+import { mdiMenuDown, mdiRefresh } from '@mdi/js'
 
 interface param {
     type: 'int' | 'double' | 'string' | null
@@ -76,10 +77,17 @@ interface params {
 
 @Component
 export default class MacroButton extends Mixins(BaseMixin) {
+    /**
+     * Icons
+     */
+    mdiMenuDown = mdiMenuDown
+    mdiRefresh = mdiRefresh
+
     private paramArray: string[] = []
     private params: params = {}
 
-    @Prop({ required: true }) declare readonly macro: GuiMacrosStateMacrogroupMacro
+    @Prop({ required: true })
+    declare readonly macro: GuiMacrosStateMacrogroupMacro
     @Prop({ default: 'primary' }) declare readonly color: string
 
     get klipperMacro() {
@@ -110,15 +118,23 @@ export default class MacroButton extends Mixins(BaseMixin) {
     }
 
     doSendMacro(gcode: string) {
-        this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
+        this.$store.dispatch('server/addEvent', {
+            message: gcode,
+            type: 'command',
+        })
         this.$socket.emit('printer.gcode.script', { script: gcode }, { loading: 'macro_' + gcode })
     }
 
     sendWithParams() {
         let params: string[] = []
         this.paramArray.forEach((paramname: string) => {
-            if (this.params[paramname].value !== null && this.params[paramname].value !== '')
-                params.push(paramname + '=' + this.params[paramname].value)
+            if (this.params[paramname].value !== null && this.params[paramname].value !== '') {
+                let tmp: string = paramname
+                if (paramname.length === 1) tmp += this.params[paramname].value
+                else tmp += '=' + this.params[paramname].value
+
+                params.push(tmp)
+            }
         })
 
         const gcode = this.macro.name + ' ' + params.join(' ')

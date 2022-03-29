@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
@@ -12,14 +13,32 @@ export const actions: ActionTree<ServerState, RootState> = {
         dispatch('updateManager/reset')
     },
 
-    init() {
+    async init({ dispatch }) {
         window.console.debug('init Server')
 
-        Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
-        Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
-        Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
-        Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
-        Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+        await dispatch('identify')
+        await Vue.$socket.emit('server.info', {}, { action: 'server/initServerInfo' })
+        await Vue.$socket.emit('server.config', {}, { action: 'server/initServerConfig' })
+        await Vue.$socket.emit('machine.system_info', {}, { action: 'server/initSystemInfo' })
+        await Vue.$socket.emit('machine.proc_stats', {}, { action: 'server/initProcStats' })
+        await Vue.$socket.emit('server.database.list', { root: 'config' }, { action: 'server/checkDatabases' })
+    },
+
+    identify({ rootState }) {
+        Vue.$socket.emit(
+            'server.connection.identify',
+            {
+                client_name: 'mainsail',
+                version: rootState.packageVersion,
+                type: 'web',
+                url: 'https://github.com/mainsail-crew/mainsail',
+            },
+            { action: 'server/setConnectionId' }
+        )
+    },
+
+    setConnectionId({ commit }, payload) {
+        commit('setConnectionId', payload.connection_id)
     },
 
     checkDatabases({ dispatch, commit, rootState }, payload) {
@@ -65,6 +84,13 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     initProcStats({ commit }, payload) {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
+    },
+
+    updateProcStats({ commit }, payload) {
+        if ('cpu_temp' in payload) commit('setCpuTemp', payload.cpu_temp)
+        if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
+        if ('network' in payload) commit('setNetworkStats', payload.network)
+        if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
     },
 
     setKlippyReady({ dispatch, state }) {
@@ -185,7 +211,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    addEvent({ commit, rootGetters }, payload) {
+    async addEvent({ commit, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -213,12 +239,20 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
 
-            commit('addEvent', {
+            await commit('addEvent', {
                 date: new Date(),
                 message: message,
                 formatMessage: formatMessage,
                 type: type,
             })
+
+            if (
+                ['error', 'response'].includes(type) &&
+                !['/', '/console'].includes(router.currentRoute.path) &&
+                message.startsWith('!! ')
+            ) {
+                Vue.$toast.error(formatMessage)
+            }
         }
     },
 

@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui && macros.length > 0"
-        icon="mdi-code-tags"
+        :icon="mdiCodeTags"
         :title="$t('Panels.MacrosPanel.Headline')"
         :collapsible="true"
         card-class="macros-panel">
@@ -25,10 +25,13 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import MacroButton from '@/components/inputs/MacroButton.vue'
+import { mdiCodeTags } from '@mdi/js'
 @Component({
     components: { MacroButton, Panel },
 })
 export default class MacrosPanel extends Mixins(BaseMixin) {
+    mdiCodeTags = mdiCodeTags
+
     get macros() {
         return this.$store.getters['printer/getMacros']
     }

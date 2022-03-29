@@ -25,8 +25,7 @@ export const actions: ActionTree<GuiState, RootState> = {
         const mainsailUrl = baseUrl + '?namespace=mainsail'
 
         if ('remoteprinters' in payload.value) {
-            if (!rootState.socket?.remoteMode)
-                dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
+            if (!rootState.remoteMode) dispatch('remoteprinters/initStore', payload.value.remoteprinters.printers)
             delete payload.value.remoteprinters
         }
 
@@ -48,6 +47,20 @@ export const actions: ActionTree<GuiState, RootState> = {
             })
 
             delete payload.value.presets
+        }
+
+        //update nonExpandPanels from V2.1.x to V2.2.0
+        if (
+            'dashboard' in payload.value &&
+            'nonExpandPanels' in payload.value.dashboard &&
+            Array.isArray(payload.value.dashboard.nonExpandPanels)
+        ) {
+            await fetch(mainsailUrl + '&key=dashboard.nonExpandPanels', { method: 'DELETE' })
+            dispatch('saveSetting', {
+                name: 'dashboard.nonExpandPanels.widescreen',
+                value: payload.value.dashboard.nonExpandPanels,
+            })
+            delete payload.value.dashboard.nonExpandPanels
         }
 
         commit('setData', payload.value)
@@ -352,12 +365,12 @@ export const actions: ActionTree<GuiState, RootState> = {
     },
 
     saveExpandPanel({ commit, dispatch, state }, payload) {
-        if (!payload.value) commit('addClosePanel', { name: payload.name })
-        else commit('removeClosePanel', { name: payload.name })
+        if (!payload.value) commit('addClosePanel', { name: payload.name, viewport: payload.viewport })
+        else commit('removeClosePanel', { name: payload.name, viewport: payload.viewport })
 
         dispatch('updateSettings', {
-            keyName: 'dashboard.nonExpandPanels',
-            newVal: state.dashboard.nonExpandPanels,
+            keyName: `dashboard.nonExpandPanels.${payload.viewport}`,
+            newVal: state.dashboard.nonExpandPanels[payload.viewport],
         })
     },
 
@@ -384,6 +397,18 @@ export const actions: ActionTree<GuiState, RootState> = {
         dispatch('saveSetting', {
             name: 'dashboard.' + name,
             value: newVal,
+        })
+    },
+
+    updateGcodeviewerCache({ dispatch, state }, payload) {
+        const klipperCache = (state.gcodeViewer.klipperCache as { [key: string]: any }) ?? {}
+
+        Object.keys(payload).forEach((key) => {
+            const value = payload[key]
+            const oldValue = key in klipperCache ? klipperCache[key] : null
+
+            if (JSON.stringify(value) !== JSON.stringify(oldValue))
+                dispatch('saveSetting', { name: `gcodeViewer.klipperCache.${key}`, value })
         })
     },
 }

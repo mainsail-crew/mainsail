@@ -1,9 +1,10 @@
 <style lang="scss" scoped>
-.btn-collapsible i::before {
+.btn-collapsible > * {
+    will-change: transform;
     transition: transform 500ms;
 }
 
-.icon-rotate-180:before {
+.icon-rotate-180 {
     transform: rotate(180deg);
 }
 </style>
@@ -31,20 +32,25 @@
 import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import { mdiMinus, mdiPlus } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
-    @Prop({ required: false, default: 'mdi-minus' }) declare readonly iconExpanded: string | null
-    @Prop({ required: false, default: 'mdi-plus' }) declare readonly iconCollapsed: string | null
+    @Prop({ required: false, default: mdiMinus }) declare readonly iconExpanded: string | null
+    @Prop({ required: false, default: mdiPlus }) declare readonly iconCollapsed: string | null
     @Prop({ required: true, default: '' }) declare readonly title: string
     @Prop({ required: true }) declare readonly subPanelClass: string
 
     get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass)
+        return this.$store.getters['gui/getPanelExpand'](this.subPanelClass, this.viewport)
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.subPanelClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', {
+            name: this.subPanelClass,
+            value: newVal,
+            viewport: this.viewport,
+        })
     }
 }
 </script>

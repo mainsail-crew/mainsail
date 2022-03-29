@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="failedComponents.length || warnings.length"
-        icon="mdi-alert-circle"
+        :icon="mdiAlertCircle"
         :title="$t('Panels.MoonrakerStatePanel.MoonrakerWarnings')"
         :collapsible="true"
         card-class="moonraker-state-panel"
@@ -27,7 +27,7 @@
         <v-divider class="mt-3"></v-divider>
         <v-card-actions class="justify-start">
             <v-btn small :href="apiUrl + '/server/files/moonraker.log'" target="_blank" class="ml-2 primary--text">
-                <v-icon class="mr-2" small>mdi-download</v-icon>
+                <v-icon class="mr-2" small>{{ mdiDownload }}</v-icon>
                 {{ $t('Panels.MoonrakerStatePanel.DownloadLog') }}
             </v-btn>
         </v-card-actions>
@@ -39,10 +39,14 @@ import Component from 'vue-class-component'
 import BaseMixin from '../mixins/base'
 import { Mixins } from 'vue-property-decorator'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiAlertCircle, mdiDownload } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class MoonrakerStatePanel extends Mixins(BaseMixin) {
+    mdiDownload = mdiDownload
+    mdiAlertCircle = mdiAlertCircle
+
     get failedComponents() {
         return this.$store.state.server.failed_components ?? []
     }

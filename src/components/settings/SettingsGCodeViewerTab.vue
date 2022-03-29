@@ -83,9 +83,9 @@
                             @update:color="updateColorValue('minFeedColor', $event)"></v-color-picker>
                     </v-menu>
                     <v-text-field
+                        v-model="minFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
                         dense
-                        v-model="minFeed"
                         hide-details="auto"
                         outlined
                         suffix="mm/s"
@@ -111,9 +111,9 @@
                             @update:color="updateColorValue('maxFeedColor', $event)"></v-color-picker>
                     </v-menu>
                     <v-text-field
+                        v-model="maxFeed"
                         :rules="[(v) => v > 0 || 'Minimum speed is 1']"
                         dense
-                        v-model="maxFeed"
                         hide-details="auto"
                         outlined
                         suffix="mm/s"

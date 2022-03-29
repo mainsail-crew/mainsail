@@ -5,14 +5,14 @@
         <panel
             :title="$t('Machine.ConfigFilesPanel.ConfigFiles')"
             card-class="machine-configfiles-panel"
-            icon="mdi-information">
+            :icon="mdiInformation">
             <v-card-text>
                 <v-row>
                     <v-col class="col-12 col-lg pr-lg-0">
                         <v-select
                             v-model="root"
                             :items="registeredDirectories"
-                            label="Root"
+                            :label="$t('Machine.ConfigFilesPanel.Root')"
                             outlined
                             hide-details
                             dense
@@ -37,7 +37,7 @@
                         <v-menu offset-y left :title="$t('Machine.ConfigFilesPanel.SetupCurrentList')" attach>
                             <template #activator="{ on, attrs }">
                                 <v-btn class="px-2 minwidth-0 ml-3" v-bind="attrs" v-on="on">
-                                    <v-icon>mdi-cog</v-icon>
+                                    <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -117,7 +117,9 @@
                         @dragover="dragOverFilelist($event, { isDirectory: true, filename: '..' })"
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, { isDirectory: true, filename: '..' })">
-                        <td class="pr-0 text-center" style="width: 32px"><v-icon>mdi-folder-upload</v-icon></td>
+                        <td class="pr-0 text-center" style="width: 32px">
+                            <v-icon>{{ mdiFolderUpload }}</v-icon>
+                        </td>
                         <td class=" " colspan="4">..</td>
                     </tr>
                 </template>
@@ -137,8 +139,8 @@
                         @dragleave="dragLeaveFilelist"
                         @drop.prevent.stop="dragDropFilelist($event, item)">
                         <td class="pr-0 text-center" style="width: 32px">
-                            <v-icon v-if="item.isDirectory">mdi-folder</v-icon>
-                            <v-icon v-if="!item.isDirectory">mdi-file</v-icon>
+                            <v-icon v-if="item.isDirectory">{{ mdiFolder }}</v-icon>
+                            <v-icon v-if="!item.isDirectory">{{ mdiFile }}</v-icon>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
                         <td class="text-no-wrap text-right">
@@ -152,7 +154,7 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="clickRow(contextMenu.item, true)">
-                    <v-icon class="mr-1">mdi-file-document-edit-outline</v-icon>
+                    <v-icon class="mr-1">{{ mdiFileDocumentEditOutline }}</v-icon>
                     {{
                         contextMenu.item.permissions.includes('w')
                             ? $t('Machine.ConfigFilesPanel.EditFile')
@@ -160,31 +162,31 @@
                     }}
                 </v-list-item>
                 <v-list-item v-if="!contextMenu.item.isDirectory" @click="downloadFile">
-                    <v-icon class="mr-1">mdi-cloud-download</v-icon>
+                    <v-icon class="mr-1">{{ mdiCloudDownload }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Download') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameFile(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="renameDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-rename-box</v-icon>
+                    <v-icon class="mr-1">{{ mdiRenameBox }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Rename') }}
                 </v-list-item>
                 <v-list-item
                     v-if="!contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="removeFile">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.isDirectory && contextMenu.item.permissions.includes('w')"
                     @click="deleteDirectory(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('Machine.ConfigFilesPanel.Delete') }}
                 </v-list-item>
             </v-list>
@@ -212,7 +214,7 @@
                             dialogImage.item.url = null
                             dialogImage.item.svg = null
                         ">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <div class="d-flex justify-center" style="max-height: calc(var(--app-height) - 64px); overflow: auto">
@@ -231,7 +233,9 @@
                 card-class="maschine-configfiles-create-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogCreateFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogCreateFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -258,7 +262,9 @@
                 card-class="maschine-configfiles-rename-file-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogRenameFile.show = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogRenameFile.show = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <v-text-field
@@ -286,7 +292,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogCreateDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -315,7 +321,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogRenameDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -344,7 +350,7 @@
                 :margin-bottom="false">
                 <template #buttons>
                     <v-btn icon tile @click="dialogDeleteDirectory.show = false">
-                        <v-icon>mdi-close-thick</v-icon>
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
                     </v-btn>
                 </template>
                 <v-card-text>
@@ -378,7 +384,7 @@
             <v-progress-linear class="mt-2" :value="uploadSnackbar.percent"></v-progress-linear>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelUpload">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
@@ -393,6 +399,23 @@ import { FileStateFile } from '@/store/files/types'
 import axios from 'axios'
 import Panel from '@/components/ui/Panel.vue'
 import { hiddenRootDirectories } from '@/store/variables'
+import {
+    mdiFilePlus,
+    mdiFileUpload,
+    mdiFolderPlus,
+    mdiInformation,
+    mdiRefresh,
+    mdiClose,
+    mdiCog,
+    mdiFolder,
+    mdiFolderUpload,
+    mdiFile,
+    mdiFileDocumentEditOutline,
+    mdiCloudDownload,
+    mdiRenameBox,
+    mdiDelete,
+    mdiCloseThick,
+} from '@mdi/js'
 
 interface contextMenu {
     shown: boolean
@@ -447,6 +470,18 @@ interface draggingFile {
     components: { Panel },
 })
 export default class ConfigFilesPanel extends Mixins(BaseMixin) {
+    mdiInformation = mdiInformation
+    mdiClose = mdiClose
+    mdiCog = mdiCog
+    mdiFolder = mdiFolder
+    mdiFolderUpload = mdiFolderUpload
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
+    mdiFile = mdiFile
+    mdiCloudDownload = mdiCloudDownload
+    mdiRenameBox = mdiRenameBox
+    mdiDelete = mdiDelete
+    mdiCloseThick = mdiCloseThick
+
     sortFiles = sortFiles
     formatFilesize = formatFilesize
     formatDate = formatDate
@@ -549,7 +584,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.UploadFile'),
                 color: 'grey darken-3',
-                icon: 'mdi-file-upload',
+                icon: mdiFileUpload,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.uploadFileButton,
@@ -557,7 +592,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateFile'),
                 color: 'grey darken-3',
-                icon: 'mdi-file-plus',
+                icon: mdiFilePlus,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createFile,
@@ -565,7 +600,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.CreateDirectory'),
                 color: 'grey darken-3',
-                icon: 'mdi-folder-plus',
+                icon: mdiFolderPlus,
                 loadingName: null,
                 onlyWriteable: true,
                 click: this.createDirecotry,
@@ -573,7 +608,7 @@ export default class ConfigFilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Machine.ConfigFilesPanel.RefreshDirectory'),
                 color: 'grey darken-3',
-                icon: 'mdi-refresh',
+                icon: mdiRefresh,
                 loadingName: null,
                 onlyWriteable: false,
                 click: this.refreshFileList,

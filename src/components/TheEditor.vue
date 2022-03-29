@@ -12,12 +12,12 @@
             @keydown.esc="escClose">
             <panel
                 card-class="editor-dialog"
-                :icon="isWriteable ? ' mdi-file-document-edit-outline' : 'mdi-file-document-outline'"
+                :icon="isWriteable ? mdiFileDocumentEditOutline : mdiFileDocumentOutline"
                 :title="
                     (filepath ? filepath.slice(1) + '/' : '') +
                     filename +
                     ' ' +
-                    (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
+                    (isWriteable ? changedOutput : '(' + $t('Editor.FileReadOnly') + ')')
                 ">
                 <template #buttons>
                     <v-btn
@@ -27,7 +27,7 @@
                         href="https://www.klipper3d.org/Config_Reference.html"
                         target="_blank"
                         class="d-none d-md-flex">
-                        <v-icon small class="mr-1">mdi-help</v-icon>
+                        <v-icon small class="mr-1">{{ mdiHelp }}</v-icon>
                         {{ $t('Editor.ConfigReference') }}
                     </v-btn>
                     <v-btn
@@ -36,7 +36,7 @@
                         tile
                         :color="restartServiceName === null ? 'primary' : ''"
                         @click="save(null)">
-                        <v-icon small class="mr-1">mdi-content-save</v-icon>
+                        <v-icon small class="mr-1">{{ mdiContentSave }}</v-icon>
                         <span class="d-none d-sm-inline">{{ $t('Editor.SaveClose') }}</span>
                     </v-btn>
                     <v-btn
@@ -46,10 +46,12 @@
                         tile
                         class="d-none d-sm-flex"
                         @click="save(restartServiceName)">
-                        <v-icon small class="mr-1">mdi-restart</v-icon>
+                        <v-icon small class="mr-1">{{ mdiRestart }}</v-icon>
                         {{ $t('Editor.SaveRestart') }}
                     </v-btn>
-                    <v-btn icon tile @click="close"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="close">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pa-0">
                     <overlay-scrollbars style="height: calc(var(--app-height) - 48px)" :options="{}">
@@ -84,18 +86,20 @@
             </template>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" tile @click="cancelDownload">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
         <v-dialog v-model="dialogConfirmChange" persistent :width="600">
             <panel
                 card-class="editor-confirm-change-dialog"
-                icon="mdi-help-circle"
+                :icon="mdiHelpCircle"
                 :title="$t('Editor.UnsavedChanges')"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="dialogConfirmChange = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="dialogConfirmChange = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="pt-3">
                     <v-row>
@@ -125,11 +129,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize } from '@/plugins/helpers'
+import { formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
+import {
+    mdiClose,
+    mdiCloseThick,
+    mdiContentSave,
+    mdiFileDocumentOutline,
+    mdiFileDocumentEditOutline,
+    mdiHelp,
+    mdiHelpCircle,
+    mdiRestart,
+} from '@mdi/js'
+import type Codemirror from '@/components/inputs/Codemirror.vue'
 
 @Component({
     components: { Panel, CodemirrorAsync },
@@ -139,12 +154,28 @@ export default class TheEditor extends Mixins(BaseMixin) {
 
     formatFilesize = formatFilesize
 
+    /**
+     * Icons
+     */
+    mdiCloseThick = mdiCloseThick
+    mdiHelp = mdiHelp
+    mdiContentSave = mdiContentSave
+    mdiRestart = mdiRestart
+    mdiClose = mdiClose
+    mdiHelpCircle = mdiHelpCircle
+    mdiFileDocumentEditOutline = mdiFileDocumentEditOutline
+    mdiFileDocumentOutline = mdiFileDocumentOutline
+
     declare $refs: {
-        editor: any
+        editor: Codemirror
     }
 
     get changed() {
-        return this.$store.state.editor.changed ? '*' : ''
+        return this.$store.state.editor.changed ?? false
+    }
+
+    get changedOutput() {
+        return this.changed ? '*' : ''
     }
 
     get show() {
@@ -216,16 +247,24 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return null
     }
 
+    get confirmUnsavedChanges() {
+        return this.$store.state.gui.editor.confirmUnsavedChanges ?? false
+    }
+
+    get escToClose() {
+        return this.$store.state.gui.editor.escToClose ?? false
+    }
+
     cancelDownload() {
         this.$store.dispatch('editor/cancelLoad')
     }
 
     escClose() {
-        if (this.$store.state.gui.editor.escToClose) this.close()
+        if (this.escToClose) this.close()
     }
 
     close() {
-        if (this.$store.state.gui.editor.confirmUnsavedChanges) this.promptUnsavedChanges()
+        if (this.confirmUnsavedChanges) this.promptUnsavedChanges()
         else this.$store.dispatch('editor/close')
     }
 
@@ -235,7 +274,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     promptUnsavedChanges() {
-        if (!this.$store.state.editor.changed || !this.isWriteable) this.$store.dispatch('editor/close')
+        if (!this.changed || !this.isWriteable) this.$store.dispatch('editor/close')
         else this.dialogConfirmChange = true
     }
 
@@ -246,6 +285,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
             content: this.sourcecode,
             restartServiceName: restartServiceName,
         })
+    }
+
+    @Watch('changed')
+    changedChanged(newVal: boolean) {
+        if (this.confirmUnsavedChanges) {
+            if (newVal) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+            else window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        }
     }
 }
 </script>

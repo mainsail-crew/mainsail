@@ -1,7 +1,7 @@
 <template>
     <panel
         v-if="klipperReadyForGui && warnings.length"
-        icon="mdi-alert-circle"
+        :icon="mdiAlertCircle"
         :title="$t('Panels.KlipperWarningsPanel.KlipperWarnings') + ' (' + warnings.length + ')'"
         :collapsible="true"
         card-class="klipper-warnings-panel"
@@ -31,7 +31,7 @@
                 </v-col>
                 <v-col class="col-auto d-flex align-center">
                     <a :href="getDocsLink(warning)" target="_blank" class="text-decoration-none">
-                        <v-icon>mdi-information</v-icon>
+                        <v-icon>{{ mdiInformation }}</v-icon>
                     </a>
                 </v-col>
             </v-row>
@@ -39,7 +39,7 @@
         <v-divider class="mt-3"></v-divider>
         <v-card-actions class="justify-start">
             <v-btn small :href="apiUrl + '/server/files/klipper.log'" target="_blank" class="ml-2 primary--text">
-                <v-icon class="mr-2" small>mdi-download</v-icon>
+                <v-icon class="mr-2" small>{{ mdiDownload }}</v-icon>
                 {{ $t('Panels.KlipperWarningsPanel.DownloadLog') }}
             </v-btn>
         </v-card-actions>
@@ -52,10 +52,15 @@ import BaseMixin from '../mixins/base'
 import { Mixins } from 'vue-property-decorator'
 import { caseInsensitiveSort } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiAlertCircle, mdiDownload, mdiInformation } from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class KlipperWarningsPanelPanel extends Mixins(BaseMixin) {
+    mdiAlertCircle = mdiAlertCircle
+    mdiInformation = mdiInformation
+    mdiDownload = mdiDownload
+
     get warnings() {
         let warnings = this.$store.state.printer.configfile?.warnings ?? []
 
