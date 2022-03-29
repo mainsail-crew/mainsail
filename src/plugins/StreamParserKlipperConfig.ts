@@ -125,9 +125,8 @@ export const klipper_config: StreamParser<any> = {
             if (stream.match(/^(?:[A-Za-z]*_?gcode|enable):/)) {
                 state.gcode = true
             } else {
-                stream.match(/^.+?:/)
-                stream.backUp(1)
-                state.pair = true
+                stream.match(/^.+?:\s*/)
+                state.pair = !stream.eol()
             }
 
             return 'atom'
