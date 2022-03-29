@@ -1,14 +1,15 @@
-import {StreamParser, StringStream} from '@codemirror/stream-parser'
-import {gcode} from '@/plugins/StreamParserGcode'
+import { StreamParser, StringStream } from '@codemirror/stream-parser'
+import { gcode } from '@/plugins/StreamParserGcode'
 
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         const ch = stream.peek()
 
         /* comments */
-        if (stream.match(/^\s+[#;]/) || (
-            [';','#'].includes(ch ?? '') && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1)))
-        )) {
+        if (
+            stream.match(/^\s+[#;]/) ||
+            ([';', '#'].includes(ch ?? '') && (stream.pos === 0 || /\s/.test(stream.string.charAt(stream.pos - 1))))
+        ) {
             stream.skipToEnd()
             state.block = false
             state.pair = false
@@ -39,11 +40,36 @@ export const klipper_config: StreamParser<any> = {
             if (state.gcode) {
                 if (stream.sol() || stream.eol()) {
                     state.gcode = false
+                    state.gcodeZeroPos = null
                     return null
                 }
 
-                state.gcodeZeroPos = stream.pos
+                if (!state.gcodeZeroPos) {
+                    stream.eatSpace()
+                    state.gcodeZeroPos = stream.pos
+                }
 
+                if (state.klipperMacroJinja) {
+                    if (
+                        (state.klipperMacroJinjaPercent && stream.match(/^%}/)) ||
+                        (!state.klipperMacroJinjaPercent && stream.match(/^}/))
+                    ) {
+                        state.klipperMacroJinja = false
+                        state.klipperMacroJinjaPercent = false
+                        stream.eatSpace()
+                        // state.gcodeZeroPos = null
+                        return null
+                    }
+                    stream.next()
+                    return 'string'
+                }
+
+                if (stream.match(/^\s*{[%{]?/)) {
+                    state.klipperMacroJinjaPercent = stream.string.includes('{%')
+                    state.klipperMacroJinja = true
+
+                    return null
+                }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
             }
         } else {
@@ -61,7 +87,7 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinja = false
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
-                        state.gcodeZeroPos = stream.pos
+                        // state.gcodeZeroPos = stream.pos
                         return null
                     }
                     stream.next()
@@ -97,7 +123,7 @@ export const klipper_config: StreamParser<any> = {
         }
 
         if (!state.pair && !state.gcode && stream.sol()) {
-            if (stream.match(/^gcode/)) {
+            if (stream.match(/^gcode:/)) {
                 state.gcode = true
             } else {
                 stream.match(/^.+?:/)
@@ -142,7 +168,7 @@ export const klipper_config: StreamParser<any> = {
             klipperMacro: false,
             gcodeZeroPos: null,
             klipperMacroJinja: false,
-            klipperMacroJinjaPercent: false
+            klipperMacroJinjaPercent: false,
         }
     },
     languageData: {
@@ -151,12 +177,12 @@ export const klipper_config: StreamParser<any> = {
 }
 
 interface StreamParserKlipperConfigState {
-    block: boolean,
-    pair: boolean,
-    was: boolean,
-    gcode: boolean,
-    gcodeZeroPos: number | null,
-    klipperMacro: boolean,
-    klipperMacroJinja: boolean,
-    klipperMacroJinjaPercent: boolean,
+    block: boolean
+    pair: boolean
+    was: boolean
+    gcode: boolean
+    gcodeZeroPos: number | null
+    klipperMacro: boolean
+    klipperMacroJinja: boolean
+    klipperMacroJinjaPercent: boolean
 }
