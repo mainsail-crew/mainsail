@@ -17,7 +17,7 @@ export const klipper_config: StreamParser<any> = {
         }
 
         if (stream.indentation() === 0) {
-            if (ch === '[') {
+            if (stream.pos === 0 && ch === '[') {
                 state.block = true
                 stream.next()
                 return null
@@ -123,7 +123,7 @@ export const klipper_config: StreamParser<any> = {
         }
 
         if (!state.pair && !state.gcode && stream.sol()) {
-            if (stream.match(/^gcode:/)) {
+            if (stream.match(/^(?:[A-Za-z]*_?gcode|text|enable):/)) {
                 state.gcode = true
             } else {
                 stream.match(/^.+?:/)
