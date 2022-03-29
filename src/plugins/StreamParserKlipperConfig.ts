@@ -123,7 +123,7 @@ export const klipper_config: StreamParser<any> = {
         }
 
         if (!state.pair && !state.gcode && stream.sol()) {
-            if (stream.match(/^(?:[A-Za-z]*_?gcode|text|enable):/)) {
+            if (stream.match(/^(?:[A-Za-z]*_?gcode|enable):/)) {
                 state.gcode = true
             } else {
                 stream.match(/^.+?:/)
