@@ -97,7 +97,7 @@ import StatusPanel from '@/components/panels/StatusPanel.vue'
 import ToolsPanel from '@/components/panels/ToolsPanel.vue'
 import WebcamPanel from '@/components/panels/WebcamPanel.vue'
 import ZoffsetPanel from '@/components/panels/ZoffsetPanel.vue'
-import _ from 'lodash'
+import kebabCase from 'lodash.kebabcase'
 
 @Component({
     components: {
@@ -123,7 +123,7 @@ export default class PageDashboard extends Mixins(DashboardMixin) {
         const components = Object.keys(this.$options.components)
 
         components?.forEach((component) => {
-            if (component.endsWith('Panel')) output.push(_.kebabCase(component))
+            if (component.endsWith('Panel')) output.push(kebabCase(component))
         })
 
         return output
