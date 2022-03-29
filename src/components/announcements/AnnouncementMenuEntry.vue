@@ -16,7 +16,14 @@
                 <v-btn icon plain :color="alertColor" class="mb-2" @click="close">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
-                <v-btn icon plain :color="alertColor" class="pb-1" @click="expand = !expand">
+                <v-btn
+                    icon
+                    plain
+                    retain-focus-on-click
+                    :color="alertColor"
+                    class="pb-1"
+                    @click="expand = !expand"
+                    @blur="expand = false">
                     <v-icon>{{ mdiBellOffOutline }}</v-icon>
                 </v-btn>
             </v-col>
