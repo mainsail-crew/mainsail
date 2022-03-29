@@ -4,7 +4,6 @@ import { gcode } from '@/plugins/StreamParserGcode'
 export const klipper_config: StreamParser<any> = {
     token: function (stream: StringStream, state: StreamParserKlipperConfigState): string | null {
         const ch = stream.peek()
-
         /* comments */
         if (
             stream.match(/^\s+[#;]/) ||
@@ -16,13 +15,17 @@ export const klipper_config: StreamParser<any> = {
             return 'comment'
         }
 
+        if (ch !== '[' && stream.indentation() === 0 && stream.sol() && stream.match(/^[^:]+$/i)) {
+            stream.skipToEnd()
+            return null
+        }
+
         if (stream.indentation() === 0) {
             if (stream.pos === 0 && ch === '[') {
                 state.block = true
                 stream.next()
                 return null
             }
-
             if (state.block) {
                 if (!ch || ch === ']' || stream.eol()) {
                     stream.next()
@@ -36,7 +39,6 @@ export const klipper_config: StreamParser<any> = {
                     return 'namespace'
                 }
             }
-
             if (state.gcode) {
                 if (stream.sol() || stream.eol()) {
                     state.gcode = false
@@ -57,7 +59,7 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinja = false
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
-                        // state.gcodeZeroPos = null
+                        state.gcodeZeroPos = stream.pos
                         return null
                     }
                     stream.next()
@@ -67,7 +69,6 @@ export const klipper_config: StreamParser<any> = {
                 if (stream.match(/^\s*{[%{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-
                     return null
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? 0)
@@ -87,7 +88,7 @@ export const klipper_config: StreamParser<any> = {
                         state.klipperMacroJinja = false
                         state.klipperMacroJinjaPercent = false
                         stream.eatSpace()
-                        // state.gcodeZeroPos = stream.pos
+                        state.gcodeZeroPos = stream.pos
                         return null
                     }
                     stream.next()
@@ -97,7 +98,6 @@ export const klipper_config: StreamParser<any> = {
                 if (stream.match(/^\s*{[%{]?/)) {
                     state.klipperMacroJinjaPercent = stream.string.includes('{%')
                     state.klipperMacroJinja = true
-
                     return null
                 }
                 return gcode.token(stream, state, state.gcodeZeroPos ?? stream.pos)
@@ -115,7 +115,6 @@ export const klipper_config: StreamParser<any> = {
                 return null
             }
         }
-
         if (state.was && stream.indentation() === 0) {
             state.pair = false
             state.gcode = false
