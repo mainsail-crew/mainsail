@@ -97,6 +97,6 @@ Vue.directive('longpress', {
         el.addEventListener('touchend', cancel)
         el.addEventListener('touchcancel', cancel)
 
-        document.addEventListener('scroll', cancel)
+        document.addEventListener('scroll', cancel, { passive: true })
     },
 })

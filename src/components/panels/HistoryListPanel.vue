@@ -1,15 +1,17 @@
-<style lang="scss">
-.history-jobs-table {
-    th.text-start {
-        padding-right: 0 !important;
-    }
+<style>
+.history-jobs-table th {
+    white-space: nowrap;
+}
+
+.history-jobs-table th.text-start {
+    padding-right: 0 !important;
 }
 </style>
 
 <template>
     <div>
         <panel
-            icon="mdi-file-document-multiple-outline"
+            :icon="mdiFileDocumentMultipleOutline"
             :title="$t('History.PrintHistory')"
             card-class="history-list-panel">
             <v-card-text>
@@ -17,7 +19,7 @@
                     <v-col class="col-4 d-flex align-center">
                         <v-text-field
                             v-model="search"
-                            append-icon="mdi-magnify"
+                            :append-icon="mdiMagnify"
                             :label="$t('History.Search')"
                             single-line
                             outlined
@@ -32,14 +34,20 @@
                                 color="warning"
                                 class="px-2 minwidth-0 ml-3"
                                 @click="deleteSelectedDialog = true">
-                                <v-icon>mdi-delete</v-icon>
+                                <v-icon>{{ mdiDelete }}</v-icon>
                             </v-btn>
                         </template>
+                        <v-btn
+                            :title="$t('History.TitleExportHistory')"
+                            class="px-2 minwidth-0 ml-3"
+                            @click="exportHistory">
+                            <v-icon>{{ mdiDatabaseExportOutline }}</v-icon>
+                        </v-btn>
                         <v-btn
                             :title="$t('History.TitleRefreshHistory')"
                             class="px-2 minwidth-0 ml-3"
                             @click="refreshHistory">
-                            <v-icon>mdi-refresh</v-icon>
+                            <v-icon>{{ mdiRefresh }}</v-icon>
                         </v-btn>
                         <v-menu :offset-y="true" :close-on-content-click="false" title="Setup current list">
                             <template #activator="{ on, attrs }">
@@ -48,7 +56,7 @@
                                     :title="$t('History.TitleSettings')"
                                     v-bind="attrs"
                                     v-on="on">
-                                    <v-icon>mdi-cog</v-icon>
+                                    <v-icon>{{ mdiCog }}</v-icon>
                                 </v-btn>
                             </template>
                             <v-list>
@@ -61,9 +69,7 @@
                                             class="mt-0"
                                             hide-details
                                             :input-value="status.showInTable"
-                                            :label="
-                                                $t('History.ShowStatusName', { name: status.name, count: status.value })
-                                            "
+                                            :label="`${status.displayName} (${status.value})`"
                                             @change="changeStatusVisible(status)"></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>
@@ -128,7 +134,7 @@
                         </td>
                         <td class="px-0 text-center" style="width: 32px">
                             <template v-if="!item.exists">
-                                <v-icon class="text--disabled">mdi-file-cancel</v-icon>
+                                <v-icon class="text--disabled">{{ mdiFile }}-cancel</v-icon>
                             </template>
                             <template v-else-if="getSmallThumbnail(item) && getBigThumbnail(item)">
                                 <v-tooltip top>
@@ -145,7 +151,7 @@
                                                 slot="preloader"
                                                 indeterminate
                                                 color="primary"></v-progress-circular>
-                                            <v-icon slot="error">mdi-file</v-icon>
+                                            <v-icon slot="error">{{ mdiFile }}</v-icon>
                                         </vue-load-image>
                                     </template>
                                     <span><img :src="getBigThumbnail(item)" width="250" /></span>
@@ -158,15 +164,25 @@
                                         slot="preloader"
                                         indeterminate
                                         color="primary"></v-progress-circular>
-                                    <v-icon slot="error">mdi-file</v-icon>
+                                    <v-icon slot="error">{{ mdiFile }}</v-icon>
                                 </vue-load-image>
                             </template>
                             <template v-else>
-                                <v-icon>mdi-file</v-icon>
+                                <v-icon>{{ mdiFile }}</v-icon>
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-center">
+                        <td class="text-right text-no-wrap">
+                            <template v-if="'note' in item && item.note">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
+                                            {{ mdiNotebook }}
+                                        </v-icon>
+                                    </template>
+                                    <span v-html="item.note.replaceAll('\n', '<br />')"></span>
+                                </v-tooltip>
+                            </template>
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
@@ -175,7 +191,13 @@
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ item.status.replace(/_/g, ' ') }}</span>
+                                <span>
+                                    {{
+                                        $te(`History.StatusValues.${item.status}`, 'en')
+                                            ? $t(`History.StatusValues.${item.status}`)
+                                            : item.status.replace(/_/g, ' ')
+                                    }}
+                                </span>
                             </v-tooltip>
                         </td>
                         <td
@@ -198,18 +220,28 @@
         <v-menu v-model="contextMenu.shown" :position-x="contextMenu.x" :position-y="contextMenu.y" absolute offset-y>
             <v-list>
                 <v-list-item @click="clickRow(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-text-box-search</v-icon>
+                    <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="'note' in contextMenu.item && contextMenu.item.note"
+                    @click="editNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
+                    {{ $t('History.EditNote') }}
+                </v-list-item>
+                <v-list-item v-else @click="createNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
+                    {{ $t('History.AddNote') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.exists"
                     :disabled="printerIsPrinting || !klipperReadyForGui"
                     @click="startPrint(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-printer</v-icon>
+                    <v-icon class="mr-1">{{ mdiPrinter }}</v-icon>
                     {{ $t('History.Reprint') }}
                 </v-list-item>
                 <v-list-item @click="deleteJob(contextMenu.item)">
-                    <v-icon class="mr-1">mdi-delete</v-icon>
+                    <v-icon class="mr-1">{{ mdiDelete }}</v-icon>
                     {{ $t('History.Delete') }}
                 </v-list-item>
             </v-list>
@@ -221,11 +253,13 @@
             @keydown.esc="detailsDialog.boolShow = false">
             <panel
                 :title="$t('History.JobDetails')"
-                icon="mdi-update"
+                :icon="mdiUpdate"
                 card-class="history-detail-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="detailsDialog.boolShow = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="detailsDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text class="px-0">
                     <overlay-scrollbars style="height: 350px" class="px-6">
@@ -250,7 +284,13 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.Status') }}</v-col>
-                            <v-col class="text-right">{{ detailsDialog.item.status }}</v-col>
+                            <v-col class="text-right">
+                                {{
+                                    $te(`History.StatusValues.${detailsDialog.item.status}`, 'en')
+                                        ? $t(`History.StatusValues.${detailsDialog.item.status}`)
+                                        : detailsDialog.item.status
+                                }}
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row>
@@ -395,7 +435,9 @@
         <v-dialog v-model="deleteSelectedDialog" max-width="400">
             <panel :title="$t('History.Delete')" card-class="history-delete-selected-dialog" :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="deleteSelectedDialog = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="deleteSelectedDialog = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-text>
                     <p class="mb-0">{{ $t('History.DeleteSelectedQuestion', { count: selectedJobs.length }) }}</p>
@@ -404,6 +446,35 @@
                     <v-spacer></v-spacer>
                     <v-btn color="" text @click="deleteSelectedDialog = false">{{ $t('History.Cancel') }}</v-btn>
                     <v-btn color="error" text @click="deleteSelectedJobs">{{ $t('History.Delete') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
+        <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
+            <panel
+                :title="noteDialog.type === 'create' ? $t('History.CreateNote') : $t('History.EditNote')"
+                :icon="noteDialog.type === 'create' ? mdiNotebookPlus : mdiNotebookEdit"
+                card-class="history-note-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="noteDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text class="pb-0">
+                    <v-row>
+                        <v-col>
+                            <v-textarea
+                                v-model="noteDialog.note"
+                                outlined
+                                hide-details
+                                :label="$t('History.Note')"></v-textarea>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="noteDialog.boolShow = false">{{ $t('History.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="saveNote">{{ $t('History.Save') }}</v-btn>
                 </v-card-actions>
             </panel>
         </v-dialog>
@@ -417,10 +488,41 @@ import { ServerHistoryStateJob } from '@/store/server/history/types'
 import { caseInsensitiveSort, formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import { thumbnailBigMin, thumbnailSmallMax, thumbnailSmallMin } from '@/store/variables'
+import {
+    mdiDatabaseExportOutline,
+    mdiDelete,
+    mdiRefresh,
+    mdiCog,
+    mdiPrinter,
+    mdiTextBoxSearch,
+    mdiFile,
+    mdiFileDocumentMultipleOutline,
+    mdiMagnify,
+    mdiCloseThick,
+    mdiUpdate,
+    mdiNotebookEdit,
+    mdiNotebookPlus,
+    mdiNotebook,
+} from '@mdi/js'
 @Component({
     components: { Panel },
 })
 export default class HistoryListPanel extends Mixins(BaseMixin) {
+    mdiDatabaseExportOutline = mdiDatabaseExportOutline
+    mdiDelete = mdiDelete
+    mdiRefresh = mdiRefresh
+    mdiCog = mdiCog
+    mdiPrinter = mdiPrinter
+    mdiFileDocumentMultipleOutline = mdiFileDocumentMultipleOutline
+    mdiTextBoxSearch = mdiTextBoxSearch
+    mdiFile = mdiFile
+    mdiMagnify = mdiMagnify
+    mdiUpdate = mdiUpdate
+    mdiCloseThick = mdiCloseThick
+    mdiNotebookPlus = mdiNotebookPlus
+    mdiNotebookEdit = mdiNotebookEdit
+    mdiNotebook = mdiNotebook
+
     formatFilesize = formatFilesize
 
     private search = ''
@@ -438,6 +540,18 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     private detailsDialog = {
         item: {},
         boolShow: false,
+    }
+
+    private noteDialog: {
+        item: ServerHistoryStateJob | null
+        note: string
+        boolShow: boolean
+        type: 'create' | 'edit'
+    } = {
+        item: null,
+        note: '',
+        boolShow: false,
+        type: 'create',
     }
 
     private deleteSelectedDialog = false
@@ -645,6 +759,10 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.$store.dispatch('gui/saveSetting', { name: 'view.history.hideColums', value: newVal })
     }
 
+    get currentLanguage() {
+        return this.$store.state.gui.general?.language ?? 'en'
+    }
+
     refreshHistory() {
         this.$socket.emit('server.history.list', { start: 0, limit: 50 }, { action: 'server/history/getHistory' })
     }
@@ -826,6 +944,56 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         this.deleteSelectedDialog = false
     }
 
+    exportHistory() {
+        const checkString = parseFloat('1.23').toLocaleString()
+        const decimalSeparator = checkString.indexOf(',') >= 0 ? ',' : '.'
+        const csvSeperator = decimalSeparator === ',' ? ';' : ','
+
+        const content: string[][] = []
+        const row: string[] = []
+
+        row.push('filename')
+        row.push('status')
+        this.tableFields.forEach((col) => {
+            row.push(col.value)
+        })
+
+        content.push(row)
+
+        if (this.jobs.length) {
+            this.jobs.forEach((job: ServerHistoryStateJob) => {
+                const row: string[] = []
+
+                let filename = job.filename
+                if (filename.includes(csvSeperator)) filename = '"' + filename + '"'
+                row.push(filename)
+                row.push(job.status)
+
+                this.tableFields.forEach((col) => {
+                    row.push(this.outputValue(col, job, false, csvSeperator))
+                })
+
+                if (this.headers.find((header) => header.value === 'slicer')?.visible) {
+                    let slicerString = 'slicer' in job.metadata && job.metadata.slicer ? job.metadata.slicer : '--'
+                    if ('slicer_version' in job.metadata && job.metadata.slicer_version)
+                        slicerString += ' ' + job.metadata.slicer_version
+                    row.push(slicerString)
+                }
+
+                content.push(row)
+            })
+        }
+
+        const csvContent = 'data:text/csv;charset=utf-8,' + content.map((e) => e.join(csvSeperator)).join('\n')
+        const link = document.createElement('a')
+        link.setAttribute('href', encodeURI(csvContent))
+        link.setAttribute('download', 'print_history.csv')
+        document.body.appendChild(link)
+
+        link.click()
+        link.remove()
+    }
+
     getStatusIcon(status: string) {
         return this.$store.getters['server/history/getPrintStatusChipIcon'](status)
     }
@@ -834,11 +1002,33 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
         return this.$store.getters['server/history/getPrintStatusChipColor'](status)
     }
 
-    outputValue(col: any, item: any) {
+    outputValue(col: any, item: any, format: boolean = true, escapeChar: string | null = null) {
         let value = col.value in item ? item[col.value] : null
         if (value === null) value = col.value in item.metadata ? item.metadata[col.value] : null
 
-        if (value > 0) {
+        if (!format) {
+            switch (col.outputType) {
+                case 'date':
+                    return this.formatDate(value)
+
+                case 'time':
+                    return value.toFixed()
+
+                default:
+                    switch (typeof value) {
+                        case 'number':
+                            return value.toLocaleString()
+
+                        case 'string':
+                            if (escapeChar !== null && value.includes(escapeChar)) value = '"' + value + '"'
+
+                            return value
+
+                        default:
+                            return value
+                    }
+            }
+        } else if (value > 0) {
             switch (col.outputType) {
                 case 'filesize':
                     return formatFilesize(value)
@@ -861,6 +1051,29 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return value
             }
         } else return '--'
+    }
+
+    createNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = ''
+        this.noteDialog.type = 'create'
+        this.noteDialog.boolShow = true
+    }
+
+    editNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = item.note ?? ''
+        this.noteDialog.type = 'edit'
+        this.noteDialog.boolShow = true
+    }
+
+    saveNote() {
+        this.$store.dispatch('server/history/saveHistoryNote', {
+            job_id: this.noteDialog.item?.job_id,
+            note: this.noteDialog.note,
+        })
+
+        this.noteDialog.boolShow = false
     }
 }
 </script>

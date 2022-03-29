@@ -57,7 +57,7 @@ export const actions: ActionTree<PrinterState, RootState> = {
         Vue.$socket.emit('server.temperature_store', {}, { action: 'printer/tempHistory/init' })
     },
 
-    getData({ commit, state }, payload) {
+    getData({ commit, dispatch, state }, payload) {
         if ('status' in payload) payload = payload.status
         if ('requestParams' in payload) delete payload.requestParams
 
@@ -73,7 +73,37 @@ export const actions: ActionTree<PrinterState, RootState> = {
         if ('bed_mesh' in state && 'bed_mesh' in payload && 'profiles' in payload.bed_mesh) {
             commit('setBedMeshProfiles', payload.bed_mesh.profiles)
 
-            delete payload.bed_mesh.profiles
+            delete payload.bed_mesh['profiles']
+        }
+
+        if (payload.configfile?.settings?.printer?.kinematics) {
+            dispatch(
+                'gui/updateGcodeviewerCache',
+                {
+                    kinematics: payload.configfile?.settings?.printer?.kinematics,
+                },
+                { root: true }
+            )
+        }
+
+        if (payload.toolhead?.axis_maximum) {
+            dispatch(
+                'gui/updateGcodeviewerCache',
+                {
+                    axis_maximum: payload.toolhead?.axis_maximum,
+                },
+                { root: true }
+            )
+        }
+
+        if (payload.toolhead?.axis_minimum) {
+            dispatch(
+                'gui/updateGcodeviewerCache',
+                {
+                    axis_minimum: payload.toolhead?.axis_minimum,
+                },
+                { root: true }
+            )
         }
 
         commit('setData', payload)

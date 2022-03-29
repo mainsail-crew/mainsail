@@ -1,15 +1,17 @@
+import 'core-js/stable' // polyfills for older browsers
 import 'regenerator-runtime' // async polyfill used by the gcodeviewer
+import 'resize-observer-polyfill' // polyfill needed by the responsive class detection
 
 import Vue from 'vue'
 import App from '@/App.vue'
 import vuetify from '@/plugins/vuetify'
 import i18n from '@/plugins/i18n'
-import './plugins/longpress'
 import store from '@/store'
 import router from '@/plugins/router'
 
 import { registerSW } from 'virtual:pwa-register'
 
+// noinspection JSUnusedGlobalSymbols
 const updateSW = registerSW({
     onOfflineReady() {},
 })
@@ -49,6 +51,10 @@ Vue.use(OverlayScrollbarsPlugin, {
     },
 })
 
+// Directives
+import './directives/longpress'
+import './directives/responsive-class'
+
 // Echarts
 import ECharts from 'vue-echarts'
 import { use } from 'echarts/core'
@@ -64,8 +70,8 @@ Vue.component('EChart', ECharts)
 //load config.json and init vue
 fetch('/config.json')
     .then((res) => res.json())
-    .then((file) => {
-        store.commit('socket/setData', file)
+    .then(async (file) => {
+        await store.dispatch('importConfigJson', file)
 
         const url = store.getters['socket/getWebsocketUrl']
         Vue.use(WebSocketPlugin, {
@@ -73,7 +79,7 @@ fetch('/config.json')
             store: store,
         })
 
-        if (!store?.state?.socket?.remoteMode) Vue.$socket.connect()
+        if (!store?.state?.remoteMode) Vue.$socket.connect()
 
         new Vue({
             vuetify,

@@ -8,9 +8,9 @@
                     <settings-row
                         :title="formatPrinterName(printer)"
                         :loading="printer.socket.isConnecting"
-                        :icon="printer.socket.isConnected ? 'mdi-checkbox-marked-circle' : 'mdi-cancel'">
-                        <v-btn small outlined @click="editPrinter(printer)">
-                            <v-icon left small>mdi-pencil</v-icon>
+                        :icon="printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel">
+                        <v-btn small outlined :disabled="!canAddPrinters" @click="editPrinter(printer)">
+                            <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
@@ -18,14 +18,15 @@
                             outlined
                             class="ml-3 minwidth-0 px-2"
                             color="error"
+                            :disabled="!canAddPrinters"
                             @click="delPrinter(printer.id)">
-                            <v-icon small>mdi-delete</v-icon>
+                            <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
             </v-card-text>
             <v-card-actions class="d-flex justify-end">
-                <v-btn text color="primary" @click="createPrinter">
+                <v-btn text color="primary" :disabled="!canAddPrinters" @click="createPrinter">
                     {{ $t('Settings.RemotePrintersTab.AddPrinter') }}
                 </v-btn>
             </v-card-actions>
@@ -81,6 +82,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import { mdiCancel, mdiCheckboxMarkedCircle, mdiDelete, mdiPencil } from '@mdi/js'
 
 interface printerForm {
     bool: boolean
@@ -94,6 +96,11 @@ interface printerForm {
     components: { SettingsRow },
 })
 export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
+    mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
+    mdiCancel = mdiCancel
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+
     private form: printerForm = {
         bool: false,
         hostname: '',
@@ -104,6 +111,10 @@ export default class SettingsRemotePrintersTab extends Mixins(BaseMixin) {
 
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
+    }
+
+    get canAddPrinters() {
+        return this.$store.state.configInstances.length === 0
     }
 
     get protocol() {

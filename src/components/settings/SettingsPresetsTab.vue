@@ -7,7 +7,7 @@
                     <v-divider v-if="key" class="my-2"></v-divider>
                     <settings-row :title="preset.name" :sub-title="getSubTitle(preset)">
                         <v-btn small outlined class="ml-3" @click="editPreset(preset)">
-                            <v-icon left small>mdi-pencil</v-icon>
+                            <v-icon left small>{{ mdiPencil }}</v-icon>
                             {{ $t('Settings.Edit') }}
                         </v-btn>
                         <v-btn
@@ -16,14 +16,14 @@
                             class="ml-3 minwidth-0 px-2"
                             color="error"
                             @click="deletePreset(preset.id)">
-                            <v-icon small>mdi-delete</v-icon>
+                            <v-icon small>{{ mdiDelete }}</v-icon>
                         </v-btn>
                     </settings-row>
                 </div>
                 <v-divider v-if="presets.length" class="my-2"></v-divider>
                 <settings-row :title="$t('Settings.PresetsTab.Cooldown')">
                     <v-btn small outlined class="ml-3" @click="editCooldown">
-                        <v-icon left small>mdi-pencil</v-icon>
+                        <v-icon left small>{{ mdiPencil }}</v-icon>
                         {{ $t('Settings.Edit') }}
                     </v-btn>
                 </settings-row>
@@ -135,6 +135,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { mdiDelete, mdiPencil } from '@mdi/js'
 
 interface presetForm {
     bool: boolean
@@ -156,6 +157,9 @@ interface presetForm {
     components: { SettingsRow },
 })
 export default class SettingsPresetsTab extends Mixins(BaseMixin) {
+    mdiPencil = mdiPencil
+    mdiDelete = mdiDelete
+
     convertName = convertName
 
     private form: presetForm = {

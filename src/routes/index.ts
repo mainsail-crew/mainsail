@@ -8,11 +8,23 @@ import Timelapse from '../pages/Timelapse.vue'
 import Machine from '../pages/Machine.vue'
 import { AsyncComponent, Component } from 'vue'
 
+import {
+    mdiMonitorDashboard,
+    mdiWebcam,
+    mdiConsoleLine,
+    mdiGrid,
+    mdiFileDocumentMultipleOutline,
+    mdiVideo3d,
+    mdiHistory,
+    mdiTimelapse,
+    mdiWrench,
+} from '@mdi/js'
+
 const routes: AppRoute[] = [
     {
         title: 'Dashboard',
         path: '/',
-        icon: 'monitor-dashboard',
+        icon: mdiMonitorDashboard,
         component: Dashboard,
         alwaysShow: true,
         showInNavi: true,
@@ -27,7 +39,7 @@ const routes: AppRoute[] = [
     {
         title: 'Webcam',
         path: '/cam',
-        icon: 'webcam',
+        icon: mdiWebcam,
         component: Webcam,
         alwaysShow: true,
         showInNavi: true,
@@ -35,7 +47,7 @@ const routes: AppRoute[] = [
     {
         title: 'Console',
         path: '/console',
-        icon: 'console-line',
+        icon: mdiConsoleLine,
         component: Console,
         alwaysShow: true,
         showInNavi: true,
@@ -44,7 +56,7 @@ const routes: AppRoute[] = [
     {
         title: 'Heightmap',
         path: '/heightmap',
-        icon: 'grid',
+        icon: mdiGrid,
         component: () => import('../pages/Heightmap.vue'),
         alwaysShow: false,
         showInNavi: true,
@@ -53,7 +65,7 @@ const routes: AppRoute[] = [
     {
         title: 'G-Code Files',
         path: '/files',
-        icon: 'file-document-multiple-outline',
+        icon: mdiFileDocumentMultipleOutline,
         component: Files,
         alwaysShow: true,
         showInNavi: true,
@@ -62,15 +74,15 @@ const routes: AppRoute[] = [
     {
         title: 'G-Code Viewer',
         path: '/viewer',
-        icon: 'video-3d',
+        icon: mdiVideo3d,
         component: () => import('../pages/Viewer.vue'),
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
     },
     {
         title: 'History',
         path: '/history',
-        icon: 'history',
+        icon: mdiHistory,
         component: History,
         alwaysShow: true,
         showInNavi: true,
@@ -79,7 +91,7 @@ const routes: AppRoute[] = [
     {
         title: 'Timelapse',
         path: '/timelapse',
-        icon: 'timelapse',
+        icon: mdiTimelapse,
         component: Timelapse,
         alwaysShow: true,
         showInNavi: true,
@@ -88,7 +100,7 @@ const routes: AppRoute[] = [
     {
         title: 'Machine',
         path: '/config',
-        icon: 'wrench',
+        icon: mdiWrench,
         component: Machine,
         alwaysShow: true,
         showInNavi: true,

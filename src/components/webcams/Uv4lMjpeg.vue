@@ -11,7 +11,7 @@
             <v-progress-circular indeterminate color="primary"></v-progress-circular>
         </div>
         <div slot="error" class="text-center py-5">
-            <v-icon x-large>mdi-webcam-off</v-icon>
+            <v-icon x-large>{{ mdiWebcamOff }}</v-icon>
             <div class="subtitle-1 mt-2">{{ $t('Panels.WebcamPanel.UrlNotAvailable') }}</div>
         </div>
     </vue-load-image>
@@ -21,9 +21,12 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { mdiWebcamOff } from '@mdi/js'
 
 @Component
 export default class Uv4lMjpeg extends Mixins(BaseMixin) {
+    mdiWebcamOff = mdiWebcamOff
+
     private isVisible = true
 
     @Prop({ required: true }) declare readonly camSettings: GuiWebcamStateWebcam

@@ -4,7 +4,7 @@
     <v-dialog v-model="showDialog" persistent :width="400">
         <panel
             card-class="select-printer-dialog"
-            icon="mdi-connection"
+            :icon="mdiConnection"
             :title="panelTitle"
             :margin-bottom="false"
             toolbar-color="toolbar">
@@ -12,7 +12,7 @@
                 <template v-if="!isConnecting && !connectingFailed">
                     <template v-if="dialogEditPrinter.bool">
                         <v-btn icon tile class="minwidth-0" @click="dialogEditPrinter.bool = false">
-                            <v-icon>mdi-close-thick</v-icon>
+                            <v-icon>{{ mdiCloseThick }}</v-icon>
                         </v-btn>
                     </template>
                     <template v-else-if="dialogAddPrinter.bool">
@@ -22,12 +22,12 @@
                             tile
                             class="minwidth-0"
                             @click="dialogAddPrinter.bool = false">
-                            <v-icon>mdi-close-thick</v-icon>
+                            <v-icon>{{ mdiCloseThick }}</v-icon>
                         </v-btn>
                     </template>
                     <template v-else-if="printers.length > 0">
                         <v-btn icon tile class="minwidth-0" color="primary" @click="checkPrinters">
-                            <v-icon>mdi-sync</v-icon>
+                            <v-icon>{{ mdiSync }}</v-icon>
                         </v-btn>
                     </template>
                 </template>
@@ -55,79 +55,83 @@
                 </v-card-text>
             </template>
             <template v-else-if="!isConnecting && dialogAddPrinter.bool">
-                <v-card-text>
-                    <v-row>
-                        <v-col class="col-8">
-                            <v-text-field
-                                v-model="dialogAddPrinter.hostname"
-                                :rules="[
-                                    (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                    (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                    (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                ]"
-                                label="Hostname/IP"
-                                required
-                                outlined
-                                hide-details="auto"
-                                dense></v-text-field>
-                        </v-col>
-                        <v-col class="col-4">
-                            <v-text-field
-                                v-model="dialogAddPrinter.port"
-                                :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
-                                label="Port"
-                                hide-details="auto"
-                                required
-                                outlined
-                                dense></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text class="middle" @click="addPrinter">
-                        {{ $t('SelectPrinterDialog.AddPrinter') }}
-                    </v-btn>
-                </v-card-actions>
+                <v-form v-model="addPrinterValid" @submit.prevent="addPrinter">
+                    <v-card-text>
+                        <v-row>
+                            <v-col class="col-8">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.hostname"
+                                    :rules="[
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    ]"
+                                    :label="$t('SelectPrinterDialog.HostnameIp')"
+                                    required
+                                    outlined
+                                    hide-details="auto"
+                                    dense></v-text-field>
+                            </v-col>
+                            <v-col class="col-4">
+                                <v-text-field
+                                    v-model="dialogAddPrinter.port"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :label="$t('SelectPrinterDialog.Port')"
+                                    hide-details="auto"
+                                    required
+                                    outlined
+                                    dense></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text class="middle" type="submit" :disabled="!addPrinterValid">
+                            {{ $t('SelectPrinterDialog.AddPrinter') }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-form>
             </template>
             <template v-else-if="!isConnecting && dialogEditPrinter.bool">
-                <v-card-text>
-                    <v-row>
-                        <v-col class="col-8">
-                            <v-text-field
-                                v-model="dialogEditPrinter.hostname"
-                                :rules="[
-                                    (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
-                                    (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                    (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
-                                ]"
-                                label="Hostname/IP"
-                                required
-                                outlined
-                                dense
-                                hide-details="auto"></v-text-field>
-                        </v-col>
-                        <v-col class="col-4">
-                            <v-text-field
-                                v-model="dialogEditPrinter.port"
-                                :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
-                                label="Port"
-                                required
-                                outlined
-                                dense
-                                hide-details="auto"></v-text-field>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
-                        <v-icon small>mdi-delete</v-icon>
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn color="primary" text @click="updatePrinter">
-                        {{ $t('SelectPrinterDialog.UpdatePrinter') }}
-                    </v-btn>
-                </v-card-actions>
+                <v-form v-model="editPrinterValid" @submit.prevent="updatePrinter">
+                    <v-card-text>
+                        <v-row>
+                            <v-col class="col-8">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.hostname"
+                                    :rules="[
+                                        (v) => !!v || $t('SelectPrinterDialog.HostnameRequired'),
+                                        (v) => !v.startsWith('http:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                        (v) => !v.startsWith('https:') || $t('SelectPrinterDialog.HostnameInvalid'),
+                                    ]"
+                                    :label="$t('SelectPrinterDialog.HostnameIp')"
+                                    required
+                                    outlined
+                                    dense
+                                    hide-details="auto"></v-text-field>
+                            </v-col>
+                            <v-col class="col-4">
+                                <v-text-field
+                                    v-model="dialogEditPrinter.port"
+                                    :rules="[(v) => !!v || $t('SelectPrinterDialog.PortRequired')]"
+                                    :label="$t('SelectPrinterDialog.Port')"
+                                    required
+                                    outlined
+                                    dense
+                                    hide-details="auto"></v-text-field>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn color="red" icon tile class="minwidth-0 rounded" @click="delPrinter">
+                            <v-icon small>{{ mdiDelete }}</v-icon>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" text type="submit" :disabled="!editPrinterValid">
+                            {{ $t('SelectPrinterDialog.UpdatePrinter') }}
+                        </v-btn>
+                    </v-card-actions>
+                </v-form>
             </template>
             <template v-else>
                 <v-card-text class="mt-3">
@@ -149,13 +153,11 @@
                                             <v-icon
                                                 v-if="!printer.socket.isConnecting"
                                                 :color="printer.socket.isConnected ? 'green' : 'red'">
-                                                mdi-{{
-                                                    printer.socket.isConnected ? 'checkbox-marked-circle' : 'cancel'
-                                                }}
+                                                {{ printer.socket.isConnected ? mdiCheckboxMarkedCircle : mdiCancel }}
                                             </v-icon>
                                         </v-col>
                                         <v-col>{{ getPrinterName(printer.id) }}</v-col>
-                                        <v-col class="col-auto pa-0">
+                                        <v-col v-if="canAddPrinters" class="col-auto pa-0">
                                             <v-btn
                                                 tile
                                                 text
@@ -163,7 +165,7 @@
                                                 large
                                                 class="mr-1"
                                                 @click.stop.prevent="editPrinter(printer)">
-                                                <v-icon small>mdi-pencil</v-icon>
+                                                <v-icon small>{{ mdiPencil }}</v-icon>
                                             </v-btn>
                                         </v-col>
                                     </v-row>
@@ -181,6 +183,7 @@
                             </p>
                             <p class="text-center mb-0">
                                 {{ $t('SelectPrinterDialog.YouCanFindMore') }}
+                                <br />
                                 <a href="https://docs.mainsail.xyz/remotemode" target="_blank">
                                     https://docs.mainsail.xyz/remotemode
                                 </a>
@@ -188,9 +191,9 @@
                             </p>
                         </v-col>
                     </v-row>
-                    <v-row>
+                    <v-row v-if="canAddPrinters">
                         <v-col class="text-center mt-0">
-                            <v-btn text color="primary" @click="dialogAddPrinter.bool = true">
+                            <v-btn text color="primary" @click="createPrinter">
                                 {{ $t('SelectPrinterDialog.AddPrinter') }}
                             </v-btn>
                         </v-col>
@@ -207,16 +210,27 @@ import BaseMixin from './mixins/base'
 import { FarmPrinterState } from '@/store/farm/printer/types'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiRemoteprintersStatePrinter } from '@/store/gui/remoteprinters/types'
+import {
+    mdiCancel,
+    mdiCheckboxMarkedCircle,
+    mdiCloseThick,
+    mdiConnection,
+    mdiDelete,
+    mdiPencil,
+    mdiSync,
+} from '@mdi/js'
 
 @Component({
     components: { Panel },
 })
 export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
+    private addPrinterValid = false
     private dialogAddPrinter = {
         bool: false,
         hostname: '',
         port: 7125,
     }
+    private editPrinterValid = false
     private dialogEditPrinter = {
         bool: false,
         id: '',
@@ -224,12 +238,31 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
         port: 0,
     }
 
+    /**
+     * Icons
+     */
+    mdiConnection = mdiConnection
+    mdiCloseThick = mdiCloseThick
+    mdiSync = mdiSync
+    mdiDelete = mdiDelete
+    mdiPencil = mdiPencil
+    mdiCheckboxMarkedCircle = mdiCheckboxMarkedCircle
+    mdiCancel = mdiCancel
+
     get printers() {
         return this.$store.getters['gui/remoteprinters/getRemoteprinters'] ?? []
     }
 
+    get canAddPrinters() {
+        return this.$store.state.configInstances.length === 0
+    }
+
     get protocol() {
         return this.$store.state.socket.protocol
+    }
+
+    get defaultMoonrakerPort() {
+        return this.protocol === 'wss' ? 7130 : 7125
     }
 
     get hostname() {
@@ -261,7 +294,7 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
     }
 
     get currentUrl() {
-        let output = 'http://' + window.location.hostname
+        let output = document.location.protocol + '//' + window.location.hostname
         if (parseInt(window.location.port) !== 80 && window.location.port !== '') output += ':' + window.location.port
 
         return output
@@ -290,6 +323,12 @@ export default class TheSelectPrinterDialog extends Mixins(BaseMixin) {
 
     getPrinterName(namespace: string) {
         return this.$store.getters['farm/getPrinterName'](namespace)
+    }
+
+    createPrinter() {
+        this.dialogAddPrinter.hostname = ''
+        this.dialogAddPrinter.port = this.defaultMoonrakerPort
+        this.dialogAddPrinter.bool = true
     }
 
     addPrinter() {

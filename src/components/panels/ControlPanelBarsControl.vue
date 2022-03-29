@@ -18,7 +18,7 @@
                     :loading="loadings.includes('homeAll')"
                     :color="homedAxes.includes('xyz') ? 'primary' : 'warning'"
                     @click="doHome">
-                    <v-icon class="mr-1">mdi-home</v-icon>
+                    <v-icon class="mr-1">{{ mdiHome }}</v-icon>
                     {{ $t('Panels.ControlPanel.ALL') }}
                 </v-btn>
                 <v-btn
@@ -129,8 +129,11 @@
 import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import ControlMixin from '@/components/mixins/control'
+import { mdiHome } from '@mdi/js'
 @Component
 export default class ControlPanelBarsControl extends Mixins(BaseMixin, ControlMixin) {
+    mdiHome = mdiHome
+
     get stepsXYsorted() {
         return [...this.$store.state.gui.control.stepsXY].sort(function (a, b) {
             return b - a

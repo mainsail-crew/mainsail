@@ -2,7 +2,9 @@
     <v-dialog v-model="isOpen" transition="dialog-bottom-transition" max-width="600" scrollable :fullscreen="isMobile">
         <template #activator="{ on, attrs }">
             <template v-if="inToolbar">
-                <v-btn icon tile v-bind="attrs" v-on="on"><v-icon small>mdi-help</v-icon></v-btn>
+                <v-btn icon tile v-bind="attrs" v-on="on">
+                    <v-icon small>{{ mdiHelp }}</v-icon>
+                </v-btn>
             </template>
             <template v-else>
                 <v-btn
@@ -11,18 +13,20 @@
                     :small="isMini"
                     v-bind="attrs"
                     v-on="on">
-                    <v-icon>mdi-help</v-icon>
+                    <v-icon>{{ mdiHelp }}</v-icon>
                 </v-btn>
             </template>
         </template>
         <template #default>
             <panel
                 :title="$t('Console.CommandList')"
-                icon="mdi-help"
+                :icon="mdiHelp"
                 card-class="command-help-dialog"
                 :margin-bottom="false">
                 <template #buttons>
-                    <v-btn icon tile @click="isOpen = false"><v-icon>mdi-close-thick</v-icon></v-btn>
+                    <v-btn icon tile @click="isOpen = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
                 </template>
                 <v-card-title>
                     <v-row>
@@ -78,6 +82,7 @@ import { CommandHelp } from '@/store/printer/types'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import Component from 'vue-class-component'
 import Panel from '@/components/ui/Panel.vue'
+import { mdiHelp, mdiCloseThick } from '@mdi/js'
 
 @Component({
     components: { Panel },
@@ -88,6 +93,13 @@ export default class CommandHelpModal extends Mixins(BaseMixin) {
 
     cmdListSearch = ''
     isOpen = false
+
+    /**
+     * Icons
+     */
+
+    mdiHelp = mdiHelp
+    mdiCloseThick = mdiCloseThick
 
     get helplist(): CommandHelp[] {
         return this.$store.state.printer.helplist ?? []

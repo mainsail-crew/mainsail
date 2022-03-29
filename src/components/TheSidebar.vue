@@ -89,7 +89,7 @@
                                     v-bind="attrs"
                                     v-on="on">
                                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                        <v-icon>mdi-view-dashboard-outline</v-icon>
+                                        <v-icon>{{ mdiViewDashboardOutline }}</v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
                                         <v-list-item-title tile class="menu-item-title">
@@ -112,7 +112,7 @@
                                     v-bind="attrs"
                                     v-on="on">
                                     <v-list-item-icon class="my-3 mr-3 menu-item-icon">
-                                        <v-icon>mdi-{{ category.icon }}</v-icon>
+                                        <v-icon>{{ category.icon }}</v-icon>
                                     </v-list-item-icon>
                                     <v-list-item-content>
                                         <v-list-item-title tile class="menu-item-title">
@@ -147,6 +147,7 @@ import TheSelectPrinterDialog from '@/components/TheSelectPrinterDialog.vue'
 import AboutModal from '@/components/modals/AboutModal.vue'
 import { navigationWidth, topbarHeight } from '@/store/variables'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
+import { mdiViewDashboardOutline } from '@mdi/js'
 
 @Component({
     components: {
@@ -158,6 +159,11 @@ import MainsailLogo from '@/components/ui/MainsailLogo.vue'
 export default class TheSidebar extends Mixins(BaseMixin) {
     navigationWidth = navigationWidth
     topbarHeight = topbarHeight
+
+    /**
+     * Icons
+     */
+    mdiViewDashboardOutline = mdiViewDashboardOutline
 
     get naviDrawer(): boolean {
         return this.$store.state.naviDrawer

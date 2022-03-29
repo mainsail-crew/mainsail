@@ -57,7 +57,7 @@
 
 <template>
     <div>
-        <panel :title="$t('GCodeViewer.Title')" icon="mdi-video-3d" card-class="gcode-viewer-panel">
+        <panel :title="$t('GCodeViewer.Title')" :icon="mdiVideo3d" card-class="gcode-viewer-panel">
             <template #buttons>
                 <v-btn
                     v-show="reloadRequired"
@@ -68,9 +68,11 @@
                     class="ml-3"
                     @click="reloadViewer">
                     <span class="d-none d-sm-block">{{ $t('GCodeViewer.ReloadRequired') }}</span>
-                    <v-icon class="d-sm-none">mdi-reload-alert</v-icon>
+                    <v-icon class="d-sm-none">{{ mdiReloadAlert }}</v-icon>
                 </v-btn>
-                <v-btn icon tile @click="resetCamera"><v-icon>mdi-camera-retake</v-icon></v-btn>
+                <v-btn icon tile @click="resetCamera">
+                    <v-icon>{{ mdiCameraRetake }}</v-icon>
+                </v-btn>
             </template>
             <v-card-text>
                 <v-row>
@@ -107,9 +109,7 @@
                                     <v-btn v-if="showTrackingButton" class="mr-3" @click="tracking = !tracking">
                                         <v-icon
                                             class="mr-2"
-                                            v-html="
-                                                tracking ? 'mdi-toggle-switch' : 'mdi-toggle-switch-off-outline'
-                                            "></v-icon>
+                                            v-html="tracking ? mdiToggleSwitch : mdiToggleSwitchOffOutline"></v-icon>
                                         {{ $t('GCodeViewer.Tracking') }}
                                     </v-btn>
                                     <v-btn @click="clearLoadedFile">{{ $t('GCodeViewer.ClearLoadedFile') }}</v-btn>
@@ -145,7 +145,7 @@
                         :title="$t('Files.SetupCurrentList')">
                         <template #activator="{ on, attrs }">
                             <v-btn class="minwidth-0 px-2 mr-3 mt-3" v-bind="attrs" v-on="on">
-                                <v-icon>mdi-cog</v-icon>
+                                <v-icon>{{ mdiCog }}</v-icon>
                             </v-btn>
                         </template>
                         <v-list>
@@ -229,7 +229,7 @@
             <v-progress-linear class="mt-2" :value="loadingPercent"></v-progress-linear>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelRendering()">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
@@ -253,7 +253,7 @@
             </template>
             <template #action="{ attrs }">
                 <v-btn color="red" text v-bind="attrs" style="min-width: auto" @click="cancelDownload">
-                    <v-icon class="0">mdi-close</v-icon>
+                    <v-icon class="0">{{ mdiClose }}</v-icon>
                 </v-btn>
             </template>
         </v-snackbar>
@@ -267,6 +267,15 @@ import GCodeViewer from '@sindarius/gcodeviewer'
 import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
+import {
+    mdiCameraRetake,
+    mdiCog,
+    mdiClose,
+    mdiReloadAlert,
+    mdiToggleSwitch,
+    mdiToggleSwitchOffOutline,
+    mdiVideo3d,
+} from '@mdi/js'
 
 interface downloadSnackbar {
     status: boolean
@@ -286,6 +295,17 @@ let viewer: any = null
     components: { Panel },
 })
 export default class Viewer extends Mixins(BaseMixin) {
+    /**
+     * Icons
+     */
+    mdiReloadAlert = mdiReloadAlert
+    mdiCameraRetake = mdiCameraRetake
+    mdiToggleSwitch = mdiToggleSwitch
+    mdiToggleSwitchOffOutline = mdiToggleSwitchOffOutline
+    mdiClose = mdiClose
+    mdiCog = mdiCog
+    mdiVideo3d = mdiVideo3d
+
     formatFilesize = formatFilesize
 
     private isBusy = false
@@ -916,7 +936,27 @@ export default class Viewer extends Mixins(BaseMixin) {
     }
 
     get kinematics() {
-        return this.$store.state.printer.configfile?.settings?.printer?.kinematics ?? ''
+        return (
+            this.$store.state.printer.configfile?.settings?.printer?.kinematics ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.kinematics ??
+            ''
+        )
+    }
+
+    get bedMaxSize() {
+        return (
+            this.$store.state.printer.toolhead?.axis_maximum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_maximum ??
+            null
+        )
+    }
+
+    get bedMinSize() {
+        return (
+            this.$store.state.printer.toolhead?.axis_minimum ??
+            this.$store.state.gui?.gcodeViewer?.klipperCache?.axis_minimum ??
+            null
+        )
     }
 
     @Watch('kinematics')
@@ -926,10 +966,6 @@ export default class Viewer extends Mixins(BaseMixin) {
         }
     }
 
-    get bedMinSize() {
-        return this.$store.state.printer.toolhead?.axis_minimum ?? null
-    }
-
     @Watch('bedMinSize', { deep: true })
     bedMinSizeChanged(newVal: number[] | null) {
         if (viewer && newVal) {
@@ -937,10 +973,6 @@ export default class Viewer extends Mixins(BaseMixin) {
             viewer.bed.buildVolume['y'].min = newVal[1]
             viewer.bed.buildVolume['z'].min = newVal[2]
         }
-    }
-
-    get bedMaxSize() {
-        return this.$store.state.printer.toolhead?.axis_maximum ?? null
     }
 
     @Watch('bedMaxSize', { deep: true })

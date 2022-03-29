@@ -3,7 +3,7 @@
 <template>
     <panel
         v-if="socketIsConnected"
-        icon="mdi-webcam"
+        :icon="mdiWebcam"
         :title="$t('Panels.WebcamPanel.Headline')"
         :collapsible="$route.fullPath !== '/cam'"
         card-class="webcam-panel">
@@ -13,13 +13,13 @@
                     <v-btn text tile v-bind="attrs" v-on="on">
                         <v-icon v-if="'icon' in currentCam" small class="mr-2">{{ currentCam.icon }}</v-icon>
                         <span class="d-none d-md-block">{{ 'name' in currentCam ? currentCam.name : 'unknown' }}</span>
-                        <v-icon small>mdi-menu-down</v-icon>
+                        <v-icon small>{{ mdiMenuDown }}</v-icon>
                     </v-btn>
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item link @click="currentCamId = 'all'">
                         <v-list-item-icon class="mr-0">
-                            <v-icon small>mdi-view-grid</v-icon>
+                            <v-icon small>{{ mdiViewGrid }}</v-icon>
                         </v-list-item-icon>
                         <v-list-item-content>
                             <v-list-item-title>{{ $t('Panels.WebcamPanel.All') }}</v-list-item-title>
@@ -74,6 +74,7 @@ import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import Panel from '@/components/ui/Panel.vue'
 import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
+import { mdiMenuDown, mdiViewGrid, mdiWebcam } from '@mdi/js'
 
 @Component({
     components: {
@@ -86,7 +87,11 @@ import { GuiWebcamStateWebcam } from '@/store/gui/webcams/types'
     },
 })
 export default class WebcamPanel extends Mixins(BaseMixin) {
-    @Prop({ default: 'dashboard' }) declare viewport?: string
+    @Prop({ default: 'dashboard' }) declare currentPage?: string
+
+    mdiWebcam = mdiWebcam
+    mdiMenuDown = mdiMenuDown
+    mdiViewGrid = mdiViewGrid
 
     get webcams(): GuiWebcamStateWebcam[] {
         return this.$store.getters['gui/webcams/getWebcams']
@@ -95,7 +100,7 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
     get currentCamId(): string {
         if (this.webcams.length === 1) return this.webcams[0].id ?? 'all'
 
-        let currentCamId = this.$store.state.gui.view.webcam.currentCam[this.viewport ?? ''] ?? 'all'
+        let currentCamId = this.$store.state.gui.view.webcam.currentCam[this.currentPage ?? ''] ?? 'all'
         if (this.webcams.findIndex((webcam: GuiWebcamStateWebcam) => webcam.id === currentCamId) !== -1)
             return currentCamId
         else if (currentCamId !== undefined && this.webcams.length === 1) return this.webcams[0].id ?? ''
@@ -103,7 +108,7 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
     }
 
     set currentCamId(newVal: string) {
-        this.$store.dispatch('gui/setCurrentWebcam', { viewport: this.viewport, value: newVal })
+        this.$store.dispatch('gui/setCurrentWebcam', { page: this.currentPage, value: newVal })
     }
 
     get currentCam(): any {
@@ -113,7 +118,7 @@ export default class WebcamPanel extends Mixins(BaseMixin) {
             cam ?? {
                 name: this.$t('Panels.WebcamPanel.All'),
                 service: 'grid',
-                icon: 'mdi-view-grid',
+                icon: mdiViewGrid,
             }
         )
     }

@@ -4,10 +4,11 @@
     border-bottom-right-radius: 4px;
 }
 
-.btn-collapsible i::before {
+.btn-collapsible > * {
+    will-change: transform;
     transition: transform 500ms;
 }
-.icon-rotate-90:before {
+.icon-rotate-90 {
     transform: rotate(90deg);
 }
 </style>
@@ -55,7 +56,7 @@
                     <slot name="buttons"></slot>
                 </div>
                 <v-btn v-if="collapsible" icon class="btn-collapsible" :ripple="true" @click="expand = !expand">
-                    <v-icon :class="expand ? '' : 'icon-rotate-90'">mdi-chevron-down</v-icon>
+                    <v-icon :class="expand ? '' : 'icon-rotate-90'">{{ mdiChevronDown }}</v-icon>
                 </v-btn>
             </v-toolbar-items>
         </v-toolbar>
@@ -72,9 +73,12 @@ import Component from 'vue-class-component'
 import { Mixins, Prop } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import { panelToolbarHeight } from '@/store/variables'
+import { mdiChevronDown, mdiChevronUp } from '@mdi/js'
 
 @Component
 export default class Panel extends Mixins(BaseMixin) {
+    mdiChevronUp = mdiChevronUp
+    mdiChevronDown = mdiChevronDown
     panelToolbarHeight = panelToolbarHeight
 
     @Prop({ default: null }) declare readonly icon: string | null
@@ -88,11 +92,11 @@ export default class Panel extends Mixins(BaseMixin) {
     @Prop({ default: false }) declare readonly hideButtonsOnCollapse: boolean
 
     get expand() {
-        return this.$store.getters['gui/getPanelExpand'](this.cardClass)
+        return this.$store.getters['gui/getPanelExpand'](this.cardClass, this.viewport)
     }
 
     set expand(newVal) {
-        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal })
+        this.$store.dispatch('gui/saveExpandPanel', { name: this.cardClass, value: newVal, viewport: this.viewport })
     }
 
     get hasIconSlot() {

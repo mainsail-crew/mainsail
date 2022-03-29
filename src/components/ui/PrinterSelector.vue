@@ -3,7 +3,7 @@
 <template>
     <v-menu bottom :offset-x="true">
         <template #activator="{ on, attrs }">
-            <v-icon class="nav-arrow right" v-bind="attrs" v-on="on">mdi-chevron-down</v-icon>
+            <v-icon class="nav-arrow right" v-bind="attrs" v-on="on">{{ mdiChevronDown }}</v-icon>
         </template>
 
         <v-list dense>
@@ -28,9 +28,15 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '../mixins/base'
 import router from '@/plugins/router'
 import { FarmPrinterState } from '@/store/farm/printer/types'
+import { mdiChevronDown } from '@mdi/js'
 
 @Component
 export default class PrinterSelector extends Mixins(BaseMixin) {
+    /**
+     * Icons
+     */
+    mdiChevronDown = mdiChevronDown
+
     get displayMenuPoint() {
         return (this.remoteMode && this.countPrinters > 1) || (!this.remoteMode && this.countPrinters)
     }
