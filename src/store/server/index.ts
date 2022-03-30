@@ -27,6 +27,7 @@ export const getDefaultState = (): ServerState => {
         events: [],
         config: {},
         system_info: null,
+        system_boot_at: null,
         cpu_temp: 0,
         moonraker_stats: null,
         throttled_state: {

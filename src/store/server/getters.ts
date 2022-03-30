@@ -159,4 +159,25 @@ export const getters: GetterTree<ServerState, any> = {
 
         return interfaces
     },
+
+    getThrottledStateFlags: (state) => {
+        let flags = state.throttled_state.flags.filter((flag: string) => flag !== '?')
+        /*let flags = [
+            'Under-Voltage Detected',
+            'Frequency Capped',
+            'Currently Throttled',
+            'Temperature Limit Active',
+            'Previously Under-Volted',
+            'Previously Frequency Capped',
+            'Previously Throttled',
+            'Previously Temperature Limited',
+        ]*/
+
+        flags = flags.map((flag) => {
+            flag = flag.replace(/ /g, '').replace(/-/g, '')
+            return flag.charAt(0).toUpperCase() + flag.slice(1)
+        })
+
+        return flags
+    },
 }

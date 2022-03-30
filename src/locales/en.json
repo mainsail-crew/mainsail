@@ -23,8 +23,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI supply voltage dropped below 4.65V at least once since the last power-on.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperature is currently above the soft limit (default 60C).",
             "DescriptionUnderVoltageDetected": "rPI supply voltage currently below 4.65V",
-            "HeadlineCurrentFlags": "Current Flags",
-            "HeadlinePreviouslyFlags": "Previously Flags",
             "TitleCurrentlyThrottled": "Currently Throttled",
             "TitleFrequencyCapped": "Frequency Capped",
             "TitlePreviouslyFrequencyCapped": "Previously Frequency Capped",
