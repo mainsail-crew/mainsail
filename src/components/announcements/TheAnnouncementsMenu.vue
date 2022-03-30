@@ -10,8 +10,8 @@
         <template #activator="{ on, attrs }">
             <v-btn icon tile class="minwidth-0" v-bind="attrs" v-on="on">
                 <v-badge
-                    :content="announcements.length <= 9 ? announcements.length : '9+'"
-                    :value="announcements.length > 0"
+                    :content="notifications.length <= 9 ? notifications.length : '9+'"
+                    :value="notifications.length > 0"
                     :color="colorBadge"
                     overlap>
                     <v-icon>{{ attrs['aria-expanded'] === 'false' ? mdiBellOutline : mdiBell }}</v-icon>
@@ -19,14 +19,14 @@
             </v-btn>
         </template>
         <v-card flat :min-width="300" :max-width="400">
-            <template v-if="announcements.length">
+            <template v-if="notifications.length">
                 <overlay-scrollbars class="announcement-menu__scrollbar">
                     <v-card-text>
-                        <template v-for="(entry, index) in announcements">
+                        <template v-for="(entry, index) in notifications">
                             <announcement-menu-entry
                                 :key="entry.entry_id"
                                 :entry="entry"
-                                :class="index < announcements.length - 1 ? '' : 'mb-0'" />
+                                :class="index < notifications.length - 1 ? '' : 'mb-0'" />
                         </template>
                     </v-card-text>
                 </overlay-scrollbars>
@@ -53,7 +53,6 @@ import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
 import AnnouncementMenuEntry from '@/components/announcements/AnnouncementMenuEntry.vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
-import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 
 @Component({
     components: { AnnouncementMenuEntry },
@@ -63,12 +62,14 @@ export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     mdiBellOutline = mdiBellOutline
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
-    get announcements() {
-        return this.$store.getters['server/announcements/getAll']
+    get notifications() {
+        return this.$store.getters['notification/getNotifications'] ?? []
     }
 
     get existsCriticalAnnouncements() {
-        return this.announcements.filter((entry: ServerAnnouncementsStateEntry) => entry.priority === 'high').length > 0
+        //return this.announcements.filter((entry: ServerAnnouncementsStateEntry) => entry.priority === 'high').length > 0
+
+        return false
     }
 
     get colorBadge() {
@@ -76,9 +77,9 @@ export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     }
 
     dismissAll() {
-        this.announcements.forEach((entry: ServerAnnouncementsStateEntry) => {
+        /*this.announcements.forEach((entry: ServerAnnouncementsStateEntry) => {
             this.$store.dispatch('server/announcements/close', { entry_id: entry.entry_id })
-        })
+        })*/
     }
 }
 </script>
