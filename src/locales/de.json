@@ -433,16 +433,18 @@
             "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}."
         },
         "ExtruderControlPanel": {
+            "Allowed": "Erlaubt",
             "EstimatedExtrusion": "Geschätzte Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
             "Headline": "Extruder",
+            "LoadFilament": "Filament laden",
+            "Requested": "Angefordert",
             "Retract": "Rückzug",
             "TooLargeExtrusion": "Extrusion zu groß!",
-            "Requested": "Angefordert",
-            "Allowed": "Erlaubt"
+            "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Neu verbinden",

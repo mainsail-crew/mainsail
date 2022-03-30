@@ -41,14 +41,6 @@
 ._btn-extruder-cmd {
     min-width: 135px !important;
 }
-
-._btn-load-cmd {
-    min-width: 100px !important;
-}
-
-._hidden {
-    display: none !important;
-}
 </style>
 
 <template>
@@ -69,20 +61,20 @@
                 <v-list dense>
                     <v-list-item>
                         <!-- FILAMENT UNLOAD -->
-                        <v-tooltip top :disabled="extrudePossible" color="error">
+                        <v-tooltip top :disabled="extrudePossible" color="secondary">
                             <template #activator="{ on }">
-                                <div v-on="on">
+                                <div style="width: 100%" v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnUnloadFilament')"
                                         :disabled="!extrudePossible || isPrinting"
                                         small
-                                        class="_btn-load-cmd"
+                                        style="width: 100%"
                                         @click="sendUnloadFilament()">
                                         <span class="d-flex align-center">
-                                            <v-icon small style="transform: rotate(270deg)" class="mr-1">
+                                            <v-icon left small style="transform: rotate(270deg)" class="mr-1">
                                                 {{ mdiLocationExit }}
                                             </v-icon>
-                                            Unload
+                                            {{ $t('Panels.ExtruderControlPanel.UnloadFilament') }}
                                         </span>
                                     </v-btn>
                                 </div>
@@ -95,20 +87,20 @@
                     </v-list-item>
                     <v-list-item>
                         <!-- FILAMENT LOAD -->
-                        <v-tooltip top :disabled="extrudePossible" color="error">
+                        <v-tooltip top :disabled="extrudePossible" color="secondary">
                             <template #activator="{ on }">
-                                <div v-on="on">
+                                <div style="width: 100%" v-on="on">
                                     <v-btn
                                         :loading="loadings.includes('btnLoadFilament')"
                                         :disabled="!extrudePossible || isPrinting"
                                         small
-                                        class="_btn-load-cmd"
+                                        style="width: 100%"
                                         @click="sendLoadFilament()">
                                         <span class="d-flex align-center">
-                                            <v-icon small style="transform: rotate(90deg)" class="mr-1">
+                                            <v-icon left small style="transform: rotate(90deg)" class="mr-1">
                                                 {{ mdiLocationEnter }}
                                             </v-icon>
-                                            Load
+                                            {{ $t('Panels.ExtruderControlPanel.LoadFilament') }}
                                         </span>
                                     </v-btn>
                                 </div>
@@ -226,9 +218,7 @@
                             </v-item-group>
                         </v-col>
                         <!-- EXTRUDE AND RETRACT BUTTON LARGE SIZED PANEL -->
-                        <v-col
-                            class="col-3 d-flex align-center flex-column justify-center"
-                            :class="{ _hidden: !el.is.large }">
+                        <v-col v-if="el.is.large" class="col-3 d-flex align-center flex-column justify-center">
                             <!-- RETRACT -->
                             <v-tooltip left :disabled="extrudePossible && !tooLargeExtrusion" color="secondary">
                                 <template #activator="{ on }">
@@ -288,7 +278,7 @@
                         </v-col>
                     </v-row>
                     <!-- EXTRUDE AND RETRACT BUTTON SMALL AND MEDIUM SIZED PANEL -->
-                    <v-row :class="{ _hidden: el.is.large, 'pb-1': !showEstimatedExtrusion }">
+                    <v-row v-if="!el.is.large" :class="{ 'pb-1': !showEstimatedExtrusion }">
                         <v-col class="pa-0">
                             <div class="d-flex justify-space-around">
                                 <div class="d-flex align-center">
