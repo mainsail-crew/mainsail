@@ -95,7 +95,7 @@
                 <v-icon class="mr-md-2">{{ mdiAlertCircleOutline }}</v-icon>
                 <span class="d-none d-md-inline">{{ $t('App.TopBar.EmergencyStop') }}</span>
             </v-btn>
-            <the-announcements-menu v-if="moonrakerComponents.includes('announcements')"></the-announcements-menu>
+            <the-notification-menu></the-notification-menu>
             <the-settings-menu></the-settings-menu>
             <the-top-corner-menu></the-top-corner-menu>
         </v-app-bar>
@@ -147,7 +147,7 @@ import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
-import TheAnnouncementsMenu from '@/components/announcements/TheAnnouncementsMenu.vue'
+import TheNotificationMenu from '@/components/notifications/TheNotificationMenu.vue'
 import { topbarHeight } from '@/store/variables'
 import { mdiAlertCircleOutline, mdiContentSave, mdiFileUpload, mdiClose, mdiCloseThick } from '@mdi/js'
 
@@ -172,7 +172,7 @@ type uploadSnackbar = {
         TheTopCornerMenu,
         PrinterSelector,
         MainsailLogo,
-        TheAnnouncementsMenu,
+        TheNotificationMenu,
     },
 })
 export default class TheTopbar extends Mixins(BaseMixin) {

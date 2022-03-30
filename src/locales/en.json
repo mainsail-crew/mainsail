@@ -1,11 +1,10 @@
 {
     "App": {
-        "Announcements": {
-            "Announcement": "Announcement",
-            "AnnouncementCritical": "Announcement (Critical)",
+        "Notifications": {
+            "Notification": "Notification",
             "Later": "later",
             "More": "more",
-            "NoAnnouncement": "No Announcement available",
+            "NoNotification": "No Notification available",
             "OneHour": "1 Hour",
             "Tomorrow": "Tomorrow"
         },

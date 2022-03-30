@@ -76,13 +76,13 @@
 <script lang="ts">
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
+import { NotificationStateEntry } from '@/store/notification/types'
 
 @Component({
     components: {},
 })
-export default class AnnouncementMenuEntry extends Mixins(BaseMixin) {
+export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     mdiClose = mdiClose
     mdiLinkVariant = mdiLinkVariant
     mdiBellOffOutline = mdiBellOffOutline
@@ -90,7 +90,7 @@ export default class AnnouncementMenuEntry extends Mixins(BaseMixin) {
     private expand = false
 
     @Prop({ required: true })
-    declare readonly entry: ServerAnnouncementsStateEntry
+    declare readonly entry: NotificationStateEntry
 
     get formatedText() {
         return this.entry.description.replace(/\[([^\]]+)\]\(([^)]+)\)/, '<a href="$2" target="_blank">$1</a>')
@@ -103,11 +103,11 @@ export default class AnnouncementMenuEntry extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$store.dispatch('server/announcements/close', { entry_id: this.entry.entry_id })
+        this.$store.dispatch('server/notification/close', { id: this.entry.id })
     }
 
     dismiss(time: number) {
-        this.$store.dispatch('server/announcements/dismiss', { entry_id: this.entry.entry_id, time })
+        this.$store.dispatch('server/notification/dismiss', { id: this.entry.id, time })
     }
 }
 </script>

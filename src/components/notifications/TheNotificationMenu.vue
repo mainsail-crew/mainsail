@@ -23,8 +23,8 @@
                 <overlay-scrollbars class="announcement-menu__scrollbar">
                     <v-card-text>
                         <template v-for="(entry, index) in notifications">
-                            <announcement-menu-entry
-                                :key="entry.entry_id"
+                            <notification-menu-entry
+                                :key="entry.id"
                                 :entry="entry"
                                 :class="index < notifications.length - 1 ? '' : 'mb-0'" />
                         </template>
@@ -41,7 +41,7 @@
             </template>
             <template v-else>
                 <v-card-text class="text-center">
-                    <span class="text-disabled">{{ $t('App.Announcements.NoAnnouncement') }}</span>
+                    <span class="text-disabled">{{ $t('App.Notifications.NoNotification') }}</span>
                 </v-card-text>
             </template>
         </v-card>
@@ -51,13 +51,13 @@
 <script lang="ts">
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
-import AnnouncementMenuEntry from '@/components/announcements/AnnouncementMenuEntry.vue'
+import NotificationMenuEntry from '@/components/notifications/NotificationMenuEntry.vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
 
 @Component({
-    components: { AnnouncementMenuEntry },
+    components: { NotificationMenuEntry },
 })
-export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
+export default class TheNotificationMenu extends Mixins(BaseMixin) {
     mdiBell = mdiBell
     mdiBellOutline = mdiBellOutline
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
@@ -67,7 +67,7 @@ export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     }
 
     get existsCriticalAnnouncements() {
-        //return this.announcements.filter((entry: ServerAnnouncementsStateEntry) => entry.priority === 'high').length > 0
+        //return this.notifications.filter((entry: ServerAnnouncementsStateEntry) => entry.priority === 'high').length > 0
 
         return false
     }
@@ -77,8 +77,8 @@ export default class TheAnnouncementsMenu extends Mixins(BaseMixin) {
     }
 
     dismissAll() {
-        /*this.announcements.forEach((entry: ServerAnnouncementsStateEntry) => {
-            this.$store.dispatch('server/announcements/close', { entry_id: entry.entry_id })
+        /*this.notifications.forEach((entry: ServerAnnouncementsStateEntry) => {
+            this.$store.dispatch('server/notifications/close', { entry_id: entry.entry_id })
         })*/
     }
 }
