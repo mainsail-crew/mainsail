@@ -2,7 +2,7 @@
     <v-alert text :color="alertColor" border="left">
         <v-row align="start">
             <v-col class="grow">
-                <div class="announcement-menu-entry__headline mb-1 text-subtitle-1">
+                <div class="notification-menu-entry__headline mb-1 text-subtitle-1">
                     <a :class="`text-decoration-none ${alertColor}--text`" :href="entry.url" target="_blank">
                         <v-icon small :class="`${alertColor}--text pb-1`">
                             {{ mdiLinkVariant }}
@@ -103,17 +103,17 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$store.dispatch('server/notification/close', { id: this.entry.id })
+        this.$store.dispatch('notification/close', { id: this.entry.id })
     }
 
     dismiss(time: number) {
-        this.$store.dispatch('server/notification/dismiss', { id: this.entry.id, time })
+        this.$store.dispatch('notification/dismiss', { id: this.entry.id, time })
     }
 }
 </script>
 
 <style scoped>
-.announcement-menu-entry__headline {
+.notification-menu-entry__headline {
     line-height: 1.2;
 }
 </style>
