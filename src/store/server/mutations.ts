@@ -53,6 +53,10 @@ export const mutations: MutationTree<ServerState> = {
         Vue.set(state, 'system_cpu_usage', payload)
     },
 
+    setSystemUptime(state, payload) {
+        Vue.set(state, 'system_uptime', payload)
+    },
+
     setKlippyConnectedTimer(state, timer) {
         Vue.set(state, 'klippy_connected_timer', timer)
     },
@@ -60,6 +64,7 @@ export const mutations: MutationTree<ServerState> = {
     setProcStats(state, payload) {
         Vue.set(state, 'cpu_temp', payload.cpu_temp)
         Vue.set(state, 'moonraker_stats', payload.moonraker_stats)
+        Vue.set(state, 'system_uptime', payload.system_uptime)
     },
 
     setConnectionId(state, payload) {

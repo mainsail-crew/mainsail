@@ -35,6 +35,7 @@ export const getDefaultState = (): ServerState => {
         network_stats: {},
         system_cpu_usage: {},
         dbNamespaces: [],
+        system_uptime: 0,
         websocket_count: 0,
         moonraker_version: '',
     }

@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/helpers'
+import { stat } from 'fs'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerState, any> = {
@@ -51,6 +52,7 @@ export const getters: GetterTree<ServerState, any> = {
                 id: string
             } | null
             load: number
+            uptime: number
             loadPercent: number
             loadProgressColor: string
             memoryFormat: string | null
@@ -121,6 +123,7 @@ export const getters: GetterTree<ServerState, any> = {
                 pythonVersion,
                 os: state.system_info?.distribution?.name ?? null,
                 release_info: state.system_info?.distribution?.release_info ?? null,
+                uptime: state.system_uptime ?? 0,
                 load,
                 loadPercent: loadPercent < 100 ? loadPercent : 100,
                 loadProgressColor,

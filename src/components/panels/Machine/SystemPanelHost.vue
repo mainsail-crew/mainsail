@@ -93,6 +93,13 @@
                             </template>
                         </span>
                     </div>
+                    <div>
+                        {{
+                            $t('Machine.SystemPanel.Values.Uptime', {
+                                uptime: hostStats.uptime,
+                            })
+                        }}
+                    </div>
                     <template v-if="networkInterfaces">
                         <div v-for="(interfaceStats, interfaceName) in networkInterfaces" :key="interfaceName">
                             <span class="text-no-wrap">
@@ -243,6 +250,10 @@ export default class SystemPanelHost extends Mixins(BaseMixin) {
         else if (this.cpuUsage > 80) color = 'warning'
 
         return color
+    }
+
+    get hostUptime() {
+        return this.$store.getters['server/getHostUptime'] ?? null
     }
 
     get networkInterfaces() {

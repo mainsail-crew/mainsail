@@ -91,6 +91,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
         if ('network' in payload) commit('setNetworkStats', payload.network)
         if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
+        if ('system_uptime' in payload) commit('setSystemUptime', payload.system_uptime)
     },
 
     setKlippyReady({ dispatch, state }) {

@@ -50,6 +50,7 @@ export interface ServerState {
         [name: string]: number
     }
     dbNamespaces: string[]
+    system_uptime: number
     websocket_count: number
     moonraker_version: string
 

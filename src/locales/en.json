@@ -378,6 +378,7 @@
                 "Distro": "Distro: {name} {version_id}",
                 "Frequency": "Freq: {frequency}",
                 "Load": "Load: {load}",
+                "Uptime": "Uptime: {uptime}",
                 "Memory": "Mem: {memory}",
                 "Os": "OS: {os}",
                 "Received": "Received: {received}",
