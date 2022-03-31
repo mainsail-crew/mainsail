@@ -64,18 +64,22 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
     get notifications() {
-        const notifications = this.$store.getters['notification/getNotifications'] ?? []
-        window.console.log(notifications)
-
-        return notifications
+        return this.$store.getters['notification/getNotifications'] ?? []
     }
 
     get existsCriticalAnnouncements() {
+        return this.notifications.filter((entry: NotificationStateEntry) => entry.priority === 'critical').length > 0
+    }
+
+    get existsHighAnnouncements() {
         return this.notifications.filter((entry: NotificationStateEntry) => entry.priority === 'high').length > 0
     }
 
     get colorBadge() {
-        return this.existsCriticalAnnouncements ? 'warning' : 'primary'
+        if (this.existsCriticalAnnouncements) return 'error'
+        if (this.existsHighAnnouncements) return 'warning'
+
+        return 'primary'
     }
 
     dismissAll() {

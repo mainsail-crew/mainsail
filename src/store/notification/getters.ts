@@ -28,7 +28,7 @@ export const getters: GetterTree<NotificationState, any> = {
 
             flags.forEach((flag: string) => {
                 notifications.push({
-                    id: 'throttledFlag/' + flag,
+                    id: 'flag/' + flag,
                     priority: flag.startsWith('Previously') ? 'high' : 'critical',
                     title: i18n.t(`App.ThrottledStates.Title${flag}`),
                     description: i18n.t(`App.ThrottledStates.Description${flag}`),

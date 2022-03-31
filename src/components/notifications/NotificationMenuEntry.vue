@@ -17,7 +17,9 @@
                 </div>
                 <p class="text-body-2 mb-0 text--disabled font-weight-light" v-html="formatedText"></p>
             </v-col>
-            <v-col class="shrink pl-0 pb-0 pt-1 pr-2 d-flex flex-column align-self-stretch justify-space-between">
+            <v-col
+                v-if="entry.priority !== 'critical'"
+                class="shrink pl-0 pb-0 pt-1 pr-2 d-flex flex-column align-self-stretch justify-space-between">
                 <v-btn icon plain :color="alertColor" class="mb-2" @click="close">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
@@ -33,7 +35,7 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="entry.priority !== 'critical'">
             <v-expand-transition>
                 <div v-show="expand" class="pt-1" style="width: 100%">
                     <v-divider class="pb-1 ml-2"></v-divider>
