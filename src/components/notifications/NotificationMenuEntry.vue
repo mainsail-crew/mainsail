@@ -3,12 +3,17 @@
         <v-row align="start">
             <v-col class="grow">
                 <div class="notification-menu-entry__headline mb-1 text-subtitle-1">
-                    <a :class="`text-decoration-none ${alertColor}--text`" :href="entry.url" target="_blank">
-                        <v-icon small :class="`${alertColor}--text pb-1`">
-                            {{ mdiLinkVariant }}
-                        </v-icon>
-                        {{ entry.title }}
-                    </a>
+                    <template v-if="'url' in entry">
+                        <a :class="`text-decoration-none ${alertColor}--text`" :href="entry.url" target="_blank">
+                            <v-icon small :class="`${alertColor}--text pb-1`">
+                                {{ mdiLinkVariant }}
+                            </v-icon>
+                            {{ entry.title }}
+                        </a>
+                    </template>
+                    <template v-else>
+                        <span :class="`${alertColor}--text`">{{ entry.title }}</span>
+                    </template>
                 </div>
                 <p class="text-body-2 mb-0 text--disabled font-weight-light" v-html="formatedText"></p>
             </v-col>
@@ -97,6 +102,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     }
 
     get alertColor() {
+        if (this.entry.priority === 'critical') return 'error'
         if (this.entry.priority === 'high') return 'warning'
 
         return 'info'
