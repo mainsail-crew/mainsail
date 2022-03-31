@@ -2,6 +2,7 @@ import { GetterTree } from 'vuex'
 import { ServerState, ServerStateNetworkInterface } from '@/store/server/types'
 import { formatConsoleMessage, formatFilesize, formatTime } from '@/plugins/helpers'
 import { stat } from 'fs'
+import prettyMilliseconds from 'pretty-ms'
 
 // eslint-disable-next-line
 export const getters: GetterTree<ServerState, any> = {
@@ -52,7 +53,7 @@ export const getters: GetterTree<ServerState, any> = {
                 id: string
             } | null
             load: number
-            uptime: number
+            uptime: string
             loadPercent: number
             loadProgressColor: string
             memoryFormat: string | null
@@ -84,6 +85,13 @@ export const getters: GetterTree<ServerState, any> = {
             }
 
             const cpuCors = state.system_info?.cpu_info?.cpu_count ?? 1
+
+            let uptime: string = ''
+            if (state.system_uptime != 0) {
+                const sysUptime = (state.system_uptime ?? 0) * 1000
+                uptime = prettyMilliseconds(sysUptime, { secondsDecimalDigits: 0 })
+            }
+
             const load = Math.round((rootState.printer.system_stats?.sysload ?? 0) * 100) / 100
             const loadPercent = Math.round((load / cpuCors) * 100)
 
@@ -123,7 +131,7 @@ export const getters: GetterTree<ServerState, any> = {
                 pythonVersion,
                 os: state.system_info?.distribution?.name ?? null,
                 release_info: state.system_info?.distribution?.release_info ?? null,
-                uptime: state.system_uptime ?? 0,
+                uptime,
                 load,
                 loadPercent: loadPercent < 100 ? loadPercent : 100,
                 loadProgressColor,
