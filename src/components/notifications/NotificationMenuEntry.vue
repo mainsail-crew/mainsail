@@ -41,30 +41,49 @@
                 <div v-show="expand" class="pt-1" style="width: 100%">
                     <v-divider class="pb-1 ml-2"></v-divider>
                     <div class="text-right py-1" style="font-size: 0.875rem">
-                        <span class="text--disabled text-caption font-weight-light">Remind in:</span>
-                        <v-btn :color="alertColor" x-small plain text outlined class="mx-1" @click="dismiss(60 * 60)">
-                            1H
-                        </v-btn>
-                        <v-btn
-                            :color="alertColor"
-                            x-small
-                            plain
-                            text
-                            outlined
-                            class="mx-1"
-                            @click="dismiss(60 * 60 * 24)">
-                            1D
-                        </v-btn>
-                        <v-btn
-                            :color="alertColor"
-                            x-small
-                            plain
-                            text
-                            outlined
-                            class="mx-1"
-                            @click="dismiss(60 * 60 * 24 * 7)">
-                            7D
-                        </v-btn>
+                        <template v-if="entryType === 'flag'">
+                            <span class="text--disabled text-caption font-weight-light">
+                                {{ $t('App.Notifications.Until') }}
+                            </span>
+                            <v-btn :color="alertColor" x-small plain text outlined class="mx-1" @click="dismiss()">
+                                {{ $t('App.Notifications.NextReboot') }}
+                            </v-btn>
+                        </template>
+                        <template v-else>
+                            <span class="text--disabled text-caption font-weight-light">
+                                {{ $t('App.Notifications.RemindIn') }}
+                            </span>
+                            <v-btn
+                                :color="alertColor"
+                                x-small
+                                plain
+                                text
+                                outlined
+                                class="mx-1"
+                                @click="dismiss(60 * 60)">
+                                1H
+                            </v-btn>
+                            <v-btn
+                                :color="alertColor"
+                                x-small
+                                plain
+                                text
+                                outlined
+                                class="mx-1"
+                                @click="dismiss(60 * 60 * 24)">
+                                1D
+                            </v-btn>
+                            <v-btn
+                                :color="alertColor"
+                                x-small
+                                plain
+                                text
+                                outlined
+                                class="mx-1"
+                                @click="dismiss(60 * 60 * 24 * 7)">
+                                7D
+                            </v-btn>
+                        </template>
                     </div>
                 </div>
             </v-expand-transition>
@@ -113,7 +132,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
         this.$store.dispatch('notification/close', { id: this.entry.id })
     }
 
-    dismiss(time: number) {
+    dismiss(time: number | null = null) {
         this.$store.dispatch('notification/dismiss', { id: this.entry.id, time })
     }
 }

@@ -47,7 +47,6 @@
             <v-toolbar-title class="text-no-wrap ml-0 pl-2 mr-2">{{ printerName }}</v-toolbar-title>
             <printer-selector v-if="countPrinters"></printer-selector>
             <v-spacer></v-spacer>
-            <the-throttled-states></the-throttled-states>
             <input
                 ref="fileUploadAndStart"
                 type="file"
@@ -143,7 +142,6 @@ import axios from 'axios'
 import { formatFilesize } from '@/plugins/helpers'
 import TheTopCornerMenu from '@/components/TheTopCornerMenu.vue'
 import TheSettingsMenu from '@/components/TheSettingsMenu.vue'
-import TheThrottledStates from '@/components/TheThrottledStates.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PrinterSelector from '@/components/ui/PrinterSelector.vue'
 import MainsailLogo from '@/components/ui/MainsailLogo.vue'
@@ -167,7 +165,6 @@ type uploadSnackbar = {
 @Component({
     components: {
         Panel,
-        TheThrottledStates,
         TheSettingsMenu,
         TheTopCornerMenu,
         PrinterSelector,
