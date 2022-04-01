@@ -23,6 +23,7 @@
                 <v-btn icon plain :color="alertColor" class="mb-2" @click="close">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
+                <v-spacer></v-spacer>
                 <v-btn
                     icon
                     plain
@@ -40,39 +41,30 @@
                 <div v-show="expand" class="pt-1" style="width: 100%">
                     <v-divider class="pb-1 ml-2"></v-divider>
                     <div class="text-right py-1" style="font-size: 0.875rem">
-                        <span class="text--disabled text-caption font-weight-light">
-                            Remind in:
-                            <v-btn
-                                :color="alertColor"
-                                x-small
-                                plain
-                                text
-                                outlined
-                                class="mx-1"
-                                @click="dismiss(60 * 60)">
-                                1H
-                            </v-btn>
-                            <v-btn
-                                :color="alertColor"
-                                x-small
-                                plain
-                                text
-                                outlined
-                                class="mx-1"
-                                @click="dismiss(60 * 60 * 24)">
-                                1D
-                            </v-btn>
-                            <v-btn
-                                :color="alertColor"
-                                x-small
-                                plain
-                                text
-                                outlined
-                                class="mx-1"
-                                @click="dismiss(60 * 60 * 24 * 7)">
-                                7D
-                            </v-btn>
-                        </span>
+                        <span class="text--disabled text-caption font-weight-light">Remind in:</span>
+                        <v-btn :color="alertColor" x-small plain text outlined class="mx-1" @click="dismiss(60 * 60)">
+                            1H
+                        </v-btn>
+                        <v-btn
+                            :color="alertColor"
+                            x-small
+                            plain
+                            text
+                            outlined
+                            class="mx-1"
+                            @click="dismiss(60 * 60 * 24)">
+                            1D
+                        </v-btn>
+                        <v-btn
+                            :color="alertColor"
+                            x-small
+                            plain
+                            text
+                            outlined
+                            class="mx-1"
+                            @click="dismiss(60 * 60 * 24 * 7)">
+                            7D
+                        </v-btn>
                     </div>
                 </div>
             </v-expand-transition>
@@ -108,6 +100,13 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
         if (this.entry.priority === 'high') return 'warning'
 
         return 'info'
+    }
+
+    get entryType() {
+        const posFirstSlash = this.entry.id.indexOf('/')
+        if (posFirstSlash === -1) return ''
+
+        return this.entry.id.slice(0, posFirstSlash)
     }
 
     close() {
