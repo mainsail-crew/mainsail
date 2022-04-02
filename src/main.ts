@@ -30,7 +30,7 @@ Vue.use(VueMeta)
 import VueLoadImage from 'vue-load-image'
 Vue.component('VueLoadImage', VueLoadImage)
 
-//vue-toast-notification
+//vue-toast-notifications
 import VueToast from 'vue-toast-notification'
 import 'vue-toast-notification/dist/theme-sugar.css'
 import { WebSocketPlugin } from '@/plugins/webSocketClient'

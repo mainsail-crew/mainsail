@@ -1,8 +1,8 @@
 import { getDefaultState } from './index'
 import { MutationTree } from 'vuex'
-import { NotificationState } from '@/store/notification/types'
+import { GuiNotificationState } from './types'
 
-export const mutations: MutationTree<NotificationState> = {
+export const mutations: MutationTree<GuiNotificationState> = {
     reset(state) {
         Object.assign(state, getDefaultState())
     },

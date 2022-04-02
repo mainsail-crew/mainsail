@@ -24,14 +24,7 @@
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn
-                    icon
-                    plain
-                    retain-focus-on-click
-                    :color="alertColor"
-                    class="pb-1"
-                    @click="expand = !expand"
-                    @blur="expand = false">
+                <v-btn icon plain retain-focus-on-click :color="alertColor" class="pb-1" @click="expand = !expand">
                     <v-icon>{{ mdiBellOffOutline }}</v-icon>
                 </v-btn>
             </v-col>
@@ -45,7 +38,14 @@
                             <span class="text--disabled text-caption font-weight-light">
                                 {{ $t('App.Notifications.Until') }}
                             </span>
-                            <v-btn :color="alertColor" x-small plain text outlined class="mx-1" @click="dismiss()">
+                            <v-btn
+                                :color="alertColor"
+                                x-small
+                                plain
+                                text
+                                outlined
+                                class="mx-1"
+                                @click="dismiss('reboot')">
                                 {{ $t('App.Notifications.NextReboot') }}
                             </v-btn>
                         </template>
@@ -95,7 +95,7 @@
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
-import { NotificationStateEntry } from '@/store/notification/types'
+import { NotificationStateEntry } from '@/store/gui/notifications/types'
 
 @Component({
     components: {},
@@ -132,7 +132,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
         this.$store.dispatch('notification/close', { id: this.entry.id })
     }
 
-    dismiss(time: number | null = null) {
+    dismiss(time: number | string) {
         this.$store.dispatch('notification/dismiss', { id: this.entry.id, time })
     }
 }

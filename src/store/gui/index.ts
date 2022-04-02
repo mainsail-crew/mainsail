@@ -134,6 +134,9 @@ export const getDefaultState = (): GuiState => {
                 axis_maximum: null,
             },
         },
+        notifications: {
+            dismiss: [],
+        },
         uiSettings: {
             logo: defaultLogoColor,
             primary: defaultPrimaryColor,

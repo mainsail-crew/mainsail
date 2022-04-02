@@ -411,4 +411,8 @@ export const actions: ActionTree<GuiState, RootState> = {
                 dispatch('saveSetting', { name: `gcodeViewer.klipperCache.${key}`, value })
         })
     },
+
+    announcementDismissFlag(_, payload) {
+        window.console.log(payload)
+    },
 }

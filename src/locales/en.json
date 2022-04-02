@@ -4,9 +4,12 @@
             "Notification": "Notification",
             "Later": "later",
             "More": "more",
+            "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
             "OneHour": "1 Hour",
-            "Tomorrow": "Tomorrow"
+            "RemindIn": "Remind in:",
+            "Tomorrow": "Tomorrow",
+            "Until": "Until:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",

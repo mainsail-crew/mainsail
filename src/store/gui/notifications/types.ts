@@ -1,6 +1,6 @@
-export interface NotificationState {}
+export interface GuiNotificationState {}
 
-export interface NotificationStateEntry {
+export interface GuiNotificationStateEntry {
     id: string
     priority: 'normal' | 'high' | 'critical'
     title: string

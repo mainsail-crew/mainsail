@@ -1,8 +1,8 @@
 import { ActionTree } from 'vuex'
-import { NotificationState } from '@/store/notification/types'
-import { RootState } from '@/store/types'
+import { GuiNotificationState } from './types'
+import { RootState } from '../../types'
 
-export const actions: ActionTree<NotificationState, RootState> = {
+export const actions: ActionTree<GuiNotificationState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
@@ -24,6 +24,9 @@ export const actions: ActionTree<NotificationState, RootState> = {
         const type = payload.id.slice(0, posFirstSlash)
         const id = payload.id.slice(posFirstSlash + 1)
 
-        if (type === 'announcement') dispatch('server/announcements/dismiss', { entry_id: id }, { root: true })
+        if (type === 'announcement')
+            dispatch('server/announcements/dismiss', { entry_id: id, time: payload.time }, { root: true })
+        else if (type === 'flag')
+            dispatch('gui/notification/dismiss', { entry_id: id, type, time: payload.time }, { root: true })
     },
 }

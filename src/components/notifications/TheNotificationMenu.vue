@@ -53,7 +53,7 @@ import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
 import NotificationMenuEntry from '@/components/notifications/NotificationMenuEntry.vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
-import { NotificationStateEntry } from '@/store/notification/types'
+import { NotificationStateEntry } from '@/store/gui/notifications/types'
 
 @Component({
     components: { NotificationMenuEntry },

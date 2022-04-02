@@ -1,11 +1,11 @@
 import { GetterTree } from 'vuex'
-import { NotificationState, NotificationStateEntry } from '@/store/notification/types'
-import { ServerAnnouncementsStateEntry } from '../server/announcements/types'
+import { GuiNotificationState, GuiNotificationStateEntry } from './types'
+import { ServerAnnouncementsStateEntry } from '@/store/server/announcements/types'
 import i18n from '@/plugins/i18n.js'
 
-export const getters: GetterTree<NotificationState, any> = {
+export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters, rootState, rootGetters) => {
-        const notifications: NotificationStateEntry[] = []
+        const notifications: GuiNotificationStateEntry[] = []
 
         const announcements = rootGetters['server/announcements/getAnnouncements']
         if (announcements.length) {
@@ -18,7 +18,7 @@ export const getters: GetterTree<NotificationState, any> = {
                     date: entry.date,
                     dismissed: entry.dismissed,
                     url: entry.url,
-                } as NotificationStateEntry)
+                } as GuiNotificationStateEntry)
             })
         }
 
@@ -34,7 +34,7 @@ export const getters: GetterTree<NotificationState, any> = {
                     description: i18n.t(`App.ThrottledStates.Description${flag}`),
                     date,
                     dismissed: false,
-                } as NotificationStateEntry)
+                } as GuiNotificationStateEntry)
             })
         }
 
