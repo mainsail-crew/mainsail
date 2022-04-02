@@ -14,7 +14,6 @@ import { gui } from '@/store/gui'
 import { farm } from '@/store/farm'
 import { editor } from '@/store/editor'
 import { gcodeviewer } from '@/store/gcodeviewer'
-import { notification } from '@/store/gui/notifications'
 
 Vue.use(Vuex)
 
@@ -50,7 +49,6 @@ export default new Vuex.Store({
         farm,
         editor,
         gcodeviewer,
-        notification,
     },
     getters: getters,
     mutations: mutations,

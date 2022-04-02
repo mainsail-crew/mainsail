@@ -5,13 +5,15 @@ import { mutations } from './mutations'
 import { getters } from './getters'
 
 export const getDefaultState = (): GuiNotificationState => {
-    return {}
+    return {
+        dismiss: [],
+    }
 }
 
 // initial state
 const state = getDefaultState()
 
-export const notification: Module<GuiNotificationState, any> = {
+export const notifications: Module<GuiNotificationState, any> = {
     namespaced: true,
     state,
     getters,

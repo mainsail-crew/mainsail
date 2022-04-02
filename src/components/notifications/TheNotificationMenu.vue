@@ -53,7 +53,7 @@ import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins } from 'vue-property-decorator'
 import NotificationMenuEntry from '@/components/notifications/NotificationMenuEntry.vue'
 import { mdiBell, mdiBellOutline, mdiCloseBoxMultipleOutline } from '@mdi/js'
-import { NotificationStateEntry } from '@/store/gui/notifications/types'
+import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 
 @Component({
     components: { NotificationMenuEntry },
@@ -64,15 +64,15 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
 
     get notifications() {
-        return this.$store.getters['notification/getNotifications'] ?? []
+        return this.$store.getters['gui/notifications/getNotifications'] ?? []
     }
 
     get existsCriticalAnnouncements() {
-        return this.notifications.filter((entry: NotificationStateEntry) => entry.priority === 'critical').length > 0
+        return this.notifications.filter((entry: GuiNotificationStateEntry) => entry.priority === 'critical').length > 0
     }
 
     get existsHighAnnouncements() {
-        return this.notifications.filter((entry: NotificationStateEntry) => entry.priority === 'high').length > 0
+        return this.notifications.filter((entry: GuiNotificationStateEntry) => entry.priority === 'high').length > 0
     }
 
     get colorBadge() {

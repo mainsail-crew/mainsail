@@ -45,7 +45,7 @@
                                 text
                                 outlined
                                 class="mx-1"
-                                @click="dismiss('reboot')">
+                                @click="dismiss('reboot', null)">
                                 {{ $t('App.Notifications.NextReboot') }}
                             </v-btn>
                         </template>
@@ -60,7 +60,7 @@
                                 text
                                 outlined
                                 class="mx-1"
-                                @click="dismiss(60 * 60)">
+                                @click="dismiss('time', 60 * 60)">
                                 1H
                             </v-btn>
                             <v-btn
@@ -70,7 +70,7 @@
                                 text
                                 outlined
                                 class="mx-1"
-                                @click="dismiss(60 * 60 * 24)">
+                                @click="dismiss('time', 60 * 60 * 24)">
                                 1D
                             </v-btn>
                             <v-btn
@@ -80,7 +80,7 @@
                                 text
                                 outlined
                                 class="mx-1"
-                                @click="dismiss(60 * 60 * 24 * 7)">
+                                @click="dismiss('time', 60 * 60 * 24 * 7)">
                                 7D
                             </v-btn>
                         </template>
@@ -95,7 +95,7 @@
 import BaseMixin from '@/components/mixins/base'
 import { Component, Mixins, Prop } from 'vue-property-decorator'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
-import { NotificationStateEntry } from '@/store/gui/notifications/types'
+import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 
 @Component({
     components: {},
@@ -108,7 +108,7 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     private expand = false
 
     @Prop({ required: true })
-    declare readonly entry: NotificationStateEntry
+    declare readonly entry: GuiNotificationStateEntry
 
     get formatedText() {
         return this.entry.description.replace(/\[([^\]]+)\]\(([^)]+)\)/, '<a href="$2" target="_blank">$1</a>')
@@ -129,11 +129,11 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
     }
 
     close() {
-        this.$store.dispatch('notification/close', { id: this.entry.id })
+        this.$store.dispatch('gui/notifications/close', { id: this.entry.id })
     }
 
-    dismiss(time: number | string) {
-        this.$store.dispatch('notification/dismiss', { id: this.entry.id, time })
+    dismiss(type: 'time' | 'reboot', time: number | null) {
+        this.$store.dispatch('gui/notifications/dismiss', { id: this.entry.id, type, time })
     }
 }
 </script>
