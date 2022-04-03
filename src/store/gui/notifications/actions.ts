@@ -84,7 +84,6 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
         }
 
         await commit('addDismiss', newDismiss)
-
-        dispatch('upload')
+        await dispatch('upload')
     },
 }
