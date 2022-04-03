@@ -7,7 +7,6 @@
 <template>
     <div>
         <min-settings-panel></min-settings-panel>
-        <moonraker-state-panel></moonraker-state-panel>
         <klippy-state-panel></klippy-state-panel>
         <klipper-warnings-panel></klipper-warnings-panel>
         <panel
@@ -368,7 +367,6 @@ import { Mixins, Watch } from 'vue-property-decorator'
 import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin } from '@/store/variables'
 import BaseMixin from '@/components/mixins/base'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
-import MoonrakerStatePanel from '@/components/panels/MoonrakerStatePanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
 import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
@@ -392,7 +390,6 @@ import {
         KlipperWarningsPanel,
         KlippyStatePanel,
         MinSettingsPanel,
-        MoonrakerStatePanel,
         Panel,
         StatusPanelExcludeObject,
     },

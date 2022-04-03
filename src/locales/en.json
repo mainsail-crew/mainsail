@@ -7,6 +7,13 @@
             "HideTill": "hide till:",
             "Notification": "Notification",
             "Later": "later",
+            "MoonrakerWarnings": {
+                "MoonrakerComponent": "Moonraker: {component}",
+                "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
+                "MoonrakerWarning": "Moonraker warning",
+                "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
+                "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
+            },
             "More": "more",
             "Never": "never",
             "NextReboot": "next reboot",
@@ -446,10 +453,6 @@
             "Y": "Y",
             "Z": "Z",
             "ZTilt": "Z Tilt"
-        },
-        "DependenciesPanel": {
-            "Dependency": "Dependency | Dependencies",
-            "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}."
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Reconnect",
