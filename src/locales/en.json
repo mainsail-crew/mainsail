@@ -1,6 +1,8 @@
 {
     "App": {
         "Notifications": {
+            "DependencyName": "Dependency: {name}",
+            "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DismissAll": "Dismiss all",
             "HideTill": "hide till:",
             "Notification": "Notification",
