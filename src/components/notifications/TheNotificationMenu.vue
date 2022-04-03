@@ -30,8 +30,8 @@
                         </template>
                     </v-card-text>
                 </overlay-scrollbars>
-                <v-divider></v-divider>
-                <v-card-actions>
+                <v-divider v-if="countNormalAnnouncements > 1"></v-divider>
+                <v-card-actions v-if="countNormalAnnouncements > 1">
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" class="mr-2" @click="dismissAll">
                         <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
@@ -75,6 +75,10 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
         return this.notifications.filter((entry: GuiNotificationStateEntry) => entry.priority === 'high').length > 0
     }
 
+    get countNormalAnnouncements() {
+        return this.notifications.filter((entry: GuiNotificationStateEntry) => entry.priority === 'normal').length
+    }
+
     get colorBadge() {
         if (this.existsCriticalAnnouncements) return 'error'
         if (this.existsHighAnnouncements) return 'warning'
@@ -83,9 +87,11 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     }
 
     dismissAll() {
-        /*this.notifications.forEach((entry: ServerAnnouncementsStateEntry) => {
-            this.$store.dispatch('server/notifications/close', { entry_id: entry.entry_id })
-        })*/
+        this.notifications
+            .filter((entry: GuiNotificationStateEntry) => entry.priority === 'normal')
+            .forEach((entry: GuiNotificationStateEntry) => {
+                this.$store.dispatch('gui/notifications/close', { entry_id: entry.id })
+            })
     }
 }
 </script>
