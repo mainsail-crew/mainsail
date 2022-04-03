@@ -5,6 +5,7 @@ import i18n from '@/plugins/i18n.js'
 import { RootStateDependency } from '@/store/types'
 import { camelize } from '@/plugins/helpers'
 import { sha256 } from 'js-sha256'
+import { PrinterStateKlipperConfigWarning } from '@/store/printer/types'
 
 export const getters: GetterTree<GuiNotificationState, any> = {
     getNotifications: (state, getters) => {
@@ -24,6 +25,9 @@ export const getters: GetterTree<GuiNotificationState, any> = {
 
         // moonraker failed compontents
         notifications = notifications.concat(getters['getNotificationsMoonrakerFailedComponents'])
+
+        // klipper warnings
+        notifications = notifications.concat(getters['getNotificationsKlipperWarnings'])
 
         const mapType = {
             normal: 2,
@@ -144,14 +148,14 @@ export const getters: GetterTree<GuiNotificationState, any> = {
             const date = rootState.server.system_boot_at ?? new Date()
 
             // get all dismissed moonraker warnings and convert it to a string[]
-            const flagDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerWarning').map(
+            const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('moonrakerWarning').map(
                 (dismiss: GuiNotificationStateDismissEntry) => {
                     return dismiss.id
                 }
             )
 
             // filter all dismissed warnings
-            warnings = warnings.filter((warning: string) => !flagDismisses.includes(sha256(warning)))
+            warnings = warnings.filter((warning: string) => !warningsDismisses.includes(sha256(warning)))
 
             warnings.forEach((warning: string) => {
                 let description = warning
@@ -207,6 +211,58 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                         .t('App.Notifications.MoonrakerWarnings.MoonrakerFailedComponentDescription', { component })
                         .toString(),
                     date,
+                    dismissed: false,
+                } as GuiNotificationStateEntry)
+            })
+        }
+
+        return notifications
+    },
+
+    getNotificationsKlipperWarnings: (state, getters, rootState, rootGetters) => {
+        const notifications: GuiNotificationStateEntry[] = []
+
+        let warnings = (rootState.printer.configfile?.warnings ?? []) as PrinterStateKlipperConfigWarning[]
+        if (warnings.length) {
+            const date = rootState.server.system_boot_at ?? new Date()
+
+            // get all dismissed klipper warnings and convert it to a string[]
+            const warningsDismisses = rootGetters['gui/notifications/getDismissByCategory']('klipperWarning').map(
+                (dismiss: GuiNotificationStateDismissEntry) => {
+                    return dismiss.id
+                }
+            )
+
+            // filter all dismissed warnings
+            warnings = warnings.filter((warning) => !warningsDismisses.includes(sha256(warning.message)))
+
+            warnings.forEach((warning) => {
+                let title = i18n.t('App.Notifications.KlipperWarnings.KlipperWarning').toString()
+                let description = warning.message
+
+                // add possible translations
+                if (warning.type === 'deprecated_value') {
+                    title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedValueHeadline').toString()
+                    description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedValue', warning).toString()
+                } else if (warning.type === 'deprecated_option') {
+                    title = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOptionHeadline').toString()
+                    description = i18n.t('App.Notifications.KlipperWarnings.DeprecatedOption', warning).toString()
+                }
+
+                // generate url to mainsail docs to fix this warning
+                let url = 'https://docs.mainsail.xyz/faq/klipper_warnings/' + warning.type
+                if (warning.type === 'deprecated_option' && warning.option.startsWith('default_parameter'))
+                    url += '#default_parameter'
+                else if (warning.type === 'deprecated_option') url += '#' + warning.option
+                else if (warning.type === 'deprecated_value') url += '#' + warning.value
+
+                notifications.push({
+                    id: `klipperWarning/${sha256(warning.message)}`,
+                    priority: 'high',
+                    title: title,
+                    description: description,
+                    date,
+                    url,
                     dismissed: false,
                 } as GuiNotificationStateEntry)
             })

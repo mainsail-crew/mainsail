@@ -8,7 +8,6 @@
     <div>
         <min-settings-panel></min-settings-panel>
         <klippy-state-panel></klippy-state-panel>
-        <klipper-warnings-panel></klipper-warnings-panel>
         <panel
             v-if="klipperState === 'ready'"
             :icon="mdiInformation"
@@ -368,7 +367,6 @@ import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin } from '@/store/v
 import BaseMixin from '@/components/mixins/base'
 import MinSettingsPanel from '@/components/panels/MinSettingsPanel.vue'
 import KlippyStatePanel from '@/components/panels/KlippyStatePanel.vue'
-import KlipperWarningsPanel from '@/components/panels/KlipperWarningsPanel.vue'
 import StatusPanelExcludeObject from '@/components/panels/StatusPanelExcludeObject.vue'
 import Panel from '@/components/ui/Panel.vue'
 import {
@@ -387,7 +385,6 @@ import {
 
 @Component({
     components: {
-        KlipperWarningsPanel,
         KlippyStatePanel,
         MinSettingsPanel,
         Panel,

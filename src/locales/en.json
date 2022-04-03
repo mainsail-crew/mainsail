@@ -14,6 +14,14 @@
                 "UnparsedConfigOption": "Unparsed config option '{option}: {value}' detected in section [{section}]. This may be an option no longer available or could be the result of a module that failed to load. In the future this will result in a startup error.",
                 "UnparsedConfigSection": "Unparsed config section [{section}] detected. This may be the result of a component that failed to load. In the future this will result in a startup error."
             },
+            "KlipperWarnings": {
+                "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedOptionHeadline": "Deprecated Klipper Option",
+                "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
+                "DeprecatedValueHeadline": "Deprecated Klipper Value",
+                "DownloadLog": "download log",
+                "KlipperWarning": "Klipper warning"
+            },
             "More": "more",
             "Never": "never",
             "NextReboot": "next reboot",
@@ -459,12 +467,6 @@
             "SwitchToPrinter": "Switch to Printer",
             "WebcamOff": "Off"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
-            "DownloadLog": "download log",
-            "KlipperWarnings": "Klipper Warnings"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware Restart",
             "KlipperCheck": "Please check if the Klipper service is running and an UDS (Unix Domain Socket) is configured.",
@@ -519,12 +521,6 @@
                 "Disabled": "disabled",
                 "Empty": "Empty"
             }
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download Log",
-            "FollowingPluginHasAnError": "Following plugin has an error:",
-            "MoonrakerErrorInfo": "An error was detected while loading the moonraker components. Please check the logfile and fix the issue.",
-            "MoonrakerWarnings": "Moonraker Warnings"
         },
         "PowerControlPanel": {
             "Error": "Error",
