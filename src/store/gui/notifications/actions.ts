@@ -31,7 +31,7 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
         dispatch('storeDismiss', {
             entry_id: id,
             category,
-            type: 'never',
+            type: 'ever',
             time: null,
         })
     },

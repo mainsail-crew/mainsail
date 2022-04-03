@@ -1,15 +1,16 @@
 {
     "App": {
         "Notifications": {
+            "HideTill": "hide till:",
             "Notification": "Notification",
             "Later": "later",
             "More": "more",
+            "Never": "never",
             "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
             "OneHour": "1 Hour",
-            "RemindIn": "Remind in:",
-            "Tomorrow": "Tomorrow",
-            "Until": "Until:"
+            "Remind": "Remind:",
+            "Tomorrow": "Tomorrow"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",

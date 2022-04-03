@@ -20,7 +20,10 @@
             <v-col
                 v-if="entry.priority !== 'critical'"
                 class="shrink pl-0 pb-0 pt-1 pr-2 d-flex flex-column align-self-stretch justify-space-between">
-                <v-btn icon plain :color="alertColor" class="mb-2" @click="close">
+                <v-btn v-if="entryType === 'announcement'" icon plain :color="alertColor" class="mb-2" @click="close">
+                    <v-icon>{{ mdiClose }}</v-icon>
+                </v-btn>
+                <v-btn v-else icon plain :color="alertColor" class="mb-2" @click="dismiss('reboot', null)">
                     <v-icon>{{ mdiClose }}</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
@@ -34,25 +37,10 @@
                 <div v-show="expand" class="pt-1" style="width: 100%">
                     <v-divider class="pb-1 ml-2"></v-divider>
                     <div class="text-right py-1" style="font-size: 0.875rem">
-                        <template v-if="entryType === 'flag'">
-                            <span class="text--disabled text-caption font-weight-light">
-                                {{ $t('App.Notifications.Until') }}
-                            </span>
-                            <v-btn
-                                :color="alertColor"
-                                x-small
-                                plain
-                                text
-                                outlined
-                                class="mx-1"
-                                @click="dismiss('reboot', null)">
-                                {{ $t('App.Notifications.NextReboot') }}
-                            </v-btn>
-                        </template>
-                        <template v-else>
-                            <span class="text--disabled text-caption font-weight-light">
-                                {{ $t('App.Notifications.RemindIn') }}
-                            </span>
+                        <span class="text--disabled text-caption font-weight-light">
+                            {{ $t('App.Notifications.Remind') }}
+                        </span>
+                        <template v-if="entryType === 'announcement'">
                             <v-btn
                                 :color="alertColor"
                                 x-small
@@ -82,6 +70,21 @@
                                 class="mx-1"
                                 @click="dismiss('time', 60 * 60 * 24 * 7)">
                                 7D
+                            </v-btn>
+                        </template>
+                        <template v-else>
+                            <v-btn
+                                :color="alertColor"
+                                x-small
+                                plain
+                                text
+                                outlined
+                                class="mx-1"
+                                @click="dismiss('reboot', null)">
+                                {{ $t('App.Notifications.NextReboot') }}
+                            </v-btn>
+                            <v-btn :color="alertColor" x-small plain text outlined class="mx-1" @click="close">
+                                {{ $t('App.Notifications.Never') }}
                             </v-btn>
                         </template>
                     </div>
