@@ -20,10 +20,20 @@ export const actions: ActionTree<GuiNotificationState, RootState> = {
         const posFirstSlash = payload.id.indexOf('/')
         if (posFirstSlash === -1) return
 
-        const type = payload.id.slice(0, posFirstSlash)
+        const category = payload.id.slice(0, posFirstSlash)
         const id = payload.id.slice(posFirstSlash + 1)
 
-        if (type === 'announcement') dispatch('server/announcements/close', { entry_id: id }, { root: true })
+        if (category === 'announcement') {
+            dispatch('server/announcements/close', { entry_id: id }, { root: true })
+            return
+        }
+
+        dispatch('storeDismiss', {
+            entry_id: id,
+            category,
+            type: 'never',
+            time: null,
+        })
     },
 
     dismiss({ dispatch }, payload) {

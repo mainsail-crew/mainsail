@@ -77,7 +77,7 @@ export const getters: GetterTree<GuiNotificationState, any> = {
                 return currentTime.getTime() < dismiss.date
             }
 
-            return false
+            return true
         })
 
         return dismisses
