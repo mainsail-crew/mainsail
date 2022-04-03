@@ -30,14 +30,16 @@
                         </template>
                     </v-card-text>
                 </overlay-scrollbars>
-                <v-divider v-if="countNormalAnnouncements > 1"></v-divider>
-                <v-card-actions v-if="countNormalAnnouncements > 1">
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" class="mr-2" @click="dismissAll">
-                        <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
-                        Dismiss all
-                    </v-btn>
-                </v-card-actions>
+                <template v-if="notifications.length > 1">
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" class="mr-2" @click="dismissAll">
+                            <v-icon left>{{ mdiCloseBoxMultipleOutline }}</v-icon>
+                            {{ $t('App.Notifications.DismissAll') }}
+                        </v-btn>
+                    </v-card-actions>
+                </template>
             </template>
             <template v-else>
                 <v-card-text class="text-center">
@@ -87,11 +89,13 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     }
 
     dismissAll() {
-        this.notifications
-            .filter((entry: GuiNotificationStateEntry) => entry.priority === 'normal')
-            .forEach((entry: GuiNotificationStateEntry) => {
+        this.notifications.forEach((entry: GuiNotificationStateEntry) => {
+            if (entry.id.startsWith('announcement')) {
                 this.$store.dispatch('gui/notifications/close', { entry_id: entry.id })
-            })
+            } else {
+                this.$store.dispatch('gui/notifications/dismiss', { entry_id: entry.id, type: 'reboot', time: null })
+            }
+        })
     }
 }
 </script>

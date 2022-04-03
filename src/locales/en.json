@@ -1,6 +1,7 @@
 {
     "App": {
         "Notifications": {
+            "DismissAll": "Dismiss all",
             "HideTill": "hide till:",
             "Notification": "Notification",
             "Later": "later",
