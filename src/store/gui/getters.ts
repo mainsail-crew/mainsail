@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
 import { GuiState } from '@/store/gui/types'
 import { GuiMacrosStateMacrogroup } from '@/store/gui/macros/types'
+import Vue from 'vue'
 
 // eslint-disable-next-line
 export const getters: GetterTree<GuiState, any> = {
