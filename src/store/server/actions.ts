@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '@/plugins/router'
 import { ActionTree } from 'vuex'
 import { ServerState, ServerStateEvent } from '@/store/server/types'
 import { camelize, formatConsoleMessage } from '@/plugins/helpers'
@@ -83,6 +84,13 @@ export const actions: ActionTree<ServerState, RootState> = {
 
     initProcStats({ commit }, payload) {
         if (payload.throttled_state !== null) commit('setThrottledState', payload.throttled_state)
+    },
+
+    updateProcStats({ commit }, payload) {
+        if ('cpu_temp' in payload) commit('setCpuTemp', payload.cpu_temp)
+        if ('moonraker_stats' in payload) commit('setMoonrakerStats', payload.moonraker_stats)
+        if ('network' in payload) commit('setNetworkStats', payload.network)
+        if ('system_cpu_usage' in payload) commit('setCpuStats', payload.system_cpu_usage)
     },
 
     setKlippyReady({ dispatch, state }) {
@@ -203,7 +211,7 @@ export const actions: ActionTree<ServerState, RootState> = {
         }
     },
 
-    addEvent({ commit, rootGetters }, payload) {
+    async addEvent({ commit, rootGetters }, payload) {
         let message = payload
         let type = 'response'
 
@@ -231,12 +239,20 @@ export const actions: ActionTree<ServerState, RootState> = {
         if (boolImport) {
             if (payload.type === 'command') formatMessage = '<a class="command text--blue">' + formatMessage + '</a>'
 
-            commit('addEvent', {
+            await commit('addEvent', {
                 date: new Date(),
                 message: message,
                 formatMessage: formatMessage,
                 type: type,
             })
+
+            if (
+                ['error', 'response'].includes(type) &&
+                !['/', '/console'].includes(router.currentRoute.path) &&
+                message.startsWith('!! ')
+            ) {
+                Vue.$toast.error(formatMessage)
+            }
         }
     },
 

@@ -128,6 +128,11 @@ export const getDefaultState = (): GuiState => {
             voxelWidth: 1,
             voxelHeight: 1,
             specularLighting: false,
+            klipperCache: {
+                kinematics: null,
+                axis_minimum: null,
+                axis_maximum: null,
+            },
         },
         uiSettings: {
             logo: defaultLogoColor,

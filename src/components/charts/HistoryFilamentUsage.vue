@@ -109,8 +109,7 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
     }
 
     get chart(): ECharts | null {
-        const historyFilamentUsage = this.$refs.historyFilamentUsage
-        return historyFilamentUsage?.inst ?? null
+        return this.$refs.historyFilamentUsage ?? null
     }
 
     mounted() {
@@ -131,11 +130,15 @@ export default class HistoryPrinttimeAvg extends Mixins(BaseMixin) {
 
     @Watch('filamentUsageArray')
     filamentUsageArrayChanged(newVal: any) {
-        this.chart?.setOption({
-            series: {
-                data: newVal,
+        this.chart?.setOption(
+            {
+                series: {
+                    data: newVal,
+                },
             },
-        })
+            false,
+            true
+        )
     }
 
     visibilityChanged(isVisible: boolean) {

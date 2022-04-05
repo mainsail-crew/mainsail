@@ -251,7 +251,9 @@
     "History": {
         "AllJobs": "Alle",
         "AvgPrinttime": "Druckzeit - Ø",
+        "Cancel": "abbrechen",
         "Delete": "Löschen",
+        "DeleteSelectedQuestion": "Sollen wirklich {count} ausgewählte Jobs gelöscht werden?",
         "Details": "Details",
         "Empty": "leer",
         "EndTime": "Endzeit",
@@ -280,12 +282,24 @@
         "PrinttimeAvg": "Druckzeit - Ø",
         "Reprint": "Erneut drucken",
         "Search": "Suchen",
-        "ShowStatusName": "Zeige \"{name}\" ({count})",
+        "SelectedFilamentUsed": "Ausg. Filamentverbrauch",
+        "SelectedJobs": "Ausg. Drucke",
+        "SelectedPrinttime": "Ausg. Druckzeit",
         "Slicer": "Slicer",
         "SlicerVersion": "Slicer Version",
         "StartTime": "Startzeit",
         "Statistics": "Statistik",
         "Status": "Status",
+        "StatusValues": {
+            "cancelled": "Abgebrochen",
+            "completed": "Abgeschlossen",
+            "error": "Fehler",
+            "in_progress": "In Arbeit",
+            "klippy_disconnect": "Klippy getrennt",
+            "klippy_shutdown": "Klippy heruntergefahren",
+            "server_exit": "Server-Exit"
+        },
+        "TitleExportHistory": "Historie exportieren",
         "TitleRefreshHistory": "Historie aktualisieren",
         "TitleSettings": "Einstellungen",
         "TotalDuration": "Gesamtdauer",
@@ -330,6 +344,7 @@
             "Rename": "Umbenennen",
             "RenameDirectory": "Verzeichnis umbenennen",
             "RenameFile": "Datei umbenennen",
+            "Root": "Stammverzeichnis",
             "SetupCurrentList": "Einstellungen",
             "ShowFile": "Zeige Dateien",
             "Total": "Gesamt",
@@ -348,17 +363,29 @@
             "Logfiles": "Logdateien"
         },
         "SystemPanel": {
-            "Awake": "Wach",
             "Constants": "Konstanten",
-            "Distro": "Distribution",
-            "Frequency": "Freq",
+            "Cpu": "CPU",
             "HostDetails": "Host-Details",
             "LastStats": "Letzte Statistik",
             "Load": "Auslastung",
-            "Memory": "Mem",
-            "Os": "OS",
+            "Memory": "MEM",
+            "NoMoreInfos": "Keine weiteren Informationen",
             "SystemLoad": "Systemauslastung",
-            "Version": "Version"
+            "Values": {
+                "Awake": "Wach: {awake}",
+                "Bandwidth": "Bandbreite: {bandwidth}/s",
+                "Distro": "Distribution: {name} {version_id}",
+                "Frequency": "Freq: {frequency}",
+                "Load": "Auslastung: {load}",
+                "Memory": "Mem: {memory}",
+                "Os": "OS: {os}",
+                "Received": "Empfangen: {received}",
+                "Temp": "Temp: {temp}°C",
+                "TempMax": "max: {temp}°C",
+                "TempMin": "min: {temp}°C",
+                "Transmitted": "Versendet: {transmitted}",
+                "Version": "Version: {version}"
+            }
         },
         "UpdatePanel": {
             "CheckForUpdates": "auf aktualisierungen prüfen",
@@ -390,13 +417,18 @@
             "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}."
         },
         "ExtruderControlPanel": {
+            "Allowed": "Erlaubt",
             "EstimatedExtrusion": "Geschätzte Extrusion:",
             "Extrude": "Extrudieren",
             "ExtruderTempTooLow": "Extruder Temp. <",
             "ExtrusionFeedrate": "Extrusionsgeschwindigkeit",
             "FilamentLength": "Filamentlänge",
-            "Headline": "Extruder-Steuerung",
-            "Retract": "Rückzug"
+            "Headline": "Extruder",
+            "LoadFilament": "Filament laden",
+            "Requested": "Angefordert",
+            "Retract": "Rückzug",
+            "TooLargeExtrusion": "Extrusion zu groß!",
+            "UnloadFilament": "Filament entladen"
         },
         "FarmPrinterPanel": {
             "ReconnectToPrinter": "Neu verbinden",
@@ -702,6 +734,11 @@
             "DbTimelapseSettings": "Zeitraffer Einstellungen",
             "DbView": "Ansichtseinstellungen",
             "DbWebcams": "Webcams",
+            "EstimateValues": {
+                "Filament": "Filament",
+                "File": "Datei",
+                "Slicer": "Slicer"
+            },
             "FactoryDialog": "Bitte wähle alle Abschnitte die du zurücksetzen möchtest:",
             "FactoryReset": "Werkseinstellungen",
             "General": "Allgemein",

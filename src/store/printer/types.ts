@@ -153,6 +153,25 @@ export interface PrinterStateKlipperConfig {
     [key: string]: any
 }
 
+export interface PrinterStateMcu {
+    name: string
+    mcu_constants: { [key: string]: string | number }
+    last_stats: { [key: string]: number }
+    version: string
+    chip: string | null
+    freq: number | null
+    freqFormat: string
+    awake: string
+    load: string
+    loadPercent: number
+    loadProgressColor: string
+    tempSensor: {
+        temperature: number
+        measured_min_temp: number | null
+        measured_max_temp: number | null
+    }
+}
+
 export interface PrinterStateExtruder {
     key: string
     name: string

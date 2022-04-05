@@ -76,7 +76,7 @@ const routes: AppRoute[] = [
         path: '/viewer',
         icon: mdiVideo3d,
         component: () => import('../pages/Viewer.vue'),
-        alwaysShow: false,
+        alwaysShow: true,
         showInNavi: true,
     },
     {

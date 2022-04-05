@@ -17,7 +17,7 @@
                     (filepath ? filepath.slice(1) + '/' : '') +
                     filename +
                     ' ' +
-                    (isWriteable ? changed : '(' + $t('Editor.FileReadOnly') + ')')
+                    (isWriteable ? changedOutput : '(' + $t('Editor.FileReadOnly') + ')')
                 ">
                 <template #buttons>
                     <v-btn
@@ -129,9 +129,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
-import { formatFilesize } from '@/plugins/helpers'
+import { formatFilesize, windowBeforeUnloadFunction } from '@/plugins/helpers'
 import Panel from '@/components/ui/Panel.vue'
 import CodemirrorAsync from '@/components/inputs/CodemirrorAsync'
 import {
@@ -171,7 +171,11 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     get changed() {
-        return this.$store.state.editor.changed ? '*' : ''
+        return this.$store.state.editor.changed ?? false
+    }
+
+    get changedOutput() {
+        return this.changed ? '*' : ''
     }
 
     get show() {
@@ -243,16 +247,24 @@ export default class TheEditor extends Mixins(BaseMixin) {
         return null
     }
 
+    get confirmUnsavedChanges() {
+        return this.$store.state.gui.editor.confirmUnsavedChanges ?? false
+    }
+
+    get escToClose() {
+        return this.$store.state.gui.editor.escToClose ?? false
+    }
+
     cancelDownload() {
         this.$store.dispatch('editor/cancelLoad')
     }
 
     escClose() {
-        if (this.$store.state.gui.editor.escToClose) this.close()
+        if (this.escToClose) this.close()
     }
 
     close() {
-        if (this.$store.state.gui.editor.confirmUnsavedChanges) this.promptUnsavedChanges()
+        if (this.confirmUnsavedChanges) this.promptUnsavedChanges()
         else this.$store.dispatch('editor/close')
     }
 
@@ -262,7 +274,7 @@ export default class TheEditor extends Mixins(BaseMixin) {
     }
 
     promptUnsavedChanges() {
-        if (!this.$store.state.editor.changed || !this.isWriteable) this.$store.dispatch('editor/close')
+        if (!this.changed || !this.isWriteable) this.$store.dispatch('editor/close')
         else this.dialogConfirmChange = true
     }
 
@@ -273,6 +285,14 @@ export default class TheEditor extends Mixins(BaseMixin) {
             content: this.sourcecode,
             restartServiceName: restartServiceName,
         })
+    }
+
+    @Watch('changed')
+    changedChanged(newVal: boolean) {
+        if (this.confirmUnsavedChanges) {
+            if (newVal) window.addEventListener('beforeunload', windowBeforeUnloadFunction)
+            else window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
+        }
     }
 }
 </script>

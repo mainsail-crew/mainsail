@@ -69,9 +69,7 @@
                                             class="mt-0"
                                             hide-details
                                             :input-value="status.showInTable"
-                                            :label="
-                                                $t('History.ShowStatusName', { name: status.name, count: status.value })
-                                            "
+                                            :label="`${status.displayName} (${status.value})`"
                                             @change="changeStatusVisible(status)"></v-checkbox>
                                     </v-list-item>
                                     <v-divider></v-divider>
@@ -174,7 +172,17 @@
                             </template>
                         </td>
                         <td class=" ">{{ item.filename }}</td>
-                        <td class="text-center">
+                        <td class="text-right text-no-wrap">
+                            <template v-if="'note' in item && item.note">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <v-icon small class="mr-2" v-bind="attrs" v-on="on">
+                                            {{ mdiNotebook }}
+                                        </v-icon>
+                                    </template>
+                                    <span v-html="item.note.replaceAll('\n', '<br />')"></span>
+                                </v-tooltip>
+                            </template>
                             <v-tooltip top>
                                 <template #activator="{ on, attrs }">
                                     <span v-bind="attrs" v-on="on">
@@ -183,7 +191,13 @@
                                         </v-icon>
                                     </span>
                                 </template>
-                                <span>{{ item.status.replace(/_/g, ' ') }}</span>
+                                <span>
+                                    {{
+                                        $te(`History.StatusValues.${item.status}`, 'en')
+                                            ? $t(`History.StatusValues.${item.status}`)
+                                            : item.status.replace(/_/g, ' ')
+                                    }}
+                                </span>
                             </v-tooltip>
                         </td>
                         <td
@@ -208,6 +222,16 @@
                 <v-list-item @click="clickRow(contextMenu.item)">
                     <v-icon class="mr-1">{{ mdiTextBoxSearch }}</v-icon>
                     {{ $t('History.Details') }}
+                </v-list-item>
+                <v-list-item
+                    v-if="'note' in contextMenu.item && contextMenu.item.note"
+                    @click="editNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookEdit }}</v-icon>
+                    {{ $t('History.EditNote') }}
+                </v-list-item>
+                <v-list-item v-else @click="createNote(contextMenu.item)">
+                    <v-icon class="mr-1">{{ mdiNotebookPlus }}</v-icon>
+                    {{ $t('History.AddNote') }}
                 </v-list-item>
                 <v-list-item
                     v-if="contextMenu.item.exists"
@@ -260,7 +284,13 @@
                         <v-divider class="my-3"></v-divider>
                         <v-row>
                             <v-col>{{ $t('History.Status') }}</v-col>
-                            <v-col class="text-right">{{ detailsDialog.item.status }}</v-col>
+                            <v-col class="text-right">
+                                {{
+                                    $te(`History.StatusValues.${detailsDialog.item.status}`, 'en')
+                                        ? $t(`History.StatusValues.${detailsDialog.item.status}`)
+                                        : detailsDialog.item.status
+                                }}
+                            </v-col>
                         </v-row>
                         <v-divider class="my-3"></v-divider>
                         <v-row>
@@ -419,6 +449,35 @@
                 </v-card-actions>
             </panel>
         </v-dialog>
+        <v-dialog v-model="noteDialog.boolShow" :max-width="600" persistent @keydown.esc="noteDialog.boolShow = false">
+            <panel
+                :title="noteDialog.type === 'create' ? $t('History.CreateNote') : $t('History.EditNote')"
+                :icon="noteDialog.type === 'create' ? mdiNotebookPlus : mdiNotebookEdit"
+                card-class="history-note-dialog"
+                :margin-bottom="false">
+                <template #buttons>
+                    <v-btn icon tile @click="noteDialog.boolShow = false">
+                        <v-icon>{{ mdiCloseThick }}</v-icon>
+                    </v-btn>
+                </template>
+                <v-card-text class="pb-0">
+                    <v-row>
+                        <v-col>
+                            <v-textarea
+                                v-model="noteDialog.note"
+                                outlined
+                                hide-details
+                                :label="$t('History.Note')"></v-textarea>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="" text @click="noteDialog.boolShow = false">{{ $t('History.Cancel') }}</v-btn>
+                    <v-btn color="primary" text @click="saveNote">{{ $t('History.Save') }}</v-btn>
+                </v-card-actions>
+            </panel>
+        </v-dialog>
     </div>
 </template>
 
@@ -441,6 +500,9 @@ import {
     mdiMagnify,
     mdiCloseThick,
     mdiUpdate,
+    mdiNotebookEdit,
+    mdiNotebookPlus,
+    mdiNotebook,
 } from '@mdi/js'
 @Component({
     components: { Panel },
@@ -457,6 +519,9 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     mdiMagnify = mdiMagnify
     mdiUpdate = mdiUpdate
     mdiCloseThick = mdiCloseThick
+    mdiNotebookPlus = mdiNotebookPlus
+    mdiNotebookEdit = mdiNotebookEdit
+    mdiNotebook = mdiNotebook
 
     formatFilesize = formatFilesize
 
@@ -475,6 +540,18 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
     private detailsDialog = {
         item: {},
         boolShow: false,
+    }
+
+    private noteDialog: {
+        item: ServerHistoryStateJob | null
+        note: string
+        boolShow: boolean
+        type: 'create' | 'edit'
+    } = {
+        item: null,
+        note: '',
+        boolShow: false,
+        type: 'create',
     }
 
     private deleteSelectedDialog = false
@@ -974,6 +1051,29 @@ export default class HistoryListPanel extends Mixins(BaseMixin) {
                     return value
             }
         } else return '--'
+    }
+
+    createNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = ''
+        this.noteDialog.type = 'create'
+        this.noteDialog.boolShow = true
+    }
+
+    editNote(item: ServerHistoryStateJob) {
+        this.noteDialog.item = item
+        this.noteDialog.note = item.note ?? ''
+        this.noteDialog.type = 'edit'
+        this.noteDialog.boolShow = true
+    }
+
+    saveNote() {
+        this.$store.dispatch('server/history/saveHistoryNote', {
+            job_id: this.noteDialog.item?.job_id,
+            note: this.noteDialog.note,
+        })
+
+        this.noteDialog.boolShow = false
     }
 }
 </script>

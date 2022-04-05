@@ -5,13 +5,14 @@ import axios from 'axios'
 import { sha256 } from 'js-sha256'
 import Vue from 'vue'
 import i18n from '@/plugins/i18n'
+import { windowBeforeUnloadFunction } from '@/plugins/helpers'
 
 export const actions: ActionTree<EditorState, RootState> = {
     reset({ commit }) {
         commit('reset')
     },
 
-    openFile({ state, dispatch, commit, rootGetters }, payload) {
+    openFile({ state, dispatch, commit, rootGetters, rootState }, payload) {
         const fullFilepath = payload.root + payload.path + '/' + payload.filename
         const url = rootGetters['socket/getUrl'] + '/server/files/' + encodeURI(fullFilepath) + `?${Date.now()}`
 
@@ -173,6 +174,8 @@ export const actions: ActionTree<EditorState, RootState> = {
 
     close({ commit }) {
         commit('reset')
+
+        window.removeEventListener('beforeunload', windowBeforeUnloadFunction)
     },
 
     updateSourcecode({ commit }, payload) {

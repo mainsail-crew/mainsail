@@ -1,7 +1,9 @@
 <style scoped>
 ._spin_button_group {
     width: 24px;
-    margin: -6px -6px 0 -6px;
+    margin-top: -6px;
+    margin-left: -6px;
+    margin-bottom: -6px;
 }
 
 .v-input--has-state {

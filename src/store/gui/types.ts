@@ -76,6 +76,11 @@ export interface GuiState {
         voxelWidth: number
         voxelHeight: number
         specularLighting: boolean
+        klipperCache: {
+            kinematics: string | null
+            axis_minimum: number[] | null
+            axis_maximum: number[] | null
+        }
     }
     macros?: GuiMacrosState
     presets?: GuiPresetsState

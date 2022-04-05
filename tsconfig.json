@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es2018", // es2018 is safari 12+
         "module": "esnext",
         "strict": true,
         "jsx": "preserve",

@@ -350,8 +350,8 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     get calcEstimateItems() {
         return [
-            { value: 'file', text: 'File' },
-            { value: 'filament', text: 'Filament' },
+            { value: 'file', text: this.$t('Settings.GeneralTab.EstimateValues.File') },
+            { value: 'filament', text: this.$t('Settings.GeneralTab.EstimateValues.Filament') },
         ]
     }
 
@@ -365,9 +365,9 @@ export default class SettingsGeneralTab extends Mixins(BaseMixin) {
 
     get calcEtaTimeItems() {
         return [
-            { value: 'file', text: 'File' },
-            { value: 'filament', text: 'Filament' },
-            { value: 'slicer', text: 'Slicer' },
+            { value: 'file', text: this.$t('Settings.GeneralTab.EstimateValues.File') },
+            { value: 'filament', text: this.$t('Settings.GeneralTab.EstimateValues.Filament') },
+            { value: 'slicer', text: this.$t('Settings.GeneralTab.EstimateValues.Slicer') },
         ]
     }
 

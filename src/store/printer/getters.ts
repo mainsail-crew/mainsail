@@ -9,6 +9,7 @@ import {
     PrinterStateHeater,
     PrinterStateTemperatureFan,
     PrinterStateMiscellaneous,
+    PrinterStateMcu,
     PrinterStateSensor,
     PrinterStateMacro,
 } from '@/store/printer/types'
@@ -398,27 +399,8 @@ export const getters: GetterTree<PrinterState, RootState> = {
         return caseInsensitiveSort(sensors, 'name')
     },
 
-    getMcus: (state, getters) => {
-        interface Mcu {
-            name: string
-            mcu_constants: { [key: string]: string | number }
-            last_stats: { [key: string]: number }
-            version: string
-            chip: string | null
-            freq: number | null
-            freqFormat: string
-            awake: string
-            load: string
-            loadPercent: number
-            loadProgressColor: string
-            tempSensor: {
-                temperature: number
-                measured_min_temp: number | null
-                measured_max_temp: number | null
-            }
-        }
-
-        const mcus: Mcu[] = []
+    getMcus: (state, getters): PrinterStateMcu[] => {
+        const mcus: PrinterStateMcu[] = []
 
         Object.keys(state).forEach((key) => {
             if (key === 'mcu' || key.startsWith('mcu ')) {

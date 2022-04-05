@@ -12,7 +12,7 @@
                         <v-select
                             v-model="root"
                             :items="registeredDirectories"
-                            label="Root"
+                            :label="$t('Machine.ConfigFilesPanel.Root')"
                             outlined
                             hide-details
                             dense
