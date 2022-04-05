@@ -120,7 +120,7 @@ import kebabCase from 'lodash.kebabcase'
 export default class PageDashboard extends Mixins(DashboardMixin) {
     get allComponents() {
         const output: string[] = []
-        const components = Object.keys(this.$options.components)
+        const components = Object.keys(this.$options.components ?? {})
 
         components?.forEach((component) => {
             if (component.endsWith('Panel')) output.push(kebabCase(component))
