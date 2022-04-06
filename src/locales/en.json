@@ -695,10 +695,10 @@
             "SpeedEInMms": "Extrusion speed presets (in mm/s)",
             "SpeedXY": "Movement speed X & Y axes",
             "SpeedZ": "Movement speed Z axis",
-            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}",
             "Style": "Style",
             "ValueGreaterThan": "Value has to be greater than {value}",
-            "ZOffsetIncrements": "Z-Offset increments (in mm)"
+            "ZOffsetIncrements": "Z-Offset increments (in mm)",
+            "ZTiltAdjust": "Z-Tilt Adjust{isDefault}"
         },
         "DashboardTab": {
             "Dashboard": "Dashboard",
