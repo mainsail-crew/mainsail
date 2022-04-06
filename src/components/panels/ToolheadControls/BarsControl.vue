@@ -11,6 +11,40 @@
 .btnMinWidthAuto {
     min-width: auto !important;
 }
+
+._btn-group {
+    border-radius: 4px;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+
+    .v-btn {
+        border-radius: 0;
+        border-color: rgba(255, 255, 255, 0.12);
+        border-style: solid;
+        border-width: thin;
+        box-shadow: none;
+        height: 28px;
+        opacity: 0.8;
+        min-width: auto !important;
+    }
+
+    .v-btn:first-child {
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .v-btn:last-child {
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+    }
+
+    .v-btn:not(:first-child) {
+        border-left-width: 0;
+    }
+}
 </style>
 
 <template>
@@ -69,9 +103,9 @@
             </v-col>
         </v-row>
         <!-- X MOVEMENT BUTTONGROUPS -->
-        <v-row no-gutters class="mt-2">
+        <v-row dense>
             <v-col class="text-center">
-                <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
+                <v-item-group class="_btn-group row no-gutters">
                     <v-btn
                         v-for="steps of stepsXYsorted"
                         :key="'x-' + steps"
@@ -96,13 +130,13 @@
                         @click="doSendMove('X+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
-                </v-btn-toggle>
+                </v-item-group>
             </v-col>
         </v-row>
         <!-- Y MOVEMENT BUTTONGROUPS -->
-        <v-row no-gutters class="mt-3">
+        <v-row dense>
             <v-col class="text-center">
-                <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
+                <v-item-group class="_btn-group row no-gutters">
                     <v-btn
                         v-for="steps of stepsXYsorted"
                         :key="'y-' + steps"
@@ -127,13 +161,13 @@
                         @click="doSendMove('Y+' + steps, feedrateXY)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
-                </v-btn-toggle>
+                </v-item-group>
             </v-col>
         </v-row>
         <!-- Z MOVEMENT BUTTONGROUPS -->
-        <v-row no-gutters class="mt-3">
+        <v-row dense>
             <v-col class="text-center">
-                <v-btn-toggle dense no-gutters class="row no-gutters" style="flex-wrap: nowrap; width: 100%">
+                <v-item-group class="_btn-group row no-gutters">
                     <v-btn
                         v-for="steps of stepsZsorted"
                         :key="'z-' + steps"
@@ -158,7 +192,7 @@
                         @click="doSendMove('Z+' + steps, feedrateZ)">
                         <span class="body-2">+{{ steps }}</span>
                     </v-btn>
-                </v-btn-toggle>
+                </v-item-group>
             </v-col>
         </v-row>
     </div>
