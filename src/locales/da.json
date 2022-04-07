@@ -1,5 +1,11 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
+                "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet."
+            }
+        },
         "NumberInput": {
             "GreaterOrEqualError": "Skal være større eller lig med {min}!",
             "MustBeBetweenError": "Skal være mellem {min} og {max}!",
@@ -15,8 +21,6 @@
             "DescriptionPreviouslyUnderVolted": "rPI strømforsyning faldt til under 4,65V mindst en gang siden sidste opstart.",
             "DescriptionTemperatureLimitActive": "rPi uC (3A+/3B+ only) temperatur er i øjeblikket over advarselsgrænsen (standard 60°C).",
             "DescriptionUnderVoltageDetected": "rPI strømforsyning i øjeblikket under 4,65V",
-            "HeadlineCurrentFlags": "\"Lige nu\" varsel",
-            "HeadlinePreviouslyFlags": "\"Tidligere\" varsel",
             "TitleCurrentlyThrottled": "Begrænset i øjeblikket",
             "TitleFrequencyCapped": "Maks. frekvens formindsket",
             "TitlePreviouslyFrequencyCapped": "Maks. frekvens formindsket tidligere",
@@ -438,12 +442,6 @@
             "SwitchToPrinter": "Skift til printer",
             "WebcamOff": "Sluk"
         },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Funktionen \"{option}\" i sektion \"{section}\" er forældet.",
-            "DeprecatedValue": "Værdien \"{value}\" i muligheden \"{option}\" i sektion \"{section}\" er forældet.",
-            "DownloadLog": "Download log",
-            "KlipperWarnings": "Klipper advarsler"
-        },
         "KlippyStatePanel": {
             "FirmwareRestart": "Genstart alt",
             "KlipperCheck": "Check at Klipper service kører og at en UDS (Unix Domain Socket) er konfigureret.",
@@ -498,12 +496,6 @@
                 "Disabled": "Deaktiveret",
                 "Empty": "Tom"
             }
-        },
-        "MoonrakerStatePanel": {
-            "DownloadLog": "Download log",
-            "FollowingPluginHasAnError": "Følgende plugin har en fejl:",
-            "MoonrakerErrorInfo": "En fejl blev fundet under indlæsning af moonraker komponenter. Tjek logfilen og ret fejlen.",
-            "MoonrakerWarnings": "Moonraker advarsler"
         },
         "PowerControlPanel": {
             "Error": "Fejl",
