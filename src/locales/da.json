@@ -544,7 +544,7 @@
             "Y": "Y",
             "Z": "Z"
         },
-        "ToolsPanel": {
+        "TemperaturePanel": {
             "AutoscaleChart": "Autoskalér diagram",
             "Avg": "Gns",
             "Color": "Farve",
