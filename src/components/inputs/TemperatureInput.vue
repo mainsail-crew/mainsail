@@ -1,7 +1,8 @@
 <style scoped>
 ._temp-input {
     font-size: 0.875rem;
-    max-width: 5.4rem;
+    min-width: 5rem;
+    max-width: 5rem;
     margin-left: 12px;
 }
 
