@@ -84,6 +84,12 @@ export interface PrinterStateFan {
     controllable: boolean
 }
 
+export interface PrinterStateWeightScale {
+    name: string
+    calibrated: boolean
+    weight: number
+}
+
 export interface PrinterStateMiscellaneous {
     name: string
     type: string

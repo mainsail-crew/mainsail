@@ -4,6 +4,7 @@ import {
     PrinterState,
     PrinterStateBedMesh,
     PrinterStateFan,
+    PrinterStateWeightScale,
     PrinterStateFilamentSensors,
     PrinterStateHeater,
     PrinterStateTemperatureFan,
@@ -241,6 +242,24 @@ export const getters: GetterTree<PrinterState, RootState> = {
 
             return 0
         })
+    },
+
+    getWeightScales: (state) => {
+        const sensorObjectNames = ['weigh_scale']
+        const sensors: PrinterStateWeightScale[] = []
+
+        for (const [key, value] of Object.entries(state)) {
+            const nameSplit = key.split(' ')
+
+            if (sensorObjectNames.includes(nameSplit[0])) {
+                sensors.push({
+                    name: nameSplit[1],
+                    calibrated: value.calibrated,
+                    weight: value.weight,
+                })
+            }
+        }
+        return caseInsensitiveSort(sensors, 'name')
     },
 
     getMiscellaneous: (state) => {

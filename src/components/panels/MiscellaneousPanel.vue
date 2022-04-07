@@ -2,7 +2,7 @@
 
 <template>
     <panel
-        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length)"
+        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length || weightScale.length)"
         :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
@@ -27,6 +27,10 @@
                 :enabled="sensor.enabled"
                 :filament_detected="sensor.filament_detected"></filament-sensor>
         </div>
+        <div v-for="(sensor, index) of weightScales" :key="'sensor_' + index">
+            <v-divider v-if="index"></v-divider>
+            <weight-scale :name="sensor.name" :calibrated="sensor.calibrated" :weight="sensor.weight"></weight-scale>
+        </div>
     </panel>
 </template>
 
@@ -35,6 +39,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
+import WeightScale from '@/components/inputs/WeightScale.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
 @Component({
@@ -49,6 +54,10 @@ export default class MiscellaneousPanel extends Mixins(BaseMixin) {
 
     get filamentSensors() {
         return this.$store.getters['printer/getFilamentSensors'] ?? []
+    }
+
+    get weightScales() {
+        return this.$store.getters['printer/getWeightScales'] ?? []
     }
 }
 </script>
