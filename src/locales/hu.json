@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "Nyomtatók",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
+                "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Az rPi ARM mag(ok) jelenleg túlterheltek.",
             "DescriptionFrequencyCapped": "Az rPi ARM max frekvenciája jelenleg 1,2 GHz -re korlátozódik.",
@@ -402,12 +408,6 @@
             "ReconnectToPrinter": "Újracsatlakozás",
             "SwitchToPrinter": "Váltás a nyomtatóra",
             "WebcamOff": "Ki"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "'{section}' / '{option}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
-            "DeprecatedValue": "'{section}' / '{option}' / Value '{value}' opcióját leírtuk, és a következő verzióban már nem lesz benne.",
-            "DownloadLog": "log letöltése",
-            "KlipperWarnings": "Klipper Figyelmeztetések"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Firmware újraindítása",
