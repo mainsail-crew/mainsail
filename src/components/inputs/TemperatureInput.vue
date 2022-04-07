@@ -20,21 +20,39 @@
     -webkit-appearance: none;
     margin: 0;
 }
+
+._temp-input {
+    font-size: 0.875rem;
+    max-width: 5.4rem;
+    margin-left: 12px;
+}
+
+._temp-input >>> .v-input__slot {
+    min-height: 1rem !important;
+}
+
+._temp-input >>> .v-text-field__slot input {
+    padding: 4px 0 4px;
+}
+
+._temp-input >>> .v-input__append-inner {
+    margin: auto -5px auto 0 !important;
+}
 </style>
 
 <template>
-    <v-combobox
+    <v-text-field
         v-model="value"
-        dense
-        hide-details
-        :items="items"
-        item-text="value"
+        suffix="°C"
         type="number"
+        dense
+        outlined
+        hide-details
         hide-spin-buttons
-        @keyup.enter="setTemps"
-        @keydown.tab="setTemps"
-        @change="changeValue"
-        @blur="onBlur"></v-combobox>
+        class="_temp-input"
+        @blur="value = target"
+        @focus="$event.target.select()"
+        @keyup.enter="setTemps"></v-text-field>
 </template>
 
 <script lang="ts">
@@ -43,7 +61,7 @@ import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 
 @Component
-export default class ToolInput extends Mixins(BaseMixin) {
+export default class TemperatureInput extends Mixins(BaseMixin) {
     private value: any = 0
 
     @Prop({ type: String, required: true }) declare readonly name: string
@@ -53,19 +71,6 @@ export default class ToolInput extends Mixins(BaseMixin) {
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, required: true }) declare readonly attributeName: string
     @Prop({ type: Array, default: [] }) declare items: number[]
-
-    changeValue(newVal: any) {
-        if (typeof newVal === 'object') {
-            this.setTemps()
-        }
-    }
-
-    onBlur(event: any) {
-        if ('target' in event && event.target && 'value' in event.target) {
-            this.value = event.target.value ?? this.value
-            this.setTemps()
-        }
-    }
 
     setTemps(): void {
         if (typeof this.value === 'object') this.value = this.value.value ?? 0

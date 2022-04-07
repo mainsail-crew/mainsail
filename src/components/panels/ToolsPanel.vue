@@ -25,7 +25,7 @@
     <panel
         v-if="klipperReadyForGui"
         :icon="mdiThermometerLines"
-        :title="$t('Panels.ToolsPanel.Headline')"
+        :title="$t('Panels.ToolsPanel.Headline').toString()"
         :collapsible="true"
         card-class="tools-panel">
         <template #buttons>
@@ -159,14 +159,13 @@
                             </div>
                         </v-col>
                         <v-col class="text-center py-2 pr-8 vertical_align_center">
-                            <tool-input
+                            <temperature-input
                                 :name="heater.name"
                                 :target="heater.target"
                                 :min_temp="heater.min_temp"
                                 :max_temp="heater.max_temp"
-                                :items="heater.presets"
                                 command="SET_HEATER_TEMPERATURE"
-                                attribute-name="HEATER"></tool-input>
+                                attribute-name="HEATER"></temperature-input>
                         </v-col>
                     </v-row>
                 </div>
@@ -222,14 +221,13 @@
                             </small>
                         </v-col>
                         <v-col class="text-center py-2 pr-8 pr-0 vertical_align_center">
-                            <tool-input
+                            <temperature-input
                                 :name="fan.name"
                                 :target="fan.target"
                                 :min_temp="fan.min_temp"
                                 :max_temp="fan.max_temp"
-                                :items="fan.presets"
                                 command="SET_TEMPERATURE_FAN_TARGET"
-                                attribute-name="temperature_fan"></tool-input>
+                                attribute-name="temperature_fan"></temperature-input>
                         </v-col>
                     </v-row>
                 </div>
@@ -356,19 +354,19 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins } from 'vue-property-decorator'
-import BaseMixin from '@/components/mixins/base'
 import { convertName } from '@/plugins/helpers'
-import ToolInput from '@/components/inputs/ToolInput.vue'
-import TempChart from '@/components/charts/TempChart.vue'
-import { datasetTypes } from '@/store/variables'
-import { PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan } from '@/store/printer/types'
 import { Debounce } from 'vue-debounce-decorator'
-import Panel from '@/components/ui/Panel.vue'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
+import { PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan } from '@/store/printer/types'
+import BaseMixin from '@/components/mixins/base'
+import TempChart from '@/components/charts/TempChart.vue'
+import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
+import Panel from '@/components/ui/Panel.vue'
+import { datasetTypes } from '@/store/variables'
 import { mdiCloseThick, mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
 
 @Component({
-    components: { Panel, TempChart, ToolInput },
+    components: { Panel, TempChart, TemperatureInput },
 })
 export default class ToolsPanel extends Mixins(BaseMixin) {
     mdiFan = mdiFan
