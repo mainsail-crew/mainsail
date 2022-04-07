@@ -1,6 +1,7 @@
 <style lang="scss" scoped>
 svg {
-    max-height: 300px;
+    max-height: 350px;
+    min-height: 275px;
     user-select: none;
     filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.3));
 }
@@ -107,7 +108,7 @@ svg a#stepper_off #stepper_off_icon {
 <template>
     <div>
         <v-row>
-            <v-col class="pb-0">
+            <v-col class="pa-0">
                 <svg
                     width="100%"
                     height="100%"
