@@ -1,26 +1,4 @@
 <style scoped>
-.tool-input {
-    min-width: 5rem;
-    margin-top: 0;
-    padding: 0;
-}
-
-.tool-input .v-input__slot {
-    margin-bottom: 0;
-}
-.tool-input .v-text-field__details {
-    display: none;
-}
-
-.tool-input input {
-    -moz-appearance: textfield;
-}
-.tool-input input::-webkit-outer-spin-button,
-.tool-input input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 ._temp-input {
     font-size: 0.875rem;
     max-width: 5.4rem;
