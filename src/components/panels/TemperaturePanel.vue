@@ -3,21 +3,8 @@
     margin: auto 0;
 }
 
-.colHeaterIcons {
-    width: 68px;
-}
-
 .canvasjs-chart-tooltip > div {
     border-radius: 10px !important;
-}
-
-.datasetColorSymbol {
-    width: 8px;
-    height: 8px;
-    border-style: solid;
-    border-width: 0px;
-    cursor: pointer;
-    border-radius: 50%;
 }
 
 ._preset-title {
@@ -33,6 +20,7 @@
         :title="$t('Panels.TemperaturePanel.Headline').toString()"
         :collapsible="true"
         card-class="temperature-panel">
+        <!-- PRESET MENU -->
         <template #buttons>
             <v-menu v-if="presets.length" :offset-y="true" left title="Preheat">
                 <template #activator="{ on, attrs }">
@@ -107,14 +95,8 @@
         <v-card-text class="pa-0 content">
             <v-container class="px-0">
                 <v-row align="center">
-                    <v-col class="py-2 font-weight-bold" style="padding-left: 68px">
+                    <v-col class="py-2 font-weight-bold" style="padding-left: 60px">
                         {{ $t('Panels.TemperaturePanel.Name') }}
-                    </v-col>
-                    <v-col
-                        v-if="boolTempchart"
-                        class="py-2 text-center flex-grow-0 font-weight-bold d-none d-md-block"
-                        style="min-width: 75px">
-                        {{ $t('Panels.TemperaturePanel.Color') }}
                     </v-col>
                     <v-col class="py-2 text-center font-weight-bold d-none d-md-block">
                         {{ $t('Panels.TemperaturePanel.State') }}
@@ -124,25 +106,17 @@
                         {{ $t('Panels.TemperaturePanel.Target') }}
                     </v-col>
                 </v-row>
+                <!-- HEATER -->
                 <div v-for="(heater, index) in heaters" :key="index">
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
-                        <v-col class="pl-8 pr-0 flex-grow-0 py-2 colHeaterIcons">
-                            <v-icon :color="heater.iconColor">{{ heater.icon }}</v-icon>
-                        </v-col>
-                        <v-col class="py-2 font-weight-bold">
-                            <span style="cursor: pointer" @click="openHeater(heater)">
+                        <v-col class="py-2 d-flex align-center pl-7">
+                            <v-icon :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}44`">
+                                {{ heater.icon }}
+                            </v-icon>
+                            <span class="pl-2" style="cursor: pointer" @click="openHeater(heater)">
                                 {{ convertName(heater.name) }}
                             </span>
-                        </v-col>
-                        <v-col
-                            v-if="boolTempchart"
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
-                            style="min-width: 75px">
-                            <div
-                                :style="'background-color: ' + heater.chartColor + 'cc;'"
-                                class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(heater)"></div>
                         </v-col>
                         <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
@@ -173,27 +147,19 @@
                         </v-col>
                     </v-row>
                 </div>
+                <!-- TEMPERATURE FANS -->
                 <div v-for="(fan, index) in temperatureFans" :key="index + 99">
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
-                        <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
+                        <v-col class="py-2 d-flex align-center pl-7">
                             <v-icon
-                                :color="fan.target ? 'grey lighten-5' : 'grey darken-2'"
+                                :color="fan.target ? `${fan.chartColor}aa` : `${fan.chartColor}44`"
                                 :class="fan.speed ? ' icon-rotate' : ''">
                                 {{ mdiFan }}
                             </v-icon>
-                        </v-col>
-                        <v-col class="py-2 font-weight-bold">
-                            <span style="cursor: pointer" @click="openHeater(fan)">{{ convertName(fan.name) }}</span>
-                        </v-col>
-                        <v-col
-                            v-if="boolTempchart"
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
-                            style="min-width: 75px">
-                            <div
-                                :style="'background-color: ' + fan.chartColor + 'cc;'"
-                                class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(fan)"></div>
+                            <span class="pl-2" style="cursor: pointer" @click="openHeater(fan)">
+                                {{ convertName(fan.name) }}
+                            </span>
                         </v-col>
                         <v-col class="py-2 text-center d-none d-md-block">
                             <v-tooltip top>
@@ -235,38 +201,21 @@
                         </v-col>
                     </v-row>
                 </div>
+                <!-- TEMPERATURE SENSORS -->
                 <div v-for="(sensor, index) in temperatureSensors" :key="index + 999">
                     <v-divider class="my-2"></v-divider>
                     <v-row align="center">
-                        <v-col class="flex-grow-0 py-2 pl-8 pr-0 colHeaterIcons">
+                        <v-col class="py-2 d-flex align-center pl-7">
                             <v-icon
-                                color="grey darken-2"
-                                :title="
-                                    $t('Panels.TemperaturePanel.Min') +
-                                    ': ' +
-                                    sensor.min_temp +
-                                    '° / ' +
-                                    $t('Panels.TemperaturePanel.Max') +
-                                    ': ' +
-                                    sensor.max_temp +
-                                    '°'
-                                ">
+                                :color="`${sensor.chartColor}aa`"
+                                :title="`${$t('Panels.TemperaturePanel.Min')}: ${sensor.min_temp}° / ${$t(
+                                    'Panels.TemperaturePanel.Max'
+                                )}: ${sensor.max_temp}°`">
                                 {{ sensor.icon }}
                             </v-icon>
-                        </v-col>
-                        <v-col class="py-2 font-weight-bold">
-                            <span style="cursor: pointer" @click="openHeater(sensor)">
+                            <span class="pl-2" style="cursor: pointer" @click="openHeater(sensor)">
                                 {{ convertName(sensor.name) }}
                             </span>
-                        </v-col>
-                        <v-col
-                            v-if="boolTempchart"
-                            class="py-2 flex-grow-0 text-center d-none d-md-block"
-                            style="min-width: 75px">
-                            <div
-                                :style="'background-color: ' + sensor.chartColor + 'CC;'"
-                                class="datasetColorSymbol d-inline-block"
-                                @click="openHeater(sensor)"></div>
                         </v-col>
                         <v-col class="py-2 d-none d-md-block"><span>&nbsp;</span></v-col>
                         <v-col class="py-2 text-center">
