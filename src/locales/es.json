@@ -1,5 +1,11 @@
 {
     "App": {
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "La opción '{option}' en la sección '{section}' está discontinuada y será removida en la próxima versión.",
+                "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión."
+            }
+        },
         "NumberInput": {
             "GreaterOrEqualError": "¡Debe ser mayor o igual a {min}!",
             "MustBeBetweenError": "¡Debe estar entre {min} y {max}!",
@@ -419,12 +425,6 @@
             "ReconnectToPrinter": "Reconectar",
             "SwitchToPrinter": "Cambiar a impresora",
             "WebcamOff": "Apagar"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "La opción '{option}' en la sección '{section}' está discontinuada y será removida en la próxima versión.",
-            "DeprecatedValue": "El valor '{value}' en la opción '{option}' en la sección '{section}' está discontinuado y será removido en la próxima versión.",
-            "DownloadLog": "Descargar registro",
-            "KlipperWarnings": "Alertas de Klipper"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Reiniciar Firmware",
