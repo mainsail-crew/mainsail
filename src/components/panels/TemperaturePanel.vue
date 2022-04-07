@@ -19,6 +19,11 @@
     cursor: pointer;
     border-radius: 50%;
 }
+
+._preset-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
 </style>
 
 <template>
@@ -29,7 +34,7 @@
         :collapsible="true"
         card-class="temperature-panel">
         <template #buttons>
-            <v-menu v-if="presets.length" :offset-y="true" title="Preheat">
+            <v-menu v-if="presets.length" :offset-y="true" left title="Preheat">
                 <template #activator="{ on, attrs }">
                     <v-btn
                         text
@@ -46,25 +51,19 @@
                 </template>
                 <v-list dense class="py-0">
                     <v-list-item v-for="preset of presets" :key="preset.index" link @click="preheat(preset)">
-                        <v-list-item-icon class="mr-0">
-                            <v-icon small>{{ mdiFire }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title v-text="preset.name"></v-list-item-title>
-                        </v-list-item-content>
+                        <div class="d-flex align-center _preset-title">
+                            <v-icon small class="mr-1">{{ mdiFire }}</v-icon>
+                            <span style="padding-top: 2px">{{ preset.name }}</span>
+                        </div>
                     </v-list-item>
                 </v-list>
                 <v-divider></v-divider>
                 <v-list dense class="py-0">
                     <v-list-item link @click="cooldown()">
-                        <v-list-item-icon class="mr-0">
-                            <v-icon small color="primary">{{ mdiSnowflake }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-content>
-                            <v-list-item-title class="primary--text">
-                                {{ $t('Panels.TemperaturePanel.Cooldown') }}
-                            </v-list-item-title>
-                        </v-list-item-content>
+                        <div class="d-flex align-center _preset-title">
+                            <v-icon small color="primary" class="mr-1">{{ mdiSnowflake }}</v-icon>
+                            <span class="primary--text">{{ $t('Panels.TemperaturePanel.Cooldown') }}</span>
+                        </div>
                     </v-list-item>
                 </v-list>
             </v-menu>
