@@ -110,10 +110,7 @@
                                 <component :is="`${controlStyle}-control`"></component>
                             </div>
                             <!-- Z-OFFSET CONTROL BARS X-LARGE -->
-                            <div
-                                class="pt-1 pl-2"
-                                style="width: 43%"
-                                :style="{ 'margin-bottom': isMobile || isTablet ? '' : '-1px' }">
+                            <div class="pl-1" style="width: 43%; height: 96px">
                                 <zoffset-control></zoffset-control>
                             </div>
                         </v-container>
@@ -157,10 +154,7 @@
                                 <component :is="`${controlStyle}-control`"></component>
                             </div>
                             <!-- Z-OFFSET CONTROL CROSS X-LARGE -->
-                            <div
-                                class="pl-1"
-                                style="width: 42%"
-                                :style="{ 'margin-bottom': isMobile || isTablet ? '' : '-1px' }">
+                            <div class="pl-1" style="width: 42%; height: 96px">
                                 <zoffset-control></zoffset-control>
                             </div>
                         </v-container>
