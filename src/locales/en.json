@@ -4,9 +4,6 @@
             "DependencyName": "Dependency: {name}",
             "DependencyDescription": "Your current {name} version does not support all features of Mainsail. Update {name} to at least {neededVersion}.",
             "DismissAll": "Dismiss all",
-            "HideTill": "hide till:",
-            "Notification": "Notification",
-            "Later": "later",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
                 "MoonrakerFailedComponentDescription": "An error was detected while loading the moonraker component '{component}'. Please check the logfile and fix the issue.",
@@ -19,16 +16,12 @@
                 "DeprecatedOptionHeadline": "Deprecated Klipper Option",
                 "DeprecatedValue": "Value '{value}' in option '{option}' in section '{section}' is deprecated and will be removed in a future release.",
                 "DeprecatedValueHeadline": "Deprecated Klipper Value",
-                "DownloadLog": "download log",
                 "KlipperWarning": "Klipper warning"
             },
-            "More": "more",
             "Never": "never",
             "NextReboot": "next reboot",
             "NoNotification": "No Notification available",
-            "OneHour": "1 Hour",
-            "Remind": "Remind:",
-            "Tomorrow": "Tomorrow"
+            "Remind": "Remind:"
         },
         "NumberInput": {
             "GreaterOrEqualError": "Must be grater or equal than {min}!",
