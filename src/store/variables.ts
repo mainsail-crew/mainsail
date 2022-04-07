@@ -75,7 +75,7 @@ export const allDashboardPanels = [
     'miniconsole',
     'miscellaneous',
     'printsettings',
-    'tools',
+    'temperature',
     'webcam',
     'zoffset',
 ]
