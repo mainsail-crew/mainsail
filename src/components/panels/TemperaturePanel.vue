@@ -158,14 +158,52 @@
                             </span>
                         </div>
                     </v-col>
-                    <v-col class="_column-input d-flex justify-space-around">
-                        <temperature-input
-                            :name="heater.name"
-                            :target="heater.target"
-                            :min_temp="heater.min_temp"
-                            :max_temp="heater.max_temp"
-                            command="SET_HEATER_TEMPERATURE"
-                            attribute-name="HEATER"></temperature-input>
+                    <v-col class="_column-input d-flex align-center justify-space-around">
+                        <div class="d-flex align-center">
+                            <div class="pr-1">
+                                <temperature-input
+                                    :name="heater.name"
+                                    :target="heater.target"
+                                    :min_temp="heater.min_temp"
+                                    :max_temp="heater.max_temp"
+                                    command="SET_HEATER_TEMPERATURE"
+                                    attribute-name="HEATER"></temperature-input>
+                            </div>
+                            <v-menu v-if="heater.presets" :offset-y="true" left title="Preheat">
+                                <template #activator="{ on, attrs }">
+                                    <v-btn
+                                        :disabled="['printing', 'paused'].includes(printer_state)"
+                                        x-small
+                                        plain
+                                        v-bind="attrs"
+                                        class="pa-0"
+                                        style="min-width: 24px"
+                                        v-on="on">
+                                        <v-icon>{{ mdiMenuDown }}</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list dense class="py-0">
+                                    <v-list-item
+                                        v-for="preset of heater.presets"
+                                        :key="preset.index"
+                                        link
+                                        style="min-height: 32px"
+                                        @click="
+                                            doSend(
+                                                `SET_HEATER_TEMPERATURE HEATER=${heater.name} TARGET=${preset.value}`
+                                            )
+                                        ">
+                                        <div class="d-flex align-center _preset-title">
+                                            <v-icon v-if="preset.value === 0" else color="primary" small class="mr-1">
+                                                {{ mdiSnowflake }}
+                                            </v-icon>
+                                            <v-icon v-else small class="mr-1">{{ mdiFire }}</v-icon>
+                                            <span style="padding-top: 2px">{{ preset.value }}°C</span>
+                                        </div>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </div>
                     </v-col>
                 </v-row>
             </div>
@@ -215,13 +253,51 @@
                         </small>
                     </v-col>
                     <v-col class="_column-input d-flex justify-space-around">
-                        <temperature-input
-                            :name="fan.name"
-                            :target="fan.target"
-                            :min_temp="fan.min_temp"
-                            :max_temp="fan.max_temp"
-                            command="SET_TEMPERATURE_FAN_TARGET"
-                            attribute-name="temperature_fan"></temperature-input>
+                        <div class="d-flex align-center">
+                            <div class="pr-1">
+                                <temperature-input
+                                    :name="fan.name"
+                                    :target="fan.target"
+                                    :min_temp="fan.min_temp"
+                                    :max_temp="fan.max_temp"
+                                    command="SET_TEMPERATURE_FAN_TARGET"
+                                    attribute-name="temperature_fan"></temperature-input>
+                            </div>
+                            <v-menu v-if="fan.presets" :offset-y="true" left title="Preheat">
+                                <template #activator="{ on, attrs }">
+                                    <v-btn
+                                        :disabled="['printing', 'paused'].includes(printer_state)"
+                                        x-small
+                                        plain
+                                        v-bind="attrs"
+                                        class="pa-0"
+                                        style="min-width: 24px"
+                                        v-on="on">
+                                        <v-icon>{{ mdiMenuDown }}</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list dense class="py-0">
+                                    <v-list-item
+                                        v-for="preset of fan.presets"
+                                        :key="preset.index"
+                                        link
+                                        style="min-height: 32px"
+                                        @click="
+                                            doSend(
+                                                `SET_TEMPERATURE_FAN_TARGET temperature_fan=${fan.name} TARGET=${preset.value}`
+                                            )
+                                        ">
+                                        <div class="d-flex align-center _preset-title">
+                                            <v-icon v-if="preset.value === 0" else color="primary" small class="mr-1">
+                                                {{ mdiSnowflake }}
+                                            </v-icon>
+                                            <v-icon v-else small class="mr-1">{{ mdiFire }}</v-icon>
+                                            <span style="padding-top: 2px">{{ preset.value }}°C</span>
+                                        </div>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </div>
                     </v-col>
                 </v-row>
             </div>
@@ -339,6 +415,7 @@ import { Debounce } from 'vue-debounce-decorator'
 import { GuiPresetsStatePreset } from '@/store/gui/presets/types'
 import { PrinterStateHeater, PrinterStateSensor, PrinterStateTemperatureFan } from '@/store/printer/types'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
 import TempChart from '@/components/charts/TempChart.vue'
 import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
@@ -348,7 +425,7 @@ import { mdiCloseThick, mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiT
 @Component({
     components: { Panel, TempChart, TemperatureInput },
 })
-export default class TemperaturePanel extends Mixins(BaseMixin) {
+export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     mdiFan = mdiFan
     mdiSnowflake = mdiSnowflake
     mdiCloseThick = mdiCloseThick
@@ -411,11 +488,11 @@ export default class TemperaturePanel extends Mixins(BaseMixin) {
     preheat(preset: GuiPresetsStatePreset): void {
         for (const [name, attributes] of Object.entries(preset.values)) {
             if (attributes.bool) {
-                let gcode = 'SET_HEATER_TEMPERATURE HEATER=' + name + ' TARGET=' + attributes.value
+                let gcode = `SET_HEATER_TEMPERATURE HEATER=${name} TARGET=${attributes.value}`
 
                 if (attributes.type === 'temperature_fan') {
                     const fanName = name.replace('temperature_fan ', '')
-                    gcode = 'SET_TEMPERATURE_FAN_TARGET temperature_fan=' + fanName + ' TARGET=' + attributes.value
+                    gcode = `SET_TEMPERATURE_FAN_TARGET temperature_fan=${fanName} TARGET=${attributes.value}`
                 }
 
                 this.$store.dispatch('server/addEvent', { message: gcode, type: 'command' })
