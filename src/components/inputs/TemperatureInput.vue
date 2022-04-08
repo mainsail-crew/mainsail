@@ -3,7 +3,6 @@
     font-size: 0.875rem;
     min-width: 5rem;
     max-width: 5rem;
-    margin-left: 12px;
 }
 
 ._temp-input >>> .v-input__slot {
@@ -14,9 +13,9 @@
     padding: 4px 0 4px;
 }
 
-._temp-input >>> .v-input__append-inner {
-    margin: auto -5px auto 0 !important;
-}
+/*._temp-input >>> .v-input__append-inner {*/
+/*    margin: auto -5px auto 0 !important;*/
+/*}*/
 </style>
 
 <template>
