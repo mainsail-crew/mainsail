@@ -12,10 +12,6 @@
 ._temp-input >>> .v-text-field__slot input {
     padding: 4px 0 4px;
 }
-
-/*._temp-input >>> .v-input__append-inner {*/
-/*    margin: auto -5px auto 0 !important;*/
-/*}*/
 </style>
 
 <template>
