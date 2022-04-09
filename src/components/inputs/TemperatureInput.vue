@@ -12,30 +12,73 @@
 ._temp-input >>> .v-text-field__slot input {
     padding: 4px 0 4px;
 }
+
+._preset {
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
 </style>
 
 <template>
-    <v-text-field
-        v-model="value"
-        suffix="°C"
-        type="number"
-        dense
-        outlined
-        hide-details
-        hide-spin-buttons
-        class="_temp-input"
-        @blur="value = target"
-        @focus="$event.target.select()"
-        @keyup.enter="setTemps"></v-text-field>
+    <div class="d-flex align-center">
+        <v-text-field
+            v-model="value"
+            suffix="°C"
+            type="number"
+            dense
+            outlined
+            hide-details
+            hide-spin-buttons
+            class="_temp-input pr-1"
+            @blur="value = target"
+            @focus="$event.target.select()"
+            @keyup.enter="setTemps"></v-text-field>
+        <v-menu v-if="presets" :offset-y="true" left title="Preheat">
+            <template #activator="{ on, attrs }">
+                <v-btn
+                    :disabled="['printing', 'paused'].includes(printer_state)"
+                    x-small
+                    plain
+                    v-bind="attrs"
+                    class="pa-0"
+                    style="min-width: 24px"
+                    v-on="on">
+                    <v-icon>{{ mdiMenuDown }}</v-icon>
+                </v-btn>
+            </template>
+            <v-list dense class="py-0">
+                <v-list-item
+                    v-for="preset of presets"
+                    :key="preset.index"
+                    link
+                    style="min-height: 32px"
+                    @click="doSend(`${command} ${attributeName}=${name} TARGET=${preset.value}`)">
+                    <div class="d-flex align-center _preset">
+                        <v-icon v-if="preset.value === 0" else color="primary" small class="mr-1">
+                            {{ mdiSnowflake }}
+                        </v-icon>
+                        <v-icon v-else small class="mr-1">{{ mdiFire }}</v-icon>
+                        <span style="padding-top: 2px">{{ preset.value }}°C</span>
+                    </div>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+    </div>
 </template>
 
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Mixins, Prop, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
+import ControlMixin from '@/components/mixins/control'
+import { mdiSnowflake, mdiFire, mdiMenuDown } from '@mdi/js'
 
 @Component
-export default class TemperatureInput extends Mixins(BaseMixin) {
+export default class TemperatureInput extends Mixins(BaseMixin, ControlMixin) {
+    mdiSnowflake = mdiSnowflake
+    mdiFire = mdiFire
+    mdiMenuDown = mdiMenuDown
+
     private value: any = 0
 
     @Prop({ type: String, required: true }) declare readonly name: string
@@ -44,7 +87,7 @@ export default class TemperatureInput extends Mixins(BaseMixin) {
     @Prop({ type: Number, required: true }) declare readonly max_temp: number
     @Prop({ type: String, required: true }) declare readonly command: string
     @Prop({ type: String, required: true }) declare readonly attributeName: string
-    @Prop({ type: Array, default: [] }) declare items: number[]
+    @Prop({ type: Array, default: [] }) declare presets: number[]
 
     setTemps(): void {
         if (typeof this.value === 'object') this.value = this.value.value ?? 0
