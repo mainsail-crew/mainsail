@@ -2,7 +2,7 @@
     "App": {
         "Notifications": {
             "DependencyName": "Abhängigkeit: {name}",
-            "DependencyDescription": "Deine momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
+            "DependencyDescription": "Die momentane {name} Version unterstützt nicht alle Funktionen von Mainsail. Aktualisiere {name} mindestens auf Version {neededVersion}.",
             "DismissAll": "Dismiss all",
             "MoonrakerWarnings": {
                 "MoonrakerComponent": "Moonraker: {component}",
