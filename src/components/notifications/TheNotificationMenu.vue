@@ -1,12 +1,13 @@
 <template>
     <v-menu
         bottom
-        left
+        :left="!isMobile"
         offset-y
         :close-on-click="true"
         :close-on-content-click="false"
         origin="center center"
-        transition="slide-y-transition">
+        transition="slide-y-transition"
+        :min-width="isMobile ? '100%' : null">
         <template #activator="{ on, attrs }">
             <v-btn icon tile class="minwidth-0" v-bind="attrs" v-on="on">
                 <v-badge
@@ -18,7 +19,7 @@
                 </v-badge>
             </v-btn>
         </template>
-        <v-card flat :min-width="300" :max-width="400">
+        <v-card flat :min-width="300" :max-width="isMobile ? null : 400">
             <template v-if="notifications.length">
                 <overlay-scrollbars class="announcement-menu__scrollbar">
                     <v-card-text>
