@@ -96,16 +96,17 @@
                 xLarge: (el) => el.width > 690,
             }">
             <template #default="{ el }">
-                <v-card-text class="px-0 py-2">
+                <v-card-text class="px-0 pt-3 pb-4">
                     <v-row align="center">
                         <!-- NAME + ICON -->
                         <v-col
                             class="py-2 font-weight-bold"
                             :class="{
-                                'col-4': el.is.small || el.is.medium || el.is.large,
+                                'col-4': el.is.small || el.is.large,
+                                'col-5': el.is.medium,
                                 'col-6': el.is.xLarge,
                             }"
-                            style="padding-left: 53px">
+                            style="padding-left: 60px">
                             {{ $t('Panels.TemperaturePanel.Name') }}
                         </v-col>
                         <!-- STATE -->
@@ -122,7 +123,8 @@
                         <v-col
                             class="py-2 text-center font-weight-bold"
                             :class="{
-                                'col-4': el.is.small || el.is.medium,
+                                'col-4': el.is.small,
+                                'col-3': el.is.medium,
                                 'col-2': el.is.large || el.is.xLarge,
                             }">
                             {{ $t('Panels.TemperaturePanel.Current') }}
@@ -145,15 +147,16 @@
                             <!-- HEATER ICON + NAME COLUMN -->
                             <v-col
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-4': el.is.small || el.is.large,
+                                    'col-5': el.is.medium,
                                     'col-6': el.is.xLarge,
                                 }"
-                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                class="pl-8 d-flex align-center flex-grow-0 py-2">
                                 <v-icon
                                     :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`">
                                     {{ heater.icon }}
                                 </v-icon>
-                                <span class="pl-1" style="cursor: pointer" @click="openHeater(heater)">
+                                <span class="pl-2" style="cursor: pointer" @click="openHeater(heater)">
                                     {{ convertName(heater.name) }}
                                 </span>
                             </v-col>
@@ -178,7 +181,8 @@
                             <v-col
                                 class="py-2 text-center"
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium,
+                                    'col-4': el.is.small,
+                                    'col-3': el.is.medium,
                                     'col-2': el.is.large || el.is.xLarge,
                                 }">
                                 <span class="d-block">{{ heater.temperature.toFixed(1) }}°C</span>
@@ -214,16 +218,17 @@
                             <!-- TEMPERATURE FANS ICON + NAME COLUMN -->
                             <v-col
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-4': el.is.small || el.is.large,
+                                    'col-5': el.is.medium,
                                     'col-6': el.is.xLarge,
                                 }"
-                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                class="pl-8 d-flex align-center flex-grow-0 py-2">
                                 <v-icon
                                     :color="fan.target ? `${fan.chartColor}aa` : `${fan.chartColor}22`"
                                     :class="fan.speed ? ' icon-rotate' : ''">
                                     {{ mdiFan }}
                                 </v-icon>
-                                <span class="pl-1" style="cursor: pointer" @click="openHeater(fan)">
+                                <span class="pl-2" style="cursor: pointer" @click="openHeater(fan)">
                                     {{ convertName(fan.name) }}
                                 </span>
                             </v-col>
@@ -254,7 +259,8 @@
                             <v-col
                                 class="py-2 text-center"
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium,
+                                    'col-4': el.is.small,
+                                    'col-3': el.is.medium,
                                     'col-2': el.is.large || el.is.xLarge,
                                 }">
                                 <span class="d-block">{{ fan.temperature.toFixed(1) }}°C</span>
@@ -295,10 +301,11 @@
                             <!-- TEMPERATURE SENSORS ICON + NAME COLUMN -->
                             <v-col
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-4': el.is.small || el.is.large,
+                                    'col-5': el.is.medium,
                                     'col-6': el.is.xLarge,
                                 }"
-                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                class="pl-8 d-flex align-center flex-grow-0 py-2">
                                 <v-icon
                                     :color="`${sensor.chartColor}aa`"
                                     :title="`${$t('Panels.TemperaturePanel.Min')}: ${sensor.min_temp}° / ${$t(
@@ -306,7 +313,7 @@
                                     )}: ${sensor.max_temp}°`">
                                     {{ sensor.icon }}
                                 </v-icon>
-                                <span class="pl-1" style="cursor: pointer" @click="openHeater(sensor)">
+                                <span class="pl-2" style="cursor: pointer" @click="openHeater(sensor)">
                                     {{ convertName(sensor.name) }}
                                 </span>
                             </v-col>
@@ -324,7 +331,8 @@
                             <v-col
                                 class="py-2 text-center"
                                 :class="{
-                                    'col-4': el.is.small || el.is.medium,
+                                    'col-4': el.is.small,
+                                    'col-3': el.is.medium,
                                     'col-2': el.is.large || el.is.xLarge,
                                 }">
                                 <v-tooltip top>
@@ -362,15 +370,15 @@
                         </v-row>
                     </template>
                     <!-- DEBUG -->
-                    <div class="text-center">
-                        <v-divider class="my-2"></v-divider>
-                        <span>
-                            {{ `small: ${el.is.small} ` }}
-                            {{ ` medium: ${el.is.medium} ` }}
-                            {{ ` large: ${el.is.large} ` }}
-                            {{ ` xLarge: ${el.is.xLarge} ` }}
-                        </span>
-                    </div>
+                    <!--                    <div class="text-center">-->
+                    <!--                        <v-divider class="my-2"></v-divider>-->
+                    <!--                        <span>-->
+                    <!--                            {{ `small: ${el.is.small} ` }}-->
+                    <!--                            {{ ` medium: ${el.is.medium} ` }}-->
+                    <!--                            {{ ` large: ${el.is.large} ` }}-->
+                    <!--                            {{ ` xLarge: ${el.is.xLarge} ` }}-->
+                    <!--                        </span>-->
+                    <!--                    </div>-->
                 </v-card-text>
             </template>
         </responsive>
