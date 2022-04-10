@@ -88,184 +88,292 @@
                 </v-list>
             </v-menu>
         </template>
-        <v-card-text class="px-0 py-2">
-            <v-row align="center">
-                <v-col class="py-2 font-weight-bold" style="padding-left: 68px">
-                    {{ $t('Panels.TemperaturePanel.Name') }}
-                </v-col>
-                <v-col class="py-2 text-center font-weight-bold d-none d-md-block">
-                    {{ $t('Panels.TemperaturePanel.State') }}
-                </v-col>
-                <v-col class="py-2 text-center font-weight-bold">
-                    {{ $t('Panels.TemperaturePanel.Current') }}
-                </v-col>
-                <v-col class="py-2 pr-8 text-center font-weight-bold">
-                    {{ $t('Panels.TemperaturePanel.Target') }}
-                </v-col>
-            </v-row>
-            <!-- HEATER -->
-            <div v-for="(heater, index) in heaters" :key="index">
-                <v-divider class="my-2"></v-divider>
-                <v-row align="center">
-                    <!-- HEATER NAME COLUMN -->
-                    <v-col class="pl-8 pr-0 flex-grow-0 py-2">
-                        <v-icon :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`">
-                            {{ heater.icon }}
-                        </v-icon>
-                    </v-col>
-                    <v-col class="py-2">
-                        <span style="cursor: pointer" @click="openHeater(heater)">
-                            {{ convertName(heater.name) }}
-                        </span>
-                    </v-col>
-                    <!-- HEATER STATE COLUMN -->
-                    <v-col class="py-2 text-center d-none d-md-block">
-                        <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <small v-bind="attrs" v-on="on">
-                                    {{ heater.target > 0 ? heater.power + '%' : 'off' }}
-                                </small>
-                            </template>
-                            <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ heater.avgPower + '%' }}</span>
-                        </v-tooltip>
-                    </v-col>
-                    <!-- HEATER CURRENT COLUMN -->
-                    <v-col class="py-2 text-center">
-                        <span class="d-block">{{ heater.temperature.toFixed(1) }}°C</span>
-                        <div v-for="(values, key) of heater.additionSensors" :key="key">
-                            <span v-if="values.bool" class="d-block">
-                                <small>{{ values.value }} {{ values.unit }}</small>
-                            </span>
-                        </div>
-                    </v-col>
-                    <!-- HEATER TARGET INPUT COLUMN -->
-                    <v-col class="py-2 text-center">
-                        <temperature-input
-                            :name="heater.name"
-                            :target="heater.target"
-                            :presets="heater.presets"
-                            :min_temp="heater.min_temp"
-                            :max_temp="heater.max_temp"
-                            command="SET_HEATER_TEMPERATURE"
-                            attribute-name="HEATER"></temperature-input>
-                    </v-col>
-                </v-row>
-            </div>
-            <!-- TEMPERATURE FANS -->
-            <div v-for="(fan, index) in temperatureFans" :key="index + 99">
-                <v-divider class="my-2"></v-divider>
-                <v-row align="center">
-                    <!-- TEMPERATURE FANS NAME COLUMN -->
-                    <v-col class="pl-8 pr-0 flex-grow-0 py-2">
-                        <v-icon
-                            :color="fan.target ? `${fan.chartColor}aa` : `${fan.chartColor}22`"
-                            :class="fan.speed ? ' icon-rotate' : ''">
-                            {{ mdiFan }}
-                        </v-icon>
-                    </v-col>
-                    <v-col class="py-2">
-                        <span style="cursor: pointer" @click="openHeater(fan)">
-                            {{ convertName(fan.name) }}
-                        </span>
-                    </v-col>
-                    <!-- TEMPERATURE FANS STATE COLUMN -->
-                    <v-col class="py-2 text-center d-none d-md-block">
-                        <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <small class="d-block" v-bind="attrs" v-on="on">
-                                    {{
-                                        fan.target > 0 && fan.speed > 0
-                                            ? fan.speed + '%'
-                                            : fan.target > 0
-                                            ? 'standby'
-                                            : 'off'
-                                    }}
-                                </small>
-                            </template>
-                            <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ fan.avgSpeed + '%' }}</span>
-                        </v-tooltip>
-                    </v-col>
-                    <!-- TEMPERATURE FANS CURRENT COLUMN -->
-                    <v-col class="py-2 text-center">
-                        <span class="d-block">{{ fan.temperature.toFixed(1) }}°C</span>
-                        <div v-for="(values, key) of fan.additionSensors" :key="key">
-                            <span v-if="values.bool" class="d-block">
-                                <small>{{ values.value }} {{ values.unit }}</small>
-                            </span>
-                        </div>
-                        <small
-                            v-if="fan.rpm !== null"
-                            :class="'d-block ' + (fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '')">
-                            {{ fan.rpm }} RPM
-                        </small>
-                    </v-col>
-                    <!-- TEMPERATURE FANS TARGET INPUT COLUMN -->
-                    <v-col class="py-2 text-center">
-                        <temperature-input
-                            :name="fan.name"
-                            :target="fan.target"
-                            :presets="fan.presets"
-                            :min_temp="fan.min_temp"
-                            :max_temp="fan.max_temp"
-                            command="SET_TEMPERATURE_FAN_TARGET"
-                            attribute-name="temperature_fan"></temperature-input>
-                    </v-col>
-                </v-row>
-            </div>
-            <!-- TEMPERATURE SENSORS -->
-            <div v-for="(sensor, index) in temperatureSensors" :key="index + 999">
-                <v-divider class="my-2"></v-divider>
-                <v-row align="center">
-                    <!-- TEMPERATURE SENSORS NAME COLUMN -->
-                    <v-col class="pl-8 pr-0 flex-grow-0 py-2">
-                        <v-icon
-                            :color="`${sensor.chartColor}aa`"
-                            :title="`${$t('Panels.TemperaturePanel.Min')}: ${sensor.min_temp}° / ${$t(
-                                'Panels.TemperaturePanel.Max'
-                            )}: ${sensor.max_temp}°`">
-                            {{ sensor.icon }}
-                        </v-icon>
-                    </v-col>
-                    <v-col class="py-2">
-                        <span style="cursor: pointer" @click="openHeater(sensor)">
-                            {{ convertName(sensor.name) }}
-                        </span>
-                    </v-col>
-                    <!-- TEMPERATURE SENSORS STATE COLUMN -->
-                    <v-col class="py-2 d-none d-md-block"><span>&nbsp;</span></v-col>
-                    <!-- TEMPERATURE SENSORS CURRENT COLUMN -->
-                    <v-col class="py-2 text-center">
-                        <v-tooltip top>
-                            <template #activator="{ on, attrs }">
-                                <span style="cursor: default" class="d-block px-0" v-bind="attrs" v-on="on">
-                                    {{ sensor.temperature.toFixed(1) }}°C
+        <responsive
+            :breakpoints="{
+                small: (el) => el.width <= 300,
+                medium: (el) => el.width > 300 && el.width <= 443,
+                large: (el) => el.width > 443 && el.width <= 690,
+                xLarge: (el) => el.width > 690,
+            }">
+            <template #default="{ el }">
+                <v-card-text class="px-0 py-2">
+                    <v-row align="center">
+                        <!-- NAME + ICON -->
+                        <v-col
+                            class="py-2 font-weight-bold"
+                            :class="{
+                                'col-4': el.is.small || el.is.medium || el.is.large,
+                                'col-6': el.is.xLarge,
+                            }"
+                            style="padding-left: 53px">
+                            {{ $t('Panels.TemperaturePanel.Name') }}
+                        </v-col>
+                        <!-- STATE -->
+                        <v-col
+                            v-if="!el.is.small && !el.is.medium"
+                            class="py-2 text-center font-weight-bold"
+                            :class="{
+                                'col-2': el.is.large,
+                                'col-1': el.is.xLarge,
+                            }">
+                            {{ $t('Panels.TemperaturePanel.State') }}
+                        </v-col>
+                        <!-- CURRENT -->
+                        <v-col
+                            class="py-2 text-center font-weight-bold"
+                            :class="{
+                                'col-4': el.is.small || el.is.medium,
+                                'col-2': el.is.large || el.is.xLarge,
+                            }">
+                            {{ $t('Panels.TemperaturePanel.Current') }}
+                        </v-col>
+                        <!-- TARGET -->
+                        <v-col
+                            class="py-2 pr-3 text-center font-weight-bold"
+                            :class="{
+                                'col-4': el.is.small || el.is.medium || el.is.large,
+                                'col-3': el.is.xLarge,
+                                'ml-n3': el.is.small || el.is.medium,
+                            }">
+                            {{ $t('Panels.TemperaturePanel.Target') }}
+                        </v-col>
+                    </v-row>
+                    <!-- HEATER -->
+                    <div v-for="(heater, index) in heaters" :key="index">
+                        <v-divider class="my-2"></v-divider>
+                        <v-row align="center">
+                            <!-- HEATER ICON + NAME COLUMN -->
+                            <v-col
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-6': el.is.xLarge,
+                                }"
+                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                <v-icon
+                                    :color="heater.target > 0 ? `${heater.chartColor}aa` : `${heater.chartColor}22`">
+                                    {{ heater.icon }}
+                                </v-icon>
+                                <span class="pl-1" style="cursor: pointer" @click="openHeater(heater)">
+                                    {{ convertName(heater.name) }}
                                 </span>
-                            </template>
-                            <span>
-                                {{ $t('Panels.TemperaturePanel.Max') }}: {{ sensor.measured_max_temp }}°C
-                                <br />
-                                {{ $t('Panels.TemperaturePanel.Min') }}: {{ sensor.measured_min_temp }}°C
-                            </span>
-                        </v-tooltip>
-                        <div v-for="(values, key) of sensor.additionSensors" :key="key">
-                            <span v-if="values.bool" class="d-block">
-                                <small>{{ values.value }} {{ values.unit }}</small>
-                            </span>
-                        </div>
-                    </v-col>
-                    <!-- TEMPERATURE SENSORS TARGET COLUMN -->
-                    <v-col class="text-center py-2 pr-8 vertical_align_center"><span>&nbsp;</span></v-col>
-                </v-row>
-            </div>
-            <template v-if="boolTempchart">
-                <v-divider class="my-2"></v-divider>
-                <v-row>
-                    <v-col class="py-0">
-                        <temp-chart></temp-chart>
-                    </v-col>
-                </v-row>
+                            </v-col>
+                            <!-- HEATER STATE COLUMN -->
+                            <v-col
+                                class="py-2 text-center"
+                                :class="{
+                                    'd-none': el.is.small || el.is.medium,
+                                    'col-2': el.is.large,
+                                    'col-1': el.is.xLarge,
+                                }">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <small v-bind="attrs" v-on="on">
+                                            {{ heater.target > 0 ? heater.power + '%' : 'off' }}
+                                        </small>
+                                    </template>
+                                    <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ heater.avgPower + '%' }}</span>
+                                </v-tooltip>
+                            </v-col>
+                            <!-- HEATER CURRENT COLUMN -->
+                            <v-col
+                                class="py-2 text-center"
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium,
+                                    'col-2': el.is.large || el.is.xLarge,
+                                }">
+                                <span class="d-block">{{ heater.temperature.toFixed(1) }}°C</span>
+                                <div v-for="(values, key) of heater.additionSensors" :key="key">
+                                    <span v-if="values.bool" class="d-block">
+                                        <small>{{ values.value }} {{ values.unit }}</small>
+                                    </span>
+                                </div>
+                            </v-col>
+                            <!-- HEATER TARGET INPUT COLUMN -->
+                            <v-col
+                                class="py-2 text-center d-flex justify-space-around"
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-3': el.is.xLarge,
+                                    'ml-n3': el.is.small || el.is.medium,
+                                }">
+                                <temperature-input
+                                    :name="heater.name"
+                                    :target="heater.target"
+                                    :presets="heater.presets"
+                                    :min_temp="heater.min_temp"
+                                    :max_temp="heater.max_temp"
+                                    command="SET_HEATER_TEMPERATURE"
+                                    attribute-name="HEATER"></temperature-input>
+                            </v-col>
+                        </v-row>
+                    </div>
+                    <!-- TEMPERATURE FANS -->
+                    <div v-for="(fan, index) in temperatureFans" :key="index + 99">
+                        <v-divider class="my-2"></v-divider>
+                        <v-row align="center">
+                            <!-- TEMPERATURE FANS ICON + NAME COLUMN -->
+                            <v-col
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-6': el.is.xLarge,
+                                }"
+                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                <v-icon
+                                    :color="fan.target ? `${fan.chartColor}aa` : `${fan.chartColor}22`"
+                                    :class="fan.speed ? ' icon-rotate' : ''">
+                                    {{ mdiFan }}
+                                </v-icon>
+                                <span class="pl-1" style="cursor: pointer" @click="openHeater(fan)">
+                                    {{ convertName(fan.name) }}
+                                </span>
+                            </v-col>
+                            <!-- TEMPERATURE FANS STATE COLUMN -->
+                            <v-col
+                                class="py-2 text-center"
+                                :class="{
+                                    'd-none': el.is.small || el.is.medium,
+                                    'col-2': el.is.large,
+                                    'col-1': el.is.xLarge,
+                                }">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <small class="d-block" v-bind="attrs" v-on="on">
+                                            {{
+                                                fan.target > 0 && fan.speed > 0
+                                                    ? fan.speed + '%'
+                                                    : fan.target > 0
+                                                    ? 'standby'
+                                                    : 'off'
+                                            }}
+                                        </small>
+                                    </template>
+                                    <span>{{ $t('Panels.TemperaturePanel.Avg') }}: {{ fan.avgSpeed + '%' }}</span>
+                                </v-tooltip>
+                            </v-col>
+                            <!-- TEMPERATURE FANS CURRENT COLUMN -->
+                            <v-col
+                                class="py-2 text-center"
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium,
+                                    'col-2': el.is.large || el.is.xLarge,
+                                }">
+                                <span class="d-block">{{ fan.temperature.toFixed(1) }}°C</span>
+                                <div v-for="(values, key) of fan.additionSensors" :key="key">
+                                    <span v-if="values.bool" class="d-block">
+                                        <small>{{ values.value }} {{ values.unit }}</small>
+                                    </span>
+                                </div>
+                                <small
+                                    v-if="fan.rpm !== null"
+                                    :class="'d-block ' + (fan.rpm === 0 && fan.speed > 0 ? 'red--text' : '')">
+                                    {{ fan.rpm }} RPM
+                                </small>
+                            </v-col>
+                            <!-- TEMPERATURE FANS TARGET INPUT COLUMN -->
+                            <v-col
+                                class="py-2 text-center d-flex justify-space-around"
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-3': el.is.xLarge,
+                                    'ml-n3': el.is.small || el.is.medium,
+                                }">
+                                <temperature-input
+                                    :name="fan.name"
+                                    :target="fan.target"
+                                    :presets="fan.presets"
+                                    :min_temp="fan.min_temp"
+                                    :max_temp="fan.max_temp"
+                                    command="SET_TEMPERATURE_FAN_TARGET"
+                                    attribute-name="temperature_fan"></temperature-input>
+                            </v-col>
+                        </v-row>
+                    </div>
+                    <!-- TEMPERATURE SENSORS -->
+                    <div v-for="(sensor, index) in temperatureSensors" :key="index + 999">
+                        <v-divider class="my-2"></v-divider>
+                        <v-row align="center">
+                            <!-- TEMPERATURE SENSORS ICON + NAME COLUMN -->
+                            <v-col
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium || el.is.large,
+                                    'col-6': el.is.xLarge,
+                                }"
+                                class="pl-6 d-flex align-center flex-grow-0 py-2">
+                                <v-icon
+                                    :color="`${sensor.chartColor}aa`"
+                                    :title="`${$t('Panels.TemperaturePanel.Min')}: ${sensor.min_temp}° / ${$t(
+                                        'Panels.TemperaturePanel.Max'
+                                    )}: ${sensor.max_temp}°`">
+                                    {{ sensor.icon }}
+                                </v-icon>
+                                <span class="pl-1" style="cursor: pointer" @click="openHeater(sensor)">
+                                    {{ convertName(sensor.name) }}
+                                </span>
+                            </v-col>
+                            <!-- TEMPERATURE SENSORS STATE COLUMN -->
+                            <v-col
+                                class="py-2"
+                                :class="{
+                                    'd-none': el.is.small || el.is.medium,
+                                    'col-2': el.is.large,
+                                    'col-1': el.is.xLarge,
+                                }">
+                                <span>&nbsp;</span>
+                            </v-col>
+                            <!-- TEMPERATURE SENSORS CURRENT COLUMN -->
+                            <v-col
+                                class="py-2 text-center"
+                                :class="{
+                                    'col-4': el.is.small || el.is.medium,
+                                    'col-2': el.is.large || el.is.xLarge,
+                                }">
+                                <v-tooltip top>
+                                    <template #activator="{ on, attrs }">
+                                        <span style="cursor: default" class="d-block px-0" v-bind="attrs" v-on="on">
+                                            {{ sensor.temperature.toFixed(1) }}°C
+                                        </span>
+                                    </template>
+                                    <span>
+                                        {{ $t('Panels.TemperaturePanel.Max') }}: {{ sensor.measured_max_temp }}°C
+                                        <br />
+                                        {{ $t('Panels.TemperaturePanel.Min') }}: {{ sensor.measured_min_temp }}°C
+                                    </span>
+                                </v-tooltip>
+                                <div v-for="(values, key) of sensor.additionSensors" :key="key">
+                                    <span v-if="values.bool" class="d-block">
+                                        <small>{{ values.value }} {{ values.unit }}</small>
+                                    </span>
+                                </div>
+                            </v-col>
+                            <!-- TEMPERATURE SENSORS TARGET COLUMN -->
+                            <v-col
+                                :class="{ 'col-4 ml-n3': el.is.small || el.is.medium }"
+                                class="py-2 pr-8 text-center vertical_align_center d-flex justify-space-around">
+                                <span>&nbsp;</span>
+                            </v-col>
+                        </v-row>
+                    </div>
+                    <template v-if="boolTempchart">
+                        <v-divider class="my-2"></v-divider>
+                        <v-row>
+                            <v-col class="py-0">
+                                <temp-chart></temp-chart>
+                            </v-col>
+                        </v-row>
+                    </template>
+                    <!-- DEBUG -->
+                    <div class="text-center">
+                        <v-divider class="my-2"></v-divider>
+                        <span>
+                            {{ `small: ${el.is.small} ` }}
+                            {{ ` medium: ${el.is.medium} ` }}
+                            {{ ` large: ${el.is.large} ` }}
+                            {{ ` xLarge: ${el.is.xLarge} ` }}
+                        </span>
+                    </div>
+                </v-card-text>
             </template>
-        </v-card-text>
+        </responsive>
         <!-- COLOR-PICKER -->
         <v-dialog v-model="editHeater.bool" persistent :width="400">
             <panel
@@ -335,11 +443,12 @@ import ControlMixin from '@/components/mixins/control'
 import TempChart from '@/components/charts/TempChart.vue'
 import TemperatureInput from '@/components/inputs/TemperatureInput.vue'
 import Panel from '@/components/ui/Panel.vue'
+import Responsive from '@/components/ui/Responsive.vue'
 import { datasetTypes } from '@/store/variables'
 import { mdiCloseThick, mdiCog, mdiFan, mdiSnowflake, mdiFire, mdiMenuDown, mdiThermometerLines } from '@mdi/js'
 
 @Component({
-    components: { Panel, TempChart, TemperatureInput },
+    components: { Panel, TempChart, TemperatureInput, Responsive },
 })
 export default class TemperaturePanel extends Mixins(BaseMixin, ControlMixin) {
     mdiFan = mdiFan
