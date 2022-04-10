@@ -171,3 +171,11 @@ export interface PrinterStateMcu {
         measured_max_temp: number | null
     }
 }
+
+export interface PrinterStateKlipperConfigWarning {
+    message: string
+    option: string
+    section: string
+    type: 'deprecated_value' | 'deprecated_option'
+    value: string
+}

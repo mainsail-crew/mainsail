@@ -12,6 +12,7 @@ import { macros } from '@/store/gui/macros'
 import { presets } from '@/store/gui/presets'
 import { remoteprinters } from '@/store/gui/remoteprinters'
 import { webcams } from '@/store/gui/webcams'
+import { notifications } from '@/store/gui/notifications'
 
 export const getDefaultState = (): GuiState => {
     return {
@@ -234,6 +235,7 @@ export const gui: Module<GuiState, any> = {
         console,
         gcodehistory,
         macros,
+        notifications,
         presets,
         remoteprinters,
         webcams,

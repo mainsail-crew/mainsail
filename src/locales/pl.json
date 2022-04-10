@@ -1,6 +1,12 @@
 {
     "App": {
         "Printers": "Drukarki",
+        "Notifications": {
+            "KlipperWarnings": {
+                "DeprecatedOption": "Opcja '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach.",
+                "DeprecatedValue": "Ustawienie '{value}' w opcji '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach."
+            }
+        },
         "ThrottledStates": {
             "DescriptionCurrentlyThrottled": "Częstotliwość rdzeni rPi jest aktualnie obniżona.",
             "DescriptionFrequencyCapped": "Taktowanie rPi ograniczone do 1.2 GHz.",
@@ -402,12 +408,6 @@
             "ReconnectToPrinter": "Ponownie połącz",
             "SwitchToPrinter": "Przełącz do drukarki",
             "WebcamOff": "Wyłącz"
-        },
-        "KlipperWarningsPanel": {
-            "DeprecatedOption": "Opcja '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach.",
-            "DeprecatedValue": "Ustawienie '{value}' w opcji '{option}' w sekcji '{section}' jest przestarzała i zostanie usunięta w przyszłych wydaniach.",
-            "DownloadLog": "Pobierz logi",
-            "KlipperWarnings": "Ostrzeżenia Klippera"
         },
         "KlippyStatePanel": {
             "FirmwareRestart": "Ponowne uruchomienie oprogramowania",
