@@ -1,5 +1,6 @@
 <template>
     <v-menu
+        v-model="boolMenu"
         bottom
         :left="!isMobile"
         offset-y
@@ -27,7 +28,8 @@
                             <notification-menu-entry
                                 :key="entry.id"
                                 :entry="entry"
-                                :class="index < notifications.length - 1 ? '' : 'mb-0'" />
+                                :class="index < notifications.length - 1 ? '' : 'mb-0'"
+                                :parent-state="boolMenu" />
                         </template>
                     </v-card-text>
                 </overlay-scrollbars>
@@ -65,6 +67,8 @@ export default class TheNotificationMenu extends Mixins(BaseMixin) {
     mdiBell = mdiBell
     mdiBellOutline = mdiBellOutline
     mdiCloseBoxMultipleOutline = mdiCloseBoxMultipleOutline
+
+    private boolMenu = false
 
     get notifications() {
         return this.$store.getters['gui/notifications/getNotifications'] ?? []

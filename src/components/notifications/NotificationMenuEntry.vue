@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import BaseMixin from '@/components/mixins/base'
-import { Component, Mixins, Prop } from 'vue-property-decorator'
+import { Component, Mixins, Prop, Watch } from 'vue-property-decorator'
 import { mdiClose, mdiLinkVariant, mdiBellOffOutline } from '@mdi/js'
 import { GuiNotificationStateEntry } from '@/store/gui/notifications/types'
 
@@ -112,6 +112,9 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
 
     @Prop({ required: true })
     declare readonly entry: GuiNotificationStateEntry
+
+    @Prop({ default: true })
+    declare readonly parentState: boolean
 
     get formatedText() {
         return this.entry.description.replace(/\[([^\]]+)\]\(([^)]+)\)/, '<a href="$2" target="_blank">$1</a>')
@@ -137,6 +140,11 @@ export default class NotificationMenuEntry extends Mixins(BaseMixin) {
 
     dismiss(type: 'time' | 'reboot', time: number | null) {
         this.$store.dispatch('gui/notifications/dismiss', { id: this.entry.id, type, time })
+    }
+
+    @Watch('parentState')
+    parentStateUpdate(newVal: boolean) {
+        if (!newVal) this.expand = false
     }
 }
 </script>
