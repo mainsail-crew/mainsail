@@ -1,12 +1,14 @@
 <style scoped>
 ._temp-input {
     font-size: 0.875rem;
-    min-width: 5rem;
+    min-width: 4rem;
     max-width: 5rem;
 }
 
 ._temp-input >>> .v-input__slot {
     min-height: 1rem !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
 }
 
 ._temp-input >>> .v-text-field__slot input {
