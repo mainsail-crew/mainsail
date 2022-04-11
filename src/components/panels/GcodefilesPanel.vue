@@ -129,7 +129,7 @@
                     <v-col class="col-12 py-2 d-flex align-center">
                         <span>
                             <b>{{ $t('Files.CurrentPath') }}:</b>
-                            {{ currentPath !== 'gcodes' ? '/' + currentPath.substring(7) : '/' }}
+                            {{ currentPath || '/' }}
                         </span>
                         <v-spacer></v-spacer>
                         <template v-if="disk_usage !== null">
@@ -212,16 +212,16 @@
                                 <v-icon>{{ mdiFolder }}</v-icon>
                             </template>
                             <template v-else>
-                                <template v-if="getSmallThumbnail(item) && getBigThumbnail(item)">
+                                <template v-if="item.small_thumbnail && item.big_thumbnail">
                                     <v-tooltip
-                                        v-if="!item.isDirectory && getSmallThumbnail(item) && getBigThumbnail(item)"
+                                        v-if="!item.isDirectory && item.small_thumbnail && item.big_thumbnail"
                                         top
                                         content-class="tooltip__content-opacity1">
                                         <template #activator="{ on, attrs }">
                                             <vue-load-image>
                                                 <img
                                                     slot="image"
-                                                    :src="getSmallThumbnail(item)"
+                                                    :src="item.small_thumbnail"
                                                     width="32"
                                                     height="32"
                                                     v-bind="attrs"
@@ -233,12 +233,12 @@
                                                 <v-icon slot="error">{{ mdiFile }}</v-icon>
                                             </vue-load-image>
                                         </template>
-                                        <span><img :src="getBigThumbnail(item)" width="250" /></span>
+                                        <span><img :src="item.big_thumbnail" width="250" /></span>
                                     </v-tooltip>
                                 </template>
-                                <template v-else-if="getSmallThumbnail(item)">
+                                <template v-else-if="item.small_thumbnail">
                                     <vue-load-image>
-                                        <img slot="image" :src="getSmallThumbnail(item)" width="32" height="32" />
+                                        <img slot="image" :src="item.small_thumbnail" width="32" height="32" />
                                         <v-progress-circular
                                             slot="preloader"
                                             indeterminate
@@ -343,12 +343,12 @@
                 </v-btn>
             </template>
         </v-snackbar>
-        <v-dialog v-model="dialogPrintFile.show" :max-width="getThumbnailWidth(dialogPrintFile.item)">
+        <v-dialog v-model="dialogPrintFile.show" :max-width="dialogPrintFile.item.big_thumbnail_width">
             <v-card>
                 <v-img
-                    v-if="getBigThumbnail(dialogPrintFile.item)"
+                    v-if="dialogPrintFile.item.big_thumbnail"
                     contain
-                    :src="getBigThumbnail(dialogPrintFile.item)"></v-img>
+                    :src="dialogPrintFile.item.big_thumbnail"></v-img>
                 <v-card-title class="headline">{{ $t('Files.StartJob') }}</v-card-title>
                 <v-card-text class="pb-0">
                     {{ $t('Files.DoYouWantToStartFilename', { filename: dialogPrintFile.item.filename }) }}
@@ -538,9 +538,9 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import axios from 'axios'
-import { thumbnailSmallMin, thumbnailSmallMax, thumbnailBigMin, validGcodeExtensions } from '@/store/variables'
+import { validGcodeExtensions } from '@/store/variables'
 import { formatFilesize, formatDate, sortFiles, formatPrintTime } from '@/plugins/helpers'
-import { FileStateFile } from '@/store/files/types'
+import { FileStateFile, FileStateGcodefile } from '@/store/files/types'
 import Panel from '@/components/ui/Panel.vue'
 import SettingsRow from '@/components/settings/SettingsRow.vue'
 import {
@@ -567,7 +567,7 @@ import {
 
 interface draggingFile {
     status: boolean
-    item: FileStateFile
+    item: FileStateGcodefile
 }
 
 interface uploadSnackbar {
@@ -587,13 +587,13 @@ interface uploadSnackbar {
 
 interface dialogPrintFile {
     show: boolean
-    item: FileStateFile
+    item: FileStateGcodefile
 }
 
 interface dialogRenameObject {
     show: boolean
     newName: string
-    item: FileStateFile
+    item: FileStateGcodefile
 }
 
 @Component({
@@ -738,7 +738,10 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     private input_rules = [(value: string) => value.indexOf(' ') === -1 || 'Name contains spaces!']
 
     get currentPath() {
-        return this.$store.state.gui.view.gcodefiles.currentPath
+        const path = this.$store.state.gui.view.gcodefiles.currentPath
+        if (path === 'gcodes') return ''
+
+        return path
     }
 
     set currentPath(newVal) {
@@ -823,7 +826,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get directory() {
-        return this.$store.getters['files/getDirectory'](this.currentPath)
+        return this.$store.getters['files/getDirectory']('gcodes/' + this.currentPath)
     }
 
     get disk_usage() {
@@ -831,27 +834,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     }
 
     get files() {
-        let files = [...(this.directory?.childrens ?? [])]
-
-        if (!this.showHiddenFiles) {
-            files = files.filter((file) => file.filename !== 'thumbs' && file.filename.substr(0, 1) !== '.')
-        }
-
-        if (!this.showPrintedFiles) {
-            files = files.filter((file) => {
-                if (file.isDirectory) return true
-                else {
-                    return (
-                        this.$store.getters['server/history/getPrintStatusByFilename'](
-                            (this.currentPath + '/' + file.filename).substr(7),
-                            file.modified.getTime()
-                        ) !== 'completed'
-                    )
-                }
-            })
-        }
-
-        return files
+        return this.$store.getters['files/getGcodeFiles'](this.currentPath, this.showHiddenFiles, this.showPrintedFiles)
     }
 
     get configHeaders() {
@@ -1147,57 +1130,17 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
         const items = data.filter((file) => !file.isDirectory && !file.metadataRequested && !file.metadataPulled)
         items.forEach((file: FileStateFile) => {
             this.$store.dispatch('files/requestMetadata', {
-                filename: this.currentPath + '/' + file.filename,
+                filename: 'gcodes' + this.currentPath + '/' + file.filename,
             })
         })
     }
 
     created() {
-        this.$socket.emit('server.files.get_directory', { path: this.currentPath }, { action: 'files/getDirectory' })
-    }
-
-    getSmallThumbnail(item: FileStateFile) {
-        if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find(
-                (thumb) =>
-                    thumb.width >= thumbnailSmallMin &&
-                    thumb.width <= thumbnailSmallMax &&
-                    thumb.height >= thumbnailSmallMin &&
-                    thumb.height <= thumbnailSmallMax
-            )
-
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
-
-        return ''
-    }
-
-    getBigThumbnail(item: FileStateFile) {
-        if (item.thumbnails?.length) {
-            const thumbnail = item.thumbnails.find((thumb) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail && 'relative_path' in thumbnail) {
-                return `${this.apiUrl}/server/files/${encodeURI(this.currentPath)}/${encodeURI(
-                    thumbnail.relative_path
-                )}?timestamp=${item.modified.getTime()}`
-            }
-        }
-
-        return ''
-    }
-
-    getThumbnailWidth(item: FileStateFile) {
-        if (this.getBigThumbnail(item)) {
-            const thumbnail = item?.thumbnails?.find((thumb) => thumb.width >= thumbnailBigMin)
-
-            if (thumbnail) return thumbnail.width
-        }
-
-        return 400
+        this.$socket.emit(
+            'server.files.get_directory',
+            { path: 'gcodes/' + this.currentPath },
+            { action: 'files/getDirectory' }
+        )
     }
 
     clickRow(item: FileStateFile, force = false) {

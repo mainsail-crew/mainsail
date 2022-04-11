@@ -247,6 +247,38 @@ export const getters: GetterTree<ServerHistoryState, any> = {
         return ''
     },
 
+    getPrintJobById: (state) => (job_id: string) => {
+        if (state.jobs.length === 0) return
+
+        return state.jobs.find((job) => job.job_id === job_id)
+    },
+
+    getPrintJobForGcodes: (state) => (filename: string, modified: number, job_id: string) => {
+        if (state.jobs.length === 0) return
+
+        // find completed job
+        const completed = state.jobs.find((job) => {
+            return (
+                job.filename === filename &&
+                job.status === 'completed' &&
+                Math.round(job.metadata?.modified * 1000) === modified
+            )
+        })
+
+        // return completed job, if it exists
+        if (completed) return completed
+
+        //search a not completed job and return
+        const open = state.jobs.find((job) => {
+            return job.filename === filename && Math.round(job.metadata?.modified * 1000) === modified
+        })
+
+        // return open job, if it exists
+        if (open) return open
+
+        return state.jobs.find((job) => job.job_id === job_id)
+    },
+
     getPrintStatusByFilename: (state) => (filename: string, modified: number) => {
         if (state.jobs.length) {
             const job = state.jobs.find((job) => {

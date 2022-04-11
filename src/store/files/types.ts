@@ -29,6 +29,18 @@ export interface FileStateFile {
     size?: number
 }
 
+export interface FileStateGcodefile extends FileStateFile {
+    small_thumbnail: string | null
+    big_thumbnail: string | null
+    big_thumbnail_width: number | null
+    last_end_time: Date | null
+    last_filament_used: number | null
+    last_print_duration: number | null
+    last_status: string | null
+    last_start_time: Date | null
+    last_total_duration: number | null
+}
+
 export interface FileStateDiskUsage {
     free: number
     total: number
