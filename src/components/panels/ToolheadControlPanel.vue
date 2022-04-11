@@ -91,219 +91,33 @@
                 </v-list>
             </v-menu>
         </template>
-        <responsive
-            :breakpoints="{
-                small: (el) => el.width > 370 && el.width <= 420,
-                medium: (el) => el.width > 420 && el.width <= 570,
-                // breakpoints used by bars and cross control style
-                large: (el) => el.width > 570 && el.width <= 692,
-                xLarge: (el) => el.width > 692,
-                // breakpoints only for circle control style
-                circLarge: (el) => el.width > 570 && el.width <= 690,
-                circXLarge: (el) => el.width > 690,
-            }">
-            <template #default="{ el }">
-                <!-- BARS CONTROLS -->
-                <template v-if="controlStyle === 'bars'">
-                    <!-- MOVE TO CONTROL BARS -->
-                    <move-to-control class="py-0 pt-3"></move-to-control>
-                    <template v-if="el.is.large || el.is.xLarge">
-                        <v-container class="d-flex align-end">
-                            <!-- AXIS CONTROL BARS LARGE && X-LARGE -->
-                            <div class="pr-2" style="width: 58%">
-                                <component :is="`${controlStyle}-control`"></component>
-                            </div>
-                            <!-- Z-OFFSET CONTROL BARS LARGE && X-LARGE -->
-                            <div class="pl-1" style="width: 42%; height: 96px">
-                                <zoffset-control></zoffset-control>
-                            </div>
-                        </v-container>
-                    </template>
-                    <template v-else>
-                        <!-- AXIS CONTROL BARS -->
-                        <v-container>
-                            <component :is="`${controlStyle}-control`"></component>
-                        </v-container>
-                        <!-- Z-OFFSET CONTROL BARS -->
-                        <v-divider></v-divider>
-                        <v-container>
-                            <zoffset-control></zoffset-control>
-                        </v-container>
-                    </template>
-                    <!-- SPEED FACTOR BARS -->
-                    <v-divider></v-divider>
-                    <v-container>
-                        <tool-slider
-                            :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-                            :icon="mdiSpeedometer"
-                            :target="speedFactor"
-                            :min="1"
-                            :max="200"
-                            :multi="100"
-                            :step="5"
-                            :dynamic-range="true"
-                            :has-input-field="true"
-                            command="M220"
-                            attribute-name="S"></tool-slider>
-                    </v-container>
-                </template>
-                <!-- CROSS CONTROLS -->
-                <template v-else-if="controlStyle === 'cross'">
-                    <!-- MOVE TO CONTROL CROSS -->
-                    <move-to-control class="py-0 pt-3"></move-to-control>
-                    <template v-if="el.is.large || el.is.xLarge">
-                        <v-container class="d-flex align-end">
-                            <!-- AXIS CONTROL CROSS LARGE && X-LARGE -->
-                            <div class="pr-2" style="width: 58%">
-                                <component :is="`${controlStyle}-control`"></component>
-                            </div>
-                            <!-- Z-OFFSET CONTROL CROSS LARGE && X-LARGE -->
-                            <div class="pl-1" style="width: 42%; height: 96px">
-                                <zoffset-control></zoffset-control>
-                            </div>
-                        </v-container>
-                    </template>
-                    <template v-else>
-                        <!-- AXIS CONTROL CROSS -->
-                        <v-container>
-                            <component :is="`${controlStyle}-control`"></component>
-                        </v-container>
-                        <!-- Z-OFFSET CONTROL CROSS -->
-                        <v-divider></v-divider>
-                        <v-container>
-                            <zoffset-control></zoffset-control>
-                        </v-container>
-                    </template>
-                    <!-- SPEED FACTOR CROSS -->
-                    <v-divider></v-divider>
-                    <v-container>
-                        <tool-slider
-                            :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-                            :icon="mdiSpeedometer"
-                            :target="speedFactor"
-                            :min="1"
-                            :max="200"
-                            :multi="100"
-                            :step="5"
-                            :dynamic-range="true"
-                            :has-input-field="true"
-                            command="M220"
-                            attribute-name="S"></tool-slider>
-                    </v-container>
-                </template>
-                <!-- CIRCLE CONTROLS -->
-                <!-- TODO achieve full responsiveness of circle controls -->
-                <template v-else>
-                    <template v-if="el.is.circLarge">
-                        <v-container class="d-flex align-center">
-                            <!-- AXIS CONTROL BARS LARGE && X-LARGE -->
-                            <div class="pt-2 px-2" style="width: 58%">
-                                <component :is="`${controlStyle}-control`"></component>
-                            </div>
-                            <!-- Z-OFFSET CONTROL BARS LARGE && X-LARGE -->
-                            <div
-                                class="pl-3 d-flex flex-column justify-space-between"
-                                style="width: 42%; min-height: 275px">
-                                <move-to-control class="pa-0"></move-to-control>
-                                <zoffset-control></zoffset-control>
-                            </div>
-                        </v-container>
-                        <v-divider></v-divider>
-                        <v-container>
-                            <tool-slider
-                                :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-                                :icon="mdiSpeedometer"
-                                :target="speedFactor"
-                                :min="1"
-                                :max="200"
-                                :multi="100"
-                                :step="5"
-                                :dynamic-range="true"
-                                :has-input-field="true"
-                                command="M220"
-                                attribute-name="S"></tool-slider>
-                        </v-container>
-                    </template>
-                    <template v-else-if="el.is.circXLarge">
-                        <v-container class="d-flex align-center">
-                            <!-- AXIS CONTROL BARS LARGE && X-LARGE -->
-                            <div class="py-2 px-2" style="width: 50%">
-                                <component :is="`${controlStyle}-control`"></component>
-                            </div>
-                            <!-- Z-OFFSET CONTROL BARS LARGE && X-LARGE -->
-                            <div
-                                class="pl-3 d-flex flex-column justify-space-between"
-                                style="width: 50%; min-height: 275px">
-                                <move-to-control class="pa-0 pt-1"></move-to-control>
-                                <zoffset-control></zoffset-control>
-                                <div>
-                                    <tool-slider
-                                        :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-                                        :icon="mdiSpeedometer"
-                                        :target="speedFactor"
-                                        :min="1"
-                                        :max="200"
-                                        :multi="100"
-                                        :step="5"
-                                        :dynamic-range="true"
-                                        :has-input-field="true"
-                                        command="M220"
-                                        attribute-name="S"></tool-slider>
-                                </div>
-                            </div>
-                        </v-container>
-                    </template>
-                    <template v-else>
-                        <!-- MOVE TO CONTROL CIRCLE -->
-                        <move-to-control class="py-0 pt-3"></move-to-control>
-                        <!-- AXIS CONTROL CIRCLE -->
-                        <v-container class="px-4">
-                            <component :is="`${controlStyle}-control`"></component>
-                        </v-container>
-                        <!-- Z-OFFSET CONTROL CIRCLE -->
-                        <v-divider></v-divider>
-                        <v-container>
-                            <zoffset-control></zoffset-control>
-                        </v-container>
-                        <!-- SPEED FACTOR CIRCLE -->
-                        <v-divider></v-divider>
-                        <v-container>
-                            <tool-slider
-                                :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
-                                :icon="mdiSpeedometer"
-                                :target="speedFactor"
-                                :min="1"
-                                :max="200"
-                                :multi="100"
-                                :step="5"
-                                :dynamic-range="true"
-                                :has-input-field="true"
-                                command="M220"
-                                attribute-name="S"></tool-slider>
-                        </v-container>
-                    </template>
-                </template>
-                <!-- DEBUG -->
-                <!--                <div class="text-center">-->
-                <!--                    <v-divider></v-divider>-->
-                <!--                    <span>-->
-                <!--                        {{ `small: ${el.is.small} ` }}-->
-                <!--                        {{ ` medium: ${el.is.medium} ` }}-->
-                <!--                        {{ ` large: ${el.is.large}` }}-->
-                <!--                        {{ ` xLarge: ${el.is.xLarge}` }}-->
-                <!--                        {{ ` circLarge: ${el.is.circLarge}` }}-->
-                <!--                        {{ ` circXLarge: ${el.is.circXLarge}` }}-->
-                <!--                    </span>-->
-                <!--                    <v-divider></v-divider>-->
-                <!--                    <span>-->
-                <!--                        {{ `mobile: ${isMobile} ` }}-->
-                <!--                        {{ ` tablet: ${isTablet} ` }}-->
-                <!--                        {{ ` desktop: ${isDesktop}` }}-->
-                <!--                        {{ ` wide: ${isWidescreen}` }}-->
-                <!--                    </span>-->
-                <!--                </div>-->
-            </template>
-        </responsive>
+        <!-- MOVE TO CONTROL -->
+        <move-to-control class="py-0 pt-3"></move-to-control>
+        <!-- AXIS CONTROL -->
+        <v-container>
+            <component :is="`${controlStyle}-control`"></component>
+        </v-container>
+        <!-- Z-OFFSET CONTROL BARS -->
+        <v-divider></v-divider>
+        <v-container>
+            <zoffset-control></zoffset-control>
+        </v-container>
+        <!-- SPEED FACTOR BARS -->
+        <v-divider></v-divider>
+        <v-container>
+            <tool-slider
+                :label="$t('Panels.ToolheadControlPanel.SpeedFactor').toString()"
+                :icon="mdiSpeedometer"
+                :target="speedFactor"
+                :min="1"
+                :max="200"
+                :multi="100"
+                :step="5"
+                :dynamic-range="true"
+                :has-input-field="true"
+                command="M220"
+                attribute-name="S"></tool-slider>
+        </v-container>
     </panel>
 </template>
 
@@ -316,7 +130,6 @@ import ControlMixin from '@/components/mixins/control'
 import CrossControl from '@/components/panels/ToolheadControls/CrossControl.vue'
 import MoveToControl from '@/components/panels/ToolheadControls/MoveToControl.vue'
 import Panel from '@/components/ui/Panel.vue'
-import Responsive from '@/components/ui/Responsive.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 import ZoffsetControl from '@/components/panels/ToolheadControls/ZoffsetControl.vue'
 import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown, mdiRestore } from '@mdi/js'
@@ -328,7 +141,6 @@ import { mdiDotsVertical, mdiEngineOff, mdiGamepad, mdiSpeedometer, mdiMenuDown,
         CrossControl,
         MoveToControl,
         Panel,
-        Responsive,
         ToolSlider,
         ZoffsetControl,
     },
