@@ -17,7 +17,6 @@ import { PrinterTempHistoryStateSerie, PrinterTempHistoryStateSourceEntry } from
 import type { ECharts } from 'echarts/core'
 import type { ECBasicOption } from 'echarts/types/dist/shared'
 import { mdiClock } from '@mdi/js'
-import { Debounce } from 'vue-debounce-decorator'
 
 interface echartsTooltipObj {
     [key: string]: any
@@ -240,7 +239,6 @@ export default class TempChart extends Mixins(BaseMixin) {
         window.removeEventListener('resize', this.eventListenerResize)
     }
 
-    @Debounce(200)
     eventListenerResize() {
         this.chart?.resize()
     }
