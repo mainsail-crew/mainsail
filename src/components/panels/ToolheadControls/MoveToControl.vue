@@ -1,12 +1,12 @@
 <template>
-    <v-container>
-        <responsive
-            :breakpoints="{
-                small: (el) => el.width <= 320,
-            }">
-            <template #default="{ el }">
-                <v-row v-if="parseFloat(homingOrigin.x) !== 0 || parseFloat(homingOrigin.y) !== 0 || el.is.small" dense>
-                    <v-col class="mt-n2 pb-2 text-center text--disabled text-caption font-weight-light">
+    <responsive
+        :breakpoints="{
+            small: (el) => el.width <= 320,
+        }">
+        <template #default="{ el }">
+            <v-container class="py-0">
+                <v-row dense>
+                    <v-col class="pb-2 text-center text--disabled text-caption font-weight-light d-flex justify-start">
                         <span>{{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}</span>
                     </v-col>
                 </v-row>
@@ -23,18 +23,6 @@
                                 :readonly="['printing'].includes(printer_state)"
                                 :disabled="!xAxisHomed"
                                 @validate="validate"></move-to-input>
-                            <div
-                                v-if="parseFloat(homingOrigin.x) !== 0"
-                                class="pl-3 text--disabled text-caption font-weight-light">
-                                <span>{{ $t('Panels.ToolheadControlPanel.XOffset') }}: {{ homingOrigin.x }}</span>
-                            </div>
-                            <div
-                                v-else-if="!el.is.small"
-                                class="pl-3 text--disabled text-caption font-weight-light text-no-wrap overflow-x-visible">
-                                <span>
-                                    {{ $t('Panels.ToolheadControlPanel.Position') }}: {{ displayPositionAbsolute }}
-                                </span>
-                            </div>
                         </v-col>
                         <v-col :class="el.is.small ? 'col-12' : 'col-4'">
                             <move-to-input
@@ -47,11 +35,6 @@
                                 :readonly="['printing'].includes(printer_state)"
                                 :disabled="!yAxisHomed"
                                 @validate="validate"></move-to-input>
-                            <div
-                                v-show="parseFloat(homingOrigin.y) !== 0"
-                                class="pl-3 text--disabled text-caption font-weight-light">
-                                <span>{{ $t('Panels.ToolheadControlPanel.YOffset') }}: {{ homingOrigin.y }}</span>
-                            </div>
                         </v-col>
                         <v-col :class="el.is.small ? 'col-12' : 'col-4'">
                             <move-to-input
@@ -64,17 +47,12 @@
                                 :readonly="['printing'].includes(printer_state)"
                                 :disabled="!zAxisHomed"
                                 @validate="validate"></move-to-input>
-                            <div
-                                v-show="parseFloat(homingOrigin.z) !== 0"
-                                class="pl-3 text--disabled text-caption font-weight-light">
-                                <span>{{ $t('Panels.ToolheadControlPanel.ZOffset') }}: {{ homingOrigin.z }}</span>
-                            </div>
                         </v-col>
                     </v-row>
                 </v-form>
-            </template>
-        </responsive>
-    </v-container>
+            </v-container>
+        </template>
+    </responsive>
 </template>
 
 <script lang="ts">
@@ -166,15 +144,6 @@ export default class MoveToControl extends Mixins(BaseMixin, ControlMixin) {
 
     get positionAbsolute(): boolean {
         return this.$store.state.printer.gcode_move?.absolute_coordinates ?? true
-    }
-
-    get homingOrigin() {
-        const offset = this.$store.state.printer?.gcode_move?.homing_origin ?? [0, 0, 0]
-        return {
-            x: offset[0]?.toFixed(2) ?? 0,
-            y: offset[1]?.toFixed(2) ?? 0,
-            z: offset[2]?.toFixed(3) ?? 0,
-        }
     }
 
     get livePositions() {

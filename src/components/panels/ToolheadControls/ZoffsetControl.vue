@@ -48,9 +48,6 @@
     <responsive
         :breakpoints="{
             xsmall: (el) => el.width <= 285,
-            small: (el) => el.width > 370 && el.width <= 420,
-            medium: (el) => el.width > 420 && el.width <= 570,
-            large: (el) => el.width > 570,
         }">
         <template #default="{ el }">
             <v-container class="pa-0">
@@ -59,7 +56,7 @@
                         <v-icon small class="mr-2">
                             {{ mdiLayersOutline }}
                         </v-icon>
-                        <span>{{ $t('Panels.ZoffsetPanel.Headline') }}</span>
+                        <span>{{ $t('Panels.ZoffsetPanel.Headline') }}: {{ zOffset }}</span>
                     </v-col>
                     <v-col class="v-subheader justify-end pl-0">
                         <div class="d-flex align-center">
@@ -242,6 +239,10 @@ export default class ZoffsetControl extends Mixins(BaseMixin) {
 
     get existZOffsetApplyEndstop() {
         return this.helplist.findIndex((gcode: CommandHelp) => gcode.commandLow === 'z_offset_apply_endstop') !== -1
+    }
+
+    get zOffset(): number {
+        return this.$store.state.printer?.gcode_move?.homing_origin[2].toFixed(3)
     }
 
     sendBabyStepDown(offset: number): void {
