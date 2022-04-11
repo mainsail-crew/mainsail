@@ -97,12 +97,12 @@
         <v-container>
             <component :is="`${controlStyle}-control`"></component>
         </v-container>
-        <!-- Z-OFFSET CONTROL BARS -->
+        <!-- Z-OFFSET CONTROL -->
         <v-divider></v-divider>
         <v-container>
             <zoffset-control></zoffset-control>
         </v-container>
-        <!-- SPEED FACTOR BARS -->
+        <!-- SPEED FACTOR -->
         <v-divider></v-divider>
         <v-container>
             <tool-slider
