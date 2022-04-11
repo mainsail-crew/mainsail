@@ -151,13 +151,9 @@
                         attribute-name="S"></tool-slider>
                 </v-container>
                 <!-- PRESSURE ADVANCE SETTINGS -->
-                <sub-panel
-                    :title="$t('Panels.MachineSettingsPanel.PressureAdvanceSettings.PressureAdvance').toString()"
-                    sub-panel-class="pressure-advance-settings-subpanel"
-                    :class="extruders.length === 1 ? 'pt-2' : ''">
-                    <pressure-advance-settings></pressure-advance-settings>
-                    <v-divider class="pb-1"></v-divider>
-                </sub-panel>
+                <v-divider></v-divider>
+                <pressure-advance-settings></pressure-advance-settings>
+                <v-divider class="pb-1"></v-divider>
                 <!-- EXTRUDER INPUTS AND QUICKSELECTS -->
                 <v-container>
                     <v-row>
@@ -377,7 +373,6 @@ import NumberInput from '@/components/inputs/NumberInput.vue'
 import Panel from '@/components/ui/Panel.vue'
 import PressureAdvanceSettings from '@/components/panels/MachineSettings/PressureAdvanceSettings.vue'
 import Responsive from '@/components/ui/Responsive.vue'
-import SubPanel from '@/components/ui/SubPanel.vue'
 import ToolSlider from '@/components/inputs/ToolSlider.vue'
 
 @Component({
@@ -386,7 +381,6 @@ import ToolSlider from '@/components/inputs/ToolSlider.vue'
         PressureAdvanceSettings,
         NumberInput,
         Responsive,
-        SubPanel,
         ToolSlider,
     },
 })

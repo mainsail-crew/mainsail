@@ -465,7 +465,7 @@
                 "Velocity": "Geschwindigkeit"
             },
             "PressureAdvanceSettings": {
-                "Advance": "Advance",
+                "Advance": "Pressure Advance",
                 "Extruder": "Extruder",
                 "PressureAdvance": "Pressure Advance",
                 "SmoothTime": "Smooth Time"
