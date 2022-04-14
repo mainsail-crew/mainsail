@@ -172,6 +172,7 @@
         "GCodeFiles": "G-Code Files",
         "HiddenFiles": "Hidden files",
         "LastModified": "Last modified",
+        "LastPrintDuration": "Last Print Duration",
         "LayerHeight": "Layer Height",
         "Name": "Name",
         "NewDirectory": "New Directory",

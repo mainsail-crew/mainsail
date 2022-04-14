@@ -330,6 +330,11 @@
                             {{ formatPrintTime(item.estimated_time) }}
                         </td>
                         <td
+                            v-if="headers.find((header) => header.value === 'last_print_duration').visible"
+                            class="text-no-wrap text-right">
+                            {{ formatPrintTime(item.last_print_duration) }}
+                        </td>
+                        <td
                             v-if="headers.find((header) => header.value === 'slicer').visible"
                             class="text-no-wrap text-right">
                             {{ item.slicer ? item.slicer : '--' }}
@@ -925,6 +930,14 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
             {
                 text: this.$t('Files.PrintTime'),
                 value: 'estimated_time',
+                align: 'right',
+                configable: true,
+                visible: true,
+                class: 'text-no-wrap',
+            },
+            {
+                text: this.$t('Files.LastPrintDuration'),
+                value: 'last_print_duration',
                 align: 'right',
                 configable: true,
                 visible: true,
