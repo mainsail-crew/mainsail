@@ -2,7 +2,7 @@
 
 <template>
     <panel
-        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length || weightScale.length)"
+        v-if="klipperReadyForGui && (miscellaneous.length || filamentSensors.length || weightScales.length)"
         :icon="mdiDipSwitch"
         :title="$t('Panels.MiscellaneousPanel.Headline')"
         :collapsible="true"
@@ -39,10 +39,11 @@ import { Component, Mixins } from 'vue-property-decorator'
 import BaseMixin from '@/components/mixins/base'
 import MiscellaneousSlider from '@/components/inputs/MiscellaneousSlider.vue'
 import FilamentSensor from '@/components/inputs/FilamentSensor.vue'
+import WeightScale from '@/components/inputs/WeightScale.vue'
 import Panel from '@/components/ui/Panel.vue'
 import { mdiDipSwitch } from '@mdi/js'
 @Component({
-    components: { Panel, FilamentSensor, MiscellaneousSlider },
+    components: { Panel, FilamentSensor, MiscellaneousSlider, WeightScale },
 })
 export default class MiscellaneousPanel extends Mixins(BaseMixin) {
     mdiDipSwitch = mdiDipSwitch
