@@ -1,13 +1,9 @@
 <style scoped>
-.v-data-table .v-data-table-header__icon {
+.files-table .v-data-table-header__icon {
     margin-left: 7px;
 }
 
-.v-data-table th {
-    white-space: nowrap;
-}
-
-.v-data-table .file-list-cursor:hover {
+.files-table .file-list-cursor:hover {
     cursor: pointer;
 }
 
@@ -171,15 +167,11 @@
                 :custom-filter="advancedSearch"
                 mobile-breakpoint="0"
                 @current-items="refreshMetadata">
-                <template slot="items">
-                    <td v-for="header in filteredHeaders" :key="header.value">{{ header.text }}</td>
-                </template>
-
                 <template #no-data>
                     <div class="text-center">{{ $t('Files.Empty') }}</div>
                 </template>
 
-                <template v-if="currentPath !== 'gcodes'" slot="body.prepend">
+                <template v-if="currentPath !== ''" #body.prepend>
                     <tr
                         class="file-list-cursor"
                         @click="clickRowGoBack"
@@ -751,16 +743,38 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
     get headers() {
         const headers = [
             { text: '', value: '', align: 'left', configable: false, visible: true, filterable: false },
-            { text: this.$t('Files.Name'), value: 'filename', align: 'left', configable: false, visible: true },
-            { text: '', value: 'status', align: 'left', configable: false, visible: true },
-            { text: this.$t('Files.Filesize'), value: 'size', align: 'right', configable: true, visible: true },
-            { text: this.$t('Files.LastModified'), value: 'modified', align: 'right', configable: true, visible: true },
+            {
+                text: this.$t('Files.Name'),
+                value: 'filename',
+                align: 'left',
+                configable: false,
+                visible: true,
+                class: 'text-no-wrap',
+            },
+            { text: '', value: 'status', align: 'left', configable: false, visible: true, class: 'text-no-wrap' },
+            {
+                text: this.$t('Files.Filesize'),
+                value: 'size',
+                align: 'right',
+                configable: true,
+                visible: true,
+                class: 'text-no-wrap',
+            },
+            {
+                text: this.$t('Files.LastModified'),
+                value: 'modified',
+                align: 'right',
+                configable: true,
+                visible: true,
+                class: 'text-no-wrap',
+            },
             {
                 text: this.$t('Files.ObjectHeight'),
                 value: 'object_height',
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.LayerHeight'),
@@ -768,6 +782,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.NozzleDiameter'),
@@ -775,6 +790,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.FilamentName'),
@@ -782,6 +798,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.FilamentType'),
@@ -789,6 +806,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.FilamentUsage'),
@@ -796,6 +814,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.FilamentWeight'),
@@ -803,6 +822,7 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
             {
                 text: this.$t('Files.PrintTime'),
@@ -810,8 +830,16 @@ export default class GcodefilesPanel extends Mixins(BaseMixin) {
                 align: 'right',
                 configable: true,
                 visible: true,
+                class: 'text-no-wrap',
             },
-            { text: this.$t('Files.Slicer'), value: 'slicer', align: 'right', configable: true, visible: true },
+            {
+                text: this.$t('Files.Slicer'),
+                value: 'slicer',
+                align: 'right',
+                configable: true,
+                visible: true,
+                class: 'text-no-wrap',
+            },
         ]
 
         headers.forEach((header) => {
